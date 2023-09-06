@@ -9,7 +9,7 @@ export interface AdminPostOrderEditsReq {
    */
   order_id: string
   /**
-   * An optional note to create for the order edit.
+   * An optional note to associate with the order edit.
    */
   internal_note?: string
 }

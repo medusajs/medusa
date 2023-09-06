@@ -143,9 +143,7 @@ const NewRegion = ({ onClose }: Props) => {
                 required
               >
                 <p className="inter-base-regular mb-xlarge text-grey-50">
-                  {t(
-                    "Add which fulfillment and payment providers shoulb be available in this region."
-                  )}
+                  {t("Add which fulfillment and payment providers should be available in this region.")}
                 </p>
                 <RegionProvidersForm form={nestedForm(form, "providers")} />
               </Accordion.Item>

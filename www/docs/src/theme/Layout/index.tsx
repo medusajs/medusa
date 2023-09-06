@@ -15,7 +15,9 @@ import type { Props } from "@theme/Layout"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import "animate.css"
-import StructuredDataSearchbox from "@site/src/components/StructuredData/Searchbox"
+import { useUser } from "@site/src/providers/User"
+import SearchProvider from "../../providers/Search"
+import ModalProvider from "../../providers/Modal"
 
 export default function Layout(props: Props): JSX.Element {
   const {
@@ -29,51 +31,53 @@ export default function Layout(props: Props): JSX.Element {
   useKeyboardNavigation()
   const isBrowser = useIsBrowser()
   const location = useLocation()
+  const { track } = useUser()
 
   useEffect(() => {
     if (isBrowser) {
-      if (window.analytics) {
-        const handlePlay = () => {
-          window.analytics.track("video_played")
-        }
+      const handlePlay = () => {
+        track("video_played")
+      }
 
-        const videos = document.querySelectorAll("video")
-        videos.forEach((video) =>
-          video.addEventListener("play", handlePlay, {
-            once: true,
-            capture: true,
-          })
-        )
+      const videos = document.querySelectorAll("video")
+      videos.forEach((video) =>
+        video.addEventListener("play", handlePlay, {
+          once: true,
+          capture: true,
+        })
+      )
 
-        return () => {
-          videos.forEach((video) =>
-            video.removeEventListener("play", handlePlay)
-          )
-        }
+      return () => {
+        videos.forEach((video) => video.removeEventListener("play", handlePlay))
       }
     }
   }, [isBrowser, location.pathname])
 
   return (
     <LayoutProvider>
-      <PageMetadata title={title} description={description} />
-      {isBrowser && location.pathname === "/" && <StructuredDataSearchbox />}
-      <SkipToContent />
+      <ModalProvider>
+        <SearchProvider>
+          <PageMetadata title={title} description={description} />
+          <SkipToContent />
 
-      <Navbar />
+          <Navbar />
 
-      <div
-        id={SkipToContentFallbackId}
-        className={clsx(
-          ThemeClassNames.wrapper.main,
-          "tw-flex-auto tw-flex-grow tw-flex-shrink-0",
-          wrapperClassName
-        )}
-      >
-        <ErrorBoundary fallback={(params) => <ErrorPageContent {...params} />}>
-          {children}
-        </ErrorBoundary>
-      </div>
+          <div
+            id={SkipToContentFallbackId}
+            className={clsx(
+              ThemeClassNames.wrapper.main,
+              "flex-auto flex-grow flex-shrink-0",
+              wrapperClassName
+            )}
+          >
+            <ErrorBoundary
+              fallback={(params) => <ErrorPageContent {...params} />}
+            >
+              {children}
+            </ErrorBoundary>
+          </div>
+        </SearchProvider>
+      </ModalProvider>
     </LayoutProvider>
   )
 }

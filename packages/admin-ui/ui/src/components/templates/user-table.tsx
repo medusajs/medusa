@@ -111,7 +111,7 @@ const UserTable: React.FC<UserTableProps> = ({
     }
 
     return `${window.location.origin}${
-      __BASE__ ? `${__BASE__}/` : "/"
+      process.env.ADMIN_PATH ? `${process.env.ADMIN_PATH}/` : "/"
     }invite?token={invite_token}`
   }, [store])
 

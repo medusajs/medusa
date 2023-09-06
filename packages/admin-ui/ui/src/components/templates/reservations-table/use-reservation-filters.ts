@@ -1,6 +1,10 @@
-import { useMemo, useReducer, useState } from "react"
+import {
+  DateComparisonOperator,
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+} from "@medusajs/types"
+import { useMemo, useReducer } from "react"
 
-import { omit } from "lodash"
 import qs from "qs"
 import { relativeDateFormatToTimestamp } from "../../../utils/time"
 
@@ -23,12 +27,46 @@ interface ReservationFilterState {
   limit: number
   offset: number
   location: string
-  additionalFilters: ReservationDefaultFilters | null
+  additionalFilters: ReservationAdditionalFilters
 }
 
-const allowedFilters = ["q", "offset", "limit", "location_id"]
+type ReservationAdditionalFilters = {
+  quantity?: NumericalComparisonOperator
+  inventory_item_id?: string[]
+  created_at?: DateComparisonOperator
+  created_by?: string[]
+  location_id?: string
+  description?: string | StringComparisonOperator
+}
 
-const DefaultTabs = {}
+type ReservationDefaultFilters = {
+  expand?: string
+  fields?: string
+  location_id?: string
+}
+
+const allowedFilters = [
+  "description",
+  "offset",
+  "limit",
+  "location_id",
+  "inventory_item_id",
+  "quantity",
+  "created_at",
+  "created_by",
+]
+
+const stateFilterMap = {
+  location: "location_id",
+  inventory_item: "inventory_item_id",
+  created_at: "created_at",
+  date: "created_at",
+  created_by: "created_by",
+  description: "description",
+  query: "q",
+  offset: "offset",
+  limit: "limit",
+}
 
 const formatDateFilter = (filter: ReservationDateFilter) => {
   if (filter === null) {
@@ -55,13 +93,19 @@ const reducer = (
     case "setFilters": {
       return {
         ...state,
-        query: action?.payload?.query,
+        ...action.payload,
       }
     }
     case "setQuery": {
       return {
         ...state,
         query: action.payload,
+      }
+    }
+    case "setDefaults": {
+      return {
+        ...state,
+        additionalFilters: {},
       }
     }
     case "setLimit": {
@@ -91,27 +135,9 @@ const reducer = (
   }
 }
 
-type ReservationDefaultFilters = {
-  expand?: string
-  fields?: string
-  location_id?: string
-}
-
-const eqSet = (as: Set<string>, bs: Set<string>) => {
-  if (as.size !== bs.size) {
-    return false
-  }
-  for (const a of as) {
-    if (!bs.has(a)) {
-      return false
-    }
-  }
-  return true
-}
-
 export const useReservationFilters = (
   existing?: string,
-  defaultFilters: ReservationDefaultFilters | null = null
+  defaultFilters: ReservationDefaultFilters = {}
 ) => {
   if (existing && existing[0] === "?") {
     existing = existing.substring(1)
@@ -122,35 +148,10 @@ export const useReservationFilters = (
     [existing, defaultFilters]
   )
 
-  const initialTabs = useMemo(() => {
-    const storageString = localStorage.getItem("reservation::filters")
-    if (storageString) {
-      const savedTabs = JSON.parse(storageString)
-
-      if (savedTabs) {
-        return Object.entries(savedTabs).map(([key, value]) => {
-          return {
-            label: key,
-            value: key,
-            removable: true,
-            representationString: value,
-          }
-        })
-      }
-    }
-
-    return []
-  }, [])
-
   const [state, dispatch] = useReducer(reducer, initial)
-  const [tabs, setTabs] = useState(initialTabs)
 
   const setDefaultFilters = (filters: ReservationDefaultFilters | null) => {
     dispatch({ type: "setDefaults", payload: filters })
-  }
-
-  const setLimit = (limit: number) => {
-    dispatch({ type: "setLimit", payload: limit })
   }
 
   const setLocationFilter = (loc: string) => {
@@ -190,6 +191,11 @@ export const useReservationFilters = (
 
   const getQueryObject = () => {
     const toQuery: any = { ...state.additionalFilters }
+
+    if (typeof toQuery.description?.["equals"] === "string") {
+      toQuery.description = toQuery.description["equals"]
+    }
+
     for (const [key, value] of Object.entries(state)) {
       if (key === "query") {
         if (value && typeof value === "string") {
@@ -197,7 +203,7 @@ export const useReservationFilters = (
         }
       } else if (key === "offset" || key === "limit") {
         toQuery[key] = value
-      } else if (value.open) {
+      } else if (value?.open) {
         if (key === "date") {
           toQuery[stateFilterMap[key]] = formatDateFilter(
             value.filter as ReservationDateFilter
@@ -206,7 +212,11 @@ export const useReservationFilters = (
           toQuery[stateFilterMap[key]] = value.filter
         }
       } else if (key === "location") {
-        toQuery[stateFilterMap[key]] = value
+        if (value) {
+          toQuery[stateFilterMap[key]] = value
+        } else {
+          delete toQuery[stateFilterMap[key]]
+        }
       }
     }
 
@@ -215,212 +225,48 @@ export const useReservationFilters = (
     return toQuery
   }
 
-  const getQueryString = () => {
-    const obj = getQueryObject()
-    return qs.stringify(obj, { skipNulls: true })
-  }
-
   const getRepresentationObject = (fromObject?: ReservationFilterState) => {
     const objToUse = fromObject ?? state
 
+    const { additionalFilters, ...filters } = objToUse
+    const entryObje = { ...additionalFilters, ...filters }
+
     const toQuery: any = {}
-    for (const [key, value] of Object.entries(objToUse)) {
+    for (const [key, value] of Object.entries(entryObje)) {
       if (key === "query") {
         if (value && typeof value === "string") {
           toQuery["q"] = value
         }
-      } else if (key === "offset" || key === "limit" || key === "location") {
+      } else if (value) {
         toQuery[stateFilterMap[key] || key] = value
-      } else if (value.open) {
-        toQuery[stateFilterMap[key]] = value.filter
       }
     }
 
     return toQuery
   }
 
-  const getRepresentationString = () => {
-    const obj = getRepresentationObject()
-    return qs.stringify(obj, { skipNulls: true })
-  }
-
   const queryObject = useMemo(() => getQueryObject(), [state])
   const representationObject = useMemo(() => getRepresentationObject(), [state])
-  const representationString = useMemo(() => getRepresentationString(), [state])
-
-  const activeFilterTab = useMemo(() => {
-    const clean = omit(representationObject, ["limit", "offset"])
-    const stringified = qs.stringify(clean)
-
-    const existsInSaved = tabs.find(
-      (el) => el.representationString === stringified
-    )
-    if (existsInSaved) {
-      return existsInSaved.value
-    }
-
-    for (const [tab, conditions] of Object.entries(DefaultTabs)) {
-      let match = true
-
-      if (Object.keys(clean).length !== Object.keys(conditions).length) {
-        continue
-      }
-
-      for (const [filter, value] of Object.entries(conditions)) {
-        if (filter in clean) {
-          if (Array.isArray(value)) {
-            match =
-              Array.isArray(clean[filter]) &&
-              eqSet(new Set(clean[filter]), new Set(value))
-          } else {
-            match = clean[filter] === value
-          }
-        } else {
-          match = false
-        }
-
-        if (!match) {
-          break
-        }
-      }
-
-      if (match) {
-        return tab
-      }
-    }
-
-    return null
-  }, [representationObject, tabs])
-
-  const availableTabs = useMemo(() => {
-    return [...tabs]
-  }, [tabs])
-
-  const setTab = (tabName: string) => {
-    let tabToUse: object | null = null
-    if (tabName in DefaultTabs) {
-      tabToUse = DefaultTabs[tabName]
-    } else {
-      const tabFound = tabs.find((t) => t.value === tabName)
-      if (tabFound) {
-        tabToUse = qs.parse(tabFound.representationString)
-      }
-    }
-
-    if (tabToUse) {
-      const toSubmit = {
-        ...state,
-      }
-
-      for (const [filter, val] of Object.entries(tabToUse)) {
-        toSubmit[filterStateMap[filter]] = {
-          open: true,
-          filter: val,
-        }
-      }
-      dispatch({ type: "setFilters", payload: toSubmit })
-    }
-  }
-
-  const saveTab = (tabName: string, filters: ReservationFilterState) => {
-    const repObj = getRepresentationObject({ ...filters })
-    const clean = omit(repObj, ["limit", "offset"])
-    const repString = qs.stringify(clean, { skipNulls: true })
-
-    const storedString = localStorage.getItem("inventory::filters")
-
-    let existing: null | object = null
-
-    if (storedString) {
-      existing = JSON.parse(storedString)
-    }
-
-    if (existing) {
-      existing[tabName] = repString
-      localStorage.setItem("inventory::filters", JSON.stringify(existing))
-    } else {
-      const newFilters = {}
-      newFilters[tabName] = repString
-      localStorage.setItem("inventory::filters", JSON.stringify(newFilters))
-    }
-
-    setTabs((prev) => {
-      const duplicate = prev.findIndex(
-        (prev) => prev.label?.toLowerCase() === tabName.toLowerCase()
-      )
-      if (duplicate !== -1) {
-        prev.splice(duplicate, 1)
-      }
-      return [
-        ...prev,
-        {
-          label: tabName,
-          value: tabName,
-          representationString: repString,
-          removable: true,
-        },
-      ]
-    })
-
-    dispatch({ type: "setFilters", payload: filters })
-  }
-
-  const removeTab = (tabValue: string) => {
-    const storedString = localStorage.getItem("products::filters")
-
-    let existing: null | object = null
-
-    if (storedString) {
-      existing = JSON.parse(storedString)
-    }
-
-    if (existing) {
-      delete existing[tabValue]
-      localStorage.setItem("products::filters", JSON.stringify(existing))
-    }
-
-    setTabs((prev) => {
-      const newTabs = prev.filter((p) => p.value !== tabValue)
-      return newTabs
-    })
-  }
 
   return {
     ...state,
     filters: {
       ...state,
     },
-    removeTab,
-    saveTab,
-    setTab,
-    availableTabs,
-    activeFilterTab,
     representationObject,
-    representationString,
     queryObject,
     paginate,
-    getQueryObject,
-    getQueryString,
     setQuery,
     setFilters,
     setDefaultFilters,
     setLocationFilter,
-    setLimit,
     reset,
   }
 }
 
-const filterStateMap = {
-  location_id: "location",
-}
-
-const stateFilterMap = {
-  location: "location_id",
-}
-
 const parseQueryString = (
   queryString?: string,
-  additionals: ReservationDefaultFilters | null = null
+  additionals: ReservationAdditionalFilters = {}
 ): ReservationFilterState => {
   const defaultVal: ReservationFilterState = {
     location: additionals?.location_id ?? "",
@@ -432,7 +278,7 @@ const parseQueryString = (
   if (queryString) {
     const filters = qs.parse(queryString)
     for (const [key, value] of Object.entries(filters)) {
-      if (allowedFilters.includes(key)) {
+      if (allowedFilters.includes(key) && !!value) {
         switch (key) {
           case "offset": {
             if (typeof value === "string") {
@@ -452,10 +298,25 @@ const parseQueryString = (
             }
             break
           }
-          case "q": {
-            if (typeof value === "string") {
-              defaultVal.query = value
-            }
+          case "description": {
+            defaultVal.additionalFilters.description = value as string
+            break
+          }
+          case "quantity": {
+            defaultVal.additionalFilters.quantity =
+              value as NumericalComparisonOperator
+            break
+          }
+          case "inventory_item_id":
+          case "created_by": {
+            defaultVal.additionalFilters[key] = (
+              Array.isArray(value) ? value : [value]
+            ) as string[]
+            break
+          }
+          case "created_at": {
+            defaultVal.additionalFilters.created_at =
+              value as DateComparisonOperator
             break
           }
           default: {

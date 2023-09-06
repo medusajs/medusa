@@ -1,0 +1,23 @@
+type: object
+required:
+  - publishable_api_keys
+  - count
+  - offset
+  - limit
+properties:
+  publishable_api_keys:
+    type: array
+    description: An array of publishable API keys details.
+    items:
+      $ref: ./PublishableApiKey.yaml
+  count:
+    type: integer
+    description: The total number of items available
+  offset:
+    type: integer
+    description: >-
+      The number of publishable API keys skipped when retrieving the publishable
+      API keys.
+  limit:
+    type: integer
+    description: The number of items per page

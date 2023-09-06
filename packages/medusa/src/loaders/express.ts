@@ -41,7 +41,10 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
   if (configModule?.projectConfig?.redis_url) {
     const RedisStore = createStore(session)
     const redisClient = redis.createClient(configModule.projectConfig.redis_url)
-    sessionOpts.store = new RedisStore({ client: redisClient })
+    sessionOpts.store = new RedisStore({
+      client: redisClient,
+      prefix: `${configModule?.projectConfig?.redis_prefix ?? ""}sess:`,
+    })
   }
 
   app.set("trust proxy", 1)

@@ -1,11 +1,8 @@
 import { MedusaError, humanizeAmount } from "medusa-core-utils"
-import {
-  ReservationType,
-  updateInventoryAndReservations,
-} from "@medusajs/medusa"
 
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
+import { updateInventoryAndReservations } from "@medusajs/medusa"
 
 class BrightpearlService extends BaseService {
   constructor(
@@ -111,7 +108,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -120,7 +117,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -553,7 +550,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: parentSo.ref,
         externalRef: `${parentSo.externalRef}.${fromRefund.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -664,7 +664,7 @@ class BrightpearlService extends BaseService {
       reservationItems
     )
 
-    if (!order?.metadata?.brightpearl_sales_order_id || !lineItems?.length) {
+    if (!order?.metadata?.brightpearl_sales_order_id) {
       return this.attemptRetryEvent(
         "reservation-items.bulk-created",
         eventData,
@@ -680,6 +680,24 @@ class BrightpearlService extends BaseService {
       { id: lineItems.map((item) => item.variant_id) },
       {}
     )
+
+    const [allReservationsForLineItems] =
+      await this.inventoryService_.listReservationItems({
+        line_item_id: lineItems.map((item) => item.id),
+      })
+
+    const lineItemReservationsMap = allReservationsForLineItems.reduce(
+      (acc, r) => {
+        if (acc.has(r.line_item_id)) {
+          acc.get(r.line_item_id).push(r)
+        } else {
+          acc.set(r.line_item_id, [r])
+        }
+        return acc
+      },
+      new Map()
+    )
+
     const lineItemMap = new Map(lineItems.map((item) => [item.id, item]))
     const variantMap = new Map(variants.map((v) => [v.id, v]))
 
@@ -688,24 +706,28 @@ class BrightpearlService extends BaseService {
     )
 
     const rows = await Promise.all(
-      reservationItems.map(async (item) => {
-        const lineItem = lineItemMap.get(item.line_item_id)
-        const variant = variantMap.get(lineItem.variant_id)
+      lineItems.map(async (item) => {
+        const reservations = lineItemReservationsMap.get(item.id)
+        const variant = variantMap.get(item.variant_id)
 
         const bpProduct = await this.retrieveProductBySKU(variant.sku)
 
-        if (!lineItem || !variant || !bpProduct) {
+        if (!reservations?.length || !variant || !bpProduct) {
           return null
         }
 
         const bpOrderRow = bpOrder.rows.find(
-          (row) => row.externalRef === lineItem.id
+          (row) => row.externalRef === item.id
         )
+
+        const reservedQuantity = reservations.reduce((acc, next) => {
+          return acc + next.quantity
+        }, 0)
 
         return {
           productId: bpProduct.productId,
           id: bpOrderRow.id,
-          quantity: item.quantity,
+          quantity: reservedQuantity,
         }
       })
     )
@@ -739,13 +761,16 @@ class BrightpearlService extends BaseService {
       )
     }
 
+    reservation[0].orderRows = order.rows.reduce((acc, next) => {
+      acc[next.id] = {
+        productId: next.productId,
+        quantity: next.quantity,
+      }
+      return acc
+    }, reservation[0].orderRows)
+
     const updatePayload = {
       products: [
-        ...order.rows.map((row) => ({
-          productId: row.productId,
-          salesOrderRowId: row.id,
-          quantity: row.quantity,
-        })),
         ...Object.entries(reservation[0].orderRows).map(([key, value]) => ({
           productId: value.productId,
           quantity: value.quantity,
@@ -760,8 +785,14 @@ class BrightpearlService extends BaseService {
     )
   }
 
+  /**
+   * create reservation based on reservation created event
+   * @param {{ ids: string[] }} eventData Event data from reservation created
+   */
   async createReservation(eventData) {
-    const { id } = eventData
+    const { ids } = eventData
+
+    const [id] = ids
 
     if (!id) {
       return
@@ -803,11 +834,20 @@ class BrightpearlService extends BaseService {
       (row) => row.externalRef === lineItems[0].id
     )
 
+    const { reservationItems } =
+      await this.inventoryService_.listReservationItems({
+        line_item_id: reservationItem.line_item_id,
+      })
+
+    const reservedQuantity = reservationItems.reduce((acc, next) => {
+      return acc + next.quantity
+    }, 0)
+
     order.rows = [
       {
         productId: bpProduct.productId,
         id: bpOrderRow.id,
-        quantity: reservationItem.quantity,
+        quantity: reservedQuantity,
       },
     ]
 
@@ -838,13 +878,18 @@ class BrightpearlService extends BaseService {
       )
     }
 
+    const existingRow = reservation[0].orderRows[bpOrderRow.id]
+    if (!existingRow) {
+      reservation[0].orderRows[bpOrderRow.id] = {
+        productId: bpProduct.productId,
+        quantity: reservedQuantity,
+      }
+    } else {
+      reservation[0].orderRows[bpOrderRow.id].quantity = reservedQuantity
+    }
+
     const updatePayload = {
       products: [
-        {
-          productId: bpProduct.productId,
-          salesOrderRowId: bpOrderRow.id,
-          quantity: reservationItem.quantity,
-        },
         ...Object.entries(reservation[0].orderRows).map(([key, value]) => ({
           productId: value.productId,
           quantity: value.quantity,
@@ -889,7 +934,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: parentSo.ref,
         externalRef: `${parentSo.externalRef}.${fromReturn.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -1002,6 +1050,7 @@ class BrightpearlService extends BaseService {
         "shipping_address",
         "billing_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "payments",
         "sales_channel",
       ],
@@ -1129,7 +1178,10 @@ class BrightpearlService extends BaseService {
       },
       ref: `${fromOrder.display_id}-S${sIndex + 1}`,
       externalRef: `${fromOrder.id}.${fromSwap.id}`,
-      channelId: this.options.channel_id || `1`,
+      channelId:
+        fromOrder.sales_channel?.metadata?.bp_id ||
+        this.options.channel_id ||
+        `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
       statusId:
         this.options.swap_status_id || this.options.default_status_id || `3`,
@@ -1216,7 +1268,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: `${parentSo.ref}-C${cIndex + 1}`,
         externalRef: `${parentSo.externalRef}.${fromClaim.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -1310,7 +1365,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: `${parentSo.ref}-S${sIndex + 1}`,
         externalRef: `${parentSo.externalRef}.${fromSwap.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -1554,7 +1612,10 @@ class BrightpearlService extends BaseService {
       priceListId: this.options.cost_price_list || `1`,
       ref: `${fromOrder.display_id}-C${cIndex + 1}`,
       externalRef: `${fromOrder.id}.${fromClaim.id}`,
-      channelId: this.options.channel_id || `1`,
+      channelId:
+        fromOrder.sales_channel?.metadata?.bp_id ||
+        this.options.channel_id ||
+        `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
       statusId:
         this.options.claim_status_id || this.options.default_status_id || `3`,
@@ -1687,7 +1748,7 @@ class BrightpearlService extends BaseService {
       const { fulfillments: existingFulfillments, sales_channel } =
         await this.orderService_
           .withTransaction(transactionManager)
-          .retrieve(order.externalRef, {
+          .retrieve(order.externalRef.split(".")[0], {
             relations: ["fulfillments", "sales_channel"],
           })
 

@@ -1,5 +1,8 @@
-import { Logger as _Logger } from "winston"
-import { MedusaContainer } from "../common/medusa-container"
+import { JoinerServiceConfig } from "../joiner"
+import { Logger } from "../logger"
+import { MedusaContainer } from "../common"
+import { RepositoryService } from "../dal"
+
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
 
@@ -12,12 +15,6 @@ export type LogLevel =
   | "log"
   | "migration"
 export type LoggerOptions = boolean | "all" | LogLevel[]
-
-export type Logger = _Logger & {
-  progress: (activityId: string, msg: string) => void
-  info: (msg: string) => void
-  warn: (msg: string) => void
-}
 
 export enum MODULE_SCOPE {
   INTERNAL = "internal",
@@ -35,15 +32,19 @@ export type InternalModuleDeclaration = {
   dependencies?: string[]
   resolve?: string
   options?: Record<string, unknown>
+  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
+  main?: boolean // If the module is the main module for the key when multiple ones are registered
 }
 
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
-  server: {
+  server?: {
     type: "http"
     url: string
     keepAlive: boolean
   }
+  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
+  main?: boolean // If the module is the main module for the key when multiple ones are registered
 }
 
 export type ModuleResolution = {
@@ -52,6 +53,7 @@ export type ModuleResolution = {
   options?: Record<string, unknown>
   dependencies?: string[]
   moduleDeclaration?: InternalModuleDeclaration | ExternalModuleDeclaration
+  moduleExports?: ModuleExports
 }
 
 export type ModuleDefinition = {
@@ -61,10 +63,16 @@ export type ModuleDefinition = {
   label: string
   canOverride?: boolean
   isRequired?: boolean
+  isQueryable?: boolean // If the modules should be queryable via Remote Joiner
   dependencies?: string[]
   defaultModuleDeclaration:
     | InternalModuleDeclaration
     | ExternalModuleDeclaration
+}
+
+export type LoadedModule = unknown & {
+  __joinerConfig: JoinerServiceConfig
+  __definition: ModuleDefinition
 }
 
 export type LoaderOptions<TOptions = Record<string, unknown>> = {
@@ -96,4 +104,24 @@ export type ModuleExports = {
     options: LoaderOptions,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
+}
+
+export interface ModuleServiceInitializeOptions {
+  database: {
+    /**
+     * Forces to use a shared knex connection
+     */
+    connection?: any
+    clientUrl?: string
+    schema?: string
+    driverOptions?: Record<string, unknown>
+    debug?: boolean
+  }
+}
+
+export type ModuleServiceInitializeCustomDataLayerOptions = {
+  manager?: any
+  repositories?: {
+    [key: string]: Constructor<RepositoryService>
+  }
 }

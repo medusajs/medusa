@@ -1,17 +1,18 @@
 import { useState } from "react"
 
 import { ProductCategory } from "@medusajs/medusa"
+import { useQueryClient } from "@tanstack/react-query"
 import {
   adminProductCategoryKeys,
   useAdminCreateProductCategory,
 } from "medusa-react"
 import { useTranslation } from "react-i18next"
-
-import { useQueryClient } from "@tanstack/react-query"
+import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
 import Button from "../../../components/fundamentals/button"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
+import InputHeader from "../../../components/fundamentals/input-header"
 import InputField from "../../../components/molecules/input"
-import TextArea from "../../../components/molecules/textarea"
 import FocusModal from "../../../components/molecules/modal/focus-modal"
 import { NextSelect } from "../../../components/molecules/select/next-select"
 import useNotification from "../../../hooks/use-notification"
@@ -46,8 +47,11 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
   const queryClient = useQueryClient()
 
   const [name, setName] = useState("")
+  const [name_ar, setNameAr] = useState("")
   const [handle, setHandle] = useState("")
+  const [handle_ar, setHandleAr] = useState("")
   const [description, setDescription] = useState("")
+  const [description_ar, setDescriptionAr] = useState("")
   const [isActive, setIsActive] = useState(true)
   const [isPublic, setIsPublic] = useState(true)
 
@@ -57,8 +61,11 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
     try {
       await createProductCategory({
         name,
+        name_ar,
         handle,
+        handle_ar,
         description,
+        description_ar,
         is_active: isActive,
         is_internal: !isPublic,
         parent_category_id: parentCategory?.id ?? null,
@@ -99,7 +106,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
         </div>
       </FocusModal.Header>
 
-      <FocusModal.Main className="no-scrollbar flex w-full justify-center">
+      <FocusModal.Main className="flex w-full justify-center">
         <div className="small:w-4/5 medium:w-7/12 large:w-6/12 my-16 max-w-[700px]">
           <h1 className="inter-xlarge-semibold text-grey-90 pb-6">
             {parentCategory
@@ -122,7 +129,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
             {t("Details")}
           </h4>
 
-          <div className="mb-8 flex justify-between gap-6">
+          <div className="medium:flex-row mb-8 flex flex-col justify-between gap-6">
             <InputField
               required
               label={t("Name")}
@@ -144,18 +151,48 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
               onChange={(ev) => setHandle(ev.target.value)}
             />
           </div>
+          <div className="medium:flex-row mb-8 flex flex-col justify-between gap-6">
+            <InputField
+              required
+              label={t("Name in arabic")}
+              type="string"
+              name="name_ar"
+              value={name_ar}
+              className="w-[338px]"
+              placeholder="الإسم"
+              onChange={(ev) => setNameAr(ev.target.value)}
+            />
 
-          <div className="mb-8">
-            <TextArea
-              label={t("Description")}
-              name="description"
-              value={description}
-              placeholder={t("Give this category a description")}
-              onChange={(ev) => setDescription(ev.target.value)}
+            <InputField
+              label={t("Handle in arabic")}
+              type="string"
+              name="handle_ar"
+              value={handle_ar}
+              className="w-[338px]"
+              placeholder={t("Custom handle in arabic")}
+              onChange={(ev) => setHandleAr(ev.target.value)}
             />
           </div>
 
-          <div className="mb-8 flex justify-between gap-6">
+          <div className="mb-8">
+            <InputHeader label={t("Description")} className="mb-xsmall" />
+            <ReactQuill
+              theme="snow"
+              value={description}
+              onChange={(value) => setDescription(value)}
+            />
+          </div>
+
+          <div className="mb-8">
+            <InputHeader label={t("Description in arabic")} className="mb-xsmall" />
+            <ReactQuill
+              theme="snow"
+              value={description_ar}
+              onChange={(value) => setDescriptionAr(value)}
+            />
+          </div>
+
+          <div className="medium:flex-row mb-8 flex flex-col justify-between gap-6">
             <div className="flex-1">
               <NextSelect
                 label={t("Status")}

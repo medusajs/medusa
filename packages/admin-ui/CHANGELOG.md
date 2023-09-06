@@ -1,5 +1,112 @@
 # @medusajs/admin-ui
 
+## 2.0.1
+
+### Patch Changes
+
+- [#4837](https://github.com/medusajs/medusa/pull/4837) [`57e199ef5`](https://github.com/medusajs/medusa/commit/57e199ef522e45c45ba5d79287a4c258e6f3914c) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(admin-ui): Fix sign out in admin panel not redirecting correctly
+
+- [#4843](https://github.com/medusajs/medusa/pull/4843) [`f4bf9ee16`](https://github.com/medusajs/medusa/commit/f4bf9ee16915a88548c1666b182df478e4f5ed74) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(admin-ui): Fix variant creation when no stock locations provided
+
+- [#4840](https://github.com/medusajs/medusa/pull/4840) [`0c7c2eeea`](https://github.com/medusajs/medusa/commit/0c7c2eeeabad684c31a18d6f5579f30820b29efb) Thanks [@fPolic](https://github.com/fPolic)! - feat(admin-ui): refresh products when import is complete
+
+## 2.0.0
+
+### Major Changes
+
+- [#4761](https://github.com/medusajs/medusa/pull/4761) [`f1a05f472`](https://github.com/medusajs/medusa/commit/f1a05f4725dcc45150f014769562bd3dfbc0f1f8) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin, admin-ui, medusa, medusa-js, medusa-react, stripe-plugin): Support admin extensions
+
+### Patch Changes
+
+- [#4568](https://github.com/medusajs/medusa/pull/4568) [`4a448b68f`](https://github.com/medusajs/medusa/commit/4a448b68fde90beb956375018ac833f6478726e6) Thanks [@fPolic](https://github.com/fPolic)! - feat(admin-ui): bulk advanced selections + copy/paste
+
+- Updated dependencies [[`9469063f6`](https://github.com/medusajs/medusa/commit/9469063f643180002ede7a8e94c6de53d2770d04), [`f1a05f472`](https://github.com/medusajs/medusa/commit/f1a05f4725dcc45150f014769562bd3dfbc0f1f8)]:
+  - medusa-react@9.0.4
+
+## 1.9.4
+
+### Patch Changes
+
+- [#4670](https://github.com/medusajs/medusa/pull/4670) [`bb534e045`](https://github.com/medusajs/medusa/commit/bb534e0453d3d27e4d5afee120d969f927e8f004) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Customer Groups in Pricing + TIP
+
+## 1.9.3
+
+### Patch Changes
+
+- [#4594](https://github.com/medusajs/medusa/pull/4594) [`aab890174`](https://github.com/medusajs/medusa/commit/aab890174dbe2c73d57e8a6f15e74f88b6ffa532) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Add missing SO relation
+
+- [#4536](https://github.com/medusajs/medusa/pull/4536) [`f561601bf`](https://github.com/medusajs/medusa/commit/f561601bf638be73ff0d0e55e28bd2192de8db32) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin): Exclude prices from PriceLists overview
+
+## 1.9.2
+
+### Patch Changes
+
+- [#4541](https://github.com/medusajs/medusa/pull/4541) [`aae4b3ad3`](https://github.com/medusajs/medusa/commit/aae4b3ad371e0b7e8e0007a6ef21ee66eda665f1) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): always show list of currencies in currency overview
+
+- [#4530](https://github.com/medusajs/medusa/pull/4530) [`55db91415`](https://github.com/medusajs/medusa/commit/55db914151fc70cf0abe8a71dd8e17067cce3908) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): number input setting
+
+- [#4552](https://github.com/medusajs/medusa/pull/4552) [`221f62dc4`](https://github.com/medusajs/medusa/commit/221f62dc4cf4a30505bf3e15034c735663659ade) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Omit PriceList prices from variant update
+
+- [#4516](https://github.com/medusajs/medusa/pull/4516) [`bfc0ea569`](https://github.com/medusajs/medusa/commit/bfc0ea5695b8999a63df9ba58409e3e139473afa) Thanks [@fPolic](https://github.com/fPolic)! - feat(admin-ui): variant prices bulk editor
+
+- Updated dependencies [[`3e6cee284`](https://github.com/medusajs/medusa/commit/3e6cee28469b5ce30687de5e5096266244f6b3a9), [`e3a856521`](https://github.com/medusajs/medusa/commit/e3a85652132c110e4dd81ae1120414121fbab0fd)]:
+  - medusa-react@9.0.3
+
+## 1.9.1
+
+### Patch Changes
+
+- [#4444](https://github.com/medusajs/medusa/pull/4444) [`78a1f3943`](https://github.com/medusajs/medusa/commit/78a1f3943b1631170721169c19b5b47a4832330f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(admin-ui): Remove new badges from inventory + categories
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
+- Updated dependencies [[`fe25c8a91`](https://github.com/medusajs/medusa/commit/fe25c8a91f4462c9ac5a15594fa71155df48c1eb), [`417debfe7`](https://github.com/medusajs/medusa/commit/417debfe7db6edd6722929fe0f905a63548a0c9e)]:
+  - medusa-react@9.0.2
+
+## 1.9.0
+
+### Minor Changes
+
+- [#4115](https://github.com/medusajs/medusa/pull/4115) [`79cca2ab8`](https://github.com/medusajs/medusa/commit/79cca2ab809b77606e65706c19f9fce37b174365) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): Add filtering capabilities for reservations view
+
+### Patch Changes
+
+- [#4231](https://github.com/medusajs/medusa/pull/4231) [`1bd2e7a5b`](https://github.com/medusajs/medusa/commit/1bd2e7a5be4aeb15ac15f5f0e70dc37a6dfaa86f) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): prevent Timeline flickering while loading
+
+- [#4316](https://github.com/medusajs/medusa/pull/4316) [`0bfdc33a0`](https://github.com/medusajs/medusa/commit/0bfdc33a0ba7f9518b68db762ede5960db878b6d) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): minor fixes for reservation management
+
+- [#4133](https://github.com/medusajs/medusa/pull/4133) [`869628bf4`](https://github.com/medusajs/medusa/commit/869628bf4c50f93375bd32946cd0605de3d981cd) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): rename allocation to reservation
+
+- [#4267](https://github.com/medusajs/medusa/pull/4267) [`f8643361c`](https://github.com/medusajs/medusa/commit/f8643361cdcb549c61e645d4ee275f20883e00d9) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa, admin-ui): remove reservations feature flag
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+- Updated dependencies [[`79cca2ab8`](https://github.com/medusajs/medusa/commit/79cca2ab809b77606e65706c19f9fce37b174365)]:
+  - medusa-react@9.0.1
+
+## 1.8.7
+
+### Patch Changes
+
+- [#4071](https://github.com/medusajs/medusa/pull/4071) [`0476f5251`](https://github.com/medusajs/medusa/commit/0476f52519237c622b37d29de0718f9774b6add7) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): update edit allocation modal design
+
+- [#4184](https://github.com/medusajs/medusa/pull/4184) [`0f87d3d64`](https://github.com/medusajs/medusa/commit/0f87d3d642b56bf19de8136e1f5bfedf364c5193) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa,admin-ui): Add reservations FF
+
+- [#4173](https://github.com/medusajs/medusa/pull/4173) [`9a46c11f2`](https://github.com/medusajs/medusa/commit/9a46c11f2acab1eba10c2cad6854c0a7f4a0ee13) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Ensures that the default invite link uses the **BASE** in constructing the link if it exists
+
+- [#4163](https://github.com/medusajs/medusa/pull/4163) [`f47b11293`](https://github.com/medusajs/medusa/commit/f47b11293e273d9a5a5238e5114c9a3a530ecf1b) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Delete variant
+
+- [#4051](https://github.com/medusajs/medusa/pull/4051) [`294576949`](https://github.com/medusajs/medusa/commit/294576949792f8c4dc2a8c1a03fdc9db73a8a00e) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): fix allow_backorder updates
+
+- [#4180](https://github.com/medusajs/medusa/pull/4180) [`5988fa8f4`](https://github.com/medusajs/medusa/commit/5988fa8f4ca1c5538e4b48cfe9b600bf43037998) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Omit purchasable variant prop on duplicate
+
+- [#4081](https://github.com/medusajs/medusa/pull/4081) [`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,client-types,medusa-js,admin-ui,medusa-react): add reservation table and creation
+
+- [#4178](https://github.com/medusajs/medusa/pull/4178) [`063d9b6d5`](https://github.com/medusajs/medusa/commit/063d9b6d5535e548356e8b47656371a8fbc54936) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): On duplicate product ensure order of variant options matches product options
+
+- Updated dependencies [[`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47)]:
+  - medusa-react@9.0.0
+
 ## 1.8.6
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # Change Log
 
+## 1.3.11
+
+### Patch Changes
+
+- [#4524](https://github.com/medusajs/medusa/pull/4524) [`fe6586e56`](https://github.com/medusajs/medusa/commit/fe6586e560ad20ec59df4727bb8a7f1f42072f4a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-plugin-sendgrid): Use correct SendGrid client
+
+## 1.3.10
+
+### Patch Changes
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
+- [#4384](https://github.com/medusajs/medusa/pull/4384) [`f65a501da`](https://github.com/medusajs/medusa/commit/f65a501da5101da75217a2b69a61ccd4fd3a3b4d) Thanks [@pevey](https://github.com/pevey)! - feat(medusa-plugin-sendgrid): Add error messages to SendgridService.sendNotification
+
 ## 1.3.9
 
 ### Patch Changes

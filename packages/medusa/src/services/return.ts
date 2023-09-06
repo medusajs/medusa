@@ -1,22 +1,6 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
-import {
-  FulfillmentStatus,
-  LineItem,
-  Order,
-  PaymentStatus,
-  Return,
-  ReturnItem,
-  ReturnStatus,
-} from "../models"
-import { ReturnRepository } from "../repositories/return"
-import { ReturnItemRepository } from "../repositories/return-item"
-import { FindConfig, Selector } from "../types/common"
-import { OrdersReturnItem } from "../types/orders"
 import { CreateReturnInput, UpdateReturnInput } from "../types/return"
-import { buildQuery, setMetadata } from "../utils"
-
+import { DeepPartial, EntityManager } from "typeorm"
+import { FindConfig, Selector } from "../types/common"
 import {
   FulfillmentProviderService,
   LineItemService,
@@ -27,6 +11,22 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
+import {
+  FulfillmentStatus,
+  LineItem,
+  Order,
+  PaymentStatus,
+  Return,
+  ReturnItem,
+  ReturnStatus,
+} from "../models"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, setMetadata } from "../utils"
+
+import { OrdersReturnItem } from "../types/orders"
+import { ReturnItemRepository } from "../repositories/return-item"
+import { ReturnRepository } from "../repositories/return"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -146,11 +146,28 @@ class ReturnService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Return[]> {
+    const [returns] = await this.listAndCount(selector, config)
+    return returns
+  }
+
+  /**
+   * @param selector - the query object for find
+   * @param config - the config object for find
+   * @return the result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Return>,
+    config: FindConfig<Return> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Return[], number]> {
     const returnRepo = this.activeManager_.withRepository(
       this.returnRepository_
     )
     const query = buildQuery(selector, config)
-    return returnRepo.find(query)
+    return returnRepo.findAndCount(query)
   }
 
   /**
@@ -513,7 +530,9 @@ class ReturnService extends TransactionBaseService {
         {
           id: returnOrder.items.map(({ item_id }) => item_id),
         },
-        { relations: ["tax_lines", "variant", "variant.product"] }
+        {
+          relations: ["tax_lines", "variant.product.profiles"],
+        }
       )
 
       returnData.items = returnOrder.items.map((item) => {
@@ -596,6 +615,7 @@ class ReturnService extends TransactionBaseService {
             "discounts.rule",
             "refunds",
             "shipping_methods",
+            "shipping_methods.shipping_option",
             "region",
             "swaps",
             "swaps.additional_items",

@@ -92,7 +92,8 @@ export class Country {
  *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
+ *     description: The details of the region the country is associated with.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Region"
  */

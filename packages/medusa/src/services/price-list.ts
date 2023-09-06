@@ -1,27 +1,27 @@
+import { FlagRouter } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
 import { CustomerGroupService } from "."
+import { TransactionBaseService } from "../interfaces"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { PriceListRepository } from "../repositories/price-list"
+import { ProductVariantRepository } from "../repositories/product-variant"
 import { FindConfig, Selector } from "../types/common"
 import {
-  CreatePriceListInput,
-  FilterablePriceListProps,
-  PriceListPriceCreateInput,
-  PriceListPriceUpdateInput,
-  UpdatePriceListInput,
+    CreatePriceListInput,
+    FilterablePriceListProps,
+    PriceListPriceCreateInput,
+    PriceListPriceUpdateInput,
+    UpdatePriceListInput,
 } from "../types/price-list"
-import ProductService from "./product"
-import RegionService from "./region"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
 import { FilterableProductProps } from "../types/product"
-import ProductVariantService from "./product-variant"
 import { FilterableProductVariantProps } from "../types/product-variant"
-import { ProductVariantRepository } from "../repositories/product-variant"
-import { FlagRouter } from "../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { buildQuery } from "../utils"
+import ProductService from "./product"
+import ProductVariantService from "./product-variant"
+import RegionService from "./region"
 
 type PriceListConstructorProps = {
   manager: EntityManager

@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Represents an invite
+ * An invite is created when an admin user invites a new user to join the store's team. Once the invite is accepted, it's deleted.
  */
 export interface Invite {
   /**
@@ -16,7 +16,7 @@ export interface Invite {
    */
   user_email: string
   /**
-   * The user's role.
+   * The user's role. These roles don't change the privileges of the user.
    */
   role: "admin" | "member" | "developer" | null
   /**

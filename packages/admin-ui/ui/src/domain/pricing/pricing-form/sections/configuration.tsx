@@ -7,11 +7,11 @@ import { useTranslation } from "react-i18next"
 import DatePicker from "../../../../components/atoms/date-picker/date-picker"
 import TimePicker from "../../../../components/atoms/date-picker/time-picker"
 import Switch from "../../../../components/atoms/switch"
-import Select from "../../../../components/molecules/select"
 import Accordion from "../../../../components/organisms/accordion"
 import { weekFromNow } from "../../../../utils/date-utils"
 import { usePriceListForm } from "../form/pricing-form-context"
 import { ConfigurationFields } from "../types"
+import { NextSelect } from "../../../../components/molecules/select/next-select"
 
 type ConfigurationProps = {
   priceList?: PriceList
@@ -172,26 +172,25 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                     className={clsx(
                       "gap-xsmall accordion-margin-transition flex w-full items-center",
                       {
-                        "mt-4": openItems.indexOf("customer_groups") > -1,
+                        "mt-4": openItems.indexOf(t("Customer Groups")) > -1,
                       }
                     )}
                   >
-                    <Select
-                      value={value}
-                      label={t("Customer Groups")}
-                      onChange={onChange}
-                      isMultiSelect
-                      fullWidth
-                      enableSearch
-                      hasSelectAll
-                      isLoading={isLoading}
+                    <NextSelect
                       options={
                         customer_groups?.map((cg) => ({
                           label: cg.name,
                           value: cg.id,
                         })) || []
                       }
+                      label="Customer Groups"
+                      onChange={onChange}
+                      isMulti={true}
+                      selectAll={true}
+                      isSearchable={true}
+                      value={value}
                       ref={ref}
+                      isLoading={isLoading}
                     />
                   </div>
                 )

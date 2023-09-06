@@ -26,7 +26,7 @@ const DimensionsForm = ({ form }: DimensionsFormProps) => {
   } = form
 
   return (
-    <div className="gap-x-large grid grid-cols-4">
+    <div className="gap-x-large medium:grid-cols-4 grid grid-cols-2">
       <InputField
         label="Width"
         placeholder="100..."

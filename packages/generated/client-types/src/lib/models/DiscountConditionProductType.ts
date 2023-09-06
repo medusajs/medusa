@@ -7,7 +7,7 @@ import type { DiscountCondition } from "./DiscountCondition"
 import type { ProductType } from "./ProductType"
 
 /**
- * Associates a discount condition with a product type
+ * This represents the association between a discount condition and a product type
  */
 export interface DiscountConditionProductType {
   /**
@@ -19,11 +19,11 @@ export interface DiscountConditionProductType {
    */
   condition_id: string
   /**
-   * Available if the relation `product_type` is expanded.
+   * The details of the product type.
    */
   product_type?: ProductType | null
   /**
-   * Available if the relation `discount_condition` is expanded.
+   * The details of the discount condition.
    */
   discount_condition?: DiscountCondition | null
   /**

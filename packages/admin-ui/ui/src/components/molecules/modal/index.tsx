@@ -57,7 +57,7 @@ const Content: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <Dialog.Content
       style={style}
-      className="min-w-modal rounded-rounded bg-grey-0 overflow-x-hidden"
+      className="medium:min-w-modal rounded-rounded bg-grey-0 w-full overflow-x-hidden"
     >
       {children}
     </Dialog.Content>
@@ -101,7 +101,7 @@ Modal.Body = ({ children, className, style }) => {
 Modal.Content = ({ children, className }) => {
   const { isLargeModal } = React.useContext(ModalContext)
 
-  const { height } = useWindowDimensions()
+  const { height, width } = useWindowDimensions()
   const style = {
     maxHeight: height - 90 - 141,
   }
@@ -111,7 +111,7 @@ Modal.Content = ({ children, className }) => {
       className={clsx(
         "overflow-y-auto px-8 pt-6",
         {
-          ["w-largeModal pb-7"]: isLargeModal,
+          ["w-largeModal pb-7"]: isLargeModal && width > 800,
           ["pb-5"]: !isLargeModal,
         },
         className

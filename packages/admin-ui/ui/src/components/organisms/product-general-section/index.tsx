@@ -1,5 +1,5 @@
-import { Product } from "@medusajs/medusa"
 import { useTranslation } from "react-i18next"
+import { Product as BaseProduct } from "@medusajs/medusa"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import useToggleState from "../../../hooks/use-toggle-state"
 import {
@@ -18,6 +18,15 @@ import Section from "../section"
 import ChannelsModal from "./channels-modal"
 import GeneralModal from "./general-modal"
 
+type Product = BaseProduct & {
+  title_ar: string
+  subtitle_ar: string
+  handle_ar: string
+  description_ar: string | null
+  seo_title: string
+  seo_description: string
+  seo_url: string
+}
 type Props = {
   product: Product
 }
@@ -76,9 +85,15 @@ const ProductGeneralSection = ({ product }: Props) => {
           />
         }
       >
-        <p className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap">
-          {product.description}
-        </p>
+        <p
+          className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap text-right"
+          dangerouslySetInnerHTML={{ __html: product.description_ar as string }}
+        ></p>
+        <br />
+        <p
+          className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap"
+          dangerouslySetInnerHTML={{ __html: product.description as string }}
+        ></p>
         <ProductTags product={product} />
         <ProductDetails product={product} />
         <ProductSalesChannels product={product} />
@@ -129,11 +144,16 @@ const ProductDetails = ({ product }: Props) => {
 
   return (
     <div className="mt-8 flex flex-col gap-y-3">
-      <h2 className="inter-base-semibold">{t("Details")}</h2>
-      <Detail title={t("Subtitle")} value={product.subtitle} />
-      <Detail title={t("Handle")} value={product.handle} />
+<h2 className="inter-base-semibold">{t("Details")}</h2>
+      <Detail title={t("Subtitle english")} value={product.subtitle} />
+      <Detail title={t("Subtitle arabic")} value={product.subtitle_ar} />
+      <Detail title={t("Handle english")} value={product.handle} />
+      <Detail title={t("Handle arabic")} value={product.handle_ar} />
       <Detail title={t("Type")} value={product.type?.value} />
       <Detail title={t("Collection")} value={product.collection?.title} />
+      <Detail title={t("SEO title")} value={product.seo_title} />
+      <Detail title={t("SEO description")} value={product.seo_description} />
+      <Detail title={t("SEO URL")} value={product.seo_url} />
       {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) && (
         <Detail
           title={t("Category")}

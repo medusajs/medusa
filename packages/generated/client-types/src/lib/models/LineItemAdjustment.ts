@@ -7,7 +7,7 @@ import type { Discount } from "./Discount"
 import type { LineItem } from "./LineItem"
 
 /**
- * Represents a Line Item Adjustment
+ * A Line Item Adjustment includes details on discounts applied on a line item.
  */
 export interface LineItemAdjustment {
   /**
@@ -19,7 +19,7 @@ export interface LineItemAdjustment {
    */
   item_id: string
   /**
-   * Available if the relation `item` is expanded.
+   * The details of the line item.
    */
   item?: LineItem | null
   /**
@@ -31,7 +31,7 @@ export interface LineItemAdjustment {
    */
   discount_id: string | null
   /**
-   * Available if the relation `discount` is expanded.
+   * The details of the discount associated with the adjustment.
    */
   discount?: Discount | null
   /**

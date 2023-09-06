@@ -11,6 +11,9 @@ type P = {
 
 function InventoryPageTableHeader(props: P) {
   const navigate = useNavigate()
+
+  const views = ["inventory", "locations", "reservations"]
+
   return (
     <TableViewHeader
       setActiveView={(v) => {
@@ -20,7 +23,7 @@ function InventoryPageTableHeader(props: P) {
           navigate(`/a/inventory/${v}`)
         }
       }}
-      views={["inventory", "locations", "reservations"]}
+      views={views}
       activeView={props.activeView}
     />
   )

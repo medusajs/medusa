@@ -14,7 +14,7 @@ const TableViewHeader: React.FC<TableViewHeaderProps> = ({
   setActiveView,
 }) => {
   return (
-    <div className="inter-large-semibold gap-x-base text-grey-40 flex">
+    <div className="inter-large-semibold gap-base text-grey-40 flex medium:flex-row flex-col">
       {views.map((k, i) => (
         <div
           key={i}

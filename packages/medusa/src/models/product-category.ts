@@ -84,9 +84,10 @@ export class ProductCategory extends BaseEntity {
 
 /**
  * @schema ProductCategory
- * title: "ProductCategory"
- * description: "Represents a product category"
+ * title: "Product Category"
+ * description: "A product category can be used to categorize products into a hierarchy of categories."
  * x-resourceId: ProductCategory
+ * x-featureFlag: "product_categories"
  * type: object
  * required:
  *   - category_children
@@ -130,8 +131,9 @@ export class ProductCategory extends BaseEntity {
  *     description: An integer that depicts the rank of category in a tree node
  *     default: 0
  *   category_children:
- *     description: Available if the relation `category_children` are expanded.
+ *     description: The details of the category's children.
  *     type: array
+ *     x-expandable: "category_children"
  *     items:
  *       $ref: "#/components/schemas/ProductCategory"
  *   parent_category_id:
@@ -140,12 +142,14 @@ export class ProductCategory extends BaseEntity {
  *     type: string
  *     default: null
  *   parent_category:
- *     description: A product category object. Available if the relation `parent_category` is expanded.
+ *     description: The details of the parent of this category.
+ *     x-expandable: "parent_category"
  *     nullable: true
  *     $ref: "#/components/schemas/ProductCategory"
  *   products:
- *     description: Products associated with category. Available if the relation `products` is expanded.
+ *     description: The details of the products that belong to this category.
  *     type: array
+ *     x-expandable: "products"
  *     items:
  *       $ref: "#/components/schemas/Product"
  *   created_at:

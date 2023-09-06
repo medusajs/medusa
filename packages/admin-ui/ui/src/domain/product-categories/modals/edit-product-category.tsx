@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react"
-
-import { ProductCategory } from "@medusajs/medusa"
+import { ProductCategory as BaseCategory } from "@medusajs/medusa"
 import { useAdminUpdateProductCategory } from "medusa-react"
 import { TFunction } from "i18next"
 import { useTranslation } from "react-i18next"
 
+import { useEffect, useState } from "react"
+import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
 import Button from "../../../components/fundamentals/button"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
+import InputHeader from "../../../components/fundamentals/input-header"
 import InputField from "../../../components/molecules/input"
-import TextArea from "../../../components/molecules/textarea"
 import SideModal from "../../../components/molecules/modal/side-modal"
 import { NextSelect } from "../../../components/molecules/select/next-select"
 import useNotification from "../../../hooks/use-notification"
@@ -24,7 +25,13 @@ const visibilityOptions: (t: TFunction) => Option[] = (t) => [
   { label: "Private", value: "private" },
 ]
 
-const statusOptions: (t: TFunction) => Option[] = (t) => [
+type ProductCategory = BaseCategory & {
+  name_ar: string
+  handle_ar: string
+  description_ar: string
+}
+
+const statusOptions: Option[] = [
   { label: "Active", value: "active" },
   { label: "Inactive", value: "inactive" },
 ]
@@ -44,8 +51,11 @@ function EditProductCategoriesSideModal(
   const { isVisible, close, activeCategory, categories } = props
 
   const [name, setName] = useState("")
+  const [name_ar, setNameAr] = useState("")
   const [handle, setHandle] = useState("")
+  const [handle_ar, setHandleAr] = useState("")
   const [description, setDescription] = useState("")
+  const [description_ar, setDescriptionAr] = useState("")
   const [isActive, setIsActive] = useState(true)
   const [isPublic, setIsPublic] = useState(true)
 
@@ -59,8 +69,11 @@ function EditProductCategoriesSideModal(
   useEffect(() => {
     if (activeCategory) {
       setName(activeCategory.name)
+      setNameAr(activeCategory.name_ar)
       setHandle(activeCategory.handle)
+      setHandleAr(activeCategory.handle_ar)
       setDescription(activeCategory.description)
+      setDescriptionAr(activeCategory.description_ar)
       setIsActive(activeCategory.is_active)
       setIsPublic(!activeCategory.is_internal)
     }
@@ -72,6 +85,9 @@ function EditProductCategoriesSideModal(
         name,
         handle,
         description,
+        name_ar,
+        description_ar,
+        handle_ar,
         is_active: isActive,
         is_internal: !isPublic,
       })
@@ -94,7 +110,7 @@ function EditProductCategoriesSideModal(
   }
 
   return (
-    <SideModal close={onClose} isVisible={!!isVisible}>
+    <SideModal close={onClose} isVisible={!!isVisible} customWidth={200}>
       <div className="flex h-full flex-col justify-between">
         {/* === HEADER === */}
         <div className="flex items-center justify-between p-6">
@@ -142,14 +158,46 @@ function EditProductCategoriesSideModal(
             onChange={(ev) => setHandle(ev.target.value)}
           />
 
-          <TextArea
-            label={t("Description")}
-            name="description"
-            value={description}
-            className="my-6"
-            placeholder={t("Give this category a description")}
-            onChange={(ev) => setDescription(ev.target.value)}
-          />
+          <div className="medium:flex-row mb-8 flex flex-col justify-between gap-6">
+            <InputField
+              required
+              label={t("Name in arabic")}
+              type="string"
+              name="name_ar"
+              value={name_ar}
+              className="w-[338px]"
+              placeholder="التجميل"
+              onChange={(ev) => setNameAr(ev.target.value)}
+            />
+
+            <InputField
+              label={t("Handle in arabic"}
+              type="string"
+              name="handle_ar"
+              value={handle_ar}
+              className="w-[338px]"
+              placeholder="صنف-التجميل"
+              onChange={(ev) => setHandleAr(ev.target.value)}
+            />
+          </div>
+
+          <div className="mb-8">
+            <InputHeader label={t("Description")} className="mb-xsmall" />
+            <ReactQuill
+              theme="snow"
+              value={description}
+              onChange={(value) => setDescription(value)}
+            />
+          </div>
+
+          <div className="mb-8">
+            <InputHeader label={t("Description in arabic")} className="mb-xsmall" />
+            <ReactQuill
+              theme="snow"
+              value={description_ar}
+              onChange={(value) => setDescriptionAr(value)}
+            />
+          </div>
 
           <NextSelect
             label={t("Status")}

@@ -25,6 +25,8 @@ import subscribersLoader from "./subscribers"
 
 import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
 import { createMedusaContainer } from "medusa-core-utils"
+import pgConnectionLoader from "./pg-connection"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 type Options = {
   directory: string
@@ -44,7 +46,10 @@ export default async ({
   const configModule = loadConfig(rootDirectory)
 
   const container = createMedusaContainer()
-  container.register("configModule", asValue(configModule))
+  container.register(
+    ContainerRegistrationKeys.CONFIG_MODULE,
+    asValue(configModule)
+  )
 
   // Add additional information to context of request
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
@@ -59,7 +64,7 @@ export default async ({
   track("FEATURE_FLAGS_LOADED")
 
   container.register({
-    logger: asValue(Logger),
+    [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
@@ -67,7 +72,7 @@ export default async ({
 
   const modelsActivity = Logger.activity(`Initializing models${EOL}`)
   track("MODELS_INIT_STARTED")
-  modelsLoader({ container })
+  modelsLoader({ container, rootDirectory })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
@@ -86,6 +91,8 @@ export default async ({
   strategiesLoader({ container, configModule, isTest })
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
+
+  await pgConnectionLoader({ container, configModule })
 
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
@@ -112,7 +119,9 @@ export default async ({
   const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
   track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
-  container.register({ manager: asValue(dataSource.manager) })
+  container.register({
+    [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
+  })
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")

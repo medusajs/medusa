@@ -88,13 +88,13 @@ class StoreService extends TransactionBaseService {
       },
       config
     )
-    const store = await storeRepo.findOne(query)
+    const stores = await storeRepo.find(query)
 
-    if (!store) {
+    if (!stores.length) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Store does not exist")
     }
 
-    return store
+    return stores[0]
   }
 
   protected getDefaultCurrency_(code: string): Partial<Currency> {

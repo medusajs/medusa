@@ -4,12 +4,14 @@ import type SearchBarType from "@theme/SearchBar"
 import type { WrapperProps } from "@docusaurus/types"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
+import { useUser } from "@site/src/providers/User"
 
 type Props = WrapperProps<typeof SearchBarType>
 
 export default function SearchBarWrapper(props: Props): JSX.Element {
   const isBrowser = useIsBrowser()
   const location = useLocation()
+  const { track } = useUser()
 
   useEffect(() => {
     if (isBrowser) {
@@ -25,9 +27,9 @@ export default function SearchBarWrapper(props: Props): JSX.Element {
         }
 
         const query = e.target.value
-        if (query.length >= 3 && window.analytics) {
+        if (query.length >= 3) {
           // send event to segment
-          window.analytics.track("search", {
+          track("search", {
             query,
           })
         }

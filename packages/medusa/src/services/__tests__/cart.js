@@ -2,7 +2,7 @@ import _ from "lodash"
 import { asClass, asValue, createContainer } from "awilix"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 import CartService from "../cart"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
@@ -859,13 +859,17 @@ describe("CartService", () => {
           gift_cards: true,
           items: {
             variant: {
-              product: true,
+              product: {
+                profiles: true,
+              },
             },
           },
           payment_sessions: true,
           region: { countries: true },
           shipping_address: true,
-          shipping_methods: true,
+          shipping_methods: {
+            shipping_option: true,
+          },
         }),
         expect.objectContaining({
           select: undefined,

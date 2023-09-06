@@ -7,7 +7,7 @@ import OrganizeForm, {
   OrganizeFormType,
 } from "../../forms/product/organize-form"
 
-import { Product } from "@medusajs/medusa"
+import { Product as BaseProduct } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
@@ -19,6 +19,17 @@ import MetadataForm, {
 } from "../../forms/general/metadata-form"
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
+import SeoForm, { SeoFormType } from "../../forms/product/seo-form"
+
+type Product = BaseProduct & {
+  title_ar: string
+  subtitle_ar: string | null
+  description_ar: string | null
+  handle_ar: string | null
+  seo_title: string | null
+  seo_description: string | null
+  seo_url: string | null
+}
 
 type Props = {
   product: Product
@@ -31,6 +42,7 @@ type GeneralFormWrapper = {
   organize: OrganizeFormType
   discountable: DiscountableFormType
   metadata: MetadataFormType
+  seo: SeoFormType
 }
 
 const GeneralModal = ({ product, open, onClose }: Props) => {
@@ -59,13 +71,18 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
     onUpdate(
       {
         title: data.general.title,
+        title_ar: data.general.title_ar,
+        subtitle_ar: data.general.subtitle_ar,
         handle: data.general.handle,
+        handle_ar: data.general.handle_ar,
         // @ts-ignore
         material: data.general.material,
         // @ts-ignore
         subtitle: data.general.subtitle,
         // @ts-ignore
         description: data.general.description,
+        // @ts-ignore
+        description_ar: data.general.description_ar,
         // @ts-ignore
         type: data.organize.type
           ? {
@@ -87,6 +104,10 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
           : [],
         discountable: data.discountable.value,
         metadata: getSubmittableMetadata(data.metadata),
+        // seo
+        seo_title: data.seo.seo_title,
+        seo_description: data.seo.seo_description,
+        seo_url: data.seo.seo_url,
       },
       onReset
     )
@@ -120,6 +141,10 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
               <h2 className="inter-base-semibold mb-base">{t("Metadata")}</h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
+            <div className="mt-xlarge">
+              <h2 className="inter-base-semibold mb-base">Seo</h2>
+              <SeoForm form={nestedForm(form, "seo")} />
+            </div>
           </Modal.Content>
           <Modal.Footer>
             <div className="flex w-full justify-end gap-x-2">
@@ -152,10 +177,14 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
   return {
     general: {
       title: product.title,
+      title_ar: product.title_ar,
       subtitle: product.subtitle,
+      subtitle_ar: product.subtitle_ar,
       material: product.material,
       handle: product.handle!,
+      handle_ar: product.handle_ar!,
       description: product.description || null,
+      description_ar: product.description_ar || null,
     },
     organize: {
       collection: product.collection
@@ -171,6 +200,11 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
       value: product.discountable,
     },
     metadata: getMetadataFormValues(product.metadata),
+    seo: {
+      seo_title: product.seo_title || null,
+      seo_description: product.seo_description || null,
+      seo_url: product.seo_url || null,
+    },
   }
 }
 

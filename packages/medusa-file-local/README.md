@@ -23,7 +23,7 @@ Store uploaded files to your Medusa backend locally.
 1\. Run the following command in the directory of the Medusa backend:
 
 ```bash
-npm install medusa-file-local
+npm install @medusajs/file-local
 ```
 
 2 \. In `medusa-config.js` add the following at the end of the `plugins` array:
@@ -31,7 +31,13 @@ npm install medusa-file-local
 ```js
 const plugins = [
   // ...
-  `medusa-file-local`
+  {
+    resolve: `@medusajs/file-local`,
+    options: {
+      upload_dir: 'uploads/images', // optional
+      backend_url: 'http://localhost:9000' // optional
+    }
+  },
 ]
 ```
 

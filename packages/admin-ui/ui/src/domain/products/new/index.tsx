@@ -42,6 +42,9 @@ import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { prepareImages } from "../../../utils/images"
 import { nestedForm } from "../../../utils/nested-form"
+import SeoForm, {
+  SeoFormType,
+} from "../../../components/forms/product/seo-form"
 
 type NewProductForm = {
   general: GeneralFormType
@@ -53,6 +56,7 @@ type NewProductForm = {
   thumbnail: ThumbnailFormType
   media: MediaFormType
   salesChannels: AddSalesChannelsFormType
+  seo: SeoFormType
 }
 
 type Props = {
@@ -351,6 +355,12 @@ const NewProduct = ({ onClose }: Props) => {
                 </p>
                 <MediaForm form={nestedForm(form, "media")} />
               </Accordion.Item>
+              <Accordion.Item title="SEO" value="seo">
+                <p className="inter-base-regular mb-large text-grey-50">
+                  Add SEO information to your product.
+                </p>
+                <SeoForm form={nestedForm(form, "seo")} />
+              </Accordion.Item>
             </Accordion>
           </div>
         </FocusModal.Main>
@@ -366,13 +376,17 @@ const createPayload = (
 ): AdminPostProductsReq => {
   const payload: AdminPostProductsReq = {
     title: data.general.title,
+    title_ar: data.general.title_ar,
     subtitle: data.general.subtitle || undefined,
+    subtitle_ar: data.general.subtitle_ar || undefined,
     material: data.general.material || undefined,
     handle: data.general.handle,
+    handle_ar: data.general.handle_ar,
     discountable: data.discounted.value,
     is_giftcard: false,
     collection_id: data.organize.collection?.value,
     description: data.general.description || undefined,
+    description_ar: data.general.description_ar || undefined,
     height: data.dimensions.height || undefined,
     length: data.dimensions.length || undefined,
     weight: data.dimensions.weight || undefined,
@@ -436,8 +450,10 @@ const createBlank = (): NewProductForm => {
   return {
     general: {
       title: "",
+      title_ar: "",
       material: null,
       subtitle: null,
+      subtitle_ar: null,
       description: null,
       handle: "",
     },
@@ -473,6 +489,11 @@ const createBlank = (): NewProductForm => {
     variants: {
       entries: [],
       options: [],
+    },
+    seo: {
+      seo_title: "",
+      seo_description: "",
+      seo_url: "",
     },
   }
 }

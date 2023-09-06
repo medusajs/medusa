@@ -48,7 +48,7 @@ const NewReservation = ({
 
   const notification = useNotification()
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: NewReservationFormType) => {
     const payload = await createPayload(data)
 
     createReservation(payload, {
@@ -117,8 +117,8 @@ const createPayload = (
   data: NewReservationFormType
 ): AdminPostReservationsReq => {
   return {
-    location_id: data.general.location,
-    inventory_item_id: data.general.item.id!,
+    location_id: data.general.location!,
+    inventory_item_id: data.general.item!.id!,
     quantity: data.general.quantity,
     description: data.general.description,
     metadata: getSubmittableMetadata(data.metadata),

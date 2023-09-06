@@ -1,0 +1,7 @@
+type: object
+required:
+  - batch_job
+properties:
+  batch_job:
+    description: Batch job details.
+    $ref: ./BatchJob.yaml

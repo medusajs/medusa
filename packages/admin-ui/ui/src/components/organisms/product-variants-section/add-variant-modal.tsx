@@ -81,7 +81,7 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
     delete data.stock.stock_location
 
     onAddVariant(createAddPayload(data), (productRes) => {
-      if (typeof stock_location !== "undefined") {
+      if (stock_location?.length) {
         createStockLocationsForVariant(productRes, stock_location).then(() => {
           resetAndClose()
         })

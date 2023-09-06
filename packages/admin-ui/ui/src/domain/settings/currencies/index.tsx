@@ -1,17 +1,17 @@
-import { useAdminStore } from "medusa-react"
-import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import BackButton from "../../../components/atoms/back-button"
-import Spinner from "../../../components/atoms/spinner"
-import Tooltip from "../../../components/atoms/tooltip"
+import CurrencyTaxSetting from "./components/currency-tax-setting"
+import DefaultStoreCurrency from "./components/default-store-currency"
 import FeatureToggle from "../../../components/fundamentals/feature-toggle"
 import JSONView from "../../../components/molecules/json-view"
 import Section from "../../../components/organisms/section"
-import { useAnalytics } from "../../../providers/analytics-provider"
-import { getErrorStatus } from "../../../utils/get-error-status"
-import CurrencyTaxSetting from "./components/currency-tax-setting"
-import DefaultStoreCurrency from "./components/default-store-currency"
+import Spinner from "../../../components/atoms/spinner"
 import StoreCurrencies from "./components/store-currencies"
+import Tooltip from "../../../components/atoms/tooltip"
+import { getErrorStatus } from "../../../utils/get-error-status"
+import { useAdminStore } from "medusa-react"
+import { useAnalytics } from "../../../providers/analytics-provider"
+import { useNavigate } from "react-router-dom"
 
 const CurrencySettings = () => {
   const navigate = useNavigate()
@@ -79,10 +79,10 @@ const CurrencySettings = () => {
             <div className="mb-large">
               <StoreCurrencies store={store} />
             </div>
-            <FeatureToggle featureFlag="tax_inclusive_pricing">
-              <div className="cursor-default">
-                <div className="inter-small-semibold text-grey-50 mb-base flex items-center justify-between">
-                  <p>Currency</p>
+            <div className="cursor-default">
+              <div className="inter-small-semibold text-grey-50 mb-base flex items-center justify-between">
+                <p>Currency</p>
+                <FeatureToggle featureFlag="tax_inclusive_pricing">
                   <Tooltip
                     side="top"
                     content={t(
@@ -91,24 +91,24 @@ const CurrencySettings = () => {
                   >
                     <p>{t("Tax Incl. Prices")}</p>
                   </Tooltip>
-                </div>
-                <div className="gap-base grid grid-cols-1">
-                  {store.currencies
-                    .sort((a, b) => {
-                      return a.code > b.code ? 1 : -1
-                    })
-                    .map((c, index) => {
-                      return (
-                        <CurrencyTaxSetting
-                          currency={c}
-                          isDefault={store.default_currency_code === c.code}
-                          key={index}
-                        />
-                      )
-                    })}
-                </div>
+                </FeatureToggle>
               </div>
-            </FeatureToggle>
+              <div className="gap-base grid grid-cols-1">
+                {store.currencies
+                  .sort((a, b) => {
+                    return a.code > b.code ? 1 : -1
+                  })
+                  .map((c, index) => {
+                    return (
+                      <CurrencyTaxSetting
+                        currency={c}
+                        isDefault={store.default_currency_code === c.code}
+                        key={index}
+                      />
+                    )
+                  })}
+              </div>
+            </div>
           </Section>
         </div>
         <div>

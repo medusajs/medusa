@@ -3,24 +3,24 @@ import {
   Order,
   VariantInventory,
 } from "@medusajs/medusa"
-import { DisplayTotal, PaymentDetails } from "../templates"
 import React, { useContext, useMemo } from "react"
 import { useTranslation } from "react-i18next"
+import { DisplayTotal, PaymentDetails } from "../templates"
 
 import { ActionType } from "../../../../components/molecules/actionables"
-import AllocateItemsModal from "../allocations/allocate-items-modal"
 import Badge from "../../../../components/fundamentals/badge"
 import BodyCard from "../../../../components/organisms/body-card"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import { OrderEditContext } from "../../edit/context"
 import OrderLine from "../order-line"
 import { ReservationItemDTO } from "@medusajs/types"
+import ReserveItemsModal from "../reservation/reserve-items-modal"
 import { Response } from "@medusajs/medusa-js"
-import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import { sum } from "lodash"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { useMedusa } from "medusa-react"
+import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import useToggleState from "../../../../hooks/use-toggle-state"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 
 type SummaryCardProps = {
   order: Order
@@ -30,9 +30,9 @@ type SummaryCardProps = {
 const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
   const { t } = useTranslation()
   const {
-    state: allocationModalIsOpen,
-    open: showAllocationModal,
-    close: closeAllocationModal,
+    state: reservationModalIsOpen,
+    open: showReservationModal,
+    close: closeReservationModal,
   } = useToggleState()
 
   const { showModal } = useContext(OrderEditContext)
@@ -160,17 +160,17 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
     if (isFeatureEnabled("inventoryService") && !allItemsReserved) {
       actionables.push({
         label: t("Allocate"),
-        onClick: showAllocationModal,
+        onClick: showReservationModal,
       })
     }
     return actionables
-  }, [showModal, isFeatureEnabled, showAllocationModal, allItemsReserved])
+  }, [showModal, isFeatureEnabled, showReservationModal, allItemsReserved])
 
   const isAllocatable = !["canceled", "archived"].includes(order.status)
 
   return (
     <BodyCard
-      className={"mb-4 h-auto min-h-0 w-full"}
+      className={"h-auto min-h-0 w-full"}
       title="Summary"
       status={
         isFeatureEnabled("inventoryService") &&
@@ -179,13 +179,13 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             onClick={
               allItemsReserved || !isAllocatable
                 ? undefined
-                : showAllocationModal
+                : showReservationModal
             }
             variant={allItemsReserved || !isAllocatable ? "success" : "danger"}
             title={
               allItemsReserved || !isAllocatable
                 ? t("Allocated")
-                : t("Awaits allocation")
+                : t("Not fully allocated")
             }
             className="rounded-rounded border px-3 py-1.5"
           />
@@ -271,11 +271,11 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
           currency={order.currency_code}
         />
       </div>
-      {allocationModalIsOpen && (
-        <AllocateItemsModal
+      {reservationModalIsOpen && (
+        <ReserveItemsModal
           reservationItemsMap={reservationItemsMap}
           items={order.items}
-          close={closeAllocationModal}
+          close={closeReservationModal}
         />
       )}
     </BodyCard>

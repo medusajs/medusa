@@ -1,9 +1,20 @@
-import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-
+import Button from "../../fundamentals/button"
+import { Column } from "@tanstack/react-table"
+import { DecoratedInventoryItemDTO } from "@medusajs/medusa"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
+import { InventoryLevelDTO } from "@medusajs/types"
+import Tooltip from "../../atoms/tooltip"
+import { useMemo } from "react"
+import { useNavigate } from "react-router-dom"
 
-const useInventoryTableColumn = () => {
+const useInventoryTableColumn = ({
+  
+  location_id,
+}: {
+  
+  location_id: string
+}): [Column<DecoratedInventoryItemDTO>[]] => {
   const { t } = useTranslation()
   const columns = useMemo(
     () => [
@@ -40,31 +51,60 @@ const useInventoryTableColumn = () => {
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: t("Incoming"),
-        accessor: "incoming_quantity",
-        Cell: ({ row: { original } }) => (
-          <div>
-            {original.location_levels.reduce(
-              (acc, next) => acc + next.incoming_quantity,
-              0
-            )}
-          </div>
-        ),
+        Header: t("Reserved"),
+        accessor: "reserved_quantity",
+        Cell: ({ row: { original } }) => {
+          const navigate = useNavigate()
+
+          return (
+            <div className="flex grow">
+              <Tooltip
+                content={
+                  <Button
+                    size="small"
+                    className="inter-small-regular w-full"
+                    variant="ghost"
+                    onClick={() => {
+                      navigate(
+                        `/a/inventory/reservations?inventory_item_id%5B0%5D=${
+                          original.id
+                        }${location_id ? `&location_id=${location_id}` : ""}`
+                      )
+                    }}
+                  >
+                    Go to reservations
+                  </Button>
+                }
+              >
+                <div>
+                  {original.location_levels.reduce(
+                    (acc: number, next: InventoryLevelDTO) =>
+                      acc + next.reserved_quantity,
+                    0
+                  )}
+                </div>
+              </Tooltip>
+            </div>
+          )
+        },
       },
       {
         Header: t("In stock"),
         accessor: "stocked_quantity",
-        Cell: ({ row: { original } }) => (
-          <div>
-            {original.location_levels.reduce(
-              (acc, next) => acc + next.stocked_quantity,
-              0
-            )}
-          </div>
-        ),
+        Cell: ({ row: { original } }) => {
+          return (
+            <div className="bg-green-20">
+              {original.location_levels.reduce(
+                (acc: number, next: InventoryLevelDTO) =>
+                  acc + next.stocked_quantity,
+                0
+              )}
+            </div>
+          )
+        },
       },
     ],
-    []
+    [location_id]
   )
 
   return [columns] as const

@@ -8,6 +8,7 @@ import ListIcon from "../../fundamentals/icons/list-icon"
 import TileIcon from "../../fundamentals/icons/tile-icon"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
 import StatusIndicator from "../../fundamentals/status-indicator"
+import { useWindowDimensions } from "../../../hooks/use-window-dimensions"
 
 const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const { t } = useTranslation()
@@ -54,7 +55,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
                   <ImagePlaceholder />
                 )}
               </div>
-              {original.title}
+              {original.title_ar}
             </div>
           )
         },
@@ -115,7 +116,48 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
     [showList]
   )
 
-  return [columns] as const
+  const mobileColumns = useMemo(
+    () => [
+      {
+        Header: "Name",
+        accessor: "title",
+        Cell: ({ row: { original } }) => {
+          return (
+            <div className="flex flex-col gap-10">
+              <div className="flex items-center">
+                <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
+                  {original.thumbnail ? (
+                    <img
+                      src={original.thumbnail}
+                      className="rounded-soft h-full object-cover"
+                    />
+                  ) : (
+                    <ImagePlaceholder />
+                  )}
+                </div>
+                {original.title_ar}
+              </div>
+              <div className="flex flex-row justify-between">
+                {getProductStatus(original.status)}
+                <div>
+                  {original.variants.reduce(
+                    (acc, next) => acc + next.inventory_quantity,
+                    0
+                  )}
+                  {" in stock for "}
+                  {original.variants.length} variant(s)
+                </div>
+              </div>
+            </div>
+          )
+        },
+      },
+    ],
+    [showList]
+  )
+  const { width } = useWindowDimensions()
+  if (width > 600) return [columns] as const
+  return [mobileColumns] as const
 }
 
 export default useProductTableColumn

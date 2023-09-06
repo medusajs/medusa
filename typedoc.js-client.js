@@ -4,7 +4,7 @@ module.exports = {
   ...globalTypedocOptions,
   entryPoints: ["packages/medusa-js/src/resources"],
   entryPointStrategy: "expand",
-  out: ["docs/content/references/js-client"],
+  out: ["www/docs/content/references/js-client"],
   tsconfig: "packages/medusa-js/tsconfig.json",
   name: "JS Client Reference",
   indexTitle: "JS Client Reference",

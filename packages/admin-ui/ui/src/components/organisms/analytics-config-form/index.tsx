@@ -4,6 +4,8 @@ import { Controller, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { NestedForm } from "../../../utils/nested-form"
 import Switch from "../../atoms/switch"
+import InfoIcon from "../../fundamentals/icons/info-icon"
+import Tooltip from "../../atoms/tooltip"
 
 export type AnalyticsConfigFormType = {
   anonymize: boolean
@@ -12,9 +14,10 @@ export type AnalyticsConfigFormType = {
 
 type Props = {
   form: NestedForm<AnalyticsConfigFormType>
+  compact?: boolean
 }
 
-const AnalyticsConfigForm = ({ form }: Props) => {
+const AnalyticsConfigForm = ({ form, compact }: Props) => {
   const { control, setValue, path } = form
   const { t } = useTranslation()
 
@@ -33,7 +36,7 @@ const AnalyticsConfigForm = ({ form }: Props) => {
   return (
     <div className="gap-y-xlarge flex flex-col">
       <div
-        className={clsx("flex items-start transition-opacity", {
+        className={clsx("flex items-center gap-3 transition-opacity", {
           "opacity-50": watchOptOut,
         })}
       >
@@ -61,7 +64,7 @@ const AnalyticsConfigForm = ({ form }: Props) => {
           }}
         />
       </div>
-      <div className="flex items-start">
+      <div className="flex items-center gap-3">
         <div className="gap-y-2xsmall flex flex-1 flex-col">
           <h2 className="inter-base-semibold">
             {t("Opt out of sharing my usage data")}

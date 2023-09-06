@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next"
 import PageDescription from "../../components/atoms/page-description"
 import Spacer from "../../components/atoms/spacer"
 import Spinner from "../../components/atoms/spinner"
+import WidgetContainer from "../../components/extensions/widget-container"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BannerCard from "../../components/molecules/banner-card"
 import BodyCard from "../../components/organisms/body-card"
@@ -19,6 +20,7 @@ import GiftCardBanner from "../../components/organisms/gift-card-banner"
 import GiftCardTable from "../../components/templates/gift-card-table"
 import useNotification from "../../hooks/use-notification"
 import useToggleState from "../../hooks/use-toggle-state"
+import { useWidgets } from "../../providers/widget-provider"
 import { ProductStatus } from "../../types/shared"
 import { getErrorMessage } from "../../utils/error-messages"
 import CustomGiftcard from "./custom-giftcard"
@@ -101,6 +103,8 @@ const Overview = () => {
     }
   }, [giftCard, store])
 
+  const { getWidgets } = useWidgets()
+
   return (
     <>
       <div className="flex flex-col">
@@ -110,6 +114,16 @@ const Overview = () => {
         />
         {!isLoading ? (
           <div className="gap-y-xsmall flex flex-col">
+            {getWidgets("gift_card.list.before").map((w, i) => {
+              return (
+                <WidgetContainer
+                  key={i}
+                  widget={w}
+                  injectionZone="gift_card.list.before"
+                  entity={null}
+                />
+              )
+            })}
             {giftCardWithCurrency ? (
               <GiftCardBanner
                 {...giftCardWithCurrency}
@@ -139,6 +153,17 @@ const Overview = () => {
             >
               <GiftCardTable />
             </BodyCard>
+
+            {getWidgets("gift_card.list.after").map((w, i) => {
+              return (
+                <WidgetContainer
+                  key={i}
+                  widget={w}
+                  injectionZone="gift_card.list.after"
+                  entity={null}
+                />
+              )
+            })}
           </div>
         ) : (
           <div className="rounded-rounded border-grey-20 flex h-44 w-full items-center justify-center border">

@@ -13,7 +13,7 @@ export interface AdminGiftCardsDeleteRes {
    */
   object: string
   /**
-   * Whether the gift card was deleted successfully or not.
+   * Whether the gift card was deleted successfully.
    */
   deleted: boolean
 }

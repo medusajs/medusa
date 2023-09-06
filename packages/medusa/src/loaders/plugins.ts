@@ -1,19 +1,3 @@
-import { SearchUtils } from "@medusajs/utils"
-import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
-import { Express } from "express"
-import fs from "fs"
-import { sync as existsSync } from "fs-exists-cached"
-import glob from "glob"
-import _ from "lodash"
-import { createRequireFromPath } from "medusa-core-utils"
-import {
-  FileService,
-  FulfillmentService,
-  OauthService,
-} from "medusa-interfaces"
-import { trackInstallation } from "medusa-telemetry"
-import path from "path"
-import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
   isBatchJobStrategy,
@@ -23,19 +7,40 @@ import {
   isPriceSelectionStrategy,
   isTaxCalculationStrategy,
 } from "../interfaces"
-import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
   ConfigModule,
   Logger,
   MedusaContainer,
 } from "../types/global"
-import formatRegistrationName from "../utils/format-registration-name"
+import {
+  FileService,
+  FulfillmentService,
+  OauthService,
+} from "medusa-interfaces"
+import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
+import { SearchUtils, upperCaseFirst } from "@medusajs/utils"
+import {
+  formatRegistrationName,
+  formatRegistrationNameWithoutNamespace,
+} from "../utils/format-registration-name"
 import {
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
+
+import { EntitySchema } from "typeorm"
+import { Express } from "express"
+import { MiddlewareService } from "../services"
+import _ from "lodash"
+import { createRequireFromPath } from "medusa-core-utils"
+import { sync as existsSync } from "fs-exists-cached"
+import fs from "fs"
+import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
+import glob from "glob"
 import logger from "./logger"
+import path from "path"
+import { trackInstallation } from "medusa-telemetry"
 
 type Options = {
   rootDirectory: string
@@ -54,6 +59,8 @@ type PluginDetails = {
 }
 
 export const isSearchEngineInstalledResolutionKey = "isSearchEngineInstalled"
+
+export const MEDUSA_PROJECT_NAME = "project-plugin"
 
 /**
  * Registers all services in the services directory
@@ -93,7 +100,8 @@ export default async ({
 
 function getResolvedPlugins(
   rootDirectory: string,
-  configModule: ConfigModule
+  configModule: ConfigModule,
+  extensionDirectoryPath = "dist"
 ): undefined | PluginDetails[] {
   const { plugins } = configModule
 
@@ -108,10 +116,12 @@ function getResolvedPlugins(
     return details
   })
 
+  const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
+  // Resolve user's project as a plugin for loading purposes
   resolved.push({
-    resolve: `${rootDirectory}/dist`,
-    name: `project-plugin`,
-    id: createPluginId(`project-plugin`),
+    resolve: extensionDirectory,
+    name: MEDUSA_PROJECT_NAME,
+    id: createPluginId(MEDUSA_PROJECT_NAME),
     options: configModule,
     version: createFileContentHash(process.cwd(), `**`),
   })
@@ -123,15 +133,22 @@ export async function registerPluginModels({
   rootDirectory,
   container,
   configModule,
+  extensionDirectoryPath = "dist",
+  pathGlob = "/models/*.js",
 }: {
   rootDirectory: string
   container: MedusaContainer
   configModule: ConfigModule
+  extensionDirectoryPath?: string
+  pathGlob?: string
 }): Promise<void> {
-  const resolved = getResolvedPlugins(rootDirectory, configModule) || []
+  const resolved =
+    getResolvedPlugins(rootDirectory, configModule, extensionDirectoryPath) ||
+    []
+
   await Promise.all(
     resolved.map(async (pluginDetails) => {
-      registerModels(pluginDetails, container)
+      registerModels(pluginDetails, container, rootDirectory, pathGlob)
     })
   )
 }
@@ -325,10 +342,12 @@ function registerApi(
   activityId: string
 ): Express {
   const logger = container.resolve<Logger>("logger")
-  logger.progress(
-    activityId,
-    `Registering custom endpoints for ${pluginDetails.name}`
-  )
+  const projectName =
+    pluginDetails.name === MEDUSA_PROJECT_NAME
+      ? "your Medusa project"
+      : `${pluginDetails.name}`
+
+  logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
     if (routes) {
@@ -336,12 +355,16 @@ function registerApi(
     }
     return app
   } catch (err) {
-    if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
-      logger.progress(
-        activityId,
-        `No customer endpoints registered for ${pluginDetails.name}`
+    if (err.code !== "MODULE_NOT_FOUND") {
+      logger.warn(
+        `An error occured while registering endpoints in ${projectName}`
       )
+
+      if (err.stack) {
+        logger.warn(`${err.stack}`)
+      }
     }
+
     return app
   }
 }
@@ -550,28 +573,74 @@ function registerRepositories(
  *    version, id, resolved path, etc. See resolvePlugin
  * @param {object} container - the container where the services will be
  *    registered
+ * @param rootDirectory
+ * @param pathGlob
  * @return {void}
  */
 function registerModels(
   pluginDetails: PluginDetails,
-  container: MedusaContainer
+  container: MedusaContainer,
+  rootDirectory: string,
+  pathGlob = "/models/*.js"
 ): void {
-  const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
-  files.forEach((fn) => {
-    const loaded = require(fn) as ClassConstructor<unknown> | EntitySchema
+  const pluginFullPathGlob = path.join(pluginDetails.resolve, pathGlob)
 
-    Object.entries(loaded).map(
-      ([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
-        if (typeof val === "function" || val instanceof EntitySchema) {
-          const name = formatRegistrationName(fn)
-          container.register({
-            [name]: asValue(val),
-          })
+  const modelExtensionsMap = getModelExtensionsMap({
+    directory: pluginDetails.resolve,
+    pathGlob: pathGlob,
+    config: { register: true },
+  })
 
-          container.registerAdd("db_entities", asValue(val))
-        }
+  const pluginModels = glob.sync(pluginFullPathGlob, {
+    ignore: ["index.js", "index.js.map"],
+  })
+
+  const coreModelsFullGlob = path.join(__dirname, "../models/*.js")
+  const coreModels = glob.sync(coreModelsFullGlob, {
+    cwd: __dirname,
+    ignore: ["index.js", "index.ts", "index.js.map"],
+  })
+
+  // Apply the extended models to the core models first to ensure that
+  // when relationships are created, the extended models are used
+  coreModels.forEach((modelPath) => {
+    const loaded = require(modelPath) as
+      | ClassConstructor<unknown>
+      | EntitySchema
+
+    if (loaded) {
+      const name = formatRegistrationName(modelPath)
+      const mappedExtensionModel = modelExtensionsMap.get(name)
+      if (mappedExtensionModel) {
+        const modelName = upperCaseFirst(
+          formatRegistrationNameWithoutNamespace(modelPath)
+        )
+
+        loaded[modelName] = mappedExtensionModel
       }
-    )
+    }
+  })
+
+  pluginModels.forEach((coreOrPluginModelPath) => {
+    const loaded = require(coreOrPluginModelPath) as
+      | ClassConstructor<unknown>
+      | EntitySchema
+
+    if (loaded) {
+      Object.entries(loaded).map(
+        ([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
+          if (typeof val === "function" || val instanceof EntitySchema) {
+            const name = formatRegistrationName(coreOrPluginModelPath)
+
+            container.register({
+              [name]: asValue(val),
+            })
+
+            container.registerAdd("db_entities", asValue(val))
+          }
+        }
+      )
+    }
   })
 }
 

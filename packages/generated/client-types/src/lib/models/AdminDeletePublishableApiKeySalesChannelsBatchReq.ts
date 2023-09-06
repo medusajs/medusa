@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminDeletePublishableApiKeySalesChannelsBatchReq {
   /**
-   * The IDs of the sales channels to delete from the publishable api key
+   * The IDs of the sales channels to remove from the publishable API key
    */
   sales_channel_ids: Array<{
     /**

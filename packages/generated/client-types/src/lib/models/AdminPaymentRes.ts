@@ -6,5 +6,8 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Payment } from "./Payment"
 
 export interface AdminPaymentRes {
+  /**
+   * Payment details
+   */
   payment: Payment
 }

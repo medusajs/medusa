@@ -1,0 +1,37 @@
+{
+  "name": "@medusajs/orchestration",
+  "version": "0.2.0",
+  "description": "Medusa utilities to orchestrate modules",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/orchestration"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Medusa",
+  "license": "MIT",
+  "devDependencies": {
+    "@medusajs/types": "^1.10.2",
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4",
+    "rimraf": "^5.0.1",
+    "ts-jest": "^25.5.1",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@medusajs/utils": "^1.9.6",
+    "graphql": "^16.6.0"
+  },
+  "scripts": {
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "build": "rimraf dist && tsc --build",
+    "watch": "tsc --build --watch",
+    "test": "jest --runInBand --bail --forceExit"
+  }
+}

@@ -86,7 +86,7 @@ const ProductTile = ({ product }) => {
           <div>
             <div className="mt-base flex items-center justify-between">
               <p className="inter-small-regular text-grey-90 line-clamp-1 mr-3">
-                {product.title}
+                {product.title_ar}
               </p>
               <StatusIndicator
                 variant={getProductStatusVariant(product.status)}

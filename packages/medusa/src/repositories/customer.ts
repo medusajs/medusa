@@ -43,7 +43,7 @@ export const CustomerRepository = dataSource.getRepository(Customer).extend({
       ]
     }
 
-    return await this.findAndCount(query_)
+    return await Promise.all([this.find(query_), this.count(query_)])
   },
 })
 export default CustomerRepository

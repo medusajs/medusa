@@ -1,9 +1,10 @@
+import { FlagRouter } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomerService,
   CustomShippingOptionService,
+  CustomerService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -26,8 +27,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  Customer,
   CustomShippingOption,
+  Customer,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -46,9 +47,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
-  isCart,
   LineItemUpdate,
   LineItemValidateData,
+  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -58,7 +59,6 @@ import {
 } from "../types/common"
 import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 
 type InjectedDependencies = {
@@ -481,10 +481,9 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
           relations: [
-            "items",
-            "items.variant",
-            "items.variant.product",
+            "items.variant.product.profiles",
             "payment_sessions",
+            "shipping_methods",
           ],
         })
 
@@ -493,7 +492,6 @@ class CartService extends TransactionBaseService {
           return cart
         }
 
-        // Remove shipping methods if they are not needed
         if (cart.shipping_methods?.length) {
           await this.shippingOptionService_
             .withTransaction(transactionManager)
@@ -518,9 +516,7 @@ class CartService extends TransactionBaseService {
 
         const result = await this.retrieve(cartId, {
           relations: [
-            "items",
-            "items.variant",
-            "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "region",
@@ -627,7 +623,10 @@ class CartService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        let cart = await this.retrieve(cartId, { select })
+        let cart = await this.retrieve(cartId, {
+          select,
+          relations: ["shipping_methods"],
+        })
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
@@ -717,11 +716,15 @@ class CartService extends TransactionBaseService {
             throw err
           })
 
+        if (cart.shipping_methods?.length) {
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(cart.shipping_methods)
+        }
+
         cart = await this.retrieve(cart.id, {
           relations: [
-            "items",
-            "items.variant",
-            "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "region",
@@ -762,7 +765,10 @@ class CartService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        let cart = await this.retrieve(cartId, { select })
+        let cart = await this.retrieve(cartId, {
+          select,
+          relations: ["shipping_methods"],
+        })
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
@@ -807,10 +813,10 @@ class CartService extends TransactionBaseService {
         const existingItems = await lineItemServiceTx.list(
           {
             cart_id: cart.id,
-            variant_id: In([items.map((item) => item.variant_id)]),
+            variant_id: In(items.map((item) => item.variant_id)),
             should_merge: true,
           },
-          { select: ["id", "metadata", "quantity"] }
+          { select: ["id", "metadata", "quantity", "variant_id"] }
         )
 
         const existingItemsVariantMap = new Map()
@@ -897,11 +903,15 @@ class CartService extends TransactionBaseService {
             throw err
           })
 
+        if (cart.shipping_methods?.length) {
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(cart.shipping_methods)
+        }
+
         cart = await this.retrieve(cart.id, {
           relations: [
-            "items",
-            "items.variant",
-            "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "region",
@@ -931,6 +941,18 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
+        const select: (keyof Cart)[] = ["id"]
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        ) {
+          select.push("sales_channel_id")
+        }
+
+        const cart = await this.retrieve(cartId, {
+          select: select,
+          relations: ["shipping_methods"],
+        })
+
         const lineItem = await this.lineItemService_.retrieve(lineItemId, {
           select: ["id", "quantity", "variant_id", "cart_id"],
         })
@@ -945,17 +967,6 @@ class CartService extends TransactionBaseService {
 
         if (lineItemUpdate.quantity) {
           if (lineItem.variant_id) {
-            const select: (keyof Cart)[] = ["id"]
-            if (
-              this.featureFlagRouter_.isFeatureEnabled(
-                SalesChannelFeatureFlag.key
-              )
-            ) {
-              select.push("sales_channel_id")
-            }
-
-            const cart = await this.retrieve(cartId, { select: select })
-
             const hasInventory =
               await this.productVariantInventoryService_.confirmInventory(
                 lineItem.variant_id,
@@ -972,15 +983,19 @@ class CartService extends TransactionBaseService {
           }
         }
 
+        if (cart.shipping_methods?.length) {
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(cart.shipping_methods)
+        }
+
         await this.lineItemService_
           .withTransaction(transactionManager)
           .update(lineItemId, lineItemUpdate)
 
         const updatedCart = await this.retrieve(cartId, {
           relations: [
-            "items",
-            "items.variant",
-            "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "region",
@@ -1004,7 +1019,7 @@ class CartService extends TransactionBaseService {
    * shipping discount
    * If a free shipping is present, we set shipping methods price to 0
    * if a free shipping was present, we set shipping methods to original amount
-   * @param cart - the the cart to adjust free shipping for
+   * @param cart - the cart to adjust free shipping for
    * @param shouldAdd - flag to indicate, if we should add or remove
    * @return void
    */
@@ -1054,10 +1069,9 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const cartRepo = transactionManager.withRepository(this.cartRepository_)
         const relations = [
-          "items",
-          "items.variant",
-          "items.variant.product",
+          "items.variant.product.profiles",
           "shipping_methods",
+          "shipping_methods.shipping_option",
           "shipping_address",
           "billing_address",
           "gift_cards",
@@ -1075,7 +1089,7 @@ class CartService extends TransactionBaseService {
           ) &&
           data.sales_channel_id
         ) {
-          relations.push("items.variant", "items.variant.product")
+          relations.push("items.variant.product.profiles")
         }
 
         const cart = await this.retrieve(cartId, {
@@ -1098,7 +1112,7 @@ class CartService extends TransactionBaseService {
           await this.updateUnitPrices_(cart, data.region_id, data.customer_id)
         }
 
-        if (isDefined(data.region_id)) {
+        if (isDefined(data.region_id) && cart.region_id !== data.region_id) {
           const shippingAddress =
             typeof data.shipping_address !== "string"
               ? data.shipping_address
@@ -1522,14 +1536,13 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
           relations: [
-            "items",
-            "items.variant",
-            "items.variant.product",
+            "items.variant.product.profiles",
             "region",
             "discounts",
             "discounts.rule",
             "payment_sessions",
             "shipping_methods",
+            "shipping_methods.shipping_option",
           ],
         })
 
@@ -1620,12 +1633,7 @@ class CartService extends TransactionBaseService {
         )
 
         const cart = await this.retrieveWithTotals(cartId, {
-          relations: [
-            "payment_sessions",
-            "items",
-            "items.variant",
-            "items.variant.product",
-          ],
+          relations: ["payment_sessions", "items.variant.product.profiles"],
         })
 
         // If cart total is 0, we don't perform anything payment related
@@ -1695,9 +1703,7 @@ class CartService extends TransactionBaseService {
 
         const cart = await this.retrieveWithTotals(cartId, {
           relations: [
-            "items",
-            "items.variant",
-            "items.variant.product",
+            "items.variant.product.profiles",
             "customer",
             "region",
             "region.payment_providers",
@@ -1821,14 +1827,13 @@ class CartService extends TransactionBaseService {
           cartId,
           {
             relations: [
-              "items",
-              "items.variant",
-              "items.variant.product",
+              "items.variant.product.profiles",
               "items.adjustments",
               "discounts",
               "discounts.rule",
               "gift_cards",
               "shipping_methods",
+              "shipping_methods.shipping_option",
               "billing_address",
               "shipping_address",
               "region",
@@ -2104,9 +2109,7 @@ class CartService extends TransactionBaseService {
               relations: [
                 "shipping_methods",
                 "shipping_methods.shipping_option",
-                "items",
-                "items.variant",
-                "items.variant.product",
+                "items.variant.product.profiles",
                 "payment_sessions",
               ],
             })
@@ -2170,7 +2173,12 @@ class CartService extends TransactionBaseService {
         }
 
         const updatedCart = await this.retrieve(cart.id, {
-          relations: ["discounts", "discounts.rule", "shipping_methods"],
+          relations: [
+            "discounts",
+            "discounts.rule",
+            "shipping_methods",
+            "shipping_methods.shipping_option",
+          ],
         })
 
         // if cart has freeshipping, adjust price
@@ -2284,7 +2292,7 @@ class CartService extends TransactionBaseService {
     cart.items = await lineItemServiceTx.list(
       { id: cart.items.map((i) => i.id) },
       {
-        relations: ["variant", "variant.product"],
+        relations: ["variant.product.profiles"],
       }
     )
   }
@@ -2440,9 +2448,7 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
           relations: [
-            "items",
-            "items.variant",
-            "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "payment_sessions",
@@ -2529,14 +2535,13 @@ class CartService extends TransactionBaseService {
                 "discounts",
                 "discounts.rule",
                 "gift_cards",
-                "items",
-                "items.variant",
-                "items.variant.product",
+                "items.variant.product.profiles",
                 "items.adjustments",
                 "region",
                 "region.tax_rates",
                 "shipping_address",
                 "shipping_methods",
+                "shipping_methods.shipping_option",
               ],
             })
 
@@ -2559,6 +2564,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.tax_lines",
             "shipping_methods",
+            "shipping_methods.shipping_option",
             "shipping_methods.tax_lines",
           ],
         })
@@ -2799,9 +2805,7 @@ class CartService extends TransactionBaseService {
   private getTotalsRelations(config: FindConfig<Cart>): string[] {
     const relationSet = new Set(config.relations)
 
-    relationSet.add("items")
-    relationSet.add("items.variant")
-    relationSet.add("items.variant.product")
+    relationSet.add("items.variant.product.profiles")
     relationSet.add("items.tax_lines")
     relationSet.add("items.adjustments")
     relationSet.add("gift_cards")

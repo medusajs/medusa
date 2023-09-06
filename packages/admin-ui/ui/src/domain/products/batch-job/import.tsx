@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next"
 import UploadModal from "../../../components/organisms/upload-modal"
 import useNotification from "../../../hooks/use-notification"
 import { usePolling } from "../../../providers/polling-provider"
+import { downloadProductImportCSVTemplate } from "./download-template"
 
 /**
  * Hook returns a batch job. The endpoint is polled every 2s while the job is processing.
@@ -193,8 +194,8 @@ function ImportProducts(props: ImportProductsProps) {
       summary={getSummary()}
       onFileRemove={onFileRemove}
       processUpload={processUpload}
-      fileTitle={t("products list")}
-      templateLink="/temp/product-import-template.csv"
+      fileTitle={"products list"}
+      onDownloadTemplate={downloadProductImportCSVTemplate}
       errorMessage={batchJob?.result?.errors?.join(" \n")}
       description2Title={t("Unsure about how to arrange your list?")}
       description2Text={t(

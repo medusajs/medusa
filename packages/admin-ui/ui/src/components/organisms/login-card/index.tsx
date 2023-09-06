@@ -2,7 +2,9 @@ import { useAdminLogin } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
+import { useWidgets } from "../../../providers/widget-provider"
 import InputError from "../../atoms/input-error"
+import WidgetContainer from "../../extensions/widget-container"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
 
@@ -26,6 +28,8 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
   const { mutate, isLoading } = useAdminLogin()
   const { t } = useTranslation()
 
+  const { getWidgets } = useWidgets()
+
   const onSubmit = (values: FormValues) => {
     mutate(values, {
       onSuccess: () => {
@@ -46,6 +50,18 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
     })
   }
   return (
+
+    <div className="gap-y-large flex flex-col">
+      {getWidgets("login.before").map((w, i) => {
+        return (
+          <WidgetContainer
+            key={i}
+            widget={w}
+            injectionZone="login.before"
+            entity={undefined}
+          />
+        )
+      })}
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center">
         <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
@@ -84,6 +100,17 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
         </span>
       </div>
     </form>
+      {getWidgets("login.after").map((w, i) => {
+        return (
+          <WidgetContainer
+            key={i}
+            widget={w}
+            injectionZone="login.after"
+            entity={undefined}
+          />
+        )
+      })}
+    </div>
   )
 }
 

@@ -1,15 +1,15 @@
-import React from "react"
-import { LineItem } from "@medusajs/medusa"
-import { sum } from "lodash"
-import { ReservationItemDTO } from "@medusajs/types"
 import { useAdminStockLocations, useAdminVariantsInventory } from "medusa-react"
 import { useTranslation } from "react-i18next"
-import Tooltip from "../../../../components/atoms/tooltip"
-import CircleQuarterSolid from "../../../../components/fundamentals/icons/circle-quarter-solid"
-import WarningCircleIcon from "../../../../components/fundamentals/icons/warning-circle"
-import CheckCircleFillIcon from "../../../../components/fundamentals/icons/check-circle-fill-icon"
-import EditAllocationDrawer from "../../details/allocations/edit-allocation-modal"
 import Button from "../../../../components/fundamentals/button"
+import CheckCircleFillIcon from "../../../../components/fundamentals/icons/check-circle-fill-icon"
+import CircleQuarterSolid from "../../../../components/fundamentals/icons/circle-quarter-solid"
+import EditReservationDrawer from "../../details/reservation/edit-reservation-modal"
+import { LineItem } from "@medusajs/medusa"
+import React from "react"
+import { ReservationItemDTO } from "@medusajs/types"
+import Tooltip from "../../../../components/atoms/tooltip"
+import WarningCircleIcon from "../../../../components/fundamentals/icons/warning-circle"
+import { sum } from "lodash"
 
 const ReservationIndicator = ({
   reservations,
@@ -37,9 +37,9 @@ const ReservationIndicator = ({
 
   const reservationsSum = sum(reservations?.map((r) => r.quantity) || [])
 
-  const allocatableSum = lineItem.quantity - (lineItem?.fulfilled_quantity || 0)
+  const reservableSum = lineItem.quantity - (lineItem?.fulfilled_quantity || 0)
 
-  const awaitingAllocation = allocatableSum - reservationsSum
+  const awaitingReservation = reservableSum - reservationsSum
 
   if (
     isLoading ||
@@ -51,21 +51,21 @@ const ReservationIndicator = ({
   }
 
   return (
-    <div className={awaitingAllocation ? "text-rose-50" : "text-grey-40"}>
+    <div className={awaitingReservation ? "text-rose-50" : "text-grey-40"}>
       <Tooltip
         content={
           <div className="inter-small-regular flex flex-col items-center px-1 pt-1 pb-2">
-            {reservationsSum || awaitingAllocation ? (
+            {reservationsSum || awaitingReservation ? (
               <div className="gap-y-base grid grid-cols-1 divide-y">
-                {!!awaitingAllocation && (
+                {!!awaitingReservation && (
                   <span className="flex w-full items-center">
-                    {t("{awaitingAllocation} items await allocation", {
-                      awaitingAllocation,
+                   { t("{awaitingReservation} items not reserved", {
+                    awaitingReservation,
                     })}
                   </span>
                 )}
                 {reservations?.map((reservation) => (
-                  <EditAllocationButton
+                  <EditReservationButton
                     key={reservation.id}
                     locationName={locationMap.get(reservation.location_id)}
                     totalReservedQuantity={reservationsSum}
@@ -84,7 +84,7 @@ const ReservationIndicator = ({
         }
         side="bottom"
       >
-        {awaitingAllocation ? (
+        {awaitingReservation ? (
           reservationsSum ? (
             <CircleQuarterSolid size={20} />
           ) : (
@@ -96,7 +96,7 @@ const ReservationIndicator = ({
       </Tooltip>
 
       {reservation && (
-        <EditAllocationDrawer
+        <EditReservationDrawer
           totalReservedQuantity={reservationsSum}
           close={() => setReservation(null)}
           reservation={reservation}
@@ -107,7 +107,7 @@ const ReservationIndicator = ({
   )
 }
 
-const EditAllocationButton = ({
+const EditReservationButton = ({
   reservation,
   locationName,
   onClick,

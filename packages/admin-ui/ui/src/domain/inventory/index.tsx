@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom"
+
 import InventoryView from "./inventory"
 import Locations from "./locations"
 import Reservations from "./reservations"

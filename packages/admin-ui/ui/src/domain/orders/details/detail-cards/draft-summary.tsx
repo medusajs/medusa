@@ -1,25 +1,26 @@
-import React, { useMemo } from "react"
-import { sum } from "lodash"
 import {
   AdminGetVariantsVariantInventoryRes,
   DraftOrder,
   VariantInventory,
 } from "@medusajs/medusa"
 import { useTranslation } from "react-i18next"
-import Badge from "../../../../components/fundamentals/badge"
-import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
-import BodyCard from "../../../../components/organisms/body-card"
-import { formatAmountWithSymbol } from "../../../../utils/prices"
-import { DisplayTotal } from "../templates"
-import { ActionType } from "../../../../components/molecules/actionables"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
-import useToggleState from "../../../../hooks/use-toggle-state"
+import React, { useMemo } from "react"
 import { useAdminReservations, useMedusa } from "medusa-react"
-import { ReservationItemDTO } from "@medusajs/types"
+
+import { ActionType } from "../../../../components/molecules/actionables"
+import Badge from "../../../../components/fundamentals/badge"
+import BodyCard from "../../../../components/organisms/body-card"
+import { DisplayTotal } from "../templates"
+import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
 import ReservationIndicator from "../../components/reservation-indicator/reservation-indicator"
-import AllocateItemsModal from "../allocations/allocate-items-modal"
+import { ReservationItemDTO } from "@medusajs/types"
+import ReserveItemsModal from "../reservation/reserve-items-modal"
 import { Response } from "@medusajs/medusa-js"
 import StatusIndicator from "../../../../components/fundamentals/status-indicator"
+import { formatAmountWithSymbol } from "../../../../utils/prices"
+import { sum } from "lodash"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import useToggleState from "../../../../hooks/use-toggle-state"
 
 type DraftSummaryCardProps = {
   order: DraftOrder
@@ -105,9 +106,9 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
   }, [reservations, inventoryEnabled])
 
   const {
-    state: allocationModalIsOpen,
-    open: showAllocationModal,
-    close: closeAllocationModal,
+    state: reservationModalIsOpen,
+    open: showReservationModal,
+    close: closeReservationModal,
   } = useToggleState()
 
   const allItemsReserved = useMemo(() => {
@@ -135,11 +136,11 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
     if (inventoryEnabled && !allItemsReserved) {
       actionables.push({
         label: "Allocate",
-        onClick: showAllocationModal,
+        onClick: showReservationModal,
       })
     }
     return actionables
-  }, [inventoryEnabled, showAllocationModal, allItemsReserved])
+  }, [inventoryEnabled, showReservationModal, allItemsReserved])
 
   return (
     <BodyCard
@@ -149,9 +150,9 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
         isFeatureEnabled("inventoryService") &&
         Array.isArray(reservations) && (
           <StatusIndicator
-            onClick={allItemsReserved ? undefined : showAllocationModal}
+            onClick={allItemsReserved ? undefined : showReservationModal}
             variant={allItemsReserved ? "success" : "danger"}
-            title={allItemsReserved ? t("Allocated") : t("Awaits allocation")}
+            title={allItemsReserved ? t("Allocated") : t("Not fully allocated")}
             className="rounded-rounded border px-3 py-1.5"
           />
         )
@@ -261,11 +262,11 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
           totalTitle={t(`Total`)}
         />
       </div>
-      {allocationModalIsOpen && (
-        <AllocateItemsModal
+      {reservationModalIsOpen && (
+        <ReserveItemsModal
           reservationItemsMap={reservationItemsMap}
           items={cart.items}
-          close={closeAllocationModal}
+          close={closeReservationModal}
         />
       )}
     </BodyCard>

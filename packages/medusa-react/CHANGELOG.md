@@ -1,5 +1,54 @@
 # Change Log
 
+## 9.0.4
+
+### Patch Changes
+
+- [#4747](https://github.com/medusajs/medusa/pull/4747) [`9469063f6`](https://github.com/medusajs/medusa/commit/9469063f643180002ede7a8e94c6de53d2770d04) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-js): return type of collection hook + export
+
+- [#4761](https://github.com/medusajs/medusa/pull/4761) [`f1a05f472`](https://github.com/medusajs/medusa/commit/f1a05f4725dcc45150f014769562bd3dfbc0f1f8) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin, admin-ui, medusa, medusa-js, medusa-react, stripe-plugin): Support admin extensions
+
+- Updated dependencies [[`9469063f6`](https://github.com/medusajs/medusa/commit/9469063f643180002ede7a8e94c6de53d2770d04), [`f1a05f472`](https://github.com/medusajs/medusa/commit/f1a05f4725dcc45150f014769562bd3dfbc0f1f8)]:
+  - @medusajs/medusa-js@6.0.3
+
+## 9.0.3
+
+### Patch Changes
+
+- [#4467](https://github.com/medusajs/medusa/pull/4467) [`3e6cee284`](https://github.com/medusajs/medusa/commit/3e6cee28469b5ce30687de5e5096266244f6b3a9) Thanks [@josetr](https://github.com/josetr)! - fix(medusa-react): add missing adminInventoryItemsKeys.lists() to inventory hooks
+
+- [#4538](https://github.com/medusajs/medusa/pull/4538) [`e3a856521`](https://github.com/medusajs/medusa/commit/e3a85652132c110e4dd81ae1120414121fbab0fd) Thanks [@josetr](https://github.com/josetr)! - fix(medusa-react): fix admin user mutation hooks invalidating wrong keys
+
+## 9.0.2
+
+### Patch Changes
+
+- [#4409](https://github.com/medusajs/medusa/pull/4409) [`fe25c8a91`](https://github.com/medusajs/medusa/commit/fe25c8a91f4462c9ac5a15594fa71155df48c1eb) Thanks [@pevey](https://github.com/pevey)! - feat(medusa-react,medusa-js): Allow custom headers
+
+- [#4441](https://github.com/medusajs/medusa/pull/4441) [`417debfe7`](https://github.com/medusajs/medusa/commit/417debfe7db6edd6722929fe0f905a63548a0c9e) Thanks [@josetr](https://github.com/josetr)! - fix(medusa-react): fix wrong admin reservations query key
+
+- Updated dependencies [[`fe25c8a91`](https://github.com/medusajs/medusa/commit/fe25c8a91f4462c9ac5a15594fa71155df48c1eb), [`708a55199`](https://github.com/medusajs/medusa/commit/708a55199aeb23f5a75fd240ddd10af2c95f3957)]:
+  - @medusajs/medusa-js@6.0.2
+
+## 9.0.1
+
+### Patch Changes
+
+- [#4115](https://github.com/medusajs/medusa/pull/4115) [`79cca2ab8`](https://github.com/medusajs/medusa/commit/79cca2ab809b77606e65706c19f9fce37b174365) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-react): update types to reflect api requests
+
+- Updated dependencies [[`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5)]:
+  - @medusajs/medusa-js@6.0.1
+
+## 9.0.0
+
+### Patch Changes
+
+- [#4081](https://github.com/medusajs/medusa/pull/4081) [`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,client-types,medusa-js,admin-ui,medusa-react): add reservation table and creation
+
+- Updated dependencies [[`0a35f21af`](https://github.com/medusajs/medusa/commit/0a35f21af7ac8b6cdc1af12a403e95f9bf6142fe), [`4fb443c0e`](https://github.com/medusajs/medusa/commit/4fb443c0ea38bde3148bce059c0ee3b91dfff3d4), [`0476f5251`](https://github.com/medusajs/medusa/commit/0476f52519237c622b37d29de0718f9774b6add7), [`0f87d3d64`](https://github.com/medusajs/medusa/commit/0f87d3d642b56bf19de8136e1f5bfedf364c5193), [`ed382f2ee`](https://github.com/medusajs/medusa/commit/ed382f2ee510cbf96164991efa7ff75e3ce659ff), [`92f01cefb`](https://github.com/medusajs/medusa/commit/92f01cefbc4a190defce425fb237d2d68728fa9a), [`e3cfbcd4a`](https://github.com/medusajs/medusa/commit/e3cfbcd4a78073c63ecd9829bc531e50d3944f07), [`6998666c6`](https://github.com/medusajs/medusa/commit/6998666c6edd6617ca61a8d39c26435bad1273e3), [`81eeaa329`](https://github.com/medusajs/medusa/commit/81eeaa32942b1a7148126a7218ceb168ce8d6cac), [`e2d29d35c`](https://github.com/medusajs/medusa/commit/e2d29d35c4c477bc9b4a3ddce1279276fd072875), [`3a38c84f8`](https://github.com/medusajs/medusa/commit/3a38c84f88b05f74ee0a172af3e3f78b2ec8c2d2), [`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47), [`a91987fab`](https://github.com/medusajs/medusa/commit/a91987fab33745f9864eab21bd1c27e8e3e24571), [`bf18bd0c8`](https://github.com/medusajs/medusa/commit/bf18bd0c8a284dd0042d4c54d84acb2e7c10edd3), [`db4199530`](https://github.com/medusajs/medusa/commit/db419953075e0907b8c4d27ab5188e9bd3e3d72b)]:
+  - @medusajs/medusa@1.12.0
+  - @medusajs/medusa-js@6.0.0
+
 ## 8.0.0
 
 ### Patch Changes
