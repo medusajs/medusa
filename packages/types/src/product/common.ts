@@ -165,6 +165,7 @@ export interface FilterableProductProps
     id?: string | string[] | OperatorMap<string>
   }
   category_ids?: string | string[] | OperatorMap<string>
+  collection_id?: string | string[] | OperatorMap<string>
 }
 
 export interface FilterableProductTagProps
