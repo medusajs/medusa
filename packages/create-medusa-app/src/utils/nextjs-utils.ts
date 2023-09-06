@@ -40,6 +40,10 @@ export async function installNextjsStarter({
     `npx create-next-app -e ${NEXTJS_REPO} ${nextjsDirectory}`,
     {
       signal: abortController?.signal,
+      env: {
+        ...process.env,
+        npm_config_yes: "yes",
+      },
     }
   )
 
