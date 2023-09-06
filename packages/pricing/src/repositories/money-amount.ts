@@ -89,20 +89,13 @@ export class MoneyAmountRepository extends DALUtils.MikroOrmBaseRepository {
     overrideExisting = false,
     context: Context = {}
   ): Promise<MoneyAmount[]> {
-    const toInsert = data.map((price) =>
-      this.create({
-        ...price,
-        price_list_id: priceListId,
-      })
-    )
-
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const moneyAmounts = toInsert.map((moneyAmountData) => {
-      return manager.create(MoneyAmount, moneyAmountData)
+    const moneyAmounts = data.map((moneyAmountData) => {
+      return manager.create(MoneyAmount, {...moneyAmountData, price_list_id: priceListId})
     })
 
-    manager.persist(moneyAmounts)
+    manager.persistAndFlush(moneyAmounts)
 
     if (overrideExisting) {
       await manager.nativeDelete(

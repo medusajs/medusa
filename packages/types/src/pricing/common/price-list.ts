@@ -1,5 +1,5 @@
 import { BaseFilterable } from "../../dal"
-import { MoneyAmountDTO, UpdateMoneyAmountDTO } from "./money-amount"
+import { CreateMoneyAmountDTO, MoneyAmountDTO, UpdateMoneyAmountDTO } from "./money-amount"
 import { PriceListUtils } from "@medusajs/utils"
 
 export interface PriceListDTO {
@@ -20,7 +20,7 @@ export interface CreatePriceListDTO {
   status?: PriceListUtils.PriceListStatus
   starts_at?: Date
   ends_at?: Date
-  prices?: MoneyAmountDTO
+  prices?: CreateMoneyAmountDTO[]
 }
 
 export interface UpdatePriceListDTO {
@@ -31,7 +31,7 @@ export interface UpdatePriceListDTO {
   status?: PriceListUtils.PriceListStatus
   starts_at?: Date
   ends_at?: Date
-  prices?: UpdateMoneyAmountDTO[]
+  prices?: (UpdateMoneyAmountDTO | CreateMoneyAmountDTO)[]
 }
 
 export interface FilterablePriceListProps

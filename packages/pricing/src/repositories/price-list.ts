@@ -78,7 +78,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
       return manager.create(PriceList, priceList)
     })
 
-    manager.persist(priceLists)
+    manager.persistAndFlush(priceLists)
 
     return priceLists
   }

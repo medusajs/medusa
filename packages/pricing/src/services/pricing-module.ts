@@ -600,16 +600,21 @@ export default class PricingModuleService<
       data.map(async (priceList) => {
         const { prices, ...rest } = priceList
         const [createdPriceList] = await this.priceListService_.create(
-          rest,
+          [rest],
           sharedContext
         )
 
-        const moneyAmounts = await this.moneyAmountService_.addPriceListPrices(
-          createdPriceList.id,
-          prices
-        )
+        if (prices) {
+          const moneyAmounts =
+            await this.moneyAmountService_.addPriceListPrices(
+              createdPriceList.id,
+              prices, 
+              false,
+              sharedContext
+            )
 
-        createdPriceList.prices = moneyAmounts
+          createdPriceList.prices = moneyAmounts
+        }
 
         return createdPriceList
       })
@@ -628,16 +633,24 @@ export default class PricingModuleService<
     data: PricingTypes.UpdatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const [priceLists, prices] = data.reduce(
+    const [priceLists, prices]: [
+      PricingTypes.UpdatePriceListDTO[],
+      (PricingTypes.UpdateMoneyAmountDTO | PricingTypes.CreateMoneyAmountDTO)[]
+    ] = data.reduce(
       (acc, priceList) => {
         const { prices, ...rest } = priceList
         acc[0].push(rest)
-        acc[1].push(
-          ...prices.map((p) => ({ ...p, price_list_id: priceList.id }))
-        )
+        if(prices?.length) { 
+          acc[1].push(
+            ...prices.map((p) => ({ ...p, price_list_id: priceList.id }))
+          )
+        }
         return acc
       },
-      [[], []]
+      [[], []] as [
+        PricingTypes.UpdatePriceListDTO[],
+        (PricingTypes.UpdateMoneyAmountDTO | PricingTypes.CreateMoneyAmountDTO)[]
+      ]
     )
 
     const updatedPriceLists = await this.priceListService_.update(
@@ -645,7 +658,10 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    const [existingPrices, newPrices] = partition(prices, (p) => p.id)
+    const [existingPrices, newPrices]: [
+      PricingTypes.UpdateMoneyAmountDTO[],
+      PricingTypes.CreateMoneyAmountDTO[]
+    ] = partition(prices, (p): p is PricingTypes.UpdateMoneyAmountDTO => !!p['id'])
 
     await Promise.all([
       this.moneyAmountService_.update(existingPrices, sharedContext),

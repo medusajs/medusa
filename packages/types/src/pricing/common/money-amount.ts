@@ -11,7 +11,7 @@ export interface MoneyAmountDTO {
 }
 
 export interface CreateMoneyAmountDTO {
-  id: string
+  id?: string
   currency_code: string
   currency?: CreateCurrencyDTO
   amount?: number

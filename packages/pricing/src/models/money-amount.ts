@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -14,8 +15,18 @@ import PriceList from "./price-list"
 import PriceSet from "./price-set"
 import { generateEntityId } from "@medusajs/utils"
 
+type OptionalRelations = "price_list"
+type OptionalFields =
+  | "min_quantity"
+  | "max_quantity"
+  | "price_list_id"
+  | "currency"
+  | "created_at"
+  | "updated_at"
 @Entity()
 class MoneyAmount {
+  [OptionalProps]?: OptionalRelations | OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 
