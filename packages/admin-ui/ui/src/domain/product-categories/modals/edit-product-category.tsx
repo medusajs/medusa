@@ -171,7 +171,7 @@ function EditProductCategoriesSideModal(
             />
 
             <InputField
-              label={t("Handle in arabic"}
+              label={t("Handle in arabic")}
               type="string"
               name="handle_ar"
               value={handle_ar}
