@@ -302,7 +302,7 @@ class BrightpearlService extends BaseService {
                       .get(sku)
                       ?.get(location.id)
 
-                    if (!inventoryLevel || !warehouseData) {
+                    if (!inventoryLevel) {
                       return
                     }
 
@@ -342,20 +342,20 @@ class BrightpearlService extends BaseService {
 
   async adjustMedusaLocationLevel_(location, inventoryLevel, warehouseData) {
     const manager = this.transactionManager_ ?? this.manager_
+    const bpOnHand = warehouseData?.onHand || 0
+    const bpinStock = warehouseData?.inStock || 0
 
-    if (inventoryLevel.stocked_quantity !== warehouseData.inStock) {
+    if (inventoryLevel.stocked_quantity !== bpinStock) {
       await this.inventoryService_.updateInventoryLevel(
         inventoryLevel.inventory_item_id,
         inventoryLevel.location_id,
-        { stocked_quantity: warehouseData.inStock },
+        { stocked_quantity: bpinStock },
         { transactionManager: manager }
       )
     }
 
     const externallyReservedQuantityAdjustment =
-      warehouseData.inStock -
-      warehouseData.onHand -
-      inventoryLevel.reserved_quantity
+      bpinStock - bpOnHand - inventoryLevel.reserved_quantity
 
     if (externallyReservedQuantityAdjustment === 0) {
       return
@@ -460,10 +460,6 @@ class BrightpearlService extends BaseService {
 
         const warehouseData =
           productAvailability.warehouses[`${location.metadata.bp_id}`]
-
-        if (!warehouseData) {
-          return
-        }
 
         await this.adjustMedusaLocationLevel_(
           location,
