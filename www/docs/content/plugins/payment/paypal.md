@@ -23,7 +23,9 @@ Before you proceed with this guide, make sure you create a [PayPal account](htt
 
 In addition, you need to configure a webhook listener on your PayPal Developer Dashboard and obtain the webhook ID. This is necessary for Webhooks to work.
 
-Webhooks are used in scenarios where the customer might leave the page during the authorization and before the checkout flow is fully complete. It will then create the order or swap after the payment is authorized if they weren’t created
+Webhooks are used in scenarios where the customer might leave the page during the authorization and before the checkout flow is fully complete. It will then create the order or swap after the payment is authorized if they weren’t created.
+
+The endpoint for PayPal webhook integration with your Medusa backend should be set to `{BACKEND_URL}/paypal/hooks`. Make sure to replace `{BACKEND_URL}` with the URL to your backend.
 
 Additionally, you need a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../development/backend/install.mdx) to get started.
 
