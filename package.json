@@ -96,6 +96,9 @@
     "@linear/sdk": "^1.22.0",
     "@octokit/core": "^4.0.5",
     "global": "^4.4.0",
+    "i18next": "^23.4.6",
+    "i18next-browser-languagedetector": "^7.1.0",
+    "i18next-http-backend": "^2.2.1",
     "import-from": "^3.0.0"
   },
   "packageManager": "yarn@3.2.1",
