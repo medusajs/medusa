@@ -119,7 +119,7 @@ const renderCard = ({
 
 const SettingsIndex = () => {
   const { getCards } = useSettings()
-
+  const { t } = useTranslation()
   const extensionCards = getCards()
 
   return (
