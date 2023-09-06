@@ -227,7 +227,7 @@ export class RemoteQuery {
 
     if (isString(query)) {
       finalQuery = RemoteJoiner.parseQuery(query, variables)
-    } else if (!(finalQuery?.service || finalQuery?.alias)) {
+    } else if (!isString(finalQuery?.service) && !isString(finalQuery?.alias)) {
       finalQuery = toRemoteJoinerQuery(query)
     }
 
