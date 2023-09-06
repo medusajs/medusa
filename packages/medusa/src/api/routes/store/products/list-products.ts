@@ -22,6 +22,7 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [get] /store/products
@@ -216,6 +217,8 @@ export default async (req, res) => {
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+
   const validated = req.validatedQuery as StoreGetProductsParams
 
   let {
@@ -224,8 +227,73 @@ export default async (req, res) => {
     currency_code: currencyCode,
     ...filterableFields
   } = req.filterableFields
-
   const listConfig = req.listConfig
+
+  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
+    IsolateProductDomain.key
+  )
+
+  if (isIsolateProductDomain) {
+    const remoteQuery = req.scope.resolve("remoteQuery")
+
+    const query = `
+      query {
+        product (skip: 0, take: 10) {
+          id
+          title
+          subtitle
+          description
+          handle
+          images {
+            url
+          }
+          tags {
+            value
+          }
+          type {
+            value
+          }
+          collection {
+            id
+            title
+            handle
+          }
+          options {
+            title
+            values {
+              id
+              value
+            }
+          }
+          variants {
+            id
+            options {
+              id
+              value
+            }
+          }
+        } 
+      }
+    `
+
+    /* const queryVariables = {
+      variables: {
+        ...filterableFields,
+      },
+    }*/
+
+    const {
+      rows: products,
+      metadata: { count },
+    } = await remoteQuery.query(query)
+
+    return res.json({
+      products: cleanResponseData(products, req.allowedProperties || []),
+      count,
+      offset: validated.offset,
+      limit: validated.limit,
+    })
+  }
 
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
