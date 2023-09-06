@@ -86,11 +86,11 @@ export async function MedusaApp(
     dbData?.clientUrl &&
     !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
   ) {
-    const { pool } = sharedResourcesConfig?.database ?? {}
+    const { pool, ...database } = sharedResourcesConfig?.database ?? {}
 
     injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
       ModulesSdkUtils.createPgConnection({
-        database: sharedResourcesConfig?.database ?? {},
+        database,
         pool,
       })
   }
