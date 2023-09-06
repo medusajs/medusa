@@ -50,101 +50,107 @@ describe("RemoteJoiner", () => {
   })
 
   it("should filter the fields and attach the values correctly", () => {
-    const filteredFields = (RemoteJoiner as any).filterFields(
-      {
-        id: "prod_01H1PN579TJ707BRK938E2ME2N",
-        title: "7468915",
-        handle: "7468915",
-        subtitle: null,
-        description: null,
-        collection_id: null,
-        collection: null,
-        type_id: "ptyp_01GX66TMARS55DBNYE31DDT8ZV",
-        type: {
-          id: "ptyp_01GX66TMARS55DBNYE31DDT8ZV",
-          value: "test-type-1",
-        },
-        options: [
-          {
-            id: "opt_01H1PN57AQE8G3FK365EYNH917",
-            title: "4108194",
-            product_id: "prod_01H1PN579TJ707BRK938E2ME2N",
-            product: "prod_01H1PN579TJ707BRK938E2ME2N",
-            values: [
-              {
-                id: "optval_01H1PN57EAMXYFRGSJJJE9P0TJ",
-                value: "4108194",
-                option_id: "opt_01H1PN57AQE8G3FK365EYNH917",
-                option: "opt_01H1PN57AQE8G3FK365EYNH917",
-                variant_id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
-                variant: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
-              },
-            ],
-          },
-        ],
-        variants: [
-          {
-            id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
-            product_id: "prod_01H1PN579TJ707BRK938E2ME2N",
-            product: "prod_01H1PN579TJ707BRK938E2ME2N",
-            options: [
-              {
-                id: "optval_01H1PN57EAMXYFRGSJJJE9P0TJ",
-                value: "4108194",
-                option_id: "opt_01H1PN57AQE8G3FK365EYNH917",
-                option: "opt_01H1PN57AQE8G3FK365EYNH917",
-                variant_id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
-                variant: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
-              },
-            ],
-          },
-        ],
-        tags: [],
-        images: [],
+    const data = {
+      id: "prod_01H1PN579TJ707BRK938E2ME2N",
+      title: "7468915",
+      handle: "7468915",
+      subtitle: null,
+      description: null,
+      collection_id: null,
+      collection: null,
+      type_id: "ptyp_01GX66TMARS55DBNYE31DDT8ZV",
+      type: {
+        id: "ptyp_01GX66TMARS55DBNYE31DDT8ZV",
+        value: "test-type-1",
       },
-      [
-        "id",
-        "title",
-        "subtitle",
-        "description",
-        "handle",
-        "images",
-        "tags",
-        "type",
-        "collection",
-        "options",
-        "variants_id",
+      options: [
+        {
+          id: "opt_01H1PN57AQE8G3FK365EYNH917",
+          title: "4108194",
+          product_id: "prod_01H1PN579TJ707BRK938E2ME2N",
+          product: "prod_01H1PN579TJ707BRK938E2ME2N",
+          values: [
+            {
+              id: "optval_01H1PN57EAMXYFRGSJJJE9P0TJ",
+              value: "4108194",
+              option_id: "opt_01H1PN57AQE8G3FK365EYNH917",
+              option: "opt_01H1PN57AQE8G3FK365EYNH917",
+              variant_id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+              variant: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+            },
+          ],
+        },
       ],
-      {
-        collection: {
-          fields: ["id", "title", "handle"],
-        },
-        images: {
-          fields: ["url"],
-        },
-        options: {
-          fields: ["title", "values"],
-          expands: {
-            values: {
-              fields: ["id", "value"],
+      variants: [
+        {
+          id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+          product_id: "prod_01H1PN579TJ707BRK938E2ME2N",
+          product: "prod_01H1PN579TJ707BRK938E2ME2N",
+          options: [
+            {
+              id: "optval_01H1PN57EAMXYFRGSJJJE9P0TJ",
+              value: "4108194",
+              option_id: "opt_01H1PN57AQE8G3FK365EYNH917",
+              option: "opt_01H1PN57AQE8G3FK365EYNH917",
+              variant_id: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
+              variant: "variant_01H1PN57E99TMZAGNEZBSS3FM3",
             },
+          ],
+        },
+      ],
+      tags: [],
+      images: [],
+    }
+
+    const fields = [
+      "id",
+      "title",
+      "subtitle",
+      "description",
+      "handle",
+      "images",
+      "tags",
+      "type",
+      "collection",
+      "options",
+      "variants_id",
+    ]
+
+    const expands = {
+      collection: {
+        fields: ["id", "title", "handle"],
+      },
+      images: {
+        fields: ["url"],
+      },
+      options: {
+        fields: ["title", "values"],
+        expands: {
+          values: {
+            fields: ["id", "value"],
           },
         },
-        tags: {
-          fields: ["value"],
-        },
-        type: {
-          fields: ["value"],
-        },
-        variants: {
-          fields: ["id", "options"],
-          expands: {
-            options: {
-              fields: ["id", "value"],
-            },
+      },
+      tags: {
+        fields: ["value"],
+      },
+      type: {
+        fields: ["value"],
+      },
+      variants: {
+        fields: ["id", "options"],
+        expands: {
+          options: {
+            fields: ["id", "value"],
           },
         },
-      }
+      },
+    }
+
+    const filteredFields = (RemoteJoiner as any).filterFields(
+      data,
+      fields,
+      expands
     )
 
     expect(filteredFields).toEqual(
