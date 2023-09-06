@@ -261,14 +261,14 @@ describe("Product Service", () => {
       it("should list all products that are not deleted", async () => {
         const products = await service.list()
 
-        expect(products).toHaveLength(1)
+        expect(products).toHaveLength(2)
         expect(products[0].id).toEqual(product.id)
       })
 
       it("should list all products including the deleted", async () => {
         const products = await service.list({}, { withDeleted: true })
 
-        expect(products).toHaveLength(2)
+        expect(products).toHaveLength(3)
       })
     })
 
@@ -457,6 +457,9 @@ describe("Product Service", () => {
           {
             ...productsData[1],
             collection_id: workingCollectionTwo.id,
+          },
+          {
+            ...productsData[2],
           },
         ])
 
