@@ -1,4 +1,11 @@
 import {
+  CaptureAuthorizedPayment,
+  CapturesAuthorizationResponse,
+  CapturesRefundResponse,
+  GetAuthorizationPaymentResponse,
+  RefundPayment,
+} from "./types/payment"
+import {
   CreateOrder,
   CreateOrderResponse,
   GetOrderResponse,
@@ -6,13 +13,7 @@ import {
   PaypalApiPath,
   PaypalSdkOptions,
 } from "./types"
-import {
-  CaptureAuthorizedPayment,
-  CapturesAuthorizationResponse,
-  CapturesRefundResponse,
-  GetAuthorizationPaymentResponse,
-  RefundPayment,
-} from "./types/payment"
+
 import { PaypalHttpClient } from "./paypal-http-client"
 import { VerifyWebhookSignature } from "./types/webhook"
 
@@ -117,7 +118,7 @@ export class PaypalSdk {
   ): Promise<GetAuthorizationPaymentResponse> {
     const url = PaypalApiPath.AUTHORIZATION_GET.replace("{id}", authorizationId)
 
-    return await this.httpClient_.request({ url })
+    return await this.httpClient_.request({ url, method: 'GET' })
   }
 
   async verifyWebhook(data: VerifyWebhookSignature) {
