@@ -22,6 +22,11 @@ import { nanoid } from "nanoid"
 import { displayFactBox, FactBoxOptions } from "../utils/facts.js"
 import { EOL } from "os"
 import { runCloneRepo } from "../utils/clone-repo.js"
+import {
+  askForNextjsStarter,
+  installNextjsStarter,
+  startNextjsStarter,
+} from "../utils/nextjs-utils.js"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
@@ -36,6 +41,7 @@ export type CreateOptions = {
   browser?: boolean
   migrations?: boolean
   directoryPath?: string
+  withNextjsStarter?: boolean
 }
 
 export default async ({
@@ -47,6 +53,7 @@ export default async ({
   browser,
   migrations,
   directoryPath,
+  withNextjsStarter = false,
 }: CreateOptions) => {
   track("CREATE_CLI")
   if (repoUrl) {
@@ -93,6 +100,7 @@ export default async ({
   const projectPath = getProjectPath(projectName, directoryPath)
   const adminEmail =
     !skipDb && migrations ? await askForAdminEmail(seed, boilerplate) : ""
+  const installNextjs = withNextjsStarter || (await askForNextjsStarter())
 
   const { client, dbConnectionString } = !skipDb
     ? await getDbClientAndCredentials({
@@ -131,6 +139,14 @@ export default async ({
     message: "Created project directory",
   })
 
+  const nextjsDirectory = installNextjs
+    ? await installNextjsStarter({
+        directoryName: projectPath,
+        abortController,
+        factBoxOptions,
+      })
+    : ""
+
   if (client && !dbUrl) {
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
@@ -160,6 +176,7 @@ export default async ({
       abortController,
       skipDb,
       migrations,
+      onboardingType: installNextjs ? "nextjs" : "default",
     })
   } catch (e: any) {
     if (isAbortError(e)) {
@@ -195,6 +212,13 @@ export default async ({
       directory: projectPath,
       abortController,
     })
+
+    if (installNextjs && nextjsDirectory) {
+      void startNextjsStarter({
+        directory: nextjsDirectory,
+        abortController,
+      })
+    }
   } catch (e) {
     if (isAbortError(e)) {
       process.exit()

@@ -21,6 +21,7 @@ type PrepareOptions = {
   abortController?: AbortController
   skipDb?: boolean
   migrations?: boolean
+  onboardingType?: "default" | "nextjs"
 }
 
 export default async ({
@@ -34,6 +35,7 @@ export default async ({
   abortController,
   skipDb,
   migrations,
+  onboardingType = "default",
 }: PrepareOptions) => {
   // initialize execution options
   const execOptions = {
@@ -64,7 +66,7 @@ export default async ({
     // add connection string to project
     fs.appendFileSync(
       path.join(directory, `.env`),
-      `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}`
+      `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}${EOL}MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}`
     )
   }
 
