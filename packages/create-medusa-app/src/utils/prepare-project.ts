@@ -66,7 +66,7 @@ export default async ({
     // add connection string to project
     fs.appendFileSync(
       path.join(directory, `.env`),
-      `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}${EOL}MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}`
+      `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}${EOL}MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=http://localhost:8000,http://localhost:7001`
     )
   }
 

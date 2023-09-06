@@ -18,9 +18,13 @@ export default async function cloneRepo({
   repoUrl,
   abortController,
 }: CloneRepoOptions) {
-  await promiseExec(`git clone ${repoUrl || DEFAULT_REPO} ${directoryName}`, {
-    signal: abortController?.signal,
-  })
+  // TODO remove branch before merging
+  await promiseExec(
+    `git clone ${repoUrl || DEFAULT_REPO} -b feat/nextjs ${directoryName}`,
+    {
+      signal: abortController?.signal,
+    }
+  )
 }
 
 export async function runCloneRepo({
