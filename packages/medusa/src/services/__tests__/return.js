@@ -1,7 +1,13 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { FlagRouter } from "@medusajs/utils"
+
 import idMap from "medusa-test-utils/dist/id-map"
 import ReturnService from "../return"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
+import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
+
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
+
 describe("ReturnService", () => {
   describe("receive", () => {
     const returnRepository = MockRepository({
@@ -332,6 +338,163 @@ describe("ReturnService", () => {
       await expect(
         returnService.update(IdMap.getId("test-return"), {})
       ).rejects.toThrow("Cannot update a canceled return")
+    })
+  })
+
+  describe("create", () => {
+    const returnRepository = MockRepository({
+      findOne: (query) => {
+        switch (query.where.id) {
+          case IdMap.getId("test-return"):
+            return Promise.resolve({
+              status: "canceled",
+            })
+          default:
+            return Promise.resolve({})
+        }
+      },
+      create: (data) => data,
+      save: (data) => data,
+    })
+
+    const returnItemRepository = MockRepository({
+      create: (data) => data,
+    })
+
+    const totalsService = {
+      getTotal: jest.fn().mockImplementation((cart) => {
+        return 1000
+      }),
+      getRefundTotal: jest.fn().mockImplementation((order, lineItems) => {
+        return 100
+      }),
+      getCalculationContext: jest
+        .fn()
+        .mockImplementation((order, lineItems) => {
+          return Promise.resolve({})
+        }),
+    }
+
+    const orderService = {
+      retrieve: jest.fn().mockImplementation(() => {
+        return Promise.resolve({
+          items: [
+            {
+              id: IdMap.getId("test-line"),
+              quantity: 10,
+              returned_quantity: 0,
+              variant_id: "test-variant",
+            },
+            {
+              id: IdMap.getId("test-line-2"),
+              quantity: 10,
+              returned_quantity: 0,
+              variant_id: "test-variant-2",
+            },
+          ],
+          payments: [{ id: "payment_test" }],
+        })
+      }),
+      withTransaction: function () {
+        return this
+      },
+    }
+
+    const lineItemService = {
+      retrieve: jest.fn().mockImplementation((data) => {
+        return Promise.resolve({ ...data, returned_quantity: 0 })
+      }),
+      update: jest.fn(),
+      withTransaction: function () {
+        return this
+      },
+    }
+
+    const returnReasonService = {
+      withTransaction: function () {
+        return this
+      },
+      list: jest.fn().mockImplementation(() => {
+        return Promise.resolve([
+          {
+            id: IdMap.getId("test-return-reason"),
+            value: "test-return-reason",
+            label: "Test Return Reason",
+            description: null,
+            parent_return_reason_id: null,
+            return_reason_children: [],
+            metadata: {},
+          },
+        ])
+      }, {}),
+    }
+
+    const shippingOptionService = ShippingOptionServiceMock
+    const taxProviderService = {
+      withTransaction: function () {
+        return this
+      },
+      createShippingTaxLines: jest.fn().mockImplementation((shippingMethod) => {
+        return Promise.resolve([
+          {
+            rate: 25,
+          },
+        ])
+      }),
+    }
+
+    const featureFlagRouter = new FlagRouter({
+      [TaxInclusivePricingFeatureFlag.key]: false,
+    })
+
+    const returnService = new ReturnService({
+      manager: MockManager,
+      lineItemService,
+      orderService,
+      totalsService,
+      returnReasonService,
+      returnRepository,
+      returnItemRepository,
+      shippingOptionService,
+      taxProviderService,
+      featureFlagRouter,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("successfully creates a return", async () => {
+      await returnService.create({
+        order_id: IdMap.getId("test-order"),
+        items: [
+          {
+            item_id: IdMap.getId("test-line"),
+            quantity: 10,
+          },
+        ],
+        shipping_method: {
+          option_id: "taxincl-option",
+          price: 80,
+        },
+      })
+
+      expect(returnRepository.save).toHaveBeenCalledTimes(2)
+      expect(returnRepository.save).toHaveBeenCalledWith({
+        order_id: IdMap.getId("test-order"),
+        items: [
+          {
+            item_id: IdMap.getId("test-line"),
+            quantity: 10,
+            metadata: undefined,
+            note: undefined,
+            reason_id: undefined,
+            requested_quantity: 10,
+          },
+        ],
+        status: "requested",
+        refund_amount: 0,
+      })
     })
   })
 })
