@@ -19,10 +19,10 @@ import TreeCrumbs from "../components/tree-crumbs"
 
 const visibilityOptions: (t: TFunction) => Option[] = (t) => [
   {
-    label: "Public",
+    label: t("Public"),
     value: "public",
   },
-  { label: "Private", value: "private" },
+  { label: t("Private"), value: "private" },
 ]
 
 type ProductCategory = BaseCategory & {
@@ -31,9 +31,9 @@ type ProductCategory = BaseCategory & {
   description_ar: string
 }
 
-const statusOptions: Option[] = [
-  { label: "Active", value: "active" },
-  { label: "Inactive", value: "inactive" },
+const statusOptions:  (t: TFunction) => Option[] = (t) => [
+  { label: t("Active"), value: "active" },
+  { label: t("Inactive"), value: "inactive" },
 ]
 
 type EditProductCategoriesSideModalProps = {
