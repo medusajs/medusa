@@ -19,21 +19,12 @@ import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 
 export type MedusaModuleConfig = (Partial<ModuleConfig> | Modules)[]
-export type SharedResources = {
-  database?: ModuleServiceInitializeOptions["database"] & {
-    pool?: {
-      name?: string
-      afterCreate?: Function
-      min?: number
-      max?: number
-      refreshIdle?: boolean
-      idleTimeoutMillis?: number
-      reapIntervalMillis?: number
-      returnToHead?: boolean
-      priorityRange?: number
-      log?: (message: string, logLevel: string) => void
-    }
-  }
+type SharedResources = {
+  database?: ModuleServiceInitializeOptions["database"]
+}
+
+const isModuleConfig = (obj: any): obj is ModuleConfig => {
+  return isObject(obj)
 }
 
 export async function MedusaApp(
@@ -83,15 +74,13 @@ export async function MedusaApp(
   )!
 
   if (
-    dbData?.clientUrl &&
+    dbData.clientUrl &&
     !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
   ) {
-    const { pool, ...database } = sharedResourcesConfig?.database ?? {}
-
     injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
       ModulesSdkUtils.createPgConnection({
-        database,
-        pool,
+        ...(sharedResourcesConfig?.database ?? {}),
+        ...dbData,
       })
   }
 
@@ -103,7 +92,7 @@ export async function MedusaApp(
       let path: string
       let declaration: any = {}
 
-      if (isObject(mod)) {
+      if (isModuleConfig(mod)) {
         if (!mod.module) {
           throw new Error(
             `Module ${JSON.stringify(mod)} is missing module name.`
@@ -138,7 +127,7 @@ export async function MedusaApp(
         declaration,
         undefined,
         injectedDependencies,
-        isObject(mod) ? mod.definition : undefined
+        isModuleConfig(mod) ? mod.definition : undefined
       )) as LoadedModule
 
       if (allModules[key] && !Array.isArray(allModules[key])) {

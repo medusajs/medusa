@@ -23,13 +23,10 @@ export default async ({ container, configModule }: Options): Promise<void> => {
   delete extra.idleTimeoutMillis
 
   const pgConnection = ModulesSdkUtils.createPgConnection({
-    database: {
-      clientUrl: connectionString,
-      schema,
-      driverOptions: extra,
-    },
+    clientUrl: connectionString,
+    schema,
+    driverOptions: extra,
     pool: {
-      min: 0,
       max: poolMax,
       idleTimeoutMillis,
     },
