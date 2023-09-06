@@ -20,6 +20,7 @@ import { usePolling } from "../../../providers/polling-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
 import NewProduct from "../new"
+import { AdminPostCollectionsReq } from "@medusajs/medusa"
 
 const VIEWS = ["products", "collections"]
 
@@ -119,8 +120,9 @@ const Overview = () => {
     close: closeImportModal,
     state: importModalOpen,
   } = useToggleState(false)
-
-  const handleCreateCollection = async (data, colMetadata) => {
+  //fix this error 
+  
+  const handleCreateCollection = async (data: AdminPostCollectionsReq, colMetadata: any[]) => {
     const metadata = colMetadata
       .filter((m) => m.key && m.value) // remove empty metadata
       .reduce((acc, next) => {
