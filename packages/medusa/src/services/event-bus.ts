@@ -197,7 +197,7 @@ export default class EventBusService
     while (this.shouldEnqueuerRun) {
       await sleep(3000)
 
-      const jobs = await this.fetchJobs(listConfig)
+      const jobs = await this.listJobs(listConfig)
 
       if (!jobs.length) {
         continue
@@ -217,7 +217,7 @@ export default class EventBusService
     }
   }
 
-  protected async fetchJobs(listConfig: FindConfig<StagedJob>) {
+  protected async listJobs(listConfig: FindConfig<StagedJob>) {
     return await this.stagedJobService_.list(listConfig).catch((err) => {
       if (DatabaseErrorCode.connectionFailure === err.code) {
         this.logger_.warn(`Database connection failure:${EOL}${err.message}`)
