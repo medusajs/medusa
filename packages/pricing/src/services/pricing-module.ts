@@ -29,8 +29,8 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   currencyService: CurrencyService<any>
   moneyAmountService: MoneyAmountService<any>
-  ruleTypeService: RuleTypeService<any>
   priceSetService: PriceSetService<any>
+  ruleTypeService: RuleTypeService<any>
 }
 
 export default class PricingModuleService<
@@ -45,6 +45,7 @@ export default class PricingModuleService<
   protected readonly moneyAmountService_: MoneyAmountService<TMoneyAmount>
   protected readonly ruleTypeService_: RuleTypeService<TRuleType>
   protected readonly priceSetService_: PriceSetService<TPriceSet>
+  protected readonly ruleTypeService_: RuleTypeService<TRuleType>
 
   constructor(
     {
