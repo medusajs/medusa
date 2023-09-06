@@ -5,6 +5,7 @@ import { DeleteResponse } from "../../../../types/common"
 import middlewares, { transformBody } from "../../../middlewares"
 import { AdminDeleteUploadsReq } from "./delete-upload"
 import { AdminPostUploadsDownloadUrlReq } from "./get-download-url"
+import { FileServiceUploadResult } from "@medusajs/types"
 
 const route = Router()
 const upload = multer({ dest: "uploads/" })
@@ -63,10 +64,7 @@ export default (app) => {
  *           type: string
  */
 export type AdminUploadsRes = {
-  uploads: {
-    url: string
-    key: string
-  }[]
+  uploads: FileServiceUploadResult[]
 }
 
 /**
