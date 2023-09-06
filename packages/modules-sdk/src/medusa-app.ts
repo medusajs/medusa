@@ -44,7 +44,7 @@ export async function MedusaApp({
   modulesConfig,
   linkModules,
   remoteFetchData,
-  injectedDependencies = [],
+  injectedDependencies = {},
 }: {
   sharedResourcesConfig?: SharedResources
   loadedModules?: LoadedModule[]
