@@ -191,21 +191,7 @@ export default class EventBusService
 
     while (this.shouldEnqueuerRun) {
       try {
-        const jobs = await this.stagedJobService_
-          .list(listConfig)
-          .catch((err) => {
-            try {
-              return []
-            } finally {
-              if (DatabaseErrorCode.connectionFailure === err.code) {
-                this.logger.warn(
-                  `Even bus connection failure: ${err.message}. Waiting the database to be up.`
-                )
-              } else {
-                this.logger.error(`Event bus error: ${err.message}.`)
-              }
-            }
-          })
+        const jobs = await this.stagedJobService_.list(listConfig)
 
         if (!jobs.length) {
           await sleep(3000)
