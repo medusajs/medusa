@@ -6,16 +6,15 @@ import {
   ModulesSdkUtils,
   retrieveEntity,
 } from "@medusajs/utils"
-import { Currency } from "@models"
+import { Currency, RuleType } from "@models"
 
 import { doNotForceTransaction, shouldForceTransaction } from "@medusajs/utils"
-import { RuletypeRepository } from "src/repositories/rule-type"
 
 type InjectedDependencies = {
   ruleTypeRepository: DAL.RepositoryService
 }
 
-export default class RuleTypeService<TEntity extends Currency = Currency> {
+export default class RuleTypeService<TEntity extends RuleType = RuleType> {
   protected readonly ruleTypeRepository_: DAL.RepositoryService
 
   constructor({ ruleTypeRepository }: InjectedDependencies) {
@@ -28,7 +27,7 @@ export default class RuleTypeService<TEntity extends Currency = Currency> {
     config: FindConfig<PricingTypes.RuleTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
-    return (await retrieveEntity<Currency, PricingTypes.RuleTypeDTO>({
+    return (await retrieveEntity<RuleType, PricingTypes.RuleTypeDTO>({
       id: currencyCode,
       identifierColumn: "code",
       entityName: Currency.name,
