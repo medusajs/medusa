@@ -24,7 +24,6 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
-import { isObject } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/products
@@ -348,7 +347,8 @@ async function listAndCountProductWithIsolatedProductModule(
     "tags",
   ]*/
 
-  // TODO: Handle fields and relations to maintain existinbg featrures and custom fields and relations
+  // TODO: handle q parameter
+  // TODO: Handle fields and relations to maintain existing features and custom fields and relations
 
   const remoteQuery = req.scope.resolve("remoteQuery")
 
@@ -374,28 +374,21 @@ async function listAndCountProductWithIsolatedProductModule(
     filterableFields.id = productIdsInSalesChannel[salesChannelIdFilter]
   }
 
-  // Stringify without quotes around props
-  function stringify(obj_from_json) {
-    if (!isObject(obj_from_json) || Array.isArray(obj_from_json)) {
-      return JSON.stringify(obj_from_json)
-    }
-
-    const props = Object.keys(obj_from_json)
-      .map((key) => `${key}: ${stringify(obj_from_json[key])}`)
-      .join(",")
-
-    return `{${props}}`
+  const variables = {
+    filters: filterableFields,
+    skip: listConfig.skip,
+    take: listConfig.take,
   }
 
   // prettier-ignore
   const args = `
-    filters: ${stringify(filterableFields)},
-    skip: ${listConfig.skip}, 
-    take: ${listConfig.take}
+    filters: $filters,
+    skip: $skip, 
+    take: $take
   `
 
   const query = `
-      query {
+      query ($filters: any, $skip: Int, $take: Int) {
         product (${args}) {
           id
           title
@@ -437,7 +430,7 @@ async function listAndCountProductWithIsolatedProductModule(
   const {
     rows: products,
     metadata: { count },
-  } = await remoteQuery(query)
+  } = await remoteQuery(query, variables)
 
   return [products, count]
 }
