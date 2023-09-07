@@ -124,6 +124,51 @@ describe("PriceSet Service", () => {
         },
       ])
     })
+
+    it("should scope priceSets with currency_code of money amounts", async () => {
+      const priceSetsResult = await service.list(
+        {
+          money_amounts: {
+            currency_code: ["USD"],
+          },
+        },
+        {
+          select: ["id", "money_amounts.id"],
+          relations: ["money_amounts"],
+        }
+      )
+
+      const serialized = JSON.parse(JSON.stringify(priceSetsResult))
+
+      expect(serialized).toEqual([
+        {
+          id: "price-set-1",
+          money_amounts: [
+            {
+              id: "money-amount-USD",
+            },
+          ],
+        },
+      ])
+    })
+  })
+
+  it("should no price sets if money amounts with a currency code dont exist", async () => {
+    const priceSetsResult = await service.list(
+      {
+        money_amounts: {
+          currency_code: ["DOESNOTEXIST"],
+        },
+      },
+      {
+        select: ["id", "money_amounts.id"],
+        relations: ["money_amounts"],
+      }
+    )
+
+    const serialized = JSON.parse(JSON.stringify(priceSetsResult))
+
+    expect(serialized).toEqual([])
   })
 
   describe("listAndCount", () => {

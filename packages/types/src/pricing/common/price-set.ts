@@ -18,4 +18,7 @@ export interface UpdatePriceSetDTO {
 export interface FilterablePriceSetProps
   extends BaseFilterable<FilterablePriceSetProps> {
   id?: string[]
+  money_amounts?: {
+    currency_code: string | string[]
+  }
 }
