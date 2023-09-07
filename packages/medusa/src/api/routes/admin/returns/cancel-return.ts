@@ -25,7 +25,7 @@ import { defaultReturnCancelFields, defaultReturnCancelRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/returns/{id}/cancel' \
+ *       curl -X POST '{backend_url}/admin/returns/{id}/cancel' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

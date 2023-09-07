@@ -41,7 +41,7 @@ import customerController from "../../../../controllers/customers"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/customers' \
+ *       curl '{backend_url}/admin/customers' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

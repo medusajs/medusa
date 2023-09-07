@@ -28,7 +28,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/payment-collections/{id}' \
+ *       curl '{backend_url}/admin/payment-collections/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

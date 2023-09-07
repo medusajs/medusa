@@ -4,6 +4,7 @@ const { Client } = pg
 type PostgresConnection = {
   user?: string
   password?: string
+  connectionString?: string
 }
 
 export default async (connect: PostgresConnection) => {

@@ -26,7 +26,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
   return (
     <Link to={to ?? ""} className="flex flex-1 items-center">
       <button
-        className="bg-grey-0 rounded-rounded p-large border-grey-20 group flex h-full flex-1 items-center border"
+        className="bg-grey-0 rounded-rounded p-base border-grey-20 group flex h-full flex-1 items-center border"
         disabled={disabled}
         onClick={() => {
           if (externalLink) {
@@ -34,8 +34,10 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
           }
         }}
       >
-        <div className="h-2xlarge w-2xlarge bg-grey-10 rounded-circle text-grey-60 group-disabled:bg-grey-10 group-disabled:text-grey-40 flex items-center justify-center">
-          {icon}
+        <div className="h-2xlarge w-2xlarge bg-grey-0 rounded-rounded border-grey-20 text-grey-60 group-disabled:bg-grey-10 group-disabled:text-grey-40 flex items-center justify-center border">
+          <div className="bg-grey-10 h-xlarge w-xlarge flex items-center justify-center overflow-hidden rounded-md">
+            {icon}
+          </div>
         </div>
         <div className="mx-large flex-1 text-left">
           <h3 className="inter-large-semibold text-grey-90 group-disabled:text-grey-40 m-0">

@@ -6,6 +6,7 @@
       "es2019"
     ],
     "target": "es5",
+    "jsx": "react-jsx" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
@@ -13,7 +14,6 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
@@ -25,9 +25,11 @@
   "include": ["src"],
   "exclude": [
     "dist",
+    "build",
     "src/**/__tests__",
     "src/**/__mocks__",
     "src/**/__fixtures__",
-    "node_modules"
+    "node_modules",
+    ".eslintrc.js"
   ]
 }

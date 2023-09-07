@@ -28,7 +28,11 @@ export interface JoinerServiceConfig {
 export interface JoinerArgument {
   name: string
   value?: any
-  field?: string
+}
+
+export interface JoinerDirective {
+  name: string
+  value?: any
 }
 
 export interface RemoteJoinerQuery {
@@ -38,10 +42,11 @@ export interface RemoteJoinerQuery {
     property: string
     fields: string[]
     args?: JoinerArgument[]
-    relationships?: JoinerRelationship[]
+    directives?: { [field: string]: JoinerDirective[] }
   }>
   fields: string[]
   args?: JoinerArgument[]
+  directives?: { [field: string]: JoinerDirective[] }
 }
 
 export interface RemoteNestedExpands {
@@ -54,6 +59,8 @@ export interface RemoteNestedExpands {
 
 export interface RemoteExpandProperty {
   property: string
+  parent: string
+  parentConfig?: JoinerServiceConfig
   serviceConfig: JoinerServiceConfig
   fields: string[]
   args?: JoinerArgument[]

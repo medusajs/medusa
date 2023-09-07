@@ -1,20 +1,28 @@
+import { MedusaApp, moduleLoader, registerModules } from "@medusajs/modules-sdk"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
+import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
 import "reflect-metadata"
 import requestIp from "request-ip"
 import { Connection } from "typeorm"
+import { joinerConfig } from "../joiner-config"
+import modulesConfig from "../modules-config"
 import { MedusaContainer } from "../types/global"
+import { remoteQueryFetchData } from "../utils"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
+import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
 import Logger from "./logger"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
+import pgConnectionLoader from "./pg-connection"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
@@ -22,11 +30,6 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-
-import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
-import { createMedusaContainer } from "medusa-core-utils"
-import pgConnectionLoader from "./pg-connection"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 type Options = {
   directory: string
@@ -181,6 +184,21 @@ export default async ({
   const searchAct =
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
+
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    const { query } = await MedusaApp({
+      modulesConfig,
+      servicesConfig: joinerConfig,
+      remoteFetchData: remoteQueryFetchData(container),
+      injectedDependencies: {
+        [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+          ContainerRegistrationKeys.PG_CONNECTION
+        ),
+      },
+    })
+
+    container.register("remoteQuery", asValue(query))
+  }
 
   return { container, dbConnection, app: expressApp }
 }

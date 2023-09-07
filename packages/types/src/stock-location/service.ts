@@ -1,6 +1,3 @@
-import { FindConfig } from "../common/common"
-import { JoinerServiceConfig } from "../joiner"
-import { SharedContext } from "../shared-context"
 import {
   CreateStockLocationInput,
   FilterableStockLocationProps,
@@ -8,8 +5,12 @@ import {
   UpdateStockLocationInput,
 } from "./common"
 
+import { FindConfig } from "../common/common"
+import { ModuleJoinerConfig } from "../modules-sdk"
+import { SharedContext } from "../shared-context"
+
 export interface IStockLocationService {
-  __joinerConfig(): JoinerServiceConfig
+  __joinerConfig(): ModuleJoinerConfig
   list(
     selector: FilterableStockLocationProps,
     config?: FindConfig<StockLocationDTO>,

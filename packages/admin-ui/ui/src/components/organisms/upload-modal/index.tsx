@@ -171,7 +171,7 @@ type UploadModalProps = {
   description1Text: string
   description2Title: string
   description2Text: string
-  templateLink: string
+  onDownloadTemplate: () => any
   canImport?: boolean
   progress?: number
   onClose: () => void
@@ -195,7 +195,7 @@ function UploadModal(props: UploadModalProps) {
     onClose,
     onSubmit,
     onFileRemove,
-    templateLink,
+    onDownloadTemplate,
     summary,
     hasError,
     errorMessage,
@@ -215,8 +215,6 @@ function UploadModal(props: UploadModalProps) {
     setUploadFile(undefined)
     onFileRemove()
   }
-
-  const download = useHref(templateLink)
 
   return (
     <Modal open handleClose={onClose}>
@@ -275,7 +273,10 @@ function UploadModal(props: UploadModalProps) {
             name="medusa-template.csv"
             size={2967}
             action={
-              <a className="h-6 w-6 cursor-pointer" href={download} download>
+              <a
+                className="h-6 w-6 cursor-pointer"
+                onClick={onDownloadTemplate}
+              >
                 <DownloadIcon stroke="#9CA3AF" />
               </a>
             }

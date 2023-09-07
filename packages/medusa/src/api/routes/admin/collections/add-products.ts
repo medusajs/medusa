@@ -39,7 +39,7 @@ import { defaultAdminCollectionsRelations } from "./index"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/collections/{id}/products/batch' \
+ *       curl -X POST '{backend_url}/admin/collections/{id}/products/batch' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{

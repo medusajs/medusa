@@ -38,7 +38,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/draft-orders' \
+ *       curl '{backend_url}/admin/draft-orders' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

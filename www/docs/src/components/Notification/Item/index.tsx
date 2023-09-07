@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { Children, ReactElement, useEffect, useRef } from "react"
+import React, { Children, ReactElement } from "react"
 import NotificationItemLayoutDefault from "./Layout/Default"
 
 export type NotificationItemProps = {
@@ -35,13 +35,13 @@ const Notification = ({
   return (
     <div
       className={clsx(
-        "md:tw-max-w-[320px] md:tw-w-[320px] tw-w-full tw-bg-medusa-bg-base dark:tw-bg-medusa-bg-base-dark tw-rounded",
-        "tw-shadow-flyout dark:tw-shadow-flyout-dark",
-        "tw-fixed md:tw-right-1 tw-left-0 tw-block tw-z-[400]",
-        placement === "bottom" && "md:tw-bottom-1 tw-bottom-0",
-        placement === "top" && "md:tw-top-1 tw-top-0",
-        "tw-opacity-100 tw-transition-opacity tw-duration-200 tw-ease-ease",
-        !show && "!tw-opacity-0",
+        "md:max-w-[320px] md:w-[320px] w-full bg-medusa-bg-base dark:bg-medusa-bg-base-dark rounded",
+        "shadow-flyout dark:shadow-flyout-dark max-h-[calc(100vh-90px)]",
+        "fixed md:right-1 left-0 z-[400] md:m-1",
+        placement === "bottom" && "md:bottom-1 bottom-0",
+        placement === "top" && "md:top-1 top-0",
+        "opacity-100 transition-opacity duration-200 ease-ease",
+        !show && "!opacity-0",
         className
       )}
     >
