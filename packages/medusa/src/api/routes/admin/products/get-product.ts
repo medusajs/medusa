@@ -24,7 +24,7 @@ import { PricingService, ProductService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/products/{id}' \
+ *       curl '{backend_url}/admin/products/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

@@ -5,7 +5,7 @@ const theme = {
   ...vsCodeTheme,
   plain: {
     ...vsCodeTheme.plain,
-    backgroundColor: "#151718",
+    backgroundColor: "#111827",
   },
 }
 

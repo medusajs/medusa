@@ -1,9 +1,8 @@
 import { useLearningPath } from "@site/src/providers/LearningPath"
-import { useNotifications } from "@site/src/providers/NotificationProvider"
+import { useNotifications } from "@site/src/providers/Notification"
 import { getLearningPath } from "@site/src/utils/learning-paths"
 import clsx from "clsx"
 import React from "react"
-import useBaseUrl from "@docusaurus/useBaseUrl"
 import Button from "../Button"
 import IconCircleMiniSolid from "@site/src/theme/Icon/CircleMiniSolid"
 import LearningPathIcon from "./Icon"
@@ -19,7 +18,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
 }) => {
   const path = getLearningPath(pathName)
   if (!path) {
-    throw new Error("Learning path does not exist.")
+    throw new Error(`Learning path ${pathName} does not exist.`)
   }
   const { startPath, path: currentPath } = useLearningPath()
   const notificationContext = useNotifications()
@@ -34,20 +33,20 @@ const LearningPath: React.FC<LearningPathProps> = ({
   return (
     <div
       className={clsx(
-        "tw-rounded tw-shadow-card-rest dark:tw-shadow-card-rest-dark tw-bg-docs-bg-surface dark:tw-bg-docs-bg-surface-dark tw-mt-1.5 tw-mb-4",
+        "rounded shadow-card-rest dark:shadow-card-rest-dark bg-docs-bg-surface dark:bg-docs-bg-surface-dark mt-1.5 mb-4",
         className
       )}
     >
       <div
         className={clsx(
-          "tw-flex tw-items-center tw-gap-1 tw-p-1 tw-border-0 tw-border-b tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark"
+          "flex items-center gap-1 p-1 border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark"
         )}
       >
         <LearningPathIcon />
-        <div className={clsx("tw-flex-auto")}>
+        <div className={clsx("basis-3/4")}>
           <span
             className={clsx(
-              "tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark tw-text-label-large-plus tw-block"
+              "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-large-plus block"
             )}
           >
             {path.label}
@@ -55,34 +54,32 @@ const LearningPath: React.FC<LearningPathProps> = ({
           {path.description && (
             <span
               className={clsx(
-                "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark tw-text-label-regular tw-mt-[4px] tw-inline-block"
+                "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark text-compact-medium mt-0.25 inline-block"
               )}
             >
               {path.description}
             </span>
           )}
         </div>
-        <Button onClick={handleClick} className={clsx("tw-flex-initial")}>
+        <Button onClick={handleClick} className={clsx("basis-1/4 max-w-fit")}>
           Start Path
         </Button>
       </div>
       {path.steps.map((step, index) => (
         <div
           className={clsx(
-            "tw-flex tw-items-center tw-p-1 tw-gap-1",
+            "flex items-center p-1 gap-1",
             index !== path.steps.length - 1 &&
-              "tw-border-0 tw-border-b tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark"
+              "border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark"
           )}
           key={index}
         >
-          <div
-            className={clsx("tw-w-3 tw-flex tw-items-center tw-justify-center")}
-          >
-            <IconCircleMiniSolid iconColorClassName="tw-stroke-medusa-icon-muted dark:tw-stroke-medusa-icon-muted-dark" />
+          <div className={clsx("w-3 flex items-center justify-center")}>
+            <IconCircleMiniSolid iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
           </div>
           <span
             className={clsx(
-              "tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark tw-text-label-regular-plus"
+              "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium-plus"
             )}
           >
             {step.title}

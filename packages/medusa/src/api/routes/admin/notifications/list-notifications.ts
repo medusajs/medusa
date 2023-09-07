@@ -44,7 +44,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/notifications' \
+ *       curl '{backend_url}/admin/notifications' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

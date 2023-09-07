@@ -106,7 +106,7 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/stock-locations' \
+ *       curl '{backend_url}/admin/stock-locations' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

@@ -13,11 +13,11 @@ import {
 } from "./common"
 
 import { FindConfig } from "../common"
-import { JoinerServiceConfig } from "../joiner"
-import { SharedContext } from ".."
+import { ModuleJoinerConfig } from "../modules-sdk"
+import { SharedContext } from "../shared-context"
 
 export interface IInventoryService {
-  __joinerConfig(): JoinerServiceConfig
+  __joinerConfig(): ModuleJoinerConfig
   listInventoryItems(
     selector: FilterableInventoryItemProps,
     config?: FindConfig<InventoryItemDTO>,

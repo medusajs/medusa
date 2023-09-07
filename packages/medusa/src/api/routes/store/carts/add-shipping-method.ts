@@ -34,7 +34,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/carts/{id}/shipping-methods' \
+ *       curl -X POST '{backend_url}/store/carts/{id}/shipping-methods' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "option_id": "{option_id}",

@@ -516,7 +516,7 @@ class ProductCategoryService extends TransactionBaseService {
       | UpdateProductCategoryInput
   ): Promise<CreateProductCategoryInput | UpdateProductCategoryInput> {
     // Typeorm only updates mpath when the category entity of the parent
-    // is passed into create/save. For this reason, everytime we create a
+    // is passed into create/save. For this reason, every time we create a
     // category, we must fetch the entity and push to create
     const parentCategoryId = productCategoryInput.parent_category_id
 

@@ -28,7 +28,7 @@ import { IsString } from "class-validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/uploads/download-url' \
+ *       curl -X POST '{backend_url}/admin/uploads/download-url' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
@@ -76,7 +76,7 @@ export default async (req, res) => {
  *   - file_key
  * properties:
  *   file_key:
- *     description: "key of the file to obtain the download link for"
+ *     description: "key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly."
  *     type: string
  */
 export class AdminPostUploadsDownloadUrlReq {

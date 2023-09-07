@@ -90,7 +90,7 @@ function CollapseButton({
         { label: categoryLabel }
       )}
       type="button"
-      className="tw-hidden"
+      className="hidden"
       onClick={onClick}
     />
   )
@@ -162,10 +162,10 @@ export default function DocSidebarItemCategory({
         customProps?.sidebar_is_soon &&
           "sidebar-soon-link sidebar-badge-wrapper",
         !customProps?.sidebar_is_title &&
-          "[&_.sidebar-item-icon]:tw-w-[20px] [&_.sidebar-item-icon]:tw-h-[20px]",
+          "[&_.sidebar-item-icon]:w-[20px] [&_.sidebar-item-icon]:h-[20px]",
         !customProps?.sidebar_is_title &&
           !customProps?.sidebar_is_back_link &&
-          "[&_.sidebar-item-icon]:tw-mr-[12px]"
+          "[&_.sidebar-item-icon]:mr-0.75"
       )}
     >
       <div

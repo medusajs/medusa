@@ -31,6 +31,8 @@ declare module "@medusajs/docs" {
   import { IconProps } from "../theme/Icon/index"
   import { DocContextValue as DocusaurusDocContextValue } from "@docusaurus/theme-common/internal"
   import { ReactNode } from "react"
+  import { NavbarLogo } from "@docusaurus/theme-common"
+  import type { DocusaurusContext } from "@docusaurus/types"
 
   type ItemCustomProps = {
     customProps?: {
@@ -106,6 +108,7 @@ declare module "@medusajs/docs" {
     type: string
     title?: string
     icon?: string
+    Icon?: React.ReactElement
     className?: string
     label?: string
     html?: string
@@ -119,14 +122,20 @@ declare module "@medusajs/docs" {
   export declare type NavbarActionButton = NavbarActionBase & {
     type: "button"
     events?: {
-      onClick?: (e: MouseEvent) => void
-      onMouseEnter?: (e: MouseEvent) => void
-      onMouseLeave?: (e: MouseEvent) => void
-      onMouseOver?: (e: MouseEvent) => void
+      onClick?: MouseEventHandler<HTMLButtonElement>
+      onMouseEnter?: MouseEventHandler<HTMLButtonElement>
+      onMouseLeave?: MouseEventHandler<HTMLButtonElement>
+      onMouseOver?: MouseEventHandler<HTMLButtonElement>
     }
   }
 
   export declare type NavbarAction = NavbarActionLink | NavbarActionButton
+
+  export declare type OptionType = {
+    value: string
+    label: string
+    isAllOption?: boolean
+  }
 
   export declare type ThemeConfig = {
     reportCodeLinkPrefix?: string
@@ -150,6 +159,21 @@ declare module "@medusajs/docs" {
     prism: {
       magicComments: MagicCommentConfig[]
     }
+    mobileLogo: NavbarLogo
+    algoliaConfig?: {
+      apiKey: string
+      indexNames: {
+        docs: string
+        api: string
+      }
+      appId: string
+      filters: OptionType[]
+      defaultFilters: string[]
+      defaultFiltersByPath: {
+        path: string
+        filters: string[]
+      }[]
+    }
   } & DocusaurusThemeConfig
 
   export declare type MedusaDocusaurusConfig = {
@@ -165,4 +189,8 @@ declare module "@medusajs/docs" {
       }
     }
   } & DocusaurusDocContextValue
+
+  export declare type MedusaDocusaurusContext = DocusaurusContext & {
+    siteConfig: MedusaDocusaurusConfig
+  }
 }

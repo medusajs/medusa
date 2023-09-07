@@ -34,7 +34,7 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/stock-locations/{id}' \
+ *       curl '{backend_url}/admin/stock-locations/{id}' \
  *       -H 'Authorization: Bearer {api_token}' \
  * security:
  *   - api_token: []

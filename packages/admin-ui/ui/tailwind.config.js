@@ -1,11 +1,35 @@
 const path = require("path")
+const preset = require("@medusajs/ui-preset")
+
+let extensionPaths = []
+
+try {
+  extensionPaths = require("./tailwind.content").content
+} catch (e) {
+  // ignore
+}
+
+let uiPath = ""
+
+try {
+  uiPath = path.resolve(
+    path.dirname(require.resolve("@medusajs/ui")),
+    "../..",
+    "**/*.{js,ts,jsx,tsx}"
+  )
+} catch (e) {
+  // ignore
+}
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  presets: [preset],
+  darkMode: "class",
   content: [
     path.join(__dirname, "src/**/*.{js,ts,jsx,tsx}"),
     path.join(__dirname, "./index.html"),
-  ],
+    uiPath,
+  ].concat(extensionPaths.map((ext) => path.join(__dirname, ext))),
   theme: {
     screens: {},
     extend: {
@@ -356,7 +380,6 @@ module.exports = {
     },
   },
   plugins: [
-    require("@tailwindcss/line-clamp"),
     require("@tailwindcss/forms")({
       strategy: "class",
     }),

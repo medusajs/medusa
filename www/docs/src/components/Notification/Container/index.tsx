@@ -1,7 +1,7 @@
 import {
   NotificationItemType,
   useNotifications,
-} from "@site/src/providers/NotificationProvider"
+} from "@site/src/providers/Notification"
 import React from "react"
 import NotificationItem from "../Item"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
@@ -35,7 +35,7 @@ const NotificationContainer = () => {
               onClose={() => handleClose(notification)}
               className={clsx(
                 notification.className,
-                "!tw-relative !tw-top-0 !tw-bottom-0 !tw-right-0"
+                "!relative !top-0 !bottom-0 !right-0"
               )}
             />
           </CSSTransition>
@@ -48,11 +48,11 @@ const NotificationContainer = () => {
     <>
       {renderFilteredNotifications(
         (notification) => notification.placement === "top",
-        "tw-flex tw-fixed tw-flex-col tw-gap-0.5 md:tw-right-1 tw-right-0 md:tw-top-1 tw-top-0 tw-z-[400] md:tw-w-auto tw-w-full"
+        "flex fixed flex-col gap-0.5 right-0 top-0 z-[400] md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
       )}
       {renderFilteredNotifications(
         (notification) => notification.placement !== "top",
-        "tw-flex tw-flex-col tw-gap-0.5 tw-fixed md:tw-right-1 tw-right-0 md:tw-bottom-1 tw-bottom-0 tw-z-[400] md:tw-w-auto tw-w-full"
+        "flex flex-col gap-0.5 fixed right-0 bottom-0 z-[400] md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
       )}
     </>
   )

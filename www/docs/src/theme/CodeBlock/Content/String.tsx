@@ -62,7 +62,7 @@ export default function CodeBlockString({
       )}
     >
       {title && <div>{title}</div>}
-      <div className={clsx("tw-relative tw-rounded-[inherit]")}>
+      <div className={clsx("relative rounded-[inherit]")}>
         <Highlight
           {...defaultProps}
           theme={prismTheme}
@@ -74,19 +74,17 @@ export default function CodeBlockString({
               <pre
                 tabIndex={0}
                 ref={wordWrap.codeBlockRef}
-                className={clsx("tw-m-0 tw-p-0", "thin-scrollbar", className)}
+                className={clsx("m-0 p-0", "thin-scrollbar", className)}
               >
                 <code
                   className={clsx(
-                    "tw-font-[inherit] tw-float-left tw-min-w-full print:tw-whitespace-pre-wrap",
+                    "font-[inherit] float-left min-w-full print:whitespace-pre-wrap",
                     showLineNumbers &&
                       tokens.length > 1 &&
-                      "tw-table tw-p-1 code-block-numbering",
-                    title && "tw-p-1",
-                    !title && tokens.length > 1 && "tw-p-1",
-                    !title &&
-                      tokens.length === 1 &&
-                      "tw-py-0.5 tw-pr-0.5 tw-pl-1"
+                      "table p-1 code-block-numbering",
+                    title && "p-1",
+                    !title && tokens.length > 1 && "p-1",
+                    !title && tokens.length === 1 && "py-0.5 pr-0.5 pl-1"
                   )}
                 >
                   {tokens.map((line, i) => (
@@ -103,9 +101,9 @@ export default function CodeBlockString({
               </pre>
               <div
                 className={clsx(
-                  "tw-flex tw-gap-x-[2px] tw-absolute tw-right-1",
-                  tokens.length === 1 && "tw-top-[4px]",
-                  tokens.length > 1 && "tw-top-1"
+                  "flex gap-x-0.125 absolute right-1",
+                  tokens.length === 1 && "top-0.25",
+                  tokens.length > 1 && "top-1"
                 )}
               >
                 {!noReport && (
@@ -118,24 +116,24 @@ export default function CodeBlockString({
                       )}`}
                       target="_blank"
                       className={clsx(
-                        "tw-bg-transparent tw-border-none tw-p-[4px] tw-cursor-pointer tw-rounded",
-                        "hover:tw-bg-medusa-code-tab-hover [&:not(:first-child)]:tw-ml-0.5",
-                        "tw-inline-flex tw-justify-center tw-items-center tw-invisible xs:tw-visible"
+                        "bg-transparent border-none p-0.25 cursor-pointer rounded",
+                        "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base-dark [&:not(:first-child)]:ml-0.5",
+                        "inline-flex justify-center items-center invisible xs:visible"
                       )}
                       rel="noreferrer"
                     >
-                      <IconAlert iconColorClassName="tw-fill-medusa-code-block-action" />
+                      <IconAlert iconColorClassName="fill-medusa-code-icon dark:fill-medusa-code-icon-dark" />
                     </a>
                   </Tooltip>
                 )}
                 {!noCopy && (
                   <CopyButton
                     buttonClassName={clsx(
-                      "tw-flex tw-bg-transparent tw-border-none tw-p-[4px] tw-cursor-pointer tw-rounded"
+                      "flex bg-transparent border-none p-0.25 cursor-pointer rounded"
                     )}
                     text={code}
                   >
-                    <IconCopy iconColorClassName="tw-fill-medusa-code-block-action" />
+                    <IconCopy iconColorClassName="fill-medusa-code-icon dark:fill-medusa-code-icon-dark" />
                   </CopyButton>
                 )}
               </div>
