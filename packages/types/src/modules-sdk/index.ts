@@ -201,18 +201,7 @@ export interface ModuleServiceInitializeOptions {
     database?: string
     driverOptions?: Record<string, unknown>
     debug?: boolean
-    pool?: {
-      name?: string
-      afterCreate?: Function
-      min?: number
-      max?: number
-      refreshIdle?: boolean
-      idleTimeoutMillis?: number
-      reapIntervalMillis?: number
-      returnToHead?: boolean
-      priorityRange?: number
-      log?: (message: string, logLevel: string) => void
-    }
+    pool?: Record<string, unknown>
   }
 }
 
