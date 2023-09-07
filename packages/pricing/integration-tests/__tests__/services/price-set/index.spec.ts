@@ -1,9 +1,11 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { PriceSet } from "@models"
+import { MoneyAmount, PriceSet } from "@models"
 import { PriceSetRepository } from "@repositories"
 import { PriceSetService } from "@services"
 
+import { createCurrencies } from "../../../__fixtures__/currency"
+import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { MikroOrmWrapper } from "../../../utils"
 
@@ -14,10 +16,37 @@ describe("PriceSet Service", () => {
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let data!: PriceSet[]
+  let moneyAmountsData!: MoneyAmount[]
+
+  const moneyAmountsInputData = [
+    {
+      id: "money-amount-USD",
+      currency_code: "USD",
+      amount: 500,
+      min_quantity: 1,
+      max_quantity: 10,
+    },
+  ]
+
+  const priceSetInputData = [
+    {
+      id: "price-set-1",
+      money_amounts: [{ id: "money-amount-USD" }],
+    },
+    {
+      id: "price-set-2",
+      money_amounts: [],
+    },
+    {
+      id: "price-set-3",
+      money_amounts: [],
+    },
+  ]
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
+    testManager = await MikroOrmWrapper.forkManager()
 
     const priceSetRepository = new PriceSetRepository({
       manager: repositoryManager,
@@ -27,8 +56,14 @@ describe("PriceSet Service", () => {
       priceSetRepository,
     })
 
-    testManager = await MikroOrmWrapper.forkManager()
-    data = await createPriceSets(testManager)
+    await createCurrencies(testManager)
+
+    moneyAmountsData = await createMoneyAmounts(
+      testManager,
+      moneyAmountsInputData
+    )
+
+    data = await createPriceSets(testManager, priceSetInputData)
   })
 
   afterEach(async () => {
@@ -36,10 +71,11 @@ describe("PriceSet Service", () => {
   })
 
   describe("list", () => {
-    it("list priceSets", async () => {
+    it("should list priceSets", async () => {
       const priceSetsResult = await service.list()
+      const serialized = JSON.parse(JSON.stringify(priceSetsResult))
 
-      expect(priceSetsResult).toEqual([
+      expect(serialized).toEqual([
         expect.objectContaining({
           id: "price-set-1",
         }),
@@ -52,7 +88,7 @@ describe("PriceSet Service", () => {
       ])
     })
 
-    it("list priceSets by id", async () => {
+    it("should list priceSets by id", async () => {
       const priceSetsResult = await service.list({
         id: ["price-set-1"],
       })
@@ -64,13 +100,13 @@ describe("PriceSet Service", () => {
       ])
     })
 
-    it("list priceSets with relations and selects", async () => {
+    it("should list priceSets with relations and selects", async () => {
       const priceSetsResult = await service.list(
         {
           id: ["price-set-1"],
         },
         {
-          select: ["id"],
+          select: ["id", "money_amounts.id"],
           relations: ["money_amounts"],
         }
       )
@@ -80,7 +116,11 @@ describe("PriceSet Service", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [],
+          money_amounts: [
+            {
+              id: "money-amount-USD",
+            },
+          ],
         },
       ])
     })
@@ -117,7 +157,7 @@ describe("PriceSet Service", () => {
       ])
     })
 
-    it("list priceSets with relations and selects", async () => {
+    it("should list priceSets with relations and selects", async () => {
       const [priceSetsResult, count] = await service.listAndCount(
         {
           id: ["price-set-1"],
@@ -134,7 +174,11 @@ describe("PriceSet Service", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [],
+          money_amounts: [
+            {
+              id: "money-amount-USD",
+            },
+          ],
         },
       ])
     })

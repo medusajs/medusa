@@ -8,14 +8,18 @@ import {
 } from "@mikro-orm/core"
 
 import MoneyAmount from "./money-amount"
+import PriceSetMoneyAmount from "./price-set-money-amount"
 
 @Entity()
 export default class PriceSet {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @ManyToMany(() => MoneyAmount)
-  money_amounts: Collection<MoneyAmount> = new Collection<MoneyAmount>(this)
+  @ManyToMany({
+    entity: () => MoneyAmount,
+    pivotEntity: () => PriceSetMoneyAmount,
+  })
+  money_amounts = new Collection<MoneyAmount>(this)
 
   @BeforeCreate()
   onCreate() {

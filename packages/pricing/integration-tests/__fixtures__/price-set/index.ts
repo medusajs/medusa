@@ -1,6 +1,6 @@
 import { CreatePriceSetDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PriceSet } from "@models"
+import { MoneyAmount, PriceSet, PriceSetMoneyAmount } from "@models"
 import { defaultPriceSetsData } from "./data"
 
 export async function createPriceSets(
@@ -9,13 +9,34 @@ export async function createPriceSets(
 ): Promise<PriceSet[]> {
   const priceSets: PriceSet[] = []
 
-  for (let moneyAmountData of priceSetsData) {
-    const priceSet = manager.create(PriceSet, moneyAmountData)
+  for (let priceSetData of priceSetsData) {
+    const priceSetDataClone = { ...priceSetData }
+    const moneyAmountsData = priceSetDataClone.money_amounts || []
+    delete priceSetDataClone.money_amounts
 
-    priceSets.push(priceSet)
+    const moneyAmountRecords = (await manager.find(MoneyAmount, {
+      id: moneyAmountsData.map((ma) => ma.id),
+    })) as MoneyAmount[]
+
+    let priceSet = manager.create(PriceSet, priceSetDataClone) as PriceSet
+
+    await manager.persist(priceSet).flush()
+
+    for (let moneyAmount of moneyAmountRecords) {
+      const price_set = (await manager.findOne(
+        PriceSet,
+        priceSet.id
+      )) as PriceSet
+
+      const psma = manager.create(PriceSetMoneyAmount, {
+        price_set: price_set.id,
+        money_amount: moneyAmount.id,
+        title: "test",
+      })
+
+      manager.persist(psma).flush()
+    }
   }
-
-  await manager.persistAndFlush(priceSets)
 
   return priceSets
 }

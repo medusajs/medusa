@@ -8,7 +8,7 @@ export interface PriceSetDTO {
 
 export interface CreatePriceSetDTO {
   id: string
-  money_amounts?: MoneyAmountDTO
+  money_amounts?: MoneyAmountDTO[]
 }
 
 export interface UpdatePriceSetDTO {
