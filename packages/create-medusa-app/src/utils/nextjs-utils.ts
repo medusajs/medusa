@@ -14,7 +14,7 @@ export async function askForNextjsStarter(): Promise<boolean> {
     {
       type: "confirm",
       name: "installNextjs",
-      message: `The Medusa backend is installed without a storefront. Would you like to install the Next.js storefront as well?${EOL}You can always install it later.`,
+      message: `Would you like to install the Next.js storefront? You can also install it later`,
       default: false,
     },
   ])
