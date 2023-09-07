@@ -622,7 +622,7 @@ class TotalsService extends TransactionBaseService {
    * @param value - discount value
    * @param discountType - the type of discount (fixed or percentage)
    * @return triples of lineitem, variant and applied discount
-   * @deprecated - Will be removed in a next release
+   * @deprecated - in favour of DiscountService.calculateDiscountForLineItem
    */
   calculateDiscount_(
     lineItem: LineItem,
