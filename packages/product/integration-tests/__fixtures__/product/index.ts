@@ -20,6 +20,7 @@ export async function createProductAndTags(
     title: string
     status: ProductTypes.ProductStatus
     tags?: { id: string; value: string }[]
+    collection_id?: string
   }[]
 ) {
   const products: any[] = data.map((productData) => {
