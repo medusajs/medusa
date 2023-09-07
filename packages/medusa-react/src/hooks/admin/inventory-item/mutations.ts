@@ -59,7 +59,7 @@ export const useAdminUpdateInventoryItem = (
       client.admin.inventoryItems.update(inventoryItemId, payload),
     buildOptions(
       queryClient,
-      [adminInventoryItemsKeys.detail(inventoryItemId)],
+      [adminInventoryItemsKeys.lists(), adminInventoryItemsKeys.detail(inventoryItemId)],
       options
     )
   )
@@ -81,7 +81,7 @@ export const useAdminDeleteInventoryItem = (
     () => client.admin.inventoryItems.delete(inventoryItemId),
     buildOptions(
       queryClient,
-      [adminInventoryItemsKeys.detail(inventoryItemId)],
+      [adminInventoryItemsKeys.lists(), adminInventoryItemsKeys.detail(inventoryItemId)],
       options
     )
   )

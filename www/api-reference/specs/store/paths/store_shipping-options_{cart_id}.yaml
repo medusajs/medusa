@@ -1,0 +1,45 @@
+get:
+  operationId: GetShippingOptionsCartId
+  summary: List for Cart
+  description: Retrieve a list of Shipping Options available for a cart.
+  externalDocs:
+    description: How to implement shipping step in checkout
+    url: >-
+      https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-checkout-flow#shipping-step
+  parameters:
+    - in: path
+      name: cart_id
+      required: true
+      description: The ID of the Cart.
+      schema:
+        type: string
+  x-codegen:
+    method: listCartOptions
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_shipping-options_{cart_id}/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_shipping-options_{cart_id}/get.sh
+  tags:
+    - Shipping Options
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCartShippingOptionsListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

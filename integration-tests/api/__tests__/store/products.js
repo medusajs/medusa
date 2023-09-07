@@ -1,15 +1,19 @@
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 const {
   simpleProductFactory,
   simpleSalesChannelFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
-const productSeeder = require("../../helpers/store-product-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/store-product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const {
+  allowedStoreProductsFields,
+  defaultStoreProductsRelations,
+} = require("@medusajs/medusa/dist")
 
 jest.setTimeout(30000)
 
@@ -208,17 +212,21 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.products[0])).toEqual([
-        // fields
-        "handle",
-        // relations
-        "variants",
-        "options",
-        "images",
-        "tags",
-        "collection",
-        "type",
-      ])
+      expect(Object.keys(response.data.products[0])).toHaveLength(8)
+      expect(Object.keys(response.data.products[0])).toEqual(
+        expect.arrayContaining([
+          // fields
+          "handle",
+          // relations
+          "variants",
+          "options",
+          "images",
+          "tags",
+          "collection",
+          "type",
+          "profiles",
+        ])
+      )
     })
 
     it("returns a list of ordered products by id ASC and filtered with free text search", async () => {
@@ -988,23 +996,33 @@ describe("/store/products", () => {
     it("response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
+      // profile_id is not a column in the products table, so it should be ignored as it
+      // will be rejected by typeorm as invalid, though, it is an entity property
+      // that we want to return, so it part of the allowedStoreProductsFields
+      const fields = allowedStoreProductsFields.filter(
+        (f) => f !== "profile_id"
+      )
+
       const response = await api.get(
-        "/store/products/test-product?fields=handle"
+        `/store/products/test-product?fields=${fields.join(",")}`
       )
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.product)).toEqual([
-        // fields
-        "handle",
-        // relations
-        "variants",
-        "options",
-        "images",
-        "tags",
-        "collection",
-        "type",
-      ])
+      const expectedProperties = [...fields, ...defaultStoreProductsRelations]
+      const actualProperties = [
+        ...Object.keys(response.data.product),
+        ...Object.keys(response.data.product.variants[0]).map(
+          (key) => `variants.${key}`
+        ),
+        "variants.prices.amount",
+        "options.values",
+      ]
+
+      expect(Object.keys(response.data.product).length).toEqual(31)
+      expect(actualProperties).toEqual(
+        expect.arrayContaining(expectedProperties)
+      )
     })
   })
 })

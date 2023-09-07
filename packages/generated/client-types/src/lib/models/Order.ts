@@ -24,7 +24,7 @@ import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
 /**
- * Represents an order
+ * An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.
  */
 export interface Order {
   /**
@@ -68,7 +68,7 @@ export interface Order {
    */
   cart_id: string | null
   /**
-   * A cart object. Available if the relation `cart` is expanded.
+   * The details of the cart associated with the order.
    */
   cart?: Cart | null
   /**
@@ -76,7 +76,7 @@ export interface Order {
    */
   customer_id: string
   /**
-   * A customer object. Available if the relation `customer` is expanded.
+   * The details of the customer associated with the order.
    */
   customer?: Customer | null
   /**
@@ -88,7 +88,7 @@ export interface Order {
    */
   billing_address_id: string | null
   /**
-   * Available if the relation `billing_address` is expanded.
+   * The details of the billing address associated with the order.
    */
   billing_address?: Address | null
   /**
@@ -96,15 +96,15 @@ export interface Order {
    */
   shipping_address_id: string | null
   /**
-   * Available if the relation `shipping_address` is expanded.
+   * The details of the shipping address associated with the order.
    */
   shipping_address?: Address | null
   /**
-   * The region's ID
+   * The ID of the region this order was created in.
    */
   region_id: string
   /**
-   * A region object. Available if the relation `region` is expanded.
+   * The details of the region this order was created in.
    */
   region?: Region | null
   /**
@@ -112,7 +112,7 @@ export interface Order {
    */
   currency_code: string
   /**
-   * Available if the relation `currency` is expanded.
+   * The details of the currency used in the order.
    */
   currency?: Currency | null
   /**
@@ -120,59 +120,59 @@ export interface Order {
    */
   tax_rate: number | null
   /**
-   * The discounts used in the order. Available if the relation `discounts` is expanded.
+   * The details of the discounts applied on the order.
    */
   discounts?: Array<Discount>
   /**
-   * The gift cards used in the order. Available if the relation `gift_cards` is expanded.
+   * The details of the gift card used in the order.
    */
   gift_cards?: Array<GiftCard>
   /**
-   * The shipping methods used in the order. Available if the relation `shipping_methods` is expanded.
+   * The details of the shipping methods used in the order.
    */
   shipping_methods?: Array<ShippingMethod>
   /**
-   * The payments used in the order. Available if the relation `payments` is expanded.
+   * The details of the payments used in the order.
    */
   payments?: Array<Payment>
   /**
-   * The fulfillments used in the order. Available if the relation `fulfillments` is expanded.
+   * The details of the fulfillments created for the order.
    */
   fulfillments?: Array<Fulfillment>
   /**
-   * The returns associated with the order. Available if the relation `returns` is expanded.
+   * The details of the returns created for the order.
    */
   returns?: Array<Return>
   /**
-   * The claims associated with the order. Available if the relation `claims` is expanded.
+   * The details of the claims created for the order.
    */
   claims?: Array<ClaimOrder>
   /**
-   * The refunds associated with the order. Available if the relation `refunds` is expanded.
+   * The details of the refunds created for the order.
    */
   refunds?: Array<Refund>
   /**
-   * The swaps associated with the order. Available if the relation `swaps` is expanded.
+   * The details of the swaps created for the order.
    */
   swaps?: Array<Swap>
   /**
-   * The ID of the draft order this order is associated with.
+   * The ID of the draft order this order was created from.
    */
   draft_order_id: string | null
   /**
-   * A draft order object. Available if the relation `draft_order` is expanded.
+   * The details of the draft order this order was created from.
    */
   draft_order?: DraftOrder | null
   /**
-   * The line items that belong to the order. Available if the relation `items` is expanded.
+   * The details of the line items that belong to the order.
    */
   items?: Array<LineItem>
   /**
-   * Order edits done on the order. Available if the relation `edits` is expanded.
+   * The details of the order edits done on the order.
    */
   edits?: Array<OrderEdit>
   /**
-   * The gift card transactions used in the order. Available if the relation `gift_card_transactions` is expanded.
+   * The gift card transactions made in the order.
    */
   gift_card_transactions?: Array<GiftCardTransaction>
   /**
@@ -192,11 +192,11 @@ export interface Order {
    */
   external_id: string | null
   /**
-   * The ID of the sales channel this order is associated with.
+   * The ID of the sales channel this order belongs to.
    */
   sales_channel_id?: string | null
   /**
-   * A sales channel object. Available if the relation `sales_channel` is expanded.
+   * The details of the sales channel this order belongs to.
    */
   sales_channel?: SalesChannel | null
   /**
@@ -244,7 +244,7 @@ export interface Order {
    */
   gift_card_tax_total?: number
   /**
-   * The items that are returnable as part of the order, order swaps or order claims
+   * The details of the line items that are returnable as part of the order, swaps, or claims
    */
   returnable_items?: Array<LineItem>
   /**

@@ -12,27 +12,23 @@ type SocialLinksProps = {
 const SocialLinks: React.FC<SocialLinksProps> = ({ links = [] }) => {
   const socialIcons = {
     twitter: (
-      <IconTwitter iconColorClassName="tw-fill-medusa-icon-placeholder dark:tw-fill-medusa-icon-placeholder-dark group-hover:tw-fill-medusa-icon-secondary dark:group-hover:tw-fill-medusa-icon-secondary-dark" />
+      <IconTwitter iconColorClassName="fill-medusa-fg-muted dark:fill-medusa-fg-muted-dark group-hover:fill-medusa-fg-subtle dark:group-hover:fill-medusa-fg-subtle-dark" />
     ),
     github: (
-      <IconGitHub iconColorClassName="tw-fill-medusa-icon-placeholder dark:tw-fill-medusa-icon-placeholder-dark group-hover:tw-fill-medusa-icon-secondary dark:group-hover:tw-fill-medusa-icon-secondary-dark" />
+      <IconGitHub iconColorClassName="fill-medusa-fg-muted dark:fill-medusa-fg-muted-dark group-hover:fill-medusa-fg-subtle dark:group-hover:fill-medusa-fg-subtle-dark" />
     ),
     discord: (
-      <IconDiscord iconColorClassName="tw-fill-medusa-icon-placeholder dark:tw-fill-medusa-icon-placeholder-dark group-hover:tw-fill-medusa-icon-secondary dark:group-hover:tw-fill-medusa-icon-secondary-dark" />
+      <IconDiscord iconColorClassName="fill-medusa-fg-muted dark:fill-medusa-fg-muted-dark group-hover:fill-medusa-fg-subtle dark:group-hover:fill-medusa-fg-subtle-dark" />
     ),
     linkedin: (
-      <IconLinkedIn iconColorClassName="tw-fill-medusa-icon-placeholder dark:tw-fill-medusa-icon-placeholder-dark group-hover:tw-fill-medusa-icon-secondary dark:group-hover:tw-fill-medusa-icon-secondary-dark" />
+      <IconLinkedIn iconColorClassName="fill-medusa-fg-muted dark:fill-medusa-fg-muted-dark group-hover:fill-medusa-fg-subtle dark:group-hover:fill-medusa-fg-subtle-dark" />
     ),
   }
 
   return (
-    <div className="tw-flex tw-items-center">
+    <div className="flex items-center">
       {links.map((link) => (
-        <a
-          className="tw-group tw-ml-1 first:tw-ml-0"
-          href={link.href}
-          key={link.type}
-        >
+        <a className="group ml-1 first:ml-0" href={link.href} key={link.type}>
           {socialIcons[link.type]}
         </a>
       ))}

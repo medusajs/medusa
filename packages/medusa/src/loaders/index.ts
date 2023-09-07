@@ -1,20 +1,28 @@
+import { MedusaApp, moduleLoader, registerModules } from "@medusajs/modules-sdk"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
+import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
 import "reflect-metadata"
 import requestIp from "request-ip"
 import { Connection } from "typeorm"
+import { joinerConfig } from "../joiner-config"
+import modulesConfig from "../modules-config"
 import { MedusaContainer } from "../types/global"
+import { remoteQueryFetchData } from "../utils"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
+import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
 import Logger from "./logger"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
+import pgConnectionLoader from "./pg-connection"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
@@ -22,9 +30,6 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-
-import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
-import { createMedusaContainer } from "medusa-core-utils"
 
 type Options = {
   directory: string
@@ -44,7 +49,10 @@ export default async ({
   const configModule = loadConfig(rootDirectory)
 
   const container = createMedusaContainer()
-  container.register("configModule", asValue(configModule))
+  container.register(
+    ContainerRegistrationKeys.CONFIG_MODULE,
+    asValue(configModule)
+  )
 
   // Add additional information to context of request
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
@@ -59,7 +67,7 @@ export default async ({
   track("FEATURE_FLAGS_LOADED")
 
   container.register({
-    logger: asValue(Logger),
+    [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
@@ -67,7 +75,7 @@ export default async ({
 
   const modelsActivity = Logger.activity(`Initializing models${EOL}`)
   track("MODELS_INIT_STARTED")
-  modelsLoader({ container })
+  modelsLoader({ container, rootDirectory })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
@@ -86,6 +94,8 @@ export default async ({
   strategiesLoader({ container, configModule, isTest })
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
+
+  await pgConnectionLoader({ container, configModule })
 
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
@@ -112,7 +122,9 @@ export default async ({
   const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
   track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
-  container.register({ manager: asValue(dataSource.manager) })
+  container.register({
+    [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
+  })
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
@@ -172,6 +184,21 @@ export default async ({
   const searchAct =
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
+
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    const { query } = await MedusaApp({
+      modulesConfig,
+      servicesConfig: joinerConfig,
+      remoteFetchData: remoteQueryFetchData(container),
+      injectedDependencies: {
+        [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+          ContainerRegistrationKeys.PG_CONNECTION
+        ),
+      },
+    })
+
+    container.register("remoteQuery", asValue(query))
+  }
 
   return { container, dbConnection, app: expressApp }
 }

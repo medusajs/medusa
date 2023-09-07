@@ -1,5 +1,15 @@
 # @medusajs/stock-location
 
+## 1.9.1
+
+### Patch Changes
+
+- [#4232](https://github.com/medusajs/medusa/pull/4232) [`af2dc4f75`](https://github.com/medusajs/medusa/commit/af2dc4f75a2ed109495ca83b1bc6ae6941c2f716) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, inventory, stock-location): Remove unnecessary transaction usage in the modules and list products end points
+
+- Updated dependencies [[`f98ba5bde`](https://github.com/medusajs/medusa/commit/f98ba5bde83ba785eead31b0c9eb9f135d664178), [`14c0f62f8`](https://github.com/medusajs/medusa/commit/14c0f62f84704a4c87beff3daaff60a52f5c88b8)]:
+  - @medusajs/utils@1.9.1
+  - @medusajs/modules-sdk@1.8.8
+
 ## 1.9.0
 
 ### Minor Changes

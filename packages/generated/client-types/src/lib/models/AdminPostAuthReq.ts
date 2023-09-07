@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostAuthReq {
   /**
-   * The User's email.
+   * The user's email.
    */
   email: string
   /**
-   * The User's password.
+   * The user's password.
    */
   password: string
 }

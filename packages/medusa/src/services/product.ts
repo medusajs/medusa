@@ -1,21 +1,26 @@
+import {
+    buildRelations,
+    buildSelects, FlagRouter, objectToStringPath
+} from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-  Product,
-  ProductCategory,
-  ProductOption,
-  ProductTag,
-  ProductType,
-  ProductVariant,
-  SalesChannel,
+    Product,
+    ProductCategory,
+    ProductOption,
+    ProductTag,
+    ProductType,
+    ProductVariant,
+    SalesChannel,
+    ShippingProfile,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
-  FindWithoutRelationsOptions,
-  ProductRepository,
+    FindWithoutRelationsOptions,
+    ProductRepository,
 } from "../repositories/product"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
@@ -24,21 +29,15 @@ import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
 import { Selector } from "../types/common"
 import {
-  CreateProductInput,
-  FilterableProductProps,
-  FindProductConfig,
-  ProductOptionInput,
-  ProductSelector,
-  UpdateProductInput,
+    CreateProductInput,
+    FilterableProductProps,
+    FindProductConfig,
+    ProductOptionInput,
+    ProductSelector,
+    UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
-import {
-  buildRelations,
-  buildSelects,
-  objectToStringPath,
-} from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -446,6 +445,10 @@ class ProductService extends TransactionBaseService {
 
       let product = productRepo.create(rest)
 
+      if (rest.profile_id) {
+        product.profiles = [{ id: rest.profile_id! }] as ShippingProfile[]
+      }
+
       if (images?.length) {
         product.images = await imageRepo.upsertImages(images)
       }
@@ -562,6 +565,10 @@ class ProductService extends TransactionBaseService {
         categories: categories,
         ...rest
       } = update
+
+      if (rest.profile_id) {
+        product.profiles = [{ id: rest.profile_id! }] as ShippingProfile[]
+      }
 
       if (!product.thumbnail && !update.thumbnail && images?.length) {
         product.thumbnail = images[0]
@@ -918,21 +925,33 @@ class ProductService extends TransactionBaseService {
   }
 
   /**
-   *
+   * Assign a product to a profile, if a profile id null is provided then detach the product from the profile
    * @param productIds ID or IDs of the products to update
    * @param profileId Shipping profile ID to update the shipping options with
-   * @returns updated shipping options
+   * @returns updated products
    */
   async updateShippingProfile(
     productIds: string | string[],
-    profileId: string
+    profileId: string | null
   ): Promise<Product[]> {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.withRepository(this.productRepository_)
 
       const ids = isString(productIds) ? [productIds] : productIds
 
-      const products = await productRepo.upsertShippingProfile(ids, profileId)
+      let products = (
+        await this.list(
+          { id: In(ids) },
+          { relations: ["profiles"], select: ["id"] }
+        )
+      ).map((product) => {
+        product.profiles = !profileId
+          ? []
+          : ([{ id: profileId }] as ShippingProfile[])
+        return product
+      })
+
+      products = await productRepo.save(products)
 
       await this.eventBus_
         .withTransaction(manager)

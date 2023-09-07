@@ -5,15 +5,15 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetShippingOptionsParams {
   /**
-   * Region ID to fetch options from
+   * Filter by a region ID.
    */
   region_id?: string
   /**
-   * Flag for fetching return options only
+   * Filter by whether the shipping option is used for returns or orders.
    */
   is_return?: boolean
   /**
-   * Flag for fetching admin specific options
+   * Filter by whether the shipping option is used only by admins or not.
    */
   admin_only?: boolean
 }

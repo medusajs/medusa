@@ -514,6 +514,7 @@ export default class OrderEditService extends TransactionBaseService {
         "items.variant",
         "region.tax_rates",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "shipping_methods.tax_lines",
       ],
     })
@@ -574,7 +575,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       let lineItem = await lineItemServiceTx.create(lineItemData)
       lineItem = await lineItemServiceTx.retrieve(lineItem.id, {
-        relations: ["variant", "variant.product"],
+        relations: ["variant.product.profiles"],
       })
 
       await this.refreshAdjustments(orderEditId)

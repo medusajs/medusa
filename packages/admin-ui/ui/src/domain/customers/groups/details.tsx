@@ -11,6 +11,8 @@ import { useEffect, useState } from "react"
 
 import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
+import Spinner from "../../../components/atoms/spinner"
+import WidgetContainer from "../../../components/extensions/widget-container"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
@@ -21,6 +23,8 @@ import CustomersListTable from "../../../components/templates/customer-group-tab
 import EditCustomersTable from "../../../components/templates/customer-group-table/edit-customers-table"
 import useQueryFilters from "../../../hooks/use-query-filters"
 import useToggleState from "../../../hooks/use-toggle-state"
+import { useWidgets } from "../../../providers/widget-provider"
+import { getErrorStatus } from "../../../utils/get-error-status"
 import CustomerGroupModal from "./customer-group-modal"
 
 /**
@@ -127,7 +131,7 @@ function CustomerGroupCustomersList(props: CustomerGroupCustomersListProps) {
     <BodyCard
       title="Customers"
       actionables={actions}
-      className="my-4 min-h-[756px] w-full"
+      className="min-h-[756px] w-full"
     >
       {showCustomersModal && (
         <EditCustomersTable
@@ -229,11 +233,32 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
  */
 function CustomerGroupDetails() {
   const { id } = useParams()
+  const navigate = useNavigate()
 
-  const { customer_group } = useAdminCustomerGroup(id!)
+  const { customer_group, isLoading, error } = useAdminCustomerGroup(id!)
+  const { getWidgets } = useWidgets()
 
-  if (!customer_group) {
-    return null
+  if (error) {
+    const errorStatus = getErrorStatus(error)
+
+    if (errorStatus) {
+      // If the product is not found, redirect to the 404 page
+      if (errorStatus.status === 404) {
+        navigate("/404")
+        return null
+      }
+    }
+
+    // Let the error boundary handle the error
+    throw error
+  }
+
+  if (isLoading || !customer_group) {
+    return (
+      <div className="flex h-[calc(100vh-64px)] w-full items-center justify-center">
+        <Spinner variant="secondary" />
+      </div>
+    )
   }
 
   return (
@@ -243,8 +268,32 @@ function CustomerGroupDetails() {
         label="Back to customer groups"
         className="mb-4"
       />
-      <CustomerGroupDetailsHeader customerGroup={customer_group} />
-      <CustomerGroupCustomersList group={customer_group} />
+      <div className="gap-y-xsmall flex flex-col">
+        {getWidgets("customer_group.details.before").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              entity={customer_group}
+              injectionZone="customer_group.details.before"
+              widget={w}
+            />
+          )
+        })}
+
+        <CustomerGroupDetailsHeader customerGroup={customer_group} />
+
+        {getWidgets("customer_group.details.after").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              entity={customer_group}
+              injectionZone="customer_group.details.after"
+              widget={w}
+            />
+          )
+        })}
+        <CustomerGroupCustomersList group={customer_group} />
+      </div>
     </div>
   )
 }

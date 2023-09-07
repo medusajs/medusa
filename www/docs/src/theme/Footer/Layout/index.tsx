@@ -17,8 +17,8 @@ export default function FooterLayout({
     <footer
       className={clsx(
         "footer",
-        "tw-border-t tw-border-x-0 tw-border-b-0 tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark",
-        "tw-pt-[108px] tw-pb-4 tw-mt-2",
+        "border-t border-x-0 border-b-0 border-solid border-medusa-border-base dark:border-medusa-border-base-dark",
+        "pt-[108px] pb-4 mt-2",
         {
           "footer--dark": style === "dark",
         }
@@ -27,23 +27,21 @@ export default function FooterLayout({
       <div
         className={clsx(
           "container container-fluid",
-          "tw-flex !tw-px-0",
-          "[&_.col]:!tw-px-0",
-          "lg:tw-flex-row tw-flex-col",
-          "!tw-pt-0"
+          "flex !px-0",
+          "[&_.col]:!px-0",
+          "lg:flex-row flex-col",
+          "!pt-0"
         )}
       >
         {(logo || copyright || socialLinks) && (
           <div className="col col--6">
-            <div className={clsx("lg:tw-mb-0 tw-mb-2")}>
+            <div className={clsx("lg:mb-0 mb-2")}>
               {logo && <div>{logo}</div>}
               {copyright}
             </div>
           </div>
         )}
-        <div
-          className={clsx("col col--6 row lg:tw-justify-end tw-justify-start")}
-        >
+        <div className={clsx("col col--6 row lg:justify-end justify-start")}>
           {socialLinks && <SocialLinks links={socialLinks} />}
           {links}
         </div>

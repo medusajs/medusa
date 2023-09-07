@@ -1,25 +1,25 @@
-import {
-  ITaxCalculationStrategy,
-  TaxCalculationContext,
-  TransactionBaseService,
-} from "../interfaces"
+import { FlagRouter } from "@medusajs/utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
-  Discount,
-  DiscountRuleType,
-  GiftCard,
-  LineItem,
-  LineItemTaxLine,
-  Region,
-  ShippingMethod,
-  ShippingMethodTaxLine,
-} from "../models"
-import { TaxProviderService } from "./index"
-import { LineAllocationsMap } from "../types/totals"
+    ITaxCalculationStrategy,
+    TaxCalculationContext,
+    TransactionBaseService,
+} from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { FlagRouter } from "../utils/flag-router"
+import {
+    Discount,
+    DiscountRuleType,
+    GiftCard,
+    LineItem,
+    LineItemTaxLine,
+    Region,
+    ShippingMethod,
+    ShippingMethodTaxLine,
+} from "../models"
+import { LineAllocationsMap } from "../types/totals"
 import { calculatePriceTaxAmount } from "../utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { TaxProviderService } from "./index"
 
 type LineItemTotals = {
   unit_price: number
@@ -720,7 +720,7 @@ export default class NewTotalsService extends TransactionBaseService {
   }
 
   /**
-   * Calculate and return the shipping method totals legacy using teh tax rate
+   * Calculate and return the shipping method totals legacy using the tax rate
    * @param shippingMethod
    * @param calculationContext
    * @param taxRate

@@ -1,14 +1,17 @@
-import * as RadixPopover from "@radix-ui/react-popover"
-
-import { Navigate, useNavigate } from "react-router-dom"
-
 import Button from "../../fundamentals/button"
+import { Column } from "@tanstack/react-table"
+import { DecoratedInventoryItemDTO } from "@medusajs/medusa"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
 import { InventoryLevelDTO } from "@medusajs/types"
 import Tooltip from "../../atoms/tooltip"
 import { useMemo } from "react"
+import { useNavigate } from "react-router-dom"
 
-const useInventoryTableColumn = () => {
+const useInventoryTableColumn = ({
+  location_id,
+}: {
+  location_id: string
+}): [Column<DecoratedInventoryItemDTO>[]] => {
   const columns = useMemo(
     () => [
       {
@@ -59,7 +62,9 @@ const useInventoryTableColumn = () => {
                     variant="ghost"
                     onClick={() => {
                       navigate(
-                        `/a/inventory/reservations?inventory_item_id%5B0%5D=${original.id}`
+                        `/a/inventory/reservations?inventory_item_id%5B0%5D=${
+                          original.id
+                        }${location_id ? `&location_id=${location_id}` : ""}`
                       )
                     }}
                   >
@@ -95,7 +100,7 @@ const useInventoryTableColumn = () => {
         },
       },
     ],
-    []
+    [location_id]
   )
 
   return [columns] as const

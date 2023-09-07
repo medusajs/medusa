@@ -189,14 +189,13 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "discounts",
         "discounts.rule",
         "gift_cards",
-        "items",
-        "items.variant",
-        "items.variant.product",
+        "items.variant.product.profiles",
         "items.adjustments",
         "region",
         "region.tax_rates",
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
       ],
     })
 
@@ -294,7 +293,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "region",
         "payment",
         "payment_sessions",
-        "items.variant.product",
+        "items.variant.product.profiles",
       ],
     })
 

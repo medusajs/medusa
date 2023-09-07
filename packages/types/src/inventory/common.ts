@@ -268,6 +268,11 @@ export type UpdateInventoryLevelInput = {
   incoming_quantity?: number
 }
 
+export type BulkUpdateInventoryLevelInput = {
+  inventory_item_id: string
+  location_id: string
+} & UpdateInventoryLevelInput
+
 export type UpdateReservationItemInput = {
   quantity?: number
   location_id?: string

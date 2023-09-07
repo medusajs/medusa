@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetProductCategoryParams {
   /**
-   * (Comma separated) Which fields should be expanded in the results.
+   * Comma-separated relations that should be expanded in the returned product category.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in the results.
+   * Comma-separated fields that should be included in the returned product category.
    */
   fields?: string
 }

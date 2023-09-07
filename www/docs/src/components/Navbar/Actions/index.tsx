@@ -14,9 +14,10 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
   className = "",
 }) => {
   return (
-    <div className={clsx("lg:tw-block tw-hidden", className)}>
+    <div className={clsx("lg:block hidden", className)}>
       {items.map((item, index) => {
         // eslint-disable-next-line no-case-declarations
+        const ItemIconElm = item.Icon
         const ItemIcon = item.icon ? Icon[item.icon] : null
         switch (item.type) {
           case "link":
@@ -25,17 +26,18 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                 text={item.title}
                 html={item.html}
                 key={index}
-                tooltipClassName="!tw-text-label-x-small-plus"
+                tooltipClassName="!text-compact-x-small-plus"
               >
                 <a
                   href={item.href}
                   title={item.title}
                   className={clsx(
-                    ItemIcon && "navbar-action-icon-item",
+                    (ItemIcon || ItemIconElm) && "navbar-action-icon-item",
                     item.className
                   )}
                 >
                   {item.label}
+                  {ItemIconElm}
                   {ItemIcon && <ItemIcon />}
                 </a>
               </Tooltip>
@@ -46,16 +48,17 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                 text={item.title}
                 html={item.html}
                 key={index}
-                tooltipClassName="!tw-text-label-x-small-plus"
+                tooltipClassName="!text-compact-x-small-plus"
               >
                 <button
                   className={clsx(
-                    ItemIcon && "navbar-action-icon-item",
+                    (ItemIcon || ItemIconElm) && "navbar-action-icon-item",
                     item.className
                   )}
                   {...item.events}
                 >
                   {item.label}
+                  {ItemIconElm}
                   {ItemIcon && <ItemIcon />}
                 </button>
               </Tooltip>

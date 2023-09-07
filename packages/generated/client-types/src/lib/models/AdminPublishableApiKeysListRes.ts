@@ -6,13 +6,16 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { PublishableApiKey } from "./PublishableApiKey"
 
 export interface AdminPublishableApiKeysListRes {
+  /**
+   * An array of publishable API keys details.
+   */
   publishable_api_keys: Array<PublishableApiKey>
   /**
    * The total number of items available
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of publishable API keys skipped when retrieving the publishable API keys.
    */
   offset: number
   /**

@@ -1,0 +1,16 @@
+type: object
+x-expanded-relations:
+  field: region
+  relations:
+    - countries
+    - payment_providers
+    - fulfillment_providers
+  eager:
+    - payment_providers
+    - fulfillment_providers
+required:
+  - region
+properties:
+  region:
+    description: Region details.
+    $ref: ./Region.yaml

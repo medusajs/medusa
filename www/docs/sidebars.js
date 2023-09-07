@@ -36,6 +36,40 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
+      type: "category",
+      label: "Recipes",
+      link: {
+        type: "doc",
+        id: "recipes/index",
+      },
+      customProps: {
+        sidebar_icon: "newspaper",
+      },
+      className: "homepage-sidebar-item",
+      items: [
+        {
+          type: "doc",
+          id: "recipes/marketplace",
+          label: "Marketplace",
+        },
+        {
+          type: "doc",
+          id: "recipes/subscriptions",
+          label: "Subscriptions",
+        },
+        {
+          type: "doc",
+          id: "recipes/b2b",
+          label: "B2B / Wholesale",
+        },
+        {
+          type: "doc",
+          id: "recipes/multi-region",
+          label: "Multi-Region Store",
+        },
+      ],
+    },
+    {
       type: "html",
       value: "Browse Docs",
       customProps: {
@@ -62,13 +96,43 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
-      type: "doc",
-      id: "admin/quickstart",
+      type: "category",
       label: "Admin Dashboard",
+      link: {
+        type: "doc",
+        id: "admin/quickstart",
+      },
       customProps: {
         sidebar_icon: "computer-desktop",
       },
       className: "homepage-sidebar-item",
+      items: [
+        {
+          type: "doc",
+          label: "Admin Custom Configuration",
+          id: "admin/configuration",
+        },
+        {
+          type: "doc",
+          label: "Admin Widgets",
+          id: "admin/widgets",
+        },
+        {
+          type: "doc",
+          label: "Admin UI Routes",
+          id: "admin/routes",
+        },
+        {
+          type: "doc",
+          label: "Admin Setting Pages",
+          id: "admin/setting-pages",
+        },
+        {
+          type: "doc",
+          label: "Example: Create Onboarding",
+          id: "admin/onboarding",
+        },
+      ],
     },
     {
       type: "ref",
@@ -90,7 +154,7 @@ module.exports = {
     {
       type: "doc",
       id: "starters/nextjs-medusa-starter",
-      label: "Next.js Storefront",
+      label: "Next.js Starter Template",
       customProps: {
         sidebar_icon: "nextjs",
       },
@@ -166,6 +230,15 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
+      type: "doc",
+      id: "beta",
+      label: "Beta Features",
+      customProps: {
+        sidebar_icon: "adjustments",
+      },
+      className: "homepage-sidebar-item",
+    },
+    {
       type: "category",
       label: "Deploy",
       customProps: {
@@ -224,15 +297,10 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "deployments/server/deploying-on-qovery",
-              label: "Deploy on Qovery",
+              id: "deployments/server/general-guide",
+              label: "General Deployment",
               customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png",
-                badge: {
-                  variant: "orange",
-                  children: "Deprecated",
-                },
+                iconName: "academic-cap-solid",
               },
             },
           ],
@@ -279,19 +347,6 @@ module.exports = {
                 },
               },
             },
-            {
-              type: "doc",
-              id: "deployments/storefront/deploying-gatsby-on-netlify",
-              label: "Deploy Gatsby on Netlify",
-              customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574027/Medusa%20Docs/Other/gCbsCvX_h7nijn.png",
-                badge: {
-                  variant: "orange",
-                  children: "Deprecated",
-                },
-              },
-            },
           ],
         },
       ],
@@ -307,109 +362,12 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
-      type: "category",
+      type: "ref",
+      id: "troubleshooting/create-medusa-app-errors",
       label: "Troubleshooting",
       customProps: {
         sidebar_icon: "bug",
       },
-      items: [
-        {
-          type: "category",
-          label: "Installation Errors",
-          items: [
-            {
-              type: "doc",
-              id: "troubleshooting/create-medusa-app-errors",
-              label: "Create Medusa App Errors",
-            },
-            {
-              type: "doc",
-              id: "troubleshooting/cli-installation-errors",
-              label: "Errors Installing CLI",
-            },
-            {
-              type: "doc",
-              id: "troubleshooting/common-installation-errors",
-              label: "General Errors",
-            },
-            {
-              type: "doc",
-              id: "troubleshooting/errors-after-update",
-              label: "Errors After Update",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Medusa Backend Errors",
-          items: [
-            {
-              type: "doc",
-              id: "troubleshooting/database-error",
-              label: "Database SASL Error",
-            },
-            {
-              type: "doc",
-              id: "troubleshooting/redis-events",
-              label: "Redis not emitting events",
-            },
-            {
-              type: "doc",
-              id: "troubleshooting/awilix-resolution-error",
-              label: "Handling AwilixResolutionError",
-            },
-            {
-              type: "doc",
-              id: "troubleshooting/missing-payment-providers",
-              label: "Payment provider missing",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Frontend Errors",
-          items: [
-            {
-              type: "doc",
-              id: "troubleshooting/cors-issues",
-              label: "CORS issues",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Admin Dashboard Errors",
-          items: [
-            {
-              type: "doc",
-              id: "troubleshooting/signing-in-to-admin",
-              label: "Signing in to the Admin Dashboard",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Plugin Errors",
-          items: [
-            {
-              type: "doc",
-              id: "troubleshooting/s3-acl-error",
-              label: "S3 Plugin ACL Error",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Other Errors",
-          items: [
-            {
-              type: "doc",
-              id: "troubleshooting/documentation-error",
-              label: "Documentation Error",
-            },
-          ],
-        },
-      ],
       className: "homepage-sidebar-item",
     },
     {
@@ -418,6 +376,15 @@ module.exports = {
       label: "Contribution Guidelines",
       customProps: {
         sidebar_icon: "document-text",
+      },
+      className: "homepage-sidebar-item",
+    },
+    {
+      type: "doc",
+      id: "glossary",
+      label: "Glossary",
+      customProps: {
+        sidebar_icon: "book-open",
       },
       className: "homepage-sidebar-item",
     },
@@ -614,6 +581,11 @@ module.exports = {
           type: "doc",
           id: "modules/products/admin/import-products",
           label: "Admin: Import Products",
+        },
+        {
+          type: "doc",
+          id: "modules/products/serverless-module",
+          label: "Storefront: Serverless Module",
         },
         {
           type: "doc",
@@ -881,6 +853,11 @@ module.exports = {
           type: "doc",
           id: "modules/multiwarehouse/admin/manage-inventory-items",
           label: "Admin: Manage Inventory Items",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-reservations",
+          label: "Admin: Manage Custom Reservations",
         },
         {
           type: "doc",
@@ -1183,6 +1160,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "modules/users/backend/rbac",
+          label: "Backend: Implement RBAC",
+        },
+        {
+          type: "doc",
           id: "modules/users/admin/manage-profile",
           label: "Admin: Implement Profiles",
         },
@@ -1228,13 +1210,18 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "development/backend/prepare-environment",
+          label: "Prepare Environment",
+        },
+        {
+          type: "doc",
           id: "development/backend/install",
           label: "Backend Quickstart",
         },
         {
           type: "doc",
-          id: "development/backend/prepare-environment",
-          label: "Prepare Environment",
+          id: "development/backend/directory-structure",
+          label: "Directory Structure",
         },
         {
           type: "doc",
@@ -1309,6 +1296,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "development/entities/repositories",
+              label: "Use a Repository",
+            },
+            {
+              type: "doc",
               id: "development/entities/extend-entity",
               label: "Extend an Entity",
             },
@@ -1349,6 +1341,11 @@ module.exports = {
               type: "doc",
               id: "development/endpoints/add-middleware",
               label: "Middleware",
+            },
+            {
+              type: "doc",
+              id: "development/endpoints/extend-validator",
+              label: "Extend Validator",
             },
             {
               type: "doc",
@@ -1884,6 +1881,142 @@ module.exports = {
       ],
     },
   ],
+  troubleshooting: [
+    {
+      type: "ref",
+      id: "homepage",
+      label: "Back to home",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "html",
+      value: "Troubleshooting",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "bug",
+      },
+    },
+    {
+      type: "category",
+      label: "Installation",
+      items: [
+        {
+          type: "doc",
+          id: "troubleshooting/create-medusa-app-errors",
+          label: "Create Medusa App Errors",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/cli-installation-errors",
+          label: "Errors Installing CLI",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/common-installation-errors",
+          label: "General Errors",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/errors-after-update",
+          label: "Errors After Update",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Medusa Backend",
+      items: [
+        {
+          type: "doc",
+          id: "troubleshooting/eaddrinuse",
+          label: "EADDRINUSE Error",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/database-error",
+          label: "Database Errors",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/redis-events",
+          label: "Redis not emitting events",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/awilix-resolution-error",
+          label: "Handling AwilixResolutionError",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/missing-payment-providers",
+          label: "Payment provider missing",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Upgrade",
+      items: [
+        {
+          type: "doc",
+          id: "troubleshooting/upgrade-beta",
+          label: "Upgrading Beta Versions",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Frontend",
+      items: [
+        {
+          type: "doc",
+          id: "troubleshooting/cors-issues",
+          label: "CORS issues",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Admin Dashboard",
+      items: [
+        {
+          type: "doc",
+          id: "troubleshooting/signing-in-to-admin",
+          label: "Signing in to the Admin Dashboard",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/custom-hooks-error",
+          label: "Custom Hooks Error",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Plugin",
+      items: [
+        {
+          type: "doc",
+          id: "troubleshooting/s3-acl-error",
+          label: "S3 Plugin ACL Error",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Other",
+      items: [
+        {
+          type: "doc",
+          id: "troubleshooting/documentation-error",
+          label: "Documentation Error",
+        },
+      ],
+    },
+  ],
   plugins: [
     {
       type: "ref",
@@ -2157,6 +2290,30 @@ module.exports = {
           },
         ],
       },
+      {
+        type: "category",
+        label: "Other",
+        collapsible: false,
+        link: {
+          type: "doc",
+          id: "plugins/other/index",
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
+        items: [
+          {
+            type: "doc",
+            id: "plugins/other/ip-lookup",
+            label: "IP Lookup",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate ipstack to access the user's region.",
+            },
+          },
+        ],
+      },
     ],
   ],
   userGuideSidebar: [
@@ -2205,15 +2362,6 @@ module.exports = {
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
-      },
-    },
-    {
-      type: "doc",
-      id: "js-client/overview",
-      label: "Medusa JS Client",
-      customProps: {
-        sidebar_is_title: true,
-        sidebar_icon: "javascript",
       },
     },
     {

@@ -10,7 +10,7 @@ export default function EditThisPage({ editUrl }: Props): JSX.Element {
       href={editUrl}
       target="_blank"
       rel="noreferrer noopener"
-      className={clsx(ThemeClassNames.common.editThisPage, "btn-primary")}
+      className={clsx(ThemeClassNames.common.editThisPage, "btn-secondary")}
     >
       <Translate
         id="theme.common.editThisPage"

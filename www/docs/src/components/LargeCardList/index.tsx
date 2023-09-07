@@ -16,9 +16,9 @@ const LargeCardList: React.FC<LargeCardListProps> = ({
       className={clsx(
         "cards-grid",
         `grid-${colSize}`,
-        "tw-gap-1",
-        "[&+*:not(.large-card)]:tw-mt-2",
-        "[&+.large-card]:tw-mt-1",
+        "gap-1",
+        "[&+*:not(.large-card)]:mt-2",
+        "[&+.large-card]:mt-1",
         className
       )}
     >

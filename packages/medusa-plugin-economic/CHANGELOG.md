@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.45
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
 ## 1.1.44
 
 ### Patch Changes

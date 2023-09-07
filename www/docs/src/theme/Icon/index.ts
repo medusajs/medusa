@@ -1,6 +1,7 @@
 import IconAcademicCapSolid from "./AcademicCapSolid"
 import IconAdjustments from "./Adjustments"
 import IconAlert from "./Alert"
+import IconArrowDownLeftMini from "./ArrowDownLeftMini"
 import IconArrowDownTray from "./ArrowDownTray"
 import IconBackArrow from "./BackArrow"
 import IconBarsThree from "./BarsThree"
@@ -19,7 +20,11 @@ import IconCashSolid from "./CashSolid"
 import IconChannels from "./Channels"
 import IconChannelsSolid from "./ChannelsSolid"
 import IconCheckCircleSolid from "./CheckCircleSolid"
+import IconCheckMini from "./CheckMini"
 import IconChevronDoubleLeftMiniSolid from "./ChevronDoubleLeftMiniSolid"
+import IconChevronUpDown from "./ChevronUpDown"
+import IconCircleDottedLine from "./CircleDottedLine"
+import IconCircleMiniSolid from "./CircleMiniSolid"
 import IconCircleStack from "./CircleStack"
 import IconCircleStackSolid from "./CircleStackSolid"
 import IconClockSolidMini from "./ClockSolidMini"
@@ -40,6 +45,9 @@ import IconCurrencyDollarSolid from "./CurrencyDollarSolid"
 import IconDarkMode from "./DarkMode"
 import IconDiscord from "./Discord"
 import IconDocumentText from "./DocumentText"
+import IconDocumentTextSolid from "./DocumentTextSolid"
+import IconEllipseMiniSolid from "./EllipseMiniSolid"
+import IconExclamationCircleSolid from "./ExclamationCircleSolid"
 import IconExternalLink from "./ExternalLink"
 import IconFlyingBox from "./FlyingBox"
 import IconFolder from "./Folder"
@@ -49,6 +57,7 @@ import IconGiftSolid from "./GiftSolid"
 import IconGitHub from "./GitHub"
 import IconGlobeEurope from "./GlobeEurope"
 import IconGlobeEuropeSolid from "./GlobeEuropeSolid"
+import IconInformationCircleSolid from "./InformationCircleSolid"
 import IconJavaScript from "./JavaScript"
 import IconKey from "./Key"
 import IconKeySolid from "./KeySolid"
@@ -56,6 +65,9 @@ import IconLightBulb from "./LightBulb"
 import IconLightBulbSolid from "./LightBulbSolid"
 import IconLightMode from "./LightMode"
 import IconLinkedIn from "./LinkedIn"
+import IconMagnifyingGlass from "./MagnifyingGlass"
+import IconMap from "./Map"
+import IconNewspaper from "./Newspaper"
 import IconNextjs from "./Nextjs"
 import IconPencilSquareSolid from "./PencilSquareSolid"
 import IconPuzzle from "./Puzzle"
@@ -70,11 +82,13 @@ import IconServerStack from "./ServerStack"
 import IconServerStackSolid from "./ServerStackSolid"
 import IconShoppingCart from "./ShoppingCart"
 import IconShoppingCartSolid from "./ShoppingCartSolid"
+import IconSidebar from "./Sidebar"
 import IconSparkles from "./Sparkles"
 import IconSparklesSolid from "./SparklesSolid"
 import IconSquaresPlus from "./SquaresPlus"
 import IconSquaresPlusSolid from "./SquaresPlusSolid"
 import IconStar from "./Star"
+import IconStarSolid from "./StarSolid"
 import IconStripe from "./Stripe"
 import IconSwatchSolid from "./SwatchSolid"
 import IconTagSolid from "./TagSolid"
@@ -83,6 +97,9 @@ import IconToolsSolid from "./ToolsSolid"
 import IconTwitter from "./Twitter"
 import IconUser from "./User"
 import IconUsersSolid from "./UsersSolid"
+import IconXCircleSolid from "./XCircleSolid"
+import IconXMark from "./XMark"
+import IconXMarkMini from "./XMarkMini"
 
 export type IconProps = {
   width?: number
@@ -95,6 +112,7 @@ export default {
   "academic-cap-solid": IconAcademicCapSolid,
   adjustments: IconAdjustments,
   alert: IconAlert,
+  "arrow-down-left-mini": IconArrowDownLeftMini,
   "arrow-down-tray": IconArrowDownTray,
   "back-arrow": IconBackArrow,
   "bars-three": IconBarsThree,
@@ -113,7 +131,11 @@ export default {
   "channels-solid": IconChannelsSolid,
   channels: IconChannels,
   "check-circle-solid": IconCheckCircleSolid,
+  "check-mini": IconCheckMini,
   "chevron-double-left-mini-solid": IconChevronDoubleLeftMiniSolid,
+  "chevron-up-down": IconChevronUpDown,
+  "circle-dotted-line": IconCircleDottedLine,
+  "circle-mini-solid": IconCircleMiniSolid,
   "circle-stack": IconCircleStack,
   "circle-stack-solid": IconCircleStackSolid,
   "clock-solid-mini": IconClockSolidMini,
@@ -134,6 +156,9 @@ export default {
   "dark-mode": IconDarkMode,
   discord: IconDiscord,
   "document-text": IconDocumentText,
+  "document-text-solid": IconDocumentTextSolid,
+  "ellipse-mini-solid": IconEllipseMiniSolid,
+  "exclamation-circle-solid": IconExclamationCircleSolid,
   "external-link": IconExternalLink,
   "flying-box": IconFlyingBox,
   folder: IconFolder,
@@ -143,6 +168,7 @@ export default {
   github: IconGitHub,
   "globe-europe": IconGlobeEurope,
   "globe-europe-solid": IconGlobeEuropeSolid,
+  "information-circle-solid": IconInformationCircleSolid,
   javascript: IconJavaScript,
   key: IconKey,
   "key-solid": IconKeySolid,
@@ -150,6 +176,9 @@ export default {
   "light-bulb-solid": IconLightBulbSolid,
   "light-mode": IconLightMode,
   linkedin: IconLinkedIn,
+  "magnifying-glass": IconMagnifyingGlass,
+  map: IconMap,
+  newspaper: IconNewspaper,
   nextjs: IconNextjs,
   "pencil-square-solid": IconPencilSquareSolid,
   puzzle: IconPuzzle,
@@ -164,11 +193,13 @@ export default {
   "server-stack-solid": IconServerStackSolid,
   "shopping-cart": IconShoppingCart,
   "shopping-cart-solid": IconShoppingCartSolid,
+  sidebar: IconSidebar,
   sparkles: IconSparkles,
   "sparkles-solid": IconSparklesSolid,
   "squares-plus": IconSquaresPlus,
   "squares-plus-solid": IconSquaresPlusSolid,
   star: IconStar,
+  "star-solid": IconStarSolid,
   stripe: IconStripe,
   "swatch-solid": IconSwatchSolid,
   "tag-solid": IconTagSolid,
@@ -177,4 +208,7 @@ export default {
   twitter: IconTwitter,
   user: IconUser,
   "users-solid": IconUsersSolid,
+  "x-circle-solid": IconXCircleSolid,
+  "x-mark": IconXMark,
+  "x-mark-mini": IconXMarkMini,
 }

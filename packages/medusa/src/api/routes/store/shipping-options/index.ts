@@ -30,6 +30,7 @@ export const defaultRelations = ["requirements"]
  * properties:
  *   shipping_options:
  *     type: array
+ *     description: "An array of shipping options details."
  *     items:
  *       $ref: "#/components/schemas/PricedShippingOption"
  */
@@ -50,6 +51,7 @@ export type StoreShippingOptionsListRes = {
  * properties:
  *   shipping_options:
  *     type: array
+ *     description: "An array of shipping options details."
  *     items:
  *       $ref: "#/components/schemas/PricedShippingOption"
  */

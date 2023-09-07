@@ -4,8 +4,9 @@ import path from "path"
 import { Ora } from "ora"
 import promiseExec from "./promise-exec.js"
 import { EOL } from "os"
-import runProcess from "./run-process.js"
-import { createFactBox, resetFactBox } from "./facts.js"
+import { displayFactBox, FactBoxOptions } from "./facts.js"
+import ProcessManager from "./process-manager.js"
+import { clearProject } from "./clear-project.js"
 
 type PrepareOptions = {
   directory: string
@@ -14,8 +15,12 @@ type PrepareOptions = {
     email: string
   }
   seed?: boolean
+  boilerplate?: boolean
   spinner: Ora
+  processManager: ProcessManager
   abortController?: AbortController
+  skipDb?: boolean
+  migrations?: boolean
 }
 
 export default async ({
@@ -23,8 +28,12 @@ export default async ({
   dbConnectionString,
   admin,
   seed,
+  boilerplate,
   spinner,
+  processManager,
   abortController,
+  skipDb,
+  migrations,
 }: PrepareOptions) => {
   // initialize execution options
   const execOptions = {
@@ -32,21 +41,41 @@ export default async ({
     signal: abortController?.signal,
   }
 
+  const npxOptions = {
+    ...execOptions,
+    env: {
+      ...process.env,
+      npm_config_yes: "yes",
+    },
+  }
+
+  const factBoxOptions: FactBoxOptions = {
+    interval: null,
+    spinner,
+    processManager,
+    message: "",
+    title: "",
+  }
+
   // initialize the invite token to return
   let inviteToken: string | undefined = undefined
 
-  // add connection string to project
-  fs.appendFileSync(
-    path.join(directory, `.env`),
-    `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}`
-  )
+  if (!skipDb) {
+    // add connection string to project
+    fs.appendFileSync(
+      path.join(directory, `.env`),
+      `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}`
+    )
+  }
 
-  let interval: NodeJS.Timer | null = createFactBox(
+  factBoxOptions.interval = displayFactBox({
+    ...factBoxOptions,
     spinner,
-    "Installing dependencies..."
-  )
+    title: "Installing dependencies...",
+    processManager,
+  })
 
-  await runProcess({
+  await processManager.runProcess({
     process: async () => {
       try {
         await promiseExec(`yarn`, execOptions)
@@ -59,34 +88,87 @@ export default async ({
     ignoreERESOLVE: true,
   })
 
-  interval = resetFactBox(
-    interval,
-    spinner,
-    "Installed Dependencies",
-    "Running Migrations...."
-  )
-
-  // run migrations
-  await runProcess({
-    process: async () => {
-      await promiseExec(
-        "npx -y @medusajs/medusa-cli@latest migrations run",
-        execOptions
-      )
-    },
+  factBoxOptions.interval = displayFactBox({
+    ...factBoxOptions,
+    message: "Installed Dependencies",
   })
 
-  interval = resetFactBox(interval, spinner, "Ran Migrations")
+  if (!boilerplate) {
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      title: "Preparing Project Directory...",
+    })
+    // delete files and directories related to onboarding
+    clearProject(directory)
+    displayFactBox({
+      ...factBoxOptions,
+      message: "Prepared Project Directory",
+    })
+  }
 
-  if (admin) {
-    // create admin user
-    interval = createFactBox(spinner, "Creating an admin user...")
+  factBoxOptions.interval = displayFactBox({
+    ...factBoxOptions,
+    title: "Building Project...",
+  })
 
-    await runProcess({
+  await processManager.runProcess({
+    process: async () => {
+      try {
+        await promiseExec(`yarn build`, execOptions)
+      } catch (e) {
+        // yarn isn't available
+        // use npm
+        await promiseExec(`npm run build`, execOptions)
+      }
+    },
+    ignoreERESOLVE: true,
+  })
+
+  displayFactBox({ ...factBoxOptions, message: "Project Built" })
+
+  if (!skipDb && migrations) {
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      title: "Running Migrations...",
+    })
+
+    // run migrations
+    await processManager.runProcess({
       process: async () => {
         const proc = await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
-          execOptions
+          "npx @medusajs/medusa-cli@latest migrations run",
+          npxOptions
+        )
+
+        // ensure that migrations actually ran in case of an uncaught error
+        if (!proc.stdout.includes("Migrations completed")) {
+          throw new Error(
+            `An error occurred while running migrations: ${
+              proc.stderr || proc.stdout
+            }`
+          )
+        }
+      },
+    })
+
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      message: "Ran Migrations",
+    })
+  }
+
+  if (admin && !skipDb && migrations) {
+    // create admin user
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      title: "Creating an admin user...",
+    })
+
+    await processManager.runProcess({
+      process: async () => {
+        const proc = await promiseExec(
+          `npx @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
+          npxOptions
         )
         // get invite token from stdout
         const match = proc.stdout.match(/Invite token: (?<token>.+)/)
@@ -94,54 +176,70 @@ export default async ({
       },
     })
 
-    interval = resetFactBox(interval, spinner, "Created admin user")
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      message: "Created admin user",
+    })
   }
 
-  if (seed) {
-    interval = createFactBox(spinner, "Seeding database...")
+  if (!skipDb && migrations) {
+    if (seed || !boilerplate) {
+      factBoxOptions.interval = displayFactBox({
+        ...factBoxOptions,
+        title: "Seeding database...",
+      })
 
-    // check if a seed file exists in the project
-    if (!fs.existsSync(path.join(directory, "data", "seed.json"))) {
-      spinner
-        ?.warn(
-          chalk.yellow(
-            "Seed file was not found in the project. Skipping seeding..."
+      // check if a seed file exists in the project
+      if (!fs.existsSync(path.join(directory, "data", "seed.json"))) {
+        spinner
+          ?.warn(
+            chalk.yellow(
+              "Seed file was not found in the project. Skipping seeding..."
+            )
           )
-        )
-        .start()
-      return inviteToken
+          .start()
+        return inviteToken
+      }
+
+      await processManager.runProcess({
+        process: async () => {
+          await promiseExec(
+            `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+              "data",
+              "seed.json"
+            )}`,
+            npxOptions
+          )
+        },
+      })
+
+      displayFactBox({
+        ...factBoxOptions,
+        message: "Seeded database with demo data",
+      })
+    } else if (
+      fs.existsSync(path.join(directory, "data", "seed-onboarding.json"))
+    ) {
+      // seed the database with onboarding seed
+      factBoxOptions.interval = displayFactBox({
+        ...factBoxOptions,
+        title: "Finish preparation...",
+      })
+
+      await processManager.runProcess({
+        process: async () => {
+          await promiseExec(
+            `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+              "data",
+              "seed-onboarding.json"
+            )}`,
+            npxOptions
+          )
+        },
+      })
     }
 
-    await runProcess({
-      process: async () => {
-        await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
-            "data",
-            "seed.json"
-          )}`,
-          execOptions
-        )
-      },
-    })
-    resetFactBox(interval, spinner, "Seeded database with demo data")
-  } else if (
-    fs.existsSync(path.join(directory, "data", "seed-onboarding.json"))
-  ) {
-    // seed the database with onboarding seed
-    interval = createFactBox(spinner, "Finish preparation...")
-
-    await runProcess({
-      process: async () => {
-        await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
-            "data",
-            "seed-onboarding.json"
-          )}`,
-          execOptions
-        )
-      },
-    })
-    resetFactBox(interval, spinner, "Finished Preparation")
+    displayFactBox({ ...factBoxOptions, message: "Finished Preparation" })
   }
 
   return inviteToken

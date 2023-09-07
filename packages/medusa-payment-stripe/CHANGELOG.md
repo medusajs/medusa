@@ -1,5 +1,23 @@
 # Change Log
 
+## 6.0.3
+
+### Patch Changes
+
+- [#4761](https://github.com/medusajs/medusa/pull/4761) [`f1a05f472`](https://github.com/medusajs/medusa/commit/f1a05f4725dcc45150f014769562bd3dfbc0f1f8) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin, admin-ui, medusa, medusa-js, medusa-react, stripe-plugin): Support admin extensions
+
+## 6.0.2
+
+### Patch Changes
+
+- [#4442](https://github.com/medusajs/medusa/pull/4442) [`4264302f2`](https://github.com/medusajs/medusa/commit/4264302f214f0717e8b3218a15d43def9122879c) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, stripe, paypal): Add update payment session support to the abstract payment processor API
+
+## 6.0.1
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
 ## 6.0.0
 
 ### Patch Changes

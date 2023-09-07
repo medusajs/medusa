@@ -1,8 +1,8 @@
-import onProcessTerminated from "./on-process-terminated.js"
+import ProcessManager from "./process-manager.js"
 
-export default () => {
+export default (processManager: ProcessManager) => {
   const abortController = new AbortController()
-  onProcessTerminated(() => abortController.abort())
+  processManager.onTerminated(() => abortController.abort())
   return abortController
 }
 

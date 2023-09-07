@@ -31,7 +31,7 @@ export interface AdminPostOrdersOrderClaimsReq {
      */
     reason?: "missing_item" | "wrong_item" | "production_failure" | "other"
     /**
-     * A list o tags to add to the Claim Item
+     * A list of tags to add to the Claim Item
      */
     tags?: Array<string>
     /**
@@ -40,7 +40,7 @@ export interface AdminPostOrdersOrderClaimsReq {
     images?: any
   }>
   /**
-   * Optional details for the Return Shipping Method, if the items are to be sent back.
+   * Optional details for the Return Shipping Method, if the items are to be sent back. Providing this field will result in a return being created and associated with the claim.
    */
   return_shipping?: {
     /**
@@ -53,20 +53,20 @@ export interface AdminPostOrdersOrderClaimsReq {
     price?: number
   }
   /**
-   * The new items to send to the Customer when the Claim type is Replace.
+   * The new items to send to the Customer. This is only used if the claim's type is `replace`.
    */
   additional_items?: Array<{
     /**
-     * The ID of the Product Variant to ship.
+     * The ID of the Product Variant.
      */
     variant_id: string
     /**
-     * The quantity of the Product Variant to ship.
+     * The quantity of the Product Variant.
      */
     quantity: number
   }>
   /**
-   * The Shipping Methods to send the additional Line Items with.
+   * The Shipping Methods to send the additional Line Items with. This is only used if the claim's type is `replace`.
    */
   shipping_methods?: Array<{
     /**
@@ -87,11 +87,11 @@ export interface AdminPostOrdersOrderClaimsReq {
     data?: Record<string, any>
   }>
   /**
-   * An optional shipping address to send the claim to. Defaults to the parent order's shipping address
+   * An optional shipping address to send the claimed items to. If not provided, the parent order's shipping address will be used.
    */
   shipping_address?: AddressPayload
   /**
-   * The amount to refund the Customer when the Claim type is `refund`.
+   * The amount to refund the customer. This is used when the claim's type is `refund`.
    */
   refund_amount?: number
   /**

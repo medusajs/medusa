@@ -115,7 +115,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
       onSuccess: () => {
         notification(
           "Denomination added",
-          "A new denomination was succesfully added",
+          "A new denomination was successfully added",
           "success"
         )
         handleClose()

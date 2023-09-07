@@ -5,7 +5,7 @@ import { IsString } from "class-validator"
  * @oas [post] /admin/uploads/download-url
  * operationId: "PostUploadsDownloadUrl"
  * summary: "Get a File's Download URL"
- * description: "Creates a presigned download url for a file"
+ * description: "Create and retrieve a presigned or public download URL for a file. The URL creation is handled by the file service installed on the Medusa backend."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -28,9 +28,9 @@ import { IsString } from "class-validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/uploads/download-url' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/uploads/download-url' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "file_key": "{file_key}"
  *       }'
@@ -76,7 +76,7 @@ export default async (req, res) => {
  *   - file_key
  * properties:
  *   file_key:
- *     description: "key of the file to obtain the download link for"
+ *     description: "key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly."
  *     type: string
  */
 export class AdminPostUploadsDownloadUrlReq {

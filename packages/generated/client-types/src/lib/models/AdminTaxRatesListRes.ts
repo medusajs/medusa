@@ -6,13 +6,16 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { TaxRate } from "./TaxRate"
 
 export interface AdminTaxRatesListRes {
+  /**
+   * An array of tax rate details.
+   */
   tax_rates: Array<TaxRate>
   /**
    * The total number of items available
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of tax rates to skip when retrieving the tax rates.
    */
   offset: number
   /**

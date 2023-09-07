@@ -1,10 +1,10 @@
+import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
+import "reflect-metadata"
 import { Region } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
-import "reflect-metadata"
-import { FlagRouter } from "../../../../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
 
@@ -101,6 +101,7 @@ export const defaultAdminRegionRelations = [
  *   - region
  * properties:
  *   region:
+ *     description: "Region details."
  *     $ref: "#/components/schemas/Region"
  */
 export class AdminRegionsRes {
@@ -127,6 +128,7 @@ export class AdminRegionsRes {
  * properties:
  *   regions:
  *     type: array
+ *     description: "An array of regions details."
  *     items:
  *       $ref: "#/components/schemas/Region"
  *   count:
@@ -134,7 +136,7 @@ export class AdminRegionsRes {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of regions skipped when retrieving the regions.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -178,6 +180,7 @@ export class FulfillmentOption {
  * properties:
  *   fulfillment_options:
  *     type: array
+ *     description: Fulfillment providers details.
  *     items:
  *       type: object
  *       required:
@@ -201,9 +204,10 @@ export class AdminGetRegionsRegionFulfillmentOptionsRes {
   fulfillment_options: FulfillmentOption[]
 }
 
+export * from "./add-country"
+export * from "./add-fulfillment-provider"
+export * from "./add-payment-provider"
+export * from "./create-region"
 export * from "./list-regions"
 export * from "./update-region"
-export * from "./create-region"
-export * from "./add-country"
-export * from "./add-payment-provider"
-export * from "./add-fulfillment-provider"
+

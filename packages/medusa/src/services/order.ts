@@ -1,67 +1,67 @@
 import { IInventoryService } from "@medusajs/types"
 import {
-  buildRelations,
-  buildSelects,
-  isDefined,
-  MedusaError,
+    buildRelations,
+    buildSelects,
+    FlagRouter,
+    isDefined,
+    MedusaError,
 } from "@medusajs/utils"
 import {
-  EntityManager,
-  FindManyOptions,
-  FindOptionsWhere,
-  ILike,
-  IsNull,
-  Not,
-  Raw,
+    EntityManager,
+    FindManyOptions,
+    FindOptionsWhere,
+    ILike,
+    IsNull,
+    Not,
+    Raw,
 } from "typeorm"
 import {
-  CartService,
-  CustomerService,
-  DiscountService,
-  DraftOrderService,
-  FulfillmentProviderService,
-  FulfillmentService,
-  GiftCardService,
-  LineItemService,
-  NewTotalsService,
-  PaymentProviderService,
-  ProductVariantInventoryService,
-  RegionService,
-  ShippingOptionService,
-  ShippingProfileService,
-  TaxProviderService,
-  TotalsService,
+    CartService,
+    CustomerService,
+    DiscountService,
+    DraftOrderService,
+    FulfillmentProviderService,
+    FulfillmentService,
+    GiftCardService,
+    LineItemService,
+    NewTotalsService,
+    PaymentProviderService,
+    ProductVariantInventoryService,
+    RegionService,
+    ShippingOptionService,
+    ShippingProfileService,
+    TaxProviderService,
+    TotalsService,
 } from "."
+import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-  Address,
-  Cart,
-  ClaimOrder,
-  Fulfillment,
-  FulfillmentItem,
-  FulfillmentStatus,
-  GiftCard,
-  LineItem,
-  Order,
-  OrderStatus,
-  Payment,
-  PaymentStatus,
-  Return,
-  Swap,
-  TrackingLink,
+    Address,
+    Cart,
+    ClaimOrder,
+    Fulfillment,
+    FulfillmentItem,
+    FulfillmentStatus,
+    GiftCard,
+    LineItem,
+    Order,
+    OrderStatus,
+    Payment,
+    PaymentStatus,
+    Return,
+    Swap,
+    TrackingLink,
 } from "../models"
-import { TransactionBaseService } from "../interfaces"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
-  CreateFulfillmentOrder,
-  FulFillmentItemType,
+    CreateFulfillmentOrder,
+    FulFillmentItemType,
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
@@ -343,11 +343,9 @@ class OrderService extends TransactionBaseService {
     const totalsToSelect = select.filter((v) => totalFields.includes(v))
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
-      relationSet.add("items")
       relationSet.add("items.tax_lines")
       relationSet.add("items.adjustments")
-      relationSet.add("items.variant")
-      relationSet.add("items.variant.product")
+      relationSet.add("items.variant.product.profiles")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
       relationSet.add("swaps.additional_items.tax_lines")
@@ -836,8 +834,7 @@ class OrderService extends TransactionBaseService {
    * have been created in regards to the shipment.
    * @param orderId - the id of the order that has been shipped
    * @param fulfillmentId - the fulfillment that has now been shipped
-   * @param trackingLinks - array of tracking numebers
-   *   associated with the shipment
+   * @param trackingLinks - array of tracking numbers associated with the shipment
    * @param config - the config of the order that has been shipped
    * @return the resulting order following the update.
    */
@@ -1018,9 +1015,7 @@ class OrderService extends TransactionBaseService {
         relations: [
           "shipping_methods",
           "shipping_methods.shipping_option",
-          "items",
-          "items.variant",
-          "items.variant.product",
+          "items.variant.product.profiles",
         ],
       })
       const { shipping_methods } = order
@@ -1348,9 +1343,9 @@ class OrderService extends TransactionBaseService {
    * In a situation where the order has more than one shipping method,
    * we need to partition the order items, such that they can be sent
    * to their respective fulfillment provider.
-   * @param orderId - id of order to cancel.
+   * @param orderId - id of order to fulfil.
    * @param itemsToFulfill - items to fulfil.
-   * @param config - the config to cancel.
+   * @param config - the config to fulfil.
    * @return result of the update operation.
    */
   async createFulfillment(
@@ -1387,10 +1382,8 @@ class OrderService extends TransactionBaseService {
           "billing_address",
           "shipping_methods",
           "shipping_methods.shipping_option",
-          "items",
           "items.adjustments",
-          "items.variant",
-          "items.variant.product",
+          "items.variant.product.profiles",
           "payments",
         ],
       })
@@ -1947,8 +1940,8 @@ class OrderService extends TransactionBaseService {
    * Handles receiving a return. This will create a
    * refund to the customer. If the returned items don't match the requested
    * items the return status will be updated to requires_action. This behaviour
-   * is useful in sitautions where a custom refund amount is requested, but the
-   * retuned items are not matching the requested items. Setting the
+   * is useful in situations where a custom refund amount is requested, but the
+   * returned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
    * @param orderId - the order to return.

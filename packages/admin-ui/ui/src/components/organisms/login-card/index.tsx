@@ -1,7 +1,9 @@
 import { useAdminLogin } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
+import { useWidgets } from "../../../providers/widget-provider"
 import InputError from "../../atoms/input-error"
+import WidgetContainer from "../../extensions/widget-container"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
 
@@ -24,6 +26,8 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
   const navigate = useNavigate()
   const { mutate, isLoading } = useAdminLogin()
 
+  const { getWidgets } = useWidgets()
+
   const onSubmit = (values: FormValues) => {
     mutate(values, {
       onSuccess: () => {
@@ -44,44 +48,66 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
     })
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col items-center">
-        <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
-          Log in to Medusa
-        </h1>
-        <div>
-          <SigninInput
-            placeholder="Email"
-            {...register("email", { required: true })}
-            autoComplete="email"
-            className="mb-small"
+    <div className="gap-y-large flex flex-col">
+      {getWidgets("login.before").map((w, i) => {
+        return (
+          <WidgetContainer
+            key={i}
+            widget={w}
+            injectionZone="login.before"
+            entity={undefined}
           />
-          <SigninInput
-            placeholder="Password"
-            type={"password"}
-            {...register("password", { required: true })}
-            autoComplete="current-password"
-            className="mb-xsmall"
-          />
-          <InputError errors={errors} name="password" />
+        )
+      })}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col items-center">
+          <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
+            Log in to Medusa
+          </h1>
+          <div>
+            <SigninInput
+              placeholder="Email"
+              {...register("email", { required: true })}
+              autoComplete="email"
+              className="mb-small"
+            />
+            <SigninInput
+              placeholder="Password"
+              type={"password"}
+              {...register("password", { required: true })}
+              autoComplete="current-password"
+              className="mb-xsmall"
+            />
+            <InputError errors={errors} name="password" />
+          </div>
+          <Button
+            className="rounded-rounded inter-base-regular mt-4 w-[280px]"
+            variant="secondary"
+            size="medium"
+            type="submit"
+            loading={isLoading}
+          >
+            Continue
+          </Button>
+          <span
+            className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
+            onClick={toResetPassword}
+          >
+            Forgot your password?
+          </span>
         </div>
-        <Button
-          className="rounded-rounded inter-base-regular mt-4 w-[280px]"
-          variant="secondary"
-          size="medium"
-          type="submit"
-          loading={isLoading}
-        >
-          Continue
-        </Button>
-        <span
-          className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
-          onClick={toResetPassword}
-        >
-          Forgot your password?
-        </span>
-      </div>
-    </form>
+      </form>
+      {getWidgets("login.after").map((w, i) => {
+        return (
+          <WidgetContainer
+            key={i}
+            widget={w}
+            injectionZone="login.after"
+            entity={undefined}
+          />
+        )
+      })}
+    </div>
   )
 }
 

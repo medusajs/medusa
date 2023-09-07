@@ -3,6 +3,9 @@
   "private": true,
   "workspaces": {
     "packages": [
+      "packages/medusa",
+      "packages/medusa-js",
+      "packages/medusa-react",
       "packages/*",
       "packages/generated/*",
       "packages/oas/*",
@@ -31,7 +34,6 @@
     "eslint": "^8.23.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-markdown": "^3.0.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -67,11 +69,10 @@
     "hooks:uninstall": "husky uninstall",
     "build": "turbo run build --no-daemon",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx .",
-    "lint:docs": "eslint -c docs/.eslintrc.js --ignore-path docs/.eslintignore docs/content",
     "prettier": "prettier",
     "jest": "jest",
     "test": "turbo run test --no-daemon",
-    "test:integration": "turbo run test:integration --no-daemon",
+    "test:integration:packages": "turbo run test:integration --no-daemon --filter='./packages/*'",
     "test:integration:api": "turbo run test:integration --no-daemon --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test:integration --no-daemon --filter=integration-tests-plugins",
     "test:integration:repositories": "turbo run test:integration --no-daemon --filter=integration-tests-repositories",
@@ -101,6 +102,7 @@
   "packageManager": "yarn@3.2.1",
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
-    "@redocly/cli/react-dom": "^17.0.1"
+    "@redocly/cli/react-dom": "^17.0.1",
+    "pg": "8.10.0"
   }
 }
