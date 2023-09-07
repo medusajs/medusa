@@ -5,7 +5,7 @@
 "@medusajs/modules-sdk": minor
 "@medusajs/inventory": minor
 "@medusajs/product": minor
-"@medusajs/medusa": minor
+"@medusajs/medusa": patch
 "@medusajs/types": minor
 "@medusajs/utils": minor
 ---
