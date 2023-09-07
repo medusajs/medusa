@@ -752,7 +752,7 @@ describe("tax inclusive prices", () => {
   describe("Money amount", () => {
     beforeEach(async () => {
       try {
-        // await adminSeeder(dbConnection)
+        await adminSeeder(dbConnection)
         await promotionsSeeder(dbConnection)
       } catch (err) {
         console.log(err)
