@@ -76,7 +76,10 @@ const EditTaxRate = ({
       onSuccess: () => {
         notification(
           t("taxes.success", "Success"),
-          t("taxes.successfully-updated-tax-rate", "Successfully updated Tax Rate."),
+          t(
+            "taxes.successfully-updated-tax-rate",
+            "Successfully updated Tax Rate."
+          ),
           "success"
         )
         onDismiss()
@@ -126,7 +129,9 @@ const EditTaxRate = ({
           <EditTaxRateDetails form={nestedForm(form, "details")} />
         </div>
         <div>
-          <p className="inter-base-semibold mb-base">{t("taxes.overrides", "Overrides")}</p>
+          <p className="inter-base-semibold mb-base">
+            {t("taxes.overrides", "Overrides")}
+          </p>
           {(product_types.length > 0 ||
             products.length > 0 ||
             shipping_options.length > 0) && (
@@ -151,9 +156,13 @@ const EditTaxRate = ({
                   }}
                   index={1}
                   name={t("taxes.product-rules", "Product Rules")}
-                  description={t("Applies to {count} productWithCount", {
-                    count: products.length,
-                  })}
+                  description={t(
+                    "taxes.product-rules.description",
+                    "Applies to {count} productWithCount",
+                    {
+                      count: products.length,
+                    }
+                  )}
                 />
               )}
               {product_types.length > 0 && (
@@ -179,9 +188,13 @@ const EditTaxRate = ({
                   }}
                   index={2}
                   name={t("taxes.product-type-rules", "Product Type Rules")}
-                  description={t("Applies to {count} product typeWithCount", {
-                    count: product_types.length,
-                  })}
+                  description={t(
+                    "taxes.product-type-rules.description",
+                    "Applies to {count} product typeWithCount",
+                    {
+                      count: product_types.length,
+                    }
+                  )}
                 />
               )}
               {shipping_options.length > 0 && (
@@ -206,8 +219,12 @@ const EditTaxRate = ({
                     )
                   }}
                   index={3}
-                  name={t("taxes.shipping-option-rules", "Shipping Option Rules")}
+                  name={t(
+                    "taxes.shipping-option-rules",
+                    "Shipping Option Rules"
+                  )}
                   description={t(
+                    "taxes.applies-to-shipping-option-with-count",
                     "Applies to {count} shipping optionWithCount",
                     {
                       count: shipping_options.length,

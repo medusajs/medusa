@@ -55,7 +55,10 @@ const Users: React.FC = () => {
         />
         <BodyCard
           title={t("users.the-team", "The Team")}
-          subtitle={t("users.manage-users-of-your-medusa-store", "Manage users of your Medusa Store")}
+          subtitle={t(
+            "users.manage-users-of-your-medusa-store",
+            "Manage users of your Medusa Store"
+          )}
           actionables={actionables}
         >
           <div className="flex grow flex-col justify-between">
@@ -65,7 +68,7 @@ const Users: React.FC = () => {
               triggerRefetch={triggerRefetch}
             />
             <p className="inter-small-regular text-grey-50">
-              {t("memberWithCount", { count: users.length })}
+              {t("users.count", "{count}", { count: users.length })}
             </p>
           </div>
           {showInviteModal && (

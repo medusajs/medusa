@@ -78,7 +78,10 @@ const PricingDetails = () => {
             )
           })}
 
-          <RawJSON data={price_list} title={t("details.raw-price-list", "Raw price list")} />
+          <RawJSON
+            data={price_list}
+            title={t("details.raw-price-list", "Raw price list")}
+          />
         </div>
       </PriceListFormProvider>
     </div>

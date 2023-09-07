@@ -151,7 +151,11 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
           <StatusIndicator
             onClick={allItemsReserved ? undefined : showReservationModal}
             variant={allItemsReserved ? "success" : "danger"}
-            title={allItemsReserved ? t("detail-cards.allocated", "Allocated") : t("detail-cards.not-fully-allocated", "Not fully allocated")}
+            title={
+              allItemsReserved
+                ? t("detail-cards.allocated", "Allocated")
+                : t("detail-cards.not-fully-allocated", "Not fully allocated")
+            }
             className="rounded-rounded border px-3 py-1.5"
           />
         )
@@ -252,13 +256,13 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={cart?.tax_total}
-          totalTitle={t(`Tax`)}
+          totalTitle={t("detail-cards.tax", "Tax")}
         />
         <DisplayTotal
           currency={region?.currency_code}
           variant="large"
           totalAmount={cart?.total}
-          totalTitle={t(`Total`)}
+          totalTitle={t("detail-cards.total", "Total")}
         />
       </div>
       {reservationModalIsOpen && (

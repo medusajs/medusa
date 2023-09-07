@@ -54,6 +54,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
       preppedImages = await prepareImages(data.thumbnail.images)
     } catch (error) {
       let errorMessage = t(
+        "product-thumbnail-section.something-went-wrong-while-trying-to-upload-the-thumbnail",
         "Something went wrong while trying to upload the thumbnail."
       )
       const response = (error as any).response as Response
@@ -63,11 +64,16 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
           errorMessage +
           " " +
           t(
+            "product-thumbnail-section.you-might-not-have-a-file-service-configured-please-contact-your-administrator",
             "You might not have a file service configured. Please contact your administrator"
           )
       }
 
-      notification(t("product-thumbnail-section.error", "Error"), errorMessage, "error")
+      notification(
+        t("product-thumbnail-section.error", "Error"),
+        errorMessage,
+        "error"
+      )
       return
     }
     const url = preppedImages?.[0]?.url
@@ -85,7 +91,12 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={onReset} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
-          <h1 className="inter-xlarge-semibold m-0">{t("product-thumbnail-section.upload-thumbnail", "Upload Thumbnail")}</h1>
+          <h1 className="inter-xlarge-semibold m-0">
+            {t(
+              "product-thumbnail-section.upload-thumbnail",
+              "Upload Thumbnail"
+            )}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -94,6 +105,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
             </h2>
             <p className="inter-base-regular text-grey-50 mb-large">
               {t(
+                "product-thumbnail-section.used-to-represent-your-product-during-checkout-social-sharing-and-more",
                 "Used to represent your product during checkout, social sharing and more."
               )}
             </p>
@@ -116,7 +128,10 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                {t("product-thumbnail-section.save-and-close", "Save and close")}
+                {t(
+                  "product-thumbnail-section.save-and-close",
+                  "Save and close"
+                )}
               </Button>
             </div>
           </Modal.Footer>

@@ -95,7 +95,9 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
     <LayeredModal context={context} open={open} handleClose={resetAndClose}>
       <Modal.Body>
         <Modal.Header handleClose={resetAndClose}>
-          <h1 className="inter-xlarge-semibold">{t("product-variants-section.add-variant", "Add Variant")}</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("product-variants-section.add-variant", "Add Variant")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>

@@ -47,9 +47,13 @@ const Configuration: React.FC<ConfigurationProps> = () => {
     <Accordion.Item
       forceMountContent
       title={t("sections.configuration", "Configuration")}
-      tooltip={t("sections.optional-configuration-for-the-price-list", "Optional configuration for the price list")}
+      tooltip={t(
+        "sections.optional-configuration-for-the-price-list",
+        "Optional configuration for the price list"
+      )}
       value="configuration"
       description={t(
+        "sections.the-price-overrides-apply-from-the-time-you-hit-the-publish-button-and-forever-if-left-untouched",
         "The price overrides apply from the time you hit the publish button and forever if left untouched."
       )}
     >
@@ -66,8 +70,12 @@ const Configuration: React.FC<ConfigurationProps> = () => {
             headingSize="medium"
             forceMountContent
             className="border-b-0"
-            title={t("sections.price-overrides-has-a-start-date", "Price overrides has a start date?")}
+            title={t(
+              "sections.price-overrides-has-a-start-date",
+              "Price overrides has a start date?"
+            )}
             subtitle={t(
+              "sections.schedule-the-price-overrides-to-activate-in-the-future",
               "Schedule the price overrides to activate in the future."
             )}
             value="starts_at"
@@ -110,8 +118,12 @@ const Configuration: React.FC<ConfigurationProps> = () => {
             headingSize="medium"
             forceMountContent
             className="border-b-0"
-            title={t("sections.price-overrides-has-an-expiry-date", "Price overrides has an expiry date?")}
+            title={t(
+              "sections.price-overrides-has-an-expiry-date",
+              "Price overrides has an expiry date?"
+            )}
             subtitle={t(
+              "sections.schedule-the-price-overrides-to-deactivate-in-the-future",
               "Schedule the price overrides to deactivate in the future."
             )}
             value="ends_at"
@@ -156,6 +168,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
             className="border-b-0"
             title={t("sections.customer-availabilty", "Customer availabilty")}
             subtitle={t(
+              "sections.specifiy-which-customer-groups-the-price-overrides-should-apply-for",
               "Specifiy which customer groups the price overrides should apply for."
             )}
             value="customer_groups"
@@ -183,7 +196,10 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                           value: cg.id,
                         })) || []
                       }
-                      label={t("sections.customer-groups.label", "Customer Groups")}
+                      label={t(
+                        "sections.customer-groups.label",
+                        "Customer Groups"
+                      )}
                       onChange={onChange}
                       isMulti={true}
                       selectAll={true}

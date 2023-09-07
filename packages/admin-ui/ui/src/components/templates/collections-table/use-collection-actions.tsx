@@ -15,7 +15,10 @@ const useCollectionActions = (collection) => {
   const handleDelete = async () => {
     const shouldDelete = await dialog({
       heading: t("collections-table.delete-collection", "Delete Collection"),
-      text: t("collections-table.are-you-sure-you-want-to-delete-this-collection", "Are you sure you want to delete this collection?"),
+      text: t(
+        "collections-table.are-you-sure-you-want-to-delete-this-collection",
+        "Are you sure you want to delete this collection?"
+      ),
     })
 
     if (shouldDelete) {

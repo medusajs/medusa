@@ -150,14 +150,21 @@ const Overview = () => {
         onSuccess: ({ collection }) => {
           notification(
             t("overview.success", "Success"),
-            t("overview.successfully-created-collection", "Successfully created collection"),
+            t(
+              "overview.successfully-created-collection",
+              "Successfully created collection"
+            ),
             "success"
           )
           navigate(`/a/collections/${collection.id}`)
           setShowNewCollection(false)
         },
         onError: (err) =>
-          notification(t("overview.error", "Error"), getErrorMessage(err), "error"),
+          notification(
+            t("overview.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          ),
       }
     )
   }
@@ -174,12 +181,19 @@ const Overview = () => {
         resetInterval()
         notification(
           t("overview.success", "Success"),
-          t("overview.successfully-initiated-export", "Successfully initiated export"),
+          t(
+            "overview.successfully-initiated-export",
+            "Successfully initiated export"
+          ),
           "success"
         )
       },
       onError: (err) => {
-        notification(t("overview.error", "Error"), getErrorMessage(err), "error")
+        notification(
+          t("overview.error", "Error"),
+          getErrorMessage(err),
+          "error"
+        )
       },
     })
 

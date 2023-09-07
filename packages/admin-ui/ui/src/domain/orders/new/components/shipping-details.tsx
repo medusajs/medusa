@@ -160,7 +160,10 @@ const ShippingDetails = () => {
     <div className="flex min-h-[705px] flex-col gap-y-8">
       <div>
         <span className="inter-base-semibold">
-          {t("components.customer-and-shipping-details", "Customer and shipping details")}
+          {t(
+            "components.customer-and-shipping-details",
+            "Customer and shipping details"
+          )}
         </span>
         <Controller
           control={form.control}
@@ -169,7 +172,10 @@ const ShippingDetails = () => {
             return (
               <Select
                 className="mt-4"
-                label={t("components.find-existing-customer", "Find existing customer")}
+                label={t(
+                  "components.find-existing-customer",
+                  "Find existing customer"
+                )}
                 options={[]}
                 enableSearch
                 value={value || null}
@@ -186,7 +192,9 @@ const ShippingDetails = () => {
       </div>
 
       <div className="flex flex-col gap-y-4">
-        <span className="inter-base-semibold">{t("components.email", "Email")}</span>
+        <span className="inter-base-semibold">
+          {t("components.email", "Email")}
+        </span>
         <InputField
           {...form.register("email")}
           label={t("components.email", "Email")}
@@ -206,7 +214,10 @@ const ShippingDetails = () => {
       {validAddresses.length && !addNew ? (
         <div>
           <span className="inter-base-semibold">
-            {t("components.choose-existing-addresses", "Choose existing addresses")}
+            {t(
+              "components.choose-existing-addresses",
+              "Choose existing addresses"
+            )}
           </span>
           <Controller
             control={form.control}

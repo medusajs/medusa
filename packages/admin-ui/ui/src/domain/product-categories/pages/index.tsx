@@ -21,6 +21,7 @@ function ProductCategoriesEmptyState() {
     <div className="flex min-h-[600px] items-center justify-center">
       <p className="text-grey-40">
         {t(
+          "pages.no-product-categories-yet-use-the-above-button-to-create-your-first-category",
           "No product categories yet, use the above button to create your first category."
         )}
       </p>
@@ -93,7 +94,10 @@ function ProductCategoryPage() {
           <BodyCard
             className="h-full"
             title={t("pages.product-categories", "Product Categories")}
-            subtitle={t("pages.helps-you-to-keep-your-products-organized", "Helps you to keep your products organized.")}
+            subtitle={t(
+              "pages.helps-you-to-keep-your-products-organized",
+              "Helps you to keep your products organized."
+            )}
             actionables={actions}
             footerMinHeight={40}
             setBorders

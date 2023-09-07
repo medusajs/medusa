@@ -39,15 +39,40 @@ const getPromotionStatusDot = (promotion, t) => {
   const status = getPromotionStatus(promotion)
   switch (status) {
     case PromotionStatus.SCHEDULED:
-      return <StatusDot title={t("discount-table.scheduled", "Scheduled")} variant="warning" />
+      return (
+        <StatusDot
+          title={t("discount-table.scheduled", "Scheduled")}
+          variant="warning"
+        />
+      )
     case PromotionStatus.EXPIRED:
-      return <StatusDot title={t("discount-table.expired", "Expired")} variant="danger" />
+      return (
+        <StatusDot
+          title={t("discount-table.expired", "Expired")}
+          variant="danger"
+        />
+      )
     case PromotionStatus.ACTIVE:
-      return <StatusDot title={t("discount-table.active", "Active")} variant="success" />
+      return (
+        <StatusDot
+          title={t("discount-table.active", "Active")}
+          variant="success"
+        />
+      )
     case PromotionStatus.DISABLED:
-      return <StatusDot title={t("discount-table.disabled", "Disabled")} variant="default" />
+      return (
+        <StatusDot
+          title={t("discount-table.disabled", "Disabled")}
+          variant="default"
+        />
+      )
     default:
-      return <StatusDot title={t("discount-table.disabled", "Disabled")} variant="default" />
+      return (
+        <StatusDot
+          title={t("discount-table.disabled", "Disabled")}
+          variant="default"
+        />
+      )
   }
 }
 
@@ -101,7 +126,11 @@ export const usePromotionTableColumns = () => {
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: <div className="text-right">{t("discount-table.amount", "Amount")}</div>,
+        Header: (
+          <div className="text-right">
+            {t("discount-table.amount", "Amount")}
+          </div>
+        ),
         id: "amount",
         Cell: ({ row: { original } }) => {
           return (
@@ -124,7 +153,11 @@ export const usePromotionTableColumns = () => {
         ),
       },
       {
-        Header: () => <div className="text-right">{t("discount-table.redemptions", "Redemptions")}</div>,
+        Header: () => (
+          <div className="text-right">
+            {t("discount-table.redemptions", "Redemptions")}
+          </div>
+        ),
         accessor: "usage_count",
         Cell: ({ row: { original } }) => {
           return (

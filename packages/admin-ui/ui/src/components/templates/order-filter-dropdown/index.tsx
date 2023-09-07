@@ -176,14 +176,20 @@ const OrderFilters = ({
           setFilter={(val) => setSingleFilter("status", val)}
         />
         <FilterDropdownItem
-          filterTitle={t("order-filter-dropdown.payment-status", "Payment Status")}
+          filterTitle={t(
+            "order-filter-dropdown.payment-status",
+            "Payment Status"
+          )}
           options={paymentFilters}
           filters={tempState.payment.filter}
           open={tempState.payment.open}
           setFilter={(val) => setSingleFilter("payment", val)}
         />
         <FilterDropdownItem
-          filterTitle={t("order-filter-dropdown.fulfillment-status", "Fulfillment Status")}
+          filterTitle={t(
+            "order-filter-dropdown.fulfillment-status",
+            "Fulfillment Status"
+          )}
           options={fulfillmentFilters}
           filters={tempState.fulfillment.filter}
           open={tempState.fulfillment.open}
@@ -210,7 +216,10 @@ const OrderFilters = ({
         />
         {isSalesChannelsEnabled && (
           <FilterDropdownItem
-            filterTitle={t("order-filter-dropdown.sales-channel", "Sales Channel")}
+            filterTitle={t(
+              "order-filter-dropdown.sales-channel",
+              "Sales Channel"
+            )}
             options={
               sales_channels?.map((salesChannel) => ({
                 value: salesChannel.id,

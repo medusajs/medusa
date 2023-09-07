@@ -51,7 +51,10 @@ const ReturnReasons = () => {
               onClick: open,
             },
           ]}
-          subtitle={t("return-reasons.manage-reasons-for-returned-items", "Manage reasons for returned items")}
+          subtitle={t(
+            "return-reasons.manage-reasons-for-returned-items",
+            "Manage reasons for returned items"
+          )}
         >
           <div className="mt-large">
             {isLoading ? (

@@ -52,6 +52,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
               ) : (
                 <Tooltip
                   content={t(
+                    "add-additional-items-screen.this-variant-does-not-have-a-price-for-the-region-currency-of-this-order-and-cannot-be-selected",
                     "This variant does not have a price for the region/currency of this order, and cannot be selected."
                   )}
                 >
@@ -126,7 +127,11 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
       }),
       columnHelper.accessor("inventory_quantity", {
         maxSize: 20,
-        header: () => <p className="select-none text-right">{t("add-additional-items-screen.stock", "Stock")}</p>,
+        header: () => (
+          <p className="select-none text-right">
+            {t("add-additional-items-screen.stock", "Stock")}
+          </p>
+        ),
         cell: ({ cell: { getValue }, row: { getCanSelect } }) => {
           const isSelectable = getCanSelect()
 
@@ -143,7 +148,11 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
       }),
       columnHelper.accessor("calculated_price_incl_tax", {
         maxSize: 80,
-        header: () => <p className="text-right">{t("add-additional-items-screen.price", "Price")}</p>,
+        header: () => (
+          <p className="text-right">
+            {t("add-additional-items-screen.price", "Price")}
+          </p>
+        ),
         cell: ({
           getValue,
           row: {
@@ -157,6 +166,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
               {original_price_incl_tax !== price && (
                 <Tooltip
                   content={t(
+                    "add-additional-items-screen.the-price-has-been-overridden-in-a-price-list-that-is-applicable-to-this-order",
                     "The price has been overridden in a price list, that is applicable to this order."
                   )}
                   side="top"

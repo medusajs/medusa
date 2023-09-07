@@ -73,7 +73,11 @@ export const useAdditionalItemsColumns = ({
       }),
       columnHelper.display({
         id: "quantity",
-        header: () => <p className="text-right">{t("items-to-send-form.quantity", "Quantity")}</p>,
+        header: () => (
+          <p className="text-right">
+            {t("items-to-send-form.quantity", "Quantity")}
+          </p>
+        ),
         maxSize: 50,
         cell: ({
           row: {
@@ -98,7 +102,9 @@ export const useAdditionalItemsColumns = ({
       }),
       columnHelper.accessor("price", {
         maxSize: 50,
-        header: () => <p className="text-right">{t("items-to-send-form.price", "Price")}</p>,
+        header: () => (
+          <p className="text-right">{t("items-to-send-form.price", "Price")}</p>
+        ),
         cell: ({
           getValue,
           row: {
@@ -112,6 +118,7 @@ export const useAdditionalItemsColumns = ({
               {original_price !== price && (
                 <Tooltip
                   content={t(
+                    "items-to-send-form.the-price-has-been-overridden-in-a-price-list-that-is-applicable-to-this-order",
                     "The price has been overridden in a price list, that is applicable to this order."
                   )}
                   side="top"

@@ -32,20 +32,30 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
   const onDelete = async () => {
     const shouldDelete = await dialog({
       heading: t("general.delete-promotion", "Delete Promotion"),
-      text: t("general.are-you-sure-you-want-to-delete-this-promotion", "Are you sure you want to delete this promotion?"),
+      text: t(
+        "general.are-you-sure-you-want-to-delete-this-promotion",
+        "Are you sure you want to delete this promotion?"
+      ),
     })
     if (shouldDelete) {
       deletediscount.mutate(undefined, {
         onSuccess: () => {
           notification(
             t("general.success", "Success"),
-            t("general.promotion-deleted-successfully", "Promotion deleted successfully"),
+            t(
+              "general.promotion-deleted-successfully",
+              "Promotion deleted successfully"
+            ),
             "success"
           )
           navigate("/a/discounts/")
         },
         onError: (err) => {
-          notification(t("general.error", "Error"), getErrorMessage(err), "error")
+          notification(
+            t("general.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       })
     }
@@ -61,13 +71,23 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
           notification(
             t("general.success", "Success"),
             !is_disabled
-              ? t(`Discount published successfully`)
-              : t(`Discount drafted successfully`),
+              ? t(
+                  "general.discount-published-successfully",
+                  "Discount published successfully"
+                )
+              : t(
+                  "general.discount-drafted-successfully",
+                  "Discount drafted successfully"
+                ),
             "success"
           )
         },
         onError: (err) => {
-          notification(t("general.error", "Error"), getErrorMessage(err), "error")
+          notification(
+            t("general.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )
@@ -176,7 +196,7 @@ const getPromotionDescription = (discount: Discount, t: TFunction) => {
     case "free_shipping":
       return (
         <h2 className="inter-xlarge-regular text-grey-90">
-          {t(`FREE SHIPPING`)}
+          {t("general.free-shipping", "FREE SHIPPING")}
         </h2>
       )
     default:

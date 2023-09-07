@@ -52,6 +52,7 @@ const MediaModal = ({ product, open, onClose }: Props) => {
       preppedImages = await prepareImages(data.media.images)
     } catch (error) {
       let errorMessage = t(
+        "product-media-section.something-went-wrong-while-trying-to-upload-images",
         "Something went wrong while trying to upload images."
       )
       const response = (error as any).response as Response
@@ -61,11 +62,16 @@ const MediaModal = ({ product, open, onClose }: Props) => {
           errorMessage +
           " " +
           t(
+            "product-media-section.you-might-not-have-a-file-service-configured-please-contact-your-administrator",
             "You might not have a file service configured. Please contact your administrator"
           )
       }
 
-      notification(t("product-media-section.error", "Error"), errorMessage, "error")
+      notification(
+        t("product-media-section.error", "Error"),
+        errorMessage,
+        "error"
+      )
       return
     }
     const urls = preppedImages.map((image) => image.url)
@@ -82,14 +88,21 @@ const MediaModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={onReset} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
-          <h1 className="inter-xlarge-semibold m-0">{t("product-media-section.edit-media", "Edit Media")}</h1>
+          <h1 className="inter-xlarge-semibold m-0">
+            {t("product-media-section.edit-media", "Edit Media")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-              <h2 className="inter-large-semibold mb-2xsmall">{t("product-media-section.media", "Media")}</h2>
+              <h2 className="inter-large-semibold mb-2xsmall">
+                {t("product-media-section.media", "Media")}
+              </h2>
               <p className="inter-base-regular text-grey-50 mb-large">
-                {t("product-media-section.add-images-to-your-product", "Add images to your product.")}
+                {t(
+                  "product-media-section.add-images-to-your-product",
+                  "Add images to your product."
+                )}
               </p>
               <div>
                 <MediaForm form={nestedForm(form, "media")} />

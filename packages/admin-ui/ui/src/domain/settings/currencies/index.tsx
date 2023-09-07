@@ -26,7 +26,10 @@ const CurrencySettings = () => {
   })
 
   if (error) {
-    let message = t("currencies.an-unknown-error-occurred", "An unknown error occurred")
+    let message = t(
+      "currencies.an-unknown-error-occurred",
+      "An unknown error occurred"
+    )
 
     const errorStatus = getErrorStatus(error)
 
@@ -71,7 +74,10 @@ const CurrencySettings = () => {
         <div className="gap-y-xsmall col-span-2 flex flex-col ">
           <Section title="Currencies">
             <p className="text-grey-50 inter-base-regular mt-2xsmall">
-              {t("currencies.manage-the-markets-that-you-will-operate-within", "Manage the markets that you will operate within.")}
+              {t(
+                "currencies.manage-the-markets-that-you-will-operate-within",
+                "Manage the markets that you will operate within."
+              )}
             </p>
           </Section>
 
@@ -86,6 +92,7 @@ const CurrencySettings = () => {
                   <Tooltip
                     side="top"
                     content={t(
+                      "currencies.decide-if-you-want-to-include-or-exclude-taxes-whenever-you-define-a-price-in-this-currency",
                       "Decide if you want to include or exclude taxes whenever you define a price in this currency"
                     )}
                   >

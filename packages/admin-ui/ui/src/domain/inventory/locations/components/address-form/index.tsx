@@ -61,7 +61,9 @@ const AddressForm = ({
 
   return (
     <>
-      <span className="inter-base-semibold">{t("address-form.address", "Address")}</span>
+      <span className="inter-base-semibold">
+        {t("address-form.address", "Address")}
+      </span>
       <div className="gap-y-large gap-x-large grid grid-cols-1">
         <div className="gap-x-large grid grid-cols-2">
           <InputField
@@ -82,7 +84,10 @@ const AddressForm = ({
             {...register(path("address_1"), {
               pattern: FormValidator.whiteSpaceRule("Address 1"),
               required: addressFieldsRequired
-                ? t("address-form.this-field-is-required", "This field is required")
+                ? t(
+                    "address-form.this-field-is-required",
+                    "This field is required"
+                  )
                 : undefined,
             })}
           />
@@ -119,7 +124,10 @@ const AddressForm = ({
             name={path("country_code")}
             rules={{
               required: addressFieldsRequired
-                ? t("address-form.this-field-is-required", "This field is required")
+                ? t(
+                    "address-form.this-field-is-required",
+                    "This field is required"
+                  )
                 : undefined,
             }}
             render={({ field: { value, onChange } }) => {

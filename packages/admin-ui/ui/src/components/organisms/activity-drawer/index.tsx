@@ -23,7 +23,9 @@ const ActivityDrawer = ({ onDismiss }) => {
       ref={ref}
       className="bg-grey-0 shadow-dropdown rounded-rounded fixed top-[64px] bottom-2 right-3 flex w-[400px] flex-col overflow-x-hidden rounded"
     >
-      <div className="inter-large-semibold pt-7 pl-8 pb-1">{t("activity-drawer.activity", "Activity")}</div>
+      <div className="inter-large-semibold pt-7 pl-8 pb-1">
+        {t("activity-drawer.activity", "Activity")}
+      </div>
 
       {!hasPollingError ? (
         batchJobs ? (
@@ -49,6 +51,7 @@ const EmptyActivityDrawer = () => {
       </span>
       <span className={"text-grey-60 inter-base-regular mt-4 text-center"}>
         {t(
+          "activity-drawer.you-dont-have-any-notifications-at-the-moment-but-once-you-do-they-will-live-here",
           "You don't have any notifications at the moment, but once you do they will live here."
         )}
       </span>
@@ -66,13 +69,16 @@ const ErrorActivityDrawer = () => {
       </span>
       <span className={"text-grey-60 inter-base-regular mt-2 text-center"}>
         {t(
+          "activity-drawer.something-went-wrong-while-trying-to-fetch-your-notifications-we-will-keep-trying",
           "Something went wrong while trying to fetch your notifications - We will keep trying!"
         )}
       </span>
 
       <div className="mt-4 flex items-center">
         <Spinner size={"small"} variant={"secondary"} />
-        <span className="ml-2.5">{t("activity-drawer.processing", "Processing...")}</span>
+        <span className="ml-2.5">
+          {t("activity-drawer.processing", "Processing...")}
+        </span>
       </div>
     </div>
   )

@@ -208,10 +208,12 @@ const VariantsTable = ({ variants, actions }: Props) => {
                         "Delete variant"
                       )}
                       text={`${t(
+                        "product-variants-section.are-you-sure-you-want-to-delete-this-variant",
                         "Are you sure you want to delete this variant? "
                       )}${
                         isFeatureEnabled("inventoryService")
                           ? t(
+                              "product-variants-section.note-deleting-the-variant-will-also-remove-inventory-items-and-levels",
                               " Note: Deleting the variant will also remove inventory items and levels"
                             )
                           : ""

@@ -344,7 +344,11 @@ function RemoveProductsPopup({
     >
       <div className="shadow-toaster pointer-events-auto flex h-[48px] min-w-[224px] items-center justify-around gap-3 rounded-lg border px-4 py-3">
         <span className="text-small text-grey-50">
-          {t("selectedWithCounts", { count: total })}
+          {t(
+            "sales-channels.table.placeholder.selected-with-counts",
+            "{count}",
+            { count: total }
+          )}
         </span>
         <div className="bg-grey-20 h-[20px] w-[1px]" />
         <Button variant="danger" size="small" onClick={onRemove}>

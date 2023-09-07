@@ -101,7 +101,11 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
       },
       {
         onSuccess: ({ draft_order }) => {
-          notification(t("new.success", "Success"), t("new.order-created", "Order created"), "success")
+          notification(
+            t("new.success", "Success"),
+            t("new.order-created", "Order created"),
+            "success"
+          )
           reset()
           onDismiss()
           steppedContext.reset()

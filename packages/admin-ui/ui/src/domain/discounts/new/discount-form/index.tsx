@@ -47,7 +47,11 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
         handleReset()
       })
       .catch((error) => {
-        notification(t("discount-form.error", "Error"), getErrorMessage(error), "error")
+        notification(
+          t("discount-form.error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       })
   }
 
@@ -57,7 +61,11 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
       closeFormModal()
       handleReset()
     } catch (error) {
-      notification(t("discount-form.error", "Error"), getErrorMessage(error), "error")
+      notification(
+        t("discount-form.error", "Error"),
+        getErrorMessage(error),
+        "error"
+      )
     }
   }
 
@@ -113,7 +121,10 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
                 forceMountContent
                 title={t("discount-form.discount-type", "Discount type")}
                 required
-                tooltip={t("discount-form.select-a-discount-type", "Select a discount type")}
+                tooltip={t(
+                  "discount-form.select-a-discount-type",
+                  "Select a discount type"
+                )}
                 value="promotion-type"
               >
                 <DiscountType />
@@ -140,6 +151,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
                 title={t("discount-form.configuration", "Configuration")}
                 value="configuration"
                 description={t(
+                  "discount-form.discount-code-applies-from-you-hit-the-publish-button-and-forever-if-left-untouched",
                   "Discount code applies from you hit the publish button and forever if left untouched."
                 )}
               >
@@ -149,16 +161,21 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
                 forceMountContent
                 title={t("discount-form.conditions", "Conditions")}
                 description={t(
+                  "discount-form.discount-code-apply-to-all-products-if-left-untouched",
                   "Discount code apply to all products if left untouched."
                 )}
                 value="conditions"
-                tooltip={t("discount-form.add-conditions-to-your-discount", "Add conditions to your Discount")}
+                tooltip={t(
+                  "discount-form.add-conditions-to-your-discount",
+                  "Add conditions to your Discount"
+                )}
               >
                 <DiscountNewConditions />
               </Accordion.Item>
               <Accordion.Item
                 title={t("discount-form.metadata", "Metadata")}
                 subtitle={t(
+                  "discount-form.metadata-allows-you-to-add-additional-information-to-your-discount",
                   "Metadata allows you to add additional information to your discount."
                 )}
                 value="metadata"

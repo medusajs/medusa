@@ -58,11 +58,22 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
       },
       {
         onSuccess: () => {
-          notifcation(t("return-shipping-options.success", "Success"), t("return-shipping-options.shipping-option-created", "Shipping option created"), "success")
+          notifcation(
+            t("return-shipping-options.success", "Success"),
+            t(
+              "return-shipping-options.shipping-option-created",
+              "Shipping option created"
+            ),
+            "success"
+          )
           closeAndReset()
         },
         onError: (error) => {
-          notifcation(t("return-shipping-options.error", "Error"), getErrorMessage(error), "error")
+          notifcation(
+            t("return-shipping-options.error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )
@@ -73,7 +84,10 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
           <h1 className="inter-xlarge-semibold">
-            {t("return-shipping-options.add-return-shipping-option", "Add Return Shipping Option")}
+            {t(
+              "return-shipping-options.add-return-shipping-option",
+              "Add Return Shipping Option"
+            )}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>

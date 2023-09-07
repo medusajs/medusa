@@ -97,7 +97,10 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
           <h1 className="inter-xlarge-semibold m-0">
-            {t("product-general-section.edit-general-information", "Edit General Information")}
+            {t(
+              "product-general-section.edit-general-information",
+              "Edit General Information"
+            )}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
@@ -108,7 +111,10 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
             />
             <div className="my-xlarge">
               <h2 className="inter-base-semibold mb-base">
-                Organize {product.is_giftcard ? t("product-general-section.gift-card", "Gift Card") : t("product-general-section.product", "Product")}
+                Organize{" "}
+                {product.is_giftcard
+                  ? t("product-general-section.gift-card", "Gift Card")
+                  : t("product-general-section.product", "Product")}
               </h2>
               <OrganizeForm form={nestedForm(form, "organize")} />
             </div>
@@ -117,7 +123,9 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
               isGiftCard={product.is_giftcard}
             />
             <div className="mt-xlarge">
-              <h2 className="inter-base-semibold mb-base">{t("product-general-section.metadata", "Metadata")}</h2>
+              <h2 className="inter-base-semibold mb-base">
+                {t("product-general-section.metadata", "Metadata")}
+              </h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </Modal.Content>

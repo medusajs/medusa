@@ -142,7 +142,14 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
     })
 
     if (errors.length === toCreate.length + toUpdate.length + toDelete.length) {
-      notification(t("product-variants-section.error", "Error"), t("product-variants-section.failed-to-update-product-options", "Failed to update product options"), "error")
+      notification(
+        t("product-variants-section.error", "Error"),
+        t(
+          "product-variants-section.failed-to-update-product-options",
+          "Failed to update product options"
+        ),
+        "error"
+      )
       return
     }
 
@@ -157,7 +164,10 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
     refetch()
     notification(
       t("product-variants-section.success", "Success"),
-      t("product-variants-section.successfully-updated-product-options", "Successfully updated product options"),
+      t(
+        "product-variants-section.successfully-updated-product-options",
+        "Successfully updated product options"
+      ),
       "success"
     )
     handleClose()
@@ -167,7 +177,9 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <h1 className="inter-xlarge-semibold">{t("product-variants-section.edit-options", "Edit Options")}</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("product-variants-section.edit-options", "Edit Options")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -189,7 +201,10 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
                         key={field.id}
                         placeholder="Color"
                         {...register(`options.${index}.title`, {
-                          required: t("product-variants-section.option-title-is-required", "Option title is required"),
+                          required: t(
+                            "product-variants-section.option-title-is-required",
+                            "Option title is required"
+                          ),
                           minLength:
                             FormValidator.minOneCharRule("Option title"),
                           pattern: FormValidator.whiteSpaceRule("Option title"),
@@ -215,7 +230,8 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
               type="button"
               onClick={handleAddAnOption}
             >
-              <PlusIcon size="20" /> {t("product-variants-section.add-an-option", "Add an option")}
+              <PlusIcon size="20" />{" "}
+              {t("product-variants-section.add-an-option", "Add an option")}
             </Button>
           </Modal.Content>
           <Modal.Footer>

@@ -37,7 +37,10 @@ function EditSalesChannel(props: EditSalesChannelProps) {
         onSuccess: () => {
           notification(
             t("form.success", "Success"),
-            t("form.the-sales-channel-is-successfully-updated", "The sales channel is successfully updated"),
+            t(
+              "form.the-sales-channel-is-successfully-updated",
+              "The sales channel is successfully updated"
+            ),
             "success"
           )
           handleClose()
@@ -45,7 +48,10 @@ function EditSalesChannel(props: EditSalesChannelProps) {
         onError: () =>
           notification(
             t("form.error", "Error"),
-            t("form.failed-to-update-the-sales-channel", "Failed to update the sales channel"),
+            t(
+              "form.failed-to-update-the-sales-channel",
+              "Failed to update the sales channel"
+            ),
             "error"
           ),
       }

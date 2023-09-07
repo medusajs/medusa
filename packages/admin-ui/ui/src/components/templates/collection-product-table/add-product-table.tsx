@@ -159,7 +159,9 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
     <Modal handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h3 className="inter-xlarge-semibold">{t("collection-product-table.add-products", "Add Products")}</h3>
+          <h3 className="inter-xlarge-semibold">
+            {t("collection-product-table.add-products", "Add Products")}
+          </h3>
         </Modal.Header>
         <Modal.Content>
           <TableContainer
@@ -183,7 +185,10 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               enableSearch
               handleSearch={handleSearch}
               searchValue={query}
-              searchPlaceholder={t("collection-product-table.search-products", "Search Products")}
+              searchPlaceholder={t(
+                "collection-product-table.search-products",
+                "Search Products"
+              )}
               {...getTableProps()}
               className="flex-grow"
             >

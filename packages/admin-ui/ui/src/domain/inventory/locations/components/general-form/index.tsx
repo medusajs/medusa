@@ -23,7 +23,10 @@ const GeneralForm = ({ form }: Props) => {
       <div className="gap-x-large mb-small grid grid-cols-2">
         <InputField
           label={t("general-form.location-name", "Location name")}
-          placeholder={t("general-form.flagship-store-warehouse", "Flagship store, warehouse")}
+          placeholder={t(
+            "general-form.flagship-store-warehouse",
+            "Flagship store, warehouse"
+          )}
           required
           {...register(path("name"), {
             required: t("general-form.name-is-required", "Name is required"),

@@ -65,7 +65,9 @@ const COLUMNS: Column<PublishableApiKey>[] = [
               </span>
             ) : (
               <span onClick={onClick} className="cursor-pointer">
-                <Translation>{(t) => t("tables.copy-to-clipboard", "Copy to clipboard")}</Translation>
+                <Translation>
+                  {(t) => t("tables.copy-to-clipboard", "Copy to clipboard")}
+                </Translation>
               </span>
             )
           }
@@ -104,9 +106,15 @@ const COLUMNS: Column<PublishableApiKey>[] = [
       return (
         <span className="min-w-[50px] text-gray-900">
           {original.revoked_at ? (
-            <StatusIndicator title={t("tables.revoked", "Revoked")} variant="danger" />
+            <StatusIndicator
+              title={t("tables.revoked", "Revoked")}
+              variant="danger"
+            />
           ) : (
-            <StatusIndicator title={t("tables.live", "Live")} variant="success" />
+            <StatusIndicator
+              title={t("tables.live", "Live")}
+              variant="success"
+            />
           )}
         </span>
       )
@@ -184,7 +192,10 @@ function PublishableKeyTableRow(props: PublishableKeyTableRowProps) {
           onDelete={async () => deletePublicKey()}
           confirmText={t("tables.yes-delete", "Yes, delete")}
           successText={t("tables.api-key-deleted", "API key deleted")}
-          text={t("tables.are-you-sure-you-want-to-delete-this-public-key", "Are you sure you want to delete this public key?")}
+          text={t(
+            "tables.are-you-sure-you-want-to-delete-this-public-key",
+            "Are you sure you want to delete this public key?"
+          )}
           heading={t("tables.delete-key", "Delete key")}
         />
       )}
@@ -195,7 +206,10 @@ function PublishableKeyTableRow(props: PublishableKeyTableRowProps) {
           onDelete={async () => revokePublicKey()}
           confirmText={t("tables.yes-revoke", "Yes, revoke")}
           successText={t("tables.api-key-revoked", "API key revoked")}
-          text={t("tables.are-you-sure-you-want-to-revoke-this-public-key", "Are you sure you want to revoke this public key?")}
+          text={t(
+            "tables.are-you-sure-you-want-to-revoke-this-public-key",
+            "Are you sure you want to revoke this public key?"
+          )}
           heading={t("tables.revoke-key", "Revoke key")}
         />
       )}
@@ -315,6 +329,7 @@ function PublishableApiKeysTable(props: PublishableApiKeysTableProps) {
         <div className="flex h-[480px] w-[100%] items-center justify-center">
           <span className="text-gray-400">
             {t(
+              "tables.no-keys-yet-use-the-above-button-to-create-your-first-publishable-key",
               "No keys yet, use the above button to create your first publishable key"
             )}
           </span>

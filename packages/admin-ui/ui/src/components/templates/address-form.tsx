@@ -53,7 +53,9 @@ const AddressForm = ({
     <div>
       {(type === AddressType.SHIPPING || type === AddressType.BILLING) && (
         <>
-          <span className="inter-base-semibold">{t("templates.general", "General")}</span>
+          <span className="inter-base-semibold">
+            {t("templates.general", "General")}
+          </span>
           <div className="gap-large mt-4 mb-8 grid grid-cols-2">
             <Input
               {...register(path("first_name"), {
@@ -178,7 +180,9 @@ const AddressForm = ({
         />
       </div>
       <div className="mt-xlarge gap-y-base flex flex-col">
-        <span className="inter-base-semibold">{t("templates.metadata", "Metadata")}</span>
+        <span className="inter-base-semibold">
+          {t("templates.metadata", "Metadata")}
+        </span>
         <MetadataForm form={nestedForm(form, "metadata")} />
       </div>
     </div>

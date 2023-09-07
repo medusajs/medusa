@@ -52,9 +52,20 @@ function ProductCategoryListItemDetails(
       onClick: async () => {
         try {
           await deleteCategory()
-          notification(t("components.success", "Success"), t("components.category-deleted", "Category deleted"), "success")
+          notification(
+            t("components.success", "Success"),
+            t("components.category-deleted", "Category deleted"),
+            "success"
+          )
         } catch (e) {
-          notification(t("components.error", "Error"), t("components.category-deletion-failed", "Category deletion failed"), "error")
+          notification(
+            t("components.error", "Error"),
+            t(
+              "components.category-deletion-failed",
+              "Category deletion failed"
+            ),
+            "error"
+          )
         }
       },
       icon: <TrashIcon size={20} />,
@@ -94,7 +105,10 @@ function ProductCategoryListItemDetails(
             <div className="flex w-[64px] items-center justify-center">
               {!item.is_active && (
                 <TooltipIcon
-                  content={t("components.category-status-is-inactive", "Category status is inactive")}
+                  content={t(
+                    "components.category-status-is-inactive",
+                    "Category status is inactive"
+                  )}
                   icon={
                     <TagDotIcon
                       size="32"
@@ -106,7 +120,10 @@ function ProductCategoryListItemDetails(
               )}
               {item.is_internal && (
                 <TooltipIcon
-                  content={t("components.category-visibility-is-private", "Category visibility is private")}
+                  content={t(
+                    "components.category-visibility-is-private",
+                    "Category visibility is private"
+                  )}
                   icon={
                     <EyeOffIcon
                       color="#889096"

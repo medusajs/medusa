@@ -32,7 +32,10 @@ const ExportModal: React.FC<ExportModalProps> = ({
             overview.
           </div> */}
           <div className="inter-small-regular text-grey-50 mb-4 flex">
-            {t("export-modal.initialize-an-export-of-your-data", "Initialize an export of your data")}
+            {t(
+              "export-modal.initialize-an-export-of-your-data",
+              "Initialize an export of your data"
+            )}
           </div>
         </Modal.Content>
         <Modal.Footer>

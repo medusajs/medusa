@@ -79,11 +79,14 @@ const AddSalesChannelsForm = ({ form }: Props) => {
       <div>
         <div>
           <div className="flex items-center justify-between">
-            <h2 className="inter-base-semibold">{t("new.sales-channels", "Sales channels")}</h2>
+            <h2 className="inter-base-semibold">
+              {t("new.sales-channels", "Sales channels")}
+            </h2>
             <Switch checked={isEnabled} onCheckedChange={toggleEnabled} />
           </div>
           <p className="inter-base-regular text-grey-50 mt-2xsmall">
             {t(
+              "new.this-product-will-only-be-available-in-the-default-sales-channel-if-left-untouched",
               "This product will only be available in the default sales channel if left untouched."
             )}
           </p>

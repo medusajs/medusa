@@ -94,11 +94,17 @@ const PriceOverrides = ({
           >
             <RadioGroup.SimpleItem
               value={MODES.SELECTED_ONLY}
-              label={t("price-overrides.apply-overrides-on-selected-variants", "Apply overrides on selected variants")}
+              label={t(
+                "price-overrides.apply-overrides-on-selected-variants",
+                "Apply overrides on selected variants"
+              )}
             />
             <RadioGroup.SimpleItem
               value={MODES.APPLY_ALL}
-              label={t("price-overrides.apply-on-all-variants", "Apply on all variants")}
+              label={t(
+                "price-overrides.apply-on-all-variants",
+                "Apply on all variants"
+              )}
             />
           </RadioGroup.Root>
         )}
@@ -122,7 +128,9 @@ const PriceOverrides = ({
           </div>
         )}
         <div className="pt-8">
-          <h6 className="inter-base-semibold">{t("price-overrides.prices", "Prices")}</h6>
+          <h6 className="inter-base-semibold">
+            {t("price-overrides.prices", "Prices")}
+          </h6>
           <div className="pt-4">
             {prices.map((price, idx) => (
               <Controller

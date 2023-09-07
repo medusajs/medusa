@@ -78,13 +78,20 @@ function EditProductCategoriesSideModal(
 
       notification(
         t("modals.success", "Success"),
-        t("modals.successfully-updated-the-category", "Successfully updated the category"),
+        t(
+          "modals.successfully-updated-the-category",
+          "Successfully updated the category"
+        ),
         "success"
       )
       close()
     } catch (e) {
       const errorMessage =
-        getErrorMessage(e) || t("modals.failed-to-update-the-category", "Failed to update the category")
+        getErrorMessage(e) ||
+        t(
+          "modals.failed-to-update-the-category",
+          "Failed to update the category"
+        )
       notification(t("modals.error", "Error"), errorMessage, "error")
     }
   }
@@ -127,7 +134,10 @@ function EditProductCategoriesSideModal(
             name="name"
             value={name}
             className="my-6"
-            placeholder={t("modals.give-this-category-a-name", "Give this category a name")}
+            placeholder={t(
+              "modals.give-this-category-a-name",
+              "Give this category a name"
+            )}
             onChange={(ev) => setName(ev.target.value)}
           />
 
@@ -147,7 +157,10 @@ function EditProductCategoriesSideModal(
             name="description"
             value={description}
             className="my-6"
-            placeholder={t("modals.give-this-category-a-description", "Give this category a description")}
+            placeholder={t(
+              "modals.give-this-category-a-description",
+              "Give this category a description"
+            )}
             onChange={(ev) => setDescription(ev.target.value)}
           />
 

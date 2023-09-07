@@ -37,13 +37,19 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
         onSuccess: () => {
           notification(
             t("invite-modal.success", "Success"),
-            t("Invitation sent to {user}", { user: data.user }),
+            t("invite-modal.invitation-sent-to", "Invitation sent to {user}", {
+              user: data.user,
+            }),
             "success"
           )
           handleClose()
         },
         onError: (error) => {
-          notification(t("invite-modal.error", "Error"), getErrorMessage(error), "error")
+          notification(
+            t("invite-modal.error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )
@@ -60,7 +66,9 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Body>
           <Modal.Header handleClose={handleClose}>
-            <span className="inter-xlarge-semibold">{t("invite-modal.invite-users", "Invite Users")}</span>
+            <span className="inter-xlarge-semibold">
+              {t("invite-modal.invite-users", "Invite Users")}
+            </span>
           </Modal.Header>
           <Modal.Content>
             <div className="gap-y-base flex flex-col">
@@ -73,7 +81,10 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
               <Controller
                 name="role"
                 control={control}
-                defaultValue={{ label: t("invite-modal.member", "Member"), value: "member" }}
+                defaultValue={{
+                  label: t("invite-modal.member", "Member"),
+                  value: "member",
+                }}
                 render={({ field: { value, onChange, onBlur, ref } }) => {
                   return (
                     <NextSelect

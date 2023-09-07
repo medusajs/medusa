@@ -70,7 +70,9 @@ const ItemsToSendForm = ({ form, order }: Props) => {
       })}
     >
       <div className="flex w-full items-center">
-        <h2 className="inter-base-semibold">{t("items-to-send-form.items-to-send", "Items to send")}</h2>
+        <h2 className="inter-base-semibold">
+          {t("items-to-send-form.items-to-send", "Items to send")}
+        </h2>
       </div>
       {fields.length > 0 && <AdditionalItemsTable instance={tableInstance} />}
 

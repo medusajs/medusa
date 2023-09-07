@@ -81,13 +81,20 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
       onSuccess: () => {
         notifcation(
           t("general-section.success", "Success"),
-          t("general-section.region-was-successfully-updated", "Region was successfully updated"),
+          t(
+            "general-section.region-was-successfully-updated",
+            "Region was successfully updated"
+          ),
           "success"
         )
         closeAndReset()
       },
       onError: (err) => {
-        notifcation(t("general-section.error", "Error"), getErrorMessage(err), "error")
+        notifcation(
+          t("general-section.error", "Error"),
+          getErrorMessage(err),
+          "error"
+        )
       },
     })
   })
@@ -96,22 +103,30 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
     <Modal handleClose={closeAndReset} open={open}>
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
-          <h1 className="inter-xlarge-semibold">{t("general-section.edit-region-details", "Edit Region Details")}</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("general-section.edit-region-details", "Edit Region Details")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-              <h3 className="inter-base-semibold mb-base">{t("general-section.details", "Details")}</h3>
+              <h3 className="inter-base-semibold mb-base">
+                {t("general-section.details", "Details")}
+              </h3>
               <RegionDetailsForm form={nestedForm(form, "details")} />
             </div>
             <div className="bg-grey-20 my-xlarge h-px w-full" />
             <div>
-              <h3 className="inter-base-semibold mb-base">{t("general-section.providers", "Providers")}</h3>
+              <h3 className="inter-base-semibold mb-base">
+                {t("general-section.providers", "Providers")}
+              </h3>
               <RegionProvidersForm form={nestedForm(form, "providers")} />
             </div>
             <div className="bg-grey-20 my-xlarge h-px w-full" />
             <div>
-              <h3 className="inter-base-semibold mb-base">{t("general-section.metadata", "Metadata")}</h3>
+              <h3 className="inter-base-semibold mb-base">
+                {t("general-section.metadata", "Metadata")}
+              </h3>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </Modal.Content>

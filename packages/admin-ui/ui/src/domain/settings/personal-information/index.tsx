@@ -19,9 +19,17 @@ const PersonalInformation = () => {
       />
       <div className="rounded-rounded border-grey-20 pt-large pb-xlarge px-xlarge gap-y-xlarge large:max-w-[50%] flex flex-col border bg-white">
         <div className="gap-y-2xsmall flex flex-col">
-          <h1 className="inter-xlarge-semibold">{t("personal-information.personal-information", "Personal information")}</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t(
+              "personal-information.personal-information",
+              "Personal information"
+            )}
+          </h1>
           <p className="inter-base-regular text-grey-50">
-            {t("personal-information.manage-your-medusa-profile", "Manage your Medusa profile")}
+            {t(
+              "personal-information.manage-your-medusa-profile",
+              "Manage your Medusa profile"
+            )}
           </p>
         </div>
         <div className="flex flex-col">

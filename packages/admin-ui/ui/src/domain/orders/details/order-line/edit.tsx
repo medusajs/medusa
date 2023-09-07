@@ -84,7 +84,10 @@ const OrderEditLine = ({
     if (!item.variant) {
       notification(
         t("order-line.warning", "Warning"),
-        t("order-line.cannot-duplicate-an-item-without-a-variant", "Cannot duplicate an item without a variant"),
+        t(
+          "order-line.cannot-duplicate-an-item-without-a-variant",
+          "Cannot duplicate an item without a variant"
+        ),
         "warning"
       )
       return
@@ -96,7 +99,11 @@ const OrderEditLine = ({
         quantity: item.quantity,
       })
     } catch (e) {
-      notification(t("order-line.error", "Error"), t("order-line.failed-to-duplicate-item", "Failed to duplicate item"), "error")
+      notification(
+        t("order-line.error", "Error"),
+        t("order-line.failed-to-duplicate-item", "Failed to duplicate item"),
+        "error"
+      )
     }
   }
 
@@ -113,9 +120,17 @@ const OrderEditLine = ({
       } else {
         await removeItem()
       }
-      notification(t("order-line.success", "Success"), t("order-line.item-removed", "Item removed"), "success")
+      notification(
+        t("order-line.success", "Success"),
+        t("order-line.item-removed", "Item removed"),
+        "success"
+      )
     } catch (e) {
-      notification(t("order-line.error", "Error"), t("order-line.failed-to-remove-item", "Failed to remove item"), "error")
+      notification(
+        t("order-line.error", "Error"),
+        t("order-line.failed-to-remove-item", "Failed to remove item"),
+        "error"
+      )
     }
   }
 
@@ -124,9 +139,20 @@ const OrderEditLine = ({
     try {
       await onRemove()
       await addLineItem({ variant_id: newVariantId, quantity: item.quantity })
-      notification(t("order-line.success", "Success"), t("order-line.item-added", "Item added"), "success")
+      notification(
+        t("order-line.success", "Success"),
+        t("order-line.item-added", "Item added"),
+        "success"
+      )
     } catch (e) {
-      notification(t("order-line.error", "Error"), t("order-line.failed-to-replace-the-item", "Failed to replace the item"), "error")
+      notification(
+        t("order-line.error", "Error"),
+        t(
+          "order-line.failed-to-replace-the-item",
+          "Failed to replace the item"
+        ),
+        "error"
+      )
     }
   }
 
@@ -168,6 +194,7 @@ const OrderEditLine = ({
       side="top"
       open={isLocked ? undefined : false}
       content={t(
+        "order-line.this-line-item-is-part-of-a-fulfillment-and-cannot-be-edited-cancel-the-fulfillment-to-edit-the-line-item",
         "This line item is part of a fulfillment and cannot be edited. Cancel the fulfillment to edit the line item."
       )}
     >

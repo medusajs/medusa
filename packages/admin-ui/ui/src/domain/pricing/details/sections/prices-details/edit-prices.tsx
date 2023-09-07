@@ -45,16 +45,21 @@ const EditPrices = ({ close, id }) => {
       <FocusModal.Main>
         <div className="mb-[25%] flex justify-center">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 w-full pt-16">
-            <h1 className="inter-xlarge-semibold">{t("prices-details.edit-prices", "Edit prices")}</h1>
+            <h1 className="inter-xlarge-semibold">
+              {t("prices-details.edit-prices", "Edit prices")}
+            </h1>
             <div className="mt-7">
               <div className="flex items-center gap-1.5">
-                <h6 className="inter-large-semibold">{t("prices-details.prices", "Prices")}</h6>
+                <h6 className="inter-large-semibold">
+                  {t("prices-details.prices", "Prices")}
+                </h6>
                 <Tooltip content="info tooltip">
                   <InfoIcon size={16} className="text-grey-40" />
                 </Tooltip>
               </div>
               <span className="inter-base-regular text-grey-50">
                 {t(
+                  "prices-details.you-will-be-able-to-override-the-prices-for-the-products-you-add-here",
                   "You will be able to override the prices for the products you add here"
                 )}
               </span>

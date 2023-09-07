@@ -47,13 +47,20 @@ const AddCurrenciesScreen = () => {
         onSuccess: () => {
           notification(
             t("store-currencies.success", "Success"),
-            t("store-currencies.successfully-updated-currencies", "Successfully updated currencies"),
+            t(
+              "store-currencies.successfully-updated-currencies",
+              "Successfully updated currencies"
+            ),
             "success"
           )
           next()
         },
         onError: (err) => {
-          notification(t("store-currencies.error", "Error"), getErrorMessage(err), "error")
+          notification(
+            t("store-currencies.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )

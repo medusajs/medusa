@@ -51,7 +51,7 @@ const EditConditionsModal = ({ open, condition, discount, onClose }: Props) => {
         <Modal.Body>
           <Modal.Header handleClose={onClose}>
             <h1 className="inter-xlarge-semibold">
-              {t("Edit {type} in Discount Condition", {
+              {t("edit-condition.title", "Edit {type} in Discount Condition", {
                 type: capitalize(getTitle(condition?.type, t)),
               })}
             </h1>

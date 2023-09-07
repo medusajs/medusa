@@ -15,7 +15,10 @@ const General = () => {
       forceMountContent
       required
       title={t("sections.general", "General")}
-      tooltip={t("sections.general-information-for-the-price-list", "General information for the price list.")}
+      tooltip={t(
+        "sections.general-information-for-the-price-list",
+        "General information for the price list."
+      )}
       value="general"
     >
       <div className="gap-y-small group-radix-state-open:mt-5 accordion-margin-transition flex flex-col">
@@ -28,7 +31,10 @@ const General = () => {
         <InputField
           label={t("sections.description", "Description")}
           required
-          placeholder={t("sections.for-our-business-partners", "For our business partners...")}
+          placeholder={t(
+            "sections.for-our-business-partners",
+            "For our business partners..."
+          )}
           {...register("description", { required: "Description is required" })}
         />
         <FeatureToggle featureFlag="tax_inclusive_pricing">
@@ -46,7 +52,10 @@ const General = () => {
               />
             </div>
             <p className="inter-base-regular text-grey-50">
-              {t("sections.choose-to-make-all-prices-in-this-list-inclusive-of-tax", "Choose to make all prices in this list inclusive of tax.")}
+              {t(
+                "sections.choose-to-make-all-prices-in-this-list-inclusive-of-tax",
+                "Choose to make all prices in this list inclusive of tax."
+              )}
             </p>
           </div>
         </FeatureToggle>

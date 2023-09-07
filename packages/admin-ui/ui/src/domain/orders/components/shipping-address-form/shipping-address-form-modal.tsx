@@ -107,7 +107,10 @@ export const useShippingAddressFormScreen = () => {
 
   const pushScreen = (props: Props) => {
     push({
-      title: t("shipping-address-form.shipping-information", "Shipping Information"),
+      title: t(
+        "shipping-address-form.shipping-information",
+        "Shipping Information"
+      ),
       onBack: () => pop(),
       view: <ShippingAddressFormScreen {...props} />,
     })

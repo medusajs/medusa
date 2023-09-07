@@ -33,6 +33,7 @@ function General(props: GeneralProps) {
           type="string"
           name="name"
           placeholder={t(
+            "form.website-app-amazon-physical-store-pos-facebook-product-feed",
             "Website, app, Amazon, physical store POS, facebook product feed..."
           )}
           value={name}
@@ -44,7 +45,10 @@ function General(props: GeneralProps) {
           label={t("form.description", "Description")}
           type="string"
           name="description"
-          placeholder={t("form.available-products-at-our-website-app", "Available products at our website, app...")}
+          placeholder={t(
+            "form.available-products-at-our-website-app",
+            "Available products at our website, app..."
+          )}
           value={description}
           onChange={(ev) => setDescription(ev.target.value)}
         />

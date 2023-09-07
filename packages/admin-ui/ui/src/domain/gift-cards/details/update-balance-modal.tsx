@@ -51,7 +51,10 @@ const UpdateBalanceModal = ({
         onSuccess: () => {
           notification(
             t("details.balance-updated", "Balance updated"),
-            t("details.gift-card-balance-was-updated", "Gift card balance was updated"),
+            t(
+              "details.gift-card-balance-was-updated",
+              "Gift card balance was updated"
+            ),
             "success"
           )
 
@@ -78,7 +81,9 @@ const UpdateBalanceModal = ({
     <Modal open={open} handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">{t("details.update-balance", "Update Balance")}</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("details.update-balance", "Update Balance")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>

@@ -102,7 +102,9 @@ function Input(props: InputProps) {
         )}
         {selectedCount === 0 ? (
           <span className="text-grey-50">
-            {placeholder ? placeholder : t("multiselect.choose-categories", "Choose categories")}
+            {placeholder
+              ? placeholder
+              : t("multiselect.choose-categories", "Choose categories")}
           </span>
         ) : null}
       </div>
@@ -193,7 +195,11 @@ function PopupItem(props: PopupItemProps) {
         <div className="flex items-center gap-2">
           {!!selectedSubcategoriesCount && (
             <span className="text-small text-gray-400">
-              {t("selectedWithCounts", { count: selectedSubcategoriesCount })}
+              {t(
+                "domain-categories-multiselect.selected-with-counts",
+                "{count}",
+                { count: selectedSubcategoriesCount }
+              )}
             </span>
           )}
           <ChevronRightIcon size={16} />

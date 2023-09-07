@@ -57,7 +57,7 @@ const SelectShippingMethod = () => {
       <span className="inter-base-semibold">
         Shipping method{" "}
         <span className="inter-base-regular text-grey-50">
-          {t("(To {name})", { name: region!.name })}
+          {t("select-shipping.to-name", "(To {name})", { name: region!.name })}
         </span>
       </span>
 
@@ -68,9 +68,12 @@ const SelectShippingMethod = () => {
               <AlertIcon size={20} />
             </div>
             <div className="flex flex-col">
-              <span className="inter-small-semibold">{t("components.attention", "Attention!")}</span>
+              <span className="inter-small-semibold">
+                {t("components.attention", "Attention!")}
+              </span>
               {t(
-                "You don't have any options for orders without shipping. Please add one (e.g. \"In-store fulfillment\") with \"Show on website\" unchecked in region settings and continue."
+                "components.you-dont-have-any-options-for-orders-without-shipping-please-add-one-e-g-in-store-fulfillment-with-show-on-website-unchecked-in-region-settings-and-continue",
+                'You don\'t have any options for orders without shipping. Please add one (e.g. "In-store fulfillment") with "Show on website" unchecked in region settings and continue.'
               )}
             </div>
           </div>
@@ -82,7 +85,10 @@ const SelectShippingMethod = () => {
               render={({ field: { value, onChange } }) => {
                 return (
                   <Select
-                    label={t("components.choose-a-shipping-method", "Choose a shipping method")}
+                    label={t(
+                      "components.choose-a-shipping-method",
+                      "Choose a shipping method"
+                    )}
                     onChange={onChange}
                     value={value}
                     options={
@@ -126,7 +132,10 @@ const SelectShippingMethod = () => {
                             currentCurrency={region.currency_code}
                           >
                             <CurrencyInput.Amount
-                              label={t("components.custom-price", "Custom Price")}
+                              label={t(
+                                "components.custom-price",
+                                "Custom Price"
+                              )}
                               amount={value}
                               onChange={onChange}
                             />

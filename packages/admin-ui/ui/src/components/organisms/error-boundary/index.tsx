@@ -94,7 +94,11 @@ class ErrorBoundary extends React.Component<Props, State> {
                   variant="primary"
                   onClick={this.dismissError}
                 >
-                  <Translation>{(t) => t("error-boundary.back-to-dashboard", "Back to dashboard")}</Translation>
+                  <Translation>
+                    {(t) =>
+                      t("error-boundary.back-to-dashboard", "Back to dashboard")
+                    }
+                  </Translation>
                 </Button>
               </div>
             </div>
@@ -122,7 +126,10 @@ const shouldTrackEvent = async (error: Error) => {
 }
 
 const errorMessage = (t: TFunction, status?: number) => {
-  const defaultMessage = t("error-boundary.an-unknown-error-occured", "An unknown error occured")
+  const defaultMessage = t(
+    "error-boundary.an-unknown-error-occured",
+    "An unknown error occured"
+  )
 
   if (!status) {
     return defaultMessage
@@ -131,10 +138,19 @@ const errorMessage = (t: TFunction, status?: number) => {
   const message = {
     400: t("error-boundary.bad-request", "Bad request"),
     401: t("error-boundary.you-are-not-logged-in", "You are not logged in"),
-    403: t("error-boundary.you-do-not-have-permission-perform-this-action", "You do not have permission perform this action"),
+    403: t(
+      "error-boundary.you-do-not-have-permission-perform-this-action",
+      "You do not have permission perform this action"
+    ),
     404: t("error-boundary.page-was-not-found", "Page was not found"),
-    500: t("error-boundary.an-unknown-server-error-occured", "An unknown server error occured"),
-    503: t("error-boundary.server-is-currently-unavailable", "Server is currently unavailable"),
+    500: t(
+      "error-boundary.an-unknown-server-error-occured",
+      "An unknown server error occured"
+    ),
+    503: t(
+      "error-boundary.server-is-currently-unavailable",
+      "Server is currently unavailable"
+    ),
   }[status]
 
   return message || defaultMessage
@@ -142,6 +158,7 @@ const errorMessage = (t: TFunction, status?: number) => {
 
 const errorDescription = (t: TFunction, status?: number) => {
   const defaultDescription = t(
+    "error-boundary.an-error-occurred-with-unspecified-causes-this-is-most-likely-due-to-a-techinical-issue-on-our-end-please-try-refreshing-the-page-if-the-issue-keeps-happening-contact-your-administrator",
     "An error occurred with unspecified causes, this is most likely due to a techinical issue on our end. Please try refreshing the page. If the issue keeps happening, contact your administrator."
   )
 
@@ -150,18 +167,28 @@ const errorDescription = (t: TFunction, status?: number) => {
   }
 
   const description = {
-    400: t("error-boundary.the-request-was-malformed-fix-your-request-and-please-try-again", "The request was malformed, fix your request and please try again."),
-    401: t("error-boundary.you-are-not-logged-in-please-log-in-to-proceed", "You are not logged in, please log in to proceed."),
+    400: t(
+      "error-boundary.the-request-was-malformed-fix-your-request-and-please-try-again",
+      "The request was malformed, fix your request and please try again."
+    ),
+    401: t(
+      "error-boundary.you-are-not-logged-in-please-log-in-to-proceed",
+      "You are not logged in, please log in to proceed."
+    ),
     403: t(
+      "error-boundary.you-do-not-have-permission-perform-this-action-if-you-think-this-is-a-mistake-contact-your-administrator",
       "You do not have permission perform this action, if you think this is a mistake, contact your administrator."
     ),
     404: t(
+      "error-boundary.the-page-you-have-requested-was-not-found-please-check-the-url-and-try-again",
       "The page you have requested was not found, please check the URL and try again."
     ),
     500: t(
+      "error-boundary.the-server-was-not-able-to-handle-your-request-this-is-mostly-likely-due-to-a-techinical-issue-on-our-end-please-try-again-if-the-issue-keeps-happening-contact-your-administrator",
       "The server was not able to handle your request, this is mostly likely due to a techinical issue on our end. Please try again. If the issue keeps happening, contact your administrator."
     ),
     503: t(
+      "error-boundary.the-server-is-temporarily-unavailable-and-your-request-could-not-be-processed-please-try-again-later-if-the-issue-keeps-happening-contact-your-administrator",
       "The server is temporarily unavailable, and your request could not be processed. Please try again later. If the issue keeps happening, contact your administrator."
     ),
   }[status]

@@ -178,7 +178,9 @@ function EditCustomersTable(props: EditCustomersTableProps) {
     <Modal handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h3 className="inter-xlarge-semibold">{t("customer-group-table.edit-customers", "Edit Customers")}</h3>
+          <h3 className="inter-xlarge-semibold">
+            {t("customer-group-table.edit-customers", "Edit Customers")}
+          </h3>
         </Modal.Header>
 
         <Modal.Content>

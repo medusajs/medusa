@@ -100,7 +100,14 @@ const CollectionDetails = () => {
       }
 
       setShowAddProducts(false)
-      notification(t("details.success", "Success"), t("details.updated-products-in-collection", "Updated products in collection"), "success")
+      notification(
+        t("details.success", "Success"),
+        t(
+          "details.updated-products-in-collection",
+          "Updated products in collection"
+        ),
+        "success"
+      )
       refetch()
     } catch (error) {
       notification(t("details.error", "Error"), getErrorMessage(error), "error")
@@ -189,7 +196,9 @@ const CollectionDetails = () => {
               </div>
               {collection.metadata && (
                 <div className="mt-large gap-y-base flex flex-col">
-                  <h3 className="inter-base-semibold">{t("details.metadata", "Metadata")}</h3>
+                  <h3 className="inter-base-semibold">
+                    {t("details.metadata", "Metadata")}
+                  </h3>
                   <div>
                     <JSONView data={collection.metadata} />
                   </div>
@@ -209,7 +218,10 @@ const CollectionDetails = () => {
             ]}
           >
             <p className="text-grey-50 inter-base-regular mt-xsmall mb-base">
-              {t("details.products-in-this-collection", "Products in this collection")}
+              {t(
+                "details.products-in-this-collection",
+                "Products in this collection"
+              )}
             </p>
             {collection && (
               <ViewProductsTable
@@ -231,7 +243,10 @@ const CollectionDetails = () => {
             )
           })}
 
-          <RawJSON data={collection} title={t("details.raw-collection", "Raw collection")} />
+          <RawJSON
+            data={collection}
+            title={t("details.raw-collection", "Raw collection")}
+          />
         </div>
         <Spacer />
       </div>
@@ -247,7 +262,10 @@ const CollectionDetails = () => {
         <DeletePrompt
           handleClose={() => setShowDelete(!showDelete)}
           heading={t("details.delete-collection", "Delete collection")}
-          successText={t("details.successfully-deleted-collection", "Successfully deleted collection")}
+          successText={t(
+            "details.successfully-deleted-collection",
+            "Successfully deleted collection"
+          )}
           onDelete={async () => handleDelete()}
           confirmText={t("details.yes-delete", "Yes, delete")}
         />

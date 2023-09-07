@@ -53,14 +53,21 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
         onSuccess: ({ discount }) => {
           notification(
             t("configurations.success", "Success"),
-            t("configurations.discount-updated-successfully", "Discount updated successfully"),
+            t(
+              "configurations.discount-updated-successfully",
+              "Discount updated successfully"
+            ),
             "success"
           )
           reset(getDefaultValues(discount))
           onClose()
         },
         onError: (error) => {
-          notification(t("configurations.error", "Error"), getErrorMessage(error), "error")
+          notification(
+            t("configurations.error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )
@@ -76,7 +83,9 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
     <Modal open={open} handleClose={onClose} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">{t("configurations.edit-configurations", "Edit configurations")}</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("configurations.edit-configurations", "Edit configurations")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>

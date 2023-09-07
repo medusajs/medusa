@@ -61,7 +61,10 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
             name="regions"
             control={control}
             rules={{
-              required: t("sections.at-least-one-region-is-required", "At least one region is required"),
+              required: t(
+                "sections.at-least-one-region-is-required",
+                "At least one region is required"
+              ),
               validate: (value) =>
                 Array.isArray(value) ? value.length > 0 : !!value,
             }}
@@ -72,7 +75,10 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                   onChange={(value) => {
                     onChange(type === "fixed" ? [value] : value)
                   }}
-                  label={t("sections.choose-valid-regions", "Choose valid regions")}
+                  label={t(
+                    "sections.choose-valid-regions",
+                    "Choose valid regions"
+                  )}
                   isMulti={type !== "fixed"}
                   selectAll={type !== "fixed"}
                   isSearchable
@@ -88,7 +94,9 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
               className="flex-1"
               placeholder={t("sections.summersale-10", "SUMMERSALE10")}
               required
-              {...register("code", { required: t("sections.code-is-required", "Code is required") })}
+              {...register("code", {
+                required: t("sections.code-is-required", "Code is required"),
+              })}
             />
 
             {type !== "free_shipping" && (
@@ -105,7 +113,10 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                         name="rule.value"
                         control={control}
                         rules={{
-                          required: t("sections.amount-is-required", "Amount is required"),
+                          required: t(
+                            "sections.amount-is-required",
+                            "Amount is required"
+                          ),
                           min: 1,
                         }}
                         render={({ field: { value, onChange } }) => {
@@ -144,10 +155,16 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
           <div className="text-grey-50 inter-small-regular mb-6 flex flex-col">
             <span>
               {t(
-                "The code your customers will enter during checkout. This will appear on your customer’s invoice."
+                "sections.the-code-your-customers-will-enter-during-checkout-this-will-appear-on-your-customers-invoice",
+                "The code your customers will enter during checkout. This will appear on your customer\u2019s invoice."
               )}
             </span>
-            <span>{t("sections.uppercase-letters-and-numbers-only", "Uppercase letters and numbers only.")}</span>
+            <span>
+              {t(
+                "sections.uppercase-letters-and-numbers-only",
+                "Uppercase letters and numbers only."
+              )}
+            </span>
           </div>
           <TextArea
             label={t("sections.description", "Description")}
@@ -165,7 +182,10 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <Checkbox
-                    label={t("sections.this-is-a-template-discount", "This is a template discount")}
+                    label={t(
+                      "sections.this-is-a-template-discount",
+                      "This is a template discount"
+                    )}
                     name="is_dynamic"
                     id="is_dynamic"
                     checked={value}
@@ -176,6 +196,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
             />
             <IconTooltip
               content={t(
+                "sections.template-discounts-allow-you-to-define-a-set-of-rules-that-can-be-used-across-a-group-of-discounts-this-is-useful-in-campaigns-that-should-generate-unique-codes-for-each-user-but-where-the-rules-for-all-unique-codes-should-be-the-same",
                 "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same."
               )}
             />

@@ -138,10 +138,14 @@ export const FormattedFulfillment = ({
                 "templates.fulfillment-has-been-canceled",
                 "Fulfillment has been canceled"
               )
-            : t("{title} Fulfilled by {provider}", {
-                title: fulfillmentObj.title,
-                provider: capitalize(fulfillment.provider_id),
-              })}
+            : t(
+                "templates.fulfilled-by-provider",
+                "{title} Fulfilled by {provider}",
+                {
+                  title: fulfillmentObj.title,
+                  provider: capitalize(fulfillment.provider_id),
+                }
+              )}
         </div>
         <div className="text-grey-50 flex">
           {!fulfillment.shipped_at

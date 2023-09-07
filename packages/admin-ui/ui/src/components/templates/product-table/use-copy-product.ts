@@ -105,7 +105,7 @@ const useCopyProduct = () => {
           "product",
           "product_id",
           "variant_rank",
-          "purchasable"
+          "purchasable",
         ])
 
         const variantBase = Object.entries(rest).reduce((acc, [key, value]) => {
@@ -183,10 +183,18 @@ const useCopyProduct = () => {
     mutate(base as AdminPostProductsReq, {
       onSuccess: ({ product: copiedProduct }) => {
         navigate(`/a/products/${copiedProduct.id}`)
-        notification(t("Success"), t("Created a new product"), "success")
+        notification(
+          t("product-table.copy.success", "Success"),
+          t("product-table.copy.created-anew-product", "Created a new product"),
+          "success"
+        )
       },
       onError: (error) => {
-        notification(t("Error"), getErrorMessage(error), "error")
+        notification(
+          t("product-table.copy.error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }

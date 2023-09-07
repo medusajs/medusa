@@ -51,13 +51,19 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
           control={control}
           name={path("currency_code")}
           rules={{
-            required: t("region-form.currency-code-is-required", "Currency code is required"),
+            required: t(
+              "region-form.currency-code-is-required",
+              "Currency code is required"
+            ),
           }}
           render={({ field }) => {
             return (
               <NextSelect
                 label={t("region-form.currency", "Currency")}
-                placeholder={t("region-form.choose-currency", "Choose currency")}
+                placeholder={t(
+                  "region-form.choose-currency",
+                  "Choose currency"
+                )}
                 required
                 {...field}
                 options={currencyOptions}
@@ -77,10 +83,18 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
               step={1}
               type={"number"}
               {...register(path("tax_rate"), {
-                required: isCreate ? t("region-form.tax-rate-is-required", "Tax rate is required") : undefined,
+                required: isCreate
+                  ? t(
+                      "region-form.tax-rate-is-required",
+                      "Tax rate is required"
+                    )
+                  : undefined,
                 max: {
                   value: 100,
-                  message: t("region-form.tax-rate-must-be-equal-to-or-less-than-100", "Tax rate must be equal to or less than 100"),
+                  message: t(
+                    "region-form.tax-rate-must-be-equal-to-or-less-than-100",
+                    "Tax rate must be equal to or less than 100"
+                  ),
                 },
                 min: FormValidator.nonNegativeNumberRule("Tax rate"),
                 valueAsNumber: true,
@@ -102,7 +116,10 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
             return (
               <NextSelect
                 label={t("region-form.countries", "Countries")}
-                placeholder={t("region-form.choose-countries", "Choose countries")}
+                placeholder={t(
+                  "region-form.choose-countries",
+                  "Choose countries"
+                )}
                 isMulti
                 selectAll
                 {...field}
@@ -117,9 +134,14 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
       <FeatureToggle featureFlag="tax_inclusive_pricing">
         <div className="mt-xlarge flex items-start justify-between">
           <div className="gap-y-2xsmall flex flex-col">
-            <h3 className="inter-base-semibold">{t("region-form.tax-inclusive-prices", "Tax inclusive prices")}</h3>
+            <h3 className="inter-base-semibold">
+              {t("region-form.tax-inclusive-prices", "Tax inclusive prices")}
+            </h3>
             <p className="inter-base-regular text-grey-50">
-              {t("region-form.when-enabled-region-prices-will-be-tax-inclusive", "When enabled region prices will be tax inclusive.")}
+              {t(
+                "region-form.when-enabled-region-prices-will-be-tax-inclusive",
+                "When enabled region prices will be tax inclusive."
+              )}
             </p>
           </div>
           <Controller

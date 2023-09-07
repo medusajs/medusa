@@ -23,13 +23,19 @@ const ConditionOperator: React.FC<ConditionOperatorProps> = ({
         className="w-full"
         label="In"
         value={DiscountConditionOperator.IN}
-        description={t("shared.applies-to-the-selected-items", "Applies to the selected items.")}
+        description={t(
+          "shared.applies-to-the-selected-items",
+          "Applies to the selected items."
+        )}
       />
       <RadioGroup.Item
         className="w-full"
         label="Not in"
         value={DiscountConditionOperator.NOT_IN}
-        description={t("shared.applies-to-all-items-except-the-selected-items", "Applies to all items except the selected items.")}
+        description={t(
+          "shared.applies-to-all-items-except-the-selected-items",
+          "Applies to all items except the selected items."
+        )}
       />
     </RadioGroup.Root>
   )

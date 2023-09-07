@@ -25,13 +25,19 @@ const DiscountAllocation = () => {
               value={AllocationType.TOTAL}
               className="flex-1"
               label={t("sections.total-amount", "Total amount")}
-              description={t("sections.apply-to-the-total-amount", "Apply to the total amount")}
+              description={t(
+                "sections.apply-to-the-total-amount",
+                "Apply to the total amount"
+              )}
             />
             <RadioGroup.Item
               value={AllocationType.ITEM}
               className="flex-1"
               label={t("sections.item-specific", "Item specific")}
-              description={t("sections.apply-to-every-allowed-item", "Apply to every allowed item")}
+              description={t(
+                "sections.apply-to-every-allowed-item",
+                "Apply to every allowed item"
+              )}
             />
           </RadioGroup.Root>
         )

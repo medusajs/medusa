@@ -37,7 +37,10 @@ const useConditionModalItems = ({
       {
         label: t("discount-form.product", "Product"),
         value: DiscountConditionType.PRODUCTS,
-        description: t("discount-form.only-for-specific-products", "Only for specific products"),
+        description: t(
+          "discount-form.only-for-specific-products",
+          "Only for specific products"
+        ),
         onClick: () =>
           layeredModalContext.push({
             title: t("discount-form.choose-products", "Choose products"),
@@ -52,7 +55,10 @@ const useConditionModalItems = ({
       {
         label: t("discount-form.customer-group", "Customer group"),
         value: DiscountConditionType.CUSTOMER_GROUPS,
-        description: t("discount-form.only-for-specific-customer-groups", "Only for specific customer groups"),
+        description: t(
+          "discount-form.only-for-specific-customer-groups",
+          "Only for specific customer groups"
+        ),
         onClick: () => {
           layeredModalContext.push({
             title: t("discount-form.choose-groups", "Choose groups"),
@@ -68,7 +74,10 @@ const useConditionModalItems = ({
       {
         label: t("discount-form.tag", "Tag"),
         value: DiscountConditionType.PRODUCT_TAGS,
-        description: t("discount-form.only-for-specific-tags", "Only for specific tags"),
+        description: t(
+          "discount-form.only-for-specific-tags",
+          "Only for specific tags"
+        ),
         onClick: () =>
           layeredModalContext.push({
             title: "Choose tags",
@@ -83,7 +92,10 @@ const useConditionModalItems = ({
       {
         label: t("discount-form.collection", "Collection"),
         value: DiscountConditionType.PRODUCT_COLLECTIONS,
-        description: t("discount-form.only-for-specific-product-collections", "Only for specific product collections"),
+        description: t(
+          "discount-form.only-for-specific-product-collections",
+          "Only for specific product collections"
+        ),
         onClick: () =>
           layeredModalContext.push({
             title: t("discount-form.choose-collections", "Choose collections"),
@@ -98,7 +110,10 @@ const useConditionModalItems = ({
       {
         label: t("discount-form.type", "Type"),
         value: DiscountConditionType.PRODUCT_TYPES,
-        description: t("discount-form.only-for-specific-product-types", "Only for specific product types"),
+        description: t(
+          "discount-form.only-for-specific-product-types",
+          "Only for specific product types"
+        ),
         onClick: () =>
           layeredModalContext.push({
             title: t("discount-form.choose-types", "Choose types"),

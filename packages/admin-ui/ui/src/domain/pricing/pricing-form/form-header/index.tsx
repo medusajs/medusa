@@ -50,7 +50,11 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
         navigate(`/a/pricing/${price_list.id}`)
       },
       onError: (error) => {
-        notification(t("form-header.error", "Error"), getErrorMessage(error), "error")
+        notification(
+          t("form-header.error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }
@@ -65,7 +69,11 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
         navigate(`/a/pricing/${price_list.id}`)
       },
       onError: (error) => {
-        notification(t("form-header.error", "Error"), getErrorMessage(error), "error")
+        notification(
+          t("form-header.error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }
@@ -79,13 +87,20 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
       onSuccess: ({ price_list }) => {
         notification(
           t("form-header.success", "Success"),
-          t("form-header.successfully-updated-price-list", "Successfully updated price list"),
+          t(
+            "form-header.successfully-updated-price-list",
+            "Successfully updated price list"
+          ),
           "success"
         )
         closeForm()
       },
       onError: (error) => {
-        notification(t("form-header.error", "Error"), getErrorMessage(error), "error")
+        notification(
+          t("form-header.error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }
@@ -96,7 +111,11 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
         props.onClose && props.onClose()
       },
       onError: (error) => {
-        notification(t("form-header.error", "Error"), getErrorMessage(error), "error")
+        notification(
+          t("form-header.error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }

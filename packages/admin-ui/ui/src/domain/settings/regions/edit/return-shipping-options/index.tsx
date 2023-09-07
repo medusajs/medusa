@@ -22,7 +22,10 @@ const ReturnShippingOptions = ({ region }: Props) => {
   return (
     <>
       <Section
-        title={t("return-shipping-options.return-shipping-options", "Return Shipping Options")}
+        title={t(
+          "return-shipping-options.return-shipping-options",
+          "Return Shipping Options"
+        )}
         actions={[
           {
             label: t("return-shipping-options.add-option", "Add Option"),
@@ -33,6 +36,7 @@ const ReturnShippingOptions = ({ region }: Props) => {
         <div className="gap-y-large flex flex-col">
           <p className="inter-base-regular text-grey-50">
             {t(
+              "return-shipping-options.enter-specifics-about-available-regional-return-shipment-methods",
               "Enter specifics about available regional return shipment methods."
             )}
           </p>

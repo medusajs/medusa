@@ -51,7 +51,10 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
             size="small"
             type="button"
             className="h-10 w-10"
-            aria-label={t("refund-amount-form.cancel-editing-refund-amount", "Cancel editing refund amount")}
+            aria-label={t(
+              "refund-amount-form.cancel-editing-refund-amount",
+              "Cancel editing refund amount"
+            )}
             onClick={disableEdit}
           >
             <CrossIcon size={16} className="text-grey-40" />
@@ -62,7 +65,10 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
             size="small"
             type="button"
             onClick={enableEdit}
-            aria-label={t("refund-amount-form.edit-refund-amount", "Edit refund amount")}
+            aria-label={t(
+              "refund-amount-form.edit-refund-amount",
+              "Edit refund amount"
+            )}
             className="h-10 w-10"
           >
             <EditIcon size={16} className="text-grey-40" />
@@ -77,12 +83,18 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
             rules={{
               min: {
                 value: 0,
-                message: t("refund-amount-form.refund-amount-cannot-be-negative", "Refund amount cannot be negative"),
+                message: t(
+                  "refund-amount-form.refund-amount-cannot-be-negative",
+                  "Refund amount cannot be negative"
+                ),
               },
               required: true,
               validate: (value) => {
                 if (value === undefined || !(value >= 0)) {
-                  return t("refund-amount-form.the-refund-amount-must-be-at-least-0", "The refund amount must be at least 0")
+                  return t(
+                    "refund-amount-form.the-refund-amount-must-be-at-least-0",
+                    "The refund amount must be at least 0"
+                  )
                 }
               },
             }}

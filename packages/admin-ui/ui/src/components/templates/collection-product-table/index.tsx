@@ -166,7 +166,10 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
       <Table
         enableSearch
         handleSearch={handleSearch}
-        searchPlaceholder={t("collection-product-table.search-products", "Search Products")}
+        searchPlaceholder={t(
+          "collection-product-table.search-products",
+          "Search Products"
+        )}
         filteringOptions={filteringOptions}
         {...getTableProps()}
         className="h-full"

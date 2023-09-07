@@ -19,19 +19,29 @@ const usePriceListActions = (priceList) => {
   const onDelete = async () => {
     const shouldDelete = await dialog({
       heading: t("price-list-table.delete-price-list", "Delete Price List"),
-      text: t("price-list-table.are-you-sure-you-want-to-delete-this-price-list", "Are you sure you want to delete this price list?"),
+      text: t(
+        "price-list-table.are-you-sure-you-want-to-delete-this-price-list",
+        "Are you sure you want to delete this price list?"
+      ),
     })
     if (shouldDelete) {
       deletePrice.mutate(undefined, {
         onSuccess: () => {
           notification(
             t("price-list-table.success", "Success"),
-            t("price-list-table.successfully-deleted-the-price-list", "Successfully deleted the price list"),
+            t(
+              "price-list-table.successfully-deleted-the-price-list",
+              "Successfully deleted the price list"
+            ),
             "success"
           )
         },
         onError: (err) =>
-          notification(t("price-list-table.error", "Error"), getErrorMessage(err), "error"),
+          notification(
+            t("price-list-table.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          ),
       })
     }
   }
@@ -46,8 +56,14 @@ const usePriceListActions = (priceList) => {
           notification(
             t("price-list-table.success", "Success"),
             isActive(priceList)
-              ? t("price-list-table.successfully-unpublished-price-list", "Successfully unpublished price list")
-              : t("price-list-table.successfully-published-price-list", "Successfully published price list"),
+              ? t(
+                  "price-list-table.successfully-unpublished-price-list",
+                  "Successfully unpublished price list"
+                )
+              : t(
+                  "price-list-table.successfully-published-price-list",
+                  "Successfully published price list"
+                ),
             "success"
           )
         },
@@ -57,7 +73,9 @@ const usePriceListActions = (priceList) => {
 
   const getActions = (): ActionType[] => [
     {
-      label: isActive(priceList) ? t("price-list-table.unpublish", "Unpublish") : t("price-list-table.publish", "Publish"),
+      label: isActive(priceList)
+        ? t("price-list-table.unpublish", "Unpublish")
+        : t("price-list-table.publish", "Publish"),
       onClick: onUpdate,
       icon: isActive(priceList) ? (
         <UnpublishIcon size={20} />

@@ -217,10 +217,21 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
       .mutateAsync(data)
       .then(() => onDismiss())
       .then(() =>
-        notification(t("returns.success", "Success"), t("returns.successfully-returned-order", "Successfully returned order"), "success")
+        notification(
+          t("returns.success", "Success"),
+          t(
+            "returns.successfully-returned-order",
+            "Successfully returned order"
+          ),
+          "success"
+        )
       )
       .catch((error) =>
-        notification(t("returns.error", "Error"), getErrorMessage(error), "error")
+        notification(
+          t("returns.error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       )
       .finally(() => setSubmitting(false))
   }
@@ -260,11 +271,15 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
     <LayeredModal context={layeredModalContext} handleClose={onDismiss}>
       <Modal.Body>
         <Modal.Header handleClose={onDismiss}>
-          <h2 className="inter-xlarge-semibold">{t("returns.request-return", "Request Return")}</h2>
+          <h2 className="inter-xlarge-semibold">
+            {t("returns.request-return", "Request Return")}
+          </h2>
         </Modal.Header>
         <Modal.Content>
           <div className="mb-7">
-            <h3 className="inter-base-semibold">{t("returns.items-to-return", "Items to return")}</h3>
+            <h3 className="inter-base-semibold">
+              {t("returns.items-to-return", "Items to return")}
+            </h3>
             <RMASelectProductTable
               order={order}
               allItems={allItems}
@@ -277,11 +292,17 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
             <div className="mb-8">
               <h3 className="inter-base-semibold ">Location</h3>
               <p className="inter-base-regular text-grey-50">
-                {t("returns.choose-which-location-you-want-to-return-the-items-to", "Choose which location you want to return the items to.")}
+                {t(
+                  "returns.choose-which-location-you-want-to-return-the-items-to",
+                  "Choose which location you want to return the items to."
+                )}
               </p>
               <Select
                 className="mt-2"
-                placeholder={t("returns.select-location-to-return-to", "Select Location to Return to")}
+                placeholder={t(
+                  "returns.select-location-to-return-to",
+                  "Select Location to Return to"
+                )}
                 value={selectedLocation}
                 isMulti={false}
                 onChange={setSelectedLocation}
@@ -299,6 +320,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   </div>
                   <div>
                     {t(
+                      "returns.the-selected-location-does-not-have-inventory-levels-for-the-selected-items-the-return-can-be-requested-but-cant-be-received-until-an-inventory-level-is-created-for-the-selected-location",
                       "The selected location does not have inventory levels for the selected items. The return can be requested but can't be received until an inventory level is created for the selected location."
                     )}
                   </div>
@@ -308,9 +330,12 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
           )}
 
           <div>
-            <h3 className="inter-base-semibold ">{t("returns.shipping", "Shipping")}</h3>
+            <h3 className="inter-base-semibold ">
+              {t("returns.shipping", "Shipping")}
+            </h3>
             <p className="inter-base-regular text-grey-50">
               {t(
+                "returns.choose-which-shipping-method-you-want-to-use-for-this-return",
                 "Choose which shipping method you want to use for this return."
               )}
             </p>
@@ -419,7 +444,12 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
               />
               <span className="gap-x-xsmall text-grey-90 ml-3 flex items-center">
                 {t("returns.send-notifications", "Send notifications")}
-                <IconTooltip content={t("returns.notify-customer-of-created-return", "Notify customer of created return")} />
+                <IconTooltip
+                  content={t(
+                    "returns.notify-customer-of-created-return",
+                    "Notify customer of created return"
+                  )}
+                />
               </span>
             </div>
             <div className="gap-x-xsmall flex">

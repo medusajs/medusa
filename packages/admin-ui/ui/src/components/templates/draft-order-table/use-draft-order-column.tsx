@@ -11,9 +11,19 @@ const useDraftOrderTableColumns = () => {
   const decideStatus = (status) => {
     switch (status) {
       case "completed":
-        return <StatusDot variant="success" title={t("draft-order-table.completed", "Completed")} />
+        return (
+          <StatusDot
+            variant="success"
+            title={t("draft-order-table.completed", "Completed")}
+          />
+        )
       default:
-        return <StatusDot variant="primary" title={t("draft-order-table.open", "Open")} />
+        return (
+          <StatusDot
+            variant="primary"
+            title={t("draft-order-table.open", "Open")}
+          />
+        )
     }
   }
 

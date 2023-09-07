@@ -34,12 +34,19 @@ const CurrentCurrenciesScreen = () => {
         onSuccess: () => {
           notification(
             t("store-currencies.success", "Success"),
-            t("store-currencies.successfully-updated-currencies", "Successfully updated currencies"),
+            t(
+              "store-currencies.successfully-updated-currencies",
+              "Successfully updated currencies"
+            ),
             "success"
           )
         },
         onError: (err) => {
-          notification(t("store-currencies.error", "Error"), getErrorMessage(err), "error")
+          notification(
+            t("store-currencies.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )
@@ -87,7 +94,10 @@ const CurrentCurrenciesScreen = () => {
     <>
       <Modal.Header handleClose={onClose}>
         <h1 className="inter-xlarge-semibold">
-          {t("store-currencies.current-store-currencies", "Current Store Currencies")}
+          {t(
+            "store-currencies.current-store-currencies",
+            "Current Store Currencies"
+          )}
         </h1>
       </Modal.Header>
       <Modal.Content>
@@ -145,7 +155,9 @@ const TableActions = ({
       <div className={clsx("transition-all duration-200", classes)}>
         <div className="mb-2 flex h-[34px] items-center divide-x">
           <span className="inter-small-regular text-grey-50 mr-3">
-            {t("selectedWithCount", { count: numberOfSelectedRows })}
+            {t("current-currencies-screen.selected-with-count", "{count}", {
+              count: numberOfSelectedRows,
+            })}
           </span>
           <div className="space-x-xsmall flex pl-3">
             <Button
@@ -173,7 +185,8 @@ const TableActions = ({
             className="border-grey-20 border"
             onClick={() => push(screen)}
           >
-            <PlusIcon size={20} /> {t("store-currencies.add-currencies", "Add Currencies")}
+            <PlusIcon size={20} />{" "}
+            {t("store-currencies.add-currencies", "Add Currencies")}
           </Button>
         </div>
       </div>

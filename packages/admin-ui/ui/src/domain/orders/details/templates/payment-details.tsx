@@ -35,7 +35,10 @@ export const PaymentDetails = ({
         <DisplayTotal
           currency={currency}
           totalAmount={returnRefund}
-          totalTitle={t("templates.refunded-for-returns", "Refunded for Returns")}
+          totalTitle={t(
+            "templates.refunded-for-returns",
+            "Refunded for Returns"
+          )}
         />
       )}
       {!!manualRefund && (

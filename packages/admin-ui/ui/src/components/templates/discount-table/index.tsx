@@ -183,7 +183,10 @@ const DiscountTable: React.FC = () => {
         }
         enableSearch
         handleSearch={setQuery}
-        searchPlaceholder={t("discount-table.search-by-code-or-description", "Search by code or description...")}
+        searchPlaceholder={t(
+          "discount-table.search-by-code-or-description",
+          "Search by code or description..."
+        )}
         searchValue={query}
         {...getTableProps()}
       >

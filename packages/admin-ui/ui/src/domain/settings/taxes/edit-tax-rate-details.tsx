@@ -28,14 +28,20 @@ export const EditTaxRateDetails = ({
 
   return (
     <div>
-      <p className="inter-base-semibold mb-base">{t("taxes.details", "Details")}</p>
+      <p className="inter-base-semibold mb-base">
+        {t("taxes.details", "Details")}
+      </p>
       <Input
         disabled={lockName}
         label={t("taxes.name", "Name")}
         prefix={
           lockName ? <LockIcon size={16} className="text-grey-40" /> : undefined
         }
-        placeholder={lockName ? t("taxes.default", "Default") : t("taxes.rate-name", "Rate name")}
+        placeholder={
+          lockName
+            ? t("taxes.default", "Default")
+            : t("taxes.rate-name", "Rate name")
+        }
         {...register(path("name"), {
           required: !lockName ? FormValidator.required("Name") : undefined,
         })}

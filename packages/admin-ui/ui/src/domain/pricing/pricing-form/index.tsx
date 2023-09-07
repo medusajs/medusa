@@ -20,7 +20,10 @@ const PriceListForm = (props: PriceListFormProps) => {
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 w-full pt-16">
             <h1 className="inter-xlarge-semibold mb-[28px]">
               {props.viewType === ViewType.CREATE
-                ? t("pricing-form.create-new-price-list", "Create new price list")
+                ? t(
+                    "pricing-form.create-new-price-list",
+                    "Create new price list"
+                  )
                 : t("pricing-form.edit-price-list", "Edit price list")}
             </h1>
             <Accordion type="multiple" defaultValue={["type"]}>

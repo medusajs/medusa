@@ -38,21 +38,29 @@ export const TablePagination = ({
       >
         <Skeleton>
           <div>
-            {t("{soothedOffset} - {pageSize} of {count} {title}", {
-              soothedOffset,
-              pageSize,
-              count,
-              title,
-            })}
+            {t(
+              "table-container.soothed-offset",
+              "{soothedOffset} - {pageSize} of {count} {title}",
+              {
+                soothedOffset,
+                pageSize,
+                count,
+                title,
+              }
+            )}
           </div>
         </Skeleton>
         <div className="flex space-x-4">
           <Skeleton>
             <div>
-              {t("{currentPage} of {soothedPageCount}", {
-                currentPage,
-                soothedPageCount,
-              })}
+              {t(
+                "table-container.current-page",
+                "{currentPage} of {soothedPageCount}",
+                {
+                  currentPage,
+                  soothedPageCount,
+                }
+              )}
             </div>
           </Skeleton>
           <div className="flex items-center space-x-4">

@@ -46,7 +46,10 @@ function CustomersListPlaceholder() {
   return (
     <div className="center flex h-full min-h-[756px] items-center justify-center">
       <span className="text-xs text-gray-400">
-        {t("groups.no-customers-in-this-group-yet", "No customers in this group yet")}
+        {t(
+          "groups.no-customers-in-this-group-yet",
+          "No customers in this group yet"
+        )}
       </span>
     </div>
   )
@@ -220,7 +223,10 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
           confirmText={t("groups.yes-delete", "Yes, delete")}
           heading={t("groups.delete-the-group", "Delete the group")}
           successText={t("groups.group-deleted", "Group deleted")}
-          text={t("groups.are-you-sure-you-want-to-delete-this-customer-group", "Are you sure you want to delete this customer group?")}
+          text={t(
+            "groups.are-you-sure-you-want-to-delete-this-customer-group",
+            "Are you sure you want to delete this customer group?"
+          )}
         />
       )}
       <CustomerGroupModal

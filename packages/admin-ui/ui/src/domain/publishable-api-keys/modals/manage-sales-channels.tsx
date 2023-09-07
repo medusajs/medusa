@@ -69,7 +69,10 @@ function AddScreen(props: {
       .then(() => {
         notification(
           t("modals.success", "Success"),
-          t("modals.sales-channels-added-to-the-scope", "Sales channels added to the scope"),
+          t(
+            "modals.sales-channels-added-to-the-scope",
+            "Sales channels added to the scope"
+          ),
           "success"
         )
       })
@@ -77,6 +80,7 @@ function AddScreen(props: {
         notification(
           t("modals.error", "Error"),
           t(
+            "modals.error-occurred-while-adding-sales-channels-to-the-scope-of-the-key",
             "Error occurred while adding sales channels to the scope of the key"
           ),
           "success"
@@ -222,7 +226,10 @@ function EditScreen(props: {
       .then(() => {
         notification(
           t("modals.success", "Success"),
-          t("modals.sales-channels-removed-from-the-scope", "Sales channels removed from the scope"),
+          t(
+            "modals.sales-channels-removed-from-the-scope",
+            "Sales channels removed from the scope"
+          ),
           "success"
         )
         setSelectedChannels({})
@@ -232,6 +239,7 @@ function EditScreen(props: {
         notification(
           t("modals.error", "Error"),
           t(
+            "modals.error-occurred-while-removing-sales-channels-from-the-scope-of-the-key",
             "Error occurred while removing sales channels from the scope of the key"
           ),
           "success"
@@ -288,7 +296,11 @@ function EditScreen(props: {
           {selectedCount ? (
             <div className="flex h-[32px] items-center justify-between gap-2">
               <span className="text-small text-grey-50 whitespace-nowrap px-2">
-                {t("selectedWithCounts", { count: selectedCount })}
+                {t(
+                  "publishable-api-keys.modals.manage-sales-channels.selected-with-counts",
+                  "{count}",
+                  { count: selectedCount }
+                )}
               </span>
               <Button
                 size="small"

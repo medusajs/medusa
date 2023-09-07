@@ -20,7 +20,10 @@ const StoreCurrencies = ({ store }: Props) => {
             {t("store-currencies.store-currencies", "Store currencies")}
           </h3>
           <p className="inter-base-regular text-grey-50">
-            {t("store-currencies.all-the-currencies-available-in-your-store", "All the currencies available in your store.")}
+            {t(
+              "store-currencies.all-the-currencies-available-in-your-store",
+              "All the currencies available in your store."
+            )}
           </p>
         </div>
         <Button variant="secondary" size="small" onClick={toggle}>

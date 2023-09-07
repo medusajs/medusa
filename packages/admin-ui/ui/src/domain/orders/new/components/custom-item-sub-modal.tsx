@@ -33,7 +33,10 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
       <Modal.Content>
         <div className="gap-y-xsmall min-h-[705px]">
           <InputField
-            placeholder={t("components.e-g-gift-wrapping", "E.g. Gift wrapping")}
+            placeholder={t(
+              "components.e-g-gift-wrapping",
+              "E.g. Gift wrapping"
+            )}
             label={t("components.title", "Title")}
             {...register("title", { required: true })}
             className="my-4"

@@ -186,7 +186,10 @@ export const useAddAdditionalItemsScreen = () => {
 
   const pushScreen = (props: Props) => {
     push({
-      title: t("add-additional-items-screen.add-product-variants", "Add Product Variants"),
+      title: t(
+        "add-additional-items-screen.add-product-variants",
+        "Add Product Variants"
+      ),
       onBack: () => pop(),
       view: <AddAdditionalItemsScreen {...props} />,
     })

@@ -59,7 +59,10 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
     if (customer.id === order.customer_id) {
       notification(
         t("transfer-orders-modal.info", "Info"),
-        t("transfer-orders-modal.customer-is-already-the-owner-of-the-order", "Customer is already the owner of the order"),
+        t(
+          "transfer-orders-modal.customer-is-already-the-owner-of-the-order",
+          "Customer is already the owner of the order"
+        ),
         "info"
       )
       onDismiss()
@@ -72,7 +75,10 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
         onSuccess: () => {
           notification(
             t("transfer-orders-modal.success", "Success"),
-            t("transfer-orders-modal.successfully-transferred-order-to-different-customer", "Successfully transferred order to different customer"),
+            t(
+              "transfer-orders-modal.successfully-transferred-order-to-different-customer",
+              "Successfully transferred order to different customer"
+            ),
             "success"
           )
           onDismiss()
@@ -80,7 +86,10 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
         onError: () => {
           notification(
             t("transfer-orders-modal.error", "Error"),
-            t("transfer-orders-modal.could-not-transfer-order-to-different-customer", "Could not transfer order to different customer"),
+            t(
+              "transfer-orders-modal.could-not-transfer-order-to-different-customer",
+              "Could not transfer order to different customer"
+            ),
             "error"
           )
         },
@@ -130,12 +139,16 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
     <Modal handleClose={onDismiss}>
       <Modal.Body>
         <Modal.Header handleClose={onDismiss}>
-          <h2 className="inter-xlarge-semibold">{t("transfer-orders-modal.transfer-order", "Transfer order")}</h2>
+          <h2 className="inter-xlarge-semibold">
+            {t("transfer-orders-modal.transfer-order", "Transfer order")}
+          </h2>
         </Modal.Header>
         <Modal.Content>
           <div className="space-y-xlarge flex flex-col">
             <div className="space-y-xsmall">
-              <h3 className="inter-base-semibold">{t("transfer-orders-modal.order", "Order")}</h3>
+              <h3 className="inter-base-semibold">
+                {t("transfer-orders-modal.order", "Order")}
+              </h3>
               <div className="border-grey-20 rounded-rounded py-xsmall flex items-center justify-between border px-2.5">
                 <Badge variant="default">
                   <span className="text-grey-60">{`#${order.display_id}`}</span>
@@ -157,7 +170,10 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
                   {t("transfer-orders-modal.current-owner", "Current Owner")}
                 </span>
                 <span className="inter-base-regular">
-                  {t("transfer-orders-modal.the-customer-currently-related-to-this-order", "The customer currently related to this order")}
+                  {t(
+                    "transfer-orders-modal.the-customer-currently-related-to-this-order",
+                    "The customer currently related to this order"
+                  )}
                 </span>
               </div>
               <div className="flex items-center">
@@ -182,9 +198,14 @@ const TransferOrdersModal: React.FC<TransferOrdersModalProps> = ({
             </div>
             <div className="grid w-full grid-cols-2">
               <div className="flex flex-col">
-                <span className="inter-base-semibold">{t("transfer-orders-modal.new-owner", "New Owner")}</span>
+                <span className="inter-base-semibold">
+                  {t("transfer-orders-modal.new-owner", "New Owner")}
+                </span>
                 <span className="inter-base-regular">
-                  {t("transfer-orders-modal.the-customer-to-transfer-this-order-to", "The customer to transfer this order to")}
+                  {t(
+                    "transfer-orders-modal.the-customer-to-transfer-this-order-to",
+                    "The customer to transfer this order to"
+                  )}
                 </span>
               </div>
               <div className="flex items-center">

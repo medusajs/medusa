@@ -14,15 +14,34 @@ const useOrderTableColums = () => {
   const decideStatus = (status) => {
     switch (status) {
       case "captured":
-        return <StatusDot variant="success" title={t("order-table.paid", "Paid")} />
+        return (
+          <StatusDot variant="success" title={t("order-table.paid", "Paid")} />
+        )
       case "awaiting":
-        return <StatusDot variant="default" title={t("order-table.awaiting", "Awaiting")} />
+        return (
+          <StatusDot
+            variant="default"
+            title={t("order-table.awaiting", "Awaiting")}
+          />
+        )
       case "requires_action":
-        return <StatusDot variant="danger" title={t("order-table.requires-action", "Requires action")} />
+        return (
+          <StatusDot
+            variant="danger"
+            title={t("order-table.requires-action", "Requires action")}
+          />
+        )
       case "canceled":
-        return <StatusDot variant="warning" title={t("order-table.canceled", "Canceled")} />
+        return (
+          <StatusDot
+            variant="warning"
+            title={t("order-table.canceled", "Canceled")}
+          />
+        )
       default:
-        return <StatusDot variant="primary" title={t("order-table.n-a", "N/A")} />
+        return (
+          <StatusDot variant="primary" title={t("order-table.n-a", "N/A")} />
+        )
     }
   }
 
@@ -81,7 +100,9 @@ const useOrderTableColums = () => {
         Cell: ({ cell: { value } }) => value?.name ?? "N/A",
       },
       {
-        Header: () => <div className="text-right">{t("order-table.total", "Total")}</div>,
+        Header: () => (
+          <div className="text-right">{t("order-table.total", "Total")}</div>
+        ),
         accessor: "total",
         Cell: ({ row, cell: { value } }) => (
           <div className="text-right">

@@ -33,7 +33,11 @@ export const useCustomerColumns = () => {
       },
       {
         accessor: "orders",
-        Header: () => <div className="text-right">{t("customer-table.orders", "Orders")}</div>,
+        Header: () => (
+          <div className="text-right">
+            {t("customer-table.orders", "Orders")}
+          </div>
+        ),
         Cell: ({ cell: { value } }) => (
           <div className="text-right">{value?.length || 0}</div>
         ),

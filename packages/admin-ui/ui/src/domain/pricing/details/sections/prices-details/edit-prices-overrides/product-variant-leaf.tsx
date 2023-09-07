@@ -27,7 +27,11 @@ const ProductVariantLeaf = ({
       <div className="text-grey-50 flex flex-1 items-center justify-end">
         <div className="text-grey-50 mr-xsmall">
           {hasPrices ? (
-            <span>{t("priceWithCount", { count: prices.length })}</span>
+            <span>
+              {t("edit-prices-overrides.count", "{count}", {
+                count: prices.length,
+              })}
+            </span>
           ) : (
             <span className="inter-small-semibold text-orange-40">
               {t("edit-prices-overrides.add-prices", "Add prices")}

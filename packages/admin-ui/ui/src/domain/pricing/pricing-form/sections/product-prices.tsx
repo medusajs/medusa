@@ -103,7 +103,10 @@ const ProductPrices = ({
         {onSearch && (
           <div className="mb-2">
             <InputField
-              placeholder={t("sections.search-by-name-or-sku", "Search by name or SKU...")}
+              placeholder={t(
+                "sections.search-by-name-or-sku",
+                "Search by name or SKU..."
+              )}
               prefix={<SearchIcon />}
               onChange={onChange}
             />
@@ -163,7 +166,9 @@ const ProductPrices = ({
         <Modal open handleClose={unselect}>
           <Modal.Body>
             <Modal.Header handleClose={unselect}>
-              <h2 className="inter-xlarge-semibold">{t("sections.edit-prices", "Edit Prices")}</h2>
+              <h2 className="inter-xlarge-semibold">
+                {t("sections.edit-prices", "Edit Prices")}
+              </h2>
             </Modal.Header>
 
             <PriceOverrides

@@ -31,14 +31,20 @@ const usePricesColumns = () => {
         ),
       },
       {
-        Header: <div className="w-[400px]">{t("prices-table.collection", "Collection")}</div>,
+        Header: (
+          <div className="w-[400px]">
+            {t("prices-table.collection", "Collection")}
+          </div>
+        ),
         accessor: "collection",
         Cell: ({ cell: { value } }) => (
           <Table.Cell>
             {value?.title ? (
               value.title
             ) : (
-              <span className="text-grey-40">{t("prices-table.no-collection", "No collection")}</span>
+              <span className="text-grey-40">
+                {t("prices-table.no-collection", "No collection")}
+              </span>
             )}
           </Table.Cell>
         ),

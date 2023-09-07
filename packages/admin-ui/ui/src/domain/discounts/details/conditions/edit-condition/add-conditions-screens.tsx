@@ -28,7 +28,7 @@ export const useAddConditionsModalScreen = (condition: DiscountCondition) => {
   }
 
   return {
-    title: t(`Add conditions`),
+    title: t("edit-condition.add-conditions", "Add conditions"),
     onBack: pop,
     view: renderModalScreen(),
   }

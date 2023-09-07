@@ -92,7 +92,10 @@ const SearchModal = ({ handleClose }) => {
                   className="flex-1"
                   onChange={onChange}
                   value={q}
-                  placeholder={t("search-modal.start-typing-to-search", "Start typing to search...")}
+                  placeholder={t(
+                    "search-modal.start-typing-to-search",
+                    "Start typing to search..."
+                  )}
                   {...getInputProps()}
                 />
                 <Tooltip

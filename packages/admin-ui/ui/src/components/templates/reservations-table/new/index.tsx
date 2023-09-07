@@ -55,7 +55,10 @@ const NewReservation = ({
       onSuccess: () => {
         notification(
           t("new.success", "Success"),
-          t("new.successfully-created-reservation", "Successfully created reservation"),
+          t(
+            "new.successfully-created-reservation",
+            "Successfully created reservation"
+          ),
           "success"
         )
         onClose()
@@ -103,7 +106,9 @@ const NewReservation = ({
               <ReservationForm form={nestedForm(form, "general")} />
             </div>
             <div className="border-grey border-grey-20 w-full items-center border-t pt-6">
-              <p className="inter-base-semibold mb-2">{t("new.metadata", "Metadata")}</p>
+              <p className="inter-base-semibold mb-2">
+                {t("new.metadata", "Metadata")}
+              </p>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </div>

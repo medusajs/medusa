@@ -138,14 +138,20 @@ const OrderFilters = ({
           setFilter={(val) => setSingleFilter("status", val)}
         />
         <FilterDropdownItem
-          filterTitle={t("gift-card-filter-dropdown.payment-status", "Payment Status")}
+          filterTitle={t(
+            "gift-card-filter-dropdown.payment-status",
+            "Payment Status"
+          )}
           options={paymentFilters}
           filters={tempState.payment.filter}
           open={tempState.payment.open}
           setFilter={(val) => setSingleFilter("payment", val)}
         />
         <FilterDropdownItem
-          filterTitle={t("gift-card-filter-dropdown.fulfillment-status", "Fulfillment Status")}
+          filterTitle={t(
+            "gift-card-filter-dropdown.fulfillment-status",
+            "Fulfillment Status"
+          )}
           options={fulfillmentFilters}
           filters={tempState.fulfillment.filter}
           open={tempState.fulfillment.open}

@@ -31,12 +31,19 @@ const ProductThumbnailSection = ({ product }: Props) => {
         onSuccess: () => {
           notification(
             t("product-thumbnail-section.success", "Success"),
-            t("product-thumbnail-section.successfully-deleted-thumbnail", "Successfully deleted thumbnail"),
+            t(
+              "product-thumbnail-section.successfully-deleted-thumbnail",
+              "Successfully deleted thumbnail"
+            ),
             "success"
           )
         },
         onError: (err) => {
-          notification(t("product-thumbnail-section.error", "Error"), getErrorMessage(err), "error")
+          notification(
+            t("product-thumbnail-section.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )
@@ -54,7 +61,9 @@ const ProductThumbnailSection = ({ product }: Props) => {
               type="button"
               onClick={toggle}
             >
-              {product.thumbnail ? t("product-thumbnail-section.edit", "Edit") : t("product-thumbnail-section.upload", "Upload")}
+              {product.thumbnail
+                ? t("product-thumbnail-section.edit", "Edit")
+                : t("product-thumbnail-section.upload", "Upload")}
             </Button>
             {product.thumbnail && (
               <TwoStepDelete onDelete={handleDelete} deleting={updating} />

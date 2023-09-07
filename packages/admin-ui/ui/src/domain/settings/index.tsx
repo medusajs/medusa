@@ -130,7 +130,10 @@ const SettingsIndex = () => {
         <div className="gap-y-2xsmall flex flex-col">
           <h2 className="inter-xlarge-semibold">General</h2>
           <p className="inter-base-regular text-grey-50">
-            {t("settings.manage-the-general-settings-for-your-store", "Manage the general settings for your store")}
+            {t(
+              "settings.manage-the-general-settings-for-your-store",
+              "Manage the general settings for your store"
+            )}
           </p>
         </div>
         <div className="medium:grid-cols-2 gap-y-xsmall grid grid-cols-1 gap-x-4">
@@ -142,7 +145,10 @@ const SettingsIndex = () => {
           <div className="gap-y-2xsmall flex flex-col">
             <h2 className="inter-xlarge-semibold">Extensions</h2>
             <p className="inter-base-regular text-grey-50">
-              {t("settings.manage-the-settings-for-your-store-apos-s-extensions", "Manage the settings for your store&apos;s extensions")}
+              {t(
+                "settings.manage-the-settings-for-your-store-apos-s-extensions",
+                "Manage the settings for your store&apos;s extensions"
+              )}
             </p>
           </div>
           <div className="medium:grid-cols-2 gap-y-xsmall grid grid-cols-1 gap-x-4">

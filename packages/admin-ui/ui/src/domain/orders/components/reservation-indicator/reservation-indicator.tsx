@@ -60,9 +60,13 @@ const ReservationIndicator = ({
               <div className="gap-y-base grid grid-cols-1 divide-y">
                 {!!awaitingReservation && (
                   <span className="flex w-full items-center">
-                    {t("{awaitingReservation} items not reserved", {
-                      awaitingReservation,
-                    })}
+                    {t(
+                      "reservation-indicator.awaiting-reservation-count",
+                      "{awaitingReservation} items not reserved",
+                      {
+                        awaitingReservation,
+                      }
+                    )}
                   </span>
                 )}
                 {reservations?.map((reservation) => (
@@ -78,7 +82,10 @@ const ReservationIndicator = ({
               </div>
             ) : (
               <span className="flex w-full items-center">
-                {t("reservation-indicator.this-item-has-been-fulfilled", "This item has been fulfilled.")}
+                {t(
+                  "reservation-indicator.this-item-has-been-fulfilled",
+                  "This item has been fulfilled."
+                )}
               </span>
             )}
           </div>
@@ -122,10 +129,14 @@ const EditReservationButton = ({
   const { t } = useTranslation()
   return (
     <div className="pt-base first:pt-0">
-      {t("{quantity} item: ${locationName}", {
-        quantity: reservation.quantity,
-        locationName,
-      })}
+      {t(
+        "edit-reservation-button.quantity-item-location-name",
+        "{quantity} item: ${locationName}",
+        {
+          quantity: reservation.quantity,
+          locationName,
+        }
+      )}
       <Button
         onClick={onClick}
         variant="ghost"

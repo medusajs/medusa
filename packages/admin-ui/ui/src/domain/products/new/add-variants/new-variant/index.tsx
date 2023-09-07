@@ -86,7 +86,10 @@ const NewVariant = ({
     if (!saved) {
       localForm.setError("options", {
         type: "deps",
-        message: t("new-variant.a-variant-with-these-options-already-exists", "A variant with these options already exists."),
+        message: t(
+          "new-variant.a-variant-with-these-options-already-exists",
+          "A variant with these options already exists."
+        ),
       })
       return
     }
@@ -98,7 +101,10 @@ const NewVariant = ({
 
   const onDelete = async () => {
     const confirmed = await warning({
-      text: t("new-variant.are-you-sure-you-want-to-delete-this-variant", "Are you sure you want to delete this variant?"),
+      text: t(
+        "new-variant.are-you-sure-you-want-to-delete-this-variant",
+        "Are you sure you want to delete this variant?"
+      ),
       heading: t("new-variant.delete-variant", "Delete Variant"),
     })
 

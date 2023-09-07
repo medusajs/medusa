@@ -71,7 +71,10 @@ const OrderIndex = () => {
         resetInterval()
         notification(
           t("orders.success", "Success"),
-          t("orders.successfully-initiated-export", "Successfully initiated export"),
+          t(
+            "orders.successfully-initiated-export",
+            "Successfully initiated export"
+          ),
           "success"
         )
       },

@@ -40,6 +40,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
     const shouldDelete = await dialog({
       heading: t("location-card.delete-location", "Delete Location"),
       text: t(
+        "location-card.are-you-sure-you-want-to-delete-this-location-this-will-also-delete-all-inventory-levels-and-reservations-associated-with-this-location",
         "Are you sure you want to delete this location. This will also delete all inventory levels and reservations associated with this location."
       ),
       extraConfirmation: true,
@@ -50,12 +51,19 @@ const LocationCard: React.FC<Props> = ({ location }) => {
         onSuccess: () => {
           notification(
             t("location-card.success", "Success"),
-            t("location-card.location-deleted-successfully", "Location deleted successfully"),
+            t(
+              "location-card.location-deleted-successfully",
+              "Location deleted successfully"
+            ),
             "success"
           )
         },
         onError: (err) => {
-          notification(t("location-card.error", "Error"), getErrorMessage(err), "error")
+          notification(
+            t("location-card.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       })
     }
@@ -98,7 +106,10 @@ const LocationCard: React.FC<Props> = ({ location }) => {
       {isFeatureEnabled("sales_channels") && (
         <div className="py-base border-grey-20 border-t border-solid px-6">
           <h2 className="inter-small-semibold text-gray-500">
-            {t("location-card.connected-sales-channels", "Connected sales channels")}
+            {t(
+              "location-card.connected-sales-channels",
+              "Connected sales channels"
+            )}
           </h2>
           <SalesChannelsSection location={location} />
         </div>

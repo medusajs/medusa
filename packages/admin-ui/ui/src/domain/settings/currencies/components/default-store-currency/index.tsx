@@ -12,10 +12,16 @@ const DefaultStoreCurrency = ({ store }: Props) => {
     <div className="gap-y-large flex flex-col">
       <div>
         <h3 className="inter-large-semibold mb-2xsmall">
-          {t("default-store-currency.default-store-currency", "Default store currency")}
+          {t(
+            "default-store-currency.default-store-currency",
+            "Default store currency"
+          )}
         </h3>
         <p className="inter-base-regular text-grey-50">
-          {t("default-store-currency.this-is-the-currency-your-prices-are-shown-in", "This is the currency your prices are shown in.")}
+          {t(
+            "default-store-currency.this-is-the-currency-your-prices-are-shown-in",
+            "This is the currency your prices are shown in."
+          )}
         </p>
       </div>
 

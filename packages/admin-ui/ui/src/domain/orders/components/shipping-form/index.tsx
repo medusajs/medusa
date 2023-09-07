@@ -114,8 +114,14 @@ const ShippingForm = ({
       <div className="flex flex-col">
         <h2 className="inter-base-semibold">
           {isReturn
-            ? t("shipping-form.shipping-for-return-items", "Shipping for return items")
-            : t("shipping-form.shipping-for-replacement-items", "Shipping for replacement items")}
+            ? t(
+                "shipping-form.shipping-for-return-items",
+                "Shipping for return items"
+              )
+            : t(
+                "shipping-form.shipping-for-replacement-items",
+                "Shipping for replacement items"
+              )}
         </h2>
         <ShippingFormHelpText isClaim={isClaim} isReturn={isReturn} />
       </div>
@@ -123,13 +129,21 @@ const ShippingForm = ({
         control={control}
         name={path("option")}
         rules={{
-          required: required ? t("shipping-form.shipping-method-is-required", "Shipping method is required") : false,
+          required: required
+            ? t(
+                "shipping-form.shipping-method-is-required",
+                "Shipping method is required"
+              )
+            : false,
         }}
         render={({ field: { value, onChange, onBlur, ref, name } }) => {
           return (
             <NextSelect
               ref={ref}
-              placeholder={t("shipping-form.choose-shipping-method", "Choose shipping method")}
+              placeholder={t(
+                "shipping-form.choose-shipping-method",
+                "Choose shipping method"
+              )}
               label={t("shipping-form.shipping-method", "Shipping method")}
               name={name}
               options={returnShippingOptions}
@@ -199,12 +213,16 @@ const ShippingFormHelpText = ({
   const text = useMemo(() => {
     if (isClaim && isReturn) {
       return t(
+        "shipping-form.return-shipping-for-items-claimed-by-the-customer-is-complimentary",
         "Return shipping for items claimed by the customer is complimentary."
       )
     }
 
     if (!isReturn) {
-      return t("shipping-form.shipping-for-replacement-items-is-complimentary", "Shipping for replacement items is complimentary.")
+      return t(
+        "shipping-form.shipping-for-replacement-items-is-complimentary",
+        "Shipping for replacement items is complimentary."
+      )
     }
 
     return undefined

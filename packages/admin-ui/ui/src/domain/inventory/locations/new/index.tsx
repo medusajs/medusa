@@ -123,6 +123,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
           notification(
             t("new.error", "Error"),
             t(
+              "new.location-was-created-successfully-but-there-was-an-error-associating-sales-channels",
               "Location was created successfully, but there was an error associating sales channels"
             ),
             "error"
@@ -152,10 +153,14 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
             {isShowingClosePrompt && (
               <DeletePrompt
                 heading={t(
+                  "new.are-you-sure-you-want-to-cancel-with-unsaved-changes",
                   "Are you sure you want to cancel with unsaved changes"
                 )}
                 confirmText={t("new.yes-cancel", "Yes, cancel")}
-                cancelText={t("new.no-continue-creating", "No, continue creating")}
+                cancelText={t(
+                  "new.no-continue-creating",
+                  "No, continue creating"
+                )}
                 successText={false}
                 handleClose={closeClosePrompt}
                 onDelete={async () => onClose()}
@@ -189,7 +194,10 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 required
               >
                 <p className="inter-base-regular text-grey-50">
-                  {t("new.specify-the-details-about-this-location", "Specify the details about this location")}
+                  {t(
+                    "new.specify-the-details-about-this-location",
+                    "Specify the details about this location"
+                  )}
                 </p>
                 <div className="mt-xlarge gap-y-xlarge flex flex-col pb-0.5">
                   <GeneralForm form={nestedForm(form, "general")} />
@@ -209,6 +217,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 >
                   <p className="inter-base-regular text-grey-50">
                     {t(
+                      "new.specify-which-sales-channels-this-locations-items-can-be-purchased-through",
                       "Specify which Sales Channels this location's items can be purchased through."
                     )}
                   </p>

@@ -23,10 +23,18 @@ export const PaymentActionables = ({
       onSuccess: () =>
         notification(
           t("templates.success", "Success"),
-          t("templates.successfully-captured-payment", "Successfully captured payment"),
+          t(
+            "templates.successfully-captured-payment",
+            "Successfully captured payment"
+          ),
           "success"
         ),
-      onError: (err) => notification(t("templates.error", "Error"), getErrorMessage(err), "error"),
+      onError: (err) =>
+        notification(
+          t("templates.error", "Error"),
+          getErrorMessage(err),
+          "error"
+        ),
     })
   }
   const loading = capturePayment.isLoading

@@ -59,7 +59,14 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
     mutate(payload, {
       onSuccess: () => {
         onClose()
-        notification(t("edit.success", "Success"), t("edit.location-edited-successfully", "Location edited successfully"), "success")
+        notification(
+          t("edit.success", "Success"),
+          t(
+            "edit.location-edited-successfully",
+            "Location edited successfully"
+          ),
+          "success"
+        )
       },
       onError: (err) => {
         notification(t("edit.error", "Error"), getErrorMessage(err), "error")
@@ -81,7 +88,9 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
               <GeneralForm form={nestedForm(form, "general")} />
               <AddressForm form={nestedForm(form, "address")} />
               <div>
-                <h2 className="inter-base-semibold mb-base">{t("edit.metadata", "Metadata")}</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("edit.metadata", "Metadata")}
+                </h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
             </div>

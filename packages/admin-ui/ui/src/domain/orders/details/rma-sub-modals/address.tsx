@@ -79,13 +79,18 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
         <Modal.Content>
           <div className="h-full">
             <h2 className="inter-base-semibold mb-4">
-              {t("rma-sub-modals.search-for-additional", "Search for additional")}{" "}
+              {t(
+                "rma-sub-modals.search-for-additional",
+                "Search for additional"
+              )}{" "}
             </h2>
           </div>
           <div>
             <div>
               <div>
-                <span className="inter-base-semibold">{t("rma-sub-modals.general", "General")}</span>
+                <span className="inter-base-semibold">
+                  {t("rma-sub-modals.general", "General")}
+                </span>
 
                 <div className="gap-x-base gap-y-base grid grid-cols-2">
                   <Input

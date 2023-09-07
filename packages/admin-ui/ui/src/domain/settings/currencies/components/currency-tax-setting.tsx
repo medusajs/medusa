@@ -42,7 +42,10 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
       onSuccess: () => {
         notification(
           t("components.success", "Success"),
-          t("components.successfully-updated-currency", "Successfully updated currency"),
+          t(
+            "components.successfully-updated-currency",
+            "Successfully updated currency"
+          ),
           "success"
         )
 
@@ -50,7 +53,11 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
         queryClient.invalidateQueries(adminStoreKeys.all)
       },
       onError: (error) => {
-        notification(t("components.error", "Error"), getErrorMessage(error), "error")
+        notification(
+          t("components.error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
         reset({
           includes_tax: currency.includes_tax,
         })

@@ -125,7 +125,9 @@ const Items = () => {
         <Table>
           <Table.Head>
             <Table.HeadRow className="text-grey-50 inter-small-semibold border-t">
-              <Table.HeadCell>{t("components.details", "Details")}</Table.HeadCell>
+              <Table.HeadCell>
+                {t("components.details", "Details")}
+              </Table.HeadCell>
               <Table.HeadCell className="pr-8 text-right">
                 {t("components.quantity", "Quantity")}
               </Table.HeadCell>

@@ -100,7 +100,11 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         ),
       },
       {
-        Header: <div className="text-right">{t("rma-sub-modals.in-stock", "In Stock")}</div>,
+        Header: (
+          <div className="text-right">
+            {t("rma-sub-modals.in-stock", "In Stock")}
+          </div>
+        ),
         accessor: "inventory_quantity",
         Cell: ({ row: { original } }) => (
           <div className="text-right">{original.inventory_quantity}</div>
@@ -233,7 +237,10 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
           <Table
             immediateSearchFocus
             enableSearch
-            searchPlaceholder={t("rma-sub-modals.search-products", "Search Products..")}
+            searchPlaceholder={t(
+              "rma-sub-modals.search-products",
+              "Search Products.."
+            )}
             searchValue={query}
             handleSearch={handleSearch}
             {...getTableProps()}

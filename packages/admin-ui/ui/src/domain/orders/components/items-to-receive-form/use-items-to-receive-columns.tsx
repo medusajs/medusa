@@ -122,7 +122,11 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
       }),
       columnHelper.display({
         id: "quantity",
-        header: () => <p className="text-right">{t("items-to-receive-form.quantity", "Quantity")}</p>,
+        header: () => (
+          <p className="text-right">
+            {t("items-to-receive-form.quantity", "Quantity")}
+          </p>
+        ),
         maxSize: 50,
         cell: ({
           row: {
@@ -149,7 +153,11 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
       }),
       columnHelper.accessor("refundable", {
         maxSize: 80,
-        header: () => <p className="text-right">{t("items-to-receive-form.refundable", "Refundable")}</p>,
+        header: () => (
+          <p className="text-right">
+            {t("items-to-receive-form.refundable", "Refundable")}
+          </p>
+        ),
         cell: ({ getValue }) => {
           return (
             <p className="text-right">

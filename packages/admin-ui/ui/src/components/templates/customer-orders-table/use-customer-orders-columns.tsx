@@ -13,36 +13,93 @@ import { TFunction } from "i18next"
 const decidePaymentStatus = (status: string, t: TFunction) => {
   switch (status) {
     case "captured":
-      return <StatusIndicator variant="success" title={t("customer-orders-table.paid", "Paid")} />
+      return (
+        <StatusIndicator
+          variant="success"
+          title={t("customer-orders-table.paid", "Paid")}
+        />
+      )
     case "awaiting":
-      return <StatusIndicator variant="warning" title={t("customer-orders-table.awaiting", "Awaiting")} />
+      return (
+        <StatusIndicator
+          variant="warning"
+          title={t("customer-orders-table.awaiting", "Awaiting")}
+        />
+      )
     case "requires":
-      return <StatusIndicator variant="danger" title={t("customer-orders-table.requires-action", "Requires action")} />
+      return (
+        <StatusIndicator
+          variant="danger"
+          title={t("customer-orders-table.requires-action", "Requires action")}
+        />
+      )
     default:
-      return <StatusIndicator variant="primary" title={t("customer-orders-table.n-a", "N/A")} />
+      return (
+        <StatusIndicator
+          variant="primary"
+          title={t("customer-orders-table.n-a", "N/A")}
+        />
+      )
   }
 }
 
 const decideFulfillmentStatus = (status: string, t: TFunction) => {
   switch (status) {
     case "fulfilled":
-      return <StatusIndicator variant="success" title={t("customer-orders-table.fulfilled", "Fulfilled")} />
+      return (
+        <StatusIndicator
+          variant="success"
+          title={t("customer-orders-table.fulfilled", "Fulfilled")}
+        />
+      )
     case "shipped":
-      return <StatusIndicator variant="success" title={t("customer-orders-table.shipped", "Shipped")} />
+      return (
+        <StatusIndicator
+          variant="success"
+          title={t("customer-orders-table.shipped", "Shipped")}
+        />
+      )
     case "not_fulfilled":
-      return <StatusIndicator variant="default" title={t("customer-orders-table.not-fulfilled", "Not fulfilled")} />
+      return (
+        <StatusIndicator
+          variant="default"
+          title={t("customer-orders-table.not-fulfilled", "Not fulfilled")}
+        />
+      )
     case "partially_fulfilled":
       return (
-        <StatusIndicator variant="warning" title={t("customer-orders-table.partially-fulfilled", "Partially fulfilled")} />
+        <StatusIndicator
+          variant="warning"
+          title={t(
+            "customer-orders-table.partially-fulfilled",
+            "Partially fulfilled"
+          )}
+        />
       )
     case "partially_shipped":
       return (
-        <StatusIndicator variant="warning" title={t("customer-orders-table.partially-shipped", "Partially shipped")} />
+        <StatusIndicator
+          variant="warning"
+          title={t(
+            "customer-orders-table.partially-shipped",
+            "Partially shipped"
+          )}
+        />
       )
     case "requires":
-      return <StatusIndicator variant="danger" title={t("customer-orders-table.requires-action", "Requires action")} />
+      return (
+        <StatusIndicator
+          variant="danger"
+          title={t("customer-orders-table.requires-action", "Requires action")}
+        />
+      )
     default:
-      return <StatusIndicator variant="primary" title={t("customer-orders-table.n-a", "N/A")} />
+      return (
+        <StatusIndicator
+          variant="primary"
+          title={t("customer-orders-table.n-a", "N/A")}
+        />
+      )
   }
 }
 
@@ -102,7 +159,11 @@ export const useCustomerOrdersColumns = (): Column<Order>[] => {
               </div>
               {remainder > 0 && (
                 <span className="text-grey-40 inter-small-regular">
-                  {t("+ {remainder} more", { remainder })}
+                  {t(
+                    "customer-orders-table.remainder-more",
+                    "+ {remainder} more",
+                    { remainder }
+                  )}
                 </span>
               )}
             </div>
@@ -131,7 +192,11 @@ export const useCustomerOrdersColumns = (): Column<Order>[] => {
         },
       },
       {
-        Header: () => <div className="text-right">{t("customer-orders-table.total", "Total")}</div>,
+        Header: () => (
+          <div className="text-right">
+            {t("customer-orders-table.total", "Total")}
+          </div>
+        ),
         accessor: "total",
         Cell: ({
           value,

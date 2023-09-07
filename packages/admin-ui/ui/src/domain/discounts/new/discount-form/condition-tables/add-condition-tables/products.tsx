@@ -57,7 +57,10 @@ const AddProductConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("add-condition-tables.search-products", "Search products..."),
+            searchPlaceholder: t(
+              "add-condition-tables.search-products",
+              "Search products..."
+            ),
           }}
           resourceName="Products"
           totalCount={count || 0}

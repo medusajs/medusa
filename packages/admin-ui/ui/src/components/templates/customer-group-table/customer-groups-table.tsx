@@ -109,10 +109,21 @@ function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
       onClick: () => {
         mutate(undefined, {
           onSuccess: () => {
-            notification(t("customer-group-table.success", "Success"), t("customer-group-table.group-deleted", "Group deleted"), "success")
+            notification(
+              t("customer-group-table.success", "Success"),
+              t("customer-group-table.group-deleted", "Group deleted"),
+              "success"
+            )
           },
           onError: () => {
-            notification(t("customer-group-table.error", "Error"), t("customer-group-table.failed-to-delete-the-group", "Failed to delete the group"), "error")
+            notification(
+              t("customer-group-table.error", "Error"),
+              t(
+                "customer-group-table.failed-to-delete-the-group",
+                "Failed to delete the group"
+              ),
+              "error"
+            )
           },
         })
       },

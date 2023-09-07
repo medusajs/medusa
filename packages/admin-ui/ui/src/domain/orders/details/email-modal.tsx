@@ -38,7 +38,10 @@ const EmailModal: React.FC<EmailModalProps> = ({
       onSuccess: () => {
         notification(
           t("details.success", "Success"),
-          t("details.successfully-updated-the-email-address", "Successfully updated the email address"),
+          t(
+            "details.successfully-updated-the-email-address",
+            "Successfully updated the email address"
+          ),
           "success"
         )
         handleClose()
@@ -52,7 +55,9 @@ const EmailModal: React.FC<EmailModalProps> = ({
       <form onSubmit={handleSubmit(handleUpdateEmail)}>
         <Modal.Body>
           <Modal.Header handleClose={handleClose}>
-            <span className="inter-xlarge-semibold">{t("details.email-address", "Email Address")}</span>
+            <span className="inter-xlarge-semibold">
+              {t("details.email-address", "Email Address")}
+            </span>
           </Modal.Header>
           <Modal.Content>
             <div className="space-y-4">

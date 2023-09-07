@@ -114,7 +114,9 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
     <Table>
       <Table.Head className="border-none">
         <Table.HeadRow className="text-grey-50 inter-small-semibold">
-          <Table.HeadCell colSpan={2}>{t("rma-select-product-table.product-details", "Product Details")}</Table.HeadCell>
+          <Table.HeadCell colSpan={2}>
+            {t("rma-select-product-table.product-details", "Product Details")}
+          </Table.HeadCell>
           <Table.HeadCell className="pr-8 text-right">
             {t("rma-select-product-table.quantity", "Quantity")}
           </Table.HeadCell>
@@ -237,9 +239,13 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                           <span className="ml-2">
                             {toReturn[item.id]?.images?.length > 0 && (
                               <>
-                                {t("imagesWitchCount", {
-                                  count: toReturn[item.id]?.images?.length,
-                                })}
+                                {t(
+                                  "rma-select-product-table.images-witch-count",
+                                  "{count}",
+                                  {
+                                    count: toReturn[item.id]?.images?.length,
+                                  }
+                                )}
                               </>
                             )}
                           </span>
@@ -267,7 +273,10 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                         size="small"
                         className="border-grey-20 border"
                       >
-                        {t("rma-select-product-table.select-reason", "Select Reason")}
+                        {t(
+                          "rma-select-product-table.select-reason",
+                          "Select Reason"
+                        )}
                       </Button>
                     </div>
                   </Table.Cell>

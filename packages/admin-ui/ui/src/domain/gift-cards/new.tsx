@@ -79,7 +79,10 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
     if (!trimmedName) {
       notification(
         t("gift-cards.error", "Error"),
-        t("gift-cards.please-enter-a-name-for-the-gift-card", "Please enter a name for the Gift Card"),
+        t(
+          "gift-cards.please-enter-a-name-for-the-gift-card",
+          "Please enter a name for the Gift Card"
+        ),
         "error"
       )
       focusByName("name")
@@ -89,7 +92,10 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
     if (!data.denominations?.length) {
       notification(
         t("gift-cards.error", "Error"),
-        t("gift-cards.please-add-at-least-one-denomination", "Please add at least one denomination"),
+        t(
+          "gift-cards.please-add-at-least-one-denomination",
+          "Please add at least one denomination"
+        ),
         "error"
       )
       focusByName("add-denomination")
@@ -133,14 +139,21 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         onSuccess: () => {
           notification(
             t("gift-cards.success", "Success"),
-            t("gift-cards.successfully-created-gift-card", "Successfully created Gift Card"),
+            t(
+              "gift-cards.successfully-created-gift-card",
+              "Successfully created Gift Card"
+            ),
             "success"
           )
           refetch()
           navigate("/a/gift-cards/manage")
         },
         onError: (err) => {
-          notification(t("gift-cards.error", "Error"), getErrorMessage(err), "error")
+          notification(
+            t("gift-cards.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )
@@ -152,28 +165,40 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         <Modal.Body>
           <Modal.Header handleClose={onClose}>
             <div>
-              <h1 className="inter-xlarge-semibold">{t("gift-cards.create-gift-card", "Create Gift Card")}</h1>
+              <h1 className="inter-xlarge-semibold">
+                {t("gift-cards.create-gift-card", "Create Gift Card")}
+              </h1>
             </div>
           </Modal.Header>
           <Modal.Content>
             <div className="mb-base">
-              <h3 className="inter-base-semibold">{t("gift-cards.gift-card-details", "Gift Card Details")}</h3>
+              <h3 className="inter-base-semibold">
+                {t("gift-cards.gift-card-details", "Gift Card Details")}
+              </h3>
             </div>
             <div className="gap-y-base flex flex-col">
               <InputField
                 label={t("gift-cards.name", "Name")}
                 required
-                placeholder={t("gift-cards.the-best-gift-card", "The best Gift Card")}
+                placeholder={t(
+                  "gift-cards.the-best-gift-card",
+                  "The best Gift Card"
+                )}
                 {...register("title", { required: true })}
               />
               <TextArea
                 label={t("gift-cards.description", "Description")}
-                placeholder={t("gift-cards.the-best-gift-card-of-all-time", "The best Gift Card of all time")}
+                placeholder={t(
+                  "gift-cards.the-best-gift-card-of-all-time",
+                  "The best Gift Card of all time"
+                )}
                 {...register("description")}
               />
             </div>
             <div className="mt-xlarge">
-              <h3 className="inter-base-semibold">{t("gift-cards.thumbnail", "Thumbnail")}</h3>
+              <h3 className="inter-base-semibold">
+                {t("gift-cards.thumbnail", "Thumbnail")}
+              </h3>
               <div className="mt-base h-[80px]">
                 {thumbnail ? (
                   <div className="flex items-center gap-x-6">
@@ -207,6 +232,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                     ]}
                     onFileChosen={handleFileUpload}
                     placeholder={t(
+                      "gift-cards.1200-x-1600-3-4-recommended-up-to-10-mb-each",
                       "1200 x 1600 (3:4) recommended, up to 10MB each"
                     )}
                   />

@@ -57,11 +57,17 @@ const Taxes = () => {
           <BodyCard
             forceDropdown
             title={t("taxes.regions", "Regions")}
-            subtitle={t("taxes.select-the-region-you-wish-to-manage-taxes-for", "Select the region you wish to manage taxes for")}
+            subtitle={t(
+              "taxes.select-the-region-you-wish-to-manage-taxes-for",
+              "Select the region you wish to manage taxes for"
+            )}
             actionables={[
               {
                 icon: <GearIcon />,
-                label: t("taxes.go-to-region-settings", "Go to Region settings"),
+                label: t(
+                  "taxes.go-to-region-settings",
+                  "Go to Region settings"
+                ),
                 onClick: () => navigate("/a/settings/regions"),
               },
             ]}

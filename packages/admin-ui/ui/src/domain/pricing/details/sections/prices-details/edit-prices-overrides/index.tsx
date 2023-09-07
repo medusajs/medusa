@@ -38,7 +38,10 @@ const EditPricesOverridesModal = ({
 
   const getOnClick = (variant) => () =>
     context.push({
-      title: t(`Edit price overrides`),
+      title: t(
+        "edit-prices-overrides.edit-price-overrides",
+        "Edit price overrides"
+      ),
       onBack: () => context.pop(),
       view: (
         <PriceOverrides
@@ -63,7 +66,10 @@ const EditPricesOverridesModal = ({
                   close()
                   notification(
                     t("edit-prices-overrides.success", "Success"),
-                    t("edit-prices-overrides.price-overrides-updated", "Price overrides updated"),
+                    t(
+                      "edit-prices-overrides.price-overrides-updated",
+                      "Price overrides updated"
+                    ),
                     "success"
                   )
                 },

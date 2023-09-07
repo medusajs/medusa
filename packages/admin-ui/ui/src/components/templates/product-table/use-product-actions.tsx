@@ -25,7 +25,10 @@ const useProductActions = (product: Product) => {
   const handleDelete = async () => {
     const shouldDelete = await dialog({
       heading: t("product-table.delete-product", "Delete Product"),
-      text: t("product-table.are-you-sure-you-want-to-delete-this-product", "Are you sure you want to delete this product?"),
+      text: t(
+        "product-table.are-you-sure-you-want-to-delete-this-product",
+        "Are you sure you want to delete this product?"
+      ),
     })
 
     if (shouldDelete) {
@@ -40,10 +43,15 @@ const useProductActions = (product: Product) => {
       icon: <EditIcon size={20} />,
     },
     {
-      label: product.status === "published" ? t("product-table.unpublish", "Unpublish") : t("product-table.publish", "Publish"),
+      label:
+        product.status === "published"
+          ? t("product-table.unpublish", "Unpublish")
+          : t("product-table.publish", "Publish"),
       onClick: () => {
         const newStatus =
-          product.status === "published" ? t("product-table.draft", "draft") : t("product-table.published", "published")
+          product.status === "published"
+            ? t("product-table.draft", "draft")
+            : t("product-table.published", "published")
         updateProduct.mutate(
           {
             status: newStatus,
@@ -53,13 +61,23 @@ const useProductActions = (product: Product) => {
               notification(
                 t("product-table.success", "Success"),
                 product.status === "published"
-                  ? t("product-table.successfully-unpublished-product", "Successfully unpublished product")
-                  : t("product-table.successfully-published-product", "Successfully published product"),
+                  ? t(
+                      "product-table.successfully-unpublished-product",
+                      "Successfully unpublished product"
+                    )
+                  : t(
+                      "product-table.successfully-published-product",
+                      "Successfully published product"
+                    ),
                 "success"
               )
             },
             onError: (err) =>
-              notification(t("product-table.error", "Error"), getErrorMessage(err), "error"),
+              notification(
+                t("product-table.error", "Error"),
+                getErrorMessage(err),
+                "error"
+              ),
           }
         )
       },

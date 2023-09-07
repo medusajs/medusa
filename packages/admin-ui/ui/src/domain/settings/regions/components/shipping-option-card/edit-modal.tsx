@@ -60,11 +60,22 @@ const EditModal = ({ open, onClose, option }: Props) => {
       },
       {
         onSuccess: () => {
-          notification(t("shipping-option-card.success", "Success"), t("shipping-option-card.shipping-option-updated", "Shipping option updated"), "success")
+          notification(
+            t("shipping-option-card.success", "Success"),
+            t(
+              "shipping-option-card.shipping-option-updated",
+              "Shipping option updated"
+            ),
+            "success"
+          )
           closeAndReset()
         },
         onError: (error) => {
-          notification(t("shipping-option-card.error", "Error"), getErrorMessage(error), "error")
+          notification(
+            t("shipping-option-card.error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )
@@ -74,12 +85,22 @@ const EditModal = ({ open, onClose, option }: Props) => {
     <Modal open={open} handleClose={closeAndReset}>
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
-          <h1 className="inter-xlarge-semibold">{t("shipping-option-card.edit-shipping-option", "Edit Shipping Option")}</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t(
+              "shipping-option-card.edit-shipping-option",
+              "Edit Shipping Option"
+            )}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-              <p className="inter-base-semibold">{t("shipping-option-card.fulfillment-method", "Fulfillment Method")}</p>
+              <p className="inter-base-semibold">
+                {t(
+                  "shipping-option-card.fulfillment-method",
+                  "Fulfillment Method"
+                )}
+              </p>
               <p className="inter-base-regular text-grey-50">
                 {option.data.id as string} via {option.provider_id}
               </p>

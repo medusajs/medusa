@@ -213,7 +213,12 @@ export const useDiscountForm = () => {
   const { t } = useTranslation()
 
   if (!context) {
-    throw new Error(t("form.use-discount-form-must-be-a-child-of-discount-form-context", "useDiscountForm must be a child of DiscountFormContext"))
+    throw new Error(
+      t(
+        "form.use-discount-form-must-be-a-child-of-discount-form-context",
+        "useDiscountForm must be a child of DiscountFormContext"
+      )
+    )
   }
   return { ...form, ...context }
 }

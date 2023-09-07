@@ -254,7 +254,10 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
             <Tooltip
               open={invalid}
               side={"top"}
-              content={invalidMessage || t("currency-input.amount-is-not-valid", "Amount is not valid")}
+              content={
+                invalidMessage ||
+                t("currency-input.amount-is-not-valid", "Amount is not valid")
+              }
             >
               <span className="inter-base-regular text-grey-40 mr-xsmall">
                 {currencyInfo.symbol_native}

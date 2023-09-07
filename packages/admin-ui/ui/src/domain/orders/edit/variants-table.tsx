@@ -86,7 +86,7 @@ const VariantsTable: React.FC<Props> = (props) => {
               <span className="font-semibold">
                 {location_level.stocked_quantity}
               </span>
-              {t(" in {location}", {
+              {t("variants-table.location", " in {location}", {
                 location: getLocationNameById(location_level.location_id),
               })}
             </div>
@@ -312,7 +312,10 @@ const VariantsTable: React.FC<Props> = (props) => {
       <Table
         immediateSearchFocus
         enableSearch
-        searchPlaceholder={t("edit.search-product-variants", "Search Product Variants...")}
+        searchPlaceholder={t(
+          "edit.search-product-variants",
+          "Search Product Variants..."
+        )}
         searchValue={query}
         handleSearch={handleSearch}
         {...table.getTableProps()}

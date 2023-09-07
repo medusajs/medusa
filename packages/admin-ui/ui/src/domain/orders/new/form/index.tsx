@@ -199,7 +199,10 @@ export const useNewOrderForm = () => {
 
   if (!context) {
     throw new Error(
-      t("form.use-new-order-form-must-be-used-within-new-order-form-provider", "useNewOrderForm must be used within NewOrderFormProvider")
+      t(
+        "form.use-new-order-form-must-be-used-within-new-order-form-provider",
+        "useNewOrderForm must be used within NewOrderFormProvider"
+      )
     )
   }
 

@@ -71,11 +71,19 @@ const useGiftCardTableColums = () => {
               ) : (
                 <div className="flex items-center space-x-2">
                   <span>N / A</span>
-                  <IconTooltip content={t("gift-card-table.region-has-been-deleted", "Region has been deleted")} />
+                  <IconTooltip
+                    content={t(
+                      "gift-card-table.region-has-been-deleted",
+                      "Region has been deleted"
+                    )}
+                  />
                 </div>
               )
             ) : (
-              <StatusIndicator title={t("gift-card-table.none", "None")} variant="danger" />
+              <StatusIndicator
+                title={t("gift-card-table.none", "None")}
+                variant="danger"
+              />
             )}
           </Table.Cell>
         ),

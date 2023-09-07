@@ -38,9 +38,14 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
     <div className="flex w-full flex-col gap-6">
       <div className="grid w-full grid-cols-2 items-center">
         <div>
-          <p className="inter-base-semibold mb-1">{t("reservation-form.location", "Location")}</p>
+          <p className="inter-base-semibold mb-1">
+            {t("reservation-form.location", "Location")}
+          </p>
           <p className="text-grey-50">
-            {t("reservation-form.choose-where-you-wish-to-reserve-from", "Choose where you wish to reserve from.")}
+            {t(
+              "reservation-form.choose-where-you-wish-to-reserve-from",
+              "Choose where you wish to reserve from."
+            )}
           </p>
         </div>
         <Controller
@@ -61,9 +66,14 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
       </div>
       <div className="grid w-full grid-cols-2 items-center">
         <div>
-          <p className="inter-base-semibold mb-1">{t("reservation-form.item-to-reserve", "Item to reserve")}</p>
+          <p className="inter-base-semibold mb-1">
+            {t("reservation-form.item-to-reserve", "Item to reserve")}
+          </p>
           <p className="text-grey-50">
-            {t("reservation-form.select-the-item-that-you-wish-to-reserve", "Select the item that you wish to reserve.")}
+            {t(
+              "reservation-form.select-the-item-that-you-wish-to-reserve",
+              "Select the item that you wish to reserve."
+            )}
           </p>
         </div>
         <Controller
@@ -91,7 +101,9 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
             [&>*:nth-child(even)]:pr-4 [&>*:nth-child(even)]:text-right 
             [&>*:nth-child(-n+2)]:border-t`}
             >
-              <div className="rounded-tl-rounded">{t("reservation-form.item", "Item")}</div>
+              <div className="rounded-tl-rounded">
+                {t("reservation-form.item", "Item")}
+              </div>
               <div className="rounded-tr-rounded">
                 {selectedItem!.title ?? "N/A"}
               </div>
@@ -104,7 +116,9 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
                 {locationLevel?.stocked_quantity -
                   locationLevel?.reserved_quantity}
               </div>
-              <div className="rounded-bl-rounded">{t("reservation-form.reserve", "Reserve")}</div>
+              <div className="rounded-bl-rounded">
+                {t("reservation-form.reserve", "Reserve")}
+              </div>
               <div className="bg-grey-0 rounded-br-rounded text-grey-80 flex items-center">
                 <input
                   className="remove-number-spinner inter-base-regular w-full shrink border-none bg-transparent text-right font-normal outline-none outline-0"
@@ -136,9 +150,14 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
       </div>
       <div className="border-grey border-grey-20 grid w-full grid-cols-2 items-center border-t py-6">
         <div>
-          <p className="inter-base-semibold mb-1">{t("reservation-form.description", "Description")}</p>
+          <p className="inter-base-semibold mb-1">
+            {t("reservation-form.description", "Description")}
+          </p>
           <p className="text-grey-50">
-            {t("reservation-form.what-type-of-reservation-is-this", "What type of reservation is this?")}
+            {t(
+              "reservation-form.what-type-of-reservation-is-this",
+              "What type of reservation is this?"
+            )}
           </p>
         </div>
         <InputField

@@ -68,7 +68,10 @@ const PricesTable = ({ id, selectProduct }: PricesTableProps) => {
         totalCount={count}
         options={{
           enableSearch: false,
-          searchPlaceholder: t("prices-table.search-by-name-or-sku", "Search by name or SKU..."),
+          searchPlaceholder: t(
+            "prices-table.search-by-name-or-sku",
+            "Search by name or SKU..."
+          ),
         }}
         {...params}
       />
@@ -121,12 +124,20 @@ const PricesTableRow = ({
           onSuccess: () => {
             notification(
               t("prices-table.success", "Success"),
-              t(`Deleted prices of product: {title}`, { title: product.title }),
+              t(
+                "prices-table.deleted-prices-of-product",
+                "Deleted prices of product: {title}",
+                { title: product.title }
+              ),
               "success"
             )
           },
           onError: (err) =>
-            notification(t("prices-table.error", "Error"), getErrorMessage(err), "error"),
+            notification(
+              t("prices-table.error", "Error"),
+              getErrorMessage(err),
+              "error"
+            ),
         })
       },
     },

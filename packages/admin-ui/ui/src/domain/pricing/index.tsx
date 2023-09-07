@@ -41,7 +41,11 @@ const PricingIndex = () => {
       <div className="flex w-full grow flex-col">
         <BodyCard
           actionables={actionables}
-          customHeader={<TableViewHeader views={[t("pricing.price-lists", "Price lists")]} />}
+          customHeader={
+            <TableViewHeader
+              views={[t("pricing.price-lists", "Price lists")]}
+            />
+          }
           className="h-fit"
         >
           <PricingTable />

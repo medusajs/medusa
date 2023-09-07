@@ -46,7 +46,9 @@ export const SALES_CHANNEL_PRODUCTS_TABLE_COLUMNS = [
     },
   },
   {
-    Header: <Translation>{(t) => t("tables.collection", "Collection")}</Translation>,
+    Header: (
+      <Translation>{(t) => t("tables.collection", "Collection")}</Translation>
+    ),
     accessor: "collection",
     Cell: ({ cell: { value } }) => {
       return <div>{value?.title || "-"}</div>

@@ -66,13 +66,20 @@ const EditCustomerModal = ({
           handleClose()
           notification(
             t("details.success", "Success"),
-            t("details.successfully-updated-customer", "Successfully updated customer"),
+            t(
+              "details.successfully-updated-customer",
+              "Successfully updated customer"
+            ),
             "success"
           )
         },
         onError: (err) => {
           handleClose()
-          notification(t("details.error", "Error"), getErrorMessage(err), "error")
+          notification(
+            t("details.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )
@@ -86,7 +93,9 @@ const EditCustomerModal = ({
     <Modal handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <span className="inter-xlarge-semibold">{t("details.customer-details", "Customer Details")}</span>
+          <span className="inter-xlarge-semibold">
+            {t("details.customer-details", "Customer Details")}
+          </span>
         </Modal.Header>
         <Modal.Content>
           <div className="gap-y-xlarge flex flex-col">
@@ -131,7 +140,9 @@ const EditCustomerModal = ({
               </div>
             </div>
             <div>
-              <h2 className="inter-base-semibold mb-base">{t("details.metadata", "Metadata")}</h2>
+              <h2 className="inter-base-semibold mb-base">
+                {t("details.metadata", "Metadata")}
+              </h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </div>

@@ -39,9 +39,20 @@ function DetailsModal(props: DetailsModalProps) {
     try {
       await updateKey({ title: name })
       close()
-      notification(t("modals.success", "Success"), t("modals.updated-the-api-key", "Updated the API key"), "success")
+      notification(
+        t("modals.success", "Success"),
+        t("modals.updated-the-api-key", "Updated the API key"),
+        "success"
+      )
     } catch (e) {
-      notification(t("modals.error", "Error"), t("modals.failed-to-update-the-api-key", "Failed to update the API key"), "error")
+      notification(
+        t("modals.error", "Error"),
+        t(
+          "modals.failed-to-update-the-api-key",
+          "Failed to update the API key"
+        ),
+        "error"
+      )
     }
   }
 

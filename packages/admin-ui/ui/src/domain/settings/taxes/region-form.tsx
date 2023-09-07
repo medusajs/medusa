@@ -97,7 +97,10 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
       onSuccess: () => {
         notification(
           t("taxes.success", "Success"),
-          t("taxes.region-tax-settings-were-successfully-updated", "Region tax settings were successfully updated."),
+          t(
+            "taxes.region-tax-settings-were-successfully-updated",
+            "Region tax settings were successfully updated."
+          ),
           "success"
         )
       },
@@ -129,10 +132,14 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           <Checkbox
             className="inter-base-regular"
             {...register("automatic_taxes")}
-            label={t("taxes.calculate-taxes-automatically", "Calculate taxes automatically?")}
+            label={t(
+              "taxes.calculate-taxes-automatically",
+              "Calculate taxes automatically?"
+            )}
           />
           <IconTooltip
             content={t(
+              "taxes.when-checked-medusa-will-automatically-apply-tax-calculations-to-carts-in-this-region-when-unchecked-you-will-have-to-manually-compute-taxes-at-checkout-manual-taxes-are-recommended-if-using-a-3rd-party-tax-provider-to-avoid-performing-too-many-requests",
               "When checked Medusa will automatically apply tax calculations to Carts in this Region. When unchecked you will have to manually compute taxes at checkout. Manual taxes are recommended if using a 3rd party tax provider to avoid performing too many requests"
             )}
           />
@@ -141,10 +148,14 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           <Checkbox
             className="inter-base-regular"
             {...register("gift_cards_taxable")}
-            label={t("taxes.apply-tax-to-gift-cards", "Apply tax to gift cards?")}
+            label={t(
+              "taxes.apply-tax-to-gift-cards",
+              "Apply tax to gift cards?"
+            )}
           />
           <IconTooltip
             content={t(
+              "taxes.when-checked-taxes-will-be-applied-to-gift-cards-on-checkout-in-some-contries-tax-regulations-require-that-taxes-are-applied-to-gift-cards-on-purchase",
               "When checked taxes will be applied to gift cards on checkout. In some contries tax regulations require that taxes are applied to gift cards on purchase."
             )}
           />

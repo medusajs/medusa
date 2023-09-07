@@ -102,11 +102,18 @@ const ReserveItemsModal: React.FC<ReserveItemsModalProps> = ({
         .map(({ error }) => getErrorMessage(error))
         .join(", ")
 
-      notification(t("reservation.couldnt-allocate-items", "Couldn't allocate items"), error, "error")
+      notification(
+        t("reservation.couldnt-allocate-items", "Couldn't allocate items"),
+        error,
+        "error"
+      )
     } else {
       notification(
         t("reservation.items-allocated", "Items allocated"),
-        t("reservation.items-have-been-allocated-successfully", "Items have been allocated successfully"),
+        t(
+          "reservation.items-have-been-allocated-successfully",
+          "Items have been allocated successfully"
+        ),
         "success"
       )
 
@@ -147,9 +154,14 @@ const ReserveItemsModal: React.FC<ReserveItemsModalProps> = ({
               </h1>
               <div className="mt-6 flex w-full items-center justify-between">
                 <div>
-                  <p className="inter-base-semibold">{t("reservation.location", "Location")}</p>
+                  <p className="inter-base-semibold">
+                    {t("reservation.location", "Location")}
+                  </p>
                   <p className="inter-base-regular">
-                    {t("reservation.choose-where-you-wish-to-allocate-from", "Choose where you wish to allocate from")}
+                    {t(
+                      "reservation.choose-where-you-wish-to-allocate-from",
+                      "Choose where you wish to allocate from"
+                    )}
                   </p>
                 </div>
                 <div className="w-1/2">
@@ -180,7 +192,10 @@ const ReserveItemsModal: React.FC<ReserveItemsModalProps> = ({
                     {t("reservation.items-to-allocate", "Items to allocate")}
                   </p>
                   <p className="inter-base-regular">
-                    {t("reservation.select-the-number-of-items-that-you-wish-to-allocate", "Select the number of items that you wish to allocate.")}
+                    {t(
+                      "reservation.select-the-number-of-items-that-you-wish-to-allocate",
+                      "Select the number of items that you wish to allocate."
+                    )}
                   </p>
                   {items?.map((item, i) => {
                     return (

@@ -60,13 +60,20 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
         onSuccess: () => {
           notification(
             t("general.success", "Success"),
-            t("general.discount-updated-successfully", "Discount updated successfully"),
+            t(
+              "general.discount-updated-successfully",
+              "Discount updated successfully"
+            ),
             "success"
           )
           onClose()
         },
         onError: (error) => {
-          notification(t("general.error", "Error"), getErrorMessage(error), "error")
+          notification(
+            t("general.error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )
@@ -90,7 +97,9 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
           <Modal.Content>
             <div className="gap-y-xlarge flex flex-col">
               <div>
-                <h2 className="inter-base-semibold mb-base">{t("general.details", "Details")}</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("general.details", "Details")}
+                </h2>
                 <DiscountGeneralForm
                   form={nestedForm(form, "general")}
                   type={discount.rule.type}
@@ -98,7 +107,9 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
                 />
               </div>
               <div>
-                <h2 className="inter-base-semibold mb-base">{t("general.metadata", "Metadata")}</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("general.metadata", "Metadata")}
+                </h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
             </div>

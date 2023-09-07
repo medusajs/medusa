@@ -104,7 +104,12 @@ const Summary = () => {
     }
 
     if (!discount.regions.find((d) => d.id === regionObj.id)) {
-      setDiscError(t("components.the-discount-is-not-applicable-to-the-selected-region", "The discount is not applicable to the selected region"))
+      setDiscError(
+        t(
+          "components.the-discount-is-not-applicable-to-the-selected-region",
+          "The discount is not applicable to the selected region"
+        )
+      )
       setCode(undefined)
       form.setValue("discount_code", undefined)
       setShowAddDiscount(true)
@@ -113,7 +118,12 @@ const Summary = () => {
 
   useEffect(() => {
     if (status === "error") {
-      setDiscError(t("components.the-discount-code-is-invalid", "The discount code is invalid"))
+      setDiscError(
+        t(
+          "components.the-discount-code-is-invalid",
+          "The discount code is invalid"
+        )
+      )
       setCode(undefined)
       form.setValue("discount_code", undefined)
       setShowAddDiscount(true)
@@ -243,7 +253,9 @@ const Summary = () => {
               <span>
                 {t("components.discount", "Discount")}
                 <span className="inter-base-regular text-grey-50 ml-0.5">
-                  {t("(Code: {code})", { code: discount.code })}
+                  {t("select-shipping.code", "(Code: {code})", {
+                    code: discount.code,
+                  })}
                 </span>
               </span>
               <span
@@ -259,7 +271,9 @@ const Summary = () => {
                   "border-r": discount.rule.type !== "free_shipping",
                 })}
               >
-                <span className="text-grey-50">{t("components.type", "Type")}</span>
+                <span className="text-grey-50">
+                  {t("components.type", "Type")}
+                </span>
                 <span>
                   {discount.rule.type !== "free_shipping"
                     ? `${discount.rule.type
@@ -270,7 +284,9 @@ const Summary = () => {
               </div>
               {discount.rule.type !== "free_shipping" && (
                 <div className="flex flex-col pl-6">
-                  <span className="text-grey-50">{t("components.value", "Value")}</span>
+                  <span className="text-grey-50">
+                    {t("components.value", "Value")}
+                  </span>
                   <span>
                     {discount.rule.type === "fixed"
                       ? `${displayAmount(
@@ -307,7 +323,9 @@ const Summary = () => {
           <div className="grid w-full grid-cols-2 gap-x-6">
             {!isNullishObject(shipping) && shipping && (
               <div className="border-grey-20 flex flex-col border-r pr-6">
-                <span className="text-grey-50">{t("components.address", "Address")}</span>
+                <span className="text-grey-50">
+                  {t("components.address", "Address")}
+                </span>
                 <span>
                   {shipping.address_1}, {shipping.address_2}
                 </span>
@@ -319,7 +337,9 @@ const Summary = () => {
             )}
             {regionObj && (
               <div className="flex flex-col">
-                <span className="text-grey-50">{t("components.shipping-method", "Shipping method")}</span>
+                <span className="text-grey-50">
+                  {t("components.shipping-method", "Shipping method")}
+                </span>
                 <span>
                   {selectedShippingOption.name} -{" "}
                   {customShippingPrice && regionObj ? (
@@ -344,8 +364,13 @@ const Summary = () => {
       )}
 
       {!isNullishObject(billing) && billing && (
-        <SummarySection title={t("components.billing-details", "Billing details")} editIndex={3}>
-          <span className="text-grey-50">{t("components.address", "Address")}</span>
+        <SummarySection
+          title={t("components.billing-details", "Billing details")}
+          editIndex={3}
+        >
+          <span className="text-grey-50">
+            {t("components.address", "Address")}
+          </span>
           <span>
             {billing.address_1}, {billing.address_2}
           </span>

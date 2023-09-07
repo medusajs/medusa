@@ -50,7 +50,10 @@ const AddTypeConditionSelector = ({ onClose }: AddConditionSelectorProps) => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("add-condition-tables.search-by-type", "Search by type..."),
+            searchPlaceholder: t(
+              "add-condition-tables.search-by-type",
+              "Search by type..."
+            ),
           }}
           resourceName="Types"
           totalCount={count || 0}

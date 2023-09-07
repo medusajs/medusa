@@ -122,6 +122,7 @@ const NewProduct = ({ onClose }: Props) => {
           preppedImages = await prepareImages(data.media.images)
         } catch (error) {
           let errorMessage = t(
+            "new.something-went-wrong-while-trying-to-upload-images",
             "Something went wrong while trying to upload images."
           )
           const response = (error as any).response as Response
@@ -131,6 +132,7 @@ const NewProduct = ({ onClose }: Props) => {
               errorMessage +
               " " +
               t(
+                "new.you-might-not-have-a-file-service-configured-please-contact-your-administrator",
                 "You might not have a file service configured. Please contact your administrator"
               )
           }
@@ -150,6 +152,7 @@ const NewProduct = ({ onClose }: Props) => {
           preppedImages = await prepareImages(data.thumbnail.images)
         } catch (error) {
           let errorMessage = t(
+            "new.something-went-wrong-while-trying-to-upload-the-thumbnail",
             "Something went wrong while trying to upload the thumbnail."
           )
           const response = (error as any).response as Response
@@ -159,6 +162,7 @@ const NewProduct = ({ onClose }: Props) => {
               errorMessage +
               " " +
               t(
+                "new.you-might-not-have-a-file-service-configured-please-contact-your-administrator",
                 "You might not have a file service configured. Please contact your administrator"
               )
           }
@@ -270,11 +274,17 @@ const NewProduct = ({ onClose }: Props) => {
             <Accordion defaultValue={["general"]} type="multiple">
               <Accordion.Item
                 value={"general"}
-                title={t("new.general-information.title", "General information")}
+                title={t(
+                  "new.general-information.title",
+                  "General information"
+                )}
                 required
               >
                 <p className="inter-base-regular text-grey-50">
-                  {t("new.to-start-selling-all-you-need-is-a-name-and-a-price", "To start selling, all you need is a name and a price.")}
+                  {t(
+                    "new.to-start-selling-all-you-need-is-a-name-and-a-price",
+                    "To start selling, all you need is a name and a price."
+                  )}
                 </p>
                 <div className="mt-xlarge gap-y-xlarge flex flex-col">
                   <GeneralForm
@@ -286,7 +296,10 @@ const NewProduct = ({ onClose }: Props) => {
               </Accordion.Item>
               <Accordion.Item title="Organize" value="organize">
                 <p className="inter-base-regular text-grey-50">
-                  {t("new.to-start-selling-all-you-need-is-a-name-and-a-price", "To start selling, all you need is a name and a price.")}
+                  {t(
+                    "new.to-start-selling-all-you-need-is-a-name-and-a-price",
+                    "To start selling, all you need is a name and a price."
+                  )}
                 </p>
                 <div className="mt-xlarge gap-y-xlarge pb-xsmall flex flex-col">
                   <div>
@@ -306,9 +319,13 @@ const NewProduct = ({ onClose }: Props) => {
               </Accordion.Item>
               <Accordion.Item title="Variants" value="variants">
                 <p className="inter-base-regular text-grey-50">
-                  {t("new.add-variations-of-this-product", "Add variations of this product.")}
+                  {t(
+                    "new.add-variations-of-this-product",
+                    "Add variations of this product."
+                  )}
                   <br />
                   {t(
+                    "new.offer-your-customers-different-options-for-color-format-size-shape-etc",
                     "Offer your customers different options for color, format, size, shape, etc."
                   )}
                 </p>
@@ -322,7 +339,10 @@ const NewProduct = ({ onClose }: Props) => {
               </Accordion.Item>
               <Accordion.Item title="Attributes" value="attributes">
                 <p className="inter-base-regular text-grey-50">
-                  {t("new.used-for-shipping-and-customs-purposes", "Used for shipping and customs purposes.")}
+                  {t(
+                    "new.used-for-shipping-and-customs-purposes",
+                    "Used for shipping and customs purposes."
+                  )}
                 </p>
                 <div className="my-xlarge">
                   <h3 className="inter-base-semibold mb-base">
@@ -340,6 +360,7 @@ const NewProduct = ({ onClose }: Props) => {
               <Accordion.Item title="Thumbnail" value="thumbnail">
                 <p className="inter-base-regular mb-large text-grey-50">
                   {t(
+                    "new.used-to-represent-your-product-during-checkout-social-sharing-and-more",
                     "Used to represent your product during checkout, social sharing and more."
                   )}
                 </p>
@@ -347,7 +368,10 @@ const NewProduct = ({ onClose }: Props) => {
               </Accordion.Item>
               <Accordion.Item title={t("new.media", "Media")} value="media">
                 <p className="inter-base-regular mb-large text-grey-50">
-                  {t("new.add-images-to-your-product", "Add images to your product.")}
+                  {t(
+                    "new.add-images-to-your-product",
+                    "Add images to your product."
+                  )}
                 </p>
                 <MediaForm form={nestedForm(form, "media")} />
               </Accordion.Item>

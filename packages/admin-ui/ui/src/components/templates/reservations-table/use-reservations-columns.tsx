@@ -27,7 +27,11 @@ const useReservationsTableColumns = () => {
         Cell: ({ cell: { value } }) => moment(value).format("MMM Do YYYY"),
       },
       {
-        Header: () => <div className="pr-2 text-right">{t("reservations-table.quantity", "Quantity")}</div>,
+        Header: () => (
+          <div className="pr-2 text-right">
+            {t("reservations-table.quantity", "Quantity")}
+          </div>
+        ),
         accessor: "quantity",
         Cell: ({ cell: { value } }) => (
           <div className="w-full pr-2 text-right">{value}</div>

@@ -9,7 +9,10 @@ const SettingsOverview: React.FC<React.PropsWithChildren> = ({ children }) => {
     <div>
       <PageDescription
         title={t("templates.settings", "Settings")}
-        subtitle={t("templates.manage-the-settings-for-your-medusa-store", "Manage the settings for your Medusa store")}
+        subtitle={t(
+          "templates.manage-the-settings-for-your-medusa-store",
+          "Manage the settings for your Medusa store"
+        )}
       />
       <div className="medium:grid-cols-2 gap-x-base gap-y-xsmall grid auto-cols-fr grid-cols-1">
         {children}

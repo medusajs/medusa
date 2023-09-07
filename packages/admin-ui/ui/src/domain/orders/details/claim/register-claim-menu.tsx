@@ -109,8 +109,14 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
 
     if (isDirty) {
       shouldClose = await dialog({
-        heading: t("claim.are-you-sure-you-want-to-close", "Are you sure you want to close?"),
-        text: t("claim.you-have-unsaved-changes-are-you-sure-you-want-to-close", "You have unsaved changes, are you sure you want to close?"),
+        heading: t(
+          "claim.are-you-sure-you-want-to-close",
+          "Are you sure you want to close?"
+        ),
+        text: t(
+          "claim.you-have-unsaved-changes-are-you-sure-you-want-to-close",
+          "You have unsaved changes, are you sure you want to close?"
+        ),
       })
     }
 
@@ -159,7 +165,10 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
           `return_items.items.${index}.return_reason_details`,
           {
             type: "manual",
-            message: t("claim.please-select-a-reason", "Please select a reason"),
+            message: t(
+              "claim.please-select-a-reason",
+              "Please select a reason"
+            ),
           },
           { shouldFocus: true }
         )
@@ -173,7 +182,10 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
         `replacement_shipping.option`,
         {
           type: "manual",
-          message: t("claim.a-shipping-method-for-replacement-items-is-required", "A shipping method for replacement items is required"),
+          message: t(
+            "claim.a-shipping-method-for-replacement-items-is-required",
+            "A shipping method for replacement items is required"
+          ),
         },
         { shouldFocus: true }
       )
@@ -226,15 +238,23 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
         onSuccess: () => {
           notification(
             t("claim.successfully-created-claim", "Successfully created claim"),
-            t("A claim for order #{display_id} was successfully created", {
-              display_id: order.display_id,
-            }),
+            t(
+              "claim.created",
+              "A claim for order #{display_id} was successfully created",
+              {
+                display_id: order.display_id,
+              }
+            ),
             "success"
           )
           handleClose()
         },
         onError: (err) => {
-          notification(t("claim.error-creating-claim", "Error creating claim"), getErrorMessage(err), "error")
+          notification(
+            t("claim.error-creating-claim", "Error creating claim"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )
@@ -259,7 +279,9 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
     >
       <Modal.Body>
         <Modal.Header handleClose={onCancel}>
-          <h1 className="inter-xlarge-semibold">{t("claim.create-claim", "Create Claim")}</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("claim.create-claim", "Create Claim")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit} data-testid="register-claim-form">
           <Modal.Content>
@@ -278,9 +300,12 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
 
               {isLocationFulfillmentEnabled && (
                 <div className="mb-8">
-                  <h3 className="inter-base-semibold ">{t("claim.location", "Location")}</h3>
+                  <h3 className="inter-base-semibold ">
+                    {t("claim.location", "Location")}
+                  </h3>
                   <p className="inter-base-regular text-grey-50">
                     {t(
+                      "claim.choose-which-location-you-want-to-return-the-items-to",
                       "Choose which location you want to return the items to."
                     )}
                   </p>
@@ -294,7 +319,10 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
                         return (
                           <Select
                             className="mt-2"
-                            placeholder={t("claim.select-location-to-return-to", "Select Location to Return to")}
+                            placeholder={t(
+                              "claim.select-location-to-return-to",
+                              "Select Location to Return to"
+                            )}
                             value={value}
                             isMulti={false}
                             onChange={onChange}

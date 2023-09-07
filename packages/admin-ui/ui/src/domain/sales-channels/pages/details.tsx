@@ -165,7 +165,10 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
             </div>
           </div>
           <div className="text-grey-50 text-small mb-6 block max-w-[100%] overflow-hidden truncate">
-            {t("pages.control-which-products-are-available-in-which-channels", "Control which products are available in which channels")}
+            {t(
+              "pages.control-which-products-are-available-in-which-channels",
+              "Control which products are available in which channels"
+            )}
           </div>
         </div>
 
@@ -175,7 +178,10 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
             ref={inputRef}
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            placeholder={t("pages.search-by-title-or-description", "Search by title or description")}
+            placeholder={t(
+              "pages.search-by-title-or-description",
+              "Search by title or description"
+            )}
             className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-inherit font-normal outline-none outline-0"
             onBlur={() => setShowFilter(!!filterText)}
             autoComplete="off"
@@ -264,6 +270,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
   const onDelete = async () => {
     const confirmed = await confirmation({
       text: t(
+        "pages.are-you-sure-you-want-to-delete-this-sales-channel-the-setup-you-made-will-be-gone-forever",
         "Are you sure you want to delete this sales channel? The setup you made will be gone forever."
       ),
       heading: t("pages.delete-channel.heading", "Delete Channel"),

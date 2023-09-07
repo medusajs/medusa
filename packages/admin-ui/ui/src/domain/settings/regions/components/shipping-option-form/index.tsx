@@ -69,19 +69,27 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
             />
           </div>
           <p className="inter-base-regular text-grey-50">
-            {t("shipping-option-form.enable-or-disable-the-shipping-option-visiblity-in-store", "Enable or disable the shipping option visiblity in store.")}
+            {t(
+              "shipping-option-form.enable-or-disable-the-shipping-option-visiblity-in-store",
+              "Enable or disable the shipping option visiblity in store."
+            )}
           </p>
         </div>
       </div>
       <div className="bg-grey-20 my-xlarge h-px w-full" />
       <div>
-        <h3 className="inter-base-semibold mb-base">{t("shipping-option-form.details", "Details")}</h3>
+        <h3 className="inter-base-semibold mb-base">
+          {t("shipping-option-form.details", "Details")}
+        </h3>
         <div className="gap-large grid grid-cols-2">
           <InputField
             label={t("shipping-option-form.title", "Title")}
             required
             {...register("name", {
-              required: t("shipping-option-form.title-is-required", "Title is required"),
+              required: t(
+                "shipping-option-form.title-is-required",
+                "Title is required"
+              ),
               pattern: FormValidator.whiteSpaceRule("Title"),
               minLength: FormValidator.minOneCharRule("Title"),
             })}
@@ -105,11 +113,17 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                         value: "flat_rate",
                       },
                       {
-                        label: t("shipping-option-form.calculated", "Calculated"),
+                        label: t(
+                          "shipping-option-form.calculated",
+                          "Calculated"
+                        ),
                         value: "calculated",
                       },
                     ]}
-                    placeholder={t("shipping-option-form.choose-a-price-type", "Choose a price type")}
+                    placeholder={t(
+                      "shipping-option-form.choose-a-price-type",
+                      "Choose a price type"
+                    )}
                     errors={errors}
                   />
                 )
@@ -157,10 +171,16 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                 render={({ field }) => {
                   return (
                     <NextSelect
-                      label={t("shipping-option-form.shipping-profile", "Shipping Profile")}
+                      label={t(
+                        "shipping-option-form.shipping-profile",
+                        "Shipping Profile"
+                      )}
                       required
                       options={shippingProfileOptions}
-                      placeholder={t("shipping-option-form.choose-a-shipping-profile", "Choose a shipping profile")}
+                      placeholder={t(
+                        "shipping-option-form.choose-a-shipping-profile",
+                        "Choose a shipping profile"
+                      )}
                       {...field}
                       errors={errors}
                     />
@@ -173,9 +193,15 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                 render={({ field }) => {
                   return (
                     <NextSelect
-                      label={t("shipping-option-form.fulfillment-method", "Fulfillment Method")}
+                      label={t(
+                        "shipping-option-form.fulfillment-method",
+                        "Fulfillment Method"
+                      )}
                       required
-                      placeholder={t("shipping-option-form.choose-a-fulfillment-method", "Choose a fulfillment method")}
+                      placeholder={t(
+                        "shipping-option-form.choose-a-fulfillment-method",
+                        "Choose a fulfillment method"
+                      )}
                       options={fulfillmentOptions}
                       {...field}
                       errors={errors}
@@ -189,7 +215,9 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
       </div>
       <div className="bg-grey-20 my-xlarge h-px w-full" />
       <div>
-        <h3 className="inter-base-semibold mb-base">{t("shipping-option-form.requirements", "Requirements")}</h3>
+        <h3 className="inter-base-semibold mb-base">
+          {t("shipping-option-form.requirements", "Requirements")}
+        </h3>
         <div className="gap-large grid grid-cols-2">
           <Controller
             control={control}
@@ -209,7 +237,10 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                   "requirements.max_subtotal.amount"
                 )
                 if (maxSubtotal && value > maxSubtotal) {
-                  return t("shipping-option-form.min-subtotal-must-be-less-than-max-subtotal", "Min. subtotal must be less than max. subtotal")
+                  return t(
+                    "shipping-option-form.min-subtotal-must-be-less-than-max-subtotal",
+                    "Min. subtotal must be less than max. subtotal"
+                  )
                 }
                 return true
               },
@@ -218,7 +249,10 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
               return (
                 <div>
                   <InputHeader
-                    label={t("shipping-option-form.min-subtotal", "Min. subtotal")}
+                    label={t(
+                      "shipping-option-form.min-subtotal",
+                      "Min. subtotal"
+                    )}
                     className="mb-xsmall"
                     tooltip={
                       <IncludesTaxTooltip includesTax={region.includes_tax} />
@@ -262,7 +296,10 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
               return (
                 <div ref={ref}>
                   <InputHeader
-                    label={t("shipping-option-form.max-subtotal", "Max. subtotal")}
+                    label={t(
+                      "shipping-option-form.max-subtotal",
+                      "Max. subtotal"
+                    )}
                     className="mb-xsmall"
                     tooltip={
                       <IncludesTaxTooltip includesTax={region.includes_tax} />
@@ -283,7 +320,9 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
       </div>
       <div className="bg-grey-20 my-xlarge h-px w-full" />
       <div>
-        <h3 className="inter-base-semibold mb-base">{t("shipping-option-form.metadata", "Metadata")}</h3>
+        <h3 className="inter-base-semibold mb-base">
+          {t("shipping-option-form.metadata", "Metadata")}
+        </h3>
         <MetadataForm form={nestedForm(form, "metadata")} />
       </div>
     </div>

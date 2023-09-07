@@ -30,7 +30,10 @@ export const TaxRateRow = ({ row, onEdit }) => {
 
     const shouldDelete = await dialog({
       heading: t("taxes.delete-tax-rate.heading", "Delete tax rate"),
-      text: t("taxes.are-you-sure-you-want-to-delete-this-tax-rate", "Are you sure you want to delete this tax rate?"),
+      text: t(
+        "taxes.are-you-sure-you-want-to-delete-this-tax-rate",
+        "Are you sure you want to delete this tax rate?"
+      ),
     })
 
     if (!shouldDelete) {
@@ -40,7 +43,11 @@ export const TaxRateRow = ({ row, onEdit }) => {
     return deleteTaxRate
       .mutateAsync()
       .then(() => {
-        notification(t("taxes.success", "Success"), t("taxes.tax-rate-was-deleted", "Tax rate was deleted."), "success")
+        notification(
+          t("taxes.success", "Success"),
+          t("taxes.tax-rate-was-deleted", "Tax rate was deleted."),
+          "success"
+        )
       })
       .catch((err) => {
         notification(t("taxes.error", "Error"), getErrorMessage(err), "error")

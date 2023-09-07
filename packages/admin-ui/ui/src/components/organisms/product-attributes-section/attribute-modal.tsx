@@ -69,7 +69,9 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={onReset} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
-          <h1 className="inter-xlarge-semibold m-0">{t("product-attributes-section.edit-attributes", "Edit Attributes")}</h1>
+          <h1 className="inter-xlarge-semibold m-0">
+            {t("product-attributes-section.edit-attributes", "Edit Attributes")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -78,7 +80,10 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
                 {t("product-attributes-section.dimensions", "Dimensions")}
               </h2>
               <p className="inter-base-regular text-grey-50 mb-large">
-                {t("product-attributes-section.configure-to-calculate-the-most-accurate-shipping-rates", "Configure to calculate the most accurate shipping rates")}
+                {t(
+                  "product-attributes-section.configure-to-calculate-the-most-accurate-shipping-rates",
+                  "Configure to calculate the most accurate shipping rates"
+                )}
               </p>
               <DimensionsForm form={nestedForm(form, "dimensions")} />
             </div>
@@ -87,7 +92,10 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
                 {t("product-attributes-section.customs", "Customs")}
               </h2>
               <p className="inter-base-regular text-grey-50 mb-large">
-                {t("product-attributes-section.configure-to-calculate-the-most-accurate-shipping-rates", "Configure to calculate the most accurate shipping rates")}
+                {t(
+                  "product-attributes-section.configure-to-calculate-the-most-accurate-shipping-rates",
+                  "Configure to calculate the most accurate shipping rates"
+                )}
               </p>
               <CustomsForm form={nestedForm(form, "customs")} />
             </div>

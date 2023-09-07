@@ -34,11 +34,15 @@ const SendNotificationForm = ({ form, type }: Props) => {
               <IndeterminateCheckbox checked={value} onChange={onChange} />
             </div>
             <p className="inter-small-semibold mr-1.5">
-              {t("send-notification-form.send-notifications", "Send notifications")}
+              {t(
+                "send-notification-form.send-notifications",
+                "Send notifications"
+              )}
             </p>
             <IconTooltip
               type="info"
               content={t(
+                "send-notification-form.if-unchecked-the-customer-will-not-receive-communication",
                 `If unchecked the customer will not receive communication about this {subject}.`,
                 { subject }
               )}

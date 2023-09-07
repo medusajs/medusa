@@ -29,17 +29,26 @@ const RegionProvidersForm = ({ form }: Props) => {
         control={control}
         name={path("payment_providers")}
         rules={{
-          required: t("region-form.payment-providers-are-required", "Payment providers are required"),
+          required: t(
+            "region-form.payment-providers-are-required",
+            "Payment providers are required"
+          ),
           minLength: {
             value: 1,
-            message: t("region-form.payment-providers-are-required", "Payment providers are required"),
+            message: t(
+              "region-form.payment-providers-are-required",
+              "Payment providers are required"
+            ),
           },
         }}
         render={({ field: { value, onBlur, onChange } }) => {
           return (
             <NextSelect
               label={t("region-form.payment-providers", "Payment Providers")}
-              placeholder={t("region-form.choose-payment-providers", "Choose payment providers...")}
+              placeholder={t(
+                "region-form.choose-payment-providers",
+                "Choose payment providers..."
+              )}
               options={paymentProviderOptions}
               isMulti
               isClearable
@@ -58,17 +67,29 @@ const RegionProvidersForm = ({ form }: Props) => {
         control={control}
         name={path("fulfillment_providers")}
         rules={{
-          required: t("region-form.fulfillment-providers-are-required", "Fulfillment providers are required"),
+          required: t(
+            "region-form.fulfillment-providers-are-required",
+            "Fulfillment providers are required"
+          ),
           minLength: {
             value: 1,
-            message: t("region-form.fulfillment-providers-are-required", "Fulfillment providers are required"),
+            message: t(
+              "region-form.fulfillment-providers-are-required",
+              "Fulfillment providers are required"
+            ),
           },
         }}
         render={({ field: { onBlur, onChange, value } }) => {
           return (
             <NextSelect
-              label={t("region-form.fulfillment-providers", "Fulfillment Providers")}
-              placeholder={t("region-form.choose-fulfillment-providers", "Choose fulfillment providers...")}
+              label={t(
+                "region-form.fulfillment-providers",
+                "Fulfillment Providers"
+              )}
+              placeholder={t(
+                "region-form.choose-fulfillment-providers",
+                "Choose fulfillment providers..."
+              )}
               options={fulfillmentProviderOptions}
               required
               isMulti

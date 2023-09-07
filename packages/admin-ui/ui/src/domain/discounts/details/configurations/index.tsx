@@ -24,7 +24,10 @@ const Configurations: React.FC<ConfigurationsProps> = ({ discount }) => {
         className="min-h-[200px]"
         actionables={[
           {
-            label: t("configurations.edit-configurations", "Edit configurations"),
+            label: t(
+              "configurations.edit-configurations",
+              "Edit configurations"
+            ),
             onClick: open,
             icon: <EditIcon size={20} />,
           },

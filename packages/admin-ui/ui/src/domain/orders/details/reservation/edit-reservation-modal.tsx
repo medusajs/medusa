@@ -253,6 +253,7 @@ const EditReservationDrawer = ({
                   </h2>
                   <span className="inter-base-regular text-grey-50">
                     {t(
+                      "reservation.choose-which-location-you-want-to-ship-the-items-from",
                       "Choose which location you want to ship the items from."
                     )}
                   </span>
@@ -324,9 +325,13 @@ const EditReservationDrawer = ({
                       />
                       <span className="text-grey-50 nowrap whitespace-nowrap pl-2">
                         {maxReservation
-                          ? t(" / {maxReservation} requested", {
-                              maxReservation,
-                            })
+                          ? t(
+                              "reservation.max-reservation-requested",
+                              " / {maxReservation} requested",
+                              {
+                                maxReservation,
+                              }
+                            )
                           : t("reservation.reserved", " reserved")}
                       </span>
                     </div>

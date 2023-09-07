@@ -59,7 +59,10 @@ const AnalyticsPreferencesModal = () => {
       onSuccess: () => {
         notification(
           t("analytics-preferences.success", "Success"),
-          t("analytics-preferences.your-preferences-were-successfully-updated", "Your preferences were successfully updated"),
+          t(
+            "analytics-preferences.your-preferences-were-successfully-updated",
+            "Your preferences were successfully updated"
+          ),
           "success"
         )
 
@@ -70,7 +73,11 @@ const AnalyticsPreferencesModal = () => {
         setSubmittingConfig(false)
       },
       onError: (err) => {
-        notification(t("analytics-preferences.error", "Error"), getErrorMessage(err), "error")
+        notification(
+          t("analytics-preferences.error", "Error"),
+          getErrorMessage(err),
+          "error"
+        )
         setSubmittingConfig(false)
       },
     })
@@ -82,10 +89,14 @@ const AnalyticsPreferencesModal = () => {
         <div className="flex flex-col items-center">
           <div className="mt-5xlarge flex w-full max-w-[664px] flex-col">
             <h1 className="inter-xlarge-semibold mb-large">
-              {t("analytics-preferences.help-us-get-better", "Help us get better")}
+              {t(
+                "analytics-preferences.help-us-get-better",
+                "Help us get better"
+              )}
             </h1>
             <p className="text-grey-50">
               {t(
+                "analytics-preferences.to-create-the-most-compelling-e-commerce-experience-we-would-like-to-gain-insights-in-how-you-use-medusa-user-insights-allow-us-to-build-a-better-more-engaging-and-more-usable-products-we-only-collect-data-for-product-improvements-read-what-data-we-gather-in-our",
                 "To create the most compelling e-commerce experience we would like to gain insights in how you use Medusa. User insights allow us to build a better, more engaging, and more usable products. We only collect data for product improvements. Read what data we gather in our"
               )}{" "}
               <a
@@ -108,7 +119,10 @@ const AnalyticsPreferencesModal = () => {
                 })}
                 {...register("email", {
                   pattern: {
-                    message: t("analytics-preferences.please-enter-a-valid-email", "Please enter a valid email"),
+                    message: t(
+                      "analytics-preferences.please-enter-a-valid-email",
+                      "Please enter a valid email"
+                    ),
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   },
                 })}

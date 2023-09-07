@@ -40,7 +40,10 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
           "password",
           {
             type: "manual",
-            message: t("login-card.these-credentials-do-not-match-our-records", "These credentials do not match our records."),
+            message: t(
+              "login-card.these-credentials-do-not-match-our-records",
+              "These credentials do not match our records."
+            ),
           },
           {
             shouldFocus: true,

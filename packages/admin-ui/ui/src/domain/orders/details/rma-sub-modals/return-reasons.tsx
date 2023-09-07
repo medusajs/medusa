@@ -59,7 +59,9 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
     <>
       <Modal.Content>
         <div className="h-full">
-          <h2 className="inter-base-semibold mb-4">{t("rma-sub-modals.reason-for-return", "Reason for Return")}</h2>
+          <h2 className="inter-base-semibold mb-4">
+            {t("rma-sub-modals.reason-for-return", "Reason for Return")}
+          </h2>
           <Select
             label={t("rma-sub-modals.reason", "Reason")}
             value={selectedReason}

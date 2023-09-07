@@ -111,7 +111,10 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
       () => {
         resetAndClose()
       },
-      t("edit-variants-modal.variants-were-successfully-updated", "Variants were successfully updated")
+      t(
+        "edit-variants-modal.variants-were-successfully-updated",
+        "Variants were successfully updated"
+      )
     )
   })
 
@@ -124,13 +127,18 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
       <LayeredModal handleClose={resetAndClose} open={open} context={context}>
         <Modal.Body>
           <Modal.Header handleClose={resetAndClose}>
-            <h1 className="inter-xlarge-semibold">{t("edit-variants-modal.edit-variants", "Edit Variants")}</h1>
+            <h1 className="inter-xlarge-semibold">
+              {t("edit-variants-modal.edit-variants", "Edit Variants")}
+            </h1>
           </Modal.Header>
           <FormProvider {...form}>
             <form onSubmit={onSubmit}>
               <Modal.Content>
                 <h2 className="inter-base-semibold mb-small">
-                  {t("edit-variants-modal.product-variants", "Product variants")}{" "}
+                  {t(
+                    "edit-variants-modal.product-variants",
+                    "Product variants"
+                  )}{" "}
                   <span className="inter-base-regular text-grey-50">
                     ({product.variants.length})
                   </span>

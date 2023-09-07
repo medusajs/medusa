@@ -11,11 +11,15 @@ function Placeholder({ showAddModal }) {
       </span>
 
       <h3 className="text-large text-gray-90 mt-6 font-semibold">
-        {t("tables.start-building-your-channels-setup", "Start building your channels setup...")}
+        {t(
+          "tables.start-building-your-channels-setup",
+          "Start building your channels setup..."
+        )}
       </h3>
       <p className="text-grey-50 mt-2 mb-8 w-[358px] text-center">
         {t(
-          "You haven’t added any products to this channels yet, but once you do they will live here."
+          "tables.you-havent-added-any-products-to-this-channels-yet-but-once-you-do-they-will-live-here",
+          "You haven\u2019t added any products to this channels yet, but once you do they will live here."
         )}
       </p>
 

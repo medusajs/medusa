@@ -116,10 +116,22 @@ const AddressModal = ({
 
     return onSave(updateObj, {
       onSuccess: () => {
-        notification(t("details.success", "Success"), t("details.successfully-updated-address", "Successfully updated address"), "success")
+        notification(
+          t("details.success", "Success"),
+          t(
+            "details.successfully-updated-address",
+            "Successfully updated address"
+          ),
+          "success"
+        )
         onClose()
       },
-      onError: (err) => notification(t("details.error", "Error"), getErrorMessage(err), "error"),
+      onError: (err) =>
+        notification(
+          t("details.error", "Error"),
+          getErrorMessage(err),
+          "error"
+        ),
     })
   })
 
@@ -137,18 +149,24 @@ const AddressModal = ({
           <Modal.Content>
             <div className="gap-y-xlarge flex flex-col">
               <div>
-                <h2 className="inter-base-semibold mb-base">{t("details.contact", "Contact")}</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("details.contact", "Contact")}
+                </h2>
                 <AddressContactForm form={nestedForm(form, "contact")} />
               </div>
               <div>
-                <h2 className="inter-base-semibold mb-base">{t("details.location", "Location")}</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("details.location", "Location")}
+                </h2>
                 <AddressLocationForm
                   form={nestedForm(form, "location")}
                   countryOptions={countryOptions}
                 />
               </div>
               <div>
-                <h2 className="inter-base-semibold mb-base">{t("details.metadata", "Metadata")}</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("details.metadata", "Metadata")}
+                </h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
             </div>

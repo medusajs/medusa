@@ -419,9 +419,18 @@ const ReservationRow = ({
       )}
       {showDeleteReservation && (
         <DeletePrompt
-          text={t("reservations-table.are-you-sure-you-want-to-remove-this-reservation", "Are you sure you want to remove this reservation?")}
-          heading={t("reservations-table.remove-reservation", "Remove reservation")}
-          successText={t("reservations-table.reservation-has-been-removed", "Reservation has been removed")}
+          text={t(
+            "reservations-table.are-you-sure-you-want-to-remove-this-reservation",
+            "Are you sure you want to remove this reservation?"
+          )}
+          heading={t(
+            "reservations-table.remove-reservation",
+            "Remove reservation"
+          )}
+          successText={t(
+            "reservations-table.reservation-has-been-removed",
+            "Reservation has been removed"
+          )}
           onDelete={async () => await deleteReservation(undefined)}
           handleClose={() => setShowDeleteReservation(false)}
         />

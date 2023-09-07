@@ -73,7 +73,11 @@ const NewRegion = ({ onClose }: Props) => {
 
       mutate(payload, {
         onSuccess: ({ region }) => {
-          notification(t("new.success", "Success"), t("new.region-created", "Region created"), "success")
+          notification(
+            t("new.success", "Success"),
+            t("new.region-created", "Region created"),
+            "success"
+          )
           navigate(`/a/settings/regions/${region.id}`)
           closeAndReset()
         },
@@ -144,6 +148,7 @@ const NewRegion = ({ onClose }: Props) => {
               >
                 <p className="inter-base-regular mb-xlarge text-grey-50">
                   {t(
+                    "new.add-which-fulfillment-and-payment-providers-should-be-available-in-this-region",
                     "Add which fulfillment and payment providers should be available in this region."
                   )}
                 </p>

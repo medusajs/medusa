@@ -75,7 +75,9 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
         <div className="min-h-[680px]">
           {!isLocked && (
             <>
-              <div className="inter-base-semibold mb-large">{t("taxes.type", "Type")}</div>
+              <div className="inter-base-semibold mb-large">
+                {t("taxes.type", "Type")}
+              </div>
               <RadioGroup.Root
                 className="gap-base flex"
                 value={selectedType}
@@ -84,19 +86,28 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
                 <RadioGroup.Item
                   className="flex-1"
                   label={t("taxes.products", "Products")}
-                  description={t("taxes.select-individual-products", "Select individual products")}
+                  description={t(
+                    "taxes.select-individual-products",
+                    "Select individual products"
+                  )}
                   value={TaxRuleType.PRODUCTS}
                 />
                 <RadioGroup.Item
                   className="flex-1"
                   label={t("taxes.product-types", "Product Types")}
-                  description={t("taxes.select-product-types", "Select product types")}
+                  description={t(
+                    "taxes.select-product-types",
+                    "Select product types"
+                  )}
                   value={TaxRuleType.PRODUCT_TYPES}
                 />
                 <RadioGroup.Item
                   className="flex-1"
                   label={t("taxes.shipping-options", "Shipping Options")}
-                  description={t("taxes.select-shipping-options", "Select shipping options")}
+                  description={t(
+                    "taxes.select-shipping-options",
+                    "Select shipping options"
+                  )}
                   value={TaxRuleType.SHIPPING_OPTIONS}
                 />
               </RadioGroup.Root>

@@ -160,7 +160,10 @@ function DropArea(props: DropAreaProps) {
         </a>
       </span>
       <span className="text-grey-40 text-small">
-        {t("upload-modal.only-csv-files-are-supported", "Only .csv files are supported.")}
+        {t(
+          "upload-modal.only-csv-files-are-supported",
+          "Only .csv files are supported."
+        )}
       </span>
     </div>
   )
@@ -235,7 +238,9 @@ function UploadModal(props: UploadModalProps) {
           </div>
 
           <div className="text-grey-90 inter-large-semibold mb-1 text-base">
-            {t("Import {fileTitle}", { fileTitle })}
+            {t("upload-modal.import-file-title", "Import {fileTitle}", {
+              fileTitle,
+            })}
           </div>
 
           <p className="text-grey-50 mb-4 text-base">{description1Text}</p>

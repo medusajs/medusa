@@ -193,7 +193,12 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   return (
     <LayeredModal context={layeredModalContext} handleClose={handleClose}>
       <Modal.Header handleClose={handleClose}>
-        <h1 className="inter-xlarge-semibold">{t("product-variants-section.edit-stock-inventory", "Edit stock & inventory")}</h1>
+        <h1 className="inter-xlarge-semibold">
+          {t(
+            "product-variants-section.edit-stock-inventory",
+            "Edit stock & inventory"
+          )}
+        </h1>
       </Modal.Header>
       {!isLoadingInventory && (
         <StockForm

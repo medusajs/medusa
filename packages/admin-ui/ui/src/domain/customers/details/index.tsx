@@ -144,8 +144,13 @@ const CustomerDetail = () => {
           </div>
         </Section>
         <BodyCard
-          title={t("Orders", { count: customer.orders.length })}
-          subtitle={t("details.an-overview-of-customer-orders", "An overview of Customer Orders")}
+          title={t("details.orders", "Orders {count}", {
+            count: customer.orders.length,
+          })}
+          subtitle={t(
+            "details.an-overview-of-customer-orders",
+            "An overview of Customer Orders"
+          )}
         >
           <div className="flex  grow flex-col">
             <CustomerOrdersTable id={customer.id} />
@@ -163,7 +168,10 @@ const CustomerDetail = () => {
           )
         })}
 
-        <RawJSON data={customer} title={t("details.raw-customer", "Raw customer")} />
+        <RawJSON
+          data={customer}
+          title={t("details.raw-customer", "Raw customer")}
+        />
       </div>
 
       {showEdit && customer && (

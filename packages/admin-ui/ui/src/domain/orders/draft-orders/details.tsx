@@ -84,9 +84,16 @@ const DraftOrderDetails = () => {
   const OrderStatusComponent = () => {
     switch (draft_order?.status) {
       case "completed":
-        return <StatusDot title={t("draft-orders.completed", "Completed")} variant="success" />
+        return (
+          <StatusDot
+            title={t("draft-orders.completed", "Completed")}
+            variant="success"
+          />
+        )
       case "open":
-        return <StatusDot title={t("draft-orders.open", "Open")} variant="default" />
+        return (
+          <StatusDot title={t("draft-orders.open", "Open")} variant="default" />
+        )
       default:
         return null
     }
@@ -107,9 +114,20 @@ const DraftOrderDetails = () => {
   const onMarkAsPaidConfirm = async () => {
     try {
       await markPaid.mutateAsync()
-      notification(t("draft-orders.success", "Success"), t("draft-orders.successfully-mark-as-paid", "Successfully mark as paid"), "success")
+      notification(
+        t("draft-orders.success", "Success"),
+        t(
+          "draft-orders.successfully-mark-as-paid",
+          "Successfully mark as paid"
+        ),
+        "success"
+      )
     } catch (err) {
-      notification(t("draft-orders.error", "Error"), getErrorMessage(err), "error")
+      notification(
+        t("draft-orders.error", "Error"),
+        getErrorMessage(err),
+        "error"
+      )
     } finally {
       setShowAsPaidConfirmation(false)
     }
@@ -118,8 +136,20 @@ const DraftOrderDetails = () => {
   const handleDeleteOrder = async () => {
     return cancelOrder.mutate(void {}, {
       onSuccess: () =>
-        notification(t("draft-orders.success", "Success"), t("draft-orders.successfully-canceled-order", "Successfully canceled order"), "success"),
-      onError: (err) => notification(t("draft-orders.error", "Error"), getErrorMessage(err), "error"),
+        notification(
+          t("draft-orders.success", "Success"),
+          t(
+            "draft-orders.successfully-canceled-order",
+            "Successfully canceled order"
+          ),
+          "success"
+        ),
+      onError: (err) =>
+        notification(
+          t("draft-orders.error", "Error"),
+          getErrorMessage(err),
+          "error"
+        ),
     })
   }
 
@@ -162,9 +192,13 @@ const DraftOrderDetails = () => {
 
             <BodyCard
               className={"mb-4 min-h-[200px] w-full"}
-              title={t("Order #{display_id}", {
-                display_id: draft_order.display_id,
-              })}
+              title={t(
+                "on-mark-as-paid-confirm.order-id",
+                "Order #{display_id}",
+                {
+                  display_id: draft_order.display_id,
+                }
+              )}
               subtitle={moment(draft_order.created_at).format(
                 "D MMMM YYYY hh:mm a"
               )}
@@ -194,13 +228,19 @@ const DraftOrderDetails = () => {
                     ]
                   : [
                       {
-                        label: t("draft-orders.cancel-draft-order", "Cancel Draft Order"),
+                        label: t(
+                          "draft-orders.cancel-draft-order",
+                          "Cancel Draft Order"
+                        ),
                         icon: null,
                         // icon: <CancelIcon size={"20"} />,
                         variant: "danger",
                         onClick: () =>
                           setDeletePromptData({
-                            resource: t("draft-orders.draft-order", "Draft Order"),
+                            resource: t(
+                              "draft-orders.draft-order",
+                              "Draft Order"
+                            ),
                             onDelete: () => handleDeleteOrder(),
                             show: true,
                           }),
@@ -223,7 +263,7 @@ const DraftOrderDetails = () => {
                 </div>
                 <div className="flex flex-col pl-6">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
-                    {t("Amount {currency_code}", {
+                    {t("draft-orders.amount", "Amount {currency_code}", {
                       currency_code: region?.currency_code.toUpperCase(),
                     })}
                   </div>
@@ -270,7 +310,9 @@ const DraftOrderDetails = () => {
                 />
                 {draft_order?.status !== "completed" && (
                   <div className="text-grey-50 inter-small-regular mt-5 flex w-full items-center">
-                    <span className="mr-2.5">{t("draft-orders.payment-link", "Payment link:")}</span>
+                    <span className="mr-2.5">
+                      {t("draft-orders.payment-link", "Payment link:")}
+                    </span>
                     {store?.payment_link_template ? (
                       <CopyToClipboard
                         value={paymentLink}
@@ -278,7 +320,10 @@ const DraftOrderDetails = () => {
                         successDuration={1000}
                       />
                     ) : (
-                      t("draft-orders.configure-payment-link-in-store-settings", "Configure payment link in store settings")
+                      t(
+                        "draft-orders.configure-payment-link-in-store-settings",
+                        "Configure payment link in store settings"
+                      )
                     )}
                   </div>
                 )}
@@ -317,7 +362,10 @@ const DraftOrderDetails = () => {
               title={t("draft-orders.customer", "Customer")}
               actionables={[
                 {
-                  label: t("draft-orders.edit-shipping-address", "Edit Shipping Address"),
+                  label: t(
+                    "draft-orders.edit-shipping-address",
+                    "Edit Shipping Address"
+                  ),
                   icon: <TruckIcon size={"20"} />,
                   onClick: () =>
                     setAddressModal({
@@ -326,7 +374,10 @@ const DraftOrderDetails = () => {
                     }),
                 },
                 {
-                  label: t("draft-orders.edit-billing-address", "Edit Billing Address"),
+                  label: t(
+                    "draft-orders.edit-billing-address",
+                    "Edit Billing Address"
+                  ),
                   icon: <DollarSignIcon size={"20"} />,
                   onClick: () => {
                     if (cart?.billing_address) {
@@ -427,12 +478,20 @@ const DraftOrderDetails = () => {
       {deletePromptData.show && (
         <DeletePrompt
           text={t("draft-orders.are-you-sure", "Are you sure?")}
-          heading={t("Remove {resource}", {
-            resource: deletePromptData?.resource,
-          })}
-          successText={t("{resource} has been removed", {
-            resource: deletePromptData?.resource || "Resource",
-          })}
+          heading={t(
+            "draft-orders.remove-resource.heading",
+            "Remove {resource}",
+            {
+              resource: deletePromptData?.resource,
+            }
+          )}
+          successText={t(
+            "draft-orders.remove-resource.success-text",
+            "{resource} has been removed",
+            {
+              resource: deletePromptData?.resource || "Resource",
+            }
+          )}
           onDelete={() => deletePromptData.onDelete()}
           handleClose={() => setDeletePromptData(initDeleteState)}
         />
@@ -442,6 +501,7 @@ const DraftOrderDetails = () => {
         <ConfirmationPrompt
           heading={t("draft-orders.mark-as-paid", "Mark as paid")}
           text={t(
+            "draft-orders.this-will-create-an-order-mark-this-as-paid-if-you-received-the-payment",
             "This will create an order. Mark this as paid if you received the payment."
           )}
           confirmText={t("draft-orders.mark-paid", "Mark paid")}

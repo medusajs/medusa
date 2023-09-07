@@ -368,11 +368,11 @@ export const useOrderFilters = (
   const availableTabs = useMemo(() => {
     return [
       {
-        label: t("Complete"),
+        label: t("order-table.filters.complete", "Complete"),
         value: "complete",
       },
       {
-        label: t("Incomplete"),
+        label: t("order-table.filters.incomplete", "Incomplete"),
         value: "incomplete",
       },
       ...tabs,

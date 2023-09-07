@@ -47,7 +47,10 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
         onSuccess: () => {
           notification(
             t("edit-user-information.success", "Success"),
-            t("edit-user-information.your-information-was-successfully-updated", "Your information was successfully updated"),
+            t(
+              "edit-user-information.your-information-was-successfully-updated",
+              "Your information was successfully updated"
+            ),
             "success"
           )
           refetch()
@@ -61,7 +64,9 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
   return (
     <Modal handleClose={onClose} open={open} isLargeModal={false}>
       <Modal.Header handleClose={onClose}>
-        <h1 className="inter-xlarge-semibold">{t("edit-user-information.edit-information", "Edit information")}</h1>
+        <h1 className="inter-xlarge-semibold">
+          {t("edit-user-information.edit-information", "Edit information")}
+        </h1>
       </Modal.Header>
       <Modal.Body>
         <Modal.Content>

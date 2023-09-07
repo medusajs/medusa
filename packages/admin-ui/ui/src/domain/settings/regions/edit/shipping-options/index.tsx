@@ -32,7 +32,10 @@ const ShippingOptions = ({ region }: Props) => {
       >
         <div className="gap-y-large flex flex-col">
           <p className="inter-base-regular text-grey-50">
-            {t("shipping-options.enter-specifics-about-available-regional-shipment-methods", "Enter specifics about available regional shipment methods.")}
+            {t(
+              "shipping-options.enter-specifics-about-available-regional-shipment-methods",
+              "Enter specifics about available regional shipment methods."
+            )}
           </p>
           <div className="gap-y-small flex flex-col">
             {shippingOptions?.map((option) => {

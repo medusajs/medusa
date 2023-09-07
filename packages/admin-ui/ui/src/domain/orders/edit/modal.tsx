@@ -41,7 +41,9 @@ function TotalsSection(props: TotalsSectionProps) {
     <>
       <div className="bg-grey-20 mb-6 h-px w-full" />
       <div className="mb-2 flex h-[40px] justify-between">
-        <span className="text-gray-500">{t("edit.amount-paid", "Amount Paid")}</span>
+        <span className="text-gray-500">
+          {t("edit.amount-paid", "Amount Paid")}
+        </span>
         <span className="text-gray-900">
           {formatAmountWithSymbol({
             amount: amountPaid,
@@ -52,7 +54,9 @@ function TotalsSection(props: TotalsSectionProps) {
       </div>
 
       <div className="mb-2 flex h-[40px] justify-between">
-        <span className="font-semibold text-gray-900">{t("edit.new-total", "New Total")}</span>
+        <span className="font-semibold text-gray-900">
+          {t("edit.new-total", "New Total")}
+        </span>
         <span className="text-2xl font-semibold">
           {formatAmountWithSymbol({
             amount: newTotal,
@@ -62,7 +66,9 @@ function TotalsSection(props: TotalsSectionProps) {
       </div>
 
       <div className="flex justify-between">
-        <span className="text-gray-500">{t("edit.difference-due", "Difference Due")}</span>
+        <span className="text-gray-500">
+          {t("edit.difference-due", "Difference Due")}
+        </span>
         <span
           className={clsx("text-gray-900", {
             "text-rose-500": differenceDue < 0,
@@ -197,9 +203,20 @@ function OrderEditModal(props: OrderEditModalProps) {
         await updateOrderEdit({ internal_note: note })
       }
 
-      notification(t("edit.success", "Success"), t("edit.order-edit-set-as-requested", "Order edit set as requested"), "success")
+      notification(
+        t("edit.success", "Success"),
+        t("edit.order-edit-set-as-requested", "Order edit set as requested"),
+        "success"
+      )
     } catch (e) {
-      notification(t("edit.error", "Error"), t("edit.failed-to-request-confirmation", "Failed to request confirmation"), "error")
+      notification(
+        t("edit.error", "Error"),
+        t(
+          "edit.failed-to-request-confirmation",
+          "Failed to request confirmation"
+        ),
+        "error"
+      )
     }
     close()
   }
@@ -224,9 +241,17 @@ function OrderEditModal(props: OrderEditModalProps) {
 
       await Promise.all(promises)
 
-      notification(t("edit.success", "Success"), t("edit.added-successfully", "Added successfully"), "success")
+      notification(
+        t("edit.success", "Success"),
+        t("edit.added-successfully", "Added successfully"),
+        "success"
+      )
     } catch (e) {
-      notification(t("edit.error", "Error"), t("edit.error-occurred", "Error occurred"), "error")
+      notification(
+        t("edit.error", "Error"),
+        t("edit.error-occurred", "Error occurred"),
+        "error"
+      )
     }
   }
 
@@ -272,7 +297,9 @@ function OrderEditModal(props: OrderEditModalProps) {
     >
       <Modal.Body>
         <Modal.Header handleClose={onCancel}>
-          <h1 className="inter-xlarge-semibold">{t("edit.edit-order", "Edit Order")}</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("edit.edit-order", "Edit Order")}
+          </h1>
         </Modal.Header>
         <Modal.Content>
           <div className="mb-4 flex items-center justify-between">

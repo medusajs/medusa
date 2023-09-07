@@ -75,13 +75,20 @@ const RefundMenu = ({
         onSuccess: () => {
           notification(
             t("refund.success", "Success"),
-            t("refund.successfully-refunded-order", "Successfully refunded order"),
+            t(
+              "refund.successfully-refunded-order",
+              "Successfully refunded order"
+            ),
             "success"
           )
           onDismiss()
         },
         onError: (error) => {
-          notification(t("refund.error", "Error"), getErrorMessage(error), "error")
+          notification(
+            t("refund.error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )
@@ -94,7 +101,9 @@ const RefundMenu = ({
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Body>
           <Modal.Header handleClose={onDismiss}>
-            <h2 className="inter-xlarge-semibold">{t("refund.create-a-refund", "Create a refund")}</h2>
+            <h2 className="inter-xlarge-semibold">
+              {t("refund.create-a-refund", "Create a refund")}
+            </h2>
           </Modal.Header>
           <Modal.Content>
             {isSystemPayment && (
@@ -107,12 +116,15 @@ const RefundMenu = ({
                     {t("refund.attention", "Attention!")}
                   </span>
                   {t(
+                    "refund.one-or-more-of-your-payments-is-a-system-payment-be-aware-that-captures-and-refunds-are-not-handled-by-medusa-for-such-payments",
                     "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments."
                   )}
                 </div>
               </div>
             )}
-            <span className="inter-base-semibold">{t("refund.details", "Details")}</span>
+            <span className="inter-base-semibold">
+              {t("refund.details", "Details")}
+            </span>
             <div className="gap-y-base mt-4 grid">
               <CurrencyInput.Root
                 size="small"
@@ -136,6 +148,7 @@ const RefundMenu = ({
                       amount={value}
                       onBlur={onBlur}
                       invalidMessage={t(
+                        "refund.cannot-refund-more-than-the-orders-net-total",
                         "Cannot refund more than the order's net total."
                       )}
                       onValidate={handleValidateRefundAmount}
@@ -147,7 +160,10 @@ const RefundMenu = ({
               <Controller
                 name="reason"
                 control={control}
-                defaultValue={{ label: t("refund.discount", "Discount"), value: "discount" }}
+                defaultValue={{
+                  label: t("refund.discount", "Discount"),
+                  value: "discount",
+                }}
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
                   <Select
@@ -161,7 +177,10 @@ const RefundMenu = ({
               <TextArea
                 {...register("note")}
                 label={t("refund.note", "Note")}
-                placeholder={t("refund.discount-for-loyal-customer", "Discount for loyal customer")}
+                placeholder={t(
+                  "refund.discount-for-loyal-customer",
+                  "Discount for loyal customer"
+                )}
               />
             </div>
           </Modal.Content>

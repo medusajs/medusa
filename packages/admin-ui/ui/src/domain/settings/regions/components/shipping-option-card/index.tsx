@@ -33,12 +33,19 @@ const ShippingOptionCard = ({ option }: Props) => {
       onSuccess: () => {
         notification(
           t("shipping-option-card.success", "Success"),
-          t("shipping-option-card.shipping-option-has-been-deleted", "Shipping option has been deleted"),
+          t(
+            "shipping-option-card.shipping-option-has-been-deleted",
+            "Shipping option has been deleted"
+          ),
           "success"
         )
       },
       onError: (error) => {
-        notification(t("shipping-option-card.error", "Error"), getErrorMessage(error), "error")
+        notification(
+          t("shipping-option-card.error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }
@@ -88,7 +95,9 @@ const ShippingOptionCard = ({ option }: Props) => {
             })}
           >
             <span className="inter-small-semibold">
-              {option.admin_only ? t("shipping-option-card.admin", "Admin") : t("shipping-option-card.store", "Store")}
+              {option.admin_only
+                ? t("shipping-option-card.admin", "Admin")
+                : t("shipping-option-card.store", "Store")}
             </span>
           </div>
           <div>

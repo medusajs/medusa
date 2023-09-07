@@ -226,7 +226,10 @@ const AddVariantsForm = ({
     if (exists) {
       newVariantForm.setError("options", {
         type: "deps",
-        message: t("add-variants.a-variant-with-these-options-already-exists", "A variant with these options already exists."),
+        message: t(
+          "add-variants.a-variant-with-these-options-already-exists",
+          "A variant with these options already exists."
+        ),
       })
       return
     }
@@ -264,10 +267,13 @@ const AddVariantsForm = ({
     <>
       <div>
         <div className="gap-x-2xsmall flex items-center">
-          <h3 className="inter-base-semibold">{t("add-variants.product-options", "Product options")}</h3>
+          <h3 className="inter-base-semibold">
+            {t("add-variants.product-options", "Product options")}
+          </h3>
           <IconTooltip
             type="info"
             content={t(
+              "add-variants.options-are-used-to-define-the-color-size-etc-of-the-product",
               "Options are used to define the color, size, etc. of the product."
             )}
           />
@@ -277,7 +283,12 @@ const AddVariantsForm = ({
             <div className="mt-small">
               <div className="inter-small-semibold mb-small gap-x-xsmall text-grey-50 grid grid-cols-[230px_1fr_40px]">
                 <span>{t("add-variants.option-title", "Option title")}</span>
-                <span>{t("add-variants.variations-comma-separated", "Variations (comma separated)")}</span>
+                <span>
+                  {t(
+                    "add-variants.variations-comma-separated",
+                    "Variations (comma separated)"
+                  )}
+                </span>
               </div>
               <div className="gap-y-xsmall grid grid-cols-1">
                 {options.map((field, index) => {
@@ -303,11 +314,17 @@ const AddVariantsForm = ({
 
                                 return newVal
                               }}
-                              invalidMessage={t("add-variants.already-exists", "already exists")}
+                              invalidMessage={t(
+                                "add-variants.already-exists",
+                                "already exists"
+                              )}
                               showLabel={false}
                               values={value}
                               onChange={onChange}
-                              placeholder={t("add-variants.blue-red-black", "Blue, Red, Black...")}
+                              placeholder={t(
+                                "add-variants.blue-red-black",
+                                "Blue, Red, Black..."
+                              )}
                             />
                           )
                         }}
@@ -353,6 +370,7 @@ const AddVariantsForm = ({
                 <IconTooltip
                   type="info"
                   content={t(
+                    "add-variants.you-must-add-at-least-one-product-option-before-you-can-begin-adding-product-variants",
                     "You must add at least one product option before you can begin adding product variants."
                   )}
                 />
@@ -409,7 +427,9 @@ const AddVariantsForm = ({
       >
         <Modal.Body>
           <Modal.Header handleClose={onToggleForm}>
-            <h1 className="inter-xlarge-semibold">{t("add-variants.create-variant", "Create Variant")}</h1>
+            <h1 className="inter-xlarge-semibold">
+              {t("add-variants.create-variant", "Create Variant")}
+            </h1>
           </Modal.Header>
           <Modal.Content>
             <CreateFlowVariantForm

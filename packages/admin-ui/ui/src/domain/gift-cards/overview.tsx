@@ -67,11 +67,18 @@ const Overview = () => {
         onSuccess: () =>
           notification(
             t("gift-cards.success", "Success"),
-            t("gift-cards.successfully-updated-gift-card", "Successfully updated Gift Card"),
+            t(
+              "gift-cards.successfully-updated-gift-card",
+              "Successfully updated Gift Card"
+            ),
             "success"
           ),
         onError: (err) =>
-          notification(t("gift-cards.error", "Error"), getErrorMessage(err), "error"),
+          notification(
+            t("gift-cards.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          ),
       }
     )
   }
@@ -110,7 +117,10 @@ const Overview = () => {
       <div className="flex flex-col">
         <PageDescription
           title={t("gift-cards.gift-cards", "Gift Cards")}
-          subtitle={t("gift-cards.manage-the-gift-cards-of-your-medusa-store", "Manage the Gift Cards of your Medusa store")}
+          subtitle={t(
+            "gift-cards.manage-the-gift-cards-of-your-medusa-store",
+            "Manage the Gift Cards of your Medusa store"
+          )}
         />
         {!isLoading ? (
           <div className="gap-y-xsmall flex flex-col">
@@ -133,7 +143,10 @@ const Overview = () => {
               />
             ) : (
               <BannerCard
-                title={t("gift-cards.are-you-ready-to-sell-your-first-gift-card", "Are you ready to sell your first Gift Card?")}
+                title={t(
+                  "gift-cards.are-you-ready-to-sell-your-first-gift-card",
+                  "Are you ready to sell your first Gift Card?"
+                )}
               >
                 <BannerCard.Description
                   cta={{
@@ -141,14 +154,20 @@ const Overview = () => {
                     onClick: () => setShowCreate(true),
                   }}
                 >
-                  {t("gift-cards.no-gift-card-has-been-added-yet", "No Gift Card has been added yet.")}
+                  {t(
+                    "gift-cards.no-gift-card-has-been-added-yet",
+                    "No Gift Card has been added yet."
+                  )}
                 </BannerCard.Description>
               </BannerCard>
             )}
 
             <BodyCard
               title={t("gift-cards.history", "History")}
-              subtitle={t("gift-cards.see-the-history-of-purchased-gift-cards", "See the history of purchased Gift Cards")}
+              subtitle={t(
+                "gift-cards.see-the-history-of-purchased-gift-cards",
+                "See the history of purchased Gift Cards"
+              )}
               actionables={actionables}
             >
               <GiftCardTable />
@@ -180,7 +199,10 @@ const Overview = () => {
         <DeletePrompt
           handleClose={closeDelete}
           onDelete={async () => onDelete()}
-          successText={t("gift-cards.successfully-deleted-gift-card", "Successfully deleted Gift Card")}
+          successText={t(
+            "gift-cards.successfully-deleted-gift-card",
+            "Successfully deleted Gift Card"
+          )}
           confirmText={t("gift-cards.yes-delete", "Yes, delete")}
           heading={t("gift-cards.delete-gift-card", "Delete Gift Card")}
         />

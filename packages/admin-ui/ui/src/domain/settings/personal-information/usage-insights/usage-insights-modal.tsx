@@ -46,13 +46,20 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
       onSuccess: () => {
         notification(
           t("usage-insights.success", "Success"),
-          t("usage-insights.your-information-was-successfully-updated", "Your information was successfully updated"),
+          t(
+            "usage-insights.your-information-was-successfully-updated",
+            "Your information was successfully updated"
+          ),
           "success"
         )
         onClose()
       },
       onError: (err) => {
-        notification(t("usage-insights.error", "Error"), getErrorMessage(err), "error")
+        notification(
+          t("usage-insights.error", "Error"),
+          getErrorMessage(err),
+          "error"
+        )
       },
     })
   })
@@ -60,7 +67,9 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
   return (
     <Modal handleClose={onClose} open={open} isLargeModal={true}>
       <Modal.Header handleClose={onClose}>
-        <h1 className="inter-xlarge-semibold">{t("usage-insights.edit-preferences", "Edit preferences")}</h1>
+        <h1 className="inter-xlarge-semibold">
+          {t("usage-insights.edit-preferences", "Edit preferences")}
+        </h1>
       </Modal.Header>
       <Modal.Body>
         <Modal.Content>

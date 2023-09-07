@@ -47,7 +47,10 @@ const GiftCardBanner: React.FC<GiftCardBannerProps> = ({
       icon: <EditIcon size={16} />,
     },
     {
-      label: status === "published" ? t("gift-card-banner.unpublish", "Unpublish") : t("gift-card-banner.publish", "Publish"),
+      label:
+        status === "published"
+          ? t("gift-card-banner.unpublish", "Unpublish")
+          : t("gift-card-banner.publish", "Publish"),
       onClick: onUnpublish,
       icon: <UnpublishIcon size={16} />,
     },
@@ -86,7 +89,11 @@ const GiftCardBanner: React.FC<GiftCardBannerProps> = ({
           <TagGrid tags={denominations} badgeVariant="default" />
           <StatusIndicator
             variant={status === "published" ? "success" : "danger"}
-            title={status === "published" ? t("gift-card-banner.published", "Published") : t("gift-card-banner.unpublished", "Unpublished")}
+            title={
+              status === "published"
+                ? t("gift-card-banner.published", "Published")
+                : t("gift-card-banner.unpublished", "Unpublished")
+            }
           />
         </div>
       </BannerCard.Footer>
