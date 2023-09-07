@@ -36,7 +36,12 @@ export class RemoteJoiner {
     }
 
     const filteredData = fields.reduce((acc: any, field: string) => {
-      acc[field] = data?.[field]
+      const fieldValue = data?.[field]
+
+      if (isDefined(fieldValue)) {
+        acc[field] = data?.[field]
+      }
+
       return acc
     }, {})
 
@@ -49,17 +54,25 @@ export class RemoteJoiner {
               RemoteJoiner.filterFields(item, expand.fields, expand.expands)
             )
           } else {
-            filteredData[key] = RemoteJoiner.filterFields(
+            const filteredFields = RemoteJoiner.filterFields(
               data[key],
               expand.fields,
               expand.expands
             )
+
+            if (isDefined(filteredFields)) {
+              filteredData[key] = RemoteJoiner.filterFields(
+                data[key],
+                expand.fields,
+                expand.expands
+              )
+            }
           }
         }
       }
     }
 
-    return filteredData
+    return (Object.keys(filteredData).length && filteredData) || undefined
   }
 
   private static getNestedItems(items: any[], property: string): any[] {
