@@ -23,14 +23,14 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
 
   @InjectManager("ruleTypeRepository_")
   async retrieve(
-    currencyCode: string,
+    ruleTypeId: string,
     config: FindConfig<PricingTypes.RuleTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await retrieveEntity<RuleType, PricingTypes.RuleTypeDTO>({
-      id: currencyCode,
-      identifierColumn: "code",
-      entityName: Currency.name,
+      id: ruleTypeId,
+      identifierColumn: "id",
+      entityName: RuleType.name,
       repository: this.ruleTypeRepository_,
       config,
       sharedContext,

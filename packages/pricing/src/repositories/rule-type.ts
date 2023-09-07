@@ -13,7 +13,7 @@ import {
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { RuleType } from "@models"
 
-export class RuletypeRepository extends DALUtils.MikroOrmBaseRepository {
+export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -78,7 +78,7 @@ export class RuletypeRepository extends DALUtils.MikroOrmBaseRepository {
       return manager.create(RuleType, ruleTypeData)
     })
 
-    manager.persist(moneyAmounts)
+    manager.persistAndFlush(moneyAmounts)
 
     return moneyAmounts
   }
