@@ -153,7 +153,7 @@ describe("PriceSet Service", () => {
     })
   })
 
-  it("should no price sets if money amounts with a currency code dont exist", async () => {
+  it("should not return price sets if money amounts with a currency code dont exist", async () => {
     const priceSetsResult = await service.list(
       {
         money_amounts: {
