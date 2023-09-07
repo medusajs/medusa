@@ -7,9 +7,12 @@ import {
 } from "@medusajs/orchestration"
 import { exportWorkflow, pipe } from "../../helper"
 import { InventoryHandlers, ProductHandlers } from "../../handlers"
+import { CreateProductsActions } from "./create-products"
 
 export enum UpdateProductsActions {
+  prepare = "prepare",
   updateProducts = "updateProducts",
+  revertUpdateProducts = "revertUpdateProducts",
   // inventory
   createInventoryItems = "createInventoryItems",
   attachInventoryItems = "attachInventoryItems",
@@ -20,12 +23,15 @@ export enum UpdateProductsActions {
 
 export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
   next: {
-    action: UpdateProductsActions.updateProducts,
-    noCompensation: true, // TODO: compensate - revert TX
+    action: CreateProductsActions.prepare,
+    noCompensation: true,
     next: {
-      action: UpdateProductsActions.createInventoryItems,
+      action: UpdateProductsActions.updateProducts,
       next: {
-        action: UpdateProductsActions.attachInventoryItems,
+        action: UpdateProductsActions.createInventoryItems,
+        next: {
+          action: UpdateProductsActions.attachInventoryItems,
+        },
       },
     },
   },
@@ -33,7 +39,7 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
 
 const handlers = new Map([
   [
-    UpdateProductsActions.updateProducts,
+    UpdateProductsActions.prepare,
     {
       invoke: pipe(
         {
@@ -43,9 +49,39 @@ const handlers = new Map([
             from: InputAlias.ProductsInputData,
           },
         },
+        ProductHandlers.updateProductsPrepareData
+      ),
+    },
+  ],
+  [
+    UpdateProductsActions.updateProducts,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: InputAlias.ProductsInputData,
+              alias: ProductHandlers.updateProducts.aliases.products,
+            },
+            {
+              from: UpdateProductsActions.prepare,
+            },
+          ],
+        },
         ProductHandlers.updateProducts
       ),
-      // compensate: TODO
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: UpdateProductsActions.prepare,
+            alias:
+              ProductHandlers.revertUpdateProducts.aliases.originalProducts,
+          },
+        },
+        ProductHandlers.revertUpdateProducts
+      ),
     },
   ],
   [
