@@ -30,4 +30,5 @@ export interface UpdateMoneyAmountDTO {
 export interface FilterableMoneyAmountProps
   extends BaseFilterable<FilterableMoneyAmountProps> {
   id?: string[]
+  currency_code?: string | string[]
 }

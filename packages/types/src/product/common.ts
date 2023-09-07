@@ -167,7 +167,8 @@ export interface FilterableProductProps
     is_internal?: boolean
     is_active?: boolean
   }
-  category_ids?: string | string[] | OperatorMap<string>
+  category_id?: string | string[] | OperatorMap<string>
+  collection_id?: string | string[] | OperatorMap<string>
 }
 
 export interface FilterableProductTagProps

@@ -1,11 +1,19 @@
-import { Image, Product, ProductCategory, ProductVariant } from "@models"
+import {
+  Image,
+  Product,
+  ProductCategory,
+  ProductCollection,
+  ProductVariant,
+} from "@models"
 import {
   assignCategoriesToProduct,
   buildProductOnlyData,
+  createCollections,
   createImages,
   createProductAndTags,
   createProductVariants,
 } from "../../../__fixtures__/product"
+
 import {
   categoriesData,
   productsData,
@@ -30,6 +38,7 @@ describe("Product Service", () => {
   let productOne: Product
   let variants!: ProductVariant[]
   let categories!: ProductCategory[]
+  let collections!: ProductCollection[]
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
@@ -252,14 +261,14 @@ describe("Product Service", () => {
       it("should list all products that are not deleted", async () => {
         const products = await service.list()
 
-        expect(products).toHaveLength(1)
+        expect(products).toHaveLength(2)
         expect(products[0].id).toEqual(product.id)
       })
 
       it("should list all products including the deleted", async () => {
         const products = await service.list({}, { withDeleted: true })
 
-        expect(products).toHaveLength(2)
+        expect(products).toHaveLength(3)
       })
     })
 
@@ -405,6 +414,132 @@ describe("Product Service", () => {
               "categories.handle",
             ] as (keyof ProductDTO)[],
             relations: ["categories"],
+          }
+        )
+
+        expect(products).toEqual([])
+      })
+    })
+
+    describe("relation: collections", () => {
+      let workingProduct: Product
+      let workingProductTwo: Product
+      let workingCollection: ProductCollection
+      let workingCollectionTwo: ProductCollection
+      const collectionData = [
+        {
+          id: "test-1",
+          title: "col 1",
+        },
+        {
+          id: "test-2",
+          title: "col 2",
+        },
+      ]
+
+      beforeEach(async () => {
+        testManager = await TestDatabase.forkManager()
+        collections = await createCollections(testManager, collectionData)
+        workingCollection = (await testManager.findOne(
+          ProductCollection,
+          "test-1"
+        )) as ProductCollection
+        workingCollectionTwo = (await testManager.findOne(
+          ProductCollection,
+          "test-2"
+        )) as ProductCollection
+
+        products = await createProductAndTags(testManager, [
+          {
+            ...productsData[0],
+            collection_id: workingCollection.id,
+          },
+          {
+            ...productsData[1],
+            collection_id: workingCollectionTwo.id,
+          },
+          {
+            ...productsData[2],
+          },
+        ])
+
+        workingProduct = products.find((p) => p.id === "test-1") as Product
+        workingProductTwo = products.find((p) => p.id === "test-2") as Product
+      })
+
+      it("should filter by collection relation and scope fields", async () => {
+        const products = await service.list(
+          {
+            id: workingProduct.id,
+            collection_id: workingCollection.id,
+          },
+          {
+            select: ["title", "collection.title"],
+            relations: ["collection"],
+          }
+        )
+
+        const serialized = JSON.parse(JSON.stringify(products))
+
+        expect(serialized.length).toEqual(1)
+        expect(serialized).toEqual([
+          {
+            id: workingProduct.id,
+            title: workingProduct.title,
+            collection_id: workingCollection.id,
+            collection: {
+              id: workingCollection.id,
+              title: workingCollection.title,
+            },
+          },
+        ])
+      })
+
+      it("should filter by collection when multiple collection ids are passed", async () => {
+        const products = await service.list(
+          {
+            collection_id: [workingCollection.id, workingCollectionTwo.id],
+          },
+          {
+            select: ["title", "collection.title"],
+            relations: ["collection"],
+          }
+        )
+
+        const serialized = JSON.parse(JSON.stringify(products))
+
+        expect(serialized.length).toEqual(2)
+        expect(serialized).toEqual([
+          {
+            id: workingProduct.id,
+            title: workingProduct.title,
+            collection_id: workingCollection.id,
+            collection: {
+              id: workingCollection.id,
+              title: workingCollection.title,
+            },
+          },
+          {
+            id: workingProductTwo.id,
+            title: workingProductTwo.title,
+            collection_id: workingCollectionTwo.id,
+            collection: {
+              id: workingCollectionTwo.id,
+              title: workingCollectionTwo.title,
+            },
+          },
+        ])
+      })
+
+      it("should returns empty array when querying for a collection that doesnt exist", async () => {
+        const products = await service.list(
+          {
+            id: workingProduct.id,
+            collection_id: "collection-doesnt-exist-id",
+          },
+          {
+            select: ["title", "collection.title"] as (keyof ProductDTO)[],
+            relations: ["collection"],
           }
         )
 
