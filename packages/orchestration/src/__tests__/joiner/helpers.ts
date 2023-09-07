@@ -5,7 +5,7 @@ describe("toRemoteJoinerQuery", () => {
     jest.clearAllMocks()
   })
 
-  it("transform a simple object to a Remote Joiner Query format", async () => {
+  it("should transform a simple object to a Remote Joiner Query format", async () => {
     const obj = {
       product: {
         fields: ["id", "title", "handle"],
@@ -21,7 +21,7 @@ describe("toRemoteJoinerQuery", () => {
     })
   })
 
-  it("transform a nested object to a Remote Joiner Query format", async () => {
+  it("should transform a nested object to a Remote Joiner Query format", async () => {
     const obj = {
       product: {
         fields: ["id", "title", "handle"],
@@ -71,7 +71,7 @@ describe("toRemoteJoinerQuery", () => {
     })
   })
 
-  it("transform a nested object with arguments and directives to a Remote Joiner Query format", async () => {
+  it("should transform a nested object with arguments and directives to a Remote Joiner Query format", async () => {
     const obj = {
       product: {
         fields: ["id", "title", "handle"],
