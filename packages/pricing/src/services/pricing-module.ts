@@ -54,6 +54,7 @@ export default class PricingModuleService<
       currencyService,
       ruleTypeService,
       priceSetService,
+      ruleTypeService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -62,6 +63,7 @@ export default class PricingModuleService<
     this.moneyAmountService_ = moneyAmountService
     this.ruleTypeService_ = ruleTypeService
     this.priceSetService_ = priceSetService
+    this.ruleTypeService_ = ruleTypeService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
