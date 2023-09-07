@@ -5,6 +5,7 @@ import fs from "fs"
 import { customAlphabet, nanoid } from "nanoid"
 import { isAbortError } from "./create-abort-controller.js"
 import logMessage from "./log-message.js"
+import { EOL } from "os"
 
 const NEXTJS_REPO = "https://github.com/medusajs/nextjs-starter-medusa"
 
@@ -13,8 +14,7 @@ export async function askForNextjsStarter(): Promise<boolean> {
     {
       type: "confirm",
       name: "installNextjs",
-      message:
-        "The Medusa backend is installed without a storefront. Would you like to install the Next.js storefront as well? You can always install it later.",
+      message: `The Medusa backend is installed without a storefront. Would you like to install the Next.js storefront as well?${EOL}You can always install it later.`,
       default: false,
     },
   ])
