@@ -29,5 +29,6 @@ export async function extractVariantsFromProduct({
 }
 
 extractVariantsFromProduct.aliases = {
-  output: "createProductsPrepareCreatePricesCompensationOutput",
+  output: "extractVariantsFromProductOutput",
+  products: "products",
 }

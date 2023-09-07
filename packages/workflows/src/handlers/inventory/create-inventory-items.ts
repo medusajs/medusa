@@ -15,7 +15,7 @@ export async function createInventoryItems({
   context,
   data,
 }: WorkflowArguments<{
-  products: ProductTypes.ProductDTO[]
+  variants: ProductTypes.ProductVariantDTO[]
 }>): Promise<Result | void> {
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
@@ -28,21 +28,8 @@ export async function createInventoryItems({
     return void 0
   }
 
-  const variants = data.products.reduce(
-    (
-      acc: ProductTypes.ProductVariantDTO[],
-      product: ProductTypes.ProductDTO
-    ) => {
-      if (product.variants?.length) {
-        return acc.concat(product.variants)
-      }
-      return acc
-    },
-    []
-  )
-
   const result = await Promise.all(
-    variants.map(async (variant) => {
+    data.variants.map(async (variant) => {
       if (!variant.manage_inventory) {
         return
       }
@@ -73,5 +60,5 @@ export async function createInventoryItems({
 }
 
 createInventoryItems.aliases = {
-  products: "products",
+  variants: "variants",
 }

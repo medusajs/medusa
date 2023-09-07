@@ -175,9 +175,11 @@ const handlers = new Map([
           merge: true,
           invoke: {
             from: CreateProductsActions.createProducts,
-            alias: InventoryHandlers.createInventoryItems.aliases.products,
+            alias:
+              MiddlewaresHandlers.extractVariantsFromProduct.aliases.products,
           },
         },
+        MiddlewaresHandlers.extractVariantsFromProduct,
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(
