@@ -27,30 +27,26 @@ const isModuleConfig = (obj: any): obj is ModuleConfig => {
   return isObject(obj)
 }
 
-export async function MedusaApp(
-  {
-    sharedResourcesConfig,
-    servicesConfig,
-    modulesConfigPath,
-    modulesConfigFileName,
-    modulesConfig,
-    linkModules,
-    remoteFetchData,
-    injectedDependencies,
-  }: {
-    sharedResourcesConfig?: SharedResources
-    loadedModules?: LoadedModule[]
-    servicesConfig?: ModuleJoinerConfig[]
-    modulesConfigPath?: string
-    modulesConfigFileName?: string
-    modulesConfig?: MedusaModuleConfig
-    linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
-    remoteFetchData?: RemoteFetchDataCallback
-    injectedDependencies?: any
-  } = {
-    injectedDependencies: {},
-  }
-): Promise<{
+export async function MedusaApp({
+  sharedResourcesConfig,
+  servicesConfig,
+  modulesConfigPath,
+  modulesConfigFileName,
+  modulesConfig,
+  linkModules,
+  remoteFetchData,
+  injectedDependencies = {},
+}: {
+  sharedResourcesConfig?: SharedResources
+  loadedModules?: LoadedModule[]
+  servicesConfig?: ModuleJoinerConfig[]
+  modulesConfigPath?: string
+  modulesConfigFileName?: string
+  modulesConfig?: MedusaModuleConfig
+  linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
+  remoteFetchData?: RemoteFetchDataCallback
+  injectedDependencies?: any
+}): Promise<{
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
   query: (

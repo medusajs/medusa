@@ -72,17 +72,17 @@ export default class ProductService<TEntity extends Product = Product> {
     config: FindConfig<ProductTypes.ProductDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    if (filters.category_ids) {
-      if (Array.isArray(filters.category_ids)) {
+    if (filters.category_id) {
+      if (Array.isArray(filters.category_id)) {
         filters.categories = {
-          id: { $in: filters.category_ids },
+          id: { $in: filters.category_id },
         }
       } else {
         filters.categories = {
-          id: filters.category_ids,
+          id: filters.category_id,
         }
       }
-      delete filters.category_ids
+      delete filters.category_id
     }
 
     const queryOptions = ModulesSdkUtils.buildQuery<Product>(filters, config)
@@ -98,17 +98,17 @@ export default class ProductService<TEntity extends Product = Product> {
     config: FindConfig<ProductTypes.ProductDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    if (filters.category_ids) {
-      if (Array.isArray(filters.category_ids)) {
+    if (filters.category_id) {
+      if (Array.isArray(filters.category_id)) {
         filters.categories = {
-          id: { $in: filters.category_ids },
+          id: { $in: filters.category_id },
         }
       } else {
         filters.categories = {
-          id: filters.category_ids,
+          id: filters.category_id,
         }
       }
-      delete filters.category_ids
+      delete filters.category_id
     }
 
     const queryOptions = ModulesSdkUtils.buildQuery<Product>(filters, config)
