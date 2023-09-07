@@ -23,6 +23,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
+import { isObject } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/products
@@ -221,6 +222,14 @@ export default async (req, res) => {
 
   const validated = req.validatedQuery as StoreGetProductsParams
 
+  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
+    IsolateProductDomain.key
+  )
+
+  if (isIsolateProductDomain) {
+    return await listProductWithIsolatedProductModule(req, res)
+  }
+
   let {
     cart_id,
     region_id: regionId,
@@ -228,73 +237,6 @@ export default async (req, res) => {
     ...filterableFields
   } = req.filterableFields
   const listConfig = req.listConfig
-
-  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
-    IsolateProductDomain.key
-  )
-
-  if (isIsolateProductDomain) {
-    const remoteQuery = req.scope.resolve("remoteQuery")
-
-    // pass (filters: {}) if we want to filter by something
-    const query = `
-      query {
-        product (skip: 0, take: 10) {
-          id
-          title
-          subtitle
-          description
-          handle
-          images {
-            url
-          }
-          tags {
-            value
-          }
-          type {
-            value
-          }
-          collection {
-            id
-            title
-            handle
-          }
-          options {
-            title
-            values {
-              id
-              value
-            }
-          }
-          variants {
-            id
-            options {
-              id
-              value
-            }
-          }
-        } 
-      }
-    `
-
-    /* const queryVariables = {
-      variables: {
-        ...filterableFields,
-      },
-    }*/
-
-    const {
-      rows: products,
-      metadata: { count },
-    } = await remoteQuery.query(query)
-
-    return res.json({
-      products: cleanResponseData(products, req.allowedProperties || []),
-      count,
-      offset: validated.offset,
-      limit: validated.limit,
-    })
-  }
 
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
@@ -375,6 +317,110 @@ export default async (req, res) => {
 
   res.json({
     products: cleanResponseData(computedProducts, req.allowedProperties || []),
+    count,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
+}
+
+async function listProductWithIsolatedProductModule(req, res) {
+  const validated = req.validatedQuery as StoreGetProductsParams
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const {
+    cart_id,
+    region_id: regionId,
+    currency_code: currencyCode,
+    ...filterableFields
+  } = req.filterableFields
+  const listConfig = req.listConfig
+
+  // get only published products for store endpoint
+  filterableFields["status"] = ["published"]
+  // store APIs only receive active and public categories to query from
+  filterableFields["categories"] = {
+    ...(filterableFields.categories || {}),
+    // Store APIs are only allowed to query active and public categories
+    ...defaultStoreCategoryScope,
+  }
+
+  let salesChannelFilter = filterableFields.sales_channel_id
+  if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
+    salesChannelFilter =
+      filterableFields.sales_channel_id ||
+      req.publishableApiKeyScopes.sales_channel_ids
+  }
+
+  delete filterableFields.sales_channel_id
+
+  // Stringify without quotes around props
+  function stringify(obj_from_json) {
+    if (!isObject(obj_from_json) || Array.isArray(obj_from_json)) {
+      return JSON.stringify(obj_from_json)
+    }
+
+    const props = Object.keys(obj_from_json)
+      .map((key) => `${key}: ${stringify(obj_from_json[key])}`)
+      .join(",")
+
+    return `{${props}}`
+  }
+
+  // prettier-ignore
+  const args = `
+    filters: ${stringify(filterableFields)},
+    skip: ${listConfig.skip}, 
+    take: ${listConfig.take}
+  `
+
+  const query = `
+      query {
+        product (${args}) {
+          id
+          title
+          subtitle
+          description
+          handle
+          images {
+            url
+          }
+          tags {
+            value
+          }
+          type {
+            value
+          }
+          collection {
+            id
+            title
+            handle
+          }
+          options {
+            title
+            values {
+              id
+              value
+            }
+          }
+          variants {
+            id
+            options {
+              id
+              value
+            }
+          }
+        } 
+      }
+    `
+
+  const {
+    rows: products,
+    metadata: { count },
+  } = await remoteQuery(query)
+
+  return res.json({
+    products: cleanResponseData(products, req.allowedProperties || []),
     count,
     offset: validated.offset,
     limit: validated.limit,
