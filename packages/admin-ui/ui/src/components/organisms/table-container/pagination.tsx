@@ -37,7 +37,7 @@ export const TablePagination = ({
         }
       >
         <Skeleton>
-          <div>
+          <div dir="rtl">
             {t("{soothedOffset} - {pageSize} of {count} {title}", {
               soothedOffset,
               pageSize,
@@ -48,7 +48,7 @@ export const TablePagination = ({
         </Skeleton>
         <div className="flex space-x-4">
           <Skeleton>
-            <div>
+            <div dir="rtl" >
               {t("{currentPage} of {soothedPageCount}", {
                 currentPage,
                 soothedPageCount,
