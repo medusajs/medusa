@@ -151,7 +151,7 @@ export default async (req, res) => {
 
     const input = {
       products: [
-        validated,
+        { id, ...validated },
       ] as WorkflowTypes.ProductWorkflow.UpdateProductInputDTO[],
       config: {
         listConfig: {

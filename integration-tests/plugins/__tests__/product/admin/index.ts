@@ -9,7 +9,10 @@ import productSeeder from "../../../../helpers/product-seeder"
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { Workflows } from "@medusajs/workflows"
 import { AxiosInstance } from "axios"
-import { simpleSalesChannelFactory } from "../../../../factories"
+import {
+  simpleProductFactory,
+  simpleSalesChannelFactory,
+} from "../../../../factories"
 
 jest.setTimeout(5000000)
 
@@ -367,6 +370,112 @@ describe("/admin/products", () => {
         expect.objectContaining({
           title: "Test Giftcard",
           discountable: false,
+        })
+      )
+    })
+  })
+
+  describe("POST /admin/products/:id", () => {
+    beforeEach(async () => {
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
+
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default channel",
+        id: "default-channel",
+        is_default: true,
+      })
+
+      await simpleProductFactory(dbConnection, {
+        title: "To update product",
+        id: "to-update",
+      })
+
+      await simpleProductFactory(dbConnection, {
+        title: "To update product",
+        id: "to-update-with-variants",
+        variants: [
+          {
+            id: "variant-1",
+            title: "Variant 1",
+            product_id: "to-update-with-variants",
+          },
+          {
+            id: "variant-2",
+            title: "Variant 2",
+            product_id: "to-update-with-variants",
+          },
+        ],
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should do a basic product update", async () => {
+      const api = useApi()! as AxiosInstance
+
+      const payload = {
+        title: "New title",
+        description: "test-product-description",
+      }
+
+      const response = await api
+        .post("/admin/products/to-update", payload, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response?.status).toEqual(200)
+      expect(response?.data.product).toEqual(
+        expect.objectContaining({
+          id: "to-update",
+          title: "New title",
+          description: "test-product-description",
+        })
+      )
+    })
+
+    it("update product and variants", async () => {
+      const api = useApi()! as AxiosInstance
+
+      const payload = {
+        title: "New title",
+        description: "test-product-description",
+        variants: [
+          {
+            id: "variant-1",
+            title: "Variant 1 updated",
+          },
+          {
+            title: "Variant 3",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products/to-update-with-variants", payload, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response?.status).toEqual(200)
+      expect(response?.data.product).toEqual(
+        expect.objectContaining({
+          id: "to-update-with-variants",
+          title: "New title",
+          description: "test-product-description",
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: "variant-1",
+              title: "Variant 1 updated",
+            }),
+            expect.objectContaining({
+              title: "Variant 3",
+            }),
+          ]),
         })
       )
     })

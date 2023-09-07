@@ -1,5 +1,5 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
-import { ProductTypes } from "@medusajs/types"
+import { ProductDTO, ProductTypes } from "@medusajs/types"
 
 import { WorkflowArguments } from "../../helper"
 
@@ -8,17 +8,15 @@ type HandlerInput = { products: ProductTypes.UpdateProductDTO[] }
 export async function updateProducts({
   container,
   data,
-}: WorkflowArguments<HandlerInput>): Promise<void> {
+}: WorkflowArguments<HandlerInput>): Promise<ProductDTO[]> {
   if (!data.products.length) {
-    return
+    return []
   }
 
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
-  data.products.forEach((product) => delete product.variants)
-
-  await productModuleService.update(data.products)
+  return await productModuleService.update(data.products)
 }
 
 updateProducts.aliases = {

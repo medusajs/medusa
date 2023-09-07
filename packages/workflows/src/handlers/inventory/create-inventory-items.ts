@@ -33,7 +33,10 @@ export async function createInventoryItems({
       acc: ProductTypes.ProductVariantDTO[],
       product: ProductTypes.ProductDTO
     ) => {
-      return acc.concat(product.variants)
+      if (product.variants?.length) {
+        return acc.concat(product.variants)
+      }
+      return acc
     },
     []
   )
