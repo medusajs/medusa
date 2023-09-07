@@ -347,19 +347,29 @@ async function listAndCountProductWithIsolatedProductModule(
     "tags",
   ]*/
 
-  // TODO: handle q parameter
   // TODO: Handle fields and relations to maintain existing features and custom fields and relations
 
   const remoteQuery = req.scope.resolve("remoteQuery")
 
   let salesChannelIdFilter = filterableFields.sales_channel_id
   if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
-    salesChannelIdFilter =
-      filterableFields.sales_channel_id ||
-      req.publishableApiKeyScopes.sales_channel_ids
+    salesChannelIdFilter ??= req.publishableApiKeyScopes.sales_channel_ids
   }
 
   delete filterableFields.sales_channel_id
+
+  filterableFields["categories"] = {
+    $or: [
+      {
+        id: null,
+      },
+      {
+        ...(filterableFields.categories || {}),
+        // Store APIs are only allowed to query active and public categories
+        ...defaultStoreCategoryScope,
+      },
+    ],
+  }
 
   if (salesChannelIdFilter) {
     const salesChannelService = req.scope.resolve(
@@ -371,7 +381,21 @@ async function listAndCountProductWithIsolatedProductModule(
         salesChannelIdFilter
       )
 
-    filterableFields.id = productIdsInSalesChannel[salesChannelIdFilter]
+    let filteredProductIds = productIdsInSalesChannel[salesChannelIdFilter]
+
+    if (filterableFields.id) {
+      filterableFields.id = Array.isArray(filterableFields.id)
+        ? filterableFields.id
+        : [filterableFields.id]
+
+      const salesChannelProductIdsSet = new Set(filteredProductIds)
+
+      filteredProductIds = filterableFields.id.filter((productId) =>
+        salesChannelProductIdsSet.has(productId)
+      )
+    }
+
+    filterableFields.id = filteredProductIds
   }
 
   const variables = {

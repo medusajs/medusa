@@ -29,6 +29,15 @@ export function buildQuery<T = any, TDto = any>(
 
 function buildWhere(filters: Record<string, any> = {}, where = {}) {
   for (let [prop, value] of Object.entries(filters)) {
+    if (["$or", "$and"].includes(prop)) {
+      where[prop] = value.map((val) => {
+        const deepWhere = {}
+        buildWhere(val, deepWhere)
+        return deepWhere
+      })
+      continue
+    }
+
     if (Array.isArray(value)) {
       value = deduplicate(value)
       where[prop] = ["$in", "$nin"].includes(prop) ? value : { $in: value }
