@@ -1,9 +1,9 @@
 import { BaseFilterable } from "../../dal"
-import { MoneyAmountDTO } from "./money-amount"
+import { FilterableMoneyAmountProps, MoneyAmountDTO } from "./money-amount"
 
 export interface PriceSetDTO {
   id: string
-  money_amounts?: MoneyAmountDTO
+  money_amounts?: MoneyAmountDTO[]
 }
 
 export interface CreatePriceSetDTO {
@@ -18,7 +18,5 @@ export interface UpdatePriceSetDTO {
 export interface FilterablePriceSetProps
   extends BaseFilterable<FilterablePriceSetProps> {
   id?: string[]
-  money_amounts?: {
-    currency_code: string | string[]
-  }
+  money_amounts?: FilterableMoneyAmountProps
 }

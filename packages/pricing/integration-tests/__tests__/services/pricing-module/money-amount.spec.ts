@@ -58,7 +58,7 @@ describe("PricingModule Service - MoneyAmount", () => {
       ])
     })
 
-    it("list moneyAmounts by id", async () => {
+    it("should list moneyAmounts by id", async () => {
       const moneyAmountsResult = await service.listMoneyAmounts({
         id: ["money-amount-USD"],
       })
@@ -70,7 +70,7 @@ describe("PricingModule Service - MoneyAmount", () => {
       ])
     })
 
-    it("list moneyAmounts with relations and selects", async () => {
+    it("should list moneyAmounts with relations and selects", async () => {
       const moneyAmountsResult = await service.listMoneyAmounts(
         {
           id: ["money-amount-USD"],
