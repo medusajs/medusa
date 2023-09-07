@@ -400,6 +400,7 @@ async function listAndCountProductWithIsolatedProductModule(
 
   const variables = {
     filters: filterableFields,
+    order: listConfig.order,
     skip: listConfig.skip,
     take: listConfig.take,
   }
@@ -407,12 +408,13 @@ async function listAndCountProductWithIsolatedProductModule(
   // prettier-ignore
   const args = `
     filters: $filters,
+    order: $order,
     skip: $skip, 
     take: $take
   `
 
   const query = `
-      query ($filters: any, $skip: Int, $take: Int) {
+      query ($filters: any, $order: any, $skip: Int, $take: Int) {
         product (${args}) {
           id
           title
