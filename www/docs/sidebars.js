@@ -73,6 +73,14 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "recipes/oms",
+          label: "Order Management System",
+          customProps: {
+            iconName: "check-circle-solid",
+          },
+        },
+        {
+          type: "doc",
           id: "recipes/pos",
           label: "POS",
           customProps: {
