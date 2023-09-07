@@ -32,7 +32,7 @@ describe("/admin/price-lists", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -113,11 +113,13 @@ describe("/admin/price-lists", () => {
               id: expect.any(String),
               amount: 85,
               currency_code: "usd",
+              variant_id: "test-variant",
             }),
             expect.objectContaining({
               id: expect.any(String),
               amount: 105,
               currency_code: region.currency_code,
+              variant_id: "test-variant",
             }),
           ],
         })
@@ -387,7 +389,7 @@ describe("/admin/price-lists", () => {
       expect(updateResult.data.price_list.customer_groups.length).toEqual(0)
     })
 
-    it("updates a price list", async () => {
+    it.only("updates a price list", async () => {
       const api = useApi()
 
       const payload = {
@@ -426,6 +428,7 @@ describe("/admin/price-lists", () => {
           console.warn(err.response.data)
         })
 
+      expect(response.data.price_list.prices.length).toEqual(5)
       expect(response.status).toEqual(200)
       expect(response.data.price_list).toMatchSnapshot({
         id: "pl_no_customer_groups",

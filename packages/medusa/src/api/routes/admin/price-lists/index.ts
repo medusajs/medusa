@@ -93,7 +93,11 @@ export const defaultAdminPriceListFields = [
   "deleted_at",
 ]
 
-export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
+export const defaultAdminPriceListRelations = [
+  "prices",
+  "prices.variants",
+  "customer_groups",
+]
 
 /**
  * @schema AdminPriceListRes

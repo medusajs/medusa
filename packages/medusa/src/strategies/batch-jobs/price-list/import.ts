@@ -312,7 +312,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
             (op.prices as PriceListPriceCreateInput[]).map((p) => {
               return {
                 ...p,
-                variant_id: op.variant_id,
+                variant_id: op.variant_id.toString(),
               }
             })
           )

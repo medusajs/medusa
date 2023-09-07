@@ -500,13 +500,29 @@ class PriceListService extends TransactionBaseService {
     const regionServiceTx = this.regionService_.withTransaction(
       this.activeManager_
     )
+
+    const regions = await regionServiceTx.list(
+      {
+        id: [
+          ...new Set(
+            prices
+              .map((p) => p.region_id)
+              .filter((p: string | undefined): p is string => !!p)
+          ),
+        ],
+      },
+      {}
+    )
+
+    const regionsMap = new Map(regions.map((r) => [r.id, r]))
+
     for (const price of prices) {
       const p = { ...price }
 
       if (p.region_id) {
-        const region = await regionServiceTx.retrieve(p.region_id)
+        const region = regionsMap.get(p.region_id)
 
-        p.currency_code = region.currency_code
+        p.currency_code = region!.currency_code
       }
 
       prices_.push(p)

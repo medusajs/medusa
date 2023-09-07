@@ -23,6 +23,7 @@ import { dataSource } from "../loaders/database"
 import { groupBy } from "lodash"
 import { isString } from "../utils"
 import partition from "lodash/partition"
+import { ulid } from "ulid"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -247,7 +248,10 @@ export const MoneyAmountRepository = dataSource
       const toInsert = prices.map((price) =>
         this.create({
           ...price,
+          id: `ma_${ulid()}`,
           price_list_id: priceListId,
+          variants: [{ id: price.variant_id! }],
+          variant_id: price.variant_id!,
         })
       )
 
@@ -256,18 +260,39 @@ export const MoneyAmountRepository = dataSource
         .orIgnore(true)
         .into(MoneyAmount)
         .values(toInsert as QueryDeepPartialEntity<MoneyAmount>[])
+        .returning("*")
         .execute()
 
+      const joinTableValues = toInsert.map((ma) => {
+        const [{ id: variant_id }] = ma.variants
+        const { id: money_amount_id } = ma
+        return this.manager.create(ProductVariantMoneyAmount, {
+          variant_id,
+          money_amount_id,
+        })
+      })
+
       if (overrideExisting) {
-        await this.createQueryBuilder()
+        const { raw } = await this.createQueryBuilder()
           .delete()
           .from(MoneyAmount)
           .where({
             price_list_id: priceListId,
             id: Not(In(insertResult.identifiers.map((ma) => ma.id))),
           })
+          .returning("id")
+          .execute()
+
+        await this.createQueryBuilder()
+          .delete()
+          .from("product_variant_money_amount")
+          .where({
+            money_amount_id: In(raw.map((deletedMa) => deletedMa.id)),
+          })
           .execute()
       }
+
+      await this.manager.save(joinTableValues)
 
       return await this.manager
         .createQueryBuilder(MoneyAmount, "ma")
