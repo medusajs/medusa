@@ -251,7 +251,6 @@ export const MoneyAmountRepository = dataSource
           id: `ma_${ulid()}`,
           price_list_id: priceListId,
           variants: [{ id: price.variant_id! }],
-          variant_id: price.variant_id!,
         })
       )
 
@@ -529,11 +528,39 @@ export const MoneyAmountRepository = dataSource
         (update) => update.id
       )
 
-      const newPriceEntities = newPrices.map((price) =>
-        this.create({ ...price, price_list_id: priceListId })
+      const [newPriceEntities, joinTableValues]: [
+        MoneyAmount[],
+        ProductVariantMoneyAmount[]
+      ] = newPrices.reduce(
+        (acc, price) => {
+          const [prices, joinTableValues] = acc
+          const id = `ma_${ulid()}`
+          const variant = this.create({
+            ...price,
+            id,
+            price_list_id: priceListId,
+          })
+          const joinTableValue = this.manager.create(
+            ProductVariantMoneyAmount,
+            {
+              variant_id: price.variant_id!,
+              money_amount_id: id,
+            }
+          )
+
+          return [
+            [...prices, variant],
+            [...joinTableValues, joinTableValue],
+          ]
+        },
+        [[], []] as [MoneyAmount[], ProductVariantMoneyAmount[]]
       )
 
-      return await this.save([...existingPrices, ...newPriceEntities])
+      const prices = await this.save([...existingPrices, ...newPriceEntities])
+
+      await this.manager.save(joinTableValues)
+
+      return prices
     },
   })
 

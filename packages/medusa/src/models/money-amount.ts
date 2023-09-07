@@ -49,7 +49,6 @@ export class MoneyAmount extends SoftDeletableEntity {
 
   @ManyToMany(() => ProductVariant, {
     onDelete: "CASCADE",
-    cascade: ["insert", "update"],
   })
   @JoinTable({
     name: "product_variant_money_amount",
