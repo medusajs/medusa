@@ -28,6 +28,8 @@
     "@medusajs/types": "^1.10.2",
     "@medusajs/utils": "^1.9.6",
     "awilix": "^8.0.0",
+    "knex": "2.4.2",
+    "pg": "^8.11.2",
     "resolve-cwd": "^3.0.0"
   },
   "scripts": {
