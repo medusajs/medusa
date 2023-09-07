@@ -1,32 +1,28 @@
+import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { Currency } from "@models"
 
-import { RuleTypeRepository } from "@repositories"
-import { RuleTypeService } from "@services"
-
-import { MikroOrmWrapper } from "../../../utils"
+import { initialize } from "../../../../src"
+import { createCurrencies } from "../../../__fixtures__/currency"
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 
-jest.setTimeout(30000)
-
-describe("RuleType Service", () => {
-  let service: RuleTypeService
+describe("PricingModuleService currency", () => {
+  let service: IPricingModuleService
   let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
-
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
-    repositoryManager = await MikroOrmWrapper.forkManager()
+    MikroOrmWrapper.forkManager()
 
-    const ruleTypeRepository = new RuleTypeRepository({
-      manager: repositoryManager,
+    service = await initialize({
+      database: {
+        clientUrl: DB_URL,
+        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
+      },
     })
 
-    service = new RuleTypeService({
-      ruleTypeRepository,
-    })
-
-    testManager = await MikroOrmWrapper.forkManager()
+    testManager = MikroOrmWrapper.forkManager()
 
     await createRuleTypes(testManager)
   })
@@ -37,7 +33,7 @@ describe("RuleType Service", () => {
 
   describe("list", () => {
     it("list rule types", async () => {
-      const ruleTypeResult = await service.list()
+      const ruleTypeResult = await service.listRuleTypes()
 
       expect(ruleTypeResult).toEqual([
         expect.objectContaining({
@@ -52,7 +48,7 @@ describe("RuleType Service", () => {
     })
 
     it("list rule types by id", async () => {
-      const ruleTypeResult = await service.list({ id: ["rule-type-1"] })
+      const ruleTypeResult = await service.listRuleTypes({ id: ["rule-type-1"] })
 
       expect(ruleTypeResult).toEqual([
         expect.objectContaining({
@@ -65,7 +61,7 @@ describe("RuleType Service", () => {
 
   describe("listAndCount", () => {
     it("should return rule types and count", async () => {
-      const [ruleTypeResult, count] = await service.listAndCount()
+      const [ruleTypeResult, count] = await service.listAndCountRuleTypes()
 
       expect(count).toEqual(2)
       expect(ruleTypeResult).toEqual([
@@ -81,7 +77,7 @@ describe("RuleType Service", () => {
     })
 
     it("should return rule types and count when filtered", async () => {
-      const [ruleTypeResult, count] = await service.listAndCount({
+      const [ruleTypeResult, count] = await service.listAndCountRuleTypes({
         id: ["rule-type-1"],
       })
 
@@ -95,7 +91,7 @@ describe("RuleType Service", () => {
     })
 
     it("should return rule types and count when using skip and take", async () => {
-      const [ruleTypeResult, count] = await service.listAndCount(
+      const [ruleTypeResult, count] = await service.listAndCountRuleTypes(
         {},
         { skip: 1, take: 1 }
       )
@@ -110,7 +106,7 @@ describe("RuleType Service", () => {
     })
 
     it("should return requested fields", async () => {
-      const [ruleTypeResult, count] = await service.listAndCount(
+      const [ruleTypeResult, count] = await service.listAndCountRuleTypes(
         {},
         {
           take: 1,
@@ -133,7 +129,7 @@ describe("RuleType Service", () => {
   describe("retrieve", () => {
 
     it("should return ruleType for the given id", async () => {
-      const ruleType = await service.retrieve('rule-type-1')
+      const ruleType = await service.retrieveRuleType('rule-type-1')
 
       expect(ruleType).toEqual(
         expect.objectContaining({
@@ -147,7 +143,7 @@ describe("RuleType Service", () => {
       let error
 
       try {
-        await service.retrieve("does-not-exist")
+        await service.retrieveRuleType("does-not-exist")
       } catch (e) {
         error = e
       }
@@ -161,7 +157,7 @@ describe("RuleType Service", () => {
       let error
 
       try {
-        await service.retrieve(undefined as unknown as string)
+        await service.retrieveRuleType(undefined as unknown as string)
       } catch (e) {
         error = e
       }
@@ -170,7 +166,7 @@ describe("RuleType Service", () => {
     })
 
     it("should return ruleType based on config select param", async () => {
-      const ruleTypeResult = await service.retrieve('rule-type-1', {
+      const ruleTypeResult = await service.retrieveRuleType('rule-type-1', {
         select: ["name"],
       })
 
@@ -187,9 +183,9 @@ describe("RuleType Service", () => {
     const id = "rule-type-1"
 
     it("should delete the ruleTypes given an id successfully", async () => {
-      await service.delete([id])
+      await service.deleteRuleTypes([id])
 
-      const currencies = await service.list({
+      const currencies = await service.listRuleTypes({
         id: [id],
       })
 
@@ -197,18 +193,18 @@ describe("RuleType Service", () => {
     })
   })
 
-  describe("update", () => {
+  describe("updateRuleTypes", () => {
     const id = "rule-type-1"
 
     it("should update the name of the ruleType successfully", async () => {
-      await service.update([
+      await service.updateRuleTypes([
         {
           id,
           name: "rule 3",
         },
       ])
 
-      const ruletype = await service.retrieve(id)
+      const ruletype = await service.retrieveRuleType(id)
 
       expect(ruletype.name).toEqual("rule 3")
     })
@@ -217,7 +213,7 @@ describe("RuleType Service", () => {
       let error
 
       try {
-        await service.update([
+        await service.updateRuleTypes([
           {
             id: "does-not-exist",
             name: "rule 3",
@@ -233,16 +229,16 @@ describe("RuleType Service", () => {
     })
   })
 
-  describe("create", () => {
+  describe("createRuleTypes", () => {
     it("should create a ruleType successfully", async () => {
-      await service.create([
+      await service.createRuleTypes([
         {
           name: "Test Rule",
           key_value: 'region_id',
         },
       ])
 
-      const [ruleType] = await service.list({
+      const [ruleType] = await service.listRuleTypes({
         name: ["Test Rule"],
       })
 

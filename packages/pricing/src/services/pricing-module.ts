@@ -42,12 +42,14 @@ export default class PricingModuleService<
       baseRepository,
       moneyAmountService,
       currencyService,
+      ruleTypeService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.currencyService_ = currencyService
     this.moneyAmountService_ = moneyAmountService
+    this.ruleTypeService_ = ruleTypeService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -324,7 +326,7 @@ export default class PricingModuleService<
   async createRuleTypes(
     data: PricingTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<PricingTypes.RuleTypeDTO[]> {
     const ruleTypes = await this.ruleTypeService_.create(data, sharedContext)
 
     return this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
@@ -339,7 +341,7 @@ export default class PricingModuleService<
   async updateRuleTypes(
     data: PricingTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<PricingTypes.RuleTypeDTO[]> {
     const ruleTypes = await this.ruleTypeService_.update(data, sharedContext)
 
     return this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
@@ -352,9 +354,9 @@ export default class PricingModuleService<
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async deleteRuleTypes(
-    currencyCodes: string[],
+    ruleTypes: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.ruleTypeService_.delete(currencyCodes, sharedContext)
+    await this.ruleTypeService_.delete(ruleTypes, sharedContext)
   }
 }
