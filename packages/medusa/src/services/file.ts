@@ -1,12 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { AbstractFileService } from "../interfaces"
 import {
-  AbstractFileService,
   FileServiceGetUploadStreamResult,
   FileServiceUploadResult,
   GetUploadedFileType,
   UploadStreamDescriptorType,
-} from "../interfaces"
+} from "@medusajs/types"
 
 class DefaultFileService extends AbstractFileService {
   async upload(

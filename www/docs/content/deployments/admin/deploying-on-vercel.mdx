@@ -85,14 +85,7 @@ In the `package.json` of the Medusa backend, add or change a build script for th
 }
 ```
 
-### Additional Build Options
-
-Aside from `--deployment`, you can use the following options when building your admin for deployment:
-
-- `--backend` or `-b`: a string specifying the URL of the Medusa backend. The default here is the value of the environment variable `MEDUSA_ADMIN_BACKEND_URL`. If this options is added, the value you set for `MEDUSA_ADMIN_BACKEND_URL` in Vercel will no longer have an effect. For example, `medusa-admin build --deployment --backend example.com`
-- `--out-dir` or `-o`: a string specifying a custom path to output the build files to. By default, it will be the `build` directory. For example, `medusa-admin --deployment --out-dir public`.
-- `--include` or `-i`: a list of strings of paths to files you want to include in the build output. It can be useful if you want to inject files that are relevant to your hosting. For example, `medusa-admin --deployment --include 200.html`
-- `--include-dist` or `-d`: a string specifying the path to copy the files specified in `--include` to. By default, the files are coopied to the root of the build directory. You can use this option to change that. For example, `medusa-admin --deployment --include 200.html --include-dist static`.
+Note that when using the `--deployment` option, the backend's URL is loaded from the `MEDUSA_ADMIN_BACKEND_URL` environment variable. You'll configure this environment variable in a later step.
 
 ---
 
@@ -133,8 +126,8 @@ This section explains how to deploy the admin using the Vercel website:
 3. Choose Project from the dropdown.
 4. In the new page that opens, find the Git repository that holds your Medusa backend and click on the Import button. If you haven’t connected your Vercel account to any Git provider, you must do that first.
 5. In the Configure Project form:
-    1. Set the Framework Preset to Vite.
-    2. Open the Build and Output Settings collapsible, and set the Build Command to `yarn build:admin` and the Output Directory to `build`. If you’ve configured the admin to use a different output directory, then change it to that directory.
+    1. Set the Framework Preset to Other.
+    2. Open the Build and Output Settings collapsible, and set the Build Command to `yarn build:admin` and the Output Directory to `build`.
     3. Open the Environment Variables collapsible, and add an environment variable with the name `MEDUSA_ADMIN_BACKEND_URL` with the value being the URL to your deployed Medusa backend.
     4. You can optionally edit the Project Name.
 6. Once you’re done, click on the “Deploy” button.

@@ -16,7 +16,7 @@ The file service you’ll be creating in this guide will be a local file service
 
 ## Prerequisites
 
-### Multer Types Package
+### (Optional) Multer Types Package
 
 If you’re using TypeScript, as instructed by this guide, you should install the Multer types package to resolve errors within your file service types.
 
@@ -45,14 +45,14 @@ You can learn more about services and their naming convention in [this documenta
 For example, create the file `src/services/local-file.ts` with the following content:
 
 ```ts title=src/services/local-file.ts
-import { 
-  AbstractFileService, 
-  DeleteFileType, 
-  FileServiceGetUploadStreamResult, 
-  FileServiceUploadResult, 
-  GetUploadedFileType, 
-  UploadStreamDescriptorType, 
-} from "@medusajs/medusa"
+import { AbstractFileService } from "@medusajs/medusa"
+import {
+  DeleteFileType,
+  FileServiceGetUploadStreamResult,
+  FileServiceUploadResult,
+  GetUploadedFileType,
+  UploadStreamDescriptorType,
+} from "@medusajs/types"
 
 class LocalFileService extends AbstractFileService {
   async upload(
@@ -65,9 +65,7 @@ class LocalFileService extends AbstractFileService {
   ): Promise<FileServiceUploadResult> {
     throw new Error("Method not implemented.")
   }
-  async delete(
-    fileData: DeleteFileType
-  ): Promise<void> {
+  async delete(fileData: DeleteFileType): Promise<void> {
     throw new Error("Method not implemented.")
   }
   async getUploadStreamDescriptor(
@@ -90,7 +88,17 @@ class LocalFileService extends AbstractFileService {
 export default LocalFileService
 ```
 
-This creates the service `LocalFileService` which, at the moment, adds a general implementation of the methods defined in the abstract class `AbstractFileService`.
+This creates the service `LocalFileService` which, at the moment, adds a general implementation of the methods defined in the abstract class `AbstractFileService`. Notice that the methods' signatures require importing types from the `@medusajs/types` package.
+
+:::tip
+
+If you get errors regarding the types not being available in the `@medusajs/types` package, make sure that the latest version of the package is installed:
+
+```bash npm2yarn
+npm install @medusajs/types@latest
+```
+
+:::
 
 ### Using a Constructor
 
@@ -191,7 +199,10 @@ fs.createReadStream(file.path)
 
 Where `file` is the parameter passed to the `upload` method.
 
-The method is expected to return an object that has one property `url`, which is a string indicating the full accessible URL to the file.
+The method is expected to return an object that has the following properties:
+
+- `url`: a string indicating the full accessible URL to the file.
+- `key`: a string indicating the key used to reference the uploaded file. This is useful when retrieving the file later with other methods like the [getDownloadStream](#getdownloadstream).
 
 An example implementation of this method for the local file service:
 
@@ -206,6 +217,7 @@ class LocalFileService extends AbstractFileService {
     fs.copyFileSync(fileData.path, filePath)
     return {
       url: `${this.serverUrl}/${filePath}`,
+      key: filePath,
     }
   }
 
@@ -235,7 +247,10 @@ fs.createReadStream(file.path)
 
 Where `file` is the parameter passed to the `uploadProtected` method.
 
-The method is expected to return an object that has one property `url`, which is a string indicating the full accessible URL to the file.
+The method is expected to return an object that has the following properties:
+
+- `url`: a string indicating the full accessible URL to the file.
+- `key`: a string indicating the key used to reference the uploaded file. This is useful when retrieving the file later with other methods like the [getDownloadStream](#getdownloadstream).
 
 An example implementation of this method for the local file service:
 
@@ -260,7 +275,12 @@ class LocalFileService extends AbstractFileService {
 ### delete
 
 This method is used to delete a file from storage. You must handle the delete logic within this method.
-This method accepts one parameter, which is an object that holds a `fileKey` property. The value of this property is a string that acts as an identifier of the file to delete. For example, for local file service, it could be the file name.
+
+This method accepts one parameter, which is an object that holds a `fileKey` property. The value of this property is a string that acts as an identifier of the file to delete. Typically, this would be the returned `key` property by other methods, such as the `upload` method.
+
+For example, for local file service, it could be the file name.
+
+You can also pass custom properties to the object passed as a first parameter.
 
 This method is not expected to return anything.
 
@@ -287,7 +307,7 @@ The method accepts one parameter, which is an object that has the following prop
 
 - `name`: a string indicating the name of the file.
 - `ext`: an optional string indicating the extension of the file.
-- `acl`: an optional string indicating the file’s permission. If the file should be uploaded privately, its value will be `private`.
+- `isPrivate`: an optional boolean value indicating if the file should be uploaded to a private bucket or location. By convention, the default value of this property should be `true`
 
 The method is expected to return an object having the following properties:
 
@@ -296,17 +316,22 @@ The method is expected to return an object having the following properties:
 - `url`: a string indicating the URL of the file once it’s uploaded.
 - `fileKey`: a string indicating the identifier of your file in the storage. For example, for a local file service this can be the file name.
 
+You can also return custom properties within the object.
+
 An example implementation of this method for the local file service:
 
 ```ts title=src/services/local-file.ts
 class LocalFileService extends AbstractFileService {
 
-  async getUploadStreamDescriptor(
-    fileData: UploadStreamDescriptorType
+  async getUploadStreamDescriptor({
+    name,
+    ext,
+    isPrivate = true,
+  }: UploadStreamDescriptorType
   ): Promise<FileServiceGetUploadStreamResult> {
-    const filePath = `${fileData.acl !== "private" ? 
+    const filePath = `${isPrivate ? 
       this.publicPath : this.protectedPath
-    }/${fileData.name}.${fileData.ext}`
+    }/${name}.${ext}`
     const writeStream = fs.createWriteStream(filePath)
 
     return {
@@ -325,7 +350,10 @@ class LocalFileService extends AbstractFileService {
 
 This method is used to read a file using a read stream, typically for download.
 
-The method accepts as a parameter an object having the `fileKey` property, which is a string indicating the identifier of the file.
+The method accepts as a parameter an object having the following properties:
+
+- `fileKey`: a string indicating the identifier of the file. This is typically the value returned by other methods like [upload](#upload).
+- `isPrivate`: an optional boolean value indicating whether the file should be downloaded from the private bucket or storage location. By convention, this should default to `true`.
 
 The method is expected to return a readable stream.
 
@@ -334,12 +362,14 @@ An example implementation of this method for the local file service:
 ```ts title=src/services/local-file.ts
 class LocalFileService extends AbstractFileService {
 
-  async getDownloadStream(
-    fileData: GetUploadedFileType
+  async getDownloadStream({
+    fileKey,
+    isPrivate = true,
+  }: GetUploadedFileType
   ): Promise<NodeJS.ReadableStream> {
-    const filePath = `${fileData.acl !== "private" ? 
+    const filePath = `${isPrivate ? 
       this.publicPath : this.protectedPath
-    }/${fileData.name}.${fileData.ext}`
+    }/${fileKey}`
     const readStream = fs.createReadStream(filePath)
 
     return readStream
@@ -355,7 +385,10 @@ The `getPresignedDownloadUrl` method is used to retrieve a download URL of the f
 
 If your file service doesn’t perform or offer a similar functionality, you can just return the URL to download the file.
 
-This method accepts as a parameter an object having the `fileKey` property, which is a string indicating the identifier of the file.
+The method accepts as a parameter an object having the following properties:
+
+- `fileKey`: a string indicating the identifier of the file. This is typically the value returned by other methods like [upload](#upload).
+- `isPrivate`: an optional boolean value indicating whether the file should be downloaded from the private bucket or storage location. By convention, this should default to `true`.
 
 The method is expected to return a string, being the URL of the file.
 
@@ -364,10 +397,15 @@ An example implementation of this method for the local file service:
 ```ts title=src/services/local-file.ts
 class LocalFileService extends AbstractFileService {
 
-  async getPresignedDownloadUrl(
-    fileData: GetUploadedFileType
+  async getPresignedDownloadUrl({
+    fileKey,
+    isPrivate = true,
+  }: GetUploadedFileType
   ): Promise<string> {
-    return `${this.serverUrl}/${fileData.fileKey}`
+    const filePath = `${isPrivate ? 
+      this.publicPath : this.protectedPath
+    }/${fileKey}`
+    return `${this.serverUrl}/${filePath}`
   }
 
   // ...

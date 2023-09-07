@@ -1,6 +1,7 @@
 export * from "./batch-job-strategy"
 export * from "./cart-completion-strategy"
 export * from "./file-service"
+export * from "./fulfillment-service"
 export * from "./models/base-entity"
 export * from "./models/soft-deletable-entity"
 export * from "./notification-service"

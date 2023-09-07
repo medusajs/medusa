@@ -13,6 +13,7 @@ import {
 import UploadModal from "../../../components/organisms/upload-modal"
 import useNotification from "../../../hooks/use-notification"
 import { usePolling } from "../../../providers/polling-provider"
+import { downloadProductImportCSVTemplate } from "./download-template"
 
 /**
  * Hook returns a batch job. The endpoint is polled every 2s while the job is processing.
@@ -177,10 +178,6 @@ function ImportProducts(props: ImportProductsProps) {
     }
   }
 
-  const templateLink = process.env.ADMIN_PATH
-    ? `${process.env.ADMIN_PATH}/temp/product-import-template.csv`
-    : "/temp/product-import-template.csv"
-
   return (
     <UploadModal
       type="products"
@@ -194,7 +191,7 @@ function ImportProducts(props: ImportProductsProps) {
       onFileRemove={onFileRemove}
       processUpload={processUpload}
       fileTitle={"products list"}
-      templateLink={templateLink}
+      onDownloadTemplate={downloadProductImportCSVTemplate}
       errorMessage={batchJob?.result?.errors?.join(" \n")}
       description2Title="Unsure about how to arrange your list?"
       description2Text="Download the template below to ensure you are following the correct format."

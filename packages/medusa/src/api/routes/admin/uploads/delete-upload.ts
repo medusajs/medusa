@@ -77,7 +77,7 @@ export default async (req, res) => {
  *   - file_key
  * properties:
  *   file_key:
- *     description: "key of the file to delete"
+ *     description: "key of the file to delete. This is obtained when you first uploaded the file, or by the file service if you used it directly."
  *     type: string
  */
 export class AdminDeleteUploadsReq {

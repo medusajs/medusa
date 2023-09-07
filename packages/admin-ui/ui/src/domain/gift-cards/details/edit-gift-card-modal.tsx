@@ -53,7 +53,7 @@ const EditGiftCardModal = ({
         onSuccess: () => {
           notification(
             "Updated Gift card",
-            "Gift card was succesfully updated",
+            "Gift card was successfully updated",
             "success"
           )
 
