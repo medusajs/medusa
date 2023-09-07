@@ -2,6 +2,7 @@ import {
   CartService,
   ProductService,
   ProductVariantInventoryService,
+  SalesChannelService,
 } from "../../../../services"
 import {
   IsArray,
@@ -222,14 +223,6 @@ export default async (req, res) => {
 
   const validated = req.validatedQuery as StoreGetProductsParams
 
-  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
-    IsolateProductDomain.key
-  )
-
-  if (isIsolateProductDomain) {
-    return await listProductWithIsolatedProductModule(req, res)
-  }
-
   let {
     cart_id,
     region_id: regionId,
@@ -257,9 +250,23 @@ export default async (req, res) => {
     }
   }
 
+  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
+    IsolateProductDomain.key
+  )
+
   const promises: Promise<any>[] = []
 
-  promises.push(productService.listAndCount(filterableFields, listConfig))
+  if (isIsolateProductDomain) {
+    promises.push(
+      listAndCountProductWithIsolatedProductModule(
+        req,
+        filterableFields,
+        listConfig
+      )
+    )
+  } else {
+    promises.push(productService.listAndCount(filterableFields, listConfig))
+  }
 
   if (validated.cart_id) {
     promises.push(
@@ -323,36 +330,49 @@ export default async (req, res) => {
   })
 }
 
-async function listProductWithIsolatedProductModule(req, res) {
-  const validated = req.validatedQuery as StoreGetProductsParams
+async function listAndCountProductWithIsolatedProductModule(
+  req,
+  filterableFields,
+  listConfig
+) {
+  /* const productExposedRelations = [
+    "product",
+    "variants",
+    "variants.options",
+    "images",
+    "categories",
+    "collection",
+    "type",
+    "options",
+    "options.values",
+    "tags",
+  ]*/
+
+  // TODO: Handle fields and relations to maintain existinbg featrures and custom fields and relations
 
   const remoteQuery = req.scope.resolve("remoteQuery")
 
-  const {
-    cart_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    ...filterableFields
-  } = req.filterableFields
-  const listConfig = req.listConfig
-
-  // get only published products for store endpoint
-  filterableFields["status"] = ["published"]
-  // store APIs only receive active and public categories to query from
-  filterableFields["categories"] = {
-    ...(filterableFields.categories || {}),
-    // Store APIs are only allowed to query active and public categories
-    ...defaultStoreCategoryScope,
-  }
-
-  let salesChannelFilter = filterableFields.sales_channel_id
+  let salesChannelIdFilter = filterableFields.sales_channel_id
   if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
-    salesChannelFilter =
+    salesChannelIdFilter =
       filterableFields.sales_channel_id ||
       req.publishableApiKeyScopes.sales_channel_ids
   }
 
   delete filterableFields.sales_channel_id
+
+  if (salesChannelIdFilter) {
+    const salesChannelService = req.scope.resolve(
+      "salesChannelService"
+    ) as SalesChannelService
+
+    const productIdsInSalesChannel =
+      await salesChannelService.listProductIdsBySalesChannelIds(
+        salesChannelIdFilter
+      )
+
+    filterableFields.id = productIdsInSalesChannel[salesChannelIdFilter]
+  }
 
   // Stringify without quotes around props
   function stringify(obj_from_json) {
@@ -419,12 +439,7 @@ async function listProductWithIsolatedProductModule(req, res) {
     metadata: { count },
   } = await remoteQuery(query)
 
-  return res.json({
-    products: cleanResponseData(products, req.allowedProperties || []),
-    count,
-    offset: validated.offset,
-    limit: validated.limit,
-  })
+  return [products, count]
 }
 
 export class StoreGetProductsPaginationParams extends PriceSelectionParams {
