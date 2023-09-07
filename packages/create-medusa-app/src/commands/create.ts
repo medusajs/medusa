@@ -178,6 +178,7 @@ export default async ({
       skipDb,
       migrations,
       onboardingType: installNextjs ? "nextjs" : "default",
+      nextjsDirectory,
     })
   } catch (e: any) {
     if (isAbortError(e)) {
