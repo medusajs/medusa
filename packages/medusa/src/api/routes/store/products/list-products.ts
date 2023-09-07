@@ -236,6 +236,7 @@ export default async (req, res) => {
   if (isIsolateProductDomain) {
     const remoteQuery = req.scope.resolve("remoteQuery")
 
+    // pass (filters: {}) if we want to filter by something
     const query = `
       query {
         product (skip: 0, take: 10) {
