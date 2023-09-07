@@ -299,9 +299,7 @@ class LineItemService extends TransactionBaseService {
           if (resolvedContext.cart) {
             const adjustments = await this.lineItemAdjustmentService_
               .withTransaction(transactionManager)
-              .generateAdjustments(resolvedContext.cart, lineItem, {
-                variant: lineItem.variant,
-              })
+              .generateAdjustments(resolvedContext.cart, lineItem, { variant })
             lineItem.adjustments =
               adjustments as unknown as LineItemAdjustment[]
           }
