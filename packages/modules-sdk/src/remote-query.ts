@@ -16,19 +16,15 @@ export class RemoteQuery {
   private modulesMap: Map<string, LoadedModule> = new Map()
   private customRemoteFetchData?: RemoteFetchDataCallback
 
-  constructor(
-    {
-      modulesLoaded,
-      customRemoteFetchData,
-      servicesConfig,
-    }: {
-      modulesLoaded?: LoadedModule[]
-      customRemoteFetchData?: RemoteFetchDataCallback
-      servicesConfig?: ModuleJoinerConfig[]
-    } = {
-      servicesConfig: [],
-    }
-  ) {
+  constructor({
+    modulesLoaded,
+    customRemoteFetchData,
+    servicesConfig = [],
+  }: {
+    modulesLoaded?: LoadedModule[]
+    customRemoteFetchData?: RemoteFetchDataCallback
+    servicesConfig?: ModuleJoinerConfig[]
+  }) {
     if (!modulesLoaded?.length) {
       modulesLoaded = MedusaModule.getLoadedModules().map(
         (mod) => Object.values(mod)[0]

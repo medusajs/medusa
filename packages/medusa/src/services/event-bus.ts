@@ -1,4 +1,4 @@
-import { EventBusTypes } from "@medusajs/types"
+import { EventBusTypes, Logger } from "@medusajs/types"
 import { DatabaseErrorCode, EventBusUtils } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -7,10 +7,13 @@ import { ConfigModule } from "../types/global"
 import { isString } from "../utils"
 import { sleep } from "../utils/sleep"
 import StagedJobService from "./staged-job"
+import { FindConfig } from "../types/common"
+import { EOL } from "os"
 
 type InjectedDependencies = {
   stagedJobService: StagedJobService
   eventBusModuleService: EventBusUtils.AbstractEventBusModuleService
+  logger: Logger
 }
 
 /**
@@ -25,18 +28,20 @@ export default class EventBusService
   protected readonly stagedJobService_: StagedJobService
   // eslint-disable-next-line max-len
   protected readonly eventBusModuleService_: EventBusTypes.IEventBusModuleService
+  protected readonly logger_: Logger
 
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
 
   constructor(
-    { stagedJobService, eventBusModuleService }: InjectedDependencies,
+    { stagedJobService, eventBusModuleService, logger }: InjectedDependencies,
     config,
     isSingleton = true
   ) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
+    this.logger_ = logger
     this.config_ = config
     this.eventBusModuleService_ = eventBusModuleService
     this.stagedJobService_ = stagedJobService
@@ -190,35 +195,37 @@ export default class EventBusService
     }
 
     while (this.shouldEnqueuerRun) {
-      try {
-        const jobs = await this.stagedJobService_.list(listConfig)
+      await sleep(3000)
 
-        if (!jobs.length) {
-          await sleep(3000)
-          continue
-        }
+      const jobs = await this.listJobs(listConfig)
 
-        const eventsData = jobs.map((job) => {
-          return {
-            eventName: job.event_name,
-            data: job.data,
-            options: { jobId: job.id, ...job.options },
-          }
-        })
-
-        await this.eventBusModuleService_.emit(eventsData).then(async () => {
-          return await this.stagedJobService_.delete(jobs.map((j) => j.id))
-        })
-
-        await sleep(3000)
-      } catch (err) {
-        if (DatabaseErrorCode.connectionFailure === err.code) {
-          await sleep(3000)
-          continue
-        }
-
-        throw err
+      if (!jobs.length) {
+        continue
       }
+
+      const eventsData = jobs.map((job) => {
+        return {
+          eventName: job.event_name,
+          data: job.data,
+          options: { jobId: job.id, ...job.options },
+        }
+      })
+
+      await this.eventBusModuleService_.emit(eventsData).then(async () => {
+        return await this.stagedJobService_.delete(jobs.map((j) => j.id))
+      })
     }
+  }
+
+  protected async listJobs(listConfig: FindConfig<StagedJob>) {
+    return await this.stagedJobService_.list(listConfig).catch((err) => {
+      if (DatabaseErrorCode.connectionFailure === err.code) {
+        this.logger_.warn(`Database connection failure:${EOL}${err.message}`)
+      } else {
+        this.logger_.warn(`Failed to fetch jobs:${EOL}${err.message}`)
+      }
+
+      return []
+    })
   }
 }
