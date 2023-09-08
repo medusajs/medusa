@@ -22,6 +22,11 @@ import { nanoid } from "nanoid"
 import { displayFactBox, FactBoxOptions } from "../utils/facts.js"
 import { EOL } from "os"
 import { runCloneRepo } from "../utils/clone-repo.js"
+import {
+  askForNextjsStarter,
+  installNextjsStarter,
+  startNextjsStarter,
+} from "../utils/nextjs-utils.js"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
@@ -36,6 +41,7 @@ export type CreateOptions = {
   browser?: boolean
   migrations?: boolean
   directoryPath?: string
+  withNextjsStarter?: boolean
 }
 
 export default async ({
@@ -47,6 +53,7 @@ export default async ({
   browser,
   migrations,
   directoryPath,
+  withNextjsStarter = false,
 }: CreateOptions) => {
   track("CREATE_CLI")
   if (repoUrl) {
@@ -70,6 +77,7 @@ export default async ({
   let isProjectCreated = false
   let isDbInitialized = false
   let printedMessage = false
+  let nextjsDirectory = ""
 
   processManager.onTerminated(async () => {
     spinner.stop()
@@ -83,7 +91,7 @@ export default async ({
     // this ensures that the message isn't printed twice to the user
     if (!printedMessage && isProjectCreated) {
       printedMessage = true
-      showSuccessMessage(projectName)
+      showSuccessMessage(projectName, undefined, nextjsDirectory)
     }
 
     return
@@ -93,6 +101,7 @@ export default async ({
   const projectPath = getProjectPath(projectName, directoryPath)
   const adminEmail =
     !skipDb && migrations ? await askForAdminEmail(seed, boilerplate) : ""
+  const installNextjs = withNextjsStarter || (await askForNextjsStarter())
 
   const { client, dbConnectionString } = !skipDb
     ? await getDbClientAndCredentials({
@@ -131,6 +140,14 @@ export default async ({
     message: "Created project directory",
   })
 
+  nextjsDirectory = installNextjs
+    ? await installNextjsStarter({
+        directoryName: projectPath,
+        abortController,
+        factBoxOptions,
+      })
+    : ""
+
   if (client && !dbUrl) {
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
@@ -160,6 +177,8 @@ export default async ({
       abortController,
       skipDb,
       migrations,
+      onboardingType: installNextjs ? "nextjs" : "default",
+      nextjsDirectory,
     })
   } catch (e: any) {
     if (isAbortError(e)) {
@@ -181,7 +200,7 @@ export default async ({
   spinner.succeed(chalk.green("Project Prepared"))
 
   if (skipDb || !browser) {
-    showSuccessMessage(projectPath, inviteToken)
+    showSuccessMessage(projectPath, inviteToken, nextjsDirectory)
     process.exit()
   }
 
@@ -195,6 +214,13 @@ export default async ({
       directory: projectPath,
       abortController,
     })
+
+    if (installNextjs && nextjsDirectory) {
+      void startNextjsStarter({
+        directory: nextjsDirectory,
+        abortController,
+      })
+    }
   } catch (e) {
     if (isAbortError(e)) {
       process.exit()
@@ -229,7 +255,7 @@ async function askForProjectName(directoryPath?: string): Promise<string> {
       message: "What's the name of your project?",
       default: "my-medusa-store",
       filter: (input) => {
-        return slugify(input)
+        return slugify(input).toLowerCase()
       },
       validate: (input) => {
         if (!input.length) {
@@ -267,12 +293,16 @@ async function askForAdminEmail(
   return adminEmail
 }
 
-function showSuccessMessage(projectName: string, inviteToken?: string) {
+function showSuccessMessage(
+  projectName: string,
+  inviteToken?: string,
+  nextjsDirectory?: string
+) {
   logMessage({
     message: boxen(
       chalk.green(
         // eslint-disable-next-line prettier/prettier
-        `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}npx @medusajs/medusa-cli develop${EOL}${EOL}${inviteToken ? `${EOL}${EOL}After you start the Medusa app, you can set a password for your admin user with the URL ${getInviteUrl(inviteToken)}${EOL}${EOL}` : ""}Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
+        `Change to the \`${projectName}\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa app again with the following command:${EOL}${EOL}npx @medusajs/medusa-cli develop${EOL}${EOL}${inviteToken ? `After you start the Medusa app, you can set a password for your admin user with the URL ${getInviteUrl(inviteToken)}${EOL}${EOL}` : ""}${nextjsDirectory?.length ? `The Next.js Starter storefront was installed in the \`${nextjsDirectory}\` directory. Change to that directory and start it with the following command:${EOL}${EOL}npm run dev${EOL}${EOL}` : ""}Check out the Medusa documentation to start your development:${EOL}${EOL}https://docs.medusajs.com/${EOL}${EOL}Star us on GitHub if you like what we're building:${EOL}${EOL}https://github.com/medusajs/medusa/stargazers`
       ),
       {
         titleAlignment: "center",

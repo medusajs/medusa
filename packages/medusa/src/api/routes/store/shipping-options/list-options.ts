@@ -1,8 +1,14 @@
+import { FlagRouter } from "@medusajs/utils"
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
-import { PricingService, ProductService } from "../../../../services"
+import { defaultRelations } from "."
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import {
+  PricingService,
+  ProductService,
+  ShippingProfileService,
+} from "../../../../services"
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
-import { defaultRelations } from "."
 
 /**
  * @oas [get] /store/shipping-options
@@ -61,6 +67,10 @@ export default async (req, res) => {
   const shippingOptionService: ShippingOptionService = req.scope.resolve(
     "shippingOptionService"
   )
+  const shippingProfileService: ShippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  )
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   // should be selector
   const query: Record<string, unknown> = {}
@@ -76,8 +86,17 @@ export default async (req, res) => {
   query.admin_only = false
 
   if (productIds.length) {
-    const prods = await productService.list({ id: productIds })
-    query.profile_id = prods.map((p) => p.profile_id)
+    if (
+      featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
+    ) {
+      const productShippinProfileMap =
+        await shippingProfileService.getMapProfileIdsByProductIds(productIds)
+
+      query.profile_id = [...productShippinProfileMap.values()]
+    } else {
+      const prods = await productService.list({ id: productIds })
+      query.profile_id = prods.map((p) => p.profile_id)
+    }
   }
 
   const options = await shippingOptionService.list(query, {
