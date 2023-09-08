@@ -125,11 +125,6 @@ export interface IPricingModuleService {
     currencyCodes: string[],
     sharedContext?: Context
   ): Promise<void>
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> b809e44b9 (update pricing service interface)
   retrieveRuleType(
     code: string,
     config?: FindConfig<RuleTypeDTO>,
@@ -137,21 +132,13 @@ export interface IPricingModuleService {
   ): Promise<RuleTypeDTO>
 
   listRuleTypes(
-<<<<<<< HEAD
     filters?: FilterableRuleTypeProps,
-=======
-    filters?: FilterableCurrencyProps,
->>>>>>> b809e44b9 (update pricing service interface)
     config?: FindConfig<RuleTypeDTO>,
     sharedContext?: Context
   ): Promise<RuleTypeDTO[]>
 
   listAndCountRuleTypes(
-<<<<<<< HEAD
     filters?: FilterableRuleTypeProps,
-=======
-    filters?: FilterableCurrencyProps,
->>>>>>> b809e44b9 (update pricing service interface)
     config?: FindConfig<RuleTypeDTO>,
     sharedContext?: Context
   ): Promise<[RuleTypeDTO[], number]>
@@ -166,12 +153,5 @@ export interface IPricingModuleService {
     sharedContext?: Context
   ): Promise<RuleTypeDTO[]>
 
-<<<<<<< HEAD
   deleteRuleTypes(ruleTypes: string[], sharedContext?: Context): Promise<void>
-=======
-  deleteRuleTypes(
-    ruleTypes: string[],
-    sharedContext?: Context
-  ): Promise<void>
->>>>>>> b809e44b9 (update pricing service interface)
 }
