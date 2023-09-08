@@ -4,9 +4,9 @@ import { PriceListService } from "@services"
 
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createPriceLists } from "../../../__fixtures__/price-list"
-import { PriceListUtils } from "../../../../../utils/dist"
 import { initialize } from "../../../../src"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { PriceListStatus, PriceListType } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
@@ -324,8 +324,8 @@ describe("PriceList Service", () => {
         id: "price-list-3",
         name: "no prices",
         description: "created description",
-        type: PriceListUtils.PriceListType.OVERRIDE,
-        status: PriceListUtils.PriceListStatus.DRAFT,
+        type: PriceListType.OVERRIDE,
+        status: PriceListStatus.DRAFT,
         starts_at: new Date(),
       }
       await service.createPriceLists([data])
@@ -343,8 +343,8 @@ describe("PriceList Service", () => {
       const data = {
         name: "no prices",
         description: "created description",
-        type: PriceListUtils.PriceListType.OVERRIDE,
-        status: PriceListUtils.PriceListStatus.DRAFT,
+        type: PriceListType.OVERRIDE,
+        status: PriceListStatus.DRAFT,
         starts_at: new Date(),
       }
 
