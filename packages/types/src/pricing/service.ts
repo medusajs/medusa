@@ -1,6 +1,3 @@
-import { FindConfig } from "../common"
-import { ModuleJoinerConfig } from "../modules-sdk"
-import { Context } from "../shared-context"
 import {
   CalculatedPriceSetDTO,
   CreateCurrencyDTO,
@@ -22,7 +19,10 @@ import {
   UpdatePriceSetDTO,
   UpdateRuleTypeDTO,
 } from "./common"
-import { CreateRuleTypeDTO, RuleTypeDTO, UpdateRuleTypeDTO } from "./price-sets"
+
+import { Context } from "../shared-context"
+import { FindConfig } from "../common"
+import { ModuleJoinerConfig } from "../modules-sdk"
 
 export interface IPricingModuleService {
   __joinerConfig(): ModuleJoinerConfig
