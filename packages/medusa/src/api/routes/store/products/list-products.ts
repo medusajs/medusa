@@ -3,6 +3,7 @@ import {
   ProductService,
   ProductVariantInventoryService,
   SalesChannelService,
+  ShippingProfileService,
 } from "../../../../services"
 import {
   IsArray,
@@ -24,6 +25,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
+import { defaultStoreProductsFields } from "./index"
 
 /**
  * @oas [get] /store/products
@@ -334,19 +336,6 @@ async function listAndCountProductWithIsolatedProductModule(
   filterableFields,
   listConfig
 ) {
-  /* const productExposedRelations = [
-    "product",
-    "variants",
-    "variants.options",
-    "images",
-    "categories",
-    "collection",
-    "type",
-    "options",
-    "options.values",
-    "tags",
-  ]*/
-
   // TODO: Handle fields and relations to maintain existing features and custom fields and relations
 
   const remoteQuery = req.scope.resolve("remoteQuery")
@@ -371,6 +360,7 @@ async function listAndCountProductWithIsolatedProductModule(
     ],
   }
 
+  // This is not the best way of handling cross filtering but for now I would say it is fine
   if (salesChannelIdFilter) {
     const salesChannelService = req.scope.resolve(
       "salesChannelService"
@@ -416,11 +406,7 @@ async function listAndCountProductWithIsolatedProductModule(
   const query = `
       query ($filters: any, $order: any, $skip: Int, $take: Int) {
         product (${args}) {
-          id
-          title
-          subtitle
-          description
-          handle
+          ${defaultStoreProductsFields.join("\n")}
           images {
             url
           }
@@ -457,6 +443,19 @@ async function listAndCountProductWithIsolatedProductModule(
     rows: products,
     metadata: { count },
   } = await remoteQuery(query, variables)
+
+  const shippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  ) as ShippingProfileService
+
+  const profilesByProductId = await shippingProfileService.retrieveForProducts(
+    products.map((p) => p.id)
+  )
+
+  products.forEach((product) => {
+    product.profile_id = profilesByProductId[product.id]?.[0]?.id
+    product.profile = profilesByProductId[product.id]?.[0]
+  })
 
   return [products, count]
 }

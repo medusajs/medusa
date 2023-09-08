@@ -14,8 +14,11 @@ export function buildQuery<T = any, TDto = any>(
     populate: deduplicate(config.relations ?? []),
     fields: config.select as string[],
     limit: config.take ?? 15,
-    orderBy: config.order as DAL.OptionsQuery<T>["orderBy"],
-    offset: config.skip,
+    offset: config.skip ?? 0,
+  }
+
+  if (config.order) {
+    findOptions.orderBy = config.order as DAL.OptionsQuery<T>["orderBy"]
   }
 
   if (config.withDeleted) {
