@@ -44,7 +44,7 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
         primaryKey: "variant_id",
         foreignKey: "id",
         alias: "prices",
-        isList: true,
+        isList: false,
       },
     },
     {

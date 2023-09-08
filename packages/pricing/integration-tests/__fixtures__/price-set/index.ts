@@ -1,6 +1,6 @@
 import { CreatePriceSetDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { MoneyAmount, PriceSet, PriceSetMoneyAmount } from "@models"
+import { PriceSet, PriceSetMoneyAmount } from "@models"
 import { defaultPriceSetsData } from "./data"
 
 export async function createPriceSets(
@@ -14,15 +14,11 @@ export async function createPriceSets(
     const moneyAmountsData = priceSetDataClone.money_amounts || []
     delete priceSetDataClone.money_amounts
 
-    const moneyAmountRecords = (await manager.find(MoneyAmount, {
-      id: moneyAmountsData.map((ma) => ma.id),
-    })) as MoneyAmount[]
-
     let priceSet = manager.create(PriceSet, priceSetDataClone) as PriceSet
 
     await manager.persist(priceSet).flush()
 
-    for (let moneyAmount of moneyAmountRecords) {
+    for (let moneyAmount of moneyAmountsData) {
       const price_set = (await manager.findOne(
         PriceSet,
         priceSet.id
