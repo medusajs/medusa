@@ -52,17 +52,28 @@ const plugins = [
       event_owner: process.env.BRIGHTPEARL_EVENT_OWNER,
       warehouse: process.env.BRIGHTPEARL_WAREHOUSE,
       // optional
-      default_status_id: process.env.BRIGHTPEARL_DEFAULT_STATUS_ID,
-      swap_status_id: process.env.BRIGHTPEARL_SWAP_STATUS_ID,
-      claim_status_id: process.env.BRIGHTPEARL_CLAIM_STATUS_ID,
-      payment_method_code: process.env.BRIGHTPEARL_PAYMENT_METHOD_CODE,
-      sales_account_code: process.env.BRIGHTPEARL_SALES_ACCOUNT_CODE,
-      shipping_account_code: process.env.BRIGHTPEARL_SHIPPING_ACCOUNT_CODE,
-      discount_account_code: process.env.BRIGHTPEARL_DISCOUNT_ACCOUNT_CODE,
-      gift_card_account_code: process.env.BRIGHTPEARL_GIFT_CARD_ACCOUNT_CODE,
-      inventory_sync_cron: process.env.BRIGHTPEARL_INVENTORY_SYNC_CRON,
-      cost_price_list: process.env.BRIGHTPEARL_COST_PRICE_LIST,
-      base_currency: process.env.BRIGHTPEARL_BASE_CURRENCY
+      default_status_id: 
+        process.env.BRIGHTPEARL_DEFAULT_STATUS_ID,
+      swap_status_id: 
+        process.env.BRIGHTPEARL_SWAP_STATUS_ID,
+      claim_status_id: 
+        process.env.BRIGHTPEARL_CLAIM_STATUS_ID,
+      payment_method_code: 
+        process.env.BRIGHTPEARL_PAYMENT_METHOD_CODE,
+      sales_account_code: 
+        process.env.BRIGHTPEARL_SALES_ACCOUNT_CODE,
+      shipping_account_code: 
+        process.env.BRIGHTPEARL_SHIPPING_ACCOUNT_CODE,
+      discount_account_code: 
+        process.env.BRIGHTPEARL_DISCOUNT_ACCOUNT_CODE,
+      gift_card_account_code: 
+        process.env.BRIGHTPEARL_GIFT_CARD_ACCOUNT_CODE,
+      inventory_sync_cron: 
+        process.env.BRIGHTPEARL_INVENTORY_SYNC_CRON,
+      cost_price_list: 
+        process.env.BRIGHTPEARL_COST_PRICE_LIST,
+      base_currency: 
+        process.env.BRIGHTPEARL_BASE_CURRENCY,
     },
   },
 ]

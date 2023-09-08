@@ -44,20 +44,24 @@ const plugins = [
     options: {
       account: process.env.WEBSHIPPER_ACCOUNT,
       api_token: process.env.WEBSHIPPER_API_TOKEN,
-      order_channel_id: process.env.WEBSHIPPER_ORDER_CHANNEL_ID,
+      order_channel_id: 
+        process.env.WEBSHIPPER_ORDER_CHANNEL_ID,
       webhook_secret: process.env.WEBSHIPPER_WEBHOOK_SECRET,
       return_address: {
         // Webshipper Shipping Address fields
       },
       // optional
       coo_countries: process.env.WEBSHIPPER_COO_COUNTRIES,
-      delete_on_cancel: process.env.WEBSHIPPER_DELETE_ON_CANCEL !== "false",
+      delete_on_cancel: 
+        process.env.WEBSHIPPER_DELETE_ON_CANCEL !== "false",
       document_size: process.env.WEBSHIPPER_DOCUMENT_SIZE,
       return_portal: {
         id: process.env.WEBSHIPPER_RETURN_PORTAL_ID,
-        cause_id: process.env.WEBSHIPPER_RETURN_PORTAL_CAUSE_ID,
-        refund_method_id: process.env.WEBSHIPPER_RETURN_REFUND_METHOD_ID,
-      }
+        cause_id: 
+          process.env.WEBSHIPPER_RETURN_PORTAL_CAUSE_ID,
+        refund_method_id: 
+          process.env.WEBSHIPPER_RETURN_REFUND_METHOD_ID,
+      },
     },
   },
 ]
@@ -125,17 +129,17 @@ const onUpdateAddress = async () => {
   const address = {
     first_name: "John",
     last_name: "Johnson",
-    ...,
+    // ...,
     metadata: {
       // TODO the value should be replaced with the
       // value entered by the customer
-      personal_customs_no: "my-customs-number"
-    }
+      personal_customs_no: "my-customs-number",
+    },
   }
 
   await medusaClient.carts
     .update(cartId, {
-      shipping_address: address
+      shipping_address: address,
     })
     .then(() => {
       console.log(
@@ -144,4 +148,3 @@ const onUpdateAddress = async () => {
     })
 }
 ```
-

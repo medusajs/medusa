@@ -66,23 +66,30 @@ The `DiscountGeneratorService` has one method `generateDiscount`. This method re
 Here's an example of using the service in an endpoint:
 
 ```ts title=src/api/index.ts
-import { Request, Response, Router } from "express";
-import bodyParser from "body-parser";
+import { Request, Response, Router } from "express"
+import bodyParser from "body-parser"
 
 export default (rootDirectory: string): Router | Router[] => {
-  const router = Router();
+  const router = Router()
 
-  router.use("/generate-discount-code", bodyParser.json(), async (req: Request, res: Response) => {
+  router.use(
+    "/generate-discount-code",
+    bodyParser.json(), 
+    async (req: Request, res: Response) => {
     // skipping validation for simplicity
     const { dynamicCode } = req.body
-    const discountGenerator = req.scope.resolve("discountGeneratorService")
-    const code = await discountGenerator.generateDiscount(dynamicCode)
+    const discountGenerator = req.scope.resolve(
+      "discountGeneratorService"
+    )
+    const code = await discountGenerator.generateDiscount(
+      dynamicCode
+    )
 
     res.json({
-      code
+      code,
     })
-  });
+  })
 
-  return router;
-};
+  return router
+}
 ```

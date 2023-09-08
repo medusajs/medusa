@@ -67,13 +67,13 @@ Finally, add the plugin to the `plugins` array in `medusa-config.js`:
 const plugins = [
   // ...,
   {
-    resolve: 'medusa-source-shopify',
+    resolve: "medusa-source-shopify",
     options: {
       domain: process.env.SHOPIFY_DOMAIN,
-      password: process.env.SHOPIFY_PASSWORD
-    }
-  }
-];
+      password: process.env.SHOPIFY_PASSWORD,
+    },
+  },
+]
 ```
 
 ---
