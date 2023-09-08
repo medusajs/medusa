@@ -6,7 +6,7 @@ import {
   ModulesSdkUtils,
   retrieveEntity,
 } from "@medusajs/utils"
-import { Currency, RuleType } from "@models"
+import { RuleType } from "@models"
 
 import { doNotForceTransaction, shouldForceTransaction } from "@medusajs/utils"
 
@@ -65,7 +65,7 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     filters: PricingTypes.FilterableRuleTypeProps = {},
     config: FindConfig<PricingTypes.RuleTypeDTO> = {}
   ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<Currency>(filters, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
 
     if (filters.id) {
       queryOptions.where["id"] = { $in: filters.id }
@@ -79,7 +79,7 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     data: PricingTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.ruleTypeRepository_ ).create(
+    return (await this.ruleTypeRepository_.create(
       data,
       sharedContext
     )) as TEntity[]
@@ -90,7 +90,7 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     data: PricingTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.ruleTypeRepository_).update(
+    return (await this.ruleTypeRepository_.update(
       data,
       sharedContext
     )) as TEntity[]

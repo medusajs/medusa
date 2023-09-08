@@ -1,11 +1,9 @@
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { Currency } from "@models"
 
 import { initialize } from "../../../../src"
-import { createCurrencies } from "../../../__fixtures__/currency"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 describe("PricingModuleService currency", () => {
   let service: IPricingModuleService
@@ -48,7 +46,9 @@ describe("PricingModuleService currency", () => {
     })
 
     it("list rule types by id", async () => {
-      const ruleTypeResult = await service.listRuleTypes({ id: ["rule-type-1"] })
+      const ruleTypeResult = await service.listRuleTypes({
+        id: ["rule-type-1"],
+      })
 
       expect(ruleTypeResult).toEqual([
         expect.objectContaining({
@@ -127,9 +127,8 @@ describe("PricingModuleService currency", () => {
   })
 
   describe("retrieve", () => {
-
     it("should return ruleType for the given id", async () => {
-      const ruleType = await service.retrieveRuleType('rule-type-1')
+      const ruleType = await service.retrieveRuleType("rule-type-1")
 
       expect(ruleType).toEqual(
         expect.objectContaining({
@@ -166,15 +165,15 @@ describe("PricingModuleService currency", () => {
     })
 
     it("should return ruleType based on config select param", async () => {
-      const ruleTypeResult = await service.retrieveRuleType('rule-type-1', {
+      const ruleTypeResult = await service.retrieveRuleType("rule-type-1", {
         select: ["name"],
       })
 
       const serialized = JSON.parse(JSON.stringify(ruleTypeResult))
 
       expect(serialized).toEqual({
-        name: 'rule 1',
-        id: 'rule-type-1'
+        name: "rule 1",
+        id: "rule-type-1",
       })
     })
   })
@@ -234,7 +233,7 @@ describe("PricingModuleService currency", () => {
       await service.createRuleTypes([
         {
           name: "Test Rule",
-          key_value: 'region_id',
+          key_value: "region_id",
         },
       ])
 
@@ -245,7 +244,7 @@ describe("PricingModuleService currency", () => {
       expect(ruleType).toEqual(
         expect.objectContaining({
           name: "Test Rule",
-          key_value: 'region_id',
+          key_value: "region_id",
         })
       )
     })

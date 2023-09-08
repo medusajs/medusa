@@ -4,47 +4,87 @@ import { Context } from "../shared-context"
 import {
   CreateCurrencyDTO,
   CreateMoneyAmountDTO,
+  CreatePriceSetDTO,
   CurrencyDTO,
   FilterableCurrencyProps,
   FilterableMoneyAmountProps,
+  FilterablePriceSetProps,
   MoneyAmountDTO,
+  PriceSetDTO,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
+  UpdatePriceSetDTO,
 } from "./common"
-import { CreateRuleTypeDTO, RuleTypeDTO, UpdateRuleTypeDTO } from "./price-sets"
+
+import {
+  CreateRuleTypeDTO,
+  FilterableRuleTypeProps,
+  RuleTypeDTO,
+  UpdateRuleTypeDTO,
+} from "./price-sets"
 
 export interface IPricingModuleService {
   __joinerConfig(): ModuleJoinerConfig
 
   retrieve(
-     id: string,
+    id: string,
+    config?: FindConfig<PriceSetDTO>,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
+
+  list(
+    filters?: FilterablePriceSetProps,
+    config?: FindConfig<PriceSetDTO>,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO[]>
+
+  listAndCount(
+    filters?: FilterablePriceSetProps,
+    config?: FindConfig<PriceSetDTO>,
+    sharedContext?: Context
+  ): Promise<[PriceSetDTO[], number]>
+
+  create(
+    data: CreatePriceSetDTO[],
+    sharedContext?: Context
+  ): Promise<PriceSetDTO[]>
+
+  update(
+    data: UpdatePriceSetDTO[],
+    sharedContext?: Context
+  ): Promise<PriceSetDTO[]>
+
+  delete(ids: string[], sharedContext?: Context): Promise<void>
+
+  retrieveMoneyAmount(
+    id: string,
     config?: FindConfig<MoneyAmountDTO>,
     sharedContext?: Context
   ): Promise<MoneyAmountDTO>
 
-  list(
+  listMoneyAmounts(
     filters?: FilterableMoneyAmountProps,
     config?: FindConfig<MoneyAmountDTO>,
     sharedContext?: Context
   ): Promise<MoneyAmountDTO[]>
 
-  listAndCount(
+  listAndCountMoneyAmounts(
     filters?: FilterableMoneyAmountProps,
     config?: FindConfig<MoneyAmountDTO>,
     sharedContext?: Context
   ): Promise<[MoneyAmountDTO[], number]>
 
-  create(
+  createMoneyAmounts(
     data: CreateMoneyAmountDTO[],
     sharedContext?: Context
   ): Promise<MoneyAmountDTO[]>
 
-  update(
+  updateMoneyAmounts(
     data: UpdateMoneyAmountDTO[],
     sharedContext?: Context
   ): Promise<MoneyAmountDTO[]>
 
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deleteMoneyAmounts(ids: string[], sharedContext?: Context): Promise<void>
 
   retrieveCurrency(
     code: string,
@@ -78,7 +118,7 @@ export interface IPricingModuleService {
     currencyCodes: string[],
     sharedContext?: Context
   ): Promise<void>
-  
+
   retrieveRuleType(
     code: string,
     config?: FindConfig<RuleTypeDTO>,
@@ -86,13 +126,13 @@ export interface IPricingModuleService {
   ): Promise<RuleTypeDTO>
 
   listRuleTypes(
-    filters?: FilterableCurrencyProps,
+    filters?: FilterableRuleTypeProps,
     config?: FindConfig<RuleTypeDTO>,
     sharedContext?: Context
   ): Promise<RuleTypeDTO[]>
 
   listAndCountRuleTypes(
-    filters?: FilterableCurrencyProps,
+    filters?: FilterableRuleTypeProps,
     config?: FindConfig<RuleTypeDTO>,
     sharedContext?: Context
   ): Promise<[RuleTypeDTO[], number]>
@@ -107,8 +147,5 @@ export interface IPricingModuleService {
     sharedContext?: Context
   ): Promise<RuleTypeDTO[]>
 
-  deleteRuleTypes(
-    ruleTypes: string[],
-    sharedContext?: Context
-  ): Promise<void>
+  deleteRuleTypes(ruleTypes: string[], sharedContext?: Context): Promise<void>
 }

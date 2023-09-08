@@ -12,7 +12,7 @@ export interface RuleTypeDTO {
   key_value: string
   default_priority: number
   kind: PricingTypes.RuleTypeKind
-  is_dynamic: boolean  
+  is_dynamic: boolean
 }
 
 export interface CreateRuleTypeDTO {
@@ -21,7 +21,7 @@ export interface CreateRuleTypeDTO {
   key_value: string
   default_priority?: number
   kind?: PricingTypes.RuleTypeKind
-  is_dynamic?: boolean  
+  is_dynamic?: boolean
 }
 
 export interface UpdateRuleTypeDTO {
@@ -30,10 +30,11 @@ export interface UpdateRuleTypeDTO {
   key_value?: string
   default_priority?: number
   kind?: PricingTypes.RuleTypeKind
-  is_dynamic?: boolean  
+  is_dynamic?: boolean
 }
 
 export interface FilterableRuleTypeProps
   extends BaseFilterable<FilterableRuleTypeProps> {
   id?: string[]
+  name?: string[]
 }
