@@ -1,4 +1,4 @@
-import { generateEntityId, PriceListUtils } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -11,6 +11,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import MoneyAmount from "./money-amount"
+import { PriceListStatus, PriceListType } from "@medusajs/types"
 
 type OptionalRelations = "prices"
 type OptionalFields =
@@ -35,16 +36,16 @@ class PriceList {
   description: string
 
   @Enum({
-    items: () => PriceListUtils.PriceListType,
-    default: PriceListUtils.PriceListType.SALE,
+    items: () => PriceListType,
+    default: PriceListType.SALE,
   })
-  type: PriceListUtils.PriceListType
+  type: PriceListType
 
   @Enum({
-    items: () => PriceListUtils.PriceListStatus,
-    default: PriceListUtils.PriceListStatus.DRAFT,
+    items: () => PriceListStatus,
+    default: PriceListStatus.DRAFT,
   })
-  status: PriceListUtils.PriceListStatus
+  status: PriceListStatus
 
   @Property({ columnType: "timestamptz", nullable: true })
   starts_at: Date | null
