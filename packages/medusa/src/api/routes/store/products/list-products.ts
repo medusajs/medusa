@@ -403,42 +403,37 @@ async function listAndCountProductWithIsolatedProductModule(
     take: $take
   `
 
+  const commonProperties = ["id", "created_at", "updated_at", "deleted_at"]
+
   const query = `
       query ($filters: any, $order: any, $skip: Int, $take: Int) {
         product (${args}) {
           ${defaultStoreProductsFields.join("\n")}
           images {
-            id
-            created_at
-            updated_at
-            deleted_at
+            ${commonProperties.join("\n")}
             url
             metadata
           }
           tags {
+            ${commonProperties.join("\n")}
             value
           }
           type {
+            ${commonProperties.join("\n")}
             value
           }
           collection {
-            id
             title
             handle
+            ${commonProperties.join("\n")}
           }
           options {
-            id
-            created_at
-            updated_at
-            deleted_at
+            ${commonProperties.join("\n")}
             title
             product_id
             metadata
             values {
-              id
-              created_at
-              updated_at
-              deleted_at
+              ${commonProperties.join("\n")}
               value
               option_id
               variant_id
@@ -446,10 +441,7 @@ async function listAndCountProductWithIsolatedProductModule(
             }
           }
           variants {
-            id
-            created_at
-            updated_at
-            deleted_at
+            ${commonProperties.join("\n")}
             title
             product_id
             sku
@@ -470,10 +462,7 @@ async function listAndCountProductWithIsolatedProductModule(
             width
             metadata
             options {
-              id
-              created_at
-              updated_at
-              deleted_at
+              ${commonProperties.join("\n")}
               value
               option_id
               variant_id
