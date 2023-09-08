@@ -23,11 +23,11 @@ For production, it's recommended to use a file service plugin that hosts your im
 
 ## Prerequisites
 
-A Medusa backend is required to be set up before following along with this document. You can follow the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
+A Medusa backend is required to be set up before following along with this document. You can follow the [quickstart guide](../../create-medusa-app.mdx) to get started in minutes.
 
 ---
 
-## Plugin Installation
+## Install Plugin
 
 In the directory of your Medusa backend, run the following command to install the local file service plugin:
 
@@ -64,7 +64,7 @@ You can pass the plugin the following options:
 
 ---
 
-## Test it Out
+## Test the Plugin
 
 Run your Medusa backend alongside the [Medusa Admin](../../admin/quickstart.mdx) to try out your new file service. Upon editing or creating products, you can now upload thumbnails and images, that are stored locally in your backend.
 
