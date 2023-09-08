@@ -8,10 +8,10 @@ export async function createRuleTypes(
 ): Promise<RuleType[]> {
   const RuleTypes: RuleType[] = []
 
-  for (let moneyAmountData of ruletypesData) {
-    const moneyAmount = manager.create(RuleType, moneyAmountData)
+  for (let ruleTypeData of ruletypesData) {
+    const ruleType = manager.create(RuleType, ruleTypeData)
 
-    RuleTypes.push(moneyAmount)
+    RuleTypes.push(ruleType)
   }
 
   await manager.persistAndFlush(RuleTypes)
