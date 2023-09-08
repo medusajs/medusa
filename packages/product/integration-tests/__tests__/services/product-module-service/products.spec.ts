@@ -1,14 +1,20 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { Product, ProductCategory, ProductCollection, ProductType, ProductVariant } from "@models"
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
+import {
+  Product,
+  ProductCategory,
+  ProductCollection,
+  ProductType,
+  ProductVariant,
+} from "@models"
 
 import { initialize } from "../../../../src"
-import { DB_URL, TestDatabase } from "../../../utils"
-import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
-import { createProductCategories } from "../../../__fixtures__/product-category"
-import { createCollections, createTypes } from "../../../__fixtures__/product"
 import { EventBusService } from "../../../__fixtures__/event-bus"
+import { createCollections, createTypes } from "../../../__fixtures__/product"
+import { createProductCategories } from "../../../__fixtures__/product-category"
+import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
+import { DB_URL, TestDatabase } from "../../../utils"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -21,14 +27,26 @@ const afterEach_ = async () => {
 }
 
 describe("ProductModuleService products", function () {
+  let productCollectionOne: ProductCollection
+  let productCollectionTwo: ProductCollection
+
+  const productCollectionsData = [
+    {
+      id: "test-1",
+      title: "col 1",
+    },
+    {
+      id: "test-2",
+      title: "col 2",
+    },
+  ]
+
   describe("update", function () {
     let module: IProductModuleService
     let productOne: Product
     let productTwo: Product
     let productCategoryOne: ProductCategory
     let productCategoryTwo: ProductCategory
-    let productCollectionOne: ProductCollection
-    let productCollectionTwo: ProductCollection
     let variantOne: ProductVariant
     let variantTwo: ProductVariant
     let variantThree: ProductVariant
@@ -37,22 +55,14 @@ describe("ProductModuleService products", function () {
     let images = ["image-1"]
     let eventBus
 
-    const productCategoriesData = [{
-      id: "test-1",
-      name: "category 1",
-    }, {
-      id: "test-2",
-      name: "category 2",
-    }]
-
-    const productCollectionsData = [
+    const productCategoriesData = [
       {
         id: "test-1",
-        title: "col 1",
+        name: "category 1",
       },
       {
         id: "test-2",
-        title: "col 2",
+        name: "category 2",
       },
     ]
 
@@ -67,10 +77,12 @@ describe("ProductModuleService products", function () {
       },
     ]
 
-    const tagsData = [{
-      id: "tag-1",
-      value: "tag 1",
-    }]
+    const tagsData = [
+      {
+        id: "tag-1",
+        value: "tag 1",
+      },
+    ]
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
@@ -83,18 +95,15 @@ describe("ProductModuleService products", function () {
       productCollectionOne = collections[0]
       productCollectionTwo = collections[1]
 
-      const types = await createTypes(
-        testManager,
-        productTypesData,
-      )
+      const types = await createTypes(testManager, productTypesData)
 
       productTypeOne = types[0]
       productTypeTwo = types[1]
 
-      const categories = (await createProductCategories(
+      const categories = await createProductCategories(
         testManager,
         productCategoriesData
-      ))
+      )
 
       productCategoryOne = categories[0]
       productCategoryTwo = categories[1]
@@ -140,14 +149,17 @@ describe("ProductModuleService products", function () {
       MedusaModule.clearInstances()
 
       eventBus = new EventBusService()
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      }, {
-        eventBusModuleService: eventBus
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -161,14 +173,22 @@ describe("ProductModuleService products", function () {
       const updateData = {
         ...data,
         id: productOne.id,
-        title: "updated title"
+        title: "updated title",
       }
 
       const updatedProducts = await module.update([updateData])
       expect(updatedProducts).toHaveLength(1)
 
       const product = await module.retrieve(updateData.id, {
-        relations: ["images", "variants", "options", "options.values", "variants.options", "tags", "type",]
+        relations: [
+          "images",
+          "variants",
+          "options",
+          "options.values",
+          "variants.options",
+          "tags",
+          "type",
+        ],
       })
 
       expect(product.images).toHaveLength(1)
@@ -236,7 +256,7 @@ describe("ProductModuleService products", function () {
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
@@ -245,32 +265,36 @@ describe("ProductModuleService products", function () {
       const updateData = {
         ...data,
         id: productOne.id,
-        title: "updated title"
+        title: "updated title",
       }
 
       await module.update([updateData])
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith([{
-        eventName: "product.updated",
-        data: { id: productOne.id }
-      }])
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        {
+          eventName: "product.updated",
+          data: { id: productOne.id },
+        },
+      ])
     })
 
     it("should add relationships to a product", async () => {
       const updateData = {
         id: productOne.id,
-        categories: [{
-          id: productCategoryOne.id
-        }],
+        categories: [
+          {
+            id: productCategoryOne.id,
+          },
+        ],
         collection_id: productCollectionOne.id,
-        type_id: productTypeOne.id
+        type_id: productTypeOne.id,
       }
 
       await module.update([updateData])
 
       const product = await module.retrieve(updateData.id, {
-        relations: ["categories", "collection", "type"]
+        relations: ["categories", "collection", "type"],
       })
 
       expect(product).toEqual(
@@ -278,15 +302,15 @@ describe("ProductModuleService products", function () {
           id: productOne.id,
           categories: [
             expect.objectContaining({
-              id: productCategoryOne.id
-            })
+              id: productCategoryOne.id,
+            }),
           ],
           collection: expect.objectContaining({
-            id: productCollectionOne.id
+            id: productCollectionOne.id,
           }),
           type: expect.objectContaining({
-            id: productTypeOne.id
-          })
+            id: productTypeOne.id,
+          }),
         })
       )
     })
@@ -296,22 +320,22 @@ describe("ProductModuleService products", function () {
         id: productTwo.id,
         type: {
           id: productTypeOne.id,
-          value: productTypeOne.value
-        }
+          value: productTypeOne.value,
+        },
       }
 
       await module.update([updateData])
 
       let product = await module.retrieve(updateData.id, {
-        relations: ["type"]
+        relations: ["type"],
       })
 
       expect(product).toEqual(
         expect.objectContaining({
           id: productTwo.id,
           type: expect.objectContaining({
-            id: productTypeOne.id
-          })
+            id: productTypeOne.id,
+          }),
         })
       )
 
@@ -319,22 +343,22 @@ describe("ProductModuleService products", function () {
         id: productTwo.id,
         type: {
           id: "new-type-id",
-          value: "new-type-value"
-        }
+          value: "new-type-value",
+        },
       }
 
       await module.update([updateData])
 
       product = await module.retrieve(updateData.id, {
-        relations: ["type"]
+        relations: ["type"],
       })
 
       expect(product).toEqual(
         expect.objectContaining({
           id: productTwo.id,
           type: expect.objectContaining({
-            ...updateData.type
-          })
+            ...updateData.type,
+          }),
         })
       )
     })
@@ -347,9 +371,11 @@ describe("ProductModuleService products", function () {
 
       const updateData = {
         id: productTwo.id,
-        categories: [{
-          id: productCategoryTwo.id
-        }],
+        categories: [
+          {
+            id: productCategoryTwo.id,
+          },
+        ],
         collection_id: productCollectionTwo.id,
         type_id: productTypeTwo.id,
         tags: [newTagData],
@@ -358,7 +384,7 @@ describe("ProductModuleService products", function () {
       await module.update([updateData])
 
       const product = await module.retrieve(updateData.id, {
-        relations: ["categories", "collection", "tags", "type"]
+        relations: ["categories", "collection", "tags", "type"],
       })
 
       expect(product).toEqual(
@@ -366,21 +392,21 @@ describe("ProductModuleService products", function () {
           id: productTwo.id,
           categories: [
             expect.objectContaining({
-              id: productCategoryTwo.id
-            })
+              id: productCategoryTwo.id,
+            }),
           ],
           collection: expect.objectContaining({
-            id: productCollectionTwo.id
+            id: productCollectionTwo.id,
           }),
           tags: [
             expect.objectContaining({
               id: newTagData.id,
-              value: newTagData.value
-            })
+              value: newTagData.value,
+            }),
           ],
           type: expect.objectContaining({
-            id: productTypeTwo.id
-          })
+            id: productTypeTwo.id,
+          }),
         })
       )
     })
@@ -391,13 +417,13 @@ describe("ProductModuleService products", function () {
         categories: [],
         collection_id: null,
         type_id: null,
-        tags: []
+        tags: [],
       }
 
       await module.update([updateData])
 
       const product = await module.retrieve(updateData.id, {
-        relations: ["categories", "collection", "tags"]
+        relations: ["categories", "collection", "tags"],
       })
 
       expect(product).toEqual(
@@ -406,7 +432,7 @@ describe("ProductModuleService products", function () {
           categories: [],
           tags: [],
           collection: null,
-          type: null
+          type: null,
         })
       )
     })
@@ -415,7 +441,7 @@ describe("ProductModuleService products", function () {
       let error
       const updateData = {
         id: "does-not-exist",
-        title: "test"
+        title: "test",
       }
 
       try {
@@ -431,18 +457,21 @@ describe("ProductModuleService products", function () {
       const updateData = {
         id: productTwo.id,
         // Note: VariantThree is already assigned to productTwo, that should be deleted
-        variants: [{
-          id: variantTwo.id,
-          title: "updated-variant"
-        }, {
-          title: "created-variant"
-        }]
+        variants: [
+          {
+            id: variantTwo.id,
+            title: "updated-variant",
+          },
+          {
+            title: "created-variant",
+          },
+        ],
       }
 
       await module.update([updateData])
 
       const product = await module.retrieve(updateData.id, {
-        relations: ["variants"]
+        relations: ["variants"],
       })
 
       expect(product.variants).toHaveLength(2)
@@ -469,12 +498,15 @@ describe("ProductModuleService products", function () {
       const updateData = {
         id: productTwo.id,
         // Note: VariantThree is already assigned to productTwo, that should be deleted
-        variants: [{
-          id: "does-not-exist",
-          title: "updated-variant"
-        }, {
-          title: "created-variant"
-        }]
+        variants: [
+          {
+            id: "does-not-exist",
+            title: "updated-variant",
+          },
+          {
+            title: "created-variant",
+          },
+        ],
       }
 
       try {
@@ -484,10 +516,12 @@ describe("ProductModuleService products", function () {
       }
 
       await module.retrieve(updateData.id, {
-        relations: ["variants"]
+        relations: ["variants"],
       })
 
-      expect(error.message).toEqual(`ProductVariant with id "does-not-exist" not found`)
+      expect(error.message).toEqual(
+        `ProductVariant with id "does-not-exist" not found`
+      )
     })
   })
 
@@ -502,14 +536,17 @@ describe("ProductModuleService products", function () {
       MedusaModule.clearInstances()
 
       eventBus = new EventBusService()
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      }, {
-        eventBusModuleService: eventBus
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -590,7 +627,7 @@ describe("ProductModuleService products", function () {
     })
 
     it("should emit events through eventBus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
@@ -599,10 +636,12 @@ describe("ProductModuleService products", function () {
       const products = await module.create([data])
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith([{
-        eventName: "product.created",
-        data: { id: products[0].id }
-      }])
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        {
+          eventName: "product.created",
+          data: { id: products[0].id },
+        },
+      ])
     })
   })
 
@@ -617,14 +656,17 @@ describe("ProductModuleService products", function () {
       MedusaModule.clearInstances()
 
       eventBus = new EventBusService()
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      }, {
-        eventBusModuleService: eventBus
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -681,7 +723,7 @@ describe("ProductModuleService products", function () {
     })
 
     it("should emit events through eventBus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
@@ -691,10 +733,12 @@ describe("ProductModuleService products", function () {
 
       await module.softDelete([products[0].id])
 
-      expect(eventBusSpy).toHaveBeenCalledWith([{
-        eventName: "product.created",
-        data: { id: products[0].id }
-      }])
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        {
+          eventName: "product.created",
+          data: { id: products[0].id },
+        },
+      ])
     })
   })
 
@@ -768,6 +812,77 @@ describe("ProductModuleService products", function () {
       for (const option of variantsOptions) {
         expect(option.deleted_at).toBeNull()
       }
+    })
+  })
+
+  describe("list", function () {
+    let module: IProductModuleService
+    let collections: ProductCollection
+
+    beforeEach(async () => {
+      const testManager = await beforeEach_()
+
+      const collections = await createCollections(
+        testManager,
+        productCollectionsData
+      )
+
+      productCollectionOne = collections[0]
+      productCollectionTwo = collections[1]
+
+      MedusaModule.clearInstances()
+
+      module = await initialize({
+        database: {
+          clientUrl: DB_URL,
+          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+        },
+      })
+
+      const productOneData = buildProductAndRelationsData({
+        collection_id: productCollectionOne.id,
+      })
+
+      const productTwoData = buildProductAndRelationsData({
+        collection_id: productCollectionTwo.id,
+      })
+
+      await module.create([productOneData, productTwoData])
+    })
+
+    afterEach(afterEach_)
+
+    it("should return a list of products scoped by collection id", async () => {
+      const productsWithCollectionOne = await module.list(
+        { collection_id: productCollectionOne.id },
+        {
+          relations: ["collection"],
+        }
+      )
+
+      expect(productsWithCollectionOne).toHaveLength(1)
+
+      expect([
+        expect.objectContaining({
+          collection: expect.objectContaining({
+            id: productCollectionOne.id,
+          }),
+        }),
+      ])
+    })
+
+    it("should returns empty array when querying for a collection that doesnt exist", async () => {
+      const products = await module.list(
+        {
+          categories: { id: ["collection-doesnt-exist-id"] },
+        },
+        {
+          select: ["title", "collection.title"],
+          relations: ["collection"],
+        }
+      )
+
+      expect(products).toEqual([])
     })
   })
 })
