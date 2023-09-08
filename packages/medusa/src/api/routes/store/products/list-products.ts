@@ -336,7 +336,7 @@ async function listAndCountProductWithIsolatedProductModule(
   filterableFields,
   listConfig
 ) {
-  // TODO: Handle fields and relations to maintain existing features and custom fields and relations
+  // TODO: Add support for fields/expands
 
   const remoteQuery = req.scope.resolve("remoteQuery")
 
