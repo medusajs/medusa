@@ -2219,6 +2219,40 @@ module.exports = {
       },
       {
         type: "category",
+        label: "Fulfillment",
+        collapsible: false,
+        link: {
+          type: "doc",
+          id: "plugins/fulfillment/index",
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
+        items: [
+          {
+            type: "doc",
+            id: "plugins/fulfillment/webshipper",
+            label: "Webshipper",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate Webshipper with the Medusa backend.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/fulfillment/manual",
+            label: "Manual Fulfillment",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate manual fulfillment in the Medusa backend.",
+            },
+          },
+        ],
+      },
+      {
+        type: "category",
         label: "Search",
         collapsible: false,
         link: {
@@ -2306,6 +2340,54 @@ module.exports = {
       },
       {
         type: "category",
+        label: "ERP",
+        collapsible: false,
+        link: {
+          type: "doc",
+          id: "plugins/erp/index",
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
+        items: [
+          {
+            type: "doc",
+            id: "plugins/erp/brightpearl",
+            label: "Brightpearl",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate Brightpearl with the Medusa backend.",
+            },
+          },
+        ],
+      },
+      {
+        type: "category",
+        label: "Source",
+        collapsible: false,
+        link: {
+          type: "doc",
+          id: "plugins/source/index",
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
+        items: [
+          {
+            type: "doc",
+            id: "plugins/source/shopify",
+            label: "Shopify",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to install this plugin to migrate data from Shopify.",
+            },
+          },
+        ],
+      },
+      {
+        type: "category",
         label: "Other",
         collapsible: false,
         link: {
@@ -2324,6 +2406,25 @@ module.exports = {
               iconName: "bolt-solid",
               description:
                 "Learn how to integrate ipstack to access the user's region.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/other/discount-generator",
+            label: "Discount Generator",
+            customProps: {
+              iconName: "bolt-solid",
+              description: "Learn how to add a discount generator in Medusa.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/other/wishlist",
+            label: "Wishlist",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to add wishlists for customers in Medusa.",
             },
           },
         ],
