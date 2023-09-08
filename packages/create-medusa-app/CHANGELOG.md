@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.0
+
+### Minor Changes
+
+- [#4968](https://github.com/medusajs/medusa/pull/4968) [`240b03800`](https://github.com/medusajs/medusa/commit/240b038006924d4872de068c98e2d6862145cb52) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): add install Next.js storefront option
+
 ## 1.1.1
 
 ### Patch Changes
