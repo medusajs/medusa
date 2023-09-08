@@ -5,7 +5,7 @@ import { initialize } from "../../../../src"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
-describe("PricingModuleService currency", () => {
+describe("PricingModuleService ruleType", () => {
   let service: IPricingModuleService
   let testManager: SqlEntityManager
 
@@ -29,8 +29,8 @@ describe("PricingModuleService currency", () => {
     await MikroOrmWrapper.clearDatabase()
   })
 
-  describe("list", () => {
-    it("list rule types", async () => {
+  describe("listRuleTypes", () => {
+    it("should list rule types", async () => {
       const ruleTypeResult = await service.listRuleTypes()
 
       expect(ruleTypeResult).toEqual([
@@ -45,7 +45,7 @@ describe("PricingModuleService currency", () => {
       ])
     })
 
-    it("list rule types by id", async () => {
+    it("should list rule types by id", async () => {
       const ruleTypeResult = await service.listRuleTypes({
         id: ["rule-type-1"],
       })
@@ -59,7 +59,7 @@ describe("PricingModuleService currency", () => {
     })
   })
 
-  describe("listAndCount", () => {
+  describe("listAndCountRuleTypes", () => {
     it("should return rule types and count", async () => {
       const [ruleTypeResult, count] = await service.listAndCountRuleTypes()
 
@@ -126,7 +126,7 @@ describe("PricingModuleService currency", () => {
     })
   })
 
-  describe("retrieve", () => {
+  describe("retrieveRuleType", () => {
     it("should return ruleType for the given id", async () => {
       const ruleType = await service.retrieveRuleType("rule-type-1")
 
@@ -178,7 +178,7 @@ describe("PricingModuleService currency", () => {
     })
   })
 
-  describe("delete", () => {
+  describe("deleteRuleTypes", () => {
     const id = "rule-type-1"
 
     it("should delete the ruleTypes given an id successfully", async () => {
