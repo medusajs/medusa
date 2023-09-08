@@ -643,7 +643,10 @@ medusa new ${rootPath} [url-to-starter]
     // remove demo files
     clearProject(rootPath)
     // remove .git directory
-    fs.rmSync(path.join(rootPath, '.git'))
+    fs.rmSync(path.join(rootPath, '.git'), {
+      recursive: true,
+      force: true,
+    })
   }
 
   successMessage(rootPath)
