@@ -9,6 +9,7 @@ import {
 import { DataSource } from "typeorm"
 import faker from "faker"
 import { simpleCustomerGroupFactory } from "./simple-customer-group-factory"
+import { ProductVariantMoneyAmount } from "@medusajs/medusa"
 
 type ProductListPrice = {
   variant_id: string
@@ -73,12 +74,15 @@ export const simplePriceListFactory = async (
         ...ma,
         price_list_id: listId,
       }
-      const toSave = manager.create(MoneyAmount, factoryData)
+      const toSave: MoneyAmount = manager.create(MoneyAmount, factoryData)
       await manager.save(toSave)
       
-      await manager.query(
-        `INSERT INTO product_variant_money_amount(id, variant_id, money_amount_id) VALUES ('${ma.variant_id}-${toSave.id}', '${ma.variant_id}', '${toSave.id}')`
-      )
+      await manager.insert(ProductVariantMoneyAmount, {
+        id: `${ma.variant_id}-${toSave.id}`,
+        variant_id: ma.variant_id,
+        money_amount_id: toSave.id,
+      })
+
       return toSave
     }))
   }

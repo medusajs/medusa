@@ -1,14 +1,16 @@
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
-import { DbAwareColumn, generateEntityId } from "../utils"
+import { generateEntityId } from "../utils"
 import { SoftDeletableEntity } from "../interfaces"
 
 @Entity()
 export class ProductVariantMoneyAmount extends SoftDeletableEntity {
-  @Index()
-  @Column({ unique: true })
+  @Index("idx_product_variant_money_amount_money_amount_id_unique", {
+    unique: true,
+  })
+  @Column()
   money_amount_id: string
 
-  @Index()
+  @Index("idx_product_variant_money_amount_variant_id")
   @Column()
   variant_id: string
 

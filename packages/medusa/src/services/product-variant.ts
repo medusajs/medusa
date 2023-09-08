@@ -760,10 +760,10 @@ class ProductVariantService extends TransactionBaseService {
         .createQueryBuilder()
         .leftJoinAndSelect(
           "product_variant_money_amount",
-          "mav",
-          "mav.money_amount_id = ma.id"
+          "pvma",
+          "pvma.money_amount_id = ma.id"
         )
-        .where("mav.variant_id = :variantId", { variantId })
+        .where("pvma.variant_id = :variantId", { variantId })
         .where("ma.region_id = :region_id", { region_id: price.region_id })
         .getOne()
 

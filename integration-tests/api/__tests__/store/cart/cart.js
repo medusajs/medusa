@@ -32,6 +32,7 @@ const {
 const {
   simpleCustomerGroupFactory,
 } = require("../../../../factories/simple-customer-group-factory")
+const { ProductVariantMoneyAmount } = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
 
@@ -151,9 +152,11 @@ describe("/store/carts", () => {
 
       await dbConnection.manager.save(ma_sale_1)
 
-      await dbConnection.query(
-        `INSERT INTO product_variant_money_amount(id, variant_id, money_amount_id) VALUES ('${prodSale.variants[0].id}-${ma_sale_1.id}', '${prodSale.variants[0].id}', '${ma_sale_1.id}')`
-      )
+      await dbConnection.manager.insert(ProductVariantMoneyAmount, {
+        id: `${prodSale.variants[0].id}-${ma_sale_1.id}`,
+        variant_id: prodSale.variants[0].id,
+        money_amount_id: ma_sale_1.id,
+      })
 
       const api = useApi()
 

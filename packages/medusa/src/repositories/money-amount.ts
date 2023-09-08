@@ -87,10 +87,10 @@ export const MoneyAmountRepository = dataSource
       const pricesNotInPricesPayload = await this.createQueryBuilder()
         .leftJoinAndSelect(
           "product_variant_money_amount",
-          "mav",
-          "mav.money_amount_id = ma.id"
+          "pvma",
+          "pvma.money_amount_id = ma.id"
         )
-        .where("mav.variant_id = :variant_id", {
+        .where("pvma.variant_id = :variant_id", {
           variant_id: variantId,
         })
         .andWhere({
@@ -131,12 +131,12 @@ export const MoneyAmountRepository = dataSource
         const maIdsForVariant = await this.createQueryBuilder("ma")
           .leftJoin(
             "product_variant_money_amount",
-            "mav",
-            "mav.money_amount_id = ma.id"
+            "pvma",
+            "pvma.money_amount_id = ma.id"
           )
-          .addSelect("mav.variant_id", "variant_id")
-          .addSelect("mav.money_amount_id", "money_amount_id")
-          .where("mav.variant_id = :variant_id", {
+          .addSelect("pvma.variant_id", "variant_id")
+          .addSelect("pvma.money_amount_id", "money_amount_id")
+          .where("pvma.variant_id = :variant_id", {
             variant_id: data_.variantId,
           })
           .getMany()
@@ -201,10 +201,10 @@ export const MoneyAmountRepository = dataSource
       let moneyAmount = await this.createQueryBuilder()
         .leftJoinAndSelect(
           "product_variant_money_amount",
-          "mav",
-          "mav.money_amount_id = ma.id"
+          "pvma",
+          "pvma.money_amount_id = ma.id"
         )
-        .where("mav.variant_id = :variantId", { variantId })
+        .where("pvma.variant_id = :variantId", { variantId })
         .andWhere("ma.currency_code = :currencyCode", {
           currencyCode: price.currency_code,
         })
@@ -245,13 +245,29 @@ export const MoneyAmountRepository = dataSource
       prices: PriceListPriceCreateInput[],
       overrideExisting = false
     ): Promise<MoneyAmount[]> {
-      const toInsert = prices.map((price) =>
-        this.create({
-          ...price,
-          id: `ma_${ulid()}`,
-          price_list_id: priceListId,
-          variants: [{ id: price.variant_id! }],
-        })
+      const [toInsert, joinTableValues] = prices.reduce(
+        (acc, price) => {
+          const [prices, joinTableValues] = acc
+          const id = `ma_${ulid()}`
+          const variant = this.create({
+            ...price,
+            id,
+            price_list_id: priceListId,
+          })
+          const joinTableValue = this.manager.create(
+            ProductVariantMoneyAmount,
+            {
+              variant_id: price.variant_id!,
+              money_amount_id: id,
+            }
+          )
+
+          return [
+            [...prices, variant],
+            [...joinTableValues, joinTableValue],
+          ]
+        },
+        [[], []] as [MoneyAmount[], ProductVariantMoneyAmount[]]
       )
 
       const insertResult = await this.createQueryBuilder()
@@ -261,15 +277,6 @@ export const MoneyAmountRepository = dataSource
         .values(toInsert as QueryDeepPartialEntity<MoneyAmount>[])
         .returning("*")
         .execute()
-
-      const joinTableValues = toInsert.map((ma) => {
-        const [{ id: variant_id }] = ma.variants
-        const { id: money_amount_id } = ma
-        return this.manager.create(ProductVariantMoneyAmount, {
-          variant_id,
-          money_amount_id,
-        })
-      })
 
       if (overrideExisting) {
         const { raw } = await this.createQueryBuilder()
@@ -320,10 +327,10 @@ export const MoneyAmountRepository = dataSource
         .leftJoinAndSelect("ma.price_list", "price_list")
         .leftJoin(
           "product_variant_money_amount",
-          "mav",
-          "mav.money_amount_id = ma.id"
+          "pvma",
+          "pvma.money_amount_id = ma.id"
         )
-        .where("mav.variant_id = :variant_id", { variant_id })
+        .where("pvma.variant_id = :variant_id", { variant_id })
 
       const getAndWhere = (subQb): WhereExpressionBuilder => {
         const andWhere = subQb.where("ma.price_list_id = :price_list_id", {
@@ -375,17 +382,17 @@ export const MoneyAmountRepository = dataSource
       const qb = this.createQueryBuilder("ma")
         .leftJoin(
           "product_variant_money_amount",
-          "mav",
-          "mav.money_amount_id = ma.id"
+          "pvma",
+          "pvma.money_amount_id = ma.id"
         )
-        .addSelect("mav.variant_id", "variant_id")
+        .addSelect("pvma.variant_id", "variant_id")
 
-      where.forEach((w, i) =>
+      where.forEach((variantCurrency, i) =>
         qb.orWhere(
-          `(mav.variant_id = :variant_id_${i} AND ma.currency_code = :currency_code_${i} AND ma.region_id IS NULL AND ma.price_list_id IS NULL)`,
+          `(pvma.variant_id = :variant_id_${i} AND ma.currency_code = :currency_code_${i} AND ma.region_id IS NULL AND ma.price_list_id IS NULL)`,
           {
-            [`variant_id_${i}`]: w.variant_id,
-            [`currency_code_${i}`]: w.currency_code,
+            [`variant_id_${i}`]: variantCurrency.variant_id,
+            [`currency_code_${i}`]: variantCurrency.currency_code,
           }
         )
       )
@@ -402,14 +409,14 @@ export const MoneyAmountRepository = dataSource
       const qb = this.createQueryBuilder("ma")
         .leftJoin(
           "product_variant_money_amount",
-          "mav",
-          "mav.money_amount_id = ma.id"
+          "pvma",
+          "pvma.money_amount_id = ma.id"
         )
-        .addSelect("mav.variant_id", "variant_id")
+        .addSelect("pvma.variant_id", "variant_id")
 
       where.forEach((w, i) =>
         qb.orWhere(
-          `(mav.variant_id = :variant_id_${i} AND ma.region_id = :region_id_${i} AND ma.price_list_id IS NULL)`,
+          `(pvma.variant_id = :variant_id_${i} AND ma.region_id = :region_id_${i} AND ma.price_list_id IS NULL)`,
           {
             [`variant_id_${i}`]: w.variant_id,
             [`region_id_${i}`]: w.region_id,
@@ -442,11 +449,11 @@ export const MoneyAmountRepository = dataSource
         .leftJoinAndSelect("ma.price_list", "price_list")
         .leftJoinAndSelect(
           "product_variant_money_amount",
-          "mav",
-          "mav.money_amount_id = ma.id"
+          "pvma",
+          "pvma.money_amount_id = ma.id"
         )
-        .addSelect("mav.variant_id", "variant_id")
-        .andWhere("mav.variant_id IN (:...variantIds)", {
+        .addSelect("pvma.variant_id", "variant_id")
+        .andWhere("pvma.variant_id IN (:...variantIds)", {
           variantIds: variant_ids,
         })
         .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
@@ -528,10 +535,7 @@ export const MoneyAmountRepository = dataSource
         (update) => update.id
       )
 
-      const [newPriceEntities, joinTableValues]: [
-        MoneyAmount[],
-        ProductVariantMoneyAmount[]
-      ] = newPrices.reduce(
+      const [newPriceEntities, joinTableValues] = newPrices.reduce(
         (acc, price) => {
           const [prices, joinTableValues] = acc
           const id = `ma_${ulid()}`

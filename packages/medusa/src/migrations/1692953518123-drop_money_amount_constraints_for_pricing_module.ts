@@ -20,7 +20,7 @@ export class dropMoneyAmountConstraintsForPricingModule1692953518123
         );
 
         INSERT INTO "product_variant_money_amount"("id", "money_amount_id", "variant_id")
-          SELECT CONCAT('pv', ma.id), "id", "variant_id" FROM "money_amount" ma;
+          SELECT CONCAT('pvma_', ma.id), "id", "variant_id" FROM "money_amount" ma;
 
         ALTER TABLE "money_amount" DROP COLUMN IF EXISTS "variant_id";
         CREATE UNIQUE INDEX IF NOT EXISTS "idx_product_variant_money_amount_money_amount_id_unique" ON "product_variant_money_amount" ("money_amount_id");
