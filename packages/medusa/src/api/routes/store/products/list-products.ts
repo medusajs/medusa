@@ -489,6 +489,7 @@ async function listAndCountProductWithIsolatedProductModule(
     metadata: { count },
   } = await remoteQuery(query, variables)
 
+  // TODO: Waiting for pr #4990 before being able to remove that logic and replace it by a new relation in the query above
   const shippingProfileService = req.scope.resolve(
     "shippingProfileService"
   ) as ShippingProfileService
