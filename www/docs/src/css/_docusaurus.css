@@ -181,11 +181,6 @@ details summary {
   @apply hidden;
 }
 
-.markdown kbd {
-  @apply !font-monospace !bg-medusa-bg-component dark:!bg-medusa-bg-component-dark !text-medusa-fg-subtle dark:!text-medusa-fg-subtle-dark;
-  @apply !rounded-md !border-medusa-border-strong dark:!border-medusa-border-strong-dark !shadow-none;
-}
-
 .theme-doc-footer {
   @apply !mt-0 border-0 !border-t border-solid !border-medusa-border-base dark:!border-medusa-border-base-dark;
   @apply pt-2;
