@@ -8,6 +8,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OptionalProps,
   PrimaryKey,
   Property,
   Unique,
@@ -15,8 +16,12 @@ import {
 
 import Product from "./product"
 
+type OptionalFields = "created_at" | "updated_at" | "deleted_at"
+
 @Entity({ tableName: "product_category" })
 class ProductCategory {
+  [OptionalProps]?: OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -61,13 +66,18 @@ class ProductCategory {
   })
   category_children = new Collection<ProductCategory>(this)
 
-  @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
   created_at?: Date
 
   @Property({
     onCreate: () => new Date(),
     onUpdate: () => new Date(),
     columnType: "timestamptz",
+    defaultRaw: "now()",
   })
   updated_at?: Date
 

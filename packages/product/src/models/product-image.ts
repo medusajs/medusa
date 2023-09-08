@@ -14,11 +14,12 @@ import { DALUtils, generateEntityId } from "@medusajs/utils"
 import Product from "./product"
 
 type OptionalRelations = "products"
+type OptionalFields = "created_at" | "updated_at" | "deleted_at"
 
 @Entity({ tableName: "image" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductImage {
-  [OptionalProps]?: OptionalRelations
+  [OptionalProps]?: OptionalRelations | OptionalFields
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -29,6 +30,21 @@ class ProductImage {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
+
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
 
   @Index({ name: "IDX_product_image_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })

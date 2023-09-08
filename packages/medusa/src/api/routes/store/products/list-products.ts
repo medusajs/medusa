@@ -408,7 +408,12 @@ async function listAndCountProductWithIsolatedProductModule(
         product (${args}) {
           ${defaultStoreProductsFields.join("\n")}
           images {
+            id
+            created_at
+            updated_at
+            deleted_at
             url
+            metadata
           }
           tags {
             value
@@ -422,17 +427,57 @@ async function listAndCountProductWithIsolatedProductModule(
             handle
           }
           options {
+            id
+            created_at
+            updated_at
+            deleted_at
             title
+            product_id
+            metadata
             values {
               id
+              created_at
+              updated_at
+              deleted_at
               value
+              option_id
+              variant_id
+              metadata
             }
           }
           variants {
             id
+            created_at
+            updated_at
+            deleted_at
+            title
+            product_id
+            sku
+            barcode
+            ean
+            upc
+            variant_rank
+            inventory_quantity
+            allow_backorder
+            manage_inventory
+            hs_code
+            origin_country
+            mid_code
+            material
+            weight
+            length
+            height
+            width
+            metadata
             options {
               id
+              created_at
+              updated_at
+              deleted_at
               value
+              option_id
+              variant_id
+              metadata
             }
           }
         } 
@@ -454,7 +499,7 @@ async function listAndCountProductWithIsolatedProductModule(
 
   products.forEach((product) => {
     product.profile_id = profilesByProductId[product.id]?.[0]?.id
-    product.profile = profilesByProductId[product.id]?.[0]
+    product.profiles = profilesByProductId[product.id]
   })
 
   return [products, count]
