@@ -221,20 +221,20 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             }
           />
         ))}
-        {order?.gift_card_transactions?.map((gcTransaction, index) => (
+        {order?.gift_cards?.map((giftCard, index) => (
           <DisplayTotal
             key={index}
             currency={order.currency_code}
-            totalAmount={-1 * gcTransaction.amount}
+            totalAmount={-1 * order.gift_card_total}
             totalTitle={
               <div className="inter-small-regular text-grey-90 flex items-center">
                 Gift card:
                 <Badge className="ml-3" variant="default">
-                  {gcTransaction.gift_card.code}
+                  {giftCard.code}
                 </Badge>
                 <div className="ml-2">
                   <CopyToClipboard
-                    value={gcTransaction.gift_card.code}
+                    value={giftCard.code}
                     showValue={false}
                     iconSize={16}
                   />
