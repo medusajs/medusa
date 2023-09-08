@@ -14,7 +14,7 @@ export async function askForNextjsStarter(): Promise<boolean> {
     {
       type: "confirm",
       name: "installNextjs",
-      message: `Would you like to install the Next.js storefront? You can also install it later`,
+      message: `Would you like to create the Next.js storefront? You can also create it later`,
       default: false,
     },
   ])
