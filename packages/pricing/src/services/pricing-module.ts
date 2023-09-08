@@ -26,6 +26,7 @@ import {
 import { joinerConfig } from "../joiner-config"
 import PriceListService from "./price-list"
 import { partition } from "lodash"
+import { PriceListDTO } from "@medusajs/types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -595,7 +596,7 @@ export default class PricingModuleService<
   async createPriceLists(
     data: PricingTypes.CreatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<PriceListDTO[]> {
     const priceLists = await Promise.all(
       data.map(async (priceList) => {
         const { prices, ...rest } = priceList
@@ -632,7 +633,7 @@ export default class PricingModuleService<
   async updatePriceLists(
     data: PricingTypes.UpdatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<PriceListDTO[]>  {
     const [priceLists, prices]: [
       PricingTypes.UpdatePriceListDTO[],
       (PricingTypes.UpdateMoneyAmountDTO | PricingTypes.CreateMoneyAmountDTO)[]

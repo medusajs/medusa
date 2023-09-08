@@ -21,6 +21,10 @@ import {
   UpdateMoneyAmountDTO,
   UpdatePriceSetDTO,
   UpdateRuleTypeDTO,
+  CreatePriceListDTO,
+  FilterablePriceListProps,
+  PriceListDTO,
+  UpdatePriceListDTO,
 } from "./common"
 
 export interface IPricingModuleService {
@@ -154,4 +158,37 @@ export interface IPricingModuleService {
   ): Promise<RuleTypeDTO[]>
 
   deleteRuleTypes(ruleTypes: string[], sharedContext?: Context): Promise<void>
+
+  retrievePriceList(
+    code: string,
+    config: FindConfig<PriceListDTO>,
+    sharedContext?: Context
+  ): Promise<PriceListDTO>
+
+  listPriceLists(
+    filters: FilterablePriceListProps,
+    config: FindConfig<PriceListDTO>,
+    sharedContext?: Context
+  ): Promise<PriceListDTO[]>
+
+  listAndCountPriceLists(
+    filters: FilterablePriceListProps,
+    config: FindConfig<PriceListDTO>,
+    sharedContext?: Context
+  ): Promise<[PriceListDTO[], number]>
+
+  createPriceLists(
+    data: CreatePriceListDTO[],
+    sharedContext?: Context
+  ): Promise<PriceListDTO[]>
+
+  updatePriceLists(
+    data: UpdatePriceListDTO[],
+    sharedContext?: Context
+  ): Promise<PriceListDTO[]>
+
+  deletePriceLists(
+    currencyCodes: string[],
+    sharedContext?: Context
+  ): Promise<void>
 }
