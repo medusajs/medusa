@@ -557,14 +557,15 @@ export class RemoteJoiner {
     parsedExpands: Map<string, RemoteExpandProperty>
   ): Map<string, RemoteExpandProperty> {
     const mergedExpands = new Map<string, RemoteExpandProperty>(parsedExpands)
-    const mergedPaths = new Map<string, string>()
+    const mergedPaths = new Map<string, RemoteExpandProperty>()
 
     for (const [path, expand] of mergedExpands.entries()) {
       const currentServiceName = expand.serviceConfig.serviceName
       let parentPath = expand.parent
 
       while (parentPath) {
-        const parentExpand = mergedExpands.get(parentPath)
+        const parentExpand =
+          mergedExpands.get(parentPath) ?? mergedPaths.get(parentPath)
         if (
           !parentExpand ||
           parentExpand.serviceConfig.serviceName !== currentServiceName
@@ -588,7 +589,7 @@ export class RemoteJoiner {
         targetExpand.args = expand.args
 
         mergedExpands.delete(path)
-        mergedPaths.set(path, parentPath)
+        mergedPaths.set(path, expand)
 
         parentPath = parentExpand.parent
       }

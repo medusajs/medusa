@@ -1,5 +1,8 @@
 import {
+  AfterLoad,
+  AfterUpdate,
   BeforeInsert,
+  BeforeUpdate,
   Check,
   Column,
   Entity,
@@ -11,9 +14,11 @@ import {
 
 import { BaseEntity } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { generateEntityId } from "../utils"
-import { DbAwareColumn } from "../utils/db-aware-column"
-import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
+import { DbAwareColumn, generateEntityId } from "../utils"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 import { Cart } from "./cart"
 import { ClaimOrder } from "./claim-order"
 import { LineItemAdjustment } from "./line-item-adjustment"
@@ -22,6 +27,8 @@ import { Order } from "./order"
 import { OrderEdit } from "./order-edit"
 import { ProductVariant } from "./product-variant"
 import { Swap } from "./swap"
+import IsolateProductDomain from "../loaders/feature-flags/isolate-product-domain"
+import { featureFlagRouter } from "../loaders/feature-flags"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
@@ -124,6 +131,9 @@ export class LineItem extends BaseEntity {
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
+  @FeatureFlagColumn(IsolateProductDomain.key, { nullable: true, type: "text" })
+  product_id: string | null
+
   @Column({ type: "int" })
   quantity: number
 
@@ -155,6 +165,39 @@ export class LineItem extends BaseEntity {
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "item")
+
+    // This is to maintain compatibility while isolating the product domain
+    if (featureFlagRouter.isFeatureEnabled(IsolateProductDomain.key)) {
+      if (
+        this.variant &&
+        Object.keys(this.variant).length === 1 &&
+        this.variant.product_id
+      ) {
+        this.variant = undefined as any
+      }
+    }
+  }
+
+  @FeatureFlagDecorators(IsolateProductDomain.key, [BeforeUpdate])
+  beforeUpdate(): void {
+    if (
+      this.variant &&
+      Object.keys(this.variant).length === 1 &&
+      this.variant.product_id
+    ) {
+      this.variant = undefined as any
+    }
+  }
+
+  @FeatureFlagDecorators(IsolateProductDomain.key, [AfterLoad, AfterUpdate])
+  afterUpdateOrLoad(): void {
+    if (this.variant) {
+      return
+    }
+
+    if (this.product_id) {
+      this.variant = { product_id: this.product_id } as any
+    }
   }
 }
 

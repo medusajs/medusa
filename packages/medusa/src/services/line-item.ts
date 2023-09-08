@@ -4,12 +4,13 @@ import { DeepPartial } from "typeorm/common/DeepPartial"
 
 import { FlagRouter } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-    LineItem,
-    LineItemAdjustment,
-    LineItemTaxLine,
-    ProductVariant,
+  LineItem,
+  LineItemAdjustment,
+  LineItemTaxLine,
+  ProductVariant,
 } from "../models"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
@@ -19,11 +20,11 @@ import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
 import { buildQuery, isString, setMetadata } from "../utils"
 import {
-    PricingService,
-    ProductService,
-    ProductVariantService,
-    RegionService,
-    TaxProviderService,
+  PricingService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  TaxProviderService,
 } from "./index"
 import LineItemAdjustmentService from "./line-item-adjustment"
 
@@ -366,6 +367,14 @@ class LineItemService extends TransactionBaseService {
 
     if (
       this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      )
+    ) {
+      rawLineItem.product_id = variant.product_id
+    }
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
         TaxInclusivePricingFeatureFlag.key
       )
     ) {
@@ -471,7 +480,9 @@ class LineItemService extends TransactionBaseService {
 
         return await lineItemRepository
           .findOne({ where: { id } })
-          .then((lineItem) => lineItem && lineItemRepository.remove(lineItem))
+          .then(
+            async (lineItem) => lineItem && lineItemRepository.remove(lineItem)
+          )
       }
     )
   }

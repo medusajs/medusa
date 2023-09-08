@@ -1,6 +1,8 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { FlagRouter, isDefined } from "@medusajs/utils"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import {
   Cart,
   CustomShippingOption,
@@ -27,6 +29,7 @@ type InjectedDependencies = {
   customShippingOptionService: CustomShippingOptionService
   shippingProfileRepository: typeof ShippingProfileRepository
   productRepository: typeof ProductRepository
+  featureFlagRouter: FlagRouter
 }
 
 /**
@@ -41,6 +44,7 @@ class ShippingProfileService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly shippingProfileRepository_: typeof ShippingProfileRepository
   protected readonly productRepository_: typeof ProductRepository
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     shippingProfileRepository,
@@ -48,6 +52,7 @@ class ShippingProfileService extends TransactionBaseService {
     productRepository,
     shippingOptionService,
     customShippingOptionService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -57,6 +62,7 @@ class ShippingProfileService extends TransactionBaseService {
     this.productRepository_ = productRepository
     this.shippingOptionService_ = shippingOptionService
     this.customShippingOptionService_ = customShippingOptionService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -79,49 +85,39 @@ class ShippingProfileService extends TransactionBaseService {
     return shippingProfileRepo.find(query)
   }
 
-  async fetchOptionsByProductIds(
-    productIds: string[],
-    filter: Selector<ShippingOption>
-  ): Promise<ShippingOption[]> {
-    const products = await this.productService_.list(
-      {
-        id: productIds,
+  async getMapProfileIdsByProductIds(
+    productIds: string[]
+  ): Promise<Map<string, string>> {
+    const mappedProfiles = new Map<string, string>()
+
+    if (!productIds?.length) {
+      return mappedProfiles
+    }
+
+    const shippingProfiles = await this.shippingProfileRepository_.find({
+      select: {
+        id: true,
+        products: {
+          id: true,
+        },
       },
-      {
-        relations: [
-          "profile",
-          "profile.shipping_options",
-          "profile.shipping_options.requirements",
-        ],
-      }
-    )
+      where: {
+        products: {
+          id: In(productIds),
+        },
+      },
+      relations: {
+        products: true,
+      },
+    })
 
-    const profiles = products.map((p) => p.profile)
-
-    const shippingOptions = profiles.reduce(
-      (acc: ShippingOption[], next: ShippingProfile) =>
-        acc.concat(next.shipping_options),
-      []
-    )
-
-    const options = await Promise.all(
-      shippingOptions.map(async (option) => {
-        let canSend = true
-        if (filter.region_id) {
-          if (filter.region_id !== option.region_id) {
-            canSend = false
-          }
-        }
-
-        if (option.deleted_at !== null) {
-          canSend = false
-        }
-
-        return canSend ? option : null
+    shippingProfiles.forEach((profile) => {
+      profile.products.forEach((product) => {
+        mappedProfiles.set(product.id, profile.id)
       })
-    )
+    })
 
-    return options.filter(Boolean) as ShippingOption[]
+    return mappedProfiles
   }
 
   /**
@@ -425,7 +421,7 @@ class ShippingProfileService extends TransactionBaseService {
    */
   async fetchCartOptions(cart): Promise<ShippingOption[]> {
     return await this.atomicPhase_(async (manager) => {
-      const profileIds = this.getProfilesInCart(cart)
+      const profileIds = await this.getProfilesInCart(cart)
 
       const selector: Selector<ShippingOption> = {
         profile_id: profileIds,
@@ -489,14 +485,25 @@ class ShippingProfileService extends TransactionBaseService {
    * @param cart - the cart to extract products from
    * @return a list of product ids
    */
-  protected getProfilesInCart(cart: Cart): string[] {
-    const profileIds = new Set<string>()
+  protected async getProfilesInCart(cart: Cart): Promise<string[]> {
+    let profileIds = new Set<string>()
 
-    cart.items.forEach((item) => {
-      if (item.variant?.product) {
-        profileIds.add(item.variant.product.profile_id)
-      }
-    })
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      )
+    ) {
+      const productShippinProfileMap = await this.getMapProfileIdsByProductIds(
+        cart.items.map((item) => item.variant?.product_id)
+      )
+      profileIds = new Set([...productShippinProfileMap.values()])
+    } else {
+      cart.items.forEach((item) => {
+        if (item.variant?.product) {
+          profileIds.add(item.variant.product.profile_id)
+        }
+      })
+    }
 
     return [...profileIds]
   }
