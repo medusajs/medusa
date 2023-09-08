@@ -1,10 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomerService,
   CustomShippingOptionService,
+  CustomerService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -29,8 +29,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  Customer,
   CustomShippingOption,
+  Customer,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -49,9 +49,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
-  isCart,
   LineItemUpdate,
   LineItemValidateData,
+  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -2188,12 +2188,7 @@ class CartService extends TransactionBaseService {
           const lineItemServiceTx =
             this.lineItemService_.withTransaction(transactionManager)
 
-          let productShippinProfileMap = new Map<string, string>(
-            cart.items.map((item) => [
-              item.variant?.product?.id,
-              item.variant?.product?.profile_id,
-            ])
-          )
+          let productShippinProfileMap = new Map<string, string>()
 
           if (
             this.featureFlagRouter_.isFeatureEnabled(
@@ -2204,6 +2199,13 @@ class CartService extends TransactionBaseService {
               await this.shippingProfileService_.getMapProfileIdsByProductIds(
                 cart.items.map((item) => item.variant.product_id)
               )
+          } else {
+            productShippinProfileMap = new Map<string, string>(
+              cart.items.map((item) => [
+                item.variant?.product?.id,
+                item.variant?.product?.profile_id,
+              ])
+            )
           }
 
           await Promise.all(

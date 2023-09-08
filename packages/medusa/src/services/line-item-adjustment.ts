@@ -17,7 +17,7 @@ type LineItemAdjustmentServiceProps = {
 }
 
 type AdjustmentContext = {
-  product_id: string
+  variant: { product_id: string }
 }
 
 type GeneratedAdjustment = {
@@ -218,11 +218,11 @@ class LineItemAdjustmentService extends TransactionBaseService {
 
       const discountServiceTx = this.discountService.withTransaction(manager)
 
-      const lineItemProduct = context.product_id
+      const lineItemProduct = context.variant.product_id
 
       const isValid = await discountServiceTx.validateDiscountForProduct(
         discount.rule_id,
-        lineItemProduct as string
+        lineItemProduct
       )
 
       // if discount is not valid for line item, then do nothing
@@ -264,7 +264,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
     lineItem: LineItem
   ): Promise<LineItemAdjustment[]> {
     const adjustments = await this.generateAdjustments(cart, lineItem, {
-      product_id: lineItem.variant?.product_id,
+      variant: lineItem.variant,
     })
 
     const createdAdjustments: LineItemAdjustment[] = []
