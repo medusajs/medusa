@@ -14,14 +14,11 @@ import {
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
   UpdatePriceSetDTO,
-} from "./common"
-
-import {
   CreateRuleTypeDTO,
   FilterableRuleTypeProps,
   RuleTypeDTO,
   UpdateRuleTypeDTO,
-} from "./price-sets"
+} from "./common"
 
 export interface IPricingModuleService {
   __joinerConfig(): ModuleJoinerConfig
