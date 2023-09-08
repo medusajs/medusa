@@ -20,8 +20,8 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/admin": "*",
-    "@medusajs/medusa": "*",
+    "@medusajs/admin": "^7.0.1",
+    "@medusajs/medusa": "^1.15.0",
     "@types/stripe": "^8.0.417",
     "awilix": "^8.0.1",
     "cross-env": "^5.2.1",

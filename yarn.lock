@@ -6058,7 +6058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/admin-ui@*, @medusajs/admin-ui@workspace:packages/admin-ui":
+"@medusajs/admin-ui@^2.0.1, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
@@ -6156,14 +6156,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin@*, @medusajs/admin@workspace:packages/admin":
+"@medusajs/admin@^7.0.1, @medusajs/admin@workspace:packages/admin":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
-    "@medusajs/admin-ui": "*"
-    "@medusajs/medusa": "*"
-    "@medusajs/ui": 0.0.0-snapshot-20230816100247
-    "@medusajs/ui-preset": 0.0.0-snapshot-20230816100247
+    "@medusajs/admin-ui": ^2.0.1
+    "@medusajs/medusa": ^1.15.0
+    "@medusajs/ui": ^1.0.0
+    "@medusajs/ui-preset": ^1.0.0
     "@rollup/plugin-alias": 5.0.0
     "@rollup/plugin-commonjs": 24.1.0
     "@rollup/plugin-json": 6.0.0
@@ -6289,15 +6289,6 @@ __metadata:
   peerDependencies:
     react: ^16.x || ^17.x || ^18.x
   checksum: 3bf8d754a9e55460e6b6ab593c470ed1f0018a0b98d7fd53dd651359788d9f293dab3cc32719a2042834e71b252fd1d76dd32b60c076fe11f98999f6bea149de
-  languageName: node
-  linkType: hard
-
-"@medusajs/icons@npm:0.0.0-snapshot-20230816100247":
-  version: 0.0.0-snapshot-20230816100247
-  resolution: "@medusajs/icons@npm:0.0.0-snapshot-20230816100247"
-  peerDependencies:
-    react: ^16.x || ^17.x || ^18.x
-  checksum: 3efab1bb573c51f5479d23390421a0794319d9b340a9be480aa2033072d615a540b83a8629f246880d72a7f69c17573914e97897c5669457479cd9fe30296601
   languageName: node
   linkType: hard
 
@@ -6681,18 +6672,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui-preset@npm:0.0.0-snapshot-20230816100247":
-  version: 0.0.0-snapshot-20230816100247
-  resolution: "@medusajs/ui-preset@npm:0.0.0-snapshot-20230816100247"
-  dependencies:
-    "@tailwindcss/forms": ^0.5.3
-    tailwindcss-animate: ^1.0.6
-  peerDependencies:
-    tailwindcss: ">=3.0.0"
-  checksum: 23bb1cd3e2a859e9267ffa3ed25fe686d16b8ce8d7906da5b1e8e3585f76d989f71de5566b837bc26e27fa02aa5ffe4f5c50cb20a1ed1453f524ee3e1285ea68
-  languageName: node
-  linkType: hard
-
 "@medusajs/ui-preset@npm:^1.0.0":
   version: 1.0.0
   resolution: "@medusajs/ui-preset@npm:1.0.0"
@@ -6702,42 +6681,6 @@ __metadata:
   peerDependencies:
     tailwindcss: ">=3.0.0"
   checksum: 4365d5e4a726250aa5299df8ce9e1ffdc9f864586b506d8552ad1561ac2a2d66d8692dd761702728904d7af884aae9d85de9dcfe94413161264821a8c7648223
-  languageName: node
-  linkType: hard
-
-"@medusajs/ui@npm:0.0.0-snapshot-20230816100247":
-  version: 0.0.0-snapshot-20230816100247
-  resolution: "@medusajs/ui@npm:0.0.0-snapshot-20230816100247"
-  dependencies:
-    "@medusajs/icons": 0.0.0-snapshot-20230816100247
-    "@radix-ui/react-alert-dialog": ^1.0.4
-    "@radix-ui/react-avatar": ^1.0.3
-    "@radix-ui/react-checkbox": ^1.0.4
-    "@radix-ui/react-dialog": ^1.0.4
-    "@radix-ui/react-dropdown-menu": ^2.0.5
-    "@radix-ui/react-label": ^2.0.2
-    "@radix-ui/react-popover": ^1.0.6
-    "@radix-ui/react-radio-group": ^1.1.3
-    "@radix-ui/react-scroll-area": ^1.0.4
-    "@radix-ui/react-slot": ^1.0.2
-    "@radix-ui/react-switch": ^1.0.3
-    "@radix-ui/react-toast": ^1.1.4
-    "@radix-ui/react-tooltip": ^1.0.6
-    "@react-aria/datepicker": ^3.5.0
-    "@react-stately/datepicker": ^3.5.0
-    class-variance-authority: ^0.6.1
-    clsx: ^1.2.1
-    copy-to-clipboard: ^3.3.3
-    date-fns: ^2.30.0
-    downshift: ^8.1.0
-    lodash: ^4.17.21
-    prism-react-renderer: ^2.0.6
-    react-day-picker: ^8.8.0
-    tailwind-merge: ^1.13.2
-  peerDependencies:
-    react: ^18.0.0
-    react-dom: ^18.0.0
-  checksum: fbaaf65282df99e7b3b45ee7dee35413fb330145b96b10177ca1d7ebd0275e049f5f153b0054baaa256fbc7d6954d23ea946a33b7c62dd32d2e8d99281d7eee8
   languageName: node
   linkType: hard
 
@@ -31467,8 +31410,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-payment-stripe@workspace:packages/medusa-payment-stripe"
   dependencies:
-    "@medusajs/admin": "*"
-    "@medusajs/medusa": "*"
+    "@medusajs/admin": ^7.0.1
+    "@medusajs/medusa": ^1.15.0
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1
     body-parser: ^1.19.0
