@@ -34,6 +34,12 @@ Store uploaded files to your Medusa backend on MinIO.
   MINIO_BUCKET=<BUCKET>
   MINIO_ACCESS_KEY=<ACCESS_KEY>
   MINIO_SECRET_KEY=<SECRET_KEY>
+  # optional variables
+  MINIO_PRIVATE_BUCKET=<PRIVATE_BUCKET>
+  MINIO_PRIVATE_ACCESS_KEY=<PRIVATE_ACCESS_KEY>
+  MINIO_PRIVATE_SECRET_KEY=<PRIVATE_SECRET_KEY>
+  MINIO_DOWNLOAD_URL_DURATION=<DOWNLOAD_URL_DURATION>
+  MINIO_CACHE_CONTROL=<CACHE_CONTROL>
   ```
 
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
@@ -48,6 +54,12 @@ Store uploaded files to your Medusa backend on MinIO.
           bucket: process.env.MINIO_BUCKET,
           access_key_id: process.env.MINIO_ACCESS_KEY,
           secret_access_key: process.env.MINIO_SECRET_KEY,
+          // optional variables
+          private_bucket: process.env.MINIO_PRIVATE_BUCKET,
+          private_access_key_id: process.env.MINIO_PRIVATE_ACCESS_KEY,
+          private_secret_access_key: process.env.MINIO_PRIVATE_SECRET_KEY,
+          download_url_duration: process.env.MINIO_DOWNLOAD_URL_DURATION,
+          cache_control: process.env.MINIO_CACHE_CONTROL
       },
     },
   ]
