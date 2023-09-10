@@ -3,31 +3,31 @@ import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
 import { MedusaError, isDefined } from "medusa-core-utils"
 import {
-    DeepPartial,
-    EntityManager,
-    FindOptionsWhere,
-    ILike,
-    In,
+  DeepPartial,
+  EntityManager,
+  FindOptionsWhere,
+  ILike,
+  In,
 } from "typeorm"
 import {
-    NewTotalsService,
-    ProductService,
-    RegionService,
-    TotalsService,
+  NewTotalsService,
+  ProductService,
+  RegionService,
+  TotalsService,
 } from "."
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-    Cart,
-    Discount,
-    DiscountConditionType,
-    LineItem,
-    Region,
+  Cart,
+  Discount,
+  DiscountConditionType,
+  LineItem,
+  Region,
 } from "../models"
 import {
-    AllocationType as DiscountAllocation,
-    DiscountRule,
-    DiscountRuleType,
+  AllocationType as DiscountAllocation,
+  DiscountRule,
+  DiscountRuleType,
 } from "../models/discount-rule"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
@@ -35,12 +35,12 @@ import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { FindConfig, Selector } from "../types/common"
 import {
-    CreateDiscountInput,
-    CreateDiscountRuleInput,
-    CreateDynamicDiscountInput,
-    FilterableDiscountProps,
-    UpdateDiscountInput,
-    UpdateDiscountRuleInput,
+  CreateDiscountInput,
+  CreateDiscountRuleInput,
+  CreateDynamicDiscountInput,
+  FilterableDiscountProps,
+  UpdateDiscountInput,
+  UpdateDiscountRuleInput,
 } from "../types/discount"
 import { CalculationContextData } from "../types/totals"
 import { buildQuery, setMetadata } from "../utils"
@@ -576,7 +576,7 @@ class DiscountService extends TransactionBaseService {
 
   async validateDiscountForProduct(
     discountRuleId: string,
-    productId: string | undefined
+    productId?: string
   ): Promise<boolean> {
     return await this.atomicPhase_(async (manager) => {
       const discountConditionRepo = manager.withRepository(
@@ -589,15 +589,9 @@ class DiscountService extends TransactionBaseService {
         return false
       }
 
-      const product = await this.productService_
-        .withTransaction(manager)
-        .retrieve(productId, {
-          relations: ["tags"],
-        })
-
       return await discountConditionRepo.isValidForProduct(
         discountRuleId,
-        product.id
+        productId
       )
     })
   }

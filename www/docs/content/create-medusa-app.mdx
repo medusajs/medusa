@@ -85,6 +85,7 @@ The `create-medusa-app` command can accept the following options:
 - `--db-url <url>`: Skips database creation and sets the database URL to the provided URL. Throws an error if connection to the database fails. Will still run migrations and open the admin after project creation. Useful if you already have a database created, locally or remotely.
 - `--no-migrations`: Skips running migrations, creating admin user, and seeding. If used, it's expected that you pass the `--db-url` option with a URL of a database that has all necessary migrations. Otherwise, unexpected errors will occur. Helpful only if combined with `--db-url`.
 - `--directory-path <path>`: Allows specifying the parent directory path to create the directory of the new project in.
+- `--with-nextjs-starter`: Installs the Next.js starter storefront under the `<PROJECT_NAME>-storefront` directory, where `<PROJECT_NAME>` is the name of the project you enter in the first question. If the `<PROJECT_NAME>-storefront` directory already exists, random characters are added at the end of `<PROJECT_NAME>-storefront`.
 
 ### Example: Connect to a Vercel PostgreSQL Database
 
@@ -122,7 +123,27 @@ You’ll first be asked to enter the name of your project, which is used to crea
 
 ---
 
-## (Optional) Step 3: Specify PostgreSQL credentials
+## Step 3: Enter an admin email
+
+You'll then be prompted to enter an admin email for your admin user. You'll be using this admin email later to login to your admin dashboard. You can use the default `admin@medusa-test.com` or enter any other email.
+
+---
+
+## (Optional) Step 4: Install Next.js Starter Storefront
+
+If you didn't pass the `--with-nextjs-starter` option, you'll be asked if you want to install the [Next.js starter storefront](./starters/nextjs-medusa-starter.mdx) along with the Medusa backend. This will install the storefront under the `<PROJECT_NAME>-storefront` directory, where `<PROJECT_NAME>` is the name of the project you specified in step 2.
+
+If you want to install the storefront, type `y` and press <kbd>enter</kbd>. If not, you can use the default value `N` and just press <kbd>enter</kbd>.
+
+:::note
+
+You can always install the storefront at a later point. Medusa is a headless backend, so it operates without a storefront by default. You can connect any storefront to it. The Next.js Starter storefront is a good option to use, but you can also build your own storefront later on.
+
+:::
+
+---
+
+## (Optional) Step 5: Specify PostgreSQL credentials
 
 :::note
 
@@ -133,12 +154,6 @@ This doesn't apply if you supplied the `--db-url` option. In that case, the comm
 By default, this command will try to use the default PostgreSQL credentials to connect to your PostgreSQL server. If they don't work, you'll be prompted to enter your PostgreSQL database and password. If they work, you can move ahead to the next step.
 
 These credentials will be used to create a database during this setup and configure your Medusa backend to connect to that database.
-
----
-
-## Step 4: Enter an admin email
-
-You'll then be prompted to enter an admin email for your admin user. You'll be using this admin email later to login to your admin dashboard. You can use the default `admin@medusa-test.com` or enter any other email.
 
 After following the above steps, the project setup will start which includes:
 
@@ -152,7 +167,7 @@ After following the above steps, the project setup will start which includes:
 
 ---
 
-## Step 5: Log into admin dashboard
+## Step 6: Log into admin dashboard
 
 Once the project is prepared, the Medusa backend will start and the admin dashboard will be opened in your default browser. You'll then be asked to enter a password for the admin email you entered earlier, as well as other account information.
 

@@ -39,7 +39,7 @@ export async function handleAddOrUpdateLineItem(
       metadata: data.metadata,
     })
 
-  await txCartService.addLineItem(cart.id, line, {
+  await txCartService.addOrUpdateLineItems(cart.id, line, {
     validateSalesChannels: featureFlagRouter.isFeatureEnabled("sales_channels"),
   })
 
