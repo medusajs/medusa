@@ -1,30 +1,30 @@
 import { isDefined, MedusaError } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import {
-    ITaxCalculationStrategy,
-    TaxCalculationContext,
-    TransactionBaseService,
+  ITaxCalculationStrategy,
+  TaxCalculationContext,
+  TransactionBaseService,
 } from "../interfaces"
 import {
-    Cart,
-    ClaimOrder,
-    Discount,
-    DiscountRuleType,
-    LineItem,
-    LineItemTaxLine,
-    Order,
-    ShippingMethod,
-    ShippingMethodTaxLine,
-    Swap,
+  Cart,
+  ClaimOrder,
+  Discount,
+  DiscountRuleType,
+  LineItem,
+  LineItemTaxLine,
+  Order,
+  ShippingMethod,
+  ShippingMethodTaxLine,
+  Swap,
 } from "../models"
 import { isCart } from "../types/cart"
 import { isOrder } from "../types/orders"
 import {
-    CalculationContextData,
-    LineAllocationsMap,
-    LineDiscount,
-    LineDiscountAmount,
-    SubtotalOptions,
+  CalculationContextData,
+  LineAllocationsMap,
+  LineDiscount,
+  LineDiscountAmount,
+  SubtotalOptions,
 } from "../types/totals"
 import { NewTotalsService, TaxProviderService } from "./index"
 
@@ -622,6 +622,7 @@ class TotalsService extends TransactionBaseService {
    * @param value - discount value
    * @param discountType - the type of discount (fixed or percentage)
    * @return triples of lineitem, variant and applied discount
+   * @deprecated - in favour of DiscountService.calculateDiscountForLineItem
    */
   calculateDiscount_(
     lineItem: LineItem,
