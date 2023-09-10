@@ -32,60 +32,60 @@ type SettingsCardType = {
   to: string
   feature_flag?: string
 }
-
+const { t } = useTranslation()
 const settings: SettingsCardType[] = [
   {
-    heading: "API Key Management",
+    heading: t("API Key Management"),
     description: "Create and manage API keys",
     icon: KeyIcon,
     to: "/a/publishable-api-keys",
     feature_flag: "publishable_api_keys",
   },
   {
-    heading: "Currencies",
+    heading: t("Currencies"),
     description: "Manage the currencies of your store",
     icon: CoinsIcon,
     to: "/a/settings/currencies",
   },
   {
-    heading: "Personal Information",
+    heading: t("Personal Information"),
     description: "Manage your Medusa profile",
     icon: HappyIcon,
     to: "/a/settings/personal-information",
   },
   {
-    heading: "Regions",
+    heading: t("Regions"),
     description: "Manage shipping, payment, and fulfillment across regions",
     icon: MapPinIcon,
     to: "/a/settings/regions",
   },
   {
-    heading: "Return Reasons",
+    heading: t("Return Reasons"),
     description: "Manage resons for returned items",
     icon: ArrowUTurnLeft,
     to: "/a/settings/return-reasons",
   },
   {
-    heading: "Sales Channels",
+    heading: t("Sales Channels"),
     description: "Control which product are available in which channels",
     icon: ChannelsIcon,
     feature_flag: "sales_channels",
     to: "/a/sales-channels",
   },
   {
-    heading: "Store Details",
+    heading: t("Store Details"),
     description: "Manage your business details",
     icon: CrosshairIcon,
     to: "/a/settings/details",
   },
   {
-    heading: "Taxes",
+    heading: t("Taxes"),
     description: "Manage taxes across regions and products",
     icon: TaxesIcon,
     to: "/a/settings/taxes",
   },
   {
-    heading: "The Team",
+    heading: t("The Team"),
     description: "Manage users of your Medusa Store",
     icon: UsersIcon,
     to: "/a/settings/team",
