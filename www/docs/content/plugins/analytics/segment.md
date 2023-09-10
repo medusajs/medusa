@@ -129,7 +129,7 @@ const plugins = [
 
 Run your backend with the following command:
 
-```bash npm2yarn
+```bash
 npx medusa develop
 ```
 
