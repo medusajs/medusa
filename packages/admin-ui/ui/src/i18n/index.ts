@@ -22,7 +22,7 @@ void i18n
     },
     load: "currentOnly",
     resources: {
-      en: {
+      "en-US": {
         translation: translateEn,
       },
       ar: {
