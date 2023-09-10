@@ -1,4 +1,5 @@
 import * as RadixPopover from "@radix-ui/react-popover"
+import { useTranslation } from "react-i18next"
 
 import React, {
   PropsWithChildren,
@@ -23,6 +24,7 @@ const FilterDropdownContainer = ({
   triggerElement,
   children,
 }: PropsWithChildren<FilterDropdownContainerProps>) => {
+  const { t } = useTranslation()
   const { height } = useWindowDimensions()
   const ref = useRef<HTMLButtonElement>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -76,7 +78,7 @@ const FilterDropdownContainer = ({
             variant="ghost"
             onClick={() => onClear()}
           >
-            Clear
+            {t("Clear")}
           </Button>
           <Button
             tabIndex={-1}
@@ -85,7 +87,7 @@ const FilterDropdownContainer = ({
             size="small"
             onClick={() => onSubmit()}
           >
-            Apply
+            {t("Apply")}
           </Button>
         </div>
       </RadixPopover.Content>

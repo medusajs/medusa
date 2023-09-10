@@ -2,6 +2,7 @@ import React from "react"
 import Button from "../../fundamentals/button"
 import InputField from "../input"
 import { trim } from "lodash"
+import { useTranslation } from "react-i18next"
 
 type SaveFilterItemProps = {
   saveFilter: () => void
@@ -14,6 +15,7 @@ const SaveFilterItem: React.FC<SaveFilterItemProps> = ({
   setName,
   name,
 }) => {
+  const { t } = useTranslation()
   const onSave = () => {
     const trimmedName = trim(name)
     if (trimmedName !== "") {
@@ -36,7 +38,7 @@ const SaveFilterItem: React.FC<SaveFilterItemProps> = ({
         size="small"
         onClick={onSave}
       >
-        Save
+        {t("Save")}
       </Button>
     </div>
   )
