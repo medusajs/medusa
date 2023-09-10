@@ -45,10 +45,10 @@ const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
     <Table>
       <Table.HeadRow className="text-grey-50 inter-small-semibold">
         <Table.HeadCell>
-          {t("rma-return-product-table.product-details", "Product Details")}
+          {t("rma-return-product-table-product-details", "Product Details")}
         </Table.HeadCell>
         <Table.HeadCell className="pr-8 text-right">
-          {t("rma-return-product-table.quantity", "Quantity")}
+          {t("rma-return-product-table-quantity", "Quantity")}
         </Table.HeadCell>
         <Table.HeadCell className="text-right">
           {isAdditionalItems ? "Unit Price" : "Refundable"}

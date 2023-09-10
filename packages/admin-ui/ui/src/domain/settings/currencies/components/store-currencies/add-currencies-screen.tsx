@@ -46,9 +46,9 @@ const AddCurrenciesScreen = () => {
       {
         onSuccess: () => {
           notification(
-            t("store-currencies.success", "Success"),
+            t("store-currencies-success", "Success"),
             t(
-              "store-currencies.successfully-updated-currencies",
+              "store-currencies-successfully-updated-currencies",
               "Successfully updated currencies"
             ),
             "success"
@@ -57,7 +57,7 @@ const AddCurrenciesScreen = () => {
         },
         onError: (err) => {
           notification(
-            t("store-currencies.error", "Error"),
+            t("store-currencies-error", "Error"),
             getErrorMessage(err),
             "error"
           )
@@ -110,7 +110,7 @@ const AddCurrenciesScreen = () => {
       <Modal.Footer>
         <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            {t("store-currencies.cancel", "Cancel")}
+            {t("store-currencies-cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
@@ -121,7 +121,7 @@ const AddCurrenciesScreen = () => {
               })
             }
           >
-            {t("store-currencies.save-and-go-back", "Save and go back")}
+            {t("store-currencies-save-and-go-back", "Save and go back")}
           </Button>
           <Button
             variant="primary"
@@ -135,7 +135,7 @@ const AddCurrenciesScreen = () => {
               })
             }
           >
-            {t("store-currencies.save-and-close", "Save and close")}
+            {t("store-currencies-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>
@@ -149,7 +149,7 @@ export const useAddCurrenciesModalScreen = () => {
 
   return {
     screen: {
-      title: t("store-currencies.add-store-currencies", "Add Store Currencies"),
+      title: t("store-currencies-add-store-currencies", "Add Store Currencies"),
       onBack: pop,
       view: <AddCurrenciesScreen />,
     },

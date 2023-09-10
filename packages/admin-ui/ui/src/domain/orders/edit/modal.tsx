@@ -42,7 +42,7 @@ function TotalsSection(props: TotalsSectionProps) {
       <div className="bg-grey-20 mb-6 h-px w-full" />
       <div className="mb-2 flex h-[40px] justify-between">
         <span className="text-gray-500">
-          {t("edit.amount-paid", "Amount Paid")}
+          {t("edit-amount-paid", "Amount Paid")}
         </span>
         <span className="text-gray-900">
           {formatAmountWithSymbol({
@@ -55,7 +55,7 @@ function TotalsSection(props: TotalsSectionProps) {
 
       <div className="mb-2 flex h-[40px] justify-between">
         <span className="font-semibold text-gray-900">
-          {t("edit.new-total", "New Total")}
+          {t("edit-new-total", "New Total")}
         </span>
         <span className="text-2xl font-semibold">
           {formatAmountWithSymbol({
@@ -67,7 +67,7 @@ function TotalsSection(props: TotalsSectionProps) {
 
       <div className="flex justify-between">
         <span className="text-gray-500">
-          {t("edit.difference-due", "Difference Due")}
+          {t("edit-difference-due", "Difference Due")}
         </span>
         <span
           className={clsx("text-gray-900", {
@@ -132,10 +132,10 @@ export function AddProductVariant(props: AddProductVariantProps) {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={onBack}>
-            {t("edit.back", "Back")}
+            {t("edit-back", "Back")}
           </Button>
           <Button variant="primary" size="small" onClick={onSubmit}>
-            {t("edit.save-and-go-back", "Save and go back")}
+            {t("edit-save-and-go-back", "Save and go back")}
           </Button>
         </div>
       </Modal.Footer>
@@ -204,15 +204,15 @@ function OrderEditModal(props: OrderEditModalProps) {
       }
 
       notification(
-        t("edit.success", "Success"),
-        t("edit.order-edit-set-as-requested", "Order edit set as requested"),
+        t("edit-success", "Success"),
+        t("edit-order-edit-set-as-requested", "Order edit set as requested"),
         "success"
       )
     } catch (e) {
       notification(
-        t("edit.error", "Error"),
+        t("edit-error", "Error"),
         t(
-          "edit.failed-to-request-confirmation",
+          "edit-failed-to-request-confirmation",
           "Failed to request confirmation"
         ),
         "error"
@@ -242,14 +242,14 @@ function OrderEditModal(props: OrderEditModalProps) {
       await Promise.all(promises)
 
       notification(
-        t("edit.success", "Success"),
-        t("edit.added-successfully", "Added successfully"),
+        t("edit-success", "Success"),
+        t("edit-added-successfully", "Added successfully"),
         "success"
       )
     } catch (e) {
       notification(
-        t("edit.error", "Error"),
-        t("edit.error-occurred", "Error occurred"),
+        t("edit-error", "Error"),
+        t("edit-error-occurred", "Error occurred"),
         "error"
       )
     }
@@ -276,7 +276,7 @@ function OrderEditModal(props: OrderEditModalProps) {
   }
 
   const addProductVariantScreen = {
-    title: t("edit.add-product-variants", "Add Product Variants"),
+    title: t("edit-add-product-variants", "Add Product Variants"),
     onBack: layeredModalContext.pop,
     view: (
       <AddProductVariant
@@ -298,13 +298,13 @@ function OrderEditModal(props: OrderEditModalProps) {
       <Modal.Body>
         <Modal.Header handleClose={onCancel}>
           <h1 className="inter-xlarge-semibold">
-            {t("edit.edit-order", "Edit Order")}
+            {t("edit-edit-order", "Edit Order")}
           </h1>
         </Modal.Header>
         <Modal.Content>
           <div className="mb-4 flex items-center justify-between">
             <span className="text-large font-semibold text-gray-900">
-              {t("edit.items", "Items")}
+              {t("edit-items", "Items")}
             </span>
             <div className="flex items-center justify-between">
               <Button
@@ -315,7 +315,7 @@ function OrderEditModal(props: OrderEditModalProps) {
                   layeredModalContext.push(addProductVariantScreen)
                 }
               >
-                {t("edit.add-items", "Add items")}
+                {t("edit-add-items", "Add items")}
               </Button>
               {!showFilter && (
                 <Button
@@ -336,7 +336,7 @@ function OrderEditModal(props: OrderEditModalProps) {
                   ref={filterRef}
                   value={filterTerm}
                   onDelete={hideFilter}
-                  placeholder={t("edit.filter-items", "Filter items...")}
+                  placeholder={t("edit-filter-items", "Filter items...")}
                   onChange={(e) => setFilterTerm(e.target.value)}
                   prefix={<SearchIcon size={14} className="text-gray-400" />}
                 />
@@ -378,10 +378,10 @@ function OrderEditModal(props: OrderEditModalProps) {
           {/* NOTE */}
           {hasChanges && (
             <div className="flex items-center justify-between">
-              <span className="text-gray-500">{t("edit.note", "Note")}</span>
+              <span className="text-gray-500">{t("edit-note", "Note")}</span>
               <InputField
                 className="max-w-[455px]"
-                placeholder={t("edit.add-a-note", "Add a note...")}
+                placeholder={t("edit-add-a-note", "Add a note...")}
                 onChange={(e) => setNote(e.target.value)}
                 value={note}
               />
@@ -396,7 +396,7 @@ function OrderEditModal(props: OrderEditModalProps) {
               type="button"
               onClick={onCancel}
             >
-              {t("edit.cancel", "Cancel")}
+              {t("edit-cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -406,7 +406,7 @@ function OrderEditModal(props: OrderEditModalProps) {
               loading={isUpdating || isRequestingConfirmation}
               onClick={onSave}
             >
-              {t("edit.save-and-close", "Save and close")}
+              {t("edit-save-and-close", "Save and close")}
             </Button>
           </div>
         </Modal.Footer>

@@ -52,7 +52,7 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
             type="button"
             className="h-10 w-10"
             aria-label={t(
-              "refund-amount-form.cancel-editing-refund-amount",
+              "refund-amount-form-cancel-editing-refund-amount",
               "Cancel editing refund amount"
             )}
             onClick={disableEdit}
@@ -66,7 +66,7 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
             type="button"
             onClick={enableEdit}
             aria-label={t(
-              "refund-amount-form.edit-refund-amount",
+              "refund-amount-form-edit-refund-amount",
               "Edit refund amount"
             )}
             className="h-10 w-10"
@@ -84,7 +84,7 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
               min: {
                 value: 0,
                 message: t(
-                  "refund-amount-form.refund-amount-cannot-be-negative",
+                  "refund-amount-form-refund-amount-cannot-be-negative",
                   "Refund amount cannot be negative"
                 ),
               },
@@ -92,7 +92,7 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
               validate: (value) => {
                 if (value === undefined || !(value >= 0)) {
                   return t(
-                    "refund-amount-form.the-refund-amount-must-be-at-least-0",
+                    "refund-amount-form-the-refund-amount-must-be-at-least-0",
                     "The refund amount must be at least 0"
                   )
                 }

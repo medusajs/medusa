@@ -24,9 +24,9 @@ const usePromotionActions = (promotion) => {
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("discount-table.delete-discount", "Delete Discount"),
+      heading: t("discount-table-delete-discount", "Delete Discount"),
       text: t(
-        "discount-table.confirm-delete",
+        "discount-table-confirm-delete",
         "Are you sure you want to delete this Discount?"
       ),
     })
@@ -45,8 +45,8 @@ const usePromotionActions = (promotion) => {
       },
       {
         label: promotion.is_disabled
-          ? t("discount-table.publish", "Publish")
-          : t("discount-table.unpublish", "Unpublish"),
+          ? t("discount-table-publish", "Publish")
+          : t("discount-table-unpublish", "Unpublish"),
         icon: promotion.is_disabled ? (
           <PublishIcon size={20} />
         ) : (
@@ -60,14 +60,14 @@ const usePromotionActions = (promotion) => {
             {
               onSuccess: () => {
                 notification(
-                  t("discount-table.success", "Success"),
+                  t("discount-table-success", "Success"),
                   promotion.is_disabled
                     ? t(
-                        "discount-table.successfully-published-discount",
+                        "discount-table-successfully-published-discount",
                         "Successfully published discount"
                       )
                     : t(
-                        "discount-table.successfully-unpublished-discount",
+                        "discount-table-successfully-unpublished-discount",
                         "Successfully unpublished discount"
                       ),
                   "success"
@@ -75,7 +75,7 @@ const usePromotionActions = (promotion) => {
               },
               onError: (err) =>
                 notification(
-                  t("discount-table.error", "Error"),
+                  t("discount-table-error", "Error"),
                   getErrorMessage(err),
                   "error"
                 ),
@@ -84,12 +84,12 @@ const usePromotionActions = (promotion) => {
         },
       },
       {
-        label: t("discount-table.duplicate", "Duplicate"),
+        label: t("discount-table-duplicate", "Duplicate"),
         icon: <DuplicateIcon size={20} />,
         onClick: () => copyPromotion(promotion),
       },
       {
-        label: t("discount-table.delete", "Delete"),
+        label: t("discount-table-delete", "Delete"),
         icon: <TrashIcon size={20} />,
         variant: "danger",
         onClick: handleDelete,

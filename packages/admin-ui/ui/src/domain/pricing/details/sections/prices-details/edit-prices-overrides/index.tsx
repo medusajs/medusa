@@ -39,7 +39,7 @@ const EditPricesOverridesModal = ({
   const getOnClick = (variant) => () =>
     context.push({
       title: t(
-        "edit-prices-overrides.edit-price-overrides",
+        "edit-prices-overrides-edit-price-overrides",
         "Edit price overrides"
       ),
       onBack: () => context.pop(),
@@ -65,9 +65,9 @@ const EditPricesOverridesModal = ({
                   context.pop()
                   close()
                   notification(
-                    t("edit-prices-overrides.success", "Success"),
+                    t("edit-prices-overrides-success", "Success"),
                     t(
-                      "edit-prices-overrides.price-overrides-updated",
+                      "edit-prices-overrides-price-overrides-updated",
                       "Price overrides updated"
                     ),
                     "success"
@@ -126,7 +126,7 @@ const EditPricesOverridesModal = ({
               size="large"
               onClick={close}
             >
-              {t("edit-prices-overrides.cancel", "Cancel")}
+              {t("edit-prices-overrides-cancel", "Cancel")}
             </Button>
             <Button
               disabled
@@ -134,7 +134,7 @@ const EditPricesOverridesModal = ({
               className="text-small rounded-rounded w-32 justify-center"
               variant="primary"
             >
-              {t("edit-prices-overrides.save", "Save")}
+              {t("edit-prices-overrides-save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

@@ -50,7 +50,7 @@ const DetailsTagConditionSelector = ({
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "details-condition-tables.search-by-tag",
+              "details-condition-tables-search-by-tag",
               "Search by tag..."
             ),
           }}

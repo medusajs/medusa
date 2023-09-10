@@ -62,7 +62,7 @@ const AddCustomerGroupConditionSelector = ({
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "add-condition-tables.search-groups",
+              "add-condition-tables-search-groups",
               "Search groups..."
             ),
           }}

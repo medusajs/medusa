@@ -113,7 +113,7 @@ const EditVariantModal = ({
     <LayeredModal context={layeredModalContext} handleClose={handleClose}>
       <Modal.Header handleClose={handleClose}>
         <h1 className="inter-xlarge-semibold">
-          {t("product-variants-section.edit-variant", "Edit Variant")}
+          {t("product-variants-section-edit-variant", "Edit Variant")}
           {variant.title && (
             <span className="inter-xlarge-regular text-grey-50">
               {" "}
@@ -134,7 +134,7 @@ const EditVariantModal = ({
               type="button"
               onClick={handleClose}
             >
-              {t("product-variants-section.cancel", "Cancel")}
+              {t("product-variants-section-cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -143,7 +143,7 @@ const EditVariantModal = ({
               disabled={!isDirty && !isDuplicate}
               loading={addingVariant || updatingVariant}
             >
-              {t("product-variants-section.save-and-close", "Save and close")}
+              {t("product-variants-section-save-and-close", "Save and close")}
             </Button>
           </div>
         </Modal.Footer>

@@ -74,9 +74,9 @@ const RefundMenu = ({
       {
         onSuccess: () => {
           notification(
-            t("refund.success", "Success"),
+            t("refund-success", "Success"),
             t(
-              "refund.successfully-refunded-order",
+              "refund-successfully-refunded-order",
               "Successfully refunded order"
             ),
             "success"
@@ -85,7 +85,7 @@ const RefundMenu = ({
         },
         onError: (error) => {
           notification(
-            t("refund.error", "Error"),
+            t("refund-error", "Error"),
             getErrorMessage(error),
             "error"
           )
@@ -102,7 +102,7 @@ const RefundMenu = ({
         <Modal.Body>
           <Modal.Header handleClose={onDismiss}>
             <h2 className="inter-xlarge-semibold">
-              {t("refund.create-a-refund", "Create a refund")}
+              {t("refund-create-a-refund", "Create a refund")}
             </h2>
           </Modal.Header>
           <Modal.Content>
@@ -113,17 +113,17 @@ const RefundMenu = ({
                 </div>
                 <div className="flex flex-col">
                   <span className="inter-small-semibold">
-                    {t("refund.attention", "Attention!")}
+                    {t("refund-attention", "Attention!")}
                   </span>
                   {t(
-                    "refund.system-payment-disclaimer",
+                    "refund-system-payment-disclaimer",
                     "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments."
                   )}
                 </div>
               </div>
             )}
             <span className="inter-base-semibold">
-              {t("refund.details", "Details")}
+              {t("refund-details", "Details")}
             </span>
             <div className="gap-y-base mt-4 grid">
               <CurrencyInput.Root
@@ -148,7 +148,7 @@ const RefundMenu = ({
                       amount={value}
                       onBlur={onBlur}
                       invalidMessage={t(
-                        "refund.cannot-refund-more-than-the-orders-net-total",
+                        "refund-cannot-refund-more-than-the-orders-net-total",
                         "Cannot refund more than the order's net total."
                       )}
                       onValidate={handleValidateRefundAmount}
@@ -161,13 +161,13 @@ const RefundMenu = ({
                 name="reason"
                 control={control}
                 defaultValue={{
-                  label: t("refund.discount", "Discount"),
+                  label: t("refund-discount", "Discount"),
                   value: "discount",
                 }}
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
                   <Select
-                    label={t("refund.reason", "Reason")}
+                    label={t("refund-reason", "Reason")}
                     options={reasonOptions}
                     value={value}
                     onChange={onChange}
@@ -176,9 +176,9 @@ const RefundMenu = ({
               />
               <TextArea
                 {...register("note")}
-                label={t("refund.note", "Note")}
+                label={t("refund-note", "Note")}
                 placeholder={t(
-                  "refund.discount-for-loyal-customer",
+                  "refund-discount-for-loyal-customer",
                   "Discount for loyal customer"
                 )}
               />
@@ -208,7 +208,7 @@ const RefundMenu = ({
                   type="checkbox"
                 />
                 <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
-                  {t("refund.send-notifications", "Send notifications")}
+                  {t("refund-send-notifications", "Send notifications")}
                   <IconTooltip content="Notify customer of created return" />
                 </span>
               </div>
@@ -219,7 +219,7 @@ const RefundMenu = ({
                   className="w-[112px]"
                   variant="ghost"
                 >
-                  {t("refund.cancel", "Cancel")}
+                  {t("refund-cancel", "Cancel")}
                 </Button>
                 <Button
                   type="submit"
@@ -229,7 +229,7 @@ const RefundMenu = ({
                   loading={isLoading}
                   disabled={isLoading}
                 >
-                  {t("refund.complete", "Complete")}
+                  {t("refund-complete", "Complete")}
                 </Button>
               </div>
             </div>

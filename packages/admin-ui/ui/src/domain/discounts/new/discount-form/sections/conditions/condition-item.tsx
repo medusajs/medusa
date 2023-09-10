@@ -190,7 +190,7 @@ const ConditionItem = <Type extends DiscountConditionType>({
                 })}
                 {remainder > 0 && (
                   <span className="text-grey-40 ml-2">
-                    {t("condition-item.remainder-more", "+{remainder} more", {
+                    {t("condition-item-remainder-more", "+{remainder} more", {
                       remainder,
                     })}
                   </span>
@@ -204,12 +204,12 @@ const ConditionItem = <Type extends DiscountConditionType>({
             forceDropdown
             actions={[
               {
-                label: t("conditions.edit", "Edit"),
+                label: t("conditions-edit", "Edit"),
                 onClick: () => setShowEdit(true),
                 icon: <EditIcon size={16} />,
               },
               {
-                label: t("conditions.delete-condition", "Delete condition"),
+                label: t("conditions-delete-condition", "Delete condition"),
                 onClick: () =>
                   updateCondition({
                     type,
@@ -233,15 +233,15 @@ const ConditionItem = <Type extends DiscountConditionType>({
 const getTitle = (type: DiscountConditionType, t: TFunction) => {
   switch (type) {
     case DiscountConditionType.PRODUCTS:
-      return t("conditions.product", "Product")
+      return t("conditions-product", "Product")
     case DiscountConditionType.PRODUCT_COLLECTIONS:
-      return t("conditions.collection", "Collection")
+      return t("conditions-collection", "Collection")
     case DiscountConditionType.PRODUCT_TAGS:
-      return t("conditions.tag", "Tag")
+      return t("conditions-tag", "Tag")
     case DiscountConditionType.CUSTOMER_GROUPS:
-      return t("conditions.customer-group", "Customer group")
+      return t("conditions-customer-group", "Customer group")
     case DiscountConditionType.PRODUCT_TYPES:
-      return t("conditions.type", "Type")
+      return t("conditions-type", "Type")
   }
 }
 

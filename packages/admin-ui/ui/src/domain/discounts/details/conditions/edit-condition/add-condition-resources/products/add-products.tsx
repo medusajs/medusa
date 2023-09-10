@@ -37,7 +37,7 @@ const AddProductConditionsScreen = () => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("products.search", "Search..."),
+            searchPlaceholder: t("products-search", "Search..."),
           }}
           resourceName="Products"
           totalCount={count ?? 0}
@@ -54,21 +54,21 @@ const AddProductConditionsScreen = () => {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            {t("products.cancel", "Cancel")}
+            {t("products-cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndGoBack(selectedResources)}
           >
-            {t("products.save-and-go-back", "Save and go back")}
+            {t("products-save-and-go-back", "Save and go back")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndClose(selectedResources)}
           >
-            {t("products.save-and-close", "Save and close")}
+            {t("products-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

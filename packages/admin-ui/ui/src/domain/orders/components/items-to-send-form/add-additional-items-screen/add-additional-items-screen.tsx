@@ -164,7 +164,7 @@ const AddAdditionalItemsScreen = ({
       <Modal.Footer>
         <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            {t("add-additional-items-screen.go-back", "Go back")}
+            {t("add-additional-items-screen-go-back", "Go back")}
           </Button>
           <Button
             variant="primary"
@@ -172,7 +172,7 @@ const AddAdditionalItemsScreen = ({
             type="button"
             onClick={onSubmit}
           >
-            {t("add-additional-items-screen.add-products", "Add products")}
+            {t("add-additional-items-screen-add-products", "Add products")}
           </Button>
         </div>
       </Modal.Footer>
@@ -187,7 +187,7 @@ export const useAddAdditionalItemsScreen = () => {
   const pushScreen = (props: Props) => {
     push({
       title: t(
-        "add-additional-items-screen.add-product-variants",
+        "add-additional-items-screen-add-product-variants",
         "Add Product Variants"
       ),
       onBack: () => pop(),

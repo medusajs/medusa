@@ -40,7 +40,7 @@ const AddCollectionConditionsScreen = () => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("collections.search", "Search..."),
+            searchPlaceholder: t("collections-search", "Search..."),
           }}
           resourceName="Collections"
           totalCount={count ?? 0}
@@ -57,21 +57,21 @@ const AddCollectionConditionsScreen = () => {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            {t("collections.cancel", "Cancel")}
+            {t("collections-cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndGoBack(selectedResources, () => refetch())}
           >
-            {t("collections.save-and-go-back", "Save and go back")}
+            {t("collections-save-and-go-back", "Save and go back")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndClose(selectedResources)}
           >
-            {t("collections.save-and-close", "Save and close")}
+            {t("collections-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

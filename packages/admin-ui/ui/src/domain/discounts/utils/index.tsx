@@ -11,14 +11,14 @@ enum DiscountConditionType {
 export const getTitle = (view: DiscountConditionType, t: TFunction) => {
   switch (view) {
     case DiscountConditionType.PRODUCTS:
-      return t("utils.products", "products")
+      return t("utils-products", "products")
     case DiscountConditionType.CUSTOMER_GROUPS:
-      return t("utils.groups", "groups")
+      return t("utils-groups", "groups")
     case DiscountConditionType.PRODUCT_TAGS:
-      return t("utils.tags", "tags")
+      return t("utils-tags", "tags")
     case DiscountConditionType.PRODUCT_COLLECTIONS:
-      return t("utils.collections", "collections")
+      return t("utils-collections", "collections")
     case DiscountConditionType.PRODUCT_TYPES:
-      return t("utils.types", "types")
+      return t("utils-types", "types")
   }
 }

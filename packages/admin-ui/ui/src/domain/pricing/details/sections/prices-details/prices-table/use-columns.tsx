@@ -10,7 +10,7 @@ const usePricesColumns = () => {
   const columns = React.useMemo<Column<Product>[]>(
     () => [
       {
-        Header: <div className="pl-4">{t("prices-table.name", "Name")}</div>,
+        Header: <div className="pl-4">{t("prices-table-name", "Name")}</div>,
         accessor: "title",
         Cell: ({ row: { original } }) => (
           <div className="flex items-center pl-4">
@@ -33,7 +33,7 @@ const usePricesColumns = () => {
       {
         Header: (
           <div className="w-[400px]">
-            {t("prices-table.collection", "Collection")}
+            {t("prices-table-collection", "Collection")}
           </div>
         ),
         accessor: "collection",
@@ -43,14 +43,14 @@ const usePricesColumns = () => {
               value.title
             ) : (
               <span className="text-grey-40">
-                {t("prices-table.no-collection", "No collection")}
+                {t("prices-table-no-collection", "No collection")}
               </span>
             )}
           </Table.Cell>
         ),
       },
       {
-        Header: t("prices-table.variants", "Variants"),
+        Header: t("prices-table-variants", "Variants"),
         Cell: ({ row: { original } }) => (
           <Table.Cell>{original.variants.length}</Table.Cell>
         ),

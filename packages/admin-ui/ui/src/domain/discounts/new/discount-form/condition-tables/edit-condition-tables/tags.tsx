@@ -49,7 +49,7 @@ const EditTagConditionSelector = ({ onClose }) => {
                 enableSearch: true,
                 immediateSearchFocus: true,
                 searchPlaceholder: t(
-                  "edit-condition-tables.search-by-tag",
+                  "edit-condition-tables-search-by-tag",
                   "Search by tag..."
                 ),
               }}

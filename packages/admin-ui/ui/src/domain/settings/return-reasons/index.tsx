@@ -34,15 +34,15 @@ const ReturnReasons = () => {
     <div>
       <BackButton
         path="/a/settings"
-        label={t("return-reasons.back-to-settings", "Back to settings")}
+        label={t("return-reasons-back-to-settings", "Back to settings")}
         className="mb-xsmall"
       />
       <TwoSplitPane>
         <BodyCard
-          title={t("return-reasons.return-reasons", "Return Reasons")}
+          title={t("return-reasons-return-reasons", "Return Reasons")}
           actionables={[
             {
-              label: t("return-reasons.add-reason.label", "Add reason"),
+              label: t("return-reasons-add-reason-label", "Add reason"),
               icon: (
                 <span className="text-grey-90">
                   <PlusIcon size={20} />
@@ -52,7 +52,7 @@ const ReturnReasons = () => {
             },
           ]}
           subtitle={t(
-            "return-reasons.manage-reasons-for-returned-items",
+            "return-reasons-manage-reasons-for-returned-items",
             "Manage reasons for returned items"
           )}
         >

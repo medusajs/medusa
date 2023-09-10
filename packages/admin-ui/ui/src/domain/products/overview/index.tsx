@@ -78,7 +78,7 @@ const Overview = () => {
               onClick={() => openImportModal()}
             >
               <UploadIcon size={20} />
-              {t("overview.import-products", "Import Products")}
+              {t("overview-import-products", "Import Products")}
             </Button>
             <Button
               variant="secondary"
@@ -86,7 +86,7 @@ const Overview = () => {
               onClick={() => openExportModal()}
             >
               <ExportIcon size={20} />
-              {t("overview.export-products", "Export Products")}
+              {t("overview-export-products", "Export Products")}
             </Button>
             <Button
               variant="secondary"
@@ -94,7 +94,7 @@ const Overview = () => {
               onClick={openProductCreate}
             >
               <PlusIcon size={20} />
-              {t("overview.new-product", "New Product")}
+              {t("overview-new-product", "New Product")}
             </Button>
           </div>
         )
@@ -108,7 +108,7 @@ const Overview = () => {
               onClick={() => setShowNewCollection(!showNewCollection)}
             >
               <PlusIcon size={20} />
-              {t("overview.new-collection", "New Collection")}
+              {t("overview-new-collection", "New Collection")}
             </Button>
           </div>
         )
@@ -149,9 +149,9 @@ const Overview = () => {
       {
         onSuccess: ({ collection }) => {
           notification(
-            t("overview.success", "Success"),
+            t("overview-success", "Success"),
             t(
-              "overview.successfully-created-collection",
+              "overview-successfully-created-collection",
               "Successfully created collection"
             ),
             "success"
@@ -161,7 +161,7 @@ const Overview = () => {
         },
         onError: (err) =>
           notification(
-            t("overview.error", "Error"),
+            t("overview-error", "Error"),
             getErrorMessage(err),
             "error"
           ),
@@ -180,9 +180,9 @@ const Overview = () => {
       onSuccess: () => {
         resetInterval()
         notification(
-          t("overview.success", "Success"),
+          t("overview-success", "Success"),
           t(
-            "overview.successfully-initiated-export",
+            "overview-successfully-initiated-export",
             "Successfully initiated export"
           ),
           "success"
@@ -190,7 +190,7 @@ const Overview = () => {
       },
       onError: (err) => {
         notification(
-          t("overview.error", "Error"),
+          t("overview-error", "Error"),
           getErrorMessage(err),
           "error"
         )

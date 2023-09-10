@@ -202,12 +202,12 @@ export const ProductTable = forwardRef(
 
     const getActions = (id: string) => [
       {
-        label: t("tables.details", "Details"),
+        label: t("tables-details", "Details"),
         onClick: () => navigate(`/a/products/${id}`),
         icon: <DetailsIcon size={20} />,
       },
       {
-        label: t("tables.remove-from-the-channel", "Remove from the channel"),
+        label: t("tables-remove-from-the-channel", "Remove from the channel"),
         variant: "danger",
         onClick: () => removeProductFromSalesChannel(id),
         icon: <TrashIcon size={20} />,
@@ -223,7 +223,7 @@ export const ProductTable = forwardRef(
           count: count!,
           offset: offs,
           pageSize: offs + rows.length,
-          title: t("tables.products", "Products"),
+          title: t("tables-products", "Products"),
           currentPage: pageIndex + 1,
           pageCount: pageCount,
           nextPage: handleNext,
@@ -345,14 +345,14 @@ function RemoveProductsPopup({
       <div className="shadow-toaster pointer-events-auto flex h-[48px] min-w-[224px] items-center justify-around gap-3 rounded-lg border px-4 py-3">
         <span className="text-small text-grey-50">
           {t(
-            "sales-channels.table.placeholder.selected-with-counts",
+            "sales-channels-table-placeholder-selected-with-counts",
             "{count}",
             { count: total }
           )}
         </span>
         <div className="bg-grey-20 h-[20px] w-[1px]" />
         <Button variant="danger" size="small" onClick={onRemove}>
-          {t("tables.remove", "Remove")}
+          {t("tables-remove", "Remove")}
         </Button>
         <button onClick={onClose} className="text-grey-50 cursor-pointer">
           <CrossIcon size={20} />

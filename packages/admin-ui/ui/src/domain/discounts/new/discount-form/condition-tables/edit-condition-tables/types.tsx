@@ -46,7 +46,7 @@ const EditTypeConditionSelector = ({ onClose }) => {
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "edit-condition-tables.search-by-type",
+              "edit-condition-tables-search-by-type",
               "Search by type..."
             ),
           }}

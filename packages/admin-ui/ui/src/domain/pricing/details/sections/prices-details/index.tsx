@@ -20,12 +20,12 @@ const Prices = ({ id }) => {
   )
   const actionables = [
     {
-      label: t("prices-details.edit-manually", "Edit manually"),
+      label: t("prices-details-edit-manually", "Edit manually"),
       onClick: openEdit,
       icon: <EditIcon size={20} />,
     },
     {
-      label: t("prices-details.import-price-list", "Import price list"),
+      label: t("prices-details-import-price-list", "Import price list"),
       onClick: openUpload,
       icon: <UploadIcon size={20} />,
     },

@@ -8,28 +8,28 @@ export const FulfillmentStatusComponent = ({ status }) => {
     case "shipped":
       return (
         <StatusDot
-          title={t("templates.shipped", "Shipped")}
+          title={t("templates-shipped", "Shipped")}
           variant="success"
         />
       )
     case "fulfilled":
       return (
         <StatusDot
-          title={t("templates.fulfilled", "Fulfilled")}
+          title={t("templates-fulfilled", "Fulfilled")}
           variant="warning"
         />
       )
     case "canceled":
       return (
         <StatusDot
-          title={t("templates.canceled", "Canceled")}
+          title={t("templates-canceled", "Canceled")}
           variant="danger"
         />
       )
     case "partially_fulfilled":
       return (
         <StatusDot
-          title={t("templates.partially-fulfilled", "Partially fulfilled")}
+          title={t("templates-partially-fulfilled", "Partially fulfilled")}
           variant="warning"
         />
       )
@@ -37,7 +37,7 @@ export const FulfillmentStatusComponent = ({ status }) => {
       return (
         <StatusDot
           title={t(
-            "templates.fulfillment-status.requires-action",
+            "templates-fulfillment-status-requires-action",
             "Requires Action"
           )}
           variant="danger"
@@ -46,14 +46,14 @@ export const FulfillmentStatusComponent = ({ status }) => {
     case "not_fulfilled":
       return (
         <StatusDot
-          title={t("templates.awaiting-fulfillment", "Awaiting fulfillment")}
+          title={t("templates-awaiting-fulfillment", "Awaiting fulfillment")}
           variant="danger"
         />
       )
     case "partially_shipped":
       return (
         <StatusDot
-          title={t("templates.partially-shipped", "Partially Shipped")}
+          title={t("templates-partially-shipped", "Partially Shipped")}
           variant="warning"
         />
       )

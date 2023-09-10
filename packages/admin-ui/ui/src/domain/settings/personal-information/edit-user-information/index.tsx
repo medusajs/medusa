@@ -54,7 +54,7 @@ const EditUserInformation = ({ user }: Props) => {
           disabled={!user}
           onClick={toggle}
         >
-          {t("edit-user-information.edit-information", "Edit information")}
+          {t("edit-user-information-edit-information", "Edit information")}
         </Button>
       </div>
       {user && (

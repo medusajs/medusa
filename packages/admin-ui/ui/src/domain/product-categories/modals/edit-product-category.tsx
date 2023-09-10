@@ -77,9 +77,9 @@ function EditProductCategoriesSideModal(
       })
 
       notification(
-        t("modals.success", "Success"),
+        t("modals-success", "Success"),
         t(
-          "modals.successfully-updated-the-category",
+          "modals-successfully-updated-the-category",
           "Successfully updated the category"
         ),
         "success"
@@ -89,10 +89,10 @@ function EditProductCategoriesSideModal(
       const errorMessage =
         getErrorMessage(e) ||
         t(
-          "modals.failed-to-update-the-category",
+          "modals-failed-to-update-the-category",
           "Failed to update the category"
         )
-      notification(t("modals.error", "Error"), errorMessage, "error")
+      notification(t("modals-error", "Error"), errorMessage, "error")
     }
   }
 
@@ -106,7 +106,7 @@ function EditProductCategoriesSideModal(
         {/* === HEADER === */}
         <div className="flex items-center justify-between p-6">
           <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
-            {t("modals.edit-product-category", "Edit product category")}
+            {t("modals-edit-product-category", "Edit product category")}
           </h3>
           <Button
             variant="secondary"
@@ -129,13 +129,13 @@ function EditProductCategoriesSideModal(
         <div className="flex-grow px-6">
           <InputField
             required
-            label={t("modals.name", "Name")}
+            label={t("modals-name", "Name")}
             type="string"
             name="name"
             value={name}
             className="my-6"
             placeholder={t(
-              "modals.give-this-category-a-name",
+              "modals-give-this-category-a-name",
               "Give this category a name"
             )}
             onChange={(ev) => setName(ev.target.value)}
@@ -143,29 +143,29 @@ function EditProductCategoriesSideModal(
 
           <InputField
             required
-            label={t("modals.handle", "Handle")}
+            label={t("modals-handle", "Handle")}
             type="string"
             name="handle"
             value={handle}
             className="my-6"
-            placeholder={t("modals.custom-handle", "Custom handle")}
+            placeholder={t("modals-custom-handle", "Custom handle")}
             onChange={(ev) => setHandle(ev.target.value)}
           />
 
           <TextArea
-            label={t("modals.description", "Description")}
+            label={t("modals-description", "Description")}
             name="description"
             value={description}
             className="my-6"
             placeholder={t(
-              "modals.give-this-category-a-description",
+              "modals-give-this-category-a-description",
               "Give this category a description"
             )}
             onChange={(ev) => setDescription(ev.target.value)}
           />
 
           <NextSelect
-            label={t("modals.status", "Status")}
+            label={t("modals-status", "Status")}
             options={statusOptions(t)}
             value={statusOptions(t)[isActive ? 0 : 1]}
             onChange={(o) => setIsActive(o.value === "active")}
@@ -173,7 +173,7 @@ function EditProductCategoriesSideModal(
 
           <NextSelect
             className="my-6"
-            label={t("modals.visibility", "Visibility")}
+            label={t("modals-visibility", "Visibility")}
             options={visibilityOptions(t)}
             value={visibilityOptions(t)[isPublic ? 0 : 1]}
             onChange={(o) => setIsPublic(o.value === "public")}
@@ -186,10 +186,10 @@ function EditProductCategoriesSideModal(
         {/* === FOOTER === */}
         <div className="flex justify-end gap-2 p-3">
           <Button size="small" variant="ghost" onClick={onClose}>
-            {t("modals.cancel", "Cancel")}
+            {t("modals-cancel", "Cancel")}
           </Button>
           <Button size="small" variant="primary" onClick={onSave}>
-            {t("modals.save-and-close", "Save and close")}
+            {t("modals-save-and-close", "Save and close")}
           </Button>
         </div>
       </div>

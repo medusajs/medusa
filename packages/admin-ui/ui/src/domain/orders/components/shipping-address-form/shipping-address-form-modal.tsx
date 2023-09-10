@@ -84,7 +84,7 @@ const ShippingAddressFormScreen = ({ form, order }: Props) => {
             type="button"
             onClick={cancelAndPop}
           >
-            {t("shipping-address-form.cancel", "Cancel")}
+            {t("shipping-address-form-cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
@@ -93,7 +93,7 @@ const ShippingAddressFormScreen = ({ form, order }: Props) => {
             type="button"
             onClick={pop}
           >
-            {t("shipping-address-form.save-and-go-back", "Save and go back")}
+            {t("shipping-address-form-save-and-go-back", "Save and go back")}
           </Button>
         </div>
       </Modal.Footer>
@@ -108,7 +108,7 @@ export const useShippingAddressFormScreen = () => {
   const pushScreen = (props: Props) => {
     push({
       title: t(
-        "shipping-address-form.shipping-information",
+        "shipping-address-form-shipping-information",
         "Shipping Information"
       ),
       onBack: () => pop(),

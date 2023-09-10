@@ -80,13 +80,13 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
               headingSize="medium"
               forceMountContent
               className="border-b-0"
-              title={t("sections.start-date", "Start date")}
+              title={t("sections-start-date", "Start date")}
               subtitle={t(
-                "sections.schedule-the-discount-to-activate-in-the-future",
+                "sections-schedule-the-discount-to-activate-in-the-future",
                 "Schedule the discount to activate in the future."
               )}
               tooltip={t(
-                "sections.select-discount-start-date",
+                "sections-select-discount-start-date",
                 "If you want to schedule the discount to activate in the future, you can set a start date here, otherwise the discount will be active immediately."
               )}
               value="starts_at"
@@ -112,11 +112,11 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                       <>
                         <DatePicker
                           date={date}
-                          label={t("sections.start-date", "Start date")}
+                          label={t("sections-start-date", "Start date")}
                           onSubmitDate={onChange}
                         />
                         <TimePicker
-                          label={t("sections.start-time", "Start time")}
+                          label={t("sections-start-time", "Start time")}
                           date={date}
                           onSubmitDate={onChange}
                         />
@@ -131,15 +131,15 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
               forceMountContent
               className="border-b-0"
               title={t(
-                "sections.discount-has-an-expiry-date",
+                "sections-discount-has-an-expiry-date",
                 "Discount has an expiry date?"
               )}
               subtitle={t(
-                "sections.schedule-the-discount-to-deactivate-in-the-future",
+                "sections-schedule-the-discount-to-deactivate-in-the-future",
                 "Schedule the discount to deactivate in the future."
               )}
               tooltip={t(
-                "sections.select-discount-end-date",
+                "sections-select-discount-end-date",
                 "If you want to schedule the discount to deactivate in the future, you can set an expiry date here."
               )}
               value="ends_at"
@@ -167,11 +167,11 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                       <>
                         <DatePicker
                           date={date}
-                          label={t("sections.expiry-date", "Expiry date")}
+                          label={t("sections-expiry-date", "Expiry date")}
                           onSubmitDate={onChange}
                         />
                         <TimePicker
-                          label={t("sections.expiry-time", "Expiry time")}
+                          label={t("sections-expiry-time", "Expiry time")}
                           date={date}
                           onSubmitDate={onChange}
                         />
@@ -186,15 +186,15 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
               forceMountContent
               className="border-b-0"
               title={t(
-                "sections.limit-the-number-of-redemptions",
+                "sections-limit-the-number-of-redemptions",
                 "Limit the number of redemptions?"
               )}
               subtitle={t(
-                "sections.limit-applies-across-all-customers-not-per-customer",
+                "sections-limit-applies-across-all-customers-not-per-customer",
                 "Limit applies across all customers, not per customer."
               )}
               tooltip={t(
-                "sections.limit-discount-number-of-uses",
+                "sections-limit-discount-number-of-uses",
                 "If you wish to limit the amount of times a customer can redeem this discount, you can set a limit here."
               )}
               value="usage_limit"
@@ -210,7 +210,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 <InputField
                   {...register("usage_limit", { valueAsNumber: true })}
                   label={t(
-                    "sections.number-of-redemptions",
+                    "sections-number-of-redemptions",
                     "Number of redemptions"
                   )}
                   type="number"
@@ -226,16 +226,16 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 headingSize="medium"
                 forceMountContent
                 title={t(
-                  "sections.availability-duration",
+                  "sections-availability-duration",
                   "Availability duration?"
                 )}
                 className="border-b-0"
                 subtitle={t(
-                  "sections.set-the-duration-of-the-discount",
+                  "sections-set-the-duration-of-the-discount",
                   "Set the duration of the discount."
                 )}
                 tooltip={t(
-                  "sections.select-a-discount-type",
+                  "sections-select-a-discount-type",
                   "Select a discount type"
                 )}
                 value="valid_duration"

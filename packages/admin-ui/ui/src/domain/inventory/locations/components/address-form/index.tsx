@@ -62,13 +62,13 @@ const AddressForm = ({
   return (
     <>
       <span className="inter-base-semibold">
-        {t("address-form.address", "Address")}
+        {t("address-form-address", "Address")}
       </span>
       <div className="gap-y-large gap-x-large grid grid-cols-1">
         <div className="gap-x-large grid grid-cols-2">
           <InputField
-            label={t("address-form.company", "Company")}
-            placeholder={t("address-form.company", "Company")}
+            label={t("address-form-company", "Company")}
+            placeholder={t("address-form-company", "Company")}
             errors={errors}
             {...register(path("company"), {
               pattern: FormValidator.whiteSpaceRule("Company"),
@@ -77,23 +77,23 @@ const AddressForm = ({
         </div>
         <div className="gap-x-large grid grid-cols-2">
           <InputField
-            label={t("address-form.address-1", "Address 1")}
-            placeholder={t("address-form.address-1", "Address 1")}
+            label={t("address-form-address-1", "Address 1")}
+            placeholder={t("address-form-address-1", "Address 1")}
             errors={errors}
             required={addressFieldsRequired}
             {...register(path("address_1"), {
               pattern: FormValidator.whiteSpaceRule("Address 1"),
               required: addressFieldsRequired
                 ? t(
-                    "address-form.this-field-is-required",
+                    "address-form-this-field-is-required",
                     "This field is required"
                   )
                 : undefined,
             })}
           />
           <InputField
-            label={t("address-form.address-2", "Address 2")}
-            placeholder={t("address-form.address-2", "Address 2")}
+            label={t("address-form-address-2", "Address 2")}
+            placeholder={t("address-form-address-2", "Address 2")}
             errors={errors}
             {...register(path("address_2"), {
               pattern: FormValidator.whiteSpaceRule("Address 2"),
@@ -102,16 +102,16 @@ const AddressForm = ({
         </div>
         <div className="gap-x-large grid grid-cols-2">
           <InputField
-            label={t("address-form.postal-code", "Postal code")}
-            placeholder={t("address-form.postal-code", "Postal code")}
+            label={t("address-form-postal-code", "Postal code")}
+            placeholder={t("address-form-postal-code", "Postal code")}
             errors={errors}
             {...register(path("postal_code"), {
               pattern: FormValidator.whiteSpaceRule("Postal code"),
             })}
           />
           <InputField
-            label={t("address-form.city", "City")}
-            placeholder={t("address-form.city", "City")}
+            label={t("address-form-city", "City")}
+            placeholder={t("address-form-city", "City")}
             errors={errors}
             {...register(path("city"), {
               pattern: FormValidator.whiteSpaceRule("City"),
@@ -125,7 +125,7 @@ const AddressForm = ({
             rules={{
               required: addressFieldsRequired
                 ? t(
-                    "address-form.this-field-is-required",
+                    "address-form-this-field-is-required",
                     "This field is required"
                   )
                 : undefined,
@@ -144,7 +144,7 @@ const AddressForm = ({
 
               return (
                 <NextSelect
-                  label={t("address-form.country", "Country")}
+                  label={t("address-form-country", "Country")}
                   required={addressFieldsRequired}
                   value={fieldValue}
                   options={countries}

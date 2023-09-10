@@ -66,7 +66,7 @@ const AddCollectionConditionSelector = ({
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "add-condition-tables.search-by-title",
+              "add-condition-tables-search-by-title",
               "Search by title..."
             ),
           }}

@@ -155,7 +155,7 @@ const OrderFilters = ({
             )}
           >
             <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
-              {t("order-filter-dropdown.filters", "Filters")}
+              {t("order-filter-dropdown-filters", "Filters")}
               <div className="text-grey-40 ml-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
                   {numberOfFilters ? numberOfFilters : "0"}
@@ -169,7 +169,7 @@ const OrderFilters = ({
         }
       >
         <FilterDropdownItem
-          filterTitle={t("order-filter-dropdown.status", "Status")}
+          filterTitle={t("order-filter-dropdown-status", "Status")}
           options={statusFilters}
           filters={tempState.status.filter}
           open={tempState.status.open}
@@ -177,7 +177,7 @@ const OrderFilters = ({
         />
         <FilterDropdownItem
           filterTitle={t(
-            "order-filter-dropdown.payment-status",
+            "order-filter-dropdown-payment-status",
             "Payment Status"
           )}
           options={paymentFilters}
@@ -187,7 +187,7 @@ const OrderFilters = ({
         />
         <FilterDropdownItem
           filterTitle={t(
-            "order-filter-dropdown.fulfillment-status",
+            "order-filter-dropdown-fulfillment-status",
             "Fulfillment Status"
           )}
           options={fulfillmentFilters}
@@ -196,7 +196,7 @@ const OrderFilters = ({
           setFilter={(val) => setSingleFilter("fulfillment", val)}
         />
         <FilterDropdownItem
-          filterTitle={t("order-filter-dropdown.regions", "Regions")}
+          filterTitle={t("order-filter-dropdown-regions", "Regions")}
           options={
             regions?.map((region) => ({
               value: region.id,
@@ -217,7 +217,7 @@ const OrderFilters = ({
         {isSalesChannelsEnabled && (
           <FilterDropdownItem
             filterTitle={t(
-              "order-filter-dropdown.sales-channel",
+              "order-filter-dropdown-sales-channel",
               "Sales Channel"
             )}
             options={
@@ -233,7 +233,7 @@ const OrderFilters = ({
           />
         )}
         <FilterDropdownItem
-          filterTitle={t("order-filter-dropdown.date", "Date")}
+          filterTitle={t("order-filter-dropdown-date", "Date")}
           options={dateFilters}
           filters={tempState.date.filter}
           open={tempState.date.open}

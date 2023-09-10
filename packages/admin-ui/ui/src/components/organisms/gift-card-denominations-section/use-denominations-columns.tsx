@@ -30,7 +30,7 @@ export const useDenominationColumns = () => {
     return [
       columnHelper.display({
         header: t(
-          "gift-card-denominations-section.denomination",
+          "gift-card-denominations-section-denomination",
           "Denomination"
         ),
         id: "denomination",
@@ -56,7 +56,7 @@ export const useDenominationColumns = () => {
       }),
       columnHelper.display({
         header: t(
-          "gift-card-denominations-section.in-other-currencies",
+          "gift-card-denominations-section-in-other-currencies",
           "In other currencies"
         ),
         id: "other_currencies",
@@ -108,7 +108,7 @@ export const useDenominationColumns = () => {
                 >
                   <span className="text-grey-50 cursor-default">
                     {t(
-                      "gift-card-denominations-section.and-more",
+                      "gift-card-denominations-section-and-more",
                       ", and {count} more",
                       { count: remainder.length }
                     )}
@@ -143,11 +143,11 @@ const Actions = ({ original }: { original: ProductVariant }) => {
   const onDelete = async () => {
     const shouldDelete = await dialog({
       heading: t(
-        "gift-card-denominations-section.delete-denomination",
+        "gift-card-denominations-section-delete-denomination",
         "Delete denomination"
       ),
       text: t(
-        "gift-card-denominations-section.confirm-delete",
+        "gift-card-denominations-section-confirm-delete",
         "Are you sure you want to delete this denomination?"
       ),
     })
@@ -157,11 +157,11 @@ const Actions = ({ original }: { original: ProductVariant }) => {
         onSuccess: () => {
           notification(
             t(
-              "gift-card-denominations-section.denomination-deleted",
+              "gift-card-denominations-section-denomination-deleted",
               "Denomination deleted"
             ),
             t(
-              "gift-card-denominations-section.denomination-was-successfully-deleted",
+              "gift-card-denominations-section-denomination-was-successfully-deleted",
               "Denomination was successfully deleted"
             ),
             "success"
@@ -169,7 +169,7 @@ const Actions = ({ original }: { original: ProductVariant }) => {
         },
         onError: (error) => {
           notification(
-            t("gift-card-denominations-section.error", "Error"),
+            t("gift-card-denominations-section-error", "Error"),
             getErrorMessage(error),
             "error"
           )
@@ -180,12 +180,12 @@ const Actions = ({ original }: { original: ProductVariant }) => {
 
   const actions: ActionType[] = [
     {
-      label: t("gift-card-denominations-section.edit", "Edit"),
+      label: t("gift-card-denominations-section-edit", "Edit"),
       onClick: open,
       icon: <EditIcon size={20} />,
     },
     {
-      label: t("gift-card-denominations-section.delete", "Delete"),
+      label: t("gift-card-denominations-section-delete", "Delete"),
       onClick: onDelete,
       icon: <TrashIcon size={20} />,
       variant: "danger",

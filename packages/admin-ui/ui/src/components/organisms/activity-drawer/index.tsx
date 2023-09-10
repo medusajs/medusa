@@ -24,7 +24,7 @@ const ActivityDrawer = ({ onDismiss }) => {
       className="bg-grey-0 shadow-dropdown rounded-rounded fixed top-[64px] bottom-2 right-3 flex w-[400px] flex-col overflow-x-hidden rounded"
     >
       <div className="inter-large-semibold pt-7 pl-8 pb-1">
-        {t("activity-drawer.activity", "Activity")}
+        {t("activity-drawer-activity", "Activity")}
       </div>
 
       {!hasPollingError ? (
@@ -47,11 +47,11 @@ const EmptyActivityDrawer = () => {
     <div className="flex h-full w-full flex-col items-center justify-center p-4">
       <SidedMouthFaceIcon size={36} />
       <span className={"inter-large-semibold text-grey-90 mt-4"}>
-        {t("activity-drawer.no-notifications.title", "It's quiet in here...")}
+        {t("activity-drawer-no-notifications-title", "It's quiet in here...")}
       </span>
       <span className={"text-grey-60 inter-base-regular mt-4 text-center"}>
         {t(
-          "activity-drawer.no-notifications.description",
+          "activity-drawer-no-notifications-description",
           "You don't have any notifications at the moment, but once you do they will live here."
         )}
       </span>
@@ -65,11 +65,11 @@ const ErrorActivityDrawer = () => {
     <div className="flex h-full w-full flex-col items-center justify-center p-4">
       <SadFaceIcon size={36} />
       <span className={"inter-large-semibold text-grey-90 mt-4"}>
-        {t("activity-drawer.error.title", "Oh no...")}
+        {t("activity-drawer-error-title", "Oh no...")}
       </span>
       <span className={"text-grey-60 inter-base-regular mt-2 text-center"}>
         {t(
-          "activity-drawer.error.description",
+          "activity-drawer-error-description",
           "Something went wrong while trying to fetch your notifications - We will keep trying!"
         )}
       </span>
@@ -77,7 +77,7 @@ const ErrorActivityDrawer = () => {
       <div className="mt-4 flex items-center">
         <Spinner size={"small"} variant={"secondary"} />
         <span className="ml-2.5">
-          {t("activity-drawer.processing", "Processing...")}
+          {t("activity-drawer-processing", "Processing...")}
         </span>
       </div>
     </div>

@@ -29,9 +29,9 @@ export const TaxRateRow = ({ row, onEdit }) => {
     }
 
     const shouldDelete = await dialog({
-      heading: t("taxes.delete-tax-rate.heading", "Delete tax rate"),
+      heading: t("taxes-delete-tax-rate-heading", "Delete tax rate"),
       text: t(
-        "taxes.confirm-delete",
+        "taxes-confirm-delete",
         "Are you sure you want to delete this tax rate?"
       ),
     })
@@ -44,19 +44,19 @@ export const TaxRateRow = ({ row, onEdit }) => {
       .mutateAsync()
       .then(() => {
         notification(
-          t("taxes.success", "Success"),
-          t("taxes.tax-rate-was-deleted", "Tax rate was deleted."),
+          t("taxes-success", "Success"),
+          t("taxes-tax-rate-was-deleted", "Tax rate was deleted."),
           "success"
         )
       })
       .catch((err) => {
-        notification(t("taxes.error", "Error"), getErrorMessage(err), "error")
+        notification(t("taxes-error", "Error"), getErrorMessage(err), "error")
       })
   }
 
   const actions: ActionType[] = [
     {
-      label: t("taxes.edit", "Edit"),
+      label: t("taxes-edit", "Edit"),
       onClick: () => onEdit(row.original),
       icon: <EditIcon size={20} />,
     },
@@ -64,7 +64,7 @@ export const TaxRateRow = ({ row, onEdit }) => {
 
   if (row.original.type === TaxRateType.RATE) {
     actions.push({
-      label: t("taxes.delete-tax-rate", "Delete Tax Rate"),
+      label: t("taxes-delete-tax-rate", "Delete Tax Rate"),
       variant: "danger",
       onClick: () => handleDelete(row.original),
       icon: <TrashIcon size={20} />,

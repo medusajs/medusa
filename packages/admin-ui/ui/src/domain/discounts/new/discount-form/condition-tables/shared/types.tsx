@@ -46,7 +46,7 @@ export const useTypesColumns = () => {
           <Translation>
             {(t) => (
               <div className="flex min-w-[626px] items-center gap-1">
-                {t("shared.type", "Type")} <SortingIcon size={16} />
+                {t("shared-type", "Type")} <SortingIcon size={16} />
               </div>
             )}
           </Translation>

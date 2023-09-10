@@ -77,7 +77,7 @@ const AddReasonScreen = ({
       <Modal.Content>
         <div className="gap-y-base flex flex-col">
           <h2 className="inter-base-semibold">
-            {t("add-return-reason.reason-for-return", "Reason for Return")}
+            {t("add-return-reason-reason-for-return", "Reason for Return")}
           </h2>
           <Controller
             control={control}
@@ -85,9 +85,9 @@ const AddReasonScreen = ({
             render={({ field }) => {
               return (
                 <NextSelect
-                  label={t("add-return-reason.reason", "Reason")}
+                  label={t("add-return-reason-reason", "Reason")}
                   placeholder={t(
-                    "add-return-reason.choose-a-return-reason",
+                    "add-return-reason-choose-a-return-reason",
                     "Choose a return reason"
                   )}
                   {...field}
@@ -98,9 +98,9 @@ const AddReasonScreen = ({
             }}
           />
           <TextArea
-            label={t("add-return-reason.note", "Note")}
+            label={t("add-return-reason-note", "Note")}
             placeholder={t(
-              "add-return-reason.product-was-damaged-during-shipping",
+              "add-return-reason-product-was-damaged-during-shipping",
               "Product was damaged during shipping"
             )}
             {...register("note")}
@@ -110,7 +110,7 @@ const AddReasonScreen = ({
       <Modal.Footer>
         <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button size="small" variant="secondary" onClick={pop} type="button">
-            {t("add-return-reason.cancel", "Cancel")}
+            {t("add-return-reason-cancel", "Cancel")}
           </Button>
           <Button
             size="small"
@@ -119,7 +119,7 @@ const AddReasonScreen = ({
             disabled={!isDirty}
             type="button"
           >
-            {t("add-return-reason.save-and-go-back", "Save and go back")}
+            {t("add-return-reason-save-and-go-back", "Save and go back")}
           </Button>
         </div>
       </Modal.Footer>
@@ -133,7 +133,7 @@ export const useAddReasonScreen = () => {
 
   const pushScreen = (props: Props) => {
     push({
-      title: t("add-return-reason.select-reason.title", "Select Reason"),
+      title: t("add-return-reason-select-reason-title", "Select Reason"),
       onBack: () => pop(),
       view: <AddReasonScreen {...props} />,
     })

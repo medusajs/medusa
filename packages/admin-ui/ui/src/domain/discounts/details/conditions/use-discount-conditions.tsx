@@ -38,15 +38,15 @@ export const useDiscountConditions = (discount: Discount) => {
     mutate(conditionId, {
       onSuccess: () => {
         notification(
-          t("conditions.success", "Success"),
-          t("conditions.condition-removed", "Condition removed"),
+          t("conditions-success", "Success"),
+          t("conditions-condition-removed", "Condition removed"),
           "success"
         )
         refetch()
       },
       onError: (error) => {
         notification(
-          t("conditions.error", "Error"),
+          t("conditions-error", "Error"),
           getErrorMessage(error),
           "error"
         )
@@ -60,13 +60,13 @@ export const useDiscountConditions = (discount: Discount) => {
     description: getDescription(condition.type, t),
     actions: [
       {
-        label: t("conditions.edit-condition", "Edit condition"),
+        label: t("conditions-edit-condition", "Edit condition"),
         icon: <EditIcon size={16} />,
         variant: "ghost",
         onClick: () => setSelectedCondition(condition.id),
       },
       {
-        label: t("conditions.delete-condition", "Delete condition"),
+        label: t("conditions-delete-condition", "Delete condition"),
         icon: <TrashIcon size={16} />,
         variant: "danger",
         onClick: () => removeCondition(condition.id),
@@ -104,27 +104,27 @@ const getDescription = (type: DiscountConditionType, t: TFunction) => {
   switch (type) {
     case DiscountConditionType.PRODUCTS:
       return t(
-        "conditions.discount-is-applicable-to-specific-products",
+        "conditions-discount-is-applicable-to-specific-products",
         "Discount is applicable to specific products"
       )
     case DiscountConditionType.PRODUCT_COLLECTIONS:
       return t(
-        "conditions.discount-is-applicable-to-specific-collections",
+        "conditions-discount-is-applicable-to-specific-collections",
         "Discount is applicable to specific collections"
       )
     case DiscountConditionType.PRODUCT_TAGS:
       return t(
-        "conditions.discount-is-applicable-to-specific-product-tags",
+        "conditions-discount-is-applicable-to-specific-product-tags",
         "Discount is applicable to specific product tags"
       )
     case DiscountConditionType.PRODUCT_TYPES:
       return t(
-        "conditions.discount-is-applicable-to-specific-product-types",
+        "conditions-discount-is-applicable-to-specific-product-types",
         "Discount is applicable to specific product types"
       )
     case DiscountConditionType.CUSTOMER_GROUPS:
       return t(
-        "conditions.discount-is-applicable-to-specific-customer-groups",
+        "conditions-discount-is-applicable-to-specific-customer-groups",
         "Discount is applicable to specific customer groups"
       )
   }

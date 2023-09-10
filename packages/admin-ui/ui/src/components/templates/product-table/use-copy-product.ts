@@ -184,14 +184,14 @@ const useCopyProduct = () => {
       onSuccess: ({ product: copiedProduct }) => {
         navigate(`/a/products/${copiedProduct.id}`)
         notification(
-          t("product-table.copy.success", "Success"),
-          t("product-table.copy.created-anew-product", "Created a new product"),
+          t("product-table-copy-success", "Success"),
+          t("product-table-copy-created-a-new-product", "Created a new product"),
           "success"
         )
       },
       onError: (error) => {
         notification(
-          t("product-table.copy.error", "Error"),
+          t("product-table-copy-error", "Error"),
           getErrorMessage(error),
           "error"
         )

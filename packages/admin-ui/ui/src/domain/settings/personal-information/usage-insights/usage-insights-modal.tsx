@@ -45,9 +45,9 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
     mutate(data, {
       onSuccess: () => {
         notification(
-          t("usage-insights.success", "Success"),
+          t("usage-insights-success", "Success"),
           t(
-            "usage-insights.your-information-was-successfully-updated",
+            "usage-insights-your-information-was-successfully-updated",
             "Your information was successfully updated"
           ),
           "success"
@@ -56,7 +56,7 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
       },
       onError: (err) => {
         notification(
-          t("usage-insights.error", "Error"),
+          t("usage-insights-error", "Error"),
           getErrorMessage(err),
           "error"
         )
@@ -68,7 +68,7 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
     <Modal handleClose={onClose} open={open} isLargeModal={true}>
       <Modal.Header handleClose={onClose}>
         <h1 className="inter-xlarge-semibold">
-          {t("usage-insights.edit-preferences", "Edit preferences")}
+          {t("usage-insights-edit-preferences", "Edit preferences")}
         </h1>
       </Modal.Header>
       <Modal.Body>
@@ -78,7 +78,7 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
         <Modal.Footer className="border-grey-20 pt-base border-t">
           <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button variant="secondary" size="small" onClick={onClose}>
-              {t("usage-insights.cancel", "Cancel")}
+              {t("usage-insights-cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -87,7 +87,7 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
               disabled={isSubmitting}
               onClick={onSubmit}
             >
-              {t("usage-insights.submit-and-close", "Submit and close")}
+              {t("usage-insights-submit-and-close", "Submit and close")}
             </Button>
           </div>
         </Modal.Footer>

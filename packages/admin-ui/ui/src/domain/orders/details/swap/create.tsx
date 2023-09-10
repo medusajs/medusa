@@ -242,9 +242,9 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
       onSuccess: () => {
         refetch()
         notification(
-          t("swap.success", "Success"),
+          t("swap-success", "Success"),
           t(
-            "swap.successfully-created-exchange",
+            "swap-successfully-created-exchange",
             "Successfully created exchange"
           ),
           "success"
@@ -252,7 +252,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
         onDismiss()
       },
       onError: (err) => {
-        notification(t("swap.error", "Error"), getErrorMessage(err), "error")
+        notification(t("swap-error", "Error"), getErrorMessage(err), "error")
       },
     })
   }
@@ -262,13 +262,13 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
       <Modal.Body>
         <Modal.Header handleClose={onDismiss}>
           <h2 className="inter-xlarge-semibold">
-            {t("swap.register-exchange", "Register Exchange")}
+            {t("swap-register-exchange", "Register Exchange")}
           </h2>
         </Modal.Header>
         <Modal.Content>
           <div className="mb-7">
             <h3 className="inter-base-semibold">
-              {t("swap.items-to-return", "Items to return")}
+              {t("swap-items-to-return", "Items to return")}
             </h3>
             <RMASelectProductTable
               order={order}
@@ -280,7 +280,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
 
           <div>
             <h3 className="inter-base-semibold ">
-              {t("swap.shipping", "Shipping")}
+              {t("swap-shipping", "Shipping")}
             </h3>
             {shippingLoading ? (
               <div className="flex justify-center">
@@ -288,10 +288,10 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
               </div>
             ) : (
               <Select
-                label={t("swap.shipping-method", "Shipping Method")}
+                label={t("swap-shipping-method", "Shipping Method")}
                 className="mt-2"
                 placeholder={t(
-                  "swap.add-a-shipping-method",
+                  "swap-add-a-shipping-method",
                   "Add a shipping method"
                 )}
                 value={shippingMethod}
@@ -318,11 +318,11 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
           {isLocationFulfillmentEnabled && (
             <div className="my-8">
               <h3 className="inter-base-semibold ">
-                {t("swap.location", "Location")}
+                {t("swap-location", "Location")}
               </h3>
               <p className="inter-base-regular text-grey-50">
                 {t(
-                  "swap.choose-which-location-you-want-to-return-the-items-to",
+                  "swap-choose-which-location-you-want-to-return-the-items-to",
                   "Choose which location you want to return the items to."
                 )}
               </p>
@@ -332,7 +332,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
                 <Select
                   className="mt-2"
                   placeholder={t(
-                    "swap.select-location-to-return-to",
+                    "swap-select-location-to-return-to",
                     "Select Location to Return to"
                   )}
                   value={selectedLocation}
@@ -351,7 +351,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
 
           <div className="mt-8 flex items-center justify-between">
             <h3 className="inter-base-semibold ">
-              {t("swap.items-to-send", "Items to send")}
+              {t("swap-items-to-send", "Items to send")}
             </h3>
             {itemsToAdd.length === 0 ? (
               <Button
@@ -368,7 +368,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
                   )
                 }}
               >
-                {t("swap.add-product", "Add Product")}
+                {t("swap-add-product", "Add Product")}
               </Button>
             ) : (
               <></>
@@ -399,13 +399,13 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
                     )
                   }}
                 >
-                  {t("swap.add-product", "Add Product")}
+                  {t("swap-add-product", "Add Product")}
                 </Button>
               </div>
             </>
           )}
           <div className="text-grey-90 inter-small-regular mt-8 flex items-center justify-between">
-            <span>{t("swap.return-total", "Return Total")}</span>
+            <span>{t("swap-return-total", "Return Total")}</span>
             <span>
               {formatAmountWithSymbol({
                 currency: order.currency_code,
@@ -414,7 +414,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
             </span>
           </div>
           <div className="text-grey-90 inter-small-regular mt-2 flex items-center justify-between">
-            <span>{t("swap.additional-total", "Additional Total")}</span>
+            <span>{t("swap-additional-total", "Additional Total")}</span>
             <span>
               {formatAmountWithSymbol({
                 currency: order.currency_code,
@@ -425,14 +425,14 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
             </span>
           </div>
           <div className="text-grey-90 inter-small-regular mt-2 flex items-center justify-between">
-            <span>{t("swap.outbond-shipping", "Outbond Shipping")}</span>
+            <span>{t("swap-outbond-shipping", "Outbond Shipping")}</span>
             <span>
-              {t("swap.calculated-at-checkout", "Calculated at checkout")}
+              {t("swap-calculated-at-checkout", "Calculated at checkout")}
             </span>
           </div>
           <div className="inter-base-semibold mt-4 flex items-center justify-between">
             <span>
-              {t("swap.estimated-difference", "Estimated difference")}
+              {t("swap-estimated-difference", "Estimated difference")}
             </span>
             <span className="inter-large-semibold">
               {formatAmountWithSymbol({
@@ -467,10 +467,10 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
                 type="checkbox"
               />
               <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
-                {t("swap.send-notifications", "Send notifications")}
+                {t("swap-send-notifications", "Send notifications")}
                 <IconTooltip
                   content={t(
-                    "swap.if-unchecked-the-customer-will-not-receive-communication-about-this-exchange",
+                    "swap-if-unchecked-the-customer-will-not-receive-communication-about-this-exchange",
                     "If unchecked the customer will not receive communication about this exchange"
                   )}
                 />
@@ -486,7 +486,7 @@ const SwapMenu: React.FC<SwapMenuProps> = ({ order, onDismiss }) => {
               type="submit"
               variant="primary"
             >
-              {t("swap.complete", "Complete")}
+              {t("swap-complete", "Complete")}
             </Button>
           </div>
         </Modal.Footer>

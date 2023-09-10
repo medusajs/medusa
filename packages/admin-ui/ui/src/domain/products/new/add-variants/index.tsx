@@ -227,7 +227,7 @@ const AddVariantsForm = ({
       newVariantForm.setError("options", {
         type: "deps",
         message: t(
-          "add-variants.a-variant-with-these-options-already-exists",
+          "add-variants-a-variant-with-these-options-already-exists",
           "A variant with these options already exists."
         ),
       })
@@ -268,12 +268,12 @@ const AddVariantsForm = ({
       <div>
         <div className="gap-x-2xsmall flex items-center">
           <h3 className="inter-base-semibold">
-            {t("add-variants.product-options", "Product options")}
+            {t("add-variants-product-options", "Product options")}
           </h3>
           <IconTooltip
             type="info"
             content={t(
-              "add-variants.options-are-used-to-define-the-color-size-etc-of-the-product",
+              "add-variants-options-are-used-to-define-the-color-size-etc-of-the-product",
               "Options are used to define the color, size, etc. of the product."
             )}
           />
@@ -282,10 +282,10 @@ const AddVariantsForm = ({
           {options.length > 0 && (
             <div className="mt-small">
               <div className="inter-small-semibold mb-small gap-x-xsmall text-grey-50 grid grid-cols-[230px_1fr_40px]">
-                <span>{t("add-variants.option-title", "Option title")}</span>
+                <span>{t("add-variants-option-title", "Option title")}</span>
                 <span>
                   {t(
-                    "add-variants.variations-comma-separated",
+                    "add-variants-variations-comma-separated",
                     "Variations (comma separated)"
                   )}
                 </span>
@@ -298,7 +298,7 @@ const AddVariantsForm = ({
                       className="gap-x-xsmall grid grid-cols-[230px_1fr_40px]"
                     >
                       <InputField
-                        placeholder={t("add-variants.color", "Color...")}
+                        placeholder={t("add-variants-color", "Color...")}
                         {...register(path(`options.${index}.title`))}
                       />
                       <Controller
@@ -315,14 +315,14 @@ const AddVariantsForm = ({
                                 return newVal
                               }}
                               invalidMessage={t(
-                                "add-variants.already-exists",
+                                "add-variants-already-exists",
                                 "already exists"
                               )}
                               showLabel={false}
                               values={value}
                               onChange={onChange}
                               placeholder={t(
-                                "add-variants.blue-red-black",
+                                "add-variants-blue-red-black",
                                 "Blue, Red, Black..."
                               )}
                             />
@@ -352,7 +352,7 @@ const AddVariantsForm = ({
             onClick={appendNewOption}
           >
             <PlusIcon size={20} />
-            <span>{t("add-variants.add-an-option", "Add an option")}</span>
+            <span>{t("add-variants-add-an-option", "Add an option")}</span>
           </Button>
           <div className="mt-xlarge">
             <div className="gap-x-2xsmall flex items-center">
@@ -361,7 +361,7 @@ const AddVariantsForm = ({
                   "opacity-50": !options.length,
                 })}
               >
-                {t("add-variants.product-variants", "Product variants")}{" "}
+                {t("add-variants-product-variants", "Product variants")}{" "}
                 <span className="inter-base-regular text-grey-50">
                   ({variants?.length || 0})
                 </span>
@@ -370,7 +370,7 @@ const AddVariantsForm = ({
                 <IconTooltip
                   type="info"
                   content={t(
-                    "add-variants.you-must-add-at-least-one-product-option-before-you-can-begin-adding-product-variants",
+                    "add-variants-you-must-add-at-least-one-product-option-before-you-can-begin-adding-product-variants",
                     "You must add at least one product option before you can begin adding product variants."
                   )}
                 />
@@ -379,9 +379,9 @@ const AddVariantsForm = ({
             {variants?.length > 0 && (
               <div className="mt-small">
                 <div className="inter-small-semibold pr-base text-grey-50 grid grid-cols-[1fr_90px_100px_48px]">
-                  <p>{t("add-variants.variant", "Variant")}</p>
+                  <p>{t("add-variants-variant", "Variant")}</p>
                   <div className="mr-xlarge flex justify-end">
-                    <p>{t("add-variants.inventory", "Inventory")}</p>
+                    <p>{t("add-variants-inventory", "Inventory")}</p>
                   </div>
                 </div>
                 <div>
@@ -414,7 +414,7 @@ const AddVariantsForm = ({
               onClick={onToggleForm}
             >
               <PlusIcon size={20} />
-              <span>{t("add-variants.add-a-variant", "Add a variant")}</span>
+              <span>{t("add-variants-add-a-variant", "Add a variant")}</span>
             </Button>
           </div>
         </div>
@@ -428,7 +428,7 @@ const AddVariantsForm = ({
         <Modal.Body>
           <Modal.Header handleClose={onToggleForm}>
             <h1 className="inter-xlarge-semibold">
-              {t("add-variants.create-variant", "Create Variant")}
+              {t("add-variants-create-variant", "Create Variant")}
             </h1>
           </Modal.Header>
           <Modal.Content>
@@ -446,7 +446,7 @@ const AddVariantsForm = ({
                 type="button"
                 onClick={onToggleForm}
               >
-                {t("add-variants.cancel", "Cancel")}
+                {t("add-variants-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -454,7 +454,7 @@ const AddVariantsForm = ({
                 type="button"
                 onClick={onAppendVariant}
               >
-                {t("add-variants.save-and-close", "Save and close")}
+                {t("add-variants-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

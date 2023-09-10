@@ -57,7 +57,7 @@ const SelectShippingMethod = () => {
       <span className="inter-base-semibold">
         Shipping method{" "}
         <span className="inter-base-regular text-grey-50">
-          {t("select-shipping.to-name", "(To {name})", { name: region!.name })}
+          {t("select-shipping-to-name", "(To {name})", { name: region!.name })}
         </span>
       </span>
 
@@ -69,10 +69,10 @@ const SelectShippingMethod = () => {
             </div>
             <div className="flex flex-col">
               <span className="inter-small-semibold">
-                {t("components.attention", "Attention!")}
+                {t("components-attention", "Attention!")}
               </span>
               {t(
-                "components.no-options-for-orders-without-shipping",
+                "components-no-options-for-orders-without-shipping",
                 'You don\'t have any options for orders without shipping. Please add one (e.g. "In-store fulfillment") with "Show on website" unchecked in region settings and continue.'
               )}
             </div>
@@ -86,7 +86,7 @@ const SelectShippingMethod = () => {
                 return (
                   <Select
                     label={t(
-                      "components.choose-a-shipping-method",
+                      "components-choose-a-shipping-method",
                       "Choose a shipping method"
                     )}
                     onChange={onChange}
@@ -114,7 +114,7 @@ const SelectShippingMethod = () => {
                     disabled={!selectedShippingOption}
                     onClick={() => setShowCustomPrice(true)}
                   >
-                    {t("components.set-custom-price", "Set custom price")}
+                    {t("components-set-custom-price", "Set custom price")}
                   </Button>
                 </div>
               )}
@@ -133,7 +133,7 @@ const SelectShippingMethod = () => {
                           >
                             <CurrencyInput.Amount
                               label={t(
-                                "components.custom-price",
+                                "components-custom-price",
                                 "Custom Price"
                               )}
                               amount={value}

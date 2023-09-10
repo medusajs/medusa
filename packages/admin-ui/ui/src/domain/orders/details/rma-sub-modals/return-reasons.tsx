@@ -60,10 +60,10 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
       <Modal.Content>
         <div className="h-full">
           <h2 className="inter-base-semibold mb-4">
-            {t("rma-sub-modals.reason-for-return", "Reason for Return")}
+            {t("rma-sub-modals-reason-for-return", "Reason for Return")}
           </h2>
           <Select
-            label={t("rma-sub-modals.reason", "Reason")}
+            label={t("rma-sub-modals-reason", "Reason")}
             value={selectedReason}
             onChange={setSelectedReason}
             options={
@@ -73,7 +73,7 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
             }
           />
           <InputField
-            label={t("rma-sub-modals.note", "Note")}
+            label={t("rma-sub-modals-note", "Note")}
             value={note}
             className="my-4"
             onChange={(val) => onChange(val)}
@@ -139,7 +139,7 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
             className="w-[112px]"
             onClick={() => pop()}
           >
-            {t("rma-sub-modals.back", "Back")}
+            {t("rma-sub-modals-back", "Back")}
           </Button>
           <Button
             variant="primary"
@@ -151,7 +151,7 @@ const RMAReturnReasonSubModal: React.FC<RMAReturnReasonSubModalProps> = ({
               pop()
             }}
           >
-            {t("rma-sub-modals.add", "Add")}
+            {t("rma-sub-modals-add", "Add")}
           </Button>
         </div>
       </Modal.Footer>

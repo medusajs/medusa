@@ -58,7 +58,7 @@ const Manage = () => {
     <div className="pb-5xlarge">
       <BackButton
         path="/a/gift-cards"
-        label={t("manage.back-to-gift-cards", "Back to Gift Cards")}
+        label={t("manage-back-to-gift-cards", "Back to Gift Cards")}
         className="mb-xsmall"
       />
       <div className="gap-x-base grid grid-cols-12">

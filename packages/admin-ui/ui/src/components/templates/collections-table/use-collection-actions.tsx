@@ -14,9 +14,9 @@ const useCollectionActions = (collection) => {
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("collections-table.delete-collection", "Delete Collection"),
+      heading: t("collections-table-delete-collection", "Delete Collection"),
       text: t(
-        "collections-table.confirm-delete",
+        "collections-table-confirm-delete",
         "Are you sure you want to delete this collection?"
       ),
     })
@@ -28,12 +28,12 @@ const useCollectionActions = (collection) => {
 
   const getActions = (coll): ActionType[] => [
     {
-      label: t("collections-table.edit", "Edit"),
+      label: t("collections-table-edit", "Edit"),
       onClick: () => navigate(`/a/collections/${coll.id}`),
       icon: <EditIcon size={20} />,
     },
     {
-      label: t("collections-table.delete", "Delete"),
+      label: t("collections-table-delete", "Delete"),
       variant: "danger",
       onClick: handleDelete,
       icon: <TrashIcon size={20} />,

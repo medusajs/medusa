@@ -65,9 +65,9 @@ const EditCustomerModal = ({
         onSuccess: () => {
           handleClose()
           notification(
-            t("details.success", "Success"),
+            t("details-success", "Success"),
             t(
-              "details.successfully-updated-customer",
+              "details-successfully-updated-customer",
               "Successfully updated customer"
             ),
             "success"
@@ -76,7 +76,7 @@ const EditCustomerModal = ({
         onError: (err) => {
           handleClose()
           notification(
-            t("details.error", "Error"),
+            t("details-error", "Error"),
             getErrorMessage(err),
             "error"
           )
@@ -94,25 +94,25 @@ const EditCustomerModal = ({
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
           <span className="inter-xlarge-semibold">
-            {t("details.customer-details", "Customer Details")}
+            {t("details-customer-details", "Customer Details")}
           </span>
         </Modal.Header>
         <Modal.Content>
           <div className="gap-y-xlarge flex flex-col">
             <div>
               <h2 className="inter-base-semibold text-grey-90 mb-4">
-                {t("details.general", "General")}
+                {t("details-general", "General")}
               </h2>
               <div className="flex w-full space-x-2">
                 <InputField
-                  label={t("details.first-name", "First Name")}
+                  label={t("details-first-name", "First Name")}
                   {...register("first_name")}
-                  placeholder={t("details.lebron", "Lebron")}
+                  placeholder={t("details-lebron", "Lebron")}
                 />
                 <InputField
-                  label={t("details.last-name", "Last Name")}
+                  label={t("details-last-name", "Last Name")}
                   {...register("last_name")}
-                  placeholder={t("details.james", "James")}
+                  placeholder={t("details-james", "James")}
                 />
               </div>
             </div>
@@ -120,7 +120,7 @@ const EditCustomerModal = ({
               <h2 className="inter-base-semibold text-grey-90 mb-4">Contact</h2>
               <div className="flex space-x-2">
                 <InputField
-                  label={t("details.email", "Email")}
+                  label={t("details-email", "Email")}
                   {...register("email", {
                     validate: (value) => !!validateEmail(value),
                     disabled: customer.has_account,
@@ -133,7 +133,7 @@ const EditCustomerModal = ({
                   disabled={customer.has_account}
                 />
                 <InputField
-                  label={t("details.phone-number", "Phone number")}
+                  label={t("details-phone-number", "Phone number")}
                   {...register("phone")}
                   placeholder="+45 42 42 42 42"
                 />
@@ -141,7 +141,7 @@ const EditCustomerModal = ({
             </div>
             <div>
               <h2 className="inter-base-semibold mb-base">
-                {t("details.metadata", "Metadata")}
+                {t("details-metadata", "Metadata")}
               </h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
@@ -156,7 +156,7 @@ const EditCustomerModal = ({
               className="mr-2"
               type="button"
             >
-              {t("details.cancel", "Cancel")}
+              {t("details-cancel", "Cancel")}
             </Button>
             <Button
               loading={updateCustomer.isLoading}
@@ -165,7 +165,7 @@ const EditCustomerModal = ({
               size="small"
               onClick={onSubmit}
             >
-              {t("details.save-and-close", "Save and close")}
+              {t("details-save-and-close", "Save and close")}
             </Button>
           </div>
         </Modal.Footer>

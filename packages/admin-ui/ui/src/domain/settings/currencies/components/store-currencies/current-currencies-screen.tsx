@@ -33,9 +33,9 @@ const CurrentCurrenciesScreen = () => {
       {
         onSuccess: () => {
           notification(
-            t("store-currencies.success", "Success"),
+            t("store-currencies-success", "Success"),
             t(
-              "store-currencies.successfully-updated-currencies",
+              "store-currencies-successfully-updated-currencies",
               "Successfully updated currencies"
             ),
             "success"
@@ -43,7 +43,7 @@ const CurrentCurrenciesScreen = () => {
         },
         onError: (err) => {
           notification(
-            t("store-currencies.error", "Error"),
+            t("store-currencies-error", "Error"),
             getErrorMessage(err),
             "error"
           )
@@ -95,7 +95,7 @@ const CurrentCurrenciesScreen = () => {
       <Modal.Header handleClose={onClose}>
         <h1 className="inter-xlarge-semibold">
           {t(
-            "store-currencies.current-store-currencies",
+            "store-currencies-current-store-currencies",
             "Current Store Currencies"
           )}
         </h1>
@@ -121,7 +121,7 @@ const CurrentCurrenciesScreen = () => {
       <Modal.Footer>
         <div className="flex w-full items-center justify-end">
           <Button variant="primary" size="small" onClick={onClose}>
-            {t("store-currencies.close", "Close")}
+            {t("store-currencies-close", "Close")}
           </Button>
         </div>
       </Modal.Footer>
@@ -155,7 +155,7 @@ const TableActions = ({
       <div className={clsx("transition-all duration-200", classes)}>
         <div className="mb-2 flex h-[34px] items-center divide-x">
           <span className="inter-small-regular text-grey-50 mr-3">
-            {t("current-currencies-screen.selected-with-count", "{count}", {
+            {t("current-currencies-screen-selected-with-count", "{count}", {
               count: numberOfSelectedRows,
             })}
           </span>
@@ -166,7 +166,7 @@ const TableActions = ({
               variant="ghost"
               className="border-grey-20 border"
             >
-              {t("store-currencies.deselect", "Deselect")}
+              {t("store-currencies-deselect", "Deselect")}
             </Button>
             <Button
               onClick={onRemove}
@@ -174,7 +174,7 @@ const TableActions = ({
               variant="ghost"
               className="border-grey-20 border text-rose-50"
             >
-              {t("store-currencies.remove", "Remove")}
+              {t("store-currencies-remove", "Remove")}
             </Button>
           </div>
         </div>
@@ -186,7 +186,7 @@ const TableActions = ({
             onClick={() => push(screen)}
           >
             <PlusIcon size={20} />{" "}
-            {t("store-currencies.add-currencies", "Add Currencies")}
+            {t("store-currencies-add-currencies", "Add Currencies")}
           </Button>
         </div>
       </div>

@@ -218,9 +218,9 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
       .then(() => onDismiss())
       .then(() =>
         notification(
-          t("returns.success", "Success"),
+          t("returns-success", "Success"),
           t(
-            "returns.successfully-returned-order",
+            "returns-successfully-returned-order",
             "Successfully returned order"
           ),
           "success"
@@ -228,7 +228,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
       )
       .catch((error) =>
         notification(
-          t("returns.error", "Error"),
+          t("returns-error", "Error"),
           getErrorMessage(error),
           "error"
         )
@@ -272,13 +272,13 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
       <Modal.Body>
         <Modal.Header handleClose={onDismiss}>
           <h2 className="inter-xlarge-semibold">
-            {t("returns.request-return", "Request Return")}
+            {t("returns-request-return", "Request Return")}
           </h2>
         </Modal.Header>
         <Modal.Content>
           <div className="mb-7">
             <h3 className="inter-base-semibold">
-              {t("returns.items-to-return", "Items to return")}
+              {t("returns-items-to-return", "Items to return")}
             </h3>
             <RMASelectProductTable
               order={order}
@@ -293,14 +293,14 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
               <h3 className="inter-base-semibold ">Location</h3>
               <p className="inter-base-regular text-grey-50">
                 {t(
-                  "returns.choose-which-location-you-want-to-return-the-items-to",
+                  "returns-choose-which-location-you-want-to-return-the-items-to",
                   "Choose which location you want to return the items to."
                 )}
               </p>
               <Select
                 className="mt-2"
                 placeholder={t(
-                  "returns.select-location-to-return-to",
+                  "returns-select-location-to-return-to",
                   "Select Location to Return to"
                 )}
                 value={selectedLocation}
@@ -320,7 +320,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   </div>
                   <div>
                     {t(
-                      "returns.selected-location-has-no-inventory-levels",
+                      "returns-selected-location-has-no-inventory-levels",
                       "The selected location does not have inventory levels for the selected items. The return can be requested but can't be received until an inventory level is created for the selected location."
                     )}
                   </div>
@@ -331,11 +331,11 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
 
           <div>
             <h3 className="inter-base-semibold ">
-              {t("returns.shipping", "Shipping")}
+              {t("returns-shipping", "Shipping")}
             </h3>
             <p className="inter-base-regular text-grey-50">
               {t(
-                "returns.choose-retur,-shipping-method",
+                "returns-choose-retur,-shipping-method",
                 "Choose which shipping method you want to use for this return."
               )}
             </p>
@@ -374,7 +374,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
             <div className="mt-10">
               {!useCustomShippingPrice && shippingMethod && (
                 <div className="inter-small-regular mb-4 flex justify-between">
-                  <span>{t("returns.shipping", "Shipping")}</span>
+                  <span>{t("returns-shipping", "Shipping")}</span>
                   <div>
                     {displayAmount(order.currency_code, shippingPrice || 0)}{" "}
                     <span className="text-grey-40 ml-3">
@@ -384,7 +384,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 </div>
               )}
               <div className="inter-base-semibold flex w-full justify-between">
-                <span>{t("returns.total-refund", "Total Refund")}</span>
+                <span>{t("returns-total-refund", "Total Refund")}</span>
                 <div className="flex items-center">
                   {!refundEdited && (
                     <>
@@ -410,7 +410,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   readOnly
                 >
                   <CurrencyInput.Amount
-                    label={t("returns.amount", "Amount")}
+                    label={t("returns-amount", "Amount")}
                     amount={refundAmount}
                     onChange={handleRefundUpdated}
                   />
@@ -443,10 +443,10 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 type="checkbox"
               />
               <span className="gap-x-xsmall text-grey-90 ml-3 flex items-center">
-                {t("returns.send-notifications", "Send notifications")}
+                {t("returns-send-notifications", "Send notifications")}
                 <IconTooltip
                   content={t(
-                    "returns.notify-customer-of-created-return",
+                    "returns-notify-customer-of-created-return",
                     "Notify customer of created return"
                   )}
                 />
@@ -460,7 +460,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 size="small"
                 variant="ghost"
               >
-                {t("returns.back", "Back")}
+                {t("returns-back", "Back")}
               </Button>
               <Button
                 onClick={onSubmit}
@@ -471,7 +471,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                 variant="primary"
                 disabled={Object.keys(toReturn).length === 0}
               >
-                {t("returns.submit", "Submit")}
+                {t("returns-submit", "Submit")}
               </Button>
             </div>
           </div>

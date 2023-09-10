@@ -40,15 +40,15 @@ function DetailsModal(props: DetailsModalProps) {
       await updateKey({ title: name })
       close()
       notification(
-        t("modals.success", "Success"),
-        t("modals.updated-the-api-key", "Updated the API key"),
+        t("modals-success", "Success"),
+        t("modals-updated-the-api-key", "Updated the API key"),
         "success"
       )
     } catch (e) {
       notification(
-        t("modals.error", "Error"),
+        t("modals-error", "Error"),
         t(
-          "modals.failed-to-update-the-api-key",
+          "modals-failed-to-update-the-api-key",
           "Failed to update the API key"
         ),
         "error"
@@ -63,7 +63,7 @@ function DetailsModal(props: DetailsModalProps) {
 
         <div className="flex items-center justify-between">
           <h3 className="inter-large-semibold text-xl text-gray-900">
-            {t("modals.edit-api-key-details", "Edit API key details")}
+            {t("modals-edit-api-key-details", "Edit API key details")}
           </h3>
           <Button variant="ghost" onClick={close}>
             <CrossIcon size={20} className="text-grey-40" />
@@ -79,11 +79,11 @@ function DetailsModal(props: DetailsModalProps) {
 
         <div className="flex-grow">
           <InputField
-            label={t("modals.title", "Title")}
+            label={t("modals-title", "Title")}
             type="string"
             name="name"
             value={name}
-            placeholder={t("modals.name-your-key", "Name your key")}
+            placeholder={t("modals-name-your-key", "Name your key")}
             onChange={({ target: { value } }) => setName(value)}
           />
         </div>
@@ -97,7 +97,7 @@ function DetailsModal(props: DetailsModalProps) {
 
         <div className="flex justify-end gap-2">
           <Button size="small" variant="ghost" onClick={close}>
-            {t("modals.cancel", "Cancel")}
+            {t("modals-cancel", "Cancel")}
           </Button>
           <Button
             size="small"
@@ -105,7 +105,7 @@ function DetailsModal(props: DetailsModalProps) {
             onClick={onSave}
             disabled={name === props.selectedKey?.title}
           >
-            {t("modals.save-and-close", "Save and close")}
+            {t("modals-save-and-close", "Save and close")}
           </Button>
         </div>
       </div>

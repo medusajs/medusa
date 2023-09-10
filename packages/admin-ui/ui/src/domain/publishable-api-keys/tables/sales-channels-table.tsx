@@ -37,7 +37,7 @@ const COLUMNS = [
     },
   },
   {
-    Header: <Translation>{(t) => t("tables.title", "Title")}</Translation>,
+    Header: <Translation>{(t) => t("tables-title", "Title")}</Translation>,
     accessor: "name",
     maxWidth: 160,
     width: 160,
@@ -54,7 +54,7 @@ const COLUMNS = [
   },
   {
     Header: (
-      <Translation>{(t) => t("tables.description", "Description")}</Translation>
+      <Translation>{(t) => t("tables-description", "Description")}</Translation>
     ),
     accessor: "description",
     Cell: ({ row }) => {
@@ -214,7 +214,7 @@ const SalesChannelTable = forwardRef(
           {!isLoading && !data?.length && (
             <div className="absolute flex h-full w-full items-center justify-center">
               <span className="text-sma text-grey-40">
-                {t("tables.no-added-sales-channels", "No added sales channels")}
+                {t("tables-no-added-sales-channels", "No added sales channels")}
               </span>
             </div>
           )}
@@ -224,7 +224,7 @@ const SalesChannelTable = forwardRef(
             pagingState={{
               count,
               offset,
-              title: t("tables.sales-channels", "Sales Channels"),
+              title: t("tables-sales-channels", "Sales Channels"),
               pageSize: offset + table.rows.length,
               currentPage: table.state.pageIndex + 1,
               pageCount: table.pageCount,

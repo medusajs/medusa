@@ -80,9 +80,9 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
     mutate(payload, {
       onSuccess: () => {
         notifcation(
-          t("general-section.success", "Success"),
+          t("general-section-success", "Success"),
           t(
-            "general-section.region-was-successfully-updated",
+            "general-section-region-was-successfully-updated",
             "Region was successfully updated"
           ),
           "success"
@@ -91,7 +91,7 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
       },
       onError: (err) => {
         notifcation(
-          t("general-section.error", "Error"),
+          t("general-section-error", "Error"),
           getErrorMessage(err),
           "error"
         )
@@ -104,28 +104,28 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
           <h1 className="inter-xlarge-semibold">
-            {t("general-section.edit-region-details", "Edit Region Details")}
+            {t("general-section-edit-region-details", "Edit Region Details")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
               <h3 className="inter-base-semibold mb-base">
-                {t("general-section.details", "Details")}
+                {t("general-section-details", "Details")}
               </h3>
               <RegionDetailsForm form={nestedForm(form, "details")} />
             </div>
             <div className="bg-grey-20 my-xlarge h-px w-full" />
             <div>
               <h3 className="inter-base-semibold mb-base">
-                {t("general-section.providers", "Providers")}
+                {t("general-section-providers", "Providers")}
               </h3>
               <RegionProvidersForm form={nestedForm(form, "providers")} />
             </div>
             <div className="bg-grey-20 my-xlarge h-px w-full" />
             <div>
               <h3 className="inter-base-semibold mb-base">
-                {t("general-section.metadata", "Metadata")}
+                {t("general-section-metadata", "Metadata")}
               </h3>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
@@ -138,7 +138,7 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
                 type="button"
                 onClick={closeAndReset}
               >
-                {t("general-section.cancel", "Cancel")}
+                {t("general-section-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -147,7 +147,7 @@ const EditRegionModal = ({ region, onClose, open }: Props) => {
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                {t("general-section.save-and-close", "Save and close")}
+                {t("general-section-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

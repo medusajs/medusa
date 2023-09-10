@@ -51,7 +51,7 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
       },
       onError: (error) => {
         notification(
-          t("form-header.error", "Error"),
+          t("form-header-error", "Error"),
           getErrorMessage(error),
           "error"
         )
@@ -70,7 +70,7 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
       },
       onError: (error) => {
         notification(
-          t("form-header.error", "Error"),
+          t("form-header-error", "Error"),
           getErrorMessage(error),
           "error"
         )
@@ -86,9 +86,9 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
     updatePriceList.mutate(data, {
       onSuccess: ({ price_list }) => {
         notification(
-          t("form-header.success", "Success"),
+          t("form-header-success", "Success"),
           t(
-            "form-header.successfully-updated-price-list",
+            "form-header-successfully-updated-price-list",
             "Successfully updated price list"
           ),
           "success"
@@ -97,7 +97,7 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
       },
       onError: (error) => {
         notification(
-          t("form-header.error", "Error"),
+          t("form-header-error", "Error"),
           getErrorMessage(error),
           "error"
         )
@@ -112,7 +112,7 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
       },
       onError: (error) => {
         notification(
-          t("form-header.error", "Error"),
+          t("form-header-error", "Error"),
           getErrorMessage(error),
           "error"
         )
@@ -126,31 +126,31 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
   switch (props.viewType) {
     case ViewType.CREATE:
       mainAction = {
-        label: t("form-header.publish-price-list", "Publish price list"),
+        label: t("form-header-publish-price-list", "Publish price list"),
         onClick: handleSubmit(onPublish),
       }
       secondaryAction = {
-        label: t("form-header.save-as-draft", "Save as draft"),
+        label: t("form-header-save-as-draft", "Save as draft"),
         onClick: handleSubmit(onSaveAsDraft),
       }
       break
     case ViewType.EDIT_DETAILS:
       mainAction = {
-        label: t("form-header.save-changes", "Save changes"),
+        label: t("form-header-save-changes", "Save changes"),
         onClick: handleSubmit(onUpdateDetails),
       }
       secondaryAction = {
-        label: t("form-header.cancel", "Cancel"),
+        label: t("form-header-cancel", "Cancel"),
         onClick: closeForm,
       }
       break
     case ViewType.EDIT_PRICES:
       mainAction = {
-        label: t("form-header.save-changes", "Save changes"),
+        label: t("form-header-save-changes", "Save changes"),
         onClick: handleSubmit(onUpdatePrices),
       }
       secondaryAction = {
-        label: t("form-header.cancel", "Cancel"),
+        label: t("form-header-cancel", "Cancel"),
         onClick: closeForm,
       }
       break

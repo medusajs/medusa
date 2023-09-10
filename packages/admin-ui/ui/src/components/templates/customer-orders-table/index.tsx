@@ -87,7 +87,7 @@ const CustomerOrdersTable = ({ id }: Props) => {
           count: count!,
           offset,
           pageSize: offset + rows.length,
-          title: t("customer-orders-table.orders", "Orders"),
+          title: t("customer-orders-table-orders", "Orders"),
           currentPage: pageIndex + 1,
           pageCount: pageCount,
           nextPage: handleNext,
@@ -121,7 +121,7 @@ const CustomerOrdersTable = ({ id }: Props) => {
                   actions={[
                     {
                       label: t(
-                        "customer-orders-table.transfer-order",
+                        "customer-orders-table-transfer-order",
                         "Transfer order"
                       ),
                       icon: <RefreshIcon size={"20"} />,

@@ -8,19 +8,19 @@ const useCollectionTableColumn = () => {
   const columns = useMemo(
     () => [
       {
-        Header: t("collections-table.title", "Title"),
+        Header: t("collections-table-title", "Title"),
         accessor: "title",
         Cell: ({ row: { original } }) => {
           return <div className="flex items-center">{original.title}</div>
         },
       },
       {
-        Header: t("collections-table.handle", "Handle"),
+        Header: t("collections-table-handle", "Handle"),
         accessor: "handle",
         Cell: ({ cell: { value } }) => <div>/{value}</div>,
       },
       {
-        Header: t("collections-table.created-at", "Created At"),
+        Header: t("collections-table-created-at", "Created At"),
         accessor: "created_at",
         Cell: ({ cell: { value } }) => (
           <Tooltip content={moment(value).format("DD MMM YYYY hh:mm A")}>
@@ -29,7 +29,7 @@ const useCollectionTableColumn = () => {
         ),
       },
       {
-        Header: t("collections-table.updated-at", "Updated At"),
+        Header: t("collections-table-updated-at", "Updated At"),
         accessor: "updated_at",
         Cell: ({ cell: { value } }) => (
           <Tooltip content={moment(value).format("DD MMM YYYY hh:mm A")}>
@@ -38,7 +38,7 @@ const useCollectionTableColumn = () => {
         ),
       },
       {
-        Header: t("collections-table.products", "Products"),
+        Header: t("collections-table-products", "Products"),
         accessor: "products",
         Cell: ({ cell: { value } }) => {
           return <div>{value?.length || "-"}</div>

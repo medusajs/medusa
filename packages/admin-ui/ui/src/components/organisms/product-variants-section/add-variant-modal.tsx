@@ -96,7 +96,7 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={resetAndClose}>
           <h1 className="inter-xlarge-semibold">
-            {t("product-variants-section.add-variant", "Add Variant")}
+            {t("product-variants-section-add-variant", "Add Variant")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
@@ -111,7 +111,7 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
                 type="button"
                 onClick={resetAndClose}
               >
-                {t("product-variants-section.cancel", "Cancel")}
+                {t("product-variants-section-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -119,7 +119,7 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
                 type="submit"
                 loading={addingVariant}
               >
-                {t("product-variants-section.save-and-close", "Save and close")}
+                {t("product-variants-section-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

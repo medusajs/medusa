@@ -87,7 +87,7 @@ const NewVariant = ({
       localForm.setError("options", {
         type: "deps",
         message: t(
-          "new-variant.a-variant-with-these-options-already-exists",
+          "new-variant-a-variant-with-these-options-already-exists",
           "A variant with these options already exists."
         ),
       })
@@ -102,10 +102,10 @@ const NewVariant = ({
   const onDelete = async () => {
     const confirmed = await warning({
       text: t(
-        "new-variant.are-you-sure-you-want-to-delete-this-variant",
+        "new-variant-are-you-sure-you-want-to-delete-this-variant",
         "Are you sure you want to delete this variant?"
       ),
-      heading: t("new-variant.delete-variant", "Delete Variant"),
+      heading: t("new-variant-delete-variant", "Delete Variant"),
     })
 
     if (confirmed) {
@@ -217,12 +217,12 @@ const NewVariant = ({
             forceDropdown
             actions={[
               {
-                label: t("new-variant.edit", "Edit"),
+                label: t("new-variant-edit", "Edit"),
                 icon: <EditIcon size={20} />,
                 onClick: toggle,
               },
               {
-                label: t("new-variant.delete", "Delete"),
+                label: t("new-variant-delete", "Delete"),
                 icon: <TrashIcon size={20} />,
                 onClick: onDelete,
                 variant: "danger",
@@ -247,7 +247,7 @@ const NewVariant = ({
         <Modal.Body>
           <Modal.Header handleClose={closeAndReset}>
             <h1 className="inter-xlarge-semibold">
-              {t("new-variant.edit-variant", "Edit Variant")}
+              {t("new-variant-edit-variant", "Edit Variant")}
               {source.general.title && (
                 <span className="inter-xlarge-regular ml-xsmall text-grey-50">
                   ({source.general.title})
@@ -270,7 +270,7 @@ const NewVariant = ({
                 type="button"
                 onClick={closeAndReset}
               >
-                {t("new-variant.cancel", "Cancel")}
+                {t("new-variant-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -278,7 +278,7 @@ const NewVariant = ({
                 type="button"
                 onClick={onUpdate}
               >
-                {t("new-variant.save-and-close", "Save and close")}
+                {t("new-variant-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

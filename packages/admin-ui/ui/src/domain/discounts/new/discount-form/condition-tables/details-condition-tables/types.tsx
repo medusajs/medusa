@@ -53,7 +53,7 @@ const DetailsTypeConditionSelector = ({
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "details-condition-tables.search-by-type",
+              "details-condition-tables-search-by-type",
               "Search by type..."
             ),
           }}

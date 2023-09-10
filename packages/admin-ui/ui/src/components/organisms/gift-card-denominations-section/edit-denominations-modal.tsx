@@ -94,11 +94,11 @@ const EditDenominationsModal = ({
         onSuccess: () => {
           notification(
             t(
-              "gift-card-denominations-section.denomination-updated",
+              "gift-card-denominations-section-denomination-updated",
               "Denomination updated"
             ),
             t(
-              "gift-card-denominations-section.a-new-denomination-was-successfully-updated",
+              "gift-card-denominations-section-a-new-denomination-was-successfully-updated",
               "A new denomination was successfully updated"
             ),
             "success"
@@ -108,7 +108,7 @@ const EditDenominationsModal = ({
         },
         onError: (error) => {
           notification(
-            t("gift-card-denominations-section.error", "Error"),
+            t("gift-card-denominations-section-error", "Error"),
             getErrorMessage(error),
             "error"
           )
@@ -123,7 +123,7 @@ const EditDenominationsModal = ({
         <Modal.Header handleClose={handleClose}>
           <h1 className="inter-xlarge-semibold">
             {t(
-              "gift-card-denominations-section.edit-denomination",
+              "gift-card-denominations-section-edit-denomination",
               "Edit Denomination"
             )}
           </h1>
@@ -140,7 +140,7 @@ const EditDenominationsModal = ({
                 type="button"
                 onClick={handleClose}
               >
-                {t("gift-card-denominations-section.cancel", "Cancel")}
+                {t("gift-card-denominations-section-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -150,7 +150,7 @@ const EditDenominationsModal = ({
                 disabled={!isDirty || isLoading}
               >
                 {t(
-                  "gift-card-denominations-section.save-and-close",
+                  "gift-card-denominations-section-save-and-close",
                   "Save and close"
                 )}
               </Button>

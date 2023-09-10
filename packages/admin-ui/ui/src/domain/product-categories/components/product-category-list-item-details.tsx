@@ -42,26 +42,26 @@ function ProductCategoryListItemDetails(
 
   const actions = [
     {
-      label: t("components.edit", "Edit"),
+      label: t("components-edit", "Edit"),
       onClick: () => productCategoriesPageContext.editCategory(item),
       icon: <EditIcon size={20} />,
     },
     {
-      label: t("components.delete", "Delete"),
+      label: t("components-delete", "Delete"),
       variant: "danger",
       onClick: async () => {
         try {
           await deleteCategory()
           notification(
-            t("components.success", "Success"),
-            t("components.category-deleted", "Category deleted"),
+            t("components-success", "Success"),
+            t("components-category-deleted", "Category deleted"),
             "success"
           )
         } catch (e) {
           notification(
-            t("components.error", "Error"),
+            t("components-error", "Error"),
             t(
-              "components.category-deletion-failed",
+              "components-category-deletion-failed",
               "Category deletion failed"
             ),
             "error"
@@ -106,7 +106,7 @@ function ProductCategoryListItemDetails(
               {!item.is_active && (
                 <TooltipIcon
                   content={t(
-                    "components.category-status-is-inactive",
+                    "components-category-status-is-inactive",
                     "Category status is inactive"
                   )}
                   icon={
@@ -121,7 +121,7 @@ function ProductCategoryListItemDetails(
               {item.is_internal && (
                 <TooltipIcon
                   content={t(
-                    "components.category-visibility-is-private",
+                    "components-category-visibility-is-private",
                     "Category visibility is private"
                   )}
                   icon={
@@ -141,7 +141,7 @@ function ProductCategoryListItemDetails(
               style={{ zIndex: 1 }}
               content={
                 <>
-                  {t("components.add-category-item-to", "Add category item to")}{" "}
+                  {t("components-add-category-item-to", "Add category item to")}{" "}
                   <span className="text-grey-80 font-semibold">
                     {`"${item.name}"`}
                   </span>

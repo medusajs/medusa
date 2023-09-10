@@ -131,7 +131,7 @@ const SettingsIndex = () => {
           <h2 className="inter-xlarge-semibold">General</h2>
           <p className="inter-base-regular text-grey-50">
             {t(
-              "settings.manage-the-general-settings-for-your-store",
+              "settings-manage-the-general-settings-for-your-store",
               "Manage the general settings for your store"
             )}
           </p>
@@ -146,7 +146,7 @@ const SettingsIndex = () => {
             <h2 className="inter-xlarge-semibold">Extensions</h2>
             <p className="inter-base-regular text-grey-50">
               {t(
-                "settings.manage-the-settings-for-your-store-apos-s-extensions",
+                "settings-manage-the-settings-for-your-store-apos-s-extensions",
                 "Manage the settings for your store&apos;s extensions"
               )}
             </p>

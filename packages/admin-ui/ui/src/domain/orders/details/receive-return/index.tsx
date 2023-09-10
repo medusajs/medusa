@@ -212,7 +212,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
       setError("receive_items.items", {
         type: "manual",
         message: t(
-          "receive-return.please-select-at-least-one-item-to-receive",
+          "receive-return-please-select-at-least-one-item-to-receive",
           "Please select at least one item to receive"
         ),
       })
@@ -254,11 +254,11 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
       onSuccess: () => {
         notification(
           t(
-            "receive-return.successfully-received-return",
+            "receive-return-successfully-received-return",
             "Successfully received return"
           ),
           t(
-            "receive-return.received-return-for-order",
+            "receive-return-received-return-for-order",
             "Received return for order #{display_id}",
             {
               display_id: order.display_id,
@@ -275,7 +275,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
       onError: (error) => {
         notification(
           t(
-            "receive-return.failed-to-receive-return",
+            "receive-return-failed-to-receive-return",
             "Failed to receive return"
           ),
           getErrorMessage(error),
@@ -290,7 +290,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
           <h1 className="inter-xlarge-semibold">
-            {t("receive-return.receive-return", "Receive Return")}
+            {t("receive-return-receive-return", "Receive Return")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
@@ -304,11 +304,11 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
               {isLocationFulfillmentEnabled && (
                 <div className="mb-8">
                   <h3 className="inter-base-semibold ">
-                    {t("receive-return.location", "Location")}
+                    {t("receive-return-location", "Location")}
                   </h3>
                   <p className="inter-base-regular text-grey-50">
                     {t(
-                      "receive-return.choose-location",
+                      "receive-return-choose-location",
                       "Choose which location you want to return the items to."
                     )}
                   </p>
@@ -318,7 +318,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
                     <Select
                       className="mt-2"
                       placeholder={t(
-                        "receive-return.select-location-to-return-to",
+                        "receive-return-select-location-to-return-to",
                         "Select Location to Return to"
                       )}
                       value={selectedLocation}
@@ -330,7 +330,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
                           : {
                               location_id: {
                                 message: t(
-                                  "receive-return.no-inventory-levels-exist-for-the-items-at-the-selected-location",
+                                  "receive-return-no-inventory-levels-exist-for-the-items-at-the-selected-location",
                                   "No inventory levels exist for the items at the selected location"
                                 ),
                               },
@@ -360,7 +360,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
           <Modal.Footer>
             <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button size="small" variant="secondary">
-                {t("receive-return.cancel", "Cancel")}
+                {t("receive-return-cancel", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -368,7 +368,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
                 disabled={!isDirty || isLoading || !locationsHasInventoryLevels}
                 loading={isLoading}
               >
-                {t("receive-return.save-and-close", "Save and close")}
+                {t("receive-return-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

@@ -39,7 +39,7 @@ export const TablePagination = ({
         <Skeleton>
           <div>
             {t(
-              "table-container.soothed-offset",
+              "table-container-soothed-offset",
               "{soothedOffset} - {pageSize} of {count} {title}",
               {
                 soothedOffset,
@@ -54,7 +54,7 @@ export const TablePagination = ({
           <Skeleton>
             <div>
               {t(
-                "table-container.current-page",
+                "table-container-current-page",
                 "{currentPage} of {soothedPageCount}",
                 {
                   currentPage,

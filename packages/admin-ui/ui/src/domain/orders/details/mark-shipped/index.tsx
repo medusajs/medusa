@@ -84,7 +84,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
 
     let action: actionType = markOrderShipped
     let successText = t(
-      "mark-shipped.successfully-marked-order-as-shipped",
+      "mark-shipped-successfully-marked-order-as-shipped",
       "Successfully marked order as shipped"
     )
     let requestObj
@@ -99,7 +99,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
           no_notification: noNotis,
         }
         successText = t(
-          "mark-shipped.successfully-marked-swap-as-shipped",
+          "mark-shipped-successfully-marked-swap-as-shipped",
           "Successfully marked swap as shipped"
         )
         break
@@ -112,7 +112,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
           tracking_numbers,
         }
         successText = t(
-          "mark-shipped.successfully-marked-claim-as-shipped",
+          "mark-shipped-successfully-marked-claim-as-shipped",
           "Successfully marked claim as shipped"
         )
         break
@@ -129,7 +129,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
     action.mutate(requestObj, {
       onSuccess: () => {
         notification(
-          t("mark-shipped.success", "Success"),
+          t("mark-shipped-success", "Success"),
           successText,
           "success"
         )
@@ -137,7 +137,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
       },
       onError: (err) =>
         notification(
-          t("mark-shipped.error", "Error"),
+          t("mark-shipped-error", "Error"),
           getErrorMessage(err),
           "error"
         ),
@@ -155,7 +155,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
           <Modal.Header handleClose={handleCancel}>
             <span className="inter-xlarge-semibold">
               {t(
-                "mark-shipped.mark-fulfillment-shipped",
+                "mark-shipped-mark-fulfillment-shipped",
                 "Mark Fulfillment Shipped"
               )}
             </span>
@@ -163,7 +163,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
           <Modal.Content>
             <div className="flex flex-col">
               <span className="inter-base-semibold mb-2">
-                {t("mark-shipped.tracking", "Tracking")}
+                {t("mark-shipped-tracking", "Tracking")}
               </span>
               <div className="flex flex-col space-y-2">
                 {trackingNumbers.map((tn, index) => (
@@ -181,14 +181,14 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                           label={
                             index === 0
                               ? t(
-                                  "mark-shipped.tracking-number.label",
+                                  "mark-shipped-tracking-number-label",
                                   "Tracking number"
                                 )
                               : ""
                           }
                           type="text"
                           placeholder={t(
-                            "mark-shipped.tracking-number",
+                            "mark-shipped-tracking-number",
                             "Tracking number..."
                           )}
                           {...field}
@@ -208,7 +208,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                 disabled={trackingNumbers.some((tn) => !tn.value)}
               >
                 {t(
-                  "mark-shipped.add-additional-tracking-number",
+                  "mark-shipped-add-additional-tracking-number",
                   "+ Add Additional Tracking Number"
                 )}
               </Button>
@@ -237,7 +237,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                   type="checkbox"
                 />
                 <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
-                  {t("mark-shipped.send-notifications", "Send notifications")}
+                  {t("mark-shipped-send-notifications", "Send notifications")}
                   <IconTooltip content="" />
                 </span>
               </div>
@@ -249,7 +249,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                   onClick={handleCancel}
                   type="button"
                 >
-                  {t("mark-shipped.cancel", "Cancel")}
+                  {t("mark-shipped-cancel", "Cancel")}
                 </Button>
                 <Button
                   size="large"
@@ -259,7 +259,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                   loading={isSubmitting}
                   disabled={isSubmitting}
                 >
-                  {t("mark-shipped.complete", "Complete")}
+                  {t("mark-shipped-complete", "Complete")}
                 </Button>
               </div>
             </div>

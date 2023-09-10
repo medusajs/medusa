@@ -8,9 +8,9 @@ const SettingsOverview: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <div>
       <PageDescription
-        title={t("templates.settings", "Settings")}
+        title={t("templates-settings", "Settings")}
         subtitle={t(
-          "templates.manage-the-settings-for-your-medusa-store",
+          "templates-manage-the-settings-for-your-medusa-store",
           "Manage the settings for your Medusa store"
         )}
       />

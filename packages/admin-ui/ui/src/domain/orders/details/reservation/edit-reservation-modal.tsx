@@ -52,14 +52,14 @@ const EditReservationDrawer = ({
   const form = useForm<EditReservationLineItemForm>({
     defaultValues: {
       item: {
-        description: reservation.description,
+        description: reservation - description,
       },
       metadata: getMetadataFormValues(reservation?.metadata),
     },
   })
 
   const { state: hasMetadata, toggle: toggleHasMetadata } = useToggleState(
-    !!reservation.metadata
+    !!reservation - metadata
   )
 
   const { control, setValue, handleSubmit, register } = form
@@ -94,9 +94,9 @@ const EditReservationDrawer = ({
     deleteReservation(undefined, {
       onSuccess: () => {
         notification(
-          t("reservation.reservation-was-deleted", "Reservation was deleted"),
+          t("reservation-reservation-was-deleted", "Reservation was deleted"),
           t(
-            "reservation.the-allocated-items-have-been-released",
+            "reservation-the-allocated-items-have-been-released",
             "The allocated items have been released."
           ),
           "success"
@@ -105,9 +105,9 @@ const EditReservationDrawer = ({
       },
       onError: () => {
         notification(
-          t("reservation.error", "Error"),
+          t("reservation-error", "Error"),
           t(
-            "reservation.failed-to-delete-the-reservation",
+            "reservation-failed-to-delete-the-reservation",
             "Failed to delete the reservation "
           ),
           "error"
@@ -124,7 +124,7 @@ const EditReservationDrawer = ({
   useEffect(() => {
     if (stock_locations?.length && reservation) {
       const defaultLocation = stock_locations.find(
-        (sl: StockLocationDTO) => sl.id === reservation.location_id
+        (sl: StockLocationDTO) => sl.id === reservation - location_id
       )
 
       if (defaultLocation) {
@@ -159,9 +159,9 @@ const EditReservationDrawer = ({
       {
         onSuccess: () => {
           notification(
-            t("reservation.reservation-was-updated", "Reservation was updated"),
+            t("reservation-reservation-was-updated", "Reservation was updated"),
             t(
-              "reservation.the-reservation-change-was-saved",
+              "reservation-the-reservation-change-was-saved",
               "The reservation change was saved."
             ),
             "success"
@@ -170,9 +170,9 @@ const EditReservationDrawer = ({
         },
         onError: () => {
           notification(
-            t("reservation.errors", "Errors"),
+            t("reservation-errors", "Errors"),
             t(
-              "reservation.failed-to-update-reservation",
+              "reservation-failed-to-update-reservation",
               "Failed to update reservation"
             ),
             "error"
@@ -233,7 +233,7 @@ const EditReservationDrawer = ({
         <div className="flex h-full flex-col justify-between">
           <div className="border-grey-20 flex items-center justify-between border-b px-8 py-6">
             <h1 className="inter-large-semibold ">
-              {t("reservation.edit-reservation", "Edit Reservation")}
+              {t("reservation-edit-reservation", "Edit Reservation")}
             </h1>
             <Button
               variant="ghost"
@@ -249,11 +249,11 @@ const EditReservationDrawer = ({
               <div className="flex flex-col gap-y-6">
                 <div>
                   <h2 className="inter-base-semibold">
-                    {t("reservation.location", "Location")}
+                    {t("reservation-location", "Location")}
                   </h2>
                   <span className="inter-base-regular text-grey-50">
                     {t(
-                      "reservation.choose-which-location-you-want-to-ship-the-items-from",
+                      "reservation-choose-which-location-you-want-to-ship-the-items-from",
                       "Choose which location you want to ship the items from."
                     )}
                   </span>
@@ -275,13 +275,13 @@ const EditReservationDrawer = ({
                 <div>
                   <h2 className="inter-base-semibold">
                     {t(
-                      "reservation.items-to-allocate.title",
+                      "reservation-items-to-allocate-title",
                       "Items to Allocate"
                     )}
                   </h2>
                   <span className="inter-base-regular text-grey-50">
                     {t(
-                      "reservation.select-the-number-of-items-that-you-wish-to-allocate",
+                      "reservation-select-the-number-of-items-that-you-wish-to-allocate",
                       "Select the number of items that you wish to allocate."
                     )}
                   </span>
@@ -326,36 +326,36 @@ const EditReservationDrawer = ({
                       <span className="text-grey-50 nowrap whitespace-nowrap pl-2">
                         {maxReservation
                           ? t(
-                              "reservation.max-reservation-requested",
+                              "reservation-max-reservation-requested",
                               " / {maxReservation} requested",
                               {
                                 maxReservation,
                               }
                             )
-                          : t("reservation.reserved", " reserved")}
+                          : t("reservation-reserved", " reserved")}
                       </span>
                     </div>
                   </div>
                 </div>
                 <div className="border-grey-20 inter-base-regular border-t pt-6">
                   <p className="inter-base-semibold">
-                    {t("reservation.description", "Description")}
+                    {t("reservation-description", "Description")}
                   </p>
                   <p className="text-grey-50 mb-6">
                     {t(
-                      "reservation.what-type-of-reservation-is-this",
+                      "reservation-what-type-of-reservation-is-this",
                       "What type of reservation is this?"
                     )}
                   </p>
                   <InputField
                     {...register("item.description")}
-                    placeholder={t("reservation.description", "Description")}
+                    placeholder={t("reservation-description", "Description")}
                   />
                 </div>
                 <div className="border-grey border-grey-20 w-full items-center border-t pt-6">
                   <div className="mb-2 flex justify-between">
                     <p className="inter-base-semibold ">
-                      {t("reservation.metadata", "Metadata")}
+                      {t("reservation-metadata", "Metadata")}
                     </p>
                     <Button
                       size="small"
@@ -365,8 +365,8 @@ const EditReservationDrawer = ({
                       onClick={toggleHasMetadata}
                     >
                       {hasMetadata
-                        ? t("reservation.remove-metadata", "Remove metadata")
-                        : t("reservation.add-metadata", "Add metadata")}
+                        ? t("reservation-remove-metadata", "Remove metadata")
+                        : t("reservation-add-metadata", "Add metadata")}
                     </Button>
                   </div>
                   {hasMetadata && (
@@ -382,7 +382,7 @@ const EditReservationDrawer = ({
                 onClick={handleDelete}
                 type="button"
               >
-                {t("reservation.delete-reservation", "Delete reservation")}
+                {t("reservation-delete-reservation", "Delete reservation")}
               </Button>
             </div>
           </div>
@@ -393,10 +393,10 @@ const EditReservationDrawer = ({
               className="border"
               onClick={close}
             >
-              {t("reservation.cancel", "Cancel")}
+              {t("reservation-cancel", "Cancel")}
             </Button>
             <Button variant="primary" size="small" type="submit">
-              {t("reservation.save-and-close", "Save and close")}
+              {t("reservation-save-and-close", "Save and close")}
             </Button>
           </div>
         </div>

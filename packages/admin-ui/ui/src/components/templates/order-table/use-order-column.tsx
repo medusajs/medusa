@@ -15,32 +15,32 @@ const useOrderTableColums = () => {
     switch (status) {
       case "captured":
         return (
-          <StatusDot variant="success" title={t("order-table.paid", "Paid")} />
+          <StatusDot variant="success" title={t("order-table-paid", "Paid")} />
         )
       case "awaiting":
         return (
           <StatusDot
             variant="default"
-            title={t("order-table.awaiting", "Awaiting")}
+            title={t("order-table-awaiting", "Awaiting")}
           />
         )
       case "requires_action":
         return (
           <StatusDot
             variant="danger"
-            title={t("order-table.requires-action", "Requires action")}
+            title={t("order-table-requires-action", "Requires action")}
           />
         )
       case "canceled":
         return (
           <StatusDot
             variant="warning"
-            title={t("order-table.canceled", "Canceled")}
+            title={t("order-table-canceled", "Canceled")}
           />
         )
       default:
         return (
-          <StatusDot variant="primary" title={t("order-table.n-a", "N/A")} />
+          <StatusDot variant="primary" title={t("order-table-n-a", "N/A")} />
         )
     }
   }
@@ -48,14 +48,14 @@ const useOrderTableColums = () => {
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">{t("order-table.order", "Order")}</div>,
+        Header: <div className="pl-2">{t("order-table-order", "Order")}</div>,
         accessor: "display_id",
         Cell: ({ cell: { value } }) => (
           <p className="text-grey-90 group-hover:text-violet-60 min-w-[100px] pl-2">{`#${value}`}</p>
         ),
       },
       {
-        Header: t("order-table.date-added", "Date added"),
+        Header: t("order-table-date-added", "Date added"),
         accessor: "created_at",
         Cell: ({ cell: { value } }) => (
           <div>
@@ -66,7 +66,7 @@ const useOrderTableColums = () => {
         ),
       },
       {
-        Header: t("order-table.customer", "Customer"),
+        Header: t("order-table-customer", "Customer"),
         accessor: "customer",
         Cell: ({ row, cell: { value } }) => (
           <div>
@@ -85,23 +85,23 @@ const useOrderTableColums = () => {
         ),
       },
       {
-        Header: t("order-table.fulfillment", "Fulfillment"),
+        Header: t("order-table-fulfillment", "Fulfillment"),
         accessor: "fulfillment_status",
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: t("order-table.payment-status", "Payment status"),
+        Header: t("order-table-payment-status", "Payment status"),
         accessor: "payment_status",
         Cell: ({ cell: { value } }) => decideStatus(value),
       },
       {
-        Header: t("order-table.sales-channel", "Sales Channel"),
+        Header: t("order-table-sales-channel", "Sales Channel"),
         accessor: "sales_channel",
         Cell: ({ cell: { value } }) => value?.name ?? "N/A",
       },
       {
         Header: () => (
-          <div className="text-right">{t("order-table.total", "Total")}</div>
+          <div className="text-right">{t("order-table-total", "Total")}</div>
         ),
         accessor: "total",
         Cell: ({ row, cell: { value } }) => (

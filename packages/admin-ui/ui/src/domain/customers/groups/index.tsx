@@ -22,7 +22,7 @@ function Index() {
 
   const actions = [
     {
-      label: t("groups.new-group", "New group"),
+      label: t("groups-new-group", "New group"),
       onClick: open,
       icon: (
         <span className="text-grey-90">

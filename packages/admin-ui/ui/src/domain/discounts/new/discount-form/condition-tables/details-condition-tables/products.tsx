@@ -58,7 +58,7 @@ const DetailsProductConditionSelector = ({
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "details-condition-tables.search-products",
+              "details-condition-tables-search-products",
               "Search products..."
             ),
           }}

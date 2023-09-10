@@ -47,7 +47,7 @@ function CustomersListPlaceholder() {
     <div className="center flex h-full min-h-[756px] items-center justify-center">
       <span className="text-xs text-gray-400">
         {t(
-          "groups.no-customers-in-this-group-yet",
+          "groups-no-customers-in-this-group-yet",
           "No customers in this group yet"
         )}
       </span>
@@ -135,7 +135,7 @@ function CustomerGroupCustomersList(props: CustomerGroupCustomersListProps) {
 
   return (
     <BodyCard
-      title={t("groups.customers", "Customers")}
+      title={t("groups-customers", "Customers")}
       actionables={actions}
       className="min-h-[756px] w-full"
     >
@@ -187,12 +187,12 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
 
   const actions: ActionType[] = [
     {
-      label: t("groups.edit", "Edit"),
+      label: t("groups-edit", "Edit"),
       onClick: open,
       icon: <EditIcon size={20} />,
     },
     {
-      label: t("groups.delete", "Delete"),
+      label: t("groups-delete", "Delete"),
       onClick: () => {
         setShowDeleteConfirmation(true)
       },
@@ -220,11 +220,11 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
         <DeletePrompt
           onDelete={onDeleteConfirmed}
           handleClose={handleConfirmDialogClose}
-          confirmText={t("groups.yes-delete", "Yes, delete")}
-          heading={t("groups.delete-the-group", "Delete the group")}
-          successText={t("groups.group-deleted", "Group deleted")}
+          confirmText={t("groups-yes-delete", "Yes, delete")}
+          heading={t("groups-delete-the-group", "Delete the group")}
+          successText={t("groups-group-deleted", "Group deleted")}
           text={t(
-            "groups.confirm-delete-customer-group",
+            "groups-confirm-delete-customer-group",
             "Are you sure you want to delete this customer group?"
           )}
         />
@@ -275,7 +275,7 @@ function CustomerGroupDetails() {
     <div className="-mt-4 pb-4">
       <BackButton
         path="/a/customers/groups"
-        label={t("groups.back-to-customer-groups", "Back to customer groups")}
+        label={t("groups-back-to-customer-groups", "Back to customer groups")}
         className="mb-4"
       />
       <div className="gap-y-xsmall flex flex-col">

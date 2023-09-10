@@ -56,9 +56,9 @@ export const EditConditionProvider = ({
       {
         onSuccess: () => {
           notification(
-            t("edit-condition.success", "Success"),
+            t("edit-condition-success", "Success"),
             t(
-              "edit-condition.the-resources-were-successfully-added",
+              "edit-condition-the-resources-were-successfully-added",
               "The resources were successfully added"
             ),
             "success"
@@ -67,9 +67,9 @@ export const EditConditionProvider = ({
         },
         onError: () =>
           notification(
-            t("edit-condition.error", "Error"),
+            t("edit-condition-error", "Error"),
             t(
-              "edit-condition.failed-to-add-resources",
+              "edit-condition-failed-to-add-resources",
               "Failed to add resources"
             ),
             "error"
@@ -84,9 +84,9 @@ export const EditConditionProvider = ({
       {
         onSuccess: () => {
           notification(
-            t("edit-condition.success", "Success"),
+            t("edit-condition-success", "Success"),
             t(
-              "edit-condition.the-resources-were-successfully-removed",
+              "edit-condition-the-resources-were-successfully-removed",
               "The resources were successfully removed"
             ),
             "success"
@@ -94,9 +94,9 @@ export const EditConditionProvider = ({
         },
         onError: () =>
           notification(
-            t("edit-condition.error", "Error"),
+            t("edit-condition-error", "Error"),
             t(
-              "edit-condition.failed-to-remove-resources",
+              "edit-condition-failed-to-remove-resources",
               "Failed to remove resources"
             ),
             "error"
@@ -138,7 +138,7 @@ export const useEditConditionContext = () => {
   if (context === null) {
     throw new Error(
       t(
-        "edit-condition.use-edit-condition-context-must-be-used-within-an-edit-condition-provider",
+        "edit-condition-use-edit-condition-context-must-be-used-within-an-edit-condition-provider",
         "useEditConditionContext must be used within an EditConditionProvider"
       )
     )

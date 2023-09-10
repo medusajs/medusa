@@ -70,18 +70,18 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
           <h1 className="inter-xlarge-semibold m-0">
-            {t("product-attributes-section.edit-attributes", "Edit Attributes")}
+            {t("product-attributes-section-edit-attributes", "Edit Attributes")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div className="mb-xlarge">
               <h2 className="inter-large-semibold mb-2xsmall">
-                {t("product-attributes-section.dimensions", "Dimensions")}
+                {t("product-attributes-section-dimensions", "Dimensions")}
               </h2>
               <p className="inter-base-regular text-grey-50 mb-large">
                 {t(
-                  "product-attributes-section.configure-to-calculate-the-most-accurate-shipping-rates",
+                  "product-attributes-section-configure-to-calculate-the-most-accurate-shipping-rates",
                   "Configure to calculate the most accurate shipping rates"
                 )}
               </p>
@@ -89,11 +89,11 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
             </div>
             <div>
               <h2 className="inter-large-semibold mb-2xsmall">
-                {t("product-attributes-section.customs", "Customs")}
+                {t("product-attributes-section-customs", "Customs")}
               </h2>
               <p className="inter-base-regular text-grey-50 mb-large">
                 {t(
-                  "product-attributes-section.configure-to-calculate-the-most-accurate-shipping-rates",
+                  "product-attributes-section-configure-to-calculate-the-most-accurate-shipping-rates",
                   "Configure to calculate the most accurate shipping rates"
                 )}
               </p>
@@ -108,7 +108,7 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                {t("product-attributes-section.cancel", "Cancel")}
+                {t("product-attributes-section-cancel", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -117,7 +117,7 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                {t("product-attributes-section.save", "Save")}
+                {t("product-attributes-section-save", "Save")}
               </Button>
             </div>
           </Modal.Footer>

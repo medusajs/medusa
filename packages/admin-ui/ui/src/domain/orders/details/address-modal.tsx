@@ -117,9 +117,9 @@ const AddressModal = ({
     return onSave(updateObj, {
       onSuccess: () => {
         notification(
-          t("details.success", "Success"),
+          t("details-success", "Success"),
           t(
-            "details.successfully-updated-address",
+            "details-successfully-updated-address",
             "Successfully updated address"
           ),
           "success"
@@ -128,7 +128,7 @@ const AddressModal = ({
       },
       onError: (err) =>
         notification(
-          t("details.error", "Error"),
+          t("details-error", "Error"),
           getErrorMessage(err),
           "error"
         ),
@@ -142,21 +142,21 @@ const AddressModal = ({
           <Modal.Header handleClose={onClose}>
             <span className="inter-xlarge-semibold">
               {type === AddressType.BILLING
-                ? t("details.billing-address", "Billing Address")
-                : t("details.shipping-address", "Shipping Address")}
+                ? t("details-billing-address", "Billing Address")
+                : t("details-shipping-address", "Shipping Address")}
             </span>
           </Modal.Header>
           <Modal.Content>
             <div className="gap-y-xlarge flex flex-col">
               <div>
                 <h2 className="inter-base-semibold mb-base">
-                  {t("details.contact", "Contact")}
+                  {t("details-contact", "Contact")}
                 </h2>
                 <AddressContactForm form={nestedForm(form, "contact")} />
               </div>
               <div>
                 <h2 className="inter-base-semibold mb-base">
-                  {t("details.location", "Location")}
+                  {t("details-location", "Location")}
                 </h2>
                 <AddressLocationForm
                   form={nestedForm(form, "location")}
@@ -165,7 +165,7 @@ const AddressModal = ({
               </div>
               <div>
                 <h2 className="inter-base-semibold mb-base">
-                  {t("details.metadata", "Metadata")}
+                  {t("details-metadata", "Metadata")}
                 </h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
@@ -179,7 +179,7 @@ const AddressModal = ({
                 onClick={onClose}
                 type="button"
               >
-                {t("details.cancel", "Cancel")}
+                {t("details-cancel", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -188,7 +188,7 @@ const AddressModal = ({
                 loading={submitting}
                 disabled={submitting || !isDirty}
               >
-                {t("details.save-and-close", "Save and close")}
+                {t("details-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

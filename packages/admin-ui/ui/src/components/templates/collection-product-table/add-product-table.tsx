@@ -160,7 +160,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
           <h3 className="inter-xlarge-semibold">
-            {t("collection-product-table.add-products", "Add Products")}
+            {t("collection-product-table-add-products", "Add Products")}
           </h3>
         </Modal.Header>
         <Modal.Content>
@@ -172,7 +172,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               count: count!,
               offset: offset,
               pageSize: offset + rows.length,
-              title: t("collection-product-table.products", "Products"),
+              title: t("collection-product-table-products", "Products"),
               currentPage: pageIndex + 1,
               pageCount: pageCount,
               nextPage: handleNext,
@@ -186,7 +186,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               handleSearch={handleSearch}
               searchValue={query}
               searchPlaceholder={t(
-                "collection-product-table.search-products",
+                "collection-product-table-search-products",
                 "Search Products"
               )}
               {...getTableProps()}
@@ -219,7 +219,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               className="w-eventButton"
               onClick={onClose}
             >
-              {t("collection-product-table.cancel", "Cancel")}
+              {t("collection-product-table-cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -228,7 +228,7 @@ const AddProductsTable: React.FC<AddProductsTableProps> = ({
               onClick={handleSubmit}
               disabled={disabled}
             >
-              {t("collection-product-table.save", "Save")}
+              {t("collection-product-table-save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

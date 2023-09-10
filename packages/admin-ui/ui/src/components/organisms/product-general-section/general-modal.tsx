@@ -98,7 +98,7 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
         <Modal.Header handleClose={onReset}>
           <h1 className="inter-xlarge-semibold m-0">
             {t(
-              "product-general-section.edit-general-information",
+              "product-general-section-edit-general-information",
               "Edit General Information"
             )}
           </h1>
@@ -113,8 +113,8 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
               <h2 className="inter-base-semibold mb-base">
                 Organize{" "}
                 {product.is_giftcard
-                  ? t("product-general-section.gift-card", "Gift Card")
-                  : t("product-general-section.product", "Product")}
+                  ? t("product-general-section-gift-card", "Gift Card")
+                  : t("product-general-section-product", "Product")}
               </h2>
               <OrganizeForm form={nestedForm(form, "organize")} />
             </div>
@@ -124,7 +124,7 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
             />
             <div className="mt-xlarge">
               <h2 className="inter-base-semibold mb-base">
-                {t("product-general-section.metadata", "Metadata")}
+                {t("product-general-section-metadata", "Metadata")}
               </h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
@@ -137,7 +137,7 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                {t("product-general-section.cancel", "Cancel")}
+                {t("product-general-section-cancel", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -146,7 +146,7 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                {t("product-general-section.save", "Save")}
+                {t("product-general-section-save", "Save")}
               </Button>
             </div>
           </Modal.Footer>

@@ -14,25 +14,25 @@ const General = () => {
     <Accordion.Item
       forceMountContent
       required
-      title={t("sections.general", "General")}
+      title={t("sections-general", "General")}
       tooltip={t(
-        "sections.general-information-for-the-price-list",
+        "sections-general-information-for-the-price-list",
         "General information for the price list."
       )}
       value="general"
     >
       <div className="gap-y-small group-radix-state-open:mt-5 accordion-margin-transition flex flex-col">
         <InputField
-          label={t("sections.name", "Name")}
+          label={t("sections-name", "Name")}
           required
-          placeholder={t("sections.b-2-b-black-friday", "B2B, Black Friday...")}
+          placeholder={t("sections-b-2-b-black-friday", "B2B, Black Friday...")}
           {...register("name", { required: "Name is required" })}
         />
         <InputField
-          label={t("sections.description", "Description")}
+          label={t("sections-description", "Description")}
           required
           placeholder={t(
-            "sections.for-our-business-partners",
+            "sections-for-our-business-partners",
             "For our business partners..."
           )}
           {...register("description", { required: "Description is required" })}
@@ -41,7 +41,7 @@ const General = () => {
           <div className="mt-3">
             <div className="flex justify-between">
               <h2 className="inter-base-semibold">
-                {t("sections.tax-inclusive-prices", "Tax inclusive prices")}
+                {t("sections-tax-inclusive-prices", "Tax inclusive prices")}
               </h2>
               <Controller
                 control={control}
@@ -53,7 +53,7 @@ const General = () => {
             </div>
             <p className="inter-base-regular text-grey-50">
               {t(
-                "sections.choose-to-make-all-prices-in-this-list-inclusive-of-tax",
+                "sections-choose-to-make-all-prices-in-this-list-inclusive-of-tax",
                 "Choose to make all prices in this list inclusive of tax."
               )}
             </p>

@@ -46,7 +46,7 @@ const PricingDetails = () => {
   return (
     <div className="pb-large">
       <BackButton
-        label={t("details.back-to-pricing", "Back to Pricing")}
+        label={t("details-back-to-pricing", "Back to Pricing")}
         path="/a/pricing"
         className="mb-xsmall"
       />
@@ -80,7 +80,7 @@ const PricingDetails = () => {
 
           <RawJSON
             data={price_list}
-            title={t("details.raw-price-list", "Raw price list")}
+            title={t("details-raw-price-list", "Raw price list")}
           />
         </div>
       </PriceListFormProvider>

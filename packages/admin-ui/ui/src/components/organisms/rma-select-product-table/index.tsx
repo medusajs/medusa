@@ -115,13 +115,13 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
       <Table.Head className="border-none">
         <Table.HeadRow className="text-grey-50 inter-small-semibold">
           <Table.HeadCell colSpan={2}>
-            {t("rma-select-product-table.product-details", "Product Details")}
+            {t("rma-select-product-table-product-details", "Product Details")}
           </Table.HeadCell>
           <Table.HeadCell className="pr-8 text-right">
-            {t("rma-select-product-table.quantity", "Quantity")}
+            {t("rma-select-product-table-quantity", "Quantity")}
           </Table.HeadCell>
           <Table.HeadCell className="text-right">
-            {t("rma-select-product-table.refundable", "Refundable")}
+            {t("rma-select-product-table-refundable", "Refundable")}
           </Table.HeadCell>
           <Table.HeadCell></Table.HeadCell>
         </Table.HeadRow>
@@ -240,7 +240,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                             {toReturn[item.id]?.images?.length > 0 && (
                               <>
                                 {t(
-                                  "rma-select-product-table.images-witch-count",
+                                  "rma-select-product-table-images-witch-count",
                                   "{count}",
                                   {
                                     count: toReturn[item.id]?.images?.length,
@@ -274,7 +274,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                         className="border-grey-20 border"
                       >
                         {t(
-                          "rma-select-product-table.select-reason",
+                          "rma-select-product-table-select-reason",
                           "Select Reason"
                         )}
                       </Button>

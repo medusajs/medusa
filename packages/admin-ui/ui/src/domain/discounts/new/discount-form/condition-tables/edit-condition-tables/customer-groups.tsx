@@ -55,7 +55,7 @@ const EditCustomerGroupConditionSelector = ({ onClose }) => {
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "edit-condition-tables.search-groups",
+              "edit-condition-tables-search-groups",
               "Search groups..."
             ),
           }}

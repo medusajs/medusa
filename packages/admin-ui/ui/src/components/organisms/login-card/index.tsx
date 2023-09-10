@@ -41,7 +41,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
           {
             type: "manual",
             message: t(
-              "login-card.no-match",
+              "login-card-no-match",
               "These credentials do not match our records."
             ),
           },
@@ -67,17 +67,17 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center">
           <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
-            {t("login-card.log-in-to-medusa", "Log in to Medusa")}
+            {t("login-card-log-in-to-medusa", "Log in to Medusa")}
           </h1>
           <div>
             <SigninInput
-              placeholder={t("login-card.email", "Email")}
+              placeholder={t("login-card-email", "Email")}
               {...register("email", { required: true })}
               autoComplete="email"
               className="mb-small"
             />
             <SigninInput
-              placeholder={t("login-card.password", "Password")}
+              placeholder={t("login-card-password", "Password")}
               type={"password"}
               {...register("password", { required: true })}
               autoComplete="current-password"
@@ -98,7 +98,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
             className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
             onClick={toResetPassword}
           >
-            {t("login-card.forgot-your-password", "Forgot your password?")}
+            {t("login-card-forgot-your-password", "Forgot your password?")}
           </span>
         </div>
       </form>

@@ -17,7 +17,7 @@ export const decideStatus = (status: string) => {
           {(t) => (
             <StatusIndicator
               title={t(
-                "collection-product-table.decide-status.published",
+                "collection-product-table-decide-status-published",
                 "Published"
               )}
               variant="success"
@@ -30,7 +30,7 @@ export const decideStatus = (status: string) => {
         <Translation>
           {(t) => (
             <StatusIndicator
-              title={t("collection-product-table.draft", "Draft")}
+              title={t("collection-product-table-draft", "Draft")}
               variant="default"
             />
           )}
@@ -41,7 +41,7 @@ export const decideStatus = (status: string) => {
         <Translation>
           {(t) => (
             <StatusIndicator
-              title={t("collection-product-table.proposed", "Proposed")}
+              title={t("collection-product-table-proposed", "Proposed")}
               variant="warning"
             />
           )}
@@ -52,7 +52,7 @@ export const decideStatus = (status: string) => {
         <Translation>
           {(t) => (
             <StatusIndicator
-              title={t("collection-product-table.rejected", "Rejected")}
+              title={t("collection-product-table-rejected", "Rejected")}
               variant="danger"
             />
           )}

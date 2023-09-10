@@ -93,7 +93,7 @@ const SearchModal = ({ handleClose }) => {
                   onChange={onChange}
                   value={q}
                   placeholder={t(
-                    "search-modal.start-typing-to-search",
+                    "search-modal-start-typing-to-search",
                     "Start typing to search..."
                   )}
                   {...getInputProps()}
@@ -101,7 +101,7 @@ const SearchModal = ({ handleClose }) => {
                 <Tooltip
                   className="bg-grey-0"
                   onClick={handleClear}
-                  content={t("search-modal.clear-search", "Clear search")}
+                  content={t("search-modal-clear-search", "Clear search")}
                 >
                   <CrossIcon className="text-grey-50 flex" />
                 </Tooltip>

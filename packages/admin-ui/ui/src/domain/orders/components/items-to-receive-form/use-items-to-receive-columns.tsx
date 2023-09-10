@@ -92,7 +92,7 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
         },
       }),
       columnHelper.accessor("variant_title", {
-        header: t("items-to-receive-form.product", "Product"),
+        header: t("items-to-receive-form-product", "Product"),
         cell: ({ getValue, row: { original } }) => {
           const value = getValue()
 
@@ -124,7 +124,7 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
         id: "quantity",
         header: () => (
           <p className="text-right">
-            {t("items-to-receive-form.quantity", "Quantity")}
+            {t("items-to-receive-form-quantity", "Quantity")}
           </p>
         ),
         maxSize: 50,
@@ -155,7 +155,7 @@ export const useItemsToReceiveColumns = ({ form, orderCurrency }: Props) => {
         maxSize: 80,
         header: () => (
           <p className="text-right">
-            {t("items-to-receive-form.refundable", "Refundable")}
+            {t("items-to-receive-form-refundable", "Refundable")}
           </p>
         ),
         cell: ({ getValue }) => {

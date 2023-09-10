@@ -15,7 +15,7 @@ const ProductMediaSection = ({ product }: Props) => {
 
   const actions: ActionType[] = [
     {
-      label: t("product-media-section.edit-media", "Edit Media"),
+      label: t("product-media-section-edit-media", "Edit Media"),
       onClick: toggle,
     },
   ]

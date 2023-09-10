@@ -40,18 +40,18 @@ const useDiscountConfigurations = (discount: Discount) => {
   const conditions: displaySetting[] = []
 
   conditions.push({
-    title: t("configurations.start-date", "Start date"),
+    title: t("configurations-start-date", "Start date"),
     description: <DisplaySettingsDateDescription date={discount.starts_at} />,
   })
 
   if (discount.ends_at) {
     conditions.push({
-      title: t("configurations.end-date", "End date"),
+      title: t("configurations-end-date", "End date"),
       description: <DisplaySettingsDateDescription date={discount.ends_at} />,
       actions: [
         {
           label: t(
-            "configurations.delete-configuration",
+            "configurations-delete-configuration",
             "Delete configuration"
           ),
           icon: <TrashIcon size={20} />,
@@ -62,9 +62,9 @@ const useDiscountConfigurations = (discount: Discount) => {
               {
                 onSuccess: () => {
                   notification(
-                    t("configurations.success", "Success"),
+                    t("configurations-success", "Success"),
                     t(
-                      "configurations.discount-end-date-removed",
+                      "configurations-discount-end-date-removed",
                       "Discount end date removed"
                     ),
                     "success"
@@ -72,7 +72,7 @@ const useDiscountConfigurations = (discount: Discount) => {
                 },
                 onError: (error) => {
                   notification(
-                    t("configurations.error", "Error"),
+                    t("configurations-error", "Error"),
                     getErrorMessage(error),
                     "error"
                   )
@@ -85,14 +85,14 @@ const useDiscountConfigurations = (discount: Discount) => {
   }
   if (discount.usage_limit) {
     conditions.push({
-      title: t("configurations.number-of-redemptions", "Number of redemptions"),
+      title: t("configurations-number-of-redemptions", "Number of redemptions"),
       description: (
         <CommonDescription text={discount.usage_limit.toLocaleString("en")} />
       ),
       actions: [
         {
           label: t(
-            "configurations.delete-configuration",
+            "configurations-delete-configuration",
             "Delete configuration"
           ),
           icon: <TrashIcon size={20} />,
@@ -103,9 +103,9 @@ const useDiscountConfigurations = (discount: Discount) => {
               {
                 onSuccess: () => {
                   notification(
-                    t("configurations.success", "Success"),
+                    t("configurations-success", "Success"),
                     t(
-                      "configurations.redemption-limit-removed",
+                      "configurations-redemption-limit-removed",
                       "Redemption limit removed"
                     ),
                     "success"
@@ -113,7 +113,7 @@ const useDiscountConfigurations = (discount: Discount) => {
                 },
                 onError: (error) => {
                   notification(
-                    t("configurations.error", "Error"),
+                    t("configurations-error", "Error"),
                     getErrorMessage(error),
                     "error"
                   )
@@ -136,7 +136,7 @@ const useDiscountConfigurations = (discount: Discount) => {
       ),
       actions: [
         {
-          label: t("configurations.delete-setting", "Delete setting"),
+          label: t("configurations-delete-setting", "Delete setting"),
           icon: <TrashIcon size={20} />,
           variant: "danger",
           onClick: async () =>
@@ -145,9 +145,9 @@ const useDiscountConfigurations = (discount: Discount) => {
               {
                 onSuccess: () => {
                   notification(
-                    t("configurations.success", "Success"),
+                    t("configurations-success", "Success"),
                     t(
-                      "configurations.discount-duration-removed",
+                      "configurations-discount-duration-removed",
                       "Discount duration removed"
                     ),
                     "success"
@@ -155,7 +155,7 @@ const useDiscountConfigurations = (discount: Discount) => {
                 },
                 onError: (error) => {
                   notification(
-                    t("configurations.error", "Error"),
+                    t("configurations-error", "Error"),
                     getErrorMessage(error),
                     "error"
                   )

@@ -122,7 +122,7 @@ const NewProduct = ({ onClose }: Props) => {
           preppedImages = await prepareImages(data.media.images)
         } catch (error) {
           let errorMessage = t(
-            "new.something-went-wrong-while-trying-to-upload-images",
+            "new-something-went-wrong-while-trying-to-upload-images",
             "Something went wrong while trying to upload images."
           )
           const response = (error as any).response as Response
@@ -132,12 +132,12 @@ const NewProduct = ({ onClose }: Props) => {
               errorMessage +
               " " +
               t(
-                "new.no-file-service-configured",
+                "new-no-file-service-configured",
                 "You might not have a file service configured. Please contact your administrator"
               )
           }
 
-          notification(t("new.error", "Error"), errorMessage, "error")
+          notification(t("new-error", "Error"), errorMessage, "error")
           return
         }
         const urls = preppedImages.map((image) => image.url)
@@ -152,7 +152,7 @@ const NewProduct = ({ onClose }: Props) => {
           preppedImages = await prepareImages(data.thumbnail.images)
         } catch (error) {
           let errorMessage = t(
-            "new.upload-thumbnail-error",
+            "new-upload-thumbnail-error",
             "Something went wrong while trying to upload the thumbnail."
           )
           const response = (error as any).response as Response
@@ -162,12 +162,12 @@ const NewProduct = ({ onClose }: Props) => {
               errorMessage +
               " " +
               t(
-                "new.no-file-service-configured",
+                "new-no-file-service-configured",
                 "You might not have a file service configured. Please contact your administrator"
               )
           }
 
-          notification(t("new.error", "Error"), errorMessage, "error")
+          notification(t("new-error", "Error"), errorMessage, "error")
           return
         }
         const urls = preppedImages.map((image) => image.url)
@@ -186,7 +186,7 @@ const NewProduct = ({ onClose }: Props) => {
           })
         },
         onError: (err) => {
-          notification(t("new.error", "Error"), getErrorMessage(err), "error")
+          notification(t("new-error", "Error"), getErrorMessage(err), "error")
         },
       })
     })
@@ -255,7 +255,7 @@ const NewProduct = ({ onClose }: Props) => {
                 disabled={!isDirty}
                 onClick={onSubmit(false)}
               >
-                {t("new.save-as-draft", "Save as draft")}
+                {t("new-save-as-draft", "Save as draft")}
               </Button>
               <Button
                 size="small"
@@ -264,7 +264,7 @@ const NewProduct = ({ onClose }: Props) => {
                 disabled={!isDirty}
                 onClick={onSubmit(true)}
               >
-                {t("new.publish-product", "Publish product")}
+                {t("new-publish-product", "Publish product")}
               </Button>
             </div>
           </div>
@@ -275,14 +275,14 @@ const NewProduct = ({ onClose }: Props) => {
               <Accordion.Item
                 value={"general"}
                 title={t(
-                  "new.general-information.title",
+                  "new-general-information-title",
                   "General information"
                 )}
                 required
               >
                 <p className="inter-base-regular text-grey-50">
                   {t(
-                    "new.to-start-selling-all-you-need-is-a-name-and-a-price",
+                    "new-to-start-selling-all-you-need-is-a-name-and-a-price",
                     "To start selling, all you need is a name and a price."
                   )}
                 </p>
@@ -297,14 +297,14 @@ const NewProduct = ({ onClose }: Props) => {
               <Accordion.Item title="Organize" value="organize">
                 <p className="inter-base-regular text-grey-50">
                   {t(
-                    "new.to-start-selling-all-you-need-is-a-name-and-a-price",
+                    "new-to-start-selling-all-you-need-is-a-name-and-a-price",
                     "To start selling, all you need is a name and a price."
                   )}
                 </p>
                 <div className="mt-xlarge gap-y-xlarge pb-xsmall flex flex-col">
                   <div>
                     <h3 className="inter-base-semibold mb-base">
-                      {t("new.organize-product", "Organize Product")}
+                      {t("new-organize-product", "Organize Product")}
                     </h3>
                     <OrganizeForm form={nestedForm(form, "organize")} />
                     <FeatureToggle featureFlag="sales_channels">
@@ -320,12 +320,12 @@ const NewProduct = ({ onClose }: Props) => {
               <Accordion.Item title="Variants" value="variants">
                 <p className="inter-base-regular text-grey-50">
                   {t(
-                    "new.add-variations-of-this-product",
+                    "new-add-variations-of-this-product",
                     "Add variations of this product."
                   )}
                   <br />
                   {t(
-                    "new.offer-your-customers-different-options-for-color-format-size-shape-etc",
+                    "new-offer-your-customers-different-options-for-color-format-size-shape-etc",
                     "Offer your customers different options for color, format, size, shape, etc."
                   )}
                 </p>
@@ -340,19 +340,19 @@ const NewProduct = ({ onClose }: Props) => {
               <Accordion.Item title="Attributes" value="attributes">
                 <p className="inter-base-regular text-grey-50">
                   {t(
-                    "new.used-for-shipping-and-customs-purposes",
+                    "new-used-for-shipping-and-customs-purposes",
                     "Used for shipping and customs purposes."
                   )}
                 </p>
                 <div className="my-xlarge">
                   <h3 className="inter-base-semibold mb-base">
-                    {t("new.dimensions", "Dimensions")}
+                    {t("new-dimensions", "Dimensions")}
                   </h3>
                   <DimensionsForm form={nestedForm(form, "dimensions")} />
                 </div>
                 <div>
                   <h3 className="inter-base-semibold mb-base">
-                    {t("new.customs", "Customs")}
+                    {t("new-customs", "Customs")}
                   </h3>
                   <CustomsForm form={nestedForm(form, "customs")} />
                 </div>
@@ -360,16 +360,16 @@ const NewProduct = ({ onClose }: Props) => {
               <Accordion.Item title="Thumbnail" value="thumbnail">
                 <p className="inter-base-regular mb-large text-grey-50">
                   {t(
-                    "new.used-to-represent-your-product-during-checkout-social-sharing-and-more",
+                    "new-used-to-represent-your-product-during-checkout-social-sharing-and-more",
                     "Used to represent your product during checkout, social sharing and more."
                   )}
                 </p>
                 <ThumbnailForm form={nestedForm(form, "thumbnail")} />
               </Accordion.Item>
-              <Accordion.Item title={t("new.media", "Media")} value="media">
+              <Accordion.Item title={t("new-media", "Media")} value="media">
                 <p className="inter-base-regular mb-large text-grey-50">
                   {t(
-                    "new.add-images-to-your-product",
+                    "new-add-images-to-your-product",
                     "Add images to your product."
                   )}
                 </p>

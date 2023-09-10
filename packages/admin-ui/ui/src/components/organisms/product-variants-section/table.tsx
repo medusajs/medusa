@@ -32,7 +32,7 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
           return (
             <div className="text-right">
               <span>
-                {t("product-variants-section.inventory", "Inventory")}
+                {t("product-variants-section-inventory", "Inventory")}
               </span>
             </div>
           )
@@ -51,12 +51,12 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
     }
     return [
       {
-        Header: t("product-variants-section.title", "Title"),
+        Header: t("product-variants-section-title", "Title"),
         id: "title",
         accessor: "title",
       },
       {
-        Header: t("product-variants-section.sku", "SKU"),
+        Header: t("product-variants-section-sku", "SKU"),
         id: "sku",
         accessor: "sku",
         maxWidth: 264,
@@ -69,7 +69,7 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
         },
       },
       {
-        Header: t("product-variants-section.ean", "EAN"),
+        Header: t("product-variants-section-ean", "EAN"),
         id: "ean",
         accessor: "ean",
         maxWidth: 264,
@@ -118,7 +118,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
     if (hasInventoryService) {
       inventoryManagementActions.push({
         label: t(
-          "product-variants-section.manage-inventory",
+          "product-variants-section-manage-inventory",
           "Manage inventory"
         ),
         icon: <BuildingsIcon size="20" />,
@@ -127,14 +127,14 @@ const VariantsTable = ({ variants, actions }: Props) => {
     }
     return [
       {
-        label: t("product-variants-section.edit-variant", "Edit Variant"),
+        label: t("product-variants-section-edit-variant", "Edit Variant"),
         icon: <EditIcon size="20" />,
         onClick: () => updateVariant(variant),
       },
       ...inventoryManagementActions,
       {
         label: t(
-          "product-variants-section.duplicate-variant",
+          "product-variants-section-duplicate-variant",
           "Duplicate Variant"
         ),
         onClick: () =>
@@ -147,7 +147,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
       },
       {
         label: t(
-          "product-variants-section.delete-variant.label",
+          "product-variants-section-delete-variant-label",
           "Delete Variant"
         ),
         onClick: () => setVariantToRemove(variant),
@@ -200,20 +200,20 @@ const VariantsTable = ({ variants, actions }: Props) => {
                       onDelete={async () => deleteVariant(variantToRemove.id)}
                       handleClose={() => setVariantToRemove(null)}
                       confirmText={t(
-                        "product-variants-section.yes-delete",
+                        "product-variants-section-yes-delete",
                         "Yes, delete"
                       )}
                       heading={t(
-                        "product-variants-section.delete-variant.heading",
+                        "product-variants-section-delete-variant-heading",
                         "Delete variant"
                       )}
                       text={`${t(
-                        "product-variants-section.confirm-delete",
+                        "product-variants-section-confirm-delete",
                         "Are you sure you want to delete this variant? "
                       )}${
                         isFeatureEnabled("inventoryService")
                           ? t(
-                              "product-variants-section.note-deleting-the-variant-will-also-remove-inventory-items-and-levels",
+                              "product-variants-section-note-deleting-the-variant-will-also-remove-inventory-items-and-levels",
                               " Note: Deleting the variant will also remove inventory items and levels"
                             )
                           : ""

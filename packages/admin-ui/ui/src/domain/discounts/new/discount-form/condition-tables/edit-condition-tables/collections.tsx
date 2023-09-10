@@ -58,12 +58,12 @@ const EditCollectionConditionSelector = ({ onClose }) => {
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "edit-condition-tables.search-by-title",
+              "edit-condition-tables-search-by-title",
               "Search by title..."
             ),
             filters: [
               {
-                title: t("edit-condition-tables.title", "Title"),
+                title: t("edit-condition-tables-title", "Title"),
                 name: "title",
               },
             ],

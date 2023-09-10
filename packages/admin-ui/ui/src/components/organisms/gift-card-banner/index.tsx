@@ -42,20 +42,20 @@ const GiftCardBanner: React.FC<GiftCardBannerProps> = ({
   const { t } = useTranslation()
   const actions: ActionType[] = [
     {
-      label: t("gift-card-banner.edit", "Edit"),
+      label: t("gift-card-banner-edit", "Edit"),
       onClick: onEdit,
       icon: <EditIcon size={16} />,
     },
     {
       label:
         status === "published"
-          ? t("gift-card-banner.unpublish", "Unpublish")
-          : t("gift-card-banner.publish", "Publish"),
+          ? t("gift-card-banner-unpublish", "Unpublish")
+          : t("gift-card-banner-publish", "Publish"),
       onClick: onUnpublish,
       icon: <UnpublishIcon size={16} />,
     },
     {
-      label: t("gift-card-banner.delete", "Delete"),
+      label: t("gift-card-banner-delete", "Delete"),
       onClick: onDelete,
       icon: <TrashIcon size={16} />,
       variant: "danger",
@@ -91,8 +91,8 @@ const GiftCardBanner: React.FC<GiftCardBannerProps> = ({
             variant={status === "published" ? "success" : "danger"}
             title={
               status === "published"
-                ? t("gift-card-banner.published", "Published")
-                : t("gift-card-banner.unpublished", "Unpublished")
+                ? t("gift-card-banner-published", "Published")
+                : t("gift-card-banner-unpublished", "Unpublished")
             }
           />
         </div>

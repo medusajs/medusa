@@ -78,9 +78,9 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
 
     if (!trimmedName) {
       notification(
-        t("gift-cards.error", "Error"),
+        t("gift-cards-error", "Error"),
         t(
-          "gift-cards.please-enter-a-name-for-the-gift-card",
+          "gift-cards-please-enter-a-name-for-the-gift-card",
           "Please enter a name for the Gift Card"
         ),
         "error"
@@ -91,9 +91,9 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
 
     if (!data.denominations?.length) {
       notification(
-        t("gift-cards.error", "Error"),
+        t("gift-cards-error", "Error"),
         t(
-          "gift-cards.please-add-at-least-one-denomination",
+          "gift-cards-please-add-at-least-one-denomination",
           "Please add at least one denomination"
         ),
         "error"
@@ -121,7 +121,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         title: data.title,
         description: data.description,
         discountable: false,
-        options: [{ title: t("gift-cards.denominations", "Denominations") }],
+        options: [{ title: t("gift-cards-denominations", "Denominations") }],
         variants: data.denominations.map((d, i) => ({
           title: `${i + 1}`,
           inventory_quantity: 0,
@@ -138,9 +138,9 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
       {
         onSuccess: () => {
           notification(
-            t("gift-cards.success", "Success"),
+            t("gift-cards-success", "Success"),
             t(
-              "gift-cards.successfully-created-gift-card",
+              "gift-cards-successfully-created-gift-card",
               "Successfully created Gift Card"
             ),
             "success"
@@ -150,7 +150,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         },
         onError: (err) => {
           notification(
-            t("gift-cards.error", "Error"),
+            t("gift-cards-error", "Error"),
             getErrorMessage(err),
             "error"
           )
@@ -166,30 +166,30 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
           <Modal.Header handleClose={onClose}>
             <div>
               <h1 className="inter-xlarge-semibold">
-                {t("gift-cards.create-gift-card", "Create Gift Card")}
+                {t("gift-cards-create-gift-card", "Create Gift Card")}
               </h1>
             </div>
           </Modal.Header>
           <Modal.Content>
             <div className="mb-base">
               <h3 className="inter-base-semibold">
-                {t("gift-cards.gift-card-details", "Gift Card Details")}
+                {t("gift-cards-gift-card-details", "Gift Card Details")}
               </h3>
             </div>
             <div className="gap-y-base flex flex-col">
               <InputField
-                label={t("gift-cards.name", "Name")}
+                label={t("gift-cards-name", "Name")}
                 required
                 placeholder={t(
-                  "gift-cards.the-best-gift-card",
+                  "gift-cards-the-best-gift-card",
                   "The best Gift Card"
                 )}
                 {...register("title", { required: true })}
               />
               <TextArea
-                label={t("gift-cards.description", "Description")}
+                label={t("gift-cards-description", "Description")}
                 placeholder={t(
-                  "gift-cards.the-best-gift-card-of-all-time",
+                  "gift-cards-the-best-gift-card-of-all-time",
                   "The best Gift Card of all time"
                 )}
                 {...register("description")}
@@ -197,7 +197,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
             </div>
             <div className="mt-xlarge">
               <h3 className="inter-base-semibold">
-                {t("gift-cards.thumbnail", "Thumbnail")}
+                {t("gift-cards-thumbnail", "Thumbnail")}
               </h3>
               <div className="mt-base h-[80px]">
                 {thumbnail ? (
@@ -217,7 +217,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                           type="button"
                           onClick={() => setValue("thumbnail", null)}
                         >
-                          {t("gift-cards.delete", "Delete")}
+                          {t("gift-cards-delete", "Delete")}
                         </button>
                       </div>
                     </div>
@@ -232,7 +232,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                     ]}
                     onFileChosen={handleFileUpload}
                     placeholder={t(
-                      "gift-cards.size-recommended",
+                      "gift-cards-size-recommended",
                       "1200 x 1600 (3:4) recommended, up to 10MB each"
                     )}
                   />
@@ -241,7 +241,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
             </div>
             <div className="mt-xlarge">
               <h3 className="inter-base-semibold mb-base">
-                {t("gift-cards.denominations", "Denominations")}
+                {t("gift-cards-denominations", "Denominations")}
                 <span className="text-rose-50">*</span>
               </h3>
               <div className="gap-y-xsmall flex flex-col">
@@ -266,7 +266,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                           render={({ field: { value, onChange, ref } }) => {
                             return (
                               <CurrencyInput.Amount
-                                label={t("gift-cards.amount", "Amount")}
+                                label={t("gift-cards-amount", "Amount")}
                                 amount={value || undefined}
                                 onChange={onChange}
                                 ref={ref}
@@ -300,7 +300,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 type="button"
               >
                 <PlusIcon size={20} />
-                {t("gift-cards.add-denomination", "Add Denomination")}
+                {t("gift-cards-add-denomination", "Add Denomination")}
               </Button>
             </div>
           </Modal.Content>
@@ -313,7 +313,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 className="w-eventButton"
                 onClick={onClose}
               >
-                {t("gift-cards.cancel", "Cancel")}
+                {t("gift-cards-cancel", "Cancel")}
               </Button>
               <Button
                 type="submit"
@@ -323,7 +323,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 loading={isLoading}
                 disabled={isLoading}
               >
-                {t("gift-cards.create-publish", "Create & Publish")}
+                {t("gift-cards-create-publish", "Create & Publish")}
               </Button>
             </div>
           </Modal.Footer>

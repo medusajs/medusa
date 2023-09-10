@@ -58,9 +58,9 @@ const AnalyticsPreferencesModal = () => {
     mutate(config, {
       onSuccess: () => {
         notification(
-          t("analytics-preferences.success", "Success"),
+          t("analytics-preferences-success", "Success"),
           t(
-            "analytics-preferences.your-preferences-were-successfully-updated",
+            "analytics-preferences-your-preferences-were-successfully-updated",
             "Your preferences were successfully updated"
           ),
           "success"
@@ -74,7 +74,7 @@ const AnalyticsPreferencesModal = () => {
       },
       onError: (err) => {
         notification(
-          t("analytics-preferences.error", "Error"),
+          t("analytics-preferences-error", "Error"),
           getErrorMessage(err),
           "error"
         )
@@ -90,13 +90,13 @@ const AnalyticsPreferencesModal = () => {
           <div className="mt-5xlarge flex w-full max-w-[664px] flex-col">
             <h1 className="inter-xlarge-semibold mb-large">
               {t(
-                "analytics-preferences.help-us-get-better",
+                "analytics-preferences-help-us-get-better",
                 "Help us get better"
               )}
             </h1>
             <p className="text-grey-50">
               {t(
-                "analytics-preferences.disclaimer",
+                "analytics-preferences-disclaimer",
                 "To create the most compelling e-commerce experience we would like to gain insights in how you use Medusa. User insights allow us to build a better, more engaging, and more usable products. We only collect data for product improvements. Read what data we gather in our"
               )}{" "}
               <a
@@ -105,7 +105,7 @@ const AnalyticsPreferencesModal = () => {
                 target="_blank"
                 className="text-violet-60"
               >
-                {t("analytics-preferences.documentation", "documentation")}
+                {t("analytics-preferences-documentation", "documentation")}
               </a>
               .
             </p>
@@ -120,7 +120,7 @@ const AnalyticsPreferencesModal = () => {
                 {...register("email", {
                   pattern: {
                     message: t(
-                      "analytics-preferences.please-enter-a-valid-email",
+                      "analytics-preferences-please-enter-a-valid-email",
                       "Please enter a valid email"
                     ),
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -137,7 +137,7 @@ const AnalyticsPreferencesModal = () => {
                 loading={isLoading}
                 onClick={onSubmit}
               >
-                {t("analytics-preferences.continue", "Continue")}
+                {t("analytics-preferences-continue", "Continue")}
               </Button>
             </div>
           </div>

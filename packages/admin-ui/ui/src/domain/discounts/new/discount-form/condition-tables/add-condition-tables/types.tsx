@@ -51,7 +51,7 @@ const AddTypeConditionSelector = ({ onClose }: AddConditionSelectorProps) => {
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "add-condition-tables.search-by-type",
+              "add-condition-tables-search-by-type",
               "Search by type..."
             ),
           }}

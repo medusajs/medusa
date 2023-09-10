@@ -38,9 +38,9 @@ const LocationCard: React.FC<Props> = ({ location }) => {
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("location-card.delete-location", "Delete Location"),
+      heading: t("location-card-delete-location", "Delete Location"),
       text: t(
-        "location-card.confirm-delete",
+        "location-card-confirm-delete",
         "Are you sure you want to delete this location. This will also delete all inventory levels and reservations associated with this location."
       ),
       extraConfirmation: true,
@@ -50,9 +50,9 @@ const LocationCard: React.FC<Props> = ({ location }) => {
       deleteLocation(undefined, {
         onSuccess: () => {
           notification(
-            t("location-card.success", "Success"),
+            t("location-card-success", "Success"),
             t(
-              "location-card.location-deleted-successfully",
+              "location-card-location-deleted-successfully",
               "Location deleted successfully"
             ),
             "success"
@@ -60,7 +60,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
         },
         onError: (err) => {
           notification(
-            t("location-card.error", "Error"),
+            t("location-card-error", "Error"),
             getErrorMessage(err),
             "error"
           )
@@ -71,13 +71,13 @@ const LocationCard: React.FC<Props> = ({ location }) => {
 
   const DropdownActions: ActionType[] = [
     {
-      label: t("location-card.edit-details", "Edit details"),
+      label: t("location-card-edit-details", "Edit details"),
       onClick: openLocationEdit,
       variant: "normal",
       icon: <EditIcon size="20px" />,
     },
     {
-      label: t("location-card.delete", "Delete"),
+      label: t("location-card-delete", "Delete"),
       onClick: onDelete,
       variant: "danger",
       icon: <TrashIcon size="20px" />,
@@ -107,7 +107,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
         <div className="py-base border-grey-20 border-t border-solid px-6">
           <h2 className="inter-small-semibold text-gray-500">
             {t(
-              "location-card.connected-sales-channels",
+              "location-card-connected-sales-channels",
               "Connected sales channels"
             )}
           </h2>

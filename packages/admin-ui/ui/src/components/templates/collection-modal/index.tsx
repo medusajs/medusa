@@ -95,9 +95,9 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
         {
           onSuccess: () => {
             notification(
-              t("collection-modal.success", "Success"),
+              t("collection-modal-success", "Success"),
               t(
-                "collection-modal.successfully-updated-collection",
+                "collection-modal-successfully-updated-collection",
                 "Successfully updated collection"
               ),
               "success"
@@ -106,7 +106,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
           },
           onError: (error) => {
             notification(
-              t("collection-modal.error", "Error"),
+              t("collection-modal-error", "Error"),
               getErrorMessage(error),
               "error"
             )
@@ -123,9 +123,9 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
         {
           onSuccess: () => {
             notification(
-              t("collection-modal.success", "Success"),
+              t("collection-modal-success", "Success"),
               t(
-                "collection-modal.successfully-created-collection",
+                "collection-modal-successfully-created-collection",
                 "Successfully created collection"
               ),
               "success"
@@ -134,7 +134,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
           },
           onError: (error) => {
             notification(
-              t("collection-modal.error", "Error"),
+              t("collection-modal-error", "Error"),
               getErrorMessage(error),
               "error"
             )
@@ -151,12 +151,12 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
           <div>
             <h1 className="inter-xlarge-semibold mb-2xsmall">
               {isEdit
-                ? t("collection-modal.edit-collection", "Edit Collection")
-                : t("collection-modal.add-collection", "Add Collection")}
+                ? t("collection-modal-edit-collection", "Edit Collection")
+                : t("collection-modal-add-collection", "Add Collection")}
             </h1>
             <p className="inter-small-regular text-grey-50">
               {t(
-                "collection-modal.description",
+                "collection-modal-description",
                 "To create a collection, all you need is a title and a handle."
               )}
             </p>
@@ -166,22 +166,22 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
           <Modal.Content>
             <div>
               <h2 className="inter-base-semibold mb-base">
-                {t("collection-modal.details", "Details")}
+                {t("collection-modal-details", "Details")}
               </h2>
               <div className="gap-x-base flex items-center">
                 <InputField
-                  label={t("collection-modal.title.label", "Title")}
+                  label={t("collection-modal-title-label", "Title")}
                   required
                   placeholder={t(
-                    "collection-modal.title.placeholder",
+                    "collection-modal-title-placeholder",
                     "Sunglasses"
                   )}
                   {...register("title", { required: true })}
                 />
                 <InputField
-                  label={t("collection-modal.handle.label", "Handle")}
+                  label={t("collection-modal-handle-label", "Handle")}
                   placeholder={t(
-                    "collection-modal.handle.placeholder",
+                    "collection-modal-handle-placeholder",
                     "sunglasses"
                   )}
                   {...register("handle")}
@@ -189,7 +189,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
                   tooltip={
                     <IconTooltip
                       content={t(
-                        "collection-modal.slug.description",
+                        "collection-modal-slug-description",
                         "URL Slug for the collection. Will be auto generated if left blank."
                       )}
                     />
@@ -199,7 +199,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
             </div>
             <div className="mt-xlarge">
               <h2 className="inter-base-semibold mb-base">
-                {t("collection-modal.metadata", "Metadata")}
+                {t("collection-modal-metadata", "Metadata")}
               </h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
@@ -212,7 +212,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
                 type="button"
                 onClick={onClose}
               >
-                {t("collection-modal.cancel", "Cancel")}
+                {t("collection-modal-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -220,9 +220,9 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
                 loading={isEdit ? updating : creating}
               >
                 {isEdit
-                  ? t("collection-modal.save-collection", "Save collection")
+                  ? t("collection-modal-save-collection", "Save collection")
                   : t(
-                      "collection-modal.publish-collection",
+                      "collection-modal-publish-collection",
                       "Publish collection"
                     )}
               </Button>

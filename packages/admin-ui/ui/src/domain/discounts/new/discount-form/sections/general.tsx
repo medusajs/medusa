@@ -62,7 +62,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
             control={control}
             rules={{
               required: t(
-                "sections.at-least-one-region-is-required",
+                "sections-at-least-one-region-is-required",
                 "At least one region is required"
               ),
               validate: (value) =>
@@ -76,7 +76,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                     onChange(type === "fixed" ? [value] : value)
                   }}
                   label={t(
-                    "sections.choose-valid-regions",
+                    "sections-choose-valid-regions",
                     "Choose valid regions"
                   )}
                   isMulti={type !== "fixed"}
@@ -90,12 +90,12 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
           />
           <div className="gap-x-base gap-y-base my-base flex">
             <InputField
-              label={t("sections.code", "Code")}
+              label={t("sections-code", "Code")}
               className="flex-1"
-              placeholder={t("sections.summersale-10", "SUMMERSALE10")}
+              placeholder={t("sections-summersale-10", "SUMMERSALE10")}
               required
               {...register("code", {
-                required: t("sections.code-is-required", "Code is required"),
+                required: t("sections-code-is-required", "Code is required"),
               })}
             />
 
@@ -114,7 +114,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                         control={control}
                         rules={{
                           required: t(
-                            "sections.amount-is-required",
+                            "sections-amount-is-required",
                             "Amount is required"
                           ),
                           min: 1,
@@ -122,7 +122,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                         render={({ field: { value, onChange } }) => {
                           return (
                             <CurrencyInput.Amount
-                              label={t("sections.amount", "Amount")}
+                              label={t("sections-amount", "Amount")}
                               required
                               amount={value}
                               onChange={onChange}
@@ -135,7 +135,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                 ) : (
                   <div className="flex-1">
                     <InputField
-                      label={t("sections.percentage", "Percentage")}
+                      label={t("sections-percentage", "Percentage")}
                       min={0}
                       required
                       type="number"
@@ -155,21 +155,21 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
           <div className="text-grey-50 inter-small-regular mb-6 flex flex-col">
             <span>
               {t(
-                "sections.customer-invoice-code",
+                "sections-customer-invoice-code",
                 "The code your customers will enter during checkout. This will appear on your customer\u2019s invoice."
               )}
             </span>
             <span>
               {t(
-                "sections.uppercase-letters-and-numbers-only",
+                "sections-uppercase-letters-and-numbers-only",
                 "Uppercase letters and numbers only."
               )}
             </span>
           </div>
           <TextArea
-            label={t("sections.description", "Description")}
+            label={t("sections-description", "Description")}
             required
-            placeholder={t("sections.summer-sale-2022", "Summer Sale 2022")}
+            placeholder={t("sections-summer-sale-2022", "Summer Sale 2022")}
             rows={1}
             {...register("rule.description", {
               required: true,
@@ -183,7 +183,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                 return (
                   <Checkbox
                     label={t(
-                      "sections.this-is-a-template-discount",
+                      "sections-this-is-a-template-discount",
                       "This is a template discount"
                     )}
                     name="is_dynamic"
@@ -196,7 +196,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
             />
             <IconTooltip
               content={t(
-                "sections.template-discounts-description",
+                "sections-template-discounts-description",
                 "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same."
               )}
             />

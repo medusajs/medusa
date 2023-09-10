@@ -61,9 +61,9 @@ const EditModal = ({ open, onClose, option }: Props) => {
       {
         onSuccess: () => {
           notification(
-            t("shipping-option-card.success", "Success"),
+            t("shipping-option-card-success", "Success"),
             t(
-              "shipping-option-card.shipping-option-updated",
+              "shipping-option-card-shipping-option-updated",
               "Shipping option updated"
             ),
             "success"
@@ -72,7 +72,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
         },
         onError: (error) => {
           notification(
-            t("shipping-option-card.error", "Error"),
+            t("shipping-option-card-error", "Error"),
             getErrorMessage(error),
             "error"
           )
@@ -87,7 +87,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
         <Modal.Header handleClose={closeAndReset}>
           <h1 className="inter-xlarge-semibold">
             {t(
-              "shipping-option-card.edit-shipping-option",
+              "shipping-option-card-edit-shipping-option",
               "Edit Shipping Option"
             )}
           </h1>
@@ -97,7 +97,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
             <div>
               <p className="inter-base-semibold">
                 {t(
-                  "shipping-option-card.fulfillment-method",
+                  "shipping-option-card-fulfillment-method",
                   "Fulfillment Method"
                 )}
               </p>
@@ -115,7 +115,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
           <Modal.Footer>
             <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button variant="secondary" size="small" onClick={closeAndReset}>
-                {t("shipping-option-card.cancel", "Cancel")}
+                {t("shipping-option-card-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -124,7 +124,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                {t("shipping-option-card.save-and-close", "Save and close")}
+                {t("shipping-option-card-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

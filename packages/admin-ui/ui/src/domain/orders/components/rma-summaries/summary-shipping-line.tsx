@@ -36,7 +36,7 @@ export const SummaryShippingLine = ({
               amount: price,
               currency: currencyCode,
             })
-          : t("rma-summaries.free", "Free")}
+          : t("rma-summaries-free", "Free")}
       </p>
     </div>
   )

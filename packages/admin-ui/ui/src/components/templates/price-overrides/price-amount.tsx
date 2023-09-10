@@ -30,7 +30,7 @@ const PriceAmount = ({ value, onChange }) => {
             >
               <div className="flex items-center gap-2">
                 {showRegions ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
-                <span>{t("price-overrides.show-regions", "Show regions")}</span>
+                <span>{t("price-overrides-show-regions", "Show regions")}</span>
               </div>
             </Button>
           ) : null}

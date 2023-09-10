@@ -26,7 +26,7 @@ const Header = ({ priceList }) => {
         {priceList.customer_groups.length ? (
           <div className="border-grey-20 border-l pl-6">
             <span className="inter-base-regular text-grey-50">
-              {t("sections.customer-groups", "Customer groups")}
+              {t("sections-customer-groups", "Customer groups")}
             </span>
             <p className="inter-base-regular text-grey-90">
               <PriceListCustomerGroupsFormatter
@@ -37,7 +37,7 @@ const Header = ({ priceList }) => {
         ) : null}
         <div className="border-grey-20 border-l pl-6">
           <span className="inter-base-regular text-grey-50">
-            {t("sections.last-edited", "Last edited")}
+            {t("sections-last-edited", "Last edited")}
           </span>
           <p className="inter-base-regular text-grey-90">
             {moment(priceList.updated_at).format("ddd, D MMM YYYY")}
@@ -45,7 +45,7 @@ const Header = ({ priceList }) => {
         </div>
         <div className="border-grey-20 border-l pl-6">
           <span className="inter-base-regular text-grey-50">
-            {t("sections.price-overrides", "Price overrides")}
+            {t("sections-price-overrides", "Price overrides")}
           </span>
           <p className="inter-base-regular text-grey-90">
             {priceList.prices?.length}
@@ -74,7 +74,7 @@ const PriceListCustomerGroupsFormatter = ({ groups }) => {
       {other && (
         <span className="text-grey-40">
           {" "}
-          + {other} {t("sections.more", "more")}
+          + {other} {t("sections-more", "more")}
         </span>
       )}
     </>
@@ -90,9 +90,9 @@ const HeadingBodyCard = ({ priceList, setIsOpen, ...props }) => {
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("sections.delete-price-list.heading", "Delete Price list"),
+      heading: t("sections-delete-price-list-heading", "Delete Price list"),
       text: t(
-        "sections.are-you-sure-you-want-to-delete-this-price-list",
+        "sections-are-you-sure-you-want-to-delete-this-price-list",
         "Are you sure you want to delete this price list?"
       ),
     })
@@ -100,9 +100,9 @@ const HeadingBodyCard = ({ priceList, setIsOpen, ...props }) => {
       deletePriceList.mutate(undefined, {
         onSuccess: () => {
           notification(
-            t("sections.success", "Success"),
+            t("sections-success", "Success"),
             t(
-              "sections.price-list-deleted-successfully",
+              "sections-price-list-deleted-successfully",
               "Price list deleted successfully"
             ),
             "success"
@@ -118,12 +118,12 @@ const HeadingBodyCard = ({ priceList, setIsOpen, ...props }) => {
 
   const actionables = [
     {
-      label: t("sections.edit-price-list-details", "Edit price list details"),
+      label: t("sections-edit-price-list-details", "Edit price list details"),
       onClick: () => setIsOpen(true),
       icon: <EditIcon size={20} />,
     },
     {
-      label: t("sections.delete-price-list", "Delete price list"),
+      label: t("sections-delete-price-list", "Delete price list"),
       onClick: onDelete,
       variant: "danger" as const,
       icon: <TrashIcon size={20} />,

@@ -160,7 +160,7 @@ const ViewProductsTable: React.FC<ViewProductsTableProps> = ({
           enableSearch
           handleSearch={handleSearch}
           searchPlaceholder={t(
-            "collection-product-table.search-products",
+            "collection-product-table-search-products",
             "Search Products"
           )}
           {...getTableProps()}
@@ -189,11 +189,11 @@ const ViewProductsTable: React.FC<ViewProductsTableProps> = ({
           onDelete={async () => handleRemoveProduct()}
           handleClose={() => setShowDelete(!showDelete)}
           heading={t(
-            "collection-product-table.remove-product-from-collection",
+            "collection-product-table-remove-product-from-collection",
             "Remove product from collection"
           )}
           successText={t(
-            "collection-product-table.product-removed-from-collection",
+            "collection-product-table-product-removed-from-collection",
             "Product removed from collection"
           )}
         />

@@ -43,12 +43,12 @@ const AnalyticsConfigForm = ({ form, compact }: Props) => {
         <div className="gap-y-2xsmall flex flex-1 flex-col">
           <div className="flex items-center">
             <h2 className="inter-base-semibold mr-2">
-              {t("analytics-config-form.title", "Anonymize my usage data")}
+              {t("analytics-config-form-title", "Anonymize my usage data")}
             </h2>
             {compact && (
               <Tooltip
                 content={t(
-                  "analytics-config-form.description",
+                  "analytics-config-form-description",
                   "You can choose to anonymize your usage data. If this option is selected, we will not collect your personal information, such as your name and email address."
                 )}
                 side="top"
@@ -60,7 +60,7 @@ const AnalyticsConfigForm = ({ form, compact }: Props) => {
           {!compact && (
             <p className="inter-base-regular text-grey-50">
               {t(
-                "analytics-config-form.description",
+                "analytics-config-form-description",
                 "You can choose to anonymize your usage data. If this option is selected, we will not collect your personal information, such as your name and email address."
               )}
             </p>
@@ -85,14 +85,14 @@ const AnalyticsConfigForm = ({ form, compact }: Props) => {
           <div className="flex items-center">
             <h2 className="inter-base-semibold mr-2">
               {t(
-                "analytics-config-form.opt-out",
+                "analytics-config-form-opt-out",
                 "Opt out of sharing my usage data"
               )}
             </h2>
             {compact && (
               <Tooltip
                 content={t(
-                  "analytics-config-form.opt-out-later",
+                  "analytics-config-form-opt-out-later",
                   "You can always opt out of sharing your usage data at any time."
                 )}
                 side="top"
@@ -104,7 +104,7 @@ const AnalyticsConfigForm = ({ form, compact }: Props) => {
           {!compact && (
             <p className="inter-base-regular text-grey-50">
               {t(
-                "analytics-config-form.opt-out-later",
+                "analytics-config-form-opt-out-later",
                 "You can always opt out of sharing your usage data at any time."
               )}
             </p>

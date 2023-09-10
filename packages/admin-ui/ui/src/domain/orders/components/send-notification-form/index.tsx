@@ -18,9 +18,9 @@ const SendNotificationForm = ({ form, type }: Props) => {
   const { control, path } = form
 
   const subject = {
-    return: t("send-notification-form.return", "return"),
-    swap: t("send-notification-form.exchange", "exchange"),
-    claim: t("send-notification-form.claim", "claim"),
+    return: t("send-notification-form-return", "return"),
+    swap: t("send-notification-form-exchange", "exchange"),
+    claim: t("send-notification-form-claim", "claim"),
   }[type]
 
   return (
@@ -35,14 +35,14 @@ const SendNotificationForm = ({ form, type }: Props) => {
             </div>
             <p className="inter-small-semibold mr-1.5">
               {t(
-                "send-notification-form.send-notifications",
+                "send-notification-form-send-notifications",
                 "Send notifications"
               )}
             </p>
             <IconTooltip
               type="info"
               content={t(
-                "send-notification-form.if-unchecked-the-customer-will-not-receive-communication",
+                "send-notification-form-if-unchecked-the-customer-will-not-receive-communication",
                 `If unchecked the customer will not receive communication about this {subject}.`,
                 { subject }
               )}

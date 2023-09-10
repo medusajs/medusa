@@ -100,26 +100,26 @@ function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
 
   const actions: ActionType[] = [
     {
-      label: t("customer-group-table.details", "Details"),
+      label: t("customer-group-table-details", "Details"),
       onClick: () => navigate(row.original.id),
       icon: <DetailsIcon size={20} />,
     },
     {
-      label: t("customer-group-table.delete", "Delete"),
+      label: t("customer-group-table-delete", "Delete"),
       onClick: () => {
         mutate(undefined, {
           onSuccess: () => {
             notification(
-              t("customer-group-table.success", "Success"),
-              t("customer-group-table.group-deleted", "Group deleted"),
+              t("customer-group-table-success", "Success"),
+              t("customer-group-table-group-deleted", "Group deleted"),
               "success"
             )
           },
           onError: () => {
             notification(
-              t("customer-group-table.error", "Error"),
+              t("customer-group-table-error", "Error"),
               t(
-                "customer-group-table.failed-to-delete-the-group",
+                "customer-group-table-failed-to-delete-the-group",
                 "Failed to delete the group"
               ),
               "error"
@@ -223,7 +223,7 @@ function CustomerGroupsTable(props: CustomerGroupsTableProps) {
         count: count,
         offset: queryObject.offset,
         pageSize: queryObject.offset + table.rows.length,
-        title: t("customer-group-table.customer-groups", "Customer groups"),
+        title: t("customer-group-table-customer-groups", "Customer groups"),
         currentPage: table.state.pageIndex + 1,
         pageCount: table.pageCount,
         nextPage: handleNext,

@@ -83,9 +83,9 @@ const OrderEditLine = ({
   const onDuplicate = async () => {
     if (!item.variant) {
       notification(
-        t("order-line.warning", "Warning"),
+        t("order-line-warning", "Warning"),
         t(
-          "order-line.cannot-duplicate-an-item-without-a-variant",
+          "order-line-cannot-duplicate-an-item-without-a-variant",
           "Cannot duplicate an item without a variant"
         ),
         "warning"
@@ -100,8 +100,8 @@ const OrderEditLine = ({
       })
     } catch (e) {
       notification(
-        t("order-line.error", "Error"),
-        t("order-line.failed-to-duplicate-item", "Failed to duplicate item"),
+        t("order-line-error", "Error"),
+        t("order-line-failed-to-duplicate-item", "Failed to duplicate item"),
         "error"
       )
     }
@@ -121,14 +121,14 @@ const OrderEditLine = ({
         await removeItem()
       }
       notification(
-        t("order-line.success", "Success"),
-        t("order-line.item-removed", "Item removed"),
+        t("order-line-success", "Success"),
+        t("order-line-item-removed", "Item removed"),
         "success"
       )
     } catch (e) {
       notification(
-        t("order-line.error", "Error"),
-        t("order-line.failed-to-remove-item", "Failed to remove item"),
+        t("order-line-error", "Error"),
+        t("order-line-failed-to-remove-item", "Failed to remove item"),
         "error"
       )
     }
@@ -140,15 +140,15 @@ const OrderEditLine = ({
       await onRemove()
       await addLineItem({ variant_id: newVariantId, quantity: item.quantity })
       notification(
-        t("order-line.success", "Success"),
-        t("order-line.item-added", "Item added"),
+        t("order-line-success", "Success"),
+        t("order-line-item-added", "Item added"),
         "success"
       )
     } catch (e) {
       notification(
-        t("order-line.error", "Error"),
+        t("order-line-error", "Error"),
         t(
-          "order-line.failed-to-replace-the-item",
+          "order-line-failed-to-replace-the-item",
           "Failed to replace the item"
         ),
         "error"
@@ -157,7 +157,7 @@ const OrderEditLine = ({
   }
 
   const replaceProductVariantScreen = {
-    title: t("order-line.replace-product-variants", "Replace Product Variants"),
+    title: t("order-line-replace-product-variants", "Replace Product Variants"),
     onBack: pop,
     view: (
       <AddProductVariant
@@ -172,17 +172,17 @@ const OrderEditLine = ({
 
   const actions = [
     !isLocked && {
-      label: t("order-line.replace-with-other-item", "Replace with other item"),
+      label: t("order-line-replace-with-other-item", "Replace with other item"),
       onClick: () => push(replaceProductVariantScreen),
       icon: <RefreshIcon size="20" />,
     },
     {
-      label: t("order-line.duplicate-item", "Duplicate item"),
+      label: t("order-line-duplicate-item", "Duplicate item"),
       onClick: onDuplicate,
       icon: <DuplicateIcon size="20" />,
     },
     !isLocked && {
-      label: t("order-line.remove-item", "Remove item"),
+      label: t("order-line-remove-item", "Remove item"),
       onClick: onRemove,
       variant: "danger",
       icon: <TrashIcon size="20" />,
@@ -194,7 +194,7 @@ const OrderEditLine = ({
       side="top"
       open={isLocked ? undefined : false}
       content={t(
-        "order-line.line-item-cannot-be-edited",
+        "order-line-line-item-cannot-be-edited",
         "This line item is part of a fulfillment and cannot be edited. Cancel the fulfillment to edit the line item."
       )}
     >
@@ -235,13 +235,13 @@ const OrderEditLine = ({
             <div className="flex items-center">
               {isNew && (
                 <div className="text-small bg-blue-10 rounded-rounded mr-2 flex h-[24px] w-[42px] flex-shrink-0 items-center justify-center text-blue-500">
-                  {t("order-line.new", "New")}
+                  {t("order-line-new", "New")}
                 </div>
               )}
 
               {isModified && (
                 <div className="text-small bg-orange-10 rounded-rounded mr-2 flex h-[24px] w-[68px] flex-shrink-0 items-center justify-center text-orange-500">
-                  {t("order-line.modified", "Modified")}
+                  {t("order-line-modified", "Modified")}
                 </div>
               )}
 

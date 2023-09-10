@@ -177,17 +177,17 @@ function ImportPrices(props: ImportPricesProps) {
   return (
     <UploadModal
       type="prices"
-      fileTitle={t("batch-job.price-list-prices", "Price List prices")}
+      fileTitle={t("batch-job-price-list-prices", "Price List prices")}
       description1Text={t(
-        "batch-job.upload-a-csv-file-with-variants",
+        "batch-job-upload-a-csv-file-with-variants",
         "Upload a CSV file with variants and prices to update your price list. Note that any existing prices will be deleted."
       )}
       description2Title={t(
-        "batch-job.unsure-about-how-to-arrange-your-list",
+        "batch-job-unsure-about-how-to-arrange-your-list",
         "Unsure about how to arrange your list?"
       )}
       description2Text={t(
-        "batch-job.download-the-template-file-below-and-update-your-prices",
+        "batch-job-download-the-template-file-below-and-update-your-prices",
         "Download the template file below and update your prices"
       )}
       status={status}

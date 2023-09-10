@@ -38,9 +38,9 @@ const DefaultCurrencySelector = ({ store }: Props) => {
       {
         onSuccess: () => {
           notification(
-            t("default-store-currency.success", "Success"),
+            t("default-store-currency-success", "Success"),
             t(
-              "default-store-currency.successfully-updated-default-currency",
+              "default-store-currency-successfully-updated-default-currency",
               "Successfully updated default currency"
             ),
             "success"
@@ -48,7 +48,7 @@ const DefaultCurrencySelector = ({ store }: Props) => {
         },
         onError: (error) => {
           notification(
-            t("default-store-currency.error", "Error"),
+            t("default-store-currency-error", "Error"),
             getErrorMessage(error),
             "error"
           )

@@ -101,16 +101,16 @@ const CollectionDetails = () => {
 
       setShowAddProducts(false)
       notification(
-        t("details.success", "Success"),
+        t("details-success", "Success"),
         t(
-          "details.updated-products-in-collection",
+          "details-updated-products-in-collection",
           "Updated products in collection"
         ),
         "success"
       )
       refetch()
     } catch (error) {
-      notification(t("details.error", "Error"), getErrorMessage(error), "error")
+      notification(t("details-error", "Error"), getErrorMessage(error), "error")
     }
   }
 
@@ -152,7 +152,7 @@ const CollectionDetails = () => {
         <BackButton
           className="mb-xsmall"
           path="/a/products?view=collections"
-          label={t("details.back-to-collections", "Back to Collections")}
+          label={t("details-back-to-collections", "Back to Collections")}
         />
         <div className="gap-y-xsmall flex flex-col">
           {getWidgets("product_collection.details.before").map((w, i) => {
@@ -177,12 +177,12 @@ const CollectionDetails = () => {
                     forceDropdown
                     actions={[
                       {
-                        label: t("details.edit-collection", "Edit Collection"),
+                        label: t("details-edit-collection", "Edit Collection"),
                         onClick: () => setShowEdit(true),
                         icon: <EditIcon size="20" />,
                       },
                       {
-                        label: t("details.delete", "Delete"),
+                        label: t("details-delete", "Delete"),
                         onClick: () => setShowDelete(!showDelete),
                         variant: "danger",
                         icon: <TrashIcon size="20" />,
@@ -197,7 +197,7 @@ const CollectionDetails = () => {
               {collection.metadata && (
                 <div className="mt-large gap-y-base flex flex-col">
                   <h3 className="inter-base-semibold">
-                    {t("details.metadata", "Metadata")}
+                    {t("details-metadata", "Metadata")}
                   </h3>
                   <div>
                     <JSONView data={collection.metadata} />
@@ -211,7 +211,7 @@ const CollectionDetails = () => {
             title="Products"
             actions={[
               {
-                label: t("details.edit-products", "Edit Products"),
+                label: t("details-edit-products", "Edit Products"),
                 icon: <EditIcon size="20" />,
                 onClick: () => setShowAddProducts(!showAddProducts),
               },
@@ -219,7 +219,7 @@ const CollectionDetails = () => {
           >
             <p className="text-grey-50 inter-base-regular mt-xsmall mb-base">
               {t(
-                "details.products-in-this-collection",
+                "details-products-in-this-collection",
                 "Products in this collection"
               )}
             </p>
@@ -245,7 +245,7 @@ const CollectionDetails = () => {
 
           <RawJSON
             data={collection}
-            title={t("details.raw-collection", "Raw collection")}
+            title={t("details-raw-collection", "Raw collection")}
           />
         </div>
         <Spacer />
@@ -261,13 +261,13 @@ const CollectionDetails = () => {
       {showDelete && (
         <DeletePrompt
           handleClose={() => setShowDelete(!showDelete)}
-          heading={t("details.delete-collection", "Delete collection")}
+          heading={t("details-delete-collection", "Delete collection")}
           successText={t(
-            "details.successfully-deleted-collection",
+            "details-successfully-deleted-collection",
             "Successfully deleted collection"
           )}
           onDelete={async () => handleDelete()}
-          confirmText={t("details.yes-delete", "Yes, delete")}
+          confirmText={t("details-yes-delete", "Yes, delete")}
         />
       )}
       {showAddProducts && (

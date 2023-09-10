@@ -132,7 +132,7 @@ const GiftCardTable = () => {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + rows.length,
-        title: t("gift-card-table.gift-cards", "Gift cards"),
+        title: t("gift-card-table-gift-cards", "Gift cards"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,

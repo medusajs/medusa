@@ -18,7 +18,7 @@ const PricingIndex = () => {
 
   const actionables = [
     {
-      label: t("pricing.add-price-list", "Add price list"),
+      label: t("pricing-add-price-list", "Add price list"),
       onClick: () => navigate(`/a/pricing/new`),
       icon: <PlusIcon size={20} />,
     },
@@ -43,7 +43,7 @@ const PricingIndex = () => {
           actionables={actionables}
           customHeader={
             <TableViewHeader
-              views={[t("pricing.price-lists", "Price lists")]}
+              views={[t("pricing-price-lists", "Price lists")]}
             />
           }
           className="h-fit"

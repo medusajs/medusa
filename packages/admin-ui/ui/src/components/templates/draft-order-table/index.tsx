@@ -109,7 +109,7 @@ const DraftOrderTable = () => {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + rows.length,
-        title: t("draft-order-table.draft-orders", "Draft Orders"),
+        title: t("draft-order-table-draft-orders", "Draft Orders"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,

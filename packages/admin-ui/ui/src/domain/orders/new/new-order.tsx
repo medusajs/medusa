@@ -102,8 +102,8 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
       {
         onSuccess: ({ draft_order }) => {
           notification(
-            t("new.success", "Success"),
-            t("new.order-created", "Order created"),
+            t("new-success", "Success"),
+            t("new-order-created", "Order created"),
             "success"
           )
           reset()
@@ -112,7 +112,7 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
           navigate(`/a/draft-orders/${draft_order.id}`)
         },
         onError: (error) => {
-          notification(t("new.error", "Error"), error.message, "error")
+          notification(t("new-error", "Error"), error.message, "error")
         },
       }
     )
@@ -132,7 +132,7 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
         <Summary />,
       ]}
       lastScreenIsSummary={true}
-      title={t("new.create-draft-order", "Create Draft Order")}
+      title={t("new-create-draft-order", "Create Draft Order")}
       handleClose={onDismiss}
     />
   )

@@ -32,7 +32,7 @@ const EditTaxRate = ({ taxRate, taxRateId, regionId, onDismiss }) => {
         <Modal.Header handleClose={onDismiss}>
           <div>
             <h1 className="inter-xlarge-semibold">
-              {t("taxes.edit-tax-rate", "Edit Tax Rate")}
+              {t("taxes-edit-tax-rate", "Edit Tax Rate")}
             </h1>
           </div>
         </Modal.Header>

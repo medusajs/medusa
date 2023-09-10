@@ -21,7 +21,7 @@ function ProductCategoriesEmptyState() {
     <div className="flex min-h-[600px] items-center justify-center">
       <p className="text-grey-40">
         {t(
-          "pages.no-product-categories-yet",
+          "pages-no-product-categories-yet",
           "No product categories yet, use the above button to create your first category."
         )}
       </p>
@@ -61,7 +61,7 @@ function ProductCategoryPage() {
 
   const actions = [
     {
-      label: t("pages.add-category", "Add category"),
+      label: t("pages-add-category", "Add category"),
       onClick: showCreateModal,
     },
   ]
@@ -93,9 +93,9 @@ function ProductCategoryPage() {
         <div className="flex w-full grow flex-col">
           <BodyCard
             className="h-full"
-            title={t("pages.product-categories", "Product Categories")}
+            title={t("pages-product-categories", "Product Categories")}
             subtitle={t(
-              "pages.helps-you-to-keep-your-products-organized",
+              "pages-helps-you-to-keep-your-products-organized",
               "Helps you to keep your products organized."
             )}
             actionables={actions}

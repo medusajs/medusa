@@ -24,11 +24,11 @@ const DetailsCollapsible = ({
   const Icon = open ? ArrowUpIcon : ArrowDownIcon
   const label = open
     ? t(
-        "details-collapsible.hide-additional-details",
+        "details-collapsible-hide-additional-details",
         "Hide additional details"
       )
     : t(
-        "details-collapsible.show-additional-details",
+        "details-collapsible-show-additional-details",
         "Show additional details"
       )
 

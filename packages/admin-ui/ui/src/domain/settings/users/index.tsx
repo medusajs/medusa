@@ -35,7 +35,7 @@ const Users: React.FC = () => {
 
   const actionables = [
     {
-      label: t("users.invite-users", "Invite Users"),
+      label: t("users-invite-users", "Invite Users"),
       onClick: () => setShowInviteModal(true),
       icon: (
         <span className="text-grey-90">
@@ -50,13 +50,13 @@ const Users: React.FC = () => {
       <div className="flex w-full grow flex-col">
         <BackButton
           path="/a/settings"
-          label={t("users.back-to-settings", "Back to settings")}
+          label={t("users-back-to-settings", "Back to settings")}
           className="mb-xsmall"
         />
         <BodyCard
-          title={t("users.the-team", "The Team")}
+          title={t("users-the-team", "The Team")}
           subtitle={t(
-            "users.manage-users-of-your-medusa-store",
+            "users-manage-users-of-your-medusa-store",
             "Manage users of your Medusa Store"
           )}
           actionables={actionables}
@@ -68,7 +68,7 @@ const Users: React.FC = () => {
               triggerRefetch={triggerRefetch}
             />
             <p className="inter-small-regular text-grey-50">
-              {t("users.count", "{count}", { count: users.length })}
+              {t("users-count", "{count}", { count: users.length })}
             </p>
           </div>
           {showInviteModal && (

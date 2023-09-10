@@ -37,7 +37,7 @@ const ExistingConditionTableActions = ({
       <div className={clsx("transition-all duration-200", classes)}>
         <div className="mb-2 flex h-[34px] items-center divide-x">
           <span className="inter-small-regular text-grey-50 mr-3">
-            {t("edit-condition.selected-with-count", "{count}", {
+            {t("edit-condition-selected-with-count", "{count}", {
               count: numberOfSelectedRows,
             })}
           </span>
@@ -48,7 +48,7 @@ const ExistingConditionTableActions = ({
               variant="ghost"
               className="border-grey-20 border"
             >
-              {t("edit-condition.deselect", "Deselect")}
+              {t("edit-condition-deselect", "Deselect")}
             </Button>
             <Button
               onClick={onRemove}
@@ -56,7 +56,7 @@ const ExistingConditionTableActions = ({
               variant="ghost"
               className="border-grey-20 border text-rose-50"
             >
-              {t("edit-condition.remove", "Remove")}
+              {t("edit-condition-remove", "Remove")}
             </Button>
           </div>
         </div>
@@ -67,7 +67,7 @@ const ExistingConditionTableActions = ({
             className="border-grey-20 border"
             onClick={() => push(addConditionsModalScreen)}
           >
-            <PlusIcon size={20} /> {t("edit-condition.add", "Add")}
+            <PlusIcon size={20} /> {t("edit-condition-add", "Add")}
           </Button>
         </div>
       </div>

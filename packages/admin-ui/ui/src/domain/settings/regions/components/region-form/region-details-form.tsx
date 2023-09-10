@@ -37,8 +37,8 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
     <div>
       <div className="gap-large grid grid-cols-2">
         <InputField
-          label={t("region-form.title", "Title")}
-          placeholder={t("region-form.europe", "Europe")}
+          label={t("region-form-title", "Title")}
+          placeholder={t("region-form-europe", "Europe")}
           required
           {...register(path("name"), {
             required: "Title is required",
@@ -52,16 +52,16 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
           name={path("currency_code")}
           rules={{
             required: t(
-              "region-form.currency-code-is-required",
+              "region-form-currency-code-is-required",
               "Currency code is required"
             ),
           }}
           render={({ field }) => {
             return (
               <NextSelect
-                label={t("region-form.currency", "Currency")}
+                label={t("region-form-currency", "Currency")}
                 placeholder={t(
-                  "region-form.choose-currency",
+                  "region-form-choose-currency",
                   "Choose currency"
                 )}
                 required
@@ -76,7 +76,7 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
         {isCreate && (
           <>
             <InputField
-              label={t("region-form.default-tax-rate", "Default Tax Rate")}
+              label={t("region-form-default-tax-rate", "Default Tax Rate")}
               required
               placeholder="25"
               prefix="%"
@@ -85,14 +85,14 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
               {...register(path("tax_rate"), {
                 required: isCreate
                   ? t(
-                      "region-form.tax-rate-is-required",
+                      "region-form-tax-rate-is-required",
                       "Tax rate is required"
                     )
                   : undefined,
                 max: {
                   value: 100,
                   message: t(
-                    "region-form.tax-rate-must-be-equal-to-or-less-than-100",
+                    "region-form-tax-rate-must-be-equal-to-or-less-than-100",
                     "Tax rate must be equal to or less than 100"
                   ),
                 },
@@ -102,7 +102,7 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
               errors={errors}
             />
             <InputField
-              label={t("region-form.default-tax-code", "Default Tax Code")}
+              label={t("region-form-default-tax-code", "Default Tax Code")}
               placeholder="1000"
               {...register(path("tax_code"))}
               errors={errors}
@@ -115,9 +115,9 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
           render={({ field }) => {
             return (
               <NextSelect
-                label={t("region-form.countries", "Countries")}
+                label={t("region-form-countries", "Countries")}
                 placeholder={t(
-                  "region-form.choose-countries",
+                  "region-form-choose-countries",
                   "Choose countries"
                 )}
                 isMulti
@@ -135,11 +135,11 @@ const RegionDetailsForm = ({ form, isCreate = false }: Props) => {
         <div className="mt-xlarge flex items-start justify-between">
           <div className="gap-y-2xsmall flex flex-col">
             <h3 className="inter-base-semibold">
-              {t("region-form.tax-inclusive-prices", "Tax inclusive prices")}
+              {t("region-form-tax-inclusive-prices", "Tax inclusive prices")}
             </h3>
             <p className="inter-base-regular text-grey-50">
               {t(
-                "region-form.when-enabled-region-prices-will-be-tax-inclusive",
+                "region-form-when-enabled-region-prices-will-be-tax-inclusive",
                 "When enabled region prices will be tax inclusive."
               )}
             </p>

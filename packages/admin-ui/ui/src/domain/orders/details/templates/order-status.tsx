@@ -8,28 +8,28 @@ export const OrderStatusComponent = ({ status }) => {
     case "completed":
       return (
         <StatusDot
-          title={t("templates.completed", "Completed")}
+          title={t("templates-completed", "Completed")}
           variant="success"
         />
       )
     case "pending":
       return (
         <StatusDot
-          title={t("templates.processing", "Processing")}
+          title={t("templates-processing", "Processing")}
           variant="default"
         />
       )
     case "canceled":
       return (
         <StatusDot
-          title={t("templates.canceled", "Canceled")}
+          title={t("templates-canceled", "Canceled")}
           variant="danger"
         />
       )
     case "requires_action":
       return (
         <StatusDot
-          title={t("templates.requires-action", "Requires action")}
+          title={t("templates-requires-action", "Requires action")}
           variant="danger"
         />
       )

@@ -11,7 +11,7 @@ const useGiftCardTableColums = () => {
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">{t("gift-card-table.code", "Code")}</div>,
+        Header: <div className="pl-2">{t("gift-card-table-code", "Code")}</div>,
         accessor: "code",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
@@ -23,7 +23,7 @@ const useGiftCardTableColums = () => {
         ),
       },
       {
-        Header: t("gift-card-table.order", "Order"),
+        Header: t("gift-card-table-order", "Order"),
         accessor: "order",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
@@ -39,7 +39,7 @@ const useGiftCardTableColums = () => {
         ),
       },
       {
-        Header: t("gift-card-table.original-amount", "Original Amount"),
+        Header: t("gift-card-table-original-amount", "Original Amount"),
         accessor: "value",
         Cell: ({ row, cell: { value }, index }) => (
           <Table.Cell key={index}>
@@ -58,7 +58,7 @@ const useGiftCardTableColums = () => {
         ),
       },
       {
-        Header: t("gift-card-table.balance", "Balance"),
+        Header: t("gift-card-table-balance", "Balance"),
         accessor: "balance",
         Cell: ({ row, cell: { value }, index }) => (
           <Table.Cell key={index}>
@@ -73,7 +73,7 @@ const useGiftCardTableColums = () => {
                   <span>N / A</span>
                   <IconTooltip
                     content={t(
-                      "gift-card-table.region-has-been-deleted",
+                      "gift-card-table-region-has-been-deleted",
                       "Region has been deleted"
                     )}
                   />
@@ -81,7 +81,7 @@ const useGiftCardTableColums = () => {
               )
             ) : (
               <StatusIndicator
-                title={t("gift-card-table.none", "None")}
+                title={t("gift-card-table-none", "None")}
                 variant="danger"
               />
             )}
@@ -91,7 +91,7 @@ const useGiftCardTableColums = () => {
       {
         Header: () => (
           <div className="rounded-rounded flex w-full justify-end pr-2">
-            {t("gift-card-table.created", "Created")}
+            {t("gift-card-table-created", "Created")}
           </div>
         ),
         accessor: "created_at",

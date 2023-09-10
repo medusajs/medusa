@@ -29,11 +29,11 @@ function General(props: GeneralProps) {
     <div className="gap-y-base my-base flex flex-col">
       <div className="flex-1">
         <InputField
-          label={t("form.title", "Title")}
+          label={t("form-title", "Title")}
           type="string"
           name="name"
           placeholder={t(
-            "form.website-app-amazon-physical-store-pos-facebook-product-feed",
+            "form-website-app-amazon-physical-store-pos-facebook-product-feed",
             "Website, app, Amazon, physical store POS, facebook product feed..."
           )}
           value={name}
@@ -42,11 +42,11 @@ function General(props: GeneralProps) {
       </div>
       <div className="flex-1">
         <InputField
-          label={t("form.description", "Description")}
+          label={t("form-description", "Description")}
           type="string"
           name="description"
           placeholder={t(
-            "form.available-products-at-our-website-app",
+            "form-available-products-at-our-website-app",
             "Available products at our website, app..."
           )}
           value={description}

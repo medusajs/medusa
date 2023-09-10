@@ -63,9 +63,9 @@ const useCopyPromotion = () => {
       onSuccess: (result) => {
         navigate(`/a/discounts/${result.discount.id}`)
         notification(
-          t("discount-table.success", "Success"),
+          t("discount-table-success", "Success"),
           t(
-            "discount-table.successfully-copied-discount",
+            "discount-table-successfully-copied-discount",
             "Successfully copied discount"
           ),
           "success"
@@ -73,7 +73,7 @@ const useCopyPromotion = () => {
       },
       onError: (err) => {
         notification(
-          t("discount-table.error", "Error"),
+          t("discount-table-error", "Error"),
           getErrorMessage(err),
           "error"
         )

@@ -13,7 +13,7 @@ export const usePriceListTableColumns = () => {
   const columns = useMemo<Column<PriceList>[]>(
     () => [
       {
-        Header: t("price-list-table.name", "Name"),
+        Header: t("price-list-table-name", "Name"),
         accessor: "name",
         Cell: ({ cell: { value } }) => (
           <Table.Cell>
@@ -22,19 +22,19 @@ export const usePriceListTableColumns = () => {
         ),
       },
       {
-        Header: t("price-list-table.description", "Description"),
+        Header: t("price-list-table-description", "Description"),
         accessor: "description",
         Cell: ({ cell: { value } }) => <Table.Cell>{value}</Table.Cell>,
       },
       {
-        Header: t("price-list-table.status", "Status"),
+        Header: t("price-list-table-status", "Status"),
         accessor: "status",
         Cell: ({ row: { original } }) => (
           <Table.Cell>{getPriceListStatus(original)}</Table.Cell>
         ),
       },
       {
-        Header: t("price-list-table.groups", "Groups"),
+        Header: t("price-list-table-groups", "Groups"),
         accessor: "customer_groups",
         Cell: ({ cell: { value } }) => {
           const groups: string[] = isArray(value)
@@ -47,7 +47,7 @@ export const usePriceListTableColumns = () => {
               {other && (
                 <span className="text-grey-40">
                   {" "}
-                  {t("price-list-table.other-more", "+ {other} more", {
+                  {t("price-list-table-other-more", "+ {other} more", {
                     other,
                   })}
                 </span>

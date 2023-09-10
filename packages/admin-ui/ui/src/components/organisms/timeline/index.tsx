@@ -78,17 +78,17 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
   const actions: ActionType[] = [
     {
       icon: <BackIcon size={20} />,
-      label: t("timeline.request-return", "Request Return"),
+      label: t("timeline-request-return", "Request Return"),
       onClick: () => setShowRequestReturn(true),
     },
     {
       icon: <RefreshIcon size={20} />,
-      label: t("timeline.register-exchange", "Register Exchange"),
+      label: t("timeline-register-exchange", "Register Exchange"),
       onClick: () => setshowCreateSwap(true),
     },
     {
       icon: <AlertIcon size={20} />,
-      label: t("timeline.register-claim", "Register Claim"),
+      label: t("timeline-register-claim", "Register Claim"),
       onClick: openRegisterClaim,
     },
   ]
@@ -106,13 +106,13 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
       {
         onSuccess: () =>
           notification(
-            t("timeline.success", "Success"),
-            t("timeline.added-note", "Added note"),
+            t("timeline-success", "Success"),
+            t("timeline-added-note", "Added note"),
             "success"
           ),
         onError: (err) =>
           notification(
-            t("timeline.error", "Error"),
+            t("timeline-error", "Error"),
             getErrorMessage(err),
             "error"
           ),
@@ -126,7 +126,7 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
         <div className="border-grey-20 py-large px-xlarge border-b">
           <div className="flex items-center justify-between">
             <h3 className="inter-xlarge-semibold">
-              {t("timeline.timeline", "Timeline")}
+              {t("timeline-timeline", "Timeline")}
             </h3>
             <div
               className={clsx({

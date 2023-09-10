@@ -64,7 +64,7 @@ const TableQuantitySelector = <
             onClick={() => updateQuantity(index, -1)}
             disabled={currentQuantity === 1}
             className="h-large w-large rounded-base disabled:text-grey-30"
-            aria-label={t("components.decrease-quantity", "Decrease quantity")}
+            aria-label={t("components-decrease-quantity", "Decrease quantity")}
           >
             <MinusIcon size={16} />
           </Button>
@@ -78,7 +78,7 @@ const TableQuantitySelector = <
             onClick={() => updateQuantity(index, 1)}
             disabled={maxQuantity ? currentQuantity === maxQuantity : undefined}
             className="h-large w-large rounded-base disabled:text-grey-30"
-            aria-label={t("components.increase-quantity", "Increase quantity")}
+            aria-label={t("components-increase-quantity", "Increase quantity")}
           >
             <PlusIcon size={16} />
           </Button>

@@ -41,7 +41,7 @@ const AddCustomerGroupsConditionsScreen = () => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("customer-groups.search", "Search..."),
+            searchPlaceholder: t("customer-groups-search", "Search..."),
           }}
           resourceName="Groups"
           totalCount={count ?? 0}
@@ -58,21 +58,21 @@ const AddCustomerGroupsConditionsScreen = () => {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            {t("customer-groups.cancel", "Cancel")}
+            {t("customer-groups-cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndGoBack(selectedResources, () => refetch())}
           >
-            {t("customer-groups.save-and-go-back", "Save and go back")}
+            {t("customer-groups-save-and-go-back", "Save and go back")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndClose(selectedResources)}
           >
-            {t("customer-groups.save-and-close", "Save and close")}
+            {t("customer-groups-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

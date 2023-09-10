@@ -37,7 +37,7 @@ const AddConditionFooter: React.FC<AddConditionFooterProps> = ({
           reset()
         }}
       >
-        {t("add-condition-tables.cancel", "Cancel")}
+        {t("add-condition-tables-cancel", "Cancel")}
       </Button>
       <Button
         variant="primary"
@@ -51,7 +51,7 @@ const AddConditionFooter: React.FC<AddConditionFooterProps> = ({
           pop()
         }}
       >
-        {t("add-condition-tables.save-and-add-more", "Save and add more")}
+        {t("add-condition-tables-save-and-add-more", "Save and add more")}
       </Button>
       <Button
         variant="primary"
@@ -62,7 +62,7 @@ const AddConditionFooter: React.FC<AddConditionFooterProps> = ({
           reset()
         }}
       >
-        {t("add-condition-tables.save-and-close", "Save and close")}
+        {t("add-condition-tables-save-and-close", "Save and close")}
       </Button>
     </div>
   )

@@ -72,8 +72,8 @@ const AddReturnReason = ({ row, form, isClaim = false }: Props) => {
                 >
                   <span>
                     {reasonDetails?.reason
-                      ? t("add-return-reason.edit-reason", "Edit reason")
-                      : t("add-return-reason.select-reason", "Select reason")}
+                      ? t("add-return-reason-edit-reason", "Edit reason")
+                      : t("add-return-reason-select-reason", "Select reason")}
                   </span>
                 </Button>
               )

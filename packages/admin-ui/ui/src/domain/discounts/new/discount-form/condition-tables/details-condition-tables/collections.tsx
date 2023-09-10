@@ -68,7 +68,7 @@ const DetailsCollectionConditionSelector = ({
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "details-condition-tables.search-by-title",
+              "details-condition-tables-search-by-title",
               "Search by title..."
             ),
           }}

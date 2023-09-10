@@ -44,16 +44,16 @@ const useSortingOptions = (products: SimpleProductType[]) => {
   useEffect(() => {
     setOptions([
       {
-        title: t("collection-product-table.sort-by", "Sort by"),
+        title: t("collection-product-table-sort-by", "Sort by"),
         options: [
           {
-            title: t("collection-product-table.all", "All"),
+            title: t("collection-product-table-all", "All"),
             onClick: () => {
               setSortedProducts(products)
             },
           },
           {
-            title: t("collection-product-table.newest", "Newest"),
+            title: t("collection-product-table-newest", "Newest"),
             onClick: () => {
               const sorted = products.sort(sortByNewest)
               console.log(sorted)
@@ -61,7 +61,7 @@ const useSortingOptions = (products: SimpleProductType[]) => {
             },
           },
           {
-            title: t("collection-product-table.oldest", "Oldest"),
+            title: t("collection-product-table-oldest", "Oldest"),
             onClick: () => {
               const sorted = products.sort(sortByOldest)
               console.log(sorted)
@@ -69,7 +69,7 @@ const useSortingOptions = (products: SimpleProductType[]) => {
             },
           },
           {
-            title: t("collection-product-table.title", "Title"),
+            title: t("collection-product-table-title", "Title"),
             onClick: () => {
               const sorted = products.sort(sortByTitle)
               console.log(sorted)

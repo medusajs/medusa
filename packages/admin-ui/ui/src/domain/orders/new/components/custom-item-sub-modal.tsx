@@ -34,10 +34,10 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
         <div className="gap-y-xsmall min-h-[705px]">
           <InputField
             placeholder={t(
-              "components.e-g-gift-wrapping",
+              "components-e-g-gift-wrapping",
               "E.g. Gift wrapping"
             )}
-            label={t("components.title", "Title")}
+            label={t("components-title", "Title")}
             {...register("title", { required: true })}
             className="my-4"
             required
@@ -49,14 +49,14 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
           >
             <CurrencyInput.Amount
               required
-              label={t("components.price", "Price")}
+              label={t("components-price", "Price")}
               amount={amount}
               onChange={(value) => setAmount(value || 0)}
             />
           </CurrencyInput.Root>
           <InputField
             className="my-4"
-            label={t("components.quantity", "Quantity")}
+            label={t("components-quantity", "Quantity")}
             {...register("quantity", { required: true })}
             type="number"
             required
@@ -71,7 +71,7 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
             className="w-[112px]"
             onClick={() => pop()}
           >
-            {t("components.back", "Back")}
+            {t("components-back", "Back")}
           </Button>
           <Button
             variant="primary"
@@ -79,7 +79,7 @@ const CustomItemSubModal: React.FC<CustomItemSubModalProps> = ({
             size="small"
             onClick={handleSubmit(onSubmitItem)}
           >
-            {t("components.add", "Add")}
+            {t("components-add", "Add")}
           </Button>
         </div>
       </Modal.Footer>

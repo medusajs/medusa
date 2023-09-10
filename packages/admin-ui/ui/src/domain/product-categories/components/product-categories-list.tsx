@@ -63,18 +63,18 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
           rank,
         })
         notification(
-          t("components.success", "Success"),
+          t("components-success", "Success"),
           t(
-            "components.successfully-updated-category-tree",
+            "components-successfully-updated-category-tree",
             "Successfully updated category tree"
           ),
           "success"
         )
       } catch (e) {
         notification(
-          t("components.error", "Error"),
+          t("components-error", "Error"),
           t(
-            "components.failed-to-update-category-tree",
+            "components-failed-to-update-category-tree",
             "Failed to update category tree"
           ),
           "error"

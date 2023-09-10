@@ -24,7 +24,7 @@ const ConditionOperator: React.FC<ConditionOperatorProps> = ({
         label="In"
         value={DiscountConditionOperator.IN}
         description={t(
-          "shared.applies-to-the-selected-items",
+          "shared-applies-to-the-selected-items",
           "Applies to the selected items."
         )}
       />
@@ -33,7 +33,7 @@ const ConditionOperator: React.FC<ConditionOperatorProps> = ({
         label="Not in"
         value={DiscountConditionOperator.NOT_IN}
         description={t(
-          "shared.applies-to-all-items-except-the-selected-items",
+          "shared-applies-to-all-items-except-the-selected-items",
           "Applies to all items except the selected items."
         )}
       />

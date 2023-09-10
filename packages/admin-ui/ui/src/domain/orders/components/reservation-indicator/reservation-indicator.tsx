@@ -61,7 +61,7 @@ const ReservationIndicator = ({
                 {!!awaitingReservation && (
                   <span className="flex w-full items-center">
                     {t(
-                      "reservation-indicator.awaiting-reservation-count",
+                      "reservation-indicator-awaiting-reservation-count",
                       "{awaitingReservation} items not reserved",
                       {
                         awaitingReservation,
@@ -83,7 +83,7 @@ const ReservationIndicator = ({
             ) : (
               <span className="flex w-full items-center">
                 {t(
-                  "reservation-indicator.this-item-has-been-fulfilled",
+                  "reservation-indicator-this-item-has-been-fulfilled",
                   "This item has been fulfilled."
                 )}
               </span>
@@ -130,7 +130,7 @@ const EditReservationButton = ({
   return (
     <div className="pt-base first:pt-0">
       {t(
-        "edit-reservation-button.quantity-item-location-name",
+        "edit-reservation-button-quantity-item-location-name",
         "{quantity} item: ${locationName}",
         {
           quantity: reservation.quantity,
@@ -143,7 +143,7 @@ const EditReservationButton = ({
         size="small"
         className="mt-2 w-full border"
       >
-        {t("reservation-indicator.edit-reservation", "Edit reservation")}
+        {t("reservation-indicator-edit-reservation", "Edit reservation")}
       </Button>
     </div>
   )

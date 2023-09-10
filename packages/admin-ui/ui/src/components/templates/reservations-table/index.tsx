@@ -279,7 +279,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
           count: count || 0,
           offset: offs,
           pageSize: offs + rows.length,
-          title: t("reservations-table.reservations", "Reservations"),
+          title: t("reservations-table-reservations", "Reservations"),
           currentPage: pageIndex + 1,
           pageCount: pageCount,
           nextPage: handleNext,
@@ -379,12 +379,12 @@ const ReservationRow = ({
   const getRowActionables = () => {
     const actions = [
       {
-        label: t("reservations-table.edit", "Edit"),
+        label: t("reservations-table-edit", "Edit"),
         onClick: () => setShowEditReservation(row.original),
         icon: <EditIcon size={20} />,
       },
       {
-        label: t("reservations-table.delete", "Delete"),
+        label: t("reservations-table-delete", "Delete"),
         variant: "danger",
         icon: <TrashIcon size={20} />,
         onClick: () => setShowDeleteReservation(true),
@@ -420,15 +420,15 @@ const ReservationRow = ({
       {showDeleteReservation && (
         <DeletePrompt
           text={t(
-            "reservations-table.confirm-delete",
+            "reservations-table-confirm-delete",
             "Are you sure you want to remove this reservation?"
           )}
           heading={t(
-            "reservations-table.remove-reservation",
+            "reservations-table-remove-reservation",
             "Remove reservation"
           )}
           successText={t(
-            "reservations-table.reservation-has-been-removed",
+            "reservations-table-reservation-has-been-removed",
             "Reservation has been removed"
           )}
           onDelete={async () => await deleteReservation(undefined)}

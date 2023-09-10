@@ -45,11 +45,11 @@ function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
       <div className="flex items-center justify-between">
         <div>
           <h5 className="inter-base-semibold text-grey-90 pb-1">
-            {t("pages.sales-channels", "Sales channels")}
+            {t("pages-sales-channels", "Sales channels")}
           </h5>
           <p className="text-grey-50">
             {t(
-              "pages.connect-as-many-sales-channels-to-your-api-key-as-you-need",
+              "pages-connect-as-many-sales-channels-to-your-api-key-as-you-need",
               "Connect as many sales channels to your API key as you need."
             )}
           </p>
@@ -61,7 +61,7 @@ function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
             className="h-[40px]"
             onClick={showModal}
           >
-            {t("pages.add-sales-channels", "Add sales channels")}
+            {t("pages-add-sales-channels", "Add sales channels")}
           </Button>
         )}
       </div>
@@ -84,7 +84,7 @@ function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
             className="h-[40px]"
             onClick={showModal}
           >
-            {t("pages.edit-sales-channels", "Edit sales channels")}
+            {t("pages-edit-sales-channels", "Edit sales channels")}
           </Button>
         </div>
       )}
@@ -126,15 +126,15 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
       const res = await createPublishableApiKey({ title: name })
       setKeyId(res.publishable_api_key.id)
       notification(
-        t("pages.success", "Success"),
-        t("pages.created-a-new-api-key", "Created a new API key"),
+        t("pages-success", "Success"),
+        t("pages-created-a-new-api-key", "Created a new API key"),
         "success"
       )
     } catch (e) {
       notification(
-        t("pages.error", "Error"),
+        t("pages-error", "Error"),
         t(
-          "pages.failed-to-create-a-new-api-key",
+          "pages-failed-to-create-a-new-api-key",
           "Failed to create a new API key"
         ),
         "error"
@@ -149,9 +149,9 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
       })
         .then(() => {
           notification(
-            t("pages.success", "Success"),
+            t("pages-success", "Success"),
             t(
-              "pages.sales-channels-added-to-the-scope",
+              "pages-sales-channels-added-to-the-scope",
               "Sales channels added to the scope"
             ),
             "success"
@@ -159,9 +159,9 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
         })
         .catch(() => {
           notification(
-            t("pages.error", "Error"),
+            t("pages-error", "Error"),
             t(
-              "pages.error-occurred-while-adding-sales-channels-to-the-scope-of-the-key",
+              "pages-error-occurred-while-adding-sales-channels-to-the-scope-of-the-key",
               "Error occurred while adding sales channels to the scope of the key"
             ),
             "success"
@@ -186,7 +186,7 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
               disabled={!name}
               className="rounded-rounded"
             >
-              {t("pages.publish-api-key", "Publish API key")}
+              {t("pages-publish-api-key", "Publish API key")}
             </Button>
           </div>
         </div>
@@ -195,14 +195,14 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
       <FocusModal.Main className="no-scrollbar flex w-full justify-center">
         <div className="medium:w-7/12 large:w-6/12 small:w-4/5 my-16 max-w-[700px]">
           <h1 className="inter-xlarge-semibold text-grey-90 pb-8">
-            {t("pages.create-api-key", "Create API Key")}
+            {t("pages-create-api-key", "Create API Key")}
           </h1>
           <h5 className="inter-base-semibold text-grey-90 pb-1">
             General Information
           </h5>
           <p className="text-grey-50 pb-8">
             {t(
-              "pages.create-and-manage-api-keys-right-now-this-is-only-related-to-sales-channels",
+              "pages-create-and-manage-api-keys-right-now-this-is-only-related-to-sales-channels",
               "Create and manage API keys. Right now this is only related to sales channels."
             )}
           </p>
@@ -241,7 +241,7 @@ function Index() {
 
   const actions = [
     {
-      label: t("pages.create-api-key.label", "Create API key"),
+      label: t("pages-create-api-key-label", "Create API key"),
       onClick: openCreateModal,
     },
   ]
@@ -257,14 +257,14 @@ function Index() {
   return (
     <div>
       <BackButton
-        label={t("pages.back-to-settings", "Back to settings")}
+        label={t("pages-back-to-settings", "Back to settings")}
         path="/a/settings"
         className="mb-xsmall"
       />
       <BodyCard
-        title={t("pages.publishable-api-keys", "Publishable API keys")}
+        title={t("pages-publishable-api-keys", "Publishable API keys")}
         subtitle={t(
-          "pages.these-publishable-keys-will-allow-you-to-authenticate-api-requests",
+          "pages-these-publishable-keys-will-allow-you-to-authenticate-api-requests",
           "These publishable keys will allow you to authenticate API requests."
         )}
         actionables={actions}

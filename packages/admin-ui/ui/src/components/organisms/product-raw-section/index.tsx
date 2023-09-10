@@ -14,8 +14,8 @@ const ProductRawSection = ({ product }: Props) => {
     <Section
       title={
         product.is_giftcard
-          ? t("product-raw-section.raw-gift-card", "Raw Gift Card")
-          : t("product-raw-section.raw-product", "Raw Product")
+          ? t("product-raw-section-raw-gift-card", "Raw Gift Card")
+          : t("product-raw-section-raw-product", "Raw Product")
       }
     >
       <div className="pt-base">

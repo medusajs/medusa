@@ -27,11 +27,11 @@ const EditRegion = ({ id }: Props) => {
     return (
       <div className="bg-grey-0 rounded-rounded border-grey-20 gap-y-xsmall flex h-full w-full flex-col items-center justify-center border text-center ">
         <h1 className="inter-large-semibold">
-          {t("edit.something-went-wrong", "Something went wrong...")}
+          {t("edit-something-went-wrong", "Something went wrong...")}
         </h1>
         <p className="inter-base-regular text-grey-50">
           {t(
-            "edit.no-region-found",
+            "edit-no-region-found",
             "We can't find a region with that ID, use the menu to the left to select a region."
           )}
         </p>

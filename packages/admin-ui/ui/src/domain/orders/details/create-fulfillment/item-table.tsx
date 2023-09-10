@@ -137,7 +137,7 @@ const FulfillmentLine = ({
       }
 
       errors[item.id] = t(
-        "create-fulfillment.quantity-is-not-valid",
+        "create-fulfillment-quantity-is-not-valid",
         "Quantity is not valid"
       )
       return errors
@@ -228,7 +228,7 @@ const FulfillmentLine = ({
               ? undefined
               : {
                   quantity: t(
-                    "create-fulfillment.quantity-is-not-valid",
+                    "create-fulfillment-quantity-is-not-valid",
                     "Quantity is not valid"
                   ),
                 }

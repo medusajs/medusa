@@ -32,28 +32,28 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
         <Dialog.Content className="bg-grey-0 shadow-dropdown rounded-rounded fixed top-[64px] bottom-2 right-3 flex w-[400px] flex-col justify-between p-8">
           <div>
             <Dialog.Title className="inter-xlarge-semibold mb-1">
-              {t("help-dialog.how-can-we-help", "How can we help?")}
+              {t("help-dialog-how-can-we-help", "How can we help?")}
             </Dialog.Title>
             <Dialog.Description className="inter-small-regular text-grey-50 mb-6">
               {t(
-                "help-dialog.we-usually-respond-in-a-few-hours",
+                "help-dialog-we-usually-respond-in-a-few-hours",
                 "We usually respond in a few hours"
               )}
             </Dialog.Description>
             <InputField
-              label={t("help-dialog.subject", "Subject")}
+              label={t("help-dialog-subject", "Subject")}
               value={subject}
               className="mb-4"
               placeholder={t(
-                "help-dialog.what-is-it-about",
+                "help-dialog-what-is-it-about",
                 "What is it about?..."
               )}
               onChange={(e) => setSubject(e.target.value)}
             />
             <TextArea
-              label={t("help-dialog.how-can-we-help", "How can we help?")}
+              label={t("help-dialog-how-can-we-help", "How can we help?")}
               placeholder={t(
-                "help-dialog.write-a-message",
+                "help-dialog-write-a-message",
                 "Write a message..."
               )}
               value={body}
@@ -77,12 +77,12 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
                 </span>
                 <p className="text-grey-40 inter-small-regular text-center leading-6">
                   {t(
-                    "help-dialog.feel-free-to-join-our-community-of",
+                    "help-dialog-feel-free-to-join-our-community-of",
                     "Feel free to join our community of"
                   )}
                   <br />
                   {t(
-                    "help-dialog.merchants-and-e-commerce-developers",
+                    "help-dialog-merchants-and-e-commerce-developers",
                     "merchants and e-commerce developers"
                   )}
                 </p>
@@ -90,7 +90,7 @@ const MailDialog = ({ open, onClose }: MailDialogProps) => {
             </a>
             <a className="w-full" href={link}>
               <Button variant="primary" size="large" className="w-full">
-                {t("help-dialog.send-a-message", "Send a message")}
+                {t("help-dialog-send-a-message", "Send a message")}
               </Button>
             </a>
           </div>

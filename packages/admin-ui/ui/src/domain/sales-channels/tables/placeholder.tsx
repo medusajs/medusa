@@ -12,19 +12,19 @@ function Placeholder({ showAddModal }) {
 
       <h3 className="text-large text-gray-90 mt-6 font-semibold">
         {t(
-          "tables.start-building-your-channels-setup",
+          "tables-start-building-your-channels-setup",
           "Start building your channels setup..."
         )}
       </h3>
       <p className="text-grey-50 mt-2 mb-8 w-[358px] text-center">
         {t(
-          "tables.no-products-in-channels",
+          "tables-no-products-in-channels",
           "You haven\u2019t added any products to this channels yet, but once you do they will live here."
         )}
       </p>
 
       <Button onClick={showAddModal} variant="primary" size="small">
-        {t("tables.add-products", "Add products")}
+        {t("tables-add-products", "Add products")}
       </Button>
     </div>
   )

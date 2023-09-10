@@ -58,7 +58,7 @@ const AddProductConditionSelector = ({
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "add-condition-tables.search-products",
+              "add-condition-tables-search-products",
               "Search products..."
             ),
           }}

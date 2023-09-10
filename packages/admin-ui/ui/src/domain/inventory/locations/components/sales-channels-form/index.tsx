@@ -46,7 +46,7 @@ const SalesChannelsForm = ({
           onClick={openSalesChannelsModal}
           type="button"
         >
-          {t("sales-channels-form.add-sales-channels", "Add sales channels")}
+          {t("sales-channels-form-add-sales-channels", "Add sales channels")}
         </Button>
       ) : (
         <div className="flex w-full items-center justify-between">
@@ -60,7 +60,7 @@ const SalesChannelsForm = ({
             type="button"
             onClick={openSalesChannelsModal}
           >
-            {t("sales-channels-form.edit-channels", "Edit channels")}
+            {t("sales-channels-form-edit-channels", "Edit channels")}
           </Button>
         </div>
       )}

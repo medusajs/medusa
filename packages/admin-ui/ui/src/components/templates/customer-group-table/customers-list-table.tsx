@@ -86,7 +86,7 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
 
   const actions = [
     {
-      label: t("customer-group-table.details", "Details"),
+      label: t("customer-group-table-details", "Details"),
       onClick: () => navigate(`/a/customers/${row.original.id}`),
       icon: <DetailsIcon size={20} />,
     },
@@ -97,7 +97,7 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
     // },
     {
       label: t(
-        "customer-group-table.delete-from-the-group",
+        "customer-group-table-delete-from-the-group",
         "Delete from the group"
       ),
       variant: "danger",
@@ -193,7 +193,7 @@ function CustomersListTable(props: CustomersListTableProps) {
         offset: queryObject.offset,
         pageSize: queryObject.offset + table.rows.length,
         title: t(
-          "customer-group-table.customer-groups.title",
+          "customer-group-table-customer-groups-title",
           "Customer Groups"
         ),
         currentPage: table.state.pageIndex + 1,

@@ -22,7 +22,7 @@ const DiscountIndex = () => {
 
   const actionables = [
     {
-      label: t("discounts.add-discount", "Add Discount"),
+      label: t("discounts-add-discount", "Add Discount"),
       onClick: () => setIsOpen(true),
       icon: <PlusIcon size={20} />,
     },

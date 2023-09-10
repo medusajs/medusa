@@ -73,7 +73,7 @@ const ProductsFilter = ({
             )}
           >
             <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
-              {t("inventory.filters", "Filters")}
+              {t("inventory-filters", "Filters")}
               <div className="text-grey-40 ml-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
                   {numberOfFilters ? numberOfFilters : "0"}

@@ -62,7 +62,7 @@ const DetailsCustomerGroupConditionSelector = ({
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "details-condition-tables.search-groups",
+              "details-condition-tables-search-groups",
               "Search groups..."
             ),
           }}

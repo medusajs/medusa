@@ -9,12 +9,12 @@ export const useCustomerColumns = () => {
   const columns = useMemo(
     () => [
       {
-        Header: t("customer-table.date-added", "Date added"),
+        Header: t("customer-table-date-added", "Date added"),
         accessor: "created_at", // accessor is the "key" in the data
         Cell: ({ cell: { value } }) => moment(value).format("DD MMM YYYY"),
       },
       {
-        Header: t("customer-table.name", "Name"),
+        Header: t("customer-table-name", "Name"),
         accessor: "customer",
         Cell: ({ row }) => (
           <CustomerAvatarItem
@@ -24,7 +24,7 @@ export const useCustomerColumns = () => {
         ),
       },
       {
-        Header: t("customer-table.email", "Email"),
+        Header: t("customer-table-email", "Email"),
         accessor: "email",
       },
       {
@@ -35,7 +35,7 @@ export const useCustomerColumns = () => {
         accessor: "orders",
         Header: () => (
           <div className="text-right">
-            {t("customer-table.orders", "Orders")}
+            {t("customer-table-orders", "Orders")}
           </div>
         ),
         Cell: ({ cell: { value } }) => (

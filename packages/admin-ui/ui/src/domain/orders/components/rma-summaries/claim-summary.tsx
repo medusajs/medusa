@@ -80,7 +80,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
         {selectedClaimItems.length > 0 && (
           <div>
             <p className="inter-base-semibold mb-small">
-              {t("rma-summaries.claimed-items", "Claimed items")}
+              {t("rma-summaries-claimed-items", "Claimed items")}
             </p>
             <div className="gap-y-xsmall flex flex-col">
               {selectedClaimItems.map((item, index) => {
@@ -115,12 +115,12 @@ export const ClaimSummary = ({ form, order }: Props) => {
           <div>
             <div className="mb-small gap-x-2xsmall flex items-center">
               <p className="inter-base-semibold">
-                {t("rma-summaries.replacement-items", "Replacement items")}
+                {t("rma-summaries-replacement-items", "Replacement items")}
               </p>
               <IconTooltip
                 type="warning"
                 content={t(
-                  "rma-summaries.customer-refund-description",
+                  "rma-summaries-customer-refund-description",
                   "The customer will receive a full refund for the claimed items, as the cost of replacement items and shipping will not be deducted. Alternatively, you can choose to set a custom refund amount when you receive the returned items or create an exchange instead."
                 )}
               />
@@ -161,18 +161,18 @@ export const ClaimSummary = ({ form, order }: Props) => {
         >
           <div className="gap-x-2xsmall flex items-center">
             <p className="inter-base-semibold">
-              {t("rma-summaries.refund-amount", "Refund amount")}
+              {t("rma-summaries-refund-amount", "Refund amount")}
             </p>
             <IconTooltip
               type="info"
               content={
                 claimType === "replace" && claimItemShipping.option
                   ? t(
-                      "rma-summaries.the-customer-will-be-refunded-once-the-returned-items-are-received",
+                      "rma-summaries-the-customer-will-be-refunded-once-the-returned-items-are-received",
                       "The customer will be refunded once the returned items are received"
                     )
                   : t(
-                      "rma-summaries.the-customer-will-be-refunded-immediately",
+                      "rma-summaries-the-customer-will-be-refunded-immediately",
                       "The customer will be refunded immediately"
                     )
               }

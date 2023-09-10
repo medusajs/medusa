@@ -22,18 +22,18 @@ const ChannelsModal = ({ product, open, onClose }: Props) => {
         sales_channels: channels.map((c) => ({ id: c.id })),
       })
       notification(
-        t("product-general-section.success", "Success"),
+        t("product-general-section-success", "Success"),
         t(
-          "product-general-section.successfully-updated-sales-channels",
+          "product-general-section-successfully-updated-sales-channels",
           "Successfully updated sales channels"
         ),
         "success"
       )
     } catch (e) {
       notification(
-        t("product-general-section.error", "Error"),
+        t("product-general-section-error", "Error"),
         t(
-          "product-general-section.failed-to-update-sales-channels",
+          "product-general-section-failed-to-update-sales-channels",
           "Failed to update sales channels"
         ),
         "error"

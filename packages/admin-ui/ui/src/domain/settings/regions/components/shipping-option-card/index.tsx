@@ -32,9 +32,9 @@ const ShippingOptionCard = ({ option }: Props) => {
     mutate(undefined, {
       onSuccess: () => {
         notification(
-          t("shipping-option-card.success", "Success"),
+          t("shipping-option-card-success", "Success"),
           t(
-            "shipping-option-card.shipping-option-has-been-deleted",
+            "shipping-option-card-shipping-option-has-been-deleted",
             "Shipping option has been deleted"
           ),
           "success"
@@ -42,7 +42,7 @@ const ShippingOptionCard = ({ option }: Props) => {
       },
       onError: (error) => {
         notification(
-          t("shipping-option-card.error", "Error"),
+          t("shipping-option-card-error", "Error"),
           getErrorMessage(error),
           "error"
         )
@@ -62,21 +62,21 @@ const ShippingOptionCard = ({ option }: Props) => {
             <div>
               <p className="inter-small-regular text-grey-50">
                 {option.price_type === ShippingOptionPriceType.FLAT_RATE
-                  ? t("shipping-option-card.flat-rate", "Flat Rate")
-                  : t("shipping-option-card.calcualted", "Calcualted")}
+                  ? t("shipping-option-card-flat-rate", "Flat Rate")
+                  : t("shipping-option-card-calcualted", "Calcualted")}
                 :{" "}
                 {stringDisplayPrice({
                   amount: option.amount,
                   currencyCode: option.region.currency_code,
                 })}{" "}
-                - {t("shipping-option-card.min-subtotal", "Min. subtotal:")}{" "}
+                - {t("shipping-option-card-min-subtotal", "Min. subtotal:")}{" "}
                 {stringDisplayPrice({
                   amount: option.requirements?.find(
                     (r) => r.type === "min_subtotal"
                   )?.amount,
                   currencyCode: option.region.currency_code,
                 })}{" "}
-                - {t("shipping-option-card.max-subtotal", "Max. subtotal:")}{" "}
+                - {t("shipping-option-card-max-subtotal", "Max. subtotal:")}{" "}
                 {stringDisplayPrice({
                   amount: option.requirements?.find(
                     (r) => r.type === "max_subtotal"
@@ -96,20 +96,20 @@ const ShippingOptionCard = ({ option }: Props) => {
           >
             <span className="inter-small-semibold">
               {option.admin_only
-                ? t("shipping-option-card.admin", "Admin")
-                : t("shipping-option-card.store", "Store")}
+                ? t("shipping-option-card-admin", "Admin")
+                : t("shipping-option-card-store", "Store")}
             </span>
           </div>
           <div>
             <Actionables
               actions={[
                 {
-                  label: t("shipping-option-card.edit", "Edit"),
+                  label: t("shipping-option-card-edit", "Edit"),
                   onClick: toggle,
                   icon: <EditIcon size={20} />,
                 },
                 {
-                  label: t("shipping-option-card.delete", "Delete"),
+                  label: t("shipping-option-card-delete", "Delete"),
                   onClick: handleDeleteOption,
                   icon: <TrashIcon size={20} />,
                   variant: "danger",

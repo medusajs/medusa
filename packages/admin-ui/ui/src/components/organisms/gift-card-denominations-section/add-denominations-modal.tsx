@@ -117,11 +117,11 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
       onSuccess: () => {
         notification(
           t(
-            "gift-card-denominations-section.denomination-added",
+            "gift-card-denominations-section-denomination-added",
             "Denomination added"
           ),
           t(
-            "gift-card-denominations-section.a-new-denomination-was-successfully-added",
+            "gift-card-denominations-section-a-new-denomination-was-successfully-added",
             "A new denomination was successfully added"
           ),
           "success"
@@ -133,7 +133,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
           // @ts-ignore
           if (error.response?.data?.type === "duplicate_error") {
             return t(
-              "gift-card-denominations-section.a-denomination-with-that-default-value-already-exists",
+              "gift-card-denominations-section-a-denomination-with-that-default-value-already-exists",
               "A denomination with that default value already exists"
             )
           } else {
@@ -142,7 +142,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
         }
 
         notification(
-          t("gift-card-denominations-section.error", "Error"),
+          t("gift-card-denominations-section-error", "Error"),
           errorMessage(),
           "error"
         )
@@ -156,7 +156,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
         <Modal.Header handleClose={handleClose}>
           <h1 className="inter-xlarge-semibold">
             {t(
-              "gift-card-denominations-section.add-denomination",
+              "gift-card-denominations-section-add-denomination",
               "Add Denomination"
             )}
           </h1>
@@ -173,7 +173,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
                 type="button"
                 onClick={handleClose}
               >
-                {t("gift-card-denominations-section.cancel", "Cancel")}
+                {t("gift-card-denominations-section-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -183,7 +183,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
                 loading={isMutating}
               >
                 {t(
-                  "gift-card-denominations-section.save-and-close",
+                  "gift-card-denominations-section-save-and-close",
                   "Save and close"
                 )}
               </Button>

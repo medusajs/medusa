@@ -104,7 +104,7 @@ function Input(props: InputProps) {
           <span className="text-grey-50">
             {placeholder
               ? placeholder
-              : t("multiselect.choose-categories", "Choose categories")}
+              : t("multiselect-choose-categories", "Choose categories")}
           </span>
         ) : null}
       </div>
@@ -196,7 +196,7 @@ function PopupItem(props: PopupItemProps) {
           {!!selectedSubcategoriesCount && (
             <span className="text-small text-gray-400">
               {t(
-                "domain-categories-multiselect.selected-with-counts",
+                "domain-categories-multiselect-selected-with-counts",
                 "{count}",
                 { count: selectedSubcategoriesCount }
               )}

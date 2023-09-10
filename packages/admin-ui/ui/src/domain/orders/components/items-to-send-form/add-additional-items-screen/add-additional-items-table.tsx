@@ -29,7 +29,7 @@ export const AddAdditionalItemsTable = ({
       <Table
         enableSearch
         searchPlaceholder={t(
-          "add-additional-items-screen.search-products",
+          "add-additional-items-screen-search-products",
           "Search products"
         )}
         searchValue={query}

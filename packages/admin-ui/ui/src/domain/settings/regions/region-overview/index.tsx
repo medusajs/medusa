@@ -56,7 +56,7 @@ const RegionOverview = ({ id }: Props) => {
   return (
     <>
       <Section
-        title={t("region-overview.regions", "Regions")}
+        title={t("region-overview-regions", "Regions")}
         customActions={
           <div>
             <Button
@@ -73,7 +73,7 @@ const RegionOverview = ({ id }: Props) => {
       >
         <p className="text-base-regular text-grey-50 mt-2xsmall">
           {t(
-            "region-overview.manage-the-markets-that-you-will-operate-within",
+            "region-overview-manage-the-markets-that-you-will-operate-within",
             "Manage the markets that you will operate within."
           )}
         </p>

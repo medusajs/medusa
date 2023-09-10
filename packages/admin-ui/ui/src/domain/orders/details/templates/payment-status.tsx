@@ -5,18 +5,18 @@ export const PaymentStatusComponent = ({ status }) => {
   const { t } = useTranslation()
   switch (status) {
     case "captured":
-      return <StatusDot title={t("templates.paid", "Paid")} variant="success" />
+      return <StatusDot title={t("templates-paid", "Paid")} variant="success" />
     case "awaiting":
       return (
         <StatusDot
-          title={t("templates.awaiting-payment", "Awaiting payment")}
+          title={t("templates-awaiting-payment", "Awaiting payment")}
           variant="danger"
         />
       )
     case "canceled":
       return (
         <StatusDot
-          title={t("templates.canceled", "Canceled")}
+          title={t("templates-canceled", "Canceled")}
           variant="danger"
         />
       )
@@ -24,7 +24,7 @@ export const PaymentStatusComponent = ({ status }) => {
       return (
         <StatusDot
           title={t(
-            "templates.payment-status.requires-action",
+            "templates-payment-status-requires-action",
             "Requires Action"
           )}
           variant="danger"

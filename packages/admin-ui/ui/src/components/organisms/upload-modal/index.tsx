@@ -90,12 +90,12 @@ function UploadSummary(props: UploadSummaryProps) {
       <div className="text-small text-grey-90 flex items-center">
         <CheckCircleIcon color="#9CA3AF" className="mr-2" />
         <span className="font-semibold"> {creations || 0}&nbsp;</span>{" "}
-        {t("upload-modal.new", "new")} {type}
+        {t("upload-modal-new", "new")} {type}
       </div>
       <div className="text-small text-grey-90 flex items-center">
         <WarningCircleIcon fill="#9CA3AF" className="mr-2" />
         <span className="font-semibold">{updates || 0}&nbsp;</span>{" "}
-        {t("upload-modal.updates", "updates")}
+        {t("upload-modal-updates", "updates")}
       </div>
     </div>
   )
@@ -143,11 +143,11 @@ function DropArea(props: DropAreaProps) {
       )}
     >
       <span className="text-grey-50 text-small">
-        {t("upload-modal.drop-your-file-here-or", "Drop your file here, or")}
+        {t("upload-modal-drop-your-file-here-or", "Drop your file here, or")}
         <a className="text-violet-60">
           <label className="cursor-pointer" htmlFor="upload-form-file">
             {" "}
-            {t("upload-modal.click-to-browse", "click to browse.")}
+            {t("upload-modal-click-to-browse", "click to browse.")}
           </label>
           <input
             type="file"
@@ -161,7 +161,7 @@ function DropArea(props: DropAreaProps) {
       </span>
       <span className="text-grey-40 text-small">
         {t(
-          "upload-modal.only-csv-files-are-supported",
+          "upload-modal-only-csv-files-are-supported",
           "Only .csv files are supported."
         )}
       </span>
@@ -238,7 +238,7 @@ function UploadModal(props: UploadModalProps) {
           </div>
 
           <div className="text-grey-90 inter-large-semibold mb-1 text-base">
-            {t("upload-modal.import-file-title", "Import {fileTitle}", {
+            {t("upload-modal-import-file-title", "Import {fileTitle}", {
               fileTitle,
             })}
           </div>
@@ -303,7 +303,7 @@ function UploadModal(props: UploadModalProps) {
                 size="small"
                 onClick={onClose}
               >
-                {t("upload-modal.cancel", "Cancel")}
+                {t("upload-modal-cancel", "Cancel")}
               </Button>
 
               <Button
@@ -313,7 +313,7 @@ function UploadModal(props: UploadModalProps) {
                 className="text-small"
                 onClick={onSubmit}
               >
-                {t("upload-modal.import-list", "Import List")}
+                {t("upload-modal-import-list", "Import List")}
               </Button>
             </div>
           </div>

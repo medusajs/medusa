@@ -52,7 +52,7 @@ const EditProductConditionSelector = ({ onClose }) => {
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "edit-condition-tables.search-products",
+              "edit-condition-tables-search-products",
               "Search products..."
             ),
           }}

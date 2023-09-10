@@ -114,9 +114,9 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   const createFulfillment = () => {
     if (isLocationFulfillmentEnabled && !locationSelectValue.value) {
       notification(
-        t("create-fulfillment.error", "Error"),
+        t("create-fulfillment-error", "Error"),
         t(
-          "create-fulfillment.please-select-a-location-to-fulfill-from",
+          "create-fulfillment-please-select-a-location-to-fulfill-from",
           "Please select a location to fulfill from"
         ),
         "error"
@@ -127,11 +127,11 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
     if (Object.keys(errors).length > 0) {
       notification(
         t(
-          "create-fulfillment.cant-allow-this-action",
+          "create-fulfillment-cant-allow-this-action",
           "Can't allow this action"
         ),
         t(
-          "create-fulfillment.trying-to-fulfill-more-than-in-stock",
+          "create-fulfillment-trying-to-fulfill-more-than-in-stock",
           "Trying to fulfill more than in stock"
         ),
         "error"
@@ -148,7 +148,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
 
     let action: actionType = createOrderFulfillment
     let successText = t(
-      "create-fulfillment.successfully-fulfilled-order",
+      "create-fulfillment-successfully-fulfilled-order",
       "Successfully fulfilled order"
     )
     let requestObj
@@ -168,7 +168,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
       case "swap":
         action = createSwapFulfillment
         successText = t(
-          "create-fulfillment.successfully-fulfilled-swap",
+          "create-fulfillment-successfully-fulfilled-swap",
           "Successfully fulfilled swap"
         )
         requestObj = {
@@ -181,7 +181,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
       case "claim":
         action = createClaimFulfillment
         successText = t(
-          "create-fulfillment.successfully-fulfilled-claim",
+          "create-fulfillment-successfully-fulfilled-claim",
           "Successfully fulfilled claim"
         )
         requestObj = {
@@ -213,7 +213,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
     action.mutate(requestObj, {
       onSuccess: () => {
         notification(
-          t("create-fulfillment.success", "Success"),
+          t("create-fulfillment-success", "Success"),
           successText,
           "success"
         )
@@ -222,7 +222,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
       },
       onError: (err) =>
         notification(
-          t("create-fulfillment.error", "Error"),
+          t("create-fulfillment-error", "Error"),
           getErrorMessage(err),
           "error"
         ),
@@ -248,7 +248,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
               type="button"
               onClick={handleCancel}
             >
-              {t("create-fulfillment.cancel", "Cancel")}
+              {t("create-fulfillment-cancel", "Cancel")}
             </Button>
             <Button
               size="small"
@@ -260,7 +260,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
                 !Object.values(quantities).some((quantity) => quantity > 0)
               }
             >
-              {t("create-fulfillment.create-fulfillment", "Create fulfillment")}
+              {t("create-fulfillment-create-fulfillment", "Create fulfillment")}
             </Button>
           </div>
         </div>
@@ -269,7 +269,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
         <div className="pt-16">
           <h1 className="inter-xlarge-semibold">
             {t(
-              "create-fulfillment.create-fulfillment.title",
+              "create-fulfillment-create-fulfillment-title",
               "Create Fulfillment"
             )}
           </h1>
@@ -278,11 +278,11 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
               <div className="grid grid-cols-2">
                 <div>
                   <h2 className="inter-base-semibold">
-                    {t("create-fulfillment.locations", "Locations")}
+                    {t("create-fulfillment-locations", "Locations")}
                   </h2>
                   <span className="text-grey-50">
                     {t(
-                      "create-fulfillment.choose-where-you-wish-to-fulfill-from",
+                      "create-fulfillment-choose-where-you-wish-to-fulfill-from",
                       "Choose where you wish to fulfill from."
                     )}
                   </span>
@@ -302,11 +302,11 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
             </FeatureToggle>
             <div className="flex flex-col">
               <span className="inter-base-semibold ">
-                {t("create-fulfillment.items-to-fulfill", "Items to fulfill")}
+                {t("create-fulfillment-items-to-fulfill", "Items to fulfill")}
               </span>
               <span className="text-grey-50 mb-6">
                 {t(
-                  "create-fulfillment.select-the-number-of-items-that-you-wish-to-fulfill",
+                  "create-fulfillment-select-the-number-of-items-that-you-wish-to-fulfill",
                   "Select the number of items that you wish to fulfill."
                 )}
               </span>
@@ -325,7 +325,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
               <div className="mb-2xsmall flex items-center justify-between">
                 <h2 className="inter-base-semibold">
                   {t(
-                    "create-fulfillment.send-notifications",
+                    "create-fulfillment-send-notifications",
                     "Send notifications"
                   )}
                 </h2>
@@ -336,7 +336,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
               </div>
               <p className="inter-base-regular text-grey-50">
                 {t(
-                  "create-fulfillment.when-toggled-notification-emails-will-be-sent",
+                  "create-fulfillment-when-toggled-notification-emails-will-be-sent",
                   "When toggled, notification emails will be sent."
                 )}
               </p>

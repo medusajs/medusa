@@ -13,7 +13,7 @@ const PersonalInformation = () => {
   return (
     <div>
       <BackButton
-        label={t("personal-information.back-to-settings", "Back to Settings")}
+        label={t("personal-information-back-to-settings", "Back to Settings")}
         path="/a/settings"
         className="mb-xsmall"
       />
@@ -21,13 +21,13 @@ const PersonalInformation = () => {
         <div className="gap-y-2xsmall flex flex-col">
           <h1 className="inter-xlarge-semibold">
             {t(
-              "personal-information.personal-information",
+              "personal-information-personal-information",
               "Personal information"
             )}
           </h1>
           <p className="inter-base-regular text-grey-50">
             {t(
-              "personal-information.manage-your-medusa-profile",
+              "personal-information-manage-your-medusa-profile",
               "Manage your Medusa profile"
             )}
           </p>

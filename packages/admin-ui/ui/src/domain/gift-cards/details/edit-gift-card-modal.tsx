@@ -54,9 +54,9 @@ const EditGiftCardModal = ({
       {
         onSuccess: () => {
           notification(
-            t("details.updated-gift-card", "Updated Gift card"),
+            t("details-updated-gift-card", "Updated Gift card"),
             t(
-              "details.gift-card-was-successfully-updated",
+              "details-gift-card-was-successfully-updated",
               "Gift card was successfully updated"
             ),
             "success"
@@ -67,7 +67,7 @@ const EditGiftCardModal = ({
         onError: (err) => {
           notification(
             t(
-              "details.failed-to-update-gift-card",
+              "details-failed-to-update-gift-card",
               "Failed to update Gift card"
             ),
             getErrorMessage(err),
@@ -89,7 +89,7 @@ const EditGiftCardModal = ({
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
           <h1 className="inter-xlarge-semibold">
-            {t("details.edit-gift-card", "Edit Gift Card")}
+            {t("details-edit-gift-card", "Edit Gift Card")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
@@ -97,7 +97,7 @@ const EditGiftCardModal = ({
             <div className="gap-y-xlarge flex flex-col">
               <div>
                 <h2 className="inter-base-semibold mb-base">
-                  {t("details.details", "Details")}
+                  {t("details-details", "Details")}
                 </h2>
                 <GiftCardRegionForm form={nestedForm(form, "region")} />
               </div>
@@ -112,7 +112,7 @@ const EditGiftCardModal = ({
                 onClick={onClose}
                 type="button"
               >
-                {t("details.cancel", "Cancel")}
+                {t("details-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -121,7 +121,7 @@ const EditGiftCardModal = ({
                 disabled={isLoading || !isDirty}
                 loading={isLoading}
               >
-                {t("details.save-and-close", "Save and close")}
+                {t("details-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

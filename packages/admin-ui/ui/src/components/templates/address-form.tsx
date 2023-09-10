@@ -54,7 +54,7 @@ const AddressForm = ({
       {(type === AddressType.SHIPPING || type === AddressType.BILLING) && (
         <>
           <span className="inter-base-semibold">
-            {t("templates.general", "General")}
+            {t("templates-general", "General")}
           </span>
           <div className="gap-large mt-4 mb-8 grid grid-cols-2">
             <Input
@@ -64,8 +64,8 @@ const AddressForm = ({
                   : false,
                 pattern: FormValidator.whiteSpaceRule("First name"),
               })}
-              placeholder={t("templates.first-name", "First Name")}
-              label={t("templates.first-name", "First Name")}
+              placeholder={t("templates-first-name", "First Name")}
+              label={t("templates-first-name", "First Name")}
               required={required}
               errors={errors}
             />
@@ -76,8 +76,8 @@ const AddressForm = ({
                   : false,
                 pattern: FormValidator.whiteSpaceRule("Last name"),
               })}
-              placeholder={t("templates.last-name", "Last Name")}
-              label={t("templates.last-name", "Last Name")}
+              placeholder={t("templates-last-name", "Last Name")}
+              label={t("templates-last-name", "Last Name")}
               required={required}
               errors={errors}
             />
@@ -85,14 +85,14 @@ const AddressForm = ({
               {...form.register(path("company"), {
                 pattern: FormValidator.whiteSpaceRule("Company"),
               })}
-              placeholder={t("templates.company", "Company")}
-              label={t("templates.company", "Company")}
+              placeholder={t("templates-company", "Company")}
+              label={t("templates-company", "Company")}
               errors={errors}
             />
             <Input
               {...form.register(path("phone"))}
-              placeholder={t("templates.phone", "Phone")}
-              label={t("templates.phone", "Phone")}
+              placeholder={t("templates-phone", "Phone")}
+              label={t("templates-phone", "Phone")}
               errors={errors}
             />
           </div>
@@ -102,10 +102,10 @@ const AddressForm = ({
         <span className="inter-base-semibold">
           {`${
             type === AddressType.BILLING
-              ? t("templates.billing-address", "Billing Address")
+              ? t("templates-billing-address", "Billing Address")
               : type === AddressType.SHIPPING
-              ? t("templates.shipping-address", "Shipping Address")
-              : t("templates.address", "Address")
+              ? t("templates-shipping-address", "Shipping Address")
+              : t("templates-address", "Address")
           }`}
         </span>
       )}
@@ -115,8 +115,8 @@ const AddressForm = ({
             required: required ? FormValidator.required("Address 1") : false,
             pattern: FormValidator.whiteSpaceRule("Address 1"),
           })}
-          placeholder={t("templates.address-1", "Address 1")}
-          label={t("templates.address-1", "Address 1")}
+          placeholder={t("templates-address-1", "Address 1")}
+          label={t("templates-address-1", "Address 1")}
           required={required}
           errors={errors}
         />
@@ -124,8 +124,8 @@ const AddressForm = ({
           {...form.register(path("address_2"), {
             pattern: FormValidator.whiteSpaceRule("Address 2"),
           })}
-          placeholder={t("templates.address-2", "Address 2")}
-          label={t("templates.address-2", "Address 2")}
+          placeholder={t("templates-address-2", "Address 2")}
+          label={t("templates-address-2", "Address 2")}
           errors={errors}
         />
         <Input
@@ -133,15 +133,15 @@ const AddressForm = ({
             required: required ? FormValidator.required("Postal code") : false,
             pattern: FormValidator.whiteSpaceRule("Postal code"),
           })}
-          placeholder={t("templates.postal-code", "Postal code")}
-          label={t("templates.postal-code", "Postal code")}
+          placeholder={t("templates-postal-code", "Postal code")}
+          label={t("templates-postal-code", "Postal code")}
           required={required}
           autoComplete="off"
           errors={errors}
         />
         <Input
-          placeholder={t("templates.city", "City")}
-          label={t("templates.city", "City")}
+          placeholder={t("templates-city", "City")}
+          label={t("templates-city", "City")}
           {...form.register(path("city"), {
             required: required ? FormValidator.required("City") : false,
             pattern: FormValidator.whiteSpaceRule("City"),
@@ -153,8 +153,8 @@ const AddressForm = ({
           {...form.register(path("province"), {
             pattern: FormValidator.whiteSpaceRule("Province"),
           })}
-          placeholder={t("templates.province", "Province")}
-          label={t("templates.province", "Province")}
+          placeholder={t("templates-province", "Province")}
+          label={t("templates-province", "Province")}
           errors={errors}
         />
         <Controller
@@ -166,7 +166,7 @@ const AddressForm = ({
           render={({ field: { value, onChange } }) => {
             return (
               <NextSelect
-                label={t("templates.country", "Country")}
+                label={t("templates-country", "Country")}
                 required={required}
                 value={value}
                 options={countryOptions}
@@ -181,7 +181,7 @@ const AddressForm = ({
       </div>
       <div className="mt-xlarge gap-y-base flex flex-col">
         <span className="inter-base-semibold">
-          {t("templates.metadata", "Metadata")}
+          {t("templates-metadata", "Metadata")}
         </span>
         <MetadataForm form={nestedForm(form, "metadata")} />
       </div>

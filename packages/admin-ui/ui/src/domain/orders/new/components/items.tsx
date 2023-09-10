@@ -119,20 +119,20 @@ const Items = () => {
   return (
     <div className="flex min-h-[705px] flex-col pt-4">
       <span className="inter-base-semibold mb-4">
-        {t("components.items-for-the-order", "Items for the order")}
+        {t("components-items-for-the-order", "Items for the order")}
       </span>
       {fields.length > 0 && region && (
         <Table>
           <Table.Head>
             <Table.HeadRow className="text-grey-50 inter-small-semibold border-t">
               <Table.HeadCell>
-                {t("components.details", "Details")}
+                {t("components-details", "Details")}
               </Table.HeadCell>
               <Table.HeadCell className="pr-8 text-right">
-                {t("components.quantity", "Quantity")}
+                {t("components-quantity", "Quantity")}
               </Table.HeadCell>
               <Table.HeadCell className="text-right">
-                {t("components.price-excl-taxes", "Price (excl. Taxes)")}
+                {t("components-price-excl-taxes", "Price (excl. Taxes)")}
               </Table.HeadCell>
               <Table.HeadCell></Table.HeadCell>
             </Table.HeadRow>
@@ -287,7 +287,7 @@ const Items = () => {
           }}
         >
           <PlusIcon size={20} />
-          {t("components.add-custom", "Add Custom")}
+          {t("components-add-custom", "Add Custom")}
         </Button>
         <Button
           variant="ghost"
@@ -305,7 +305,7 @@ const Items = () => {
           }}
         >
           <PlusIcon size={20} />
-          {t("components.add-existing", "Add Existing")}
+          {t("components-add-existing", "Add Existing")}
         </Button>
       </div>
     </div>
@@ -314,7 +314,7 @@ const Items = () => {
 
 const SelectProductsScreen = (pop, itemsToAdd, setSelectedItems, t) => {
   return {
-    title: t("components.add-products", "Add Products"),
+    title: t("components-add-products", "Add Products"),
     onBack: () => pop(),
     view: (
       <RMASelectProductSubModal
@@ -327,7 +327,7 @@ const SelectProductsScreen = (pop, itemsToAdd, setSelectedItems, t) => {
 
 const CreateCustomProductScreen = (pop, onSubmit, region, t) => {
   return {
-    title: t("components.add-custom-item", "Add Custom Item"),
+    title: t("components-add-custom-item", "Add Custom Item"),
     onBack: () => pop(),
     view: <CustomItemSubModal onSubmit={onSubmit} region={region} />,
   }

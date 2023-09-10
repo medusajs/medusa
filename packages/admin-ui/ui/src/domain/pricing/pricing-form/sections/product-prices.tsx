@@ -62,14 +62,14 @@ const ProductPrices = ({
   const getVariantActions = (variant) => {
     return [
       {
-        label: t("sections.edit-prices.label", "Edit prices"),
+        label: t("sections-edit-prices-label", "Edit prices"),
         icon: <EditIcon />,
         onClick: () => {
           setSelectedVariant(variant)
         },
       },
       {
-        label: t("sections.remove-from-list", "Remove from list"),
+        label: t("sections-remove-from-list", "Remove from list"),
         icon: <TrashIcon size={20} />,
         onClick: () => {
           // missing core support
@@ -104,7 +104,7 @@ const ProductPrices = ({
           <div className="mb-2">
             <InputField
               placeholder={t(
-                "sections.search-by-name-or-sku",
+                "sections-search-by-name-or-sku",
                 "Search by name or SKU..."
               )}
               prefix={<SearchIcon />}
@@ -167,7 +167,7 @@ const ProductPrices = ({
           <Modal.Body>
             <Modal.Header handleClose={unselect}>
               <h2 className="inter-xlarge-semibold">
-                {t("sections.edit-prices", "Edit Prices")}
+                {t("sections-edit-prices", "Edit Prices")}
               </h2>
             </Modal.Header>
 

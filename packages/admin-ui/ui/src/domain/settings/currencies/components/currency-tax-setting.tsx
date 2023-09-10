@@ -41,9 +41,9 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
     mutate(data, {
       onSuccess: () => {
         notification(
-          t("components.success", "Success"),
+          t("components-success", "Success"),
           t(
-            "components.successfully-updated-currency",
+            "components-successfully-updated-currency",
             "Successfully updated currency"
           ),
           "success"
@@ -54,7 +54,7 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
       },
       onError: (error) => {
         notification(
-          t("components.error", "Error"),
+          t("components-error", "Error"),
           getErrorMessage(error),
           "error"
         )
@@ -81,7 +81,7 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
           {isDefault && (
             <div className="bg-grey-10 rounded-rounded px-xsmall py-[2px]">
               <p className="inter-small-semibold text-grey-50">
-                {t("components.default", "Default")}
+                {t("components-default", "Default")}
               </p>
             </div>
           )}

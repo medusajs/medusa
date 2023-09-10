@@ -27,7 +27,7 @@ const ProductAttributesSection = ({ product }: Props) => {
       <Section title="Attributes" actions={actions} forceDropdown>
         <div className="gap-y-xsmall mb-large mt-base flex flex-col">
           <h2 className="inter-base-semibold">
-            {t("product-attributes-section.dimensions", "Dimensions")}
+            {t("product-attributes-section-dimensions", "Dimensions")}
           </h2>
           <div className="gap-y-xsmall flex flex-col">
             <Attribute attribute="Height" value={product.height} />
@@ -38,20 +38,20 @@ const ProductAttributesSection = ({ product }: Props) => {
         </div>
         <div className="gap-y-xsmall flex flex-col">
           <h2 className="inter-base-semibold">
-            {t("product-attributes-section.customs", "Customs")}
+            {t("product-attributes-section-customs", "Customs")}
           </h2>
           <div className="gap-y-xsmall flex flex-col">
             <Attribute
-              attribute={t("product-attributes-section.mid-code", "MID Code")}
+              attribute={t("product-attributes-section-mid-code", "MID Code")}
               value={product.mid_code}
             />
             <Attribute
-              attribute={t("product-attributes-section.hs-code", "HS Code")}
+              attribute={t("product-attributes-section-hs-code", "HS Code")}
               value={product.hs_code}
             />
             <Attribute
               attribute={t(
-                "product-attributes-section.country-of-origin",
+                "product-attributes-section-country-of-origin",
                 "Country of origin"
               )}
               value={product.origin_country}

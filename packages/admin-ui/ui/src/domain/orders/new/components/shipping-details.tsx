@@ -161,7 +161,7 @@ const ShippingDetails = () => {
       <div>
         <span className="inter-base-semibold">
           {t(
-            "components.customer-and-shipping-details",
+            "components-customer-and-shipping-details",
             "Customer and shipping details"
           )}
         </span>
@@ -173,7 +173,7 @@ const ShippingDetails = () => {
               <Select
                 className="mt-4"
                 label={t(
-                  "components.find-existing-customer",
+                  "components-find-existing-customer",
                   "Find existing customer"
                 )}
                 options={[]}
@@ -193,11 +193,11 @@ const ShippingDetails = () => {
 
       <div className="flex flex-col gap-y-4">
         <span className="inter-base-semibold">
-          {t("components.email", "Email")}
+          {t("components-email", "Email")}
         </span>
         <InputField
           {...form.register("email")}
-          label={t("components.email", "Email")}
+          label={t("components-email", "Email")}
           placeholder="lebron@james.com"
           disabled={!!customerId}
           required
@@ -215,7 +215,7 @@ const ShippingDetails = () => {
         <div>
           <span className="inter-base-semibold">
             {t(
-              "components.choose-existing-addresses",
+              "components-choose-existing-addresses",
               "Choose existing addresses"
             )}
           </span>
@@ -254,7 +254,7 @@ const ShippingDetails = () => {
               className="border-grey-20 w-[112px] border"
               onClick={onCreateNew}
             >
-              {t("components.create-new", "Create new")}
+              {t("components-create-new", "Create new")}
             </Button>
           </div>
         </div>

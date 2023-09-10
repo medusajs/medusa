@@ -70,16 +70,16 @@ const OrderIndex = () => {
       onSuccess: () => {
         resetInterval()
         notification(
-          t("orders.success", "Success"),
+          t("orders-success", "Success"),
           t(
-            "orders.successfully-initiated-export",
+            "orders-successfully-initiated-export",
             "Successfully initiated export"
           ),
           "success"
         )
       },
       onError: (err) => {
-        notification(t("orders.error", "Error"), getErrorMessage(err), "error")
+        notification(t("orders-error", "Error"), getErrorMessage(err), "error")
       },
     })
 
@@ -132,7 +132,7 @@ const OrderIndex = () => {
       </div>
       {exportModalOpen && (
         <ExportModal
-          title={t("orders.export-orders", "Export Orders")}
+          title={t("orders-export-orders", "Export Orders")}
           handleClose={() => closeExportModal()}
           onSubmit={handleCreateExport}
           loading={createBatchJob.isLoading}

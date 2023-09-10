@@ -114,16 +114,16 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
       )
         .then(() => {
           notification(
-            t("new.success", "Success"),
-            t("new.location-added-successfully", "Location added successfully"),
+            t("new-success", "Success"),
+            t("new-location-added-successfully", "Location added successfully"),
             "success"
           )
         })
         .catch(() => {
           notification(
-            t("new.error", "Error"),
+            t("new-error", "Error"),
             t(
-              "new.location-created",
+              "new-location-created",
               "Location was created successfully, but there was an error associating sales channels"
             ),
             "error"
@@ -133,7 +133,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
           onClose()
         })
     } catch (err) {
-      notification(t("new.error", "Error"), getErrorMessage(err), "error")
+      notification(t("new-error", "Error"), getErrorMessage(err), "error")
     }
   }
 
@@ -153,12 +153,12 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
             {isShowingClosePrompt && (
               <DeletePrompt
                 heading={t(
-                  "new.cancel-location-changes",
+                  "new-cancel-location-changes",
                   "Are you sure you want to cancel with unsaved changes"
                 )}
-                confirmText={t("new.yes-cancel", "Yes, cancel")}
+                confirmText={t("new-yes-cancel", "Yes, cancel")}
                 cancelText={t(
-                  "new.no-continue-creating",
+                  "new-no-continue-creating",
                   "No, continue creating"
                 )}
                 successText={false}
@@ -173,7 +173,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 type="submit"
                 disabled={!isDirty}
               >
-                {t("new.add-location", "Add location")}
+                {t("new-add-location", "Add location")}
               </Button>
             </div>
           </div>
@@ -181,7 +181,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
         <FocusModal.Main className="no-scrollbar flex w-full justify-center">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 my-16 max-w-[700px]">
             <h1 className="mb-base text-grey-90 text-xlarge px-1 font-semibold">
-              {t("new.add-new-location", "Add new location")}
+              {t("new-add-new-location", "Add new location")}
             </h1>
             <Accordion
               value={accordionValue}
@@ -190,12 +190,12 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
             >
               <Accordion.Item
                 value={"general"}
-                title={t("new.general-information", "General Information")}
+                title={t("new-general-information", "General Information")}
                 required
               >
                 <p className="inter-base-regular text-grey-50">
                   {t(
-                    "new.location-details",
+                    "new-location-details",
                     "Specify the details about this location"
                   )}
                 </p>
@@ -204,7 +204,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                   <AddressForm form={nestedForm(form, "address")} />
                   <div>
                     <h2 className="inter-base-semibold mb-base">
-                      {t("new.metadata", "Metadata")}
+                      {t("new-metadata", "Metadata")}
                     </h2>
                     <MetadataForm form={nestedForm(form, "metadata")} />
                   </div>
@@ -217,7 +217,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 >
                   <p className="inter-base-regular text-grey-50">
                     {t(
-                      "new.select-location-channel",
+                      "new-select-location-channel",
                       "Specify which Sales Channels this location's items can be purchased through."
                     )}
                   </p>

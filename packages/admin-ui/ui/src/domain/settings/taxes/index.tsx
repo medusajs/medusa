@@ -50,22 +50,22 @@ const Taxes = () => {
       <div>
         <BackButton
           path="/a/settings"
-          label={t("taxes.back-to-settings", "Back to settings")}
+          label={t("taxes-back-to-settings", "Back to settings")}
           className="mb-xsmall"
         />
         <TwoSplitPane threeCols>
           <BodyCard
             forceDropdown
-            title={t("taxes.regions", "Regions")}
+            title={t("taxes-regions", "Regions")}
             subtitle={t(
-              "taxes.select-the-region-you-wish-to-manage-taxes-for",
+              "taxes-select-the-region-you-wish-to-manage-taxes-for",
               "Select the region you wish to manage taxes for"
             )}
             actionables={[
               {
                 icon: <GearIcon />,
                 label: t(
-                  "taxes.go-to-region-settings",
+                  "taxes-go-to-region-settings",
                   "Go to Region settings"
                 ),
                 onClick: () => navigate("/a/settings/regions"),

@@ -24,9 +24,9 @@ const useProductActions = (product: Product) => {
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("product-table.delete-product", "Delete Product"),
+      heading: t("product-table-delete-product", "Delete Product"),
       text: t(
-        "product-table.confirm-delete",
+        "product-table-confirm-delete",
         "Are you sure you want to delete this product?"
       ),
     })
@@ -38,20 +38,20 @@ const useProductActions = (product: Product) => {
 
   const getActions = (): ActionType[] => [
     {
-      label: t("product-table.edit", "Edit"),
+      label: t("product-table-edit", "Edit"),
       onClick: () => navigate(`/a/products/${product.id}`),
       icon: <EditIcon size={20} />,
     },
     {
       label:
         product.status === "published"
-          ? t("product-table.unpublish", "Unpublish")
-          : t("product-table.publish", "Publish"),
+          ? t("product-table-unpublish", "Unpublish")
+          : t("product-table-publish", "Publish"),
       onClick: () => {
         const newStatus =
           product.status === "published"
-            ? t("product-table.draft", "draft")
-            : t("product-table.published", "published")
+            ? t("product-table-draft", "draft")
+            : t("product-table-published", "published")
         updateProduct.mutate(
           {
             status: newStatus,
@@ -59,14 +59,14 @@ const useProductActions = (product: Product) => {
           {
             onSuccess: () => {
               notification(
-                t("product-table.success", "Success"),
+                t("product-table-success", "Success"),
                 product.status === "published"
                   ? t(
-                      "product-table.successfully-unpublished-product",
+                      "product-table-successfully-unpublished-product",
                       "Successfully unpublished product"
                     )
                   : t(
-                      "product-table.successfully-published-product",
+                      "product-table-successfully-published-product",
                       "Successfully published product"
                     ),
                 "success"
@@ -74,7 +74,7 @@ const useProductActions = (product: Product) => {
             },
             onError: (err) =>
               notification(
-                t("product-table.error", "Error"),
+                t("product-table-error", "Error"),
                 getErrorMessage(err),
                 "error"
               ),
@@ -89,12 +89,12 @@ const useProductActions = (product: Product) => {
         ),
     },
     {
-      label: t("product-table.duplicate", "Duplicate"),
+      label: t("product-table-duplicate", "Duplicate"),
       onClick: () => copyProduct(product),
       icon: <DuplicateIcon size={20} />,
     },
     {
-      label: t("product-table.delete", "Delete"),
+      label: t("product-table-delete", "Delete"),
       variant: "danger",
       onClick: handleDelete,
       icon: <TrashIcon size={20} />,

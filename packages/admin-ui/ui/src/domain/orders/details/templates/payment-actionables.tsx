@@ -17,21 +17,21 @@ export const PaymentActionables = ({
   const { payment_status } = order!
 
   // Default label and action
-  let label = t("templates.capture-payment", "Capture payment")
+  let label = t("templates-capture-payment", "Capture payment")
   let action = () => {
     capturePayment.mutate(void {}, {
       onSuccess: () =>
         notification(
-          t("templates.success", "Success"),
+          t("templates-success", "Success"),
           t(
-            "templates.successfully-captured-payment",
+            "templates-successfully-captured-payment",
             "Successfully captured payment"
           ),
           "success"
         ),
       onError: (err) =>
         notification(
-          t("templates.error", "Error"),
+          t("templates-error", "Error"),
           getErrorMessage(err),
           "error"
         ),
@@ -52,7 +52,7 @@ export const PaymentActionables = ({
   switch (true) {
     case payment_status === "captured" ||
       payment_status === "partially_refunded": {
-      label = t("templates.refund", "Refund")
+      label = t("templates-refund", "Refund")
       action = () => showRefundMenu()
       break
     }

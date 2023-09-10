@@ -59,9 +59,9 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
       {
         onSuccess: () => {
           notification(
-            t("general.success", "Success"),
+            t("general-success", "Success"),
             t(
-              "general.discount-updated-successfully",
+              "general-discount-updated-successfully",
               "Discount updated successfully"
             ),
             "success"
@@ -70,7 +70,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
         },
         onError: (error) => {
           notification(
-            t("general.error", "Error"),
+            t("general-error", "Error"),
             getErrorMessage(error),
             "error"
           )
@@ -90,7 +90,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
           <h1 className="inter-xlarge-semibold">
-            {t("general.edit-general-information", "Edit general information")}
+            {t("general-edit-general-information", "Edit general information")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
@@ -98,7 +98,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
             <div className="gap-y-xlarge flex flex-col">
               <div>
                 <h2 className="inter-base-semibold mb-base">
-                  {t("general.details", "Details")}
+                  {t("general-details", "Details")}
                 </h2>
                 <DiscountGeneralForm
                   form={nestedForm(form, "general")}
@@ -108,7 +108,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
               </div>
               <div>
                 <h2 className="inter-base-semibold mb-base">
-                  {t("general.metadata", "Metadata")}
+                  {t("general-metadata", "Metadata")}
                 </h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
@@ -122,7 +122,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
                 type="button"
                 onClick={onClose}
               >
-                {t("general.cancel", "Cancel")}
+                {t("general-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -131,7 +131,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
                 disabled={isLoading}
                 loading={isLoading}
               >
-                {t("general.save-and-close", "Save and close")}
+                {t("general-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

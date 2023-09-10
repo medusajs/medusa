@@ -46,9 +46,9 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
       {
         onSuccess: () => {
           notification(
-            t("edit-user-information.success", "Success"),
+            t("edit-user-information-success", "Success"),
             t(
-              "edit-user-information.your-information-was-successfully-updated",
+              "edit-user-information-your-information-was-successfully-updated",
               "Your information was successfully updated"
             ),
             "success"
@@ -65,7 +65,7 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
     <Modal handleClose={onClose} open={open} isLargeModal={false}>
       <Modal.Header handleClose={onClose}>
         <h1 className="inter-xlarge-semibold">
-          {t("edit-user-information.edit-information", "Edit information")}
+          {t("edit-user-information-edit-information", "Edit information")}
         </h1>
       </Modal.Header>
       <Modal.Body>
@@ -88,7 +88,7 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
         <Modal.Footer className="border-grey-20 pt-base border-t">
           <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button variant="secondary" size="small" onClick={onClose}>
-              {t("edit-user-information.cancel", "Cancel")}
+              {t("edit-user-information-cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -97,7 +97,7 @@ const EditUserInformationModal = ({ user, open, onClose }: Props) => {
               disabled={isSubmitting}
               onClick={onSubmit}
             >
-              {t("edit-user-information.submit-and-close", "Submit and close")}
+              {t("edit-user-information-submit-and-close", "Submit and close")}
             </Button>
           </div>
         </Modal.Footer>

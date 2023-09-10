@@ -44,15 +44,15 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     mutate(data, {
       onSuccess: () => {
         notification(
-          t("edit-user-modal.success", "Success"),
-          t("edit-user-modal.user-was-updated", "User was updated"),
+          t("edit-user-modal-success", "Success"),
+          t("edit-user-modal-user-was-updated", "User was updated"),
           "success"
         )
         onSuccess()
       },
       onError: (error) => {
         notification(
-          t("edit-user-modal.error", "Error"),
+          t("edit-user-modal-error", "Error"),
           getErrorMessage(error),
           "error"
         )
@@ -69,15 +69,15 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
         <Modal.Body>
           <Modal.Header handleClose={handleClose}>
             <span className="inter-xlarge-semibold">
-              {t("edit-user-modal.edit-user", "Edit User")}
+              {t("edit-user-modal-edit-user", "Edit User")}
             </span>
           </Modal.Header>
           <Modal.Content>
             <div className="gap-large mb-base grid w-full grid-cols-2">
               <InputField
-                label={t("edit-user-modal.first-name.label", "First Name")}
+                label={t("edit-user-modal-first-name-label", "First Name")}
                 placeholder={t(
-                  "edit-user-modal.first-name.placeholder",
+                  "edit-user-modal-first-name-placeholder",
                   "First name..."
                 )}
                 required
@@ -89,9 +89,9 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                 errors={errors}
               />
               <InputField
-                label={t("edit-user-modal.last-name.label", "Last Name")}
+                label={t("edit-user-modal-last-name-label", "Last Name")}
                 placeholder={t(
-                  "edit-user-modal.last-name.placeholder",
+                  "edit-user-modal-last-name-placeholder",
                   "Last name..."
                 )}
                 required
@@ -104,7 +104,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
               />
             </div>
             <InputField
-              label={t("edit-user-modal.email", "Email")}
+              label={t("edit-user-modal-email", "Email")}
               disabled
               value={user.email}
             />
@@ -117,7 +117,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                 onClick={handleClose}
                 className="mr-2"
               >
-                {t("edit-user-modal.cancel", "Cancel")}
+                {t("edit-user-modal-cancel", "Cancel")}
               </Button>
               <Button
                 loading={isLoading}
@@ -125,7 +125,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                 variant="primary"
                 size="small"
               >
-                {t("edit-user-modal.save", "Save")}
+                {t("edit-user-modal-save", "Save")}
               </Button>
             </div>
           </Modal.Footer>

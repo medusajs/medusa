@@ -17,7 +17,7 @@ const useInventoryTableColumn = ({
   const columns = useMemo(
     () => [
       {
-        Header: t("inventory-table.item", "Item"),
+        Header: t("inventory-table-item", "Item"),
         accessor: "title",
         Cell: ({ row: { original } }) => {
           return (
@@ -38,18 +38,18 @@ const useInventoryTableColumn = ({
         },
       },
       {
-        Header: t("inventory-table.variant", "Variant"),
+        Header: t("inventory-table-variant", "Variant"),
         Cell: ({ row: { original } }) => {
           return <div>{original?.variants[0]?.title || "-"}</div>
         },
       },
       {
-        Header: t("inventory-table.sku", "SKU"),
+        Header: t("inventory-table-sku", "SKU"),
         accessor: "sku",
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: t("inventory-table.reserved", "Reserved"),
+        Header: t("inventory-table-reserved", "Reserved"),
         accessor: "reserved_quantity",
         Cell: ({ row: { original } }) => {
           const navigate = useNavigate()
@@ -87,7 +87,7 @@ const useInventoryTableColumn = ({
         },
       },
       {
-        Header: t("inventory-table.in-stock", "In stock"),
+        Header: t("inventory-table-in-stock", "In stock"),
         accessor: "stocked_quantity",
         Cell: ({ row: { original } }) => {
           return (

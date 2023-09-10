@@ -15,7 +15,7 @@ const SalesChannelsSection = ({
         {!location.sales_channels?.length ? (
           <span className="inter-base-regular text-grey-40">
             {t(
-              "sales-channels-section.not-connected-to-any-sales-channels-yet",
+              "sales-channels-section-not-connected-to-any-sales-channels-yet",
               "Not connected to any sales channels yet"
             )}
           </span>

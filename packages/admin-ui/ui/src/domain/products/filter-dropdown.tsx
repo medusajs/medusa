@@ -115,7 +115,7 @@ const ProductsFilter = ({
             )}
           >
             <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
-              {t("products.filters", "Filters")}
+              {t("products-filters", "Filters")}
               <div className="text-grey-40 ml-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
                   {numberOfFilters ? numberOfFilters : "0"}
@@ -129,7 +129,7 @@ const ProductsFilter = ({
         }
       >
         <FilterDropdownItem
-          filterTitle={t("products.status", "Status")}
+          filterTitle={t("products-status", "Status")}
           options={statusFilters}
           filters={tempState.status.filter}
           open={tempState.status.open}
@@ -185,7 +185,7 @@ const ProductsFilter = ({
                 "inter-small-regular": !tempState.tags.open,
               })}
             >
-              {t("products.tags", "Tags")}
+              {t("products-tags", "Tags")}
             </span>
           </div>
 
@@ -197,7 +197,7 @@ const ProductsFilter = ({
               <TagInput
                 className="pt-0 pb-1"
                 showLabel={false}
-                placeholder={t("products.spring-summer", "Spring, summer...")}
+                placeholder={t("products-spring-summer", "Spring, summer...")}
                 values={(tempState.tags.filter || [])
                   .map((t) => {
                     const found = (product_tags || []).find((pt) => pt.id === t)

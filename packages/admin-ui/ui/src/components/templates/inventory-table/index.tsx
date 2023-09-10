@@ -219,7 +219,7 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
         count: count || 0,
         offset: offs,
         pageSize: offs + rows.length,
-        title: t("inventory-table.inventory-items", "Inventory Items"),
+        title: t("inventory-table-inventory-items", "Inventory Items"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,
@@ -316,7 +316,7 @@ const InventoryRow = ({
     const actions = [
       {
         label: t(
-          "inventory-table.actions.adjust-availability",
+          "inventory-table-actions-adjust-availability",
           "Adjust Availability"
         ),
         onClick: showAdjustAvailabilityModal,
@@ -326,7 +326,7 @@ const InventoryRow = ({
     if (productId) {
       return [
         {
-          label: t("inventory-table.view-product", "View Product"),
+          label: t("inventory-table-view-product", "View Product"),
           onClick: () => navigate(`/a/products/${productId}`),
         },
         ...actions,
@@ -403,9 +403,9 @@ const AdjustAvailabilityModal = ({
       {
         onSuccess: () => {
           notification(
-            t("inventory-table.success", "Success"),
+            t("inventory-table-success", "Success"),
             t(
-              "inventory-table.inventory-item-updated-successfully",
+              "inventory-table-inventory-item-updated-successfully",
               "Inventory item updated successfully"
             ),
             "success"
@@ -423,7 +423,7 @@ const AdjustAvailabilityModal = ({
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
           <h1 className="inter-large-semibold">
-            {t("inventory-table.adjust-availability", "Adjust availability")}
+            {t("inventory-table-adjust-availability", "Adjust availability")}
           </h1>
         </Modal.Header>
         <Modal.Content>
@@ -480,7 +480,7 @@ const AdjustAvailabilityModal = ({
             className="border"
             onClick={handleClose}
           >
-            {t("inventory-table.cancel", "Cancel")}
+            {t("inventory-table-cancel", "Cancel")}
           </Button>
           <Button
             size="small"
@@ -489,7 +489,7 @@ const AdjustAvailabilityModal = ({
             loading={isSubmitting}
             onClick={onSubmit}
           >
-            {t("inventory-table.save-and-close", "Save and close")}
+            {t("inventory-table-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

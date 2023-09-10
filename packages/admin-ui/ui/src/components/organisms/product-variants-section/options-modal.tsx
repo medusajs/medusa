@@ -143,9 +143,9 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
 
     if (errors.length === toCreate.length + toUpdate.length + toDelete.length) {
       notification(
-        t("product-variants-section.error", "Error"),
+        t("product-variants-section-error", "Error"),
         t(
-          "product-variants-section.failed-to-update-product-options",
+          "product-variants-section-failed-to-update-product-options",
           "Failed to update product options"
         ),
         "error"
@@ -163,9 +163,9 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
 
     refetch()
     notification(
-      t("product-variants-section.success", "Success"),
+      t("product-variants-section-success", "Success"),
       t(
-        "product-variants-section.successfully-updated-product-options",
+        "product-variants-section-successfully-updated-product-options",
         "Successfully updated product options"
       ),
       "success"
@@ -178,17 +178,17 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
           <h1 className="inter-xlarge-semibold">
-            {t("product-variants-section.edit-options", "Edit Options")}
+            {t("product-variants-section-edit-options", "Edit Options")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <h2 className="inter-large-semibold mb-base">
-              {t("product-variants-section.product-options", "Product options")}
+              {t("product-variants-section-product-options", "Product options")}
             </h2>
             <div className="gap-y-small flex flex-col">
               <p className="inter-small-semibold text-grey-50">
-                {t("product-variants-section.option-title", "Option title")}
+                {t("product-variants-section-option-title", "Option title")}
               </p>
               <div className="gap-y-xsmall flex flex-col">
                 {fields.map((field, index) => {
@@ -202,7 +202,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
                         placeholder="Color"
                         {...register(`options.${index}.title`, {
                           required: t(
-                            "product-variants-section.option-title-is-required",
+                            "product-variants-section-option-title-is-required",
                             "Option title is required"
                           ),
                           minLength:
@@ -231,7 +231,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
               onClick={handleAddAnOption}
             >
               <PlusIcon size="20" />{" "}
-              {t("product-variants-section.add-an-option", "Add an option")}
+              {t("product-variants-section-add-an-option", "Add an option")}
             </Button>
           </Modal.Content>
           <Modal.Footer>
@@ -242,7 +242,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={handleClose}
               >
-                {t("product-variants-section.cancel", "Cancel")}
+                {t("product-variants-section-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -251,7 +251,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={isSubmitting}
               >
-                {t("product-variants-section.save-and-close", "Save and close")}
+                {t("product-variants-section-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

@@ -153,8 +153,8 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
             variant={allItemsReserved ? "success" : "danger"}
             title={
               allItemsReserved
-                ? t("detail-cards.allocated", "Allocated")
-                : t("detail-cards.not-fully-allocated", "Not fully allocated")
+                ? t("detail-cards-allocated", "Allocated")
+                : t("detail-cards-not-fully-allocated", "Not fully allocated")
             }
             className="rounded-rounded border px-3 py-1.5"
           />
@@ -227,7 +227,7 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={order?.cart?.subtotal}
-          totalTitle={t("detail-cards.subtotal", "Subtotal")}
+          totalTitle={t("detail-cards-subtotal", "Subtotal")}
         />
         {cart?.discounts?.map((discount, index) => (
           <div key={index} className="mt-4 flex items-center justify-between">
@@ -251,18 +251,18 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={cart?.shipping_total}
-          totalTitle={t("detail-cards.shipping", "Shipping")}
+          totalTitle={t("detail-cards-shipping", "Shipping")}
         />
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={cart?.tax_total}
-          totalTitle={t("detail-cards.tax", "Tax")}
+          totalTitle={t("detail-cards-tax", "Tax")}
         />
         <DisplayTotal
           currency={region?.currency_code}
           variant="large"
           totalAmount={cart?.total}
-          totalTitle={t("detail-cards.total", "Total")}
+          totalTitle={t("detail-cards-total", "Total")}
         />
       </div>
       {reservationModalIsOpen && (

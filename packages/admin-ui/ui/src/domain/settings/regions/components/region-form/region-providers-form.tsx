@@ -30,13 +30,13 @@ const RegionProvidersForm = ({ form }: Props) => {
         name={path("payment_providers")}
         rules={{
           required: t(
-            "region-form.payment-providers-are-required",
+            "region-form-payment-providers-are-required",
             "Payment providers are required"
           ),
           minLength: {
             value: 1,
             message: t(
-              "region-form.payment-providers-are-required",
+              "region-form-payment-providers-are-required",
               "Payment providers are required"
             ),
           },
@@ -44,9 +44,9 @@ const RegionProvidersForm = ({ form }: Props) => {
         render={({ field: { value, onBlur, onChange } }) => {
           return (
             <NextSelect
-              label={t("region-form.payment-providers", "Payment Providers")}
+              label={t("region-form-payment-providers", "Payment Providers")}
               placeholder={t(
-                "region-form.choose-payment-providers",
+                "region-form-choose-payment-providers",
                 "Choose payment providers..."
               )}
               options={paymentProviderOptions}
@@ -68,13 +68,13 @@ const RegionProvidersForm = ({ form }: Props) => {
         name={path("fulfillment_providers")}
         rules={{
           required: t(
-            "region-form.fulfillment-providers-are-required",
+            "region-form-fulfillment-providers-are-required",
             "Fulfillment providers are required"
           ),
           minLength: {
             value: 1,
             message: t(
-              "region-form.fulfillment-providers-are-required",
+              "region-form-fulfillment-providers-are-required",
               "Fulfillment providers are required"
             ),
           },
@@ -83,11 +83,11 @@ const RegionProvidersForm = ({ form }: Props) => {
           return (
             <NextSelect
               label={t(
-                "region-form.fulfillment-providers",
+                "region-form-fulfillment-providers",
                 "Fulfillment Providers"
               )}
               placeholder={t(
-                "region-form.choose-fulfillment-providers",
+                "region-form-choose-fulfillment-providers",
                 "Choose fulfillment providers..."
               )}
               options={fulfillmentProviderOptions}

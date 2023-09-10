@@ -134,7 +134,7 @@ const Root: React.FC<CurrencyInputProps> = ({
             {!readOnly ? (
               <Select
                 enableSearch
-                label={t("currency-input.currency", "Currency")}
+                label={t("currency-input-currency", "Currency")}
                 value={value}
                 onChange={onCurrencyChange}
                 options={options}
@@ -142,7 +142,7 @@ const Root: React.FC<CurrencyInputProps> = ({
               />
             ) : (
               <Input
-                label={t("currency-input.currency", "Currency")}
+                label={t("currency-input-currency", "Currency")}
                 value={value?.label}
                 readOnly
                 className="pointer-events-none"
@@ -256,7 +256,7 @@ const Amount = forwardRef<HTMLInputElement, AmountInputProps>(
               side={"top"}
               content={
                 invalidMessage ||
-                t("currency-input.amount-is-not-valid", "Amount is not valid")
+                t("currency-input-amount-is-not-valid", "Amount is not valid")
               }
             >
               <span className="inter-base-regular text-grey-40 mr-xsmall">

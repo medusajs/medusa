@@ -43,7 +43,7 @@ const SelectRegionScreen = () => {
   return (
     <div className="flex min-h-[705px] flex-col">
       <span className="inter-base-semibold mb-4">
-        {t("components.choose-region", "Choose region")}
+        {t("components-choose-region", "Choose region")}
       </span>
       <Controller
         control={control}
@@ -51,7 +51,7 @@ const SelectRegionScreen = () => {
         render={({ field: { onChange, value } }) => {
           return (
             <NextSelect
-              label={t("components.region", "Region")}
+              label={t("components-region", "Region")}
               onChange={onChange}
               value={value}
               options={regionOptions}

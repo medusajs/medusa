@@ -27,7 +27,7 @@ const CurrencySettings = () => {
 
   if (error) {
     let message = t(
-      "currencies.an-unknown-error-occurred",
+      "currencies-an-unknown-error-occurred",
       "An unknown error occurred"
     )
 
@@ -44,7 +44,7 @@ const CurrencySettings = () => {
 
     // temp needs design
     return (
-      <Section title={t("currencies.error", "Error")}>
+      <Section title={t("currencies-error", "Error")}>
         <p className="inter-base-regular">{message}</p>
 
         <div className="mt-base px-base py-xsmall">
@@ -66,7 +66,7 @@ const CurrencySettings = () => {
   return (
     <div className="pb-xlarge">
       <BackButton
-        label={t("currencies.back-to-settings", "Back to Settings")}
+        label={t("currencies-back-to-settings", "Back to Settings")}
         path="/a/settings"
         className="mb-xsmall"
       />
@@ -75,7 +75,7 @@ const CurrencySettings = () => {
           <Section title="Currencies">
             <p className="text-grey-50 inter-base-regular mt-2xsmall">
               {t(
-                "currencies.manage-the-markets-that-you-will-operate-within",
+                "currencies-manage-the-markets-that-you-will-operate-within",
                 "Manage the markets that you will operate within."
               )}
             </p>
@@ -92,11 +92,11 @@ const CurrencySettings = () => {
                   <Tooltip
                     side="top"
                     content={t(
-                      "currencies.include-or-exclude-taxes",
+                      "currencies-include-or-exclude-taxes",
                       "Decide if you want to include or exclude taxes whenever you define a price in this currency"
                     )}
                   >
-                    <p>{t("currencies.tax-incl-prices", "Tax Incl. Prices")}</p>
+                    <p>{t("currencies-tax-incl-prices", "Tax Incl. Prices")}</p>
                   </Tooltip>
                 </FeatureToggle>
               </div>

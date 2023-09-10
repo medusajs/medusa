@@ -48,7 +48,7 @@ const AddTagConditionSelector = ({ onClose }: AddConditionSelectorProps) => {
             enableSearch: true,
             immediateSearchFocus: true,
             searchPlaceholder: t(
-              "add-condition-tables.search-by-tag",
+              "add-condition-tables-search-by-tag",
               "Search by tag..."
             ),
           }}

@@ -53,7 +53,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
       tax_provider_id: {
         label:
           region.tax_provider_id === null
-            ? t("taxes.system-tax-provider", "System Tax Provider")
+            ? t("taxes-system-tax-provider", "System Tax Provider")
             : region.tax_provider_id,
         value: region.tax_provider_id,
       },
@@ -69,7 +69,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
     if (tax_providers) {
       return [
         {
-          label: t("taxes.system-tax-provider", "System Tax Provider"),
+          label: t("taxes-system-tax-provider", "System Tax Provider"),
           value: null,
         },
         ...tax_providers.map((tp) => ({
@@ -81,7 +81,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
 
     return [
       {
-        label: t("taxes.system-tax-provider", "System Tax Provider"),
+        label: t("taxes-system-tax-provider", "System Tax Provider"),
         value: null,
       },
     ]
@@ -96,16 +96,16 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
     updateRegion.mutate(toSubmit, {
       onSuccess: () => {
         notification(
-          t("taxes.success", "Success"),
+          t("taxes-success", "Success"),
           t(
-            "taxes.region-tax-settings-were-successfully-updated",
+            "taxes-region-tax-settings-were-successfully-updated",
             "Region tax settings were successfully updated."
           ),
           "success"
         )
       },
       onError: (error) => {
-        notification(t("taxes.error", "Error"), getErrorMessage(error), "error")
+        notification(t("taxes-error", "Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -120,7 +120,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           render={({ field: { value, onChange } }) => (
             <Select
               disabled={isProvidersLoading}
-              label={t("taxes.tax-provider", "Tax Provider")}
+              label={t("taxes-tax-provider", "Tax Provider")}
               options={providerOptions}
               value={value}
               onChange={onChange}
@@ -133,13 +133,13 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
             className="inter-base-regular"
             {...register("automatic_taxes")}
             label={t(
-              "taxes.calculate-taxes-automatically",
+              "taxes-calculate-taxes-automatically",
               "Calculate taxes automatically?"
             )}
           />
           <IconTooltip
             content={t(
-              "taxes.automatically-apply-tax-calculations-to-carts",
+              "taxes-automatically-apply-tax-calculations-to-carts",
               "When checked Medusa will automatically apply tax calculations to Carts in this Region. When unchecked you will have to manually compute taxes at checkout. Manual taxes are recommended if using a 3rd party tax provider to avoid performing too many requests"
             )}
           />
@@ -149,13 +149,13 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
             className="inter-base-regular"
             {...register("gift_cards_taxable")}
             label={t(
-              "taxes.apply-tax-to-gift-cards",
+              "taxes-apply-tax-to-gift-cards",
               "Apply tax to gift cards?"
             )}
           />
           <IconTooltip
             content={t(
-              "taxes.apply-taxes-to-gift-cards",
+              "taxes-apply-taxes-to-gift-cards",
               "When checked taxes will be applied to gift cards on checkout. In some contries tax regulations require that taxes are applied to gift cards on purchase."
             )}
           />
@@ -169,7 +169,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
             size="medium"
             type="submit"
           >
-            {t("taxes.save", "Save")}
+            {t("taxes-save", "Save")}
           </Button>
         )}
       </div>

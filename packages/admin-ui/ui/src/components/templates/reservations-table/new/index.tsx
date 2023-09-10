@@ -54,9 +54,9 @@ const NewReservation = ({
     createReservation(payload, {
       onSuccess: () => {
         notification(
-          t("new.success", "Success"),
+          t("new-success", "Success"),
           t(
-            "new.successfully-created-reservation",
+            "new-successfully-created-reservation",
             "Successfully created reservation"
           ),
           "success"
@@ -64,7 +64,7 @@ const NewReservation = ({
         onClose()
       },
       onError: (err: Error) => {
-        notification(t("new.error", "Error"), getErrorMessage(err), "error")
+        notification(t("new-error", "Error"), getErrorMessage(err), "error")
       },
     })
   }
@@ -89,10 +89,10 @@ const NewReservation = ({
                 type="button"
                 onClick={onClose}
               >
-                {t("new.cancel", "Cancel")}
+                {t("new-cancel", "Cancel")}
               </Button>
               <Button size="small" variant="primary" type="submit">
-                {t("new.save-reservation", "Save reservation")}
+                {t("new-save-reservation", "Save reservation")}
               </Button>
             </div>
           </div>
@@ -100,14 +100,14 @@ const NewReservation = ({
         <FocusModal.Main className="no-scrollbar flex w-full justify-center">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 my-16 max-w-[700px]">
             <h1 className="mb-base text-grey-90 text-xlarge font-semibold">
-              {t("new.reserve-item", "Reserve Item")}
+              {t("new-reserve-item", "Reserve Item")}
             </h1>
             <div className="mt-xlarge gap-y-xlarge flex w-full pb-0.5">
               <ReservationForm form={nestedForm(form, "general")} />
             </div>
             <div className="border-grey border-grey-20 w-full items-center border-t pt-6">
               <p className="inter-base-semibold mb-2">
-                {t("new.metadata", "Metadata")}
+                {t("new-metadata", "Metadata")}
               </p>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>

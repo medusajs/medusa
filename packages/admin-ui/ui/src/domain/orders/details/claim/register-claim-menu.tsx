@@ -110,11 +110,11 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
     if (isDirty) {
       shouldClose = await dialog({
         heading: t(
-          "claim.are-you-sure-you-want-to-close",
+          "claim-are-you-sure-you-want-to-close",
           "Are you sure you want to close?"
         ),
         text: t(
-          "claim.you-have-unsaved-changes-are-you-sure-you-want-to-close",
+          "claim-you-have-unsaved-changes-are-you-sure-you-want-to-close",
           "You have unsaved changes, are you sure you want to close?"
         ),
       })
@@ -166,7 +166,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
           {
             type: "manual",
             message: t(
-              "claim.please-select-a-reason",
+              "claim-please-select-a-reason",
               "Please select a reason"
             ),
           },
@@ -183,7 +183,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
         {
           type: "manual",
           message: t(
-            "claim.a-shipping-method-for-replacement-items-is-required",
+            "claim-a-shipping-method-for-replacement-items-is-required",
             "A shipping method for replacement items is required"
           ),
         },
@@ -237,9 +237,9 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
       {
         onSuccess: () => {
           notification(
-            t("claim.successfully-created-claim", "Successfully created claim"),
+            t("claim-successfully-created-claim", "Successfully created claim"),
             t(
-              "claim.created",
+              "claim-created",
               "A claim for order #{display_id} was successfully created",
               {
                 display_id: order.display_id,
@@ -251,7 +251,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
         },
         onError: (err) => {
           notification(
-            t("claim.error-creating-claim", "Error creating claim"),
+            t("claim-error-creating-claim", "Error creating claim"),
             getErrorMessage(err),
             "error"
           )
@@ -280,7 +280,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={onCancel}>
           <h1 className="inter-xlarge-semibold">
-            {t("claim.create-claim", "Create Claim")}
+            {t("claim-create-claim", "Create Claim")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit} data-testid="register-claim-form">
@@ -301,11 +301,11 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
               {isLocationFulfillmentEnabled && (
                 <div className="mb-8">
                   <h3 className="inter-base-semibold ">
-                    {t("claim.location", "Location")}
+                    {t("claim-location", "Location")}
                   </h3>
                   <p className="inter-base-regular text-grey-50">
                     {t(
-                      "claim.choose-which-location-you-want-to-return-the-items-to",
+                      "claim-choose-which-location-you-want-to-return-the-items-to",
                       "Choose which location you want to return the items to."
                     )}
                   </p>
@@ -320,7 +320,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
                           <Select
                             className="mt-2"
                             placeholder={t(
-                              "claim.select-location-to-return-to",
+                              "claim-select-location-to-return-to",
                               "Select Location to Return to"
                             )}
                             value={value}
@@ -374,14 +374,14 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
                   type="button"
                   onClick={onCancel}
                 >
-                  {t("claim.cancel", "Cancel")}
+                  {t("claim-cancel", "Cancel")}
                 </Button>
                 <Button
                   variant="primary"
                   size="small"
                   disabled={!isDirty || isLoading || watchedItems?.length < 1}
                 >
-                  {t("claim.submit-and-close", "Submit and close")}
+                  {t("claim-submit-and-close", "Submit and close")}
                 </Button>
               </div>
             </div>

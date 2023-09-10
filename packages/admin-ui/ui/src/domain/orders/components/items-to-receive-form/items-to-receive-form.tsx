@@ -65,7 +65,7 @@ export const ItemsToReceiveForm = ({ form, order }: Props) => {
   return (
     <div className="gap-y-xsmall flex flex-col">
       <h2 className="inter-base-semibold">
-        {t("items-to-receive-form.items-to-receive", "Items to receive")}
+        {t("items-to-receive-form-items-to-receive", "Items to receive")}
       </h2>
 
       <ItemsToReceiveTable instance={tableInstance} />

@@ -59,9 +59,9 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
       {
         onSuccess: () => {
           notifcation(
-            t("shipping-options.success", "Success"),
+            t("shipping-options-success", "Success"),
             t(
-              "shipping-options.shipping-option-created",
+              "shipping-options-shipping-option-created",
               "Shipping option created"
             ),
             "success"
@@ -70,7 +70,7 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
         },
         onError: (error) => {
           notifcation(
-            t("shipping-options.error", "Error"),
+            t("shipping-options-error", "Error"),
             getErrorMessage(error),
             "error"
           )
@@ -84,7 +84,7 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
           <h1 className="inter-xlarge-semibold">
-            {t("shipping-options.add-shipping-option", "Add Shipping Option")}
+            {t("shipping-options-add-shipping-option", "Add Shipping Option")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
@@ -99,7 +99,7 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
                 type="button"
                 onClick={closeAndReset}
               >
-                {t("shipping-options.cancel", "Cancel")}
+                {t("shipping-options-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -108,7 +108,7 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                {t("shipping-options.save-and-close", "Save and close")}
+                {t("shipping-options-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

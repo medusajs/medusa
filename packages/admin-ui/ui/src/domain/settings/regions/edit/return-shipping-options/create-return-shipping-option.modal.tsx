@@ -59,9 +59,9 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
       {
         onSuccess: () => {
           notifcation(
-            t("return-shipping-options.success", "Success"),
+            t("return-shipping-options-success", "Success"),
             t(
-              "return-shipping-options.shipping-option-created",
+              "return-shipping-options-shipping-option-created",
               "Shipping option created"
             ),
             "success"
@@ -70,7 +70,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
         },
         onError: (error) => {
           notifcation(
-            t("return-shipping-options.error", "Error"),
+            t("return-shipping-options-error", "Error"),
             getErrorMessage(error),
             "error"
           )
@@ -85,7 +85,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
         <Modal.Header handleClose={closeAndReset}>
           <h1 className="inter-xlarge-semibold">
             {t(
-              "return-shipping-options.add-return-shipping-option",
+              "return-shipping-options-add-return-shipping-option",
               "Add Return Shipping Option"
             )}
           </h1>
@@ -102,7 +102,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
                 type="button"
                 onClick={closeAndReset}
               >
-                {t("return-shipping-options.cancel", "Cancel")}
+                {t("return-shipping-options-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -111,7 +111,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                {t("return-shipping-options.save-and-close", "Save and close")}
+                {t("return-shipping-options-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

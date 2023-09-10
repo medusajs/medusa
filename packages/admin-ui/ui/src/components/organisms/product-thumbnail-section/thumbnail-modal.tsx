@@ -54,7 +54,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
       preppedImages = await prepareImages(data.thumbnail.images)
     } catch (error) {
       let errorMessage = t(
-        "product-thumbnail-section.upload-thumbnail-error",
+        "product-thumbnail-section-upload-thumbnail-error",
         "Something went wrong while trying to upload the thumbnail."
       )
       const response = (error as any).response as Response
@@ -64,13 +64,13 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
           errorMessage +
           " " +
           t(
-            "product-thumbnail-section.you-might-not-have-a-file-service-configured-please-contact-your-administrator",
+            "product-thumbnail-section-you-might-not-have-a-file-service-configured-please-contact-your-administrator",
             "You might not have a file service configured. Please contact your administrator"
           )
       }
 
       notification(
-        t("product-thumbnail-section.error", "Error"),
+        t("product-thumbnail-section-error", "Error"),
         errorMessage,
         "error"
       )
@@ -93,7 +93,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
         <Modal.Header handleClose={onReset}>
           <h1 className="inter-xlarge-semibold m-0">
             {t(
-              "product-thumbnail-section.upload-thumbnail",
+              "product-thumbnail-section-upload-thumbnail",
               "Upload Thumbnail"
             )}
           </h1>
@@ -101,11 +101,11 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <h2 className="inter-large-semibold mb-2xsmall">
-              {t("product-thumbnail-section.thumbnail", "Thumbnail")}
+              {t("product-thumbnail-section-thumbnail", "Thumbnail")}
             </h2>
             <p className="inter-base-regular text-grey-50 mb-large">
               {t(
-                "product-thumbnail-section.used-to-represent-your-product-during-checkout-social-sharing-and-more",
+                "product-thumbnail-section-used-to-represent-your-product-during-checkout-social-sharing-and-more",
                 "Used to represent your product during checkout, social sharing and more."
               )}
             </p>
@@ -119,7 +119,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                {t("product-thumbnail-section.cancel", "Cancel")}
+                {t("product-thumbnail-section-cancel", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -129,7 +129,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
                 loading={updating}
               >
                 {t(
-                  "product-thumbnail-section.save-and-close",
+                  "product-thumbnail-section-save-and-close",
                   "Save and close"
                 )}
               </Button>
