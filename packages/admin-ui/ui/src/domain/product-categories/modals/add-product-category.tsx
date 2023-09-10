@@ -132,7 +132,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
           <div className="medium:flex-row mb-8 flex flex-col justify-between gap-6">
             <InputField
               required
-              label={t("Name")}
+              label={t("Name in Engilish")}
               type="string"
               name="name"
               value={name}
@@ -142,7 +142,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
             />
 
             <InputField
-              label={t("Handle")}
+              label={t("Handle in Engilish")}
               type="string"
               name="handle"
               value={handle}
@@ -175,7 +175,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
           </div>
 
           <div className="mb-8">
-            <InputHeader label={t("Description")} className="mb-xsmall" />
+            <InputHeader label={t("Description in English")} className="mb-xsmall" />
             <ReactQuill
               theme="snow"
               value={description}
