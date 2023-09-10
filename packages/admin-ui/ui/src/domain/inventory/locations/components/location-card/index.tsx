@@ -40,7 +40,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
     const shouldDelete = await dialog({
       heading: t("location-card.delete-location", "Delete Location"),
       text: t(
-        "location-card.are-you-sure-you-want-to-delete-this-location-this-will-also-delete-all-inventory-levels-and-reservations-associated-with-this-location",
+        "location-card.confirm-delete",
         "Are you sure you want to delete this location. This will also delete all inventory levels and reservations associated with this location."
       ),
       extraConfirmation: true,

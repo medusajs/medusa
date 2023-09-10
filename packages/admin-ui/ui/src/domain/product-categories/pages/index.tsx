@@ -21,7 +21,7 @@ function ProductCategoriesEmptyState() {
     <div className="flex min-h-[600px] items-center justify-center">
       <p className="text-grey-40">
         {t(
-          "pages.no-product-categories-yet-use-the-above-button-to-create-your-first-category",
+          "pages.no-product-categories-yet",
           "No product categories yet, use the above button to create your first category."
         )}
       </p>

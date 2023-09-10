@@ -26,7 +26,7 @@ const usePromotionActions = (promotion) => {
     const shouldDelete = await dialog({
       heading: t("discount-table.delete-discount", "Delete Discount"),
       text: t(
-        "discount-table.are-you-sure-you-want-to-delete-this-discount",
+        "discount-table.confirm-delete",
         "Are you sure you want to delete this Discount?"
       ),
     })

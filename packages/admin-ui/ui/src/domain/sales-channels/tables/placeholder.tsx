@@ -18,7 +18,7 @@ function Placeholder({ showAddModal }) {
       </h3>
       <p className="text-grey-50 mt-2 mb-8 w-[358px] text-center">
         {t(
-          "tables.you-havent-added-any-products-to-this-channels-yet-but-once-you-do-they-will-live-here",
+          "tables.no-products-in-channels",
           "You haven\u2019t added any products to this channels yet, but once you do they will live here."
         )}
       </p>

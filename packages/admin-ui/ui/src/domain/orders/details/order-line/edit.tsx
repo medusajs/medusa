@@ -194,7 +194,7 @@ const OrderEditLine = ({
       side="top"
       open={isLocked ? undefined : false}
       content={t(
-        "order-line.this-line-item-is-part-of-a-fulfillment-and-cannot-be-edited-cancel-the-fulfillment-to-edit-the-line-item",
+        "order-line.line-item-cannot-be-edited",
         "This line item is part of a fulfillment and cannot be edited. Cancel the fulfillment to edit the line item."
       )}
     >

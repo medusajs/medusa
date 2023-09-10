@@ -112,7 +112,7 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
         resetAndClose()
       },
       t(
-        "edit-variants-modal.variants-were-successfully-updated",
+        "edit-variants-modal.update-success",
         "Variants were successfully updated"
       )
     )

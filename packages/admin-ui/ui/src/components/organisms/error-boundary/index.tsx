@@ -147,10 +147,7 @@ const errorMessage = (t: TFunction, status?: number) => {
       "error-boundary.an-unknown-server-error-occured",
       "An unknown server error occured"
     ),
-    503: t(
-      "error-boundary.server-is-currently-unavailable",
-      "Server is currently unavailable"
-    ),
+    503: t("error-boundary.503", "Server is currently unavailable"),
   }[status]
 
   return message || defaultMessage
@@ -158,7 +155,7 @@ const errorMessage = (t: TFunction, status?: number) => {
 
 const errorDescription = (t: TFunction, status?: number) => {
   const defaultDescription = t(
-    "error-boundary.an-error-occurred-with-unspecified-causes-this-is-most-likely-due-to-a-techinical-issue-on-our-end-please-try-refreshing-the-page-if-the-issue-keeps-happening-contact-your-administrator",
+    "error-boundary.500",
     "An error occurred with unspecified causes, this is most likely due to a techinical issue on our end. Please try refreshing the page. If the issue keeps happening, contact your administrator."
   )
 
@@ -168,27 +165,27 @@ const errorDescription = (t: TFunction, status?: number) => {
 
   const description = {
     400: t(
-      "error-boundary.the-request-was-malformed-fix-your-request-and-please-try-again",
+      "error-boundary.400",
       "The request was malformed, fix your request and please try again."
     ),
     401: t(
-      "error-boundary.you-are-not-logged-in-please-log-in-to-proceed",
+      "error-boundary.401",
       "You are not logged in, please log in to proceed."
     ),
     403: t(
-      "error-boundary.you-do-not-have-permission-perform-this-action-if-you-think-this-is-a-mistake-contact-your-administrator",
+      "error-boundary.403",
       "You do not have permission perform this action, if you think this is a mistake, contact your administrator."
     ),
     404: t(
-      "error-boundary.the-page-you-have-requested-was-not-found-please-check-the-url-and-try-again",
+      "error-boundary.404",
       "The page you have requested was not found, please check the URL and try again."
     ),
     500: t(
-      "error-boundary.the-server-was-not-able-to-handle-your-request-this-is-mostly-likely-due-to-a-techinical-issue-on-our-end-please-try-again-if-the-issue-keeps-happening-contact-your-administrator",
+      "error-boundary.500.2",
       "The server was not able to handle your request, this is mostly likely due to a techinical issue on our end. Please try again. If the issue keeps happening, contact your administrator."
     ),
     503: t(
-      "error-boundary.the-server-is-temporarily-unavailable-and-your-request-could-not-be-processed-please-try-again-later-if-the-issue-keeps-happening-contact-your-administrator",
+      "error-boundary.503.2",
       "The server is temporarily unavailable, and your request could not be processed. Please try again later. If the issue keeps happening, contact your administrator."
     ),
   }[status]

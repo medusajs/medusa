@@ -155,7 +155,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
           <div className="text-grey-50 inter-small-regular mb-6 flex flex-col">
             <span>
               {t(
-                "sections.the-code-your-customers-will-enter-during-checkout-this-will-appear-on-your-customers-invoice",
+                "sections.customer-invoice-code",
                 "The code your customers will enter during checkout. This will appear on your customer\u2019s invoice."
               )}
             </span>
@@ -196,7 +196,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
             />
             <IconTooltip
               content={t(
-                "sections.template-discounts-allow-you-to-define-a-set-of-rules-that-can-be-used-across-a-group-of-discounts-this-is-useful-in-campaigns-that-should-generate-unique-codes-for-each-user-but-where-the-rules-for-all-unique-codes-should-be-the-same",
+                "sections.template-discounts-description",
                 "Template discounts allow you to define a set of rules that can be used across a group of discounts. This is useful in campaigns that should generate unique codes for each user, but where the rules for all unique codes should be the same."
               )}
             />

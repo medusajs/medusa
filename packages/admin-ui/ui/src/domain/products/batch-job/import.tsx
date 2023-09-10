@@ -221,11 +221,11 @@ function ImportProducts(props: ImportProductsProps) {
         "Unsure about how to arrange your list?"
       )}
       description2Text={t(
-        "batch-job.download-the-template-below-to-ensure-you-are-following-the-correct-format",
+        "batch-job.download-template",
         "Download the template below to ensure you are following the correct format."
       )}
       description1Text={t(
-        "batch-job.through-imports-you-can-add-or-update-products-to-update-existing-products-variants-you-must-set-an-existing-id-in-the-product-variant-id-columns-if-the-value-is-unset-a-new-record-will-be-created-you-will-be-asked-for-confirmation-before-we-import-products",
+        "batch-job.imports-description",
         "Through imports you can add or update products. To update existing products/variants you must set an existing id in the Product/Variant id columns. If the value is unset a new record will be created. You will be asked for confirmation before we import products."
       )}
     />

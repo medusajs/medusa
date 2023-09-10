@@ -118,7 +118,7 @@ const Overview = () => {
         <PageDescription
           title={t("gift-cards.gift-cards", "Gift Cards")}
           subtitle={t(
-            "gift-cards.manage-the-gift-cards-of-your-medusa-store",
+            "gift-cards.manage",
             "Manage the Gift Cards of your Medusa store"
           )}
         />

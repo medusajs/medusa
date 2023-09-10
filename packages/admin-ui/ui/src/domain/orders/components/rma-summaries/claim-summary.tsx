@@ -120,7 +120,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
               <IconTooltip
                 type="warning"
                 content={t(
-                  "rma-summaries.the-customer-will-receive-a-full-refund-for-the-claimed-items-as-the-cost-of-replacement-items-and-shipping-will-not-be-deducted-alternatively-you-can-choose-to-set-a-custom-refund-amount-when-you-receive-the-returned-items-or-create-an-exchange-instead",
+                  "rma-summaries.customer-refund-description",
                   "The customer will receive a full refund for the claimed items, as the cost of replacement items and shipping will not be deducted. Alternatively, you can choose to set a custom refund amount when you receive the returned items or create an exchange instead."
                 )}
               />

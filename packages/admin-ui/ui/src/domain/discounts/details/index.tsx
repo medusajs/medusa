@@ -85,7 +85,7 @@ const Edit = () => {
           successText={t("details.discount-deleted", "Discount deleted")}
           confirmText={t("details.yes-delete", "Yes, delete")}
           text={t(
-            "details.are-you-sure-you-want-to-delete-this-discount",
+            "details.confirm-delete-discount",
             "Are you sure you want to delete this discount?"
           )}
           heading={t("details.delete-discount", "Delete discount")}

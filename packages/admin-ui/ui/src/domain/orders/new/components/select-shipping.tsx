@@ -72,7 +72,7 @@ const SelectShippingMethod = () => {
                 {t("components.attention", "Attention!")}
               </span>
               {t(
-                "components.you-dont-have-any-options-for-orders-without-shipping-please-add-one-e-g-in-store-fulfillment-with-show-on-website-unchecked-in-region-settings-and-continue",
+                "components.no-options-for-orders-without-shipping",
                 'You don\'t have any options for orders without shipping. Please add one (e.g. "In-store fulfillment") with "Show on website" unchecked in region settings and continue.'
               )}
             </div>

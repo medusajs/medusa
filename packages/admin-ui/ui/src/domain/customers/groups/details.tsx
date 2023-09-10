@@ -224,7 +224,7 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
           heading={t("groups.delete-the-group", "Delete the group")}
           successText={t("groups.group-deleted", "Group deleted")}
           text={t(
-            "groups.are-you-sure-you-want-to-delete-this-customer-group",
+            "groups.confirm-delete-customer-group",
             "Are you sure you want to delete this customer group?"
           )}
         />

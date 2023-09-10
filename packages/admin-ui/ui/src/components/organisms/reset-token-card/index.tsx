@@ -1,7 +1,7 @@
 import { useAdminSendResetPasswordToken } from "medusa-react"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useTranslation } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import FormValidator from "../../../utils/form-validator"
@@ -61,17 +61,13 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
           {t("reset-token-card.reset-your-password", "Reset your password")}
         </h1>
         <span className="inter-base-regular text-grey-50 mb-large text-center">
-          {t(
-            "reset-token-card.enter-your-email-address-below-and-we-apos-ll",
-            "Enter your email address below, and we&apos;ll"
-          )}
-          <br />
-          {t(
-            "reset-token-card.send-you-instructions-on-how-to-reset",
-            "send you instructions on how to reset"
-          )}
-          <br />
-          {t("reset-token-card.your-password", "your password.")}
+          <Trans t={t} i18nKey="reset-token-card.password-reset.description">
+            Enter your email address below, and we'll
+            <br />
+            send you instructions on how to reset
+            <br />
+            your password.
+          </Trans>
         </span>
         {!mailSent ? (
           <>

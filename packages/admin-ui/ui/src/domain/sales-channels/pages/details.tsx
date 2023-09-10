@@ -270,7 +270,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
   const onDelete = async () => {
     const confirmed = await confirmation({
       text: t(
-        "pages.are-you-sure-you-want-to-delete-this-sales-channel-the-setup-you-made-will-be-gone-forever",
+        "pages.confirm-delete-sales-channel",
         "Are you sure you want to delete this sales channel? The setup you made will be gone forever."
       ),
       heading: t("pages.delete-channel.heading", "Delete Channel"),

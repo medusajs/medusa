@@ -52,7 +52,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
               ) : (
                 <Tooltip
                   content={t(
-                    "add-additional-items-screen.this-variant-does-not-have-a-price-for-the-region-currency-of-this-order-and-cannot-be-selected",
+                    "add-additional-items-screen.variant-price-missing",
                     "This variant does not have a price for the region/currency of this order, and cannot be selected."
                   )}
                 >
@@ -166,7 +166,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
               {original_price_incl_tax !== price && (
                 <Tooltip
                   content={t(
-                    "add-additional-items-screen.the-price-has-been-overridden-in-a-price-list-that-is-applicable-to-this-order",
+                    "add-additional-items-screen.price-overridden-in-price-list-applicable-to-this-order",
                     "The price has been overridden in a price list, that is applicable to this order."
                   )}
                   side="top"

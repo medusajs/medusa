@@ -118,7 +118,7 @@ export const useAdditionalItemsColumns = ({
               {original_price !== price && (
                 <Tooltip
                   content={t(
-                    "items-to-send-form.the-price-has-been-overridden-in-a-price-list-that-is-applicable-to-this-order",
+                    "items-to-send-form.price-overridden-in-price-list-applicable-to-this-order",
                     "The price has been overridden in a price list, that is applicable to this order."
                   )}
                   side="top"

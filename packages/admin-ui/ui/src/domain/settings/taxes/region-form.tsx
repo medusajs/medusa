@@ -139,7 +139,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           />
           <IconTooltip
             content={t(
-              "taxes.when-checked-medusa-will-automatically-apply-tax-calculations-to-carts-in-this-region-when-unchecked-you-will-have-to-manually-compute-taxes-at-checkout-manual-taxes-are-recommended-if-using-a-3rd-party-tax-provider-to-avoid-performing-too-many-requests",
+              "taxes.automatically-apply-tax-calculations-to-carts",
               "When checked Medusa will automatically apply tax calculations to Carts in this Region. When unchecked you will have to manually compute taxes at checkout. Manual taxes are recommended if using a 3rd party tax provider to avoid performing too many requests"
             )}
           />
@@ -155,7 +155,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           />
           <IconTooltip
             content={t(
-              "taxes.when-checked-taxes-will-be-applied-to-gift-cards-on-checkout-in-some-contries-tax-regulations-require-that-taxes-are-applied-to-gift-cards-on-purchase",
+              "taxes.apply-taxes-to-gift-cards",
               "When checked taxes will be applied to gift cards on checkout. In some contries tax regulations require that taxes are applied to gift cards on purchase."
             )}
           />

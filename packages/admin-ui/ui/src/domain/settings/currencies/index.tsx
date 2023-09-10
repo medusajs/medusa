@@ -92,7 +92,7 @@ const CurrencySettings = () => {
                   <Tooltip
                     side="top"
                     content={t(
-                      "currencies.decide-if-you-want-to-include-or-exclude-taxes-whenever-you-define-a-price-in-this-currency",
+                      "currencies.include-or-exclude-taxes",
                       "Decide if you want to include or exclude taxes whenever you define a price in this currency"
                     )}
                   >

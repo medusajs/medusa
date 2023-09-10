@@ -232,7 +232,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                     ]}
                     onFileChosen={handleFileUpload}
                     placeholder={t(
-                      "gift-cards.1200-x-1600-3-4-recommended-up-to-10-mb-each",
+                      "gift-cards.size-recommended",
                       "1200 x 1600 (3:4) recommended, up to 10MB each"
                     )}
                   />

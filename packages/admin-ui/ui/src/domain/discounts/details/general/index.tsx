@@ -33,7 +33,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
     const shouldDelete = await dialog({
       heading: t("general.delete-promotion", "Delete Promotion"),
       text: t(
-        "general.are-you-sure-you-want-to-delete-this-promotion",
+        "general.confirm-delete-promotion",
         "Are you sure you want to delete this promotion?"
       ),
     })

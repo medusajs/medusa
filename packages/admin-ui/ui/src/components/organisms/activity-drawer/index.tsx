@@ -47,11 +47,11 @@ const EmptyActivityDrawer = () => {
     <div className="flex h-full w-full flex-col items-center justify-center p-4">
       <SidedMouthFaceIcon size={36} />
       <span className={"inter-large-semibold text-grey-90 mt-4"}>
-        {t("activity-drawer.its-quite-in-here", "It's quite in here...")}
+        {t("activity-drawer.no-notifications.title", "It's quiet in here...")}
       </span>
       <span className={"text-grey-60 inter-base-regular mt-4 text-center"}>
         {t(
-          "activity-drawer.you-dont-have-any-notifications-at-the-moment-but-once-you-do-they-will-live-here",
+          "activity-drawer.no-notifications.description",
           "You don't have any notifications at the moment, but once you do they will live here."
         )}
       </span>
@@ -65,11 +65,11 @@ const ErrorActivityDrawer = () => {
     <div className="flex h-full w-full flex-col items-center justify-center p-4">
       <SadFaceIcon size={36} />
       <span className={"inter-large-semibold text-grey-90 mt-4"}>
-        {t("activity-drawer.oh-no", "Oh no...")}
+        {t("activity-drawer.error.title", "Oh no...")}
       </span>
       <span className={"text-grey-60 inter-base-regular mt-2 text-center"}>
         {t(
-          "activity-drawer.something-went-wrong-while-trying-to-fetch-your-notifications-we-will-keep-trying",
+          "activity-drawer.error.description",
           "Something went wrong while trying to fetch your notifications - We will keep trying!"
         )}
       </span>

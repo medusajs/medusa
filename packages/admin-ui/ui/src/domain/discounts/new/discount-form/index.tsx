@@ -151,8 +151,8 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
                 title={t("discount-form.configuration", "Configuration")}
                 value="configuration"
                 description={t(
-                  "discount-form.discount-code-applies-from-you-hit-the-publish-button-and-forever-if-left-untouched",
-                  "Discount code applies from you hit the publish button and forever if left untouched."
+                  "discount-form.discount-code-application-disclaimer",
+                  "Discount code applies from when you hit the publish button and forever if left untouched."
                 )}
               >
                 <Configuration />
@@ -175,7 +175,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
               <Accordion.Item
                 title={t("discount-form.metadata", "Metadata")}
                 subtitle={t(
-                  "discount-form.metadata-allows-you-to-add-additional-information-to-your-discount",
+                  "discount-form.metadata-usage-description",
                   "Metadata allows you to add additional information to your discount."
                 )}
                 value="metadata"

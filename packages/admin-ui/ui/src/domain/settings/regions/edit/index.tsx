@@ -31,7 +31,7 @@ const EditRegion = ({ id }: Props) => {
         </h1>
         <p className="inter-base-regular text-grey-50">
           {t(
-            "edit.we-cant-find-a-region-with-that-id-use-the-menu-to-the-left-to-select-a-region",
+            "edit.no-region-found",
             "We can't find a region with that ID, use the menu to the left to select a region."
           )}
         </p>

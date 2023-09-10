@@ -132,7 +132,7 @@ const NewProduct = ({ onClose }: Props) => {
               errorMessage +
               " " +
               t(
-                "new.you-might-not-have-a-file-service-configured-please-contact-your-administrator",
+                "new.no-file-service-configured",
                 "You might not have a file service configured. Please contact your administrator"
               )
           }
@@ -152,7 +152,7 @@ const NewProduct = ({ onClose }: Props) => {
           preppedImages = await prepareImages(data.thumbnail.images)
         } catch (error) {
           let errorMessage = t(
-            "new.something-went-wrong-while-trying-to-upload-the-thumbnail",
+            "new.upload-thumbnail-error",
             "Something went wrong while trying to upload the thumbnail."
           )
           const response = (error as any).response as Response
@@ -162,7 +162,7 @@ const NewProduct = ({ onClose }: Props) => {
               errorMessage +
               " " +
               t(
-                "new.you-might-not-have-a-file-service-configured-please-contact-your-administrator",
+                "new.no-file-service-configured",
                 "You might not have a file service configured. Please contact your administrator"
               )
           }

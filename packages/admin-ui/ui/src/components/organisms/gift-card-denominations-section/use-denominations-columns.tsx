@@ -147,7 +147,7 @@ const Actions = ({ original }: { original: ProductVariant }) => {
         "Delete denomination"
       ),
       text: t(
-        "gift-card-denominations-section.are-you-sure-you-want-to-delete-this-denomination",
+        "gift-card-denominations-section.confirm-delete",
         "Are you sure you want to delete this denomination?"
       ),
     })

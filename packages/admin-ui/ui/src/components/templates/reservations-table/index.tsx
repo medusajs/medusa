@@ -420,7 +420,7 @@ const ReservationRow = ({
       {showDeleteReservation && (
         <DeletePrompt
           text={t(
-            "reservations-table.are-you-sure-you-want-to-remove-this-reservation",
+            "reservations-table.confirm-delete",
             "Are you sure you want to remove this reservation?"
           )}
           heading={t(

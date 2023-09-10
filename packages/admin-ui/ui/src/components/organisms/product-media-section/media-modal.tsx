@@ -52,7 +52,7 @@ const MediaModal = ({ product, open, onClose }: Props) => {
       preppedImages = await prepareImages(data.media.images)
     } catch (error) {
       let errorMessage = t(
-        "product-media-section.something-went-wrong-while-trying-to-upload-images",
+        "product-media-section.upload-images-error",
         "Something went wrong while trying to upload images."
       )
       const response = (error as any).response as Response
@@ -62,7 +62,7 @@ const MediaModal = ({ product, open, onClose }: Props) => {
           errorMessage +
           " " +
           t(
-            "product-media-section.you-might-not-have-a-file-service-configured-please-contact-your-administrator",
+            "product-media-section.file-service-not-configured",
             "You might not have a file service configured. Please contact your administrator"
           )
       }

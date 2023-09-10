@@ -54,7 +54,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
       preppedImages = await prepareImages(data.thumbnail.images)
     } catch (error) {
       let errorMessage = t(
-        "product-thumbnail-section.something-went-wrong-while-trying-to-upload-the-thumbnail",
+        "product-thumbnail-section.upload-thumbnail-error",
         "Something went wrong while trying to upload the thumbnail."
       )
       const response = (error as any).response as Response

@@ -308,7 +308,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
                   </h3>
                   <p className="inter-base-regular text-grey-50">
                     {t(
-                      "receive-return.choose-which-location-you-want-to-return-the-items-to",
+                      "receive-return.choose-location",
                       "Choose which location you want to return the items to."
                     )}
                   </p>

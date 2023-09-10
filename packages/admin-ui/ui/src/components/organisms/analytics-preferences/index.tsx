@@ -96,7 +96,7 @@ const AnalyticsPreferencesModal = () => {
             </h1>
             <p className="text-grey-50">
               {t(
-                "analytics-preferences.to-create-the-most-compelling-e-commerce-experience-we-would-like-to-gain-insights-in-how-you-use-medusa-user-insights-allow-us-to-build-a-better-more-engaging-and-more-usable-products-we-only-collect-data-for-product-improvements-read-what-data-we-gather-in-our",
+                "analytics-preferences.disclaimer",
                 "To create the most compelling e-commerce experience we would like to gain insights in how you use Medusa. User insights allow us to build a better, more engaging, and more usable products. We only collect data for product improvements. Read what data we gather in our"
               )}{" "}
               <a

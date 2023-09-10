@@ -319,7 +319,7 @@ const UserTable: React.FC<UserTableProps> = ({
         (deleteUser ? (
           <DeletePrompt
             text={t(
-              "templates.are-you-sure-you-want-to-remove-this-user",
+              "templates.confirm-remove",
               "Are you sure you want to remove this user?"
             )}
             heading={t("templates.remove-user.heading", "Remove user")}
@@ -345,7 +345,7 @@ const UserTable: React.FC<UserTableProps> = ({
       {selectedInvite && (
         <DeletePrompt
           text={t(
-            "templates.are-you-sure-you-want-to-remove-this-invite",
+            "templates.confirm-remove-invite",
             "Are you sure you want to remove this invite?"
           )}
           heading={t("templates.remove-invite", "Remove invite")}

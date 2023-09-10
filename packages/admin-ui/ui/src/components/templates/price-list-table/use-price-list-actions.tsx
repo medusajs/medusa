@@ -20,7 +20,7 @@ const usePriceListActions = (priceList) => {
     const shouldDelete = await dialog({
       heading: t("price-list-table.delete-price-list", "Delete Price List"),
       text: t(
-        "price-list-table.are-you-sure-you-want-to-delete-this-price-list",
+        "price-list-table.confirm-delete",
         "Are you sure you want to delete this price list?"
       ),
     })

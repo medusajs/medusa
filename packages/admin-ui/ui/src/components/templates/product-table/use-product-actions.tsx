@@ -26,7 +26,7 @@ const useProductActions = (product: Product) => {
     const shouldDelete = await dialog({
       heading: t("product-table.delete-product", "Delete Product"),
       text: t(
-        "product-table.are-you-sure-you-want-to-delete-this-product",
+        "product-table.confirm-delete",
         "Are you sure you want to delete this product?"
       ),
     })

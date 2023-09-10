@@ -20,7 +20,7 @@ const Type = () => {
         "Select the type of the price list"
       )}
       tooltip={t(
-        "sections.unlike-with-sale-prices-a-price-override-will-not-communicate-to-the-customer-that-the-price-is-part-of-a-sale",
+        "sections.sale-prices-compare-to-price-override",
         "Unlike with sale prices a price override will not communicate to the customer that the price is part of a sale."
       )}
     >

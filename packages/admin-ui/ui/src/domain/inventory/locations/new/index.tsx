@@ -123,7 +123,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
           notification(
             t("new.error", "Error"),
             t(
-              "new.location-was-created-successfully-but-there-was-an-error-associating-sales-channels",
+              "new.location-created",
               "Location was created successfully, but there was an error associating sales channels"
             ),
             "error"
@@ -153,7 +153,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
             {isShowingClosePrompt && (
               <DeletePrompt
                 heading={t(
-                  "new.are-you-sure-you-want-to-cancel-with-unsaved-changes",
+                  "new.cancel-location-changes",
                   "Are you sure you want to cancel with unsaved changes"
                 )}
                 confirmText={t("new.yes-cancel", "Yes, cancel")}
@@ -195,7 +195,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
               >
                 <p className="inter-base-regular text-grey-50">
                   {t(
-                    "new.specify-the-details-about-this-location",
+                    "new.location-details",
                     "Specify the details about this location"
                   )}
                 </p>
@@ -217,7 +217,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 >
                   <p className="inter-base-regular text-grey-50">
                     {t(
-                      "new.specify-which-sales-channels-this-locations-items-can-be-purchased-through",
+                      "new.select-location-channel",
                       "Specify which Sales Channels this location's items can be purchased through."
                     )}
                   </p>

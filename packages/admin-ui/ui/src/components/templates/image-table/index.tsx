@@ -77,7 +77,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
             <span>{t("image-table.thumbnail", "Thumbnail")}</span>
             <IconTooltip
               content={t(
-                "image-table.select-which-image-you-want-to-use-as-the-thumbnail-for-this-product",
+                "image-table.select-thumbnail-image-for-product",
                 "Select which image you want to use as the thumbnail for this product"
               )}
             />

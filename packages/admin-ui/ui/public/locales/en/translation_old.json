@@ -20,7 +20,7 @@
   "To create a collection, all you need is a title and a handle.": "",
   "URL Slug for the collection. Will be auto generated if left blank.": "",
   "Select which image you want to use as the thumbnail for this product": "",
-  "Discount code applies from you hit the publish button and forever if left untouched.": "",
+  "Discount code applies from when you hit the publish button and forever if left untouched.": "",
   "Discount code apply to all products if left untouched.": "",
   "Metadata allows you to add additional information to your discount.": "",
   "If you want to schedule the discount to activate in the future, you can set a start date here, otherwise the discount will be active immediately.": "",
@@ -144,5 +144,8 @@
   "(Code: {code})": "",
   "Deleted prices of product: {title}": "",
   "selectedWithCount_one": "",
-  "selectedWithCount_other": ""
+  "selectedWithCount_other": "",
+  "reset-token-card.send-you-instructions-on-how-to-reset": "send you instructions on how to reset",
+  "reset-token-card.your-password": "your password.",
+  "reset-token-card.enter-your-email-address-below-and-we-apos-ll": "Enter your email address below, and we&apos;ll"
 }

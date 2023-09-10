@@ -53,7 +53,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
       )}
       value="configuration"
       description={t(
-        "sections.the-price-overrides-apply-from-the-time-you-hit-the-publish-button-and-forever-if-left-untouched",
+        "sections.price-overrides-time-application",
         "The price overrides apply from the time you hit the publish button and forever if left untouched."
       )}
     >

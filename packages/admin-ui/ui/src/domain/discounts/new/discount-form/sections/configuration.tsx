@@ -86,7 +86,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 "Schedule the discount to activate in the future."
               )}
               tooltip={t(
-                "sections.if-you-want-to-schedule-the-discount-to-activate-in-the-future-you-can-set-a-start-date-here-otherwise-the-discount-will-be-active-immediately",
+                "sections.select-discount-start-date",
                 "If you want to schedule the discount to activate in the future, you can set a start date here, otherwise the discount will be active immediately."
               )}
               value="starts_at"
@@ -139,7 +139,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 "Schedule the discount to deactivate in the future."
               )}
               tooltip={t(
-                "sections.if-you-want-to-schedule-the-discount-to-deactivate-in-the-future-you-can-set-an-expiry-date-here",
+                "sections.select-discount-end-date",
                 "If you want to schedule the discount to deactivate in the future, you can set an expiry date here."
               )}
               value="ends_at"
@@ -194,7 +194,7 @@ const Settings: React.FC<SettingsProps> = ({ promotion, isEdit = false }) => {
                 "Limit applies across all customers, not per customer."
               )}
               tooltip={t(
-                "sections.if-you-wish-to-limit-the-amount-of-times-a-customer-can-redeem-this-discount-you-can-set-a-limit-here",
+                "sections.limit-discount-number-of-uses",
                 "If you wish to limit the amount of times a customer can redeem this discount, you can set a limit here."
               )}
               value="usage_limit"

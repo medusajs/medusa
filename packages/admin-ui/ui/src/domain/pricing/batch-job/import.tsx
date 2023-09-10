@@ -179,7 +179,7 @@ function ImportPrices(props: ImportPricesProps) {
       type="prices"
       fileTitle={t("batch-job.price-list-prices", "Price List prices")}
       description1Text={t(
-        "batch-job.upload-a-csv-file-with-variants-and-prices-to-update-your-price-list-note-that-any-existing-prices-will-be-deleted",
+        "batch-job.upload-a-csv-file-with-variants",
         "Upload a CSV file with variants and prices to update your price list. Note that any existing prices will be deleted."
       )}
       description2Title={t(

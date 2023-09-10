@@ -31,7 +31,7 @@ export const TaxRateRow = ({ row, onEdit }) => {
     const shouldDelete = await dialog({
       heading: t("taxes.delete-tax-rate.heading", "Delete tax rate"),
       text: t(
-        "taxes.are-you-sure-you-want-to-delete-this-tax-rate",
+        "taxes.confirm-delete",
         "Are you sure you want to delete this tax rate?"
       ),
     })

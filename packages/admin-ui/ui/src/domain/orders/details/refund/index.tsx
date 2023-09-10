@@ -116,7 +116,7 @@ const RefundMenu = ({
                     {t("refund.attention", "Attention!")}
                   </span>
                   {t(
-                    "refund.one-or-more-of-your-payments-is-a-system-payment-be-aware-that-captures-and-refunds-are-not-handled-by-medusa-for-such-payments",
+                    "refund.system-payment-disclaimer",
                     "One or more of your payments is a system payment. Be aware, that captures and refunds are not handled by Medusa for such payments."
                   )}
                 </div>

@@ -320,7 +320,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
                   </div>
                   <div>
                     {t(
-                      "returns.the-selected-location-does-not-have-inventory-levels-for-the-selected-items-the-return-can-be-requested-but-cant-be-received-until-an-inventory-level-is-created-for-the-selected-location",
+                      "returns.selected-location-has-no-inventory-levels",
                       "The selected location does not have inventory levels for the selected items. The return can be requested but can't be received until an inventory level is created for the selected location."
                     )}
                   </div>
@@ -335,7 +335,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
             </h3>
             <p className="inter-base-regular text-grey-50">
               {t(
-                "returns.choose-which-shipping-method-you-want-to-use-for-this-return",
+                "returns.choose-retur,-shipping-method",
                 "Choose which shipping method you want to use for this return."
               )}
             </p>

@@ -156,7 +156,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
             </h1>
             <p className="inter-small-regular text-grey-50">
               {t(
-                "collection-modal.to-create-a-collection-all-you-need-is-a-title-and-a-handle",
+                "collection-modal.description",
                 "To create a collection, all you need is a title and a handle."
               )}
             </p>
@@ -189,7 +189,7 @@ const CollectionModal: React.FC<CollectionModalProps> = ({
                   tooltip={
                     <IconTooltip
                       content={t(
-                        "collection-modal.url-slug-for-the-collection-will-be-auto-generated-if-left-blank",
+                        "collection-modal.slug.description",
                         "URL Slug for the collection. Will be auto generated if left blank."
                       )}
                     />
