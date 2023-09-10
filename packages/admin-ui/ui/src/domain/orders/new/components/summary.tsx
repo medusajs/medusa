@@ -242,7 +242,7 @@ const Summary = () => {
             <div className="inter-base-semibold mb-4 flex w-full justify-between">
               <span>
                 {t("Discount")}
-                <span className="inter-base-regular text-grey-50 ml-0.5">
+                <span className="inter-base-regular text-grey-50 ml-0.5" dir="auto">
                   {t("(Code: {code})", { code: discount.code })}
                 </span>
               </span>

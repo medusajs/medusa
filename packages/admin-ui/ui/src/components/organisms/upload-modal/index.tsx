@@ -234,7 +234,7 @@ function UploadModal(props: UploadModalProps) {
             </button>
           </div>
 
-          <div className="text-grey-90 inter-large-semibold mb-1 text-base">
+          <div className="text-grey-90 inter-large-semibold mb-1 text-base" dir="auto">
             {t("Import {fileTitle}", { fileTitle })}
           </div>
 

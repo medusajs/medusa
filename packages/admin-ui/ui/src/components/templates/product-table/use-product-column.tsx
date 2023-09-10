@@ -81,7 +81,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         Header: t("Inventory"),
         accessor: "variants",
         Cell: ({ cell: { value } }) => (
-          <div>
+          <div dir ="auto" >
             {value.reduce((acc, next) => acc + next.inventory_quantity, 0)}
             {t("in stock for {count} variant(s)", { count: value.length })}
           </div>

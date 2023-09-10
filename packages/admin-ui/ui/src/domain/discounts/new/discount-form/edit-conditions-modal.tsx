@@ -22,7 +22,7 @@ const EditConditionsModal: React.FC<EditConditionsModalProps> = ({
   return (
     <Modal open handleClose={onClose}>
       <Modal.Header handleClose={onClose}>
-        <h1 className="inter-xlarge-semibold">
+        <h1 className="inter-xlarge-semibold" dir="auto">
           {t("Edit {title}", { title: getTitle(view, t) })}
         </h1>
       </Modal.Header>
