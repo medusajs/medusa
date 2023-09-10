@@ -39,7 +39,7 @@ describe("MoneyAmount Service", () => {
   })
 
   describe("list", () => {
-    it("list moneyAmounts", async () => {
+    it("should list all moneyAmounts", async () => {
       const moneyAmountsResult = await service.list()
 
       expect(moneyAmountsResult).toEqual([
@@ -58,7 +58,7 @@ describe("MoneyAmount Service", () => {
       ])
     })
 
-    it("list moneyAmounts by id", async () => {
+    it("should list moneyAmounts by id", async () => {
       const moneyAmountsResult = await service.list({
         id: ["money-amount-USD"],
       })
@@ -70,10 +70,35 @@ describe("MoneyAmount Service", () => {
       ])
     })
 
-    it("list moneyAmounts with relations and selects", async () => {
+    it("should list moneyAmounts with relations and selects", async () => {
       const moneyAmountsResult = await service.list(
         {
           id: ["money-amount-USD"],
+        },
+        {
+          select: ["id", "min_quantity", "currency.code"],
+          relations: ["currency"],
+        }
+      )
+
+      const serialized = JSON.parse(JSON.stringify(moneyAmountsResult))
+
+      expect(serialized).toEqual([
+        {
+          id: "money-amount-USD",
+          min_quantity: "1",
+          currency_code: "USD",
+          currency: {
+            code: "USD",
+          },
+        },
+      ])
+    })
+
+    it("should list moneyAmounts scoped by currency_code", async () => {
+      const moneyAmountsResult = await service.list(
+        {
+          currency_code: ["USD"],
         },
         {
           select: ["id", "min_quantity", "currency.code"],

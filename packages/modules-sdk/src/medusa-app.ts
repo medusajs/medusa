@@ -38,18 +38,24 @@ export type SharedResources = {
 
 export async function MedusaApp({
   sharedResourcesConfig,
+  servicesConfig,
   modulesConfigPath,
+  modulesConfigFileName,
   modulesConfig,
   linkModules,
   remoteFetchData,
+  injectedDependencies = {},
 }: {
   sharedResourcesConfig?: SharedResources
   loadedModules?: LoadedModule[]
+  servicesConfig?: ModuleJoinerConfig[]
   modulesConfigPath?: string
+  modulesConfigFileName?: string
   modulesConfig?: MedusaModuleConfig
   linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
   remoteFetchData?: RemoteFetchDataCallback
-} = {}): Promise<{
+  injectedDependencies?: any
+}): Promise<{
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
   query: (
@@ -59,10 +65,12 @@ export async function MedusaApp({
 }> {
   const modules: MedusaModuleConfig =
     modulesConfig ??
-    (await import(process.cwd() + (modulesConfigPath ?? "/modules-config")))
-      .default
-
-  const injectedDependencies: any = {}
+    (
+      await import(
+        modulesConfigPath ??
+          process.cwd() + (modulesConfigFileName ?? "/modules-config")
+      )
+    ).default
 
   const dbData = ModulesSdkUtils.loadDatabaseConfig(
     "medusa",
@@ -167,7 +175,10 @@ export async function MedusaApp({
     console.warn("Error initializing link modules.", err)
   }
 
-  const remoteQuery = new RemoteQuery(undefined, remoteFetchData)
+  const remoteQuery = new RemoteQuery({
+    servicesConfig,
+    customRemoteFetchData: remoteFetchData,
+  })
   query = async (
     query: string | RemoteJoinerQuery,
     variables?: Record<string, unknown>

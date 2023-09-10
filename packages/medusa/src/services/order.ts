@@ -733,7 +733,13 @@ class OrderService extends TransactionBaseService {
       let giftCardableAmountBalance = giftCardableAmount
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
-      for (const giftCard of cart.gift_cards) {
+      //Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
+      const orderedGiftCards = cart.gift_cards.sort((a, b) => {
+        let aEnd = a.ends_at ?? new Date(2100, 1, 1)
+        let bEnd = b.ends_at ?? new Date(2100, 1, 1)
+        return aEnd.getTime() - bEnd.getTime() || a.balance - b.balance
+      })
+      for (const giftCard of orderedGiftCards) {
         const newGiftCardBalance = Math.max(
           0,
           giftCard.balance - giftCardableAmountBalance
@@ -755,6 +761,9 @@ class OrderService extends TransactionBaseService {
 
         giftCardableAmountBalance =
           giftCardableAmountBalance - giftCardBalanceUsed
+
+        if (giftCardableAmountBalance == 0)
+          break;
       }
 
       const shippingOptionServiceTx =

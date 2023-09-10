@@ -16,17 +16,21 @@ export class RemoteQuery {
   private modulesMap: Map<string, LoadedModule> = new Map()
   private customRemoteFetchData?: RemoteFetchDataCallback
 
-  constructor(
-    modulesLoaded?: LoadedModule[],
+  constructor({
+    modulesLoaded,
+    customRemoteFetchData,
+    servicesConfig = [],
+  }: {
+    modulesLoaded?: LoadedModule[]
     customRemoteFetchData?: RemoteFetchDataCallback
-  ) {
+    servicesConfig?: ModuleJoinerConfig[]
+  }) {
     if (!modulesLoaded?.length) {
       modulesLoaded = MedusaModule.getLoadedModules().map(
         (mod) => Object.values(mod)[0]
       )
     }
 
-    const servicesConfig: ModuleJoinerConfig[] = []
     for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
@@ -41,7 +45,7 @@ export class RemoteQuery {
       }
 
       this.modulesMap.set(serviceName, mod)
-      servicesConfig.push(mod.__joinerConfig)
+      servicesConfig!.push(mod.__joinerConfig)
     }
 
     this.customRemoteFetchData = customRemoteFetchData
@@ -65,7 +69,7 @@ export class RemoteQuery {
     this.remoteJoiner.setFetchDataCallback(remoteFetchData)
   }
 
-  private static getAllFieldsAndRelations(
+  public static getAllFieldsAndRelations(
     data: any,
     prefix = "",
     args: Record<string, unknown[]> = {}
