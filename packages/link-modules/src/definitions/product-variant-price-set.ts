@@ -2,22 +2,22 @@ import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { LINKS } from "../links"
 
-export const ProductVariantMoneyAmount: ModuleJoinerConfig = {
-  serviceName: LINKS.ProductVariantMoneyAmount,
+export const ProductVariantPriceSet: ModuleJoinerConfig = {
+  serviceName: LINKS.ProductVariantPriceSet,
   isLink: true,
   databaseConfig: {
-    tableName: "product_variant_money_amount",
-    idPrefix: "pvma",
+    tableName: "product_variant_price_set",
+    idPrefix: "pvps",
   },
   alias: [
     {
-      name: "product_variant_money_amount",
+      name: "product_variant_price_set",
     },
     {
-      name: "product_variant_money_amounts",
+      name: "product_variant_price_sets",
     },
   ],
-  primaryKeys: ["id", "variant_id", "money_amount_id"],
+  primaryKeys: ["id", "variant_id", "price_set_id"],
   relationships: [
     {
       serviceName: Modules.PRODUCT,
@@ -31,8 +31,8 @@ export const ProductVariantMoneyAmount: ModuleJoinerConfig = {
     {
       serviceName: Modules.PRICING,
       primaryKey: "id",
-      foreignKey: "money_amount_id",
-      alias: "money_amount",
+      foreignKey: "price_set_id",
+      alias: "price_set",
       deleteCascade: true,
     },
   ],
@@ -40,18 +40,18 @@ export const ProductVariantMoneyAmount: ModuleJoinerConfig = {
     {
       serviceName: Modules.PRODUCT,
       relationship: {
-        serviceName: LINKS.ProductVariantMoneyAmount,
+        serviceName: LINKS.ProductVariantPriceSet,
         primaryKey: "variant_id",
         foreignKey: "id",
         alias: "prices",
-        isList: true,
+        isList: false,
       },
     },
     {
       serviceName: Modules.PRICING,
       relationship: {
-        serviceName: LINKS.ProductVariantMoneyAmount,
-        primaryKey: "money_amount_id",
+        serviceName: LINKS.ProductVariantPriceSet,
+        primaryKey: "price_set_id",
         foreignKey: "id",
         alias: "variant_link",
       },
