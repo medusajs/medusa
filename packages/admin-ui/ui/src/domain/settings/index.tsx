@@ -32,60 +32,60 @@ type SettingsCardType = {
   to: string
   feature_flag?: string
 }
-const { t } = useTranslation()
+
 const settings: SettingsCardType[] = [
   {
-    heading: t("API Key Management"),
+    heading: "API Key Management",
     description: "Create and manage API keys",
     icon: KeyIcon,
     to: "/a/publishable-api-keys",
     feature_flag: "publishable_api_keys",
   },
   {
-    heading: t("Currencies"),
+    heading: "Currencies",
     description: "Manage the currencies of your store",
     icon: CoinsIcon,
     to: "/a/settings/currencies",
   },
   {
-    heading: t("Personal Information"),
+    heading: "Personal Information",
     description: "Manage your Medusa profile",
     icon: HappyIcon,
     to: "/a/settings/personal-information",
   },
   {
-    heading: t("Regions"),
+    heading: "Regions",
     description: "Manage shipping, payment, and fulfillment across regions",
     icon: MapPinIcon,
     to: "/a/settings/regions",
   },
   {
-    heading: t("Return Reasons"),
+    heading: "Return Reasons",
     description: "Manage resons for returned items",
     icon: ArrowUTurnLeft,
     to: "/a/settings/return-reasons",
   },
   {
-    heading: t("Sales Channels"),
+    heading: "Sales Channels",
     description: "Control which product are available in which channels",
     icon: ChannelsIcon,
     feature_flag: "sales_channels",
     to: "/a/sales-channels",
   },
   {
-    heading: t("Store Details"),
+    heading: "Store Details",
     description: "Manage your business details",
     icon: CrosshairIcon,
     to: "/a/settings/details",
   },
   {
-    heading: t("Taxes"),
+    heading: "Taxes",
     description: "Manage taxes across regions and products",
     icon: TaxesIcon,
     to: "/a/settings/taxes",
   },
   {
-    heading: t("The Team"),
+    heading: "The Team",
     description: "Manage users of your Medusa Store",
     icon: UsersIcon,
     to: "/a/settings/team",
@@ -100,10 +100,10 @@ const renderCard = ({
   feature_flag,
 }: SettingsCardType) => {
   const Icon = icon || GearIcon
-
+  const { t } = useTranslation()
   const card = (
     <SettingsCard
-      heading={heading}
+      heading={t(heading)}
       description={description}
       icon={<Icon />}
       to={to}
