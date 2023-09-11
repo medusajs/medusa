@@ -8,7 +8,7 @@ import {
   RemoteNestedExpands,
 } from "@medusajs/types"
 
-import { isDefined } from "@medusajs/utils"
+import { isDefined, isString } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
@@ -25,6 +25,7 @@ export type RemoteFetchDataCallback = (
 
 export class RemoteJoiner {
   private serviceConfigCache: Map<string, JoinerServiceConfig> = new Map()
+
   private implodeMapping: {
     location: string[]
     property: string
@@ -306,7 +307,7 @@ export class RemoteJoiner {
   ) {
     const getChildren = (item: any, prop: string) => {
       if (Array.isArray(item)) {
-        return item.flatMap((currentItem) => currentItem[prop] || [])
+        return item.flatMap((currentItem) => currentItem[prop])
       } else {
         return item[prop]
       }
@@ -319,6 +320,7 @@ export class RemoteJoiner {
       }
     }
 
+    const cleanup: [any, string][] = []
     for (const alias of this.implodeMapping) {
       const propPath = alias.path
 
@@ -345,7 +347,7 @@ export class RemoteJoiner {
           curPath.push(prop)
 
           const config = parsedExpands.get(curPath.join(".")) as any
-          if (config?.isMapping && parentRemoveItems === null) {
+          if (config?.isAliasMapping && parentRemoveItems === null) {
             parentRemoveItems = [currentItems, prop]
           }
 
@@ -363,10 +365,14 @@ export class RemoteJoiner {
         }
 
         if (parentRemoveItems !== null) {
-          const [remItems, path] = parentRemoveItems
-          removeChildren(remItems, path)
+          cleanup.push(parentRemoveItems)
         }
       })
+    }
+
+    for (const parentRemoveItems of cleanup) {
+      const [remItems, path] = parentRemoveItems
+      removeChildren(remItems, path)
     }
   }
 
@@ -530,6 +536,7 @@ export class RemoteJoiner {
     const parsedExpands = new Map<string, any>()
     parsedExpands.set(BASE_PATH, initialService)
 
+    let forwardArgumentsOnPath: string[] = []
     for (const expand of expands || []) {
       const properties = expand.property.split(".")
       let currentServiceConfig = serviceConfig
@@ -539,7 +546,17 @@ export class RemoteJoiner {
         const fieldAlias = currentServiceConfig.fieldAlias ?? {}
 
         if (fieldAlias[prop]) {
-          const fullPath = currentPath.concat(fieldAlias[prop].split("."))
+          const alias = fieldAlias[prop] as any
+
+          const path = isString(alias) ? alias : alias.path
+          const fullPath = currentPath.concat(path.split("."))
+
+          forwardArgumentsOnPath = forwardArgumentsOnPath.concat(
+            (alias?.forwardArgumentsOnPath || []).map(
+              (forPath) =>
+                BASE_PATH + "." + currentPath.concat(forPath).join(".")
+            )
+          )
 
           this.implodeMapping.push({
             location: currentPath,
@@ -548,10 +565,22 @@ export class RemoteJoiner {
           })
 
           const extMapping = expands as unknown[]
+
+          const middlePath = path.split(".").slice(0, -1)
+          let curMiddlePath = currentPath
+          for (const path of middlePath) {
+            curMiddlePath = curMiddlePath.concat(path)
+            extMapping.push({
+              args: expand.args,
+              property: curMiddlePath.join("."),
+              isAliasMapping: true,
+            })
+          }
+
           extMapping.push({
+            ...expand,
             property: fullPath.join("."),
-            fields: expand.fields,
-            isMapping: true,
+            isAliasMapping: true,
           })
           continue
         }
@@ -563,8 +592,9 @@ export class RemoteJoiner {
 
         let fields: string[] | undefined =
           fullPath === BASE_PATH + "." + expand.property
-            ? expand.fields
+            ? expand.fields ?? []
             : undefined
+
         const args =
           fullPath === BASE_PATH + "." + expand.property
             ? expand.args
@@ -575,25 +605,23 @@ export class RemoteJoiner {
             parsedExpands.get([BASE_PATH, ...currentPath].join(".")) || query
 
           if (parentExpand) {
-            if (parentExpand.fields) {
-              const relField = relationship.inverse
-                ? relationship.primaryKey
-                : relationship.foreignKey.split(".").pop()!
+            const relField = relationship.inverse
+              ? relationship.primaryKey
+              : relationship.foreignKey.split(".").pop()!
 
-              parentExpand.fields = parentExpand.fields
-                .concat(relField.split(","))
-                .filter((field) => field !== relationship.alias)
+            parentExpand.fields ??= []
 
-              parentExpand.fields = [...new Set(parentExpand.fields)]
-            }
+            parentExpand.fields = parentExpand.fields
+              .concat(relField.split(","))
+              .filter((field) => field !== relationship.alias)
+
+            parentExpand.fields = [...new Set(parentExpand.fields)]
 
             if (fields) {
               const relField = relationship.inverse
                 ? relationship.foreignKey.split(".").pop()!
                 : relationship.primaryKey
               fields = fields.concat(relField.split(","))
-
-              fields = [...new Set(fields)]
             }
           }
 
@@ -608,17 +636,33 @@ export class RemoteJoiner {
           }
         }
 
+        const isAliasMapping = (expand as any).isAliasMapping
         if (!parsedExpands.has(fullPath)) {
           const parentPath = [BASE_PATH, ...currentPath].join(".")
+
           parsedExpands.set(fullPath, {
             property: prop,
             serviceConfig: currentServiceConfig,
             fields,
-            args,
-            isMapping: (expand as any).isMapping,
+            args: isAliasMapping
+              ? forwardArgumentsOnPath.includes(fullPath)
+                ? args
+                : undefined
+              : args,
+            isAliasMapping: isAliasMapping,
             parent: parentPath,
             parentConfig: parsedExpands.get(parentPath).serviceConfig,
           })
+        } else {
+          const exp = parsedExpands.get(fullPath)
+
+          if (forwardArgumentsOnPath.includes(fullPath) && args) {
+            exp.args = (exp.args || []).concat(args)
+          }
+
+          if (fields) {
+            exp.fields = (exp.fields || []).concat(fields)
+          }
         }
 
         currentPath.push(prop)
@@ -659,7 +703,7 @@ export class RemoteJoiner {
           targetExpand = targetExpand.expands[key] ??= {}
         }
 
-        targetExpand.fields = expand.fields
+        targetExpand.fields = [...new Set(expand.fields)]
         targetExpand.args = expand.args
 
         mergedExpands.delete(path)

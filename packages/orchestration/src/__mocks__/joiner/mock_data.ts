@@ -79,7 +79,10 @@ export const serviceConfigs: JoinerServiceConfig[] = [
   {
     serviceName: "order",
     fieldAlias: {
-      product_user_alias: "products.product.user",
+      product_user_alias: {
+        path: "products.product.user",
+        forwardArgumentsOnPath: ["products.product"],
+      },
     },
     primaryKeys: ["id"],
     relationships: [
