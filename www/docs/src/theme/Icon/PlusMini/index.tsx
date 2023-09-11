@@ -1,7 +1,10 @@
 import React from "react"
 import { IconProps } from ".."
 
-const IconPlusMini = ({ iconColorClassName, ...props }: IconProps) => {
+const IconPlusMini: React.FC<IconProps> = ({
+  iconColorClassName,
+  ...props
+}) => {
   return (
     <svg
       width={props.width || 20}
