@@ -22,6 +22,8 @@ export default function DocCardList(props: ModifiedProps): JSX.Element {
     return <DocCardListForCurrentSidebarCategory {...props} />
   }
   const filteredItems = filterDocCardListItems(items)
+    .filter((item) => !item.customProps.excludeFromDocList)
+
   return (
     <section
       className={clsx("cards-grid", `grid-${props.colSize || "4"}`, className)}
