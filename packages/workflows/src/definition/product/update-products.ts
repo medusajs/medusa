@@ -5,10 +5,12 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, pipe } from "../../helper"
+import { exportWorkflow, pipe, WorkflowArguments } from "../../helper"
 import { InventoryHandlers, ProductHandlers } from "../../handlers"
 import { CreateProductsActions } from "./create-products"
 import { mapData } from "../../handlers/middlewares/map-data"
+import { updateProductsPrepareInventoryUpdate } from "../../handlers/middlewares/update-products-prepare-inventory-update"
+import { extractVariantsFromProduct } from "../../handlers/middlewares"
 
 export enum UpdateProductsActions {
   prepare = "prepare",
@@ -35,14 +37,14 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
     next: {
       action: UpdateProductsActions.updateProducts,
       next: [
-        {
-          action: UpdateProductsActions.attachSalesChannels,
-          saveResponse: false,
-        },
-        {
-          action: UpdateProductsActions.detachSalesChannels,
-          saveResponse: false,
-        },
+        // {
+        //   action: UpdateProductsActions.attachSalesChannels,
+        //   saveResponse: false,
+        // },
+        // {
+        //   action: UpdateProductsActions.detachSalesChannels,
+        //   saveResponse: false,
+        // },
         {
           action: UpdateProductsActions.createInventoryItems,
           next: {
@@ -100,89 +102,102 @@ const handlers = new Map([
       ),
     },
   ],
-  [
-    UpdateProductsActions.attachSalesChannels,
-    {
-      invoke: pipe(
-        {
-          merge: true,
-          invoke: [
-            {
-              from: UpdateProductsActions.prepare,
-              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
-            },
-            {
-              from: UpdateProductsActions.updateProducts,
-            },
-          ],
-        },
-        mapData((data) => ({
-          productsHandleSalesChannelsMap: data.productHandleAddedChannelsMap,
-        })),
-        ProductHandlers.attachSalesChannelToProducts
-      ),
-      compensate: pipe(
-        {
-          merge: true,
-          invoke: {
-            from: UpdateProductsActions.prepare,
-            alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
-          },
-        },
-        mapData((data) => ({
-          productsHandleSalesChannelsMap: data.productHandleAddedChannelsMap,
-        })),
-        ProductHandlers.detachSalesChannelFromProducts
-      ),
-    },
-  ],
-  [
-    UpdateProductsActions.detachSalesChannels,
-    {
-      invoke: pipe(
-        {
-          merge: true,
-          invoke: [
-            {
-              from: UpdateProductsActions.prepare,
-              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
-            },
-            {
-              from: UpdateProductsActions.updateProducts,
-            },
-          ],
-        },
-        mapData((data) => ({
-          productsHandleSalesChannelsMap: data.productHandleRemovedChannelsMap,
-        })),
-        ProductHandlers.detachSalesChannelFromProducts
-      ),
-      compensate: pipe(
-        {
-          merge: true,
-          invoke: {
-            from: UpdateProductsActions.prepare,
-            alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
-          },
-        },
-        mapData((data) => ({
-          productsHandleSalesChannelsMap: data.productHandleRemovedChannelsMap,
-        })),
-        ProductHandlers.attachSalesChannelToProducts
-      ),
-    },
-  ],
+  // [
+  //   UpdateProductsActions.attachSalesChannels,
+  //   {
+  //     invoke: pipe(
+  //       {
+  //         merge: true,
+  //         invoke: [
+  //           {
+  //             from: UpdateProductsActions.prepare,
+  //             alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+  //           },
+  //           {
+  //             from: UpdateProductsActions.updateProducts,
+  //           },
+  //         ],
+  //       },
+  //       mapData((data) => ({
+  //         productsHandleSalesChannelsMap: data.productHandleAddedChannelsMap,
+  //       })),
+  //       ProductHandlers.attachSalesChannelToProducts
+  //     ),
+  //     compensate: pipe(
+  //       {
+  //         merge: true,
+  //         invoke: {
+  //           from: UpdateProductsActions.prepare,
+  //           alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+  //         },
+  //       },
+  //       mapData((data) => ({
+  //         productsHandleSalesChannelsMap: data.productHandleAddedChannelsMap,
+  //       })),
+  //       ProductHandlers.detachSalesChannelFromProducts
+  //     ),
+  //   },
+  // ],
+  // [
+  //   UpdateProductsActions.detachSalesChannels,
+  //   {
+  //     invoke: pipe(
+  //       {
+  //         merge: true,
+  //         invoke: [
+  //           {
+  //             from: UpdateProductsActions.prepare,
+  //             alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+  //           },
+  //           {
+  //             from: UpdateProductsActions.updateProducts,
+  //           },
+  //         ],
+  //       },
+  //       mapData((data) => ({
+  //         productsHandleSalesChannelsMap: data.productHandleRemovedChannelsMap,
+  //       })),
+  //       ProductHandlers.detachSalesChannelFromProducts
+  //     ),
+  //     compensate: pipe(
+  //       {
+  //         merge: true,
+  //         invoke: {
+  //           from: UpdateProductsActions.prepare,
+  //           alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+  //         },
+  //       },
+  //       mapData((data) => ({
+  //         productsHandleSalesChannelsMap: data.productHandleRemovedChannelsMap,
+  //       })),
+  //       ProductHandlers.attachSalesChannelToProducts
+  //     ),
+  //   },
+  // ],
   [
     UpdateProductsActions.createInventoryItems,
     {
       invoke: pipe(
         {
           merge: true,
-          invoke: {
-            from: UpdateProductsActions.updateProducts,
-            alias: ProductHandlers.updateProducts.aliases.products,
-          },
+          invoke: [
+            {
+              from: UpdateProductsActions.prepare,
+              alias: updateProductsPrepareInventoryUpdate.aliases.preparedData,
+            },
+            {
+              from: UpdateProductsActions.updateProducts,
+              alias: updateProductsPrepareInventoryUpdate.aliases.products,
+            },
+          ],
         },
+        updateProductsPrepareInventoryUpdate,
+        mapData<any>((data) => ({
+          ...data,
+          [updateProductsPrepareInventoryUpdate.aliases.products]:
+            data.createdVariantsMap.values(),
+        })),
+        extractVariantsFromProduct,
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(

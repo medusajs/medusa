@@ -8,6 +8,7 @@ type HandlerInput = {
 
 export async function createProducts({
   container,
+  context,
   data,
 }: WorkflowArguments<HandlerInput>): Promise<ProductTypes.ProductDTO[]> {
   const data_ = data.products
@@ -15,7 +16,7 @@ export async function createProducts({
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
-  return await productModuleService.create(data_)
+  return await productModuleService.create(data_, context)
 }
 
 createProducts.aliases = {

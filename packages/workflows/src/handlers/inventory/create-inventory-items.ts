@@ -17,6 +17,8 @@ export async function createInventoryItems({
 }: WorkflowArguments<{
   variants: ProductTypes.ProductVariantDTO[]
 }>): Promise<Result | void> {
+  console.log("Create Inventory", data)
+
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
 

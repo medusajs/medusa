@@ -4,19 +4,21 @@ import { ProductDTO, ProductTypes, UpdateProductDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 import { UpdateProductsPreparedData } from "./update-products-prepare-data"
 
-type HandlerInput = {
-  preparedData: UpdateProductsPreparedData
-}
+type HandlerInput = UpdateProductsPreparedData
 
 export async function revertUpdateProducts({
   container,
+  context,
   data,
 }: WorkflowArguments<HandlerInput>): Promise<ProductDTO[]> {
+  console.log("Revert called")
+
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
   return await productModuleService.update(
-    data.preparedData.products as UpdateProductDTO[]
+    data.originalProducts as unknown as UpdateProductDTO[],
+    context
   )
 }
 
