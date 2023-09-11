@@ -3,19 +3,16 @@ import { ProductTypes, ProductVariantDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 import { UpdateProductsPreparedData } from "../product"
 
-export async function updateProductsPrepareInventoryUpdate({
+export async function updateProductsExtractCreatedVariants({
   data,
-  container,
 }: WorkflowArguments<{
   preparedData: UpdateProductsPreparedData // products state before the update
   products: ProductTypes.ProductDTO[] // updated products
 }>) {
   const createdVariants: ProductVariantDTO[] = []
-  const deletedVariants: ProductVariantDTO[] = []
 
   data.products.forEach((product) => {
     const addedVariants: ProductVariantDTO[] = []
-    const removedVariants: ProductVariantDTO[] = []
 
     const originalProduct = data.preparedData.originalProducts.find(
       (p) => p.id === product.id
@@ -27,27 +24,19 @@ export async function updateProductsPrepareInventoryUpdate({
       }
     })
 
-    originalProduct.variants.forEach((variant) => {
-      if (!product.variants.find((v) => v.id === variant.id)) {
-        removedVariants.push(variant)
-      }
-    })
-
     createdVariants.push(...addedVariants)
-    deletedVariants.push(...removedVariants)
   })
 
   return {
-    alias: updateProductsPrepareInventoryUpdate.aliases.output,
+    alias: updateProductsExtractCreatedVariants.aliases.output,
     value: {
-      createdVariants,
-      deletedVariants,
+      variants: createdVariants,
     },
   }
 }
 
-updateProductsPrepareInventoryUpdate.aliases = {
+updateProductsExtractCreatedVariants.aliases = {
   preparedData: "preparedData",
   products: "products",
-  output: "updateProductsPrepareInventoryUpdateOutput",
+  output: "updateProductsExtractCreatedVariants",
 }

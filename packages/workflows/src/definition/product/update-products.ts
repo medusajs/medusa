@@ -5,12 +5,10 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, pipe, WorkflowArguments } from "../../helper"
+import { exportWorkflow, pipe } from "../../helper"
 import { InventoryHandlers, ProductHandlers } from "../../handlers"
 import { CreateProductsActions } from "./create-products"
-import { mapData } from "../../handlers/middlewares/map-data"
-import { updateProductsPrepareInventoryUpdate } from "../../handlers/middlewares/update-products-prepare-inventory-update"
-import { extractVariantsFromProduct } from "../../handlers/middlewares"
+import { updateProductsExtractCreatedVariants } from "../../handlers/middlewares/update-products-extract-created-variants"
 
 export enum UpdateProductsActions {
   prepare = "prepare",
@@ -21,13 +19,13 @@ export enum UpdateProductsActions {
   // inventory
   createInventoryItems = "createInventoryItems",
   attachInventoryItems = "attachInventoryItems",
+  detachInventoryItems = "detachInventoryItems",
 }
 
 // TODO: sales channels
 // TODO: shipping profiles
 
 // TODO: also detach inventory items from deleted variants
-
 // TODO: diff middleware for variants
 
 export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
@@ -183,23 +181,15 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: updateProductsPrepareInventoryUpdate.aliases.preparedData,
+              alias: updateProductsExtractCreatedVariants.aliases.preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
-              alias: updateProductsPrepareInventoryUpdate.aliases.products,
+              alias: updateProductsExtractCreatedVariants.aliases.products,
             },
           ],
         },
-        updateProductsPrepareInventoryUpdate,
-        mapData<any>(
-          (data) => ({
-            ...data,
-            [InventoryHandlers.createInventoryItems.aliases.variants]:
-              data.createdVariants,
-          }),
-          "variants"
-        ),
+        updateProductsExtractCreatedVariants,
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(
@@ -211,6 +201,7 @@ const handlers = new Map([
               InventoryHandlers.removeInventoryItems.aliases.inventoryItems,
           },
         },
+        updateProductsExtractCreatedVariants,
         InventoryHandlers.removeInventoryItems
       ),
     },
