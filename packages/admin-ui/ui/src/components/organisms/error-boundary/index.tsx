@@ -1,7 +1,9 @@
 import { AxiosError } from "axios"
 import React, { ErrorInfo } from "react"
-import { analytics, getAnalyticsConfig } from "../../../services/analytics"
+import { analyticsOptIn } from "../../../services/analytics"
 import Button from "../../fundamentals/button"
+import { WRITE_KEY } from "../../../constants/analytics"
+import { AnalyticsBrowser } from "@segment/analytics-next"
 
 type State = {
   hasError: boolean
@@ -11,6 +13,18 @@ type State = {
 
 type Props = {
   children?: React.ReactNode
+}
+
+// Analytics instance used for tracking errors
+let analyticsInstance: ReturnType<typeof AnalyticsBrowser.load> | undefined;
+
+const analytics = () => {
+  if (!analyticsInstance) {
+    analyticsInstance = AnalyticsBrowser.load({
+      writeKey: WRITE_KEY,
+    })
+  }
+  return analyticsInstance
 }
 
 class ErrorBoundary extends React.Component<Props, State> {
@@ -40,7 +54,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     }
 
     const properties = getTrackingInfo(error, errorInfo)
-    analytics.track("error", properties)
+    analytics().track("error", properties)
   }
 
   public dismissError = () => {
@@ -98,19 +112,7 @@ const shouldTrackEvent = async (error: Error) => {
     return false
   }
 
-  const res = await getAnalyticsConfig().catch(() => undefined)
-
-  // Don't track if we have no config to ensure we have permission
-  if (!res) {
-    return false
-  }
-
-  // Don't track if user has opted out from sharing usage insights
-  if (res.analytics_config.opt_out) {
-    return false
-  }
-
-  return true
+  return await analyticsOptIn();
 }
 
 const errorMessage = (status?: number) => {
