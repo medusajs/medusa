@@ -51,21 +51,81 @@ module.exports = {
           type: "doc",
           id: "recipes/marketplace",
           label: "Marketplace",
+          customProps: {
+            iconName: "building-storefront",
+          },
         },
         {
           type: "doc",
           id: "recipes/subscriptions",
           label: "Subscriptions",
+          customProps: {
+            iconName: "credit-card-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/commerce-automation",
+          label: "Commerce Automation",
+          customProps: {
+            iconName: "clock-solid-mini",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/oms",
+          label: "Order Management System",
+          customProps: {
+            iconName: "check-circle-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/pos",
+          label: "POS",
+          customProps: {
+            iconName: "computer-desktop-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/digital-products",
+          label: "Digital Products",
+          customProps: {
+            iconName: "photo-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/personalized-products",
+          label: "Personalized Products",
+          customProps: {
+            iconName: "swatch-solid",
+          },
         },
         {
           type: "doc",
           id: "recipes/b2b",
           label: "B2B / Wholesale",
+          customProps: {
+            iconName: "building-solid",
+          },
         },
         {
           type: "doc",
           id: "recipes/multi-region",
           label: "Multi-Region Store",
+          customProps: {
+            iconName: "globe-europe-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/omnichannel",
+          label: "Omnichannel Store",
+          customProps: {
+            iconName: "channels-solid",
+          },
         },
       ],
     },
@@ -2219,6 +2279,40 @@ module.exports = {
       },
       {
         type: "category",
+        label: "Fulfillment",
+        collapsible: false,
+        link: {
+          type: "doc",
+          id: "plugins/fulfillment/index",
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
+        items: [
+          {
+            type: "doc",
+            id: "plugins/fulfillment/webshipper",
+            label: "Webshipper",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate Webshipper with the Medusa backend.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/fulfillment/manual",
+            label: "Manual Fulfillment",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate manual fulfillment in the Medusa backend.",
+            },
+          },
+        ],
+      },
+      {
+        type: "category",
         label: "Search",
         collapsible: false,
         link: {
@@ -2306,6 +2400,54 @@ module.exports = {
       },
       {
         type: "category",
+        label: "ERP",
+        collapsible: false,
+        link: {
+          type: "doc",
+          id: "plugins/erp/index",
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
+        items: [
+          {
+            type: "doc",
+            id: "plugins/erp/brightpearl",
+            label: "Brightpearl",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate Brightpearl with the Medusa backend.",
+            },
+          },
+        ],
+      },
+      {
+        type: "category",
+        label: "Source",
+        collapsible: false,
+        link: {
+          type: "doc",
+          id: "plugins/source/index",
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
+        items: [
+          {
+            type: "doc",
+            id: "plugins/source/shopify",
+            label: "Shopify",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to install this plugin to migrate data from Shopify.",
+            },
+          },
+        ],
+      },
+      {
+        type: "category",
         label: "Other",
         collapsible: false,
         link: {
@@ -2324,6 +2466,35 @@ module.exports = {
               iconName: "bolt-solid",
               description:
                 "Learn how to integrate ipstack to access the user's region.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/other/restock-notifications",
+            label: "Restock Notifications",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate restock notifications with the Medusa backend.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/other/discount-generator",
+            label: "Discount Generator",
+            customProps: {
+              iconName: "bolt-solid",
+              description: "Learn how to add a discount generator in Medusa.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/other/wishlist",
+            label: "Wishlist",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to add wishlists for customers in Medusa.",
             },
           },
         ],

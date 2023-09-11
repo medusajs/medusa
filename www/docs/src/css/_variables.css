@@ -75,7 +75,7 @@
   /* Inline Code */
   --ifm-code-border-radius: theme(borderRadius.DEFAULT);
   --ifm-code-padding-horizontal: theme(padding[0.5]);
-  --ifm-code-background: theme(colors.medusa.bg.subtle.DEFAULT) !important;
+  --ifm-code-background: theme(colors.medusa.tag.neutral.bg.DEFAULT) !important;
 
   /* Code Blocks */
   --ifm-pre-background: theme(colors.medusa.code.bg.base.DEFAULT);
@@ -154,7 +154,7 @@ html[data-theme="dark"] {
   --ifm-navbar-link-color: theme(colors.medusa.fg.subtle.dark);
 
   /* Inline Code */
-  --ifm-code-background: theme(colors.medusa.bg.base.dark) !important;
+  --ifm-code-background: theme(colors.medusa.tag.neutral.bg.dark) !important;
 
   /* Code Blocks */
   --ifm-pre-background: theme(colors.medusa.code.bg.base.dark);
@@ -200,9 +200,9 @@ html[data-theme="dark"] {
 }
 
 .alert {
-  --ifm-code-background: theme(colors.medusa.bg.subtle.DEFAULT) !important;
+  --ifm-code-background: theme(colors.medusa.tag.neutral.bg.DEFAULT) !important;
 }
 
 html[data-theme="dark"] .alert {
-  --ifm-code-background: theme(colors.medusa.bg.subtle.dark) !important;
+  --ifm-code-background: theme(colors.medusa.tag.neutral.bg.dark) !important;
 }

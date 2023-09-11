@@ -14,6 +14,12 @@ In this document, you’ll learn how you can create a custom [Entity](./overview
 
 To create an entity, create a TypeScript file in `src/models`. For example, here’s a `Post` entity defined in the file `src/models/post.ts`:
 
+:::note
+
+Entities can only be placed in the top level of the `src/models` directory. So, you can't create an entity in a subfolder.
+
+:::
+
 ```ts title=src/models/post.ts
 import { 
   BeforeInsert, 
@@ -135,39 +141,13 @@ Adding these relations allows you to later on expand these relations when retrie
 
 ---
 
-## Step 2: Create a Migration
+## Step 2: Create and Run Migrations
 
 Additionally, you must create a migration for your entity. Migrations are used to update the database schema with new tables or changes to existing tables.
 
 You can learn more about Migrations, how to create or generate them, and how to run them in the [Migration documentation](./migrations/create.md).
 
----
-
-## Step 3: Create a Repository
-
-An repository is required for every entity you create. They provide methods to access and modify an entity's records, and they're used by other resources such as services or endpoints to perform those functionalities.
-
-To learn how to create a repository, refer to the [Repositories](./repositories.md) documentation.
-
----
-
-## (Optional) Step 4: Run Migrations
-
-Before you start using your entity, make sure to run the migrations that reflect the entity on your database schema. If you've already ran migrations, you can skip this step.
-
-To run migrations, run the `build` command that transpiles your code:
-
-```bash npm2yarn
-npm run build
-```
-
-Then, run the `migration` command:
-
-```bash
-npx medusa migrations run
-```
-
-You should see that your migration have executed.
+Make sure to run the migrations before you start using the entity.
 
 ---
 
