@@ -4,16 +4,18 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "start": "docusaurus clear && docusaurus start",
+    "dev": "docusaurus clear && docusaurus start",
+    "dev:monorepo": "yarn dev --port 3001",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
-    "serve": "docusaurus serve",
+    "start": "docusaurus serve",
+    "start:monorepo": "yarn start --port 3001",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "lint": "eslint --ignore-path .eslintignore --ext .js,.jsx,.ts,.tsx .",
-    "lint:content": "eslint --no-eslintrc -c .content.eslintrc.js --ignore-path .content.eslintignore content"
+    "lint": "eslint --ignore-path .eslintignore --ext .js,.jsx,.ts,.tsx . --fix",
+    "lint:content": "eslint --no-eslintrc -c .content.eslintrc.js --ignore-path .content.eslintignore content --fix"
   },
   "dependencies": {
     "@babel/preset-react": "^7.18.6",

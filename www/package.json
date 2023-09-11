@@ -1,0 +1,19 @@
+{
+  "name": "docs-root",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "start": "turbo run start:monorepo",
+    "dev": "turbo run dev:monorepo",
+    "lint": "turbo run lint"
+  },
+  "dependencies": {
+    "tsconfig": "*"
+  }
+}

@@ -10,7 +10,8 @@
       "@site/*": ["./*"],
       "@medusajs/docs-ui/*": ["./src/components/*"]
     },
-    "allowJs": true
+    "allowJs": true,
+    "module": "Node16"
   },
   "typeRoots": ["./node_modules/@types", "./src/types"],
   "include": [

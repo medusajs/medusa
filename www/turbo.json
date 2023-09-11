@@ -1,0 +1,33 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        ".docusaurus/**",
+        "build"
+      ]
+    },
+    "start:monorepo": {
+      "dependsOn": [
+        "^start:monorepo"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ]
+    },
+    "dev:monorepo": {
+      "dependsOn": [
+        "^dev:monorepo"
+      ],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

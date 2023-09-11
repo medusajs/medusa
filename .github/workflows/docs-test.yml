@@ -30,10 +30,10 @@ jobs:
           extension: docs
 
       - name: Install Docusaurus dependencies
-        working-directory: www/docs
+        working-directory: www
         run: yarn install
       - name: Build Docusaurus website
-        working-directory: www/docs
+        working-directory: www/apps/docs
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
           API_URL: "https://docs.medusajs.com"
@@ -53,7 +53,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get Directories to Scan
-        working-directory: www/docs/vale
+        working-directory: www/apps/docs/vale
         run: ./get-files.sh
         id: directories
 
@@ -80,11 +80,11 @@ jobs:
           fetch-depth: 0
 
       - name: Install dependencies
-        working-directory: www/docs
+        working-directory: www
         run: yarn install
 
       - name: Run Eslint
-        working-directory: www/docs
+        working-directory: www/apps/docs
         run: yarn lint:content
   
   code-docs-eslint:
@@ -104,33 +104,9 @@ jobs:
         run: yarn install
 
       - name: Install dependencies
-        working-directory: www/docs
+        working-directory: www
         run: yarn install
 
       - name: Run Eslint
-        working-directory: www/docs
-        run: yarn lint
-
-  code-api-ref-eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Install Monorepo dependencies
-        run: yarn install
-
-      - name: Install dependencies
-        working-directory: www/api-reference
-        run: yarn install
-
-      - name: Run Eslint
-        working-directory: www/api-reference
+        working-directory: www
         run: yarn lint

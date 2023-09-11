@@ -1,0 +1,22 @@
+{
+  "extends": "tsconfig/tsconfig.nextjs.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "typeRoots": ["./node_modules/@types", "./types"]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.tsx",
+    "**/*.ts",
+    "**/*.js",
+    ".next/types/**/*.ts",
+    "**/*.mjs" 
+  ],
+  "exclude": [
+    "specs",
+  ]
+}

@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss"
 import path from "path"
-import coreConfig from "../tailwind.config"
+import coreConfig from "../../tailwind.config"
 
 // Get two levels up from require.resolve("@medusajs/ui")
 const root = path.join(require.resolve("@medusajs/ui"), "../..")
