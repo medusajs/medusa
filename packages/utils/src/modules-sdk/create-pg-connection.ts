@@ -24,7 +24,7 @@ export function createPgConnection(options: Options) {
     pool: {
       // https://knexjs.org/guide/#pool
       ...(pool ?? {}),
-      min: pool?.min ?? 0,
+      min: (pool?.min as number) ?? 0,
     },
   })
 }
