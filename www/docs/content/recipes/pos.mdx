@@ -1,0 +1,305 @@
+---
+addHowToData: true
+---
+
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
+# POS
+
+This document guides you through the different features and resources available in Medusa to create a point-of-sale (POS) system.
+
+## Overview
+
+A POS system can be used in a business’s retail or offline stores to access and manage products and their inventories, and place orders for customers. Based on your use case, you can provide more features that can improve the customer experience. For example, customer discounts or Return Merchandise Authorization (RMA) features.
+
+Medusa’s architecture, commerce features, and customization capabilities allow you to build a POS system without any limitations or restrictions.
+
+Medusa’s headless backend facilitates creating any type of frontend that can communicate with the backend, including a POS system. Also, Medusa’s commerce features, including mutli-warehouse, sales channels, and order management features, can power your POS system to provide essential features for both store operators and customers making their purchase.
+
+:::tip
+
+Recommended read: [How Tekla built a POS system with Medusa](https://medusajs.com/blog/tekla-agilo-pos-case/).
+
+:::
+
+---
+
+## Freedom in Choosing Your POS Tech Stack
+
+When you decide to build a POS system, you have to make an important choice of which programming framework, language, or tool you want to use. In most cases, this can be interdependent on the commerce engine, as it can limit your choices.
+
+Medusa’s modular architecture removes any restrictions you may have while making this choice. Regardless of what you choose, any client or front end can connect to the Medusa backend using its headless REST APIs. So, when building the POS system, you’ll be interacting with the [Admin REST APIs](https://docs.medusajs.com/api/admin).
+
+For example, you can use [Expo](https://expo.dev/) with [React Native](https://reactnative.dev/) to build a cross-platform POS app. In this case, you can also utilize [Medusa’s JavaScript client](../js-client/overview.md) to make it even easier to send requests to the backend.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/development/fundamentals/architecture-overview',
+    label: 'Medusa’s Architecture',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about Medusa\'s architecture and its ecosystem.',
+    }
+  },
+  {
+    type: 'link',
+    href: 'https://docs.medusajs.com/api/admin',
+    label: 'Admin REST APIs',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Check out available Admin REST APIs in Medusa.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/js-client/overview',
+    label: 'JavaScript Client',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the JavaScript client and to use it.',
+    }
+  },
+]} />
+
+---
+
+## Integrate a Barcode Scanner
+
+An essential feature a POS system needs is the capability to search and find products by scanning their barcode. You can then check their inventory information or add them to the customer’s order.
+
+Medusa’s [Product Variant entity](../references/entities/classes/ProductVariant.md), which represents a saleable stock item, already includes the necessary attributes to implement this integration, mainly the `barcode` attribute. Other notable attributes include `ean`, `upc`, and `hs_code`, among others.
+
+To search through product variants by their barcode, you can create a custom endpoint and use it within your POS. The endpoint can receive the item’s barcode, and return all product variants having that barcode.
+
+You can also create another custom endpoint that allows you to scan products in your store by their barcode and automatically add them to your backend. This eliminates the need to enter your product details manually.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/products',
+    label: 'Products',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Product architecture and features.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/endpoints/create',
+    label: 'Create Endpoint',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an endpoint in the Medusa backend.',
+    }
+  },
+]} />
+
+<details>
+<summary>
+Example: Search Products By Barcode Endpoint
+</summary>
+
+Here’s an example of creating a custom endpoint that searches product variants by a barcode:
+
+```ts title=src/api/index.ts
+import { Request, Response, Router } from "express"
+import cors from "cors"
+import { 
+  ConfigModule, 
+  errorHandler, 
+  ProductVariantService, 
+  wrapHandler,
+} from "@medusajs/medusa"
+import { getConfigFile } from "medusa-core-utils"
+import { MedusaError } from "@medusajs/utils"
+
+export default (rootDirectory: string): Router | Router[] => {
+  // Read currently-loaded medusa config
+  const { configModule } = getConfigFile<ConfigModule>(
+    rootDirectory,
+    "medusa-config"
+  )
+  const { projectConfig } = configModule
+
+  // Set up our CORS options objects, based on config
+  const storeCorsOptions = {
+    origin: projectConfig.store_cors.split(","),
+    credentials: true,
+  }
+
+  // Set up express router
+  const router = Router()
+  
+  router.get(
+    "/store/search-barcode", 
+    cors(storeCorsOptions), 
+    wrapHandler(
+      async (req: Request, res: Response) => {
+        const barcode = (req.query.barcode as string) || ""
+        if (!barcode) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA, 
+            "Barcode is required"
+          )
+        }
+        // get product service
+        const productVariantService = req.scope.resolve<
+          ProductVariantService
+        >("productVariantService")
+
+        // retrieve product variants by barcode
+        const productVariants = await productVariantService
+          .list({
+            barcode,
+          })
+
+        res.json({
+          product_variants: productVariants,
+        })
+      }
+    )
+  )
+
+  router.use(errorHandler())
+
+  return router
+}
+```
+
+</details>
+
+---
+
+## Access Accurate Inventory Details
+
+As you manage an online and offline store, it’s important to make a separation between inventory quantity across different locations. For example, when an online order is made, the change in the inventory quantity of the order items should be made from the warehouse’s inventory, and not from the retail store’s.
+
+Medusa’s multi-warehouse features allow you to manage the inventory items and their availability across locations and sales channels. You can create a sales channel for your online store and a sales channel for your POS system, then manage the inventory quantity of product variants in each of those sales channels. You can also have different sales channels for different retail stores that use the POS system.
+
+When a customer browses your online store and wants to make a purchase, they can only buy items that are available in stock in the location associated with the online store’s channel.
+
+In the POS system, you can use the admin [stock location](https://docs.medusajs.com/api/admin#stock-locations) and [inventory item APIs](https://docs.medusajs.com/api/admin#inventory-items) to check whether an item is available in inventory or not. This helps store operators provide better and quicker customer service.
+
+This also opens the door for other business opportunities, such as an endless aisle experience. If a product isn’t available in-store but is available in other warehouses, you can allow a customer to purchase that item in-store and have it delivered to their address.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/modules/multiwarehouse/overview',
+    label: 'Multi-Warehouse',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Multi-warehouse architecture and features.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/sales-channels/overview',
+    label: 'Sales Channels',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Sales Channel architecture and features.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/multiwarehouse/admin/manage-inventory-items',
+    label: 'Manage Inventory Items',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to use the Admin REST APIs to manage inventory items.',
+    }
+  },
+]} />
+
+---
+
+## Build an Omni-channel Customer Experience
+
+A customer making a purchase in-store should have the same benefits as an online customer. You can find their customer details, if they’re registered in the ecommerce store, and provide them with applicable discounts if necessary.
+
+Using Medusa’s Customer APIs and features, you can easily query customers and place an order under their account. The customer can then view their order details on their profile as if they had placed the order online.
+
+In addition, using Medusa’s dynamic discounts feature, store operators can create discounts on the fly for customers using the POS system and apply them to their orders. This improves customer experience and builds customer loyalty.
+
+You can further customize your setup to provide a better customer experience. For example, you can create a rewards system or loyalty points that your customers can benefit from when they make purchases either through the POS system or the online store.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/customers/overview',
+    label: 'Customers',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Customer architecture and features.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/discounts/overview',
+    label: 'Discounts',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Discount architecture and features.',
+    }
+  },
+]} />
+
+---
+
+## Accept Payment, Place Order, and Use RMA Features
+
+The first element to placing an order is accepting the customer’s payment. This is handled differently based on the payment methods you want to provide.
+
+Medusa provides a [manual payment processor](https://github.com/medusajs/medusa/tree/develop/packages/medusa-payment-manual) with a minimal implementation that assumes merchants handle all payment operations manually. Alternatively, you can integrate payment processors that allow you to accept in-store payments, such as [Stripe Terminal](https://stripe.com/terminal), by creating a payment processor.
+
+To place an order in the POS system, you can use the [Draft Order APIs](https://docs.medusajs.com/api/admin#draft-orders). This would allow the store operator to place the order under the customer’s account if they’re registered, and add all the necessary details related to discounts and more, similar to placing an order through the online store.
+
+Using the Medusa admin dashboard, merchants can view all orders coming from different sales channels. This keeps logistics and order handling consistent throughout orders. This also allows customers who place their order in-store to benefit from features like returns and exchanges or swaps that are already available for online store orders.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/backend/add-payment-provider',
+    label: 'Create a Payment Processor',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a payment processor.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/orders/draft-orders',
+    label: 'Draft Orders',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Draft Order architecture and features.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/orders/returns',
+    label: 'Order Returns',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Order Return architecture and features.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/orders/swaps',
+    label: 'Order Swaps',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Order Swap architecture and features.',
+    }
+  },
+]} />
+
+---
+
+## Additional Development
+
+You can find other resources for your POS development in the [Medusa Development section](../development/overview.mdx) of this documentation.
