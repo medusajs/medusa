@@ -13,7 +13,7 @@ A fulfillment provider is the shipping provider used to fulfill orders and deliv
 
 By default, a Medusa Backend has a `manual` fulfillment provider which has minimal implementation. It allows you to accept orders and fulfill them manually. However, you can integrate any fulfillment provider into Medusa, and your fulfillment provider can interact with third-party shipping providers.
 
-Adding a fulfillment provider is as simple as creating one [service](../../../development/services/create-service.mdx) file in `src/services`. A fulfillment provider is essentially a service that extends the `FulfillmentService`. It requires implementing 4 methods:
+Adding a fulfillment provider is as simple as creating one [service](../../../development/services/create-service.mdx) file in `src/services`. A fulfillment provider is essentially a service that extends the `AbstractFulfillmentService`. It requires implementing 4 methods:
 
 1. `getFulfillmentOptions`: used to retrieve available fulfillment options provided by this fulfillment provider.
 2. `validateOption`: used to validate the shipping option when it’s being created by the admin.
@@ -33,16 +33,90 @@ Fulfillment providers are loaded and installed on the backend startup.
 The first step is to create a JavaScript or TypeScript file under `src/services`. For example, create the file `src/services/my-fulfillment.ts` with the following content:
 
 ```ts title=src/services/my-fulfillment.ts
-import { FulfillmentService } from "medusa-interfaces"
+import { 
+  AbstractFulfillmentService, 
+  Cart, 
+  Fulfillment, 
+  LineItem, 
+  Order,
+} from "@medusajs/medusa"
+import { 
+  CreateReturnType,
+} from "@medusajs/medusa/dist/types/fulfillment-provider"
 
-class MyFulfillmentService extends FulfillmentService {
-
+class MyFulfillmentService extends AbstractFulfillmentService {
+  async getFulfillmentOptions(): Promise<any[]> {
+    throw new Error("Method not implemented.")
+  }
+  async validateFulfillmentData(
+    optionData: { [x: string]: unknown }, 
+    data: { [x: string]: unknown },
+    cart: Cart
+  ): Promise<Record<string, unknown>> {
+    throw new Error("Method not implemented.")
+  }
+  async validateOption(
+    data: { [x: string]: unknown }
+  ): Promise<boolean> {
+    throw new Error("Method not implemented.")
+  }
+  async canCalculate(
+    data: { [x: string]: unknown }
+  ): Promise<boolean> {
+    throw new Error("Method not implemented.")
+  }
+  async calculatePrice(
+    optionData: { [x: string]: unknown },
+    data: { [x: string]: unknown },
+    cart: Cart
+  ): Promise<number> {
+    throw new Error("Method not implemented.")
+  }
+  async createFulfillment(
+    data: { [x: string]: unknown }, 
+    items: LineItem, 
+    order: Order, 
+    fulfillment: Fulfillment
+  ) {
+    throw new Error("Method not implemented.")
+  }
+  async cancelFulfillment(
+    fulfillment: { [x: string]: unknown }
+  ): Promise<any> {
+    throw new Error("Method not implemented.")
+  }
+  async createReturn(
+    returnOrder: CreateReturnType
+  ): Promise<Record<string, unknown>> {
+    throw new Error("Method not implemented.")
+  }
+  async getFulfillmentDocuments(
+    data: { [x: string]: unknown }
+  ): Promise<any> {
+    throw new Error("Method not implemented.")
+  }
+  async getReturnDocuments(
+    data: Record<string, unknown>
+  ): Promise<any> {
+    throw new Error("Method not implemented.")
+  }
+  async getShipmentDocuments(
+    data: Record<string, unknown>
+  ): Promise<any> {
+    throw new Error("Method not implemented.")
+  }
+  async retrieveDocuments(
+    fulfillmentData: Record<string, unknown>, 
+    documentType: "invoice" | "label"
+  ): Promise<any> {
+    throw new Error("Method not implemented.")
+  }
 }
 
 export default MyFulfillmentService
 ```
 
-Fulfillment provider services must extend the `FulfillmentService` class imported from `medusa-interfaces`.
+Fulfillment provider services must extend the `AbstractFulfillmentService` class imported from `@medusajs/medusa`.
 
 :::note
 
@@ -59,13 +133,11 @@ The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installe
 The value of this property will also be used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin#regions_postregionsregionfulfillmentproviders) to a region.
 
 ```ts
-import { FulfillmentService } from "medusa-interfaces"
-
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   static identifier = "my-fulfillment"
-}
 
-export default MyFulfillmentService
+  // ...
+}
 ```
 
 ### constructor
@@ -79,7 +151,7 @@ Additionally, if you’re creating your fulfillment provider as an external plug
 For example:
 
 ```ts
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
   constructor(container, options) {
     super()
@@ -101,9 +173,9 @@ Later on, these options can be used when creating a shipping option, such as whe
 For example:
 
 ```ts
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
-  async getFulfillmentOptions() {
+  async getFulfillmentOptions(): Promise<any[]> {
     return [
       {
         id: "my-fulfillment",
@@ -127,10 +199,12 @@ This method returns a boolean. If the returned value is `false`, an error is thr
 For example, you can use this method to ensure that the `id` in the `data` object is correct:
 
 ```ts
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
-  async validateOption(data) {
-      return data.id == "my-fulfillment"
+  async validateOption(
+    data: { [x: string]: unknown }
+  ): Promise<boolean> {
+    return data.id == "my-fulfillment"
   }
 }
 ```
@@ -158,9 +232,13 @@ The returned value may also be used to calculate the price of the shipping metho
 Here's an example implementation:
 
 ```ts
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
-  async validateFulfillmentData(optionData, data, cart) {
+  async validateFulfillmentData(
+    optionData: { [x: string]: unknown }, 
+    data: { [x: string]: unknown },
+    cart: Cart
+  ): Promise<Record<string, unknown>> {
     if (data.id !== "my-fulfillment") {
       throw new Error("invalid data")
     }
@@ -193,13 +271,13 @@ This method must return an object of data that will be stored in the `data` attr
 Here is a basic implementation of `createFulfillment` for a fulfillment provider that does not interact with any third-party provider to create the fulfillment:
 
 ```ts
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
   async createFulfillment(
-    methodData,
-    fulfillmentItems,
-    fromOrder,
-    fulfillment
+    data: { [x: string]: unknown }, 
+    items: LineItem, 
+    order: Order, 
+    fulfillment: Fulfillment
   ) {
     // No data is being sent anywhere
     // No data to be stored in the fulfillment's data object
@@ -225,9 +303,11 @@ If the method returns `false`, an error is thrown as it means the selected shipp
 For example:
 
 ```ts
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
-  canCalculate(data) {
+  async canCalculate(
+    data: { [x: string]: unknown }
+  ): Promise<boolean> {
     return data.id === "my-fulfillment-dynamic"
   }
 }
@@ -252,13 +332,17 @@ This method receives three parameters:
 
 The method is expected to return a number that will be used to set the price of the shipping method or option, based on the context it's used in.
 
-If your fulfillment provider does not provide any dynamically calculated rates you can keep the function empty. For example:
+If your fulfillment provider does not provide any dynamically calculated rates you can return any static value or throw an error. For example:
 
 ```ts
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
-  async calculatePrice(optionData, data, cart) {
-    // leave empty
+  async calculatePrice(
+    optionData: { [x: string]: unknown },
+    data: { [x: string]: unknown },
+    cart: Cart
+  ): Promise<number> {
+    throw new Error("Method not implemented.")
   }
 }
 ```
@@ -266,9 +350,13 @@ class MyFulfillmentService extends FulfillmentService {
 Otherwise, you can use it to calculate the price with custom logic. For example:
 
 ```ts
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
-  async calculatePrice(optionData, data, cart) {
+  async calculatePrice(
+    optionData: { [x: string]: unknown },
+    data: { [x: string]: unknown },
+    cart: Cart
+  ): Promise<number> {
     return cart.items.length * 1000
   }
 }
@@ -287,9 +375,11 @@ The method must return an object that will be used to set the value of the `ship
 This is the basic implementation of the method for a fulfillment provider that does not contact with a third-party provider to fulfill the return:
 
 ```ts
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends AbstractFulfillmentService {
   // ...
-  async createReturn(returnOrder) {
+  async createReturn(
+    returnOrder: CreateReturnType
+  ): Promise<Record<string, unknown>> {
     return {}
   }
 }
@@ -306,8 +396,106 @@ This is the basic implementation of the method for a fulfillment provider that d
 ```ts
 class MyFulfillmentService extends FulfillmentService {
   // ...
-  async cancelFulfillment(fulfillment) {
+  async cancelFulfillment(
+    fulfillment: { [x: string]: unknown }
+  ): Promise<any> {
     return {}
+  }
+}
+```
+
+#### retrieveDocuments
+
+This method is used to retrieve any documents associated with an order and its fulfillments. This method isn't used by default in the backend, but you can use it for custom use cases such as allowing admins to download these documents.
+
+The method accepts two parameters:
+
+1. The first parameter is the `data` attribute of the order's fulfillment.
+2. The second parameter is a string indicating the type of document to retrieve. Possible values are `invoice` and `label`.
+
+There are no restrictions on the returned response. If your fulfillment provider doesn't provide this functionality, you can leave the method empty or through an error.
+
+For example:
+
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async retrieveDocuments(
+    fulfillmentData: Record<string, unknown>, 
+    documentType: "invoice" | "label"
+  ): Promise<any> {
+    // assuming you contact a client to
+    // retrieve the document
+    return this.client.getDocuments()
+  }
+}
+```
+
+#### getFulfillmentDocuments
+
+This method is used to retrieve any documents associated with a fulfillment. This method isn't used by default in the backend, but you can use it for custom use cases such as allowing admins to download these documents.
+
+The method accepts the `data` attribute of the fulfillment that you're retrieving the documents for.
+
+There are no restrictions on the returned response. If your fulfillment provider doesn't provide this functionality, you can leave the method empty or through an error.
+
+For example:
+
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async getFulfillmentDocuments(
+    data: { [x: string]: unknown }
+  ): Promise<any> {
+    // assuming you contact a client to
+    // retrieve the document
+    return this.client.getFulfillmentDocuments()
+  }
+}
+```
+
+#### getReturnDocuments
+
+This method is used to retrieve any documents associated with a return. This method isn't used by default in the backend, but you can use it for custom use cases such as allowing admins to download these documents.
+
+The method accepts the `data` attribute of the return that you're retrieving the documents for.
+
+There are no restrictions on the returned response. If your fulfillment provider doesn't provide this functionality, you can leave the method empty or through an error.
+
+For example:
+
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async getReturnDocuments(
+    data: Record<string, unknown>
+  ): Promise<any> {
+    // assuming you contact a client to
+    // retrieve the document
+    return this.client.getReturnDocuments()
+  }
+}
+```
+
+#### getShipmentDocuments
+
+This method is used to retrieve any documents associated with a shipment. This method isn't used by default in the backend, but you can use it for custom use cases such as allowing admins to download these documents.
+
+The method accepts the `data` attribute of the shipment that you're retrieving the documents for.
+
+There are no restrictions on the returned response. If your fulfillment provider doesn't provide this functionality, you can leave the method empty or through an error.
+
+For example:
+
+```ts
+class MyFulfillmentService extends FulfillmentService {
+  // ...
+  async getShipmentDocuments(
+    data: Record<string, unknown>
+  ): Promise<any> {
+    // assuming you contact a client to
+    // retrieve the document
+    return this.client.getShipmentDocuments()
   }
 }
 ```
