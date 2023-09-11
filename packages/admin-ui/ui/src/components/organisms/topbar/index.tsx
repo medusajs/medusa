@@ -46,8 +46,6 @@ const Topbar: React.FC = () => {
           variant={"ghost"}
           hasNotifications={!!batchJobs?.length}
         />
-
-        <LanguageMenu />
       </div>
       {showSupportform && (
         <MailDialog

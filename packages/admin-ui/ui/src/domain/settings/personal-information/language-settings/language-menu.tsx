@@ -1,7 +1,7 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import React from "react"
 import { useTranslation } from "react-i18next"
-import Button from "../../fundamentals/button"
+import Button from "../../../../components/fundamentals/button"
 
 const LanguageMenu: React.FC = () => {
   const { i18n } = useTranslation()

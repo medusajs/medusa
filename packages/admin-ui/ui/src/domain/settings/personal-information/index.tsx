@@ -4,6 +4,7 @@ import BackButton from "../../../components/atoms/back-button"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import EditUserInformation from "./edit-user-information"
 import UsageInsights from "./usage-insights"
+import LanguageSettings from "./language-settings"
 
 const PersonalInformation = () => {
   const { isFeatureEnabled } = useFeatureFlag()
@@ -35,6 +36,9 @@ const PersonalInformation = () => {
         <div className="flex flex-col">
           <div className="border-grey-20 py-xlarge border-t">
             <EditUserInformation user={user} />
+          </div>
+          <div className="border-grey-20 py-xlarge border-t">
+            <LanguageSettings />
           </div>
           {isFeatureEnabled("analytics") && (
             <div className="border-grey-20 py-xlarge border-t">
