@@ -21,8 +21,9 @@ export default function DocCardList(props: ModifiedProps): JSX.Element {
   if (!items) {
     return <DocCardListForCurrentSidebarCategory {...props} />
   }
-  const filteredItems = filterDocCardListItems(items)
-    .filter((item) => !item.customProps.excludeFromDocList)
+  const filteredItems = filterDocCardListItems(items).filter(
+    (item) => !item.customProps.excludeFromDocList
+  )
 
   return (
     <section
