@@ -7,7 +7,6 @@ export interface PriceSetDTO {
 }
 
 export interface CreatePriceSetDTO {
-  id: string
   money_amounts?: MoneyAmountDTO[]
 }
 
