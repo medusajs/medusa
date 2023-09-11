@@ -148,7 +148,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                       name={t("taxes-product-rules", "Product Rules")}
                       description={t(
                         "taxes-product-rules-description",
-                        "Applies to {count} productWithCount",
+                        "Applies to {{count}} productWithCount",
                         {
                           count: products.length,
                         }
@@ -180,7 +180,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                       name={t("taxes-product-type-rules", "Product Type Rules")}
                       description={t(
                         "taxes-applies-to-product-type-with-count",
-                        "Applies to {count} product typeWithCount",
+                        "Applies to {{count}} product typeWithCount",
                         {
                           count: product_types.length,
                         }
@@ -215,7 +215,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                       )}
                       description={t(
                         "taxes-applies-to-shipping-option-with-count",
-                        "Applies to {count} shipping optionWithCount",
+                        "Applies to {{count}} shipping optionWithCount",
                         {
                           count: shipping_options.length,
                         }

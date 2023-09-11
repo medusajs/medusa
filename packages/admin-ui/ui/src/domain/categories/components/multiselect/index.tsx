@@ -197,7 +197,7 @@ function PopupItem(props: PopupItemProps) {
             <span className="text-small text-gray-400">
               {t(
                 "domain-categories-multiselect-selected-with-counts",
-                "{count}",
+                "{{count}}",
                 { count: selectedSubcategoriesCount }
               )}
             </span>

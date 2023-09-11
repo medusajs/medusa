@@ -172,7 +172,7 @@ const ProductDetails = ({ product }: Props) => {
         title={t("product-general-section-metadata", "Metadata")}
         value={
           Object.entries(product.metadata || {}).length > 0
-            ? t("product-general-section-count", "{count}", {
+            ? t("product-general-section-count", "{{count}}", {
                 count: Object.keys(product.metadata || {}).length,
               })
             : undefined

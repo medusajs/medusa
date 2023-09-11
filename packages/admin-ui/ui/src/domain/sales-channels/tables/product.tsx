@@ -346,7 +346,7 @@ function RemoveProductsPopup({
         <span className="text-small text-grey-50">
           {t(
             "sales-channels-table-placeholder-selected-with-counts",
-            "{count}",
+            "{{count}}",
             { count: total }
           )}
         </span>

@@ -327,7 +327,7 @@ const EditReservationDrawer = ({
                         {maxReservation
                           ? t(
                               "reservation-max-reservation-requested",
-                              " / {maxReservation} requested",
+                              " / {{maxReservation}} requested",
                               {
                                 maxReservation,
                               }

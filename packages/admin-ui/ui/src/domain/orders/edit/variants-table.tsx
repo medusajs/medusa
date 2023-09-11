@@ -86,7 +86,7 @@ const VariantsTable: React.FC<Props> = (props) => {
               <span className="font-semibold">
                 {location_level.stocked_quantity}
               </span>
-              {t("variants-table-location", " in {location}", {
+              {t("variants-table-location", " in {{location}}", {
                 location: getLocationNameById(location_level.location_id),
               })}
             </div>

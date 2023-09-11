@@ -68,7 +68,7 @@ const Users: React.FC = () => {
               triggerRefetch={triggerRefetch}
             />
             <p className="inter-small-regular text-grey-50">
-              {t("users-count", "{count}", { count: users.length })}
+              {t("users-count", "{{count}}", { count: users.length })}
             </p>
           </div>
           {showInviteModal && (

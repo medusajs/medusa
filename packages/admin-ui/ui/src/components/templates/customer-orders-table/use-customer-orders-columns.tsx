@@ -161,7 +161,7 @@ export const useCustomerOrdersColumns = (): Column<Order>[] => {
                 <span className="text-grey-40 inter-small-regular">
                   {t(
                     "customer-orders-table-remainder-more",
-                    "+ {remainder} more",
+                    "+ {{remainder}} more",
                     { remainder }
                   )}
                 </span>

@@ -194,7 +194,7 @@ const DraftOrderDetails = () => {
               className={"mb-4 min-h-[200px] w-full"}
               title={t(
                 "on-mark-as-paid-confirm-order-id",
-                "Order #{display_id}",
+                "Order #{{display_id}}",
                 {
                   display_id: draft_order.display_id,
                 }
@@ -263,7 +263,7 @@ const DraftOrderDetails = () => {
                 </div>
                 <div className="flex flex-col pl-6">
                   <div className="inter-smaller-regular text-grey-50 mb-1">
-                    {t("draft-orders-amount", "Amount {currency_code}", {
+                    {t("draft-orders-amount", "Amount {{currency_code}}", {
                       currency_code: region?.currency_code.toUpperCase(),
                     })}
                   </div>
@@ -480,14 +480,14 @@ const DraftOrderDetails = () => {
           text={t("draft-orders-are-you-sure", "Are you sure?")}
           heading={t(
             "draft-orders-remove-resource-heading",
-            "Remove {resource}",
+            "Remove {{resource}}",
             {
               resource: deletePromptData?.resource,
             }
           )}
           successText={t(
             "draft-orders-remove-resource-success-text",
-            "{resource} has been removed",
+            "{{resource}} has been removed",
             {
               resource: deletePromptData?.resource || "Resource",
             }

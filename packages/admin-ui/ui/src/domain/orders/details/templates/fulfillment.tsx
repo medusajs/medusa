@@ -140,7 +140,7 @@ export const FormattedFulfillment = ({
               )
             : t(
                 "templates-fulfilled-by-provider",
-                "{title} Fulfilled by {provider}",
+                "{{title}} Fulfilled by {{provider}}",
                 {
                   title: fulfillmentObj.title,
                   provider: capitalize(fulfillment.provider_id),

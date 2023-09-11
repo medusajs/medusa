@@ -37,7 +37,7 @@ const ExistingConditionTableActions = ({
       <div className={clsx("transition-all duration-200", classes)}>
         <div className="mb-2 flex h-[34px] items-center divide-x">
           <span className="inter-small-regular text-grey-50 mr-3">
-            {t("edit-condition-selected-with-count", "{count}", {
+            {t("edit-condition-selected-with-count", "{{count}}", {
               count: numberOfSelectedRows,
             })}
           </span>

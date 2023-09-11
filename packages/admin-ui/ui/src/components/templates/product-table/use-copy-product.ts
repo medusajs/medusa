@@ -185,7 +185,10 @@ const useCopyProduct = () => {
         navigate(`/a/products/${copiedProduct.id}`)
         notification(
           t("product-table-copy-success", "Success"),
-          t("product-table-copy-created-a-new-product", "Created a new product"),
+          t(
+            "product-table-copy-created-a-new-product",
+            "Created a new product"
+          ),
           "success"
         )
       },

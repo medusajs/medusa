@@ -47,7 +47,7 @@ export const usePriceListTableColumns = () => {
               {other && (
                 <span className="text-grey-40">
                   {" "}
-                  {t("price-list-table-other-more", "+ {other} more", {
+                  {t("price-list-table-other-more", "+ {{other}} more", {
                     other,
                   })}
                 </span>

@@ -3,6 +3,7 @@ import { useAdminSalesChannels } from "medusa-react"
 import React from "react"
 import Tooltip from "../../atoms/tooltip"
 import Badge from "../../fundamentals/badge"
+import { useTranslation } from "react-i18next"
 
 type Props = {
   channels?: SalesChannel[]
@@ -11,6 +12,7 @@ type Props = {
 const SalesChannelsDisplay = ({ channels = [] }: Props) => {
   const { count } = useAdminSalesChannels()
   const remainder = Math.max(channels.length - 3, 0)
+  const { t } = useTranslation()
 
   return (
     <div className="gap-y-small flex flex-col">

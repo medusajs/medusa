@@ -126,7 +126,7 @@ const PricesTableRow = ({
               t("prices-table-success", "Success"),
               t(
                 "prices-table-deleted-prices-of-product",
-                "Deleted prices of product: {title}",
+                "Deleted prices of product: {{title}}",
                 { title: product.title }
               ),
               "success"

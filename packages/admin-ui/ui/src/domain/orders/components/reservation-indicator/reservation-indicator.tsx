@@ -62,7 +62,7 @@ const ReservationIndicator = ({
                   <span className="flex w-full items-center">
                     {t(
                       "reservation-indicator-awaiting-reservation-count",
-                      "{awaitingReservation} items not reserved",
+                      "{{awaitingReservation}} items not reserved",
                       {
                         awaitingReservation,
                       }
@@ -131,7 +131,7 @@ const EditReservationButton = ({
     <div className="pt-base first:pt-0">
       {t(
         "edit-reservation-button-quantity-item-location-name",
-        "{quantity} item: ${locationName}",
+        "{{quantity}} item: ${{locationName}}",
         {
           quantity: reservation.quantity,
           locationName,

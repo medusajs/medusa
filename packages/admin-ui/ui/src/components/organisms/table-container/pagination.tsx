@@ -40,7 +40,7 @@ export const TablePagination = ({
           <div>
             {t(
               "table-container-soothed-offset",
-              "{soothedOffset} - {pageSize} of {count} {title}",
+              "{{soothedOffset}} - {{pageSize}} of {{count}} {{title}}",
               {
                 soothedOffset,
                 pageSize,
@@ -55,7 +55,7 @@ export const TablePagination = ({
             <div>
               {t(
                 "table-container-current-page",
-                "{currentPage} of {soothedPageCount}",
+                "{{currentPage}} of {{soothedPageCount}}",
                 {
                   currentPage,
                   soothedPageCount,

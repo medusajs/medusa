@@ -57,7 +57,9 @@ const SelectShippingMethod = () => {
       <span className="inter-base-semibold">
         Shipping method{" "}
         <span className="inter-base-regular text-grey-50">
-          {t("select-shipping-to-name", "(To {name})", { name: region!.name })}
+          {t("select-shipping-to-name", "(To {{name}})", {
+            name: region!.name,
+          })}
         </span>
       </span>
 

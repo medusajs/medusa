@@ -240,7 +240,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
             t("claim-successfully-created-claim", "Successfully created claim"),
             t(
               "claim-created",
-              "A claim for order #{display_id} was successfully created",
+              "A claim for order #{{display_id}} was successfully created",
               {
                 display_id: order.display_id,
               }

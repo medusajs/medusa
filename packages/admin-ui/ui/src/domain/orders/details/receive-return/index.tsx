@@ -259,7 +259,7 @@ export const ReceiveReturnMenu = ({ order, returnRequest, onClose }: Props) => {
           ),
           t(
             "receive-return-received-return-for-order",
-            "Received return for order #{display_id}",
+            "Received return for order #{{display_id}}",
             {
               display_id: order.display_id,
             }

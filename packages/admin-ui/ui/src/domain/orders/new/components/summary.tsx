@@ -253,7 +253,7 @@ const Summary = () => {
               <span>
                 {t("components-discount", "Discount")}
                 <span className="inter-base-regular text-grey-50 ml-0.5">
-                  {t("select-shipping-code", "(Code: {code})", {
+                  {t("select-shipping-code", "(Code: {{code}})", {
                     code: discount.code,
                   })}
                 </span>

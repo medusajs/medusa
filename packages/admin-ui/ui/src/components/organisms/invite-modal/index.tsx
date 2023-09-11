@@ -37,9 +37,13 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
         onSuccess: () => {
           notification(
             t("invite-modal-success", "Success"),
-            t("invite-modal-invitation-sent-to", "Invitation sent to {user}", {
-              user: data.user,
-            }),
+            t(
+              "invite-modal-invitation-sent-to",
+              "Invitation sent to {{user}}",
+              {
+                user: data.user,
+              }
+            ),
             "success"
           )
           handleClose()

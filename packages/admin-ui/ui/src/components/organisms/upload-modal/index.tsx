@@ -230,7 +230,7 @@ function UploadModal(props: UploadModalProps) {
         <Modal.Content>
           <div className="flex justify-between">
             <span className="text-grey-90 inter-large-semibold py-4 text-2xl">
-              Import {fileTitle}
+              Import {{ fileTitle }}
             </span>
             <button onClick={onClose} className="text-grey-50 cursor-pointer">
               <CrossIcon size={20} />
@@ -238,7 +238,7 @@ function UploadModal(props: UploadModalProps) {
           </div>
 
           <div className="text-grey-90 inter-large-semibold mb-1 text-base">
-            {t("upload-modal-import-file-title", "Import {fileTitle}", {
+            {t("upload-modal-import-file-title", "Import {{fileTitle}}", {
               fileTitle,
             })}
           </div>

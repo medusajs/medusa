@@ -241,7 +241,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                               <>
                                 {t(
                                   "rma-select-product-table-images-witch-count",
-                                  "{count}",
+                                  "{{count}}",
                                   {
                                     count: toReturn[item.id]?.images?.length,
                                   }

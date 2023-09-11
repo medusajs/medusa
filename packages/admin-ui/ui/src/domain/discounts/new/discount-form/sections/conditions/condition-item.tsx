@@ -190,7 +190,7 @@ const ConditionItem = <Type extends DiscountConditionType>({
                 })}
                 {remainder > 0 && (
                   <span className="text-grey-40 ml-2">
-                    {t("condition-item-remainder-more", "+{remainder} more", {
+                    {t("condition-item-remainder-more", "+{{remainder}} more", {
                       remainder,
                     })}
                   </span>

@@ -221,7 +221,7 @@ const OrderDetails = () => {
         "Are you sure you want to cancel the order?"
       ),
       extraConfirmation: true,
-      entityName: t("order-details-display-id", "order #{display_id}", {
+      entityName: t("order-details-display-id", "order #{{display_id}}", {
         display_id: order.display_id,
       }),
     })

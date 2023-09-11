@@ -144,7 +144,7 @@ const CustomerDetail = () => {
           </div>
         </Section>
         <BodyCard
-          title={t("details-orders", "Orders {count}", {
+          title={t("details-orders", "Orders {{count}}", {
             count: customer.orders.length,
           })}
           subtitle={t(

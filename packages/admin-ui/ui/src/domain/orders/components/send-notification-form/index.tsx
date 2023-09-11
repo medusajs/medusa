@@ -43,7 +43,7 @@ const SendNotificationForm = ({ form, type }: Props) => {
               type="info"
               content={t(
                 "send-notification-form-if-unchecked-the-customer-will-not-receive-communication",
-                "If unchecked the customer will not receive communication about this {subject}.",
+                "If unchecked the customer will not receive communication about this {{subject}}.",
                 { subject }
               )}
             />

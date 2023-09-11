@@ -109,7 +109,7 @@ export const useDenominationColumns = () => {
                   <span className="text-grey-50 cursor-default">
                     {t(
                       "gift-card-denominations-section-and-more",
-                      ", and {count} more",
+                      ", and {{count}} more",
                       { count: remainder.length }
                     )}
                   </span>

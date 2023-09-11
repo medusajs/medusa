@@ -110,7 +110,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
         <div className="small:w-4/5 medium:w-7/12 large:w-6/12 my-16 max-w-[700px]">
           <h1 className="inter-xlarge-semibold text-grey-90 pb-6">
             {parentCategory
-              ? t("modals-add-category-to", "Add category to {name}", {
+              ? t("modals-add-category-to", "Add category to {{name}}", {
                   name: parentCategory.name,
                 })
               : t("modals-add-category", "Add category")}

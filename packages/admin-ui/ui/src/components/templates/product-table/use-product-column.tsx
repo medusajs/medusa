@@ -105,7 +105,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
             {value.reduce((acc, next) => acc + next.inventory_quantity, 0)}
             {t(
               "product-table-inventory-in-stock-count",
-              "in stock for {count} variant(s)",
+              "in stock for {{count}} variant(s)",
               { count: value.length }
             )}
           </div>

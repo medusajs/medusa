@@ -298,7 +298,7 @@ function EditScreen(props: {
               <span className="text-small text-grey-50 whitespace-nowrap px-2">
                 {t(
                   "publishable-api-keys-modals-manage-sales-channels-selected-with-counts",
-                  "{count}",
+                  "{{count}}",
                   { count: selectedCount }
                 )}
               </span>
