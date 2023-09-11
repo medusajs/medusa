@@ -12,6 +12,7 @@ import { Order } from "./order"
 import { Region } from "./region"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import {ProductVariant} from "./product-variant";
 
 @Entity()
 export class GiftCard extends SoftDeletableEntity {
@@ -40,6 +41,14 @@ export class GiftCard extends SoftDeletableEntity {
   @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
   order: Order
+
+  @Index()
+  @Column({ nullable: true })
+  variant_id: string
+
+  @ManyToOne(() => ProductVariant)
+  @JoinColumn({ name: "variant_id" })
+  variant: ProductVariant
 
   @Column({ default: false })
   is_disabled: boolean

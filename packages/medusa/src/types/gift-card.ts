@@ -1,4 +1,5 @@
 export type CreateGiftCardInput = {
+  variant_id?: string
   order_id?: string
   value?: number
   balance?: number

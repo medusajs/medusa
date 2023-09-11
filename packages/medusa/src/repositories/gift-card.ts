@@ -16,6 +16,7 @@ export const GiftCardRepository = dataSource.getRepository(GiftCard).extend({
 
       query_.relations = query_.relations ?? {}
       query_.relations.order = query_.relations.order ?? true
+      query_.relations.variant = query_.relations.variant ?? true
 
       query_.where = query_.where as FindOptionsWhere<GiftCard>[]
       query_.where = [

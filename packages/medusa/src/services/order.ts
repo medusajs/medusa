@@ -841,6 +841,7 @@ class OrderService extends TransactionBaseService {
       const createGiftCardPromise = giftCardTxnService.create({
         region_id: order.region_id,
         order_id: order.id,
+        variant_id: lineItem.variant_id || undefined,
         value: taxExclusivePrice,
         balance: taxExclusivePrice,
         metadata: lineItem.metadata,
