@@ -202,6 +202,7 @@ export interface ModuleServiceInitializeOptions {
     database?: string
     driverOptions?: Record<string, unknown>
     debug?: boolean
+    pool?: Record<string, unknown>
   }
 }
 
