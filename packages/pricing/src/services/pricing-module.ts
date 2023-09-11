@@ -25,6 +25,10 @@ type InjectedDependencies = {
   priceSetService: PriceSetService<any>
 }
 
+type PricingContext = {
+  currency_code?: string
+}
+
 export default class PricingModuleService<
   TPriceSet extends PriceSet = PriceSet,
   TMoneyAmount extends MoneyAmount = MoneyAmount,
@@ -53,6 +57,59 @@ export default class PricingModuleService<
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  @InjectManager("baseRepository_")
+  async calculatePrices(
+    priceSetIds: string[],
+    pricingContext: PricingContext,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.CalculatedPriceSetDTO> {
+    // Keeping this whole logic raw in here for now as they will undergo
+    // some changes, will abstract them out once we have a final version
+    const priceSetFilters: PricingTypes.FilterablePriceSetProps = {
+      id: priceSetIds,
+    }
+
+    const priceSets = await this.list(
+      priceSetFilters,
+      {
+        select: [
+          "id",
+          "money_amounts.id",
+          "money_amounts.currency_code",
+          "money_amounts.amount",
+          "money_amounts.min_quantity",
+          "money_amounts.max_quantity",
+        ],
+        relations: ["money_amounts"],
+      },
+      sharedContext
+    )
+
+    const calculatedPrices = priceSets.map(
+      (priceSet): PricingTypes.CalculatedPriceSetDTO => {
+        // TODO: This will change with the rules engine selection,
+        // making a DB query directly instead
+        // This should look for a default price when no rules apply
+        // When no price is set, return null values for all cases
+        const selectedMoneyAmount = priceSet.money_amounts?.find(
+          (ma) =>
+            pricingContext.currency_code &&
+            ma.currency_code === pricingContext.currency_code
+        )
+
+        return {
+          id: priceSet.id,
+          amount: selectedMoneyAmount?.amount || null,
+          currency_code: selectedMoneyAmount?.currency_code || null,
+          min_quantity: selectedMoneyAmount?.min_quantity || null,
+          max_quantity: selectedMoneyAmount?.max_quantity || null,
+        }
+      }
+    )
+
+    return JSON.parse(JSON.stringify(calculatedPrices))
   }
 
   @InjectManager("baseRepository_")

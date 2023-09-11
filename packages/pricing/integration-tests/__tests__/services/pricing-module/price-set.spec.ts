@@ -3,6 +3,8 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
 import { initialize } from "../../../../src"
+import { createCurrencies } from "../../../__fixtures__/currency"
+import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
@@ -13,6 +15,38 @@ describe("PricingModule Service - PriceSet", () => {
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let data!: PriceSet[]
+
+  const moneyAmountsInputData = [
+    {
+      id: "money-amount-USD",
+      currency_code: "USD",
+      amount: 500,
+      min_quantity: 1,
+      max_quantity: 10,
+    },
+    {
+      id: "money-amount-EUR",
+      currency_code: "EUR",
+      amount: 500,
+      min_quantity: 1,
+      max_quantity: 10,
+    },
+  ]
+
+  const priceSetInputData = [
+    {
+      id: "price-set-1",
+      money_amounts: [{ id: "money-amount-USD" }],
+    },
+    {
+      id: "price-set-2",
+      money_amounts: [{ id: "money-amount-EUR" }],
+    },
+    {
+      id: "price-set-3",
+      money_amounts: [],
+    },
+  ]
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
@@ -26,11 +60,84 @@ describe("PricingModule Service - PriceSet", () => {
     })
 
     testManager = MikroOrmWrapper.forkManager()
-    data = await createPriceSets(testManager)
+    await createCurrencies(testManager)
+    await createMoneyAmounts(testManager, moneyAmountsInputData)
+    data = await createPriceSets(testManager, priceSetInputData)
   })
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+  })
+
+  describe("calculatePrices", () => {
+    it("retrieves the calculated prices when no context is set", async () => {
+      const priceSetsResult = await service.calculatePrices(
+        ["price-set-1", "price-set-2"],
+        {}
+      )
+
+      expect(priceSetsResult).toEqual([
+        {
+          id: "price-set-1",
+          amount: null,
+          currency_code: null,
+          min_quantity: null,
+          max_quantity: null,
+        },
+        {
+          id: "price-set-2",
+          amount: null,
+          currency_code: null,
+          min_quantity: null,
+          max_quantity: null,
+        },
+      ])
+    })
+
+    it("retrieves the calculated prices when a context is set", async () => {
+      const priceSetsResult = await service.calculatePrices(
+        ["price-set-1", "price-set-2"],
+        {
+          currency_code: "USD",
+        }
+      )
+
+      expect(priceSetsResult).toEqual([
+        {
+          id: "price-set-1",
+          amount: "500",
+          currency_code: "USD",
+          min_quantity: "1",
+          max_quantity: "10",
+        },
+        {
+          id: "price-set-2",
+          amount: null,
+          currency_code: null,
+          min_quantity: null,
+          max_quantity: null,
+        },
+      ])
+    })
+
+    it("retrieves the calculated prices only when id exists in the database", async () => {
+      const priceSetsResult = await service.calculatePrices(
+        ["price-set-doesnotexist", "price-set-1"],
+        {
+          currency_code: "USD",
+        }
+      )
+
+      expect(priceSetsResult).toEqual([
+        {
+          id: "price-set-1",
+          amount: "500",
+          currency_code: "USD",
+          min_quantity: "1",
+          max_quantity: "10",
+        },
+      ])
+    })
   })
 
   describe("list", () => {
@@ -68,7 +175,7 @@ describe("PricingModule Service - PriceSet", () => {
           id: ["price-set-1"],
         },
         {
-          select: ["id"],
+          select: ["id", "money_amounts.id", "money_amounts.amount"],
           relations: ["money_amounts"],
         }
       )
@@ -78,7 +185,7 @@ describe("PricingModule Service - PriceSet", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [],
+          money_amounts: [{ id: "money-amount-USD", amount: "500" }],
         },
       ])
     })
@@ -132,7 +239,7 @@ describe("PricingModule Service - PriceSet", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [],
+          money_amounts: [{ id: "money-amount-USD" }],
         },
       ])
     })

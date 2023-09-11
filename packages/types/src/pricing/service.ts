@@ -2,6 +2,7 @@ import { FindConfig } from "../common"
 import { ModuleJoinerConfig } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
+  CalculatedPriceSetDTO,
   CreateCurrencyDTO,
   CreateMoneyAmountDTO,
   CreatePriceSetDTO,
@@ -11,6 +12,7 @@ import {
   FilterablePriceSetProps,
   MoneyAmountDTO,
   PriceSetDTO,
+  PricingContext,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
   UpdatePriceSetDTO,
@@ -18,6 +20,12 @@ import {
 
 export interface IPricingModuleService {
   __joinerConfig(): ModuleJoinerConfig
+
+  calculatePrices(
+    priceSetIds: string[],
+    pricingContext: PricingContext,
+    sharedContext?: Context
+  ): Promise<CalculatedPriceSetDTO>
 
   retrieve(
     id: string,
