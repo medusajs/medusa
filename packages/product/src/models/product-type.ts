@@ -9,8 +9,9 @@ import {
 } from "@mikro-orm/core"
 
 import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
 
-type OptionalFields = "created_at" | "updated_at" | "deleted_at"
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product_type" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

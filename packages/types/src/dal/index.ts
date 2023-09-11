@@ -22,3 +22,4 @@ export type FindOptions<T = any> = {
 }
 
 export * from "./repository-service"
+export * from "./entity"

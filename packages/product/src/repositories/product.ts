@@ -49,17 +49,10 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
 
     await this.mutateNotInCategoriesConstraints(findOptions_)
 
-    if ("q" in findOptions_.where && findOptions_.where.q) {
-      const q = findOptions_.where.q
-      delete findOptions_.where.q
-
-      findOptions_.where = {
-        $and: [
-          findOptions_.where,
-          { $or: this.getFreeTextSearchConstraints(q) },
-        ],
-      } as DAL.FilterQuery<Product & { q?: string }>
-    }
+    this.applyFreeTextSearchFilters<Product>(
+      findOptions_,
+      this.getFreeTextSearchConstraints
+    )
 
     return await manager.find(
       Product,
@@ -83,17 +76,10 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
 
     await this.mutateNotInCategoriesConstraints(findOptions_)
 
-    if ("q" in findOptions_.where && findOptions_.where.q) {
-      const q = findOptions_.where.q
-      delete findOptions_.where.q
-
-      findOptions_.where = {
-        $and: [
-          findOptions_.where,
-          { $or: this.getFreeTextSearchConstraints(q) },
-        ],
-      } as DAL.FilterQuery<Product & { q?: string }>
-    }
+    this.applyFreeTextSearchFilters<Product>(
+      findOptions_,
+      this.getFreeTextSearchConstraints
+    )
 
     return await manager.findAndCount(
       Product,

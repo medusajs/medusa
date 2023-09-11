@@ -15,8 +15,9 @@ import {
 } from "@mikro-orm/core"
 
 import Product from "./product"
+import { DAL } from "@medusajs/types"
 
-type OptionalFields = "created_at" | "updated_at" | "deleted_at"
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product_category" })
 class ProductCategory {

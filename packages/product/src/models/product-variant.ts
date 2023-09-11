@@ -15,15 +15,14 @@ import {
 } from "@mikro-orm/core"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
+import { DAL } from "@medusajs/types"
 
 type OptionalFields =
-  | "created_at"
-  | "updated_at"
-  | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
   | "product"
   | "product_id"
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product_variant" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

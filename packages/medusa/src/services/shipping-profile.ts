@@ -166,7 +166,7 @@ class ShippingProfileService extends TransactionBaseService {
     if (!isDefined(productIds)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `"profileIds" must be defined`
+        `"productIds" must be defined`
       )
     }
 

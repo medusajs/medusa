@@ -12,9 +12,10 @@ import {
 
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import Product from "./product"
+import { DAL } from "@medusajs/types"
 
 type OptionalRelations = "products"
-type OptionalFields = "created_at" | "updated_at" | "deleted_at"
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "image" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

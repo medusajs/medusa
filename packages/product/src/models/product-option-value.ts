@@ -10,15 +10,14 @@ import {
 } from "@mikro-orm/core"
 import { ProductOption, ProductVariant } from "./index"
 import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/types"
 
 type OptionalFields =
-  | "created_at"
-  | "updated_at"
-  | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
   | "option_id"
   | "variant_id"
+  | DAL.SoftDeletableEntityDateColumns
 type OptionalRelations = "product" | "option" | "variant"
 
 @Entity({ tableName: "product_option_value" })

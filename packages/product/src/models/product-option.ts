@@ -14,13 +14,12 @@ import {
 } from "@mikro-orm/core"
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
+import { DAL } from "@medusajs/types"
 
 type OptionalRelations =
   | "values"
   | "product"
-  | "created_at"
-  | "updated_at"
-  | "deleted_at"
+  | DAL.SoftDeletableEntityDateColumns
 type OptionalFields = "product_id"
 
 @Entity({ tableName: "product_option" })

@@ -27,6 +27,7 @@ import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
 import ProductImage from "./product-image"
+import { DAL } from "@medusajs/types"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -34,9 +35,7 @@ type OptionalFields =
   | "type_id"
   | "is_giftcard"
   | "discountable"
-  | "created_at"
-  | "updated_at"
-  | "deleted_at"
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

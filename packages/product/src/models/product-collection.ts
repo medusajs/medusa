@@ -13,9 +13,10 @@ import {
 
 import { DALUtils, generateEntityId, kebabCase } from "@medusajs/utils"
 import Product from "./product"
+import { DAL } from "@medusajs/types"
 
 type OptionalRelations = "products"
-type OptionalFields = "created_at" | "updated_at" | "deleted_at"
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product_collection" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
