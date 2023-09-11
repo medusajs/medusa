@@ -192,12 +192,14 @@ const handlers = new Map([
           ],
         },
         updateProductsPrepareInventoryUpdate,
-        mapData<any>((data) => ({
-          ...data,
-          [updateProductsPrepareInventoryUpdate.aliases.products]:
-            data.createdVariantsMap.values(),
-        })),
-        extractVariantsFromProduct,
+        mapData<any>(
+          (data) => ({
+            ...data,
+            [InventoryHandlers.createInventoryItems.aliases.variants]:
+              data.createdVariants,
+          }),
+          "variants"
+        ),
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(

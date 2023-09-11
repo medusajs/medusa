@@ -121,34 +121,38 @@ export function pipe<T>(
 
     let finalResult
     for (const fn of functions) {
-      let result = await fn({
-        container,
-        payload,
-        data,
-        metadata,
-        context: context as Context,
-      })
+      try {
+        let result = await fn({
+          container,
+          payload,
+          data,
+          metadata,
+          context: context as Context,
+        })
 
-      if (Array.isArray(result)) {
-        for (const action of result) {
-          if (action?.alias) {
-            data[action.alias] = action.value
+        if (Array.isArray(result)) {
+          for (const action of result) {
+            if (action?.alias) {
+              data[action.alias] = action.value
+            }
+          }
+        } else if (
+          result &&
+          "alias" in (result as WorkflowStepMiddlewareReturn)
+        ) {
+          if ((result as WorkflowStepMiddlewareReturn).alias) {
+            data[(result as WorkflowStepMiddlewareReturn).alias!] = (
+              result as WorkflowStepMiddlewareReturn
+            ).value
+          } else {
+            data = (result as WorkflowStepMiddlewareReturn).value
           }
         }
-      } else if (
-        result &&
-        "alias" in (result as WorkflowStepMiddlewareReturn)
-      ) {
-        if ((result as WorkflowStepMiddlewareReturn).alias) {
-          data[(result as WorkflowStepMiddlewareReturn).alias!] = (
-            result as WorkflowStepMiddlewareReturn
-          ).value
-        } else {
-          data = (result as WorkflowStepMiddlewareReturn).value
-        }
-      }
 
-      finalResult = result
+        finalResult = result
+      } catch (e) {
+        console.log(e)
+      }
     }
 
     if (typeof input.onComplete === "function") {

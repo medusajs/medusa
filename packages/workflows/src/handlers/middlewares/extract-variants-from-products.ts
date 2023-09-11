@@ -7,7 +7,6 @@ export async function extractVariantsFromProduct({
 }: WorkflowArguments<{
   products: ProductTypes.ProductDTO[]
 }>) {
-  console.log("here", data)
   const variants = data.products.reduce(
     (
       acc: ProductTypes.ProductVariantDTO[],

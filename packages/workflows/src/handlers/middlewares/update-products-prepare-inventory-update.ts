@@ -2,7 +2,6 @@ import { ProductTypes, ProductVariantDTO } from "@medusajs/types"
 
 import { WorkflowArguments } from "../../helper"
 import { UpdateProductsPreparedData } from "../product"
-import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 export async function updateProductsPrepareInventoryUpdate({
   data,
@@ -11,13 +10,8 @@ export async function updateProductsPrepareInventoryUpdate({
   preparedData: UpdateProductsPreparedData // products state before the update
   products: ProductTypes.ProductDTO[] // updated products
 }>) {
-  const createdVariantsMap = new Map()
-  const deletedVariantsMap = new Map()
-
-  const productModuleService: ProductTypes.IProductModuleService =
-    container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
-
-  console.log("Prep inventory", data)
+  const createdVariants: ProductVariantDTO[] = []
+  const deletedVariants: ProductVariantDTO[] = []
 
   data.products.forEach((product) => {
     const addedVariants: ProductVariantDTO[] = []
@@ -39,15 +33,15 @@ export async function updateProductsPrepareInventoryUpdate({
       }
     })
 
-    createdVariantsMap.set(product.id, addedVariants)
-    deletedVariantsMap.set(product.id, removedVariants)
+    createdVariants.push(...addedVariants)
+    deletedVariants.push(...removedVariants)
   })
 
   return {
     alias: updateProductsPrepareInventoryUpdate.aliases.output,
     value: {
-      createdVariantsMap,
-      deletedVariantsMap,
+      createdVariants,
+      deletedVariants,
     },
   }
 }

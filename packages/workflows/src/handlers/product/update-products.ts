@@ -14,8 +14,6 @@ export async function updateProducts({
     return []
   }
 
-  console.log("Update called", data)
-
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
