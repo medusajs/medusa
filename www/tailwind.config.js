@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  presets: [require("@medusajs/ui-preset")],
   darkMode: ["class", `[data-theme="dark"]`], // hooks into docusaurus' dark mode settings
+  // TODO: remove anything that can be replaced by the
+  // UI preset
   theme: {
     extend: {
       colors: {
@@ -552,10 +555,9 @@ module.exports = {
         "sidebar-hidden": "0px",
         "main-content": "1140px",
         "main-content-hidden-sidebar": "1440px",
-        "api-ref-sidebar": "280px",
-        "api-ref-main": "calc(100% - 280px)",
-        "api-ref-content": "calc(100% - 484px)",
-        "api-ref-code": "468px"
+        "ref-sidebar": "280px",
+        "ref-main": "calc(100% - 280px)",
+        "ref-content": "calc(100% - 484px)",
       },
       height: {
         navbar: "57px",

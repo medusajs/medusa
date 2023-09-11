@@ -2,7 +2,7 @@ import Loading from ".."
 
 const ContentLoading = () => {
   return (
-    <div className="w-api-ref-content">
+    <div className="w-ref-content">
       <Loading />
     </div>
   )

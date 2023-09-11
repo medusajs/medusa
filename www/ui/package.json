@@ -1,0 +1,40 @@
+{
+  "name": "docs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@medusajs/icons": "latest",
+    "@medusajs/ui": "latest",
+    "@medusajs/ui-preset": "latest",
+    "@radix-ui/react-dialog": "^1.0.4",
+    "@radix-ui/react-scroll-area": "^1.0.4",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@types/node": "20.4.9",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "10.4.14",
+    "contentlayer": "^0.3.4",
+    "date-fns": "^2.30.0",
+    "eslint": "8.46.0",
+    "eslint-config-next": "13.4.13",
+    "mdast-util-toc": "^7.0.0",
+    "next": "13.4.13",
+    "next-contentlayer": "^0.3.4",
+    "next-themes": "^0.2.1",
+    "postcss": "8.4.27",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "remark": "^14.0.3",
+    "tailwindcss": "3.3.3",
+    "typescript": "5.1.6",
+    "unist-builder": "3.0.0",
+    "unist-util-visit": "4.1.2"
+  }
+}

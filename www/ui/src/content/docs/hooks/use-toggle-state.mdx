@@ -1,0 +1,38 @@
+---
+title: "useToggleState"
+description: ""
+component: true
+---
+
+<br />
+
+This is a simple hook that can be used to keep track of a boolean value and toggle between its two states.
+
+<br />
+It can be useful to, for example, display or hide the same `FocusModal` component
+via multiple triggers, e.g. in a table.
+
+## Usage
+
+<Snippet>`import {useToggleState} from "@medusajs/ui"`</Snippet>
+
+<Snippet>``` const [state, open, close, toggle] = useToggleState() ```</Snippet>
+
+## API Reference
+
+---
+
+### Call Signature
+
+<br />
+`useToggleState(initial: boolean = false)`
+
+### Returns
+
+<HookValues hook="useToggleState" />
+
+## Examples
+
+---
+
+<ComponentExample name="use-toggle-state-demo" />

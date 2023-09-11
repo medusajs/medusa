@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "google",
+    "../.eslintrc.js"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off"
+  },
+  "settings": {
+    "next": {
+      "rootDir": "."
+    }
+  },
+  "overrides": [
+    {
+      "files": ["src/examples/*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-empty-function": "off",
+        "no-console": "off"
+      }
+    }
+  ]
+}
