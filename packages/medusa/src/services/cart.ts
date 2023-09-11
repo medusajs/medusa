@@ -2699,7 +2699,8 @@ class CartService extends TransactionBaseService {
     )
 
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
-      cart.subtotal - cart.discount_total,
+      cart.subtotal + cart.shipping_total + cart.item_tax_total + 
+        cart.shipping_tax_total - cart.discount_total,
       {
         region: cart.region,
         giftCards: cart.gift_cards,
