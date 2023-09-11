@@ -1,4 +1,11 @@
-import { MedusaApp, moduleLoader, registerModules } from "@medusajs/modules-sdk"
+import {
+  ExternalModuleDeclaration,
+  InternalModuleDeclaration,
+  MedusaApp,
+  moduleLoader,
+  ModulesDefinition,
+  registerModules,
+} from "@medusajs/modules-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
@@ -11,7 +18,7 @@ import { Connection } from "typeorm"
 import { joinerConfig } from "../joiner-config"
 import modulesConfig from "../modules-config"
 import { MedusaContainer } from "../types/global"
-import { remoteQueryFetchData } from "../utils"
+import { isObject, remoteQueryFetchData } from "../utils"
 import apiLoader from "./api"
 import loadConfig from "./config"
 import databaseLoader, { dataSource } from "./database"
@@ -30,11 +37,42 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
+import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   directory: string
   expressApp: Express
   isTest: boolean
+}
+
+/**
+ * Merge the modules config from the medusa-config file with the modules config from medusa package
+ * @param modules
+ * @param medusaInternalModulesConfig
+ */
+function mergeModulesConfig(
+  modules: ConfigModule["modules"],
+  medusaInternalModulesConfig
+) {
+  for (const [moduleName, moduleConfig] of Object.entries(modules as any)) {
+    const moduleDefinition = ModulesDefinition[moduleName]
+
+    if (moduleDefinition?.isLegacy) {
+      continue
+    }
+
+    const isModuleEnabled = moduleConfig === true || isObject(moduleConfig)
+
+    if (!isModuleEnabled) {
+      delete medusaInternalModulesConfig[moduleName]
+    } else if (isModuleEnabled) {
+      // noop
+    } else {
+      medusaInternalModulesConfig[moduleName] = moduleConfig as Partial<
+        InternalModuleDeclaration | ExternalModuleDeclaration
+      >
+    }
+  }
 }
 
 export default async ({
@@ -186,6 +224,8 @@ export default async ({
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
+
     const { query } = await MedusaApp({
       modulesConfig,
       servicesConfig: joinerConfig,

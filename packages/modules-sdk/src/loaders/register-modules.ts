@@ -23,6 +23,11 @@ export const registerModules = (
   const projectModules = modules ?? {}
 
   for (const definition of MODULE_DEFINITIONS) {
+    // Skip non legacy modules
+    if (!definition.isLegacy) {
+      continue
+    }
+
     const customConfig = projectModules[definition.key]
 
     const canSkip =
@@ -60,6 +65,12 @@ export const registerMedusaModule = (
 
   if (modDefinition === undefined) {
     throw new Error(`Module: ${moduleKey} is not defined.`)
+  }
+
+  if (modDefinition.isLegacy) {
+    throw new Error(
+      `Module: ${moduleKey} is a legacy module. Please use registerModules instead.`
+    )
   }
 
   if (
