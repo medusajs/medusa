@@ -67,7 +67,7 @@ export interface FulfillmentService {
    */
   createFulfillment(
     data: ShippingMethodData,
-    items: LineItem,
+    items: LineItem[],
     order: Order,
     fulfillment: Fulfillment
   ): Promise<FulfillmentProviderData>
@@ -143,7 +143,7 @@ export abstract class AbstractFulfillmentService implements FulfillmentService {
 
   abstract createFulfillment(
     data: ShippingMethodData,
-    items: LineItem,
+    items: LineItem[],
     order: Order,
     fulfillment: Fulfillment
   ): Promise<FulfillmentProviderData>
