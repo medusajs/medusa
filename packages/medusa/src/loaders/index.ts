@@ -65,8 +65,6 @@ function mergeModulesConfig(
 
     if (!isModuleEnabled) {
       delete medusaInternalModulesConfig[moduleName]
-    } else if (isModuleEnabled) {
-      // noop
     } else {
       medusaInternalModulesConfig[moduleName] = moduleConfig as Partial<
         InternalModuleDeclaration | ExternalModuleDeclaration
