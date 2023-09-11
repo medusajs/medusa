@@ -16,6 +16,7 @@ export interface JoinerServiceConfigAlias {
 export interface JoinerServiceConfig {
   serviceName: string
   alias?: JoinerServiceConfigAlias | JoinerServiceConfigAlias[] // Property name to use as entrypoint to the service
+  fieldAlias?: Record<string, string> // alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
   primaryKeys: string[]
   relationships?: JoinerRelationship[]
   extends?: {

@@ -56,6 +56,9 @@ export const serviceConfigs: JoinerServiceConfig[] = [
     alias: {
       name: "variant",
     },
+    fieldAlias: {
+      user_shortcut: "product.user",
+    },
     primaryKeys: ["id"],
     relationships: [
       {
@@ -75,6 +78,9 @@ export const serviceConfigs: JoinerServiceConfig[] = [
   },
   {
     serviceName: "order",
+    fieldAlias: {
+      product_user_alias: "products.product.user",
+    },
     primaryKeys: ["id"],
     relationships: [
       {
