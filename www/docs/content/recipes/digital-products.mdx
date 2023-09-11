@@ -12,9 +12,11 @@ This document guides you through the different documentation resources that will
 
 ## Overview
 
-A business can sell digital or downloadable products. The products are stored privately using a storage service, such as S3, or other storage mechanism. When the customer buys this type of product, typically an email is sent to them where they can download the product.
+A business can sell digital or downloadable products. The products are stored privately using a storage service, such as S3, or other storage mechanism. When the customer buys this type of product, an email is sent to them where they can download the product.
 
-Medusa doesn’t support digital products by default. However, it provides the customization capabilities necessary to implement it based on your use case, restriction free. You can create new entities that allow you to represent a digital product and link them to existing product-related entities.
+Medusa doesn't have a built-in concept of a digital product since our focus is standardizing features and implementations, then offering the building blocks that enable you to build your use-case easily.
+
+You can create new entities that allow you to represent a digital product and link them to existing product-related entities.
 
 Medusa’s plugins also allows you to choose the services that play part in your digital products implementation. Whether you want to use S3, MinIO, or another service to store your digital products, all you have to do is install an existing plugin or create your own. The same applies for sending notifications, such as emails, to the customer using notification services.
 
@@ -172,13 +174,6 @@ export class ProductMedia extends BaseEntity {
   @Column({ type: "varchar" })
   variant_id: string
 
-  @ManyToOne(
-    () => ProductVariant,
-    (variant) => variant.product_medias
-  )
-  @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
-
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "post")
@@ -193,53 +188,7 @@ The entity has the following attributes:
 - `file_key`: a string that indicates the downloadable file’s key. The key is retrieved by the installed file service, which is covered in the next step, and it’s used later if you want to get a downloadable link or delete the file.
 - `variant_id`: a string indicating the ID of the product variant this file is associated with.
 
-To use this relation on the `ProductVariant` entity as well, extend the entity by creating the file `src/models/product-variant.ts` with the following content:
-
-```ts title=src/models/product-variant.ts
-import { Entity, OneToMany } from "typeorm"
-import { 
-  ProductVariant as MedusaProductVariant,
-} from "@medusajs/medusa"
-import { ProductMedia } from "./product-media"
-
-@Entity()
-export class ProductVariant extends MedusaProductVariant {
-  @OneToMany(() => ProductMedia, (media) => media.variant)
-  product_medias: ProductMedia[]
-}
-```
-
-If you’re using TypeScript, it’s recommended to create the file `src/index.d.ts` with the following content:
-
-<!-- eslint-disable max-len -->
-
-```ts title=src/index.d.ts
-import { ProductMedia } from "./models/product-media"
-
-export declare module "@medusajs/medusa/dist/models/product-variant" {
-  declare interface ProductVariant {
-    product_medias: ProductMedia[];
-  }
-}
-```
-
-This ensures that your IDE’s autocomplete takes into consideration the new `product_medias` relation on the `ProductVariant` entity.
-
-Next, you need to create a repository for the `ProductMedia` entity. To do that, create the file `src/repositories/product-media.ts` with the following content:
-
-```ts title=src/repositories/product-media.ts
-import { ProductMedia } from "../models/product-media"
-import { 
-  dataSource,
-} from "@medusajs/medusa/dist/loaders/database"
-
-export const ProductMediaRepository = dataSource
-  .getRepository(ProductMedia)
-
-export default ProductMediaRepository
-```
-
-Finally, you need to create a migration script that reflects the changes on the database schema.
+Next, you need to create a migration script that reflects the changes on the database schema.
 
 To do that, run the following command to create a migration file:
 
@@ -258,11 +207,9 @@ export class ProductMediaCreate1693901604934 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
       await queryRunner.query(`CREATE TYPE "public"."product_media_type_enum" AS ENUM('main', 'preview')`)
       await queryRunner.query(`CREATE TABLE "product_media" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "type" "public"."product_media_type_enum" NOT NULL DEFAULT 'main', "file_key" character varying NOT NULL, "variant_id" character varying NOT NULL, CONSTRAINT "PK_09d4639de8082a32aa27f3ac9a6" PRIMARY KEY ("id"))`)
-      await queryRunner.query(`ALTER TABLE "product_media" ADD CONSTRAINT "FK_b38718bc6a3891beb6e620be706" FOREIGN KEY ("variant_id") REFERENCES "product_variant"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.query(`ALTER TABLE "product_media" DROP CONSTRAINT "FK_b38718bc6a3891beb6e620be706"`)
       await queryRunner.query(`DROP TABLE "product_media"`)
       await queryRunner.query(`DROP TYPE "public"."product_media_type_enum"`)
   }
@@ -332,20 +279,13 @@ import {
   TransactionBaseService,
   buildQuery,
 } from "@medusajs/medusa"
-import { 
-  ProductMediaRepository, 
-} from "../repositories/product-media"
 import { ProductMedia } from "../models/product-media"
 import { MedusaError } from "@medusajs/utils"
 
 class ProductMediaService extends TransactionBaseService {
-  protected productMediaRepository_: 
-    typeof ProductMediaRepository
 
   constructor(container) {
     super(container)
-    this.productMediaRepository_ = 
-      container.productMediaRepository
   }
 
   async listAndCount(
@@ -355,8 +295,8 @@ class ProductMediaService extends TransactionBaseService {
       take: 20,
       relations: [],
   }): Promise<[ProductMedia[], number]> {
-    const productMediaRepo = this.activeManager_.withRepository(
-      this.productMediaRepository_
+    const productMediaRepo = this.activeManager_.getRepository(
+      ProductMedia
     )
 
     const query = buildQuery(selector, config)
@@ -383,10 +323,9 @@ class ProductMediaService extends TransactionBaseService {
     id: string,
     config?: FindConfig<ProductMedia>
   ): Promise<ProductMedia> {
-    const productMediaRepo = this.activeManager_
-      .withRepository(
-        this.productMediaRepository_
-      )
+    const productMediaRepo = this.activeManager_.getRepository(
+      ProductMedia
+    )
 
     const query = buildQuery({
       id,
@@ -411,8 +350,8 @@ class ProductMediaService extends TransactionBaseService {
     >
   ): Promise<ProductMedia> {
     return this.atomicPhase_(async (manager) => {
-      const productMediaRepo = manager.withRepository(
-        this.productMediaRepository_
+      const productMediaRepo = manager.getRepository(
+        ProductMedia
       )
       const productMedia = productMediaRepo.create(data)
       const result = await productMediaRepo.save(productMedia)
@@ -426,8 +365,8 @@ class ProductMediaService extends TransactionBaseService {
     data: Omit<Partial<ProductMedia>, "id">
   ): Promise<ProductMedia> {
     return await this.atomicPhase_(async (manager) => {
-      const productMediaRepo = manager.withRepository(
-        this.productMediaRepository_
+      const productMediaRepo = manager.getRepository(
+        ProductMedia
       )
       const productMedia = await this.retrieve(id)
 
@@ -439,8 +378,8 @@ class ProductMediaService extends TransactionBaseService {
 
   async delete(id: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productMediaRepo = manager.withRepository(
-        this.productMediaRepository_
+      const productMediaRepo = manager.getRepository(
+        ProductMedia
       )
       const productMedia = await this.retrieve(id)
       
