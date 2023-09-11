@@ -168,6 +168,36 @@ class ShippingProfileService extends TransactionBaseService {
     return profile
   }
 
+  async retrieveForProducts(
+    productIds: string | string[]
+  ): Promise<{ [product_id: string]: ShippingProfile[] }> {
+    if (!isDefined(productIds)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"profileIds" must be defined`
+      )
+    }
+
+    productIds = isString(productIds) ? [productIds] : productIds
+
+    const profileRepository = this.activeManager_.withRepository(
+      this.shippingProfileRepository_
+    )
+
+    const productProfilesMap = await profileRepository.findByProducts(
+      productIds
+    )
+
+    if (!Object.keys(productProfilesMap)?.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `No Profile found for products with id: ${productIds.join(", ")}`
+      )
+    }
+
+    return productProfilesMap
+  }
+
   /**
    * Creates a default shipping profile, if this does not already exist.
    * @return {Promise<ShippingProfile>} the shipping profile
