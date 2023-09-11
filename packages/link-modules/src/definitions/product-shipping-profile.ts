@@ -24,9 +24,10 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
     },
     {
       serviceName: "shippingProfileService",
+      isInternalService: true,
       primaryKey: "id",
       foreignKey: "profile_id",
-      alias: "shipping_profile",
+      alias: "profile",
     },
   ],
   extends: [
