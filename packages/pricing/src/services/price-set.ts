@@ -4,12 +4,12 @@ import {
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
+  doNotForceTransaction,
   retrieveEntity,
+  shouldForceTransaction,
 } from "@medusajs/utils"
 import { PriceSet } from "@models"
 import { PriceSetRepository } from "@repositories"
-
-import { doNotForceTransaction, shouldForceTransaction } from "@medusajs/utils"
 
 type InjectedDependencies = {
   priceSetRepository: DAL.RepositoryService

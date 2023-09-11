@@ -23,6 +23,6 @@ export default class PriceSet {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ps")
+    this.id = generateEntityId(this.id, "pset")
   }
 }

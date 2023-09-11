@@ -1,6 +1,5 @@
+import { CreatePriceSetDTO, IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { IPricingModuleService } from "@medusajs/types"
 import { PriceSet } from "@models"
 
 import { initialize } from "../../../../src"
@@ -281,7 +280,7 @@ describe("PricingModule Service - PriceSet", () => {
       await service.create([
         {
           id: "price-set-new",
-        },
+        } as unknown as CreatePriceSetDTO,
       ])
 
       const [priceSet] = await service.list({

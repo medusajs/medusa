@@ -1,5 +1,5 @@
+import { CreatePriceSetDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
 import { MoneyAmount, PriceSet } from "@models"
 import { PriceSetRepository } from "@repositories"
 import { PriceSetService } from "@services"
@@ -371,7 +371,7 @@ describe("PriceSet Service", () => {
       await service.create([
         {
           id: "price-set-new",
-        },
+        } as unknown as CreatePriceSetDTO,
       ])
 
       const [priceSet] = await service.list({
@@ -381,7 +381,7 @@ describe("PriceSet Service", () => {
       expect(priceSet).toEqual(
         expect.objectContaining({
           id: "price-set-new",
-        })
+        } as unknown as CreatePriceSetDTO)
       )
     })
   })

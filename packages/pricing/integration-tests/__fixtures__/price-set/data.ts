@@ -1,6 +1,6 @@
 import { CreatePriceSetDTO } from "@medusajs/types"
 
-export const defaultPriceSetsData: CreatePriceSetDTO[] = [
+export const defaultPriceSetsData = [
   {
     id: "price-set-1",
   },
@@ -10,4 +10,4 @@ export const defaultPriceSetsData: CreatePriceSetDTO[] = [
   {
     id: "price-set-3",
   },
-]
+] as unknown as CreatePriceSetDTO[]
