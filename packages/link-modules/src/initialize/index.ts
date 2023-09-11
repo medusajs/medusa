@@ -90,8 +90,10 @@ export const initialize = async (
         continue
       }
     } else if (
-      !modulesLoadedKeys.includes(primary.serviceName) ||
-      !modulesLoadedKeys.includes(foreign.serviceName)
+      (!primary.isInternalService &&
+        !modulesLoadedKeys.includes(primary.serviceName)) ||
+      (!foreign.isInternalService &&
+        !modulesLoadedKeys.includes(foreign.serviceName))
     ) {
       continue
     }
@@ -176,8 +178,10 @@ export async function runMigrations(
     allLinks.add(serviceKey)
 
     if (
-      !modulesLoadedKeys.includes(primary.serviceName) ||
-      !modulesLoadedKeys.includes(foreign.serviceName)
+      (!primary.isInternalService &&
+        !modulesLoadedKeys.includes(primary.serviceName)) ||
+      (!foreign.isInternalService &&
+        !modulesLoadedKeys.includes(foreign.serviceName))
     ) {
       continue
     }

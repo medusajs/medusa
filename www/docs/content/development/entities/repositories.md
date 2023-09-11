@@ -8,17 +8,68 @@ In this document, you'll learn what repositories are, how to use them within you
 
 ## Overview
 
-Repositories provide generic helper methods for entities. For example, a `find` method to retrieve all entities with pagination, or `findOne` to retrieve a single entity record.
+Repositories provide generic helper methods for entities. For example, you can use the `find` method to retrieve all entities with pagination, or `findOne` to retrieve a single entity record.
 
 Repostories are [Typeorm repositories](https://typeorm.io/working-with-repository), so you can refer to Typeorm's documentation on all available methods.
 
-This guide provides some basic methods you'll need during your custom development with Medusa.
+By default, you don't need to create a repository for your custom entities. You can retrieve the default repository of an entity using the Entity Manager. You should only create a repository if you want to implement custom methods in it.
 
 ---
 
-## Basic Implementation
+## Access Default Repository
 
-Each entity you create needs a repository. A repository is created under the `src/repositories` directory of your Medusa backend project. The file name is the name of the repository without `Repository`.
+If you haven't created a custom repository, you can access the default repository using the [Entity Manager](https://typeorm.io/entity-manager-api). The Entity Manager is registered in the [dependency container](../fundamentals/dependency-injection.md) under the name `manager`. So, you can [resolve it](../fundamentals/dependency-injection.md#resolve-resources) and use its method `getRepository` to retrieve the repository of an entity.
+
+For example, to retrieve the default repository of an entity in a service:
+
+```ts title=src/services/post.ts
+import { Post } from "../models/post"
+
+class PostService extends TransactionBaseService {
+  // ...
+
+  async list(): Promise<Post[]> {
+    const postRepo = this.activeManager_.getRepository(
+      Post
+    )
+    return await postRepo.find()
+  }
+
+  // ...
+}
+```
+
+Another example is retrieving the default repository of an entity in an endpoint:
+
+```ts title=src/api/index.ts
+import { Post } from "../models/post"
+import { EntityManager } from "typeorm"
+
+// ...
+
+export default () => {
+  // ...
+
+  storeRouter.get("/posts", async (req, res) => {
+    const manager: EntityManager = req.scope.resolve("manager")
+    const postRepo = manager.getRepository(Post)
+
+    return res.json({
+      posts: await postRepo.find(),
+    })
+  })
+
+  // ...
+}
+```
+
+---
+
+## Create Custom Repository
+
+If you want to add custom methods or override existing methods in a repository, you can create a custom repository.
+
+Repositories are created under the `src/repositories` directory of your Medusa backend project. The file name is the name of the repository without `Repository`.
 
 For example, to create a repository for a `Post` entity, create the file `src/repositories/post.ts` with the following content:
 
@@ -30,11 +81,19 @@ import {
 
 export const PostRepository = dataSource
   .getRepository(Post)
+  .extend({
+    customMethod(): void {
+      // TODO add custom implementation
+      return
+    },
+  })
 
 export default PostRepository
 ```
 
-The repository is created using the `getRepository` method of the data source exported from the core package in Medusa. This method accepts the entity as a parameter.
+The repository is created using the `getRepository` method of the data source exported from the core package in Medusa. This method accepts the entity as a parameter. You then use the `extend` method to add a new method `customMethod`.
+
+You can learn about available Repository methods that you can override in [Typeorm's documentation](https://typeorm.io/repository-api).
 
 :::tip
 
@@ -44,41 +103,13 @@ A data source is Typeorm’s connection settings that allows you to connect to y
 
 ---
 
-## Customizing a Repository
-
-If you want to add methods to the repository or override Typeorm's Repository methods, you can do that using the `extend` method:
-
-```ts title=src/repositories/post.ts
-import { Post } from "../models/post"
-import { 
-  dataSource,
-} from "@medusajs/medusa/dist/loaders/database"
-
-export const PostRepository = dataSource
-  .getRepository(Post)
-  .extend({
-    customFunction(): void {
-      // TODO add custom implementation
-      return
-    },
-  })
-
-export default PostRepository
-```
-
-You can learn about available Repository methods in [Typeorm's documentation](https://typeorm.io/repository-api).
-
----
-
-## Using Repositories in Other Resources
-
-When you want to perform an action or use on an entity in one of your custom resources, such as an endpoint or a service, you need to use its repository.
+## Using Custom Repositories in Other Resources
 
 ### Endpoints
 
-To access a repository within an endpoint, use the `req.scope.resolve` method. For example:
+To access a custom repository within an endpoint, use the `req.scope.resolve` method. For example:
 
-```ts
+```ts title=src/api/index.ts
 import { PostRepository } from "../repositories/post"
 import { EntityManager } from "typeorm"
 
@@ -106,11 +137,11 @@ You can learn more about endpoints [here](../endpoints/overview.mdx).
 
 ### Services and Subscribers
 
-As repositories are registered in the [dependency container](../fundamentals/dependency-injection.md#dependency-container-and-injection), they can be accessed through dependency injection in the constructor of a service or a subscriber.
+As custom repositories are registered in the [dependency container](../fundamentals/dependency-injection.md#dependency-container-and-injection), they can be accessed through dependency injection in the constructor of a service or a subscriber.
 
 For example:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import { PostRepository } from "../repositories/post"
 
 class PostService extends TransactionBaseService {
