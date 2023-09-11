@@ -1,7 +1,6 @@
 ---
 "@medusajs/link-modules": patch
-"@medusajs/modules-sdk": patch
 "@medusajs/types": patch
 ---
 
-Add extra fields to link modules
+fix(link-modules): Fix link module initialization

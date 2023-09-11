@@ -2,10 +2,7 @@ import clsx from "clsx"
 import { useForm, useWatch } from "react-hook-form"
 import useNotification from "../../../hooks/use-notification"
 import { useAnalytics } from "../../../providers/analytics-provider"
-import {
-  analytics,
-  useAdminCreateAnalyticsConfig,
-} from "../../../services/analytics"
+import { useAdminCreateAnalyticsConfig } from "../../../services/analytics"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { nestedForm } from "../../../utils/nested-form"
 import Button from "../../fundamentals/button"
@@ -38,7 +35,7 @@ const AnalyticsPreferencesModal = () => {
     control,
   } = form
 
-  const { setSubmittingConfig } = useAnalytics()
+  const { setSubmittingConfig, trackUserEmail } = useAnalytics()
 
   const watchOptOut = useWatch({
     control: control,
@@ -65,7 +62,7 @@ const AnalyticsPreferencesModal = () => {
         )
 
         if (shouldTrackEmail) {
-          analytics.track("userEmail", { email })
+          trackUserEmail({ email })
         }
 
         setSubmittingConfig(false)

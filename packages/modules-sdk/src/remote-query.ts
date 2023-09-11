@@ -1,4 +1,9 @@
 import {
+  RemoteFetchDataCallback,
+  RemoteJoiner,
+  toRemoteJoinerQuery,
+} from "@medusajs/orchestration"
+import {
   JoinerRelationship,
   JoinerServiceConfig,
   LoadedModule,
@@ -6,8 +11,6 @@ import {
   RemoteExpandProperty,
   RemoteJoinerQuery,
 } from "@medusajs/types"
-
-import { RemoteFetchDataCallback, RemoteJoiner } from "@medusajs/orchestration"
 import { isString, toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "./medusa-module"
 
@@ -16,19 +19,15 @@ export class RemoteQuery {
   private modulesMap: Map<string, LoadedModule> = new Map()
   private customRemoteFetchData?: RemoteFetchDataCallback
 
-  constructor(
-    {
-      modulesLoaded,
-      customRemoteFetchData,
-      servicesConfig,
-    }: {
-      modulesLoaded?: LoadedModule[]
-      customRemoteFetchData?: RemoteFetchDataCallback
-      servicesConfig?: ModuleJoinerConfig[]
-    } = {
-      servicesConfig: [],
-    }
-  ) {
+  constructor({
+    modulesLoaded,
+    customRemoteFetchData,
+    servicesConfig = [],
+  }: {
+    modulesLoaded?: LoadedModule[]
+    customRemoteFetchData?: RemoteFetchDataCallback
+    servicesConfig?: ModuleJoinerConfig[]
+  }) {
     if (!modulesLoaded?.length) {
       modulesLoaded = MedusaModule.getLoadedModules().map(
         (mod) => Object.values(mod)[0]
@@ -217,12 +216,16 @@ export class RemoteQuery {
   }
 
   public async query(
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ): Promise<any> {
-    const finalQuery = isString(query)
-      ? RemoteJoiner.parseQuery(query, variables)
-      : query
+    let finalQuery: RemoteJoinerQuery = query as RemoteJoinerQuery
+
+    if (isString(query)) {
+      finalQuery = RemoteJoiner.parseQuery(query, variables)
+    } else if (!isString(finalQuery?.service) && !isString(finalQuery?.alias)) {
+      finalQuery = toRemoteJoinerQuery(query)
+    }
 
     return await this.remoteJoiner.query(finalQuery)
   }

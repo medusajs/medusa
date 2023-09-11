@@ -247,46 +247,39 @@ class TaxProviderService extends TransactionBaseService {
     lineItems: LineItem[],
     calculationContext: TaxCalculationContext
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
-    const productIds = lineItems
-      .map((l) => l?.variant?.product_id)
-      .filter((p) => p)
+    const productIds = [
+      ...new Set(
+        lineItems.map((item) => item?.variant?.product_id).filter((p) => p)
+      ),
+    ]
 
     const productRatesMap = await this.getRegionRatesForProduct(
       productIds,
       calculationContext.region
     )
 
-    const calculationLines = await Promise.all(
-      lineItems.map(async (l) => {
-        if (l.is_return) {
-          return null
-        }
+    const calculationLines = lineItems.map((item) => {
+      if (item.is_return) {
+        return null
+      }
 
-        if (l.variant_id && !l.variant) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Unable to get the tax lines for the item ${l.id}, it contains a variant_id but the variant is missing.`
-          )
-        }
-
-        if (l.variant?.product_id) {
-          return {
-            item: l,
-            rates: productRatesMap.get(l.variant.product_id) ?? [],
-          }
-        }
-
-        /*
-         * If the line item is custom and therefore not associated with a
-         * product we assume no taxes - we should consider adding rate overrides
-         * to custom lines at some point
-         */
+      if (item.variant?.product_id) {
         return {
-          item: l,
-          rates: [],
+          item: item,
+          rates: productRatesMap.get(item.variant?.product_id) ?? [],
         }
-      })
-    )
+      }
+
+      /*
+       * If the line item is custom and therefore not associated with a
+       * product we assume no taxes - we should consider adding rate overrides
+       * to custom lines at some point
+       */
+      return {
+        item: item,
+        rates: [],
+      }
+    })
 
     const shippingCalculationLines = await Promise.all(
       calculationContext.shipping_methods.map(async (sm) => {

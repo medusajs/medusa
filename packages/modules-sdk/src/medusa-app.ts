@@ -10,8 +10,8 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModulesSdkUtils,
   isObject,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
@@ -19,47 +19,34 @@ import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 
 export type MedusaModuleConfig = (Partial<ModuleConfig> | Modules)[]
-export type SharedResources = {
-  database?: ModuleServiceInitializeOptions["database"] & {
-    pool?: {
-      name?: string
-      afterCreate?: Function
-      min?: number
-      max?: number
-      refreshIdle?: boolean
-      idleTimeoutMillis?: number
-      reapIntervalMillis?: number
-      returnToHead?: boolean
-      priorityRange?: number
-      log?: (message: string, logLevel: string) => void
-    }
-  }
+type SharedResources = {
+  database?: ModuleServiceInitializeOptions["database"]
 }
 
-export async function MedusaApp(
-  {
-    sharedResourcesConfig,
-    servicesConfig,
-    modulesConfigPath,
-    modulesConfigFileName,
-    modulesConfig,
-    linkModules,
-    remoteFetchData,
-    injectedDependencies,
-  }: {
-    sharedResourcesConfig?: SharedResources
-    loadedModules?: LoadedModule[]
-    servicesConfig?: ModuleJoinerConfig[]
-    modulesConfigPath?: string
-    modulesConfigFileName?: string
-    modulesConfig?: MedusaModuleConfig
-    linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
-    remoteFetchData?: RemoteFetchDataCallback
-    injectedDependencies?: any
-  } = {
-    injectedDependencies: {},
-  }
-): Promise<{
+const isModuleConfig = (obj: any): obj is ModuleConfig => {
+  return isObject(obj)
+}
+
+export async function MedusaApp({
+  sharedResourcesConfig,
+  servicesConfig,
+  modulesConfigPath,
+  modulesConfigFileName,
+  modulesConfig,
+  linkModules,
+  remoteFetchData,
+  injectedDependencies = {},
+}: {
+  sharedResourcesConfig?: SharedResources
+  loadedModules?: LoadedModule[]
+  servicesConfig?: ModuleJoinerConfig[]
+  modulesConfigPath?: string
+  modulesConfigFileName?: string
+  modulesConfig?: MedusaModuleConfig
+  linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
+  remoteFetchData?: RemoteFetchDataCallback
+  injectedDependencies?: any
+}): Promise<{
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
   query: (
@@ -81,25 +68,16 @@ export async function MedusaApp(
     sharedResourcesConfig as ModuleServiceInitializeOptions,
     true
   )!
-  const { pool } = sharedResourcesConfig?.database ?? {}
 
-  if (dbData?.clientUrl) {
-    const { knex } = await import("knex")
-    const dbConnection = knex({
-      client: "pg",
-      searchPath: dbData.schema || "public",
-      connection: {
-        connectionString: dbData.clientUrl,
-        ssl: (dbData.driverOptions?.connection as any).ssl! ?? false,
-      },
-      pool: {
-        // https://knexjs.org/guide/#pool
-        ...(pool ?? {}),
-        min: pool?.min ?? 0,
-      },
-    })
-
-    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] = dbConnection
+  if (
+    dbData.clientUrl &&
+    !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
+  ) {
+    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
+      ModulesSdkUtils.createPgConnection({
+        ...(sharedResourcesConfig?.database ?? {}),
+        ...dbData,
+      })
   }
 
   const allModules: Record<string, LoadedModule | LoadedModule[]> = {}
@@ -110,7 +88,7 @@ export async function MedusaApp(
       let path: string
       let declaration: any = {}
 
-      if (isObject(mod)) {
+      if (isModuleConfig(mod)) {
         if (!mod.module) {
           throw new Error(
             `Module ${JSON.stringify(mod)} is missing module name.`
@@ -145,7 +123,7 @@ export async function MedusaApp(
         declaration,
         undefined,
         injectedDependencies,
-        isObject(mod) ? mod.definition : undefined
+        isModuleConfig(mod) ? mod.definition : undefined
       )) as LoadedModule
 
       if (allModules[key] && !Array.isArray(allModules[key])) {

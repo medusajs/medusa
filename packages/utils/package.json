@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/utils",
-  "version": "1.9.7",
+  "version": "1.10.0",
   "description": "Medusa utilities functions shared by Medusa core and Modules",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,11 +27,12 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/types": "^1.10.2",
+    "@medusajs/types": "^1.11.0",
     "@mikro-orm/core": "5.7.12",
     "@mikro-orm/migrations": "5.7.12",
     "@mikro-orm/postgresql": "5.7.12",
     "awilix": "^8.0.1",
+    "knex": "2.4.2",
     "ulid": "^2.3.0"
   },
   "scripts": {

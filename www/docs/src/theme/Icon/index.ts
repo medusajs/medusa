@@ -70,6 +70,8 @@ import IconMap from "./Map"
 import IconNewspaper from "./Newspaper"
 import IconNextjs from "./Nextjs"
 import IconPencilSquareSolid from "./PencilSquareSolid"
+import IconPhotoSolid from "./PhotoSolid"
+import IconPlusMini from "./PlusMini"
 import IconPuzzle from "./Puzzle"
 import IconPuzzleSolid from "./PuzzleSolid"
 import IconReact from "./React"
@@ -181,6 +183,8 @@ export default {
   newspaper: IconNewspaper,
   nextjs: IconNextjs,
   "pencil-square-solid": IconPencilSquareSolid,
+  "photo-solid": IconPhotoSolid,
+  "plus-mini": IconPlusMini,
   puzzle: IconPuzzle,
   "puzzle-solid": IconPuzzleSolid,
   react: IconReact,

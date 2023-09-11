@@ -168,6 +168,7 @@ export type ModuleJoinerConfig = Omit<
 }
 
 export declare type ModuleJoinerRelationship = JoinerRelationship & {
+  isInternalService?: boolean // If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more "internal" services
   deleteCascade?: boolean // If true, the link joiner will cascade deleting the relationship
 }
 
@@ -201,6 +202,7 @@ export interface ModuleServiceInitializeOptions {
     database?: string
     driverOptions?: Record<string, unknown>
     debug?: boolean
+    pool?: Record<string, unknown>
   }
 }
 
