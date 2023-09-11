@@ -3,7 +3,6 @@ import {
   ProductService,
   ProductVariantInventoryService,
   SalesChannelService,
-  ShippingProfileService,
 } from "../../../../services"
 import {
   IsArray,
@@ -409,24 +408,29 @@ async function listAndCountProductWithIsolatedProductModule(
       query ($filters: any, $order: any, $skip: Int, $take: Int) {
         product (${args}) {
           ${defaultStoreProductsFields.join("\n")}
+          
           images {
             ${commonProperties.join("\n")}
             url
             metadata
           }
+          
           tags {
             ${commonProperties.join("\n")}
             value
           }
+          
           type {
             ${commonProperties.join("\n")}
             value
           }
+          
           collection {
             title
             handle
             ${commonProperties.join("\n")}
           }
+          
           options {
             ${commonProperties.join("\n")}
             title
@@ -440,6 +444,7 @@ async function listAndCountProductWithIsolatedProductModule(
               metadata
             }
           }
+          
           variants {
             ${commonProperties.join("\n")}
             title
@@ -469,6 +474,14 @@ async function listAndCountProductWithIsolatedProductModule(
               metadata
             }
           }
+          
+          shipping_profile {
+            profile {
+              id
+              name
+              type
+            }
+          }
         } 
       }
     `
@@ -478,18 +491,12 @@ async function listAndCountProductWithIsolatedProductModule(
     metadata: { count },
   } = await remoteQuery(query, variables)
 
-  // TODO: Waiting for pr #4990 before being able to remove that logic and replace it by a new relation in the query above
-  const shippingProfileService = req.scope.resolve(
-    "shippingProfileService"
-  ) as ShippingProfileService
-
-  const profilesByProductId = await shippingProfileService.retrieveForProducts(
-    products.map((p) => p.id)
-  )
-
   products.forEach((product) => {
-    product.profile_id = profilesByProductId[product.id]?.[0]?.id
-    product.profiles = profilesByProductId[product.id]
+    product.profile_id = product.shipping_profile?.profile?.id
+    product.profiles = product.shipping_profile?.profile
+      ? [product.shipping_profile?.profile]
+      : undefined
+    product.profile = product.shipping_profile?.profile
   })
 
   return [products, count]
