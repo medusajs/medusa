@@ -1,5 +1,6 @@
-import { FlagRouter } from "@medusajs/utils"
 import { NextFunction, Request, Response } from "express"
+
+import { FlagRouter } from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../loaders/feature-flags/sales-channels"
 import { SalesChannelService } from "../../services"
 
@@ -8,11 +9,13 @@ import { SalesChannelService } from "../../services"
  * @param context Object of options
  * @param context.attachChannelAsArray Whether to attach the default sales channel as an array or just a string
  */
-export function withDefaultSalesChannel({
-  attachChannelAsArray,
-}: {
-  attachChannelAsArray?: boolean
-}): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+export function withDefaultSalesChannel(
+  {
+    attachChannelAsArray,
+  }: {
+    attachChannelAsArray: boolean
+  } = { attachChannelAsArray: false }
+): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, _, next: NextFunction) => {
     const featureFlagRouter = req.scope.resolve(
       "featureFlagRouter"
@@ -38,6 +41,7 @@ export function withDefaultSalesChannel({
           : defaultSalesChannel.id
       }
     } catch {
+      // noop
     } finally {
       next()
     }
