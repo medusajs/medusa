@@ -18,7 +18,7 @@ type Props = {
 }
 
 // Analytics instance used for tracking errors
-let analyticsInstance: ReturnType<typeof AnalyticsBrowser.load> | undefined;
+let analyticsInstance: ReturnType<typeof AnalyticsBrowser.load> | undefined
 
 const analytics = () => {
   if (!analyticsInstance) {
@@ -122,7 +122,7 @@ const shouldTrackEvent = async (error: Error) => {
     return false
   }
 
-  return await analyticsOptIn();
+  return await analyticsOptIn()
 }
 
 const errorMessage = (t: TFunction, status?: number) => {
