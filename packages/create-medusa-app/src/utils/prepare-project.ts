@@ -21,6 +21,8 @@ type PrepareOptions = {
   abortController?: AbortController
   skipDb?: boolean
   migrations?: boolean
+  onboardingType?: "default" | "nextjs"
+  nextjsDirectory?: string
 }
 
 export default async ({
@@ -34,6 +36,8 @@ export default async ({
   abortController,
   skipDb,
   migrations,
+  onboardingType = "default",
+  nextjsDirectory = "",
 }: PrepareOptions) => {
   // initialize execution options
   const execOptions = {
@@ -61,11 +65,12 @@ export default async ({
   let inviteToken: string | undefined = undefined
 
   if (!skipDb) {
+    let env = `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}${EOL}MEDUSA_ADMIN_ONBOARDING_TYPE=${onboardingType}${EOL}STORE_CORS=http://localhost:8000,http://localhost:7001`
+    if (nextjsDirectory) {
+      env += `${EOL}MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY=${nextjsDirectory}`
+    }
     // add connection string to project
-    fs.appendFileSync(
-      path.join(directory, `.env`),
-      `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}`
-    )
+    fs.appendFileSync(path.join(directory, `.env`), env)
   }
 
   factBoxOptions.interval = displayFactBox({

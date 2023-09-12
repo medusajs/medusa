@@ -24,9 +24,10 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
     },
     {
       serviceName: "shippingProfileService",
+      isInternalService: true,
       primaryKey: "id",
       foreignKey: "profile_id",
-      alias: "shipping_profile",
+      alias: "profile",
     },
   ],
   extends: [
@@ -34,6 +35,7 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
       serviceName: Modules.PRODUCT,
       relationship: {
         serviceName: LINKS.ProductShippingProfile,
+        isInternalService: true,
         primaryKey: "product_id",
         foreignKey: "id",
         alias: "shipping_profile",
@@ -43,6 +45,7 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
       serviceName: "shippingProfileService",
       relationship: {
         serviceName: LINKS.ProductShippingProfile,
+        isInternalService: true,
         primaryKey: "profile_id",
         foreignKey: "id",
         alias: "product_link",

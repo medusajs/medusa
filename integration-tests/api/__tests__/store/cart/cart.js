@@ -562,6 +562,7 @@ describe("/store/carts", () => {
               {
                 id: "test-li",
                 variant_id: "test-variant",
+                product_id: "test-product",
                 quantity: 1,
                 unit_price: 100,
                 adjustments: [
@@ -650,6 +651,7 @@ describe("/store/carts", () => {
             id: "line-item-2",
             cart_id: discountCart.id,
             variant_id: "test-variant-quantity",
+            product_id: "test-product",
             unit_price: 950,
             quantity: 1,
             adjustments: [
@@ -719,6 +721,7 @@ describe("/store/carts", () => {
             id: "line-item-2",
             cart_id: discountCart.id,
             variant_id: "test-variant-quantity",
+            product_id: "test-product",
             unit_price: 1000,
             quantity: 1,
             adjustments: [
@@ -810,6 +813,7 @@ describe("/store/carts", () => {
         unit_price: 1000,
         quantity: 1,
         variant_id: "test-variant-quantity",
+        product_id: "test-product",
         cart_id: "test-cart-w-total-fixed-discount",
       })
 
@@ -853,6 +857,7 @@ describe("/store/carts", () => {
         unit_price: 1000,
         quantity: 1,
         variant_id: "test-variant-quantity",
+        product_id: "test-product",
         cart_id: "test-cart-w-total-percentage-discount",
       })
 
@@ -896,6 +901,7 @@ describe("/store/carts", () => {
         unit_price: 1000,
         quantity: 1,
         variant_id: "test-variant-quantity",
+        product_id: "test-product",
         cart_id: "test-cart-w-item-fixed-discount",
       })
 
@@ -939,6 +945,7 @@ describe("/store/carts", () => {
         unit_price: 1000,
         quantity: 1,
         variant_id: "test-variant-quantity",
+        product_id: "test-product",
         cart_id: "test-cart-w-item-percentage-discount",
       })
 
@@ -1056,6 +1063,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1116,6 +1124,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1266,6 +1275,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1333,6 +1343,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1393,6 +1404,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -1463,6 +1475,7 @@ describe("/store/carts", () => {
           line_items: [
             {
               variant_id: "test-variant",
+              product_id: "test-product",
               unit_price: 100,
             },
           ],
@@ -2213,6 +2226,7 @@ describe("/store/carts", () => {
         line_items: [
           {
             variant_id: product.variants[0].id,
+            product_id: product.id,
             quantity: 1,
             unit_price: 1000,
           },
@@ -2257,6 +2271,7 @@ describe("/store/carts", () => {
       line_items: [
         {
           variant_id: product.variants[0].id,
+          product_id: product.id,
           quantity: 1,
           unit_price: 1000,
         },
@@ -2708,7 +2723,13 @@ describe("/store/carts", () => {
       const product = await simpleProductFactory(dbConnection)
       const cart = await simpleCartFactory(dbConnection, {
         region: region.id,
-        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+        line_items: [
+          {
+            variant_id: product.variants[0].id,
+            product_id: product.id,
+            quantity: 1,
+          },
+        ],
         shipping_address: {
           country_code: "us",
         },
@@ -2743,7 +2764,13 @@ describe("/store/carts", () => {
       const product = await simpleProductFactory(dbConnection)
       const cart = await simpleCartFactory(dbConnection, {
         region: region.id,
-        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+        line_items: [
+          {
+            variant_id: product.variants[0].id,
+            product_id: product.id,
+            quantity: 1,
+          },
+        ],
       })
       await simpleShippingOptionFactory(dbConnection, {
         region_id: region.id,
@@ -2775,7 +2802,13 @@ describe("/store/carts", () => {
       const product = await simpleProductFactory(dbConnection)
       const cart = await simpleCartFactory(dbConnection, {
         region: region.id,
-        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+        line_items: [
+          {
+            variant_id: product.variants[0].id,
+            product_id: product.id,
+            quantity: 1,
+          },
+        ],
       })
       await simpleShippingOptionFactory(dbConnection, {
         region_id: region.id,

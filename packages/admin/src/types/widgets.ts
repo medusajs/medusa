@@ -7,12 +7,17 @@ import type {
   Order,
   PriceList,
   Product,
+  ProductCollection,
 } from "@medusajs/medusa"
 
 import type { WidgetConfig, WidgetProps } from "@medusajs/admin-ui"
 
 export interface ProductDetailsWidgetProps extends WidgetProps {
   product: Product
+}
+
+export interface ProductCollectionDetailsWidgetProps extends WidgetProps {
+  productCollection: ProductCollection
 }
 
 export interface OrderDetailsWidgetProps extends WidgetProps {
