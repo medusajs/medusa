@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 import { useAdminCreateBatchJob } from "medusa-react"
 import Spacer from "../../components/atoms/spacer"
@@ -25,6 +26,7 @@ const VIEWS = ["orders", "drafts"]
 const OrderIndex = () => {
   const view = "orders"
 
+  const { t } = useTranslation()
   const { resetInterval } = usePolling()
   const navigate = useNavigate()
   const createBatchJob = useAdminCreateBatchJob()
@@ -67,10 +69,17 @@ const OrderIndex = () => {
     createBatchJob.mutate(reqObj, {
       onSuccess: () => {
         resetInterval()
-        notification("Success", "Successfully initiated export", "success")
+        notification(
+          t("orders-success", "Success"),
+          t(
+            "orders-successfully-initiated-export",
+            "Successfully initiated export"
+          ),
+          "success"
+        )
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(t("orders-error", "Error"), getErrorMessage(err), "error")
       },
     })
 
@@ -123,7 +132,7 @@ const OrderIndex = () => {
       </div>
       {exportModalOpen && (
         <ExportModal
-          title="Export Orders"
+          title={t("orders-export-orders", "Export Orders")}
           handleClose={() => closeExportModal()}
           onSubmit={handleCreateExport}
           loading={createBatchJob.isLoading}

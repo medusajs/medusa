@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { FilteringOptionProps } from "../../molecules/table/filtering-option"
 import { SimpleProductType } from "./utils"
 
 // TODO: Redo this with server side sorting
 
 const useSortingOptions = (products: SimpleProductType[]) => {
+  const { t } = useTranslation()
   const [options, setOptions] = useState<FilteringOptionProps[]>([])
   const [sortedProducts, setSortedProducts] =
     useState<SimpleProductType[]>(products)
@@ -42,16 +44,16 @@ const useSortingOptions = (products: SimpleProductType[]) => {
   useEffect(() => {
     setOptions([
       {
-        title: "Sort by",
+        title: t("collection-product-table-sort-by", "Sort by"),
         options: [
           {
-            title: "All",
+            title: t("collection-product-table-all", "All"),
             onClick: () => {
               setSortedProducts(products)
             },
           },
           {
-            title: "Newest",
+            title: t("collection-product-table-newest", "Newest"),
             onClick: () => {
               const sorted = products.sort(sortByNewest)
               console.log(sorted)
@@ -59,7 +61,7 @@ const useSortingOptions = (products: SimpleProductType[]) => {
             },
           },
           {
-            title: "Oldest",
+            title: t("collection-product-table-oldest", "Oldest"),
             onClick: () => {
               const sorted = products.sort(sortByOldest)
               console.log(sorted)
@@ -67,7 +69,7 @@ const useSortingOptions = (products: SimpleProductType[]) => {
             },
           },
           {
-            title: "Title",
+            title: t("collection-product-table-title", "Title"),
             onClick: () => {
               const sorted = products.sort(sortByTitle)
               console.log(sorted)

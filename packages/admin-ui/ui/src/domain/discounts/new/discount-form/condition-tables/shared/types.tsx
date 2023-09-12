@@ -1,6 +1,7 @@
 import { ProductType } from "@medusajs/medusa"
 import { useMemo } from "react"
 import { Column, HeaderGroup, Row } from "react-table"
+import { Translation } from "react-i18next"
 import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
 import Table from "../../../../../../components/molecules/table"
 
@@ -42,9 +43,13 @@ export const useTypesColumns = () => {
     return [
       {
         Header: () => (
-          <div className="flex min-w-[626px] items-center gap-1">
-            Type <SortingIcon size={16} />
-          </div>
+          <Translation>
+            {(t) => (
+              <div className="flex min-w-[626px] items-center gap-1">
+                {t("shared-type", "Type")} <SortingIcon size={16} />
+              </div>
+            )}
+          </Translation>
         ),
         accessor: "value",
         Cell: ({ row: { original } }) => {

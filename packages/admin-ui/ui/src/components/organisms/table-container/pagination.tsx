@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { SkeletonProvider } from "../../../providers/skeleton-provider"
 import Skeleton from "../../atoms/skeleton"
 import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
@@ -24,6 +25,7 @@ export const TablePagination = ({
     hasPrev,
   },
 }: Props) => {
+  const { t } = useTranslation()
   const soothedOffset = count > 0 ? offset + 1 : 0
   const soothedPageCount = Math.max(1, pageCount)
 
@@ -35,11 +37,31 @@ export const TablePagination = ({
         }
       >
         <Skeleton>
-          <div>{`${soothedOffset} - ${pageSize} of ${count} ${title}`}</div>
+          <div>
+            {t(
+              "table-container-soothed-offset",
+              "{{soothedOffset}} - {{pageSize}} of {{count}} {{title}}",
+              {
+                soothedOffset,
+                pageSize,
+                count,
+                title,
+              }
+            )}
+          </div>
         </Skeleton>
         <div className="flex space-x-4">
           <Skeleton>
-            <div>{`${currentPage} of ${soothedPageCount}`}</div>
+            <div>
+              {t(
+                "table-container-current-page",
+                "{{currentPage}} of {{soothedPageCount}}",
+                {
+                  currentPage,
+                  soothedPageCount,
+                }
+              )}
+            </div>
           </Skeleton>
           <div className="flex items-center space-x-4">
             <button

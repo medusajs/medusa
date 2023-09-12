@@ -1,10 +1,12 @@
 import { Controller } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Accordion from "../../../../components/organisms/accordion"
 import RadioGroup from "../../../../components/organisms/radio-group"
 import { usePriceListForm } from "../form/pricing-form-context"
 import { PriceListType } from "../types"
 
 const Type = () => {
+  const { t } = useTranslation()
   const { control } = usePriceListForm()
 
   return (
@@ -12,9 +14,15 @@ const Type = () => {
       forceMountContent
       required
       value="type"
-      title="Price list type"
-      description="Select the type of the price list"
-      tooltip="Unlike with sale prices a price override will not communicate to the customer that the price is part of a sale."
+      title={t("sections-price-list-type", "Price list type")}
+      description={t(
+        "sections-select-the-type-of-the-price-list",
+        "Select the type of the price list"
+      )}
+      tooltip={t(
+        "sections-sale-prices-compare-to-price-override",
+        "Unlike with sale prices a price override will not communicate to the customer that the price is part of a sale."
+      )}
     >
       <Controller
         name="type"
@@ -30,14 +38,20 @@ const Type = () => {
               <RadioGroup.Item
                 value={PriceListType.SALE}
                 className="flex-1"
-                label="Sale"
-                description="Use this if you are creating prices for a sale."
+                label={t("sections-sale", "Sale")}
+                description={t(
+                  "sections-use-this-if-you-are-creating-prices-for-a-sale",
+                  "Use this if you are creating prices for a sale."
+                )}
               />
               <RadioGroup.Item
                 value={PriceListType.OVERRIDE}
                 className="flex-1"
-                label="Override"
-                description="Use this to override prices."
+                label={t("sections-override", "Override")}
+                description={t(
+                  "sections-use-this-to-override-prices",
+                  "Use this to override prices."
+                )}
               />
             </RadioGroup.Root>
           )
