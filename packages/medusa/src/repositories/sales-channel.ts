@@ -85,7 +85,7 @@ export const SalesChannelRepository = dataSource
         : [salesChannelIds]
 
       const result = await this.createQueryBuilder()
-        .select("*")
+        .select(["sales_channel_id", "product_id"])
         .from(productSalesChannelTable, "psc")
         .where({ sales_channel_id: In(salesChannelIds) })
         .execute()

@@ -17,7 +17,7 @@ export interface OptionsQuery<T, P extends string = never> {
 }
 
 export type FindOptions<T = any> = {
-  where: FilterQuery<T> | BaseFilterable<FilterQuery<T>>
+  where: FilterQuery<T> & BaseFilterable<FilterQuery<T>>
   options?: OptionsQuery<T, any>
 }
 

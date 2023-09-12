@@ -402,42 +402,58 @@ async function listAndCountProductWithIsolatedProductModule(
     take: $take
   `
 
-  const commonProperties = ["id", "created_at", "updated_at", "deleted_at"]
-
   const query = `
       query ($filters: any, $order: any, $skip: Int, $take: Int) {
         product (${args}) {
           ${defaultStoreProductsFields.join("\n")}
           
           images {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             url
             metadata
           }
           
           tags {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             value
           }
           
           type {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             value
           }
           
           collection {
             title
             handle
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
           }
           
           options {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             title
             product_id
             metadata
             values {
-              ${commonProperties.join("\n")}
+              id
+              created_at
+              updated_at
+              deleted_at
               value
               option_id
               variant_id
@@ -446,7 +462,10 @@ async function listAndCountProductWithIsolatedProductModule(
           }
           
           variants {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             title
             product_id
             sku
@@ -467,7 +486,10 @@ async function listAndCountProductWithIsolatedProductModule(
             width
             metadata
             options {
-              ${commonProperties.join("\n")}
+              id
+              created_at
+              updated_at
+              deleted_at
               value
               option_id
               variant_id
@@ -478,6 +500,9 @@ async function listAndCountProductWithIsolatedProductModule(
           shipping_profile {
             profile {
               id
+              created_at
+              updated_at
+              deleted_at
               name
               type
             }
