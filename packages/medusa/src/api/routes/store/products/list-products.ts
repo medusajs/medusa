@@ -515,7 +515,7 @@ async function listAndCountProductWithIsolatedProductModule(
   } = await remoteQuery(query, variables)
 
   products.forEach((product) => {
-    product.profile_id = product.shipping_profile?.profile?.id
+    product.profile_id = product.profile?.id
   })
 
   return [products, count]
