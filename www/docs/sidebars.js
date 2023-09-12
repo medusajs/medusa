@@ -442,8 +442,8 @@ module.exports = {
     {
       type: "category",
       link: {
-        type: "doc",
-        ref: "contribution/docs",
+        type: "ref",
+        id: "contribution/docs",
       },
       label: "Contribution Guidelines",
       customProps: {
