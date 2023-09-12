@@ -3,6 +3,7 @@ import { PricedVariant } from "@medusajs/medusa/dist/types/pricing"
 import { createColumnHelper } from "@tanstack/react-table"
 import clsx from "clsx"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import Thumbnail from "../../../../../components/atoms/thumbnail"
 import Tooltip from "../../../../../components/atoms/tooltip"
 import SortingIcon from "../../../../../components/fundamentals/icons/sorting-icon"
@@ -12,6 +13,7 @@ import { formatAmountWithSymbol } from "../../../../../utils/prices"
 const columnHelper = createColumnHelper<PricedVariant>()
 
 export const useAddAdditionalItemsColumns = (order: Order) => {
+  const { t } = useTranslation()
   const columns = useMemo(
     () => [
       columnHelper.display({
@@ -49,9 +51,10 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
                 />
               ) : (
                 <Tooltip
-                  content={
+                  content={t(
+                    "add-additional-items-screen-variant-price-missing",
                     "This variant does not have a price for the region/currency of this order, and cannot be selected."
-                  }
+                  )}
                 >
                   <IndeterminateCheckbox
                     checked={getIsSelected()}
@@ -124,7 +127,11 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
       }),
       columnHelper.accessor("inventory_quantity", {
         maxSize: 20,
-        header: () => <p className="select-none text-right">Stock</p>,
+        header: () => (
+          <p className="select-none text-right">
+            {t("add-additional-items-screen-stock", "Stock")}
+          </p>
+        ),
         cell: ({ cell: { getValue }, row: { getCanSelect } }) => {
           const isSelectable = getCanSelect()
 
@@ -141,7 +148,11 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
       }),
       columnHelper.accessor("calculated_price_incl_tax", {
         maxSize: 80,
-        header: () => <p className="text-right">Price</p>,
+        header: () => (
+          <p className="text-right">
+            {t("add-additional-items-screen-price", "Price")}
+          </p>
+        ),
         cell: ({
           getValue,
           row: {
@@ -154,7 +165,10 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
             <div className="text-right">
               {original_price_incl_tax !== price && (
                 <Tooltip
-                  content="The price has been overridden in a price list, that is applicable to this order."
+                  content={t(
+                    "add-additional-items-screen-price-overridden-in-price-list-applicable-to-this-order",
+                    "The price has been overridden in a price list, that is applicable to this order."
+                  )}
                   side="top"
                 >
                   <p className="text-grey-40 cursor-default line-through">

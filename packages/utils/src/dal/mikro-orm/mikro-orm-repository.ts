@@ -6,7 +6,7 @@ import {
 } from "@medusajs/types"
 import { isString } from "../../common"
 import { MedusaContext } from "../../decorators"
-import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
+import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
@@ -130,6 +130,22 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
     })
 
     return [entities, softDeletedEntitiesMap]
+  }
+
+  applyFreeTextSearchFilters<T>(
+    findOptions: DAL.FindOptions<T & { q?: string }>,
+    retrieveConstraintsToApply: (q: string) => any[]
+  ): void {
+    if (!("q" in findOptions.where) || !findOptions.where.q) {
+      return
+    }
+
+    const q = findOptions.where.q as string
+    delete findOptions.where.q
+
+    findOptions.where = {
+      $and: [findOptions.where, { $or: retrieveConstraintsToApply(q) }],
+    } as unknown as DAL.FilterQuery<T & { q?: string }>
   }
 }
 

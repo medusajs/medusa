@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../../../components/fundamentals/button"
 import { DiscountConditionOperator } from "../../../../types"
 import { useDiscountForm } from "../../form/discount-form-context"
@@ -21,11 +22,12 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
   operator,
   onClose,
 }) => {
+  const { t } = useTranslation()
   const { updateCondition } = useDiscountForm()
   return (
     <div className="gap-x-xsmall flex w-full items-center justify-end">
       <Button variant="secondary" size="small" onClick={onClose}>
-        Cancel
+        {t("edit-condition-tables-cancel", "Cancel")}
       </Button>
       <Button
         variant="danger"
@@ -39,7 +41,7 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
           onClose()
         }}
       >
-        Delete condition
+        {t("edit-condition-tables-delete-condition", "Delete condition")}
       </Button>
       <Button
         variant="primary"
@@ -54,7 +56,7 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
         }}
         className="min-w-[128px]"
       >
-        Save
+        {t("edit-condition-tables-save", "Save")}
       </Button>
     </div>
   )

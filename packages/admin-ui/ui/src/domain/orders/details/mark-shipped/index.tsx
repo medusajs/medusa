@@ -6,6 +6,8 @@ import {
 } from "medusa-react"
 import React, { useState } from "react"
 import { Controller, useFieldArray, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+
 import Button from "../../../../components/fundamentals/button"
 import CheckIcon from "../../../../components/fundamentals/icons/check-icon"
 import IconTooltip from "../../../../components/molecules/icon-tooltip"
@@ -31,6 +33,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
   fulfillment,
   handleCancel,
 }) => {
+  const { t } = useTranslation()
   const { control, watch, handleSubmit } = useForm<MarkShippedFormData>({
     defaultValues: {
       tracking_numbers: [{ value: "" }],
@@ -80,7 +83,10 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
       | typeof markClaimShipped
 
     let action: actionType = markOrderShipped
-    let successText = "Successfully marked order as shipped"
+    let successText = t(
+      "mark-shipped-successfully-marked-order-as-shipped",
+      "Successfully marked order as shipped"
+    )
     let requestObj
 
     switch (type) {
@@ -92,7 +98,10 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
           tracking_numbers,
           no_notification: noNotis,
         }
-        successText = "Successfully marked swap as shipped"
+        successText = t(
+          "mark-shipped-successfully-marked-swap-as-shipped",
+          "Successfully marked swap as shipped"
+        )
         break
 
       case "claim":
@@ -102,7 +111,10 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
           claim_id: resourceId,
           tracking_numbers,
         }
-        successText = "Successfully marked claim as shipped"
+        successText = t(
+          "mark-shipped-successfully-marked-claim-as-shipped",
+          "Successfully marked claim as shipped"
+        )
         break
 
       default:
@@ -116,10 +128,19 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
 
     action.mutate(requestObj, {
       onSuccess: () => {
-        notification("Success", successText, "success")
+        notification(
+          t("mark-shipped-success", "Success"),
+          successText,
+          "success"
+        )
         handleCancel()
       },
-      onError: (err) => notification("Error", getErrorMessage(err), "error"),
+      onError: (err) =>
+        notification(
+          t("mark-shipped-error", "Error"),
+          getErrorMessage(err),
+          "error"
+        ),
     })
   }
 
@@ -133,12 +154,17 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
         <Modal.Body>
           <Modal.Header handleClose={handleCancel}>
             <span className="inter-xlarge-semibold">
-              Mark Fulfillment Shipped
+              {t(
+                "mark-shipped-mark-fulfillment-shipped",
+                "Mark Fulfillment Shipped"
+              )}
             </span>
           </Modal.Header>
           <Modal.Content>
             <div className="flex flex-col">
-              <span className="inter-base-semibold mb-2">Tracking</span>
+              <span className="inter-base-semibold mb-2">
+                {t("mark-shipped-tracking", "Tracking")}
+              </span>
               <div className="flex flex-col space-y-2">
                 {trackingNumbers.map((tn, index) => (
                   <Controller
@@ -152,9 +178,19 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                       return (
                         <Input
                           deletable={index !== 0}
-                          label={index === 0 ? "Tracking number" : ""}
+                          label={
+                            index === 0
+                              ? t(
+                                  "mark-shipped-tracking-number-label",
+                                  "Tracking number"
+                                )
+                              : ""
+                          }
                           type="text"
-                          placeholder={"Tracking number..."}
+                          placeholder={t(
+                            "mark-shipped-tracking-number",
+                            "Tracking number..."
+                          )}
                           {...field}
                           onDelete={() => removeTracking(index)}
                         />
@@ -171,7 +207,10 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                 variant="secondary"
                 disabled={trackingNumbers.some((tn) => !tn.value)}
               >
-                + Add Additional Tracking Number
+                {t(
+                  "mark-shipped-add-additional-tracking-number",
+                  "+ Add Additional Tracking Number"
+                )}
               </Button>
             </div>
           </Modal.Content>
@@ -198,7 +237,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                   type="checkbox"
                 />
                 <span className="text-grey-90 gap-x-xsmall ml-3 flex items-center">
-                  Send notifications
+                  {t("mark-shipped-send-notifications", "Send notifications")}
                   <IconTooltip content="" />
                 </span>
               </div>
@@ -210,7 +249,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                   onClick={handleCancel}
                   type="button"
                 >
-                  Cancel
+                  {t("mark-shipped-cancel", "Cancel")}
                 </Button>
                 <Button
                   size="large"
@@ -220,7 +259,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                   loading={isSubmitting}
                   disabled={isSubmitting}
                 >
-                  Complete
+                  {t("mark-shipped-complete", "Complete")}
                 </Button>
               </div>
             </div>

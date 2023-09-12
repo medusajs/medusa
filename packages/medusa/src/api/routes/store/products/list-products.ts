@@ -2,6 +2,7 @@ import {
   CartService,
   ProductService,
   ProductVariantInventoryService,
+  SalesChannelService,
 } from "../../../../services"
 import {
   IsArray,
@@ -22,6 +23,8 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
+import { defaultStoreProductsFields } from "./index"
 
 /**
  * @oas [get] /store/products
@@ -216,6 +219,8 @@ export default async (req, res) => {
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+
   const validated = req.validatedQuery as StoreGetProductsParams
 
   let {
@@ -224,7 +229,6 @@ export default async (req, res) => {
     currency_code: currencyCode,
     ...filterableFields
   } = req.filterableFields
-
   const listConfig = req.listConfig
 
   // get only published products for store endpoint
@@ -246,9 +250,23 @@ export default async (req, res) => {
     }
   }
 
+  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
+    IsolateProductDomain.key
+  )
+
   const promises: Promise<any>[] = []
 
-  promises.push(productService.listAndCount(filterableFields, listConfig))
+  if (isIsolateProductDomain) {
+    promises.push(
+      listAndCountProductWithIsolatedProductModule(
+        req,
+        filterableFields,
+        listConfig
+      )
+    )
+  } else {
+    promises.push(productService.listAndCount(filterableFields, listConfig))
+  }
 
   if (validated.cart_id) {
     promises.push(
@@ -310,6 +328,197 @@ export default async (req, res) => {
     offset: validated.offset,
     limit: validated.limit,
   })
+}
+
+async function listAndCountProductWithIsolatedProductModule(
+  req,
+  filterableFields,
+  listConfig
+) {
+  // TODO: Add support for fields/expands
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  let salesChannelIdFilter = filterableFields.sales_channel_id
+  if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
+    salesChannelIdFilter ??= req.publishableApiKeyScopes.sales_channel_ids
+  }
+
+  delete filterableFields.sales_channel_id
+
+  filterableFields["categories"] = {
+    $or: [
+      {
+        id: null,
+      },
+      {
+        ...(filterableFields.categories || {}),
+        // Store APIs are only allowed to query active and public categories
+        ...defaultStoreCategoryScope,
+      },
+    ],
+  }
+
+  // This is not the best way of handling cross filtering but for now I would say it is fine
+  if (salesChannelIdFilter) {
+    const salesChannelService = req.scope.resolve(
+      "salesChannelService"
+    ) as SalesChannelService
+
+    const productIdsInSalesChannel =
+      await salesChannelService.listProductIdsBySalesChannelIds(
+        salesChannelIdFilter
+      )
+
+    let filteredProductIds = productIdsInSalesChannel[salesChannelIdFilter]
+
+    if (filterableFields.id) {
+      filterableFields.id = Array.isArray(filterableFields.id)
+        ? filterableFields.id
+        : [filterableFields.id]
+
+      const salesChannelProductIdsSet = new Set(filteredProductIds)
+
+      filteredProductIds = filterableFields.id.filter((productId) =>
+        salesChannelProductIdsSet.has(productId)
+      )
+    }
+
+    filterableFields.id = filteredProductIds
+  }
+
+  const variables = {
+    filters: filterableFields,
+    order: listConfig.order,
+    skip: listConfig.skip,
+    take: listConfig.take,
+  }
+
+  // prettier-ignore
+  const args = `
+    filters: $filters,
+    order: $order,
+    skip: $skip, 
+    take: $take
+  `
+
+  const query = `
+      query ($filters: any, $order: any, $skip: Int, $take: Int) {
+        product (${args}) {
+          ${defaultStoreProductsFields.join("\n")}
+          
+          images {
+            id
+            created_at
+            updated_at
+            deleted_at
+            url
+            metadata
+          }
+          
+          tags {
+            id
+            created_at
+            updated_at
+            deleted_at
+            value
+          }
+          
+          type {
+            id
+            created_at
+            updated_at
+            deleted_at
+            value
+          }
+          
+          collection {
+            title
+            handle
+            id
+            created_at
+            updated_at
+            deleted_at
+          }
+          
+          options {
+            id
+            created_at
+            updated_at
+            deleted_at
+            title
+            product_id
+            metadata
+            values {
+              id
+              created_at
+              updated_at
+              deleted_at
+              value
+              option_id
+              variant_id
+              metadata
+            }
+          }
+          
+          variants {
+            id
+            created_at
+            updated_at
+            deleted_at
+            title
+            product_id
+            sku
+            barcode
+            ean
+            upc
+            variant_rank
+            inventory_quantity
+            allow_backorder
+            manage_inventory
+            hs_code
+            origin_country
+            mid_code
+            material
+            weight
+            length
+            height
+            width
+            metadata
+            options {
+              id
+              created_at
+              updated_at
+              deleted_at
+              value
+              option_id
+              variant_id
+              metadata
+            }
+          }
+          
+          profile {
+            id
+            created_at
+            updated_at
+            deleted_at
+            name
+            type
+          }
+        } 
+      }
+    `
+
+  const {
+    rows: products,
+    metadata: { count },
+  } = await remoteQuery(query, variables)
+
+  products.forEach((product) => {
+    product.profile_id = product.profile?.id
+  })
+
+  return [products, count]
 }
 
 export class StoreGetProductsPaginationParams extends PriceSelectionParams {

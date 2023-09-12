@@ -4,6 +4,7 @@ import {
   useAdminPriceListProducts,
 } from "medusa-react"
 import { HeaderGroup, Row } from "react-table"
+import { useTranslation } from "react-i18next"
 import CancelIcon from "../../../../../../components/fundamentals/icons/cancel-icon"
 import EditIcon from "../../../../../../components/fundamentals/icons/edit-icon"
 import Table from "../../../../../../components/molecules/table"
@@ -25,6 +26,7 @@ type PricesTableProps = {
 }
 
 const PricesTable = ({ id, selectProduct }: PricesTableProps) => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
   const {
     products,
@@ -66,7 +68,10 @@ const PricesTable = ({ id, selectProduct }: PricesTableProps) => {
         totalCount={count}
         options={{
           enableSearch: false,
-          searchPlaceholder: "Search by name or SKU...",
+          searchPlaceholder: t(
+            "prices-table-search-by-name-or-sku",
+            "Search by name or SKU..."
+          ),
         }}
         {...params}
       />
@@ -97,6 +102,7 @@ const PricesTableRow = ({
   onClick,
   ...props
 }) => {
+  const { t } = useTranslation()
   const notification = useNotification()
   const deleteProductPrices = useAdminDeletePriceListProductPrices(
     priceListId,
@@ -105,25 +111,33 @@ const PricesTableRow = ({
 
   const actions = [
     {
-      label: "Edit prices",
+      label: t("prices-table-edit-prices", "Edit prices"),
       icon: <EditIcon size={20} />,
       onClick: onClick,
     },
     {
-      label: "Remove product",
+      label: t("prices-table-remove-product", "Remove product"),
       icon: <CancelIcon size={20} />,
       variant: "danger" as const,
       onClick: () => {
         deleteProductPrices.mutate(undefined, {
           onSuccess: () => {
             notification(
-              "Success",
-              `Deleted prices of product: ${product.title}`,
+              t("prices-table-success", "Success"),
+              t(
+                "prices-table-deleted-prices-of-product",
+                "Deleted prices of product: {{title}}",
+                { title: product.title }
+              ),
               "success"
             )
           },
           onError: (err) =>
-            notification("Error", getErrorMessage(err), "error"),
+            notification(
+              t("prices-table-error", "Error"),
+              getErrorMessage(err),
+              "error"
+            ),
         })
       },
     },

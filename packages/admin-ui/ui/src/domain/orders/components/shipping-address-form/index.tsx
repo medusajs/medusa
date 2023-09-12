@@ -1,5 +1,6 @@
 import { Order } from "@medusajs/medusa"
 import { useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import { AddressPayload } from "../../../../components/templates/address-form"
 import { NestedForm } from "../../../../utils/nested-form"
@@ -13,6 +14,7 @@ type Props = {
 const ShippingAddressForm = ({ form, order }: Props) => {
   const { control, path } = form
   const { pushScreen } = useShippingAddressFormScreen()
+  const { t } = useTranslation()
 
   const {
     address_1,
@@ -29,7 +31,9 @@ const ShippingAddressForm = ({ form, order }: Props) => {
 
   return (
     <div>
-      <h2 className="inter-base-semibold">Shipping address</h2>
+      <h2 className="inter-base-semibold">
+        {t("shipping-address-form-shipping-address", "Shipping address")}
+      </h2>
       <div className="flex items-center justify-between">
         <div className="inter-small-regular text-grey-50">
           <p>{`${address_1}${address_2 ? `, ${address_2}` : ""}`}</p>
@@ -49,7 +53,10 @@ const ShippingAddressForm = ({ form, order }: Props) => {
           type="button"
           onClick={() => pushScreen({ form, order })}
         >
-          Ship to a different address
+          {t(
+            "shipping-address-form-ship-to-a-different-address",
+            "Ship to a different address"
+          )}
         </Button>
       </div>
     </div>

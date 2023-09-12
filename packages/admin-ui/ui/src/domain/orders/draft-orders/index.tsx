@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Spacer from "../../../components/atoms/spacer"
 import WidgetContainer from "../../../components/extensions/widget-container"
 
@@ -16,6 +17,7 @@ const VIEWS = ["orders", "drafts"]
 
 const DraftOrderIndex = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const view = "drafts"
   const [showNewOrder, setShowNewOrder] = useState(false)
@@ -25,7 +27,7 @@ const DraftOrderIndex = () => {
   const actions = useMemo(() => {
     return [
       {
-        label: "Create draft order",
+        label: t("draft-orders-create-draft-order", "Create draft order"),
         onClick: () => setShowNewOrder(true),
         icon: <PlusIcon size={20} />,
       },

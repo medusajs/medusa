@@ -28,7 +28,8 @@
     "dev": "yarn create:dev:entry && webpack serve --mode=development --config ./webpack.config.dev.ts --progress profile",
     "analyze:bundle": "ANALYZE_BUNDLE=true webpack --config ./webpack.config.dev.ts",
     "analyze:deps": "ANALYZE_DEPS=true webpack serve --config ./webpack.config.dev.ts --progress profile",
-    "build": "tsup"
+    "build": "tsup",
+    "sync:i18n": "i18next 'ui/src/**/*.{ts,tsx,js,jsx}' -c 'ui/i18next-parser.config.js'"
   },
   "dependencies": {
     "@babel/parser": "7.22.5",
@@ -62,6 +63,9 @@
     "emoji-picker-react": "^4.4.3",
     "framer-motion": "^9.1.6",
     "html-webpack-plugin": "^5.5.1",
+    "i18next": "^22.5.0",
+    "i18next-browser-languagedetector": "^7.0.1",
+    "i18next-http-backend": "^2.2.1",
     "md5": "^2.3.0",
     "medusa-react": "*",
     "mini-css-extract-plugin": "^2.7.6",
@@ -88,6 +92,7 @@
     "react-hook-form": "7.38.0",
     "react-hot-toast": "2.4.0",
     "react-hotkeys-hook": "^3.4.7",
+    "react-i18next": "^12.3.1",
     "react-json-tree": "^0.17.0",
     "react-jwt": "^1.1.4",
     "react-nestable": "^2.0.0",
@@ -117,6 +122,7 @@
     "@types/react-dom": "^18.0.10",
     "@types/react-table": "^7.7.9",
     "duplicate-dependencies-webpack-plugin": "^1.0.2",
+    "i18next-parser": "^8.0.0",
     "jest": "25.5.4",
     "ts-jest": "25.5.1",
     "ts-node": "^10.9.1",

@@ -584,7 +584,7 @@ export class RemoteJoiner {
           const alias = fieldAlias[prop] as any
 
           const path = isString(alias) ? alias : alias.path
-          const fullPath = currentPath.concat(path.split("."))
+          const fullPath = [...new Set(currentPath.concat(path.split(".")))]
 
           forwardArgumentsOnPath = forwardArgumentsOnPath.concat(
             (alias?.forwardArgumentsOnPath || []).map(

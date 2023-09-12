@@ -4,6 +4,7 @@ import {
   ProductVariant,
 } from "@medusajs/medusa"
 import React, { useContext, useEffect, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../../forms/product/variant-form/edit-flow-variant-form"
@@ -23,6 +24,7 @@ type Props = {
 }
 
 const EditVariantScreen = ({ variant, product }: Props) => {
+  const { t } = useTranslation()
   const { onClose } = useEditVariantsModal()
   const form = useForm<EditFlowVariantFormType>({
     defaultValues: getEditVariantDefaultValues(variant, product),
@@ -67,7 +69,7 @@ const EditVariantScreen = ({ variant, product }: Props) => {
         <Modal.Footer>
           <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button variant="secondary" size="small" type="button">
-              Cancel
+              {t("edit-variants-modal-cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -77,7 +79,7 @@ const EditVariantScreen = ({ variant, product }: Props) => {
               loading={updatingVariant}
               onClick={onSubmitAndBack}
             >
-              Save and go back
+              {t("edit-variants-modal-save-and-go-back", "Save and go back")}
             </Button>
             <Button
               variant="primary"
@@ -87,7 +89,7 @@ const EditVariantScreen = ({ variant, product }: Props) => {
               loading={updatingVariant}
               onClick={onSubmitAndClose}
             >
-              Save and close
+              {t("edit-variants-modal-save-and-close", "Save and close")}
             </Button>
           </div>
         </Modal.Footer>
@@ -133,11 +135,12 @@ export const createUpdatePayload = (
 }
 
 export const useEditVariantScreen = (props: Props) => {
+  const { t } = useTranslation()
   const { pop } = React.useContext(LayeredModalContext)
 
   const screen = useMemo(() => {
     return {
-      title: "Edit Variant",
+      title: t("edit-variants-modal-edit-variant", "Edit Variant"),
       subtitle: props.variant.title,
       onBack: pop,
       view: <EditVariantScreen {...props} />,

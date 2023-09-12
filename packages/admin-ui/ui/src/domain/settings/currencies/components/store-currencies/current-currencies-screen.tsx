@@ -3,6 +3,7 @@ import clsx from "clsx"
 import { useAdminUpdateStore } from "medusa-react"
 import { useMemo, useState } from "react"
 import { usePagination, useRowSelect, useSortBy, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../../components/fundamentals/button"
 import PlusIcon from "../../../../../components/fundamentals/icons/plus-icon"
 import Modal from "../../../../../components/molecules/modal"
@@ -19,6 +20,7 @@ const CurrentCurrenciesScreen = () => {
   const [offset, setOffset] = useState(0)
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([])
   const { onClose, store } = useEditCurrenciesModal()
+  const { t } = useTranslation()
 
   const { mutate } = useAdminUpdateStore()
   const notification = useNotification()
@@ -30,10 +32,21 @@ const CurrentCurrenciesScreen = () => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully updated currencies", "success")
+          notification(
+            t("store-currencies-success", "Success"),
+            t(
+              "store-currencies-successfully-updated-currencies",
+              "Successfully updated currencies"
+            ),
+            "success"
+          )
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification(
+            t("store-currencies-error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )
@@ -80,7 +93,12 @@ const CurrentCurrenciesScreen = () => {
   return (
     <>
       <Modal.Header handleClose={onClose}>
-        <h1 className="inter-xlarge-semibold">Current Store Currencies</h1>
+        <h1 className="inter-xlarge-semibold">
+          {t(
+            "store-currencies-current-store-currencies",
+            "Current Store Currencies"
+          )}
+        </h1>
       </Modal.Header>
       <Modal.Content>
         <CurrenciesTable
@@ -103,7 +121,7 @@ const CurrentCurrenciesScreen = () => {
       <Modal.Footer>
         <div className="flex w-full items-center justify-end">
           <Button variant="primary" size="small" onClick={onClose}>
-            Close
+            {t("store-currencies-close", "Close")}
           </Button>
         </div>
       </Modal.Footer>
@@ -124,6 +142,7 @@ const TableActions = ({
 }: TableActionProps) => {
   const showAdd = !!numberOfSelectedRows
 
+  const { t } = useTranslation()
   const { screen, push } = useAddCurrenciesModalScreen()
 
   const classes = {
@@ -136,7 +155,9 @@ const TableActions = ({
       <div className={clsx("transition-all duration-200", classes)}>
         <div className="mb-2 flex h-[34px] items-center divide-x">
           <span className="inter-small-regular text-grey-50 mr-3">
-            {numberOfSelectedRows} selected
+            {t("current-currencies-screen-selected-with-count", "{{count}}", {
+              count: numberOfSelectedRows,
+            })}
           </span>
           <div className="space-x-xsmall flex pl-3">
             <Button
@@ -145,7 +166,7 @@ const TableActions = ({
               variant="ghost"
               className="border-grey-20 border"
             >
-              Deselect
+              {t("store-currencies-deselect", "Deselect")}
             </Button>
             <Button
               onClick={onRemove}
@@ -153,7 +174,7 @@ const TableActions = ({
               variant="ghost"
               className="border-grey-20 border text-rose-50"
             >
-              Remove
+              {t("store-currencies-remove", "Remove")}
             </Button>
           </div>
         </div>
@@ -164,7 +185,8 @@ const TableActions = ({
             className="border-grey-20 border"
             onClick={() => push(screen)}
           >
-            <PlusIcon size={20} /> Add Currencies
+            <PlusIcon size={20} />{" "}
+            {t("store-currencies-add-currencies", "Add Currencies")}
           </Button>
         </div>
       </div>
