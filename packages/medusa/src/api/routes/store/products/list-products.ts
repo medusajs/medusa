@@ -497,15 +497,13 @@ async function listAndCountProductWithIsolatedProductModule(
             }
           }
           
-          shipping_profile {
-            profile {
-              id
-              created_at
-              updated_at
-              deleted_at
-              name
-              type
-            }
+          profile {
+            id
+            created_at
+            updated_at
+            deleted_at
+            name
+            type
           }
         } 
       }
@@ -518,10 +516,6 @@ async function listAndCountProductWithIsolatedProductModule(
 
   products.forEach((product) => {
     product.profile_id = product.shipping_profile?.profile?.id
-    product.profiles = product.shipping_profile?.profile
-      ? [product.shipping_profile?.profile]
-      : undefined
-    product.profile = product.shipping_profile?.profile
   })
 
   return [products, count]
