@@ -9,6 +9,8 @@ import { exportWorkflow, pipe } from "../../helper"
 import { InventoryHandlers, ProductHandlers } from "../../handlers"
 import { CreateProductsActions } from "./create-products"
 import { updateProductsExtractCreatedVariants } from "../../handlers/middlewares/update-products-extract-created-variants"
+import { updateProductsExtractDeletedVariants } from "../../handlers/middlewares/update-products-extract-deleted-variants"
+import { useVariantsInventoryItems } from "../../handlers/middlewares/use-variants-inventory-items"
 
 export enum UpdateProductsActions {
   prepare = "prepare",
@@ -20,13 +22,11 @@ export enum UpdateProductsActions {
   createInventoryItems = "createInventoryItems",
   attachInventoryItems = "attachInventoryItems",
   detachInventoryItems = "detachInventoryItems",
+  removeInventoryItems = "removeInventoryItems",
 }
 
 // TODO: sales channels
 // TODO: shipping profiles
-
-// TODO: also detach inventory items from deleted variants
-// TODO: diff middleware for variants
 
 export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
   next: {
@@ -44,9 +44,19 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
         //   saveResponse: false,
         // },
         {
+          // for created variants
           action: UpdateProductsActions.createInventoryItems,
           next: {
             action: UpdateProductsActions.attachInventoryItems,
+          },
+        },
+
+        {
+          // for deleted variants
+          action: UpdateProductsActions.detachInventoryItems,
+          next: {
+            action: UpdateProductsActions.removeInventoryItems,
+            noCompensation: true, //  we cannot create as a compensation, but we need to restore which will be done in the handler
           },
         },
       ],
@@ -201,7 +211,6 @@ const handlers = new Map([
               InventoryHandlers.removeInventoryItems.aliases.inventoryItems,
           },
         },
-        updateProductsExtractCreatedVariants,
         InventoryHandlers.removeInventoryItems
       ),
     },
@@ -223,13 +232,77 @@ const handlers = new Map([
       compensate: pipe(
         {
           merge: true,
+          invoke: [
+            {
+              from: UpdateProductsActions.prepare,
+              alias: updateProductsExtractCreatedVariants.aliases.preparedData,
+            },
+            {
+              from: UpdateProductsActions.updateProducts,
+              alias: updateProductsExtractDeletedVariants.aliases.products,
+            },
+          ],
+        },
+        updateProductsExtractDeletedVariants,
+        useVariantsInventoryItems,
+        InventoryHandlers.detachInventoryItems
+      ),
+    },
+  ],
+  [
+    UpdateProductsActions.detachInventoryItems,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductsActions.prepare,
+              alias: updateProductsExtractDeletedVariants.aliases.preparedData,
+            },
+            {
+              from: UpdateProductsActions.updateProducts,
+              alias: updateProductsExtractDeletedVariants.aliases.products,
+            },
+          ],
+        },
+        updateProductsExtractDeletedVariants,
+        useVariantsInventoryItems,
+        InventoryHandlers.detachInventoryItems
+      ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductsActions.prepare,
+              alias: updateProductsExtractDeletedVariants.aliases.preparedData,
+            },
+            {
+              from: UpdateProductsActions.updateProducts,
+              alias: updateProductsExtractDeletedVariants.aliases.products,
+            },
+          ],
+        },
+        updateProductsExtractDeletedVariants,
+        useVariantsInventoryItems,
+        InventoryHandlers.attachInventoryItems
+      ),
+    },
+  ],
+  [
+    UpdateProductsActions.removeInventoryItems,
+    {
+      invoke: pipe(
+        {
+          merge: true,
           invoke: {
-            from: UpdateProductsActions.createInventoryItems,
+            from: UpdateProductsActions.detachInventoryItems,
             alias:
-              InventoryHandlers.detachInventoryItems.aliases.inventoryItems,
+              InventoryHandlers.removeInventoryItems.aliases.inventoryItems,
           },
         },
-        InventoryHandlers.detachInventoryItems
+        InventoryHandlers.removeInventoryItems
       ),
     },
   ],

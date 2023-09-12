@@ -10,7 +10,7 @@ export async function detachInventoryItems({
     variant: ProductTypes.ProductVariantDTO
     inventoryItem: InventoryItemDTO
   }[]
-}>): Promise<void> {
+}>): Promise<InventoryItemDTO[]> {
   const { manager } = context
 
   const productVariantInventoryService = container
@@ -18,7 +18,7 @@ export async function detachInventoryItems({
     .withTransaction(manager)
 
   if (!data?.inventoryItems.length) {
-    return
+    return []
   }
 
   await Promise.all(
@@ -29,6 +29,8 @@ export async function detachInventoryItems({
       )
     })
   )
+
+  return data.inventoryItems.map(({ inventoryItem }) => inventoryItem)
 }
 
 detachInventoryItems.aliases = {

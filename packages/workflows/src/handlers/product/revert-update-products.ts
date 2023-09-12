@@ -11,14 +11,11 @@ export async function revertUpdateProducts({
   context,
   data,
 }: WorkflowArguments<HandlerInput>): Promise<ProductDTO[]> {
-  console.log("Revert called")
-
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
   return await productModuleService.update(
     data.originalProducts as unknown as UpdateProductDTO[]
-    // context
   )
 }
 

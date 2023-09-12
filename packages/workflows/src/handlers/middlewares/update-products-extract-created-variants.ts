@@ -38,5 +38,5 @@ export async function updateProductsExtractCreatedVariants({
 updateProductsExtractCreatedVariants.aliases = {
   preparedData: "preparedData",
   products: "products",
-  output: "updateProductsExtractCreatedVariants",
+  output: "updateProductsExtractCreatedVariantsOutput",
 }
