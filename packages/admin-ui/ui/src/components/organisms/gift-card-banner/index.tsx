@@ -1,4 +1,5 @@
 import React, { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { normalizeAmount } from "../../../utils/prices"
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
@@ -6,7 +7,7 @@ import UnpublishIcon from "../../fundamentals/icons/unpublish-icon"
 import StatusIndicator from "../../fundamentals/status-indicator"
 import { ActionType } from "../../molecules/actionables"
 import BannerCard from "../../molecules/banner-card"
-import TagGrid from "../../molecules/tag-grid.tsx"
+import TagGrid from "../../molecules/tag-grid"
 
 type GiftCardVariant = {
   prices: {
@@ -38,19 +39,23 @@ const GiftCardBanner: React.FC<GiftCardBannerProps> = ({
   onUnpublish,
   onDelete,
 }) => {
+  const { t } = useTranslation()
   const actions: ActionType[] = [
     {
-      label: "Edit",
+      label: t("gift-card-banner-edit", "Edit"),
       onClick: onEdit,
       icon: <EditIcon size={16} />,
     },
     {
-      label: status === "published" ? "Unpublish" : "Publish",
+      label:
+        status === "published"
+          ? t("gift-card-banner-unpublish", "Unpublish")
+          : t("gift-card-banner-publish", "Publish"),
       onClick: onUnpublish,
       icon: <UnpublishIcon size={16} />,
     },
     {
-      label: "Delete",
+      label: t("gift-card-banner-delete", "Delete"),
       onClick: onDelete,
       icon: <TrashIcon size={16} />,
       variant: "danger",
@@ -84,7 +89,11 @@ const GiftCardBanner: React.FC<GiftCardBannerProps> = ({
           <TagGrid tags={denominations} badgeVariant="default" />
           <StatusIndicator
             variant={status === "published" ? "success" : "danger"}
-            title={status === "published" ? "Published" : "Unpublished"}
+            title={
+              status === "published"
+                ? t("gift-card-banner-published", "Published")
+                : t("gift-card-banner-unpublished", "Unpublished")
+            }
           />
         </div>
       </BannerCard.Footer>

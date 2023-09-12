@@ -6,6 +6,7 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import useEditProductActions from "../../../../hooks/use-edit-product-actions"
 import Button from "../../../fundamentals/button"
 import Modal from "../../../molecules/modal"
@@ -36,6 +37,7 @@ export type EditVariantsForm = {
 const EditVariantsModal = ({ open, onClose, product }: Props) => {
   const context = useContext(LayeredModalContext)
   const { onUpdate, updating } = useEditProductActions(product.id)
+  const { t } = useTranslation()
 
   const form = useForm<EditVariantsForm>({
     defaultValues: getDefaultValues(product),
@@ -109,7 +111,10 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
       () => {
         resetAndClose()
       },
-      "Variants were successfully updated"
+      t(
+        "edit-variants-modal-update-success",
+        "Variants were successfully updated"
+      )
     )
   })
 
@@ -122,20 +127,29 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
       <LayeredModal handleClose={resetAndClose} open={open} context={context}>
         <Modal.Body>
           <Modal.Header handleClose={resetAndClose}>
-            <h1 className="inter-xlarge-semibold">Edit Variants</h1>
+            <h1 className="inter-xlarge-semibold">
+              {t("edit-variants-modal-edit-variants", "Edit Variants")}
+            </h1>
           </Modal.Header>
           <FormProvider {...form}>
             <form onSubmit={onSubmit}>
               <Modal.Content>
                 <h2 className="inter-base-semibold mb-small">
-                  Product variants{" "}
+                  {t(
+                    "edit-variants-modal-product-variants",
+                    "Product variants"
+                  )}{" "}
                   <span className="inter-base-regular text-grey-50">
                     ({product.variants.length})
                   </span>
                 </h2>
                 <div className="pr-base inter-small-semibold text-grey-50 mb-small grid grid-cols-[1fr_1fr_48px]">
-                  <p className="col-start-1 col-end-1 text-left">Variant</p>
-                  <p className="col-start-2 col-end-2 text-right">Inventory</p>
+                  <p className="col-start-1 col-end-1 text-left">
+                    {t("edit-variants-modal-variant", "Variant")}
+                  </p>
+                  <p className="col-start-2 col-end-2 text-right">
+                    {t("edit-variants-modal-inventory", "Inventory")}
+                  </p>
                 </div>
                 <div>{fields.map((card, i) => renderCard(card, i))}</div>
               </Modal.Content>
@@ -147,7 +161,7 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
                     type="button"
                     onClick={resetAndClose}
                   >
-                    Cancel
+                    {t("edit-variants-modal-cancel", "Cancel")}
                   </Button>
                   <Button
                     variant="primary"
@@ -156,7 +170,7 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
                     loading={updating}
                     disabled={updating || !isDirty}
                   >
-                    Save and close
+                    {t("edit-variants-modal-save-and-close", "Save and close")}
                   </Button>
                 </div>
               </Modal.Footer>

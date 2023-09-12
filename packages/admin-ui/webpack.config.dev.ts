@@ -34,6 +34,10 @@ const getDevServerConfig = () => {
       devServer: {
         port: 7001,
         historyApiFallback: true,
+        static: {
+          directory: path.resolve(__dirname, "./ui/public"),
+          publicPath: "/",
+        },
       } as Configuration,
     },
   }

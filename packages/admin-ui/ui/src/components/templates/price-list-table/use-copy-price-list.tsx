@@ -1,5 +1,6 @@
 import { useAdminCreatePriceList } from "medusa-react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 
@@ -7,6 +8,7 @@ const useCopyPriceList = () => {
   const navigate = useNavigate()
   const notification = useNotification()
   const createPriceList = useAdminCreatePriceList()
+  const { t } = useTranslation()
 
   const handleCopyPriceList = async (priceList) => {
     const copy: any = {
@@ -44,9 +46,20 @@ const useCopyPriceList = () => {
     try {
       const data = await createPriceList.mutateAsync(copy)
       navigate(`/a/pricing/${data.price_list.id}`)
-      notification("Success", "Successfully copied price list", "success")
+      notification(
+        t("price-list-table-success", "Success"),
+        t(
+          "price-list-table-successfully-copied-price-list",
+          "Successfully copied price list"
+        ),
+        "success"
+      )
     } catch (err) {
-      notification("Error", getErrorMessage(err), "error")
+      notification(
+        t("price-list-table-error", "Error"),
+        getErrorMessage(err),
+        "error"
+      )
     }
   }
 
