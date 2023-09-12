@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import Button from "../../fundamentals/button"
 import MinusIcon from "../../fundamentals/icons/minus-icon"
@@ -39,11 +40,16 @@ const RMAReturnProductsTable: React.FC<RMAReturnProductsTableProps> = ({
   handleRemoveItem,
   handleToAddQuantity,
 }) => {
+  const { t } = useTranslation()
   return (
     <Table>
       <Table.HeadRow className="text-grey-50 inter-small-semibold">
-        <Table.HeadCell>Product Details</Table.HeadCell>
-        <Table.HeadCell className="pr-8 text-right">Quantity</Table.HeadCell>
+        <Table.HeadCell>
+          {t("rma-return-product-table-product-details", "Product Details")}
+        </Table.HeadCell>
+        <Table.HeadCell className="pr-8 text-right">
+          {t("rma-return-product-table-quantity", "Quantity")}
+        </Table.HeadCell>
         <Table.HeadCell className="text-right">
           {isAdditionalItems ? "Unit Price" : "Refundable"}
         </Table.HeadCell>

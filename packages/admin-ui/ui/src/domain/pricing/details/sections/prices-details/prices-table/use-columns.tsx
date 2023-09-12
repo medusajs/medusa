@@ -1,14 +1,16 @@
 import { Product } from "@medusajs/medusa"
 import * as React from "react"
 import { Column } from "react-table"
+import { useTranslation } from "react-i18next"
 import ImagePlaceholder from "../../../../../../components/fundamentals/image-placeholder"
 import Table from "../../../../../../components/molecules/table"
 
 const usePricesColumns = () => {
+  const { t } = useTranslation()
   const columns = React.useMemo<Column<Product>[]>(
     () => [
       {
-        Header: <div className="pl-4">Name</div>,
+        Header: <div className="pl-4">{t("prices-table-name", "Name")}</div>,
         accessor: "title",
         Cell: ({ row: { original } }) => (
           <div className="flex items-center pl-4">
@@ -29,20 +31,26 @@ const usePricesColumns = () => {
         ),
       },
       {
-        Header: <div className="w-[400px]">Collection</div>,
+        Header: (
+          <div className="w-[400px]">
+            {t("prices-table-collection", "Collection")}
+          </div>
+        ),
         accessor: "collection",
         Cell: ({ cell: { value } }) => (
           <Table.Cell>
             {value?.title ? (
               value.title
             ) : (
-              <span className="text-grey-40">No collection</span>
+              <span className="text-grey-40">
+                {t("prices-table-no-collection", "No collection")}
+              </span>
             )}
           </Table.Cell>
         ),
       },
       {
-        Header: "Variants",
+        Header: t("prices-table-variants", "Variants"),
         Cell: ({ row: { original } }) => (
           <Table.Cell>{original.variants.length}</Table.Cell>
         ),

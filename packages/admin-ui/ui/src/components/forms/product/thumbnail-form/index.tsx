@@ -3,9 +3,7 @@ import { FormImage } from "../../../../types/shared"
 import { NestedForm } from "../../../../utils/nested-form"
 import FileUploadField from "../../../atoms/file-upload-field"
 import TrashIcon from "../../../fundamentals/icons/trash-icon"
-import Actionables, {
-  ActionType
-} from "../../../molecules/actionables"
+import Actionables, { ActionType } from "../../../molecules/actionables"
 
 export type ThumbnailFormType = {
   images: FormImage[]
