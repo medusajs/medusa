@@ -17,12 +17,11 @@ export async function updateProducts({
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
-  const products = await productModuleService.update(data.products, context)
+  const products = await productModuleService.update(data.products)
 
   return await productModuleService.list(
     { id: products.map((p) => p.id) },
     { relations: ["variants"] } // TODO: pass relations
-    // context
   )
 }
 
