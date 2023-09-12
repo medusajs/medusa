@@ -3,7 +3,9 @@ import IsolateProductDomain from "../loaders/feature-flags/isolate-product-domai
 
 export const featureFlag = IsolateProductDomain.key
 
-export class LineItemProductId1692870898424 implements MigrationInterface {
+export class AddTimestempsToProductShippingProfiles1692870898425
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       ALTER TABLE "product_shipping_profile" ADD COLUMN IF NOT EXISTS "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now();
