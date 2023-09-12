@@ -1,7 +1,18 @@
 import i18n from "i18next"
-import { initReactI18next } from "react-i18next"
-import Backend from "i18next-http-backend"
 import LanguageDetector from "i18next-browser-languagedetector"
+import Backend from "i18next-http-backend"
+import { initReactI18next } from "react-i18next"
+
+export const supportedLanguages = [
+  {
+    locale: "en",
+    name: "English",
+  },
+  {
+    locale: "da",
+    name: "Dansk",
+  },
+]
 
 void i18n
   .use(Backend)
@@ -9,6 +20,7 @@ void i18n
   .use(initReactI18next)
   // https://www.i18next.com/overview/configuration-options
   .init({
+    supportedLngs: supportedLanguages.map((l) => l.locale),
     fallbackLng: ["en"],
     returnNull: false,
     debug: true,
