@@ -8,6 +8,7 @@ export type JoinerRelationship = {
    * TODO: Remove when there are no more "internal" services
    */
   isInternalService?: boolean
+  /**
    * In an inverted relationship the foreign key is on the other service and the primary key is on the current service
    */
   inverse?: boolean
