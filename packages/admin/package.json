@@ -1,6 +1,6 @@
 {
   "name": "uc-custon-medusajs-admin",
-  "version": "7.0.3",
+  "version": "7.0.4",
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
@@ -45,7 +45,7 @@
     "rollup": "3.20.7",
     "rollup-plugin-esbuild": "5.0.0",
     "ts-dedent": "^2.2.0",
-    "uc-custon-medusajs-admin-ui": "2.0.3"
+    "uc-custon-medusajs-admin-ui": "2.0.4"
   },
   "peerDependencies": {
     "@medusajs/medusa": "^1.14.0"
