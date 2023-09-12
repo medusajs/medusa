@@ -31,7 +31,7 @@ const LanguageSettings = () => {
         >
           {t(
             "personal-information-language-settings-help-us-translate",
-            "Help use translate"
+            "Help us translate"
           )}
         </a>
       </div>
