@@ -32,7 +32,7 @@ type PricingContext = {
 export default class PricingModuleService<
   TPriceSet extends PriceSet = PriceSet,
   TMoneyAmount extends MoneyAmount = MoneyAmount,
-  TCurrency extends Currency = Currency,
+  TCurrency extends Currency = Currency
 > implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService

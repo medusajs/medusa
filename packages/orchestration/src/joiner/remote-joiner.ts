@@ -202,15 +202,14 @@ export class RemoteJoiner {
         // errors when the core services are not found in cache.
         // TODO: Remove when there are no more "internal" services
         const isInternalServicePresent = relationships.some(
-          (rel) =>
-            rel.isInternalService === true && rel.serviceName === serviceName
+          (rel) => rel.isInternalService === true
         )
 
         if (isInternalServicePresent) continue
 
         throw new Error(`Service "${serviceName}" was not found`)
       }
-      
+
       const service_ = this.serviceConfigCache.get(serviceName)!
       service_.relationships?.push(...relationships)
       Object.assign(service_.fieldAlias!, fieldAlias ?? {})
