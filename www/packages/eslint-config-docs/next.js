@@ -4,8 +4,9 @@ module.exports = {
     "google",
     "./base.js"
   ],
-  rules: {
+  "rules": {
     "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/prefer-ts-expect-error": "off"
   },
   ignorePatterns: [
     "next.config.js",
@@ -14,4 +15,7 @@ module.exports = {
     "public",
     ".eslintrc.js"
   ],
+  parserOptions: {
+    project: true,
+  },
 }

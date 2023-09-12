@@ -7,6 +7,7 @@ module.exports = {
       experimentalDecorators: true,
       jsx: true,
     },
+    project: true,
   },
   plugins: ["prettier"],
   extends: [
