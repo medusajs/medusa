@@ -189,18 +189,18 @@ export class RemoteJoiner {
     }
 
     for (const [serviceName, relationships] of expandedRelationships) {
-      // If true, the relationship is an internal service from the medusa core
-      // If modules are being used ouside of the core, we should not be throwing
-      // errors when the core services are not found in cache.
-      // TODO: Remove when there are no more "internal" services
-      const isInternalServicePresent = relationships.some(
-        (rel) => rel.isInternalService === true
-      )
+      if (!this.serviceConfigCache.has(serviceName)) {
+        // If true, the relationship is an internal service from the medusa core
+        // If modules are being used ouside of the core, we should not be throwing
+        // errors when the core services are not found in cache.
+        // TODO: Remove when there are no more "internal" services
+        const isInternalServicePresent = relationships.some(
+          (rel) =>
+            rel.isInternalService === true && rel.serviceName === serviceName
+        )
 
-      if (
-        !this.serviceConfigCache.has(serviceName) &&
-        !isInternalServicePresent
-      ) {
+        if (isInternalServicePresent) continue
+
         throw new Error(`Service "${serviceName}" was not found`)
       }
 
