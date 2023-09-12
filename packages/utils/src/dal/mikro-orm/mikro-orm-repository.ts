@@ -145,7 +145,7 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
 
     findOptions.where = {
       $and: [findOptions.where, { $or: retrieveConstraintsToApply(q) }],
-    } as unknown as DAL.FilterQuery<T>
+    } as unknown as DAL.FilterQuery<T & { q?: string }>
   }
 }
 

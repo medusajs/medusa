@@ -9,9 +9,6 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
     tableName: "product_shipping_profile",
     idPrefix: "psprof",
   },
-  fieldAlias: {
-    profile: "shipping_profile.profile",
-  },
   alias: [
     {
       name: "product_shipping_profile",
@@ -36,6 +33,9 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
   extends: [
     {
       serviceName: Modules.PRODUCT,
+      /*fieldAlias: {
+        profile: "shipping_profile.profile",
+      },*/
       relationship: {
         serviceName: LINKS.ProductShippingProfile,
         isInternalService: true,
