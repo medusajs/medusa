@@ -564,7 +564,7 @@ export class RemoteJoiner {
             path: fullPath,
           })
 
-          const extMapping = expands as unknown[]
+          const extMapping = [...(expands as unknown[])]
 
           const middlePath = path.split(".").slice(0, -1)
           let curMiddlePath = currentPath
