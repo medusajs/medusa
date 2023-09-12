@@ -1,5 +1,6 @@
+import { MoneyAmount, PriceList } from "@models"
+
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PriceList, MoneyAmount } from "@models"
 import { defaultPriceListData } from "./data"
 
 export async function createPriceLists(
@@ -9,12 +10,12 @@ export async function createPriceLists(
   const priceLists: PriceList[] = []
 
   for (let priceListData of priceListsData) {
-    const {prices, ...rest } = priceListData
+    const { prices, ...rest } = priceListData
     const priceList: PriceList = manager.create(PriceList, rest)
 
     const createdPrices: MoneyAmount[] = []
-    if(prices?.length){ 
-      for(let price of prices){
+    if (prices?.length) {
+      for (let price of prices) {
         const createdPrice = manager.create(MoneyAmount, price)
         createdPrices.push(createdPrice)
       }
