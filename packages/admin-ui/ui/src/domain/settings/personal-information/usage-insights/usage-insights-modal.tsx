@@ -1,6 +1,7 @@
 import { AnalyticsConfig } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import Modal from "../../../../components/molecules/modal"
 import AnalyticsConfigForm, {
@@ -18,6 +19,7 @@ type Props = {
 }
 
 const UsageInsightsModal = ({ config, open, onClose }: Props) => {
+  const { t } = useTranslation()
   const { mutate, isLoading: isSubmitting } = useAdminUpdateAnalyticsConfig()
 
   const form = useForm<AnalyticsConfigFormType>({
@@ -43,14 +45,21 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
     mutate(data, {
       onSuccess: () => {
         notification(
-          "Success",
-          "Your information was successfully updated",
+          t("usage-insights-success", "Success"),
+          t(
+            "usage-insights-your-information-was-successfully-updated",
+            "Your information was successfully updated"
+          ),
           "success"
         )
         onClose()
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(
+          t("usage-insights-error", "Error"),
+          getErrorMessage(err),
+          "error"
+        )
       },
     })
   })
@@ -58,7 +67,9 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
   return (
     <Modal handleClose={onClose} open={open} isLargeModal={true}>
       <Modal.Header handleClose={onClose}>
-        <h1 className="inter-xlarge-semibold">Edit preferences</h1>
+        <h1 className="inter-xlarge-semibold">
+          {t("usage-insights-edit-preferences", "Edit preferences")}
+        </h1>
       </Modal.Header>
       <Modal.Body>
         <Modal.Content>
@@ -67,7 +78,7 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
         <Modal.Footer className="border-grey-20 pt-base border-t">
           <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button variant="secondary" size="small" onClick={onClose}>
-              Cancel
+              {t("usage-insights-cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -76,7 +87,7 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
               disabled={isSubmitting}
               onClick={onSubmit}
             >
-              Submit and close
+              {t("usage-insights-submit-and-close", "Submit and close")}
             </Button>
           </div>
         </Modal.Footer>

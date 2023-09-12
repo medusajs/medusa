@@ -1,6 +1,7 @@
 import { MoneyAmount, ProductVariant } from "@medusajs/medusa"
 import React from "react"
 import { Control, Controller, useForm, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Checkbox, { CheckboxProps } from "../../atoms/checkbox"
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
@@ -35,6 +36,7 @@ const PriceOverrides = ({
   defaultVariant,
   isEdit = false,
 }: PriceOverridesType) => {
+  const { t } = useTranslation()
   const [mode, setMode] = React.useState(MODES.SELECTED_ONLY)
   const {
     handleSubmit,
@@ -92,11 +94,17 @@ const PriceOverrides = ({
           >
             <RadioGroup.SimpleItem
               value={MODES.SELECTED_ONLY}
-              label="Apply overrides on selected variants"
+              label={t(
+                "price-overrides-apply-overrides-on-selected-variants",
+                "Apply overrides on selected variants"
+              )}
             />
             <RadioGroup.SimpleItem
               value={MODES.APPLY_ALL}
-              label="Apply on all variants"
+              label={t(
+                "price-overrides-apply-on-all-variants",
+                "Apply on all variants"
+              )}
             />
           </RadioGroup.Root>
         )}
@@ -120,7 +128,9 @@ const PriceOverrides = ({
           </div>
         )}
         <div className="pt-8">
-          <h6 className="inter-base-semibold">Prices</h6>
+          <h6 className="inter-base-semibold">
+            {t("price-overrides-prices", "Prices")}
+          </h6>
           <div className="pt-4">
             {prices.map((price, idx) => (
               <Controller
@@ -154,7 +164,7 @@ const PriceOverrides = ({
             size="large"
             onClick={onClose}
           >
-            Cancel
+            {t("price-overrides-cancel", "Cancel")}
           </Button>
           <Button
             size="large"
@@ -163,7 +173,7 @@ const PriceOverrides = ({
             onClick={onClick}
             loading={isSubmitting}
           >
-            Save and close
+            {t("price-overrides-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>
