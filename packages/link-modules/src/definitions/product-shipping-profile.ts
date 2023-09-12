@@ -33,9 +33,6 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
   extends: [
     {
       serviceName: Modules.PRODUCT,
-      fieldAlias: {
-        shipping_profile: "shipping_profile.profile",
-      },
       relationship: {
         serviceName: LINKS.ProductShippingProfile,
         isInternalService: true,
