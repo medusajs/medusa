@@ -33,6 +33,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "remark": "^14.0.3",
+    "tailwind": "*",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6",
     "unist-builder": "3.0.0",

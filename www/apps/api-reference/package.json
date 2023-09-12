@@ -48,6 +48,7 @@
     "react-transition-group": "^4.4.5",
     "slugify": "^1.6.6",
     "swr": "^2.2.0",
+    "tailwind": "*",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6",
     "uuid": "^9.0.0",

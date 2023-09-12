@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import coreConfig from "../../tailwind.config"
+import coreConfig from "tailwind"
+import plugin from "tailwindcss/plugin"
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
     },
   },
   plugins: [
-    require("tailwindcss/plugin")(({ addVariant }) => {
+    plugin(({ addVariant }) => {
       addVariant("search-cancel", "&::-webkit-search-cancel-button")
     }),
   ],

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import coreConfig from "../../tailwind.config"
+import coreConfig from "../../packages/tailwind/tailwind.config"
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -10,7 +10,8 @@ module.exports = {
   },
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
-    "../../docs/content/**/*.{mdx,md}",
+    "./content/**/*.{mdx,md}",
+    "!./content/references",
     "docusaurus.config.js",
     "sidebars.js",
   ],

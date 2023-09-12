@@ -136,8 +136,8 @@ module.exports = {
               dark: "#35373C",
               hover: {
                 DEFAULT: "#E5E7EB",
-                dark: "#464B50"
-              }
+                dark: "#464B50",
+              },
             },
             interactive: {
               DEFAULT: "#3B82F6",
@@ -149,64 +149,64 @@ module.exports = {
             },
             disabled: {
               DEFAULT: "#F3F4F6",
-              dark: "#27282D"
+              dark: "#27282D",
             },
             highlight: {
               DEFAULT: "#EFF6FF",
               dark: "#172554",
               hover: {
                 DEFAULT: "#DBEAFE",
-                dark: "#1E3A8A"
-              }
+                dark: "#1E3A8A",
+              },
             },
             field: {
               DEFAULT: "#F9FAFB",
               dark: "#27282D",
               hover: {
                 DEFAULT: "#F3F4F6",
-                dark: "#2E3035"
-              }
-            }
+                dark: "#2E3035",
+              },
+            },
           },
           fg: {
             base: {
               DEFAULT: "#030712",
-              dark: "#EDEEF0"
+              dark: "#EDEEF0",
             },
             subtle: {
               DEFAULT: "#4B5563",
-              dark: "#ADB1B8"
+              dark: "#ADB1B8",
             },
             muted: {
               DEFAULT: "#9CA3AF",
-              dark: "#696E77"
+              dark: "#696E77",
             },
             disabled: {
               DEFAULT: "#D1D5DB",
-              dark: "#3C3F44"
+              dark: "#3C3F44",
             },
             on: {
               color: {
                 DEFAULT: "#FFFFFF",
-                dark: "#FFFFFF"
+                dark: "#FFFFFF",
               },
               inverted: {
                 DEFAULT: "#FFFFFF",
-                dark: "#18181A"
-              }
+                dark: "#18181A",
+              },
             },
             interactive: {
               DEFAULT: "#3B82F6",
               dark: "#60A5FA",
               hover: {
                 DEFAULT: "#2563EB",
-                dark: "#3B82F6"
-              }
+                dark: "#3B82F6",
+              },
             },
             error: {
               DEFAULT: "#E11D48",
-              dark: "#FB7185"
-            }
+              dark: "#FB7185",
+            },
           },
           border: {
             base: {
@@ -231,12 +231,12 @@ module.exports = {
             },
             danger: {
               DEFAULT: "#BE123C",
-              dark: "#BE123C"
+              dark: "#BE123C",
             },
             transparent: {
               DEFAULT: "rgba(3, 7, 18, 0)",
-              dark: "rgba(238, 238, 238, 0)"
-            }
+              dark: "rgba(238, 238, 238, 0)",
+            },
           },
           button: {
             inverted: {
@@ -244,11 +244,11 @@ module.exports = {
               dark: "#EDEEF0",
               hover: {
                 DEFAULT: "#1F2937",
-                dark: "#FFFFFF"
+                dark: "#FFFFFF",
               },
               pressed: {
                 DEFAULT: "#374151",
-                dark: "#EDEEF0"
+                dark: "#EDEEF0",
               },
             },
             neutral: {
@@ -430,31 +430,31 @@ module.exports = {
             text: {
               base: {
                 DEFAULT: "#F9FAFB",
-                dark: "#EDEEF0"
+                dark: "#EDEEF0",
               },
               subtle: {
                 DEFAULT: "#9CA3AF",
-                dark: "#696E77"
+                dark: "#696E77",
               },
-              highlight: "#102A4C"
+              highlight: "#102A4C",
             },
             icon: {
               DEFAULT: "#6B7280",
-              dark: "#464B50"
+              dark: "#464B50",
             },
             bg: {
               base: {
                 DEFAULT: "#111827",
-                dark: "#1B1B1F"
+                dark: "#1B1B1F",
               },
               header: {
                 DEFAULT: "#1F2937",
-                dark: "#18181A"
-              }
+                dark: "#18181A",
+              },
             },
             border: {
               DEFAULT: "#374151",
-              dark: "#2E3035"
+              dark: "#2E3035",
             },
           },
         },
@@ -492,18 +492,30 @@ module.exports = {
         "modal-dark":
           "0px 2px 24px 0px rgba(0, 0, 0, 0.32), 0px 16px 32px 0px rgba(0, 0, 0, 0.32), 0px 0px 0px 1px rgba(255, 255, 255, 0.10)",
         "navbar-dark": "0px 1px 0px 0px #2E2E32",
-        "button-colored": "0px 0.5px 0px 0px rgba(3, 7, 18, 0.16), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.16), 0px 1.75px 0px 0px rgba(255, 255, 255, 0.16) inset",
-        "button-colored-dark": "0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60)",
-        "button-colored-focused": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 0.5px 0px 0px rgba(3, 7, 18, 0.20), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.20), 0px 1.75px 0px 0px rgba(255, 255, 255, 0.16) inset",
-        "button-colored-focused-dark": "0px 0px 0px 3px rgba(96, 165, 250, 0.80), 0px 0px 0px 1px #1B1B1F, 0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60)",
-        "button-neutral": "0px 0.5px 0px 0px rgba(3, 7, 18, 0.16), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.16)",
-        "button-neutral-dark": "0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60), 0px 1.5px 0px 0px rgba(255, 255, 255, 0.10) inset",
-        "button-neutral-focused": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 0.5px 0px 0px rgba(3, 7, 18, 0.16), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.16)",
-        "button-neutral-focused-dark": "0px 0px 0px 3px rgba(96, 165, 250, 0.80), 0px 0px 0px 1px #1B1B1F, 0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60), 0px 1.5px 0px 0px rgba(255, 255, 255, 0.10) inset",
-        "button-secondary": "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
-        "button-secondary-dark": "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
-        "button-secondary-focus": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
-        "button-secondary-focus-dark": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
+        "button-colored":
+          "0px 0.5px 0px 0px rgba(3, 7, 18, 0.16), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.16), 0px 1.75px 0px 0px rgba(255, 255, 255, 0.16) inset",
+        "button-colored-dark":
+          "0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60)",
+        "button-colored-focused":
+          "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 0.5px 0px 0px rgba(3, 7, 18, 0.20), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.20), 0px 1.75px 0px 0px rgba(255, 255, 255, 0.16) inset",
+        "button-colored-focused-dark":
+          "0px 0px 0px 3px rgba(96, 165, 250, 0.80), 0px 0px 0px 1px #1B1B1F, 0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60)",
+        "button-neutral":
+          "0px 0.5px 0px 0px rgba(3, 7, 18, 0.16), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.16)",
+        "button-neutral-dark":
+          "0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60), 0px 1.5px 0px 0px rgba(255, 255, 255, 0.10) inset",
+        "button-neutral-focused":
+          "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 0.5px 0px 0px rgba(3, 7, 18, 0.16), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.16)",
+        "button-neutral-focused-dark":
+          "0px 0px 0px 3px rgba(96, 165, 250, 0.80), 0px 0px 0px 1px #1B1B1F, 0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60), 0px 1.5px 0px 0px rgba(255, 255, 255, 0.10) inset",
+        "button-secondary":
+          "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
+        "button-secondary-dark":
+          "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
+        "button-secondary-focus":
+          "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
+        "button-secondary-focus-dark":
+          "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
         // TODO remove if not used
         active: "0px 0px 0px 3px #E1F0FF",
         "active-dark": "0px 0px 0px 3px #2C2250",
@@ -527,19 +539,27 @@ module.exports = {
         "button-neutral-dark":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.00) 100%)",
         "no-image": "none",
-        "button-inverted": "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
+        "button-inverted":
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
         "button-inverted-dark":
           "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.12) 100%)",
-        "button-danger": "linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-danger-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-danger-hover": "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-danger-hover-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-danger-pressed": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
-        "button-danger-pressed-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.14) 100%)",
+        "button-danger":
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.00) 100%)",
+        "button-danger-dark":
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%)",
+        "button-danger-hover":
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
+        "button-danger-hover-dark":
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.00) 100%)",
+        "button-danger-pressed":
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
+        "button-danger-pressed-dark":
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.14) 100%)",
         "code-fade": "linear-gradient(90deg, #11182700, #111827 24px)",
         "code-fade-dark": "linear-gradient(90deg, #1B1B1F00, #1B1B1F 24px)",
-        "fade": "linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))",
-        "fade-dark": "linear-gradient(to top, rgba(27, 27, 31, 1), rgba(27, 27, 31, 0))",
+        fade: "linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))",
+        "fade-dark":
+          "linear-gradient(to top, rgba(27, 27, 31, 1), rgba(27, 27, 31, 0))",
       },
       screens: {
         xs: "576px",
@@ -566,7 +586,7 @@ module.exports = {
         "main-content": "1140px",
         "main-content-hidden-sidebar": "1440px",
         xl: "1419px",
-        xxl: "1440px"
+        xxl: "1440px",
       },
       minWidth: {
         xl: "1419px",
@@ -604,99 +624,99 @@ module.exports = {
           "16px",
           {
             lineHeight: "20px",
-            fontWeight: "500"
-          }
+            fontWeight: "500",
+          },
         ],
         "compact-large": [
           "16px",
           {
             lineHeight: "20px",
-            fontWeight: "400"
-          }
+            fontWeight: "400",
+          },
         ],
         "compact-medium-plus": [
           "14px",
           {
             lineHeight: "20px",
-            fontWeight: "500"
-          }
+            fontWeight: "500",
+          },
         ],
         "compact-medium": [
           "14px",
           {
             lineHeight: "20px",
-            fontWeight: "400"
-          }
+            fontWeight: "400",
+          },
         ],
         "compact-small-plus": [
           "13px",
           {
             lineHeight: "20px",
-            fontWeight: "500"
-          }
+            fontWeight: "500",
+          },
         ],
         "compact-small": [
           "13px",
           {
             lineHeight: "20px",
-            fontWeight: "400"
-          }
+            fontWeight: "400",
+          },
         ],
         "compact-x-small-plus": [
           "12px",
           {
             lineHeight: "20px",
-            fontWeight: "500"
-          }
+            fontWeight: "500",
+          },
         ],
         "compact-x-small": [
           "12px",
           {
             lineHeight: "20px",
-            fontWeight: "400"
-          }
+            fontWeight: "400",
+          },
         ],
         "x-large-plus": [
           "18px",
           {
             lineHeight: "32px",
-            fontWeight: "500"
-          }
+            fontWeight: "500",
+          },
         ],
         "x-large": [
           "18px",
           {
             lineHeight: "32px",
-            fontWeight: "400"
-          }
+            fontWeight: "400",
+          },
         ],
         "large-plus": [
           "16px",
           {
             lineHeight: "28px",
-            fontWeight: "500"
-          }
+            fontWeight: "500",
+          },
         ],
-        "large": [
+        large: [
           "16px",
           {
             lineHeight: "28px",
-            fontWeight: "400"
-          }
+            fontWeight: "400",
+          },
         ],
         "medium-plus": [
           "14px",
           {
             lineHeight: "24px",
-            fontWeight: "500"
-          }
+            fontWeight: "500",
+          },
         ],
-        "medium": [
+        medium: [
           "14px",
           {
             lineHeight: "24px",
-            fontWeight: "400"
-          }
+            fontWeight: "400",
+          },
         ],
         "code-label": [
           "13px",

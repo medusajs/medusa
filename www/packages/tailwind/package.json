@@ -1,0 +1,17 @@
+{
+  "name": "tailwind",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "tailwind.config.js",
+  "devDependencies": {
+    "eslint-config-docs": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "tailwind.config.js",
+    "postcss.config.js"
+  ]
+}

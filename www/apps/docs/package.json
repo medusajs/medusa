@@ -33,6 +33,7 @@
     "docusaurus-plugin-image-zoom": "^0.1.1",
     "docusaurus-plugin-segment": "^1.0.3",
     "dotenv": "^16.0.3",
+    "eslint": "^8.49.0",
     "eslint-config-docs": "*",
     "file-loader": "^6.2.0",
     "lodash": "^4.17.21",
@@ -44,6 +45,7 @@
     "react-tooltip": "5.7.4",
     "react-transition-group": "^4.4.5",
     "react-uuid": "^2.0.0",
+    "tailwind": "*",
     "tailwindcss": "^3.3.2",
     "url-loader": "^4.1.1",
     "uuid": "^9.0.0"

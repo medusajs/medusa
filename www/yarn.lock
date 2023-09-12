@@ -7991,6 +7991,7 @@ __metadata:
     react-transition-group: ^4.4.5
     slugify: ^1.6.6
     swr: ^2.2.0
+    tailwind: "*"
     tailwindcss: 3.3.3
     typescript: 5.1.6
     uuid: ^9.0.0
@@ -9879,8 +9880,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docs-root@workspace:."
   dependencies:
+    autoprefixer: 10.4.14
     eslint: ^8.36.0
+    postcss: 8.4.27
     prettier: ^2.8.4
+    tailwindcss: 3.3.3
     tsconfig: "*"
     turbo: latest
   languageName: unknown
@@ -9909,6 +9913,7 @@ __metadata:
     docusaurus-plugin-image-zoom: ^0.1.1
     docusaurus-plugin-segment: ^1.0.3
     dotenv: ^16.0.3
+    eslint: ^8.49.0
     eslint-config-docs: "*"
     file-loader: ^6.2.0
     lodash: ^4.17.21
@@ -9920,12 +9925,11 @@ __metadata:
     react-tooltip: 5.7.4
     react-transition-group: ^4.4.5
     react-uuid: ^2.0.0
+    tailwind: "*"
     tailwindcss: ^3.3.2
     typescript: ^5.0.2
     url-loader: ^4.1.1
     uuid: ^9.0.0
-  peerDependencies:
-    eslint: ^8.36.0
   languageName: unknown
   linkType: soft
 
@@ -10744,7 +10748,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.36.0":
+"eslint@npm:^8.36.0, eslint@npm:^8.49.0":
   version: 8.49.0
   resolution: "eslint@npm:8.49.0"
   dependencies:
@@ -18431,6 +18435,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tailwind@*, tailwind@workspace:packages/tailwind":
+  version: 0.0.0-use.local
+  resolution: "tailwind@workspace:packages/tailwind"
+  dependencies:
+    eslint-config-docs: "*"
+  languageName: unknown
+  linkType: soft
+
 "tailwindcss-animate@npm:^1.0.6":
   version: 1.0.7
   resolution: "tailwindcss-animate@npm:1.0.7"
@@ -19039,6 +19051,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     remark: ^14.0.3
+    tailwind: "*"
     tailwindcss: 3.3.3
     typescript: 5.1.6
     unist-builder: 3.0.0

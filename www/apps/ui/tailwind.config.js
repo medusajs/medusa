@@ -1,6 +1,5 @@
-import type { Config } from "tailwindcss"
 import path from "path"
-import coreConfig from "../../tailwind.config"
+import coreConfig from "tailwind"
 
 // Get two levels up from require.resolve("@medusajs/ui")
 const root = path.join(require.resolve("@medusajs/ui"), "../..")
@@ -13,12 +12,12 @@ const { spacing, ...coreTheme } = coreConfig.theme || {}
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { borderRadius, ...extendedTheme } = coreConfig.theme?.extend || {}
 
-const config: Config = {
+module.exports = {
   ...coreConfig,
   darkMode: "class",
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}", uiPath],
   theme: {
-    // ...coreTheme,
+    ...coreTheme,
     extend: {
       ...extendedTheme,
       container: {
@@ -30,5 +29,3 @@ const config: Config = {
     },
   },
 }
-
-export default config

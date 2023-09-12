@@ -92,7 +92,8 @@ module.exports = {
     browser: true,
   },
   ignorePatterns: [
-    "eslint-config-docs"
+    "eslint-config-docs",
+    ".eslintrc.js"
   ],
   overrides: [
     {

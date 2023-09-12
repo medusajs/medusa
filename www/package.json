@@ -15,8 +15,11 @@
     "lint:content": "turbo run lint:content"
   },
   "dependencies": {
+    "autoprefixer": "10.4.14",
     "eslint": "^8.36.0",
+    "postcss": "8.4.27",
     "prettier": "^2.8.4",
+    "tailwindcss": "3.3.3",
     "tsconfig": "*",
     "turbo": "latest"
   }
