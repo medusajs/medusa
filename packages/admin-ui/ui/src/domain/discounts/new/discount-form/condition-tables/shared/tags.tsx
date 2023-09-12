@@ -1,5 +1,6 @@
 import { ProductTag } from "@medusajs/medusa"
 import { Column, HeaderGroup, Row } from "react-table"
+import { Translation } from "react-i18next"
 import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
 import Table from "../../../../../../components/molecules/table"
 
@@ -7,7 +8,13 @@ export const TagColumns: Column<ProductTag>[] = [
   {
     Header: () => (
       <div className="flex items-center gap-1">
-        Tag <SortingIcon size={16} />
+        <Translation>
+          {(t) => (
+            <>
+              {t("shared-tag", "Tag")} <SortingIcon size={16} />
+            </>
+          )}
+        </Translation>
       </div>
     ),
     accessor: "value",

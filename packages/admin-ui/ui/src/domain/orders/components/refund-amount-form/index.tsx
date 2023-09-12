@@ -1,5 +1,6 @@
 import { Order } from "@medusajs/medusa"
 import { Controller, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
@@ -18,6 +19,7 @@ export type RefundAmountFormType = {
 }
 
 const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
+  const { t } = useTranslation()
   const {
     control,
     path,
@@ -49,7 +51,10 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
             size="small"
             type="button"
             className="h-10 w-10"
-            aria-label="Cancel editing refund amount"
+            aria-label={t(
+              "refund-amount-form-cancel-editing-refund-amount",
+              "Cancel editing refund amount"
+            )}
             onClick={disableEdit}
           >
             <CrossIcon size={16} className="text-grey-40" />
@@ -60,7 +65,10 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
             size="small"
             type="button"
             onClick={enableEdit}
-            aria-label="Edit refund amount"
+            aria-label={t(
+              "refund-amount-form-edit-refund-amount",
+              "Edit refund amount"
+            )}
             className="h-10 w-10"
           >
             <EditIcon size={16} className="text-grey-40" />
@@ -75,12 +83,18 @@ const RefundAmountForm = ({ form, initialValue = 0, order }: Props) => {
             rules={{
               min: {
                 value: 0,
-                message: "Refund amount cannot be negative",
+                message: t(
+                  "refund-amount-form-refund-amount-cannot-be-negative",
+                  "Refund amount cannot be negative"
+                ),
               },
               required: true,
               validate: (value) => {
                 if (value === undefined || !(value >= 0)) {
-                  return "The refund amount must be at least 0"
+                  return t(
+                    "refund-amount-form-the-refund-amount-must-be-at-least-0",
+                    "The refund amount must be at least 0"
+                  )
                 }
               },
             }}

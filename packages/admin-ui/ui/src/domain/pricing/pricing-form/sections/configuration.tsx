@@ -3,6 +3,7 @@ import clsx from "clsx"
 import { useAdminCustomerGroups } from "medusa-react"
 import React, { useState } from "react"
 import { Controller } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import DatePicker from "../../../../components/atoms/date-picker/date-picker"
 import TimePicker from "../../../../components/atoms/date-picker/time-picker"
 import Switch from "../../../../components/atoms/switch"
@@ -17,6 +18,7 @@ type ConfigurationProps = {
 }
 
 const checkForEnabledConfigs = (config: ConfigurationFields): string[] => {
+  const { t } = useTranslation()
   const enabledConfigs: string[] = []
 
   if (config.customer_groups && config.customer_groups.length > 0) {
@@ -33,6 +35,7 @@ const checkForEnabledConfigs = (config: ConfigurationFields): string[] => {
 }
 
 const Configuration: React.FC<ConfigurationProps> = () => {
+  const { t } = useTranslation()
   const { customer_groups, isLoading } = useAdminCustomerGroups()
   const { control, handleConfigurationSwitch, configFields } =
     usePriceListForm()
@@ -43,10 +46,16 @@ const Configuration: React.FC<ConfigurationProps> = () => {
   return (
     <Accordion.Item
       forceMountContent
-      title="Configuration"
-      tooltip="Optional configuration for the price list"
+      title={t("sections-configuration", "Configuration")}
+      tooltip={t(
+        "sections-optional-configuration-for-the-price-list",
+        "Optional configuration for the price list"
+      )}
       value="configuration"
-      description="The price overrides apply from the time you hit the publish button and forever if left untouched."
+      description={t(
+        "sections-price-overrides-time-application",
+        "The price overrides apply from the time you hit the publish button and forever if left untouched."
+      )}
     >
       <Accordion
         type="multiple"
@@ -61,8 +70,14 @@ const Configuration: React.FC<ConfigurationProps> = () => {
             headingSize="medium"
             forceMountContent
             className="border-b-0"
-            title="Price overrides has a start date?"
-            subtitle="Schedule the price overrides to activate in the future."
+            title={t(
+              "sections-price-overrides-has-a-start-date",
+              "Price overrides has a start date?"
+            )}
+            subtitle={t(
+              "sections-schedule-the-price-overrides-to-activate-in-the-future",
+              "Schedule the price overrides to activate in the future."
+            )}
             value="starts_at"
             customTrigger={
               <Switch checked={openItems.indexOf("starts_at") > -1} />
@@ -85,12 +100,12 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                     <>
                       <DatePicker
                         date={ensuredDate}
-                        label="Start date"
+                        label={t("sections-start-date", "Start date")}
                         onSubmitDate={onChange}
                       />
                       <TimePicker
                         date={ensuredDate}
-                        label="Start date"
+                        label={t("sections-start-date", "Start date")}
                         onSubmitDate={onChange}
                       />
                     </>
@@ -103,8 +118,14 @@ const Configuration: React.FC<ConfigurationProps> = () => {
             headingSize="medium"
             forceMountContent
             className="border-b-0"
-            title="Price overrides has an expiry date?"
-            subtitle="Schedule the price overrides to deactivate in the future."
+            title={t(
+              "sections-price-overrides-has-an-expiry-date",
+              "Price overrides has an expiry date?"
+            )}
+            subtitle={t(
+              "sections-schedule-the-price-overrides-to-deactivate-in-the-future",
+              "Schedule the price overrides to deactivate in the future."
+            )}
             value="ends_at"
             customTrigger={
               <Switch checked={openItems.indexOf("ends_at") > -1} />
@@ -127,12 +148,12 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                     <>
                       <DatePicker
                         date={ensuredDate}
-                        label="End date"
+                        label={t("sections-end-date", "End date")}
                         onSubmitDate={onChange}
                       />
                       <TimePicker
                         date={ensuredDate}
-                        label="End date"
+                        label={t("sections-end-date", "End date")}
                         onSubmitDate={onChange}
                       />
                     </>
@@ -145,8 +166,11 @@ const Configuration: React.FC<ConfigurationProps> = () => {
             headingSize="medium"
             forceMountContent
             className="border-b-0"
-            title="Customer availabilty"
-            subtitle="Specifiy which customer groups the price overrides should apply for."
+            title={t("sections-customer-availabilty", "Customer availabilty")}
+            subtitle={t(
+              "sections-specifiy-which-customer-groups-the-price-overrides-should-apply-for",
+              "Specifiy which customer groups the price overrides should apply for."
+            )}
             value="customer_groups"
             customTrigger={
               <Switch checked={openItems.indexOf("customer_groups") > -1} />
@@ -172,7 +196,10 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                           value: cg.id,
                         })) || []
                       }
-                      label="Customer Groups"
+                      label={t(
+                        "sections-customer-groups-label",
+                        "Customer Groups"
+                      )}
                       onChange={onChange}
                       isMulti={true}
                       selectAll={true}

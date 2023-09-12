@@ -1,6 +1,7 @@
 import { Product } from "@medusajs/medusa"
 import { useAdminProducts } from "medusa-react"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import Modal from "../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../hooks/use-query-filters"
@@ -16,6 +17,7 @@ import {
 import EditConditionFooter from "./edit-condition-footer"
 
 const EditProductConditionSelector = ({ onClose }) => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
   const { conditions } = useDiscountForm()
   const [items, setItems] = useState(conditions.products?.items || [])
@@ -49,7 +51,10 @@ const EditProductConditionSelector = ({ onClose }) => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search products...",
+            searchPlaceholder: t(
+              "edit-condition-tables-search-products",
+              "Search products..."
+            ),
           }}
           resourceName="Products"
           totalCount={count || 0}
