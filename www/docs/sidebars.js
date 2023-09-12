@@ -442,7 +442,7 @@ module.exports = {
     {
       type: "category",
       link: {
-        type: "ref",
+        type: "doc",
         id: "contribution/docs",
       },
       label: "Contribution Guidelines",
