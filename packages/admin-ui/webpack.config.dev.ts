@@ -32,7 +32,7 @@ const getDevServerConfig = () => {
     ...devConfig,
     ...{
       devServer: {
-        port: 7001,
+        port: 7002,
         historyApiFallback: true,
       } as Configuration,
     },

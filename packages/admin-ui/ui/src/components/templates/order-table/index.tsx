@@ -34,7 +34,8 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
   let hiddenColumns = ["sales_channel"]
   if (isFeatureEnabled("sales_channels")) {
     if (!defaultQueryProps.expand.includes("sales_channel")) {
-      defaultQueryProps.expand = defaultQueryProps.expand + ",sales_channel"
+      defaultQueryProps.expand =
+        defaultQueryProps.expand + ",shipping_address,sales_channel,items"
     }
     hiddenColumns = []
   }
@@ -203,10 +204,10 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
           className={clsx({ ["relative"]: isLoading })}
         >
           <Table.Head>
-            {headerGroups?.map((headerGroup) => (
-              <Table.HeadRow {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((col) => (
-                  <Table.HeadCell {...col.getHeaderProps()}>
+            {headerGroups?.map((headerGroup, index) => (
+              <Table.HeadRow {...headerGroup.getHeaderGroupProps()} key={index}>
+                {headerGroup.headers.map((col, idx) => (
+                  <Table.HeadCell {...col.getHeaderProps()} key={idx}>
                     {col.render("Header")}
                   </Table.HeadCell>
                 ))}
@@ -214,7 +215,7 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
             ))}
           </Table.Head>
           <Table.Body {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {rows.map((row, index) => {
               prepareRow(row)
               return (
                 <Table.Row
@@ -222,10 +223,11 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
                   linkTo={row.original.id}
                   {...row.getRowProps()}
                   className="group"
+                  key={index}
                 >
-                  {row.cells.map((cell) => {
+                  {row.cells.map((cell, idx) => {
                     return (
-                      <Table.Cell {...cell.getCellProps()}>
+                      <Table.Cell {...cell.getCellProps()} key={idx}>
                         {cell.render("Cell")}
                       </Table.Cell>
                     )

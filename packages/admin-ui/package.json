@@ -5,7 +5,7 @@
   "version": "2.0.2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa.git",
+    "url": "https://github.com/BoStan42/medusa-uc-custom.git",
     "directory": "packages/admin-ui"
   },
   "exports": {
@@ -109,7 +109,7 @@
   },
   "devDependencies": {
     "@babel/types": "7.22.5",
-    "@medusajs/medusa": "*",
+    "@medusajs/medusa": "workspace:^",
     "@medusajs/types": "*",
     "@types/pluralize": "^0.0.29",
     "@types/react": "^18.0.27",

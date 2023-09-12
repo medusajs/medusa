@@ -6066,7 +6066,7 @@ __metadata:
     "@babel/traverse": 7.22.5
     "@babel/types": 7.22.5
     "@hookform/error-message": ^2.0.1
-    "@medusajs/medusa": "*"
+    "@medusajs/medusa": "workspace:^"
     "@medusajs/types": "*"
     "@medusajs/ui": ^1.0.0
     "@medusajs/ui-preset": ^1.0.0
@@ -6421,7 +6421,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.12.3, @medusajs/medusa@^1.14.0, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.15.1, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.12.3, @medusajs/medusa@^1.14.0, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.15.1, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
