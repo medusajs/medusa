@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Docusaurus",
+  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": ".",
+    "lib": [
+      "es2022"
+    ],
+    "paths": {
+      "@site/*": ["./*"],
+      "@medusajs/docs-ui/*": ["./src/components/*"]
+    },
+    "allowJs": true,
+    "module": "Node16"
+  },
+  "typeRoots": ["./node_modules/@types", "./src/types"]
+}

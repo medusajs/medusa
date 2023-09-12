@@ -33,6 +33,7 @@
     "docusaurus-plugin-image-zoom": "^0.1.1",
     "docusaurus-plugin-segment": "^1.0.3",
     "dotenv": "^16.0.3",
+    "eslint-config-docs": "*",
     "file-loader": "^6.2.0",
     "lodash": "^4.17.21",
     "postcss": "^8.4.21",
@@ -60,21 +61,10 @@
     ]
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.21.3",
-    "@docusaurus/eslint-plugin": "latest",
     "@docusaurus/module-type-aliases": "latest",
     "@tsconfig/docusaurus": "^1.0.7",
     "@types/react-transition-group": "^4.4.6",
     "@types/uuid": "^9.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.55.0",
-    "@typescript-eslint/parser": "^5.55.0",
-    "eslint": "^8.36.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^8.7.0",
-    "eslint-plugin-markdown": "^3.0.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.32.2",
-    "prettier": "^2.8.4",
     "typescript": "^5.0.2"
   }
 }

@@ -17,11 +17,7 @@
         "^start:monorepo"
       ]
     },
-    "lint": {
-      "dependsOn": [
-        "^lint"
-      ]
-    },
+    "lint": { },
     "dev:monorepo": {
       "dependsOn": [
         "^dev:monorepo"
