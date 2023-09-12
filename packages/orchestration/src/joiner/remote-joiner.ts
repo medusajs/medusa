@@ -202,7 +202,23 @@ export class RemoteJoiner {
 
       const service_ = this.serviceConfigCache.get(serviceName)!
       service_.relationships?.push(...relationships)
-      Object.assign(service_.fieldAlias ?? {}, fieldAlias ?? {})
+      Object.assign(service_.fieldAlias!, fieldAlias ?? {})
+
+      if (Object.keys(service_.fieldAlias!).length) {
+        const conflictAliases = service_.relationships!.filter(
+          (relationship) => {
+            return fieldAlias[relationship.alias]
+          }
+        )
+
+        if (conflictAliases.length) {
+          throw new Error(
+            `Conflict configuration for service "${serviceName}". The following aliases are already defined as relationships: ${conflictAliases
+              .map((relationship) => relationship.alias)
+              .join(", ")}`
+          )
+        }
+      }
     }
 
     return serviceConfigs
