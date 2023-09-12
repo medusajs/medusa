@@ -2,6 +2,7 @@ import { Order } from "@medusajs/medusa"
 import { useAdminOrders } from "medusa-react"
 import { useState } from "react"
 import { useTable, usePagination } from "react-table"
+import { useTranslation } from "react-i18next"
 import RefreshIcon from "../../fundamentals/icons/refresh-icon"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
@@ -15,6 +16,7 @@ type Props = {
 }
 
 const CustomerOrdersTable = ({ id }: Props) => {
+  const { t } = useTranslation()
   const [selectedOrderForTransfer, setSelectedOrderForTransfer] =
     useState<Order | null>(null)
 
@@ -85,7 +87,7 @@ const CustomerOrdersTable = ({ id }: Props) => {
           count: count!,
           offset,
           pageSize: offset + rows.length,
-          title: "Orders",
+          title: t("customer-orders-table-orders", "Orders"),
           currentPage: pageIndex + 1,
           pageCount: pageCount,
           nextPage: handleNext,
@@ -118,7 +120,10 @@ const CustomerOrdersTable = ({ id }: Props) => {
                   forceDropdown
                   actions={[
                     {
-                      label: "Transfer order",
+                      label: t(
+                        "customer-orders-table-transfer-order",
+                        "Transfer order"
+                      ),
                       icon: <RefreshIcon size={"20"} />,
                       onClick: () => {
                         setSelectedOrderForTransfer(row.original as Order)

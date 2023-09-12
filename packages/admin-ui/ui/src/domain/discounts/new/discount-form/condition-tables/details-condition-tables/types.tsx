@@ -1,5 +1,6 @@
 import { useAdminProductTypes } from "medusa-react"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import Modal from "../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../hooks/use-query-filters"
@@ -16,6 +17,7 @@ import DetailsConditionFooter from "./details-condition-footer"
 const DetailsTypeConditionSelector = ({
   onClose,
 }: AddConditionSelectorProps) => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
 
   const { conditions } = useConditions()
@@ -50,7 +52,10 @@ const DetailsTypeConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search by type...",
+            searchPlaceholder: t(
+              "details-condition-tables-search-by-type",
+              "Search by type..."
+            ),
           }}
           resourceName="Types"
           totalCount={count || 0}

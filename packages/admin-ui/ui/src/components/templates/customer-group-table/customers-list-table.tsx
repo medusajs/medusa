@@ -8,6 +8,7 @@ import {
 } from "react-table"
 
 import { Customer } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 
 import { useNavigate } from "react-router-dom"
 import useQueryFilters from "../../../hooks/use-query-filters"
@@ -81,10 +82,11 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
   const { row, removeCustomers } = props
 
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const actions = [
     {
-      label: "Details",
+      label: t("customer-group-table-details", "Details"),
       onClick: () => navigate(`/a/customers/${row.original.id}`),
       icon: <DetailsIcon size={20} />,
     },
@@ -94,7 +96,10 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
     //   icon: <MailIcon size={20} />,
     // },
     {
-      label: "Delete from the group",
+      label: t(
+        "customer-group-table-delete-from-the-group",
+        "Delete from the group"
+      ),
       variant: "danger",
       onClick: () =>
         removeCustomers({
@@ -124,6 +129,7 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
  * Render a list of customers that belong to a customer group.
  */
 function CustomersListTable(props: CustomersListTableProps) {
+  const { t } = useTranslation()
   const {
     customers,
     removeCustomers,
@@ -186,7 +192,10 @@ function CustomersListTable(props: CustomersListTableProps) {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + table.rows.length,
-        title: "Customer Groups",
+        title: t(
+          "customer-group-table-customer-groups-title",
+          "Customer Groups"
+        ),
         currentPage: table.state.pageIndex + 1,
         pageCount: table.pageCount,
         nextPage: handleNext,

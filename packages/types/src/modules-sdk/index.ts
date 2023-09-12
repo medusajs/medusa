@@ -124,6 +124,14 @@ export type ModuleJoinerConfig = Omit<
   relationships?: ModuleJoinerRelationship[]
   extends?: {
     serviceName: string
+    fieldAlias?: Record<
+      string,
+      | string
+      | {
+          path: string
+          forwardArgumentsOnPath: string[]
+        }
+    > // alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
     relationship: ModuleJoinerRelationship
   }[]
   serviceName?: string

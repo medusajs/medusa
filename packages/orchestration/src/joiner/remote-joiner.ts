@@ -8,7 +8,7 @@ import {
   RemoteNestedExpands,
 } from "@medusajs/types"
 
-import { isDefined } from "@medusajs/utils"
+import { isDefined, isString } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
@@ -25,6 +25,12 @@ export type RemoteFetchDataCallback = (
 
 export class RemoteJoiner {
   private serviceConfigCache: Map<string, JoinerServiceConfig> = new Map()
+
+  private implodeMapping: {
+    location: string[]
+    property: string
+    path: string[]
+  }[] = []
 
   private static filterFields(
     data: any,
@@ -76,9 +82,7 @@ export class RemoteJoiner {
   }
 
   private static getNestedItems(items: any[], property: string): any[] {
-    return items
-      .flatMap((item) => item[property])
-      .filter((item) => item !== undefined)
+    return items.flatMap((item) => item?.[property])
   }
 
   private static createRelatedDataMap(
@@ -124,15 +128,18 @@ export class RemoteJoiner {
   }
 
   private buildReferences(serviceConfigs: ModuleJoinerConfig[]) {
-    const expandedRelationships: Map<string, JoinerRelationship[]> = new Map()
+    const expandedRelationships: Map<
+      string,
+      { fieldAlias; relationships: JoinerRelationship[] }
+    > = new Map()
     for (const service of serviceConfigs) {
       if (this.serviceConfigCache.has(service.serviceName!)) {
         throw new Error(`Service "${service.serviceName}" is already defined.`)
       }
 
-      if (!service.relationships) {
-        service.relationships = []
-      }
+      service.fieldAlias ??= {}
+      service.relationships ??= []
+      service.extends ??= []
 
       // add aliases
       const isReadOnlyDefinition =
@@ -171,26 +178,47 @@ export class RemoteJoiner {
         this.cacheServiceConfig(serviceConfigs, service.serviceName)
       }
 
-      if (!service.extends) {
-        continue
-      }
-
       for (const extend of service.extends) {
         if (!expandedRelationships.has(extend.serviceName)) {
-          expandedRelationships.set(extend.serviceName, [])
+          expandedRelationships.set(extend.serviceName, {
+            fieldAlias: {},
+            relationships: [],
+          })
         }
 
-        expandedRelationships.get(extend.serviceName)!.push(extend.relationship)
+        const service_ = expandedRelationships.get(extend.serviceName)!
+        service_.relationships.push(extend.relationship)
+        Object.assign(service_.fieldAlias ?? {}, extend.fieldAlias)
       }
     }
 
-    for (const [serviceName, relationships] of expandedRelationships) {
+    for (const [
+      serviceName,
+      { fieldAlias, relationships },
+    ] of expandedRelationships) {
       if (!this.serviceConfigCache.has(serviceName)) {
         throw new Error(`Service "${serviceName}" was not found`)
       }
 
-      const service = this.serviceConfigCache.get(serviceName)
-      service!.relationships?.push(...relationships)
+      const service_ = this.serviceConfigCache.get(serviceName)!
+      service_.relationships?.push(...relationships)
+      Object.assign(service_.fieldAlias!, fieldAlias ?? {})
+
+      if (Object.keys(service_.fieldAlias!).length) {
+        const conflictAliases = service_.relationships!.filter(
+          (relationship) => {
+            return fieldAlias[relationship.alias]
+          }
+        )
+
+        if (conflictAliases.length) {
+          throw new Error(
+            `Conflict configuration for service "${serviceName}". The following aliases are already defined as relationships: ${conflictAliases
+              .map((relationship) => relationship.alias)
+              .join(", ")}`
+          )
+        }
+      }
     }
 
     return serviceConfigs
@@ -265,6 +293,8 @@ export class RemoteJoiner {
       } else {
         uniqueIds = Array.from(new Set(uniqueIds.flat()))
       }
+
+      uniqueIds = uniqueIds.filter((id) => id !== undefined)
     }
 
     if (relationship) {
@@ -295,57 +325,110 @@ export class RemoteJoiner {
     return response
   }
 
+  private handleFieldAliases(
+    items: any[],
+    parsedExpands: Map<string, RemoteExpandProperty>
+  ) {
+    const getChildren = (item: any, prop: string) => {
+      if (Array.isArray(item)) {
+        return item.flatMap((currentItem) => currentItem[prop])
+      } else {
+        return item[prop]
+      }
+    }
+    const removeChildren = (item: any, prop: string) => {
+      if (Array.isArray(item)) {
+        item.forEach((currentItem) => delete currentItem[prop])
+      } else {
+        delete item[prop]
+      }
+    }
+
+    const cleanup: [any, string][] = []
+    for (const alias of this.implodeMapping) {
+      const propPath = alias.path
+
+      let itemsLocation = items
+      for (const locationProp of alias.location) {
+        propPath.shift()
+        itemsLocation = RemoteJoiner.getNestedItems(itemsLocation, locationProp)
+      }
+
+      itemsLocation.forEach((locationItem) => {
+        if (!locationItem) {
+          return
+        }
+
+        let currentItems = locationItem
+        let parentRemoveItems: any = null
+
+        const curPath: string[] = [BASE_PATH].concat(alias.location)
+        for (const prop of propPath) {
+          if (currentItems === undefined) {
+            break
+          }
+
+          curPath.push(prop)
+
+          const config = parsedExpands.get(curPath.join(".")) as any
+          if (config?.isAliasMapping && parentRemoveItems === null) {
+            parentRemoveItems = [currentItems, prop]
+          }
+
+          currentItems = getChildren(currentItems, prop)
+        }
+
+        if (Array.isArray(currentItems)) {
+          if (currentItems.length < 2) {
+            locationItem[alias.property] = currentItems.shift()
+          } else {
+            locationItem[alias.property] = currentItems
+          }
+        } else {
+          locationItem[alias.property] = currentItems
+        }
+
+        if (parentRemoveItems !== null) {
+          cleanup.push(parentRemoveItems)
+        }
+      })
+    }
+
+    for (const parentRemoveItems of cleanup) {
+      const [remItems, path] = parentRemoveItems
+      removeChildren(remItems, path)
+    }
+  }
+
   private async handleExpands(
     items: any[],
-    query: RemoteJoinerQuery,
     parsedExpands: Map<string, RemoteExpandProperty>
   ): Promise<void> {
     if (!parsedExpands) {
       return
     }
-    const resolvedPaths = new Set<string>()
-    const stack: [any[], Partial<RemoteJoinerQuery>, string][] = [
-      [items, query, BASE_PATH],
-    ]
 
-    while (stack.length > 0) {
-      const [currentItems, currentQuery, basePath] = stack.pop()!
+    for (const [expandedPath, expand] of parsedExpands.entries()) {
+      if (expandedPath === BASE_PATH) {
+        continue
+      }
 
-      for (const [expandedPath, expand] of parsedExpands.entries()) {
-        const isParentPath = expandedPath.startsWith(basePath)
+      let nestedItems = items
+      const expandedPathLevels = expandedPath.split(".")
 
-        if (!isParentPath || resolvedPaths.has(expandedPath)) {
-          continue
-        }
+      for (let idx = 1; idx < expandedPathLevels.length - 1; idx++) {
+        nestedItems = RemoteJoiner.getNestedItems(
+          nestedItems,
+          expandedPathLevels[idx]
+        )
+      }
 
-        resolvedPaths.add(expandedPath)
-        const property = expand.property || ""
-
-        let curItems = currentItems
-        const expandedPathLevels = expandedPath.split(".")
-        for (let idx = 1; idx < expandedPathLevels.length - 1; idx++) {
-          curItems = RemoteJoiner.getNestedItems(
-            curItems,
-            expandedPathLevels[idx]
-          )
-        }
-
-        await this.expandProperty(curItems, expand.parentConfig!, expand)
-        const nestedItems = RemoteJoiner.getNestedItems(currentItems, property)
-
-        if (nestedItems.length > 0) {
-          const relationship = expand.serviceConfig
-          let nextProp = currentQuery
-          if (relationship) {
-            const relQuery = {
-              service: relationship.serviceName,
-            }
-            nextProp = relQuery
-          }
-          stack.push([nestedItems, nextProp, expandedPath])
-        }
+      if (nestedItems.length > 0) {
+        await this.expandProperty(nestedItems, expand.parentConfig!, expand)
       }
     }
+
+    this.handleFieldAliases(items, parsedExpands)
   }
 
   private async expandProperty(
@@ -379,11 +462,9 @@ export class RemoteJoiner {
     const idsToFetch: any[] = []
 
     items.forEach((item) => {
-      const values = fieldsArray
-        .map((field) => item[field])
-        .filter((value) => value !== undefined)
+      const values = fieldsArray.map((field) => item?.[field])
 
-      if (values.length === fieldsArray.length && !item[relationship.alias]) {
+      if (values.length === fieldsArray.length && !item?.[relationship.alias]) {
         if (fieldsArray.length === 1) {
           if (!idsToFetch.includes(values[0])) {
             idsToFetch.push(values[0])
@@ -424,30 +505,30 @@ export class RemoteJoiner {
     )
 
     items.forEach((item) => {
-      if (!item[relationship.alias]) {
-        const itemKey = fieldsArray.map((field) => item[field]).join(",")
+      if (!item || item[relationship.alias]) {
+        return
+      }
 
-        if (Array.isArray(item[field])) {
-          item[relationship.alias] = item[field]
-            .map((id) => {
-              if (relationship.isList && !Array.isArray(relatedDataMap[id])) {
-                relatedDataMap[id] =
-                  relatedDataMap[id] !== undefined ? [relatedDataMap[id]] : []
-              }
+      const itemKey = fieldsArray.map((field) => item[field]).join(",")
 
-              return relatedDataMap[id]
-            })
-            .filter((relatedItem) => relatedItem !== undefined)
-        } else {
-          if (relationship.isList && !Array.isArray(relatedDataMap[itemKey])) {
-            relatedDataMap[itemKey] =
-              relatedDataMap[itemKey] !== undefined
-                ? [relatedDataMap[itemKey]]
-                : []
+      if (Array.isArray(item[field])) {
+        item[relationship.alias] = item[field].map((id) => {
+          if (relationship.isList && !Array.isArray(relatedDataMap[id])) {
+            relatedDataMap[id] =
+              relatedDataMap[id] !== undefined ? [relatedDataMap[id]] : []
           }
 
-          item[relationship.alias] = relatedDataMap[itemKey]
+          return relatedDataMap[id]
+        })
+      } else {
+        if (relationship.isList && !Array.isArray(relatedDataMap[itemKey])) {
+          relatedDataMap[itemKey] =
+            relatedDataMap[itemKey] !== undefined
+              ? [relatedDataMap[itemKey]]
+              : []
         }
+
+        item[relationship.alias] = relatedDataMap[itemKey]
       }
     })
   }
@@ -479,21 +560,65 @@ export class RemoteJoiner {
     const parsedExpands = new Map<string, any>()
     parsedExpands.set(BASE_PATH, initialService)
 
+    let forwardArgumentsOnPath: string[] = []
     for (const expand of expands || []) {
       const properties = expand.property.split(".")
-      let currentServiceConfig = serviceConfig as any
+      let currentServiceConfig = serviceConfig
       const currentPath: string[] = []
 
       for (const prop of properties) {
+        const fieldAlias = currentServiceConfig.fieldAlias ?? {}
+
+        if (fieldAlias[prop]) {
+          const alias = fieldAlias[prop] as any
+
+          const path = isString(alias) ? alias : alias.path
+          const fullPath = currentPath.concat(path.split("."))
+
+          forwardArgumentsOnPath = forwardArgumentsOnPath.concat(
+            (alias?.forwardArgumentsOnPath || []).map(
+              (forPath) =>
+                BASE_PATH + "." + currentPath.concat(forPath).join(".")
+            )
+          )
+
+          this.implodeMapping.push({
+            location: currentPath,
+            property: prop,
+            path: fullPath,
+          })
+
+          const extMapping = expands as unknown[]
+
+          const middlePath = path.split(".").slice(0, -1)
+          let curMiddlePath = currentPath
+          for (const path of middlePath) {
+            curMiddlePath = curMiddlePath.concat(path)
+            extMapping.push({
+              args: expand.args,
+              property: curMiddlePath.join("."),
+              isAliasMapping: true,
+            })
+          }
+
+          extMapping.push({
+            ...expand,
+            property: fullPath.join("."),
+            isAliasMapping: true,
+          })
+          continue
+        }
+
         const fullPath = [BASE_PATH, ...currentPath, prop].join(".")
-        const relationship = currentServiceConfig.relationships.find(
+        const relationship = currentServiceConfig.relationships?.find(
           (relation) => relation.alias === prop
         )
 
         let fields: string[] | undefined =
           fullPath === BASE_PATH + "." + expand.property
-            ? expand.fields
+            ? expand.fields ?? []
             : undefined
+
         const args =
           fullPath === BASE_PATH + "." + expand.property
             ? expand.args
@@ -504,29 +629,29 @@ export class RemoteJoiner {
             parsedExpands.get([BASE_PATH, ...currentPath].join(".")) || query
 
           if (parentExpand) {
-            if (parentExpand.fields) {
-              const relField = relationship.inverse
-                ? relationship.primaryKey
-                : relationship.foreignKey.split(".").pop()!
+            const relField = relationship.inverse
+              ? relationship.primaryKey
+              : relationship.foreignKey.split(".").pop()!
 
-              parentExpand.fields = parentExpand.fields
-                .concat(relField.split(","))
-                .filter((field) => field !== relationship.alias)
+            parentExpand.fields ??= []
 
-              parentExpand.fields = [...new Set(parentExpand.fields)]
-            }
+            parentExpand.fields = parentExpand.fields
+              .concat(relField.split(","))
+              .filter((field) => field !== relationship.alias)
+
+            parentExpand.fields = [...new Set(parentExpand.fields)]
 
             if (fields) {
               const relField = relationship.inverse
                 ? relationship.foreignKey.split(".").pop()!
                 : relationship.primaryKey
               fields = fields.concat(relField.split(","))
-
-              fields = [...new Set(fields)]
             }
           }
 
-          currentServiceConfig = this.getServiceConfig(relationship.serviceName)
+          currentServiceConfig = this.getServiceConfig(
+            relationship.serviceName
+          )!
 
           if (!currentServiceConfig) {
             throw new Error(
@@ -535,16 +660,33 @@ export class RemoteJoiner {
           }
         }
 
+        const isAliasMapping = (expand as any).isAliasMapping
         if (!parsedExpands.has(fullPath)) {
           const parentPath = [BASE_PATH, ...currentPath].join(".")
+
           parsedExpands.set(fullPath, {
             property: prop,
             serviceConfig: currentServiceConfig,
             fields,
-            args,
+            args: isAliasMapping
+              ? forwardArgumentsOnPath.includes(fullPath)
+                ? args
+                : undefined
+              : args,
+            isAliasMapping: isAliasMapping,
             parent: parentPath,
             parentConfig: parsedExpands.get(parentPath).serviceConfig,
           })
+        } else {
+          const exp = parsedExpands.get(fullPath)
+
+          if (forwardArgumentsOnPath.includes(fullPath) && args) {
+            exp.args = (exp.args || []).concat(args)
+          }
+
+          if (fields) {
+            exp.fields = (exp.fields || []).concat(fields)
+          }
         }
 
         currentPath.push(prop)
@@ -585,7 +727,7 @@ export class RemoteJoiner {
           targetExpand = targetExpand.expands[key] ??= {}
         }
 
-        targetExpand.fields = expand.fields
+        targetExpand.fields = [...new Set(expand.fields)]
         targetExpand.args = expand.args
 
         mergedExpands.delete(path)
@@ -648,11 +790,7 @@ export class RemoteJoiner {
 
     const data = response.path ? response.data[response.path!] : response.data
 
-    await this.handleExpands(
-      Array.isArray(data) ? data : [data],
-      queryObj,
-      parsedExpands
-    )
+    await this.handleExpands(Array.isArray(data) ? data : [data], parsedExpands)
 
     return response.data
   }

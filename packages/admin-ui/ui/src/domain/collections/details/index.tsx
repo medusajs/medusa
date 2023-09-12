@@ -5,6 +5,7 @@ import {
 } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+
 import BackButton from "../../../components/atoms/back-button"
 import Spacer from "../../../components/atoms/spacer"
 import Spinner from "../../../components/atoms/spinner"
@@ -25,11 +26,13 @@ import { useWidgets } from "../../../providers/widget-provider"
 import Medusa from "../../../services/api"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { getErrorStatus } from "../../../utils/get-error-status"
+import { useTranslation } from "react-i18next"
 
 const CollectionDetails = () => {
   const { id } = useParams()
 
   const { collection, isLoading, error, refetch } = useAdminCollection(id!)
+  const { t } = useTranslation()
   const deleteCollection = useAdminDeleteCollection(id!)
   const updateCollection = useAdminUpdateCollection(id!)
   const [showEdit, setShowEdit] = useState(false)
@@ -97,10 +100,17 @@ const CollectionDetails = () => {
       }
 
       setShowAddProducts(false)
-      notification("Success", "Updated products in collection", "success")
+      notification(
+        t("details-success", "Success"),
+        t(
+          "details-updated-products-in-collection",
+          "Updated products in collection"
+        ),
+        "success"
+      )
       refetch()
     } catch (error) {
-      notification("Error", getErrorMessage(error), "error")
+      notification(t("details-error", "Error"), getErrorMessage(error), "error")
     }
   }
 
@@ -142,7 +152,7 @@ const CollectionDetails = () => {
         <BackButton
           className="mb-xsmall"
           path="/a/products?view=collections"
-          label="Back to Collections"
+          label={t("details-back-to-collections", "Back to Collections")}
         />
         <div className="gap-y-xsmall flex flex-col">
           {getWidgets("product_collection.details.before").map((w, i) => {
@@ -167,12 +177,12 @@ const CollectionDetails = () => {
                     forceDropdown
                     actions={[
                       {
-                        label: "Edit Collection",
+                        label: t("details-edit-collection", "Edit Collection"),
                         onClick: () => setShowEdit(true),
                         icon: <EditIcon size="20" />,
                       },
                       {
-                        label: "Delete",
+                        label: t("details-delete", "Delete"),
                         onClick: () => setShowDelete(!showDelete),
                         variant: "danger",
                         icon: <TrashIcon size="20" />,
@@ -186,7 +196,9 @@ const CollectionDetails = () => {
               </div>
               {collection.metadata && (
                 <div className="mt-large gap-y-base flex flex-col">
-                  <h3 className="inter-base-semibold">Metadata</h3>
+                  <h3 className="inter-base-semibold">
+                    {t("details-metadata", "Metadata")}
+                  </h3>
                   <div>
                     <JSONView data={collection.metadata} />
                   </div>
@@ -199,14 +211,17 @@ const CollectionDetails = () => {
             title="Products"
             actions={[
               {
-                label: "Edit Products",
+                label: t("details-edit-products", "Edit Products"),
                 icon: <EditIcon size="20" />,
                 onClick: () => setShowAddProducts(!showAddProducts),
               },
             ]}
           >
             <p className="text-grey-50 inter-base-regular mt-xsmall mb-base">
-              Products in this collection
+              {t(
+                "details-products-in-this-collection",
+                "Products in this collection"
+              )}
             </p>
             {collection && (
               <ViewProductsTable
@@ -228,7 +243,10 @@ const CollectionDetails = () => {
             )
           })}
 
-          <RawJSON data={collection} title="Raw collection" />
+          <RawJSON
+            data={collection}
+            title={t("details-raw-collection", "Raw collection")}
+          />
         </div>
         <Spacer />
       </div>
@@ -243,10 +261,13 @@ const CollectionDetails = () => {
       {showDelete && (
         <DeletePrompt
           handleClose={() => setShowDelete(!showDelete)}
-          heading="Delete collection"
-          successText="Successfully deleted collection"
+          heading={t("details-delete-collection", "Delete collection")}
+          successText={t(
+            "details-successfully-deleted-collection",
+            "Successfully deleted collection"
+          )}
           onDelete={async () => handleDelete()}
-          confirmText="Yes, delete"
+          confirmText={t("details-yes-delete", "Yes, delete")}
         />
       )}
       {showAddProducts && (

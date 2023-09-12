@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../fundamentals/button"
 import PlusIcon from "../../fundamentals/icons/plus-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
@@ -20,6 +21,7 @@ const Metadata: React.FC<AddMetadataProps> = ({
   setMetadata,
   heading = "Metadata",
 }) => {
+  const { t } = useTranslation()
   const [localData, setLocalData] = useState<MetadataField[]>([])
 
   useEffect(() => {
@@ -79,7 +81,7 @@ const Metadata: React.FC<AddMetadataProps> = ({
             onClick={addKeyPair}
           >
             <PlusIcon size={20} />
-            Add Metadata
+            {t("metadata-add-metadata", "Add Metadata")}
           </Button>
         </div>
       </div>

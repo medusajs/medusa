@@ -1,5 +1,6 @@
 import { AdminPostProductsProductVariantsReq, Product } from "@medusajs/medusa"
 import { useEffect } from "react"
+import { useTranslation } from "react-i18next"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../forms/product/variant-form/edit-flow-variant-form"
@@ -22,6 +23,7 @@ type Props = {
 
 const AddVariantModal = ({ open, onClose, product }: Props) => {
   const context = useLayeredModal()
+  const { t } = useTranslation()
 
   const { client } = useMedusa()
   const form = useForm<EditFlowVariantFormType>({
@@ -93,7 +95,9 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
     <LayeredModal context={context} open={open} handleClose={resetAndClose}>
       <Modal.Body>
         <Modal.Header handleClose={resetAndClose}>
-          <h1 className="inter-xlarge-semibold">Add Variant</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("product-variants-section-add-variant", "Add Variant")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -107,7 +111,7 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
                 type="button"
                 onClick={resetAndClose}
               >
-                Cancel
+                {t("product-variants-section-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -115,7 +119,7 @@ const AddVariantModal = ({ open, onClose, product }: Props) => {
                 type="submit"
                 loading={addingVariant}
               >
-                Save and close
+                {t("product-variants-section-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

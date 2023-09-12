@@ -1,4 +1,5 @@
 import { Route, Routes, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Spacer from "../../components/atoms/spacer"
 import RouteContainer from "../../components/extensions/route-container"
 import WidgetContainer from "../../components/extensions/widget-container"
@@ -12,11 +13,12 @@ import New from "./new"
 import PricingTable from "./pricing-table"
 
 const PricingIndex = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const actionables = [
     {
-      label: "Add price list",
+      label: t("pricing-add-price-list", "Add price list"),
       onClick: () => navigate(`/a/pricing/new`),
       icon: <PlusIcon size={20} />,
     },
@@ -39,7 +41,11 @@ const PricingIndex = () => {
       <div className="flex w-full grow flex-col">
         <BodyCard
           actionables={actionables}
-          customHeader={<TableViewHeader views={["Price lists"]} />}
+          customHeader={
+            <TableViewHeader
+              views={[t("pricing-price-lists", "Price lists")]}
+            />
+          }
           className="h-fit"
         >
           <PricingTable />
