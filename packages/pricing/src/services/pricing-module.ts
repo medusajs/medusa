@@ -531,12 +531,12 @@ export default class PricingModuleService<
 
   @InjectManager("baseRepository_")
   async retrievePriceList(
-    code: string,
+    id: string,
     config: FindConfig<PricingTypes.PriceListDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceListDTO> {
     const priceList = await this.priceListService_.retrieve(
-      code,
+      id,
       config,
       sharedContext
     )
@@ -575,7 +575,7 @@ export default class PricingModuleService<
     config: FindConfig<PricingTypes.PriceListDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[PricingTypes.PriceListDTO[], number]> {
-    const [currencies, count] = await this.priceListService_.listAndCount(
+    const [priceLists, count] = await this.priceListService_.listAndCount(
       filters,
       config,
       sharedContext
@@ -583,7 +583,7 @@ export default class PricingModuleService<
 
     return [
       await this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
-        currencies,
+        priceLists,
         {
           populate: true,
         }
@@ -678,9 +678,9 @@ export default class PricingModuleService<
   }
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async deletePriceLists(
-    currencyCodes: string[],
+    ids: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.priceListService_.delete(currencyCodes, sharedContext)
+    await this.priceListService_.delete(ids, sharedContext)
   }
 }
