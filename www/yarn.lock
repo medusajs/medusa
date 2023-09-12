@@ -9924,6 +9924,8 @@ __metadata:
     typescript: ^5.0.2
     url-loader: ^4.1.1
     uuid: ^9.0.0
+  peerDependencies:
+    eslint: ^8.36.0
   languageName: unknown
   linkType: soft
 

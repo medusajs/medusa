@@ -6,7 +6,8 @@
         "./*"
       ]
     },
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "rootDir": "."
   },
   "include": [
     "next-env.d.ts",

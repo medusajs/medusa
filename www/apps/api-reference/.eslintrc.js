@@ -1,4 +1,6 @@
 module.exports = {
   root: true,
-  extends: ["docs/docusaurus"],
+  extends: [
+    "docs/next"
+  ]
 }

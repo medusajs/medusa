@@ -11,7 +11,8 @@
     "build": "turbo run build",
     "start": "turbo run start:monorepo",
     "dev": "turbo run dev:monorepo",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "lint:content": "turbo run lint:content"
   },
   "dependencies": {
     "eslint": "^8.36.0",

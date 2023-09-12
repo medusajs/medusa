@@ -84,7 +84,7 @@ jobs:
         run: yarn install
 
       - name: Run Eslint
-        working-directory: www/apps/docs
+        working-directory: www
         run: yarn lint:content
   
   code-docs-eslint:

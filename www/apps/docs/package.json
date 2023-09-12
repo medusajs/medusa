@@ -14,8 +14,8 @@
     "start:monorepo": "yarn start --port 3001",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "lint": "eslint --ignore-path .eslintignore --ext .js,.jsx,.ts,.tsx . --fix",
-    "lint:content": "eslint --no-eslintrc -c .content.eslintrc.js --ignore-path .content.eslintignore content --fix"
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
+    "lint:content": "eslint --no-eslintrc -c .content.eslintrc.js content --fix"
   },
   "dependencies": {
     "@babel/preset-react": "^7.18.6",

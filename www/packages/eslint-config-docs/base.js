@@ -1,7 +1,3 @@
-const path = require("node:path")
-
-const project = path.resolve(path.join(__filename, "..", "..", "tsconfig", "base.json"))
-
 module.exports = {
   root: true,
   parser: "@babel/eslint-parser",
@@ -11,7 +7,6 @@ module.exports = {
       experimentalDecorators: true,
       jsx: true,
     },
-    project,
   },
   plugins: ["prettier"],
   extends: [
@@ -23,11 +18,6 @@ module.exports = {
   settings: {
     react: {
       version: "detect",
-    },
-    "import/resolver": {
-      typescript: {
-        project,
-      },
     },
   },
   rules: {
@@ -100,7 +90,9 @@ module.exports = {
     jest: true,
     browser: true,
   },
-  ignorePatterns: [],
+  ignorePatterns: [
+    "eslint-config-docs"
+  ],
   overrides: [
     {
       files: ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -111,7 +103,7 @@ module.exports = {
       ],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project,
+        project: "./tsconfig.json"
       },
       rules: {
         "valid-jsdoc": "off",

@@ -1,5 +1,11 @@
 {
   "extends": "tsconfig/docusaurus.json",
+  "compilerOptions": {
+    "paths": {
+      "@site/*": ["./*"],
+      "@medusajs/docs-ui/*": ["./src/components/*"]
+    }
+  },
   "include": [
     "src/**/*",
     "docusaurus.config.js",
@@ -7,5 +13,6 @@
     "tailwind.config.js",
     "postcss.config.js",
     "content/**/*"
-  ]
+  ],
+  "typeRoots": ["./node_modules/@types", "./src/types"]
 }

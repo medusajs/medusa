@@ -18,6 +18,7 @@
       ]
     },
     "lint": { },
+    "lint:content": { },
     "dev:monorepo": {
       "dependsOn": [
         "^dev:monorepo"

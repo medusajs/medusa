@@ -1,35 +1,4 @@
-const path = require("node:path")
-
-const project = path.resolve(path.join(__filename, "..", "..", "tsconfig", "docusaurus.json"))
-
 module.exports = {
-  root: true,
-  parser: "@babel/eslint-parser",
-  parserOptions: {
-    requireConfigFile: false,
-    ecmaFeatures: {
-      experimentalDecorators: true,
-    },
-  },
-  plugins: ["prettier", "markdown"],
-  extends: [
-    "eslint:recommended",
-    "google",
-    "plugin:prettier/recommended",
-    "plugin:markdown/recommended",
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-  ],
-  settings: {
-    react: {
-      version: "detect",
-    },
-    "import/resolver": {
-      typescript: {
-        project,
-      },
-    },
-  },
   rules: {
     "no-undef": "off",
     "no-unused-expressions": "off",
@@ -87,30 +56,25 @@ module.exports = {
     "react/prop-types": "off",
     "react/jsx-no-undef": "off",
   },
-  env: {
-    es6: true,
-    node: true,
-  },
-  ignorePatterns: [],
   overrides: [
     {
-      files: ["content/**/*.md", "content/**/*.mdx"],
+      files: ["**/*.md", "**/*.mdx"],
       processor: "markdown/markdown",
     },
     {
       files: [
-        "content/**/*.md/*.js",
-        "content/**/*.mdx/*.js",
-        "content/**/*.md/*.jsx",
-        "content/**/*.mdx/*.jsx",
+        "**/*.md/*.js",
+        "**/*.mdx/*.js",
+        "**/*.md/*.jsx",
+        "**/*.mdx/*.jsx",
       ],
     },
     {
       files: [
-        "content/**/*.md/*.ts",
-        "content/**/*.mdx/*.ts",
-        "content/**/*.md/*.tsx",
-        "content/**/*.mdx/*.tsx",
+        "**/*.md/*.ts",
+        "**/*.mdx/*.ts",
+        "**/*.md/*.tsx",
+        "**/*.mdx/*.tsx",
       ],
       plugins: ["@typescript-eslint/eslint-plugin"],
       extends: ["plugin:@typescript-eslint/recommended"],

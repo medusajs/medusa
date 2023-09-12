@@ -1,15 +1,15 @@
-{
-  "root": true,
-  "extends": [
+module.exports = {
+  root: true,
+  extends: [
     "docs/next"
   ],
-  "overrides": [
+  overrides: [
     {
-      "files": ["src/examples/*.tsx"],
-      "rules": {
+      files: ["src/examples/*.tsx"],
+      rules: {
         "@typescript-eslint/no-empty-function": "off",
         "no-console": "off"
       }
     }
-  ]
+  ],
 }
