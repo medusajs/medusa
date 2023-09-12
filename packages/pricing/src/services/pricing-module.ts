@@ -32,7 +32,7 @@ type PricingContext = {
 export default class PricingModuleService<
   TPriceSet extends PriceSet = PriceSet,
   TMoneyAmount extends MoneyAmount = MoneyAmount,
-  TCurrency extends Currency = Currency
+  TCurrency extends Currency = Currency,
 > implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -62,7 +62,7 @@ export default class PricingModuleService<
   @InjectManager("baseRepository_")
   async calculatePrices(
     priceSetIds: string[],
-    pricingContext: PricingContext,
+    pricingContext: PricingContext = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.CalculatedPriceSetDTO> {
     // Keeping this whole logic raw in here for now as they will undergo

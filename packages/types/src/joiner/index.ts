@@ -3,6 +3,11 @@ export type JoinerRelationship = {
   foreignKey: string
   primaryKey: string
   serviceName: string
+  /**
+   * If true, the relationship is an internal service from the medusa core
+   * TODO: Remove when there are no more "internal" services
+   */
+  isInternalService?: boolean
   inverse?: boolean // In an inverted relationship the foreign key is on the other service and the primary key is on the current service
   isList?: boolean // Force the relationship to return a list
   args?: Record<string, any> // Extra arguments to pass to the remoteFetchData callback
