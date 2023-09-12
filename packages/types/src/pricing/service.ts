@@ -2,10 +2,7 @@ import {
   CalculatedPriceSetDTO,
   CreateCurrencyDTO,
   CreateMoneyAmountDTO,
-<<<<<<< HEAD
-=======
   CreatePriceListDTO,
->>>>>>> 45fdea698 (suggestions from pr review)
   CreatePriceSetDTO,
   CreateRuleTypeDTO,
   CurrencyDTO,
@@ -22,17 +19,8 @@ import {
   RuleTypeDTO,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
-<<<<<<< HEAD
   UpdatePriceSetDTO,
   UpdateRuleTypeDTO,
-  CreatePriceListDTO,
-  FilterablePriceListProps,
-  PriceListDTO,
-  UpdatePriceListDTO,
-=======
-  UpdatePriceListDTO,
-  UpdatePriceSetDTO
->>>>>>> 45fdea698 (suggestions from pr review)
 } from "./common"
 
 import { Context } from "../shared-context"
