@@ -32,6 +32,7 @@
     "@mikro-orm/migrations": "5.7.12",
     "@mikro-orm/postgresql": "5.7.12",
     "awilix": "^8.0.1",
+    "knex": "2.4.2",
     "ulid": "^2.3.0"
   },
   "scripts": {

@@ -10,7 +10,10 @@ const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../../factories")
+const {
+  simpleProductFactory,
+  simpleSalesChannelFactory,
+} = require("../../../../factories")
 
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
@@ -21,6 +24,10 @@ describe("Get variant", () => {
   const productId = "test-product"
   const variantId = "test-variant"
   let invItem
+  let salesChannelService
+  let salesChannelLocationService
+  let location
+  let inventoryService
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -52,8 +59,16 @@ describe("Get variant", () => {
     const productVariantInventoryService = appContainer.resolve(
       "productVariantInventoryService"
     )
-    const inventoryService = appContainer.resolve("inventoryService")
+    inventoryService = appContainer.resolve("inventoryService")
+    salesChannelService = appContainer.resolve("salesChannelService")
+    salesChannelLocationService = appContainer.resolve(
+      "salesChannelLocationService"
+    )
+    const stockLocationService = appContainer.resolve("stockLocationService")
 
+    location = await stockLocationService.create({
+      name: "test-location",
+    })
     await simpleProductFactory(
       dbConnection,
       {
@@ -94,5 +109,35 @@ describe("Get variant", () => {
         ],
       })
     )
+  })
+
+  it("sets availability correctly", async () => {
+    const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+      is_default: true,
+    })
+
+    await salesChannelService.addProducts(salesChannel.id, [productId])
+
+    await salesChannelLocationService.associateLocation(
+      salesChannel.id,
+      location.id
+    )
+
+    await inventoryService.createInventoryLevel({
+      inventory_item_id: invItem.id,
+      location_id: location.id,
+      stocked_quantity: 10,
+    })
+
+    const api = useApi()
+
+    const response = await api.get(`/store/variants/${variantId}`)
+
+    expect(response.data).toEqual({
+      variant: expect.objectContaining({
+        purchasable: true,
+        inventory_quantity: 10,
+      }),
+    })
   })
 })

@@ -7,6 +7,7 @@ import { StoreGetVariantsVariantParams } from "./get-variant"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { withDefaultSalesChannel } from "../../../middlewares/with-default-sales-channel"
 
 const route = Router()
 
@@ -17,6 +18,7 @@ export default (app) => {
 
   route.get(
     "/",
+    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetVariantsParams, {
       defaultRelations: defaultStoreVariantRelations,
       allowedRelations: allowedStoreVariantRelations,
@@ -26,6 +28,7 @@ export default (app) => {
   )
   route.get(
     "/:id",
+    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetVariantsVariantParams, {
       defaultRelations: defaultStoreVariantRelations,
       allowedRelations: allowedStoreVariantRelations,
