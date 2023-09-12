@@ -9,6 +9,7 @@ import { IsInt, IsOptional, IsString } from "class-validator"
 
 import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { IsType } from "../../../../utils/validators/is-type"
+import { MedusaError } from "@medusajs/utils"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { Type } from "class-transformer"
@@ -154,6 +155,7 @@ export default async (req, res) => {
     "cart_id",
     "region_id",
     "currency_code",
+    "sales_channel_id",
   ])
 
   if (validated.ids) {
