@@ -1,3 +1,3 @@
-import type { RouteConfig, RouteProps } from "@medusajs/admin-ui"
+import type { RouteConfig, RouteProps } from "uc-custon-medusajs-admin-ui"
 
 export { RouteConfig, RouteProps }
