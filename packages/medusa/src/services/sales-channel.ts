@@ -303,6 +303,22 @@ class SalesChannelService extends TransactionBaseService {
   }
 
   /**
+   * List all product ids that belongs to the sales channels ids
+   *
+   * @param salesChannelIds
+   */
+  async listProductIdsBySalesChannelIds(
+    salesChannelIds: string | string[]
+  ): Promise<{ [salesChannelId: string]: string[] }> {
+    const salesChannelRepo = this.activeManager_.withRepository(
+      this.salesChannelRepository_
+    )
+    return await salesChannelRepo.listProductIdsBySalesChannelIds(
+      salesChannelIds
+    )
+  }
+
+  /**
    * Remove a batch of product from a sales channel
    * @param salesChannelId - The id of the sales channel on which to remove the products
    * @param productIds - The products ids to remove from the sales channel
