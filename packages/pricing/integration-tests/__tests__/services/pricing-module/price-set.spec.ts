@@ -72,7 +72,7 @@ describe("PricingModule Service - PriceSet", () => {
   describe("calculatePrices", () => {
     it("retrieves the calculated prices when no context is set", async () => {
       const priceSetsResult = await service.calculatePrices(
-        ["price-set-1", "price-set-2"],
+        { id: ["price-set-1", "price-set-2"] },
         {}
       )
 
@@ -96,9 +96,11 @@ describe("PricingModule Service - PriceSet", () => {
 
     it("retrieves the calculated prices when a context is set", async () => {
       const priceSetsResult = await service.calculatePrices(
-        ["price-set-1", "price-set-2"],
+        { id: ["price-set-1", "price-set-2"] },
         {
-          currency_code: "USD",
+          context: {
+            currency_code: "USD",
+          },
         }
       )
 
@@ -122,9 +124,9 @@ describe("PricingModule Service - PriceSet", () => {
 
     it("retrieves the calculated prices only when id exists in the database", async () => {
       const priceSetsResult = await service.calculatePrices(
-        ["price-set-doesnotexist", "price-set-1"],
+        { id: ["price-set-doesnotexist", "price-set-1"] },
         {
-          currency_code: "USD",
+          context: { currency_code: "USD" },
         }
       )
 
