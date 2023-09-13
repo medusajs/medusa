@@ -28,18 +28,21 @@ export type MedusaModuleConfig = {
 
 export type SharedResources = {
   database?: ModuleServiceInitializeOptions["database"] & {
-    pool?: {
-      name?: string
-      afterCreate?: Function
-      min?: number
-      max?: number
-      refreshIdle?: boolean
-      idleTimeoutMillis?: number
-      reapIntervalMillis?: number
-      returnToHead?: boolean
-      priorityRange?: number
-      log?: (message: string, logLevel: string) => void
-    }
+    /**
+     * {
+     *   name?: string
+     *   afterCreate?: Function
+     *   min?: number
+     *   max?: number
+     *   refreshIdle?: boolean
+     *   idleTimeoutMillis?: number
+     *   reapIntervalMillis?: number
+     *   returnToHead?: boolean
+     *   priorityRange?: number
+     *   log?: (message: string, logLevel: string) => void
+     * }
+     */
+    pool?: Record<string, unknown>
   }
 }
 

@@ -134,10 +134,15 @@ export default async ({
   await pgConnectionLoader({ container, configModule })
 
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
+
   track("MODULES_INIT_STARTED")
   await moduleLoader({
     container,
-    moduleResolutions: registerModules(configModule?.modules),
+    moduleResolutions: registerModules(configModule?.modules, {
+      loadLegacyOnly: featureFlagRouter.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      ),
+    }),
     logger: Logger,
   })
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
@@ -221,6 +226,7 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
+  // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
   if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
     mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
 
