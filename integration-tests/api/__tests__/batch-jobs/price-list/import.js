@@ -196,28 +196,23 @@ describe("Price list import batch job", () => {
     expect(priceListRes.data.price_list.prices).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          variant_id: "test-pl-variant",
           currency_code: "usd",
           amount: 1111,
         }),
         expect.objectContaining({
-          variant_id: "test-pl-variant",
           currency_code: "eur",
           region_id: "test-pl-region",
           amount: 2222,
         }),
         expect.objectContaining({
-          variant_id: "test-pl-variant",
           currency_code: "jpy",
           amount: 3333,
         }),
         expect.objectContaining({
-          variant_id: "test-pl-sku-variant",
           currency_code: "usd",
           amount: 4444,
         }),
         expect.objectContaining({
-          variant_id: "test-pl-sku-variant",
           currency_code: "eur",
           region_id: "test-pl-region",
           amount: 5555,

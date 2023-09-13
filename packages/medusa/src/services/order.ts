@@ -733,7 +733,13 @@ class OrderService extends TransactionBaseService {
       let giftCardableAmountBalance = giftCardableAmount
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
-      for (const giftCard of cart.gift_cards) {
+      //Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
+      const orderedGiftCards = cart.gift_cards.sort((a, b) => {
+        let aEnd = a.ends_at ?? new Date(2100, 1, 1)
+        let bEnd = b.ends_at ?? new Date(2100, 1, 1)
+        return aEnd.getTime() - bEnd.getTime() || a.balance - b.balance
+      })
+      for (const giftCard of orderedGiftCards) {
         const newGiftCardBalance = Math.max(
           0,
           giftCard.balance - giftCardableAmountBalance
@@ -755,6 +761,9 @@ class OrderService extends TransactionBaseService {
 
         giftCardableAmountBalance =
           giftCardableAmountBalance - giftCardBalanceUsed
+
+        if (giftCardableAmountBalance == 0)
+          break;
       }
 
       const shippingOptionServiceTx =
@@ -850,8 +859,7 @@ class OrderService extends TransactionBaseService {
    * have been created in regards to the shipment.
    * @param orderId - the id of the order that has been shipped
    * @param fulfillmentId - the fulfillment that has now been shipped
-   * @param trackingLinks - array of tracking numebers
-   *   associated with the shipment
+   * @param trackingLinks - array of tracking numbers associated with the shipment
    * @param config - the config of the order that has been shipped
    * @return the resulting order following the update.
    */
@@ -1957,8 +1965,8 @@ class OrderService extends TransactionBaseService {
    * Handles receiving a return. This will create a
    * refund to the customer. If the returned items don't match the requested
    * items the return status will be updated to requires_action. This behaviour
-   * is useful in sitautions where a custom refund amount is requested, but the
-   * retuned items are not matching the requested items. Setting the
+   * is useful in situations where a custom refund amount is requested, but the
+   * returned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
    * @param orderId - the order to return.

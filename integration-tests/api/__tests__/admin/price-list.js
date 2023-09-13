@@ -168,6 +168,8 @@ describe("/admin/price-lists", () => {
             price_list_id: "pl_no_customer_groups",
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            variant: expect.any(Object),
+            variants: expect.any(Array),
           },
           {
             id: expect.any(String),
@@ -179,6 +181,8 @@ describe("/admin/price-lists", () => {
             price_list_id: "pl_no_customer_groups",
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            variant: expect.any(Object),
+            variants: expect.any(Array),
           },
           {
             id: expect.any(String),
@@ -190,6 +194,8 @@ describe("/admin/price-lists", () => {
             price_list_id: "pl_no_customer_groups",
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            variant: expect.any(Object),
+            variants: expect.any(Array),
           },
         ],
         created_at: expect.any(String),
@@ -452,6 +458,8 @@ describe("/admin/price-lists", () => {
             region_id: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             deleted_at: null,
           },
           {
@@ -461,6 +469,8 @@ describe("/admin/price-lists", () => {
             min_quantity: 101,
             max_quantity: 500,
             variant_id: "test-variant",
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             price_list_id: "pl_no_customer_groups",
             region_id: null,
             created_at: expect.any(String),
@@ -474,6 +484,8 @@ describe("/admin/price-lists", () => {
             min_quantity: 501,
             max_quantity: 1000,
             variant_id: "test-variant",
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             price_list_id: "pl_no_customer_groups",
             region_id: null,
             created_at: expect.any(String),
@@ -485,6 +497,8 @@ describe("/admin/price-lists", () => {
             amount: 85,
             currency_code: "usd",
             variant_id: "test-variant_1",
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             price_list_id: "pl_no_customer_groups",
             min_quantity: null,
             max_quantity: null,
@@ -498,6 +512,8 @@ describe("/admin/price-lists", () => {
             amount: 10,
             currency_code: "usd",
             variant_id: "test-variant",
+            variant: expect.any(Object),
+            variants: expect.any(Array),
             price_list_id: "pl_no_customer_groups",
             min_quantity: null,
             max_quantity: null,
@@ -560,6 +576,8 @@ describe("/admin/price-lists", () => {
         region_id: null,
         created_at: expect.any(String),
         updated_at: expect.any(String),
+        variant: expect.any(Object),
+        variants: expect.any(Array),
       })
     })
 
@@ -690,6 +708,8 @@ describe("/admin/price-lists", () => {
           variant_id: "test-variant",
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -701,6 +721,8 @@ describe("/admin/price-lists", () => {
           variant_id: "test-variant",
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -712,6 +734,8 @@ describe("/admin/price-lists", () => {
           variant_id: "test-variant",
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -723,6 +747,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 2000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -734,6 +760,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 3000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -745,6 +773,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 4000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
       ])
     })
@@ -802,6 +832,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 2000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -813,6 +845,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 3000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
         {
           id: expect.any(String),
@@ -824,6 +858,8 @@ describe("/admin/price-lists", () => {
           max_quantity: 4000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          variant: expect.any(Object),
+          variants: expect.any(Array),
         },
       ])
     })

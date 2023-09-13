@@ -6,9 +6,10 @@ import {
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
+
 import { isObject } from "@medusajs/utils"
 import resolveCwd from "resolve-cwd"
-import MODULE_DEFINITIONS from "../definitions"
+import { MODULE_DEFINITIONS, ModulesDefinition } from "../definitions"
 
 export const registerModules = (
   modules?: Record<
@@ -46,34 +47,57 @@ export const registerModules = (
 
 export const registerMedusaModule = (
   moduleKey: string,
-  moduleDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration,
+  moduleDeclaration:
+    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+    | string
+    | false,
+  moduleExports?: ModuleExports,
+  definition?: ModuleDefinition
+): Record<string, ModuleResolution> => {
+  const moduleResolutions = {} as Record<string, ModuleResolution>
+
+  const modDefinition = definition ?? ModulesDefinition[moduleKey]
+
+  if (modDefinition === undefined) {
+    throw new Error(`Module: ${moduleKey} is not defined.`)
+  }
+
+  if (
+    isObject(moduleDeclaration) &&
+    moduleDeclaration?.scope === MODULE_SCOPE.EXTERNAL
+  ) {
+    // TODO: getExternalModuleResolution(...)
+    throw new Error("External Modules are not supported yet.")
+  }
+
+  moduleResolutions[moduleKey] = getInternalModuleResolution(
+    modDefinition,
+    moduleDeclaration as InternalModuleDeclaration,
+    moduleExports
+  )
+
+  return moduleResolutions
+}
+
+export const registerMedusaLinkModule = (
+  definition: ModuleDefinition,
+  moduleDeclaration: Partial<InternalModuleDeclaration>,
   moduleExports?: ModuleExports
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
 
-  for (const definition of MODULE_DEFINITIONS) {
-    if (definition.key !== moduleKey) {
-      continue
-    }
-
-    if (moduleDeclaration.scope === MODULE_SCOPE.EXTERNAL) {
-      // TODO: getExternalModuleResolution(...)
-      throw new Error("External Modules are not supported yet.")
-    }
-
-    moduleResolutions[definition.key] = getInternalModuleResolution(
-      definition,
-      moduleDeclaration as InternalModuleDeclaration,
-      moduleExports
-    )
-  }
+  moduleResolutions[definition.key] = getInternalModuleResolution(
+    definition,
+    moduleDeclaration as InternalModuleDeclaration,
+    moduleExports
+  )
 
   return moduleResolutions
 }
 
 function getInternalModuleResolution(
   definition: ModuleDefinition,
-  moduleConfig: InternalModuleDeclaration | false | string,
+  moduleConfig: InternalModuleDeclaration | string | false,
   moduleExports?: ModuleExports
 ): ModuleResolution {
   if (typeof moduleConfig === "boolean") {
@@ -116,7 +140,7 @@ function getInternalModuleResolution(
       ),
     ],
     moduleDeclaration: {
-      ...definition.defaultModuleDeclaration,
+      ...(definition.defaultModuleDeclaration ?? {}),
       ...moduleDeclaration,
     },
     moduleExports,

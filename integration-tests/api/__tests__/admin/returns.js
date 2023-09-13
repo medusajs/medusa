@@ -1,5 +1,7 @@
 const path = require("path")
+
 import { ReturnReason, ShippingMethod } from "@medusajs/medusa"
+
 import { createReturnableOrder } from "../claims"
 
 const setupServer = require("../../../environment-helpers/setup-server")
@@ -77,7 +79,7 @@ describe("/admin/returns", () => {
       const manager = dbConnection.manager
 
       // add a shipping method so we can fulfill the swap
-      const sm = await manager.create(ShippingMethod, {
+      const sm = manager.create(ShippingMethod, {
         id: "test-method-swap-cart",
         swap_id: sid,
         shipping_option_id: "test-option",

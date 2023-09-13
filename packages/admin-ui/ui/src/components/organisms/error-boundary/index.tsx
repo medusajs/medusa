@@ -1,7 +1,11 @@
 import { AxiosError } from "axios"
 import React, { ErrorInfo } from "react"
-import { analytics, getAnalyticsConfig } from "../../../services/analytics"
+import { analyticsOptIn } from "../../../services/analytics"
+import { Translation } from "react-i18next"
 import Button from "../../fundamentals/button"
+import { WRITE_KEY } from "../../../constants/analytics"
+import { AnalyticsBrowser } from "@segment/analytics-next"
+import { TFunction } from "i18next"
 
 type State = {
   hasError: boolean
@@ -11,6 +15,18 @@ type State = {
 
 type Props = {
   children?: React.ReactNode
+}
+
+// Analytics instance used for tracking errors
+let analyticsInstance: ReturnType<typeof AnalyticsBrowser.load> | undefined
+
+const analytics = () => {
+  if (!analyticsInstance) {
+    analyticsInstance = AnalyticsBrowser.load({
+      writeKey: WRITE_KEY,
+    })
+  }
+  return analyticsInstance
 }
 
 class ErrorBoundary extends React.Component<Props, State> {
@@ -40,7 +56,7 @@ class ErrorBoundary extends React.Component<Props, State> {
     }
 
     const properties = getTrackingInfo(error, errorInfo)
-    analytics.track("error", properties)
+    analytics().track("error", properties)
   }
 
   public dismissError = () => {
@@ -61,10 +77,14 @@ class ErrorBoundary extends React.Component<Props, State> {
                   </p>
                 )}
                 <h1 className="inter-xlarge-semibold mb-xsmall">
-                  {errorMessage(this.state.status)}
+                  <Translation>
+                    {(t) => errorMessage(t, this.state.status)}
+                  </Translation>
                 </h1>
                 <p className="inter-base-regular text-grey-50">
-                  {errorDescription(this.state.status)}
+                  <Translation>
+                    {(t) => errorDescription(t, this.state.status)}
+                  </Translation>
                 </p>
               </div>
 
@@ -74,7 +94,11 @@ class ErrorBoundary extends React.Component<Props, State> {
                   variant="primary"
                   onClick={this.dismissError}
                 >
-                  Back to dashboard
+                  <Translation>
+                    {(t) =>
+                      t("error-boundary-back-to-dashboard", "Back to dashboard")
+                    }
+                  </Translation>
                 </Button>
               </div>
             </div>
@@ -98,55 +122,72 @@ const shouldTrackEvent = async (error: Error) => {
     return false
   }
 
-  const res = await getAnalyticsConfig().catch(() => undefined)
-
-  // Don't track if we have no config to ensure we have permission
-  if (!res) {
-    return false
-  }
-
-  // Don't track if user has opted out from sharing usage insights
-  if (res.analytics_config.opt_out) {
-    return false
-  }
-
-  return true
+  return await analyticsOptIn()
 }
 
-const errorMessage = (status?: number) => {
-  const defaultMessage = "An unknown error occured"
+const errorMessage = (t: TFunction, status?: number) => {
+  const defaultMessage = t(
+    "error-boundary-an-unknown-error-occured",
+    "An unknown error occured"
+  )
 
   if (!status) {
     return defaultMessage
   }
 
   const message = {
-    400: "Bad request",
-    401: "You are not logged in",
-    403: "You do not have permission perform this action",
-    404: "Page was not found",
-    500: "An unknown server error occured",
-    503: "Server is currently unavailable",
+    400: t("error-boundary-bad-request", "Bad request"),
+    401: t("error-boundary-you-are-not-logged-in", "You are not logged in"),
+    403: t(
+      "error-boundary-you-do-not-have-permission-perform-this-action",
+      "You do not have permission perform this action"
+    ),
+    404: t("error-boundary-page-was-not-found", "Page was not found"),
+    500: t(
+      "error-boundary-an-unknown-server-error-occured",
+      "An unknown server error occured"
+    ),
+    503: t("error-boundary-503", "Server is currently unavailable"),
   }[status]
 
   return message || defaultMessage
 }
 
-const errorDescription = (status?: number) => {
-  const defaultDescription =
+const errorDescription = (t: TFunction, status?: number) => {
+  const defaultDescription = t(
+    "error-boundary-500",
     "An error occurred with unspecified causes, this is most likely due to a techinical issue on our end. Please try refreshing the page. If the issue keeps happening, contact your administrator."
+  )
 
   if (!status) {
     return defaultDescription
   }
 
   const description = {
-    400: "The request was malformed, fix your request and please try again.",
-    401: "You are not logged in, please log in to proceed.",
-    403: "You do not have permission perform this action, if you think this is a mistake, contact your administrator.",
-    404: "The page you have requested was not found, please check the URL and try again.",
-    500: "The server was not able to handle your request, this is mostly likely due to a techinical issue on our end. Please try again. If the issue keeps happening, contact your administrator.",
-    503: "The server is temporarily unavailable, and your request could not be processed. Please try again later. If the issue keeps happening, contact your administrator.",
+    400: t(
+      "error-boundary-400",
+      "The request was malformed, fix your request and please try again."
+    ),
+    401: t(
+      "error-boundary-401",
+      "You are not logged in, please log in to proceed."
+    ),
+    403: t(
+      "error-boundary-403",
+      "You do not have permission perform this action, if you think this is a mistake, contact your administrator."
+    ),
+    404: t(
+      "error-boundary-404",
+      "The page you have requested was not found, please check the URL and try again."
+    ),
+    500: t(
+      "error-boundary-500-2",
+      "The server was not able to handle your request, this is mostly likely due to a techinical issue on our end. Please try again. If the issue keeps happening, contact your administrator."
+    ),
+    503: t(
+      "error-boundary-503-2",
+      "The server is temporarily unavailable, and your request could not be processed. Please try again later. If the issue keeps happening, contact your administrator."
+    ),
   }[status]
 
   return description || defaultDescription

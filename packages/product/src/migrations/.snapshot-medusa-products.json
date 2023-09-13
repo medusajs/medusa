@@ -1,5 +1,7 @@
 {
-  "namespaces": ["public"],
+  "namespaces": [
+    "public"
+  ],
   "name": "public",
   "tables": [
     {
@@ -97,6 +99,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "now()",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -107,6 +110,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "now()",
           "mappedType": "datetime"
         }
       },
@@ -115,21 +119,27 @@
       "indexes": [
         {
           "keyName": "IDX_product_category_path",
-          "columnNames": ["mpath"],
+          "columnNames": [
+            "mpath"
+          ],
           "composite": false,
           "primary": false,
           "unique": false
         },
         {
           "keyName": "IDX_product_category_handle",
-          "columnNames": ["handle"],
+          "columnNames": [
+            "handle"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "product_category_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -139,9 +149,13 @@
       "foreignKeys": {
         "product_category_parent_category_id_foreign": {
           "constraintName": "product_category_parent_category_id_foreign",
-          "columnNames": ["parent_category_id"],
+          "columnNames": [
+            "parent_category_id"
+          ],
           "localTableName": "public.product_category",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product_category",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -186,6 +200,28 @@
           "nullable": true,
           "mappedType": "json"
         },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
         "deleted_at": {
           "name": "deleted_at",
           "type": "timestamptz",
@@ -201,7 +237,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "keyName": "IDX_product_collection_deleted_at",
           "primary": false,
@@ -209,14 +247,18 @@
         },
         {
           "keyName": "IDX_product_collection_handle_unique",
-          "columnNames": ["handle"],
+          "columnNames": [
+            "handle"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "product_collection_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -254,6 +296,28 @@
           "nullable": true,
           "mappedType": "json"
         },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
         "deleted_at": {
           "name": "deleted_at",
           "type": "timestamptz",
@@ -269,14 +333,18 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["url"],
+          "columnNames": [
+            "url"
+          ],
           "composite": false,
           "keyName": "IDX_product_image_url",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "keyName": "IDX_product_image_deleted_at",
           "primary": false,
@@ -284,7 +352,9 @@
         },
         {
           "keyName": "image_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -322,6 +392,28 @@
           "nullable": true,
           "mappedType": "json"
         },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
         "deleted_at": {
           "name": "deleted_at",
           "type": "timestamptz",
@@ -337,7 +429,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "keyName": "IDX_product_tag_deleted_at",
           "primary": false,
@@ -345,7 +439,9 @@
         },
         {
           "keyName": "product_tag_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -383,6 +479,28 @@
           "nullable": true,
           "mappedType": "json"
         },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
         "deleted_at": {
           "name": "deleted_at",
           "type": "timestamptz",
@@ -398,7 +516,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "keyName": "IDX_product_type_deleted_at",
           "primary": false,
@@ -406,7 +526,9 @@
         },
         {
           "keyName": "product_type_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -479,7 +601,12 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": ["draft", "proposed", "published", "rejected"],
+          "enumItems": [
+            "draft",
+            "proposed",
+            "published",
+            "rejected"
+          ],
           "mappedType": "enum"
         },
         "thumbnail": {
@@ -608,6 +735,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "now()",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -618,6 +746,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "now()",
           "mappedType": "datetime"
         },
         "deleted_at": {
@@ -644,14 +773,18 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["type_id"],
+          "columnNames": [
+            "type_id"
+          ],
           "composite": false,
           "keyName": "IDX_product_type_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "keyName": "IDX_product_deleted_at",
           "primary": false,
@@ -659,14 +792,18 @@
         },
         {
           "keyName": "IDX_product_handle_unique",
-          "columnNames": ["handle"],
+          "columnNames": [
+            "handle"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "product_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -676,18 +813,26 @@
       "foreignKeys": {
         "product_collection_id_foreign": {
           "constraintName": "product_collection_id_foreign",
-          "columnNames": ["collection_id"],
+          "columnNames": [
+            "collection_id"
+          ],
           "localTableName": "public.product",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product_collection",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "product_type_id_foreign": {
           "constraintName": "product_type_id_foreign",
-          "columnNames": ["type_id"],
+          "columnNames": [
+            "type_id"
+          ],
           "localTableName": "public.product",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product_type",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -732,6 +877,28 @@
           "nullable": true,
           "mappedType": "json"
         },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
         "deleted_at": {
           "name": "deleted_at",
           "type": "timestamptz",
@@ -747,14 +914,18 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["product_id"],
+          "columnNames": [
+            "product_id"
+          ],
           "composite": false,
           "keyName": "IDX_product_option_product_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "keyName": "IDX_product_option_deleted_at",
           "primary": false,
@@ -762,7 +933,9 @@
         },
         {
           "keyName": "product_option_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -772,9 +945,13 @@
       "foreignKeys": {
         "product_option_product_id_foreign": {
           "constraintName": "product_option_product_id_foreign",
-          "columnNames": ["product_id"],
+          "columnNames": [
+            "product_id"
+          ],
           "localTableName": "public.product_option",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product",
           "updateRule": "cascade"
         }
@@ -806,7 +983,10 @@
       "indexes": [
         {
           "keyName": "product_tags_pkey",
-          "columnNames": ["product_id", "product_tag_id"],
+          "columnNames": [
+            "product_id",
+            "product_tag_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -816,18 +996,26 @@
       "foreignKeys": {
         "product_tags_product_id_foreign": {
           "constraintName": "product_tags_product_id_foreign",
-          "columnNames": ["product_id"],
+          "columnNames": [
+            "product_id"
+          ],
           "localTableName": "public.product_tags",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "product_tags_product_tag_id_foreign": {
           "constraintName": "product_tags_product_tag_id_foreign",
-          "columnNames": ["product_tag_id"],
+          "columnNames": [
+            "product_tag_id"
+          ],
           "localTableName": "public.product_tags",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product_tag",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -873,9 +1061,13 @@
       "foreignKeys": {
         "product_images_product_id_foreign": {
           "constraintName": "product_images_product_id_foreign",
-          "columnNames": ["product_id"],
+          "columnNames": [
+            "product_id"
+          ],
           "localTableName": "public.product_images",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -886,7 +1078,9 @@
             "image_id"
           ],
           "localTableName": "public.product_images",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.image",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -919,7 +1113,10 @@
       "indexes": [
         {
           "keyName": "product_category_product_pkey",
-          "columnNames": ["product_id", "product_category_id"],
+          "columnNames": [
+            "product_id",
+            "product_category_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -929,18 +1126,26 @@
       "foreignKeys": {
         "product_category_product_product_id_foreign": {
           "constraintName": "product_category_product_product_id_foreign",
-          "columnNames": ["product_id"],
+          "columnNames": [
+            "product_id"
+          ],
           "localTableName": "public.product_category_product",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "product_category_product_product_category_id_foreign": {
           "constraintName": "product_category_product_product_category_id_foreign",
-          "columnNames": ["product_category_id"],
+          "columnNames": [
+            "product_category_id"
+          ],
           "localTableName": "public.product_category_product",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product_category",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1141,6 +1346,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "now()",
           "mappedType": "datetime"
         },
         "updated_at": {
@@ -1151,6 +1357,7 @@
           "primary": false,
           "nullable": false,
           "length": 6,
+          "default": "now()",
           "mappedType": "datetime"
         },
         "deleted_at": {
@@ -1168,14 +1375,18 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "keyName": "IDX_product_variant_deleted_at",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": ["product_id"],
+          "columnNames": [
+            "product_id"
+          ],
           "composite": false,
           "keyName": "IDX_product_variant_product_id",
           "primary": false,
@@ -1183,35 +1394,45 @@
         },
         {
           "keyName": "IDX_product_variant_sku_unique",
-          "columnNames": ["sku"],
+          "columnNames": [
+            "sku"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "IDX_product_variant_barcode_unique",
-          "columnNames": ["barcode"],
+          "columnNames": [
+            "barcode"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "IDX_product_variant_ean_unique",
-          "columnNames": ["ean"],
+          "columnNames": [
+            "ean"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "IDX_product_variant_upc_unique",
-          "columnNames": ["upc"],
+          "columnNames": [
+            "upc"
+          ],
           "composite": false,
           "primary": false,
           "unique": true
         },
         {
           "keyName": "product_variant_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1221,9 +1442,13 @@
       "foreignKeys": {
         "product_variant_product_id_foreign": {
           "constraintName": "product_variant_product_id_foreign",
-          "columnNames": ["product_id"],
+          "columnNames": [
+            "product_id"
+          ],
           "localTableName": "public.product_variant",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1277,6 +1502,28 @@
           "nullable": true,
           "mappedType": "json"
         },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
         "deleted_at": {
           "name": "deleted_at",
           "type": "timestamptz",
@@ -1292,21 +1539,27 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["option_id"],
+          "columnNames": [
+            "option_id"
+          ],
           "composite": false,
           "keyName": "IDX_product_option_value_option_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": ["variant_id"],
+          "columnNames": [
+            "variant_id"
+          ],
           "composite": false,
           "keyName": "IDX_product_option_value_variant_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": ["deleted_at"],
+          "columnNames": [
+            "deleted_at"
+          ],
           "composite": false,
           "keyName": "IDX_product_option_value_deleted_at",
           "primary": false,
@@ -1314,7 +1567,9 @@
         },
         {
           "keyName": "product_option_value_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1324,17 +1579,25 @@
       "foreignKeys": {
         "product_option_value_option_id_foreign": {
           "constraintName": "product_option_value_option_id_foreign",
-          "columnNames": ["option_id"],
+          "columnNames": [
+            "option_id"
+          ],
           "localTableName": "public.product_option_value",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product_option",
           "updateRule": "cascade"
         },
         "product_option_value_variant_id_foreign": {
           "constraintName": "product_option_value_variant_id_foreign",
-          "columnNames": ["variant_id"],
+          "columnNames": [
+            "variant_id"
+          ],
           "localTableName": "public.product_option_value",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.product_variant",
           "deleteRule": "cascade",
           "updateRule": "cascade"

@@ -2,7 +2,8 @@ import { ModuleServiceInitializeOptions } from "@medusajs/types"
 
 export async function mikroOrmCreateConnection(
   database: ModuleServiceInitializeOptions["database"] & { connection?: any },
-  entities: any[]
+  entities: any[],
+  pathToMigrations: string
 ) {
   let schema = database.schema || "public"
 
@@ -33,7 +34,8 @@ export async function mikroOrmCreateConnection(
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
     migrations: {
-      path: __dirname + "/../migrations",
+      path: pathToMigrations,
     },
+    pool: database.pool as any,
   })
 }

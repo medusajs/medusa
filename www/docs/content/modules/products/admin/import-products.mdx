@@ -39,6 +39,811 @@ The local file service can't be used for product import.
 
 You must have a CSV file that you will use to import products into your Medusa backend. You can check [this CSV example file](https://medusa-doc-files.s3.amazonaws.com/product-import-sales-channels.csv) to see which format is required for your import.
 
+<details>
+<summary>
+Expected columns
+</summary>
+
+#### Product columns
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+Product Handle
+</td>
+<td>
+The handle of the product
+</td>
+<td>
+Yes
+</td>
+</tr>
+
+<tr>
+<td>
+Product Id
+</td>
+<td>
+The ID of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Title
+</td>
+<td>
+The title of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Subtitle
+</td>
+<td>
+The subtitle of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Description
+</td>
+<td>
+The description of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Status
+</td>
+<td>
+The status of the product. Its value can be `draft`, `proposed`, `published`, or `rejected`.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Thumbnail
+</td>
+<td>
+A URL to the thumbnail of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Image (number) Url
+</td>
+<td>
+A URL to a product image. To add more than one image, you can specify the image number in the column title. For example, "Image 1 Url".
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Weight
+</td>
+<td>
+The weight of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Length
+</td>
+<td>
+The length of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Width
+</td>
+<td>
+The width of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Height
+</td>
+<td>
+The height of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product HS Code
+</td>
+<td>
+The HS Code of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Origin Country
+</td>
+<td>
+The origin country of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product MID Code
+</td>
+<td>
+The MID code of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Material
+</td>
+<td>
+The material of the product
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Discountable
+</td>
+<td>
+A boolean value indicating whether the product is discountable.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product External Id
+</td>
+<td>
+The external ID of the product. Useful if the product is being imported from another platform and you want to maintain the link to it.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Profile Name
+</td>
+<td>
+The name of the product's shipping profile.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Profile Type
+</td>
+<td>
+The type of the product's shipping profile. Its value can be `default`, `gift_card`, or `custom`.
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+</table>
+
+#### Product Collection columns
+
+:::note
+
+A product collection is only associated with the product if the handle provided exists. Otherwise, it's skipped.
+
+:::
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+Product Collection Title
+</td>
+<td>
+The title of the product collection
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Collection Handle
+</td>
+<td>
+The handle of the product collection
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+</table>
+
+#### Product Type columns
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+Product Type
+</td>
+<td>
+The value of the product type
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+</table>
+
+#### Product Tag columns
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+Product Tags
+</td>
+<td>
+A comma-separated list of product tags
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+</table>
+
+#### Product Option columns
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+"Option Name" or "Option (number) Name"
+</td>
+<td>
+The name of the product option. If you name the column "Option Name", it means only one option will be added, and there should be no duplicate column with the same name for another option. To add more than one option, use the "Option (number) Name" name. For example, "Option 1 Name".
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+"Option Value" or "Option (number) Value"
+</td>
+<td>
+The value of the product option. If you name the column "Option Value", it means only one option will be added, and there should be no duplicate column with the same name for another option. To add more than one option value, use the "Option (number) Value" name. For example, "Option 1 Value". The number of the value should correspond to the same option name number.
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+</table>
+
+#### Product Variant Columns
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+Variant Id
+</td>
+<td>
+The ID of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Title
+</td>
+<td>
+The title of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant SKU
+</td>
+<td>
+The SKU of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Barcode
+</td>
+<td>
+The barcode of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Inventory Quantity
+</td>
+<td>
+The inventory quantity of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Allow Backorder
+</td>
+<td>
+A boolean value indicating if the variant can be back-ordered.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Manage Inventory
+</td>
+<td>
+A boolean value indicating if the variant's inventory can be managed.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Weight
+</td>
+<td>
+The weight of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Length
+</td>
+<td>
+The length of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Width
+</td>
+<td>
+The width of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Height
+</td>
+<td>
+The height of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant HS Code
+</td>
+<td>
+The HS Code of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Origin Country
+</td>
+<td>
+The origin country of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant MID Code
+</td>
+<td>
+The MID code of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Variant Material
+</td>
+<td>
+The material of the product variant
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+</table>
+
+#### Prices columns
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+Price (region name)
+</td>
+<td>
+The price amount for a particular region, where (region name) is the name of the region.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Price (currency code)
+</td>
+<td>
+The price amount for a particular currency, where (currency code) is the 3 character ISO code of the currency. For example, "Price USD".
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+</table>
+
+#### Sales channel columns
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+Sales Channel (number) Id
+</td>
+<td>
+The ID of the sales channel this product is available in, if it already exists.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Sales Channel (number) Name
+</td>
+<td>
+The name of the sales channel this product is available in. To specify more than one sales channel, include a number in the name. For example, "Sales Channel 1 Name".
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Sales Channel (number) Description
+</td>
+<td>
+The description of the sales channel this product is available in. Make sure the column name has the same number as the corresponding sales channel name.
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+</table>
+
+#### Product Category columns
+
+:::note
+
+The [product categories beta feature](../../../beta.md) must be enabled first. Otherwise, these columns will be ignored.
+
+:::
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+Product Category (number) Handle
+</td>
+<td>
+The handle of the product category this product belongs to. If you're specifying more than one product category, you must include a number in the column name. For example, "Product Category 1 Handle". If a product category with this handle doesn't exist, the product category will be ignored.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Category (number) Name
+</td>
+<td>
+The name of the product category this product belongs to. Make sure to use the same number as that of the corresponding product category handle.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Product Category (number) Description
+</td>
+<td>
+The description of the product category this product belongs to. Make sure to use the same number as that of the corresponding product category handle.
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+</table>
+
+</details>
+
 ### JS Client
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.

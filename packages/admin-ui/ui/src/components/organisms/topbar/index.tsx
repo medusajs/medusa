@@ -7,6 +7,7 @@ import NotificationBell from "../../molecules/notification-bell"
 import SearchBar from "../../molecules/search-bar"
 import ActivityDrawer from "../activity-drawer"
 import MailDialog from "../help-dialog"
+import LanguageMenu from "../../molecules/language-menu"
 
 const Topbar: React.FC = () => {
   const {

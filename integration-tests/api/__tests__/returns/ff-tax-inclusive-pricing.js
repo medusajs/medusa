@@ -8,6 +8,7 @@ const { useDb } = require("../../../environment-helpers/use-db")
 const {
   simpleProductFactory,
   simpleOrderFactory,
+  simpleShippingOptionFactory,
 } = require("../../../factories")
 const adminSeeder = require("../../../helpers/admin-seeder")
 
@@ -266,6 +267,64 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
     expect(response.data.order.returns[0].refund_amount).toEqual(1200)
     expect(response.data.order.returns[0].items).toHaveLength(1)
     expect(response.data.order.returns[0].items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          item_id: "test-item",
+          quantity: 1,
+          note: "TOO SMALL",
+        }),
+      ])
+    )
+  })
+
+  it("creates a store return with tax inclusive shipping option", async () => {
+    await adminSeeder(dbConnection)
+
+    const order = await createReturnableOrder(dbConnection, {
+      includes_tax: true,
+    })
+    const returnOption = await simpleShippingOptionFactory(dbConnection, {
+      name: "Return method",
+      region_id: "test-region",
+      is_return: true,
+      price: 1000,
+      includes_tax: true,
+    })
+
+    const api = useApi()
+
+    const response = await api.post(
+      `/store/returns`,
+      {
+        order_id: order.id,
+        return_shipping: {
+          option_id: returnOption.id,
+        },
+        items: [
+          {
+            item_id: "test-item",
+            quantity: 1,
+            note: "TOO SMALL",
+          },
+        ],
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+
+    /*
+     * Region has default tax rate 12.5 but line item has tax rate 20
+     * therefore refund amount should be 1000 * 1.2 = 1200
+     * shipping method will have tax inclusive price of 1000
+     */
+    expect(response.data.return.refund_amount).toEqual(200)
+    expect(response.data.return.items).toHaveLength(1)
+    expect(response.data.return.items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           item_id: "test-item",
