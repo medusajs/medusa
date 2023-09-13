@@ -103,7 +103,10 @@ testApp.use((req, res, next) => {
 })
 
 let supertestRequest
-let isInit = false
+let resolveIsInit
+const isInit = new Promise((resolve) => {
+  resolveIsInit = resolve
+})
 
 async function init() {
   featureFlagLoader(config)
@@ -122,15 +125,13 @@ async function init() {
   await apiLoader({ container, app: testApp, configModule: config })
 
   supertestRequest = supertest(testApp)
-  isInit = true
+  resolveIsInit(true)
 }
 
 init()
 
 export async function request(method, url, opts = {}) {
-  while (!isInit) {
-    await new Promise((resolve) => setTimeout(resolve, 100))
-  }
+  await isInit
 
   const { payload, query, headers = {}, flags = [] } = opts
 
