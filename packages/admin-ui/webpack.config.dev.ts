@@ -14,7 +14,7 @@ const getDevServerConfig = () => {
     entry: path.resolve(__dirname, "ui", "src", "main.tsx"),
     env: "development",
     options: {
-      backend: "http://localhost:9000",
+      backend: process.env.BE_URL ?? "http://localhost:9000",
       path: "/",
     },
     template: path.resolve(__dirname, "ui", "index.html"),

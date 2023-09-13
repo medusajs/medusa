@@ -19,7 +19,7 @@ export async function develop({
   plugins,
   options = {
     path: "/",
-    backend: "http://localhost:9000",
+    backend: process.env.BE_URL ?? "http://localhost:9000",
     develop: {
       open: true,
       port: 7001,
