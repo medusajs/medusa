@@ -60,12 +60,12 @@ export const MoneyAmountRepository = dataSource
             (
               d
             ): d is {
-              variant: QueryDeepPartialEntity<ProductVariant>
+              variant_id: string
               id: string
-            } => !!d.variant
+            } => !!d.variant_id
           )
           .map((d) => ({
-            variant_id: d.variant.id,
+            variant_id: d.variant_id,
             money_amount_id: d.id,
           }))
       )
@@ -539,7 +539,7 @@ export const MoneyAmountRepository = dataSource
         (acc, price) => {
           const [prices, joinTableValues] = acc
           const id = `ma_${ulid()}`
-          const variant = this.create({
+          const variantPrice = this.create({
             ...price,
             id,
             price_list_id: priceListId,
@@ -552,19 +552,35 @@ export const MoneyAmountRepository = dataSource
             }
           )
 
-          return [
-            [...prices, variant],
-            [...joinTableValues, joinTableValue],
-          ]
+          prices.push(variantPrice)
+          joinTableValues.push(joinTableValue)
+
+          return [prices, joinTableValues]
         },
         [[], []] as [MoneyAmount[], ProductVariantMoneyAmount[]]
       )
 
-      const prices = await this.save([...existingPrices, ...newPriceEntities])
-
-      await this.manager.save(joinTableValues)
+      const [prices] = await Promise.all([
+        this.save([...existingPrices, ...newPriceEntities]),
+        await this.manager.save(joinTableValues),
+      ])
 
       return prices
+    },
+
+    async getPricesForVariantInRegion(
+      variantId: string,
+      regionId: string | undefined
+    ): Promise<MoneyAmount[]> {
+      return this.createQueryBuilder()
+        .leftJoinAndSelect(
+          "product_variant_money_amount",
+          "pvma",
+          "pvma.money_amount_id = ma.id"
+        )
+        .where("pvma.variant_id = :variantId", { variantId })
+        .where("ma.region_id = :regionId", { regionId })
+        .getMany()
     },
   })
 

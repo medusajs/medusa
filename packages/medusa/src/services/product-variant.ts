@@ -588,11 +588,10 @@ class ProductVariantService extends TransactionBaseService {
             })
           }
         } else {
-          const variant = variantsMap.get(variantId)
           const ma = moneyAmountRepo.create({
             ...price,
+            variant_id: variantId,
           }) as QueryDeepPartialEntity<MoneyAmount>
-          ma.variant = variant as QueryDeepPartialEntity<ProductVariant>
           dataToCreate.push(ma)
         }
       })
@@ -675,12 +674,11 @@ class ProductVariantService extends TransactionBaseService {
             })
           }
         } else {
-          const variant = variantsMap.get(variantId)
           const ma = moneyAmountRepo.create({
             ...price,
             currency_code: price.currency_code.toLowerCase(),
+            variant_id: variantId,
           }) as QueryDeepPartialEntity<MoneyAmount>
-          ma.variant = variant as QueryDeepPartialEntity<ProductVariant>
           dataToCreate.push(ma)
         }
       })
@@ -756,16 +754,10 @@ class ProductVariantService extends TransactionBaseService {
         this.moneyAmountRepository_
       )
 
-      let moneyAmount = await moneyAmountRepo
-        .createQueryBuilder()
-        .leftJoinAndSelect(
-          "product_variant_money_amount",
-          "pvma",
-          "pvma.money_amount_id = ma.id"
-        )
-        .where("pvma.variant_id = :variantId", { variantId })
-        .where("ma.region_id = :region_id", { region_id: price.region_id })
-        .getOne()
+      let [moneyAmount] = await moneyAmountRepo.getPricesForVariantInRegion(
+        variantId,
+        price.region_id
+      )
 
       const created = !moneyAmount
 
