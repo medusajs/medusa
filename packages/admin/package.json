@@ -1,6 +1,6 @@
 {
   "name": "uc-custon-medusajs-admin",
-  "version": "7.0.6",
+  "version": "7.0.7",
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa.git",
+    "url": "https://github.com/BoStan42/medusa-uc-custom.git",
     "directory": "packages/admin"
   },
   "dependencies": {
