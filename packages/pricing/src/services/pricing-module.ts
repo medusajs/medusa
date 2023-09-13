@@ -4,6 +4,8 @@ import {
   FindConfig,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  PricingContext,
+  PricingFilters,
   PricingTypes,
 } from "@medusajs/types"
 import { Currency, MoneyAmount, PriceSet } from "@models"
@@ -23,10 +25,6 @@ type InjectedDependencies = {
   currencyService: CurrencyService<any>
   moneyAmountService: MoneyAmountService<any>
   priceSetService: PriceSetService<any>
-}
-
-type PricingContext = {
-  currency_code?: string
 }
 
 export default class PricingModuleService<
@@ -61,14 +59,15 @@ export default class PricingModuleService<
 
   @InjectManager("baseRepository_")
   async calculatePrices(
-    priceSetIds: string[],
-    pricingContext: PricingContext,
+    pricingFilters: PricingFilters,
+    pricingContext: PricingContext = { context: {} },
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.CalculatedPriceSetDTO> {
     // Keeping this whole logic raw in here for now as they will undergo
     // some changes, will abstract them out once we have a final version
+    const context = pricingContext.context || {}
     const priceSetFilters: PricingTypes.FilterablePriceSetProps = {
-      id: priceSetIds,
+      id: pricingFilters.id,
     }
 
     const priceSets = await this.list(
@@ -95,8 +94,7 @@ export default class PricingModuleService<
         // When no price is set, return null values for all cases
         const selectedMoneyAmount = priceSet.money_amounts?.find(
           (ma) =>
-            pricingContext.currency_code &&
-            ma.currency_code === pricingContext.currency_code
+            context.currency_code && ma.currency_code === context.currency_code
         )
 
         return {

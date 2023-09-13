@@ -157,7 +157,6 @@ export class RemoteQuery {
       "skip",
       "take",
       "limit",
-      "order",
       "offset",
       "cursor",
       "sort",
