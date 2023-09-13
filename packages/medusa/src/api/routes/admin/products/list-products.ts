@@ -6,11 +6,11 @@ import {
   SalesChannelService,
 } from "../../../../services"
 
-import { IInventoryService } from "@medusajs/types"
-import { Type } from "class-transformer"
-import { Product } from "../../../../models"
-import { PricedProduct } from "../../../../types/pricing"
 import { FilterableProductProps } from "../../../../types/product"
+import { IInventoryService } from "@medusajs/types"
+import { PricedProduct } from "../../../../types/pricing"
+import { Product } from "../../../../models"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /admin/products

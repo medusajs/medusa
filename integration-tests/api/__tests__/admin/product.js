@@ -372,10 +372,10 @@ describe("/admin/products", () => {
       expect(expectedVariantPrices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price4",
+            id: "test-price_4",
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price_3",
           }),
         ])
       )
@@ -1665,6 +1665,7 @@ describe("/admin/products", () => {
 
     it("successfully updates a variant's price by changing an existing price (given a region_id)", async () => {
       const api = useApi()
+
       const data = {
         prices: [
           {
@@ -1745,6 +1746,7 @@ describe("/admin/products", () => {
                   expect.objectContaining({
                     amount: 100,
                     currency_code: "usd",
+                    id: "test-price",
                   }),
                   expect.objectContaining({
                     amount: 4500,
