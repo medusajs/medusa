@@ -418,12 +418,10 @@ describe("/admin/products", () => {
           {
             id: "variant-1",
             title: "Variant 1",
-            product_id: "to-update-with-variants",
           },
           {
             id: "variant-2",
             title: "Variant 2",
-            product_id: "to-update-with-variants",
           },
         ],
       })

@@ -4,20 +4,21 @@ import {
   updateProducts,
   UpdateProductsActions,
 } from "@medusajs/workflows"
-import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { WorkflowTypes } from "@medusajs/types"
 import path from "path"
 
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { simpleProductFactory } from "../../../../factories"
 
 describe("UpdateProduct workflow", function () {
   let medusaProcess
+  let dbConnection
   let medusaContainer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    await initDb({ cwd } as any)
+    dbConnection = await initDb({ cwd } as any)
     const { container } = await bootstrapApp({ cwd })
     medusaContainer = container
   })
@@ -27,6 +28,14 @@ describe("UpdateProduct workflow", function () {
     await db.shutdown()
 
     medusaProcess.kill()
+  })
+
+  beforeEach(async () => {
+    await simpleProductFactory(dbConnection, {
+      title: "Original title",
+      id: "to-update",
+      variants: [{ id: "original-variant" }],
+    })
   })
 
   it("should compensate all the invoke if something fails", async () => {
@@ -49,18 +58,16 @@ describe("UpdateProduct workflow", function () {
       {
         products: [
           {
-            id: "tst-id",
-            title: "Test product",
-            type: { value: "physical" },
-            tags: [{ value: "test" }],
-            subtitle: "Test subtitle",
+            id: "to-update",
+            title: "Updated title",
             variants: [
               {
-                title: "Test variant",
+                title: "Should be deleted with revert variant",
               },
             ],
           },
         ],
+        config: { listConfig: { relations: ["variants"] } },
       }
 
     const manager = medusaContainer.resolve("manager")
@@ -78,47 +85,26 @@ describe("UpdateProduct workflow", function () {
       {
         action: "fail_step",
         handlerType: "invoke",
-        error: new Error(`Failed to create products`),
+        error: new Error(`Failed to update products`),
       },
     ])
 
     expect(transaction.getState()).toEqual("reverted")
 
-    expect(result).toHaveLength(1)
-    expect(result[0]).toEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-      })
-    )
-
-    const productId = result[0].id
-
     let [product] = await Handlers.ProductHandlers.listProducts({
       container: medusaContainer,
       context,
       data: {
-        ids: [productId],
+        ids: ["to-update"],
+        config: { listConfig: { relations: ["variants"] } },
       },
     } as any)
 
-    expect(product).toBeUndefined()
-
-    const productModule = medusaContainer.resolve(
-      ModuleRegistrationName.PRODUCT
-    ) as IProductModuleService
-
-    ;[product] = await productModule.list(
-      {
-        id: productId,
-      },
-      {
-        withDeleted: true,
-      }
-    )
-
     expect(product).toEqual(
       expect.objectContaining({
-        deleted_at: expect.any(String),
+        title: "Original title",
+        id: "to-update",
+        variants: [expect.objectContaining({ id: "original-variant" })],
       })
     )
   })

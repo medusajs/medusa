@@ -14,6 +14,8 @@ export async function revertUpdateProducts({
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
+  console.log("reverting", data.originalProducts)
+
   return await productModuleService.update(
     data.originalProducts as unknown as UpdateProductDTO[]
   )
