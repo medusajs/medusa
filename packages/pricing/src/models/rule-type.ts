@@ -1,23 +1,17 @@
 import { generateEntityId } from "@medusajs/utils"
-import { PricingTypes } from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
-  Enum,
-  ManyToOne,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
-type OptionalFields =
-  | "default_priority"
-  | "kind"
-  | "is_dynamic"
-  
+type OptionalFields = "default_priority"
+
 @Entity()
 class RuleType {
-  [OptionalProps]?: OptionalFields 
+  [OptionalProps]?: OptionalFields
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -25,20 +19,11 @@ class RuleType {
   @Property({ columnType: "text" })
   name: string
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", index: "IDX_rule_type_key_value" })
   key_value: string
 
   @Property({ columnType: "integer", default: 0 })
   default_priority: number
-  
-  @Enum({
-    items: () => PricingTypes.RuleTypeKind,
-    default: PricingTypes.RuleTypeKind.FILTER,
-  })
-  kind: PricingTypes.RuleTypeKind
-  
-  @Property({ columnType: "boolean", default: false })
-  is_dynamic: boolean
 
   @BeforeCreate()
   onCreate() {
