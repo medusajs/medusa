@@ -1,4 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   EntityManager,
@@ -8,25 +7,8 @@ import {
   FindOptionsWhere,
   ILike,
   In,
-  IsNull,
   SelectQueryBuilder,
 } from "typeorm"
-import {
-  IPriceSelectionStrategy,
-  PriceSelectionContext,
-  TransactionBaseService,
-} from "../interfaces"
-import {
-  MoneyAmount,
-  Product,
-  ProductOptionValue,
-  ProductVariant,
-} from "../models"
-import {
-  FindWithRelationsOptions,
-  ProductVariantRepository,
-} from "../repositories/product-variant"
-import { FindConfig, WithRequiredProperty } from "../types/common"
 import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
@@ -38,6 +20,23 @@ import {
   UpdateVariantPricesData,
   UpdateVariantRegionPriceData,
 } from "../types/product-variant"
+import { FindConfig, WithRequiredProperty } from "../types/common"
+import {
+  FindWithRelationsOptions,
+  ProductVariantRepository,
+} from "../repositories/product-variant"
+import {
+  IPriceSelectionStrategy,
+  PriceSelectionContext,
+  TransactionBaseService,
+} from "../interfaces"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import {
+  MoneyAmount,
+  Product,
+  ProductOptionValue,
+  ProductVariant,
+} from "../models"
 import {
   buildQuery,
   hasChanges,
@@ -46,12 +45,12 @@ import {
   setMetadata,
 } from "../utils"
 
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { CartRepository } from "../repositories/cart"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { ProductRepository } from "../repositories/product"
-import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import EventBusService from "./event-bus"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { ProductOptionValueRepository } from "../repositories/product-option-value"
+import { ProductRepository } from "../repositories/product"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import RegionService from "./region"
 import { buildRelations } from "@medusajs/utils"
 
@@ -398,6 +397,7 @@ class ProductVariantService extends TransactionBaseService {
                 { id },
                 { id, ...toUpdate }
               )
+
               result = variantRepo.create({
                 ...variant,
                 ...rawResult.generatedMaps[0],
@@ -544,16 +544,16 @@ class ProductVariantService extends TransactionBaseService {
       const moneyAmountRepo = manager.withRepository(
         this.moneyAmountRepository_
       )
+      const productVariantRepo = this.activeManager_.withRepository(
+        this.productVariantRepository_
+      )
 
       const where = data.map((data_) => ({
         variant_id: data_.variantId,
         region_id: data_.price.region_id,
-        price_list_id: IsNull(),
       }))
 
-      const moneyAmounts = await moneyAmountRepo.find({
-        where,
-      })
+      const moneyAmounts = await moneyAmountRepo.findRegionMoneyAmounts(where)
 
       const moneyAmountsMapToVariantId = new Map()
       moneyAmounts.map((d) => {
@@ -582,12 +582,11 @@ class ProductVariantService extends TransactionBaseService {
             })
           }
         } else {
-          dataToCreate.push(
-            moneyAmountRepo.create({
-              ...price,
-              variant_id: variantId,
-            }) as QueryDeepPartialEntity<MoneyAmount>
-          )
+          const ma = moneyAmountRepo.create({
+            ...price,
+          }) as QueryDeepPartialEntity<MoneyAmount>
+          ma.variant = { id: variantId }
+          dataToCreate.push(ma)
         }
       })
 
@@ -626,17 +625,16 @@ class ProductVariantService extends TransactionBaseService {
       const moneyAmountRepo = manager.withRepository(
         this.moneyAmountRepository_
       )
+      const productVariantRepo = this.activeManager_.withRepository(
+        this.productVariantRepository_
+      )
 
       const where = data.map((data_) => ({
         variant_id: data_.variantId,
         currency_code: data_.price.currency_code,
-        region_id: IsNull(),
-        price_list_id: IsNull(),
       }))
 
-      const moneyAmounts = await moneyAmountRepo.find({
-        where,
-      })
+      const moneyAmounts = await moneyAmountRepo.findCurrencyMoneyAmounts(where)
 
       const moneyAmountsMapToVariantId = new Map()
       moneyAmounts.map((d) => {
@@ -665,13 +663,12 @@ class ProductVariantService extends TransactionBaseService {
             })
           }
         } else {
-          dataToCreate.push(
-            moneyAmountRepo.create({
-              ...price,
-              variant_id: variantId,
-              currency_code: price.currency_code.toLowerCase(),
-            }) as QueryDeepPartialEntity<MoneyAmount>
-          )
+          const ma = moneyAmountRepo.create({
+            ...price,
+            currency_code: price.currency_code.toLowerCase(),
+          }) as QueryDeepPartialEntity<MoneyAmount>
+          ma.variant = { id: variantId }
+          dataToCreate.push(ma)
         }
       })
 
@@ -746,24 +743,34 @@ class ProductVariantService extends TransactionBaseService {
         this.moneyAmountRepository_
       )
 
-      let moneyAmount = await moneyAmountRepo.findOne({
-        where: {
-          variant_id: variantId,
-          region_id: price.region_id,
-          price_list_id: IsNull(),
-        },
-      })
+      let [moneyAmount] = await moneyAmountRepo.getPricesForVariantInRegion(
+        variantId,
+        price.region_id
+      )
+
+      const created = !moneyAmount
 
       if (!moneyAmount) {
         moneyAmount = moneyAmountRepo.create({
           ...price,
-          variant_id: variantId,
+          variant: { id: variantId },
         })
       } else {
         moneyAmount.amount = price.amount
       }
 
-      return await moneyAmountRepo.save(moneyAmount)
+      const createdAmount = await moneyAmountRepo.save(moneyAmount)
+
+      if (created) {
+        await moneyAmountRepo.createProductVariantMoneyAmounts([
+          {
+            variant_id: variantId,
+            money_amount_id: createdAmount.id,
+          },
+        ])
+      }
+
+      return createdAmount
     })
   }
 

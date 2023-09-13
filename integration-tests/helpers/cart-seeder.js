@@ -1,3 +1,5 @@
+const { ProductVariantMoneyAmount } = require("@medusajs/medusa")
+const { ProductOption } = require("@medusajs/medusa")
 const {
   Customer,
   Region,
@@ -86,7 +88,7 @@ module.exports = async (dataSource, data = {}) => {
     `UPDATE "country" SET region_id='test-region-multiple' WHERE iso_2 = 'dk'`
   )
 
-  const customer5 = await manager.create(Customer, {
+  const customer5 = manager.create(Customer, {
     id: "test-customer-5",
     email: "test5@email.com",
     first_name: "John",
@@ -97,7 +99,7 @@ module.exports = async (dataSource, data = {}) => {
   })
   await manager.save(customer5)
 
-  const c_group_5 = await manager.create(CustomerGroup, {
+  const c_group_5 = manager.create(CustomerGroup, {
     id: "test-group-5",
     name: "test-group-5",
   })
@@ -106,7 +108,7 @@ module.exports = async (dataSource, data = {}) => {
   customer5.groups = [c_group_5]
   await manager.save(customer5)
 
-  const priceList_customer = await manager.create(PriceList, {
+  const priceList_customer = manager.create(PriceList, {
     id: "pl_customer",
     name: "VIP winter sale",
     description: "Winter sale for VIP customers.",
@@ -221,7 +223,7 @@ module.exports = async (dataSource, data = {}) => {
   itemPerc15.rule = itemPerc15Rule
   await manager.save(itemPerc15)
 
-  const dUsageLimit = await manager.create(Discount, {
+  const dUsageLimit = manager.create(Discount, {
     id: "test-discount-usage-limit",
     code: "SPENT",
     is_dynamic: false,
@@ -230,7 +232,7 @@ module.exports = async (dataSource, data = {}) => {
     usage_count: 10,
   })
 
-  const drUsage = await manager.create(DiscountRule, {
+  const drUsage = manager.create(DiscountRule, {
     id: "test-discount-rule-usage-limit",
     description: "Created",
     type: "fixed",
@@ -243,14 +245,14 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(dUsageLimit)
 
-  const d = await manager.create(Discount, {
+  const d = manager.create(Discount, {
     id: "test-discount",
     code: "CREATED",
     is_dynamic: false,
     is_disabled: false,
   })
 
-  const dr = await manager.create(DiscountRule, {
+  const dr = manager.create(DiscountRule, {
     id: "test-discount-rule",
     description: "Created",
     type: "fixed",
@@ -369,12 +371,12 @@ module.exports = async (dataSource, data = {}) => {
     email: "test@email.com",
   })
 
-  const c2 = await manager.create(Customer, {
+  const c2 = manager.create(Customer, {
     id: "test-customer-2",
     email: "test-2@email.com",
   })
 
-  const cg = await manager.create(CustomerGroup, {
+  const cg = manager.create(CustomerGroup, {
     id: "cgroup",
     name: "customer group",
   })
@@ -422,7 +424,7 @@ module.exports = async (dataSource, data = {}) => {
     data: {},
   })
 
-  const priceList = await manager.create(PriceList, {
+  const priceList = manager.create(PriceList, {
     id: "pl",
     name: "VIP winter sale",
     description: "Winter sale for VIP customers.",
@@ -432,7 +434,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList)
 
-  const priceList1 = await manager.create(PriceList, {
+  const priceList1 = manager.create(PriceList, {
     id: "pl_current",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -444,6 +446,12 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList1)
 
+  const denomOp = manager.create(ProductOption, {
+    id: "denom",
+    title: "Denomination",
+  })
+  await manager.save(denomOp)
+
   const giftCardProduct = manager.create(Product, {
     id: "giftcard-product",
     title: "Giftcard",
@@ -451,11 +459,11 @@ module.exports = async (dataSource, data = {}) => {
     discountable: false,
     profile_id: gcProfile.id,
     profiles: [{ id: gcProfile.id }],
-    options: [{ id: "denom", title: "Denomination" }],
+    options: [denomOp],
   })
   await manager.save(Product, giftCardProduct)
 
-  await manager.insert(ProductVariant, {
+  const denom = manager.create(ProductVariant, {
     id: "giftcard-denom",
     title: "1000",
     product_id: "giftcard-product",
@@ -467,17 +475,36 @@ module.exports = async (dataSource, data = {}) => {
       },
     ],
   })
+  await manager.save(denom)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_denom",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-denom",
+    money_amount_id: "test-price_denom",
+    variant_id: "giftcard-denom",
+  })
+
+  const op_1 = manager.create(ProductOption, {
+    id: "test-option",
+    title: "Size",
+  })
+  await manager.save(op_1)
 
   const testProduct = manager.create(Product, {
     id: "test-product",
     title: "test product",
     profile_id: defaultProfile.id,
     profiles: [{ id: defaultProfile.id }],
-    options: [{ id: "test-option", title: "Size" }],
+    options: [op_1],
   })
-  await manager.save(Product, testProduct)
+  await manager.save(testProduct)
 
-  await manager.insert(ProductVariant, {
+  const quantityVariant = manager.create(ProductVariant, {
     id: "test-variant-quantity",
     title: "test variant",
     product_id: "test-product",
@@ -490,7 +517,48 @@ module.exports = async (dataSource, data = {}) => {
     ],
   })
 
-  await manager.insert(ProductVariant, {
+  await manager.save(quantityVariant)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_quantity-1",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-quantity-1",
+    money_amount_id: "test-price_quantity-1",
+    variant_id: "test-variant-quantity",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_quantity-2",
+    currency_code: "usd",
+    min_quantity: 10,
+    max_quantity: 100,
+    amount: 800,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-quantity-2",
+    money_amount_id: "test-price_quantity-2",
+    variant_id: "test-variant-quantity",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_quantity-3",
+    currency_code: "usd",
+    min_quantity: 100,
+    amount: 700,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-quantity-3",
+    money_amount_id: "test-price_quantity-3",
+    variant_id: "test-variant-quantity",
+  })
+
+  const variantSale = manager.create(ProductVariant, {
     id: "test-variant-sale",
     title: "test variant",
     product_id: "test-product",
@@ -503,7 +571,34 @@ module.exports = async (dataSource, data = {}) => {
     ],
   })
 
-  await manager.insert(ProductVariant, {
+  await manager.save(variantSale)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_sale-1",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-1",
+    money_amount_id: "test-price_sale-1",
+    variant_id: "test-variant-sale",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-sale-2",
+    currency_code: "usd",
+    amount: 800,
+    price_list_id: "pl_current",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-2",
+    money_amount_id: "test-price-sale-2",
+    variant_id: "test-variant-sale",
+  })
+
+  const variantSaleCustomer = manager.create(ProductVariant, {
     id: "test-variant-sale-customer",
     title: "test variant",
     product_id: "test-product",
@@ -515,8 +610,47 @@ module.exports = async (dataSource, data = {}) => {
       },
     ],
   })
+  await manager.save(variantSaleCustomer)
 
-  await manager.insert(ProductVariant, {
+  await manager.insert(MoneyAmount, {
+    id: "test-price_sale-customer-1",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-customer-1",
+    money_amount_id: "test-price_sale-customer-1",
+    variant_id: "test-variant-sale-customer",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_sale-customer-2",
+    currency_code: "usd",
+    amount: 700,
+    price_list_id: "pl_customer",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-customer-2",
+    money_amount_id: "test-price_sale-customer-2",
+    variant_id: "test-variant-sale-customer",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-sale-customer-3",
+    currency_code: "usd",
+    amount: 800,
+    price_list_id: "pl_current",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-customer-3",
+    money_amount_id: "test-price_sale-customer-3",
+    variant_id: "test-variant-sale-customer",
+  })
+
+  const testVariant = manager.create(ProductVariant, {
     id: "test-variant",
     title: "test variant",
     product_id: "test-product",
@@ -528,8 +662,33 @@ module.exports = async (dataSource, data = {}) => {
       },
     ],
   })
+  await manager.save(testVariant)
 
-  await manager.insert(ProductVariant, {
+  await manager.insert(MoneyAmount, {
+    id: "test-price-1",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-1",
+    money_amount_id: "test-price-1",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-2",
+    currency_code: "eur",
+    amount: 2000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-2",
+    money_amount_id: "test-price-2",
+    variant_id: "test-variant",
+  })
+
+  const variant2 = await manager.insert(ProductVariant, {
     id: "test-variant-2",
     title: "test variant 2",
     product_id: "test-product",
@@ -542,106 +701,17 @@ module.exports = async (dataSource, data = {}) => {
     ],
   })
 
-  const ma = manager.create(MoneyAmount, {
-    variant_id: "test-variant",
+  await manager.insert(MoneyAmount, {
+    id: "test-price-2-2",
     currency_code: "usd",
-    type: "default",
-    amount: 1000,
-  })
-  await manager.save(ma)
-
-  const maEur = manager.create(MoneyAmount, {
-    variant_id: "test-variant",
-    currency_code: "eur",
-    type: "default",
-    amount: 2000,
-  })
-  await manager.save(maEur)
-
-  const ma_sale = manager.create(MoneyAmount, {
-    variant_id: "test-variant-sale",
-    currency_code: "usd",
-    amount: 1000,
-  })
-  await manager.save(ma_sale)
-
-  const ma_sale_1 = manager.create(MoneyAmount, {
-    variant_id: "test-variant-sale",
-    currency_code: "usd",
-    amount: 800,
-    price_list_id: "pl_current",
-  })
-  await manager.save(ma_sale_1)
-
-  const ma_sale_customer = manager.create(MoneyAmount, {
-    variant_id: "test-variant-sale-customer",
-    currency_code: "usd",
-    amount: 1000,
-  })
-  await manager.save(ma_sale_customer)
-
-  const ma_sale_customer_1 = manager.create(MoneyAmount, {
-    variant_id: "test-variant-sale-customer",
-    currency_code: "usd",
-    amount: 700,
-    price_list_id: "pl_customer",
-  })
-  await manager.save(ma_sale_customer_1)
-
-  const ma_sale_customer_2 = manager.create(MoneyAmount, {
-    variant_id: "test-variant-sale-customer",
-    currency_code: "usd",
-    amount: 800,
-    price_list_id: "pl_current",
-  })
-  await manager.save(ma_sale_customer_2)
-
-  const ma_quantity = manager.create(MoneyAmount, {
-    variant_id: "test-variant-quantity",
-    currency_code: "usd",
-    type: "default",
-    amount: 1000,
-  })
-  await manager.save(ma_quantity)
-
-  const ma_quantity_1 = manager.create(MoneyAmount, {
-    variant_id: "test-variant-quantity",
-    currency_code: "usd",
-    type: "sale",
-    min_quantity: 10,
-    max_quantity: 100,
-    amount: 800,
-  })
-
-  await manager.save(ma_quantity_1)
-
-  const ma_quantity_2 = manager.create(MoneyAmount, {
-    variant_id: "test-variant-quantity",
-    currency_code: "usd",
-    type: "sale",
-    min_quantity: 100,
-    amount: 700,
-  })
-
-  await manager.save(ma_quantity_2)
-
-  const ma2 = manager.create(MoneyAmount, {
-    variant_id: "test-variant-2",
-    currency_code: "usd",
-    type: "default",
     amount: 8000,
   })
 
-  await manager.save(ma2)
-
-  const ma3 = manager.create(MoneyAmount, {
-    variant_id: "giftcard-denom",
-    currency_code: "usd",
-    type: "default",
-    amount: 1000,
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-2-1",
+    money_amount_id: "test-price-2-2",
+    variant_id: "test-variant-2",
   })
-
-  await manager.save(ma3)
 
   const cart = manager.create(Cart, {
     id: "test-cart",
@@ -908,7 +978,7 @@ module.exports = async (dataSource, data = {}) => {
   })
   await manager.save(cart4)
 
-  await manager.insert(ProductVariant, {
+  const variantSaleCG = manager.create(ProductVariant, {
     id: "test-variant-sale-cg",
     title: "test variant",
     product_id: "test-product",
@@ -920,31 +990,46 @@ module.exports = async (dataSource, data = {}) => {
       },
     ],
   })
+  await manager.save(variantSaleCG)
 
-  const ma_cg = manager.create(MoneyAmount, {
-    variant_id: "test-variant-sale-cg",
+  await manager.insert(MoneyAmount, {
+    id: "test-test-variant-sale-cg-1",
     currency_code: "usd",
     amount: 1000,
   })
-  await manager.save(ma_cg)
 
-  const ma_sale_cg = manager.create(MoneyAmount, {
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-sale-cg-1",
+    money_amount_id: "test-test-variant-sale-cg-1",
     variant_id: "test-variant-sale-cg",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-test-variant-sale-cg-2",
     currency_code: "usd",
     price_list_id: "pl",
     amount: 500,
   })
-  await manager.save(ma_sale_cg)
 
-  const ma_sale_cg_new_region = manager.create(MoneyAmount, {
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-sale-cg-2",
+    money_amount_id: "test-test-variant-sale-cg-2",
     variant_id: "test-variant-sale-cg",
-    region_id: "test-region-multiple",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-test-variant-sale-cg-3",
     currency_code: "eur",
     amount: 700,
   })
-  await manager.save(ma_sale_cg_new_region)
 
-  const li3 = await manager.create(LineItem, {
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-sale-cg-3",
+    money_amount_id: "test-test-variant-sale-cg-3",
+    variant_id: "test-variant-sale-cg",
+  })
+
+  const li3 = manager.create(LineItem, {
     id: "test-item3",
     title: "Line Item",
     description: "Line Item Desc",

@@ -5,6 +5,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { FieldArrayWithId, useFieldArray } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import InputError from "../../../../components/atoms/input-error"
 import { FormImage, Option } from "../../../../types/shared"
 import { NestedForm } from "../../../../utils/nested-form"
@@ -50,6 +51,7 @@ type Props = {
 }
 
 const ItemsToReturnForm = ({ form, order, isClaim = false }: Props) => {
+  const { t } = useTranslation()
   const {
     control,
     path,
@@ -78,7 +80,9 @@ const ItemsToReturnForm = ({ form, order, isClaim = false }: Props) => {
   return (
     <div className="gap-y-base flex flex-col">
       <h2 className="inter-base-semibold">
-        Items to {isClaim ? "claim" : "return"}
+        {isClaim
+          ? t("items-to-return-form-items-to-claim", "Items to claim")
+          : t("items-to-return-form-items-to-return", "Items to return")}
       </h2>
       <ItemsToReturnTable form={form} instance={table} isClaim={isClaim} />
       <InputError errors={errors} name={path("items")} />

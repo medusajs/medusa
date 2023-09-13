@@ -8,7 +8,9 @@ import {
 import { IsOptional, IsString } from "class-validator"
 
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { cleanResponseData } from "../../../../utils"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
+import { defaultStoreProductsFields } from "./index"
 
 /**
  * @oas [get] /store/products/{id}
@@ -90,7 +92,14 @@ export default async (req, res) => {
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
-  const rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+
+  let rawProduct
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomain.key)) {
+    rawProduct = await getProductWithIsolatedProductModule(req, id)
+  } else {
+    rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  }
 
   let sales_channel_id = validated.sales_channel_id
   if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
@@ -151,6 +160,126 @@ export default async (req, res) => {
   res.json({
     product: cleanResponseData(decoratedProduct, req.allowedProperties || []),
   })
+}
+
+async function getProductWithIsolatedProductModule(req, id: string) {
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id }
+  const commonProperties = []
+
+  const query = `
+      query ($id: String!) {
+        product (id: $id) {
+          ${defaultStoreProductsFields.join("\n")}
+          
+          images {
+            id
+            created_at
+            updated_at
+            deleted_at
+            url
+            metadata
+          }
+          
+          tags {
+            id
+            created_at
+            updated_at
+            deleted_at
+            value
+          }
+          
+          type {
+            id
+            created_at
+            updated_at
+            deleted_at
+            value
+          }
+          
+          collection {
+            title
+            handle
+            id
+            created_at
+            updated_at
+            deleted_at
+          }
+          
+          options {
+            id
+            created_at
+            updated_at
+            deleted_at
+            title
+            product_id
+            metadata
+            values {
+              id
+              created_at
+              updated_at
+              deleted_at
+              value
+              option_id
+              variant_id
+              metadata
+            }
+          }
+          
+          variants {
+            id
+            created_at
+            updated_at
+            deleted_at
+            title
+            product_id
+            sku
+            barcode
+            ean
+            upc
+            variant_rank
+            inventory_quantity
+            allow_backorder
+            manage_inventory
+            hs_code
+            origin_country
+            mid_code
+            material
+            weight
+            length
+            height
+            width
+            metadata
+            options {
+              id
+              created_at
+              updated_at
+              deleted_at
+              value
+              option_id
+              variant_id
+              metadata
+            }
+          }
+          
+          profile {
+            id
+            created_at
+            updated_at
+            deleted_at
+            name
+            type
+          }
+        } 
+      }
+    `
+
+  const [product] = await remoteQuery(query, variables)
+
+  product.profile_id = product.profile?.id
+
+  return product
 }
 
 export class StoreGetProductsProductParams extends PriceSelectionParams {

@@ -158,6 +158,7 @@ export type PriceListPriceUpdateInput = {
 export type PriceListPriceCreateInput = {
   region_id?: string
   currency_code?: string
+  variant_id: string
   amount: number
   min_quantity?: number
   max_quantity?: number

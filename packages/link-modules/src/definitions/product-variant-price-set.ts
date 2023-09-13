@@ -43,8 +43,7 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
         serviceName: LINKS.ProductVariantPriceSet,
         primaryKey: "variant_id",
         foreignKey: "id",
-        alias: "prices",
-        isList: false,
+        alias: "price",
       },
     },
     {

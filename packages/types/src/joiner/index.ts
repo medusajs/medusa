@@ -3,19 +3,42 @@ export type JoinerRelationship = {
   foreignKey: string
   primaryKey: string
   serviceName: string
-  inverse?: boolean // In an inverted relationship the foreign key is on the other service and the primary key is on the current service
-  isList?: boolean // Force the relationship to return a list
-  args?: Record<string, any> // Extra arguments to pass to the remoteFetchData callback
+  /**
+   * If true, the relationship is an internal service from the medusa core
+   * TODO: Remove when there are no more "internal" services
+   */
+  isInternalService?: boolean
+  /**
+   * In an inverted relationship the foreign key is on the other service and the primary key is on the current service
+   */
+  inverse?: boolean
+  /**
+   * Force the relationship to return a list
+   */
+  isList?: boolean
+  /**
+   * Extra arguments to pass to the remoteFetchData callback
+   */
+  args?: Record<string, any>
 }
 
 export interface JoinerServiceConfigAlias {
   name: string
-  args?: Record<string, any> // Extra arguments to pass to the remoteFetchData callback
+  /**
+   * Extra arguments to pass to the remoteFetchData callback
+   */
+  args?: Record<string, any>
 }
 
 export interface JoinerServiceConfig {
   serviceName: string
-  alias?: JoinerServiceConfigAlias | JoinerServiceConfigAlias[] // Property name to use as entrypoint to the service
+  /**
+   * Property name to use as entrypoint to the service
+   */
+  alias?: JoinerServiceConfigAlias | JoinerServiceConfigAlias[]
+  /**
+   * alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
+   */
   fieldAlias?: Record<
     string,
     | string
@@ -23,14 +46,17 @@ export interface JoinerServiceConfig {
         path: string
         forwardArgumentsOnPath: string[]
       }
-  > // alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
+  >
   primaryKeys: string[]
   relationships?: JoinerRelationship[]
   extends?: {
     serviceName: string
     relationship: JoinerRelationship
   }[]
-  args?: Record<string, any> // Extra arguments to pass to the remoteFetchData callback
+  /**
+   * Extra arguments to pass to the remoteFetchData callback
+   */
+  args?: Record<string, any>
 }
 
 export interface JoinerArgument {
