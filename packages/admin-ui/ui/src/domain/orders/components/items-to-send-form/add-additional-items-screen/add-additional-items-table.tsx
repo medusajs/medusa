@@ -1,6 +1,7 @@
 import { PricedVariant } from "@medusajs/medusa/dist/types/pricing"
 import { flexRender, Table as Instance } from "@tanstack/react-table"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import LoadingContainer from "../../../../../components/atoms/loading-container"
 import Table from "../../../../../components/molecules/table"
 
@@ -17,6 +18,7 @@ export const AddAdditionalItemsTable = ({
 }: Props) => {
   const [query, setQuery] = useState<string | undefined>(undefined)
   const { getHeaderGroups, getRowModel } = instance
+  const { t } = useTranslation()
 
   useEffect(() => {
     setSearchTerm(query)
@@ -26,7 +28,10 @@ export const AddAdditionalItemsTable = ({
     <LoadingContainer isLoading={isLoadingData}>
       <Table
         enableSearch
-        searchPlaceholder="Search products"
+        searchPlaceholder={t(
+          "add-additional-items-screen-search-products",
+          "Search products"
+        )}
         searchValue={query}
         handleSearch={setQuery}
       >

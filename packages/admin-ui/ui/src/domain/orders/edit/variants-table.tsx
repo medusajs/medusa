@@ -4,6 +4,7 @@ import { usePagination, useRowSelect, useTable } from "react-table"
 import { InventoryLevelDTO, ProductVariant } from "@medusajs/medusa"
 import clsx from "clsx"
 import pluralize from "pluralize"
+import { useTranslation } from "react-i18next"
 import { useDebounce } from "../../../hooks/use-debounce"
 import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
 import Table from "../../../components/molecules/table"
@@ -25,6 +26,7 @@ type Props = {
 }
 
 const VariantsTable: React.FC<Props> = (props) => {
+  const { t } = useTranslation()
   const { isReplace, regionId, currencyCode, customerId, setSelectedVariants } =
     props
 
@@ -84,8 +86,9 @@ const VariantsTable: React.FC<Props> = (props) => {
               <span className="font-semibold">
                 {location_level.stocked_quantity}
               </span>
-              {" in "}
-              {getLocationNameById(location_level.location_id)}
+              {t("variants-table-location", " in {{location}}", {
+                location: getLocationNameById(location_level.location_id),
+              })}
             </div>
           )
         )}
@@ -136,7 +139,9 @@ const VariantsTable: React.FC<Props> = (props) => {
     return [
       {
         Header: (
-          <div className="text-small font-semibold text-gray-500">Product</div>
+          <div className="text-small font-semibold text-gray-500">
+            {t("edit-product", "Product")}
+          </div>
         ),
         accessor: "sku",
         Cell: ProductCell,
@@ -144,7 +149,7 @@ const VariantsTable: React.FC<Props> = (props) => {
       {
         Header: (
           <div className="text-small text-right font-semibold text-gray-500">
-            In Stock
+            {t("edit-in-stock", "In Stock")}
           </div>
         ),
         accessor: "inventory_quantity",
@@ -153,7 +158,7 @@ const VariantsTable: React.FC<Props> = (props) => {
       {
         Header: (
           <div className="text-small text-right font-semibold text-gray-500">
-            Price
+            {t("edit-price", "Price")}
           </div>
         ),
         accessor: "amount",
@@ -295,7 +300,7 @@ const VariantsTable: React.FC<Props> = (props) => {
         count: count!,
         offset: offset,
         pageSize: offset + table.rows.length,
-        title: "Products",
+        title: t("edit-products", "Products"),
         currentPage: table.state.pageIndex + 1,
         pageCount: table.pageCount,
         nextPage: handleNext,
@@ -307,7 +312,10 @@ const VariantsTable: React.FC<Props> = (props) => {
       <Table
         immediateSearchFocus
         enableSearch
-        searchPlaceholder="Search Product Variants..."
+        searchPlaceholder={t(
+          "edit-search-product-variants",
+          "Search Product Variants..."
+        )}
         searchValue={query}
         handleSearch={handleSearch}
         {...table.getTableProps()}

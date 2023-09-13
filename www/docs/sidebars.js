@@ -49,6 +49,15 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "recipes/ecommerce",
+          label: "Ecommerce",
+          customProps: {
+            iconName: "shopping-cart",
+            excludeFromDocList: true,
+          },
+        },
+        {
+          type: "doc",
           id: "recipes/marketplace",
           label: "Marketplace",
           customProps: {
@@ -106,7 +115,7 @@ module.exports = {
         {
           type: "doc",
           id: "recipes/b2b",
-          label: "B2B / Wholesale",
+          label: "B2B",
           customProps: {
             iconName: "building-solid",
           },

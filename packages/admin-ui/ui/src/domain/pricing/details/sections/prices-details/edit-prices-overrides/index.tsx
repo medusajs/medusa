@@ -1,6 +1,7 @@
 import { MoneyAmount, Product } from "@medusajs/medusa"
 import { useAdminStore, useAdminUpdatePriceList } from "medusa-react"
 import { useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../../../components/fundamentals/button"
 import { CollapsibleTree } from "../../../../../../components/molecules/collapsible-tree"
 import Modal from "../../../../../../components/molecules/modal"
@@ -22,6 +23,7 @@ const EditPricesOverridesModal = ({
   close,
   product,
 }: EditPricesOverridesModalProps) => {
+  const { t } = useTranslation()
   const context = useLayeredModal()
   const { id: priceListId } = useParams()
   const updatePriceList = useAdminUpdatePriceList(priceListId || "")
@@ -36,7 +38,10 @@ const EditPricesOverridesModal = ({
 
   const getOnClick = (variant) => () =>
     context.push({
-      title: `Edit price overrides`,
+      title: t(
+        "edit-prices-overrides-edit-price-overrides",
+        "Edit price overrides"
+      ),
       onBack: () => context.pop(),
       view: (
         <PriceOverrides
@@ -59,7 +64,14 @@ const EditPricesOverridesModal = ({
                 onSuccess: () => {
                   context.pop()
                   close()
-                  notification("Success", "Price overrides updated", "success")
+                  notification(
+                    t("edit-prices-overrides-success", "Success"),
+                    t(
+                      "edit-prices-overrides-price-overrides-updated",
+                      "Price overrides updated"
+                    ),
+                    "success"
+                  )
                 },
               }
             )
@@ -114,7 +126,7 @@ const EditPricesOverridesModal = ({
               size="large"
               onClick={close}
             >
-              Cancel
+              {t("edit-prices-overrides-cancel", "Cancel")}
             </Button>
             <Button
               disabled
@@ -122,7 +134,7 @@ const EditPricesOverridesModal = ({
               className="text-small rounded-rounded w-32 justify-center"
               variant="primary"
             >
-              Save
+              {t("edit-prices-overrides-save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

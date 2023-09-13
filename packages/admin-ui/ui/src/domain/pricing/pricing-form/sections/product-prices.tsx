@@ -1,6 +1,7 @@
 import { MoneyAmount, Product, ProductVariant } from "@medusajs/medusa"
 import { useAdminStore } from "medusa-react"
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 import LoadingContainer from "../../../../components/atoms/loading-container"
 import Button from "../../../../components/fundamentals/button"
 import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
@@ -37,6 +38,7 @@ const ProductPrices = ({
   onSearch,
   onFileChosen,
 }: ProductPricesProps) => {
+  const { t } = useTranslation()
   const [showAdd, setShowAdd] = React.useState(false)
   const [selectedVariant, setSelectedVariant] =
     React.useState<ProductVariant | null>(null)
@@ -60,14 +62,14 @@ const ProductPrices = ({
   const getVariantActions = (variant) => {
     return [
       {
-        label: "Edit prices",
+        label: t("sections-edit-prices-label", "Edit prices"),
         icon: <EditIcon />,
         onClick: () => {
           setSelectedVariant(variant)
         },
       },
       {
-        label: "Remove from list",
+        label: t("sections-remove-from-list", "Remove from list"),
         icon: <TrashIcon size={20} />,
         onClick: () => {
           // missing core support
@@ -101,7 +103,10 @@ const ProductPrices = ({
         {onSearch && (
           <div className="mb-2">
             <InputField
-              placeholder="Search by name or SKU..."
+              placeholder={t(
+                "sections-search-by-name-or-sku",
+                "Search by name or SKU..."
+              )}
               prefix={<SearchIcon />}
               onChange={onChange}
             />
@@ -161,7 +166,9 @@ const ProductPrices = ({
         <Modal open handleClose={unselect}>
           <Modal.Body>
             <Modal.Header handleClose={unselect}>
-              <h2 className="inter-xlarge-semibold">Edit Prices</h2>
+              <h2 className="inter-xlarge-semibold">
+                {t("sections-edit-prices", "Edit Prices")}
+              </h2>
             </Modal.Header>
 
             <PriceOverrides

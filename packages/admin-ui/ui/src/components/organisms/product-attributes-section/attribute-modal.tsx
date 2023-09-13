@@ -1,6 +1,7 @@
 import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { countries } from "../../../utils/countries"
 import { nestedForm } from "../../../utils/nested-form"
@@ -23,6 +24,7 @@ type AttributesForm = {
 }
 
 const AttributeModal = ({ product, open, onClose }: Props) => {
+  const { t } = useTranslation()
   const { onUpdate, updating } = useEditProductActions(product.id)
   const form = useForm<AttributesForm>({
     defaultValues: getDefaultValues(product),
@@ -67,21 +69,33 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={onReset} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
-          <h1 className="inter-xlarge-semibold m-0">Edit Attributes</h1>
+          <h1 className="inter-xlarge-semibold m-0">
+            {t("product-attributes-section-edit-attributes", "Edit Attributes")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div className="mb-xlarge">
-              <h2 className="inter-large-semibold mb-2xsmall">Dimensions</h2>
+              <h2 className="inter-large-semibold mb-2xsmall">
+                {t("product-attributes-section-dimensions", "Dimensions")}
+              </h2>
               <p className="inter-base-regular text-grey-50 mb-large">
-                Configure to calculate the most accurate shipping rates
+                {t(
+                  "product-attributes-section-configure-to-calculate-the-most-accurate-shipping-rates",
+                  "Configure to calculate the most accurate shipping rates"
+                )}
               </p>
               <DimensionsForm form={nestedForm(form, "dimensions")} />
             </div>
             <div>
-              <h2 className="inter-large-semibold mb-2xsmall">Customs</h2>
+              <h2 className="inter-large-semibold mb-2xsmall">
+                {t("product-attributes-section-customs", "Customs")}
+              </h2>
               <p className="inter-base-regular text-grey-50 mb-large">
-                Configure to calculate the most accurate shipping rates
+                {t(
+                  "product-attributes-section-configure-to-calculate-the-most-accurate-shipping-rates",
+                  "Configure to calculate the most accurate shipping rates"
+                )}
               </p>
               <CustomsForm form={nestedForm(form, "customs")} />
             </div>
@@ -94,7 +108,7 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                Cancel
+                {t("product-attributes-section-cancel", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -103,7 +117,7 @@ const AttributeModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                Save
+                {t("product-attributes-section-save", "Save")}
               </Button>
             </div>
           </Modal.Footer>

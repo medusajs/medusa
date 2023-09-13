@@ -2,6 +2,7 @@ import { Store } from "@medusajs/medusa"
 import { useAdminUpdateStore } from "medusa-react"
 import { useEffect, useMemo } from "react"
 import { Controller, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { NextSelect } from "../../../../../components/molecules/select/next-select"
 import useNotification from "../../../../../hooks/use-notification"
 import { Option } from "../../../../../types/shared"
@@ -21,6 +22,7 @@ const DefaultCurrencySelector = ({ store }: Props) => {
       defaultValues: getDefaultValue(store),
     })
 
+  const { t } = useTranslation()
   const { mutate } = useAdminUpdateStore()
   const notification = useNotification()
 
@@ -36,13 +38,20 @@ const DefaultCurrencySelector = ({ store }: Props) => {
       {
         onSuccess: () => {
           notification(
-            "Success",
-            "Successfully updated default currency",
+            t("default-store-currency-success", "Success"),
+            t(
+              "default-store-currency-successfully-updated-default-currency",
+              "Successfully updated default currency"
+            ),
             "success"
           )
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(
+            t("default-store-currency-error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )

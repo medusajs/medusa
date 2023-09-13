@@ -8,15 +8,21 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OptionalProps,
   PrimaryKey,
   Property,
   Unique,
 } from "@mikro-orm/core"
 
 import Product from "./product"
+import { DAL } from "@medusajs/types"
+
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product_category" })
 class ProductCategory {
+  [OptionalProps]?: OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -61,13 +67,18 @@ class ProductCategory {
   })
   category_children = new Collection<ProductCategory>(this)
 
-  @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
   created_at?: Date
 
   @Property({
     onCreate: () => new Date(),
     onUpdate: () => new Date(),
     columnType: "timestamptz",
+    defaultRaw: "now()",
   })
   updated_at?: Date
 
