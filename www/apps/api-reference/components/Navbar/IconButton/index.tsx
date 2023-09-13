@@ -1,6 +1,7 @@
 import clsx from "clsx"
+import { Button, ButtonProps } from "docs-ui"
 
-export type NavbarIconButtonProps = React.HTMLAttributes<HTMLButtonElement>
+export type NavbarIconButtonProps = ButtonProps
 
 const NavbarIconButton = ({
   children,
@@ -8,16 +9,16 @@ const NavbarIconButton = ({
   ...props
 }: NavbarIconButtonProps) => {
   return (
-    <button
+    <Button
       className={clsx(
-        "btn-secondary btn-secondary-icon",
-        "[&>svg]:h-[22px] [&>svg]:w-[22px]",
+        "[&>svg]:h-[22px] [&>svg]:w-[22px] btn-secondary-icon",
         className
       )}
+      variant="secondary"
       {...props}
     >
       {children}
-    </button>
+    </Button>
   )
 }
 

@@ -5,6 +5,7 @@ import plugin from "tailwindcss/plugin"
 module.exports = {
   ...coreConfig,
   content: [
+    ...coreConfig.content,
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",

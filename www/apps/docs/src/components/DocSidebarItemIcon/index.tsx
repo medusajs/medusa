@@ -1,6 +1,6 @@
 import React from "react"
-import icons from "@site/src/theme/Icon"
-import BorderedIcon from "@site/src/components/BorderedIcon"
+import icons from "../../theme/Icon"
+import BorderedIcon from "../BorderedIcon"
 import clsx from "clsx"
 
 type DocSidebarItemIconProps = {

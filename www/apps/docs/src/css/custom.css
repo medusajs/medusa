@@ -123,7 +123,7 @@
     --animate-duration: 0.2s;
   }
 
-  .btn-secondary {
+  /* .btn-secondary {
     @apply inline-flex flex-row justify-center items-center;
     @apply py-[5px] px-0.75 rounded-sm cursor-pointer;
     @apply bg-button-neutral bg-medusa-button-neutral dark:bg-button-neutral-dark dark:bg-medusa-button-neutral-dark;
@@ -155,7 +155,7 @@
     @apply disabled:text-medusa-fg-disabled dark:disabled:text-medusa-fg-disabled-dark;
     @apply border border-medusa-border-loud dark:border-medusa-border-loud-dark;
     @apply select-none;
-  }
+  } */
 
   .navbar-action-icon-item {
     @apply lg:bg-button-neutral lg:bg-medusa-button-neutral lg:dark:bg-button-neutral-dark lg:dark:bg-medusa-button-neutral-dark;

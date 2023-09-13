@@ -1,11 +1,13 @@
+"use client"
+
 import MethodLabel from "@/components/MethodLabel"
 import type { Operation } from "@/types/openapi"
 import TagsOperationCodeSectionResponses from "./Responses"
 import type { TagOperationCodeSectionRequestSamplesProps } from "./RequestSamples"
 import dynamic from "next/dynamic"
 import clsx from "clsx"
-import CopyButton from "../../../CopyButton"
 import IconCopyOutline from "../../../Icons/CopyOutline"
+import { CopyButton } from "docs-ui"
 
 const TagOperationCodeSectionRequestSamples =
   dynamic<TagOperationCodeSectionRequestSamplesProps>(

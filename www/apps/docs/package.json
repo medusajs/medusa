@@ -48,6 +48,7 @@
     "react-uuid": "^2.0.0",
     "tailwind": "*",
     "tailwindcss": "^3.3.2",
+    "tsconfig": "*",
     "url-loader": "^4.1.1",
     "uuid": "^9.0.0"
   },

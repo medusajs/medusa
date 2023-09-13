@@ -9,6 +9,7 @@ module.exports = {
     preflight: false, // disable Tailwind's reset
   },
   content: [
+    ...coreConfig.content,
     "./src/**/*.{js,jsx,ts,tsx}",
     "./content/**/*.{mdx,md}",
     "!./content/references",

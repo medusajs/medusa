@@ -1,14 +1,7 @@
-import { CopyButtonProps } from "@/components/CopyButton"
-import clsx from "clsx"
-import dynamic from "next/dynamic"
-import SpinnerLoading from "../Loading/Spinner"
+"use client"
 
-const CopyButton = dynamic<CopyButtonProps>(
-  async () => import("../CopyButton"),
-  {
-    loading: () => <SpinnerLoading />,
-  }
-) as React.FC<CopyButtonProps>
+import clsx from "clsx"
+import { CopyButton } from "docs-ui"
 
 export type InlineCodeProps = React.ComponentProps<"code">
 

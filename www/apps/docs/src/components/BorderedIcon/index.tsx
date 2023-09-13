@@ -1,54 +1,32 @@
 import React from "react"
-import ThemedImage from "@theme/ThemedImage"
-import clsx from "clsx"
-import Bordered from "../Bordered/index"
-import { IconProps } from "@site/src/theme/Icon/index"
+import type { BorderedIconProps as UiBorderedIconProps } from "docs-ui"
+import { BorderedIcon as UiBorderedIcon } from "docs-ui"
+import { useColorMode } from "@docusaurus/theme-common"
 
-type BorderedIconProp = {
+type BorderedIconProps = {
   icon?: {
     light: string
     dark?: string
   }
-  IconComponent?: React.FC<IconProps>
-  wrapperClassName?: string
-  iconWrapperClassName?: string
-  iconClassName?: string
-  iconColorClassName?: string
-} & React.HTMLAttributes<HTMLSpanElement>
+} & Omit<UiBorderedIconProps, "icon">
 
-const BorderedIcon: React.FC<BorderedIconProp> = ({
+const BorderedIcon: React.FC<BorderedIconProps> = ({
   icon = null,
-  IconComponent = null,
-  wrapperClassName,
-  iconWrapperClassName,
-  iconClassName,
-  iconColorClassName = "",
+  ...props
 }) => {
+  const { colorMode } = useColorMode()
+
   return (
-    <Bordered wrapperClassName={wrapperClassName}>
-      <span
-        className={clsx(
-          "inline-flex justify-center items-center rounded-xs p-0.125 bg-medusa-bg-component dark:bg-medusa-bg-component-dark",
-          iconWrapperClassName
-        )}
-      >
-        {!IconComponent && (
-          <ThemedImage
-            sources={{
-              light: icon.light,
-              dark: icon.dark || icon.light,
-            }}
-            className={clsx(iconClassName, "bordered-icon")}
-          />
-        )}
-        {IconComponent && (
-          <IconComponent
-            className={clsx(iconClassName, "bordered-icon")}
-            iconColorClassName={iconColorClassName}
-          />
-        )}
-      </span>
-    </Bordered>
+    <UiBorderedIcon
+      {...props}
+      icon={
+        icon
+          ? colorMode === "light"
+            ? icon.light
+            : icon.dark || icon.light
+          : ""
+      }
+    />
   )
 }
 

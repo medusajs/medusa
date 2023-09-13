@@ -3,10 +3,9 @@ import { useThemeConfig } from "@docusaurus/theme-common"
 import { useAnnouncementBar } from "@docusaurus/theme-common/internal"
 import AnnouncementBarCloseButton from "@theme/AnnouncementBar/CloseButton"
 import AnnouncementBarContent from "@theme/AnnouncementBar/Content"
-
-import Bordered from "@site/src/components/Bordered"
-import IconBell from "@site/src/theme/Icon/Bell/index"
 import clsx from "clsx"
+import { Bordered } from "docs-ui"
+import IconBell from "../Icon/Bell"
 
 export default function AnnouncementBar(): JSX.Element | null {
   const { announcementBar } = useThemeConfig()

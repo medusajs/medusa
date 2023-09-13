@@ -7,7 +7,6 @@ import SearchEmptyQueryBoundary from "../EmptyQueryBoundary"
 import SearchSuggestions from "../Suggestions"
 import checkArraySameElms from "../../../utils/array-same-elms"
 import SearchHitsWrapper from "../Hits"
-import Button from "../../Button"
 import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
 import { OptionType } from "@medusajs/docs"
 import { useSearch } from "../../../providers/Search"
@@ -18,6 +17,7 @@ import SelectBadge from "../../Select/Badge"
 import Kbd from "../../../theme/MDXComponents/Kbd"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import { ThemeConfig } from "@medusajs/docs"
+import { Button } from "docs-ui"
 
 const SearchModal = () => {
   const modalRef = useRef<HTMLDialogElement | null>(null)

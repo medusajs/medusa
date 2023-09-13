@@ -1,32 +1,25 @@
 import React from "react"
+import { IconProps } from "@/icons"
+import { Bordered } from "@/components/Bordered"
 import clsx from "clsx"
-import Bordered from "../Bordered/index"
-import IconProps from "../Icons/types"
-import { useColorMode } from "../../providers/color-mode"
-import Image from "next/image"
 
-type BorderedIconProp = {
-  icon?: {
-    light: string
-    dark?: string
-  }
-  IconComponent?: React.FC<IconProps>
+export type BorderedIconProps = {
+  icon?: string
+  IconComponent?: React.FC<IconProps> | null
   wrapperClassName?: string
   iconWrapperClassName?: string
   iconClassName?: string
   iconColorClassName?: string
 } & React.HTMLAttributes<HTMLSpanElement>
 
-const BorderedIcon: React.FC<BorderedIconProp> = ({
-  icon = null,
+export const BorderedIcon = ({
+  icon = "",
   IconComponent = null,
   wrapperClassName,
   iconWrapperClassName,
   iconClassName,
   iconColorClassName = "",
-}) => {
-  const { colorMode } = useColorMode()
-
+}: BorderedIconProps) => {
   return (
     <Bordered wrapperClassName={wrapperClassName}>
       <span
@@ -36,8 +29,8 @@ const BorderedIcon: React.FC<BorderedIconProp> = ({
         )}
       >
         {!IconComponent && (
-          <Image
-            src={(colorMode === "light" ? icon?.light : icon?.dark) || ""}
+          <img
+            src={icon || ""}
             className={clsx(iconClassName, "bordered-icon")}
             alt=""
           />
@@ -52,5 +45,3 @@ const BorderedIcon: React.FC<BorderedIconProp> = ({
     </Bordered>
   )
 }
-
-export default BorderedIcon

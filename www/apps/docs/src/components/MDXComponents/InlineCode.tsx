@@ -1,7 +1,7 @@
 import React from "react"
-import CopyButton from "@site/src/components/CopyButton"
 import type { Props } from "@theme/MDXComponents/Code"
 import clsx from "clsx"
+import { CopyButton } from "docs-ui"
 
 const MDXInlineCode: React.FC<Props> = (props) => {
   return (

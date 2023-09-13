@@ -5,12 +5,12 @@ import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import uuid from "react-uuid"
 import Solutions from "./Solutions/index"
-import Button from "../Button"
-import { useUser } from "@site/src/providers/User"
 import Details from "../../theme/Details"
 import TextArea from "../TextArea"
 import Label from "../Label"
 import InputText from "../Input/Text"
+import { useUser } from "../../providers/User"
+import { Button } from "docs-ui"
 
 type FeedbackProps = {
   event?: string
@@ -148,12 +148,14 @@ const Feedback: React.FC<FeedbackProps> = ({
                 <Button
                   onClick={handleFeedback}
                   className="w-fit mr-0.5 last:mr-0 positive"
+                  variant="secondary"
                 >
                   {positiveBtn}
                 </Button>
                 <Button
                   onClick={handleFeedback}
                   className="w-fit mr-0.5 last:mr-0"
+                  variant="secondary"
                 >
                   {negativeBtn}
                 </Button>
@@ -229,6 +231,7 @@ const Feedback: React.FC<FeedbackProps> = ({
                   onClick={submitFeedback}
                   disabled={loading}
                   className="mt-1 w-fit"
+                  variant="secondary"
                 >
                   {submitBtn}
                 </Button>

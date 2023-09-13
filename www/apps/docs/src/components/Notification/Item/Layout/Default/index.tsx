@@ -1,11 +1,11 @@
 import React from "react"
 import { NotificationItemProps } from "../.."
 import clsx from "clsx"
-import IconInformationCircleSolid from "@site/src/theme/Icon/InformationCircleSolid"
-import IconXCircleSolid from "@site/src/theme/Icon/XCircleSolid"
-import IconExclamationCircleSolid from "@site/src/theme/Icon/ExclamationCircleSolid"
-import IconCheckCircleSolid from "@site/src/theme/Icon/CheckCircleSolid"
-import Button from "@site/src/components/Button"
+import IconInformationCircleSolid from "../../../../../theme/Icon/InformationCircleSolid"
+import IconXCircleSolid from "../../../../../theme/Icon/XCircleSolid"
+import IconExclamationCircleSolid from "../../../../../theme/Icon/ExclamationCircleSolid"
+import IconCheckCircleSolid from "../../../../../theme/Icon/CheckCircleSolid"
+import { Button } from "docs-ui"
 
 type NotificationItemLayoutDefaultProps = NotificationItemProps & {
   handleClose: () => void

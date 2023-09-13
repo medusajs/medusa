@@ -155,10 +155,10 @@ const config = {
     },
     navbarActions: [
       {
-        type: "link",
-        href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
+        type: "button",
         label: "Report an Issue",
-        className: "btn-secondary max-[1014px]:hidden",
+        className: "max-[1014px]:hidden",
+        href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
       },
     ],
     mobileLogo: {

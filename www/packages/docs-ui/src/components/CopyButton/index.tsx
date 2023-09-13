@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useRef, useCallback } from "react"
-// @ts-expect-error: wait until docusaurus uses type: module
 import copy from "copy-text-to-clipboard"
-import Tooltip from "@site/src/components/Tooltip"
 import clsx from "clsx"
+import { Tooltip } from "@/components/Tooltip"
 
-type CopyButtonProps = {
+export type CopyButtonProps = {
   text: string
   buttonClassName?: string
   tooltipClassName?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
-const CopyButton: React.FC<CopyButtonProps> = ({
+export const CopyButton = ({
   text,
   buttonClassName = "",
   tooltipClassName = "",
   children,
-}) => {
+}: CopyButtonProps) => {
   const [isCopied, setIsCopied] = useState(false)
-  const copyTimeout = useRef(undefined)
+  const copyTimeout = useRef<number>(0)
 
   const handleCopy = useCallback(() => {
     copy(text)
@@ -43,5 +42,3 @@ const CopyButton: React.FC<CopyButtonProps> = ({
     </Tooltip>
   )
 }
-
-export default CopyButton

@@ -1,8 +1,9 @@
 import React from "react"
-import Tooltip from "@site/src/components/Tooltip"
+import Tooltip from "../../Tooltip"
 import { NavbarAction } from "@medusajs/docs"
-import Icon from "@site/src/theme/Icon"
+import Icon from "../../../theme/Icon"
 import clsx from "clsx"
+import { Button } from "docs-ui"
 
 type NavbarActionsProps = {
   items: NavbarAction[]
@@ -50,17 +51,22 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                 key={index}
                 tooltipClassName="!text-compact-x-small-plus"
               >
-                <button
-                  className={clsx(
-                    (ItemIcon || ItemIconElm) && "navbar-action-icon-item",
-                    item.className
-                  )}
+                <Button
+                  className={clsx(item.href && "relative", item.className)}
+                  variant={item.variant || "secondary"}
+                  buttonType={item.buttonType || "default"}
                   {...item.events}
                 >
                   {item.label}
                   {ItemIconElm}
                   {ItemIcon && <ItemIcon />}
-                </button>
+                  {item.href && (
+                    <a
+                      href={item.href}
+                      className="absolute top-0 left-0 w-full h-full"
+                    />
+                  )}
+                </Button>
               </Tooltip>
             )
           default:

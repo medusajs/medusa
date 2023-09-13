@@ -7,9 +7,9 @@ import { MouseEvent, useMemo } from "react"
 import Kbd from "../../MDXComponents/Kbd"
 import { useSearch } from "../../../providers/search"
 import { useMobile } from "../../../providers/mobile"
-import Button from "../../Button"
 import { usePageLoading } from "../../../providers/page-loading"
 import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
+import { Button } from "docs-ui"
 
 const SearchModalOpener = () => {
   const { setIsOpen } = useSearch()

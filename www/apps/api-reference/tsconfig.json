@@ -6,7 +6,11 @@
         "./*"
       ]
     },
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ],
+    "jsx": "preserve"
   },
   "include": [
     "next-env.d.ts",
@@ -14,9 +18,9 @@
     "**/*.ts",
     "**/*.js",
     ".next/types/**/*.ts",
-    "**/*.mjs" 
+    "**/*.mjs"
   ],
   "exclude": [
-    "specs",
+    "specs"
   ]
 }

@@ -1,11 +1,11 @@
-import { useLearningPath } from "@site/src/providers/LearningPath"
-import { useNotifications } from "@site/src/providers/Notification"
-import { getLearningPath } from "@site/src/utils/learning-paths"
 import clsx from "clsx"
 import React from "react"
-import Button from "../Button"
-import IconCircleMiniSolid from "@site/src/theme/Icon/CircleMiniSolid"
 import LearningPathIcon from "./Icon"
+import { getLearningPath } from "../../utils/learning-paths"
+import { useLearningPath } from "../../providers/LearningPath"
+import { useNotifications } from "../../providers/Notification"
+import IconCircleMiniSolid from "../../theme/Icon/CircleMiniSolid"
+import { Button } from "docs-ui"
 
 type LearningPathProps = {
   pathName: string

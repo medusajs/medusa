@@ -12,23 +12,51 @@
   ],
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --external react",
-    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external react",
-    "clean": "rimraf dist"
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external react"
   },
   "devDependencies": {
+    "clsx": "^2.0.0",
     "eslint-config-docs": "*",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "rimraf": "^5.0.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "tailwind": "*",
+    "tailwindcss": "^3.3.3",
     "tsup": "^5.10.1",
     "typescript": "^5.1.6"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^17.0.0",
-    "react-dom": "^18.0.0 || ^17.0.0"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "dependencies": {
-    "@medusajs/ui": "^1.0.0"
+    "@medusajs/ui": "^1.0.0",
+    "react-tooltip": "^5.21.3",
+    "react-uuid": "^2.0.0"
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "treeshake": true,
+    "sourcemap": "inline",
+    "minify": true,
+    "clean": true,
+    "dts": true,
+    "splitting": false,
+    "format": [
+      "cjs",
+      "esm"
+    ],
+    "external": [
+      "react"
+    ],
+    "injectStyle": false
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    }
   }
 }

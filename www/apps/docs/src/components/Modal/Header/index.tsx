@@ -1,8 +1,8 @@
 import React from "react"
 import clsx from "clsx"
 import { useModal } from "../../../providers/Modal"
-import Button from "../../Button"
 import IconXMark from "../../../theme/Icon/XMark"
+import { Button } from "docs-ui"
 
 type ModalHeaderProps = {
   title?: string

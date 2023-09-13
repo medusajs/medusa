@@ -3,7 +3,6 @@
 import React, { useRef, useState } from "react"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
 import Solutions from "./Solutions/index"
-import Button from "../Button"
 import { ExtraData, useAnalytics } from "@/providers/analytics"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
@@ -11,6 +10,7 @@ import { useArea } from "../../providers/area"
 import clsx from "clsx"
 import TextArea from "../TextArea"
 import Label from "../Label"
+import { Button } from "docs-ui"
 
 type FeedbackProps = {
   event: string
@@ -153,14 +153,15 @@ const Feedback: React.FC<FeedbackProps> = ({
                   >
                     {negativeBtn}
                   </Button>
-                  <Link
-                    href={`https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml&title=API%20Ref%28${area}%29%3A%20Issue%20in%20${encodeURI(
-                      sectionTitle
-                    )}`}
-                    className="btn-secondary"
-                  >
-                    Report Issue
-                  </Link>
+                  <Button variant="secondary">
+                    <Link
+                      href={`https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml&title=API%20Ref%28${area}%29%3A%20Issue%20in%20${encodeURI(
+                        sectionTitle
+                      )}`}
+                    >
+                      Report Issue
+                    </Link>
+                  </Button>
                 </div>
               </div>
             )}

@@ -8,12 +8,12 @@ import NavbarItem, { type Props as NavbarItemConfig } from "@theme/NavbarItem"
 import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle"
 import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle"
 import NavbarLogo from "@theme/Navbar/Logo"
-import NavbarActions from "@site/src/components/Navbar/Actions"
-import Tooltip from "@site/src/components/Tooltip"
+import NavbarActions from "../../../components/Navbar/Actions"
+import Tooltip from "../../../components/Tooltip"
 import { ThemeConfig } from "@medusajs/docs"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import clsx from "clsx"
-import { useSidebar } from "@site/src/providers/Sidebar"
+import { useSidebar } from "../../../providers/Sidebar"
 import IconSidebar from "../../Icon/Sidebar"
 import IconChevronDoubleLeftMiniSolid from "../../Icon/ChevronDoubleLeftMiniSolid"
 
@@ -147,6 +147,7 @@ export default function NavbarContent(): JSX.Element {
                   ) : (
                     <IconChevronDoubleLeftMiniSolid iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
                   ),
+                  buttonType: "icon",
                 },
               ]}
               className="sidebar-toggler"

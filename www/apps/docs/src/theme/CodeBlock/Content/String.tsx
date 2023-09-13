@@ -12,12 +12,12 @@ import Highlight, { defaultProps, type Language } from "prism-react-renderer"
 import Line from "@theme/CodeBlock/Line"
 import Container from "@theme/CodeBlock/Container"
 import type { Props } from "@theme/CodeBlock/Content/String"
-import CopyButton from "@site/src/components//CopyButton"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { ThemeConfig } from "@medusajs/docs"
-import Tooltip from "@site/src/components/Tooltip"
-import IconAlert from "@site/src/theme/Icon/Alert"
-import IconCopy from "@site/src/theme/Icon/Copy"
+import Tooltip from "../../../components/Tooltip"
+import IconAlert from "../../../theme/Icon/Alert"
+import IconCopy from "../../../theme/Icon/Copy"
+import { CopyButton } from "docs-ui"
 
 export default function CodeBlockString({
   children,

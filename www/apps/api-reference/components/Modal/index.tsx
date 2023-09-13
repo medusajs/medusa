@@ -1,10 +1,10 @@
 import clsx from "clsx"
 import React, { forwardRef, useCallback, useEffect, useRef } from "react"
-import { ButtonProps } from "../Button"
 import { useModal } from "../../providers/modal"
 import ModalHeader from "./Header"
 import ModalFooter from "./Footer"
 import useKeyboardShortcut from "../../hooks/use-keyboard-shortcut"
+import { ButtonProps } from "docs-ui"
 
 export type ModalProps = {
   className?: string

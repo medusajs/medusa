@@ -2,10 +2,13 @@
   "extends": "tsconfig/base.json",
   "compilerOptions": {
     "paths": {
-      "@docs-ui/*": ["./src/*"]
+      "docs-ui": ["./src/index.ts"],
+      "@/components/*": ["./src/components/*"],
+      "@/icons": ["./src/icons/index.ts"],
+      "@/icons/*": ["./src/icons/*"]
     },
     "outDir": "./dist",
-    "jsx": "react-jsx",
+    "jsx": "react",
     "lib": ["dom", "ES2015"],
     "module": "ESNext",
     "target": "es6",

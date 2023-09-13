@@ -1,6 +1,6 @@
-import Button from "@site/src/components/Button"
-import { useLearningPath } from "@site/src/providers/LearningPath"
 import React from "react"
+import { useLearningPath } from "../../../../providers/LearningPath"
+import { Button } from "docs-ui"
 
 type LearningPathStepActionsType = {
   onFinish?: () => void

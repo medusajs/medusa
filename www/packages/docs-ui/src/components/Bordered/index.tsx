@@ -1,11 +1,11 @@
-import React from "react"
 import clsx from "clsx"
+import React from "react"
 
-type BorderedProps = {
+export type BorderedProps = {
   wrapperClassName?: string
 } & React.HTMLAttributes<HTMLSpanElement>
 
-const Bordered: React.FC<BorderedProps> = ({ wrapperClassName, children }) => {
+export const Bordered = ({ wrapperClassName, children }: BorderedProps) => {
   return (
     <span
       className={clsx(
@@ -19,5 +19,3 @@ const Bordered: React.FC<BorderedProps> = ({ wrapperClassName, children }) => {
     </span>
   )
 }
-
-export default Bordered

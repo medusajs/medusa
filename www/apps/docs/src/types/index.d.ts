@@ -27,7 +27,7 @@ declare module "@medusajs/docs" {
     PropSidebarItemLink,
     PropSidebarItemHtml,
   } from "@docusaurus/plugin-content-docs"
-  import { BadgeProps } from "docs-ui"
+  import { BadgeProps, ButtonType, ButtonVariants } from "docs-ui"
   import { IconProps } from "../theme/Icon/index"
   import { DocContextValue as DocusaurusDocContextValue } from "@docusaurus/theme-common/internal"
   import { ReactNode } from "react"
@@ -121,6 +121,9 @@ declare module "@medusajs/docs" {
 
   export declare type NavbarActionButton = NavbarActionBase & {
     type: "button"
+    variant?: ButtonVariants
+    buttonType?: ButtonType
+    href?: string
     events?: {
       onClick?: MouseEventHandler<HTMLButtonElement>
       onMouseEnter?: MouseEventHandler<HTMLButtonElement>

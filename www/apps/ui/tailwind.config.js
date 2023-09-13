@@ -15,7 +15,7 @@ const { borderRadius, ...extendedTheme } = coreConfig.theme?.extend || {}
 module.exports = {
   ...coreConfig,
   darkMode: "class",
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}", uiPath],
+  content: [...coreConfig.content, "./src/**/*.{js,ts,jsx,tsx,mdx}", uiPath],
   theme: {
     ...coreTheme,
     extend: {

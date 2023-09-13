@@ -1,22 +1,24 @@
 import React from "react"
 import clsx from "clsx"
 
+export type BadgeVariant =
+  | "purple"
+  | "purple-dark"
+  | "orange"
+  | "orange-dark"
+  | "green"
+  | "green-dark"
+  | "blue"
+  | "blue-dark"
+  | "red"
+  | "neutral"
+
 export type BadgeProps = {
   className?: string
-  variant:
-    | "purple"
-    | "purple-dark"
-    | "orange"
-    | "orange-dark"
-    | "green"
-    | "green-dark"
-    | "blue"
-    | "blue-dark"
-    | "red"
-    | "neutral"
+  variant: BadgeVariant
 } & React.HTMLAttributes<HTMLSpanElement>
 
-const Badge: React.FC<BadgeProps> = ({ className, variant, children }) => {
+export const Badge = ({ className, variant, children }: BadgeProps) => {
   return (
     <span
       className={clsx(
@@ -49,5 +51,3 @@ const Badge: React.FC<BadgeProps> = ({ className, variant, children }) => {
     </span>
   )
 }
-
-export default Badge
