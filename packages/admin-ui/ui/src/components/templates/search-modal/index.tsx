@@ -5,6 +5,7 @@ import {
   useAdminProducts,
 } from "medusa-react"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import { useDebounce } from "../../../hooks/use-debounce"
 import Spinner from "../../atoms/spinner"
 import Input from "../../atoms/text-input"
@@ -24,6 +25,7 @@ const getTotal = (...lists) =>
   lists.reduce((total, list = []) => total + list.length, 0)
 
 const SearchModal = ({ handleClose }) => {
+  const { t } = useTranslation()
   const [q, setQ] = React.useState("")
   const query = useDebounce(q, 500)
   const onChange = (e) => setQ(e.target.value)
@@ -90,13 +92,16 @@ const SearchModal = ({ handleClose }) => {
                   className="flex-1"
                   onChange={onChange}
                   value={q}
-                  placeholder="Start typing to search..."
+                  placeholder={t(
+                    "search-modal-start-typing-to-search",
+                    "Start typing to search..."
+                  )}
                   {...getInputProps()}
                 />
                 <Tooltip
                   className="bg-grey-0"
                   onClick={handleClear}
-                  content="Clear search"
+                  content={t("search-modal-clear-search", "Clear search")}
                 >
                   <CrossIcon className="text-grey-50 flex" />
                 </Tooltip>

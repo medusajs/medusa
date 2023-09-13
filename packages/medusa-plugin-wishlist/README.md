@@ -37,10 +37,4 @@ Add wishlist capabilities to your commerce application.
 
 ## Test the Plugin
 
-1\. Run the following command in the directory of the Medusa backend to run the backend:
-
-  ```bash
-  npm run start
-  ```
-
-2\. Retrieve a customer's wishlist using the endpoint `/wishlist/:token`, where `:token` is the customer's token.
+Learn about testing the plugin in [the documentation](https://docs.medusajs.com/plugins/other/wishlist)

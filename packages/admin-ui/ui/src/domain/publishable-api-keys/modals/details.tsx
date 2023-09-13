@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { PublishableApiKey } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 
 import Button from "../../../components/fundamentals/button"
 import InputField from "../../../components/molecules/input"
@@ -20,6 +21,7 @@ type DetailsModalProps = {
 function DetailsModal(props: DetailsModalProps) {
   const { close, selectedKey } = props
   const notification = useNotification()
+  const { t } = useTranslation()
 
   const [name, setName] = useState(selectedKey?.title)
 
@@ -37,9 +39,20 @@ function DetailsModal(props: DetailsModalProps) {
     try {
       await updateKey({ title: name })
       close()
-      notification("Success", "Updated the API key", "success")
+      notification(
+        t("modals-success", "Success"),
+        t("modals-updated-the-api-key", "Updated the API key"),
+        "success"
+      )
     } catch (e) {
-      notification("Error", "Failed to update the API key", "error")
+      notification(
+        t("modals-error", "Error"),
+        t(
+          "modals-failed-to-update-the-api-key",
+          "Failed to update the API key"
+        ),
+        "error"
+      )
     }
   }
 
@@ -50,7 +63,7 @@ function DetailsModal(props: DetailsModalProps) {
 
         <div className="flex items-center justify-between">
           <h3 className="inter-large-semibold text-xl text-gray-900">
-            Edit API key details
+            {t("modals-edit-api-key-details", "Edit API key details")}
           </h3>
           <Button variant="ghost" onClick={close}>
             <CrossIcon size={20} className="text-grey-40" />
@@ -66,11 +79,11 @@ function DetailsModal(props: DetailsModalProps) {
 
         <div className="flex-grow">
           <InputField
-            label="Title"
+            label={t("modals-title", "Title")}
             type="string"
             name="name"
             value={name}
-            placeholder="Name your key"
+            placeholder={t("modals-name-your-key", "Name your key")}
             onChange={({ target: { value } }) => setName(value)}
           />
         </div>
@@ -84,7 +97,7 @@ function DetailsModal(props: DetailsModalProps) {
 
         <div className="flex justify-end gap-2">
           <Button size="small" variant="ghost" onClick={close}>
-            Cancel
+            {t("modals-cancel", "Cancel")}
           </Button>
           <Button
             size="small"
@@ -92,7 +105,7 @@ function DetailsModal(props: DetailsModalProps) {
             onClick={onSave}
             disabled={name === props.selectedKey?.title}
           >
-            Save and close
+            {t("modals-save-and-close", "Save and close")}
           </Button>
         </div>
       </div>

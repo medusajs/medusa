@@ -104,29 +104,7 @@ In the directory of your Medusa backend, run the following command to install th
 npm install medusa-file-s3
 ```
 
-Then, add the following environment variables:
-
-```bash
-S3_URL=<YOUR_BUCKET_URL>
-S3_BUCKET=<YOUR_BUCKET_NAME>
-S3_REGION=<YOUR_BUCKET_REGION>
-S3_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
-S3_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
-S3_CACHE_CONTROL=<YOUR_CACHE_CONTROL>
-S3_DOWNLOAD_FILE_DURATION=<YOUR_DOWNLOAD_FILE_DURATION_AMOUNT>
-```
-
-Where:
-
-1. `<YOUR_BUCKET_URL>` is the URL to your bucket. It’s in the form `https://<BUCKET_NAME>.s3.<REGION>.amazonaws.com`, where `<BUCKET_NAME>` is the name of the bucket and the `<REGION>` is the region the bucket is created in. If you’re not sure which region, on your bucket’s page on S3 click on Properties. You can then find the region under AWS Region. Make sure to only copy the code (for example, `us-east-1`).
-2. `<YOUR_BUCKET_NAME>` is the name of the bucket you created.
-3. `<YOUR_BUCKET_REGION>` is the region code of your bucket. For example, `us-east-1`.
-4. `<YOUR_ACCESS_KEY_ID>` is the Access Key ID that you created for your user.
-5. `<YOUR_SECRET_ACCESS_KEY>` is the Secret Access Key that you created for your user.
-6. `<YOUR_CACHE_CONTROL>` is the value for caching the objects in a web browser or CDN network. For example: cache object for 10 hours, `max-age=36000`
-7. `<YOUR_DOWNLOAD_FILE_DURATION_AMOUNT>` is the expiry duration for a download URL. For example, you can set the value to ``3600`` if you want the download URL to expire in 1 hour.
-
-Finally, in `medusa-config.js`, add to the `plugins` array the following new item:
+Then, in `medusa-config.js`, add to the `plugins` array the following new item:
 
 ```jsx title=medusa-config.js
 const plugins = [
@@ -145,6 +123,28 @@ const plugins = [
     },
   },
 ]
+```
+
+Where:
+
+1. `s3_url` (required) is the URL to your bucket. It’s in the form `https://<BUCKET_NAME>.s3.<REGION>.amazonaws.com`, where `<BUCKET_NAME>` is the name of the bucket and the `<REGION>` is the region the bucket is created in. If you’re not sure which region, on your bucket’s page on S3 click on Properties. You can then find the region under AWS Region. Make sure to only copy the code (for example, `us-east-1`).
+2. `bucket` (required) is the name of the bucket you created.
+3. `region` (required) is the region code of your bucket. For example, `us-east-1`.
+4. `access_key_id` (required) is the Access Key ID that you created for your user.
+5. `secret_access_key` (required) is the Secret Access Key that you created for your user.
+6. `cache_control` (default: `max-age=31536000`) is the value for caching the objects in a web browser or CDN network. For example: cache object for 10 hours, `max-age=36000`
+7. `download_file_duration` (optional) is the expiry duration for a download URL. For example, you can set the value to ``3600`` if you want the download URL to expire in 1 hour.
+
+Make sure to also set these values in your environment variables as well:
+
+```bash
+S3_URL=<YOUR_BUCKET_URL>
+S3_BUCKET=<YOUR_BUCKET_NAME>
+S3_REGION=<YOUR_BUCKET_REGION>
+S3_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
+S3_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
+S3_CACHE_CONTROL=<YOUR_CACHE_CONTROL>
+S3_DOWNLOAD_FILE_DURATION=<YOUR_DOWNLOAD_FILE_DURATION_AMOUNT>
 ```
 
 

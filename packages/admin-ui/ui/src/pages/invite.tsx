@@ -12,7 +12,8 @@ import PublicLayout from "../components/templates/login-layout"
 import useNotification from "../hooks/use-notification"
 import { getErrorMessage } from "../utils/error-messages"
 import FormValidator from "../utils/form-validator"
-import { analytics, useAdminCreateAnalyticsConfig } from "../services/analytics"
+import { useAdminCreateAnalyticsConfig } from "../services/analytics"
+import { useAnalytics } from "../providers/analytics-provider"
 import AnalyticsConfigForm, {
   AnalyticsConfigFormType,
 } from "../components/organisms/analytics-config-form"
@@ -30,6 +31,7 @@ const InvitePage = () => {
   const location = useLocation()
   const parsed = qs.parse(location.search.substring(1))
   const [signUp, setSignUp] = useState(false)
+  const { trackUserEmail } = useAnalytics()
 
   const first_run = !!parsed.first_run
 
@@ -117,7 +119,7 @@ const InvitePage = () => {
       await createAnalyticsConfig(data.analytics)
 
       if (shouldTrackEmail) {
-        await analytics.track("userEmail", {
+        trackUserEmail({
           email: token?.user_email,
         })
       }

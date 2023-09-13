@@ -185,6 +185,7 @@
           "nullable": false,
           "mappedType": "text"
         },
+<<<<<<< HEAD
         "title": {
           "name": "title",
           "type": "text",
@@ -194,13 +195,19 @@
           "nullable": false,
           "mappedType": "text"
         },
+=======
+>>>>>>> develop
         "price_set_id": {
           "name": "price_set_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
+<<<<<<< HEAD
           "nullable": false,
+=======
+          "nullable": true,
+>>>>>>> develop
           "mappedType": "text"
         },
         "money_amount_id": {
@@ -209,6 +216,18 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
+<<<<<<< HEAD
+=======
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+>>>>>>> develop
           "nullable": false,
           "mappedType": "text"
         }
@@ -219,9 +238,17 @@
         {
           "keyName": "price_set_money_amount_pkey",
           "columnNames": [
+<<<<<<< HEAD
             "id"
           ],
           "composite": false,
+=======
+            "id",
+            "price_set_id",
+            "money_amount_id"
+          ],
+          "composite": true,
+>>>>>>> develop
           "primary": true,
           "unique": true
         }
@@ -238,7 +265,10 @@
             "id"
           ],
           "referencedTableName": "public.price_set",
+<<<<<<< HEAD
           "deleteRule": "cascade",
+=======
+>>>>>>> develop
           "updateRule": "cascade"
         },
         "price_set_money_amount_money_amount_id_foreign": {
@@ -254,6 +284,7 @@
           "updateRule": "cascade"
         }
       }
+<<<<<<< HEAD
     },
     {
       "columns": {
@@ -334,6 +365,8 @@
       ],
       "checks": [],
       "foreignKeys": {}
+=======
+>>>>>>> develop
     }
   ]
 }

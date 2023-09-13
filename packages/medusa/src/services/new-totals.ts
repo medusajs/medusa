@@ -2,20 +2,20 @@ import { FlagRouter } from "@medusajs/utils"
 import { MedusaError, isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
-    ITaxCalculationStrategy,
-    TaxCalculationContext,
-    TransactionBaseService,
+  ITaxCalculationStrategy,
+  TaxCalculationContext,
+  TransactionBaseService,
 } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-    Discount,
-    DiscountRuleType,
-    GiftCard,
-    LineItem,
-    LineItemTaxLine,
-    Region,
-    ShippingMethod,
-    ShippingMethodTaxLine,
+  Discount,
+  DiscountRuleType,
+  GiftCard,
+  LineItem,
+  LineItemTaxLine,
+  Region,
+  ShippingMethod,
+  ShippingMethodTaxLine,
 } from "../models"
 import { LineAllocationsMap } from "../types/totals"
 import { calculatePriceTaxAmount } from "../utils"
@@ -675,7 +675,7 @@ export default class NewTotalsService extends TransactionBaseService {
       if (!totals.tax_lines) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
-          "Tax Lines must be joined to calculate taxes"
+          "Tax Lines must be joined to calculate shipping taxes"
         )
       }
     }

@@ -33,6 +33,11 @@ program
     "--directory-path <path>",
     "Specify the directory path to install the project in."
   )
+  .option(
+    "--with-nextjs-starter",
+    "Install the Next.js starter along with the Medusa backend",
+    false
+  )
   .parse()
 
 void create(program.opts())

@@ -1,8 +1,6 @@
 import { AdminAnalyticsConfigRes } from "@medusajs/medusa"
-import { AnalyticsBrowser } from "@segment/analytics-next"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
-import { WRITE_KEY } from "../constants/analytics"
 import { MEDUSA_BACKEND_URL } from "../constants/medusa-backend-url"
 import { useFeatureFlag } from "../providers/feature-flag-provider"
 
@@ -15,10 +13,19 @@ const client = axios.create({
   withCredentials: true,
 })
 
-// Analytics instance used for tracking one-off events, such as errors and the initial permission request
-export const analytics = AnalyticsBrowser.load({
-  writeKey: WRITE_KEY,
-})
+/**
+ * Returns true if analytics are enabled for the current user.
+ */
+export const analyticsOptIn = async () => {
+  const res = await getAnalyticsConfig().catch(() => undefined)
+
+  // Don't track if we have no config to ensure we have permission
+  if (!res) {
+    return false
+  }
+
+  return !res.analytics_config.opt_out
+}
 
 /**
  * Fetches the analytics config for the current user.
