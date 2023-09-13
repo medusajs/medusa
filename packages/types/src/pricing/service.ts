@@ -13,6 +13,7 @@ import {
   MoneyAmountDTO,
   PriceSetDTO,
   PricingContext,
+  PricingFilters,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
   UpdatePriceSetDTO,
@@ -22,8 +23,8 @@ export interface IPricingModuleService {
   __joinerConfig(): ModuleJoinerConfig
 
   calculatePrices(
-    priceSetIds: string[],
-    pricingContext: PricingContext,
+    filters: PricingFilters,
+    context?: PricingContext,
     sharedContext?: Context
   ): Promise<CalculatedPriceSetDTO>
 
