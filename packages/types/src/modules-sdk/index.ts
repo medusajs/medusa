@@ -36,8 +36,14 @@ export type InternalModuleDeclaration = {
    */
   resolve?: string
   options?: Record<string, unknown>
-  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
-  main?: boolean // If the module is the main module for the key when multiple ones are registered
+  /**
+   * If multiple modules are registered with the same key, the alias can be used to differentiate them
+   */
+  alias?: string
+  /**
+   * If the module is the main module for the key when multiple ones are registered
+   */
+  main?: boolean
 }
 
 export type ExternalModuleDeclaration = {
@@ -48,8 +54,14 @@ export type ExternalModuleDeclaration = {
     keepAlive: boolean
   }
   options?: Record<string, unknown>
-  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
-  main?: boolean // If the module is the main module for the key when multiple ones are registered
+  /**
+   * If multiple modules are registered with the same key, the alias can be used to differentiate them
+   */
+  alias?: string
+  /**
+   * If the module is the main module for the key when multiple ones are registered
+   */
+  main?: boolean
 }
 
 export type ModuleResolution = {
@@ -74,7 +86,10 @@ export type ModuleDefinition = {
    * @deprecated property will be removed in future versions
    */
   isRequired?: boolean
-  isQueryable?: boolean // If the module is queryable via Remote Joiner
+  /**
+   * If the module is queryable via Remote Joiner
+   */
+  isQueryable?: boolean
   dependencies?: string[]
   defaultModuleDeclaration:
     | InternalModuleDeclaration
@@ -136,12 +151,27 @@ export type ModuleJoinerConfig = Omit<
   }[]
   serviceName?: string
   primaryKeys?: string[]
-  isLink?: boolean // If the module is a link module
-  linkableKeys?: string[] // Keys that can be used to link to other modules
-  isReadOnlyLink?: boolean // If true it expands a RemoteQuery property but doesn't create a pivot table
+  /**
+   * If the module is a link module
+   */
+  isLink?: boolean
+  /**
+   * Keys that can be used to link to other modules
+   */
+  linkableKeys?: string[]
+  /**
+   * If true it expands a RemoteQuery property but doesn't create a pivot table
+   */
+  isReadOnlyLink?: boolean
   databaseConfig?: {
-    tableName?: string // Name of the pivot table. If not provided it is auto generated
-    idPrefix?: string // Prefix for the id column. If not provided it is "link"
+    /**
+     * Name of the pivot table. If not provided it is auto generated
+     */
+    tableName?: string
+    /**
+     * Prefix for the id column. If not provided it is "link"
+     */
+    idPrefix?: string
     extraFields?: Record<
       string,
       {
@@ -169,15 +199,24 @@ export type ModuleJoinerConfig = Omit<
           | "text"
         defaultValue?: string
         nullable?: boolean
-        options?: Record<string, unknown> // Mikro-orm options for the column
+        /**
+         * Mikro-orm options for the column
+         */
+        options?: Record<string, unknown>
       }
     >
   }
 }
 
 export declare type ModuleJoinerRelationship = JoinerRelationship & {
-  isInternalService?: boolean // If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more "internal" services
-  deleteCascade?: boolean // If true, the link joiner will cascade deleting the relationship
+  /**
+   * If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more "internal" services
+   */
+  isInternalService?: boolean
+  /**
+   * If true, the link joiner will cascade deleting the relationship
+   */
+  deleteCascade?: boolean
 }
 
 export type ModuleExports = {

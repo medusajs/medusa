@@ -2,6 +2,7 @@ import { createContext, useState } from "react"
 
 import { ProductCategory } from "@medusajs/medusa"
 import { useAdminProductCategories } from "medusa-react"
+import { useTranslation } from "react-i18next"
 
 import Spacer from "../../../components/atoms/spacer"
 import BodyCard from "../../../components/organisms/body-card"
@@ -15,11 +16,14 @@ import { flattenCategoryTree } from "../utils"
  * Product categories empty state placeholder.
  */
 function ProductCategoriesEmptyState() {
+  const { t } = useTranslation()
   return (
     <div className="flex min-h-[600px] items-center justify-center">
       <p className="text-grey-40">
-        No product categories yet, use the above button to create your first
-        category.
+        {t(
+          "pages-no-product-categories-yet",
+          "No product categories yet, use the above button to create your first category."
+        )}
       </p>
     </div>
   )
@@ -34,6 +38,7 @@ export const ProductCategoriesContext = createContext<{
  * Product category index page container.
  */
 function ProductCategoryPage() {
+  const { t } = useTranslation()
   const {
     state: isCreateModalVisible,
     open: showCreateModal,
@@ -56,7 +61,7 @@ function ProductCategoryPage() {
 
   const actions = [
     {
-      label: "Add category",
+      label: t("pages-add-category", "Add category"),
       onClick: showCreateModal,
     },
   ]
@@ -88,8 +93,11 @@ function ProductCategoryPage() {
         <div className="flex w-full grow flex-col">
           <BodyCard
             className="h-full"
-            title="Product Categories"
-            subtitle="Helps you to keep your products organized."
+            title={t("pages-product-categories", "Product Categories")}
+            subtitle={t(
+              "pages-helps-you-to-keep-your-products-organized",
+              "Helps you to keep your products organized."
+            )}
             actionables={actions}
             footerMinHeight={40}
             setBorders

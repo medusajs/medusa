@@ -91,8 +91,13 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
         },
       }
 
-      delete whereOptions.parent_category_id
-      delete whereOptions.id
+      if ("parent_category_id" in whereOptions) {
+        delete whereOptions.parent_category_id
+      }
+
+      if ("id" in whereOptions) {
+        delete whereOptions.id
+      }
 
       const descendantsForCategory = await manager.find(
         ProductCategory,
