@@ -1,7 +1,6 @@
 import { ProductStatus } from "../../product"
 
 import {
-  CreateProductOptionInputDTO,
   CreateProductProductCategoryInputDTO,
   CreateProductSalesChannelInputDTO,
   CreateProductTagInputDTO,
@@ -10,15 +9,10 @@ import {
 } from "./create-products"
 
 export interface UpdateProductInputDTO {
-  /**
-   * TODO: check this fields
-   */
-
   id: string
-  title: string
+  title?: string
   subtitle?: string
   description?: string
-  is_giftcard?: boolean
   discountable?: boolean
   images?: string[]
   thumbnail?: string
@@ -27,20 +21,18 @@ export interface UpdateProductInputDTO {
   type?: CreateProductTypeInputDTO
   collection_id?: string
   tags?: CreateProductTagInputDTO[]
+  sales_channels?: CreateProductSalesChannelInputDTO[]
   categories?: CreateProductProductCategoryInputDTO[]
-  options?: CreateProductOptionInputDTO[]
   variants?: CreateProductVariantInputDTO[]
   weight?: number
   length?: number
-  height?: number
   width?: number
+  height?: number
   hs_code?: string
   origin_country?: string
   mid_code?: string
   material?: string
   metadata?: Record<string, unknown>
-
-  sales_channels?: CreateProductSalesChannelInputDTO[]
 }
 
 export interface UpdateProductsWorkflowInputDTO {
