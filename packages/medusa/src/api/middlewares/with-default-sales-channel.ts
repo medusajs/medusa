@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express"
 import { FlagRouter } from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../loaders/feature-flags/sales-channels"
 import { SalesChannelService } from "../../services"
+import IsolateProductDomain from "../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * Middleware that includes the default sales channel on the request, if no sales channels present
@@ -23,6 +24,8 @@ export function withDefaultSalesChannel(
 
     if (
       !featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key) ||
+      // Do not attach the default SC if the isolate product domain feature flag is enabled
+      featureFlagRouter.isFeatureEnabled(IsolateProductDomain.key) ||
       req.query.sales_channel_id?.length ||
       req.get("x-publishable-api-key")
     ) {
