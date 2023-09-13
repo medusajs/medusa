@@ -38,7 +38,6 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
       },
       relationship: {
         serviceName: LINKS.ProductShippingProfile,
-        isInternalService: true,
         primaryKey: "product_id",
         foreignKey: "id",
         alias: "shipping_profile",
