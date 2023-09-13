@@ -33,6 +33,18 @@ export const joinerConfig: ModuleJoinerConfig = {
       name: "price_sets",
     },
     {
+      name: "calculated_prices",
+      args: {
+        methodOverride: "calculatePrices",
+      },
+    },
+    {
+      name: "calculated_price",
+      args: {
+        methodOverride: "calculatePrice",
+      },
+    },
+    {
       name: "money_amount",
       args: {
         methodSuffix: "MoneyAmounts",
