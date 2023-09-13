@@ -386,13 +386,33 @@ describe("/admin/products", () => {
         is_default: true,
       })
 
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Channel 3",
+        id: "channel-3",
+        is_default: true,
+      })
+
       await simpleProductFactory(dbConnection, {
         title: "To update product",
         id: "to-update",
       })
 
       await simpleProductFactory(dbConnection, {
-        title: "To update product",
+        title: "To update product with channels",
+        id: "to-update-with-sales-channels",
+        sales_channels: [
+          { name: "channel 1", id: "channel-1" },
+          { name: "channel 2", id: "channel-2" },
+        ],
+      })
+
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "To be added",
+        id: "to-be-added",
+      })
+
+      await simpleProductFactory(dbConnection, {
+        title: "To update product with variants",
         id: "to-update-with-variants",
         variants: [
           {
@@ -476,6 +496,37 @@ describe("/admin/products", () => {
               title: "Variant 3",
             }),
           ]),
+        })
+      )
+    })
+
+    it("update product's sales channels", async () => {
+      const api = useApi()! as AxiosInstance
+
+      const payload = {
+        title: "New title",
+        description: "test-product-description",
+        sales_channels: [{ id: "channel-2" }, { id: "channel-3" }],
+      }
+
+      const response = await api
+        .post(
+          "/admin/products/to-update-with-sales-channels",
+          payload,
+          adminHeaders
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response?.status).toEqual(200)
+      expect(response?.data.product).toEqual(
+        expect.objectContaining({
+          id: "to-update-with-sales-channels",
+          sales_channels: [
+            expect.objectContaining({ id: "channel-2" }),
+            expect.objectContaining({ id: "channel-3" }),
+          ],
         })
       )
     })

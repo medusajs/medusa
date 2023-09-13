@@ -11,22 +11,23 @@ import { CreateProductsActions } from "./create-products"
 import { updateProductsExtractCreatedVariants } from "../../handlers/middlewares/update-products-extract-created-variants"
 import { updateProductsExtractDeletedVariants } from "../../handlers/middlewares/update-products-extract-deleted-variants"
 import { useVariantsInventoryItems } from "../../handlers/middlewares/use-variants-inventory-items"
+import {
+  reshapeAttachSalesChannelsData,
+  reshapeDetachSalesChannelsData,
+} from "../../handlers/middlewares/update-prodcut-reshape-sales-channes-data"
 
 export enum UpdateProductsActions {
   prepare = "prepare",
   updateProducts = "updateProducts",
-  revertUpdateProducts = "revertUpdateProducts",
+
   attachSalesChannels = "attachSalesChannels",
   detachSalesChannels = "detachSalesChannels",
-  // inventory
+
   createInventoryItems = "createInventoryItems",
   attachInventoryItems = "attachInventoryItems",
   detachInventoryItems = "detachInventoryItems",
   removeInventoryItems = "removeInventoryItems",
 }
-
-// TODO: sales channels
-// TODO: shipping profiles
 
 export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
   next: {
@@ -35,14 +36,14 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
     next: {
       action: UpdateProductsActions.updateProducts,
       next: [
-        // {
-        //   action: UpdateProductsActions.attachSalesChannels,
-        //   saveResponse: false,
-        // },
-        // {
-        //   action: UpdateProductsActions.detachSalesChannels,
-        //   saveResponse: false,
-        // },
+        {
+          action: UpdateProductsActions.attachSalesChannels,
+          saveResponse: false,
+        },
+        {
+          action: UpdateProductsActions.detachSalesChannels,
+          saveResponse: false,
+        },
         {
           // for created variants
           action: UpdateProductsActions.createInventoryItems,
@@ -50,7 +51,6 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
             action: UpdateProductsActions.attachInventoryItems,
           },
         },
-
         {
           // for deleted variants
           action: UpdateProductsActions.detachInventoryItems,
@@ -110,78 +110,86 @@ const handlers = new Map([
       ),
     },
   ],
-  // [
-  //   UpdateProductsActions.attachSalesChannels,
-  //   {
-  //     invoke: pipe(
-  //       {
-  //         merge: true,
-  //         invoke: [
-  //           {
-  //             from: UpdateProductsActions.prepare,
-  //             alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
-  //           },
-  //           {
-  //             from: UpdateProductsActions.updateProducts,
-  //           },
-  //         ],
-  //       },
-  //       mapData((data) => ({
-  //         productsHandleSalesChannelsMap: data.productHandleAddedChannelsMap,
-  //       })),
-  //       ProductHandlers.attachSalesChannelToProducts
-  //     ),
-  //     compensate: pipe(
-  //       {
-  //         merge: true,
-  //         invoke: {
-  //           from: UpdateProductsActions.prepare,
-  //           alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
-  //         },
-  //       },
-  //       mapData((data) => ({
-  //         productsHandleSalesChannelsMap: data.productHandleAddedChannelsMap,
-  //       })),
-  //       ProductHandlers.detachSalesChannelFromProducts
-  //     ),
-  //   },
-  // ],
-  // [
-  //   UpdateProductsActions.detachSalesChannels,
-  //   {
-  //     invoke: pipe(
-  //       {
-  //         merge: true,
-  //         invoke: [
-  //           {
-  //             from: UpdateProductsActions.prepare,
-  //             alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
-  //           },
-  //           {
-  //             from: UpdateProductsActions.updateProducts,
-  //           },
-  //         ],
-  //       },
-  //       mapData((data) => ({
-  //         productsHandleSalesChannelsMap: data.productHandleRemovedChannelsMap,
-  //       })),
-  //       ProductHandlers.detachSalesChannelFromProducts
-  //     ),
-  //     compensate: pipe(
-  //       {
-  //         merge: true,
-  //         invoke: {
-  //           from: UpdateProductsActions.prepare,
-  //           alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
-  //         },
-  //       },
-  //       mapData((data) => ({
-  //         productsHandleSalesChannelsMap: data.productHandleRemovedChannelsMap,
-  //       })),
-  //       ProductHandlers.attachSalesChannelToProducts
-  //     ),
-  //   },
-  // ],
+  [
+    UpdateProductsActions.attachSalesChannels,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductsActions.prepare,
+              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+            },
+            {
+              from: UpdateProductsActions.updateProducts,
+              alias:
+                ProductHandlers.attachSalesChannelToProducts.aliases.products,
+            },
+          ],
+        },
+        reshapeAttachSalesChannelsData,
+        ProductHandlers.attachSalesChannelToProducts
+      ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductsActions.prepare,
+              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+            },
+            {
+              from: UpdateProductsActions.updateProducts,
+            },
+          ],
+        },
+        reshapeAttachSalesChannelsData,
+        ProductHandlers.detachSalesChannelFromProducts
+      ),
+    },
+  ],
+  [
+    UpdateProductsActions.detachSalesChannels,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductsActions.prepare,
+              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+            },
+            {
+              from: UpdateProductsActions.updateProducts,
+              alias:
+                ProductHandlers.detachSalesChannelFromProducts.aliases.products,
+            },
+          ],
+        },
+        reshapeDetachSalesChannelsData,
+        ProductHandlers.detachSalesChannelFromProducts
+      ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductsActions.prepare,
+              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+            },
+            {
+              from: UpdateProductsActions.updateProducts,
+              alias:
+                ProductHandlers.detachSalesChannelFromProducts.aliases.products,
+            },
+          ],
+        },
+        reshapeDetachSalesChannelsData,
+        ProductHandlers.attachSalesChannelToProducts
+      ),
+    },
+  ],
   [
     UpdateProductsActions.createInventoryItems,
     {

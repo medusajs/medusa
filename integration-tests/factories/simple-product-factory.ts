@@ -7,6 +7,7 @@ import {
   ShippingProfileType,
   Store,
 } from "@medusajs/medusa"
+import { kebabCase } from "@medusajs/utils"
 import {
   ProductVariantFactoryData,
   simpleProductVariantFactory,
@@ -26,6 +27,7 @@ export type ProductFactoryData = {
   title?: string
   type?: string
   tags?: string[]
+  handle?: string
   options?: { id: string; title: string }[]
   variants?: Omit<ProductVariantFactoryData, "product_id">[]
   sales_channels?: SalesChannelFactoryData[]
@@ -97,6 +99,8 @@ export const simpleProductFactory = async (
     ] as ShippingProfile[],
     metadata: data.metadata || null,
   } as unknown as Product
+
+  productToCreate.handle = data.handle || kebabCase(data.title)
 
   if (typeof data.tags !== "undefined") {
     for (let i = 0; i < data.tags.length; i++) {

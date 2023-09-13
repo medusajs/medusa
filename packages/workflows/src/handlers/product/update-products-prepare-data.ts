@@ -1,5 +1,4 @@
 import { ProductDTO, ProductTypes, SalesChannelDTO } from "@medusajs/types"
-import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 import { WorkflowArguments } from "../../helper"
 
@@ -21,6 +20,7 @@ export type UpdateProductsPreparedData = {
 
 export async function updateProductsPrepareData({
   container,
+  context,
   data,
 }: WorkflowArguments<HandlerInput>): Promise<UpdateProductsPreparedData> {
   const ids = data.products.map((product) => product.id)
@@ -28,12 +28,12 @@ export async function updateProductsPrepareData({
   const productHandleAddedChannelsMap = new Map<string, string[]>()
   const productHandleRemovedChannelsMap = new Map<string, string[]>()
 
-  const productModuleService: ProductTypes.IProductModuleService =
-    container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
+  const productService = container.resolve("productService")
+  const productServiceTx = productService.withTransaction(context.manager)
 
-  const products = await productModuleService.list(
+  const products = await productServiceTx.list(
     { id: ids },
-    { relations: ["variants"] } // TODO: figure out relations from config arg
+    { relations: ["variants", "sales_channels"] } // TODO: figure out relations from config arg
   )
 
   data.products.forEach((productInput) => {
