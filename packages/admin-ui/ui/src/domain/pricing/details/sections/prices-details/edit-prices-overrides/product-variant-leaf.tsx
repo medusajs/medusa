@@ -1,5 +1,6 @@
 import { MoneyAmount, ProductVariant } from "@medusajs/medusa"
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../../../components/fundamentals/button"
 import ChevronRightIcon from "../../../../../../components/fundamentals/icons/chevron-right-icon"
 
@@ -14,6 +15,7 @@ const ProductVariantLeaf = ({
   prices,
   onClick,
 }: ProductVariantLeafProps) => {
+  const { t } = useTranslation()
   const { title, sku } = variant
   const hasPrices = prices.length > 0
   return (
@@ -25,12 +27,14 @@ const ProductVariantLeaf = ({
       <div className="text-grey-50 flex flex-1 items-center justify-end">
         <div className="text-grey-50 mr-xsmall">
           {hasPrices ? (
-            <span>{`${prices.length} price${
-              prices.length > 1 ? "s" : ""
-            }`}</span>
+            <span>
+              {t("edit-prices-overrides-count", "{{count}}", {
+                count: prices.length,
+              })}
+            </span>
           ) : (
             <span className="inter-small-semibold text-orange-40">
-              Add prices
+              {t("edit-prices-overrides-add-prices", "Add prices")}
             </span>
           )}
         </div>
