@@ -5,7 +5,7 @@ import {
 } from "@medusajs/medusa"
 import React, { useMemo } from "react"
 import { useAdminReservations, useMedusa } from "medusa-react"
-
+import { useTranslation } from "react-i18next"
 import { ActionType } from "../../../../components/molecules/actionables"
 import Badge from "../../../../components/fundamentals/badge"
 import BodyCard from "../../../../components/organisms/body-card"
@@ -26,6 +26,8 @@ type DraftSummaryCardProps = {
 }
 
 const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
+  const { t } = useTranslation()
+
   const { client } = useMedusa()
   const { isFeatureEnabled } = useFeatureFlag()
   const inventoryEnabled = useMemo(() => {
@@ -149,7 +151,11 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
           <StatusIndicator
             onClick={allItemsReserved ? undefined : showReservationModal}
             variant={allItemsReserved ? "success" : "danger"}
-            title={allItemsReserved ? "Allocated" : "Not fully allocated"}
+            title={
+              allItemsReserved
+                ? t("detail-cards-allocated", "Allocated")
+                : t("detail-cards-not-fully-allocated", "Not fully allocated")
+            }
             className="rounded-rounded border px-3 py-1.5"
           />
         )
@@ -221,7 +227,7 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={order?.cart?.subtotal}
-          totalTitle={"Subtotal"}
+          totalTitle={t("detail-cards-subtotal", "Subtotal")}
         />
         {cart?.discounts?.map((discount, index) => (
           <div key={index} className="mt-4 flex items-center justify-between">
@@ -245,18 +251,18 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={cart?.shipping_total}
-          totalTitle={"Shipping"}
+          totalTitle={t("detail-cards-shipping", "Shipping")}
         />
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={cart?.tax_total}
-          totalTitle={`Tax`}
+          totalTitle={t("detail-cards-tax", "Tax")}
         />
         <DisplayTotal
           currency={region?.currency_code}
           variant="large"
           totalAmount={cart?.total}
-          totalTitle={`Total`}
+          totalTitle={t("detail-cards-total", "Total")}
         />
       </div>
       {reservationModalIsOpen && (

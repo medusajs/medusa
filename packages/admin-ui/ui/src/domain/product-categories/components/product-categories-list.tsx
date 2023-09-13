@@ -1,6 +1,7 @@
 import { dropRight, flatMap, get } from "lodash"
 import React, { useCallback, useMemo } from "react"
 import Nestable from "react-nestable"
+import { useTranslation } from "react-i18next"
 
 import "react-nestable/dist/styles/index.css"
 import "../styles/product-categories.css"
@@ -23,6 +24,7 @@ type ProductCategoriesListProps = {
  * Draggable list that renders product categories tree view.
  */
 function ProductCategoriesList(props: ProductCategoriesListProps) {
+  const { t } = useTranslation()
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   const notification = useNotification()
@@ -60,9 +62,23 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
           parent_category_id: parentId,
           rank,
         })
-        notification("Success", "Successfully updated category tree", "success")
+        notification(
+          t("components-success", "Success"),
+          t(
+            "components-successfully-updated-category-tree",
+            "Successfully updated category tree"
+          ),
+          "success"
+        )
       } catch (e) {
-        notification("Error", "Failed to update category tree", "error")
+        notification(
+          t("components-error", "Error"),
+          t(
+            "components-failed-to-update-category-tree",
+            "Failed to update category tree"
+          ),
+          "error"
+        )
         enableError()
       } finally {
         await queryClient.invalidateQueries(adminProductCategoryKeys.lists())

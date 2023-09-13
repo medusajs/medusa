@@ -1,11 +1,12 @@
 import { useAdminCollections } from "medusa-react"
 import { useContext, useState } from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../../../../components/fundamentals/button"
 import Modal from "../../../../../../../components/molecules/modal"
 import { LayeredModalContext } from "../../../../../../../components/molecules/modal/layered-modal"
 import { SelectableTable } from "../../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../../hooks/use-query-filters"
-import { defaultQueryProps } from "../../../../..//new/discount-form/condition-tables/shared/common"
+import { defaultQueryProps } from "../../../../../new/discount-form/condition-tables/shared/common"
 import {
   CollectionRow,
   CollectionsHeader,
@@ -14,6 +15,7 @@ import {
 import { useEditConditionContext } from "../../edit-condition-provider"
 
 const AddCollectionConditionsScreen = () => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
 
   const { pop } = useContext(LayeredModalContext)
@@ -38,7 +40,7 @@ const AddCollectionConditionsScreen = () => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search...",
+            searchPlaceholder: t("collections-search", "Search..."),
           }}
           resourceName="Collections"
           totalCount={count ?? 0}
@@ -55,21 +57,21 @@ const AddCollectionConditionsScreen = () => {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            Cancel
+            {t("collections-cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndGoBack(selectedResources, () => refetch())}
           >
-            Save and go back
+            {t("collections-save-and-go-back", "Save and go back")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndClose(selectedResources)}
           >
-            Save and close
+            {t("collections-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

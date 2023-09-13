@@ -2,6 +2,7 @@ import { AdminPostProductsReq, Product } from "@medusajs/medusa"
 import { omit } from "lodash"
 import { useAdminCreateProduct } from "medusa-react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { ProductStatus } from "../../../types/shared"
 import { getErrorMessage } from "../../../utils/error-messages"
@@ -37,6 +38,7 @@ const useCopyProduct = () => {
   const navigate = useNavigate()
   const notification = useNotification()
   const { mutate } = useAdminCreateProduct()
+  const { t } = useTranslation()
 
   const handleCopyProduct = (product: Product) => {
     const {
@@ -103,7 +105,7 @@ const useCopyProduct = () => {
           "product",
           "product_id",
           "variant_rank",
-          "purchasable"
+          "purchasable",
         ])
 
         const variantBase = Object.entries(rest).reduce((acc, [key, value]) => {
@@ -181,10 +183,21 @@ const useCopyProduct = () => {
     mutate(base as AdminPostProductsReq, {
       onSuccess: ({ product: copiedProduct }) => {
         navigate(`/a/products/${copiedProduct.id}`)
-        notification("Success", "Created a new product", "success")
+        notification(
+          t("product-table-copy-success", "Success"),
+          t(
+            "product-table-copy-created-a-new-product",
+            "Created a new product"
+          ),
+          "success"
+        )
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(
+          t("product-table-copy-error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }

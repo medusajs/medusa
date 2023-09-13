@@ -3,6 +3,7 @@ import { useAdminDiscounts } from "medusa-react"
 import qs from "qs"
 import React, { useEffect, useState } from "react"
 import { usePagination, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import { useAnalytics } from "../../../providers/analytics-provider"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
@@ -16,6 +17,7 @@ const DEFAULT_PAGE_SIZE = 15
 const defaultQueryProps = {}
 
 const DiscountTable: React.FC = () => {
+  const { t } = useTranslation()
   const {
     removeTab,
     setTab,
@@ -157,7 +159,7 @@ const DiscountTable: React.FC = () => {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + rows.length,
-        title: "Discounts",
+        title: t("discount-table-discounts", "Discounts"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,
@@ -181,7 +183,10 @@ const DiscountTable: React.FC = () => {
         }
         enableSearch
         handleSearch={setQuery}
-        searchPlaceholder="Search by code or description..."
+        searchPlaceholder={t(
+          "discount-table-search-by-code-or-description",
+          "Search by code or description..."
+        )}
         searchValue={query}
         {...getTableProps()}
       >

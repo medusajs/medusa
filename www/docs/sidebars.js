@@ -49,23 +49,92 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "recipes/ecommerce",
+          label: "Ecommerce",
+          customProps: {
+            iconName: "shopping-cart",
+            excludeFromDocList: true,
+          },
+        },
+        {
+          type: "doc",
           id: "recipes/marketplace",
           label: "Marketplace",
+          customProps: {
+            iconName: "building-storefront",
+          },
         },
         {
           type: "doc",
           id: "recipes/subscriptions",
           label: "Subscriptions",
+          customProps: {
+            iconName: "credit-card-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/commerce-automation",
+          label: "Commerce Automation",
+          customProps: {
+            iconName: "clock-solid-mini",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/oms",
+          label: "Order Management System",
+          customProps: {
+            iconName: "check-circle-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/pos",
+          label: "POS",
+          customProps: {
+            iconName: "computer-desktop-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/digital-products",
+          label: "Digital Products",
+          customProps: {
+            iconName: "photo-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/personalized-products",
+          label: "Personalized Products",
+          customProps: {
+            iconName: "swatch-solid",
+          },
         },
         {
           type: "doc",
           id: "recipes/b2b",
-          label: "B2B / Wholesale",
+          label: "B2B",
+          customProps: {
+            iconName: "building-solid",
+          },
         },
         {
           type: "doc",
           id: "recipes/multi-region",
           label: "Multi-Region Store",
+          customProps: {
+            iconName: "globe-europe-solid",
+          },
+        },
+        {
+          type: "doc",
+          id: "recipes/omnichannel",
+          label: "Omnichannel Store",
+          customProps: {
+            iconName: "channels-solid",
+          },
         },
       ],
     },
@@ -2406,6 +2475,16 @@ module.exports = {
               iconName: "bolt-solid",
               description:
                 "Learn how to integrate ipstack to access the user's region.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/other/restock-notifications",
+            label: "Restock Notifications",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate restock notifications with the Medusa backend.",
             },
           },
           {

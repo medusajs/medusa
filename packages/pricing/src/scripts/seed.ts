@@ -22,11 +22,14 @@ export async function run({
 
   logger.info(`Loading seed data from ${path}...`)
 
-  const { currenciesData, moneyAmountsData } = await import(
-    resolve(process.cwd(), path)
-  ).catch((e) => {
+  const {
+    currenciesData,
+    moneyAmountsData,
+    priceSetsData,
+    priceSetMoneyAmountsData,
+  } = await import(resolve(process.cwd(), path)).catch((e) => {
     logger?.error(
-      `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following: currenciesData, moneyAmountsData.${EOL}${e}`
+      `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following: priceSetsData, currenciesData, moneyAmountsData and priceSetMoneyAmountsData.${EOL}${e}`
     )
     throw e
   })
@@ -44,10 +47,12 @@ export async function run({
   const manager = orm.em.fork()
 
   try {
-    logger.info("Inserting currencies & money_amounts")
+    logger.info("Inserting price_sets, currencies & money_amounts")
 
     await createCurrencies(manager, currenciesData)
     await createMoneyAmounts(manager, moneyAmountsData)
+    await createPriceSets(manager, priceSetsData)
+    await createPriceSetMoneyAmounts(manager, priceSetMoneyAmountsData)
   } catch (e) {
     logger.error(
       `Failed to insert the seed data in the PostgreSQL database ${dbData.clientUrl}.${EOL}${e}`
@@ -81,4 +86,33 @@ async function createMoneyAmounts(
   await manager.persistAndFlush(moneyAmounts)
 
   return moneyAmounts
+}
+
+async function createPriceSets(
+  manager: SqlEntityManager,
+  data: RequiredEntityData<PricingModels.PriceSet>[]
+) {
+  const priceSets = data.map((priceSetData) => {
+    return manager.create(PricingModels.PriceSet, priceSetData)
+  })
+
+  await manager.persistAndFlush(priceSets)
+
+  return priceSets
+}
+
+async function createPriceSetMoneyAmounts(
+  manager: SqlEntityManager,
+  data: RequiredEntityData<PricingModels.PriceSetMoneyAmount>[]
+) {
+  const priceSetMoneyAmounts = data.map((priceSetMoneyAmountData) => {
+    return manager.create(
+      PricingModels.PriceSetMoneyAmount,
+      priceSetMoneyAmountData
+    )
+  })
+
+  await manager.persistAndFlush(priceSetMoneyAmounts)
+
+  return priceSetMoneyAmounts
 }

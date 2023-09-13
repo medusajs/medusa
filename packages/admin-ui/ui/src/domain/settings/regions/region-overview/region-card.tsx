@@ -1,4 +1,5 @@
 import { Region } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import RadioGroup from "../../../../components/organisms/radio-group"
 import fulfillmentProvidersMapper from "../../../../utils/fulfillment-providers.mapper"
 import paymentProvidersMapper from "../../../../utils/payment-providers-mapper"
@@ -8,6 +9,7 @@ type Props = {
 }
 
 const RegionCard = ({ region }: Props) => {
+  const { t } = useTranslation()
   return (
     <RadioGroup.Item
       value={region.id}
@@ -26,17 +28,17 @@ const RegionCard = ({ region }: Props) => {
               ? region.payment_providers
                   .map((pp) => paymentProvidersMapper(pp.id).label)
                   .join(", ")
-              : "Not configured"}
+              : t("region-overview-not-configured", "Not configured")}
           </span>
         </p>
         <p>
-          Fulfillment providers:{" "}
+          {t("region-overview-fulfillment-providers", "Fulfillment providers:")}{" "}
           <span className="truncate">
             {region.fulfillment_providers?.length
               ? region.fulfillment_providers
                   .map((fp) => fulfillmentProvidersMapper(fp.id).label)
                   .join(", ")
-              : "Not configured"}
+              : t("region-overview-not-configured", "Not configured")}
           </span>
         </p>
       </div>

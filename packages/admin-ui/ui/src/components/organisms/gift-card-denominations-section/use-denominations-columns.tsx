@@ -2,6 +2,7 @@ import { MoneyAmount, ProductVariant } from "@medusajs/medusa"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useAdminDeleteVariant, useAdminStore } from "medusa-react"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
@@ -17,6 +18,7 @@ const columnHelper = createColumnHelper<ProductVariant>()
 
 export const useDenominationColumns = () => {
   const { store } = useAdminStore()
+  const { t } = useTranslation()
 
   const columns = useMemo(() => {
     if (!store) {
@@ -27,7 +29,10 @@ export const useDenominationColumns = () => {
 
     return [
       columnHelper.display({
-        header: "Denomination",
+        header: t(
+          "gift-card-denominations-section-denomination",
+          "Denomination"
+        ),
         id: "denomination",
         cell: ({ row }) => {
           const defaultDenomination = row.original.prices.find(
@@ -50,7 +55,10 @@ export const useDenominationColumns = () => {
         },
       }),
       columnHelper.display({
-        header: "In other currencies",
+        header: t(
+          "gift-card-denominations-section-in-other-currencies",
+          "In other currencies"
+        ),
         id: "other_currencies",
         cell: ({ row }) => {
           const otherCurrencies = row.original.prices.filter(
@@ -98,7 +106,13 @@ export const useDenominationColumns = () => {
                     </ul>
                   }
                 >
-                  <span className="text-grey-50 cursor-default">{`, and ${remainder.length} more`}</span>
+                  <span className="text-grey-50 cursor-default">
+                    {t(
+                      "gift-card-denominations-section-and-more",
+                      ", and {{count}} more",
+                      { count: remainder.length }
+                    )}
+                  </span>
                 </Tooltip>
               )}
             </p>
@@ -118,6 +132,7 @@ export const useDenominationColumns = () => {
 }
 
 const Actions = ({ original }: { original: ProductVariant }) => {
+  const { t } = useTranslation()
   const { state, open, close } = useToggleState()
 
   const { mutateAsync } = useAdminDeleteVariant(original.product_id)
@@ -127,21 +142,37 @@ const Actions = ({ original }: { original: ProductVariant }) => {
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
-      heading: "Delete denomination",
-      text: "Are you sure you want to delete this denomination?",
+      heading: t(
+        "gift-card-denominations-section-delete-denomination",
+        "Delete denomination"
+      ),
+      text: t(
+        "gift-card-denominations-section-confirm-delete",
+        "Are you sure you want to delete this denomination?"
+      ),
     })
 
     if (shouldDelete) {
       mutateAsync(original.id, {
         onSuccess: () => {
           notification(
-            "Denomination deleted",
-            "Denomination was successfully deleted",
+            t(
+              "gift-card-denominations-section-denomination-deleted",
+              "Denomination deleted"
+            ),
+            t(
+              "gift-card-denominations-section-denomination-was-successfully-deleted",
+              "Denomination was successfully deleted"
+            ),
             "success"
           )
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(
+            t("gift-card-denominations-section-error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       })
     }
@@ -149,12 +180,12 @@ const Actions = ({ original }: { original: ProductVariant }) => {
 
   const actions: ActionType[] = [
     {
-      label: "Edit",
+      label: t("gift-card-denominations-section-edit", "Edit"),
       onClick: open,
       icon: <EditIcon size={20} />,
     },
     {
-      label: "Delete",
+      label: t("gift-card-denominations-section-delete", "Delete"),
       onClick: onDelete,
       icon: <TrashIcon size={20} />,
       variant: "danger",

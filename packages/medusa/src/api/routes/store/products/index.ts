@@ -40,7 +40,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   route.get(
     "/:id",
-    withDefaultSalesChannel({}),
+    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetProductsProductParams, {
       defaultRelations: defaultStoreProductsRelations,
       defaultFields: defaultStoreProductsFields,
