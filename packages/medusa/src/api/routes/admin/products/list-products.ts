@@ -353,13 +353,11 @@ async function listAndCountProductWithIsolatedProductModule(
     ) as PriceListService
     promises.push(
       priceListService
-        .retrieve(priceListId, {
-          relations: ["prices"],
-        })
-        .then((priceList) => {
-          // TODO: need some more refactoring, maybe a link between price list and product to attach the variant and use the
-          // remote query here to retrieve [money_amount, product] couple such as what we have for the shipping profile
-          priceList.prices.map((ma) => variantIdsFilter.add(ma.variant_id))
+        .listPriceListsVariantIdsMap(priceListId)
+        .then((priceListVariantIdsMap) => {
+          priceListVariantIdsMap[priceListId].map((variantId) =>
+            variantIdsFilter.add(variantId)
+          )
         })
     )
   }
