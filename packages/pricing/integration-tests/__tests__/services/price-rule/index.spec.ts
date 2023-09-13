@@ -138,10 +138,9 @@ describe("PriceRule Service", () => {
         expect(serialized).toEqual([
           {
             id: "price-rule-1",
-            price_set: 
-              {
-                id: "price-set-1",
-              },
+            price_set: {
+              id: "price-set-1",
+            },
           },
         ])
       })
@@ -292,26 +291,23 @@ describe("PriceRule Service", () => {
             currency_code: "EUR",
           },
         ])
-  
+
         const psma = testManager.create(PriceSetMoneyAmount, {
-          price_set: testManager.getReference(
-            PriceSet,
-            "price-set-1"
-          ),
+          price_set: testManager.getReference(PriceSet, "price-set-1"),
           money_amount: ma.id,
           title: "test",
         })
-  
-        await testManager.persist(psma).flush()
 
+        await testManager.persist(psma).flush()
 
         await service.create([
           {
+            id: "price-rule-new",
             price_set_id: "price-set-1",
             rule_type_id: "rule-type-1",
             value: "region_1",
             price_list_id: "test",
-            price_set_money_amount: psma.id
+            price_set_money_amount_id: psma.id,
           } as unknown as CreatePriceRuleDTO,
         ])
 
