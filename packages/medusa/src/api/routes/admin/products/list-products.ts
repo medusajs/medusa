@@ -366,7 +366,7 @@ async function listAndCountProductWithIsolatedProductModule(
   delete filterableFields.discount_condition_id
 
   if (discountConditionId) {
-    // TODO Add support through another link such as we have for the shipping_profile
+    // TODO
   }
 
   await Promise.all(promises)
