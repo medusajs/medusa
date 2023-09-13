@@ -149,7 +149,6 @@ export class RemoteQuery {
     const service = this.modulesMap.get(serviceConfig.serviceName)!
 
     let filters = {}
-    let context = {}
     const options = {
       ...RemoteQuery.getAllFieldsAndRelations(expand),
     }
@@ -158,7 +157,6 @@ export class RemoteQuery {
       "skip",
       "take",
       "limit",
-      "order",
       "offset",
       "cursor",
       "sort",
@@ -171,8 +169,6 @@ export class RemoteQuery {
     for (const arg of expand.args || []) {
       if (arg.name === "filters" && arg.value) {
         filters = { ...arg.value }
-      } else if (arg.name === "context" && arg.value) {
-        context = { ...arg.value }
       } else if (availableOptions.includes(arg.name)) {
         const argName = availableOptionsAlias.has(arg.name)
           ? availableOptionsAlias.get(arg.name)!
@@ -183,25 +179,6 @@ export class RemoteQuery {
 
     if (ids) {
       filters[keyField] = ids
-    }
-
-    const methodOverride = relationship?.args?.methodOverride
-
-    if (methodOverride) {
-      if (typeof service[methodOverride] !== "function") {
-        throw new Error(
-          `Method "${methodOverride}" does not exist on "${serviceConfig.serviceName}"`
-        )
-      }
-
-      const result = await service[methodOverride](filters, {
-        context,
-        options,
-      })
-
-      return {
-        data: result,
-      }
     }
 
     const hasPagination = this.hasPagination(options)
