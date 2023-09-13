@@ -6,8 +6,8 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { exportWorkflow, pipe } from "../../helper"
-import { InventoryHandlers, ProductHandlers } from "../../handlers"
 import { CreateProductsActions } from "./create-products"
+import { InventoryHandlers, ProductHandlers } from "../../handlers"
 import { updateProductsExtractCreatedVariants } from "../../handlers/middlewares/update-products-extract-created-variants"
 import { updateProductsExtractDeletedVariants } from "../../handlers/middlewares/update-products-extract-deleted-variants"
 import { useVariantsInventoryItems } from "../../handlers/middlewares/use-variants-inventory-items"
@@ -56,7 +56,7 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
           action: UpdateProductsActions.detachInventoryItems,
           next: {
             action: UpdateProductsActions.removeInventoryItems,
-            noCompensation: true, //  we cannot create as a compensation, but we need to restore which will be done in the handler
+            noCompensation: true, //  we cannot "create" as a compensation, but we need to restore which will be done in the handler
           },
         },
       ],
@@ -323,6 +323,6 @@ WorkflowManager.register(
 )
 
 export const updateProducts = exportWorkflow<
-  WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO,
+  WorkflowTypes.ProductWorkflow.UpdateProductsWorkflowInputDTO,
   ProductTypes.ProductDTO[]
 >(Workflows.UpdateProducts, UpdateProductsActions.updateProducts)

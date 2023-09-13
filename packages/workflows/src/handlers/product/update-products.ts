@@ -3,7 +3,10 @@ import { ProductDTO, ProductTypes } from "@medusajs/types"
 
 import { WorkflowArguments } from "../../helper"
 
-type HandlerInput = { products: ProductTypes.UpdateProductDTO[] }
+type HandlerInput = {
+  products: ProductTypes.UpdateProductDTO[]
+  config: { listConfig: { relations?: string[]; select?: string[] } }
+}
 
 export async function updateProducts({
   container,
@@ -21,7 +24,7 @@ export async function updateProducts({
 
   return await productModuleService.list(
     { id: products.map((p) => p.id) },
-    { relations: ["variants"] } // TODO: pass relations
+    { relations: data.config.listConfig?.relations }
   )
 }
 

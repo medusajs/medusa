@@ -1,12 +1,6 @@
-import { ProductDTO, ProductTypes, SalesChannelDTO } from "@medusajs/types"
+import { ProductDTO, SalesChannelDTO, WorkflowTypes } from "@medusajs/types"
 
 import { WorkflowArguments } from "../../helper"
-
-type HandlerInput = {
-  products: (ProductTypes.UpdateProductDTO & {
-    sales_channels?: SalesChannelDTO[]
-  })[]
-}
 
 type ProductWithSalesChannelsDTO = ProductDTO & {
   sales_channels?: SalesChannelDTO[]
@@ -22,7 +16,7 @@ export async function updateProductsPrepareData({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInput>): Promise<UpdateProductsPreparedData> {
+}: WorkflowArguments<WorkflowTypes.ProductWorkflow.UpdateProductsWorkflowInputDTO>): Promise<UpdateProductsPreparedData> {
   const ids = data.products.map((product) => product.id)
 
   const productHandleAddedChannelsMap = new Map<string, string[]>()
@@ -33,7 +27,12 @@ export async function updateProductsPrepareData({
 
   const products = await productServiceTx.list(
     { id: ids },
-    { relations: ["variants", "sales_channels"] } // TODO: figure out relations from config arg
+    {
+      relations: [
+        ...(data.config.listConfig?.relations || []),
+        "sales_channels", // TODO: remove this and use product module
+      ],
+    }
   )
 
   data.products.forEach((productInput) => {

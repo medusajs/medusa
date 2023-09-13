@@ -156,7 +156,14 @@ export default async (req, res) => {
       config: {
         listConfig: {
           select: defaultAdminProductFields,
-          relations: defaultAdminProductRelations,
+          relations: [
+            "variants",
+            "images",
+            "options",
+            "tags",
+            "type",
+            "collection",
+          ],
         },
       },
     }

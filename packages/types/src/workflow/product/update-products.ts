@@ -37,4 +37,5 @@ export interface UpdateProductInputDTO {
 
 export interface UpdateProductsWorkflowInputDTO {
   products: UpdateProductInputDTO[]
+  config: { listConfig?: { relations?: string[]; select?: string[] } }
 }
