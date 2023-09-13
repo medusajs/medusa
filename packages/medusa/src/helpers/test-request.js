@@ -1,6 +1,8 @@
 import {
   moduleHelper,
   moduleLoader,
+  ModulesDefinition,
+  registerMedusaModule,
   registerModules,
 } from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
@@ -17,6 +19,7 @@ import passportLoader from "../loaders/passport"
 import repositories from "../loaders/repositories"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
+import modules from "../modules-config"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -31,6 +34,14 @@ const clientSessionOpts = {
 }
 
 const moduleResolutions = registerModules({})
+// Load non legacy modules
+Object.keys(modules).map((moduleKey) => {
+  moduleResolutions[moduleKey] = registerMedusaModule(
+    moduleKey,
+    ModulesDefinition[moduleKey]
+  )[moduleKey]
+})
+
 const config = {
   projectConfig: {
     jwt_secret: "supersecret",
@@ -91,24 +102,36 @@ testApp.use((req, res, next) => {
   next()
 })
 
-featureFlagLoader(config)
-models({ container, configModule: config, isTest: true })
-repositories({ container, isTest: true })
-servicesLoader({ container, configModule: config })
-strategiesLoader({ container, configModule: config })
-passportLoader({ app: testApp, container, configModule: config })
-moduleLoader({ container, moduleResolutions })
+let supertestRequest
+let isInit = false
 
-testApp.use((req, res, next) => {
-  req.scope = container.createScope()
-  next()
-})
+async function init() {
+  featureFlagLoader(config)
+  models({ container, configModule: config, isTest: true })
+  repositories({ container, isTest: true })
+  servicesLoader({ container, configModule: config })
+  strategiesLoader({ container, configModule: config })
+  await passportLoader({ app: testApp, container, configModule: config })
+  await moduleLoader({ container, moduleResolutions })
 
-apiLoader({ container, app: testApp, configModule: config })
+  testApp.use((req, res, next) => {
+    req.scope = container.createScope()
+    next()
+  })
 
-const supertestRequest = supertest(testApp)
+  await apiLoader({ container, app: testApp, configModule: config })
+
+  supertestRequest = supertest(testApp)
+  isInit = true
+}
+
+init()
 
 export async function request(method, url, opts = {}) {
+  while (!isInit) {
+    await new Promise((resolve) => setTimeout(resolve, 100))
+  }
+
   const { payload, query, headers = {}, flags = [] } = opts
 
   flags.forEach((flag) => {
