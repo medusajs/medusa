@@ -48,7 +48,7 @@ To change the language:
 
 :::tip
 
-Can't find your language? Learn how you can contribute by translating the admin to other languages [here](../../contribution/admin-translations.md#method-2-using-github).
+Can't find your language? Learn how you can contribute by translating the admin to other languages [here](../../contribution/admin-translations.md).
 
 :::
 
