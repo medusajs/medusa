@@ -1,15 +1,10 @@
-import { EntityManager } from "typeorm"
-import { computerizeAmount, MedusaError } from "medusa-core-utils"
-
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
-import CsvParser from "../../../services/csv-parser"
 import {
   BatchJobService,
   PriceListService,
   ProductVariantService,
   RegionService,
 } from "../../../services"
-import { CreateBatchJobInput } from "../../../types/batch-job"
 import {
   InjectedProps,
   OperationType,
@@ -21,9 +16,14 @@ import {
   TBuiltPriceListImportLine,
   TParsedPriceListImportRowData,
 } from "./types"
+import { MedusaError, computerizeAmount } from "medusa-core-utils"
+
 import { BatchJob } from "../../../models"
-import { TParsedProductImportRowData } from "../product/types"
+import { CreateBatchJobInput } from "../../../types/batch-job"
+import CsvParser from "../../../services/csv-parser"
+import { EntityManager } from "typeorm"
 import { PriceListPriceCreateInput } from "../../../types/price-list"
+import { TParsedProductImportRowData } from "../product/types"
 
 /*
  * Default strategy class used for a batch import of products/variants.
@@ -309,12 +309,14 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
         try {
           await txPriceListService.addPrices(
             priceListId,
-            (op.prices as PriceListPriceCreateInput[]).map((p) => {
-              return {
-                ...p,
-                variant_id: op.variant_id,
+            (op.prices as PriceListPriceCreateInput[]).map(
+              (p: PriceListPriceCreateInput) => {
+                return {
+                  ...p,
+                  variant_id: op.variant_id as string,
+                }
               }
-            })
+            )
           )
         } catch (e) {
           PriceListImportStrategy.throwDescriptiveError(op, e.message)
