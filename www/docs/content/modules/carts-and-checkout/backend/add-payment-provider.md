@@ -164,7 +164,7 @@ You can also use the constructor to initialize your integration with the third-p
 Additionally, if you’re creating your Payment Processor as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor. The options are passed as a second parameter:
 
 ```ts
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   constructor(container, options) {
     super(container)
@@ -272,7 +272,7 @@ import {
   PaymentSessionResponse,
 } from "@medusajs/medusa"
 
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   async initiatePayment(
     context: PaymentProcessorContext
@@ -302,7 +302,7 @@ An example of a minimal implementation of `retrievePayment` where you don’t ne
 import { Data } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   async retrievePayment(
     paymentSessionData: Record<string, unknown>
@@ -334,7 +334,7 @@ An example of a minimal implementation of `getPaymentStatus` where you don’t n
 import { Data, PaymentSessionStatus } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   async getPaymentStatus(
     paymentSessionData: Record<string, unknown>
@@ -395,7 +395,7 @@ import {
 } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   async updatePayment(
     context: PaymentProcessorContext
@@ -432,7 +432,7 @@ An example of a minimal implementation of `deletePayment` where no interaction w
 import { PaymentSession } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   async deletePayment(
     paymentSessionData: Record<string, unknown>
@@ -484,7 +484,7 @@ import {
 } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   async authorizePayment(
     paymentSessionData: Record<string, unknown>, 
@@ -524,7 +524,7 @@ An example of a minimal implementation of `capturePayment` that doesn’t need t
 import { Data, Payment } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   async capturePayment(payment: Payment): Promise<Data> {
     return {
@@ -552,7 +552,7 @@ An example of a minimal implementation of `refundPayment` that doesn’t need to
 import { Data, Payment } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   async refundPayment(
     paymentSessionData: Record<string, unknown>, 
@@ -583,7 +583,7 @@ An example of a minimal implementation of `cancelPayment` that doesn’t need to
 import { Data, Payment } from "@medusajs/medusa"
 // ...
 
-class MyPaymentService extends AbstractPaymentService {
+class MyPaymentService extends AbstractPaymentProcessor {
   // ...
   async cancelPayment(
     paymentSessionData: Record<string, unknown>
