@@ -100,7 +100,7 @@ export const simpleProductFactory = async (
     metadata: data.metadata || null,
   } as unknown as Product
 
-  productToCreate.handle = data.handle || kebabCase(data.title)
+  productToCreate.handle = data.handle || kebabCase(productToCreate.title)
 
   if (typeof data.tags !== "undefined") {
     for (let i = 0; i < data.tags.length; i++) {
