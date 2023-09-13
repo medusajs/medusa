@@ -17,7 +17,7 @@ void i18n
   // https://www.i18next.com/overview/configuration-options
   .init({
     supportedLngs: supportedLanguages.map((l) => l.locale),
-    fallbackLng: ["en"],
+    fallbackLng: "en",
     returnNull: false,
     debug: true,
     interpolation: {
