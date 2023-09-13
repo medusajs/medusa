@@ -4,12 +4,11 @@ import {
   ProductService,
   ProductVariantInventoryService,
   RegionService,
-  ShippingProfileService,
 } from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
 
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { cleanResponseData } from "../../../../utils"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultStoreProductsFields } from "./index"
 
@@ -167,45 +166,72 @@ async function getProductWithIsolatedProductModule(req, id: string) {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
   const variables = { id }
-  const commonProperties = ["id", "created_at", "updated_at", "deleted_at"]
+  const commonProperties = []
 
   const query = `
       query ($id: String!) {
         product (id: $id) {
           ${defaultStoreProductsFields.join("\n")}
+          
           images {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             url
             metadata
           }
+          
           tags {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             value
           }
+          
           type {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             value
           }
+          
           collection {
             title
             handle
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
           }
+          
           options {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             title
             product_id
             metadata
             values {
-              ${commonProperties.join("\n")}
+              id
+              created_at
+              updated_at
+              deleted_at
               value
               option_id
               variant_id
               metadata
             }
           }
+          
           variants {
-            ${commonProperties.join("\n")}
+            id
+            created_at
+            updated_at
+            deleted_at
             title
             product_id
             sku
@@ -226,12 +252,24 @@ async function getProductWithIsolatedProductModule(req, id: string) {
             width
             metadata
             options {
-              ${commonProperties.join("\n")}
+              id
+              created_at
+              updated_at
+              deleted_at
               value
               option_id
               variant_id
               metadata
             }
+          }
+          
+          profile {
+            id
+            created_at
+            updated_at
+            deleted_at
+            name
+            type
           }
         } 
       }
@@ -239,17 +277,7 @@ async function getProductWithIsolatedProductModule(req, id: string) {
 
   const [product] = await remoteQuery(query, variables)
 
-  // TODO: Waiting for pr #4990 before being able to remove that logic and replace it by a new relation in the query above
-  const shippingProfileService = req.scope.resolve(
-    "shippingProfileService"
-  ) as ShippingProfileService
-
-  const profilesByProductId = await shippingProfileService.retrieveForProducts([
-    product.id,
-  ])
-
-  product.profile_id = profilesByProductId[product.id]?.[0]?.id
-  product.profiles = profilesByProductId[product.id]
+  product.profile_id = product.profile?.id
 
   return product
 }
