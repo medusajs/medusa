@@ -12,8 +12,8 @@ import { IInventoryService } from "@medusajs/types"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../../models"
 import { Type } from "class-transformer"
-import { defaultStoreProductsFields } from "../../store/products"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { defaultAdminProductFields } from "./index"
 
 /**
  * @oas [get] /admin/products
@@ -399,7 +399,7 @@ async function listAndCountProductWithIsolatedProductModule(
   const query = `
       query ($filters: any, $order: any, $skip: Int, $take: Int) {
         product (${args}) {
-          ${defaultStoreProductsFields.join("\n")}
+          ${defaultAdminProductFields.join("\n")}
           
           images {
             id
