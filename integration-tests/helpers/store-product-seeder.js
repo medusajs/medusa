@@ -1,3 +1,5 @@
+const { ProductVariantMoneyAmount } = require("@medusajs/medusa")
+const { MoneyAmount } = require("@medusajs/medusa")
 const {
   ProductCollection,
   ProductTag,
@@ -26,7 +28,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     new Date()
   )
 
-  const priceList = await manager.create(PriceList, {
+  const priceList = manager.create(PriceList, {
     id: "pl",
     name: "VIP winter sale",
     description: "Winter sale for VIP customers.",
@@ -36,7 +38,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
 
   await manager.save(priceList)
 
-  const priceList1 = await manager.create(PriceList, {
+  const priceList1 = manager.create(PriceList, {
     id: "pl_expired",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -152,7 +154,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     product_id: "test-product",
   })
 
-  const variant1 = await manager.create(ProductVariant, {
+  const variant1 = manager.create(ProductVariant, {
     id: "test-variant",
     inventory_quantity: 10,
     title: "Test variant",
@@ -162,21 +164,6 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     upc: "test-upc",
     barcode: "test-barcode",
     product_id: "test-product",
-    prices: [
-      { id: "test-price", currency_code: "usd", type: "default", amount: 100 },
-      {
-        id: "test-price-discount",
-        currency_code: "usd",
-        amount: 80,
-        price_list_id: "pl",
-      },
-      {
-        id: "test-price-discount-expired",
-        currency_code: "usd",
-        amount: 70,
-        price_list_id: "pl_expired",
-      },
-    ],
     options: [
       {
         id: "test-variant-option",
@@ -188,7 +175,46 @@ module.exports = async (dataSource, defaultSalesChannel) => {
 
   await manager.save(variant1)
 
-  const variant2 = await manager.create(ProductVariant, {
+  await manager.insert(MoneyAmount, {
+    id: "test-price",
+    currency_code: "usd",
+    type: "default",
+    amount: 100,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant-1",
+    money_amount_id: "test-price",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-discount",
+    currency_code: "usd",
+    amount: 80,
+    price_list_id: "pl",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant-2",
+    money_amount_id: "test-price-discount",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-discount-expired",
+    currency_code: "usd",
+    amount: 70,
+    price_list_id: "pl_expired",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant-3",
+    money_amount_id: "test-price-discount-expired",
+    variant_id: "test-variant",
+  })
+
+  const variant2 = manager.create(ProductVariant, {
     id: "test-variant_1",
     inventory_quantity: 10,
     title: "Test variant rank (1)",
@@ -198,21 +224,6 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     upc: "test-upc1",
     barcode: "test-barcode 1",
     product_id: "test-product",
-    prices: [
-      { id: "test-price1", currency_code: "usd", type: "default", amount: 100 },
-      {
-        id: "test-price1-discount",
-        currency_code: "usd",
-        amount: 80,
-        price_list_id: "pl",
-      },
-      {
-        id: "test-price1-discount-expired",
-        currency_code: "usd",
-        amount: 70,
-        price_list_id: "pl_expired",
-      },
-    ],
     options: [
       {
         id: "test-variant-option-1",
@@ -224,7 +235,46 @@ module.exports = async (dataSource, defaultSalesChannel) => {
 
   await manager.save(variant2)
 
-  const variant3 = await manager.create(ProductVariant, {
+  await manager.insert(MoneyAmount, {
+    id: "test-price1",
+    currency_code: "usd",
+    type: "default",
+    amount: 100,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant_1-1",
+    money_amount_id: "test-price1",
+    variant_id: "test-variant_1",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price1-discount",
+    currency_code: "usd",
+    amount: 80,
+    price_list_id: "pl",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant_1-2",
+    money_amount_id: "test-price1-discount",
+    variant_id: "test-variant_1",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price1-discount-expired",
+    currency_code: "usd",
+    amount: 70,
+    price_list_id: "pl_expired",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant_1-3",
+    money_amount_id: "test-price1-discount-expired",
+    variant_id: "test-variant_1",
+  })
+
+  const variant3 = manager.create(ProductVariant, {
     id: "test-variant_2",
     inventory_quantity: 10,
     title: "Test variant rank (2)",
@@ -233,21 +283,6 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     ean: "test-ean2",
     upc: "test-upc2",
     product_id: "test-product",
-    prices: [
-      { id: "test-price2", currency_code: "usd", type: "default", amount: 100 },
-      {
-        id: "test-price2-discount",
-        currency_code: "usd",
-        amount: 80,
-        price_list_id: "pl",
-      },
-      {
-        id: "test-price2-discount-expired",
-        currency_code: "usd",
-        amount: 70,
-        price_list_id: "pl_expired",
-      },
-    ],
     options: [
       {
         id: "test-variant-option-2",
@@ -258,6 +293,45 @@ module.exports = async (dataSource, defaultSalesChannel) => {
   })
 
   await manager.save(variant3)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price2",
+    currency_code: "usd",
+    type: "default",
+    amount: 100,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant_2-1",
+    money_amount_id: "test-price2",
+    variant_id: "test-variant_2",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price2-discount",
+    currency_code: "usd",
+    amount: 80,
+    price_list_id: "pl",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant_2-2",
+    money_amount_id: "test-price2-discount",
+    variant_id: "test-variant_2",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price2-discount-expired",
+    currency_code: "usd",
+    amount: 70,
+    price_list_id: "pl_expired",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant_2-3",
+    money_amount_id: "test-price2-discount-expired",
+    variant_id: "test-variant_2",
+  })
 
   const p1 = manager.create(Product, {
     id: "test-product1",
@@ -277,7 +351,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
 
   await manager.save(p1)
 
-  const variant4 = await manager.create(ProductVariant, {
+  const variant4 = manager.create(ProductVariant, {
     id: "test-variant_3",
     inventory_quantity: 10,
     title: "Test variant rank (2)",
@@ -286,7 +360,6 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     ean: "test-ean3",
     upc: "test-upc3",
     product_id: "test-product1",
-    prices: [{ id: "test-price3", currency_code: "usd", amount: 100 }],
     options: [
       {
         id: "test-variant-option-3",
@@ -298,7 +371,19 @@ module.exports = async (dataSource, defaultSalesChannel) => {
 
   await manager.save(variant4)
 
-  const variant5 = await manager.create(ProductVariant, {
+  await manager.insert(MoneyAmount, {
+    id: "test-price3",
+    currency_code: "usd",
+    amount: 100,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant_3-1",
+    money_amount_id: "test-price3",
+    variant_id: "test-variant_3",
+  })
+
+  const variant5 = manager.create(ProductVariant, {
     id: "test-variant_4",
     inventory_quantity: 10,
     title: "Test variant rank (2)",
@@ -307,7 +392,6 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     ean: "test-ean4",
     upc: "test-upc4",
     product_id: "test-product1",
-    prices: [{ id: "test-price4", currency_code: "usd", amount: 100 }],
     options: [
       {
         id: "test-variant-option-4",
@@ -318,6 +402,18 @@ module.exports = async (dataSource, defaultSalesChannel) => {
   })
 
   await manager.save(variant5)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price4",
+    currency_code: "usd",
+    amount: 100,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-test-variant_4-1",
+    money_amount_id: "test-price4",
+    variant_id: "test-variant_4",
+  })
 
   const product1 = manager.create(Product, {
     id: "test-product_filtering_1",

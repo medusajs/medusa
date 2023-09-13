@@ -4,18 +4,18 @@ import { EntityManager } from "typeorm"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
 import { TransactionBaseService } from "../interfaces"
 import {
-    IPriceSelectionStrategy,
-    PriceSelectionContext,
+  IPriceSelectionStrategy,
+  PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Product, ProductVariant, Region, ShippingOption } from "../models"
 import {
-    PricedProduct,
-    PricedShippingOption,
-    PricedVariant,
-    PricingContext,
-    ProductVariantPricing,
-    TaxedPricing,
+  PricedProduct,
+  PricedShippingOption,
+  PricedVariant,
+  PricingContext,
+  ProductVariantPricing,
+  TaxedPricing,
 } from "../types/pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { calculatePriceTaxAmount } from "../utils"
