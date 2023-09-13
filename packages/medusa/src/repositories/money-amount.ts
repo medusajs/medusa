@@ -60,12 +60,12 @@ export const MoneyAmountRepository = dataSource
             (
               d
             ): d is {
-              variant_id: string
+              variant: QueryDeepPartialEntity<ProductVariant>
               id: string
-            } => !!d.variant_id
+            } => !!d.variant
           )
           .map((d) => ({
-            variant_id: d.variant_id,
+            variant_id: d.variant.id,
             money_amount_id: d.id,
           }))
       )
@@ -227,14 +227,12 @@ export const MoneyAmountRepository = dataSource
       const createdAmount = await this.save(moneyAmount)
 
       if (created) {
-        await this.createQueryBuilder()
-          .insert()
-          .into("product_variant_money_amount")
-          .values({
+        await this.createProductVariantMoneyAmounts([
+          {
             variant_id: variantId,
             money_amount_id: createdAmount.id,
-          })
-          .execute()
+          },
+        ])
       }
 
       return createdAmount
@@ -581,6 +579,16 @@ export const MoneyAmountRepository = dataSource
         .where("pvma.variant_id = :variantId", { variantId })
         .where("ma.region_id = :regionId", { regionId })
         .getMany()
+    },
+
+    async createProductVariantMoneyAmounts(
+      toCreate: { variant_id: string; money_amount_id: string }[]
+    ) {
+      return await this.createQueryBuilder()
+        .insert()
+        .into("product_variant_money_amount")
+        .values(toCreate)
+        .execute()
     },
   })
 

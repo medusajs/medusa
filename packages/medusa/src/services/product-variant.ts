@@ -562,12 +562,6 @@ class ProductVariantService extends TransactionBaseService {
         moneyAmountsMapToVariantId.set(d.variant_id, moneyAmounts)
       })
 
-      const variants = await productVariantRepo.find({
-        where: { id: In(data.map((d) => d.variantId)) },
-      })
-
-      const variantsMap = new Map(variants.map((v) => [v.id, v]))
-
       const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
       const dataToUpdate: QueryDeepPartialEntity<MoneyAmount>[] = []
 
@@ -590,8 +584,8 @@ class ProductVariantService extends TransactionBaseService {
         } else {
           const ma = moneyAmountRepo.create({
             ...price,
-            variant_id: variantId,
           }) as QueryDeepPartialEntity<MoneyAmount>
+          ma.variant = { id: variantId }
           dataToCreate.push(ma)
         }
       })
@@ -649,11 +643,6 @@ class ProductVariantService extends TransactionBaseService {
         moneyAmountsMapToVariantId.set(d.variant_id, moneyAmounts)
       })
 
-      const variants = await productVariantRepo.find({
-        where: { id: In(data.map((d) => d.variantId)) },
-      })
-      const variantsMap = new Map(variants.map((v) => [v.id, v]))
-
       const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
       const dataToUpdate: QueryDeepPartialEntity<MoneyAmount>[] = []
 
@@ -677,8 +666,8 @@ class ProductVariantService extends TransactionBaseService {
           const ma = moneyAmountRepo.create({
             ...price,
             currency_code: price.currency_code.toLowerCase(),
-            variant_id: variantId,
           }) as QueryDeepPartialEntity<MoneyAmount>
+          ma.variant = { id: variantId }
           dataToCreate.push(ma)
         }
       })
@@ -773,15 +762,12 @@ class ProductVariantService extends TransactionBaseService {
       const createdAmount = await moneyAmountRepo.save(moneyAmount)
 
       if (created) {
-        await moneyAmountRepo
-          .createQueryBuilder()
-          .insert()
-          .into("product_variant_money_amount")
-          .values({
+        await moneyAmountRepo.createProductVariantMoneyAmounts([
+          {
             variant_id: variantId,
             money_amount_id: createdAmount.id,
-          })
-          .execute()
+          },
+        ])
       }
 
       return createdAmount
