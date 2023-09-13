@@ -1,7 +1,6 @@
-import { PriceSet, PriceSetMoneyAmount } from "../../../../src"
+import { PriceSet, PriceSetMoneyAmount } from "@models"
 
 import { CreatePriceRuleDTO } from "@medusajs/types"
-import { CreatePriceSetDTO } from "@medusajs/types"
 import { MikroOrmWrapper } from "../../../utils"
 import { PriceRuleRepository } from "@repositories"
 import { PriceRuleService } from "@services"
@@ -45,8 +44,8 @@ describe("PriceRule Service", () => {
 
   describe("list", () => {
     it("should list priceRules", async () => {
-      const priceSetsResult = await service.list()
-      const serialized = JSON.parse(JSON.stringify(priceSetsResult))
+      const priceRuleResult = await service.list()
+      const serialized = JSON.parse(JSON.stringify(priceRuleResult))
 
       expect(serialized).toEqual([
         expect.objectContaining({
@@ -121,8 +120,8 @@ describe("PriceRule Service", () => {
         ])
       })
 
-      it("should list priceSets with relations and selects", async () => {
-        const [priceSetsResult, count] = await service.listAndCount(
+      it("should list priceRules with relations and selects", async () => {
+        const [priceRulesResult, count] = await service.listAndCount(
           {
             id: ["price-rule-1"],
           },
@@ -132,7 +131,7 @@ describe("PriceRule Service", () => {
           }
         )
 
-        const serialized = JSON.parse(JSON.stringify(priceSetsResult))
+        const serialized = JSON.parse(JSON.stringify(priceRulesResult))
 
         expect(count).toEqual(1)
         expect(serialized).toEqual([
@@ -145,14 +144,14 @@ describe("PriceRule Service", () => {
         ])
       })
 
-      it("should return priceSets and count when using skip and take", async () => {
-        const [priceSetsResult, count] = await service.listAndCount(
+      it("should return priceRules and count when using skip and take", async () => {
+        const [priceRulesResult, count] = await service.listAndCount(
           {},
           { skip: 1, take: 1 }
         )
 
         expect(count).toEqual(2)
-        expect(priceSetsResult).toEqual([
+        expect(priceRulesResult).toEqual([
           expect.objectContaining({
             id: "price-rule-2",
           }),
@@ -160,7 +159,7 @@ describe("PriceRule Service", () => {
       })
 
       it("should return requested fields", async () => {
-        const [priceSetsResult, count] = await service.listAndCount(
+        const [priceRulesResult, count] = await service.listAndCount(
           {},
           {
             take: 1,
@@ -168,7 +167,7 @@ describe("PriceRule Service", () => {
           }
         )
 
-        const serialized = JSON.parse(JSON.stringify(priceSetsResult))
+        const serialized = JSON.parse(JSON.stringify(priceRulesResult))
 
         expect(count).toEqual(2)
         expect(serialized).toEqual([
@@ -182,17 +181,17 @@ describe("PriceRule Service", () => {
     describe("retrieve", () => {
       const id = "price-rule-1"
 
-      it("should return priceSet for the given id", async () => {
-        const priceSet = await service.retrieve(id)
+      it("should return priceRule for the given id", async () => {
+        const priceRule = await service.retrieve(id)
 
-        expect(priceSet).toEqual(
+        expect(priceRule).toEqual(
           expect.objectContaining({
             id,
           })
         )
       })
 
-      it("should throw an error when priceSet with id does not exist", async () => {
+      it("should throw an error when priceRule with id does not exist", async () => {
         let error
 
         try {
@@ -218,12 +217,12 @@ describe("PriceRule Service", () => {
         expect(error.message).toEqual('"priceRuleId" must be defined')
       })
 
-      it("should return priceSet based on config select param", async () => {
-        const priceSet = await service.retrieve(id, {
+      it("should return priceRule based on config select param", async () => {
+        const priceRule = await service.retrieve(id, {
           select: ["id"],
         })
 
-        const serialized = JSON.parse(JSON.stringify(priceSet))
+        const serialized = JSON.parse(JSON.stringify(priceRule))
 
         expect(serialized).toEqual({
           id,
@@ -234,14 +233,14 @@ describe("PriceRule Service", () => {
     describe("delete", () => {
       const id = "price-set-1"
 
-      it("should delete the priceSets given an id successfully", async () => {
+      it("should delete the priceRules given an id successfully", async () => {
         await service.delete([id])
 
-        const priceSets = await service.list({
+        const priceRules = await service.list({
           id: [id],
         })
 
-        expect(priceSets).toHaveLength(0)
+        expect(priceRules).toHaveLength(0)
       })
     })
 
@@ -284,7 +283,7 @@ describe("PriceRule Service", () => {
         expect(error.message).toEqual('PriceRule with id "undefined" not found')
       })
 
-      it("should create a priceSet successfully", async () => {
+      it("should create a priceRule successfully", async () => {
         const [ma] = await createMoneyAmounts(testManager, [
           {
             amount: 100,
@@ -292,7 +291,7 @@ describe("PriceRule Service", () => {
           },
         ])
 
-        const psma = testManager.create(PriceSetMoneyAmount, {
+        const psma: PriceSetMoneyAmount = testManager.create(PriceSetMoneyAmount, {
           price_set: testManager.getReference(PriceSet, "price-set-1"),
           money_amount: ma.id,
           title: "test",
