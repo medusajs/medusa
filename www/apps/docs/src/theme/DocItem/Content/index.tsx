@@ -6,7 +6,7 @@ import Heading from "@theme/Heading"
 import MDXContent from "@theme/MDXContent"
 import type { Props } from "@theme/DocItem/Content"
 import { DocContextValue } from "@medusajs/docs"
-import Badge from "@site/src/components/Badge"
+import { Badge, type BadgeVariant } from "docs-ui"
 
 /**
  Title can be declared inside md content or declared through
@@ -44,7 +44,7 @@ export default function DocItemContent({ children }: Props): JSX.Element {
             {syntheticTitle}
             {badge && (
               <Badge
-                variant={badge.variant}
+                variant={badge.variant as BadgeVariant}
                 className="md:hidden ml-1 align-middle"
               >
                 {badge.text}
@@ -52,7 +52,10 @@ export default function DocItemContent({ children }: Props): JSX.Element {
             )}
           </Heading>
           {badge && (
-            <Badge variant={badge.variant} className={clsx("md:block hidden")}>
+            <Badge
+              variant={badge.variant as BadgeVariant}
+              className={clsx("md:block hidden")}
+            >
               {badge.text}
             </Badge>
           )}

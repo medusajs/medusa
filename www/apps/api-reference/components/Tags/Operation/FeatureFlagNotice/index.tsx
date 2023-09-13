@@ -1,4 +1,4 @@
-import Badge from "../../../Badge"
+import { Badge } from "docs-ui"
 import Link from "../../../MDXComponents/Link"
 import Tooltip from "../../../Tooltip"
 

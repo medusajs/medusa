@@ -93,7 +93,8 @@ module.exports = {
   },
   ignorePatterns: [
     "eslint-config-docs",
-    ".eslintrc.js"
+    ".eslintrc.js",
+    "dist"
   ],
   overrides: [
     {

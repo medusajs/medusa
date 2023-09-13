@@ -12,7 +12,7 @@ import DocItemContent from "@theme/DocItem/Content"
 import DocBreadcrumbs from "@theme/DocBreadcrumbs"
 import type { Props } from "@theme/DocItem/Layout"
 import Footer from "@theme/Footer"
-import { useSidebar } from "@site/src/providers/Sidebar"
+import { useSidebar } from "../../../providers/Sidebar"
 
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports

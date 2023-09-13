@@ -1,9 +1,9 @@
 import React from "react"
 import BorderedIcon from "../BorderedIcon"
 import clsx from "clsx"
-import Badge from "../Badge"
-import { IconProps } from "@site/src/theme/Icon/index"
 import Link from "@docusaurus/Link"
+import { IconProps } from "../../theme/Icon"
+import { Badge } from "docs-ui"
 
 type LargeCardProps = {
   Icon: React.FC<IconProps>

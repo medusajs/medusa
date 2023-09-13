@@ -18,9 +18,9 @@ import { translate } from "@docusaurus/Translate"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import DocSidebarItems from "@theme/DocSidebarItems"
 import type { Props } from "@theme/DocSidebarItem/Category"
-import Badge from "@site/src/components/Badge/index"
-import DocSidebarItemIcon from "@site/src/components/DocSidebarItemIcon"
 import { ModifiedPropSidebarItemCategory } from "@medusajs/docs"
+import DocSidebarItemIcon from "../../../components/DocSidebarItemIcon"
+import { Badge } from "docs-ui"
 
 type ModifiedProps = Props & {
   item: ModifiedPropSidebarItemCategory

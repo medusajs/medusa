@@ -13,5 +13,8 @@
   "files": [
     "tailwind.config.js",
     "postcss.config.js"
-  ]
+  ],
+  "dependencies": {
+    "@medusajs/ui-preset": "^1.0.0"
+  }
 }

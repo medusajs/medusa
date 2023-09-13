@@ -7,15 +7,15 @@ import {
 } from "@docusaurus/theme-common/internal"
 import isInternalUrl from "@docusaurus/isInternalUrl"
 import { translate } from "@docusaurus/Translate"
-import BorderedIcon from "@site/src/components/BorderedIcon"
-import Badge from "@site/src/components/Badge"
-import Icons from "@site/src/theme/Icon"
 import {
   ModifiedDocCard,
   ModifiedDocCardItemCategory,
   ModifiedDocCardItemLink,
   ModifiedSidebarItem,
 } from "@medusajs/docs"
+import { Badge } from "docs-ui"
+import BorderedIcon from "../../components/BorderedIcon"
+import Icons from "../Icon"
 
 type ModifiedProps = {
   item: ModifiedDocCard

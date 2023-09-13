@@ -30,6 +30,7 @@
     "animate.css": "^4.1.1",
     "autoprefixer": "^10.4.14",
     "clsx": "^1.1.1",
+    "docs-ui": "*",
     "docusaurus-plugin-image-zoom": "^0.1.1",
     "docusaurus-plugin-segment": "^1.0.3",
     "dotenv": "^16.0.3",

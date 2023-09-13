@@ -1,0 +1,19 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+    "paths": {
+      "@docs-ui/*": ["./src/*"]
+    },
+    "outDir": "./dist",
+    "jsx": "react-jsx",
+    "lib": ["dom", "ES2015"],
+    "module": "ESNext",
+    "target": "es6",
+    "incremental": false
+  },
+  "include": [
+    "src/**/*",
+    "tailwind.config.js",
+    "postcss.config.js",
+  ]
+}

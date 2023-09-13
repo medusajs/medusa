@@ -1,7 +1,7 @@
 import type { Operation } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import type { TagsOperationCodeSectionResponsesSampleProps } from "./Sample"
-import Badge from "../../../../Badge"
+import { Badge } from "docs-ui"
 
 const TagsOperationCodeSectionResponsesSample =
   dynamic<TagsOperationCodeSectionResponsesSampleProps>(

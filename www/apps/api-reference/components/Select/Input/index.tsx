@@ -1,11 +1,11 @@
 import clsx from "clsx"
 import IconChevronUpDown from "../../Icons/ChevronUpDown"
 import { useRef, useState } from "react"
-import Badge from "../../Badge"
 import IconXMarkMini from "../../Icons/XMarkMini"
 import useSelect from "../../../hooks/use-select"
 import SelectDropdown from "../Dropdown"
 import { SelectProps } from "../types"
+import { Badge } from "docs-ui"
 
 const SelectInput = ({
   value,

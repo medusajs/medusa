@@ -5,11 +5,11 @@ import type { TagsOperationDescriptionSectionResponsesProps } from "./Responses"
 import dynamic from "next/dynamic"
 import TagsOperationDescriptionSectionParameters from "./Parameters"
 import MDXContentClient from "@/components/MDXContent/Client"
-import type { BadgeProps } from "../../../Badge"
 import type { TagsOperationFeatureFlagNoticeProps } from "../FeatureFlagNotice"
 import type { LinkProps } from "../../../MDXComponents/Link"
 import Feedback from "../../../Feedback"
 import { useArea } from "../../../../providers/area"
+import type { BadgeProps } from "docs-ui"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -31,7 +31,7 @@ const Link = dynamic<LinkProps>(
 ) as React.FC<LinkProps>
 
 const Badge = dynamic<BadgeProps>(
-  async () => import("../../../Badge")
+  async () => (await import("docs-ui")).Badge
 ) as React.FC<BadgeProps>
 
 const TagsOperationFeatureFlagNotice =

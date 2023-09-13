@@ -2,10 +2,9 @@ import React from "react"
 import clsx from "clsx"
 import { ThemeClassNames } from "@docusaurus/theme-common"
 import type { Props } from "@theme/DocSidebarItem/Html"
-import DocSidebarItemIcon from "@site/src/components/DocSidebarItemIcon"
-
-import Badge from "@site/src/components/Badge"
 import { ModifiedPropSidebarItemHtml } from "@medusajs/docs"
+import DocSidebarItemIcon from "../../../components/DocSidebarItemIcon"
+import { Badge } from "docs-ui"
 
 type ModifiedProps = Props & {
   item: ModifiedPropSidebarItemHtml
