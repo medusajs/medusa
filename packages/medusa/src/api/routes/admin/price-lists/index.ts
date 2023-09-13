@@ -1,20 +1,22 @@
-import { FlagRouter } from "@medusajs/utils"
-import { Router } from "express"
 import "reflect-metadata"
-import { PriceList, Product } from "../../../.."
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, {
-  transformBody,
-  transformQuery,
-} from "../../../middlewares"
+import { PriceList, Product } from "../../../.."
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
-import { AdminPostPriceListsPriceListReq } from "./create-price-list"
-import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
+
 import { AdminGetPriceListPaginationParams } from "./list-price-lists"
+import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
+import { AdminPostPriceListsPriceListReq } from "./create-price-list"
+import { FlagRouter } from "@medusajs/utils"
+import { Router } from "express"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
 
@@ -91,7 +93,11 @@ export const defaultAdminPriceListFields = [
   "deleted_at",
 ]
 
-export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
+export const defaultAdminPriceListRelations = [
+  "prices",
+  "prices.variants",
+  "customer_groups",
+]
 
 /**
  * @schema AdminPriceListRes
@@ -285,4 +291,3 @@ export * from "./get-price-list"
 export * from "./list-price-list-products"
 export * from "./list-price-lists"
 export * from "./update-price-list"
-
