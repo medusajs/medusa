@@ -25,16 +25,11 @@ export default class PriceRule {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Property({ columnType: "text"})
-  price_set_id!: string
 
   @ManyToOne({ entity: () => PriceSet, fieldName: "price_set_id", name: "price_rule_price_set_id_unique"  })
   price_set: PriceSet
 
-  @Property({ columnType: "text"})
-  rule_type_id!: string
-  
-  @OneToOne({ entity: () => RuleType, fieldName: "rule_type_id", name: "price_rule_rule_type_id_unique" })
+  @ManyToOne({ entity: () => RuleType, fieldName: "rule_type_id", name: "price_rule_rule_type_id_unique" })
   rule_type: RuleType
 
   @Property({ columnType: "boolean", default: false })
@@ -46,10 +41,7 @@ export default class PriceRule {
   @Property({ columnType: "integer", default: 0 })
   priority: number
 
-  @Property({ columnType: "text"})
-  price_set_money_amount_id: string
-
-  @ManyToOne({ entity: () => RuleType, fieldName: "rule_type_id", name: "price_rule_rule_type_id_unique" })
+  @ManyToOne({ entity: () => PriceSetMoneyAmount, fieldName: "price_set_money_amount_id", name: "price_set_money_amount_id_unique" })
   price_set_money_amount: PriceSetMoneyAmount
   
   @Property({ columnType: "text" })

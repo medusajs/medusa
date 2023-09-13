@@ -8,7 +8,7 @@ import {
   retrieveEntity,
   shouldForceTransaction,
 } from "@medusajs/utils"
-import { PriceRule, PriceSet } from "@models"
+import { PriceRule } from "@models"
 import { PriceRuleRepository } from "@repositories"
 
 type InjectedDependencies = {

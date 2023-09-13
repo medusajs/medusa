@@ -10,8 +10,8 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
+import { PriceRule, PriceSet, PriceSetMoneyAmount, RuleType } from "@models"
 
-import { PriceRule } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
@@ -73,9 +73,18 @@ export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
     data: CreatePriceRuleDTO[],
     context: Context = {}
   ): Promise<PriceRule[]> {
-    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const manager : SqlEntityManager = this.getActiveManager<SqlEntityManager>(context)
 
-    const priceRules = data.map((ruleData) => {
+    const toCreate = data.map((ruleData) => {
+      const ruleDataClone = { ...ruleData }
+      ruleDataClone.rule_type = manager.getReference(RuleType, ruleData.rule_type_id)
+      ruleDataClone.price_set = manager.getReference(PriceSet, ruleData.price_set_id)
+      ruleDataClone.price_set_money_amount = manager.getReference(PriceSetMoneyAmount, ruleData.price_set_money_amount_id)
+
+      return ruleData
+    })
+
+    const priceRules = toCreate.map((ruleData) => {
       return manager.create(PriceRule, ruleData)
     })
 

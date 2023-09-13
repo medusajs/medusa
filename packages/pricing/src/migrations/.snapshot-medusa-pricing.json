@@ -462,6 +462,18 @@
           ],
           "referencedTableName": "public.rule_type",
           "updateRule": "cascade"
+        },
+        "price_rule_price_set_money_amount_id_foreign": {
+          "constraintName": "price_rule_price_set_money_amount_id_foreign",
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
+          "localTableName": "public.price_rule",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.price_set_money_amount",
+          "updateRule": "cascade"
         }
       }
     }

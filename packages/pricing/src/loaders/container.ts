@@ -22,6 +22,7 @@ export default async ({
     moneyAmountService: asClass(defaultServices.MoneyAmountService).singleton(),
     priceSetService: asClass(defaultServices.PriceSetService).singleton(),
     ruleTypeService: asClass(defaultServices.RuleTypeService).singleton(),
+    priceRuleService: asClass(defaultServices.PriceRuleService).singleton(),
   })
 
   if (customRepositories) {
@@ -49,6 +50,9 @@ function loadDefaultRepositories({ container }) {
     ).singleton(),
     ruleTypeRepository: asClass(
       defaultRepositories.RuleTypeRepository
+    ).singleton(),
+    priceRuleRepository: asClass(
+      defaultRepositories.PriceRuleRepository
     ).singleton(),
   })
 }
