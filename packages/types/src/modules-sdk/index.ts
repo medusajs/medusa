@@ -31,9 +31,7 @@ export type InternalModuleDeclaration = {
   scope: MODULE_SCOPE.INTERNAL
   resources: MODULE_RESOURCE_TYPE
   dependencies?: string[]
-  /**
-   * @deprecated The property should not be used.
-   */
+  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   resolve?: string
   options?: Record<string, unknown>
   /**
@@ -48,6 +46,7 @@ export type InternalModuleDeclaration = {
 
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
+  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   server?: {
     type: "http"
     url: string
@@ -86,10 +85,8 @@ export type ModuleDefinition = {
    * @deprecated property will be removed in future versions
    */
   isRequired?: boolean
-  /**
-   * If the module is queryable via Remote Joiner
-   */
-  isQueryable?: boolean
+  isQueryable?: boolean // If the module is queryable via Remote Joiner
+  isLegacy?: boolean // If the module is a legacy module TODO: Remove once all the legacy modules are migrated
   dependencies?: string[]
   defaultModuleDeclaration:
     | InternalModuleDeclaration
