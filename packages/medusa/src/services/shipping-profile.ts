@@ -156,25 +156,13 @@ class ShippingProfileService extends TransactionBaseService {
     return profile
   }
 
-  async retrieveDefault(): Promise<ShippingProfile | null> {
-    const profileRepository = this.activeManager_.withRepository(
-      this.shippingProfileRepository_
-    )
-
-    const profile = await profileRepository.findOne({
-      where: { type: ShippingProfileType.DEFAULT },
-    })
-
-    return profile
-  }
-
   async retrieveForProducts(
     productIds: string | string[]
   ): Promise<{ [product_id: string]: ShippingProfile[] }> {
     if (!isDefined(productIds)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `"profileIds" must be defined`
+        `"productIds" must be defined`
       )
     }
 
@@ -196,6 +184,18 @@ class ShippingProfileService extends TransactionBaseService {
     }
 
     return productProfilesMap
+  }
+
+  async retrieveDefault(): Promise<ShippingProfile | null> {
+    const profileRepository = this.activeManager_.withRepository(
+      this.shippingProfileRepository_
+    )
+
+    const profile = await profileRepository.findOne({
+      where: { type: ShippingProfileType.DEFAULT },
+    })
+
+    return profile
   }
 
   /**
