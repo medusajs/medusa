@@ -34,6 +34,7 @@ const getDevServerConfig = () => {
       devServer: {
         port: 7001,
         historyApiFallback: true,
+        allowedHosts: "all",
       } as Configuration,
     },
   }
