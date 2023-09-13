@@ -56,8 +56,10 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
   },
 
   async listPriceListsVariantIdsMap(
-    priceListId: string
+    priceListIds: string | string[]
   ): Promise<{ [priceListId: string]: string[] }> {
+    priceListIds = Array.isArray(priceListIds) ? priceListIds : [priceListIds]
+
     const data = await this.createQueryBuilder("pl")
       .innerJoin("pl.prices", "prices")
       .innerJoinAndSelect(
@@ -65,7 +67,7 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
         "pvma",
         "pvma.id = prices.id"
       )
-      .where("pl.id = :id", { id: priceListId })
+      .where("pl.id IN (:...ids)", { ids: priceListIds })
       .execute()
 
     return data.reduce((acc, curr) => {
