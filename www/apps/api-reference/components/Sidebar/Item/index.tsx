@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { MethodLabelProps } from "../../MethodLabel"
 import checkSidebarItemVisibility from "@/utils/check-sidebar-item-visibility"
-import Loading from "../../Loading"
+import { Loading } from "docs-ui"
 
 const MethodLabel = dynamic<MethodLabelProps>(
   async () => import("../../MethodLabel")

@@ -4,7 +4,7 @@ import { useSidebar } from "@/providers/sidebar"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import { SidebarItemProps } from "./Item"
-import Loading from "../Loading"
+import { Loading } from "docs-ui"
 
 const SidebarItem = dynamic<SidebarItemProps>(async () => import("./Item"), {
   loading: () => <Loading count={1} />,

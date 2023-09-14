@@ -3,8 +3,7 @@ import dynamic from "next/dynamic"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagOperationParametersProps } from "../.."
 import TagsOperationParametersNested from "../../Nested"
-import Loading from "@/components/Loading"
-import { Details } from "docs-ui"
+import { Details, Loading } from "docs-ui"
 
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(

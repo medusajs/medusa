@@ -16,7 +16,7 @@ import clsx from "clsx"
 import { useBaseSpecs } from "@/providers/base-specs"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
 import { useLoading } from "@/providers/loading"
-import DividedLoading from "@/components/Loading/Divided"
+import DividedLoading from "@/components/DividedLoading"
 
 const TagOperation = dynamic<TagOperationProps>(
   async () => import("../Operation")

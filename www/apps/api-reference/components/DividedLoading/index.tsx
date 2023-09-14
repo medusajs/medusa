@@ -1,5 +1,5 @@
 import DividedLayout from "@/layouts/Divided"
-import Loading from ".."
+import { Loading } from "docs-ui"
 
 type DividedLoadingProps = {
   className?: string

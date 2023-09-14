@@ -5,8 +5,7 @@ import { useState } from "react"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import type { TagOperationParametersProps } from "../.."
-import Loading from "@/components/Loading"
-import { Details } from "docs-ui"
+import { Details, Loading } from "docs-ui"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),

@@ -3,11 +3,11 @@ import clsx from "clsx"
 import { IconProps } from "@/icons"
 import { Spinner } from "@medusajs/icons"
 
-type SpinnerLoadingProps = {
+export type SpinnerLoadingProps = {
   iconProps?: IconProps
 }
 
-const SpinnerLoading = ({ iconProps }: SpinnerLoadingProps) => {
+export const SpinnerLoading = ({ iconProps }: SpinnerLoadingProps) => {
   return (
     <span role="status">
       <Spinner
@@ -17,5 +17,3 @@ const SpinnerLoading = ({ iconProps }: SpinnerLoadingProps) => {
     </span>
   )
 }
-
-export default SpinnerLoading

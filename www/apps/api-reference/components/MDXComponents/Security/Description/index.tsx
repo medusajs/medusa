@@ -1,9 +1,9 @@
-import Loading from "@/components/Loading"
 import type { MDXContentClientProps } from "@/components/MDXContent/Client"
 import type { MDXContentServerProps } from "@/components/MDXContent/Server"
 import type { SecuritySchemeObject } from "@/types/openapi"
 import getSecuritySchemaTypeName from "@/utils/get-security-schema-type-name"
 import clsx from "clsx"
+import { Loading } from "docs-ui"
 import dynamic from "next/dynamic"
 
 const MDXContentClient = dynamic<MDXContentClientProps>(

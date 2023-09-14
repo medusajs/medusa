@@ -2,7 +2,7 @@ import type { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import { TagOperationParametersObjectProps } from "../Object"
-import Loading from "@/components/Loading"
+import { Loading } from "docs-ui"
 
 const TagOperationParametersObject = dynamic<TagOperationParametersObjectProps>(
   async () => import("../Object"),

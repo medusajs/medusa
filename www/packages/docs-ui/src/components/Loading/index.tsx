@@ -1,13 +1,17 @@
 import React from "react"
 import clsx from "clsx"
 
-type LoadingProps = {
+export type LoadingProps = {
   className?: string
   barClassName?: string
   count?: number
 }
 
-const Loading = ({ className, count = 6, barClassName }: LoadingProps) => {
+export const Loading = ({
+  className,
+  count = 6,
+  barClassName,
+}: LoadingProps) => {
   const getLoadingBars = () => {
     const bars = []
     for (let i = 0; i < count; i++) {
@@ -37,5 +41,3 @@ const Loading = ({ className, count = 6, barClassName }: LoadingProps) => {
     </span>
   )
 }
-
-export default Loading

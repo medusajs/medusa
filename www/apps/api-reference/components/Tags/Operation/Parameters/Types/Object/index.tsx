@@ -4,8 +4,7 @@ import dynamic from "next/dynamic"
 import type { TagOperationParametersProps } from "../.."
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import checkRequired from "@/utils/check-required"
-import Loading from "@/components/Loading"
-import type { DetailsProps } from "docs-ui"
+import { Loading, type DetailsProps } from "docs-ui"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),

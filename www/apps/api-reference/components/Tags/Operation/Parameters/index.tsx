@@ -6,7 +6,7 @@ import type { TagOperationParametersArrayProps } from "./Types/Array"
 import type { TagOperationParametersUnionProps } from "./Types/Union"
 import type { TagOperationParamatersOneOfProps } from "./Types/OneOf"
 import checkRequired from "@/utils/check-required"
-import Loading from "@/components/Loading"
+import { Loading } from "docs-ui"
 
 const TagOperationParametersObject = dynamic<TagOperationParametersObjectProps>(
   async () => import("./Types/Object"),
