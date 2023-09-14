@@ -144,8 +144,6 @@ export default async (req, res) => {
     )
   }
 
-  let product
-
   if (isWorkflowEnabled && !!productModuleService) {
     const updateProductWorkflow = updateProducts(req.scope)
 
@@ -174,9 +172,8 @@ export default async (req, res) => {
         manager: manager,
       },
     })
-    product = result[0]
   } else {
-    product = await manager.transaction(async (transactionManager) => {
+    await manager.transaction(async (transactionManager) => {
       const productServiceTx =
         productService.withTransaction(transactionManager)
 
@@ -296,16 +293,14 @@ export default async (req, res) => {
     })
   }
 
-  const rawProduct = await productService.retrieve(product.id, {
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
 
-  const [productWithPrices] = await pricingService.setProductPrices([
-    rawProduct,
-  ])
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
-  res.json({ product: productWithPrices })
+  res.json({ product })
 }
 
 class ProductVariantOptionReq {
