@@ -15,6 +15,7 @@ import {
   reshapeAttachSalesChannelsData,
   reshapeDetachSalesChannelsData,
 } from "../../handlers/middlewares/update-prodcut-reshape-sales-channes-data"
+import { detachSalesChannelFromProducts } from "../../handlers/product"
 
 export enum UpdateProductsActions {
   prepare = "prepare",
@@ -141,6 +142,7 @@ const handlers = new Map([
             },
             {
               from: UpdateProductsActions.updateProducts,
+              alias: detachSalesChannelFromProducts.aliases.products,
             },
           ],
         },

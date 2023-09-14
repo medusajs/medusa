@@ -43,7 +43,7 @@ describe("UpdateProduct workflow", function () {
 
     workflow.appendAction(
       "fail_step",
-      UpdateProductsActions.attachInventoryItems,
+      UpdateProductsActions.detachInventoryItems,
       {
         invoke: pipe({}, async function failStep() {
           throw new Error(`Failed to update products`)
@@ -89,6 +89,7 @@ describe("UpdateProduct workflow", function () {
       },
     ])
 
+    console.log(transaction.errors)
     expect(transaction.getState()).toEqual("reverted")
 
     let [product] = await Handlers.ProductHandlers.listProducts({
