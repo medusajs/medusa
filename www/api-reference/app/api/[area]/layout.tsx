@@ -47,9 +47,9 @@ export default function RootLayout({
         )}
       >
         <AnalyticsProvider>
-          <ModalProvider>
-            <ColorModeProvider>
-              <PageLoadingProvider>
+          <PageLoadingProvider>
+            <ModalProvider>
+              <ColorModeProvider>
                 <BaseSpecsProvider>
                   <SidebarProvider>
                     <NavbarProvider>
@@ -71,9 +71,9 @@ export default function RootLayout({
                     </NavbarProvider>
                   </SidebarProvider>
                 </BaseSpecsProvider>
-              </PageLoadingProvider>
-            </ColorModeProvider>
-          </ModalProvider>
+              </ColorModeProvider>
+            </ModalProvider>
+          </PageLoadingProvider>
         </AnalyticsProvider>
       </body>
     </html>
