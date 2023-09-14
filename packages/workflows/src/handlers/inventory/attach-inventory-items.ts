@@ -18,7 +18,7 @@ export async function attachInventoryItems({
     .withTransaction(manager)
 
   if (!data?.inventoryItems?.length) {
-    return
+    return []
   }
 
   const inventoryData = data.inventoryItems.map(
@@ -27,8 +27,9 @@ export async function attachInventoryItems({
       inventoryItemId: inventoryItem.id,
     })
   )
+  await productVariantInventoryService.attachInventoryItem(inventoryData)
 
-  return await productVariantInventoryService.attachInventoryItem(inventoryData)
+  return data.inventoryItems
 }
 
 attachInventoryItems.aliases = {

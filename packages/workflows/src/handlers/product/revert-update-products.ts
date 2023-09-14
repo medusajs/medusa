@@ -1,10 +1,17 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
-import { ProductDTO, ProductTypes, UpdateProductDTO } from "@medusajs/types"
+import {
+  ProductDTO,
+  ProductTypes,
+  ProductVariantDTO,
+  UpdateProductDTO,
+} from "@medusajs/types"
 
 import { WorkflowArguments } from "../../helper"
 import { UpdateProductsPreparedData } from "./update-products-prepare-data"
 
-type HandlerInput = UpdateProductsPreparedData
+type HandlerInput = UpdateProductsPreparedData & {
+  variants: ProductVariantDTO[]
+}
 
 export async function revertUpdateProducts({
   container,
@@ -14,7 +21,12 @@ export async function revertUpdateProducts({
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
-  console.log("reverting", data.originalProducts)
+  // restore variants that have been soft deleted during update products step
+  await productModuleService.restoreVariants(data.variants.map((v) => v.id))
+  data.originalProducts.forEach((product) => {
+    // @ts-ignore
+    product.variants = product.variants.map((v) => ({ id: v.id }))
+  })
 
   return await productModuleService.update(
     data.originalProducts as unknown as UpdateProductDTO[]
@@ -23,4 +35,5 @@ export async function revertUpdateProducts({
 
 revertUpdateProducts.aliases = {
   preparedData: "preparedData",
+  variants: "variants",
 }

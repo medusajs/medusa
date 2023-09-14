@@ -31,6 +31,7 @@ import { FindConfig } from "../common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { ModuleJoinerConfig } from "../modules-sdk"
 import { Context } from "../shared-context"
+import { InjectManager, MedusaContext } from "@medusajs/utils"
 
 export interface IProductModuleService {
   __joinerConfig(): ModuleJoinerConfig
@@ -163,6 +164,8 @@ export interface IProductModuleService {
     config?: FindConfig<ProductVariantDTO>,
     sharedContext?: Context
   ): Promise<[ProductVariantDTO[], number]>
+
+  restoreVariants(ids: string[], sharedContext?: Context): Promise<void>
 
   retrieveCollection(
     productCollectionId: string,

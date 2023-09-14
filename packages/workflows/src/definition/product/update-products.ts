@@ -57,7 +57,6 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
           action: UpdateProductsActions.detachInventoryItems,
           next: {
             action: UpdateProductsActions.removeInventoryItems,
-            noCompensation: true, //  we cannot "create" as a compensation, but we need to restore which will be done in the handler
           },
         },
       ],
@@ -102,11 +101,18 @@ const handlers = new Map([
       compensate: pipe(
         {
           merge: true,
-          invoke: {
-            from: UpdateProductsActions.prepare,
-            alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
-          },
+          invoke: [
+            {
+              from: UpdateProductsActions.prepare,
+              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+            },
+            {
+              from: UpdateProductsActions.updateProducts,
+              alias: updateProductsExtractDeletedVariants.aliases.products,
+            },
+          ],
         },
+        updateProductsExtractDeletedVariants,
         ProductHandlers.revertUpdateProducts
       ),
     },
@@ -120,7 +126,7 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+              alias: reshapeAttachSalesChannelsData.aliases.preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
@@ -138,7 +144,7 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+              alias: reshapeAttachSalesChannelsData.aliases.preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
@@ -160,7 +166,7 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+              alias: reshapeDetachSalesChannelsData.aliases.preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
@@ -178,7 +184,7 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: ProductHandlers.revertUpdateProducts.aliases.preparedData,
+              alias: reshapeDetachSalesChannelsData.aliases.preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
@@ -313,6 +319,19 @@ const handlers = new Map([
           },
         },
         InventoryHandlers.removeInventoryItems
+      ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductsActions.removeInventoryItems,
+              alias:
+                InventoryHandlers.restoreInventoryItems.aliases.inventoryItems,
+            },
+          ],
+        },
+        InventoryHandlers.restoreInventoryItems
       ),
     },
   ],

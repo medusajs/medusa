@@ -990,7 +990,7 @@ export default class ProductModuleService<
 
     if (productVariantIdsToDelete.length) {
       promises.push(
-        this.productVariantService_.delete(
+        this.productVariantService_.softDelete(
           productVariantIdsToDelete,
           sharedContext
         )
@@ -1000,6 +1000,14 @@ export default class ProductModuleService<
     await Promise.all(promises)
 
     return products
+  }
+
+  @InjectManager("baseRepository_")
+  async restoreVariants(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productVariantService_.restore(ids, sharedContext)
   }
 
   protected async upsertAndAssignImagesToProductData(
