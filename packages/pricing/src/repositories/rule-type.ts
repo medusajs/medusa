@@ -74,13 +74,13 @@ export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   ): Promise<RuleType[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const moneyAmounts = data.map((ruleTypeData) => {
+    const ruleTypes = data.map((ruleTypeData) => {
       return manager.create(RuleType, ruleTypeData)
     })
 
-    manager.persistAndFlush(moneyAmounts)
+    manager.persistAndFlush(ruleTypes)
 
-    return moneyAmounts
+    return ruleTypes
   }
 
   async update(
@@ -88,40 +88,40 @@ export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
     context: Context = {}
   ): Promise<RuleType[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const moneyAmountIds = data.map((moneyAmountData) => moneyAmountData.id)
-    const existingMoneyAmounts = await this.find(
+    const ruleTypeIds = data.map((ruleType) => ruleType.id)
+    const existingRuleTypes = await this.find(
       {
         where: {
           id: {
-            $in: moneyAmountIds,
+            $in: ruleTypeIds,
           },
         },
       },
       context
     )
 
-    const existingMoneyAmountMap = new Map(
-      existingMoneyAmounts.map<[string, RuleType]>((moneyAmount) => [
-        moneyAmount.id,
-        moneyAmount,
+    const existingRuleTypesMap = new Map(
+      existingRuleTypes.map<[string, RuleType]>((ruleType) => [
+        ruleType.id,
+        ruleType,
       ])
     )
 
-    const moneyAmounts = data.map((moneyAmountData) => {
-      const existingMoneyAmount = existingMoneyAmountMap.get(moneyAmountData.id)
+    const ruleTypes = data.map((ruleTypeData) => {
+      const existingRuleType = existingRuleTypesMap.get(ruleTypeData.id)
 
-      if (!existingMoneyAmount) {
+      if (!existingRuleType) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `RuleType with id "${moneyAmountData.id}" not found`
+          `RuleType with id "${ruleTypeData.id}" not found`
         )
       }
 
-      return manager.assign(existingMoneyAmount, moneyAmountData)
+      return manager.assign(existingRuleType, ruleTypeData)
     })
 
-    manager.persist(moneyAmounts)
+    manager.persist(ruleTypes)
 
-    return moneyAmounts
+    return ruleTypes
   }
 }
