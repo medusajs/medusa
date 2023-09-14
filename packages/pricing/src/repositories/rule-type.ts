@@ -78,7 +78,7 @@ export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
       return manager.create(RuleType, ruleTypeData)
     })
 
-    manager.persistAndFlush(ruleTypes)
+    manager.persist(ruleTypes)
 
     return ruleTypes
   }
