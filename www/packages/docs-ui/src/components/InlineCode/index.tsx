@@ -1,12 +1,15 @@
 "use client"
 
+import React from "react"
 import clsx from "clsx"
 import { CopyButton } from "docs-ui"
 
-export type InlineCodeProps = React.ComponentProps<"code">
+export type InlineCodeProps = {
+  forceInline?: boolean
+} & React.ComponentProps<"code">
 
-const InlineCode = (props: InlineCodeProps) => {
-  const isInline = typeof props.children === "string"
+export const InlineCode = (props: InlineCodeProps) => {
+  const isInline = props.forceInline || typeof props.children === "string"
   return (
     <>
       {!isInline && <code {...props} />}
@@ -34,5 +37,3 @@ const InlineCode = (props: InlineCodeProps) => {
     </>
   )
 }
-
-export default InlineCode

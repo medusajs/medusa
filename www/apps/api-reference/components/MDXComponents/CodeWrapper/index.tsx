@@ -1,5 +1,5 @@
 import CodeBlock from "@/components/CodeBlock"
-import InlineCode from "../../InlineCode"
+import { InlineCode } from "docs-ui"
 
 type CodeWrapperProps = {
   className?: string

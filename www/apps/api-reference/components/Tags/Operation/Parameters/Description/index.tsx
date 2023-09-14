@@ -1,14 +1,13 @@
-import type { InlineCodeProps } from "@/components/InlineCode"
 import MDXContentClient from "@/components/MDXContent/Client"
 import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import capitalize from "../../../../../utils/capitalize"
 import { Fragment } from "react"
-import { NextLink } from "docs-ui"
+import { NextLink, type InlineCodeProps } from "docs-ui"
 
 const InlineCode = dynamic<InlineCodeProps>(
-  async () => import("../../../../InlineCode")
+  async () => (await import("docs-ui")).InlineCode
 ) as React.FC<InlineCodeProps>
 
 type TagOperationParametersDescriptionProps = {
