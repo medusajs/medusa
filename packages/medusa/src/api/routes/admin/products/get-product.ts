@@ -1,4 +1,6 @@
 import { PricingService, ProductService } from "../../../../services"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { defaultAdminProductFields } from "./index"
 
 /**
  * @oas [get] /admin/products/{id}
@@ -56,8 +58,18 @@ export default async (req, res) => {
 
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  let rawProduct
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    rawProduct = await getProductWithIsolatedProductModule(
+      req,
+      id,
+      req.retrieveConfig
+    )
+  } else {
+    rawProduct = await productService.retrieve(id, req.retrieveConfig)
+  }
 
   // We only set prices if variants.prices are requested
   const shouldSetPricing = ["variants", "variants.prices"].every((relation) =>
@@ -71,4 +83,124 @@ export default async (req, res) => {
   }
 
   res.json({ product })
+}
+
+async function getProductWithIsolatedProductModule(req, id, retrieveConfig) {
+  // TODO: Add support for fields/expands
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id }
+
+  const query = `
+      query ($id: String!) {
+        product (id: $id) {
+          ${defaultAdminProductFields.join("\n")}
+          
+          images {
+            id
+            created_at
+            updated_at
+            deleted_at
+            url
+            metadata
+          }
+          
+          tags {
+            id
+            created_at
+            updated_at
+            deleted_at
+            value
+          }
+          
+          type {
+            id
+            created_at
+            updated_at
+            deleted_at
+            value
+          }
+          
+          collection {
+            title
+            handle
+            id
+            created_at
+            updated_at
+            deleted_at
+          }
+          
+          options {
+            id
+            created_at
+            updated_at
+            deleted_at
+            title
+            product_id
+            metadata
+            values {
+              id
+              created_at
+              updated_at
+              deleted_at
+              value
+              option_id
+              variant_id
+              metadata
+            }
+          }
+          
+          variants {
+            id
+            created_at
+            updated_at
+            deleted_at
+            title
+            product_id
+            sku
+            barcode
+            ean
+            upc
+            variant_rank
+            inventory_quantity
+            allow_backorder
+            manage_inventory
+            hs_code
+            origin_country
+            mid_code
+            material
+            weight
+            length
+            height
+            width
+            metadata
+            options {
+              id
+              created_at
+              updated_at
+              deleted_at
+              value
+              option_id
+              variant_id
+              metadata
+            }
+          }
+          
+          profile {
+            id
+            created_at
+            updated_at
+            deleted_at
+            name
+            type
+          }
+        } 
+      }
+    `
+
+  const [product] = await remoteQuery(query, variables)
+
+  product.profile_id = product.profile?.id
+
+  return product
 }

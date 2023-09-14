@@ -166,7 +166,6 @@ async function getProductWithIsolatedProductModule(req, id: string) {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
   const variables = { id }
-  const commonProperties = []
 
   const query = `
       query ($id: String!) {
