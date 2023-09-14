@@ -19,8 +19,8 @@ class RuleType {
   @Property({ columnType: "text" })
   name: string
 
-  @Property({ columnType: "text", index: "IDX_rule_type_key_value" })
-  key_value: string
+  @Property({ columnType: "text", index: "IDX_rule_type_rule_attribute" })
+  rule_attribute: string
 
   @Property({ columnType: "integer", default: 0 })
   default_priority: number

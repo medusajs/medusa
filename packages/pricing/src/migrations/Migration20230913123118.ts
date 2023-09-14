@@ -31,11 +31,11 @@ export class Migration20230913123118 extends Migration {
     )
 
     this.addSql(
-      'create table "rule_type" ("id" text not null, "name" text not null, "key_value" text not null, "default_priority" integer not null default 0, constraint "rule_type_pkey" primary key ("id"));'
+      'create table "rule_type" ("id" text not null, "name" text not null, "rule_attribute" text not null, "default_priority" integer not null default 0, constraint "rule_type_pkey" primary key ("id"));'
     )
 
     this.addSql(
-      'create index "IDX_rule_type_key_value" on "rule_type" ("key_value");'
+      'create index "IDX_rule_type_rule_attribute" on "rule_type" ("rule_attribute");'
     )
 
     this.addSql(
