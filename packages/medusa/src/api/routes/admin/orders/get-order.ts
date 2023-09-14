@@ -273,17 +273,9 @@ async function getOrder(req, id: string, context: TotalsContext) {
       "shipped_at",
       "canceled_at",
       "metadata",
-      "idempotency_key",
     ],
     tracking_links: {
-      fields: [
-        "id",
-        "url",
-        "tracking_number",
-        "fulfillment_id",
-        "idempotency_key",
-        "metadata",
-      ],
+      fields: ["id", "url", "tracking_number", "fulfillment_id", "metadata"],
     },
     items: {
       fields: ["fulfillment_id", "item_id", "quantity"],
@@ -292,6 +284,68 @@ async function getOrder(req, id: string, context: TotalsContext) {
     provider: {
       fields: ["id", "is_installed"],
     },
+  }
+
+  const expandedGiftCard = {
+    fields: [
+      "code",
+      "value",
+      "balance",
+      "is_disabled",
+      "ends_at",
+      "tax_rate",
+      "metadata",
+    ],
+  }
+
+  const expandedPayment = {
+    fields: [
+      "id",
+      "created_at",
+      "updated_at",
+      "swap_id",
+      "cart_id",
+      "order_id",
+      "amount",
+      "currency_code",
+      "amount_refunded",
+      "provider_id",
+      "data,",
+      "captured_at",
+      "canceled_at",
+      "metadata",
+    ],
+  }
+
+  const expandedReturn = {
+    fields: [
+      "id",
+      "status",
+      "location_id",
+      "shipping_data",
+      "refund_amount",
+      "received_at",
+      "no_notification",
+      "metadata",
+    ],
+    items: {
+      fields: [
+        "return_id",
+        "item_id",
+        "quantity",
+        "is_requested",
+        "requested_quantity",
+        "received_quantity",
+        "reason_id",
+        "note",
+        "metadata",
+      ],
+      item: expandedItems,
+      reason: {
+        fields: ["id", "value", "label", "description", "metadata"],
+      },
+    },
+    shipping_method: expandedShippingMethods,
   }
 
   const query = {
@@ -352,11 +406,9 @@ async function getOrder(req, id: string, context: TotalsContext) {
           "id",
           "payment_status",
           "fulfillment_status",
-          "additional_items",
           "reason",
           "type",
           "order_id",
-          "return_order",
           "shipping_address_id",
           "refund_amount",
           "canceled_at",
@@ -364,10 +416,10 @@ async function getOrder(req, id: string, context: TotalsContext) {
           "updated_at",
           "no_notification",
           "metadata",
-          "idempotency_key",
           "created_at",
           "updated_at",
         ],
+        additional_items: expandedItems,
         shipping_address: expandedShippingAddress,
         shipping_methods: expandedShippingMethods,
         claim_items: {
@@ -382,6 +434,7 @@ async function getOrder(req, id: string, context: TotalsContext) {
           },
         },
         fulfillments: expandedFullfilments,
+        return_order: expandedReturn,
       },
       customer: {
         fields: [
@@ -414,33 +467,15 @@ async function getOrder(req, id: string, context: TotalsContext) {
       },
       fulfillments: expandedFullfilments,
       gift_card_transactions: {
-        fields: [],
+        fields: ["id", "amount", "created_at", "is_taxable", "tax_rate"],
+        gift_card: expandedGiftCard,
       },
-      gift_cards: {
-        fields: [],
-      },
+      gift_cards: expandedGiftCard,
       items: expandedItems,
-      payments: {
-        fields: [
-          "id",
-          "created_at",
-          "updated_at",
-          "swap_id",
-          "cart_id",
-          "order_id",
-          "amount",
-          "currency_code",
-          "amount_refunded",
-          "provider_id",
-          "data,",
-          "captured_at",
-          "canceled_at",
-          "metadata",
-          "idempotency_key",
-        ],
-      },
+      payments: expandedPayment,
       refunds: {
-        fields: [],
+        fields: ["amount", "note", "reason", "metadata"],
+        payment: expandedPayment,
       },
       region: {
         fields: [
@@ -458,9 +493,7 @@ async function getOrder(req, id: string, context: TotalsContext) {
           "metadata",
         ],
       },
-      returns: {
-        fields: [],
-      },
+      returns: expandedReturn,
       sales_channel: {
         fields: [
           "id",
@@ -476,7 +509,23 @@ async function getOrder(req, id: string, context: TotalsContext) {
       shipping_address: expandedShippingAddress,
       shipping_methods: expandedShippingMethods,
       swaps: {
-        fields: [],
+        fields: [
+          "fulfillment_status",
+          "payment_status",
+          "difference_due",
+          "shipping_address_id",
+          "cart_id",
+          "confirmed_at",
+          "canceled_at",
+          "no_notification",
+          "allow_backorder",
+          "metadata",
+        ],
+        additional_items: expandedItems,
+        fulfillments: expandedFullfilments,
+        payment: expandedPayment,
+        shipping_address: expandedShippingAddress,
+        shipping_methods: expandedShippingMethods,
       },
     },
   }
