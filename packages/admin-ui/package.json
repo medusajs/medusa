@@ -121,6 +121,7 @@
     "@types/react-datepicker": "^4.10.0",
     "@types/react-dom": "^18.0.10",
     "@types/react-table": "^7.7.9",
+    "copy-webpack-plugin": "^11.0.0",
     "duplicate-dependencies-webpack-plugin": "^1.0.2",
     "i18next-parser": "^8.0.0",
     "jest": "25.5.4",
