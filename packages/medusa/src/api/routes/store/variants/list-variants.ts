@@ -8,10 +8,8 @@ import {
 } from "../../../../services"
 
 import { Type } from "class-transformer"
-import { omit } from "lodash"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 
@@ -128,34 +126,21 @@ import { IsType } from "../../../../utils/validators/is-type"
  */
 export default async (req, res) => {
   const validated = await validator(StoreGetVariantsParams, req.query)
-  const { expand, offset, limit } = validated
 
   const customer_id = req.user?.customer_id
 
-  const listConfig = {
-    select: req.listConfig.select,
-    relations: req.listConfig.relations,
-    skip: offset,
-    take: limit,
-  }
-
-  const filterableFields: FilterableProductVariantProps = omit(validated, [
-    "ids",
-    "limit",
-    "offset",
-    "expand",
-    "fields",
-    "cart_id",
-    "region_id",
-    "currency_code",
-    "sales_channel_id",
-  ])
+  let {
+    cart_id,
+    region_id,
+    currency_code,
+    sales_channel_id,
+    ids,
+    ...filterableFields
+  } = req.filterableFields
 
   if (validated.ids) {
-    filterableFields.id = validated.ids.split(",")
+    filterableFields["id"] = validated.ids.split(",")
   }
-
-  let sales_channel_id = validated.sales_channel_id
 
   if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
     sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
@@ -170,7 +155,10 @@ export default async (req, res) => {
     req.scope.resolve("productVariantInventoryService")
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  const rawVariants = await variantService.list(filterableFields, listConfig)
+  const rawVariants = await variantService.list(
+    filterableFields,
+    req.listConfig
+  )
 
   let regionId = validated.region_id
   let currencyCode = validated.currency_code
