@@ -27,7 +27,7 @@ class RuleType {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "rt")
+    this.id = generateEntityId(this.id, "rul-typ")
   }
 }
 
