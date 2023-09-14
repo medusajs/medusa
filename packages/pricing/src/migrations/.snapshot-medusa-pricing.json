@@ -293,8 +293,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "key_value": {
-          "name": "key_value",
+        "rule_attribute": {
+          "name": "rule_attribute",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -318,10 +318,10 @@
       "indexes": [
         {
           "columnNames": [
-            "key_value"
+            "rule_attribute"
           ],
           "composite": false,
-          "keyName": "IDX_rule_type_key_value",
+          "keyName": "IDX_rule_type_rule_attribute",
           "primary": false,
           "unique": false
         },

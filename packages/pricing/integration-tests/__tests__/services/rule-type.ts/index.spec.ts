@@ -238,7 +238,7 @@ describe("RuleType Service", () => {
       await service.create([
         {
           name: "Test Rule",
-          key_value: 'region_id',
+          rule_attribute: 'region_id',
         },
       ])
 
@@ -249,7 +249,7 @@ describe("RuleType Service", () => {
       expect(ruleType).toEqual(
         expect.objectContaining({
           name: "Test Rule",
-          key_value: 'region_id',
+          rule_attribute: 'region_id',
         })
       )
     })

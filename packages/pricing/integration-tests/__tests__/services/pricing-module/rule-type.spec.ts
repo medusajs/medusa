@@ -233,7 +233,7 @@ describe("PricingModuleService ruleType", () => {
       await service.createRuleTypes([
         {
           name: "Test Rule",
-          key_value: "region_id",
+          rule_attribute: "region_id",
         },
       ])
 
@@ -244,7 +244,7 @@ describe("PricingModuleService ruleType", () => {
       expect(ruleType).toEqual(
         expect.objectContaining({
           name: "Test Rule",
-          key_value: "region_id",
+          rule_attribute: "region_id",
         })
       )
     })
