@@ -2,11 +2,11 @@ import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import { useState } from "react"
-import Details from "@/components/Details"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import type { TagOperationParametersProps } from "../.."
 import Loading from "@/components/Loading"
+import { Details } from "docs-ui"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),
@@ -104,13 +104,15 @@ const TagOperationParamatersOneOf = ({
     <>
       {isNested && (
         <Details
-          summaryContent={
-            <TagOperationParametersDefault
-              schema={schema}
-              name={schema.parameterName || schema.title || ""}
-              isRequired={isRequired}
-              expandable={true}
-            />
+          summaryElm={
+            <summary className="cursor-pointer">
+              <TagOperationParametersDefault
+                schema={schema}
+                name={schema.parameterName || schema.title || ""}
+                isRequired={isRequired}
+                expandable={true}
+              />
+            </summary>
           }
           className="!border-y-0"
         >

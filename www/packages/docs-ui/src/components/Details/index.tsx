@@ -1,7 +1,10 @@
-import { Suspense, cloneElement, useRef, useState } from "react"
-import Loading from "../Loading"
+"use client"
+
+import React, { Suspense, cloneElement, useRef, useState } from "react"
+import Loading from "@/components/Loading"
 import clsx from "clsx"
 import { CSSTransition } from "react-transition-group"
+import { DetailsSummary } from "./Summary"
 
 export type DetailsProps = {
   openInitial?: boolean
@@ -9,7 +12,7 @@ export type DetailsProps = {
   summaryElm?: React.ReactNode
 } & React.HTMLAttributes<HTMLDetailsElement>
 
-const Details = ({
+export const Details = ({
   openInitial = false,
   summaryContent,
   summaryElm,
@@ -45,15 +48,17 @@ const Details = ({
         event.stopPropagation()
       }}
       className={clsx(
-        "border-medusa-border-base dark:border-medusa-border-base-dark border-y",
-        "overflow-hidden",
+        "border-medusa-border-base dark:border-medusa-border-base-dark border-y border-solid border-x-0",
+        "overflow-hidden [&>summary]:relative [&>summary]:z-[398]",
         props.className
       )}
     >
       {summaryContent && (
-        <summary onClick={handleToggle} className="cursor-pointer">
-          {summaryContent}
-        </summary>
+        <DetailsSummary
+          onClick={handleToggle}
+          className="cursor-pointer"
+          title={summaryContent}
+        />
       )}
       {summaryElm &&
         cloneElement(summaryElm as React.ReactElement, {
@@ -86,5 +91,3 @@ const Details = ({
     </details>
   )
 }
-
-export default Details

@@ -1,3 +1,5 @@
+import plugin from "tailwindcss/plugin"
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [require("@medusajs/ui-preset")],
@@ -733,6 +735,20 @@ module.exports = {
           },
         ],
       },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
+        fadeOut: {
+          from: { opacity: 1 },
+          to: { opacity: 0 },
+        },
+      },
+      animation: {
+        fadeIn: "fadeIn 500ms",
+        fadeOut: "fadeOut 500ms",
+      },
     },
     fontFamily: {
       base: [
@@ -807,4 +823,22 @@ module.exports = {
       "toc-dark": "url('/img/side-menu.svg')",
     },
   },
+  plugins: [
+    plugin(({ addVariant, addUtilities, addComponents }) => {
+      addVariant("search-cancel", "&::-webkit-search-cancel-button")
+      addUtilities({
+        ".animation-fill-forwards": {
+          animationFillMode: "forwards",
+        },
+        "animate-fast": {
+          animationDuration: "300ms",
+        },
+      })
+      addComponents({
+        ".btn-secondary-icon": {
+          padding: "4px !important",
+        },
+      })
+    }),
+  ],
 }

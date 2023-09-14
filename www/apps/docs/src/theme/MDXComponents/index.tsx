@@ -3,9 +3,8 @@ import MDXComponents from "@theme-original/MDXComponents"
 import MDXInlineCode from "@site/src/components/MDXComponents/InlineCode"
 import CloudinaryImage from "@site/src/components/CloudinaryImage"
 import MDXDetails from "./Details"
-import MDXSummary from "./Summary"
 import MDXA from "./A"
-import Kbd from "./Kbd"
+import { Kbd, DetailsSummary } from "docs-ui"
 
 export default {
   // Re-use the default mapping
@@ -13,7 +12,7 @@ export default {
   inlineCode: MDXInlineCode,
   img: CloudinaryImage,
   details: MDXDetails,
-  summary: MDXSummary,
+  summary: DetailsSummary,
   a: MDXA,
   kbd: Kbd,
 }

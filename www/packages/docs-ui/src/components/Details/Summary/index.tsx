@@ -1,17 +1,18 @@
+import React from "react"
 import clsx from "clsx"
-import IconPlusMini from "../../Icons/PlusMini"
+import { PlusMini } from "@medusajs/icons"
 
-type DetailsSummaryProps = {
-  title: string
+export type DetailsSummaryProps = {
+  title: React.ReactNode
   subtitle?: string
   badge?: React.ReactNode
   expandable?: boolean
   open?: boolean
   className?: string
   titleClassName?: string
-} & React.HTMLAttributes<HTMLElement>
+} & Omit<React.HTMLAttributes<HTMLElement>, "title">
 
-const DetailsSummary = ({
+export const DetailsSummary = ({
   title,
   subtitle,
   badge,
@@ -52,7 +53,7 @@ const DetailsSummary = ({
         <span className="flex gap-0.5">
           {badge}
           {expandable && (
-            <IconPlusMini
+            <PlusMini
               className={clsx("transition-transform", open && "rotate-45")}
             />
           )}
@@ -61,5 +62,3 @@ const DetailsSummary = ({
     </summary>
   )
 }
-
-export default DetailsSummary

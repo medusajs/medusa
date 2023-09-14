@@ -3,10 +3,11 @@ import Translate, { translate } from "@docusaurus/Translate"
 import { PageMetadata } from "@docusaurus/theme-common"
 import Layout from "@theme/Layout"
 import useBaseUrl from "@docusaurus/useBaseUrl"
+import DocsProviders from "../providers/DocsProviders"
 
 export default function NotFound(): JSX.Element {
   return (
-    <>
+    <DocsProviders>
       <PageMetadata
         title={translate({
           id: "theme.NotFound.title",
@@ -80,6 +81,6 @@ export default function NotFound(): JSX.Element {
           </div>
         </main>
       </Layout>
-    </>
+    </DocsProviders>
   )
 }

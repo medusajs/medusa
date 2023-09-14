@@ -5,9 +5,8 @@ import { MouseEvent, useMemo } from "react"
 import { useSearch } from "../../../providers/Search"
 import { useWindowSize } from "@docusaurus/theme-common"
 import IconMagnifyingGlass from "../../../theme/Icon/MagnifyingGlass"
-import Kbd from "../../../theme/MDXComponents/Kbd"
 import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
-import { Button } from "docs-ui"
+import { Button, Kbd } from "docs-ui"
 
 const SearchModalOpener = () => {
   const { setIsOpen } = useSearch()

@@ -14,10 +14,9 @@ import { findNextSibling, findPrevSibling } from "../../../utils/dom-utils"
 import IconMagnifyingGlass from "../../../theme/Icon/MagnifyingGlass"
 import IconXMark from "../../../theme/Icon/XMark"
 import SelectBadge from "../../Select/Badge"
-import Kbd from "../../../theme/MDXComponents/Kbd"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import { ThemeConfig } from "@medusajs/docs"
-import { Button } from "docs-ui"
+import { Button, Kbd } from "docs-ui"
 
 const SearchModal = () => {
   const modalRef = useRef<HTMLDialogElement | null>(null)

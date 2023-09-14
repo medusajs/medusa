@@ -29,12 +29,14 @@
     "build": "yarn clean && yarn build:js:cjs && yarn build:js:esm",
     "build:js:cjs": "tsc --project tsconfig.cjs.json && tsc-alias -p tsconfig.cjs.json",
     "build:js:esm": "tsc --project tsconfig.esm.json && tsc-alias -p tsconfig.esm.json",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "dev": "yarn build:js:cjs && yarn build:js:esm"
   },
   "devDependencies": {
     "@types/react": "^17.0.1",
     "@types/react-dom": "^17.0.1",
     "clsx": "^2.0.0",
+    "cpy-cli": "^5.0.0",
     "eslint-config-docs": "*",
     "next": "latest",
     "react": "^17.0.1",
@@ -54,10 +56,12 @@
     "react-dom": ">=17"
   },
   "dependencies": {
+    "@medusajs/icons": "^1.0.0",
     "@medusajs/ui": "^1.0.0",
     "@octokit/request": "^8.1.1",
     "@segment/analytics-next": "^1.55.0",
     "react-tooltip": "^5.21.3",
+    "react-transition-group": "^4.4.5",
     "react-uuid": "^2.0.0"
   }
 }

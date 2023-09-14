@@ -3,9 +3,9 @@ import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
 import type { TagOperationParametersProps } from "../.."
 import type { TagsOperationParametersNestedProps } from "../../Nested"
-import type { DetailsProps } from "@/components/Details"
 import checkRequired from "@/utils/check-required"
 import Loading from "@/components/Loading"
+import type { DetailsProps } from "docs-ui"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),
@@ -23,7 +23,7 @@ const TagsOperationParametersNested =
   ) as React.FC<TagsOperationParametersNestedProps>
 
 const Details = dynamic<DetailsProps>(
-  async () => import("../../../../../Details"),
+  async () => (await import("docs-ui")).Details,
   {
     loading: () => <Loading />,
   }
@@ -50,13 +50,18 @@ const TagOperationParametersObject = ({
   }
 
   const getPropertyDescriptionElm = (expandable = false) => {
-    return (
+    const content = (
       <TagOperationParametersDefault
         name={name}
         schema={schema}
         isRequired={isRequired}
         expandable={expandable}
       />
+    )
+    return expandable ? (
+      <summary className="cursor-pointer">{content}</summary>
+    ) : (
+      <>{content}</>
     )
   }
 
@@ -120,7 +125,7 @@ const TagOperationParametersObject = ({
 
   return (
     <Details
-      summaryContent={getPropertyDescriptionElm(true)}
+      summaryElm={getPropertyDescriptionElm(true)}
       className="!border-y-0"
     >
       {getPropertyParameterElms(true)}

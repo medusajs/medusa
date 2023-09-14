@@ -3,10 +3,9 @@
   "compilerOptions": {
     "paths": {
       "docs-ui": ["./src/index.ts"],
-      "@/components/*": ["./src/components/*"],
-      "@/icons": ["./src/icons/index.ts"],
-      "@/icons/*": ["./src/icons/*"],
-      "@/providers/*": ["./src/providers/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "outDir": "dist",
     "tsBuildInfoFile": "./dist/.tsbuildinfo-client",

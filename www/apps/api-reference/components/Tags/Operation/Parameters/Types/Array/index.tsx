@@ -2,9 +2,9 @@ import type { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagOperationParametersProps } from "../.."
-import Details from "@/components/Details"
 import TagsOperationParametersNested from "../../Nested"
 import Loading from "@/components/Loading"
+import { Details } from "docs-ui"
 
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
@@ -58,13 +58,15 @@ const TagOperationParametersArray = ({
 
   return (
     <Details
-      summaryContent={
-        <TagOperationParametersDefault
-          name={name}
-          schema={schema}
-          isRequired={isRequired}
-          expandable={true}
-        />
+      summaryElm={
+        <summary className="cursor-pointer">
+          <TagOperationParametersDefault
+            name={name}
+            schema={schema}
+            isRequired={isRequired}
+            expandable={true}
+          />
+        </summary>
       }
       className="!border-y-0"
     >

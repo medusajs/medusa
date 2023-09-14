@@ -1,7 +1,7 @@
 import React, { type ComponentProps, type ReactElement } from "react"
 import type { Props } from "@theme/MDXComponents/Details"
-import { MDXSummaryProps } from "./Summary"
 import Details, { DetailsProps } from "../Details"
+import { type DetailsSummaryProps } from "docs-ui"
 
 type MDXDetailsProps = Props & DetailsProps
 
@@ -13,7 +13,7 @@ export default function MDXDetails(props: MDXDetailsProps): JSX.Element {
     (item): item is ReactElement<ComponentProps<"summary">> =>
       React.isValidElement(item) &&
       (item.props as { mdxType: string } | null)?.mdxType === "summary"
-  ) as React.ReactElement<MDXSummaryProps>
+  ) as React.ReactElement<DetailsSummaryProps>
   const children = <>{items.filter((item) => item !== summary)}</>
 
   return (

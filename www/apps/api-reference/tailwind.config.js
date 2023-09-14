@@ -1,5 +1,4 @@
 import coreConfig from "tailwind"
-import plugin from "tailwindcss/plugin"
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -26,9 +25,4 @@ module.exports = {
       "magnifying-glass-dark": "url('/images/magnifying-glass-dark.svg')",
     },
   },
-  plugins: [
-    plugin(({ addVariant }) => {
-      addVariant("search-cancel", "&::-webkit-search-cancel-button")
-    }),
-  ],
 }

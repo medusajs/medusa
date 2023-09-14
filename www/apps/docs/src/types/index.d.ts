@@ -177,6 +177,9 @@ declare module "@medusajs/docs" {
         filters: string[]
       }[]
     }
+    analytics?: {
+      apiKey: string
+    }
   } & DocusaurusThemeConfig
 
   export declare type MedusaDocusaurusConfig = {

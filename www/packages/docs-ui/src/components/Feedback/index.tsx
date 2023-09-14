@@ -8,6 +8,8 @@ import clsx from "clsx"
 import { TextArea } from "@/components/TextArea"
 import { Label } from "@/components/Label"
 import { Button } from "docs-ui"
+import { Details } from "@/components/Details"
+import { InputText } from "@/components/Input/Text"
 
 export type FeedbackProps = {
   event: string
@@ -125,8 +127,8 @@ export const Feedback = ({
             nodeRef.current?.addEventListener("transitionend", done, false)
           }}
           classNames={{
-            enter: "animate-fadeIn animate-fill-forwards animate-fast",
-            exit: "animate-fadeOut animate-fill-forwards animate-fast",
+            enter: "animate-fadeIn animation-fill-forwards animate-fast",
+            exit: "animate-fadeOut animation-fill-forwards animate-fast",
           }}
         >
           <>
@@ -174,61 +176,60 @@ export const Feedback = ({
                   onChange={(e) => setMessage(e.target.value)}
                 />
                 {showLongForm && !positiveFeedback && (
-                  <></>
-                  // <Details summary="More Details" className="mt-1">
-                  //   <div className="flex flex-col gap-0.5">
-                  //     <div className="flex flex-col gap-0.5">
-                  //       <Label>
-                  //         Can you provide the exact steps you took before
-                  //         receiving the error? For example, the commands you
-                  //         ran.
-                  //       </Label>
-                  //       <TextArea
-                  //         rows={4}
-                  //         value={steps}
-                  //         onChange={(e) => setSteps(e.target.value)}
-                  //         placeholder="1. I ran npm dev..."
-                  //       />
-                  //     </div>
-                  //     <div className="flex flex-col gap-0.5">
-                  //       <Label>
-                  //         If applicable, what version of Medusa are you using?
-                  //         If a plugin is related to the error, please provide a
-                  //         version of that as well.
-                  //       </Label>
-                  //       <TextArea
-                  //         rows={4}
-                  //         value={medusaVersion}
-                  //         onChange={(e) => setMedusaVersion(e.target.value)}
-                  //         placeholder="@medusajs/medusa: vX"
-                  //       />
-                  //     </div>
-                  //     <div className="flex flex-col gap-0.5">
-                  //       <Label>
-                  //         Were you able to fix the error? If so, what steps did
-                  //         you follow?
-                  //       </Label>
-                  //       <TextArea
-                  //         rows={4}
-                  //         value={errorFix}
-                  //         onChange={(e) => setErrorFix(e.target.value)}
-                  //         placeholder="@medusajs/medusa: vX"
-                  //       />
-                  //     </div>
-                  //     <div className="flex flex-col gap-0.5">
-                  //       <Label>
-                  //         Can you provide your email or discord username? This
-                  //         would allow us to contact you for further info or
-                  //         assist you with your issue.
-                  //       </Label>
-                  //       <InputText
-                  //         value={contactInfo}
-                  //         onChange={(e) => setContactInfo(e.target.value)}
-                  //         placeholder="user@example.com"
-                  //       />
-                  //     </div>
-                  //   </div>
-                  // </Details>
+                  <Details summaryContent="More Details" className="mt-1">
+                    <div className="flex flex-col gap-0.5">
+                      <div className="flex flex-col gap-0.5">
+                        <Label>
+                          Can you provide the exact steps you took before
+                          receiving the error? For example, the commands you
+                          ran.
+                        </Label>
+                        <TextArea
+                          rows={4}
+                          value={steps}
+                          onChange={(e) => setSteps(e.target.value)}
+                          placeholder="1. I ran npm dev..."
+                        />
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <Label>
+                          If applicable, what version of Medusa are you using?
+                          If a plugin is related to the error, please provide a
+                          version of that as well.
+                        </Label>
+                        <TextArea
+                          rows={4}
+                          value={medusaVersion}
+                          onChange={(e) => setMedusaVersion(e.target.value)}
+                          placeholder="@medusajs/medusa: vX"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <Label>
+                          Were you able to fix the error? If so, what steps did
+                          you follow?
+                        </Label>
+                        <TextArea
+                          rows={4}
+                          value={errorFix}
+                          onChange={(e) => setErrorFix(e.target.value)}
+                          placeholder="@medusajs/medusa: vX"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <Label>
+                          Can you provide your email or discord username? This
+                          would allow us to contact you for further info or
+                          assist you with your issue.
+                        </Label>
+                        <InputText
+                          value={contactInfo}
+                          onChange={(e) => setContactInfo(e.target.value)}
+                          placeholder="user@example.com"
+                        />
+                      </div>
+                    </div>
+                  </Details>
                 )}
                 <Button
                   onClick={submitFeedback}

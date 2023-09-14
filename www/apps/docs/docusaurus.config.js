@@ -96,6 +96,9 @@ const config = {
       ],
       defaultFilters: ["docs"],
     },
+    analytics: {
+      apiKey: process.env.SEGMENT_API_KEY || "temp",
+    },
     prism: {
       defaultLanguage: "js",
       plugins: ["line-numbers", "show-language"],
