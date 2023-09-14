@@ -2,13 +2,12 @@
 
 import clsx from "clsx"
 import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
-import InputText from "../../Input/Text"
 import { MouseEvent, useMemo } from "react"
 import { useSearch } from "../../../providers/search"
 import { useMobile } from "../../../providers/mobile"
 import { usePageLoading } from "../../../providers/page-loading"
 import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
-import { Button, Kbd } from "docs-ui"
+import { Button, InputText, Kbd } from "docs-ui"
 
 const SearchModalOpener = () => {
   const { setIsOpen } = useSearch()
