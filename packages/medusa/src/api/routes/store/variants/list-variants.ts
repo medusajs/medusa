@@ -1,3 +1,4 @@
+import { IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -5,17 +6,14 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
-import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
-import { IsType } from "../../../../utils/validators/is-type"
-import { MedusaError } from "@medusajs/utils"
+import { Type } from "class-transformer"
+import { omit } from "lodash"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { Type } from "class-transformer"
-import { defaultStoreVariantRelations } from "."
-import { omit } from "lodash"
+import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /store/variants
@@ -132,17 +130,11 @@ export default async (req, res) => {
   const validated = await validator(StoreGetVariantsParams, req.query)
   const { expand, offset, limit } = validated
 
-  let expandFields: string[] = []
-  if (expand) {
-    expandFields = expand.split(",")
-  }
-
   const customer_id = req.user?.customer_id
 
   const listConfig = {
-    relations: expandFields.length
-      ? expandFields
-      : defaultStoreVariantRelations,
+    select: req.listConfig.select,
+    relations: req.listConfig.relations,
     skip: offset,
     take: limit,
   }
@@ -152,6 +144,7 @@ export default async (req, res) => {
     "limit",
     "offset",
     "expand",
+    "fields",
     "cart_id",
     "region_id",
     "currency_code",
