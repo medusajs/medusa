@@ -48,7 +48,6 @@ export default class PricingModuleService<
   protected readonly moneyAmountService_: MoneyAmountService<TMoneyAmount>
   protected readonly ruleTypeService_: RuleTypeService<TRuleType>
   protected readonly priceSetService_: PriceSetService<TPriceSet>
-  protected readonly ruleTypeService_: RuleTypeService<TRuleType>
   protected readonly priceRuleService_: PriceRuleService<TPriceRule>
 
   constructor(
@@ -58,7 +57,6 @@ export default class PricingModuleService<
       currencyService,
       ruleTypeService,
       priceSetService,
-      ruleTypeService,
       priceRuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
