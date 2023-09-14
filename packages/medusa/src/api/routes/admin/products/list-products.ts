@@ -253,6 +253,9 @@ export default async (req, res) => {
         req.filterableFields,
         req.listConfig
       )
+
+    rawProducts = products
+    count = count_
   } else {
     const [products, count_] = await productService.listAndCount(
       req.filterableFields,
@@ -348,6 +351,10 @@ async function listAndCountProductWithIsolatedProductModule(
   delete filterableFields.price_list_id
 
   if (priceListId) {
+    // TODO: it is working but validate the behaviour.
+    // e.g pricing context properly set.
+    // At the moment filtering by price list but not having any customer id or
+    // include discount forces the query to filter with price list id is null
     const priceListService = req.scope.resolve(
       "priceListService"
     ) as PriceListService
@@ -366,7 +373,7 @@ async function listAndCountProductWithIsolatedProductModule(
   delete filterableFields.discount_condition_id
 
   if (discountConditionId) {
-    // TODO
+    // TODO implement later
   }
 
   await Promise.all(promises)

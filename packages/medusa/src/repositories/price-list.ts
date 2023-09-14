@@ -65,13 +65,15 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
       .innerJoinAndSelect(
         ProductVariantMoneyAmount,
         "pvma",
-        "pvma.id = prices.id"
+        "pvma.money_amount_id = prices.id"
       )
       .where("pl.id IN (:...ids)", { ids: priceListIds })
       .execute()
 
     return data.reduce((acc, curr) => {
-      acc[curr["pvma_variant_id"]] = curr["pvma_id"]
+      acc[curr["pl_id"]] ??= []
+      acc[curr["pl_id"]].push(curr["pvma_variant_id"])
+      acc[curr["pl_id"]] = [...new Set(acc[curr["pl_id"]])]
       return acc
     }, {})
   },
