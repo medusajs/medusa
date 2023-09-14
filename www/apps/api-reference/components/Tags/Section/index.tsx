@@ -12,12 +12,13 @@ import type { MDXContentClientProps } from "../../MDXContent/Client"
 import TagPaths from "../Paths"
 import DividedLayout from "@/layouts/Divided"
 import LoadingProvider from "@/providers/loading"
-import type { LinkProps } from "../../MDXComponents/Link"
 import SectionContainer from "../../Section/Container"
-import Feedback from "../../Feedback"
 import { useArea } from "../../../providers/area"
 import SectionDivider from "../../Section/Divider"
 import clsx from "clsx"
+import { Feedback, NextLink } from "docs-ui"
+import { usePathname } from "next/navigation"
+import formatReportLink from "../../../utils/format-report-link"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
@@ -26,10 +27,6 @@ export type TagSectionProps = {
 const Section = dynamic<SectionProps>(
   async () => import("../../Section")
 ) as React.FC<SectionProps>
-
-const Link = dynamic<LinkProps>(
-  async () => import("../../MDXComponents/Link")
-) as React.FC<LinkProps>
 
 const MDXContentClient = dynamic<MDXContentClientProps>(
   async () => import("../../MDXContent/Client"),
@@ -43,6 +40,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
   const [loadPaths, setLoadPaths] = useState(false)
   const slugTagName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
+  const pathname = usePathname()
   const { ref } = useInView({
     threshold: 0.5,
     rootMargin: `112px 0px 112px 0px`,
@@ -98,9 +96,9 @@ const TagSection = ({ tag }: TagSectionProps) => {
             {tag.externalDocs && (
               <>
                 Related guide:{" "}
-                <Link href={tag.externalDocs.url} target="_blank">
+                <NextLink href={tag.externalDocs.url} target="_blank">
                   {tag.externalDocs.description || "Read More"}
-                </Link>
+                </NextLink>
               </>
             )}
             <Feedback
@@ -109,7 +107,8 @@ const TagSection = ({ tag }: TagSectionProps) => {
                 area,
                 section: tag.name,
               }}
-              sectionTitle={tag.name}
+              pathName={pathname}
+              reportLink={formatReportLink(area, tag.name)}
             />
           </SectionContainer>
         }

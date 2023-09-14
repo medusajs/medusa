@@ -1,5 +1,4 @@
-import { Badge } from "docs-ui"
-import Link from "../../../MDXComponents/Link"
+import { Badge, NextLink } from "docs-ui"
 import Tooltip from "../../../Tooltip"
 
 export type TagsOperationFeatureFlagNoticeProps = {
@@ -21,12 +20,12 @@ const TagsOperationFeatureFlagNotice = ({
         <span className={tooltipTextClassName}>
           To use this {type}, make sure to
           <br />
-          <Link
+          <NextLink
             href="https://docs.medusajs.com/development/feature-flags/toggle"
             target="__blank"
           >
             enable its feature flag: <code>{featureFlag}</code>
-          </Link>
+          </NextLink>
         </span>
       }
       clickable

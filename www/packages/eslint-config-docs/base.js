@@ -84,6 +84,10 @@ module.exports = {
         allow: ["error", "warn"],
       },
     ],
+    "react/prop-types": [
+      2,
+      { "ignore": ["className"] }
+    ],
   },
   env: {
     es6: true,

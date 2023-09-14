@@ -143,7 +143,7 @@ declare module "@medusajs/docs" {
   export declare type ThemeConfig = {
     reportCodeLinkPrefix?: string
     footerFeedback: {
-      event?: string
+      event: string
     }
     socialLinks?: SocialLink[]
     cloudinaryConfig?: {

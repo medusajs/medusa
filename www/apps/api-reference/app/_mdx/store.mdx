@@ -1,6 +1,8 @@
-import Feedback from "@/components/Feedback"
+
+import { Feedback } from "docs-ui"
 import CodeTabs from "@/components/CodeTabs"
 import SectionContainer from "@/components/Section/Container"
+import formatReportLink from "@/utils/format-report-link"
 
 <SectionContainer noTopPadding={true}>
 
@@ -23,6 +25,8 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
     section: "introduction"
   }}
   sectionTitle="Introduction"
+  reportLink={formatReportLink("store", "Introduction")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -100,6 +104,8 @@ fetch(`<BACKEND_URL>/admin/products`, {
     section: "authentication-cookie"
   }}
   sectionTitle="Authentication - Cookie Session ID"
+  reportLink={formatReportLink("store", "Authentication - Cookie Session ID")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -183,6 +189,8 @@ const App = () => {
     section: "publishable-api-key"
   }}
   sectionTitle="Publishable API Key"
+  reportLink={formatReportLink("store", "Publishable API Key")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -254,6 +262,8 @@ const App = () => {
     section: "http-compression"
   }}
   sectionTitle="HTTP Compression"
+  reportLink={formatReportLink("store", "HTTP Compression")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -457,6 +467,8 @@ relations like `collection`.
     section: "expand"
   }}
   sectionTitle="Expanding Fields"
+  reportLink={formatReportLink("store", "Expanding Fields")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -777,6 +789,8 @@ export default Products`,
     section: "select-fields"
   }}
   sectionTitle="Selecting Fields"
+  reportLink={formatReportLink("store", "Selecting Fields")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -917,6 +931,8 @@ curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_
     section: "query-parameters"
   }}
   sectionTitle="Query Parameter Types"
+  reportLink={formatReportLink("store", "Query Parameter Types")}
+  pathName="/api/store"
 />
 
 </SectionContainer>
@@ -1141,6 +1157,8 @@ order.
     section: "pagination"
   }}
   sectionTitle="Pagination"
+  reportLink={formatReportLink("store", "Pagination")}
+  pathName="/api/store"
 />
 
 </SectionContainer>

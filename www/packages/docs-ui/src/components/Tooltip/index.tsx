@@ -1,4 +1,6 @@
-import React, { useEffect, useId, useState } from "react"
+"use client"
+
+import React, { useEffect, useState } from "react"
 import { Tooltip as ReactTooltip } from "react-tooltip"
 import type { ITooltip } from "react-tooltip"
 import clsx from "clsx"

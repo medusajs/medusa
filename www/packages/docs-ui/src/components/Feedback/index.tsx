@@ -2,18 +2,17 @@
 
 import React, { useRef, useState } from "react"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
-import Solutions from "./Solutions/index"
-import { ExtraData, useAnalytics } from "@/providers/analytics"
-import { usePathname } from "next/navigation"
-import Link from "next/link"
-import { useArea } from "../../providers/area"
+import { Solutions } from "./Solutions"
+import { ExtraData, useAnalytics } from "@/providers/Analytics"
 import clsx from "clsx"
-import TextArea from "../TextArea"
-import Label from "../Label"
+import { TextArea } from "@/components/TextArea"
+import { Label } from "@/components/Label"
 import { Button } from "docs-ui"
 
-type FeedbackProps = {
+export type FeedbackProps = {
   event: string
+  pathName: string
+  reportLink?: string
   question?: string
   positiveBtn?: string
   negativeBtn?: string
@@ -24,12 +23,14 @@ type FeedbackProps = {
   showPossibleSolutions?: boolean
   className?: string
   extraData?: ExtraData
-  sectionTitle?: string
   vertical?: boolean
+  showLongForm?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
-const Feedback: React.FC<FeedbackProps> = ({
+export const Feedback = ({
   event,
+  pathName,
+  reportLink,
   question = "Was this section helpful?",
   positiveBtn = "Yes",
   negativeBtn = "No",
@@ -40,9 +41,9 @@ const Feedback: React.FC<FeedbackProps> = ({
   showPossibleSolutions = true,
   className = "",
   extraData = {},
-  sectionTitle = "",
   vertical = false,
-}) => {
+  showLongForm = false,
+}: FeedbackProps) => {
   const [showForm, setShowForm] = useState(false)
   const [submittedFeedback, setSubmittedFeedback] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -51,15 +52,16 @@ const Feedback: React.FC<FeedbackProps> = ({
   const inlineMessageRef = useRef<HTMLDivElement>(null)
   const [positiveFeedback, setPositiveFeedback] = useState(false)
   const [message, setMessage] = useState("")
+  const [steps, setSteps] = useState("")
+  const [medusaVersion, setMedusaVersion] = useState("")
+  const [errorFix, setErrorFix] = useState("")
+  const [contactInfo, setContactInfo] = useState("")
   const nodeRef: React.RefObject<HTMLDivElement> = submittedFeedback
     ? inlineMessageRef
     : showForm
     ? inlineQuestionRef
     : inlineFeedbackRef
-
-  const pathname = usePathname()
   const { loaded, track } = useAnalytics()
-  const { area } = useArea()
 
   function handleFeedback(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (!loaded) {
@@ -81,7 +83,7 @@ const Feedback: React.FC<FeedbackProps> = ({
     track(
       event,
       {
-        url: pathname,
+        url: pathName,
         label: document.title,
         feedback:
           (feedback !== null && feedback) ||
@@ -153,15 +155,11 @@ const Feedback: React.FC<FeedbackProps> = ({
                   >
                     {negativeBtn}
                   </Button>
-                  <Button variant="secondary">
-                    <Link
-                      href={`https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml&title=API%20Ref%28${area}%29%3A%20Issue%20in%20${encodeURI(
-                        sectionTitle
-                      )}`}
-                    >
-                      Report Issue
-                    </Link>
-                  </Button>
+                  {reportLink && (
+                    <Button variant="secondary">
+                      <a href={reportLink}>Report Issue</a>
+                    </Button>
+                  )}
                 </div>
               </div>
             )}
@@ -175,6 +173,63 @@ const Feedback: React.FC<FeedbackProps> = ({
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                 />
+                {showLongForm && !positiveFeedback && (
+                  <></>
+                  // <Details summary="More Details" className="mt-1">
+                  //   <div className="flex flex-col gap-0.5">
+                  //     <div className="flex flex-col gap-0.5">
+                  //       <Label>
+                  //         Can you provide the exact steps you took before
+                  //         receiving the error? For example, the commands you
+                  //         ran.
+                  //       </Label>
+                  //       <TextArea
+                  //         rows={4}
+                  //         value={steps}
+                  //         onChange={(e) => setSteps(e.target.value)}
+                  //         placeholder="1. I ran npm dev..."
+                  //       />
+                  //     </div>
+                  //     <div className="flex flex-col gap-0.5">
+                  //       <Label>
+                  //         If applicable, what version of Medusa are you using?
+                  //         If a plugin is related to the error, please provide a
+                  //         version of that as well.
+                  //       </Label>
+                  //       <TextArea
+                  //         rows={4}
+                  //         value={medusaVersion}
+                  //         onChange={(e) => setMedusaVersion(e.target.value)}
+                  //         placeholder="@medusajs/medusa: vX"
+                  //       />
+                  //     </div>
+                  //     <div className="flex flex-col gap-0.5">
+                  //       <Label>
+                  //         Were you able to fix the error? If so, what steps did
+                  //         you follow?
+                  //       </Label>
+                  //       <TextArea
+                  //         rows={4}
+                  //         value={errorFix}
+                  //         onChange={(e) => setErrorFix(e.target.value)}
+                  //         placeholder="@medusajs/medusa: vX"
+                  //       />
+                  //     </div>
+                  //     <div className="flex flex-col gap-0.5">
+                  //       <Label>
+                  //         Can you provide your email or discord username? This
+                  //         would allow us to contact you for further info or
+                  //         assist you with your issue.
+                  //       </Label>
+                  //       <InputText
+                  //         value={contactInfo}
+                  //         onChange={(e) => setContactInfo(e.target.value)}
+                  //         placeholder="user@example.com"
+                  //       />
+                  //     </div>
+                  //   </div>
+                  // </Details>
+                )}
                 <Button
                   onClick={submitFeedback}
                   disabled={loading}
@@ -204,5 +259,3 @@ const Feedback: React.FC<FeedbackProps> = ({
     </div>
   )
 }
-
-export default Feedback

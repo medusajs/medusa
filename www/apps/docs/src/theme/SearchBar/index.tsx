@@ -4,14 +4,14 @@ import type SearchBarType from "@theme/SearchBar"
 import type { WrapperProps } from "@docusaurus/types"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
-import { useUser } from "@site/src/providers/User"
+import { useAnalytics } from "docs-ui"
 
 type Props = WrapperProps<typeof SearchBarType>
 
 export default function SearchBarWrapper(props: Props): JSX.Element {
   const isBrowser = useIsBrowser()
   const location = useLocation()
-  const { track } = useUser()
+  const { track } = useAnalytics()
 
   useEffect(() => {
     if (isBrowser) {

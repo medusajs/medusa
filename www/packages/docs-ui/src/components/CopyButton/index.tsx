@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect, useRef, useCallback } from "react"
 import copy from "copy-text-to-clipboard"
 import clsx from "clsx"

@@ -1,4 +1,5 @@
 import mdx from "@next/mdx"
+import bundleAnalyzer from "@next/bundle-analyzer"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -28,6 +29,7 @@ const nextConfig = {
 
     return config
   },
+  transpilePackages: ["docs-ui"],
 }
 
 const withMDX = mdx({
@@ -36,4 +38,9 @@ const withMDX = mdx({
     rehypePlugins: [],
   },
 })
-export default withMDX(nextConfig)
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE_BUNDLE === "true",
+})
+
+export default withBundleAnalyzer(withMDX(nextConfig))

@@ -1,11 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { useAnalytics } from "../../providers/analytics"
 import { useModal } from "../../providers/modal"
-import Label from "../Label"
-import TextArea from "../TextArea"
 import ModalFooter from "../Modal/Footer"
+import { Label, TextArea, useAnalytics } from "docs-ui"
 
 const DetailedFeedback = () => {
   const [improvementFeedback, setImprovementFeedback] = useState("")
@@ -56,7 +54,6 @@ const DetailedFeedback = () => {
                 return
               }
               const buttonElm = e.target as HTMLButtonElement
-              // buttonElm.disabled = true
               buttonElm.classList.add("cursor-not-allowed")
               buttonElm.textContent = "Please wait"
               track(

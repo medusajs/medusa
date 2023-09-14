@@ -2,12 +2,7 @@ import type { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import type { TooltipProps } from "../../../../Tooltip"
 import type { TagsOperationFeatureFlagNoticeProps } from "../../FeatureFlagNotice"
-import { LinkProps } from "../../../../MDXComponents/Link"
-import type { BadgeProps } from "docs-ui"
-
-const Badge = dynamic<BadgeProps>(
-  async () => (await import("docs-ui")).Badge
-) as React.FC<BadgeProps>
+import { Badge, NextLink } from "docs-ui"
 
 const Tooltip = dynamic<TooltipProps>(
   async () => import("../../../../Tooltip")
@@ -17,10 +12,6 @@ const TagsOperationFeatureFlagNotice =
   dynamic<TagsOperationFeatureFlagNoticeProps>(
     async () => import("../../FeatureFlagNotice")
   ) as React.FC<TagsOperationFeatureFlagNoticeProps>
-
-const Link = dynamic<LinkProps>(
-  async () => import("../../../../MDXComponents/Link")
-) as React.FC<LinkProps>
 
 export type TagOperationParametersNameProps = {
   name: string
@@ -49,7 +40,8 @@ const TagOperationParametersName = ({
               <>
                 If this request accepts an <code>expand</code> parameter,
                 <br /> this field can be{" "}
-                <Link href="#expanding-fields">expanded</Link> into an object.
+                <NextLink href="#expanding-fields">expanded</NextLink> into an
+                object.
               </>
             }
             clickable

@@ -1,3 +1,5 @@
+"use client"
+
 import type { Operation } from "@/types/openapi"
 import type { TagsOperationDescriptionSectionSecurityProps } from "./Security"
 import type { TagsOperationDescriptionSectionRequestProps } from "./RequestBody"
@@ -6,10 +8,10 @@ import dynamic from "next/dynamic"
 import TagsOperationDescriptionSectionParameters from "./Parameters"
 import MDXContentClient from "@/components/MDXContent/Client"
 import type { TagsOperationFeatureFlagNoticeProps } from "../FeatureFlagNotice"
-import type { LinkProps } from "../../../MDXComponents/Link"
-import Feedback from "../../../Feedback"
 import { useArea } from "../../../../providers/area"
-import type { BadgeProps } from "docs-ui"
+import { Feedback, Badge, NextLink } from "docs-ui"
+import { usePathname } from "next/navigation"
+import formatReportLink from "../../../../utils/format-report-link"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -26,14 +28,6 @@ const TagsOperationDescriptionSectionResponses =
     async () => import("./Responses")
   ) as React.FC<TagsOperationDescriptionSectionResponsesProps>
 
-const Link = dynamic<LinkProps>(
-  async () => import("../../../MDXComponents/Link")
-) as React.FC<LinkProps>
-
-const Badge = dynamic<BadgeProps>(
-  async () => (await import("docs-ui")).Badge
-) as React.FC<BadgeProps>
-
 const TagsOperationFeatureFlagNotice =
   dynamic<TagsOperationFeatureFlagNoticeProps>(
     async () => import("../FeatureFlagNotice")
@@ -46,6 +40,7 @@ const TagsOperationDescriptionSection = ({
   operation,
 }: TagsOperationDescriptionSectionProps) => {
   const { area } = useArea()
+  const pathname = usePathname()
 
   return (
     <>
@@ -73,7 +68,8 @@ const TagsOperationDescriptionSection = ({
           area,
           section: operation.summary,
         }}
-        sectionTitle={operation.summary}
+        pathName={pathname}
+        reportLink={formatReportLink(area, operation.summary)}
         className="!my-2"
         vertical={true}
         question="Did this endpoint run successfully?"
@@ -81,9 +77,9 @@ const TagsOperationDescriptionSection = ({
       {operation.externalDocs && (
         <>
           Related guide:{" "}
-          <Link href={operation.externalDocs.url} target="_blank">
+          <NextLink href={operation.externalDocs.url} target="_blank">
             {operation.externalDocs.description || "Read More"}
-          </Link>
+          </NextLink>
         </>
       )}
       {operation.security && (

@@ -1,17 +1,15 @@
+import React from "react"
 import clsx from "clsx"
-import NextLink from "next/link"
-import type { LinkProps as NextLinkProps } from "next/link"
 
 export type LinkProps = {
   href?: string
   children?: React.ReactNode
   className?: string
-} & Partial<NextLinkProps> &
-  React.AllHTMLAttributes<HTMLAnchorElement>
+} & React.AllHTMLAttributes<HTMLAnchorElement>
 
-const Link = ({ href, children, className, ...rest }: LinkProps) => {
+export const Link = ({ href, children, className, ...rest }: LinkProps) => {
   return (
-    <NextLink
+    <a
       href={href || ""}
       {...rest}
       className={clsx(
@@ -21,8 +19,6 @@ const Link = ({ href, children, className, ...rest }: LinkProps) => {
       )}
     >
       {children}
-    </NextLink>
+    </a>
   )
 }
-
-export default Link

@@ -15,9 +15,10 @@ import type { Props } from "@theme/Layout"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import "animate.css"
-import { useUser } from "@site/src/providers/User"
 import SearchProvider from "../../providers/Search"
 import ModalProvider from "../../providers/Modal"
+import DocsProviders from "../../providers/DocsProviders"
+import { useAnalytics } from "docs-ui"
 
 export default function Layout(props: Props): JSX.Element {
   const {
@@ -31,7 +32,7 @@ export default function Layout(props: Props): JSX.Element {
   useKeyboardNavigation()
   const isBrowser = useIsBrowser()
   const location = useLocation()
-  const { track } = useUser()
+  const { track } = useAnalytics()
 
   useEffect(() => {
     if (isBrowser) {
@@ -55,29 +56,31 @@ export default function Layout(props: Props): JSX.Element {
 
   return (
     <LayoutProvider>
-      <ModalProvider>
-        <SearchProvider>
-          <PageMetadata title={title} description={description} />
-          <SkipToContent />
+      <DocsProviders>
+        <ModalProvider>
+          <SearchProvider>
+            <PageMetadata title={title} description={description} />
+            <SkipToContent />
 
-          <Navbar />
+            <Navbar />
 
-          <div
-            id={SkipToContentFallbackId}
-            className={clsx(
-              ThemeClassNames.wrapper.main,
-              "flex-auto flex-grow flex-shrink-0",
-              wrapperClassName
-            )}
-          >
-            <ErrorBoundary
-              fallback={(params) => <ErrorPageContent {...params} />}
+            <div
+              id={SkipToContentFallbackId}
+              className={clsx(
+                ThemeClassNames.wrapper.main,
+                "flex-auto flex-grow flex-shrink-0",
+                wrapperClassName
+              )}
             >
-              {children}
-            </ErrorBoundary>
-          </div>
-        </SearchProvider>
-      </ModalProvider>
+              <ErrorBoundary
+                fallback={(params) => <ErrorPageContent {...params} />}
+              >
+                {children}
+              </ErrorBoundary>
+            </div>
+          </SearchProvider>
+        </ModalProvider>
+      </DocsProviders>
     </LayoutProvider>
   )
 }

@@ -1,14 +1,14 @@
 import React from "react"
 import clsx from "clsx"
 
-type TextAreaProps = {
+export type TextAreaProps = {
   className?: string
 } & React.DetailedHTMLProps<
   React.TextareaHTMLAttributes<HTMLTextAreaElement>,
   HTMLTextAreaElement
 >
 
-const TextArea = (props: TextAreaProps) => {
+export const TextArea = (props: TextAreaProps) => {
   return (
     <textarea
       {...props}
@@ -28,5 +28,3 @@ const TextArea = (props: TextAreaProps) => {
     />
   )
 }
-
-export default TextArea

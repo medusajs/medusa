@@ -3,17 +3,13 @@ import MDXContentClient from "@/components/MDXContent/Client"
 import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
-import type { LinkProps } from "../../../../MDXComponents/Link"
 import capitalize from "../../../../../utils/capitalize"
 import { Fragment } from "react"
+import { NextLink } from "docs-ui"
 
 const InlineCode = dynamic<InlineCodeProps>(
   async () => import("../../../../InlineCode")
 ) as React.FC<InlineCodeProps>
-
-const Link = dynamic<LinkProps>(
-  async () => import("../../../../MDXComponents/Link")
-) as React.FC<LinkProps>
 
 type TagOperationParametersDescriptionProps = {
   schema: SchemaObject
@@ -128,9 +124,9 @@ const TagOperationParametersDescription = ({
       {schema.externalDocs && (
         <>
           Related guide:{" "}
-          <Link href={schema.externalDocs.url} target="_blank">
+          <NextLink href={schema.externalDocs.url} target="_blank">
             {schema.externalDocs.description || "Read More"}
-          </Link>
+          </NextLink>
         </>
       )}
     </div>

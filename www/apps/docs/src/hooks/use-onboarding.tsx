@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react"
 import { useQueryStringValue } from "@docusaurus/theme-common/internal"
 import { useNotifications } from "../providers/Notification"
 import Rating from "../components/Rating"
-import { useUser } from "../providers/User"
+import { useAnalytics } from "docs-ui"
 
 const useOnboarding = () => {
   const isOnboarding = useQueryStringValue("ref") === "onboarding"
   const [showNotification, setShowNotification] = useState(isOnboarding)
   const { addNotification, removeNotification, generateId } = useNotifications()
-  const { track } = useUser()
+  const { track } = useAnalytics()
 
   useEffect(() => {
     if (isOnboarding) {

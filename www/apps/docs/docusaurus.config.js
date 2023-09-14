@@ -17,12 +17,12 @@ const config = {
   organizationName: "medusajs",
   projectName: "medusajs/www",
   plugins: [
-    [
-      "docusaurus-plugin-segment",
-      {
-        apiKey: process.env.SEGMENT_API_KEY || "temp",
-      },
-    ],
+    // [
+    //   "docusaurus-plugin-segment",
+    //   {
+    //     apiKey: process.env.SEGMENT_API_KEY || "temp",
+    //   },
+    // ],
     require.resolve("docusaurus-plugin-image-zoom"),
     async function tailwindPlugin() {
       return {

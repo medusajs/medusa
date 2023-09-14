@@ -1,7 +1,7 @@
 "use client"
 
 import clsx from "clsx"
-import { Highlight, HighlightProps, themes } from "prism-react-renderer"
+import { HighlightProps, Highlight, themes } from "prism-react-renderer"
 import IconCopy from "../Icons/Copy"
 import { useColorMode } from "../../providers/color-mode"
 import { CopyButton } from "docs-ui"

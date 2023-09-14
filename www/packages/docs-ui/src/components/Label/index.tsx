@@ -1,11 +1,11 @@
 import clsx from "clsx"
 import React from "react"
 
-type LabelProps = {
+export type LabelProps = {
   className?: string
 } & React.HTMLAttributes<HTMLSpanElement>
 
-const Label = ({ children, className }: LabelProps) => {
+export const Label = ({ children, className }: LabelProps) => {
   return (
     <span
       className={clsx(
@@ -17,5 +17,3 @@ const Label = ({ children, className }: LabelProps) => {
     </span>
   )
 }
-
-export default Label

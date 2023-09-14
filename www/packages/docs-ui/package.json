@@ -6,57 +6,58 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/cjs/index.js",
+  "types": "./dist/cjs/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      }
+    }
+  },
+  "sideEffects": false,
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --external react",
-    "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external react"
+    "build": "yarn clean && yarn build:js:cjs && yarn build:js:esm",
+    "build:js:cjs": "tsc --project tsconfig.cjs.json && tsc-alias -p tsconfig.cjs.json",
+    "build:js:esm": "tsc --project tsconfig.esm.json && tsc-alias -p tsconfig.esm.json",
+    "clean": "rimraf dist"
   },
   "devDependencies": {
+    "@types/react": "^17.0.1",
+    "@types/react-dom": "^17.0.1",
     "clsx": "^2.0.0",
     "eslint-config-docs": "*",
+    "next": "latest",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "rimraf": "^5.0.1",
     "tailwind": "*",
     "tailwindcss": "^3.3.3",
+    "tsc-alias": "^1.8.7",
     "tsup": "^5.10.1",
     "typescript": "^5.1.6"
   },
   "peerDependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "@types/react": ">=17",
+    "@types/react-dom": ">=17",
+    "next": "*",
+    "react": ">=17",
+    "react-dom": ">=17"
   },
   "dependencies": {
     "@medusajs/ui": "^1.0.0",
+    "@octokit/request": "^8.1.1",
+    "@segment/analytics-next": "^1.55.0",
     "react-tooltip": "^5.21.3",
     "react-uuid": "^2.0.0"
-  },
-  "tsup": {
-    "entry": [
-      "src/index.ts"
-    ],
-    "treeshake": true,
-    "sourcemap": "inline",
-    "minify": true,
-    "clean": true,
-    "dts": true,
-    "splitting": false,
-    "format": [
-      "cjs",
-      "esm"
-    ],
-    "external": [
-      "react"
-    ],
-    "injectStyle": false
-  },
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
-    }
   }
 }

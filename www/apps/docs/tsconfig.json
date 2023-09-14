@@ -1,9 +1,9 @@
 {
   "extends": "tsconfig/docusaurus.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@site/*": ["./*"],
-      "@medusajs/docs-ui/*": ["./src/components/*"]
+      "@site/*": ["./*"]
     }
   },
   "include": [

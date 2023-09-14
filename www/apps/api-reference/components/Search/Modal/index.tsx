@@ -12,12 +12,11 @@ import SearchSuggestions from "../Suggestions"
 import { useSearch } from "../../../providers/search"
 import checkArraySameElms from "../../../utils/array-same-elms"
 import SearchHitsWrapper from "../Hits"
-import Kbd from "../../MDXComponents/Kbd"
 import { OptionType } from "../../../hooks/use-select"
 import SelectBadge from "../../Select/Badge"
 import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
 import { findNextSibling, findPrevSibling } from "../../../utils/dom-utils"
-import { Button } from "docs-ui"
+import { Button, Kbd } from "docs-ui"
 
 const algoliaClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || "temp",

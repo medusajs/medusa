@@ -7,13 +7,13 @@ import Navbar from "@/components/Navbar"
 import ColorModeProvider from "@/providers/color-mode"
 import { Inter } from "next/font/google"
 import { Roboto_Mono } from "next/font/google"
-import AnalyticsProvider from "@/providers/analytics"
 import NavbarProvider from "@/providers/navbar"
 import ModalProvider from "../../../providers/modal"
 import SearchProvider from "../../../providers/search"
 import { ScrollControllerProvider } from "../../../hooks/scroll-utils"
 import MobileProvider from "../../../providers/mobile"
 import PageLoadingProvider from "../../../providers/page-loading"
+import Providers from "../../../providers"
 
 export const metadata = {
   title: "Medusa API Reference",
@@ -46,10 +46,10 @@ export default function RootLayout({
           "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
         )}
       >
-        <AnalyticsProvider>
-          <ModalProvider>
-            <ColorModeProvider>
-              <PageLoadingProvider>
+        <Providers>
+          <PageLoadingProvider>
+            <ModalProvider>
+              <ColorModeProvider>
                 <BaseSpecsProvider>
                   <SidebarProvider>
                     <NavbarProvider>
@@ -71,10 +71,10 @@ export default function RootLayout({
                     </NavbarProvider>
                   </SidebarProvider>
                 </BaseSpecsProvider>
-              </PageLoadingProvider>
-            </ColorModeProvider>
-          </ModalProvider>
-        </AnalyticsProvider>
+              </ColorModeProvider>
+            </ModalProvider>
+          </PageLoadingProvider>
+        </Providers>
       </body>
     </html>
   )

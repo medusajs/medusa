@@ -1,8 +1,9 @@
+import React from "react"
 import clsx from "clsx"
 
-type KbdProps = React.ComponentProps<"kbd">
+export type KbdProps = React.ComponentProps<"kbd">
 
-const Kbd = ({ children, className, ...props }: KbdProps) => {
+export const Kbd = ({ children, className, ...props }: KbdProps) => {
   return (
     <kbd
       className={clsx(
@@ -20,5 +21,3 @@ const Kbd = ({ children, className, ...props }: KbdProps) => {
     </kbd>
   )
 }
-
-export default Kbd

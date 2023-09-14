@@ -5,7 +5,9 @@
   "compilerOptions": {
     "jsx": "react",
     "lib": [
-      "es2022"
+      "es2022",
+      "dom",
+      "dom.iterable"
     ],
     "allowJs": true,
     "module": "Node16"

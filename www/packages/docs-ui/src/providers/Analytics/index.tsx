@@ -2,14 +2,13 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { Analytics, AnalyticsBrowser } from "@segment/analytics-next"
-import { Area } from "@/types/openapi"
 
 export type ExtraData = {
-  area: Area
   section?: string
+  [key: string]: any
 }
 
-type AnalyticsContextType = {
+export type AnalyticsContextType = {
   loaded: boolean
   analytics: Analytics | null
   track: (
@@ -21,13 +20,17 @@ type AnalyticsContextType = {
 
 const AnalyticsContext = createContext<AnalyticsContextType | null>(null)
 
-type AnalyticsProviderProps = {
+export type AnalyticsProviderProps = {
+  writeKey?: string
   children?: React.ReactNode
 }
 
 const LOCAL_STORAGE_KEY = "ajs_anonymous_id"
 
-const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }) => {
+export const AnalyticsProvider = ({
+  writeKey = "temp",
+  children,
+}: AnalyticsProviderProps) => {
   // loaded is used to ensure that a connection has been made to segment
   // even if it failed. This is to ensure that the connection isn't
   // continuously retried
@@ -39,7 +42,7 @@ const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }) => {
     if (!loaded) {
       analyticsBrowser
         .load(
-          { writeKey: process.env.NEXT_PUBLIC_SEGMENT_API_KEY || "temp" },
+          { writeKey },
           {
             initialPageview: true,
             user: {
@@ -97,8 +100,6 @@ const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }) => {
     </AnalyticsContext.Provider>
   )
 }
-
-export default AnalyticsProvider
 
 export const useAnalytics = () => {
   const context = useContext(AnalyticsContext)

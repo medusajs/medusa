@@ -1,20 +1,22 @@
+"use client"
+
 import React, { useEffect, useState } from "react"
 import { request } from "@octokit/request"
-import Link from "@/components/MDXComponents/Link"
+import { Link } from "@/components/Link"
 
-type SolutionsProps = {
+export type SolutionsProps = {
   feedback: boolean
   message?: string
 }
 
-type GitHubSearchItem = {
+export type GitHubSearchItem = {
   url: string
   html_url: string
   title: string
   [key: string]: unknown
 }
 
-const Solutions: React.FC<SolutionsProps> = ({ feedback, message }) => {
+export const Solutions = ({ feedback, message }: SolutionsProps) => {
   const [possibleSolutionsQuery, setPossibleSolutionsQuery] =
     useState<string>("")
   const [possibleSolutions, setPossibleSolutions] = useState<
@@ -88,5 +90,3 @@ const Solutions: React.FC<SolutionsProps> = ({ feedback, message }) => {
     </>
   )
 }
-
-export default Solutions

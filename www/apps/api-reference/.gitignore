@@ -38,3 +38,6 @@ next-env.d.ts
 # unnecessary specs
 specs/admin.oas.json
 specs/store.oas.json
+
+# analyzer
+analyze

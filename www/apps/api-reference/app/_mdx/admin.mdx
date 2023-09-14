@@ -1,6 +1,7 @@
 import CodeTabs from "@/components/CodeTabs"
-import Feedback from "@/components/Feedback"
+import { Feedback } from "docs-ui"
 import SectionContainer from "@/components/Section/Container"
+import formatReportLink from "@/utils/format-report-link"
 
 <SectionContainer noTopPadding={true}>
 
@@ -23,6 +24,8 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
     section: "introduction"
   }}
   sectionTitle="Introduction"
+  reportLink={formatReportLink("admin", "Introduction")}
+  pathName="/api/admin"
 />
 
 </SectionContainer>
@@ -150,6 +153,8 @@ You can also pass it to client libraries:
   }}
   sectionTitle="Authentication - API Token"
   className="mb-3"
+  reportLink={formatReportLink("admin", "Authentication - API Token")}
+  pathName="/api/admin"
 />
 
 ### Cookie Session ID
@@ -220,6 +225,8 @@ fetch(`<BACKEND_URL>/admin/products`, {
     section: "authentication-cookie"
   }}
   sectionTitle="Authentication - Cookie Session ID"
+  reportLink={formatReportLink("admin", "Authentication - Cookie Session ID")}
+  pathName="/api/admin"
 />
 
 </SectionContainer>
@@ -291,6 +298,8 @@ const App = () => {
     section: "http-compression"
   }}
   sectionTitle="HTTP Compression"
+  reportLink={formatReportLink("admin", "Authentication - Cookie Session ID")}
+  pathName="/api/admin"
 />
 
 </SectionContainer>
@@ -502,6 +511,8 @@ relations like `collection`.
     section: "expand"
   }}
   sectionTitle="Expanding Fields"
+  reportLink={formatReportLink("admin", "Expanding Fields")}
+  pathName="/api/admin"
 />
 
 </SectionContainer>
@@ -832,6 +843,8 @@ export default Products`,
     section: "select-fields"
   }}
   sectionTitle="Selecting Fields"
+  reportLink={formatReportLink("admin", "Selecting Fields")}
+  pathName="/api/admin"
 />
 
 </SectionContainer>
@@ -982,6 +995,8 @@ curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_
     section: "query-parameters"
   }}
   sectionTitle="Query Parameter Types"
+  reportLink={formatReportLink("admin", "Query Parameter Types")}
+  pathName="/api/admin"
 />
 
 </SectionContainer>
@@ -1205,6 +1220,8 @@ order.
     section: "pagination"
   }}
   sectionTitle="Pagination"
+  reportLink={formatReportLink("admin", "Pagination")}
+  pathName="/api/admin"
 />
 
 </SectionContainer>

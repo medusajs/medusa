@@ -3,7 +3,7 @@ import { getLearningPath } from "@site/src/utils/learning-paths"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { useHistory } from "@docusaurus/router"
 import { LearningPathFinishType } from "@site/src/components/LearningPath/Finish"
-import { useUser } from "../User"
+import { useAnalytics } from "docs-ui"
 
 export type LearningPathType = {
   name: string
@@ -51,7 +51,7 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
   const [currentStep, setCurrentStep] = useState(-1)
   const isBrowser = useIsBrowser()
   const history = useHistory()
-  const { track } = useUser()
+  const { track } = useAnalytics()
 
   const startPath = (path: LearningPathType) => {
     setPath(path)

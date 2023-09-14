@@ -9,8 +9,7 @@ import Details from "../../theme/Details"
 import TextArea from "../TextArea"
 import Label from "../Label"
 import InputText from "../Input/Text"
-import { useUser } from "../../providers/User"
-import { Button } from "docs-ui"
+import { Button, useAnalytics } from "docs-ui"
 
 type FeedbackProps = {
   event?: string
@@ -56,7 +55,7 @@ const Feedback: React.FC<FeedbackProps> = ({
 
   const isBrowser = useIsBrowser()
   const location = useLocation()
-  const { track } = useUser()
+  const { track } = useAnalytics()
   const [steps, setSteps] = useState("")
   const [medusaVersion, setMedusaVersion] = useState("")
   const [errorFix, setErrorFix] = useState("")

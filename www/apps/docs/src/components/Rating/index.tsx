@@ -1,8 +1,7 @@
-import { useUser } from "../../providers/User"
 import IconStar from "../../theme/Icon/Star"
 import IconStarSolid from "../../theme/Icon/StarSolid"
 import clsx from "clsx"
-import { Button } from "docs-ui"
+import { Button, useAnalytics } from "docs-ui"
 import React, { useRef, useState } from "react"
 
 type RatingProps = {
@@ -20,7 +19,7 @@ const Rating: React.FC<RatingProps> = ({
   const [hoverRating, setHoverRating] = useState(0)
   const starElms = useRef<HTMLElement[]>([])
   const starArr = Array.from(Array(5).keys())
-  const { track } = useUser()
+  const { track } = useAnalytics()
 
   const handleRating = (selectedRating: number) => {
     if (rating) {
@@ -49,7 +48,7 @@ const Rating: React.FC<RatingProps> = ({
         return (
           <Button
             variant="clear"
-            ref={(element) => {
+            buttonRef={(element) => {
               if (starElms.current.length - 1 < i) {
                 starElms.current.push(element)
               }
