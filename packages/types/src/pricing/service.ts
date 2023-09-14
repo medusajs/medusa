@@ -6,20 +6,24 @@ import {
   CreateCurrencyDTO,
   CreateMoneyAmountDTO,
   CreatePriceSetDTO,
+  CreatePriceSetMoneyAmountRulesDTO,
   CreateRuleTypeDTO,
   CurrencyDTO,
   FilterableCurrencyProps,
   FilterableMoneyAmountProps,
+  FilterablePriceSetMoneyAmountRulesProps,
   FilterablePriceSetProps,
   FilterableRuleTypeProps,
   MoneyAmountDTO,
   PriceSetDTO,
+  PriceSetMoneyAmountRulesDTO,
   PricingContext,
   PricingFilters,
   RuleTypeDTO,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
   UpdatePriceSetDTO,
+  UpdatePriceSetMoneyAmountRulesDTO,
   UpdateRuleTypeDTO,
 } from "./common"
 
@@ -154,4 +158,37 @@ export interface IPricingModuleService {
   ): Promise<RuleTypeDTO[]>
 
   deleteRuleTypes(ruleTypes: string[], sharedContext?: Context): Promise<void>
+
+  retrievePriceSetMoneyAmountRules(
+    id: string,
+    config?: FindConfig<PriceSetMoneyAmountRulesDTO>,
+    sharedContext?: Context
+  ): Promise<PriceSetMoneyAmountRulesDTO>
+
+  listPriceSetMoneyAmountRules(
+    filters?: FilterablePriceSetMoneyAmountRulesProps,
+    config?: FindConfig<PriceSetMoneyAmountRulesDTO>,
+    sharedContext?: Context
+  ): Promise<PriceSetMoneyAmountRulesDTO[]>
+
+  listAndCountPriceSetMoneyAmountRules(
+    filters?: FilterablePriceSetMoneyAmountRulesProps,
+    config?: FindConfig<PriceSetMoneyAmountRulesDTO>,
+    sharedContext?: Context
+  ): Promise<[PriceSetMoneyAmountRulesDTO[], number]>
+
+  createPriceSetMoneyAmountRules(
+    data: CreatePriceSetMoneyAmountRulesDTO[],
+    sharedContext?: Context
+  ): Promise<PriceSetMoneyAmountRulesDTO[]>
+
+  updatePriceSetMoneyAmountRules(
+    data: UpdatePriceSetMoneyAmountRulesDTO[],
+    sharedContext?: Context
+  ): Promise<PriceSetMoneyAmountRulesDTO[]>
+
+  deletePriceSetMoneyAmountRules(
+    ids: string[],
+    sharedContext?: Context
+  ): Promise<void>
 }
