@@ -539,14 +539,14 @@ export default class PricingModuleService<
     config: FindConfig<PricingTypes.PriceSetMoneyAmountRulesDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceSetMoneyAmountRulesDTO> {
-    const ruleType = await this.priceSetMoneyAmountRulesService_.retrieve(
+    const record = await this.priceSetMoneyAmountRulesService_.retrieve(
       id,
       config,
       sharedContext
     )
 
     return this.baseRepository_.serialize<PricingTypes.PriceSetMoneyAmountRulesDTO>(
-      ruleType,
+      record,
       {
         populate: true,
       }
@@ -559,7 +559,7 @@ export default class PricingModuleService<
     config: FindConfig<PricingTypes.PriceSetMoneyAmountRulesDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceSetMoneyAmountRulesDTO[]> {
-    const ruleTypes = await this.priceSetMoneyAmountRulesService_.list(
+    const records = await this.priceSetMoneyAmountRulesService_.list(
       filters,
       config,
       sharedContext
@@ -567,7 +567,7 @@ export default class PricingModuleService<
 
     return this.baseRepository_.serialize<
       PricingTypes.PriceSetMoneyAmountRulesDTO[]
-    >(ruleTypes, {
+    >(records, {
       populate: true,
     })
   }
@@ -578,7 +578,7 @@ export default class PricingModuleService<
     config: FindConfig<PricingTypes.PriceSetMoneyAmountRulesDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[PricingTypes.PriceSetMoneyAmountRulesDTO[], number]> {
-    const [ruleTypes, count] =
+    const [records, count] =
       await this.priceSetMoneyAmountRulesService_.listAndCount(
         filters,
         config,
@@ -588,7 +588,7 @@ export default class PricingModuleService<
     return [
       await this.baseRepository_.serialize<
         PricingTypes.PriceSetMoneyAmountRulesDTO[]
-      >(ruleTypes, {
+      >(records, {
         populate: true,
       }),
       count,
@@ -600,14 +600,14 @@ export default class PricingModuleService<
     data: PricingTypes.CreatePriceSetMoneyAmountRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceSetMoneyAmountRulesDTO[]> {
-    const ruleTypes = await this.priceSetMoneyAmountRulesService_.create(
+    const records = await this.priceSetMoneyAmountRulesService_.create(
       data,
       sharedContext
     )
 
     return this.baseRepository_.serialize<
       PricingTypes.PriceSetMoneyAmountRulesDTO[]
-    >(ruleTypes, {
+    >(records, {
       populate: true,
     })
   }
@@ -617,23 +617,23 @@ export default class PricingModuleService<
     data: PricingTypes.UpdatePriceSetMoneyAmountRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceSetMoneyAmountRulesDTO[]> {
-    const ruleTypes = await this.priceSetMoneyAmountRulesService_.update(
+    const records = await this.priceSetMoneyAmountRulesService_.update(
       data,
       sharedContext
     )
 
     return this.baseRepository_.serialize<
       PricingTypes.PriceSetMoneyAmountRulesDTO[]
-    >(ruleTypes, {
+    >(records, {
       populate: true,
     })
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async deletePriceSetMoneyAmountRules(
-    ruleTypes: string[],
+    ids: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.priceSetMoneyAmountRulesService_.delete(ruleTypes, sharedContext)
+    await this.priceSetMoneyAmountRulesService_.delete(ids, sharedContext)
   }
 }
