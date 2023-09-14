@@ -8,6 +8,10 @@ export const supportedLanguages = [
     locale: "en",
     name: "English",
   },
+  {
+    locale: "fr",
+    name: "Français",
+  },
 ]
 
 void i18n

@@ -19,10 +19,15 @@ export default class PriceSetMoneyAmount {
   @Property({ columnType: "text" })
   title!: string
 
-  @ManyToOne(() => PriceSet, { onDelete: "cascade" })
+  @ManyToOne(() => PriceSet, {
+    onDelete: "cascade",
+    index: "IDX_price_set_money_amount_price_set_id",
+  })
   price_set?: PriceSet
 
-  @ManyToOne(() => MoneyAmount, {})
+  @ManyToOne(() => MoneyAmount, {
+    index: "IDX_price_set_money_amount_money_amount_id",
+  })
   money_amount?: MoneyAmount
 
   @BeforeCreate()
