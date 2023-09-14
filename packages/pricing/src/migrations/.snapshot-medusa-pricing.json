@@ -385,7 +385,7 @@
             "price_set_money_amount_id"
           ],
           "composite": false,
-          "keyName": "IDX_price_set_money_amount_price_set_money_amount_id",
+          "keyName": "IDX_price_set_money_amount_rules_price_set_money_amount_id",
           "primary": false,
           "unique": false
         },
@@ -394,7 +394,7 @@
             "rule_type_id"
           ],
           "composite": false,
-          "keyName": "IDX_price_set_money_amount_price_set_rule_type_id",
+          "keyName": "IDX_price_set_money_amount_rules_rule_type_id",
           "primary": false,
           "unique": false
         },

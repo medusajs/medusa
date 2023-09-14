@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20230914195247 extends Migration {
+export class Migration20230914200827 extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "currency" ("code" text not null, "symbol" text not null, "symbol_native" text not null, "name" text not null, constraint "currency_pkey" primary key ("code"));');
@@ -18,8 +18,8 @@ export class Migration20230914195247 extends Migration {
     this.addSql('create index "IDX_rule_type_rule_attribute" on "rule_type" ("rule_attribute");');
 
     this.addSql('create table "price_set_money_amount_rules" ("id" text not null, "price_set_money_amount_id" text not null, "rule_type_id" text not null, "value" text not null, constraint "price_set_money_amount_rules_pkey" primary key ("id"));');
-    this.addSql('create index "IDX_price_set_money_amount_price_set_money_amount_id" on "price_set_money_amount_rules" ("price_set_money_amount_id");');
-    this.addSql('create index "IDX_price_set_money_amount_price_set_rule_type_id" on "price_set_money_amount_rules" ("rule_type_id");');
+    this.addSql('create index "IDX_price_set_money_amount_rules_price_set_money_amount_id" on "price_set_money_amount_rules" ("price_set_money_amount_id");');
+    this.addSql('create index "IDX_price_set_money_amount_rules_rule_type_id" on "price_set_money_amount_rules" ("rule_type_id");');
 
     this.addSql('alter table "money_amount" add constraint "money_amount_currency_code_foreign" foreign key ("currency_code") references "currency" ("code") on update cascade on delete set null;');
 

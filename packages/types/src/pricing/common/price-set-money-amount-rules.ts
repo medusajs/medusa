@@ -17,8 +17,8 @@ export interface CreatePriceSetMoneyAmountRulesDTO {
 
 export interface UpdatePriceSetMoneyAmountRulesDTO {
   id: string
-  price_set_money_amount_id?: string
-  rule_type_id?: string
+  price_set_money_amount?: string
+  rule_type?: string
   value?: string
 }
 

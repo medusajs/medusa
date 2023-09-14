@@ -16,12 +16,12 @@ export default class PriceSetMoneyAmountRules {
   id!: string
 
   @ManyToOne(() => PriceSetMoneyAmount, {
-    index: "IDX_price_set_money_amount_price_set_money_amount_id",
+    index: "IDX_price_set_money_amount_rules_price_set_money_amount_id",
   })
   price_set_money_amount?: PriceSetMoneyAmount | string
 
   @ManyToOne(() => RuleType, {
-    index: "IDX_price_set_money_amount_price_set_rule_type_id",
+    index: "IDX_price_set_money_amount_rules_rule_type_id",
   })
   rule_type?: RuleType | string
 

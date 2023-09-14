@@ -12,7 +12,7 @@ import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
-describe("PriceSetMoneyAmountRules Service", () => {
+describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
   let service: IPricingModuleService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
@@ -33,7 +33,6 @@ describe("PriceSetMoneyAmountRules Service", () => {
     await createMoneyAmounts(testManager)
     await createPriceSets(testManager)
     await createRuleTypes(testManager)
-    await createPriceSetMoneyAmounts(testManager)
     await createPriceSetMoneyAmounts(testManager)
     await createPriceSetMoneyAmountRules(testManager)
   })

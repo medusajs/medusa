@@ -38,7 +38,6 @@ describe("PriceSetMoneyAmountRules Service", () => {
     await createPriceSets(testManager)
     await createRuleTypes(testManager)
     await createPriceSetMoneyAmounts(testManager)
-    await createPriceSetMoneyAmounts(testManager)
     await createPriceSetMoneyAmountRules(testManager)
   })
 
@@ -222,12 +221,27 @@ describe("PriceSetMoneyAmountRules Service", () => {
         {
           id,
           value: "New value",
+          price_set_money_amount: "price-set-money-amount-CAD",
+          rule_type: "rule-type-2",
         },
       ])
 
-      const psmar = await service.retrieve(id)
+      const psmar = await service.retrieve(id, {
+        relations: ["price_set_money_amount", "rule_type"],
+      })
 
-      expect(psmar.value).toEqual("New value")
+      expect(psmar).toEqual(
+        expect.objectContaining({
+          id,
+          value: "New value",
+          price_set_money_amount: expect.objectContaining({
+            id: "price-set-money-amount-CAD",
+          }),
+          rule_type: expect.objectContaining({
+            id: "rule-type-2",
+          }),
+        })
+      )
     })
 
     it("should throw an error when a id does not exist", async () => {
