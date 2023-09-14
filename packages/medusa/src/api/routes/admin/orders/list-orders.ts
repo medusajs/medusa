@@ -1,6 +1,6 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
-
 import { Type } from "class-transformer"
+import { IsNumber, IsOptional, IsString } from "class-validator"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { OrderService } from "../../../../services"
 import { AdminListOrdersSelector } from "../../../../types/orders"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
@@ -198,13 +198,23 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  */
 export default async (req, res) => {
   const orderService: OrderService = req.scope.resolve("orderService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
   const { skip, take } = req.listConfig
 
-  const [orders, count] = await orderService.listAndCount(
-    req.filterableFields,
-    req.listConfig
+  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
+    IsolateProductDomain.key
   )
+
+  let promise: Promise<any>
+
+  if (isIsolateProductDomain) {
+    promise = listAndCountOrders(req, req.filterableFields, req.listConfig)
+  } else {
+    promise = orderService.listAndCount(req.filterableFields, req.listConfig)
+  }
+
+  const [orders, count] = await promise
 
   const data = cleanResponseData(orders, req.allowedProperties)
 
@@ -214,6 +224,90 @@ export default async (req, res) => {
     offset: skip,
     limit: take,
   })
+}
+
+async function listAndCountOrders(req, filterableFields, listConfig) {
+  // TODO: Add support for fields/expands
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = {
+    filters: filterableFields,
+    sort: listConfig.order,
+    skip: listConfig.skip,
+    take: listConfig.take,
+  }
+
+  const query = {
+    orders: {
+      __args: variables,
+      fields: [
+        "id",
+        "status",
+        "display_id",
+        "created_at",
+        "email",
+        "fulfillment_status",
+        "payment_status",
+        "total",
+        "currency_code",
+      ],
+      customer: {
+        fields: [
+          "id",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "email",
+          "first_name",
+          "last_name",
+          "billing_address_id",
+          "phone",
+          "has_account",
+          "metadata",
+        ],
+      },
+      sales_channel: {
+        fields: [
+          "id",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "name",
+          "description",
+          "is_disabled",
+          "metadata",
+        ],
+      },
+      shipping_address: {
+        fields: [
+          "id",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "customer_id",
+          "company",
+          "first_name",
+          "last_name",
+          "address_1",
+          "address_2",
+          "city",
+          "country_code",
+          "province",
+          "postal_code",
+          "phone",
+          "metadata",
+        ],
+      },
+    },
+  }
+
+  const {
+    rows: orders,
+    metadata: { count },
+  } = await remoteQuery(query)
+
+  return [orders, count]
 }
 
 export class AdminGetOrdersParams extends AdminListOrdersSelector {

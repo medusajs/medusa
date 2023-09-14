@@ -74,4 +74,40 @@ export const joinerConfig: ModuleJoinerConfig[] = [
       },
     ],
   },
+  {
+    serviceName: "orderService",
+    primaryKeys: ["id"],
+    linkableKeys: ["order_id"],
+    alias: [
+      {
+        name: "order",
+      },
+      {
+        name: "orders",
+      },
+    ],
+    relationships: [
+      {
+        serviceName: Modules.PRODUCT,
+        primaryKey: "id",
+        foreignKey: "variant_id",
+        alias: "variant",
+        args: {
+          methodSuffix: "Variants",
+        },
+      },
+      {
+        serviceName: "regionService",
+        primaryKey: "id",
+        foreignKey: "region_id",
+        alias: "region",
+      },
+      {
+        serviceName: "customerService",
+        primaryKey: "id",
+        foreignKey: "customer_id",
+        alias: "customer",
+      },
+    ],
+  },
 ]
