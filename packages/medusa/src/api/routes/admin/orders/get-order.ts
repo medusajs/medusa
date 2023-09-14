@@ -94,6 +94,9 @@ async function getOrder(req, id: string, context: TotalsContext) {
   }
 
   const expandedVariant = {
+    __args: {
+      withDeleted: true,
+    },
     fields: [
       "id",
       "created_at",
