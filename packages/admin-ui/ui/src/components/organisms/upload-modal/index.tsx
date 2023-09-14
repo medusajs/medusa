@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import { ReactNode, useState } from "react"
 import { useHref } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 import Tooltip from "../../atoms/tooltip"
 import Button from "../../fundamentals/button"
@@ -83,16 +84,18 @@ type UploadSummaryProps = {
  */
 function UploadSummary(props: UploadSummaryProps) {
   const { creations, updates, type } = props
+  const { t } = useTranslation()
   return (
     <div className="flex gap-6">
       <div className="text-small text-grey-90 flex items-center">
         <CheckCircleIcon color="#9CA3AF" className="mr-2" />
-        <span className="font-semibold"> {creations || 0}&nbsp;</span> new{" "}
-        {type}
+        <span className="font-semibold"> {creations || 0}&nbsp;</span>{" "}
+        {t("upload-modal-new", "new")} {type}
       </div>
       <div className="text-small text-grey-90 flex items-center">
         <WarningCircleIcon fill="#9CA3AF" className="mr-2" />
-        <span className="font-semibold">{updates || 0}&nbsp;</span> updates
+        <span className="font-semibold">{updates || 0}&nbsp;</span>{" "}
+        {t("upload-modal-updates", "updates")}
       </div>
     </div>
   )
@@ -106,6 +109,7 @@ type DropAreaProps = {
  * Component handles an CSV file drop.
  */
 function DropArea(props: DropAreaProps) {
+  const { t } = useTranslation()
   const [isDragOver, setIsDragOver] = useState(false)
 
   const handleFileDrop = (e) => {
@@ -139,11 +143,11 @@ function DropArea(props: DropAreaProps) {
       )}
     >
       <span className="text-grey-50 text-small">
-        Drop your file here, or
+        {t("upload-modal-drop-your-file-here-or", "Drop your file here, or")}
         <a className="text-violet-60">
           <label className="cursor-pointer" htmlFor="upload-form-file">
             {" "}
-            click to browse.
+            {t("upload-modal-click-to-browse", "click to browse.")}
           </label>
           <input
             type="file"
@@ -156,7 +160,10 @@ function DropArea(props: DropAreaProps) {
         </a>
       </span>
       <span className="text-grey-40 text-small">
-        Only .csv files are supported.
+        {t(
+          "upload-modal-only-csv-files-are-supported",
+          "Only .csv files are supported."
+        )}
       </span>
     </div>
   )
@@ -203,6 +210,7 @@ function UploadModal(props: UploadModalProps) {
     type,
   } = props
   const [uploadFile, setUploadFile] = useState<File>()
+  const { t } = useTranslation()
 
   const { name, size } = uploadFile || {}
 
@@ -222,7 +230,7 @@ function UploadModal(props: UploadModalProps) {
         <Modal.Content>
           <div className="flex justify-between">
             <span className="text-grey-90 inter-large-semibold py-4 text-2xl">
-              Import {fileTitle}
+              Import {{ fileTitle }}
             </span>
             <button onClick={onClose} className="text-grey-50 cursor-pointer">
               <CrossIcon size={20} />
@@ -230,7 +238,9 @@ function UploadModal(props: UploadModalProps) {
           </div>
 
           <div className="text-grey-90 inter-large-semibold mb-1 text-base">
-            Import {fileTitle}
+            {t("upload-modal-import-file-title", "Import {{fileTitle}}", {
+              fileTitle,
+            })}
           </div>
 
           <p className="text-grey-50 mb-4 text-base">{description1Text}</p>
@@ -293,7 +303,7 @@ function UploadModal(props: UploadModalProps) {
                 size="small"
                 onClick={onClose}
               >
-                Cancel
+                {t("upload-modal-cancel", "Cancel")}
               </Button>
 
               <Button
@@ -303,7 +313,7 @@ function UploadModal(props: UploadModalProps) {
                 className="text-small"
                 onClick={onSubmit}
               >
-                Import List
+                {t("upload-modal-import-list", "Import List")}
               </Button>
             </div>
           </div>

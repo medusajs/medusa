@@ -86,13 +86,13 @@ describe("Promotions", () => {
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price1",
+            id: "test-price-1",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price-3",
             region_id: "test-region",
             currency_code: "usd",
             price_list_id: "pl",
@@ -141,13 +141,13 @@ describe("Promotions", () => {
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price1",
+            id: "test-price-1",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price-3",
             region_id: "test-region",
             currency_code: "usd",
             price_list_id: "pl",
@@ -436,13 +436,13 @@ describe("Promotions", () => {
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price1",
+            id: "test-price-1",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price-3",
             region_id: "test-region",
             currency_code: "usd",
             price_list_id: "pl",

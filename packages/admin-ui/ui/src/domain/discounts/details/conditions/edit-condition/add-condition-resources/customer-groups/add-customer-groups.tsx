@@ -1,5 +1,7 @@
 import { useAdminCustomerGroups } from "medusa-react"
 import { useContext, useState } from "react"
+import { useTranslation } from "react-i18next"
+
 import Modal from "../../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../../hooks/use-query-filters"
@@ -14,6 +16,7 @@ import Button from "../../../../../../../components/fundamentals/button"
 import { LayeredModalContext } from "../../../../../../../components/molecules/modal/layered-modal"
 
 const AddCustomerGroupsConditionsScreen = () => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
 
   const { pop } = useContext(LayeredModalContext)
@@ -38,7 +41,7 @@ const AddCustomerGroupsConditionsScreen = () => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search...",
+            searchPlaceholder: t("customer-groups-search", "Search..."),
           }}
           resourceName="Groups"
           totalCount={count ?? 0}
@@ -55,21 +58,21 @@ const AddCustomerGroupsConditionsScreen = () => {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            Cancel
+            {t("customer-groups-cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndGoBack(selectedResources, () => refetch())}
           >
-            Save and go back
+            {t("customer-groups-save-and-go-back", "Save and go back")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndClose(selectedResources)}
           >
-            Save and close
+            {t("customer-groups-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

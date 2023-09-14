@@ -222,14 +222,14 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       })
 
       const manager = dbConnection.manager
-      categoryWithProduct = await manager.create(ProductCategory, {
+      categoryWithProduct = manager.create(ProductCategory, {
         id: categoryWithProductId,
         name: "category with Product",
         products: [{ id: testProductId }],
       })
       await manager.save(categoryWithProduct)
 
-      categoryWithoutProduct = await manager.create(ProductCategory, {
+      categoryWithoutProduct = manager.create(ProductCategory, {
         id: categoryWithoutProductId,
         name: "category without product",
       })
