@@ -43,6 +43,7 @@ import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
 import { validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /admin/products
@@ -259,14 +260,139 @@ export default async (req, res) => {
     })
   }
 
-  const rawProduct = await productService.retrieve(product.id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  let rawProduct
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    rawProduct = await getProductWithIsolatedProductModule(req, product.id)
+  } else {
+    rawProduct = await productService.retrieve(product.id, {
+      select: defaultAdminProductFields,
+      relations: defaultAdminProductRelations,
+    })
+  }
 
   const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product: pricedProduct })
+}
+
+async function getProductWithIsolatedProductModule(req, id) {
+  // TODO: Add support for fields/expands
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id }
+
+  const query = `
+      query ($id: String!) {
+        product (id: $id) {
+          ${defaultAdminProductFields.join("\n")}
+          
+          images {
+            id
+            created_at
+            updated_at
+            deleted_at
+            url
+            metadata
+          }
+          
+          tags {
+            id
+            created_at
+            updated_at
+            deleted_at
+            value
+          }
+          
+          type {
+            id
+            created_at
+            updated_at
+            deleted_at
+            value
+          }
+          
+          collection {
+            title
+            handle
+            id
+            created_at
+            updated_at
+            deleted_at
+          }
+          
+          options {
+            id
+            created_at
+            updated_at
+            deleted_at
+            title
+            product_id
+            metadata
+            values {
+              id
+              created_at
+              updated_at
+              deleted_at
+              value
+              option_id
+              variant_id
+              metadata
+            }
+          }
+          
+          variants {
+            id
+            created_at
+            updated_at
+            deleted_at
+            title
+            product_id
+            sku
+            barcode
+            ean
+            upc
+            variant_rank
+            inventory_quantity
+            allow_backorder
+            manage_inventory
+            hs_code
+            origin_country
+            mid_code
+            material
+            weight
+            length
+            height
+            width
+            metadata
+            options {
+              id
+              created_at
+              updated_at
+              deleted_at
+              value
+              option_id
+              variant_id
+              metadata
+            }
+          }
+          
+          profile {
+            id
+            created_at
+            updated_at
+            deleted_at
+            name
+            type
+          }
+        } 
+      }
+    `
+
+  const [product] = await remoteQuery(query, variables)
+
+  product.profile_id = product.profile?.id
+
+  return product
 }
 
 class ProductVariantOptionReq {
