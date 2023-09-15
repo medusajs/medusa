@@ -19,7 +19,7 @@ export const supportedLanguages = [
 ]
 
 const backendUrl = window.location.origin
-const adminPath = process.env.ADMIN_PATH ? `${process.env.ADMIN_PATH}` : ""
+const adminPath = process.env.ADMIN_PATH ? `${process.env.ADMIN_PATH}/` : "/"
 
 const pathToLoadFrom = `${backendUrl}${adminPath}locales/{{lng}}/{{ns}}.json`
 
