@@ -1,5 +1,6 @@
 "use client"
 
+import { usePageLoading } from "docs-ui"
 import { OpenAPIV3 } from "openapi-types"
 import {
   ReactNode,
@@ -10,7 +11,6 @@ import {
   useReducer,
   useState,
 } from "react"
-import { usePageLoading } from "./page-loading"
 
 export enum SidebarItemSections {
   TOP = "top",

@@ -1,8 +1,6 @@
 "use client"
 
-import { Button } from "docs-ui"
-import { useModal } from "../../../providers/modal"
-import { usePageLoading } from "../../../providers/page-loading"
+import { Button, useModal, usePageLoading } from "docs-ui"
 import DetailedFeedback from "../../DetailedFeedback"
 
 const FeedbackModal = () => {

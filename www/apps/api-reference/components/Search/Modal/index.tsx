@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
 import { InstantSearch, SearchBox } from "react-instantsearch"
-import Modal from "../../Modal"
 import clsx from "clsx"
 import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
 import IconXMark from "../../Icons/XMark"
@@ -14,9 +13,14 @@ import checkArraySameElms from "../../../utils/array-same-elms"
 import SearchHitsWrapper from "../Hits"
 import { OptionType } from "../../../hooks/use-select"
 import SelectBadge from "../../Select/Badge"
-import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
 import { findNextSibling, findPrevSibling } from "../../../utils/dom-utils"
-import { Button, Kbd } from "docs-ui"
+import {
+  Button,
+  Kbd,
+  Modal,
+  useKeyboardShortcut,
+  usePageLoading,
+} from "docs-ui"
 
 const algoliaClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || "temp",
@@ -82,6 +86,7 @@ const SearchModal = () => {
   }, [])
   const { isOpen, setIsOpen, defaultFilters } = useSearch()
   const [filters, setFilters] = useState<string[]>(defaultFilters)
+  const { isLoading } = usePageLoading()
   const formattedFilters: string = useMemo(() => {
     let formatted = ""
     filters.forEach((filter) => {
@@ -197,6 +202,7 @@ const SearchModal = () => {
     action: handleKeyAction,
     checkEditing: false,
     preventDefault: false,
+    isLoading,
   })
 
   const handleKeyDown = useCallback(
@@ -243,7 +249,7 @@ const SearchModal = () => {
       modalContainerClassName="w-screen h-screen !rounded-none md:!rounded-lg"
       open={isOpen}
       onClose={() => setIsOpen(false)}
-      ref={modalRef}
+      passedRef={modalRef}
     >
       <InstantSearch
         indexName={process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME}

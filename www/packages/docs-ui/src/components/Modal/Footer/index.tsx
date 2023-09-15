@@ -1,13 +1,18 @@
+import React from "react"
 import clsx from "clsx"
 import { Button, ButtonProps } from "docs-ui"
 
-type ModalFooterProps = {
+export type ModalFooterProps = {
   actions?: ButtonProps[]
   children?: React.ReactNode
   className?: string
 }
 
-const ModalFooter = ({ actions, children, className }: ModalFooterProps) => {
+export const ModalFooter = ({
+  actions,
+  children,
+  className,
+}: ModalFooterProps) => {
   return (
     <div
       className={clsx(
@@ -24,5 +29,3 @@ const ModalFooter = ({ actions, children, className }: ModalFooterProps) => {
     </div>
   )
 }
-
-export default ModalFooter

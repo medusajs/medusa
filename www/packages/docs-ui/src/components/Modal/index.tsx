@@ -1,10 +1,16 @@
+"use client"
+
 import clsx from "clsx"
-import React, { forwardRef, useCallback, useEffect, useRef } from "react"
-import { useModal } from "../../providers/modal"
-import ModalHeader from "./Header"
-import ModalFooter from "./Footer"
-import useKeyboardShortcut from "../../hooks/use-keyboard-shortcut"
+import React, { useCallback, useEffect, useRef } from "react"
+import { useModal } from "@/providers"
+import { ModalHeader } from "./Header"
+import { ModalFooter } from "./Footer"
+import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
 import { ButtonProps } from "docs-ui"
+
+type Ref =
+  | React.MutableRefObject<HTMLDialogElement | null>
+  | ((instance: HTMLDialogElement | null) => void)
 
 export type ModalProps = {
   className?: string
@@ -15,23 +21,22 @@ export type ModalProps = {
   onClose?: React.ReactEventHandler<HTMLDialogElement>
   open?: boolean
   footerContent?: React.ReactNode
+  passedRef?: Ref
 } & Omit<React.ComponentProps<"dialog">, "ref">
 
-const Modal = forwardRef<HTMLDialogElement, ModalProps>(function Modal(
-  {
-    className,
-    title,
-    actions,
-    children,
-    contentClassName,
-    modalContainerClassName,
-    onClose,
-    open = true,
-    footerContent,
-    ...props
-  },
-  passedRef
-) {
+export const Modal = ({
+  className,
+  title,
+  actions,
+  children,
+  contentClassName,
+  modalContainerClassName,
+  onClose,
+  open = true,
+  footerContent,
+  passedRef,
+  ...props
+}: ModalProps) => {
   const { closeModal } = useModal()
   const ref = useRef<HTMLDialogElement | null>(null)
 
@@ -86,7 +91,7 @@ const Modal = forwardRef<HTMLDialogElement, ModalProps>(function Modal(
       className={clsx(
         "fixed top-0 left-0 flex h-screen w-screen items-center justify-center",
         "bg-medusa-bg-overlay dark:bg-medusa-bg-overlay-dark z-[500]",
-        "hidden open:flex",
+        "hidden open:flex border-0 p-0",
         className
       )}
       onClick={handleClick}
@@ -112,6 +117,4 @@ const Modal = forwardRef<HTMLDialogElement, ModalProps>(function Modal(
       </div>
     </dialog>
   )
-})
-
-export default Modal
+}

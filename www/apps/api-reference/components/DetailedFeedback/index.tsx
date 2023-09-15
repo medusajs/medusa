@@ -1,9 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useModal } from "../../providers/modal"
-import ModalFooter from "../Modal/Footer"
-import { Label, TextArea, useAnalytics } from "docs-ui"
+import { Label, TextArea, useAnalytics, useModal, ModalFooter } from "docs-ui"
 
 const DetailedFeedback = () => {
   const [improvementFeedback, setImprovementFeedback] = useState("")

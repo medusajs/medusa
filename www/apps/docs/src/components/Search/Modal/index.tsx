@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
 import { InstantSearch, SearchBox } from "react-instantsearch"
-import Modal from "../../Modal"
 import clsx from "clsx"
 import SearchEmptyQueryBoundary from "../EmptyQueryBoundary"
 import SearchSuggestions from "../Suggestions"
 import checkArraySameElms from "../../../utils/array-same-elms"
 import SearchHitsWrapper from "../Hits"
-import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
 import { OptionType } from "@medusajs/docs"
 import { useSearch } from "../../../providers/Search"
 import { findNextSibling, findPrevSibling } from "../../../utils/dom-utils"
@@ -16,7 +14,7 @@ import IconXMark from "../../../theme/Icon/XMark"
 import SelectBadge from "../../Select/Badge"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import { ThemeConfig } from "@medusajs/docs"
-import { Button, Kbd } from "docs-ui"
+import { Button, Kbd, Modal, useKeyboardShortcut } from "docs-ui"
 
 const SearchModal = () => {
   const modalRef = useRef<HTMLDialogElement | null>(null)
@@ -219,7 +217,7 @@ const SearchModal = () => {
       modalContainerClassName="w-screen h-screen !rounded-none md:!rounded-lg"
       open={isOpen}
       onClose={() => setIsOpen(false)}
-      ref={modalRef}
+      passedRef={modalRef}
     >
       <InstantSearch
         indexName={algolia.indexNames.docs}

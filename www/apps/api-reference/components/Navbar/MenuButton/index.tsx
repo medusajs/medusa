@@ -5,7 +5,7 @@ import { useSidebar } from "@/providers/sidebar"
 import IconSidebar from "../../Icons/Sidebar"
 import clsx from "clsx"
 import IconXMark from "../../Icons/XMark"
-import { usePageLoading } from "../../../providers/page-loading"
+import { usePageLoading } from "docs-ui"
 
 type NavbarMenuButtonProps = {
   buttonProps?: NavbarIconButtonProps

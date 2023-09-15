@@ -1,8 +1,10 @@
+"use client"
+
 import React, { useContext, useState } from "react"
 import { createContext } from "react"
-import Modal, { ModalProps } from "../../components/Modal"
+import { Modal, type ModalProps } from "@/components"
 
-type ModalContextType = {
+export type ModalContextType = {
   modalProps: ModalProps | null
   setModalProps: (value: ModalProps | null) => void
   closeModal: () => void
@@ -10,11 +12,11 @@ type ModalContextType = {
 
 const ModalContext = createContext<ModalContextType | null>(null)
 
-type ModalProviderProps = {
+export type ModalProviderProps = {
   children?: React.ReactNode
 }
 
-const ModalProvider = ({ children }: ModalProviderProps) => {
+export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [modalProps, setModalProps] = useState<ModalProps | null>(null)
 
   const closeModal = () => {
@@ -39,8 +41,6 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
     </ModalContext.Provider>
   )
 }
-
-export default ModalProvider
 
 export const useModal = () => {
   const context = useContext(ModalContext)

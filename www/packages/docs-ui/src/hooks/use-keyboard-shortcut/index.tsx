@@ -1,19 +1,23 @@
+"use client"
+
 import { useCallback, useEffect } from "react"
 
-type useKeyboardShortcutOptions = {
+export type useKeyboardShortcutOptions = {
   metakey?: boolean
   shortcutKeys: string[]
   action: (e: KeyboardEvent) => void
   checkEditing?: boolean
   preventDefault?: boolean
+  isLoading?: boolean
 }
 
-const useKeyboardShortcut = ({
+export const useKeyboardShortcut = ({
   metakey = true,
   shortcutKeys,
   action,
   checkEditing = true,
   preventDefault = true,
+  isLoading = false,
 }: useKeyboardShortcutOptions) => {
   function isEditingContent(event: KeyboardEvent) {
     const element = event.target as HTMLElement
@@ -38,6 +42,9 @@ const useKeyboardShortcut = ({
 
   const sidebarShortcut = useCallback(
     (e: KeyboardEvent) => {
+      if (isLoading) {
+        return
+      }
       if (
         (!metakey || e.metaKey || e.ctrlKey) &&
         checkKeysPressed(e.key) &&
@@ -49,7 +56,7 @@ const useKeyboardShortcut = ({
         action(e)
       }
     },
-    [metakey, checkKeysPressed, checkEditing, action, preventDefault]
+    [isLoading, metakey, checkKeysPressed, checkEditing, action, preventDefault]
   )
 
   useEffect(() => {
@@ -60,5 +67,3 @@ const useKeyboardShortcut = ({
     }
   }, [sidebarShortcut])
 }
-
-export default useKeyboardShortcut

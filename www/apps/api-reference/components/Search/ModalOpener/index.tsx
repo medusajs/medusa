@@ -5,9 +5,13 @@ import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
 import { MouseEvent, useMemo } from "react"
 import { useSearch } from "../../../providers/search"
 import { useMobile } from "../../../providers/mobile"
-import { usePageLoading } from "../../../providers/page-loading"
-import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
-import { Button, InputText, Kbd } from "docs-ui"
+import {
+  Button,
+  InputText,
+  Kbd,
+  useKeyboardShortcut,
+  usePageLoading,
+} from "docs-ui"
 
 const SearchModalOpener = () => {
   const { setIsOpen } = useSearch()
@@ -21,6 +25,7 @@ const SearchModalOpener = () => {
   useKeyboardShortcut({
     shortcutKeys: ["k"],
     action: () => setIsOpen((prev) => !prev),
+    isLoading,
   })
 
   const handleOpen = (

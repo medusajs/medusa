@@ -1,13 +1,14 @@
+import React from "react"
 import clsx from "clsx"
-import { useModal } from "../../../providers/modal"
-import IconXMark from "../../Icons/XMark"
+import { useModal } from "@/providers"
 import { Button } from "docs-ui"
+import { XMark } from "@medusajs/icons"
 
-type ModalHeaderProps = {
+export type ModalHeaderProps = {
   title?: string
 }
 
-const ModalHeader = ({ title }: ModalHeaderProps) => {
+export const ModalHeader = ({ title }: ModalHeaderProps) => {
   const { closeModal } = useModal()
 
   return (
@@ -29,10 +30,8 @@ const ModalHeader = ({ title }: ModalHeaderProps) => {
         className="cursor-pointer"
         onClick={() => closeModal()}
       >
-        <IconXMark />
+        <XMark />
       </Button>
     </div>
   )
 }
-
-export default ModalHeader
