@@ -25,6 +25,8 @@ import {
   RuleTypeService,
 } from "@services"
 
+import { EntityManager } from "@mikro-orm/postgresql"
+
 import {
   InjectManager,
   InjectTransactionManager,
@@ -99,6 +101,19 @@ export default class PricingModuleService<
     const priceSetFilters: PricingTypes.FilterablePriceSetProps = {
       id: pricingFilters.id,
     }
+
+    const manager = sharedContext.manager as EntityManager
+
+    const qb = manager
+      .createQueryBuilder(PriceSet, "ps")
+      .select(["ps.*"])
+      .where({ id: { $in: pricingFilters.id } })
+      .leftJoin("ps.money_amounts", "ma")
+      .addSelect("ma.amount as ma__amount")
+
+    console.log("qb.getQuery - ", await qb.getQuery())
+    const results = await qb.getResult()
+    console.log(JSON.stringify(results))
 
     const priceSets = await this.list(
       priceSetFilters,

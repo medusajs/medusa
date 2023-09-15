@@ -70,12 +70,15 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("calculatePrices", () => {
-    it("retrieves the calculated prices when no context is set", async () => {
+    it.only("retrieves the calculated prices when no context is set", async () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-1", "price-set-2"] },
         {}
       )
-
+      console.log(
+        "priceSetsResult - ",
+        JSON.stringify(priceSetsResult, null, 2)
+      )
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-1",
