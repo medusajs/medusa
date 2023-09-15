@@ -1,10 +1,11 @@
-import { useCallback, useRef, useState } from "react"
-import useSelect from "../../../hooks/use-select"
-import clsx from "clsx"
-import SelectDropdown from "../Dropdown"
-import { SelectProps } from "../types"
+"use client"
 
-const SelectBadge = ({
+import React, { useCallback, useRef, useState } from "react"
+import { useSelect } from "@/hooks"
+import clsx from "clsx"
+import { SelectDropdown, SelectProps } from ".."
+
+export const SelectBadge = ({
   value,
   options,
   setSelected,
@@ -55,7 +56,7 @@ const SelectBadge = ({
           className={clsx(
             "text-medusa-fg-base dark:text-medusa-fg-base-dark",
             "text-compact-x-small-plus",
-            "inline-block w-[60px] max-w-[60px] overflow-hidden text-ellipsis"
+            "inline-block max-w-[60px] overflow-hidden text-ellipsis"
           )}
         >
           {str}
@@ -79,7 +80,7 @@ const SelectBadge = ({
     <div className={clsx("relative", className)}>
       <div
         className={clsx(
-          "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border",
+          "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border border-solid",
           "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-subtle-hover-dark",
           "py-0.25 h-fit cursor-pointer px-0.5",
           "flex items-center gap-[6px] whitespace-nowrap",
@@ -122,7 +123,7 @@ const SelectBadge = ({
         handleSelectAll={handleSelectAll}
         handleChange={handleChange}
         parentRef={ref}
-        ref={dropdownRef}
+        passedRef={dropdownRef}
         className={clsx(
           "!top-[unset] !bottom-full",
           open && "!-translate-y-0.5"

@@ -17,12 +17,6 @@ const config = {
   organizationName: "medusajs",
   projectName: "medusajs/www",
   plugins: [
-    // [
-    //   "docusaurus-plugin-segment",
-    //   {
-    //     apiKey: process.env.SEGMENT_API_KEY || "temp",
-    //   },
-    // ],
     require.resolve("docusaurus-plugin-image-zoom"),
     async function tailwindPlugin() {
       return {
@@ -47,8 +41,8 @@ const config = {
       appId: process.env.ALGOLIA_APP_ID || "temp",
       apiKey: process.env.ALGOLIA_API_KEY || "temp",
       indexNames: {
-        docs: process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME,
-        api: process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME,
+        docs: process.env.DOCS_ALGOLIA_INDEX_NAME,
+        api: process.env.API_ALGOLIA_INDEX_NAME,
       },
       filters: [
         {

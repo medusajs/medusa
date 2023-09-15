@@ -12,12 +12,12 @@ import { useSearch } from "../../../providers/search"
 import checkArraySameElms from "../../../utils/array-same-elms"
 import SearchHitsWrapper from "../Hits"
 import { OptionType } from "../../../hooks/use-select"
-import SelectBadge from "../../Select/Badge"
 import { findNextSibling, findPrevSibling } from "../../../utils/dom-utils"
 import {
   Button,
   Kbd,
   Modal,
+  SelectBadge,
   useKeyboardShortcut,
   usePageLoading,
 } from "docs-ui"

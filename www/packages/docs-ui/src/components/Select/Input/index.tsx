@@ -1,14 +1,13 @@
-import React from "react"
-import clsx from "clsx"
-import { useRef, useState } from "react"
-import useSelect from "../../../hooks/use-select"
-import SelectDropdown from "../Dropdown"
-import { SelectProps } from "../types"
-import IconChevronUpDown from "../../../theme/Icon/ChevronUpDown"
-import IconXMarkMini from "../../../theme/Icon/XMarkMini"
-import { Badge } from "docs-ui"
+"use client"
 
-const SelectInput = ({
+import React, { useRef, useState } from "react"
+import clsx from "clsx"
+import { useSelect } from "@/hooks"
+import { SelectDropdown, SelectProps } from ".."
+import { Badge } from "docs-ui"
+import { ChevronUpDown, XMarkMini } from "@medusajs/icons"
+
+export const SelectInput = ({
   value,
   options,
   setSelected,
@@ -82,8 +81,8 @@ const SelectInput = ({
             {(value as string[]).length}
           </span>
           {showClearButton && (
-            <IconXMarkMini
-              iconColorClassName="stroke-medusa-tag-neutral-icon dark:stroke-medusa-tag-neutral-icon-dark"
+            <XMarkMini
+              className="text-medusa-tag-neutral-icon dark:text-medusa-tag-neutral-icon-dark"
               onClick={(e) => {
                 e.stopPropagation()
                 setSelected?.([])
@@ -102,7 +101,7 @@ const SelectInput = ({
           ? selectedValues[0].label
           : props.placeholder}
       </span>
-      <IconChevronUpDown iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+      <ChevronUpDown className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
       <input
         type="hidden"
         name={props.name}
@@ -119,10 +118,8 @@ const SelectInput = ({
         handleSelectAll={handleSelectAll}
         handleChange={handleChange}
         parentRef={ref}
-        ref={dropdownRef}
+        passedRef={dropdownRef}
       />
     </div>
   )
 }
-
-export default SelectInput

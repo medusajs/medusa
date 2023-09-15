@@ -15,10 +15,13 @@
     "module": "ESNext",
     "target": "es6",
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
   },
   "include": [
-    "src/**/*",
-    "rollup.config.js"
+    "src/**/*"
   ]
 }

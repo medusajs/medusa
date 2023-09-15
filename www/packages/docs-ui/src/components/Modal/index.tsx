@@ -6,11 +6,8 @@ import { useModal } from "@/providers"
 import { ModalHeader } from "./Header"
 import { ModalFooter } from "./Footer"
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut"
-import { ButtonProps } from "docs-ui"
-
-type Ref =
-  | React.MutableRefObject<HTMLDialogElement | null>
-  | ((instance: HTMLDialogElement | null) => void)
+import { ButtonProps } from "@/components"
+import { Ref } from "@/types"
 
 export type ModalProps = {
   className?: string
@@ -21,7 +18,7 @@ export type ModalProps = {
   onClose?: React.ReactEventHandler<HTMLDialogElement>
   open?: boolean
   footerContent?: React.ReactNode
-  passedRef?: Ref
+  passedRef?: Ref<HTMLDialogElement>
 } & Omit<React.ComponentProps<"dialog">, "ref">
 
 export const Modal = ({
