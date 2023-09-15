@@ -31,7 +31,7 @@ export async function createPriceRules(
         {
           id: priceRuleDataClone.rule_type_id,
           name: "rule 1",
-          key_value: "region_id",
+          rule_attribute: "region_id",
         },
       ])
 
