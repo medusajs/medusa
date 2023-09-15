@@ -7893,7 +7893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"algoliasearch@npm:^4.13.1, algoliasearch@npm:^4.19.1":
+"algoliasearch@npm:^4.13.1, algoliasearch@npm:^4.19.1, algoliasearch@npm:^4.20.0":
   version: 4.20.0
   resolution: "algoliasearch@npm:4.20.0"
   dependencies:
@@ -10040,12 +10040,14 @@ __metadata:
     "@segment/analytics-next": ^1.55.0
     "@types/react": ^17.0.1
     "@types/react-dom": ^17.0.1
+    algoliasearch: ^4.20.0
     clsx: ^2.0.0
     cpy-cli: ^5.0.0
     eslint-config-docs: "*"
     next: latest
     react: ^17.0.1
     react-dom: ^17.0.1
+    react-instantsearch: ^7.0.3
     react-tooltip: ^5.21.3
     react-transition-group: ^4.4.5
     react-uuid: ^2.0.0
@@ -17235,7 +17237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-instantsearch@npm:^7.0.1":
+"react-instantsearch@npm:^7.0.1, react-instantsearch@npm:^7.0.3":
   version: 7.0.3
   resolution: "react-instantsearch@npm:7.0.3"
   dependencies:

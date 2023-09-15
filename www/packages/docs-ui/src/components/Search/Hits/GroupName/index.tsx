@@ -1,10 +1,11 @@
+import React from "react"
 import clsx from "clsx"
 
-type SearchHitGroupNameProps = {
+export type SearchHitGroupNameProps = {
   name: string
 }
 
-const SearchHitGroupName = ({ name }: SearchHitGroupNameProps) => {
+export const SearchHitGroupName = ({ name }: SearchHitGroupNameProps) => {
   return (
     <span
       className={clsx(
@@ -17,5 +18,3 @@ const SearchHitGroupName = ({ name }: SearchHitGroupNameProps) => {
     </span>
   )
 }
-
-export default SearchHitGroupName

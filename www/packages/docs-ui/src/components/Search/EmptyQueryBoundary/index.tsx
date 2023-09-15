@@ -1,21 +1,22 @@
+"use client"
+
+import React from "react"
 import { useInstantSearch } from "react-instantsearch"
 
-type SearchEmptyQueryBoundaryProps = {
+export type SearchEmptyQueryBoundaryProps = {
   children: React.ReactNode
   fallback: React.ReactNode
 }
 
-const SearchEmptyQueryBoundary = ({
+export const SearchEmptyQueryBoundary = ({
   children,
   fallback,
 }: SearchEmptyQueryBoundaryProps) => {
   const { indexUiState } = useInstantSearch()
 
   if (!indexUiState.query) {
-    return fallback
+    return <>{fallback}</>
   }
 
-  return children
+  return <>{children}</>
 }
-
-export default SearchEmptyQueryBoundary

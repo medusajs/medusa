@@ -1,27 +1,27 @@
 "use client"
 
+import React, { MouseEvent, useMemo } from "react"
 import clsx from "clsx"
-import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
-import { MouseEvent, useMemo } from "react"
-import { useSearch } from "../../../providers/search"
-import { useMobile } from "../../../providers/mobile"
-import {
-  Button,
-  InputText,
-  Kbd,
-  useKeyboardShortcut,
-  usePageLoading,
-} from "docs-ui"
+import { useSearch } from "@/providers"
+import { Button, InputText, Kbd } from "@/components"
+import { MagnifyingGlass } from "@medusajs/icons"
+import { useKeyboardShortcut } from "@/hooks"
 
-const SearchModalOpener = () => {
+export type SearchModalOpenerProps = {
+  isLoading?: boolean
+  isMobile?: boolean
+}
+
+export const SearchModalOpener = ({
+  isLoading = false,
+  isMobile = false,
+}: SearchModalOpenerProps) => {
   const { setIsOpen } = useSearch()
-  const { isMobile } = useMobile()
   const isApple = useMemo(() => {
     return typeof navigator !== "undefined"
       ? navigator.userAgent.toLowerCase().indexOf("mac") !== 0
       : true
   }, [])
-  const { isLoading } = usePageLoading()
   useKeyboardShortcut({
     shortcutKeys: ["k"],
     action: () => setIsOpen((prev) => !prev),
@@ -48,7 +48,7 @@ const SearchModalOpener = () => {
     <>
       {isMobile && (
         <Button variant="clear" onClick={handleOpen}>
-          <IconMagnifyingGlass iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+          <MagnifyingGlass className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
         </Button>
       )}
       {!isMobile && (
@@ -56,9 +56,11 @@ const SearchModalOpener = () => {
           className={clsx("relative w-min hover:cursor-pointer")}
           onClick={handleOpen}
         >
-          <IconMagnifyingGlass
-            iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark"
-            className={clsx("absolute left-0.5 top-[5px]")}
+          <MagnifyingGlass
+            className={clsx(
+              "absolute left-0.5 top-[5px]",
+              "text-medusa-fg-muted dark:text-medusa-fg-muted-dark"
+            )}
           />
           <InputText
             type="search"
@@ -83,5 +85,3 @@ const SearchModalOpener = () => {
     </>
   )
 }
-
-export default SearchModalOpener

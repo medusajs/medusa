@@ -1,4 +1,4 @@
-export default function checkArraySameElms(
+export function checkArraySameElms(
   arr1: Array<any>,
   arr2: Array<any>
 ): boolean {

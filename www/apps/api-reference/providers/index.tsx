@@ -1,13 +1,17 @@
 "use client"
 
-import { AnalyticsProvider, ModalProvider, PageLoadingProvider } from "docs-ui"
+import {
+  AnalyticsProvider,
+  MobileProvider,
+  ModalProvider,
+  PageLoadingProvider,
+} from "docs-ui"
 import ColorModeProvider from "./color-mode"
 import BaseSpecsProvider from "./base-specs"
 import SidebarProvider from "./sidebar"
 import NavbarProvider from "./navbar"
 import { ScrollControllerProvider } from "../hooks/scroll-utils"
 import SearchProvider from "./search"
-import MobileProvider from "./mobile"
 
 type ProvidersProps = {
   children?: React.ReactNode

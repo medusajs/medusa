@@ -8,17 +8,17 @@ import React, {
   useState,
 } from "react"
 
-type MobileContextType = {
+export type MobileContextType = {
   isMobile?: boolean
 }
 
 const MobileContext = createContext<MobileContextType | null>(null)
 
-type MobileProviderProps = {
+export type MobileProviderProps = {
   children: React.ReactNode
 }
 
-const MobileProvider = ({ children }: MobileProviderProps) => {
+export const MobileProvider = ({ children }: MobileProviderProps) => {
   const [isMobile, setIsMobile] = useState(false)
 
   const handleResize = useCallback(() => {
@@ -51,8 +51,6 @@ const MobileProvider = ({ children }: MobileProviderProps) => {
     </MobileContext.Provider>
   )
 }
-
-export default MobileProvider
 
 export const useMobile = () => {
   const context = useContext(MobileContext)

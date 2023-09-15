@@ -5,7 +5,7 @@ import NavbarLogo from "./Logo"
 import getLinkWithBasePath from "../../utils/get-link-with-base-path"
 import FeedbackModal from "./FeedbackModal"
 import MobileMenu from "./MobileMenu"
-import SearchModalOpener from "../Search/ModalOpener"
+import NavbarSearchModalOpener from "./SearchModalOpener"
 
 const Navbar = () => {
   return (
@@ -43,7 +43,7 @@ const Navbar = () => {
         </div>
         <div className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 lg:flex">
           <div>
-            <SearchModalOpener />
+            <NavbarSearchModalOpener />
           </div>
           <NavbarColorModeToggle />
           <FeedbackModal />

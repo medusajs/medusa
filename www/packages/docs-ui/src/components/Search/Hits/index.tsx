@@ -1,6 +1,7 @@
+"use client"
+
+import React, { Fragment, useEffect, useMemo, useState } from "react"
 import clsx from "clsx"
-import Link from "next/link"
-import { Fragment, useEffect, useMemo, useState } from "react"
 import {
   Configure,
   ConfigureProps,
@@ -9,12 +10,12 @@ import {
   useHits,
   useInstantSearch,
 } from "react-instantsearch"
-import SearchNoResult from "../NoResults"
-import SearchHitGroupName from "./GroupName"
-import getBaseUrl from "../../../utils/get-base-url"
-import { useSearch } from "../../../providers/search"
+import { SearchNoResult } from "../NoResults"
+import { SearchHitGroupName } from "./GroupName"
+import { useSearch } from "@/providers"
+import { Link } from "@/components/Link"
 
-type Hierarchy = "lvl0" | "lvl1" | "lvl2" | "lvl3" | "lvl4" | "lvl5"
+export type Hierarchy = "lvl0" | "lvl1" | "lvl2" | "lvl3" | "lvl4" | "lvl5"
 
 export type HitType = {
   hierarchy: {
@@ -34,27 +35,25 @@ export type HitType = {
   objectID: string
 }
 
-type GroupedHitType = {
+export type GroupedHitType = {
   [k: string]: HitType[]
 }
 
-type SearchHitWrapperProps = {
+export type SearchHitWrapperProps = {
   configureProps: ConfigureProps
-}
+  indices: string[]
+} & Omit<SearchHitsProps, "indexName" | "setNoResults">
 
-type IndexResults = {
+export type IndexResults = {
   [k: string]: boolean
 }
 
-const SearchHitsWrapper = ({ configureProps }: SearchHitWrapperProps) => {
+export const SearchHitsWrapper = ({
+  configureProps,
+  indices,
+  ...rest
+}: SearchHitWrapperProps) => {
   const { status } = useInstantSearch()
-  const indices = useMemo(
-    () => [
-      process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
-      process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME || "temp",
-    ],
-    []
-  )
   const [hasNoResults, setHashNoResults] = useState<IndexResults>({
     [indices[0]]: false,
     [indices[1]]: false,
@@ -75,7 +74,11 @@ const SearchHitsWrapper = ({ configureProps }: SearchHitWrapperProps) => {
       {status !== "loading" && showNoResults && <SearchNoResult />}
       {indices.map((indexName, index) => (
         <Index indexName={indexName} key={index}>
-          <SearchHits indexName={indexName} setNoResults={setNoResults} />
+          <SearchHits
+            indexName={indexName}
+            setNoResults={setNoResults}
+            {...rest}
+          />
           <Configure {...configureProps} />
         </Index>
       ))}
@@ -83,12 +86,17 @@ const SearchHitsWrapper = ({ configureProps }: SearchHitWrapperProps) => {
   )
 }
 
-type SearchHitsProps = {
+export type SearchHitsProps = {
   indexName: string
   setNoResults: (index: string, value: boolean) => void
+  checkInternalPattern?: RegExp
 }
 
-const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
+export const SearchHits = ({
+  indexName,
+  setNoResults,
+  checkInternalPattern,
+}: SearchHitsProps) => {
   const { hits } = useHits<HitType>()
   const { status } = useInstantSearch()
   const { setIsOpen } = useSearch()
@@ -122,11 +130,11 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
     )
   }
 
-  const baseUrl = useMemo(() => getBaseUrl(), [])
-
   const checkIfInternal = (url: string): boolean => {
-    const testRegex = new RegExp(`^${baseUrl}/api/(admin|store)`)
-    return testRegex.test(url)
+    if (!checkInternalPattern) {
+      return false
+    }
+    return checkInternalPattern.test(url)
   }
 
   return (
@@ -205,5 +213,3 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
     </div>
   )
 }
-
-export default SearchHitsWrapper

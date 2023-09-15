@@ -60,6 +60,8 @@
     "@medusajs/ui": "^1.0.0",
     "@octokit/request": "^8.1.1",
     "@segment/analytics-next": "^1.55.0",
+    "algoliasearch": "^4.20.0",
+    "react-instantsearch": "^7.0.3",
     "react-tooltip": "^5.21.3",
     "react-transition-group": "^4.4.5",
     "react-uuid": "^2.0.0"

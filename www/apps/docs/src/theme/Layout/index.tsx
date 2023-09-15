@@ -14,7 +14,6 @@ import ErrorPageContent from "@theme/ErrorPageContent"
 import type { Props } from "@theme/Layout"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
-import SearchProvider from "../../providers/Search"
 import { useAnalytics } from "docs-ui"
 
 export default function Layout(props: Props): JSX.Element {
@@ -53,27 +52,23 @@ export default function Layout(props: Props): JSX.Element {
 
   return (
     <LayoutProvider>
-      <SearchProvider>
-        <PageMetadata title={title} description={description} />
-        <SkipToContent />
+      <PageMetadata title={title} description={description} />
+      <SkipToContent />
 
-        <Navbar />
+      <Navbar />
 
-        <div
-          id={SkipToContentFallbackId}
-          className={clsx(
-            ThemeClassNames.wrapper.main,
-            "flex-auto flex-grow flex-shrink-0",
-            wrapperClassName
-          )}
-        >
-          <ErrorBoundary
-            fallback={(params) => <ErrorPageContent {...params} />}
-          >
-            {children}
-          </ErrorBoundary>
-        </div>
-      </SearchProvider>
+      <div
+        id={SkipToContentFallbackId}
+        className={clsx(
+          ThemeClassNames.wrapper.main,
+          "flex-auto flex-grow flex-shrink-0",
+          wrapperClassName
+        )}
+      >
+        <ErrorBoundary fallback={(params) => <ErrorPageContent {...params} />}>
+          {children}
+        </ErrorBoundary>
+      </div>
     </LayoutProvider>
   )
 }

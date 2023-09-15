@@ -824,7 +824,7 @@ module.exports = {
     },
   },
   plugins: [
-    plugin(({ addVariant, addUtilities, addComponents }) => {
+    plugin(({ addVariant, addUtilities, addComponents, theme }) => {
       addVariant("search-cancel", "&::-webkit-search-cancel-button")
       addUtilities({
         ".animation-fill-forwards": {
@@ -837,6 +837,14 @@ module.exports = {
       addComponents({
         ".btn-secondary-icon": {
           padding: "4px !important",
+        },
+        "btn-clear": {
+          backgroundColor: "transparent",
+          boxShadow: theme("shadow.none"),
+          borderWidth: 0,
+          borderColor: "transparent",
+          outlineColor: "transparent",
+          cursor: "pointer",
         },
       })
     }),

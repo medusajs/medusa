@@ -3,8 +3,8 @@
 import NavbarMenuButton from "../MenuButton"
 import NavbarMobileLogo from "../MobileLogo"
 import NavbarColorModeToggle from "../ColorModeToggle"
-import SearchModalOpener from "../../Search/ModalOpener"
-import { useMobile } from "../../../providers/mobile"
+import NavbarSearchModalOpener from "../SearchModalOpener"
+import { useMobile } from "docs-ui"
 
 const MobileMenu = () => {
   const { isMobile } = useMobile()
@@ -21,7 +21,7 @@ const MobileMenu = () => {
           />
           <NavbarMobileLogo />
           <div className="flex">
-            <SearchModalOpener />
+            <NavbarSearchModalOpener />
             <NavbarColorModeToggle
               buttonProps={{
                 className:

@@ -1,48 +1,76 @@
 "use client"
 
-import { createContext, useContext, useState } from "react"
-import SearchModal from "../components/Search/Modal"
-
-type SearchContextType = {
-  isOpen: boolean
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  defaultFilters: string[]
-  setDefaultFilters: (value: string[]) => void
-}
-
-const SearchContext = createContext<SearchContextType | null>(null)
+import { usePageLoading, SearchProvider as UiSearchProvider } from "docs-ui"
+import getBaseUrl from "../utils/get-base-url"
 
 type SearchProviderProps = {
   children: React.ReactNode
 }
 
 const SearchProvider = ({ children }: SearchProviderProps) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [defaultFilters, setDefaultFilters] = useState<string[]>([])
-
+  const { isLoading } = usePageLoading()
   return (
-    <SearchContext.Provider
-      value={{
-        isOpen,
-        setIsOpen,
-        defaultFilters,
-        setDefaultFilters,
+    <UiSearchProvider
+      searchProps={{
+        algolia: {
+          appId: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || "temp",
+          apiKey: process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || "temp",
+          mainIndexName:
+            process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
+          indices: [
+            process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
+            process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME || "temp",
+          ],
+        },
+        isLoading,
+        suggestions: [
+          {
+            title: "Search Suggestions",
+            items: [
+              "Authentication",
+              "Expanding fields",
+              "Selecting fields",
+              "Pagination",
+              "Query parameter types",
+            ],
+          },
+        ],
+        checkInternalPattern: new RegExp(`^${getBaseUrl()}/api/(admin|store)`),
+        filterOptions: [
+          {
+            value: "admin",
+            label: "Admin API",
+          },
+          {
+            value: "store",
+            label: "Store API",
+          },
+          {
+            value: "docs",
+            label: "Docs",
+          },
+          {
+            value: "user-guide",
+            label: "User Guide",
+          },
+          {
+            value: "plugins",
+            label: "Plugins",
+          },
+          {
+            value: "reference",
+            label: "References",
+          },
+          {
+            value: "ui",
+            label: "UI",
+          },
+        ],
       }}
     >
       {children}
-      <SearchModal />
-    </SearchContext.Provider>
+    </UiSearchProvider>
   )
 }
 
 export default SearchProvider
-
-export const useSearch = (): SearchContextType => {
-  const context = useContext(SearchContext)
-
-  if (!context) {
-    throw new Error("useSearch must be used inside a SearchProvider")
-  }
-
-  return context
-}

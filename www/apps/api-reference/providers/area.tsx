@@ -1,8 +1,8 @@
 "use client"
 
 import type { Area } from "@/types/openapi"
+import { useSearch } from "docs-ui"
 import { createContext, useContext, useEffect, useState } from "react"
-import { useSearch } from "./search"
 
 type AreaContextType = {
   area: Area

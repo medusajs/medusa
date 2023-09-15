@@ -1,29 +1,17 @@
-import React, { useEffect } from "react"
-import { createContext, useContext, useState } from "react"
-import SearchModal from "../../components/Search/Modal"
-import { useLocalPathname } from "@docusaurus/theme-common/internal"
-import { useThemeConfig } from "@docusaurus/theme-common"
+import React, { useEffect, useState } from "react"
+import { SearchProvider as UiSearchProvider, checkArraySameElms } from "docs-ui"
 import { ThemeConfig } from "@medusajs/docs"
-import checkArraySameElms from "../../utils/array-same-elms"
-
-type SearchContextType = {
-  isOpen: boolean
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  defaultFilters: string[]
-  setDefaultFilters: (value: string[]) => void
-}
-
-const SearchContext = createContext<SearchContextType | null>(null)
+import { useThemeConfig } from "@docusaurus/theme-common"
+import { useLocalPathname } from "@docusaurus/theme-common/internal"
 
 type SearchProviderProps = {
   children: React.ReactNode
 }
 
 const SearchProvider = ({ children }: SearchProviderProps) => {
-  const [isOpen, setIsOpen] = useState(false)
   const [defaultFilters, setDefaultFilters] = useState<string[]>([])
-  const currentPath = useLocalPathname()
   const { algoliaConfig: algolia } = useThemeConfig() as ThemeConfig
+  const currentPath = useLocalPathname()
 
   useEffect(() => {
     let resultFilters = []
@@ -41,28 +29,43 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
   }, [currentPath])
 
   return (
-    <SearchContext.Provider
-      value={{
-        isOpen,
-        setIsOpen,
-        defaultFilters,
-        setDefaultFilters,
+    <UiSearchProvider
+      searchProps={{
+        algolia: {
+          appId: algolia.appId,
+          apiKey: algolia.apiKey,
+          mainIndexName: algolia.indexNames.docs,
+          indices: Object.values(algolia.indexNames),
+        },
+        filterOptions: algolia.filters,
+        suggestions: [
+          {
+            title: "Getting started? Try one of the following terms.",
+            items: [
+              "Install Medusa with create-medusa-app",
+              "Next.js quickstart",
+              "Admin dashboard quickstart",
+              "Commerce modules",
+              "Medusa architecture",
+            ],
+          },
+          {
+            title: "Developing with Medusa",
+            items: [
+              "Recipes",
+              "How to create endpoints",
+              "How to create an entity",
+              "How to create a plugin",
+              "How to create an admin widget",
+            ],
+          },
+        ],
       }}
+      initialDefaultFilters={defaultFilters}
     >
       {children}
-      <SearchModal />
-    </SearchContext.Provider>
+    </UiSearchProvider>
   )
 }
 
 export default SearchProvider
-
-export const useSearch = (): SearchContextType => {
-  const context = useContext(SearchContext)
-
-  if (!context) {
-    throw new Error("useSearch must be used inside a SearchProvider")
-  }
-
-  return context
-}

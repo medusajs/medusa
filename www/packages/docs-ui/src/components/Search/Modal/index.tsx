@@ -1,34 +1,46 @@
+"use client"
+
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
 import { InstantSearch, SearchBox } from "react-instantsearch"
 import clsx from "clsx"
-import SearchEmptyQueryBoundary from "../EmptyQueryBoundary"
-import SearchSuggestions from "../Suggestions"
-import checkArraySameElms from "../../../utils/array-same-elms"
-import SearchHitsWrapper from "../Hits"
-import { OptionType } from "@medusajs/docs"
-import { useSearch } from "../../../providers/Search"
-import { findNextSibling, findPrevSibling } from "../../../utils/dom-utils"
-import IconMagnifyingGlass from "../../../theme/Icon/MagnifyingGlass"
-import IconXMark from "../../../theme/Icon/XMark"
-import { useThemeConfig } from "@docusaurus/theme-common"
-import { ThemeConfig } from "@medusajs/docs"
-import { Button, Kbd, Modal, SelectBadge, useKeyboardShortcut } from "docs-ui"
+import { SearchEmptyQueryBoundary } from "../EmptyQueryBoundary"
+import { SearchSuggestions, type SearchSuggestionType } from "../Suggestions"
+import { useSearch } from "@/providers"
+import { checkArraySameElms } from "@/utils"
+import { SearchHitsWrapper } from "../Hits"
+import { findNextSibling, findPrevSibling } from "@/utils"
+import { Button, Kbd, Modal, SelectBadge } from "@/components"
+import { MagnifyingGlass, XMark } from "@medusajs/icons"
+import { useKeyboardShortcut, type OptionType } from "@/hooks"
 
-const SearchModal = () => {
-  const modalRef = useRef<HTMLDialogElement | null>(null)
-  const { algoliaConfig: algolia } = useThemeConfig() as ThemeConfig
-
-  if (!algolia) {
-    throw new Error("Algolia configuration is not defined")
+export type SearchModalProps = {
+  algolia: {
+    appId: string
+    apiKey: string
+    mainIndexName: string
+    indices: string[]
   }
+  isLoading?: boolean
+  suggestions: SearchSuggestionType[]
+  checkInternalPattern?: RegExp
+  filterOptions?: OptionType[]
+}
 
-  const algoliaClient = useMemo(() => {
-    return algoliasearch(algolia.appId, algolia.apiKey)
-  }, [])
+export const SearchModal = ({
+  algolia,
+  suggestions,
+  isLoading = false,
+  checkInternalPattern,
+  filterOptions = [],
+}: SearchModalProps) => {
+  const algoliaClient = useMemo(
+    () => algoliasearch(algolia.appId, algolia.apiKey),
+    [algolia]
+  )
 
-  const searchClient: SearchClient = useMemo(() => {
-    return {
+  const searchClient: SearchClient = useMemo(
+    () => ({
       ...algoliaClient,
       async search(requests) {
         if (requests.every(({ params }) => !params?.query)) {
@@ -49,10 +61,10 @@ const SearchModal = () => {
 
         return algoliaClient.search(requests)
       },
-    }
-  }, [])
-
-  const options: OptionType[] = algolia.filters
+    }),
+    [algoliaClient]
+  )
+  const modalRef = useRef<HTMLDialogElement | null>(null)
   const { isOpen, setIsOpen, defaultFilters } = useSearch()
   const [filters, setFilters] = useState<string[]>(defaultFilters)
   const formattedFilters: string = useMemo(() => {
@@ -170,6 +182,7 @@ const SearchModal = () => {
     action: handleKeyAction,
     checkEditing: false,
     preventDefault: false,
+    isLoading,
   })
 
   const handleKeyDown = useCallback(
@@ -219,7 +232,7 @@ const SearchModal = () => {
       passedRef={modalRef}
     >
       <InstantSearch
-        indexName={algolia.indexNames.docs}
+        indexName={algolia.mainIndexName}
         searchClient={searchClient}
       >
         <div
@@ -247,13 +260,10 @@ const SearchModal = () => {
               loadingIndicator: clsx("absolute top-[18px] right-1"),
             }}
             submitIconComponent={() => (
-              <IconMagnifyingGlass iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+              <MagnifyingGlass className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
             )}
             resetIconComponent={() => (
-              <IconXMark
-                iconColorClassName="stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
-                className="hidden md:block"
-              />
+              <XMark className="hidden md:block text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark" />
             )}
             placeholder="Find something..."
             autoFocus
@@ -269,11 +279,13 @@ const SearchModal = () => {
             )}
             onClick={() => setIsOpen(false)}
           >
-            <IconXMark iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+            <XMark className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
           </Button>
         </div>
         <div className="mx-0.5 h-[calc(100%-120px)] md:h-[332px] md:flex-initial lg:max-h-[332px] lg:min-h-[332px]">
-          <SearchEmptyQueryBoundary fallback={<SearchSuggestions />}>
+          <SearchEmptyQueryBoundary
+            fallback={<SearchSuggestions suggestions={suggestions} />}
+          >
             <SearchHitsWrapper
               configureProps={{
                 filters: formattedFilters,
@@ -288,6 +300,8 @@ const SearchModal = () => {
                   "hierarchy.lvl2",
                 ],
               }}
+              indices={algolia.indices}
+              checkInternalPattern={checkInternalPattern}
             />
           </SearchEmptyQueryBoundary>
         </div>
@@ -300,27 +314,29 @@ const SearchModal = () => {
           "bg-medusa-bg-base dark:bg-medusa-bg-base-dark"
         )}
       >
-        <SelectBadge
-          multiple
-          options={options}
-          value={filters}
-          setSelected={(value) =>
-            setFilters(Array.isArray(value) ? [...value] : [value])
-          }
-          addSelected={(value) => setFilters((prev) => [...prev, value])}
-          removeSelected={(value) =>
-            setFilters((prev) => prev.filter((v) => v !== value))
-          }
-          showClearButton={false}
-          placeholder="Filters"
-          handleAddAll={(isAllSelected: boolean) => {
-            if (isAllSelected) {
-              setFilters(defaultFilters)
-            } else {
-              setFilters(options.map((option) => option.value))
+        {filterOptions.length && (
+          <SelectBadge
+            multiple
+            options={filterOptions}
+            value={filters}
+            setSelected={(value) =>
+              setFilters(Array.isArray(value) ? [...value] : [value])
             }
-          }}
-        />
+            addSelected={(value) => setFilters((prev) => [...prev, value])}
+            removeSelected={(value) =>
+              setFilters((prev) => prev.filter((v) => v !== value))
+            }
+            showClearButton={false}
+            placeholder="Filters"
+            handleAddAll={(isAllSelected: boolean) => {
+              if (isAllSelected) {
+                setFilters(defaultFilters)
+              } else {
+                setFilters(filterOptions.map((option) => option.value))
+              }
+            }}
+          />
+        )}
         <div className="hidden items-center gap-1 md:flex">
           <div className="flex items-center gap-0.5">
             <span
@@ -352,5 +368,3 @@ const SearchModal = () => {
     </Modal>
   )
 }
-
-export default SearchModal

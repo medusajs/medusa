@@ -1,18 +1,17 @@
 import React from "react"
 import NavbarSearch from "@theme/Navbar/Search"
 import type { Props } from "@theme/NavbarItem/SearchNavbarItem"
-import SearchModalOpener from "../../components/Search/ModalOpener"
+import { SearchModalOpener } from "docs-ui"
+import { useWindowSize } from "@docusaurus/theme-common"
 
 export default function SearchNavbarItem({
   mobile,
 }: Props): JSX.Element | null {
-  if (mobile) {
-    return null
-  }
+  const windowSize = useWindowSize()
 
   return (
     <NavbarSearch>
-      <SearchModalOpener />
+      <SearchModalOpener isMobile={mobile || windowSize !== "desktop"} />
     </NavbarSearch>
   )
 }

@@ -2,6 +2,7 @@ import { AnalyticsProvider, ModalProvider } from "docs-ui"
 import React from "react"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import { ThemeConfig } from "@medusajs/docs"
+import SearchProvider from "../Search"
 
 type DocsProvidersProps = {
   children?: React.ReactNode
@@ -14,7 +15,9 @@ const DocsProviders = ({ children }: DocsProvidersProps) => {
 
   return (
     <AnalyticsProvider writeKey={apiKey}>
-      <ModalProvider>{children}</ModalProvider>
+      <ModalProvider>
+        <SearchProvider>{children}</SearchProvider>
+      </ModalProvider>
     </AnalyticsProvider>
   )
 }

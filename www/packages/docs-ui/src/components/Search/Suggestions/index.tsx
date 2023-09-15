@@ -1,32 +1,21 @@
+"use client"
+
 import React from "react"
 import clsx from "clsx"
 import { useInstantSearch } from "react-instantsearch"
-import SearchHitGroupName from "../Hits/GroupName"
+import { SearchHitGroupName } from "../Hits/GroupName"
 
-const SearchSuggestions = () => {
+export type SearchSuggestionType = {
+  title: string
+  items: string[]
+}
+
+export type SearchSuggestionsProps = {
+  suggestions: SearchSuggestionType[]
+}
+
+export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
   const { setIndexUiState } = useInstantSearch()
-  const suggestions = [
-    {
-      title: "Getting started? Try one of the following terms.",
-      items: [
-        "Install Medusa with create-medusa-app",
-        "Next.js quickstart",
-        "Admin dashboard quickstart",
-        "Commerce modules",
-        "Medusa architecture",
-      ],
-    },
-    {
-      title: "Developing with Medusa",
-      items: [
-        "Recipes",
-        "How to create endpoints",
-        "How to create an entity",
-        "How to create a plugin",
-        "How to create an admin widget",
-      ],
-    },
-  ]
   return (
     <div className="h-full overflow-auto">
       {suggestions.map((suggestion, index) => (
@@ -65,5 +54,3 @@ const SearchSuggestions = () => {
     </div>
   )
 }
-
-export default SearchSuggestions
