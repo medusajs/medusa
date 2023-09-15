@@ -248,19 +248,12 @@ const handlers = new Map([
       compensate: pipe(
         {
           merge: true,
-          invoke: [
-            {
-              from: UpdateProductsActions.prepare,
-              alias: updateProductsExtractCreatedVariants.aliases.preparedData,
-            },
-            {
-              from: UpdateProductsActions.updateProducts,
-              alias: updateProductsExtractDeletedVariants.aliases.products,
-            },
-          ],
+          invoke: {
+            from: UpdateProductsActions.attachInventoryItems,
+            alias:
+              InventoryHandlers.detachInventoryItems.aliases.inventoryItems,
+          },
         },
-        updateProductsExtractDeletedVariants,
-        useVariantsInventoryItems,
         InventoryHandlers.detachInventoryItems
       ),
     },
