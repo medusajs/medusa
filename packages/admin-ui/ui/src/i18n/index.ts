@@ -16,6 +16,10 @@ export const supportedLanguages = [
     locale: "pt",
     name: "Português (Brasil)",
   },
+  {
+    locale: "uk",
+    name: "Українська",
+  },
 ]
 
 const backendUrl = window.location.origin
