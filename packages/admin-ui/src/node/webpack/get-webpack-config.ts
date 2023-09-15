@@ -30,6 +30,7 @@ export function getWebpackConfig({
   env,
   options,
   template,
+  publicFolder,
   reporting = "fancy",
 }: WebpackConfigArgs): Configuration {
   const isProd = env === "production"
@@ -181,7 +182,7 @@ export function getWebpackConfig({
       new CopyPlugin({
         patterns: [
           {
-            from: path.resolve(__dirname, "..", "ui", "public"),
+            from: publicFolder || path.resolve(__dirname, "..", "ui", "public"),
             to: path.resolve(dest, "public"),
           },
         ],
