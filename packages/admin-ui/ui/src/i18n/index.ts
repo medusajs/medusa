@@ -14,7 +14,7 @@ export const supportedLanguages = [
   },
   {
     locale: "pt-BR",
-    name: "Português Brasileiro",
+    name: "Português (Brasil)",
   },
 ]
 
