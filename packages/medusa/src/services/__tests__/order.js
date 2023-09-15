@@ -364,6 +364,7 @@ describe("OrderService", () => {
         subtotal: 100,
         total: 100,
         discount_total: 0,
+        gift_card_total: 100,
       }
 
       orderService.cartService_.retrieveWithTotals = () => {

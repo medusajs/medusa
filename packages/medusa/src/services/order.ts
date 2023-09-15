@@ -725,7 +725,8 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      let giftCardableAmountBalance = cart.gift_card_total!
+      let giftCardableAmountBalance = cart.gift_card_total ?? 0
+
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
       // Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
