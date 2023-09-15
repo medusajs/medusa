@@ -59,6 +59,7 @@
     "chokidar": "^3.5.3",
     "clsx": "^1.2.1",
     "copy-to-clipboard": "^3.3.1",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "emoji-picker-react": "^4.4.3",
     "framer-motion": "^9.1.6",
