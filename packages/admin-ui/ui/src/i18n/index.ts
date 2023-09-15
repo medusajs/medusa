@@ -13,7 +13,7 @@ export const supportedLanguages = [
     name: "Français",
   },
   {
-    locale: "pt-BR",
+    locale: "pt",
     name: "Português (Brasil)",
   },
 ]
@@ -21,7 +21,7 @@ export const supportedLanguages = [
 const backendUrl = window.location.origin
 const adminPath = process.env.ADMIN_PATH ? `${process.env.ADMIN_PATH}/` : "/"
 
-const pathToLoadFrom = `${backendUrl}${adminPath}locales/{{lng}}/{{ns}}.json`
+const pathToLoadFrom = `${backendUrl}${adminPath}public/locales/{{lng}}/{{ns}}.json`
 
 void i18n
   .use(Backend)
@@ -30,7 +30,7 @@ void i18n
   // https://www.i18next.com/overview/configuration-options
   .init({
     backend: {
-      loadPath: pathToLoadFrom
+      loadPath: pathToLoadFrom,
     },
     supportedLngs: supportedLanguages.map((l) => l.locale),
     fallbackLng: "en",
