@@ -1,4 +1,8 @@
-import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
+import {
+  IInventoryService,
+  InventoryItemDTO,
+  SharedContext,
+} from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 export async function restoreInventoryItems({
@@ -8,7 +12,7 @@ export async function restoreInventoryItems({
 }: WorkflowArguments<{
   inventoryItems: { inventoryItem: InventoryItemDTO }[]
 }>) {
-  const { manager } = context
+  const { manager } = context as SharedContext
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
 
@@ -20,12 +24,10 @@ export async function restoreInventoryItems({
     return
   }
 
-  // TODO
-
-  // return await inventoryService!.restoreItems(
-  //   data.inventoryItems.map(({ inventoryItem }) => inventoryItem.id),
-  //   { transactionManager: manager }
-  // )
+  return await inventoryService!.restoreInventoryItem(
+    data.inventoryItems.map(({ inventoryItem }) => inventoryItem.id),
+    { transactionManager: manager }
+  )
 }
 
 restoreInventoryItems.aliases = {

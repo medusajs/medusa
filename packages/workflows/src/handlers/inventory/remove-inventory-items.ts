@@ -1,4 +1,4 @@
-import { InventoryItemDTO } from "@medusajs/types"
+import { InventoryItemDTO, SharedContext } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 export async function removeInventoryItems({
@@ -8,7 +8,7 @@ export async function removeInventoryItems({
 }: WorkflowArguments<{
   inventoryItems: { inventoryItem: InventoryItemDTO }[]
 }>) {
-  const { manager } = context
+  const { manager } = context as SharedContext
   const inventoryService = container.resolve("inventoryService")
 
   if (!inventoryService) {

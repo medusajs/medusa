@@ -15,6 +15,7 @@ import {
 import { FindConfig } from "../common"
 import { ModuleJoinerConfig } from "../modules-sdk"
 import { SharedContext } from "../shared-context"
+import { MedusaContext } from "@medusajs/utils"
 
 export interface IInventoryService {
   __joinerConfig(): ModuleJoinerConfig
@@ -123,6 +124,11 @@ export interface IInventoryService {
 
   // TODO make it bulk
   deleteInventoryItem(
+    inventoryItemId: string | string[],
+    context?: SharedContext
+  ): Promise<void>
+
+  restoreInventoryItem(
     inventoryItemId: string | string[],
     context?: SharedContext
   ): Promise<void>
