@@ -13,18 +13,18 @@ In this document, you’ll learn how to deploy your Medusa backend to Railway.
 
 Railway provides a free plan that allows you to deploy your Medusa backend along with PostgreSQL and Redis databases. This is useful mainly for development and demo purposes.
 
+:::note
+
+If you're deploying the admin plugin along with the backend, you'll need at least the Developer plan. The resources provided by the starter plan will cause memory errors.
+
+:::
+
 If you also don't have a Medusa project, you can deploy to Railway instantly with this button:
 
 <a 
   href="https://railway.app/template/zC7eOq?referralCode=TW4Qi0" class="img-url no-zoom-img">
   <img src="https://railway.app/button.svg" alt="Deploy with Railway" class="no-zoom-img"/>
 </a>
-
-:::note
-
-The deployment may fail the first time you run this button. If so, make sure to [enable Redis in your backend's configurations](../../development/backend/configurations.md#redis-url).
-
-:::
 
 ---
 
