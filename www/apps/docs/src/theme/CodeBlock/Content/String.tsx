@@ -14,10 +14,9 @@ import Container from "@theme/CodeBlock/Container"
 import type { Props } from "@theme/CodeBlock/Content/String"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { ThemeConfig } from "@medusajs/docs"
-import Tooltip from "../../../components/Tooltip"
 import IconAlert from "../../../theme/Icon/Alert"
 import IconCopy from "../../../theme/Icon/Copy"
-import { CopyButton } from "docs-ui"
+import { CopyButton, Tooltip } from "docs-ui"
 
 export default function CodeBlockString({
   children,

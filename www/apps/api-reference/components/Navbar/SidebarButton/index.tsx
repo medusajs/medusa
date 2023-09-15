@@ -1,11 +1,11 @@
 "use client"
 
 import IconSidebar from "@/components/Icons/Sidebar"
-import Tooltip from "@/components/Tooltip"
 import NavbarIconButton from "../IconButton"
 import { useSidebar } from "../../../providers/sidebar"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
+import { Tooltip } from "docs-ui"
 
 const NavbarSidebarButton = () => {
   const { desktopSidebarOpen, setDesktopSidebarOpen } = useSidebar()

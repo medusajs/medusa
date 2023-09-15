@@ -3,9 +3,9 @@ import type { Props } from "@theme/MDXComponents/A"
 import { getGlossaryByPath } from "../../utils/glossary"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
 import { MedusaDocusaurusContext } from "@medusajs/docs"
-import Tooltip from "../../components/Tooltip"
 import Link from "@docusaurus/Link"
 import clsx from "clsx"
+import { Tooltip } from "docs-ui"
 
 const MDXA = (props: Props) => {
   const { href, children } = props

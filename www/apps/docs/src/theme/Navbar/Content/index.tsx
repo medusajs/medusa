@@ -9,13 +9,13 @@ import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle"
 import NavbarMobileSidebarToggle from "@theme/Navbar/MobileSidebar/Toggle"
 import NavbarLogo from "@theme/Navbar/Logo"
 import NavbarActions from "../../../components/Navbar/Actions"
-import Tooltip from "../../../components/Tooltip"
 import { ThemeConfig } from "@medusajs/docs"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import clsx from "clsx"
 import { useSidebar } from "../../../providers/Sidebar"
 import IconSidebar from "../../Icon/Sidebar"
 import IconChevronDoubleLeftMiniSolid from "../../Icon/ChevronDoubleLeftMiniSolid"
+import { Tooltip } from "docs-ui"
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved

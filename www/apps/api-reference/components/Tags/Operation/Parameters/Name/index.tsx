@@ -1,11 +1,11 @@
 import type { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
-import type { TooltipProps } from "../../../../Tooltip"
+import type { TooltipProps } from "docs-ui"
 import type { TagsOperationFeatureFlagNoticeProps } from "../../FeatureFlagNotice"
 import { Badge, NextLink } from "docs-ui"
 
 const Tooltip = dynamic<TooltipProps>(
-  async () => import("../../../../Tooltip")
+  async () => (await import("docs-ui")).Tooltip
 ) as React.FC<TooltipProps>
 
 const TagsOperationFeatureFlagNotice =

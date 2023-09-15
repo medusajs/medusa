@@ -1,9 +1,8 @@
 import React from "react"
-import Tooltip from "../../Tooltip"
 import { NavbarAction } from "@medusajs/docs"
 import Icon from "../../../theme/Icon"
 import clsx from "clsx"
-import { Button } from "docs-ui"
+import { Button, Tooltip } from "docs-ui"
 
 type NavbarActionsProps = {
   items: NavbarAction[]

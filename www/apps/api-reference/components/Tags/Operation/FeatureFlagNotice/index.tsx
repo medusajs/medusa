@@ -1,5 +1,4 @@
-import { Badge, NextLink } from "docs-ui"
-import Tooltip from "../../../Tooltip"
+import { Badge, NextLink, Tooltip } from "docs-ui"
 
 export type TagsOperationFeatureFlagNoticeProps = {
   featureFlag: string

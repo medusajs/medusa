@@ -43,7 +43,7 @@ export const Tooltip = ({
       </span>
       <ReactTooltip
         anchorId={elementId}
-        anchorSelect={`#${elementId}`}
+        // anchorSelect={elementId ? `#${elementId}` : undefined}
         className={clsx(
           "!border-medusa-border-base dark:!border-medusa-border-base-dark !border !border-solid",
           "!text-compact-x-small-plus !shadow-tooltip dark:!shadow-tooltip-dark !rounded",
