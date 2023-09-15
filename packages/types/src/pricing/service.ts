@@ -19,6 +19,7 @@ import {
   RuleTypeDTO,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
+  UpdatePriceListDTO,
   UpdatePriceSetDTO,
   UpdateRuleTypeDTO,
 } from "./common"
