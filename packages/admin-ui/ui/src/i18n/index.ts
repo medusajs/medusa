@@ -8,7 +8,16 @@ export const supportedLanguages = [
     locale: "en",
     name: "English",
   },
+  {
+    locale: "fr",
+    name: "Français",
+  },
 ]
+
+const backendUrl = window.location.origin
+const adminPath = process.env.ADMIN_PATH ? `${process.env.ADMIN_PATH}` : ""
+
+const pathToLoadFrom = `${backendUrl}${adminPath}locales/{{lng}}/{{ns}}.json`
 
 void i18n
   .use(Backend)
@@ -16,6 +25,9 @@ void i18n
   .use(initReactI18next)
   // https://www.i18next.com/overview/configuration-options
   .init({
+    backend: {
+      loadPath: pathToLoadFrom
+    },
     supportedLngs: supportedLanguages.map((l) => l.locale),
     fallbackLng: "en",
     returnNull: false,
