@@ -1,4 +1,9 @@
-# Contribution Guidelines
+---
+sidebar_label: "Docs"
+sidebar_position: 1
+---
+
+# Docs Contribution Guidelines
 
 Thank you for your interest in contributing to the documentation! You will be helping the open source community and other developers interested in learning more about Medusa and using it.
 
