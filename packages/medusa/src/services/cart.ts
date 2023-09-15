@@ -1,10 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -29,8 +29,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -49,9 +49,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -2698,8 +2698,21 @@ class CartService extends TransactionBaseService {
       }
     )
 
+    cart.tax_total = cart.item_tax_total + cart.shipping_tax_total
+
+    cart.raw_discount_total = cart.discount_total
+    cart.discount_total = Math.round(cart.discount_total)
+
+    const giftCardableAmount =
+      (cart.region?.gift_cards_taxable
+        ? cart.subtotal + cart.shipping_total - cart.discount_total
+        : cart.subtotal +
+          cart.shipping_total +
+          cart.tax_total -
+          cart.discount_total) || 0
+
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
-      cart.subtotal - cart.discount_total,
+      giftCardableAmount,
       {
         region: cart.region,
         giftCards: cart.gift_cards,
@@ -2708,11 +2721,6 @@ class CartService extends TransactionBaseService {
 
     cart.gift_card_total = giftCardTotal.total || 0
     cart.gift_card_tax_total = giftCardTotal.tax_total || 0
-
-    cart.tax_total = cart.item_tax_total + cart.shipping_tax_total
-
-    cart.raw_discount_total = cart.discount_total
-    cart.discount_total = Math.round(cart.discount_total)
 
     cart.total =
       cart.subtotal +

@@ -1898,8 +1898,18 @@ class OrderService extends TransactionBaseService {
       }
     )
 
+    order.tax_total = item_tax_total + shipping_tax_total
+
+    const giftCardableAmount =
+      (order.region?.gift_cards_taxable
+        ? order.subtotal + order.shipping_total - order.discount_total
+        : order.subtotal +
+          order.shipping_total +
+          order.tax_total -
+          order.discount_total) || 0
+
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
-      order.subtotal - order.discount_total,
+      giftCardableAmount,
       {
         region: order.region,
         giftCards: order.gift_cards,
@@ -1909,8 +1919,7 @@ class OrderService extends TransactionBaseService {
     order.gift_card_total = giftCardTotal.total || 0
     order.gift_card_tax_total = giftCardTotal.tax_total || 0
 
-    order.tax_total =
-      item_tax_total + shipping_tax_total - order.gift_card_tax_total
+    order.tax_total -= order.gift_card_tax_total
 
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {
