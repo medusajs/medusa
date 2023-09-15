@@ -15,7 +15,6 @@ import {
 import { FindConfig } from "../common"
 import { ModuleJoinerConfig } from "../modules-sdk"
 import { SharedContext } from "../shared-context"
-import { MedusaContext } from "@medusajs/utils"
 
 export interface IInventoryService {
   __joinerConfig(): ModuleJoinerConfig
