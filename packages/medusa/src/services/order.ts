@@ -725,12 +725,7 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      const giftCardableAmount =
-        (cart.region?.gift_cards_taxable
-          ? cart.subtotal! - cart.discount_total!
-          : cart.total! + cart.gift_card_total!) || 0 // we re add the gift card total to compensate the fact that the decorate total already removed this amount from the total
-
-      let giftCardableAmountBalance = giftCardableAmount
+      let giftCardableAmountBalance = cart.gift_card_total!
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
       // Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
@@ -739,6 +734,7 @@ class OrderService extends TransactionBaseService {
         const bEnd = b.ends_at ?? new Date(2100, 1, 1)
         return aEnd.getTime() - bEnd.getTime() || a.balance - b.balance
       })
+
       for (const giftCard of orderedGiftCards) {
         const newGiftCardBalance = Math.max(
           0,
