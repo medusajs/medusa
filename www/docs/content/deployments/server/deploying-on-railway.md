@@ -26,6 +26,12 @@ If you also don't have a Medusa project, you can deploy to Railway instantly wit
   <img src="https://railway.app/button.svg" alt="Deploy with Railway" class="no-zoom-img"/>
 </a>
 
+:::note
+
+The deployment may fail the first time you run this button. If so, make sure to [enable Redis in your backend's configurations](../../development/backend/configurations.md#redis-url).
+
+:::
+
 ---
 
 ## Prerequisites
@@ -162,8 +168,8 @@ To configure the environment variables of your Medusa backend:
 PORT=9000
 JWT_SECRET=something
 COOKIE_SECRET=something
-DATABASE_URL=${{Postgres.DATABASE_URL}}
-REDIS_URL=${{Redis.REDIS_URL}}
+DATABASE_URL=${{postgresql.DATABASE_URL}}
+REDIS_URL=${{redis.REDIS_URL}}
 DATABASE_TYPE=postgres
 ```
 
