@@ -4,6 +4,8 @@ import {
   Collection,
   Entity,
   ManyToMany,
+  OneToMany,
+  OptionalProps,
   PrimaryKey,
 } from "@mikro-orm/core"
 
@@ -12,8 +14,13 @@ import PriceSetMoneyAmount from "./price-set-money-amount"
 
 @Entity()
 export default class PriceSet {
+  [OptionalProps]?: "price_set_money_amounts"
+
   @PrimaryKey({ columnType: "text" })
   id!: string
+
+  @OneToMany(() => PriceSetMoneyAmount, (psma) => psma.price_set)
+  price_set_money_amounts = new Collection<PriceSetMoneyAmount>(this)
 
   @ManyToMany({
     entity: () => MoneyAmount,

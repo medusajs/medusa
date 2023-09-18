@@ -106,30 +106,16 @@ export default class PricingModuleService<
 
     const qb = manager
       .createQueryBuilder(PriceSet, "ps")
-      .select(["ps.*"])
+      .select(["ps.id"], true)
       .where({ id: { $in: pricingFilters.id } })
-      .leftJoin("ps.money_amounts", "ma")
-      .addSelect("ma.amount as ma__amount")
+      .leftJoin("ps.price_set_money_amounts", "psma", {})
+      .leftJoinAndSelect("ps.money_amounts", "ma", {})
 
-    console.log("qb.getQuery - ", await qb.getQuery())
-    const results = await qb.getResult()
-    console.log(JSON.stringify(results))
+    const queryBuilderResults = await qb.execute("all", true)
 
-    const priceSets = await this.list(
-      priceSetFilters,
-      {
-        select: [
-          "id",
-          "money_amounts.id",
-          "money_amounts.currency_code",
-          "money_amounts.amount",
-          "money_amounts.min_quantity",
-          "money_amounts.max_quantity",
-        ],
-        relations: ["money_amounts"],
-      },
-      sharedContext
-    )
+    const priceSets = JSON.parse(JSON.stringify(queryBuilderResults))
+
+    console.log("priceSets - ", JSON.stringify(priceSets, null, 2))
 
     const calculatedPrices = priceSets.map(
       (priceSet): PricingTypes.CalculatedPriceSetDTO => {

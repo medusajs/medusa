@@ -5,7 +5,9 @@ import { PriceSet } from "@models"
 import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
+import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
+import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
@@ -15,38 +17,6 @@ describe("PricingModule Service - PriceSet", () => {
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let data!: PriceSet[]
-
-  const moneyAmountsInputData = [
-    {
-      id: "money-amount-USD",
-      currency_code: "USD",
-      amount: 500,
-      min_quantity: 1,
-      max_quantity: 10,
-    },
-    {
-      id: "money-amount-EUR",
-      currency_code: "EUR",
-      amount: 500,
-      min_quantity: 1,
-      max_quantity: 10,
-    },
-  ]
-
-  const priceSetInputData = [
-    {
-      id: "price-set-1",
-      money_amounts: [{ id: "money-amount-USD" }],
-    },
-    {
-      id: "price-set-2",
-      money_amounts: [{ id: "money-amount-EUR" }],
-    },
-    {
-      id: "price-set-3",
-      money_amounts: [],
-    },
-  ]
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
@@ -61,8 +31,11 @@ describe("PricingModule Service - PriceSet", () => {
 
     testManager = MikroOrmWrapper.forkManager()
     await createCurrencies(testManager)
-    await createMoneyAmounts(testManager, moneyAmountsInputData)
-    data = await createPriceSets(testManager, priceSetInputData)
+    await createMoneyAmounts(testManager)
+    data = await createPriceSets(testManager)
+    await createPriceSetMoneyAmounts(testManager)
+
+    await createPriceRules(testManager)
   })
 
   afterEach(async () => {
@@ -70,15 +43,12 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("calculatePrices", () => {
-    it.only("retrieves the calculated prices when no context is set", async () => {
+    it("retrieves the calculated prices when no context is set", async () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-1", "price-set-2"] },
         {}
       )
-      console.log(
-        "priceSetsResult - ",
-        JSON.stringify(priceSetsResult, null, 2)
-      )
+
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-1",
@@ -97,7 +67,7 @@ describe("PricingModule Service - PriceSet", () => {
       ])
     })
 
-    it("retrieves the calculated prices when a context is set", async () => {
+    it.only("retrieves the calculated prices when a context is set", async () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-1", "price-set-2"] },
         {
