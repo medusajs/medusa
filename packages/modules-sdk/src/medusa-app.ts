@@ -12,8 +12,8 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  isObject,
   ModulesSdkUtils,
+  isObject,
 } from "@medusajs/utils"
 import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
@@ -115,7 +115,7 @@ export async function MedusaApp({
         declaration = { ...mod }
         delete declaration.definition
       } else {
-        path = MODULE_PACKAGE_NAMES[mod as Modules]
+        path = MODULE_PACKAGE_NAMES[moduleName]
       }
 
       declaration.scope ??= MODULE_SCOPE.INTERNAL
