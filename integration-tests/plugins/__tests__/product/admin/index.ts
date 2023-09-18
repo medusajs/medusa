@@ -528,5 +528,65 @@ describe("/admin/products", () => {
         })
       )
     })
+
+    it("update inventory when variants are updated", async () => {
+      const api = useApi()! as AxiosInstance
+
+      const variantInventoryService = medusaContainer.resolve(
+        "productVariantInventoryService"
+      )
+
+      const payload = {
+        title: "New title",
+        description: "test-product-description",
+        variants: [
+          {
+            id: "variant-1",
+            title: "Variant 1 updated",
+          },
+          {
+            title: "Variant 3",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products/to-update-with-variants", payload, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      let inventory = await variantInventoryService.listInventoryItemsByVariant(
+        "variant-2"
+      )
+
+      expect(inventory).toEqual([]) // no inventory items for removed variant
+
+      expect(response?.status).toEqual(200)
+      expect(response?.data.product).toEqual(
+        expect.objectContaining({
+          id: "to-update-with-variants",
+          title: "New title",
+          description: "test-product-description",
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: "variant-1",
+              title: "Variant 1 updated",
+            }),
+            expect.objectContaining({
+              title: "Variant 3",
+            }),
+          ]),
+        })
+      )
+
+      inventory = await variantInventoryService.listInventoryItemsByVariant(
+        response?.data.product.variants.find((v) => v.title === "Variant 3").id
+      )
+
+      expect(inventory).toEqual([
+        expect.objectContaining({ id: expect.any(String) }),
+      ])
+    })
   })
 })
