@@ -63,9 +63,9 @@ export function remoteQueryFetchData(container: MedusaContainer) {
       filters[keyField] = ids
     }
 
-    const hasPag = hasPagination(options)
+    const hasPagination_ = hasPagination(options)
 
-    let methodName = hasPag ? "listAndCount" : "list"
+    let methodName = hasPagination_ ? "listAndCount" : "list"
 
     if (relationship?.args?.methodSuffix) {
       methodName += relationship.args.methodSuffix
@@ -75,7 +75,7 @@ export function remoteQueryFetchData(container: MedusaContainer) {
 
     const result = await service[methodName](filters, options)
 
-    if (hasPag) {
+    if (hasPagination_) {
       const [data, count] = result
       return {
         data: {
