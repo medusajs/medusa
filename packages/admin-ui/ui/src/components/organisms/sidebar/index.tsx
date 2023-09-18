@@ -78,7 +78,7 @@ const SidebarBase: any = () => {
           <SidebarMenuItem
             pageLink={"/a/reviews"}
             icon={<TagIcon size={ICON_SIZE} />}
-            text={"Reviews"}
+            text={t("Reviews")}
             triggerHandler={triggerHandler}
           />
           {isFeatureEnabled("product_categories") && (

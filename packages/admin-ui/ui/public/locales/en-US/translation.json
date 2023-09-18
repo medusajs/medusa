@@ -497,6 +497,7 @@
   "Tag": "Tag",
   "Edit {title}": "Edit {{title}}",
   "useDiscountForm must be a child of DiscountFormContext": "useDiscountForm must be a child of DiscountFormContext",
+  "Reviews": "Reviews",
   "Save as draft": "Save as draft",
   "Publish discount": "Publish discount",
   "Create new discount": "Create new discount",
