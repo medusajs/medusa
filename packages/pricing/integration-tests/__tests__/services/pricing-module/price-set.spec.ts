@@ -8,8 +8,8 @@ import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -29,16 +29,6 @@ describe("PricingModule Service - PriceSet", () => {
         schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
       },
     })
-
-    testManager = MikroOrmWrapper.forkManager()
-    await createCurrencies(testManager)
-    await createMoneyAmounts(testManager)
-    data = await createPriceSets(testManager)
-    await createPriceSetMoneyAmounts(testManager)
-
-    await createRuleTypes(testManager)
-    
-    await createPriceRules(testManager)
   })
 
   afterEach(async () => {
@@ -46,75 +36,336 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("calculatePrices", () => {
-    it("retrieves the calculated prices when no context is set", async () => {
-      const priceSetsResult = await service.calculatePrices(
-        { id: ["price-set-1", "price-set-2"] },
-        {}
-      )
+    describe("single pricing context", () => {
+      beforeEach(async () => {
+        testManager = MikroOrmWrapper.forkManager()
 
-      expect(priceSetsResult).toEqual([
-        {
-          id: "price-set-1",
-          amount: null,
-          currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
-        },
-        {
-          id: "price-set-2",
-          amount: null,
-          currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
-        },
-      ])
-    })
+        await createCurrencies(testManager)
+        await createMoneyAmounts(testManager)
+        await createPriceSets(testManager)
+        await createPriceSetMoneyAmounts(testManager)
+        await createRuleTypes(testManager)
+        await createPriceRules(testManager)
+      })
 
-    it.only("retrieves the calculated prices when a context is set", async () => {
-      const priceSetsResult = await service.calculatePrices(
-        { id: ["price-set-1", "price-set-2"] },
-        {
-          context: {
-            currency_code: "USD",
+      it("retrieves the calculated prices when no context is set", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-1", "price-set-2"] },
+          {}
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
           },
-        }
-      )
+          {
+            id: "price-set-2",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
 
-      expect(priceSetsResult).toEqual([
-        {
-          id: "price-set-1",
-          amount: "500",
-          currency_code: "USD",
-          min_quantity: "1",
-          max_quantity: "10",
-        },
-        {
-          id: "price-set-2",
-          amount: null,
-          currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
-        },
-      ])
+      it("retrieves the calculated prices when a context is set", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-1", "price-set-2"] },
+          {
+            context: {
+              currency_code: "USD",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: "500",
+            currency_code: "USD",
+            min_quantity: "1",
+            max_quantity: "10",
+          },
+          {
+            id: "price-set-2",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
+
+      it("retrieves the calculated prices only when id exists in the database", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-doesnotexist", "price-set-1"] },
+          {
+            context: { currency_code: "USD" },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: "500",
+            currency_code: "USD",
+            min_quantity: "1",
+            max_quantity: "10",
+          },
+        ])
+      })
+
+      it("retrieves the calculated prices when a context is set, but not present in the db", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-1", "price-set-2"] },
+          {
+            context: {
+              currency_code: "TEST",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          {
+            id: "price-set-2",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
+
+      it("retrieves the calculated prices when a context is set but rule attribute doesnt exist the data layer", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-1", "price-set-2"] },
+          {
+            context: {
+              city: "Berlin",
+            } as any,
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          {
+            id: "price-set-2",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
+
+      it("retrieves the calculated prices when a context is set with a totally random pricing attribute", async () => {
+        await createCurrencies(testManager, [
+          {
+            name: "dollas",
+            code: "DOLLA",
+            symbol: "$",
+            symbol_native: "$",
+          },
+        ])
+
+        await createPriceSets(testManager, [
+          {
+            id: "price-set-city",
+            money_amounts: [],
+          } as any,
+        ])
+
+        await createMoneyAmounts(testManager, [
+          {
+            id: "money-amount-city",
+            currency_code: "DOLLA",
+            amount: 666,
+          },
+        ])
+
+        await createPriceSetMoneyAmounts(testManager, [
+          {
+            id: "price-set-money-amount-city",
+            title: "psma city",
+            price_set: "price-set-city",
+            money_amount: "money-amount-city",
+          },
+        ])
+
+        await createRuleTypes(testManager, [
+          {
+            id: "rule-type-city",
+            name: "rule type city",
+            rule_attribute: "city",
+          },
+        ])
+
+        await createPriceRules(testManager, [
+          {
+            id: "price-rule-city",
+            price_set_id: "price-set-city",
+            rule_type_id: "rule-type-city",
+            price_set_money_amount_id: "price-set-money-amount-city",
+            value: "Berlin",
+            price_list_id: "test",
+          },
+        ])
+
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-city"] },
+          {
+            context: {
+              city: "Berlin",
+            } as any,
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-city",
+            amount: "666",
+            currency_code: "DOLLA",
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
     })
 
-    it("retrieves the calculated prices only when id exists in the database", async () => {
-      const priceSetsResult = await service.calculatePrices(
-        { id: ["price-set-doesnotexist", "price-set-1"] },
-        {
-          context: { currency_code: "USD" },
-        }
-      )
+    describe("multiple pricing context", () => {
+      beforeEach(async () => {
+        testManager = MikroOrmWrapper.forkManager()
 
-      expect(priceSetsResult).toEqual([
-        {
-          id: "price-set-1",
-          amount: "500",
-          currency_code: "USD",
-          min_quantity: "1",
-          max_quantity: "10",
-        },
-      ])
+        await createCurrencies(testManager)
+        await createMoneyAmounts(testManager)
+        await createPriceSets(testManager)
+        await createPriceSetMoneyAmounts(testManager)
+        await createRuleTypes(testManager)
+        await createPriceRules(testManager)
+      })
+
+      it("retrieves the calculated prices when a context is set", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-1", "price-set-2"] },
+          {
+            context: {
+              currency_code: "USD",
+              region_id: "DE",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: "500",
+            currency_code: "USD",
+            min_quantity: "1",
+            max_quantity: "10",
+          },
+          {
+            id: "price-set-2",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
+
+      it("retrieves the calculated prices only when id exists in the database", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-doesnotexist", "price-set-1"] },
+          {
+            context: { currency_code: "USD", region_id: "DE" },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: "500",
+            currency_code: "USD",
+            min_quantity: "1",
+            max_quantity: "10",
+          },
+        ])
+      })
+
+      it("retrieves the calculated prices when a context is set, but not present in the db", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-1", "price-set-2"] },
+          {
+            context: {
+              currency_code: "TEST",
+              region_id: "DE",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          {
+            id: "price-set-2",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
+
+      it("retrieves the calculated prices when a context is set but rule attribute doesnt exist the data layer", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-1", "price-set-2"] },
+          {
+            context: {
+              city: "Berlin",
+              region_id: "DE",
+            } as any,
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          {
+            id: "price-set-2",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
     })
   })
 

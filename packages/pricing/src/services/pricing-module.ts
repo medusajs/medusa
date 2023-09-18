@@ -107,7 +107,7 @@ export default class PricingModuleService<
     const where: any[] = Object.entries(context).map(([key, value]) => {
       return {
         $and: [
-          // { "rt.rule_attribute": key },
+          { "rt.rule_attribute": key },
           {
             "pr.value": value,
           },
@@ -115,49 +115,29 @@ export default class PricingModuleService<
       }
     })
 
-    where.push({
-      $and: [
-        // { "rt.rule_attribute": null },
-        {
-          "pr.value": null,
-        },
-      ],
-    })
+    const prQb = manager
+      .createQueryBuilder(PriceRule, "pr")
+      .select(["pr.id"], true)
+      .leftJoin("pr.rule_type", "rt", {})
+      .where(where)
 
-    console.log("where - ", JSON.stringify(where, null, 2))
-
-    const priceRulesQb = manager
-      .createQueryBuilder(RuleType, "rt")
-      .select(["rt.id"], true)
-      .where({ rule_attribute: { $in: ["currency_code"] } }) //Object.keys(context)
-
-    const res = await priceRulesQb.execute("all", true)
-
-    console.log("res - ", JSON.stringify(res, null, 2))
+    const psmaQb = manager
+      .createQueryBuilder(PriceRule, "pr")
+      .select(["pr.price_set_money_amount_id"], true)
+      .leftJoin("pr.rule_type", "rt", {})
+      .where(where)
 
     const qb = manager
       .createQueryBuilder(PriceSet, "ps")
       .select(["ps.id"], true)
       .where({ id: { $in: pricingFilters.id } })
       .leftJoin("ps.price_set_money_amounts", "psma", {})
-      .leftJoinAndSelect("psma.money_amount", "ma", {})
-      .leftJoinAndSelect("psma.price_rules", "pr", {
-        'pr.rule_type_id': { $in: res.map(rt => rt.id)}, //priceRulesQb.getQuery(),
-        'pr.value': 'USD'
+      .leftJoinAndSelect("psma.money_amount", "ma", {
+        "psma.id": psmaQb.getKnexQuery(),
       })
-      // .leftJoinAndSelect("pr.rule_type", "rt", {})
-      // .where({ $or: where })
-    // .addSelect([
-    //   "ma.currency_code",
-    //   "ma.amount",
-    //   "ma.min_quantity",
-    //   "ma.max_quantity",
-    // ])
-    // .andWhere({
-    //   money_amounts: { $or: [{ currency_code: context.currency_code }, { currency_code: null }] },
-    // })
-
-    console.log(qb.getQuery())
+      .leftJoinAndSelect("psma.price_rules", "pr", {
+        "pr.id": prQb.getKnexQuery(),
+      })
 
     const joinedProps = (qb as any)._joinedProps
     const driver = (qb as any).driver
@@ -174,7 +154,7 @@ export default class PricingModuleService<
 
     const priceSets = JSON.parse(JSON.stringify(queryBuilderResults))
 
-    console.log("priceSets - ", JSON.stringify(priceSets, null, 2))
+    // console.log("priceSets - ", JSON.stringify(priceSets, null, 2))
 
     const calculatedPrices = priceSets.map(
       (priceSet): PricingTypes.CalculatedPriceSetDTO => {
