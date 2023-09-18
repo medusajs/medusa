@@ -226,11 +226,12 @@ class OrderService extends TransactionBaseService {
     }
 
     // Remove fields related to totals from the DB select
-    config.select = (config.select ?? []).filter(
+    const dbConfig = JSON.parse(JSON.stringify(config))
+    dbConfig.select = (config.select ?? []).filter(
       (field) => !field.endsWith("_total")
     )
 
-    const query = buildQuery(selector, config) as FindManyOptions<Order>
+    const query = buildQuery(selector, dbConfig) as FindManyOptions<Order>
 
     if (q) {
       const where = query.where as FindOptionsWhere<Order>
