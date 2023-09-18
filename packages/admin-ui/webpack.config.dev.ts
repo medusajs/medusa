@@ -18,6 +18,7 @@ const getDevServerConfig = () => {
       path: "/",
     },
     template: path.resolve(__dirname, "ui", "index.html"),
+    publicFolder: path.resolve(__dirname, "ui", "public"),
   })
 
   if (analyzeBundle) {
