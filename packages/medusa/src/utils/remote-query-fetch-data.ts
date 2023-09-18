@@ -38,7 +38,6 @@ export function remoteQueryFetchData(container: MedusaContainer) {
       "skip",
       "take",
       "limit",
-      "order",
       "offset",
       "order",
       "sort",
