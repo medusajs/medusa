@@ -1,6 +1,6 @@
 import { LearningPathStepType } from "@site/src/providers/LearningPath"
+import { Rating } from "docs-ui"
 import React from "react"
-import Rating from "../../Rating"
 
 export type LearningPathFinishType =
   | {

@@ -1,17 +1,19 @@
 import React from "react"
 import { NotificationItemProps } from "../.."
 import clsx from "clsx"
-import IconInformationCircleSolid from "../../../../../theme/Icon/InformationCircleSolid"
-import IconXCircleSolid from "../../../../../theme/Icon/XCircleSolid"
-import IconExclamationCircleSolid from "../../../../../theme/Icon/ExclamationCircleSolid"
-import IconCheckCircleSolid from "../../../../../theme/Icon/CheckCircleSolid"
-import { Button } from "docs-ui"
+import {
+  CheckCircleSolid,
+  ExclamationCircleSolid,
+  InformationCircleSolid,
+  XCircleSolid,
+} from "@medusajs/icons"
+import { Button } from "@/components"
 
-type NotificationItemLayoutDefaultProps = NotificationItemProps & {
+export type NotificationItemLayoutDefaultProps = NotificationItemProps & {
   handleClose: () => void
 }
 
-const NotificationItemLayoutDefault: React.FC<
+export const NotificationItemLayoutDefault: React.FC<
   NotificationItemLayoutDefaultProps
 > = ({
   type = "info",
@@ -32,16 +34,16 @@ const NotificationItemLayoutDefault: React.FC<
             )}
           >
             {type === "info" && (
-              <IconInformationCircleSolid iconColorClassName="fill-medusa-fg-interactive-dark" />
+              <InformationCircleSolid className="text-medusa-fg-interactive-dark" />
             )}
             {type === "error" && (
-              <IconXCircleSolid iconColorClassName="fill-medusa-tag-red-icon dark:fill-medusa-tag-red-icon-dark" />
+              <XCircleSolid className="text-medusa-tag-red-icon dark:text-medusa-tag-red-icon-dark" />
             )}
             {type === "warning" && (
-              <IconExclamationCircleSolid iconColorClassName="fill-medusa-tag-orange-icon dark:fill-medusa-tag-orange-icon-dark" />
+              <ExclamationCircleSolid className="text-medusa-tag-orange-icon dark:text-medusa-tag-orange-icon-dark" />
             )}
             {type === "success" && (
-              <IconCheckCircleSolid iconColorClassName="fill-medusa-tag-green-icon dark:fill-medusa-tag-green-icon-dark" />
+              <CheckCircleSolid className="text-medusa-tag-green-icon dark:text-medusa-tag-green-icon-dark" />
             )}
             {type === "custom" && CustomIcon}
           </div>
@@ -85,5 +87,3 @@ const NotificationItemLayoutDefault: React.FC<
     </>
   )
 }
-
-export default NotificationItemLayoutDefault

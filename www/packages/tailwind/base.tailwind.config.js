@@ -744,10 +744,28 @@ module.exports = {
           from: { opacity: 1 },
           to: { opacity: 0 },
         },
+        tada: {
+          from: {
+            transform: "scale3d(1, 1, 1)",
+          },
+          "10%, 20%": {
+            transform: "scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg)",
+          },
+          "30%, 50%, 70%, 90%": {
+            transform: "scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg)",
+          },
+          "40%, 60%, 80%": {
+            transform: "scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg)",
+          },
+          to: {
+            transform: "scale3d(1, 1, 1)",
+          },
+        },
       },
       animation: {
         fadeIn: "fadeIn 500ms",
         fadeOut: "fadeOut 500ms",
+        tada: "tada 1s",
       },
     },
     fontFamily: {

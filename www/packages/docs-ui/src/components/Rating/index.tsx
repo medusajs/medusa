@@ -1,16 +1,18 @@
-import IconStar from "../../theme/Icon/Star"
-import IconStarSolid from "../../theme/Icon/StarSolid"
-import clsx from "clsx"
-import { Button, useAnalytics } from "docs-ui"
-import React, { useRef, useState } from "react"
+"use client"
 
-type RatingProps = {
+import React, { useRef, useState } from "react"
+import clsx from "clsx"
+import { Star, StarSolid } from "@medusajs/icons"
+import { Button } from "@/components"
+import { useAnalytics } from "@/providers"
+
+export type RatingProps = {
   event?: string
   className?: string
   onRating?: () => void
 } & React.HTMLAttributes<HTMLDivElement>
 
-const Rating: React.FC<RatingProps> = ({
+export const Rating: React.FC<RatingProps> = ({
   event = "rating",
   className = "",
   onRating,
@@ -28,7 +30,7 @@ const Rating: React.FC<RatingProps> = ({
     setHoverRating(0)
     setRating(selectedRating)
     for (let i = 0; i < selectedRating; i++) {
-      starElms.current[i].classList.add("animate__animated", "animate__tada")
+      starElms.current[i].classList.add("animate-tada")
     }
     track(
       event,
@@ -50,7 +52,7 @@ const Rating: React.FC<RatingProps> = ({
             variant="clear"
             buttonRef={(element) => {
               if (starElms.current.length - 1 < i) {
-                starElms.current.push(element)
+                starElms.current.push(element as HTMLElement)
               }
             }}
             key={i}
@@ -66,9 +68,9 @@ const Rating: React.FC<RatingProps> = ({
             }}
             onClick={() => handleRating(i + 1)}
           >
-            {!isSelected && <IconStar />}
+            {!isSelected && <Star />}
             {isSelected && (
-              <IconStarSolid iconColorClassName="fill-medusa-tag-orange-icon dark:fill-medusa-tag-orange-icon-dark" />
+              <StarSolid className="text-medusa-tag-orange-icon dark:text-medusa-tag-orange-icon-dark" />
             )}
           </Button>
         )
@@ -76,5 +78,3 @@ const Rating: React.FC<RatingProps> = ({
     </div>
   )
 }
-
-export default Rating

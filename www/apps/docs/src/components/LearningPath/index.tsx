@@ -3,9 +3,8 @@ import React from "react"
 import LearningPathIcon from "./Icon"
 import { getLearningPath } from "../../utils/learning-paths"
 import { useLearningPath } from "../../providers/LearningPath"
-import { useNotifications } from "../../providers/Notification"
 import IconCircleMiniSolid from "../../theme/Icon/CircleMiniSolid"
-import { Button } from "docs-ui"
+import { Button, useNotifications } from "docs-ui"
 
 type LearningPathProps = {
   pathName: string

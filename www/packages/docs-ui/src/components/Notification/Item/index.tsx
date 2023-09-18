@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import React, { Children, ReactElement } from "react"
-import NotificationItemLayoutDefault from "./Layout/Default"
+import { NotificationItemLayoutDefault } from "./Layout/Default"
 
 export type NotificationItemProps = {
   layout?: "default" | "empty"
@@ -17,7 +17,7 @@ export type NotificationItemProps = {
   onClose?: () => void
 } & React.HTMLAttributes<HTMLDivElement>
 
-const Notification = ({
+export const NotificationItem = ({
   className = "",
   placement = "bottom",
   show = true,
@@ -51,13 +51,13 @@ const Notification = ({
         </NotificationItemLayoutDefault>
       )}
       {layout === "empty" &&
-        Children.map(children, (child) =>
-          React.cloneElement(child, {
-            onClose: handleClose,
-          })
-        )}
+        Children.map(children, (child) => {
+          if (child) {
+            return React.cloneElement(child, {
+              onClose: handleClose,
+            })
+          }
+        })}
     </div>
   )
 }
-
-export default Notification

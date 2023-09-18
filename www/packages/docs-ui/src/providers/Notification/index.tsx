@@ -1,13 +1,14 @@
+"use client"
+
 import React, { createContext, useContext, useReducer } from "react"
-import { NotificationItemProps } from "@site/src/components/Notification/Item"
-import { v4 as uuid4 } from "uuid"
-import NotificationContainer from "@site/src/components/Notification/Container"
+import { NotificationItemProps, NotificationContainer } from "@/components"
+import uuid from "react-uuid"
 
 export type NotificationItemType = {
   id?: string
 } & NotificationItemProps
 
-type NotificationContextType = {
+export type NotificationContextType = {
   notifications: NotificationItemType[]
   addNotification: (value: NotificationItemType) => void
   generateId: () => string
@@ -18,17 +19,13 @@ type NotificationContextType = {
   ) => void
 }
 
-type NotificationProviderProps = {
-  children?: React.ReactNode
-}
-
-enum NotificationReducerActionTypes {
+export enum NotificationReducerActionTypes {
   ADD = "add",
   REMOVE = "remove",
   UPDATE = "update",
 }
 
-type NotificationReducerAction =
+export type NotificationReducerAction =
   | {
       type: NotificationReducerActionTypes.ADD
       notification: NotificationItemType
@@ -70,12 +67,16 @@ const notificationReducer = (
 
 const NotificationContext = createContext<NotificationContextType | null>(null)
 
-const NotificationProvider: React.FC<NotificationProviderProps> = ({
+export type NotificationProviderProps = {
+  children?: React.ReactNode
+}
+
+export const NotificationProvider = ({
   children,
-}) => {
+}: NotificationProviderProps) => {
   const [notifications, dispatch] = useReducer(notificationReducer, [])
 
-  const generateId = () => uuid4()
+  const generateId = () => uuid()
 
   const addNotification = (notification: NotificationItemType) => {
     if (!notification.id) {
@@ -121,13 +122,13 @@ const NotificationProvider: React.FC<NotificationProviderProps> = ({
   )
 }
 
-export default NotificationProvider
-
-export const useNotifications = () => {
+export const useNotifications = (): NotificationContextType => {
   const context = useContext(NotificationContext)
 
   if (!context) {
-    console.warn("useNotifications must be used within a NotificationProvider")
+    throw new Error(
+      "useNotifications must be used within a NotificationProvider"
+    )
   }
 
   return context

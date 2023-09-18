@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useQueryStringValue } from "@docusaurus/theme-common/internal"
-import { useNotifications } from "../providers/Notification"
-import Rating from "../components/Rating"
-import { useAnalytics } from "docs-ui"
+import { Rating, useAnalytics, useNotifications } from "docs-ui"
 
 const useOnboarding = () => {
   const isOnboarding = useQueryStringValue("ref") === "onboarding"

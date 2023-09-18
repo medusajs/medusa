@@ -1,18 +1,17 @@
-import {
-  NotificationItemType,
-  useNotifications,
-} from "@site/src/providers/Notification"
+import { NotificationItemType, useNotifications } from "@/providers"
 import React from "react"
-import NotificationItem from "../Item"
+import { NotificationItem } from "./Item"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import clsx from "clsx"
 
-const NotificationContainer = () => {
+export const NotificationContainer = () => {
   const { notifications, removeNotification } = useNotifications()
 
   const handleClose = (notification: NotificationItemType) => {
     notification.onClose?.()
-    removeNotification(notification.id)
+    if (notification.id) {
+      removeNotification(notification.id)
+    }
   }
 
   const renderFilteredNotifications = (
@@ -57,5 +56,3 @@ const NotificationContainer = () => {
     </>
   )
 }
-
-export default NotificationContainer
