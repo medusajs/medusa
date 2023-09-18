@@ -3,8 +3,7 @@
 import clsx from "clsx"
 import { HighlightProps, Highlight, themes } from "prism-react-renderer"
 import IconCopy from "../Icons/Copy"
-import { useColorMode } from "../../providers/color-mode"
-import { CopyButton } from "docs-ui"
+import { CopyButton, useColorMode } from "docs-ui"
 
 export type CodeBlockProps = {
   source: string

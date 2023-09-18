@@ -1,6 +1,6 @@
 "use client"
 
-import { useColorMode } from "@/providers/color-mode"
+import { useColorMode } from "docs-ui"
 import Image from "next/image"
 import Link from "next/link"
 

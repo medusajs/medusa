@@ -2,11 +2,11 @@
 
 import {
   AnalyticsProvider,
+  ColorModeProvider,
   MobileProvider,
   ModalProvider,
   PageLoadingProvider,
 } from "docs-ui"
-import ColorModeProvider from "./color-mode"
 import BaseSpecsProvider from "./base-specs"
 import SidebarProvider from "./sidebar"
 import NavbarProvider from "./navbar"

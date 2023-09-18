@@ -1,8 +1,8 @@
 "use client"
 
-import { useColorMode } from "@/providers/color-mode"
 import NavbarIconButton, { NavbarIconButtonProps } from "../IconButton"
 import type IconProps from "@/components/Icons/types"
+import { useColorMode } from "docs-ui"
 import dynamic from "next/dynamic"
 
 const IconLightMode = dynamic<IconProps>(

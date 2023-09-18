@@ -1,12 +1,13 @@
 import React from "react"
 import clsx from "clsx"
 import Link from "@docusaurus/Link"
-import { IconProps } from "../../theme/Icon"
 import { Badge } from "docs-ui"
 import BorderedIcon from "../BorderedIcon"
 
 type LargeCardProps = {
-  Icon: React.FC<IconProps>
+  // TODO change to React.FC<IconProps>
+  // once react versions are resolved
+  Icon: any
   image: {
     light: string
     dark?: string
