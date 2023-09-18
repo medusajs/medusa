@@ -10,7 +10,7 @@ import ImagePlaceholder from "../../fundamentals/image-placeholder"
 import StatusIndicator from "../../fundamentals/status-indicator"
 import Actionables from "../../molecules/actionables"
 import useProductActions from "./use-product-actions"
-
+import i18n from "i18next"
 type ProductOverviewProps = {
   products?: Product[]
   toggleListView: () => void
@@ -86,7 +86,7 @@ const ProductTile = ({ product }) => {
           <div>
             <div className="mt-base flex items-center justify-between">
               <p className="inter-small-regular text-grey-90 line-clamp-1 mr-3">
-                {product.title_ar}
+              {i18n.language === "ar" ? product.title_ar : product.title}
               </p>
               <StatusIndicator
                 variant={getProductStatusVariant(product.status)}

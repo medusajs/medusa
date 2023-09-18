@@ -9,7 +9,7 @@ import TileIcon from "../../fundamentals/icons/tile-icon"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
 import StatusIndicator from "../../fundamentals/status-indicator"
 import { useWindowDimensions } from "../../../hooks/use-window-dimensions"
-
+import i18n from "i18next"
 const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const { t } = useTranslation()
   const getProductStatus = (status) => {
@@ -55,7 +55,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
                   <ImagePlaceholder />
                 )}
               </div>
-              {original.title_ar}
+              {i18n.language === "ar" ? original.title_ar : original.title}
             </div>
           )
         },
@@ -135,7 +135,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
                     <ImagePlaceholder />
                   )}
                 </div>
-                {original.title_ar}
+                {i18n.language === "ar" ? original.title_ar : original.title}
               </div>
               <div className="flex flex-row justify-between">
                 {getProductStatus(original.status)}
