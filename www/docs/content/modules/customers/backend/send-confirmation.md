@@ -170,7 +170,7 @@ class CustomerConfirmationSubscriber {
       templateId: "customer-confirmation",
       from: "hello@medusajs.com",
       to: data.email,
-      data: {
+      dynamic_template_data: {
         // any data necessary for your template...
         first_name: data.first_name,
         last_name: data.last_name,
