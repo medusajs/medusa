@@ -184,7 +184,7 @@ class ClaimOrderSubscriber {
       templateId: "order-claim-confirmation",
       from: "hello@medusajs.com",
       to: data.old_email,
-      data: {
+      dynamic_template_data: {
         link: `http://example.com/confirm-order-claim/${data.token}`,
         // other data...
       },
