@@ -9,6 +9,7 @@ import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { createRuleTypes } from "../../../__fixtures__/rule-type"
 
 jest.setTimeout(30000)
 
@@ -35,6 +36,8 @@ describe("PricingModule Service - PriceSet", () => {
     data = await createPriceSets(testManager)
     await createPriceSetMoneyAmounts(testManager)
 
+    await createRuleTypes(testManager)
+    
     await createPriceRules(testManager)
   })
 

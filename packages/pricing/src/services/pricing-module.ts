@@ -104,22 +104,60 @@ export default class PricingModuleService<
 
     const manager = sharedContext.manager as EntityManager
 
+    const where: any[] = Object.entries(context).map(([key, value]) => {
+      return {
+        $and: [
+          // { "rt.rule_attribute": key },
+          {
+            "pr.value": value,
+          },
+        ],
+      }
+    })
+
+    where.push({
+      $and: [
+        // { "rt.rule_attribute": null },
+        {
+          "pr.value": null,
+        },
+      ],
+    })
+
+    console.log("where - ", JSON.stringify(where, null, 2))
+
+    const priceRulesQb = manager
+      .createQueryBuilder(RuleType, "rt")
+      .select(["rt.id"], true)
+      .where({ rule_attribute: { $in: ["currency_code"] } }) //Object.keys(context)
+
+    const res = await priceRulesQb.execute("all", true)
+
+    console.log("res - ", JSON.stringify(res, null, 2))
+
     const qb = manager
       .createQueryBuilder(PriceSet, "ps")
       .select(["ps.id"], true)
       .where({ id: { $in: pricingFilters.id } })
       .leftJoin("ps.price_set_money_amounts", "psma", {})
-      .leftJoinAndSelect("psma.money_amount", "ma", { "ma.currency_code": context.currency_code })
-      
-      // .addSelect([
-      //   "ma.currency_code",
-      //   "ma.amount",
-      //   "ma.min_quantity",
-      //   "ma.max_quantity",
-      // ])
-      // .andWhere({
-      //   money_amounts: { $or: [{ currency_code: context.currency_code }, { currency_code: null }] },
-      // })
+      .leftJoinAndSelect("psma.money_amount", "ma", {})
+      .leftJoinAndSelect("psma.price_rules", "pr", {
+        'pr.rule_type_id': { $in: res.map(rt => rt.id)}, //priceRulesQb.getQuery(),
+        'pr.value': 'USD'
+      })
+      // .leftJoinAndSelect("pr.rule_type", "rt", {})
+      // .where({ $or: where })
+    // .addSelect([
+    //   "ma.currency_code",
+    //   "ma.amount",
+    //   "ma.min_quantity",
+    //   "ma.max_quantity",
+    // ])
+    // .andWhere({
+    //   money_amounts: { $or: [{ currency_code: context.currency_code }, { currency_code: null }] },
+    // })
+
+    console.log(qb.getQuery())
 
     const joinedProps = (qb as any)._joinedProps
     const driver = (qb as any).driver

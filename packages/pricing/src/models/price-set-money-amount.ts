@@ -1,8 +1,10 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Collection,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryKey,
   PrimaryKeyType,
   Property,
@@ -10,6 +12,7 @@ import {
 
 import MoneyAmount from "./money-amount"
 import PriceSet from "./price-set"
+import PriceRule from "./price-rule"
 
 @Entity()
 export default class PriceSetMoneyAmount {
@@ -29,6 +32,12 @@ export default class PriceSetMoneyAmount {
     index: "IDX_price_set_money_amount_money_amount_id",
   })
   money_amount?: MoneyAmount
+
+  @OneToMany({
+    entity: () => PriceRule,
+    mappedBy: (ps) => ps.price_set_money_amount,
+  })
+  price_rules = new Collection<PriceRule>(this)
 
   @BeforeCreate()
   onCreate() {

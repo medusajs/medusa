@@ -15,63 +15,15 @@ export async function createPriceRules(
   for (let priceRuleData of pricesRulesData) {
     const priceRuleDataClone: any = { ...priceRuleData }
 
-    if (priceRuleDataClone.price_set_id) {
-      priceRuleDataClone.price_set = manager.getReference(
-        PriceSet,
-        priceRuleDataClone.price_set_id
-      )
-    }
+    priceRuleDataClone.price_set = priceRuleDataClone.price_set_id
 
-    let dbRuleType: RuleType | null = await manager.findOne(RuleType, {
-      id: priceRuleDataClone.rule_type_id,
-    })
-
-    if (!dbRuleType) {
-      const [createdRuleType] = await createRuleTypes(manager, [
-        {
-          id: priceRuleDataClone.rule_type_id,
-          name: "rule 1",
-          rule_attribute: "region_id",
-        },
-      ])
-
-      dbRuleType = createdRuleType
-    }
-
-    priceRuleDataClone.rule_type = manager.getReference(
-      RuleType,
-      dbRuleType!.id
-    )
+    priceRuleDataClone.rule_type = priceRuleDataClone.rule_type_id
 
     const priceSetMoneyAmountId =
       priceRuleDataClone.price_set_money_amount_id ||
       priceRuleDataClone.price_set_money_amount?.id
 
-    let psma: PriceSetMoneyAmount | null = await manager.findOne(
-      PriceSetMoneyAmount,
-      {
-        id: priceSetMoneyAmountId,
-      }
-    )
-
-    if (!psma) {
-      const [ma] = await createMoneyAmounts(manager, [
-        priceRuleDataClone.price_set_money_amount.money_amount ?? {
-          amount: 100,
-          currency_code: "EUR",
-        },
-      ])
-
-      psma = manager.create(PriceSetMoneyAmount, {
-        price_set: priceRuleDataClone.price_set.id,
-        money_amount: ma.id,
-        title: "test",
-      })
-
-      await manager.persist(psma).flush()
-    }
-
-    priceRuleDataClone.price_set_money_amount = psma?.id
+    priceRuleDataClone.price_set_money_amount = priceSetMoneyAmountId
 
     const priceRule = manager.create(PriceRule, priceRuleDataClone)
 

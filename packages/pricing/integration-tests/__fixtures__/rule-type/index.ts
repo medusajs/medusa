@@ -11,9 +11,9 @@ export async function createRuleTypes(
   for (let ruleTypeData of ruletypesData) {
     const ruleType = manager.create(RuleType, ruleTypeData)
 
-    await manager.persistAndFlush(ruleType)
     ruleTypes.push(ruleType)
   }
+  await manager.persistAndFlush(ruleTypes)
 
   return ruleTypes
 }
