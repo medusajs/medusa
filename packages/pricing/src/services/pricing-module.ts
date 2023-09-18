@@ -109,8 +109,17 @@ export default class PricingModuleService<
       .select(["ps.id"], true)
       .where({ id: { $in: pricingFilters.id } })
       .leftJoin("ps.price_set_money_amounts", "psma", {})
-      .leftJoinAndSelect("ps.money_amounts", "ma", {})
-      .addSelect(["ma.currency_code"])
+      .leftJoinAndSelect("psma.money_amount", "ma", { "ma.currency_code": context.currency_code })
+      
+      // .addSelect([
+      //   "ma.currency_code",
+      //   "ma.amount",
+      //   "ma.min_quantity",
+      //   "ma.max_quantity",
+      // ])
+      // .andWhere({
+      //   money_amounts: { $or: [{ currency_code: context.currency_code }, { currency_code: null }] },
+      // })
 
     const joinedProps = (qb as any)._joinedProps
     const driver = (qb as any).driver
@@ -135,17 +144,13 @@ export default class PricingModuleService<
         // making a DB query directly instead
         // This should look for a default price when no rules apply
         // When no price is set, return null values for all cases
-        const selectedMoneyAmount = priceSet.money_amounts?.find(
-          (ma) =>
-            context.currency_code && ma.currency_code === context.currency_code
-        )
 
         return {
           id: priceSet.id,
-          amount: selectedMoneyAmount?.amount || null,
-          currency_code: selectedMoneyAmount?.currency_code || null,
-          min_quantity: selectedMoneyAmount?.min_quantity || null,
-          max_quantity: selectedMoneyAmount?.max_quantity || null,
+          amount: priceSet?.ma__amount || null,
+          currency_code: priceSet?.ma__currency_code || null,
+          min_quantity: priceSet?.ma__min_quantity || null,
+          max_quantity: priceSet?.ma__max_quantity || null,
         }
       }
     )
