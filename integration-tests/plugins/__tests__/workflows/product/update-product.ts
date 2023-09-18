@@ -34,6 +34,7 @@ describe("UpdateProduct workflow", function () {
     await simpleProductFactory(dbConnection, {
       title: "Original title",
       id: "to-update",
+      handle: "to-update",
       variants: [{ id: "original-variant" }],
     })
   })

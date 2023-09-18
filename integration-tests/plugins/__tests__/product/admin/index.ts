@@ -129,7 +129,6 @@ describe("/admin/products", () => {
           title: "Test",
           discountable: true,
           is_giftcard: false,
-          handle: "test",
           status: "draft",
           created_at: expect.any(String),
           updated_at: expect.any(String),
@@ -395,13 +394,11 @@ describe("/admin/products", () => {
       await simpleProductFactory(dbConnection, {
         title: "To update product",
         id: "to-update",
-        handle: "to-update",
       })
 
       await simpleProductFactory(dbConnection, {
         title: "To update product with channels",
         id: "to-update-with-sales-channels",
-        handle: "to-update-with-sales-channels",
         sales_channels: [
           { name: "channel 1", id: "channel-1" },
           { name: "channel 2", id: "channel-2" },
@@ -416,7 +413,6 @@ describe("/admin/products", () => {
       await simpleProductFactory(dbConnection, {
         title: "To update product with variants",
         id: "to-update-with-variants",
-        handle: "to-update-with-variants",
         variants: [
           {
             id: "variant-1",
