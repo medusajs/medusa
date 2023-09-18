@@ -6237,7 +6237,7 @@ __metadata:
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
     "@radix-ui/react-collapsible": ^1.0.1
-    "@radix-ui/react-dialog": ^1.0.2
+    "@radix-ui/react-dialog": ^1.0.4
     "@radix-ui/react-dropdown-menu": ^2.0.2
     "@radix-ui/react-popover": ^1.0.3
     "@radix-ui/react-portal": ^1.0.2
@@ -8293,7 +8293,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-dialog@npm:1.0.4, @radix-ui/react-dialog@npm:^1.0.2, @radix-ui/react-dialog@npm:^1.0.4":
+"@radix-ui/react-dialog@npm:1.0.4, @radix-ui/react-dialog@npm:^1.0.4":
   version: 1.0.4
   resolution: "@radix-ui/react-dialog@npm:1.0.4"
   dependencies:
