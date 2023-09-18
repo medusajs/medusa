@@ -8003,6 +8003,7 @@ __metadata:
     "@docsearch/react": ^3.5.1
     "@mdx-js/loader": ^2.3.0
     "@mdx-js/react": ^2.3.0
+    "@medusajs/icons": ^1.0.0
     "@next/bundle-analyzer": ^13.4.19
     "@next/mdx": ^13.4.12
     "@octokit/request": ^8.1.1
@@ -10077,6 +10078,7 @@ __metadata:
     "@docusaurus/module-type-aliases": latest
     "@docusaurus/preset-classic": latest
     "@docusaurus/remark-plugin-npm2yarn": latest
+    "@medusajs/icons": ^1.0.0
     "@octokit/request": ^6.2.3
     "@svgr/webpack": 6.2.1
     "@tsconfig/docusaurus": ^1.0.7

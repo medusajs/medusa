@@ -1,6 +1,6 @@
+import { ArrowUpRightOnBox } from "@medusajs/icons"
 import clsx from "clsx"
 import Link from "next/link"
-import IconArrowUpRightOnBox from "../Icons/ArrowUpRightOnBox"
 
 type CardProps = {
   title: string
@@ -29,7 +29,7 @@ const Card = ({ title, text, href, className }: CardProps) => {
 
       {href && (
         <>
-          <IconArrowUpRightOnBox />
+          <ArrowUpRightOnBox />
           <Link
             href={href}
             className="absolute left-0 top-0 h-full w-full rounded"

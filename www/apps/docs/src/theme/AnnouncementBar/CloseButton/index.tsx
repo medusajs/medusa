@@ -26,7 +26,7 @@ export default function AnnouncementBarCloseButton(
         width={20}
         height={20}
         strokeWidth={1.5}
-        iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark"
+        className="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark"
       />
     </button>
   )

@@ -5,7 +5,7 @@ import AnnouncementBarCloseButton from "@theme/AnnouncementBar/CloseButton"
 import AnnouncementBarContent from "@theme/AnnouncementBar/Content"
 import clsx from "clsx"
 import { Bordered } from "docs-ui"
-import IconBell from "../Icon/Bell"
+import { BellAlertSolid } from "@medusajs/icons"
 
 export default function AnnouncementBar(): JSX.Element | null {
   const { announcementBar } = useThemeConfig()
@@ -31,7 +31,7 @@ export default function AnnouncementBar(): JSX.Element | null {
             "rounded-xs bg-medusa-bg-component dark:bg-medusa-bg-component-dark"
           )}
         >
-          <IconBell iconColorClassName="fill-medusa-fg-subtle dark:fill-medusa-fg-subtle-dark" />
+          <BellAlertSolid className="text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark" />
         </div>
       </Bordered>
       <AnnouncementBarContent className={clsx("flex-1")} />

@@ -1,7 +1,7 @@
 import React from "react"
-import { IconProps } from "@/icons"
 import { Bordered } from "@/components/Bordered"
 import clsx from "clsx"
+import { IconProps } from "@/types"
 
 export type BorderedIconProps = {
   icon?: string
@@ -37,7 +37,11 @@ export const BorderedIcon = ({
         )}
         {IconComponent && (
           <IconComponent
-            className={clsx(iconClassName, "bordered-icon")}
+            className={clsx(
+              "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+              iconClassName,
+              "bordered-icon"
+            )}
             iconColorClassName={iconColorClassName}
           />
         )}

@@ -13,9 +13,8 @@ import { ThemeConfig } from "@medusajs/docs"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import clsx from "clsx"
 import { useSidebar } from "../../../providers/Sidebar"
-import IconSidebar from "../../Icon/Sidebar"
-import IconChevronDoubleLeftMiniSolid from "../../Icon/ChevronDoubleLeftMiniSolid"
 import { Tooltip } from "docs-ui"
+import { ChevronDoubleLeftMiniSolid, Sidebar } from "@medusajs/icons"
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -143,9 +142,9 @@ export default function NavbarContent(): JSX.Element {
                     },
                   },
                   Icon: !sidebarContext?.hiddenSidebarContainer ? (
-                    <IconSidebar iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+                    <Sidebar className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
                   ) : (
-                    <IconChevronDoubleLeftMiniSolid iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+                    <ChevronDoubleLeftMiniSolid className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
                   ),
                   buttonType: "icon",
                 },

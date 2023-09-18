@@ -2,34 +2,27 @@ import React, { type ReactNode } from "react"
 import clsx from "clsx"
 import Translate from "@docusaurus/Translate"
 import type { Props } from "@theme/Admonition"
-import IconInformationCircleSolid from "../Icon/InformationCircleSolid"
-import IconLightBulbSolid from "../Icon/LightBulbSolid"
-import IconExclamationCircleSolid from "../Icon/ExclamationCircleSolid"
+import {
+  ExclamationCircleSolid,
+  InformationCircleSolid,
+  LightBulbSolid,
+} from "@medusajs/icons"
 
 function NoteIcon() {
   return (
-    <IconInformationCircleSolid
-      className="inline-block mr-0.125"
-      iconColorClassName="fill-medusa-fg-interactive-dark"
-    />
+    <InformationCircleSolid className="inline-block mr-0.125 text-medusa-fg-interactive-dark" />
   )
 }
 
 function TipIcon() {
   return (
-    <IconLightBulbSolid
-      className="inline-block mr-0.125"
-      iconColorClassName="fill-medusa-tag-orange-icon-dark"
-    />
+    <LightBulbSolid className="inline-block mr-0.125 text-medusa-tag-orange-icon-dark" />
   )
 }
 
 function DangerIcon() {
   return (
-    <IconExclamationCircleSolid
-      className="inline-block mr-0.125"
-      iconColorClassName="fill-medusa-fg-error dark:fill-medusa-fg-error-dark"
-    />
+    <ExclamationCircleSolid className="inline-block mr-0.125 text-medusa-fg-error dark:text-medusa-fg-error-dark" />
   )
 }
 

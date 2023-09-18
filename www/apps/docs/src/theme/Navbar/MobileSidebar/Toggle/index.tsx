@@ -1,8 +1,7 @@
 import React from "react"
 import { useNavbarMobileSidebar } from "@docusaurus/theme-common/internal"
 import { translate } from "@docusaurus/Translate"
-import IconSidebar from "../../../Icon/Sidebar"
-import IconXMark from "../../../Icon/XMark"
+import { Sidebar, XMark } from "@medusajs/icons"
 
 export default function MobileSidebarToggle(): JSX.Element {
   const { toggle, shown } = useNavbarMobileSidebar()
@@ -20,10 +19,10 @@ export default function MobileSidebarToggle(): JSX.Element {
       type="button"
     >
       {!shown && (
-        <IconSidebar iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+        <Sidebar className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
       )}
       {shown && (
-        <IconXMark iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+        <XMark className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
       )}
     </button>
   )

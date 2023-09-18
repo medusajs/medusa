@@ -3,8 +3,8 @@ import React from "react"
 import LearningPathIcon from "./Icon"
 import { getLearningPath } from "../../utils/learning-paths"
 import { useLearningPath } from "../../providers/LearningPath"
-import IconCircleMiniSolid from "../../theme/Icon/CircleMiniSolid"
 import { Button, useNotifications } from "docs-ui"
+import { CircleMiniSolid } from "@medusajs/icons"
 
 type LearningPathProps = {
   pathName: string
@@ -74,7 +74,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
           key={index}
         >
           <div className={clsx("w-3 flex items-center justify-center")}>
-            <IconCircleMiniSolid iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+            <CircleMiniSolid className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
           </div>
           <span
             className={clsx(

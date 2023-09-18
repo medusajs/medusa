@@ -1,16 +1,16 @@
 "use client"
 
+import { IconProps } from "@medusajs/icons/dist/types"
 import NavbarIconButton, { NavbarIconButtonProps } from "../IconButton"
-import type IconProps from "@/components/Icons/types"
 import { useColorMode } from "docs-ui"
 import dynamic from "next/dynamic"
 
 const IconLightMode = dynamic<IconProps>(
-  async () => import("../../Icons/LightMode")
+  async () => (await import("@medusajs/icons")).Sun
 ) as React.FC<IconProps>
 
 const IconDarkMode = dynamic<IconProps>(
-  async () => import("../../Icons/DarkMode")
+  async () => (await import("@medusajs/icons")).Moon
 ) as React.FC<IconProps>
 
 type NavbarColorModeToggleProps = {
@@ -23,10 +23,10 @@ const NavbarColorModeToggle = ({ buttonProps }: NavbarColorModeToggleProps) => {
   return (
     <NavbarIconButton {...buttonProps} onClick={() => toggleColorMode()}>
       {colorMode === "light" && (
-        <IconLightMode iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+        <IconLightMode className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
       )}
       {colorMode === "dark" && (
-        <IconDarkMode iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+        <IconDarkMode className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
       )}
     </NavbarIconButton>
   )

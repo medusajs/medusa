@@ -3,9 +3,8 @@ import React from "react"
 import LearningPathStepActions from "./Actions"
 import clsx from "clsx"
 import IconCircleDottedLine from "@site/src/theme/Icon/CircleDottedLine"
-import IconCheckCircleSolid from "@site/src/theme/Icon/CheckCircleSolid"
-import IconCircleMiniSolid from "@site/src/theme/Icon/CircleMiniSolid"
 import Link from "@docusaurus/Link"
+import { CheckCircleSolid, CircleMiniSolid } from "@medusajs/icons"
 
 type LearningPathStepsProps = {
   onFinish?: () => void
@@ -39,9 +38,11 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
                   />
                 )}
                 {index < currentStep && (
-                  <IconCheckCircleSolid iconColorClassName="fill-medusa-fg-interactive dark:fill-medusa-fg-interactive-dark" />
+                  <CheckCircleSolid className="text-medusa-fg-interactive dark:text-medusa-fg-interactive-dark" />
                 )}
-                {index > currentStep && <IconCircleMiniSolid />}
+                {index > currentStep && (
+                  <CircleMiniSolid className="text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark" />
+                )}
               </div>
               <span
                 className={clsx(

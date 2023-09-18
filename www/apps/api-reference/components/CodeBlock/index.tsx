@@ -2,8 +2,8 @@
 
 import clsx from "clsx"
 import { HighlightProps, Highlight, themes } from "prism-react-renderer"
-import IconCopy from "../Icons/Copy"
 import { CopyButton, useColorMode } from "docs-ui"
+import { SquareTwoStackSolid } from "@medusajs/icons"
 
 export type CodeBlockProps = {
   source: string
@@ -102,7 +102,7 @@ const CodeBlock = ({
               )}
             >
               <CopyButton text={source} tooltipClassName="font-base">
-                <IconCopy className="fill-medusa-code-icon dark:fill-medusa-code-icon-dark" />
+                <SquareTwoStackSolid className="text-medusa-code-icon dark:text-medusa-code-icon-dark" />
               </CopyButton>
             </div>
           </>

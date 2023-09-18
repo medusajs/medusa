@@ -6,8 +6,8 @@ import TagsOperationCodeSectionResponses from "./Responses"
 import type { TagOperationCodeSectionRequestSamplesProps } from "./RequestSamples"
 import dynamic from "next/dynamic"
 import clsx from "clsx"
-import IconCopyOutline from "../../../Icons/CopyOutline"
 import { CopyButton } from "docs-ui"
+import { SquareTwoStack } from "@medusajs/icons"
 
 const TagOperationCodeSectionRequestSamples =
   dynamic<TagOperationCodeSectionRequestSamplesProps>(
@@ -41,7 +41,7 @@ const TagOperationCodeSection = ({
           </code>
         </div>
         <CopyButton text={endpointPath} tooltipClassName="font-base">
-          <IconCopyOutline iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+          <SquareTwoStack className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
         </CopyButton>
       </div>
       {operation["x-codeSamples"] && (

@@ -2,10 +2,9 @@
 
 import NavbarIconButton, { NavbarIconButtonProps } from "../IconButton"
 import { useSidebar } from "@/providers/sidebar"
-import IconSidebar from "../../Icons/Sidebar"
 import clsx from "clsx"
-import IconXMark from "../../Icons/XMark"
 import { usePageLoading } from "docs-ui"
+import { Sidebar, XMark } from "@medusajs/icons"
 
 type NavbarMenuButtonProps = {
   buttonProps?: NavbarIconButtonProps
@@ -26,10 +25,10 @@ const NavbarMenuButton = ({ buttonProps }: NavbarMenuButtonProps) => {
       }}
     >
       {!mobileSidebarOpen && (
-        <IconSidebar iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+        <Sidebar className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
       )}
       {mobileSidebarOpen && (
-        <IconXMark iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+        <XMark className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
       )}
     </NavbarIconButton>
   )

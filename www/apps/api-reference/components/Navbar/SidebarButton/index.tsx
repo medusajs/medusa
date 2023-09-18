@@ -1,11 +1,11 @@
 "use client"
 
-import IconSidebar from "@/components/Icons/Sidebar"
 import NavbarIconButton from "../IconButton"
 import { useSidebar } from "../../../providers/sidebar"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import { Tooltip } from "docs-ui"
+import { Sidebar } from "@medusajs/icons"
 
 const NavbarSidebarButton = () => {
   const { desktopSidebarOpen, setDesktopSidebarOpen } = useSidebar()
@@ -79,7 +79,7 @@ const NavbarSidebarButton = () => {
       }
     >
       <NavbarIconButton onClick={toggleSidebar}>
-        <IconSidebar iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+        <Sidebar className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
       </NavbarIconButton>
     </Tooltip>
   )

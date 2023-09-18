@@ -24,18 +24,20 @@ const DocSidebarItemIcon: React.FC<DocSidebarItemIconProps> = ({
           IconComponent={IconComponent}
           iconClassName={clsx("sidebar-item-icon")}
           iconColorClassName={clsx(
+            "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
             is_disabled &&
-              "stroke-medusa-fg-disabled dark:stroke-medusa-fg-disabled-dark"
+              "text-medusa-fg-disabled dark:text-medusa-fg-disabled-dark"
           )}
         />
       )}
       {!is_title && (
         <IconComponent
-          className={clsx("sidebar-item-icon")}
-          iconColorClassName={
+          className={clsx(
+            "sidebar-item-icon",
+            "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
             is_disabled &&
-            "stroke-medusa-fg-disabled dark:stroke-medusa-fg-disabled-dark"
-          }
+              "text-medusa-fg-disabled dark:text-medusa-fg-disabled-dark"
+          )}
         />
       )}
     </>

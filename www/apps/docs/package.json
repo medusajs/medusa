@@ -24,6 +24,7 @@
     "@docusaurus/core": "latest",
     "@docusaurus/preset-classic": "latest",
     "@docusaurus/remark-plugin-npm2yarn": "latest",
+    "@medusajs/icons": "^1.0.0",
     "@octokit/request": "^6.2.3",
     "@svgr/webpack": "6.2.1",
     "algoliasearch-helper": "^3.11.3",

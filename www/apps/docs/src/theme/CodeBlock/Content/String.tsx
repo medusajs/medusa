@@ -14,9 +14,8 @@ import Container from "@theme/CodeBlock/Container"
 import type { Props } from "@theme/CodeBlock/Content/String"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { ThemeConfig } from "@medusajs/docs"
-import IconAlert from "../../../theme/Icon/Alert"
-import IconCopy from "../../../theme/Icon/Copy"
 import { CopyButton, Tooltip } from "docs-ui"
+import { ExclamationCircleSolid, SquareTwoStackSolid } from "@medusajs/icons"
 
 export default function CodeBlockString({
   children,
@@ -121,7 +120,7 @@ export default function CodeBlockString({
                       )}
                       rel="noreferrer"
                     >
-                      <IconAlert iconColorClassName="fill-medusa-code-icon dark:fill-medusa-code-icon-dark" />
+                      <ExclamationCircleSolid className="text-medusa-code-icon dark:text-medusa-code-icon-dark" />
                     </a>
                   </Tooltip>
                 )}
@@ -132,7 +131,7 @@ export default function CodeBlockString({
                     )}
                     text={code}
                   >
-                    <IconCopy iconColorClassName="fill-medusa-code-icon dark:fill-medusa-code-icon-dark" />
+                    <SquareTwoStackSolid className="text-medusa-code-icon dark:text-medusa-code-icon-dark" />
                   </CopyButton>
                 )}
               </div>
