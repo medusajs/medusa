@@ -30,18 +30,18 @@ const TagOperationCodeSection = ({
     <div className={clsx("mt-2 flex flex-col gap-2", className)}>
       <div
         className={clsx(
-          "bg-medusa-bg-subtle dark:bg-medusa-code-bg-base-dark border-medusa-border-base dark:border-medusa-border-base-dark px-0.75 rounded border py-0.5",
+          "bg-ui-bg-subtle border-ui-border-base px-0.75 rounded border py-0.5",
           "text-code-body flex w-full justify-between gap-1"
         )}
       >
         <div className={clsx("flex w-[calc(100%-36px)] gap-1")}>
           <MethodLabel method={method} className="h-fit" />
-          <code className="text-medusa-fg-subtle dark:text-medusa-code-text-base-dark break-words break-all">
+          <code className="text-ui-fg-subtle break-words break-all">
             {endpointPath}
           </code>
         </div>
         <CopyButton text={endpointPath} tooltipClassName="font-base">
-          <SquareTwoStack className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
+          <SquareTwoStack className="text-ui-fg-muted" />
         </CopyButton>
       </div>
       {operation["x-codeSamples"] && (

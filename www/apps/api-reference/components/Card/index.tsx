@@ -13,15 +13,15 @@ const Card = ({ title, text, href, className }: CardProps) => {
   return (
     <div
       className={clsx(
-        "bg-medusa-bg-subtle dark:bg-medusa-code-bg-base-dark w-full rounded",
-        "shadow-card-rest dark:shadow-card-rest-dark py-0.75 relative px-1",
+        "bg-ui-bg-subtle w-full rounded",
+        "shadow-elevation-card-rest py-0.75 relative px-1",
         "flex items-center justify-between gap-1 transition-shadow",
-        href && "hover:shadow-card-hover dark:hover:shadow-card-hover-dark",
+        href && "hover:shadow-elevation-card-hover",
         className
       )}
     >
       <div className="flex flex-col">
-        <span className="text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark">
+        <span className="text-compact-medium-plus text-ui-fg-base">
           {title}
         </span>
         {text && <span className="text-compact-medium">{text}</span>}

@@ -25,7 +25,7 @@ const CodeBlock = ({
     <div
       className={clsx(
         "bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark relative mb-1 rounded",
-        "border-medusa-code-border dark:border-medusa-code-border-dark w-full max-w-full border",
+        "border-ui-code-border w-full max-w-full border",
         "xs:after:content-[''] xs:after:rounded xs:after:absolute xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade xs:dark:after:bg-code-fade-dark",
         collapsed && "max-h-[400px] overflow-auto",
         className
@@ -36,7 +36,7 @@ const CodeBlock = ({
           ...themes.vsDark,
           plain: {
             ...themes.vsDark.plain,
-            backgroundColor: colorMode === "light" ? "#111827" : "#1E1E1E",
+            backgroundColor: colorMode === "light" ? "#111827" : "#1B1B1F",
           },
         }}
         code={source.trim()}
@@ -77,7 +77,7 @@ const CodeBlock = ({
                       {tokens.length > 1 && (
                         <span
                           className={clsx(
-                            "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark mr-1 table-cell select-none",
+                            "text-ui-code-text-subtle mr-1 table-cell select-none",
                             "bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark sticky left-0 w-[1%] px-1 text-right"
                           )}
                         >
@@ -102,7 +102,7 @@ const CodeBlock = ({
               )}
             >
               <CopyButton text={source} tooltipClassName="font-base">
-                <SquareTwoStackSolid className="text-medusa-code-icon dark:text-medusa-code-icon-dark" />
+                <SquareTwoStackSolid className="text-ui-code-icon" />
               </CopyButton>
             </div>
           </>

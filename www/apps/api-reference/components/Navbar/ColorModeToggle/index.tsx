@@ -22,12 +22,8 @@ const NavbarColorModeToggle = ({ buttonProps }: NavbarColorModeToggleProps) => {
 
   return (
     <NavbarIconButton {...buttonProps} onClick={() => toggleColorMode()}>
-      {colorMode === "light" && (
-        <IconLightMode className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
-      )}
-      {colorMode === "dark" && (
-        <IconDarkMode className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
-      )}
+      {colorMode === "light" && <IconLightMode className="text-ui-fg-muted" />}
+      {colorMode === "dark" && <IconDarkMode className="text-ui-fg-muted" />}
     </NavbarIconButton>
   )
 }

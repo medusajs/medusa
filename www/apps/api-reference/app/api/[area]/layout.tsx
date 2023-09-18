@@ -34,7 +34,7 @@ export default function RootLayout({
           inter.variable,
           robotoMono.variable,
           "bg-docs-bg dark:bg-docs-bg-dark font-base text-medium h-full w-full",
-          "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
+          "text-ui-fg-subtle"
         )}
       >
         <Providers>

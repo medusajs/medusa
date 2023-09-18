@@ -60,16 +60,12 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
         href={item.isPathHref ? item.path : `#${item.path}`}
         className={clsx(
           "flex items-center justify-between gap-0.5 rounded-sm border px-0.5 py-[6px] hover:no-underline",
-          !item.hasChildren &&
-            "text-compact-small-plus text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+          !item.hasChildren && "text-compact-small-plus text-ui-fg-subtle",
           item.hasChildren &&
-            "text-compact-x-small-plus text-medusa-fg-muted dark:text-medusa-fg-muted-dark uppercase",
-          active &&
-            "!text-medusa-fg-base dark:!text-medusa-fg-base-dark bg-medusa-bg-base-pressed dark:bg-medusa-bg-base-pressed-dark",
-          active &&
-            "border-medusa-border-base dark:border-medusa-border-base-dark",
-          !active &&
-            "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark border-transparent"
+            "text-compact-x-small-plus text-ui-fg-muted uppercase",
+          active && "!text-ui-fg-base bg-ui-bg-base-pressed",
+          active && "border-ui-border-base",
+          !active && "hover:bg-ui-bg-base-hover border-transparent"
         )}
         scroll={true}
         onClick={() => {

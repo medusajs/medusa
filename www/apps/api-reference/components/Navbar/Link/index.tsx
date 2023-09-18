@@ -25,12 +25,10 @@ const NavbarLink = ({
     <Link
       href={href}
       className={clsx(
-        activeItem === activeValue &&
-          "text-medusa-fg-base dark:text-medusa-fg-base-dark",
-        activeItem !== activeValue &&
-          "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+        activeItem === activeValue && "text-ui-fg-base",
+        activeItem !== activeValue && "text-ui-fg-subtle",
         "text-compact-small-plus inline-block",
-        "hover:text-medusa-fg-base dark:hover:text-medusa-fg-base-dark",
+        "hover:text-ui-fg-base",
         className
       )}
     >

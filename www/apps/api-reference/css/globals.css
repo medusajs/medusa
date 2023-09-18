@@ -20,11 +20,11 @@
   }
   
   h1, h2, h3, h4 {
-    @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
+    @apply text-ui-fg-base;
   }
   
   hr {
-    @apply h-[1px] w-full border-0 bg-medusa-border-base dark:bg-medusa-border-base-dark my-2;
+    @apply h-[1px] w-full border-0 bg-ui-border-base my-2;
   }
   
   p, ul, ol {
@@ -40,7 +40,7 @@
   }
 
   *::selection {
-    @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
+    @apply bg-ui-bg-highlight;
   }
 
   pre *::selection {
@@ -52,8 +52,8 @@
   }
 
   mark {
-    @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
-    @apply text-medusa-fg-interactive dark:text-medusa-fg-interactive-dark;
+    @apply bg-ui-bg-highlight;
+    @apply text-ui-fg-interactive;
   }
 }
 
