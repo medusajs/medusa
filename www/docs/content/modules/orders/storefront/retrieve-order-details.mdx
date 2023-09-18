@@ -123,7 +123,10 @@ const Order = () => {
   const { 
     order, 
     isLoading, 
-  } = useOrders(orderId)
+  } = useOrders({
+    display_id: 1,
+    email: "user@example.com",
+  })
  
   return (
     <div>

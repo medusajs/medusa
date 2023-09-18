@@ -1,4 +1,5 @@
 import ReactRefreshPlugin from "@pmmmwh/react-refresh-webpack-plugin"
+import CopyPlugin from "copy-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import path from "node:path"
@@ -29,6 +30,7 @@ export function getWebpackConfig({
   env,
   options,
   template,
+  publicFolder,
   reporting = "fancy",
 }: WebpackConfigArgs): Configuration {
   const isProd = env === "production"
@@ -176,6 +178,15 @@ export function getWebpackConfig({
       }),
 
       new webpack.DefinePlugin(envVars),
+
+      new CopyPlugin({
+        patterns: [
+          {
+            from: publicFolder || path.resolve(__dirname, "..", "ui", "public"),
+            to: path.resolve(dest, "public"),
+          },
+        ],
+      }),
 
       !isProd && new ReactRefreshPlugin(),
 
