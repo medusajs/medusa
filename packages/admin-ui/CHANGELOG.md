@@ -1,5 +1,28 @@
 # @medusajs/admin-ui
 
+## 2.1.0
+
+### Minor Changes
+
+- [#4962](https://github.com/medusajs/medusa/pull/4962) [`afd4e72cd`](https://github.com/medusajs/medusa/commit/afd4e72cdf69781924bae642f2e225ef9572e9a5) Thanks [@gempain](https://github.com/gempain)! - feat(admin-ui): Multi-language support
+
+### Patch Changes
+
+- [#5064](https://github.com/medusajs/medusa/pull/5064) [`c722440c3`](https://github.com/medusajs/medusa/commit/c722440c30d51719c83a6f4c419690b2078cb79c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Load translations from path
+
+- [#5057](https://github.com/medusajs/medusa/pull/5057) [`cb67760f7`](https://github.com/medusajs/medusa/commit/cb67760f715436f82d9271464228ffdfb3c9cba7) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin,admin-ui): Copy `/public` folder to admin build folder during build, in order for the build to include translation files. Also bumps the version of `dotenv` to match the version used in other Medusa dependencies.
+
+- [#5028](https://github.com/medusajs/medusa/pull/5028) [`d4432dd18`](https://github.com/medusajs/medusa/commit/d4432dd1838f28ee2f3637114ff97ff63e22b0de) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(admin-ui): Add display name + pull supported languages from config
+
+- [#5066](https://github.com/medusajs/medusa/pull/5066) [`53ffd614b`](https://github.com/medusajs/medusa/commit/53ffd614b599eb14d3f3d339b5a90335c32e9e77) Thanks [@dahorarodrigo](https://github.com/dahorarodrigo)! - feat(admin-ui): pt-BR translations and en version text fixes
+
+- [#4939](https://github.com/medusajs/medusa/pull/4939) [`87e3a7d06`](https://github.com/medusajs/medusa/commit/87e3a7d06ae76b6bee92b1bb97d0c8f8da07d4e9) Thanks [@jporsay](https://github.com/jporsay)! - correctly skipping analytics when user opted out
+
+- [#5080](https://github.com/medusajs/medusa/pull/5080) [`a7459029f`](https://github.com/medusajs/medusa/commit/a7459029fe9549b3845ee9e01d0d88ea5e85635f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(admin-ui): Add pt-BR to supported languages
+
+- Updated dependencies [[`7d3572302`](https://github.com/medusajs/medusa/commit/7d35723023ed5bcfaf06ff2480e97508527e8665)]:
+  - medusa-react@9.0.5
+
 ## 2.0.2
 
 ### Patch Changes
