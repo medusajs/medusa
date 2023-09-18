@@ -241,7 +241,7 @@ class OrderConfirmationSubscriber {
       templateId: "order-confirmation",
       from: "hello@medusajs.com",
       to: order.email,
-      data: {
+      dynamic_template_data: {
         // any data necessary for your template...
         items: order.items,
         status: order.status,
