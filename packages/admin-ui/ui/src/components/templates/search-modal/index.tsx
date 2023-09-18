@@ -54,7 +54,7 @@ const SearchModal = ({ handleClose }) => {
     { enabled: !!query, keepPreviousData: true }
   )
   const { products, isFetching: isFetchingProducts } = useAdminProducts(
-    { q: query, limit: 5 },
+    { q: query, limit: 20 ,offset: 0 ,fields:'title,title_ar'},
     { enabled: !!query, keepPreviousData: true }
   )
 
