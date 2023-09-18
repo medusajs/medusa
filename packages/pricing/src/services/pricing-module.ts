@@ -110,8 +110,20 @@ export default class PricingModuleService<
       .where({ id: { $in: pricingFilters.id } })
       .leftJoin("ps.price_set_money_amounts", "psma", {})
       .leftJoinAndSelect("ps.money_amounts", "ma", {})
+      .addSelect(["ma.currency_code"])
 
-    const queryBuilderResults = await qb.execute("all", true)
+    const joinedProps = (qb as any)._joinedProps
+    const driver = (qb as any).driver
+    const mainAlias = (qb as any).mainAlias
+
+    let queryBuilderResults = await qb.execute("all", true)
+
+    if (joinedProps.size > 0) {
+      queryBuilderResults = driver.mergeJoinedResult(
+        queryBuilderResults,
+        mainAlias.metadata
+      )
+    }
 
     const priceSets = JSON.parse(JSON.stringify(queryBuilderResults))
 
