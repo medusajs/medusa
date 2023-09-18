@@ -1,5 +1,15 @@
 # @medusajs/admin-ui
 
+## 2.1.1
+
+### Patch Changes
+
+- [#5113](https://github.com/medusajs/medusa/pull/5113) [`4dd11c886`](https://github.com/medusajs/medusa/commit/4dd11c88675c304b46806bbe28ef3574b02f0476) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): modal pointer events
+
+- [#5111](https://github.com/medusajs/medusa/pull/5111) [`8772a0722`](https://github.com/medusajs/medusa/commit/8772a0722ecfb6bceed0cfccfce66d0e7cdba331) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Wrap invite route in AnalyticsProvider
+
+- [#5103](https://github.com/medusajs/medusa/pull/5103) [`4710520c3`](https://github.com/medusajs/medusa/commit/4710520c35886c1df7dd934e7950b6309e1f78df) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): import modal template
+
 ## 2.1.0
 
 ### Minor Changes
