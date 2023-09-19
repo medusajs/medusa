@@ -114,7 +114,7 @@ class PriceListService extends TransactionBaseService {
     if (!priceListIds.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `"priceListId" must be defined`
+        `"priceListIds" must be defined`
       )
     }
 
@@ -128,9 +128,7 @@ class PriceListService extends TransactionBaseService {
     if (!Object.keys(priceListsVariantIdsMap)?.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `No PriceList found for priceListIds with id: ${priceListIds.join(
-          ", "
-        )}`
+        `No PriceLists found with ids: ${priceListIds.join(", ")}`
       )
     }
 
