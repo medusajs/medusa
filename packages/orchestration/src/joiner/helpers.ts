@@ -7,7 +7,7 @@ export function toRemoteJoinerQuery(obj: any): RemoteJoinerQuery {
     expands: [],
   }
 
-  function extractRecursive(obj, parentName = "") {
+  function extractRecursive(obj, parentName = "", isEntryPoint = true) {
     for (const key in obj) {
       const value = obj[key]
 
@@ -16,15 +16,11 @@ export function toRemoteJoinerQuery(obj: any): RemoteJoinerQuery {
         !["fields", "__args", "__directives"].includes(key)
 
       if (canExpand) {
-        const entityName =
-          parentName && parentName !== remoteJoinerQuery.alias
-            ? `${parentName}.${key}`
-            : key
+        const entityName = parentName ? `${parentName}.${key}` : key
         const expandObj: any = {
           property: entityName,
         }
 
-        const isEntryPoint = parentName === ""
         const reference = isEntryPoint ? remoteJoinerQuery : expandObj
 
         if (value.__args) {
@@ -50,7 +46,7 @@ export function toRemoteJoinerQuery(obj: any): RemoteJoinerQuery {
           remoteJoinerQuery.expands!.push(expandObj)
         }
 
-        extractRecursive(value, entityName)
+        extractRecursive(value, isEntryPoint ? "" : entityName, false)
       }
     }
 
