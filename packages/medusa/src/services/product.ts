@@ -701,7 +701,7 @@ class ProductService extends TransactionBaseService {
   async deleteProductImages(imageUrls: string[]): Promise<void> {
     await Promise.all(
       imageUrls.map(async (url) => {
-        const fileName = path.basename(url)
+        const fileName = path.basename(url, path.extname(url))
         const fileExtension = path.extname(url).replace(".", "")
 
         if (!fileName || !fileExtension) {
@@ -712,7 +712,7 @@ class ProductService extends TransactionBaseService {
           name: fileName,
           ext: fileExtension,
         })
-        await this.fileService_.delete({ fileKey, file_key: fileKey })
+        await this.fileService_.delete({ fileKey })
       })
     )
   }

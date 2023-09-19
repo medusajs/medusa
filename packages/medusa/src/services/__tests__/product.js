@@ -382,6 +382,127 @@ describe("ProductService", () => {
       })
     })
 
+    it("successfully deletes product images", async () => {
+      const productRepository = MockRepository({
+        save: (product) => Promise.resolve(product),
+        findOneWithRelations: () =>
+          Promise.resolve({
+            id: IdMap.getId("ironman"),
+            images: [
+              {
+                id: IdMap.getId("image1"),
+                url: "https://s3.amazonaws.com/medusa-dev/products/ironman/image1.jpg",
+              },
+              {
+                id: IdMap.getId("image2"),
+                url: "https://s3.amazonaws.com/medusa-dev/products/ironman/image2.jpg",
+              },
+            ],
+          }),
+      })
+
+      const imageRepository = {
+        upsertImages: (images) => Promise.resolve(images),
+      }
+
+      const fileService = {
+        getUploadStreamDescriptor: jest
+          .fn()
+          .mockImplementation(({ name, ext }) => ({
+            fileKey: `${name}.${ext}`,
+          })),
+        delete: jest.fn(),
+      }
+
+      const configModuleWithProductImageDelete = JSON.parse(
+        JSON.stringify(configModule)
+      )
+      configModuleWithProductImageDelete.projectConfig.delete_product_images = true
+
+      const productService = new ProductService({
+        manager: MockManager,
+        eventBusService,
+        productRepository,
+        featureFlagRouter: new FlagRouter({}),
+        configModule,
+        fileService,
+        imageRepository,
+        configModule: configModuleWithProductImageDelete,
+      })
+
+      await productService.update(IdMap.getId("ironman"), {
+        images: [],
+      })
+
+      expect(fileService.delete).toHaveBeenCalledTimes(2)
+      expect(fileService.delete).toHaveBeenNthCalledWith(1, {
+        fileKey: "image1.jpg",
+      })
+      expect(fileService.delete).toHaveBeenNthCalledWith(2, {
+        fileKey: "image2.jpg",
+      })
+    })
+
+    it("deletes only unreferenced product images", async () => {
+      const productRepository = MockRepository({
+        save: (product) => Promise.resolve(product),
+        findOneWithRelations: () =>
+          Promise.resolve({
+            id: IdMap.getId("ironman"),
+            images: [
+              {
+                id: IdMap.getId("image1"),
+                url: "https://s3.amazonaws.com/medusa-dev/products/ironman/image1.jpg",
+              },
+              {
+                id: IdMap.getId("image2"),
+                url: "https://s3.amazonaws.com/medusa-dev/products/ironman/image2.jpg",
+              },
+            ],
+            thumbnail:
+              "https://s3.amazonaws.com/medusa-dev/products/ironman/image1.jpg",
+          }),
+      })
+
+      const imageRepository = {
+        upsertImages: (images) => Promise.resolve(images),
+      }
+
+      const fileService = {
+        getUploadStreamDescriptor: jest
+          .fn()
+          .mockImplementation(({ name, ext }) => ({
+            fileKey: `${name}.${ext}`,
+          })),
+        delete: jest.fn(),
+      }
+
+      const configModuleWithProductImageDelete = JSON.parse(
+        JSON.stringify(configModule)
+      )
+      configModuleWithProductImageDelete.projectConfig.delete_product_images = true
+
+      const productService = new ProductService({
+        manager: MockManager,
+        eventBusService,
+        productRepository,
+        featureFlagRouter: new FlagRouter({}),
+        configModule,
+        fileService,
+        imageRepository,
+        configModule: configModuleWithProductImageDelete,
+      })
+
+      await productService.update(IdMap.getId("ironman"), {
+        images: [],
+      })
+
+      expect(fileService.delete).toHaveBeenCalledTimes(1)
+      expect(fileService.delete).toHaveBeenNthCalledWith(1, {
+        fileKey: "image2.jpg",
+      })
+    })
+
     it("throws on non existing product", async () => {
       try {
         await productService.update("123", { title: "new title" })
@@ -418,6 +539,109 @@ describe("ProductService", () => {
       expect(eventBusService.emit).toBeCalledTimes(1)
       expect(eventBusService.emit).toBeCalledWith("product.deleted", {
         id: IdMap.getId("ironman"),
+      })
+    })
+
+    it("successfully deletes product images", async () => {
+      const images = [
+        {
+          id: IdMap.getId("image1"),
+          url: "https://s3.amazonaws.com/medusa-dev/products/ironman/image1.jpg",
+        },
+        {
+          id: IdMap.getId("image2"),
+          url: "https://s3.amazonaws.com/medusa-dev/products/ironman/image2.jpg",
+        },
+      ]
+      const productRepository = MockRepository({
+        findOne: () =>
+          Promise.resolve({
+            id: IdMap.getId("ironman"),
+            images,
+            thumbnail: images[0].url,
+          }),
+      })
+
+      const fileService = {
+        getUploadStreamDescriptor: jest
+          .fn()
+          .mockImplementation(({ name, ext }) => ({
+            fileKey: `${name}.${ext}`,
+          })),
+        delete: jest.fn(),
+      }
+
+      const configModuleWithProductImageDelete = JSON.parse(
+        JSON.stringify(configModule)
+      )
+      configModuleWithProductImageDelete.projectConfig.delete_product_images = true
+
+      const productService = new ProductService({
+        manager: MockManager,
+        eventBusService,
+        productRepository,
+        featureFlagRouter: new FlagRouter({}),
+        fileService,
+        configModule: configModuleWithProductImageDelete,
+      })
+
+      await productService.delete(IdMap.getId("ironman"))
+      expect(fileService.delete).toHaveBeenCalledTimes(images.length)
+      expect(fileService.delete).toHaveBeenNthCalledWith(1, {
+        fileKey: "image1.jpg",
+      })
+      expect(fileService.delete).toHaveBeenNthCalledWith(2, {
+        fileKey: "image2.jpg",
+      })
+    })
+
+    it("successfully deletes product thumbnail if not present on images", async () => {
+      const images = [
+        {
+          id: IdMap.getId("image1"),
+          url: "https://s3.amazonaws.com/medusa-dev/products/ironman/image1.jpg",
+        },
+      ]
+      const productRepository = MockRepository({
+        findOne: () =>
+          Promise.resolve({
+            id: IdMap.getId("ironman"),
+            images,
+            thumbnail:
+              "https://s3.amazonaws.com/medusa-dev/products/ironman/image2.jpg",
+          }),
+      })
+
+      const fileService = {
+        getUploadStreamDescriptor: jest
+          .fn()
+          .mockImplementation(({ name, ext }) => ({
+            fileKey: `${name}.${ext}`,
+          })),
+        delete: jest.fn(),
+      }
+
+      const configModuleWithProductImageDelete = JSON.parse(
+        JSON.stringify(configModule)
+      )
+      configModuleWithProductImageDelete.projectConfig.delete_product_images = true
+
+      const productService = new ProductService({
+        manager: MockManager,
+        eventBusService,
+        productRepository,
+        featureFlagRouter: new FlagRouter({}),
+        fileService,
+        configModule: configModuleWithProductImageDelete,
+      })
+
+      await productService.delete(IdMap.getId("ironman"))
+      expect(fileService.delete).toHaveBeenCalledTimes(2)
+      expect(fileService.delete).toHaveBeenNthCalledWith(1, {
+        fileKey: "image1.jpg",
+      })
+      expect(fileService.delete).toHaveBeenNthCalledWith(2, {
+        fileKey: "image2.jpg",
       })
     })
   })
