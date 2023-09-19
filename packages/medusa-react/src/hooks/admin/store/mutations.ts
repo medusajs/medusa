@@ -32,7 +32,7 @@ export const useAdminAddStoreCurrency = (
   const queryClient = useQueryClient()
 
   return useMutation(
-    (currency_code: string) => client.admin.store.deleteCurrency(currency_code),
+    (currency_code: string) => client.admin.store.addCurrency(currency_code),
     buildOptions(queryClient, adminStoreKeys.details(), options)
   )
 }

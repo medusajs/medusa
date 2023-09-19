@@ -158,7 +158,7 @@ class RestockNotificationSubscriber {
       templateId: "restock-notification",
       from: "hello@medusajs.com",
       to: emails,
-      data: {
+      dynamic_template_data: {
         // any data necessary for your template...
         variant,
       },

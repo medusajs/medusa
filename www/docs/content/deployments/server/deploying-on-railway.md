@@ -162,8 +162,8 @@ To configure the environment variables of your Medusa backend:
 PORT=9000
 JWT_SECRET=something
 COOKIE_SECRET=something
-DATABASE_URL=${{Postgres.DATABASE_URL}}
-REDIS_URL=${{Redis.REDIS_URL}}
+DATABASE_URL=${{postgresql.DATABASE_URL}}
+REDIS_URL=${{redis.REDIS_URL}}
 DATABASE_TYPE=postgres
 ```
 

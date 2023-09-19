@@ -1,5 +1,39 @@
 # Change Log
 
+## 1.16.0
+
+### Minor Changes
+
+- [`77c85fc6c`](https://github.com/medusajs/medusa/commit/77c85fc6c6c940244b7714aee3a458ee4f86aad0) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor bump @medusajs/medusa
+
+### Patch Changes
+
+- [#5037](https://github.com/medusajs/medusa/pull/5037) [`7231f6583`](https://github.com/medusajs/medusa/commit/7231f658331485640aeac2b6109c824fd05ce19b) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Prevent default SC to be assigned if the isolated product flag is enabled
+
+- [#5018](https://github.com/medusajs/medusa/pull/5018) [`4fa675ec2`](https://github.com/medusajs/medusa/commit/4fa675ec25b3d6fccd881c4f5a5b91f0e9e13e82) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa, modules-sdk, types): Refactor modules loading from medusa
+
+- [#5053](https://github.com/medusajs/medusa/pull/5053) [`dc94f053d`](https://github.com/medusajs/medusa/commit/dc94f053d31d3544c313b23ac1d6d1465e8336db) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Support `fields` param in list-variants
+
+- [#4961](https://github.com/medusajs/medusa/pull/4961) [`6273b4b16`](https://github.com/medusajs/medusa/commit/6273b4b160493463e1199e5db4e9cfa4cff6fbe4) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils, module-sdk, medusa, types): Extract pg connection utils to utils package
+
+- [#4556](https://github.com/medusajs/medusa/pull/4556) [`2b078f06d`](https://github.com/medusajs/medusa/commit/2b078f06d930e6219b46720f4a916b20015329e5) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): include default sales channel for store/variant endpoints if no other channel is selected
+
+- [#4969](https://github.com/medusajs/medusa/pull/4969) [`30863fee5`](https://github.com/medusajs/medusa/commit/30863fee529ed035f161c749fda3cd64fa48efb1) Thanks [@adrien2p](https://github.com/adrien2p)! - feat: store List products remote query with product isolation
+
+- [#5042](https://github.com/medusajs/medusa/pull/5042) [`5362bfc34`](https://github.com/medusajs/medusa/commit/5362bfc348cad3aecb4fb93b21920355ad9d9ffc) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Migrations to remove FKs related to product
+
+- [#5071](https://github.com/medusajs/medusa/pull/5071) [`60360d2fd`](https://github.com/medusajs/medusa/commit/60360d2fd26528e08c9ac93d316738c397b51169) Thanks [@adrien2p](https://github.com/adrien2p)! - style(medusa): Fix order service linting issues
+
+- [#5010](https://github.com/medusajs/medusa/pull/5010) [`05a32683a`](https://github.com/medusajs/medusa/commit/05a32683a341451fc4d3526687ec775926e1ba68) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Get product with isolated product module
+
+- [#5029](https://github.com/medusajs/medusa/pull/5029) [`05fcfd803`](https://github.com/medusajs/medusa/commit/05fcfd803e5f06bf29354b20eb57bbc9c2c72d8e) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Fix duplicated migration - AddTimestempsToProductShippingProfiles1692870898425
+
+- Updated dependencies [[`d8649baca`](https://github.com/medusajs/medusa/commit/d8649bacaa2ed784b9e7b2b0e1f1194d3697bb92), [`4fa675ec2`](https://github.com/medusajs/medusa/commit/4fa675ec25b3d6fccd881c4f5a5b91f0e9e13e82), [`6273b4b16`](https://github.com/medusajs/medusa/commit/6273b4b160493463e1199e5db4e9cfa4cff6fbe4), [`30863fee5`](https://github.com/medusajs/medusa/commit/30863fee529ed035f161c749fda3cd64fa48efb1), [`3d68be2b6`](https://github.com/medusajs/medusa/commit/3d68be2b6b93ae928f5c955e102ebdf2c34fb364), [`107aaa371`](https://github.com/medusajs/medusa/commit/107aaa371c444843874d125bf8bd493ef89f5756)]:
+  - @medusajs/orchestration@0.4.0
+  - @medusajs/modules-sdk@1.11.0
+  - @medusajs/utils@1.10.1
+  - @medusajs/workflows@0.2.2
+
 ## 1.15.1
 
 ### Patch Changes
