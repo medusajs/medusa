@@ -651,7 +651,7 @@ describe("/store/carts", () => {
           {
             id: "line-item-2",
             cart_id: discountCart.id,
-            variant_id: "test-variant-quantity",
+            variant_id: "test-variant-quantity-1",
             product_id: "test-product",
             unit_price: 950,
             quantity: 1,
@@ -791,7 +791,7 @@ describe("/store/carts", () => {
         expect.arrayContaining([
           expect.objectContaining({
             cart_id: "test-cart-3",
-            unit_price: 8000,
+            unit_price: 500,
             variant_id: "test-variant-sale-cg",
             quantity: 3,
             adjustments: [],
@@ -855,7 +855,7 @@ describe("/store/carts", () => {
         allow_discounts: true,
         title: "Line Item Disc",
         thumbnail: "https://test.js/1234",
-        unit_price: 1000,
+        unit_price: 800,
         quantity: 1,
         variant_id: "test-variant-quantity",
         product_id: "test-product",
@@ -877,12 +877,12 @@ describe("/store/carts", () => {
         expect.arrayContaining([
           expect.objectContaining({
             cart_id: "test-cart-w-total-percentage-discount",
-            unit_price: 1000,
+            unit_price: 800,
             variant_id: "test-variant-quantity",
             quantity: 10,
             adjustments: [
               expect.objectContaining({
-                amount: 1000,
+                amount: 800,
                 discount_id: "10Percent",
                 description: "discount",
               }),
