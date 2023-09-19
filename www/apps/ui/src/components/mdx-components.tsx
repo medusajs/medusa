@@ -116,8 +116,8 @@ const components = {
   Snippet,
   PackageInstall,
   IconSearch,
-  Feedback: Feedback,
-  // Colors,
+  Feedback,
+  Colors,
 }
 
 const Mdx = ({ code }: MdxProps) => {

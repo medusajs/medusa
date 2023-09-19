@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "dev:monorepo": "yarn dev -p 3002",
-    "build": "next build",
+    "build": "yarn copy-colors && next build",
     "start": "next start",
     "start:monorepo": "yarn start -p 3002",
-    "lint": "next lint --fix"
+    "lint": "next lint --fix",
+    "copy-colors": "ts-node ./scripts/copy-colors.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
@@ -40,5 +41,8 @@
     "typescript": "5.1.6",
     "unist-builder": "3.0.0",
     "unist-util-visit": "4.1.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
   }
 }

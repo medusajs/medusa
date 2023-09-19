@@ -1,9 +1,11 @@
 "use client"
 
 import { Copy, clx } from "@medusajs/ui"
-import { useTheme } from "next-themes"
 import React from "react"
-import { colors as allColors } from "@medusajs/ui-preset"
+// import { colors as allColors } from "@medusajs/ui-preset"
+import { useColorMode } from "docs-ui"
+// import { colors as allColors } from "../config/colors"
+import { colors as allColors } from "@medusajs/ui-preset/src/theme/tokens/colors"
 
 type Color = {
   name: string
@@ -113,12 +115,7 @@ const cssVarToTailwindClass = (name: string) => {
 }
 
 const Colors = () => {
-  const { theme } = useTheme()
-
-  const mode = React.useMemo(
-    () => (theme === "light" ? "light" : "dark"),
-    [theme]
-  )
+  const { colorMode } = useColorMode()
 
   const colors: ColorsTable = {
     backgrounds: [],
@@ -129,20 +126,22 @@ const Colors = () => {
     tags: [],
   }
 
-  for (const [tag, value] of Object.entries(allColors[mode])) {
+  for (const [tag, value] of Object.entries(allColors[colorMode])) {
     const prefix = tag.match(/(--[a-zA-Z]+)/gi)
     if (prefix && Object.keys(PREFIXES).includes(prefix[0])) {
       if (!tag.includes("gradient")) {
         colors[PREFIXES[prefix[0]]].push({
           name: tag,
-          code: value,
+          code: value as string,
         })
       }
     }
   }
 
   for (const [, section] of Object.entries(colors)) {
-    section.sort((a, b) => (a.name < b.name ? -1 : 1))
+    section.sort((a, b) => {
+      return a.name < b.name ? -1 : 1
+    })
   }
 
   return (

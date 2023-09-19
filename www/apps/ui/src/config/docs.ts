@@ -67,16 +67,16 @@ export const docsConfig: DocsConfig = {
       ],
     },
     // TODO enable once colors export is fixed
-    // {
-    //   title: "Colors",
-    //   items: [
-    //     {
-    //       title: "Overview",
-    //       href: "/colors/overview",
-    //       items: [],
-    //     },
-    //   ],
-    // },
+    {
+      title: "Colors",
+      items: [
+        {
+          title: "Overview",
+          href: "/colors/overview",
+          items: [],
+        },
+      ],
+    },
     {
       title: "Icons",
       items: [
