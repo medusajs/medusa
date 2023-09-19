@@ -601,7 +601,7 @@ describe("LineItemService", () => {
 
         expect(err).toBeDefined()
         expect(err.message).toEqual(
-          "Unable to generate some line items because variant id is missing. Please provide a variant id for each line item"
+          "Unable to generate the line item because one or more required argument(s) are missing.. Ensure a variant id is passed for each variant"
         )
       })
 

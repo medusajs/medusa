@@ -621,18 +621,21 @@ class LineItemService extends TransactionBaseService {
     regionIdOrContext: T extends string ? string : GenerateLineItemContext,
     quantity?: number
   ): void | never {
+    const errorMessage =
+      "Unable to generate the line item because one or more required argument(s) are missing."
+
     if (isString(variantIdOrData)) {
       if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
-          "The generate method has been called with a variant id but one of the argument quantity or regionId is missing. Please, provide the variantId, quantity and regionId"
+          `${errorMessage}. Ensure quantity, regionId, and variantId are passed`
         )
       }
 
       if (!variantIdOrData) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "Unbable to generate the line item because it is missing a variant id. Please provide a variant id for the line item"
+          `${errorMessage}. Ensure variant id is passed`
         )
       }
       return
@@ -643,7 +646,7 @@ class LineItemService extends TransactionBaseService {
     if (!resolvedContext?.region_id) {
       throw new MedusaError(
         MedusaError.Types.UNEXPECTED_STATE,
-        "The generate method has been called with the data but the context is missing either region_id or region. Please provide at least one of region or region_id"
+        `${errorMessage}. Ensure region or region_id are passed`
       )
     }
 
@@ -656,7 +659,7 @@ class LineItemService extends TransactionBaseService {
     if (hasMissingVariantId) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Unable to generate some line items because variant id is missing. Please provide a variant id for each line item"
+        `${errorMessage}. Ensure a variant id is passed for each variant`
       )
     }
   }
