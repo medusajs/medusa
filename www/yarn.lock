@@ -19717,6 +19717,7 @@ __metadata:
     "@types/react": ^18.2.0
     "@types/react-dom": ^18.2.0
     autoprefixer: 10.4.14
+    clsx: ^2.0.0
     contentlayer: ^0.3.4
     date-fns: ^2.30.0
     docs-ui: "*"

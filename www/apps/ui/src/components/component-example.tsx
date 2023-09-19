@@ -6,6 +6,7 @@ import { ExampleRegistry } from "../registries/example-registry"
 
 import { CodeBlock } from "@/components/code-block"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs"
+import { Feedback } from "./feedback"
 
 interface ComponentExampleProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -55,6 +56,7 @@ export function ComponentExample({
           </TabsContent>
         </div>
       </Tabs>
+      <Feedback title={name} question="Was this example helpful?" />
     </div>
   )
 }

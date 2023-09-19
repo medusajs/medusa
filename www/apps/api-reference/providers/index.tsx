@@ -19,7 +19,7 @@ type ProvidersProps = {
 
 const Providers = ({ children }: ProvidersProps) => {
   return (
-    <AnalyticsProvider key={process.env.NEXT_PUBLIC_SEGMENT_API_KEY}>
+    <AnalyticsProvider writeKey={process.env.NEXT_PUBLIC_SEGMENT_API_KEY}>
       <PageLoadingProvider>
         <ModalProvider>
           <ColorModeProvider>
