@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import AuthService from "../../../../services/auth"
 import { validator } from "../../../../utils/validator"
 import { StorePostAuthReq } from "./create-session"
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /store/token
@@ -66,33 +66,37 @@ import { MedusaError } from "medusa-core-utils"
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-    const {
-        projectConfig: { jwt_secret },
-    } = req.scope.resolve("configModule")
-    if (!jwt_secret) {
-        throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            "Please configure jwt_secret in your environment"
-        )
-    }
-    const validated = await validator(StorePostAuthReq, req.body)
+  const {
+    projectConfig: { jwt_secret },
+  } = req.scope.resolve("configModule")
+  if (!jwt_secret) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      "Please configure jwt_secret in your environment"
+    )
+  }
+  const validated = await validator(StorePostAuthReq, req.body)
 
-    const authService: AuthService = req.scope.resolve("authService")
-    const manager: EntityManager = req.scope.resolve("manager")
-    const result = await manager.transaction(async (transactionManager) => {
-        return await authService
-            .withTransaction(transactionManager)
-            .authenticateCustomer(validated.email, validated.password)
-    })
+  const authService: AuthService = req.scope.resolve("authService")
+  const manager: EntityManager = req.scope.resolve("manager")
+  const result = await manager.transaction(async (transactionManager) => {
+    return await authService
+      .withTransaction(transactionManager)
+      .authenticateCustomer(validated.email, validated.password)
+  })
 
-    if (result.success && result.customer) {
-        // Create jwt token to send back
-        const token = jwt.sign({ customer_id: result.customer.id, domain: "store" }, jwt_secret, {
-            expiresIn: "30d",
-        })
+  if (result.success && result.customer) {
+    // Create jwt token to send back
+    const token = jwt.sign(
+      { customer_id: result.customer.id, domain: "store" },
+      jwt_secret,
+      {
+        expiresIn: "30d",
+      }
+    )
 
-        res.json({ access_token: token })
-    } else {
-        res.sendStatus(401)
-    }
+    res.json({ access_token: token })
+  } else {
+    res.sendStatus(401)
+  }
 }
