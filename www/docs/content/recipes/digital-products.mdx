@@ -1055,7 +1055,7 @@ class HandleOrderSubscribers {
       templateId: "digital-download",
       from: "hello@medusajs.com",
       to: order.email,
-      data: {
+      dynamic_template_data: {
         // any data necessary for your template...
         digital_download_urls: urls,
       },

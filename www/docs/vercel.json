@@ -476,6 +476,10 @@
     {
       "source": "/recipes/rbac",
       "destination": "/modules/users/backend/rbac"
+    },
+    {
+      "source": "/contribution-guidelines",
+      "destination": "/contribution/docs"
     }
   ]
 }
