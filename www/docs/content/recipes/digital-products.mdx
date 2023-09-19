@@ -12,13 +12,13 @@ This document guides you through the different documentation resources that will
 
 ## Overview
 
-A business can sell digital or downloadable products. The products are stored privately using a storage service, such as S3, or other storage mechanism. When the customer buys this type of product, an email is sent to them where they can download the product.
+Digital products are stored privately using a storage service like S3 or another storage mechanism. When the customer buys this type of product, an email is sent to them where they can download the product.
 
-Medusa doesn't have a built-in concept of a digital product since our focus is standardizing features and implementations, then offering the building blocks that enable you to build your use-case easily.
+Medusa doesn't have a built-in concept of a digital product since our focus is standardizing features and implementations, then offering the building blocks that enable you to build your use case.
 
-You can create new entities that allow you to represent a digital product and link them to existing product-related entities.
+You can create new entities to represent a digital product and link them to existing product-related entities.
 
-Medusa’s plugins also allows you to choose the services that play part in your digital products implementation. Whether you want to use S3, MinIO, or another service to store your digital products, all you have to do is install an existing plugin or create your own. The same applies for sending notifications, such as emails, to the customer using notification services.
+Medusa's plugins also allow you to choose the services that play a part in your digital product implementation. Whether you want to use S3, MinIO, or another service to store your digital products, you must install an existing plugin or create your own. The same applies to sending notifications, such as emails, to customers using notification services.
 
 ---
 
@@ -26,9 +26,9 @@ Medusa’s plugins also allows you to choose the services that play part in your
 
 A file service is used to handle storage functionalities in Medusa. This includes uploading, retrieving, and downloading files, among other features. For digital products, a file service is essential to implement the basic functionalities of digital products.
 
-The Medusa core defines an abstract file service that is extended by File Service plugins with the actual functionality. This allows you to choose the storage method that works best for your use case.
+The Medusa core defines an abstract file service extended by File Service plugins with the actual functionality. This allows you to choose the best storage method for your use case.
 
-By default, when you install a Medusa project, the Local file service plugin is installed. This plugin is useful for development, but it’s not recommended for production.
+When you install a Medusa project, the Local file service plugin is installed by default. This plugin is helpful for development, but it's not recommended for production.
 
 Medusa also provides official file service plugins that you can use in production, such as the [S3 plugin](../plugins/file-service/s3.mdx) or the [MinIO plugin](../plugins/file-service/minio.md). You can also create your own file service, or browse the [Plugins Library](https://medusajs.com/plugins/?filters=Storage&categories=Storage) for plugins created by the community.
 
@@ -68,9 +68,9 @@ Medusa also provides official file service plugins that you can use in productio
 
 A notification service is used to handle sending notifications to users and customers. For example, when you want to send an order confirmation email or an email with reset-password instructions.
 
-For digital products, a notification service allows you to send the customer an email, or another form of notification, with a link to download the file they purchased.
+For digital products, a notification service allows you to send the customer an email or another form of notification with a link to download the file they purchased.
 
-The Medusa core defines an abstract Notification service that is extended by Notification Service plugins with the actual functionality. This allows you to choose the notification method that best works for your use case.
+The Medusa core defines an abstract Notification service extended by Notification Service plugins with the actual functionality. This allows you to choose the best notification method for your use case.
 
 Medusa provides official notification plugins that you can use, such as the SendGrid plugin. You can also create your own notification service, or browse the [Plugins Library for plugins](https://medusajs.com/plugins/?filters=Storage&filters=Notification&categories=Storage&categories=Notification) created by the community.
 
@@ -110,9 +110,9 @@ Medusa provides official notification plugins that you can use, such as the Send
 
 An entity represents a table in the database. The Medusa core defines entities necessary for the commerce features it provides. You can also extend those entities or create your own.
 
-To represent a digital product, it’s recommended to create an entity that has a relation to the `ProductVariant` entity. The `ProductVariant` entity represents the saleable variant of a `Product`.
+To represent a digital product, it's recommended to create an entity that has a relation to the `ProductVariant` entity. The `ProductVariant` entity represents the saleable variant of a `Product`.
 
-For example, if you’re selling the Harry Potter movies, you would have a `Product` with the name “Harry Potter”, and for each movie in the series a `ProductVariant`. Each `ProductVariant` would be associated with the custom entity you create that represents the downloadable movie.
+For example, if you're selling the Harry Potter movies, you would have a `Product` named “Harry Potter” and, for each movie in the series, a `ProductVariant`. Each `ProductVariant` would be associated with the custom entity you create that represents the downloadable movie.
 
 <DocCardList colSize={6} items={[
   {
@@ -230,7 +230,7 @@ npx medusa migrations run
 
 ## Add Custom Endpoints
 
-After creating your entity, you need to create custom admin endpoints that allows you to access and manipulate that entity. The endpoints necessary vary based on your case, but generally speaking you’ll need endpoints to perform Create, Read, Update, and Delete (CRUD) functionalities.
+After creating your entity, you need to create custom admin endpoints that allow you to access and manipulate that entity. The endpoints necessary vary based on your case, but generally speaking, you'll need endpoints to perform Create, Read, Update, and Delete (CRUD) functionalities.
 
 :::tip
 
@@ -238,7 +238,7 @@ The Medusa backend provides the necessary endpoints for the actual file upload. 
 
 :::
 
-You can also create custom storefront endpoints that allows you to show information related to the downloadable digital product if this information isn’t stored within the `Product` or `ProductVariant` entities.
+You can also create custom storefront endpoints that allow you to show information related to the downloadable digital product if this information isn't stored within the `Product` or `ProductVariant` entities.
 
 Creating an endpoint also requires creating a service, which is a class that typically holds utility methods for an entity. You can implement the CRUD functionalities as methods within the service, then access the service in an endpoint and use its methods.
 
@@ -564,9 +564,9 @@ export default (rootDirectory: string): Router | Router[] => {
 
 ## Customize Admin Dashboard
 
-The Medusa admin dashboard provides merchants with an easy-to-use interface to manage their store’s data and settings. It’s also extendable to add widgets, pages, and setting pages relevant to your use case.
+The Medusa admin dashboard provides merchants with an easy-to-use interface to manage their store's data and settings. It's also extendable, so you can add widgets, pages, and setting pages relevant to your use case.
 
-To add an interface that allows the admin user to upload digital products, you can create custom widgets or pages that uses the routes you created. For the actual file upload, you can use the [Protected Files Upload endpoint](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected).
+To add an interface that allows the admin user to upload digital products, you can create custom widgets or pages that use the routes you created. You can use the [Protected Files Upload endpoint](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected).
 
 <DocCardList colSize={4} items={[
   {
@@ -959,7 +959,7 @@ If you open the admin now, you’ll find a new Digital Products item in the side
 
 When a customer purchases a digital product, they should receive a link to download it.
 
-To implement that, you first need to listen to the `order.placed` event using a Subscriber. Then, in the handler method of the subscriber, you check for the digital products in the order, and obtain the download URLs using the file service’s `getPresignedDownloadUrl` method.
+To implement that, you first need to listen to the `order.placed` event using a Subscriber. Then, in the handler method of the subscriber, you check for the digital products in the order and obtain the download URLs using the file service's `getPresignedDownloadUrl` method.
 
 Finally, you can send a notification, such as an email, to the customer using the Notification Service of your choice. That notification would hold the download links to the products they purchased.
 
