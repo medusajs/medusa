@@ -30,7 +30,6 @@ Object.entries(coreConfig.theme.extend.borderRadius)
 
 module.exports = {
   ...coreConfig,
-  darkMode: "class",
   content: [...coreConfig.content, "./src/**/*.{js,ts,jsx,tsx,mdx}", uiPath],
   theme: {
     ...coreTheme,

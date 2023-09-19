@@ -56,7 +56,10 @@ export function ComponentExample({
           </TabsContent>
         </div>
       </Tabs>
-      <Feedback title={name} question="Was this example helpful?" />
+      <Feedback
+        title={`example ${name}`}
+        question="Was this example helpful?"
+      />
     </div>
   )
 }

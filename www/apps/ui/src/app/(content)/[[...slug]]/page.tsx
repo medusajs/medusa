@@ -5,7 +5,6 @@ import { notFound } from "next/navigation"
 import { Mdx } from "@/components/mdx-components"
 import { siteConfig } from "@/config/site"
 import { Metadata } from "next"
-import { Feedback } from "@/components/feedback"
 
 interface DocPageProps {
   params: {
@@ -68,7 +67,6 @@ export default async function DocPage({ params }: DocPageProps) {
       </Text>
       <div>
         <Mdx code={doc.body.code} />
-        <Feedback title={doc.title} />
       </div>
     </div>
   )

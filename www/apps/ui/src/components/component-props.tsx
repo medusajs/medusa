@@ -3,6 +3,7 @@ import { Container } from "@medusajs/ui"
 import * as React from "react"
 
 import { PropRegistry } from "@/registries/prop-registry"
+import { Feedback } from "./feedback"
 
 type ComponentPropsProps = {
   component: string
@@ -27,17 +28,20 @@ const ComponentProps = ({ component }: ComponentPropsProps) => {
   }, [component])
 
   return (
-    <Container className="mb-6 mt-8 overflow-hidden p-0">
-      <React.Suspense
-        fallback={
-          <div className="text-ui-fg-muted flex flex-1 items-center justify-center">
-            <Spinner className="animate-spin" />
-          </div>
-        }
-      >
-        {Props}
-      </React.Suspense>
-    </Container>
+    <>
+      <Container className="mb-6 mt-8 overflow-hidden p-0">
+        <React.Suspense
+          fallback={
+            <div className="text-ui-fg-muted flex flex-1 items-center justify-center">
+              <Spinner className="animate-spin" />
+            </div>
+          }
+        >
+          {Props}
+        </React.Suspense>
+      </Container>
+      <Feedback title={`props of ${component}`} />
+    </>
   )
 }
 

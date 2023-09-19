@@ -53,7 +53,7 @@ const SearchResults = ({ query = "" }: { query?: string }) => {
             <Tooltip content={name}>
               <div className="border-ui-border-base flex h-10 w-10 items-center justify-center rounded-lg border">
                 <span className="sr-only">Icon named {name}</span>
-                <div className="bg-ui-bg-component flex h-8 w-8 items-center justify-center rounded-[4px]">
+                <div className="bg-ui-bg-component flex h-8 w-8 items-center justify-center rounded-[4px] text-ui-fg-base">
                   {React.createElement(Icons[name as keyof typeof Icons])}
                 </div>
               </div>

@@ -18,6 +18,14 @@ const avatarProps: PropDataMap = [
     },
     defaultValue: "base",
   },
+  {
+    prop: "src",
+    type: "string",
+  },
+  {
+    prop: "fallback",
+    type: "string",
+  },
 ]
 
 const Props = () => {
