@@ -11,8 +11,10 @@ class JwtTokenManager {
   public registerJwt(token: string, domain: "admin" | "store") {
     if (domain === "admin") {
       this.adminJwt = token;
-    } else {
+    } else if (domain === "store") {
       this.storeJwt = token;
+    } else {
+      throw new Error(`'domain' must be wither 'admin' or 'store' received ${domain}`)
     }
   }
 
@@ -20,7 +22,13 @@ class JwtTokenManager {
    * Retrieve the store or admin jwt token
    */
   public getJwt(domain: "admin" | "store") {
-    return domain === "admin" ? this.adminJwt : this.storeJwt;
+    if (domain === "admin") {
+      return this.adminJwt;
+    } else if (domain === "store") {
+      return this.storeJwt;
+    } else {
+      throw new Error(`'domain' must be wither 'admin' or 'store' received ${domain}`)
+    }
   }
 }
 
