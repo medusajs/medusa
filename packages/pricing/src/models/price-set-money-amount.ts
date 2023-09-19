@@ -11,8 +11,8 @@ import {
 } from "@mikro-orm/core"
 
 import MoneyAmount from "./money-amount"
-import PriceSet from "./price-set"
 import PriceRule from "./price-rule"
+import PriceSet from "./price-set"
 
 @Entity()
 export default class PriceSetMoneyAmount {

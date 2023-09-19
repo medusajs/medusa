@@ -114,13 +114,14 @@ export default class PricingModuleService<
         ],
       }
     })
+    console.log("where - ", JSON.stringify(where, null, 2))
 
     const prQb = manager
       .createQueryBuilder(PriceRule, "pr")
       .select(["pr.id"], true)
       .leftJoin("pr.rule_type", "rt", {})
       .where(where)
-
+    // console.log("prQb - ", await prQb.execute("all", true))
     const psmaQb = manager
       .createQueryBuilder(PriceRule, "pr")
       .select(["pr.price_set_money_amount_id"], true)
@@ -132,12 +133,19 @@ export default class PricingModuleService<
       .select(["ps.id"], true)
       .where({ id: { $in: pricingFilters.id } })
       .leftJoin("ps.price_set_money_amounts", "psma", {})
-      .leftJoinAndSelect("psma.money_amount", "ma", {
-        "psma.id": psmaQb.getKnexQuery(),
+      .leftJoin("psma.money_amount", "ma", {
+        "psma.id": [psmaQb.getKnexQuery()],
       })
-      .leftJoinAndSelect("psma.price_rules", "pr", {
-        "pr.id": prQb.getKnexQuery(),
+      .leftJoin("psma.price_rules", "pr", {
+        "pr.id": [prQb.getKnexQuery()],
       })
+      .addSelect([
+        "ma.id as ma_id",
+        "psma.id as psma_id",
+        "pr.id as price_rule_id",
+      ])
+    // .addSelect("count(pr.id)")
+    // .groupBy(["id", "ma.id", "psma.id", "pr.id"])
 
     const joinedProps = (qb as any)._joinedProps
     const driver = (qb as any).driver
@@ -153,7 +161,7 @@ export default class PricingModuleService<
     }
 
     const priceSets = JSON.parse(JSON.stringify(queryBuilderResults))
-
+    console.log("priceSets - ", priceSets)
     // console.log("priceSets - ", JSON.stringify(priceSets, null, 2))
 
     const calculatedPrices = priceSets.map(

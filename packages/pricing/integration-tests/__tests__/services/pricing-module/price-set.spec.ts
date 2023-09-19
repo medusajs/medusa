@@ -4,14 +4,38 @@ import { PriceSet } from "@models"
 
 import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
-import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
-import { createPriceRules } from "../../../__fixtures__/price-rule"
+import {
+  createMoneyAmounts,
+  defaultMoneyAmountsData,
+} from "../../../__fixtures__/money-amount"
+import {
+  createPriceRules,
+  defaultPriceRuleData,
+} from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
-import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
+import {
+  createPriceSetMoneyAmounts,
+  defaultPriceSetMoneyAmountsData,
+} from "../../../__fixtures__/price-set-money-amount"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
+
+async function seedData({
+  moneyAmountsData = defaultMoneyAmountsData,
+  priceRuleData = defaultPriceRuleData,
+  priceSetMoneyAmountsData = defaultPriceSetMoneyAmountsData,
+} = {}) {
+  const testManager = MikroOrmWrapper.forkManager()
+
+  await createCurrencies(testManager)
+  await createMoneyAmounts(testManager, moneyAmountsData)
+  await createPriceSets(testManager)
+  await createPriceSetMoneyAmounts(testManager, priceSetMoneyAmountsData)
+  await createRuleTypes(testManager)
+  await createPriceRules(testManager, priceRuleData)
+}
 
 describe("PricingModule Service - PriceSet", () => {
   let service: IPricingModuleService
@@ -251,23 +275,52 @@ describe("PricingModule Service - PriceSet", () => {
 
     describe("multiple pricing context", () => {
       beforeEach(async () => {
-        testManager = MikroOrmWrapper.forkManager()
+        const moneyAmountsData = [
+          ...defaultMoneyAmountsData,
+          {
+            id: "money-amount-USD-region",
+            currency_code: "USD",
+            amount: 222,
+            min_quantity: 1,
+            max_quantity: 10,
+          },
+        ]
 
-        await createCurrencies(testManager)
-        await createMoneyAmounts(testManager)
-        await createPriceSets(testManager)
-        await createPriceSetMoneyAmounts(testManager)
-        await createRuleTypes(testManager)
-        await createPriceRules(testManager)
+        const priceSetMoneyAmountsData = [
+          ...defaultPriceSetMoneyAmountsData,
+          {
+            id: "price-set-money-amount-USD-region",
+            title: "price set money amount USD for US region",
+            price_set: "price-set-1",
+            money_amount: "money-amount-USD-region",
+          },
+        ]
+
+        const priceRuleData = [
+          ...defaultPriceRuleData,
+          {
+            id: "price-rule-3",
+            price_set_id: "price-set-1",
+            rule_type_id: "rule-type-2", // region_id
+            value: "US",
+            price_list_id: "test",
+            price_set_money_amount_id: "price-set-money-amount-USD-region",
+          },
+        ]
+        await seedData({
+          moneyAmountsData,
+          priceRuleData,
+          priceSetMoneyAmountsData,
+        })
       })
 
-      it("retrieves the calculated prices when a context is set", async () => {
+      it.only("retrieves the calculated prices when multiple context is set", async () => {
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-1", "price-set-2"] },
           {
             context: {
               currency_code: "USD",
-              region_id: "DE",
+              region_id: "US",
             },
           }
         )
@@ -275,7 +328,7 @@ describe("PricingModule Service - PriceSet", () => {
         expect(priceSetsResult).toEqual([
           {
             id: "price-set-1",
-            amount: "500",
+            amount: "222",
             currency_code: "USD",
             min_quantity: "1",
             max_quantity: "10",
@@ -370,6 +423,8 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("list", () => {
+    beforeEach(async () => await seedData())
+
     it("list priceSets", async () => {
       const priceSetsResult = await service.list()
 
@@ -421,6 +476,8 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("listAndCount", () => {
+    beforeEach(async () => await seedData())
+
     it("should return priceSets and count", async () => {
       const [priceSetsResult, count] = await service.listAndCount()
 
@@ -508,6 +565,7 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("retrieve", () => {
+    beforeEach(async () => await seedData())
     const id = "price-set-1"
 
     it("should return priceSet for the given id", async () => {
@@ -560,6 +618,7 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("delete", () => {
+    beforeEach(async () => await seedData())
     const id = "price-set-1"
 
     it("should delete the priceSets given an id successfully", async () => {
@@ -574,6 +633,7 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("update", () => {
+    beforeEach(async () => await seedData())
     const id = "price-set-1"
 
     it("should throw an error when a id does not exist", async () => {
@@ -596,6 +656,8 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("create", () => {
+    beforeEach(async () => await seedData())
+
     it("should throw an error when a id does not exist", async () => {
       let error
 

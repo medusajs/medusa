@@ -1,10 +1,10 @@
-import { PriceRule, PriceSet, PriceSetMoneyAmount, RuleType } from "@models"
+import { PriceRule } from "@models"
 
 import { CreatePriceRuleDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createMoneyAmounts } from "../money-amount"
-import { createRuleTypes } from "../rule-type"
 import { defaultPriceRuleData } from "./data"
+
+export * from "./data"
 
 export async function createPriceRules(
   manager: SqlEntityManager,

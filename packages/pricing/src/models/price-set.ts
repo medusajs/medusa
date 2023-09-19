@@ -1,6 +1,7 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Cascade,
   Collection,
   Entity,
   ManyToMany,
@@ -10,6 +11,7 @@ import {
 } from "@mikro-orm/core"
 
 import MoneyAmount from "./money-amount"
+import PriceRule from "./price-rule"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 
 @Entity()
@@ -19,8 +21,15 @@ export default class PriceSet {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @OneToMany(() => PriceSetMoneyAmount, (psma) => psma.price_set)
+  @OneToMany(() => PriceSetMoneyAmount, (psma) => psma.price_set, {
+    cascade: [Cascade.REMOVE],
+  })
   price_set_money_amounts = new Collection<PriceSetMoneyAmount>(this)
+
+  @OneToMany(() => PriceRule, (pr) => pr.price_set, {
+    cascade: [Cascade.REMOVE],
+  })
+  price_rules = new Collection<PriceRule>(this)
 
   @ManyToMany({
     entity: () => MoneyAmount,
