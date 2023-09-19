@@ -194,10 +194,9 @@ export const defaultStoreRemoteQueryFields = {
         "metadata",
       ],
     },
-
-    profile: {
-      fields: ["id", "created_at", "updated_at", "deleted_at", "name", "type"],
-    },
+  },
+  profile: {
+    fields: ["id", "created_at", "updated_at", "deleted_at", "name", "type"],
   },
 }
 
