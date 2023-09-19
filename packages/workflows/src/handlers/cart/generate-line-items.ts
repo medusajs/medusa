@@ -1,7 +1,7 @@
 import { ProductTypes, ProductVariantDTO } from "@medusajs/types"
+import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 import { WorkflowArguments } from "../../helper"
-import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 type HandlerInputData = {
   items: Partial<ProductVariantDTO[]> // TODO: update data type
@@ -21,7 +21,7 @@ function pickVariantPropsForLineItemsGenerate(variant: ProductVariantDTO) {
   return variant // TODO
 }
 
-export async function prepareLineItems({
+export async function generateLineItems({
   container,
   context,
   data,
@@ -36,7 +36,7 @@ export async function prepareLineItems({
   const lineItemServiceTx = lineItemService.withTransaction(manager)
 
   const productModuleService: ProductTypes.IProductModuleService =
-    container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
+    container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName) // TODO: use the core service
 
   const variants = await productModuleService.listVariants({ id: ids })
 
@@ -49,4 +49,4 @@ export async function prepareLineItems({
   )
 }
 
-prepareLineItems.aliases = Aliases
+generateLineItems.aliases = Aliases

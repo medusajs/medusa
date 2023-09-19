@@ -174,15 +174,15 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: [
-            getWorkflowInput(CartHandlers.prepareLineItems.aliases.items)
+            getWorkflowInput(CartHandlers.generateLineItems.aliases.items)
               .invoke,
             {
               from: CreateCartActions.createCart,
-              alias: CartHandlers.prepareLineItems.aliases.cart,
+              alias: CartHandlers.generateLineItems.aliases.cart,
             },
           ],
         },
-        CartHandlers.prepareLineItems
+        CartHandlers.generateLineItems
       ),
     },
   ],
