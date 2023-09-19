@@ -406,11 +406,6 @@ describe("ProductService", () => {
       }
 
       const fileService = {
-        getUploadStreamDescriptor: jest
-          .fn()
-          .mockImplementation(({ name, ext }) => ({
-            fileKey: `${name}.${ext}`,
-          })),
         delete: jest.fn(),
       }
 
@@ -469,11 +464,6 @@ describe("ProductService", () => {
       }
 
       const fileService = {
-        getUploadStreamDescriptor: jest
-          .fn()
-          .mockImplementation(({ name, ext }) => ({
-            fileKey: `${name}.${ext}`,
-          })),
         delete: jest.fn(),
       }
 
@@ -563,11 +553,6 @@ describe("ProductService", () => {
       })
 
       const fileService = {
-        getUploadStreamDescriptor: jest
-          .fn()
-          .mockImplementation(({ name, ext }) => ({
-            fileKey: `${name}.${ext}`,
-          })),
         delete: jest.fn(),
       }
 
@@ -613,11 +598,6 @@ describe("ProductService", () => {
       })
 
       const fileService = {
-        getUploadStreamDescriptor: jest
-          .fn()
-          .mockImplementation(({ name, ext }) => ({
-            fileKey: `${name}.${ext}`,
-          })),
         delete: jest.fn(),
       }
 
