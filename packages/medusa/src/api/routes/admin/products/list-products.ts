@@ -403,7 +403,7 @@ async function listAndCountProductWithIsolatedProductModule(
   const {
     rows: products,
     metadata: { count },
-  } = await remoteQuery(query, variables)
+  } = await remoteQuery(query)
 
   products.forEach((product) => {
     product.profile_id = product.profile?.id
