@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin",
-  "version": "7.1.0",
+  "version": "7.1.1",
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
@@ -27,7 +27,7 @@
     "directory": "packages/admin"
   },
   "dependencies": {
-    "@medusajs/admin-ui": "^2.1.0",
+    "@medusajs/admin-ui": "^2.1.1",
     "@medusajs/ui": "^1.0.0",
     "@medusajs/ui-preset": "^1.0.0",
     "@rollup/plugin-alias": "5.0.0",

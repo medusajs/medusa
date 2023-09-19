@@ -13,15 +13,11 @@ import useNotification from "../hooks/use-notification"
 import { getErrorMessage } from "../utils/error-messages"
 import FormValidator from "../utils/form-validator"
 import { useAdminCreateAnalyticsConfig } from "../services/analytics"
-import {
-  AnalyticsProvider,
-  useAnalytics,
-} from "../providers/analytics-provider"
+import { useAnalytics } from "../providers/analytics-provider"
 import AnalyticsConfigForm, {
   AnalyticsConfigFormType,
 } from "../components/organisms/analytics-config-form"
 import { nestedForm } from "../utils/nested-form"
-import { WRITE_KEY } from "../constants/analytics"
 
 type FormValues = {
   password: string
@@ -155,90 +151,88 @@ const InvitePage = () => {
   }
 
   return (
-    <AnalyticsProvider writeKey={WRITE_KEY}>
-      <PublicLayout>
-        <SEO title="Create Account" />
-        {signUp ? (
-          <form onSubmit={handleAcceptInvite}>
-            <div className="flex w-[300px] flex-col items-center">
-              <h1 className="inter-xlarge-semibold mb-large text-[20px]">
-                Create your Medusa account
-              </h1>
-              <div className="gap-y-small flex flex-col">
-                <div>
-                  <SigninInput readOnly placeholder={token.user_email} />
-                </div>
-                <div>
-                  <SigninInput
-                    placeholder="Password"
-                    type={"password"}
-                    {...register("password", {
-                      required: FormValidator.required("Password"),
-                    })}
-                    autoComplete="new-password"
-                  />
-                </div>
-                <div>
-                  <SigninInput
-                    placeholder="Confirm password"
-                    type={"password"}
-                    {...register("repeat_password", {
-                      required: "You must confirm your password",
-                    })}
-                    autoComplete="new-password"
-                  />
-                  <InputError errors={errors} name="repeat_password" />
-                </div>
+    <PublicLayout>
+      <SEO title="Create Account" />
+      {signUp ? (
+        <form onSubmit={handleAcceptInvite}>
+          <div className="flex w-[300px] flex-col items-center">
+            <h1 className="inter-xlarge-semibold mb-large text-[20px]">
+              Create your Medusa account
+            </h1>
+            <div className="gap-y-small flex flex-col">
+              <div>
+                <SigninInput readOnly placeholder={token.user_email} />
               </div>
-              <div className="gap-y-small my-8 flex w-[300px] flex-col">
-                <AnalyticsConfigForm
-                  form={nestedForm(form, "analytics")}
-                  compact={true}
+              <div>
+                <SigninInput
+                  placeholder="Password"
+                  type={"password"}
+                  {...register("password", {
+                    required: FormValidator.required("Password"),
+                  })}
+                  autoComplete="new-password"
                 />
               </div>
-              <Button
-                variant="secondary"
-                size="medium"
-                className="mt-large w-[300px]"
-                loading={isLoading}
-              >
-                Create account
-              </Button>
-              <p className="inter-small-regular text-grey-50 mt-xlarge">
-                Already signed up? <a href="/login">Log in</a>
-              </p>
+              <div>
+                <SigninInput
+                  placeholder="Confirm password"
+                  type={"password"}
+                  {...register("repeat_password", {
+                    required: "You must confirm your password",
+                  })}
+                  autoComplete="new-password"
+                />
+                <InputError errors={errors} name="repeat_password" />
+              </div>
             </div>
-          </form>
-        ) : (
-          <div className="flex flex-col items-center text-center">
-            <h1 className="inter-xlarge-semibold text-[20px]">
-              {first_run
-                ? `Let's get you started!`
-                : `You have been invited to join the team`}
-            </h1>
-            {first_run ? (
-              <p className="inter-base-regular text-grey-50 mt-xsmall">
-                Create an admin account to access your <br /> Medusa dashboard.
-              </p>
-            ) : (
-              <p className="inter-base-regular text-grey-50 mt-xsmall">
-                You can now join the team. Sign up below and get started
-                <br />
-                with your Medusa account right away.
-              </p>
-            )}
+            <div className="gap-y-small my-8 flex w-[300px] flex-col">
+              <AnalyticsConfigForm
+                form={nestedForm(form, "analytics")}
+                compact={true}
+              />
+            </div>
             <Button
               variant="secondary"
               size="medium"
-              className="mt-xlarge w-[300px]"
-              onClick={() => setSignUp(true)}
+              className="mt-large w-[300px]"
+              loading={isLoading}
             >
-              Sign up
+              Create account
             </Button>
+            <p className="inter-small-regular text-grey-50 mt-xlarge">
+              Already signed up? <a href="/login">Log in</a>
+            </p>
           </div>
-        )}
-      </PublicLayout>
-    </AnalyticsProvider>
+        </form>
+      ) : (
+        <div className="flex flex-col items-center text-center">
+          <h1 className="inter-xlarge-semibold text-[20px]">
+            {first_run
+              ? `Let's get you started!`
+              : `You have been invited to join the team`}
+          </h1>
+          {first_run ? (
+            <p className="inter-base-regular text-grey-50 mt-xsmall">
+              Create an admin account to access your <br /> Medusa dashboard.
+            </p>
+          ) : (
+            <p className="inter-base-regular text-grey-50 mt-xsmall">
+              You can now join the team. Sign up below and get started
+              <br />
+              with your Medusa account right away.
+            </p>
+          )}
+          <Button
+            variant="secondary"
+            size="medium"
+            className="mt-xlarge w-[300px]"
+            onClick={() => setSignUp(true)}
+          >
+            Sign up
+          </Button>
+        </div>
+      )}
+    </PublicLayout>
   )
 }
 
