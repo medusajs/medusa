@@ -18,29 +18,37 @@ export type ColorModeProviderProps = {
 
 export const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
   const [colorMode, setColorMode] = useState<ColorMode>("light")
+  const [loaded, setLoaded] = useState(false)
 
   const toggleColorMode = () =>
     setColorMode(colorMode === "light" ? "dark" : "light")
 
-  const init = () => {
+  useEffect(() => {
+    if (loaded) {
+      return
+    }
+
     const theme = localStorage.getItem("theme")
     if (theme && (theme === "light" || theme === "dark")) {
       setColorMode(theme)
+      setLoaded(true)
     }
-  }
-
-  useEffect(() => {
-    init()
   }, [])
 
   useEffect(() => {
+    document.querySelector("html")?.setAttribute("data-theme", colorMode)
+  }, [colorMode])
+
+  useEffect(() => {
+    if (!loaded) {
+      return
+    }
+
     const theme = localStorage.getItem("theme")
     if (theme !== colorMode) {
       localStorage.setItem("theme", colorMode)
     }
-
-    document.querySelector("html")?.setAttribute("data-theme", colorMode)
-  }, [colorMode])
+  }, [loaded, colorMode])
 
   return (
     <ColorModeContext.Provider
