@@ -850,7 +850,9 @@ class CartService extends TransactionBaseService {
             variant_id: In(items.map((item) => item.variant_id)),
             should_merge: true,
           },
-          { select: ["id", "metadata", "quantity", "variant_id"] }
+          {
+            select: ["id", "metadata", "quantity", "variant_id"],
+          }
         )
 
         const existingItemsVariantMap = new Map()
@@ -864,7 +866,7 @@ class CartService extends TransactionBaseService {
           let currentItem: LineItem | undefined
 
           const existingItem = existingItemsVariantMap.get(item.variant_id)
-          if (item.should_merge && existingItem?.should_merge) {
+          if (item.should_merge && existingItem) {
             currentItem = existingItem
             currentItem!.metadata = setMetadata(currentItem, item.metadata)
           }
