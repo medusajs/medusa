@@ -2,11 +2,16 @@
 
 import React from "react"
 import { SearchModalOpener } from "@/components"
-import { useMobile, usePageLoading } from "@/providers"
+import { useMobile } from "@/providers"
 
-export const NavbarSearchModalOpener = () => {
+export type NavbarSearchModalOpenerProps = {
+  isLoading?: boolean
+}
+
+export const NavbarSearchModalOpener = ({
+  isLoading,
+}: NavbarSearchModalOpenerProps) => {
   const { isMobile } = useMobile()
-  const { isLoading } = usePageLoading()
 
   return <SearchModalOpener isMobile={isMobile} isLoading={isLoading} />
 }

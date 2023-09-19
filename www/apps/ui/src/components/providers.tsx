@@ -1,10 +1,29 @@
 "use client"
 
-import { ThemeProvider as NextThemesProvider } from "next-themes"
-import { ThemeProviderProps } from "next-themes/dist/types"
+import {
+  ColorModeProvider,
+  MobileProvider,
+  ModalProvider,
+  NavbarProvider,
+} from "docs-ui"
+import SearchProvider from "./search-provider"
 
-const ThemeProvider = ({ children, ...props }: ThemeProviderProps) => {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>
+type ProvidersProps = {
+  children: React.ReactNode
 }
 
-export { ThemeProvider }
+const Providers = ({ children }: ProvidersProps) => {
+  return (
+    <MobileProvider>
+      <ColorModeProvider>
+        <ModalProvider>
+          <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
+            <SearchProvider>{children}</SearchProvider>
+          </NavbarProvider>
+        </ModalProvider>
+      </ColorModeProvider>
+    </MobileProvider>
+  )
+}
+
+export { Providers }

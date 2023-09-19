@@ -34,7 +34,6 @@ const Tags = () => {
   const { baseSpecs, setBaseSpecs } = useBaseSpecs()
   const { addItems } = useSidebar()
   const { area } = useArea()
-  const { activeItem, setActiveItem } = useNavbar()
 
   const { data } = useSWR<ExpandedDocument>(
     loadData && !baseSpecs
@@ -49,12 +48,6 @@ const Tags = () => {
   useEffect(() => {
     setExpand(getCurrentTag())
   }, [])
-
-  useEffect(() => {
-    if (activeItem !== area) {
-      setActiveItem(area)
-    }
-  }, [activeItem, setActiveItem, area])
 
   useEffect(() => {
     setLoadData(true)

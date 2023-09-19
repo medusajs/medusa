@@ -14,6 +14,7 @@ export type NavbarProps = {
   showColorModeToggle?: boolean
   additionalActions?: React.ReactNode
   mobileMenuButton: NavbarMobileMenuButtonProps
+  isLoading?: boolean
 }
 
 export const Navbar = ({
@@ -23,6 +24,7 @@ export const Navbar = ({
   showColorModeToggle = true,
   additionalActions,
   mobileMenuButton,
+  isLoading,
 }: NavbarProps) => {
   return (
     <nav
@@ -43,7 +45,9 @@ export const Navbar = ({
           ))}
         </div>
         <div className="hidden min-w-0 flex-1 items-center justify-end gap-docs_0.5 lg:flex">
-          {showSearchOpener && <NavbarSearchModalOpener />}
+          {showSearchOpener && (
+            <NavbarSearchModalOpener isLoading={isLoading} />
+          )}
           {showColorModeToggle && <NavbarColorModeToggle />}
           {additionalActions}
         </div>

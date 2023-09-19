@@ -15,7 +15,7 @@ const { borderRadius, ...extendedTheme } = coreConfig.theme?.extend || {}
 // remove core spacing except those having "docs" prefix
 const modifiedSpacing = {}
 Object.entries(coreConfig.theme.spacing)
-  .filter(([key]) => !key.startsWith("docs_"))
+  .filter(([key]) => key.startsWith("docs_"))
   .map(([key, value]) => {
     modifiedSpacing[key] = value
   })
@@ -23,7 +23,7 @@ Object.entries(coreConfig.theme.spacing)
 // remove core border radius except those having "docs" prefix
 const modifiedRadius = {}
 Object.entries(coreConfig.theme.extend.borderRadius)
-  .filter(([key]) => !key.startsWith("docs_"))
+  .filter(([key]) => key.startsWith("docs_"))
   .map(([key, value]) => {
     modifiedRadius[key] = value
   })
@@ -43,7 +43,7 @@ module.exports = {
         },
       },
       borderRadius: modifiedRadius,
+      spacing: modifiedSpacing,
     },
-    spacing: modifiedSpacing,
   },
 }

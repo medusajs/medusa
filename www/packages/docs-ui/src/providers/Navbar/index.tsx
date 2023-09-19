@@ -1,6 +1,7 @@
 "use client"
 
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 
 export type NavbarContextType = {
   activeItem: string | null
@@ -11,10 +12,25 @@ const NavbarContext = createContext<NavbarContextType | null>(null)
 
 export type NavbarProviderProps = {
   children: React.ReactNode
+  basePath?: string
 }
 
-export const NavbarProvider = ({ children }: NavbarProviderProps) => {
+export const NavbarProvider = ({
+  children,
+  basePath = "",
+}: NavbarProviderProps) => {
   const [activeItem, setActiveItem] = useState<string | null>(null)
+  const pathname = usePathname()
+
+  const assemblePathName = (path: string) =>
+    `${basePath}/${path.charAt(0) === "/" ? path.substring(1) : path}`
+
+  useEffect(() => {
+    const newPath = assemblePathName(pathname)
+    if (activeItem !== newPath) {
+      setActiveItem(newPath)
+    }
+  }, [pathname, activeItem])
 
   return (
     <NavbarContext.Provider

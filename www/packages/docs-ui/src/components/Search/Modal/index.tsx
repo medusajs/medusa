@@ -1,12 +1,11 @@
 "use client"
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import algoliasearch, { SearchClient } from "algoliasearch/lite"
 import { InstantSearch, SearchBox } from "react-instantsearch"
 import clsx from "clsx"
 import { SearchEmptyQueryBoundary } from "../EmptyQueryBoundary"
 import { SearchSuggestions, type SearchSuggestionType } from "../Suggestions"
-import { useSearch } from "@/providers"
+import { AlgoliaProps, useSearch } from "@/providers"
 import { checkArraySameElms } from "@/utils"
 import { SearchHitsWrapper } from "../Hits"
 import { findNextSibling, findPrevSibling } from "@/utils"
@@ -15,12 +14,7 @@ import { MagnifyingGlass, XMark } from "@medusajs/icons"
 import { useKeyboardShortcut, type OptionType } from "@/hooks"
 
 export type SearchModalProps = {
-  algolia: {
-    appId: string
-    apiKey: string
-    mainIndexName: string
-    indices: string[]
-  }
+  algolia: AlgoliaProps
   isLoading?: boolean
   suggestions: SearchSuggestionType[]
   checkInternalPattern?: RegExp
@@ -34,38 +28,8 @@ export const SearchModal = ({
   checkInternalPattern,
   filterOptions = [],
 }: SearchModalProps) => {
-  const algoliaClient = useMemo(
-    () => algoliasearch(algolia.appId, algolia.apiKey),
-    [algolia]
-  )
-
-  const searchClient: SearchClient = useMemo(
-    () => ({
-      ...algoliaClient,
-      async search(requests) {
-        if (requests.every(({ params }) => !params?.query)) {
-          return Promise.resolve({
-            results: requests.map(() => ({
-              hits: [],
-              nbHits: 0,
-              nbPages: 0,
-              page: 0,
-              processingTimeMS: 0,
-              hitsPerPage: 0,
-              exhaustiveNbHits: false,
-              query: "",
-              params: "",
-            })),
-          })
-        }
-
-        return algoliaClient.search(requests)
-      },
-    }),
-    [algoliaClient]
-  )
   const modalRef = useRef<HTMLDialogElement | null>(null)
-  const { isOpen, setIsOpen, defaultFilters } = useSearch()
+  const { isOpen, setIsOpen, defaultFilters, searchClient } = useSearch()
   const [filters, setFilters] = useState<string[]>(defaultFilters)
   const formattedFilters: string = useMemo(() => {
     let formatted = ""

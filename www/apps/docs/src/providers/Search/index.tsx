@@ -30,13 +30,13 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
 
   return (
     <UiSearchProvider
+      algolia={{
+        appId: algolia.appId,
+        apiKey: algolia.apiKey,
+        mainIndexName: algolia.indexNames.docs,
+        indices: Object.values(algolia.indexNames),
+      }}
       searchProps={{
-        algolia: {
-          appId: algolia.appId,
-          apiKey: algolia.apiKey,
-          mainIndexName: algolia.indexNames.docs,
-          indices: Object.values(algolia.indexNames),
-        },
         filterOptions: algolia.filters,
         suggestions: [
           {

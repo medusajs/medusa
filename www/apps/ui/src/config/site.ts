@@ -8,6 +8,6 @@ type SiteConfig = {
 export const siteConfig: SiteConfig = {
   name: "Medusa UI",
   url: "https://docs.medusajs.com/ui",
-  ogImage: "https://docs.medusajs.com/ui/medusa-og.png",
+  ogImage: "https://docs.medusajs.com/ui/images/medusa-og.png",
   description: "Primitives for building Medusa applications.",
 }

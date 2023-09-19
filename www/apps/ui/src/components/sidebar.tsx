@@ -37,7 +37,7 @@ export function Sidebar({ items }: DocsSidebarNavProps) {
 }
 
 interface SidebarItemsProps {
-  items: SidebarNavItem[]
+  items?: SidebarNavItem[]
   pathname: string | null
 }
 

@@ -1,12 +1,13 @@
 "use client"
 
-import { Navbar as UiNavbar } from "docs-ui"
+import { Navbar as UiNavbar, usePageLoading } from "docs-ui"
 import getLinkWithBasePath from "../../utils/get-link-with-base-path"
 import { useSidebar } from "../../providers/sidebar"
 import FeedbackModal from "./FeedbackModal"
 
 const Navbar = () => {
   const { setMobileSidebarOpen, mobileSidebarOpen } = useSidebar()
+  const { isLoading } = usePageLoading()
 
   return (
     <UiNavbar
@@ -26,12 +27,10 @@ const Navbar = () => {
         {
           href: `${getLinkWithBasePath("/store")}`,
           label: "Store API",
-          activeValue: "store",
         },
         {
           href: `${getLinkWithBasePath("/admin")}`,
           label: "Admin API",
-          activeValue: "admin",
         },
         {
           href: `/ui`,
@@ -43,6 +42,7 @@ const Navbar = () => {
         mobileSidebarOpen,
       }}
       additionalActions={<FeedbackModal />}
+      isLoading={isLoading}
     />
   )
 }

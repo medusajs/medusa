@@ -1,13 +1,8 @@
-export interface NavItem {
+export interface SidebarNavItem {
   title: string
   href?: string
   disabled?: boolean
   external?: boolean
   label?: string
+  items?: SidebarNavItem[]
 }
-
-export interface NavItemWithChildren extends NavItem {
-  items: NavItemWithChildren[]
-}
-
-export type SidebarNavItem = NavItemWithChildren

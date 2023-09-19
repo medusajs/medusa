@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { Inter, Roboto_Mono } from "next/font/google"
 
 import { Navbar } from "@/components/navbar"
-import { ThemeProvider } from "@/components/providers"
+import { Providers } from "@/components/providers"
 import { Sidebar } from "@/components/sidebar"
 import { docsConfig } from "@/config/docs"
 
@@ -34,11 +34,7 @@ export default function RootLayout({
       <body
         className={`bg-ui-bg-base h-screen w-full ${inter.variable} ${robotoMono.variable}`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          disableTransitionOnChange
-        >
+        <Providers>
           <div className="w-full">
             <Navbar />
             <div className="max-w-xxl grid w-full grid-cols-1 px-6 lg:mx-auto lg:grid-cols-[280px_1fr]">
@@ -50,7 +46,7 @@ export default function RootLayout({
               </div>
             </div>
           </div>
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )

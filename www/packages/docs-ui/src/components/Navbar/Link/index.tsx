@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useMemo } from "react"
 import clsx from "clsx"
 import { useNavbar } from "@/providers"
 import { NextLink, NextLinkProps } from "@/components"
@@ -9,23 +9,31 @@ export type NavbarLinkProps = {
   href: string
   label: string
   className?: string
-  activeValue?: string
+  activeValuePattern?: RegExp
 } & NextLinkProps
 
 export const NavbarLink = ({
   href,
   label,
   className,
-  activeValue,
+  activeValuePattern,
 }: NavbarLinkProps) => {
   const { activeItem } = useNavbar()
+
+  const isActive = useMemo(() => {
+    return activeItem
+      ? activeValuePattern
+        ? activeValuePattern.test(activeItem)
+        : href === activeItem
+      : false
+  }, [activeItem, href, activeValuePattern])
 
   return (
     <NextLink
       href={href}
       className={clsx(
-        activeItem === activeValue && "!text-ui-fg-base",
-        activeItem !== activeValue && "!text-ui-fg-subtle",
+        isActive && "!text-ui-fg-base",
+        !isActive && "!text-ui-fg-subtle",
         "text-compact-small-plus inline-block",
         "hover:!text-ui-fg-base",
         className

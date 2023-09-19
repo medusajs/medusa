@@ -2,7 +2,7 @@ const { withContentlayer } = require("next-contentlayer")
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/ui",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/ui",
   async rewrites() {
     return {
       fallback: [

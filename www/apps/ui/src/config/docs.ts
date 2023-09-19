@@ -1,35 +1,43 @@
-import { NavItem, SidebarNavItem } from "../types/nav"
+import { NavbarLinkProps } from "docs-ui"
+import { SidebarNavItem } from "../types/nav"
 
 type DocsConfig = {
-  mainNav: NavItem[]
+  mainNav: NavbarLinkProps[]
   sidebarNav: SidebarNavItem[]
 }
 
 export const docsConfig: DocsConfig = {
   mainNav: [
     {
-      title: "Docs",
-      external: true,
+      label: "Docs",
+      target: "_blank",
+      rel: "noreferrer",
       href: `${process.env.NEXT_PUBLIC_DOCS_URL}`,
     },
     {
-      title: "User Guide",
-      external: true,
+      label: "User Guide",
+      target: "_blank",
+      rel: "noreferrer",
       href: `${process.env.NEXT_PUBLIC_DOCS_URL}/user-guide`,
     },
     {
-      title: "Store API",
-      external: true,
+      label: "Store API",
+      target: "_blank",
+      rel: "noreferrer",
       href: `${process.env.NEXT_PUBLIC_DOCS_URL}/api/store`,
     },
     {
-      title: "Admin API",
-      external: true,
+      label: "Admin API",
+      target: "_blank",
+      rel: "noreferrer",
       href: `${process.env.NEXT_PUBLIC_DOCS_URL}/api/admin`,
     },
     {
-      title: "UI",
+      label: "UI",
+      target: "_blank",
+      rel: "noreferrer",
       href: `${process.env.NEXT_PUBLIC_DOCS_URL}/ui`,
+      activeValuePattern: new RegExp("/ui"),
     },
   ],
   sidebarNav: [
