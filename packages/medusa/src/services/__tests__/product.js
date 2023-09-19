@@ -26,6 +26,12 @@ const mockUpsertType = jest.fn().mockImplementation((value) => {
   return Promise.resolve(productType)
 })
 
+const configModule = {
+  projectConfig: {
+    delete_product_images: false,
+  },
+}
+
 describe("ProductService", () => {
   describe("retrieve", () => {
     const productRepo = MockRepository({
@@ -53,6 +59,7 @@ describe("ProductService", () => {
       manager: MockManager,
       productRepository: productRepo,
       featureFlagRouter: new FlagRouter({}),
+      configModule,
     })
 
     beforeEach(async () => {
@@ -125,6 +132,7 @@ describe("ProductService", () => {
       productTagRepository,
       productTypeRepository,
       featureFlagRouter: new FlagRouter({}),
+      configModule,
     })
 
     beforeEach(() => {
@@ -287,6 +295,7 @@ describe("ProductService", () => {
       cartRepository,
       priceSelectionStrategy,
       featureFlagRouter: new FlagRouter({}),
+      configModule,
     })
 
     beforeEach(() => {
@@ -392,6 +401,7 @@ describe("ProductService", () => {
       eventBusService,
       productRepository,
       featureFlagRouter: new FlagRouter({}),
+      configModule,
     })
 
     beforeEach(() => {
@@ -440,6 +450,7 @@ describe("ProductService", () => {
       productVariantService,
       eventBusService,
       featureFlagRouter: new FlagRouter({}),
+      configModule,
     })
 
     beforeEach(() => {
@@ -499,6 +510,7 @@ describe("ProductService", () => {
       productRepository,
       eventBusService,
       featureFlagRouter: new FlagRouter({}),
+      configModule,
     })
 
     beforeEach(() => {
@@ -567,6 +579,7 @@ describe("ProductService", () => {
       productOptionRepository,
       eventBusService,
       featureFlagRouter: new FlagRouter({}),
+      configModule,
     })
 
     beforeEach(() => {
@@ -675,6 +688,7 @@ describe("ProductService", () => {
       productOptionRepository,
       eventBusService,
       featureFlagRouter: new FlagRouter({}),
+      configModule,
     })
 
     beforeEach(() => {

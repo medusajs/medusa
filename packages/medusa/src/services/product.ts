@@ -1,26 +1,29 @@
 import {
-    buildRelations,
-    buildSelects, FlagRouter, objectToStringPath
+  buildRelations,
+  buildSelects,
+  FlagRouter,
+  objectToStringPath,
 } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
+import path from "path"
 import { ProductVariantService, SearchService } from "."
-import { TransactionBaseService } from "../interfaces"
+import { IFileService, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-    Product,
-    ProductCategory,
-    ProductOption,
-    ProductTag,
-    ProductType,
-    ProductVariant,
-    SalesChannel,
-    ShippingProfile,
+  Product,
+  ProductCategory,
+  ProductOption,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+  SalesChannel,
+  ShippingProfile,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
-    FindWithoutRelationsOptions,
-    ProductRepository,
+  FindWithoutRelationsOptions,
+  ProductRepository,
 } from "../repositories/product"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
@@ -29,15 +32,16 @@ import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
 import { Selector } from "../types/common"
 import {
-    CreateProductInput,
-    FilterableProductProps,
-    FindProductConfig,
-    ProductOptionInput,
-    ProductSelector,
-    UpdateProductInput,
+  CreateProductInput,
+  FilterableProductProps,
+  FindProductConfig,
+  ProductOptionInput,
+  ProductSelector,
+  UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
+import { ConfigModule } from "@medusajs/types"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -52,6 +56,17 @@ type InjectedDependencies = {
   searchService: SearchService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
+  fileService: IFileService
+  configModule: ConfigModule
+}
+
+type ProductUpdatedEvent = {
+  id: string
+  fields: string[]
+}
+
+type ProductDeletedEvent = {
+  id: string
 }
 
 class ProductService extends TransactionBaseService {
@@ -67,6 +82,8 @@ class ProductService extends TransactionBaseService {
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  protected readonly fileService_: IFileService
+  protected readonly configModule_: ConfigModule
 
   static readonly IndexName = `products`
   static readonly Events = {
@@ -87,6 +104,8 @@ class ProductService extends TransactionBaseService {
     imageRepository,
     searchService,
     featureFlagRouter,
+    fileService,
+    configModule,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -102,6 +121,8 @@ class ProductService extends TransactionBaseService {
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
     this.featureFlagRouter_ = featureFlagRouter
+    this.fileService_ = fileService
+    this.configModule_ = configModule
   }
 
   /**
@@ -556,6 +577,8 @@ class ProductService extends TransactionBaseService {
         relations,
       })
 
+      const originalProduct = { ...product }
+
       const {
         metadata,
         images,
@@ -637,15 +660,61 @@ class ProductService extends TransactionBaseService {
 
       const result = await productRepo.save(product)
 
+      // get updated fields from original product and updated product
+      const updatedFields = Object.keys(originalProduct).reduce<string[]>(
+        (acc, key) => {
+          if (originalProduct[key] !== result[key]) {
+            acc.push(key)
+          }
+          return acc
+        },
+        []
+      )
+
+      if (this.configModule_.projectConfig.delete_product_images) {
+        const imagesToDelete = new Set<string>()
+        originalProduct.images
+          .filter((i) => !result.images.find((image) => image.id === i.id))
+          .forEach((image) => {
+            if (result.thumbnail !== image.url) {
+              imagesToDelete.add(image.url)
+            }
+          })
+
+        if (originalProduct.thumbnail && !result.thumbnail) {
+          imagesToDelete.add(originalProduct.thumbnail)
+        }
+        await this.deleteProductImages(Array.from(imagesToDelete))
+      }
+
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, {
+        .emit<ProductUpdatedEvent>(ProductService.Events.UPDATED, {
           id: result.id,
-          fields: Object.keys(update),
+          fields: updatedFields,
         })
 
       return result
     })
+  }
+
+  async deleteProductImages(imageUrls: string[]): Promise<void> {
+    await Promise.all(
+      imageUrls.map(async (url) => {
+        const fileName = path.basename(url)
+        const fileExtension = path.extname(url).replace(".", "")
+
+        if (!fileName || !fileExtension) {
+          return Promise.resolve()
+        }
+
+        const { fileKey } = await this.fileService_.getUploadStreamDescriptor({
+          name: fileName,
+          ext: fileExtension,
+        })
+        await this.fileService_.delete({ fileKey, file_key: fileKey })
+      })
+    )
   }
 
   /**
@@ -663,6 +732,7 @@ class ProductService extends TransactionBaseService {
       const product = await productRepo.findOne({
         where: { id: productId },
         relations: {
+          images: true,
           variants: {
             prices: true,
             options: true,
@@ -676,9 +746,17 @@ class ProductService extends TransactionBaseService {
 
       await productRepo.softRemove(product)
 
+      if (this.configModule_.projectConfig.delete_product_images) {
+        const imagesToDelete = new Set(product.images.map((image) => image.url))
+        if (product.thumbnail) {
+          imagesToDelete.add(product.thumbnail)
+        }
+        await this.deleteProductImages(Array.from(imagesToDelete))
+      }
+
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductService.Events.DELETED, {
+        .emit<ProductDeletedEvent>(ProductService.Events.DELETED, {
           id: productId,
         })
 
@@ -732,7 +810,10 @@ class ProductService extends TransactionBaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, result)
+        .emit<ProductUpdatedEvent>(ProductService.Events.UPDATED, {
+          id: result.id,
+          fields: ["options"],
+        })
       return result
     })
   }
@@ -767,10 +848,13 @@ class ProductService extends TransactionBaseService {
         return variant
       })
 
-      const result = productRepo.save(product)
+      const result = await productRepo.save(product)
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, result)
+        .emit<ProductUpdatedEvent>(ProductService.Events.UPDATED, {
+          id: result.id,
+          fields: ["variants"],
+        })
       return result
     })
   }
@@ -828,7 +912,10 @@ class ProductService extends TransactionBaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, product)
+        .emit<ProductUpdatedEvent>(ProductService.Events.UPDATED, {
+          id: product.id,
+          fields: ["options"],
+        })
       return product
     })
   }
@@ -919,7 +1006,10 @@ class ProductService extends TransactionBaseService {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, product)
+        .emit<ProductUpdatedEvent>(ProductService.Events.UPDATED, {
+          id: product.id,
+          fields: ["options"],
+        })
       return product
     })
   }
@@ -953,9 +1043,14 @@ class ProductService extends TransactionBaseService {
 
       products = await productRepo.save(products)
 
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, products)
+      products.forEach(async (product) => {
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit<ProductUpdatedEvent>(ProductService.Events.UPDATED, {
+            id: product.id,
+            fields: ["profiles"],
+          })
+      })
 
       return products
     })

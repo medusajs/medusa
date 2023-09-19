@@ -1,12 +1,16 @@
 import fs from "fs"
-import type { S3ClientConfigType, PutObjectCommandInput, GetObjectCommandOutput } from "@aws-sdk/client-s3"
+import type {
+  S3ClientConfigType,
+  PutObjectCommandInput,
+  GetObjectCommandOutput,
+} from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
-import { 
-  S3Client, 
-  PutObjectCommand, 
-  DeleteObjectCommand, 
-  GetObjectCommand 
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+  GetObjectCommand,
 } from "@aws-sdk/client-s3"
 import { parse } from "path"
 import { AbstractFileService, IFileService } from "@medusajs/medusa"
@@ -15,7 +19,7 @@ import {
   FileServiceUploadResult,
   GetUploadedFileType,
   UploadStreamDescriptorType,
-  Logger
+  Logger,
 } from "@medusajs/types"
 import stream from "stream"
 
@@ -49,12 +53,12 @@ class S3Service extends AbstractFileService implements IFileService {
   protected getClient(overwriteConfig: Partial<S3ClientConfigType> = {}) {
     const config: S3ClientConfigType = {
       credentials: {
-         accessKeyId: this.accessKeyId_,
-         secretAccessKey: this.secretAccessKey_,
+        accessKeyId: this.accessKeyId_,
+        secretAccessKey: this.secretAccessKey_,
       },
       region: this.region_,
       ...this.awsConfigObject_,
-      signatureVersion: 'v4',
+      signatureVersion: "v4",
       ...overwriteConfig,
     }
 
@@ -76,7 +80,6 @@ class S3Service extends AbstractFileService implements IFileService {
       acl: undefined,
     }
   ) {
-
     const parsedFilename = parse(file.originalname)
 
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
@@ -87,7 +90,7 @@ class S3Service extends AbstractFileService implements IFileService {
       Body: fs.createReadStream(file.path),
       Key: fileKey,
       ContentType: file.mimetype,
-      CacheControl: this.cacheControl_
+      CacheControl: this.cacheControl_,
     })
 
     try {
@@ -103,9 +106,9 @@ class S3Service extends AbstractFileService implements IFileService {
   }
 
   async delete(file: DeleteFileType): Promise<void> {
-   const command = new DeleteObjectCommand({
+    const command = new DeleteObjectCommand({
       Bucket: this.bucket_,
-      Key: `${file.file_key}`,
+      Key: file.fileKey,
     })
 
     try {
@@ -131,7 +134,7 @@ class S3Service extends AbstractFileService implements IFileService {
 
     const uploadJob = new Upload({
       client: this.client_,
-      params
+      params,
     })
 
     return {
@@ -163,7 +166,9 @@ class S3Service extends AbstractFileService implements IFileService {
       Key: `${fileData.fileKey}`,
     })
 
-    return await getSignedUrl(this.client_, command, { expiresIn: this.downloadFileDuration_ })
+    return await getSignedUrl(this.client_, command, {
+      expiresIn: this.downloadFileDuration_,
+    })
   }
 }
 

@@ -1,5 +1,6 @@
 import { AbstractFileService, IFileService } from "@medusajs/medusa"
 import {
+  DeleteFileType,
   FileServiceGetUploadStreamResult,
   FileServiceUploadResult,
   UploadStreamDescriptorType,
@@ -57,7 +58,7 @@ class LocalService extends AbstractFileService implements IFileService {
     })
   }
 
-  async delete(file): Promise<void> {
+  async delete(file: DeleteFileType): Promise<void> {
     const filePath = `${this.uploadDir_}/${file.fileKey}`
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath)

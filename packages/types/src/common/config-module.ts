@@ -46,6 +46,8 @@ export type ProjectConfigOptions = {
   }
   store_cors?: string
   admin_cors?: string
+
+  delete_product_images?: boolean
 }
 
 export type ConfigModule = {
