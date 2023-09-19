@@ -56,9 +56,7 @@ class AdminAuthResource extends BaseResource {
     const path = `/admin/auth/token`
     return this.client.request("POST", path, payload, {}, customHeaders)
       .then((res) => {
-        if (res.data?.access_token) {
-          JwtTokenManager.registerJwt(res.data.access_token, "admin");
-        }
+        JwtTokenManager.registerJwt(res.access_token, "admin");
         
         return res
       });

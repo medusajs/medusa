@@ -64,9 +64,7 @@ class AuthResource extends BaseResource {
     const path = `/store/auth/token`
     return this.client.request("POST", path, payload, {}, customHeaders)
       .then((res) => {
-        if (res.data?.access_token) {
-          JwtTokenManager.registerJwt(res.data.access_token, "store");
-        }
+        JwtTokenManager.registerJwt(res.data.access_token, "store");
         
         return res
       });
