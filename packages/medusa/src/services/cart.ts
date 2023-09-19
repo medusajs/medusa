@@ -864,7 +864,7 @@ class CartService extends TransactionBaseService {
           let currentItem: LineItem | undefined
 
           const existingItem = existingItemsVariantMap.get(item.variant_id)
-          if (item.should_merge && existingItem) {
+          if (item.should_merge && existingItem?.should_merge) {
             currentItem = existingItem
             currentItem!.metadata = setMetadata(currentItem, item.metadata)
           }
@@ -894,6 +894,7 @@ class CartService extends TransactionBaseService {
               quantity: item.quantity,
               has_shipping: false,
               unit_price: item.unit_price,
+              metadata: currentItem.metadata,
             }
           } else {
             // Since the variant is eager loaded, we are removing it before the line item is being created.
