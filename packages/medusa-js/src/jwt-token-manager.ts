@@ -6,7 +6,7 @@ class JwtTokenManager {
   private storeJwt: string | null = null;
 
   /**
-   * Set a publishable api key to be sent with each request.
+   * Set a store or admin jwt token to be sent with each request.
    */
   public registerJwt(token: string, domain: "admin" | "store") {
     if (domain === "admin") {
@@ -17,7 +17,7 @@ class JwtTokenManager {
   }
 
   /**
-   * Retrieve the publishable api key.
+   * Retrieve the store or admin jwt token
    */
   public getJwt(domain: "admin" | "store") {
     return domain === "admin" ? this.adminJwt : this.storeJwt;
