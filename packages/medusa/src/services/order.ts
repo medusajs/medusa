@@ -336,6 +336,7 @@ class OrderService extends TransactionBaseService {
       "shipping_total",
       "discount_total",
       "gift_card_total",
+      "gift_card_tax_total",
       "total",
       "paid_total",
       "refunded_total",
