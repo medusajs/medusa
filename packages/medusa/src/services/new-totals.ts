@@ -1,9 +1,6 @@
 import { FlagRouter } from "@medusajs/utils"
 import { MedusaError, isDefined } from "medusa-core-utils"
-import {
-  EntityManager,
-  UsingJoinColumnOnlyOnOneSideAllowedError,
-} from "typeorm"
+import { EntityManager } from "typeorm"
 import {
   ITaxCalculationStrategy,
   TaxCalculationContext,
@@ -118,7 +115,7 @@ export default class NewTotalsService extends TransactionBaseService {
       }
     }
 
-    const calculationMethod = isDefined(taxRate)
+    const calculationMethod = taxRate
       ? this.getLineItemTotalsLegacy.bind(this)
       : this.getLineItemTotals_.bind(this)
 
