@@ -8,7 +8,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminRemoteQueryFields,
+} from "."
 import {
   PricingService,
   ProductService,
@@ -281,114 +285,14 @@ async function getProductWithIsolatedProductModule(req, id) {
 
   const variables = { id }
 
-  const query = `
-      query ($id: String!) {
-        product (id: $id) {
-          ${defaultAdminProductFields.join("\n")}
-          
-          images {
-            id
-            created_at
-            updated_at
-            deleted_at
-            url
-            metadata
-          }
-          
-          tags {
-            id
-            created_at
-            updated_at
-            deleted_at
-            value
-          }
-          
-          type {
-            id
-            created_at
-            updated_at
-            deleted_at
-            value
-          }
-          
-          collection {
-            title
-            handle
-            id
-            created_at
-            updated_at
-            deleted_at
-          }
-          
-          options {
-            id
-            created_at
-            updated_at
-            deleted_at
-            title
-            product_id
-            metadata
-            values {
-              id
-              created_at
-              updated_at
-              deleted_at
-              value
-              option_id
-              variant_id
-              metadata
-            }
-          }
-          
-          variants {
-            id
-            created_at
-            updated_at
-            deleted_at
-            title
-            product_id
-            sku
-            barcode
-            ean
-            upc
-            variant_rank
-            inventory_quantity
-            allow_backorder
-            manage_inventory
-            hs_code
-            origin_country
-            mid_code
-            material
-            weight
-            length
-            height
-            width
-            metadata
-            options {
-              id
-              created_at
-              updated_at
-              deleted_at
-              value
-              option_id
-              variant_id
-              metadata
-            }
-          }
-          
-          profile {
-            id
-            created_at
-            updated_at
-            deleted_at
-            name
-            type
-          }
-        } 
-      }
-    `
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultAdminRemoteQueryFields,
+    },
+  }
 
-  const [product] = await remoteQuery(query, variables)
+  const [product] = await remoteQuery(query)
 
   product.profile_id = product.profile?.id
 
