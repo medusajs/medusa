@@ -51,6 +51,10 @@ Store uploaded files to your Medusa backend on Spaces.
           secret_access_key: process.env.SPACE_SECRET_ACCESS_KEY,
       },
     },
+    projectConfig: {
+      // ...
+      delete_product_images: true, // to be able to delete images when deleting a product or removing an image
+    },
   ]
   ```
 

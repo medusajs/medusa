@@ -53,6 +53,10 @@ const plugins = [
       aws_config_object: {},
     },
   },
+  projectConfig: {
+    // ...
+    delete_product_images: true, // to delete images when deleting a product or removing an image
+  },
 ]
 ```
 

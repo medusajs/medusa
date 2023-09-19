@@ -38,6 +38,10 @@ const plugins = [
       backend_url: 'http://localhost:9000' // optional
     }
   },
+  projectConfig: {
+    // ...
+    delete_product_images: true, // to delete images when deleting a product or removing an image
+  },
 ]
 ```
 
@@ -52,4 +56,3 @@ npm run start
 ```
 
 2\. Upload an image for a product using the admin dashboard or using [the Admin APIs](https://docs.medusajs.com/api/admin#tag/Upload).
-

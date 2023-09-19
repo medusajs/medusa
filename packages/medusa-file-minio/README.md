@@ -50,6 +50,10 @@ Store uploaded files to your Medusa backend on MinIO.
           secret_access_key: process.env.MINIO_SECRET_KEY,
       },
     },
+    projectConfig: {
+      // ...
+      delete_product_images: true, // to delete images when deleting a product or removing an image
+    },
   ]
   ```
 
