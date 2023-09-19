@@ -306,7 +306,16 @@ describe("PricingModule Service - PriceSet", () => {
             price_list_id: "test",
             price_set_money_amount_id: "price-set-money-amount-USD-region",
           },
+          {
+            id: "price-rule-4",
+            price_set_id: "price-set-1",
+            rule_type_id: "rule-type-1",
+            value: "USD",
+            price_list_id: "test",
+            price_set_money_amount_id: "price-set-money-amount-USD-region",
+          },
         ]
+
         await seedData({
           moneyAmountsData,
           priceRuleData,
@@ -314,7 +323,7 @@ describe("PricingModule Service - PriceSet", () => {
         })
       })
 
-      it.only("retrieves the calculated prices when multiple context is set", async () => {
+      it("retrieves the calculated prices when multiple context is set", async () => {
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-1", "price-set-2"] },
           {
@@ -347,14 +356,14 @@ describe("PricingModule Service - PriceSet", () => {
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-doesnotexist", "price-set-1"] },
           {
-            context: { currency_code: "USD", region_id: "DE" },
+            context: { currency_code: "USD", region_id: "US" },
           }
         )
 
         expect(priceSetsResult).toEqual([
           {
             id: "price-set-1",
-            amount: "500",
+            amount: "222",
             currency_code: "USD",
             min_quantity: "1",
             max_quantity: "10",

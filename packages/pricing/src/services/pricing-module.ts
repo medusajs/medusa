@@ -114,44 +114,39 @@ export default class PricingModuleService<
         ],
       }
     })
-    console.log("where - ", JSON.stringify(where, null, 2))
 
-    const prQb = manager
+    // Get all the prices rules that matches the count of pricing contexts
+    // and the attributes provided in the context
+    const psmqQb = manager
       .createQueryBuilder(PriceRule, "pr")
-      .select(["pr.id"], true)
+      .select(["pr.price_set_money_amount_id"], false)
       .leftJoin("pr.rule_type", "rt", {})
       .where(where)
-    // console.log("prQb - ", await prQb.execute("all", true))
-    const psmaQb = manager
-      .createQueryBuilder(PriceRule, "pr")
-      .select(["pr.price_set_money_amount_id"], true)
-      .leftJoin("pr.rule_type", "rt", {})
-      .where(where)
+      .groupBy(["pr.price_set_money_amount_id"])
+      .having(
+        `COUNT(pr.price_set_money_amount_id) = ${
+          Object.entries(context).length
+        }`
+      )
 
+    // Apply the build subqueries and join it with price set money amounts and price rules
+    // via the price set
     const qb = manager
       .createQueryBuilder(PriceSet, "ps")
       .select(["ps.id"], true)
       .where({ id: { $in: pricingFilters.id } })
       .leftJoin("ps.price_set_money_amounts", "psma", {})
-      .leftJoin("psma.money_amount", "ma", {
-        "psma.id": [psmaQb.getKnexQuery()],
+      .leftJoinAndSelect("psma.money_amount", "ma", {
+        "psma.id": [psmqQb.getKnexQuery()],
       })
-      .leftJoin("psma.price_rules", "pr", {
-        "pr.id": [prQb.getKnexQuery()],
-      })
-      .addSelect([
-        "ma.id as ma_id",
-        "psma.id as psma_id",
-        "pr.id as price_rule_id",
-      ])
-    // .addSelect("count(pr.id)")
-    // .groupBy(["id", "ma.id", "psma.id", "pr.id"])
 
+    // this is a missed implementation in mikroORM that mimics
+    // entity building and merging of duplicated rows.
     const joinedProps = (qb as any)._joinedProps
     const driver = (qb as any).driver
     const mainAlias = (qb as any).mainAlias
 
-    let queryBuilderResults = await qb.execute("all", true)
+    let queryBuilderResults = await qb.execute()
 
     if (joinedProps.size > 0) {
       queryBuilderResults = driver.mergeJoinedResult(
@@ -161,8 +156,6 @@ export default class PricingModuleService<
     }
 
     const priceSets = JSON.parse(JSON.stringify(queryBuilderResults))
-    console.log("priceSets - ", priceSets)
-    // console.log("priceSets - ", JSON.stringify(priceSets, null, 2))
 
     const calculatedPrices = priceSets.map(
       (priceSet): PricingTypes.CalculatedPriceSetDTO => {
