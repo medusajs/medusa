@@ -127,7 +127,7 @@ npm run build
 
 ---
 
-## Step 4: Run Migration
+## Step 3: Run Migration
 
 The last step is to run the migration with the command detailed earlier
 

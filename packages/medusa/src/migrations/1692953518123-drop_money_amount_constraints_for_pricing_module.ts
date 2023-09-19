@@ -35,7 +35,7 @@ export class dropMoneyAmountConstraintsForPricingModule1692953518123
         DROP INDEX IF EXISTS "idx_product_variant_money_amount_money_amount_id_unique";
         DROP INDEX IF EXISTS "idx_product_variant_money_amount_variant_id";
 
-        ALTER TABLE "product_variant_money_amount" ADD COLUMN IF NOT EXISTS "variant_id";
+        ALTER TABLE "money_amount" ADD COLUMN IF NOT EXISTS "variant_id" text;
 
         UPDATE "money_amount" SET "variant_id" = "product_variant_money_amount"."variant_id"
           FROM "product_variant_money_amount"
@@ -44,6 +44,7 @@ export class dropMoneyAmountConstraintsForPricingModule1692953518123
         DROP TABLE IF EXISTS "product_variant_money_amount";
 
         CREATE INDEX IF NOT EXISTS idx_product_variant_money_amount_id ON money_amount (variant_id);
+        ALTER TABLE "money_amount" ADD CONSTRAINT "FK_17a06d728e4cfbc5bd2ddb70af0" FOREIGN KEY ("variant_id") REFERENCES "product_variant"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
       `
     )
   }

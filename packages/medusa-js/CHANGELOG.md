@@ -1,5 +1,11 @@
 # Change Log
 
+## 6.0.4
+
+### Patch Changes
+
+- [#5074](https://github.com/medusajs/medusa/pull/5074) [`7d3572302`](https://github.com/medusajs/medusa/commit/7d35723023ed5bcfaf06ff2480e97508527e8665) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-react): fix `useAdminAddStoreCurrency` hook
+
 ## 6.0.3
 
 ### Patch Changes
