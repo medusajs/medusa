@@ -486,10 +486,14 @@ describe("LineItemService", () => {
       })
 
       const cartRepository = MockRepository({
-        findOne: () =>
-          Promise.resolve({
-            region_id: IdMap.getId("test-region"),
-          }),
+        findOne: ({ id }) =>
+          Promise.resolve(
+            !id
+              ? null
+              : {
+                  region_id: IdMap.getId("test-region"),
+                }
+          ),
       })
 
       const regionService = {
@@ -568,6 +572,27 @@ describe("LineItemService", () => {
 
       beforeEach(async () => {
         jest.clearAllMocks()
+      })
+
+      it("should not succeed to generate a line item if a variant id is not provided", async () => {
+        const err = await lineItemService
+          .generate(
+            [
+              {
+                variant_id: "",
+                quantity: 1,
+              },
+            ],
+            {
+              region_id: IdMap.getId("test-region"),
+            }
+          )
+          .catch((e) => e)
+
+        expect(err).toBeDefined()
+        expect(err.message).toEqual(
+          "Unable to generate some line items because variant id is missing. Please provide a variant id for each line item."
+        )
       })
 
       it("successfully create a line item with tax inclusive set to false", async () => {
