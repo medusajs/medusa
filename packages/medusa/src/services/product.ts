@@ -681,9 +681,10 @@ class ProductService extends TransactionBaseService {
             }
           })
 
-        if (originalProduct.thumbnail && !result.thumbnail) {
-          imagesToDelete.add(originalProduct.thumbnail)
+        if (result.thumbnail) {
+          imagesToDelete.delete(result.thumbnail)
         }
+
         await this.deleteProductImages(Array.from(imagesToDelete))
       }
 
