@@ -7,13 +7,13 @@ import Icons from '@theme/Icon';
 
 # Order Management System (OMS)
 
-This document guides you through the different features and resources available in Medusa to use it as an order management system (OMS).
+This document guides you through Medusa's different features and resources to use it as an order management system (OMS).
 
 ## Overview
 
-An order management system (OMS) is a system that provides features to track and manage orders and typically integrates with third-party services to handle payment, fulfillment, and more. Businesses use an OMS as part of a bigger commerce ecosystem that uses different services to achieve the business use case.
+When you build or integrate an OMS, you face certain challenges, such as accepting orders from different sales channels, tracking inventory across the sales channels, and integrating third-party fulfillment and payment providers with the OMS.
 
-Medusa can be used within a larger ecosystem as an OMS. Its modular architecture and commerce features make it easy for developers to integrate it with other services while utilizing powerful OMS features, including returns, exchanges, and order edits.
+Medusa provides the building blocks that allow you to integrate it as an OMS within a larger commerce ecosystem. Its commerce features and modular architecture allow businesses to accept orders from any sales channel, benefit from multi-warehouse inventory features, and integrate third-party services for fulfillment, payment, and more.
 
 :::tip
 
@@ -25,15 +25,17 @@ Recommended read: [How Siam Makro used Medusa an OMS](https://medusajs.com/blog/
 
 ## Source Orders into Medusa
 
-Since an OMS is part of a larger ecosystem, your orders will likely come from different sources or channels. All these channels must ultimately direct their order to the OMS. This can be done in different ways in Medusa depending on your use case.
+Orders from different sales channels in your commerce ecosystem must all route their orders into the OMS.
 
-The basic way would be to use the REST APIs to create an order in Medusa. You can use the [Store REST APIs](https://docs.medusajs.com/api/store#carts), which are useful if the order is placed directly by the customer such as through a storefront. Alternatively, you can use the [Draft Orders](https://docs.medusajs.com/api/admin#draft-orders) feature that allows you to create the order without customer interference. This method can be helpful if you’re creating the order through an automated script or from a channel managed by a store operator, such as a [POS](./pos.mdx).
+![Routing orders into Medusa OMS](https://res.cloudinary.com/dza7lstvk/image/upload/v1695115403/Medusa%20Docs/Diagrams/oms-orders_to4yaq.jpg)
 
-If your use case is more advanced or complex, you can create a custom endpoint that gives you more control over how you create the order. For example, you can create a custom endpoint that allows creating or inserting a batch of orders.
+Medusa's [Store REST APIs](https://docs.medusajs.com/api/store) let you integrate a checkout experience in any storefront. Alternatively, you can use Medusa's [Draft Order APIs](https://docs.medusajs.com/api/admin#draft-orders) to place an order without direct involvement from the customer, such as when placing an order through a POS.
 
-You can also create a Scheduled Job to import orders into Medusa from an external service or system at a defined interval.
+You can implement customizations in your backend if you accept orders through a third-party checkout system and need more flexibility over adding orders to Medusa.
 
-<DocCardList colSize={6} items={[
+You can add support for importing orders into Medusa through a custom endpoint that allows batch-inserting orders. Alternatively, you can create a scheduled job that runs at a specified interval and imports orders from an external service.
+
+<DocCardList colSize={4} items={[
   {
     type: 'link',
     href: 'https://docs.medusajs.com/api/store#carts',
@@ -41,15 +43,6 @@ You can also create a Scheduled Job to import orders into Medusa from an externa
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to use the Store REST APIs to create an order.',
-    }
-  },
-  {
-    type: 'link',
-    href: 'https://docs.medusajs.com/api/admin#draft-orders',
-    label: 'Draft Order APIs',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn about available Draft Order Admin REST APIs.',
     }
   },
   {
@@ -76,13 +69,13 @@ You can also create a Scheduled Job to import orders into Medusa from an externa
 
 ## Route Orders to Third-party Fulfillment Services
 
-In your ecosystem, you have different third-party services and tools that handle the fulfillment of orders. The OMS integrates with these services to ensure they’re used when fulfillment events occur.
+You can integrate third-party fulfillment providers with Medusa by creating a fulfillment service class or using a fulfillment plugin.
 
-With Medusa, you can integrate third-party fulfillment services either by creating a fulfillment provider or installing an existing fulfillment plugin. The fulfillment provider must implement different methods that are used when fulfillment actions are taken on the order.
+Medusa uses the fulfillment service whenever a fulfillment action is performed, such as when a fulfillment is created for items in an order. The service's methods interact with the third-party provider to handle the desired fulfillment actions.
 
-For example, when an admin creates a fulfillment on an order, the method defined in the fulfillment provider associated with the order is executed. In that method, you can create the necessary implementation that handles creating the fulfillment in the third-party service.
+![Fulfilling orders with Medusa OMS](https://res.cloudinary.com/dza7lstvk/image/upload/v1695115456/Medusa%20Docs/Diagrams/oms-fulfillment_kfi1iz.jpg)
 
-In addition, Medusa has an event bus that allows you to listen to events and perform an action asynchronously when that event is triggered. So, you can listen to fulfillment-related events, such as the `order.fulfillment_created` event, and handle that event in the subscribed method when it’s triggered.
+In addition, Medusa has an event bus that allows you to listen to events and perform a task asynchronously when that event is triggered. So, you can listen to fulfillment-related events, such as the `order.fulfillment_created` event, and handle that event in the subscribed handler method.
 
 <DocCardList colSize={6} items={[
   {
@@ -109,11 +102,9 @@ In addition, Medusa has an event bus that allows you to listen to events and per
 
 ## Process Payment with Third-Party Providers
 
-Similar to fulfillment services, you’ll also have payment providers that handle processing payments. Your OMS integrates with these providers to handle payment-related actions.
+Like fulfillment services, you can integrate third-party payment providers with Medusa by creating a payment processor or using payment plugins.
 
-Medusa allows you to integrate third-party payment providers by creating a payment processor. The payment processor must implement different methods that are used when the order’s payment is being processed, such as when it’s captured or refunded.
-
-Alternatively, you can use existing payment plugins. Medusa provides official payment plugins for [Stripe](../plugins/payment/stripe.mdx), [PayPal](../plugins/payment/paypal.md), and [Klarna](../plugins/payment/klarna.md).
+When a payment action occurs, such as capturing payment, Medusa uses the integrated payment provider to perform these actions. Medusa also emits payment-related events, such as `order.payment_captured`, that can be handled by a subscriber.
 
 <DocCardList colSize={6} items={[
   {
@@ -138,17 +129,51 @@ Alternatively, you can use existing payment plugins. Medusa provides official pa
 
 ---
 
+## Track Inventory Across Sales Channels
+
+Medusa's multi-warehouse and sales channel features allow merchants to track inventory levels tied to sales channels across stock locations. When an order is placed, the item's quantity is reserved from the stock location associated with the order's sales channel. Once the item is fulfilled, the reserved quantity is deducted from the item's inventory quantity.
+
+In addition, Medusa's inventory and stock location modules that power its multi-warehouse features can be replaced entirely with a custom implementation. You can then take control of how inventory functionalities are implemented in Medusa.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/modules/multiwarehouse/overview',
+    label: 'Multi-warehouse',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Multi-warehouse architecture and features.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/sales-channels/overview',
+    label: 'Sales Channels',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the Sales Channel architecture and features.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/plugins/create',
+    label: 'Create a Plugin',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a plugin that can be installed in a Medusa backend.',
+    }
+  },
+]} />
+
+---
+
 ## Handle Returns, Exchanges, and Edits
 
-Medusa provides advanced order features that make it an ideal OMS choice and allow you to provide a great customer experience.
+In Medusa, items in an order can be returned or exchanged; they can be created by the merchant or requested by the customer. A merchant can also edit an order to add, update, or delete items.
 
-Items in an order can be returned or exchanged. The return or exchange can either be requested by the customer or created by an admin. Once created, they reflect changes in the order’s total and inventory and allow the admin to issue a refund to the customer as well if necessary. In the case of exchanges, the fulfillment provider will be used to fulfill the new item sent to the customer.
+When changes are made to an order by any of the mentioned actions, the changes are reflected on the order's totals and associated inventory. The integrated fulfillment and payment providers are used if fulfillment or payment actions are required, such as fulfilling exchanged items.
 
-Orders can also be edited to add, update, or delete items in an order. Additional payment can be authorized, or a refund can be issued, if necessary. Once an order edit is confirmed, the changes are reflected on the order’s totals and inventory.
-
-These features can be used through the [Admin](https://docs.medusajs.com/api/admin) and [Store REST APIs](https://docs.medusajs.com/api/store). You can also perform these actions in your custom endpoints or services using the [core services](../references/services/index.md) and their methods.
-
-Once these actions occur, events, such as `order.return_requested` are triggered by Medusa’s event bus. So, you can listen to different events to perform asynchronous actions, for example, to communicate with third-party services or tools.
+Medusa also emits events related to these actions, such as `order.return_requested`. So, you can listen to these events and perform asynchronous actions, such as communicating with third-party services.
 
 <DocCardList colSize={6} items={[
   {
@@ -185,50 +210,6 @@ Once these actions occur, events, such as `order.return_requested` are triggered
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Check out triggered events in Medusa and their payloads.',
-    }
-  },
-]} />
-
----
-
-## Track Inventory Across Sales Channels
-
-An OMS typically connects to more than one sales channel, such as one or more storefronts and a POS. It’s important to keep track of your inventory across these sales channels.
-
-Medusa’s multi-warehouse and sales channel features allow you to track inventory levels across different stock locations, which are tied to sales channels. When an order is placed, an item in a stock location, based on the order’s sales channel, is reserved. Once the item is fulfilled, the reserved quantity is deducted from the item’s inventory quantity.
-
-The inventory is also changed when an item is returned, exchanged, or when an order is edited.
-
-Medusa’s inventory and stock location modules that power its multi-warehouse features can also be completely replaced with a custom implementation. This allows you to take control of how inventory functionalities are implemented in Medusa.
-
-In addition, you can integrate third-party inventory systems by creating or installing a plugin. Medusa provides an official [Brightpearl](https://github.com/medusajs/medusa/tree/develop/packages/medusa-plugin-brightpearl) plugin that syncs orders and inventory with Brightpearl.
-
-<DocCardList colSize={4} items={[
-  {
-    type: 'link',
-    href: '/modules/multiwarehouse/overview',
-    label: 'Multi-warehouse',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn about the Multi-warehouse architecture and features.',
-    }
-  },
-  {
-    type: 'link',
-    href: '/modules/sales-channels/overview',
-    label: 'Sales Channels',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn about the Sales Channel architecture and features.',
-    }
-  },
-  {
-    type: 'link',
-    href: '/development/plugins/create',
-    label: 'Create a Plugin',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn how to create a plugin that can be installed in a Medusa backend.',
     }
   },
 ]} />

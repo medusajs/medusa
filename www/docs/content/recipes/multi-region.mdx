@@ -7,31 +7,31 @@ import Icons from '@theme/Icon';
 
 # Multi-Regional Store
 
-This document guides you through the different features and resources available in Medusa to create a multi-regional store.
+This document guides you through Medusa's different features and resources to create a multi-regional store.
 
 ## Overview
 
-A multi-regional store allows merchants to sell across different countries. This includes supporting each country’s tax rules, currency, available shipping and payment options, and more.
+A multi-regional store allows merchants to sell across different countries. This includes supporting each country's tax rules, currency, available shipping and payment options, and more.
 
-Medusa provides the necessary features to create a multi-regional store out of the box. This recipe explains how you can benefit from Medusa’s features to create a multi-regional store.
+Medusa comes with multi-regional support out of the box. This recipe explains how you can benefit from Medusa's features to create a multi-regional store.
 
 ---
 
 ## Multi-Region Setup
 
-With Medusa, you can create an unlimited number of regions in your store. Each region can have its own configurations. These configurations can be managed either through the Medusa admin or the Admin REST APIs.
+With Medusa, you can create unlimited regions in your store. Each region has configurations managed through the Medusa Admin Dashboard or the Admin API.
 
 ### Currency
 
 Merchants can specify the currency of each region. Multiple regions can have the same currency, but a region can have only one currency.
 
-This affects what currency are prices shown to the customer in a region. As explained later, this also affects what prices are shown to the customer as well in a region.
+When customers view your products from a region, they see the prices in the region’s currency. As explained later, this also affects which prices are shown to the customer in a region.
 
 ### Tax rates and providers
 
-Merchants can define for each region a default tax rate and tax rates for specific conditions (for example, for a specific set of products). Each region can also have a different tax provider that calculates the taxes. You can use Medusa’s default tax provider, or create your own tax provider.
+At the regional level, merchants can define a default tax rate and tax rates for specific conditions (for example, for a particular set of products). Each region can also have a different tax provider that calculates the taxes. You can use Medusa's default tax provider or create a custom tax provider.
 
-During checkout, the taxes are calculated based on the customer’s region and its taxes configurations and rates.
+During checkout, the taxes are calculated based on the customer's region, tax configurations, and rates.
 
 <DocCardList colSize={4} items={[
   {
@@ -65,11 +65,11 @@ During checkout, the taxes are calculated based on the customer’s region and i
 
 ### Payment and Fulfillment Providers
 
-Merchants can choose which payment and fulfillment providers are available in which regions. For example, a region may have Stripe enabled as a payment provider, while another may have PayPal enabled instead.
+Merchants can choose which payment and fulfillment providers are available in each region. For example, one region can use Payment Provider A and B while another only uses Payment Provider B.
 
-This affects what payment and shipping methods are shown to the customer during checkout. Customers can only use the methods enabled in their region.
+Customers will only be shown the payment providers and shipping options configured for the region during checkout. This lets you give customers a localized experience that feels familiar and instills trust.
 
-Medusa provides official plugins for payment and fulfillment providers. You can also create your own providers.
+Medusa provides official plugins for payment and fulfillment providers. You can also create custom providers.
 
 <DocCardList colSize={6} items={[
   {
@@ -114,11 +114,11 @@ Medusa provides official plugins for payment and fulfillment providers. You can 
 
 ## Prices Per Region and Currency
 
-When a merchant sets the price of a product in Medusa, they can specify the price per currency and per region. Merchants can also benefit from this pricing mechanism when adding sales or overriding prices for specific conditions using the [Price Lists feature](../modules/price-lists/overview.mdx).
+When a merchant sets the price of a product in Medusa, they can specify the price per currency and region. Merchants can also benefit from this pricing mechanism when adding sales or overriding prices for specific conditions using the [Price Lists feature](../modules/price-lists/overview.mdx).
 
-Then, customers see the price of a product based on the region they’re in and the region’s currency, and whether any special pricing applies to their case. Medusa has a pricing strategy (which you can override) to show the customer the best price based on their context.
+Then, customers see the price of a product based on the region they're in and the region's currency and whether any special pricing applies to their case. Medusa has a pricing strategy (which you can override) to show the customer the best price based on their context.
 
-Using the [tax-inclusive beta feature](../beta.md#tax-inclusive-pricing), merchants can also specify prices that include taxes per currency and region. Medusa then takes care of calculating the tax amount applied to a line item in the cart based on the region’s tax configurations.
+Using the [tax-inclusive beta feature](../beta.md#tax-inclusive-pricing), merchants can specify prices, including taxes per currency and region. Medusa then calculates the tax amount applied to a line item in the cart based on the region's tax configurations.
 
 <DocCardList colSize={6} items={[
   {
@@ -143,55 +143,11 @@ Using the [tax-inclusive beta feature](../beta.md#tax-inclusive-pricing), mercha
 
 ---
 
-## Product Availability Per Region
-
-In a multi-regional setup, you may have products that should only be available in certain regions. Using the Sales Channels feature, you can control the availability of products within different channels.
-
-Sales channels aren’t directly associated with regions by default, but you can create a custom relation between the `SalesChannel` entity and the `Region` entity. Alternatively, you can utilize the `metadata` attribute of each entity, which is an attribute that can be used to add custom data, to set the ID of the associated sales channel or region for each entity.
-
-Then, when a customer is viewing the products from a region, only the products available in the region’s associated sales channel are retrieved and shown to the customer.
-
-This also allows you to create or deploy different storefronts for different regions, if necessary. Each storefront only shows the products available in a region and its sales channel.
-
-It should also be noted that a cart is associated with a region and a sales channel. So, customers can only buy a product if it belongs to the same sales channel as the cart.
-
-<DocCardList colSize={4} items={[
-  {
-    type: 'link',
-    href: '/modules/sales-channels/overview',
-    label: 'Sales Channels Overview',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn about the sales channel feature in Medusa.',
-    }
-  },
-  {
-    type: 'link',
-    href: '/development/entities/extend-entity',
-    label: 'Extend Entities',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn how to extend entities in the Medusa backend.',
-    }
-  },
-  {
-    type: 'link',
-    href: '/modules/sales-channels/storefront/use-sales-channels',
-    label: 'Show Products by Sales Channel',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn how to show products by a sales channel in the storefront.',
-    }
-  },
-]} />
-
----
-
 ## Multi-Warehouse Support
 
-Medusa provides Multi-warehouse features that allow you to manage your inventory across different locations. Merchants can then control which location an item in an order is fulfilled from, allowing them to keep a correct inventory count across locations and selling channels.
+Medusa provides Multi-warehouse features that allow you to manage your inventory across different locations. Merchants can then control which location an item in an order is fulfilled, allowing them to keep a correct inventory count across locations and sales channels.
 
-In a multi-regional setup, this can allow you to manage your inventory through Medusa across the different regions you serve. Your products’ inventory and availability aren’t bound to a single stock location, and customers are always shown accurate inventory information based on the location associated with their sales channel.
+A multi-regional setup lets you manage your inventory through Medusa across the different regions you serve. Your products’ inventory and availability aren't bound to a single stock location, and customers are always shown accurate inventory information based on the location associated with their sales channel.
 
 <DocCardList colSize={4} items={[
   {
@@ -227,9 +183,9 @@ In a multi-regional setup, this can allow you to manage your inventory through M
 
 ## Multi-Lingual Setup with Third-Party CMS
 
-Medusa can be integrated with any third-party services, including Content Management Systems (CMS). With a third-party CMS, you can benefit from rich CMS features, including managing your content in multiple languages. This allows you to cater to customers’ different languages in the regions you serve.
+Medusa can be integrated with third-party services, including Content Management Systems (CMS). You can benefit from rich CMS features with a third-party CMS, including managing your content in multiple languages. This allows you to cater to customers’ different languages in the regions you serve.
 
-Medusa provides an official Contentful plugin and a community Strapi plugin. You can also create your own CMS plugin that integrates with your preferred CMS platform to provide multi-lingual features.
+Medusa provides an official Contentful plugin and a community Strapi plugin. You can also create a CMS plugin that integrates with your preferred CMS platform to provide multi-lingual features.
 
 <DocCardList colSize={6} items={[
   {
@@ -256,9 +212,9 @@ Medusa provides an official Contentful plugin and a community Strapi plugin. You
 
 ## Automatic Location Detection
 
-When you sell across regions, it’s important to be able to detect the customer’s region and provide them with the products, prices, and content relevant to them without requiring actions from their side.
+When you sell across regions, it's essential to be able to detect the customer's region and provide them with the products, prices, and content relevant to them without requiring actions from their side.
 
-Medusa provides an IP Lookup plugin that allows you to detect a customer’s location and, ultimately, their region using [ipstack](https://ipstack.com/). You can also create a plugin that detects the location through a different logic.
+Medusa provides an IP Lookup plugin that lets you detect a customer's location and, ultimately, their region using [ipstack](https://ipstack.com/). You can also create a plugin that detects the location through a different logic.
 
 <DocCardList colSize={6} items={[
   {
