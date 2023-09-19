@@ -1,5 +1,11 @@
 # @medusajs/modules-sdk
 
+## 1.11.1
+
+### Patch Changes
+
+- [#5114](https://github.com/medusajs/medusa/pull/5114) [`1e5a6d435`](https://github.com/medusajs/medusa/commit/1e5a6d4359135b82bb34f1dff184b508810443ac) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Fix default module path
+
 ## 1.11.0
 
 ### Minor Changes
