@@ -1,4 +1,4 @@
-import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
+import { defaultStoreCustomersFields, defaultStoreCustomersRelations, allowedStoreCustomersRelations } from "."
 import { FindParams } from "../../../../types/common"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
@@ -60,7 +60,9 @@ export default async (req, res) => {
 
   let expandFields: string[] = []
   if (validated.expand) {
-    expandFields = validated.expand.split(",")
+    expandFields = validated.expand.split(",").filter((f) =>
+      allowedStoreCustomersRelations.includes(f)
+    )
   }
 
   const findConfig = {
