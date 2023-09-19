@@ -16,10 +16,14 @@ export const supportedLanguages = [
     locale: "pt",
     name: "Português (Brasil)",
   },
+  {
+    locale: "ru",
+    name: "Русский",
+  },
 ]
 
 const backendUrl = window.location.origin
-const adminPath = process.env.ADMIN_PATH ? `${process.env.ADMIN_PATH}/` : "/"
+const adminPath = process.env.ADMIN_PATH ? `${process.env.ADMIN_PATH}` : "/"
 
 const pathToLoadFrom = `${backendUrl}${adminPath}public/locales/{{lng}}/{{ns}}.json`
 
