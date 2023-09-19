@@ -46,7 +46,7 @@ export function toRemoteJoinerQuery(obj: any): RemoteJoinerQuery {
           remoteJoinerQuery.expands!.push(expandObj)
         }
 
-        extractRecursive(value, !isEntryPoint ? entityName : "", false)
+        extractRecursive(value, isEntryPoint ? "" : entityName, false)
       }
     }
 
