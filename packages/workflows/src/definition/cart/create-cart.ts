@@ -17,6 +17,7 @@ import { exportWorkflow, pipe } from "../../helper"
 
 enum CreateCartActions {
   setContext = "setContext",
+  prepareLineItems = "prepareLineItems",
   attachLineItems = "attachLineItems",
   findRegion = "findRegion",
   findSalesChannel = "findSalesChannel",
@@ -168,17 +169,36 @@ const handlers = new Map([
     },
   ],
   [
+    CreateCartActions.prepareLineItems,
+    {
+      invoke: pipe(
+        {
+          invoke: [
+            getWorkflowInput(CartHandlers.prepareLineItems.aliases.items)
+              .invoke,
+            {
+              from: CreateCartActions.createCart,
+              alias: CartHandlers.prepareLineItems.aliases.cart,
+            },
+          ],
+        },
+        CartHandlers.prepareLineItems
+      ),
+    },
+  ],
+  [
     CreateCartActions.attachLineItems,
     {
       invoke: pipe(
         {
           invoke: [
-            getWorkflowInput(
-              CartHandlers.attachLineItemsToCart.aliases.LineItems
-            ).invoke,
             {
               from: CreateCartActions.createCart,
               alias: CartHandlers.attachLineItemsToCart.aliases.Cart,
+            },
+            {
+              from: CreateCartActions.prepareLineItems,
+              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
             },
           ],
         },

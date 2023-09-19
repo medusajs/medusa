@@ -4,9 +4,7 @@ import { SalesChannelFeatureFlag } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInputData = {
-  line_items: {
-    items?: CartWorkflow.CreateLineItemInputDTO[]
-  }
+  line_items: CartWorkflow.CreateLineItemInputDTO[] // TODO: LineItemDTO
   cart: {
     id: string
     customer_id: string
@@ -27,25 +25,13 @@ export async function attachLineItemsToCart({
   const { manager } = context
 
   const featureFlagRouter = container.resolve("featureFlagRouter")
-  const lineItemService = container.resolve("lineItemService")
   const cartService = container.resolve("cartService")
 
-  const lineItemServiceTx = lineItemService.withTransaction(manager)
   const cartServiceTx = cartService.withTransaction(manager)
-  let lineItems = data[Aliases.LineItems].items
+  let lineItems = data[Aliases.LineItems]
   const cart = data[Aliases.Cart]
 
   if (lineItems?.length) {
-    const generateInputData = lineItems.map((item) => ({
-      variantId: item.variant_id,
-      quantity: item.quantity,
-    }))
-
-    lineItems = await lineItemServiceTx.generate(generateInputData, {
-      region_id: cart.region_id,
-      customer_id: cart.customer_id,
-    })
-
     await cartServiceTx.addOrUpdateLineItems(cart.id, lineItems, {
       validateSalesChannels: featureFlagRouter.isFeatureEnabled(
         SalesChannelFeatureFlag.key
