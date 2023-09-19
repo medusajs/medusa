@@ -123,7 +123,6 @@ export default async (req, res) => {
           {
             metadata: validated.metadata,
             unit_price: validated.unit_price,
-            should_merge: validated.should_merge,
           }
         )
 
@@ -203,8 +202,4 @@ export class AdminPostDraftOrdersDraftOrderLineItemsReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown> = {}
-
-  @IsBoolean()
-  @IsOptional()
-  should_merge?: boolean
 }

@@ -1056,13 +1056,11 @@ describe("/store/carts", () => {
 
       const lineItemId = createResponse.data.cart.items.find(
         (i) => i.variant_id === "test-variant-sale-cg"
-      )
-
-      console.log(lineItemId)
+      ).id
 
       const response = await api
         .post(
-          `/store/carts/test-cart/line-items/${lineItemId.id}`,
+          `/store/carts/test-cart/line-items/${lineItemId}`,
           {
             quantity: 5,
           },
@@ -1085,6 +1083,65 @@ describe("/store/carts", () => {
           }),
         ])
       )
+    })
+
+    it("creates line item with should_merge false and duplicates line items when updating", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        id: "pl_current",
+        prices: [
+          {
+            variant_id: "test-variant-sale-cg",
+            amount: 10,
+            min_quantity: 5,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const createResponse = await api
+        .post(
+          "/store/carts/test-cart/line-items/",
+          {
+            quantity: 1,
+            variant_id: "test-variant-sale-cg",
+            should_merge: false,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(createResponse.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 500,
+            variant_id: "test-variant-sale-cg",
+            quantity: 1,
+          }),
+        ])
+      )
+
+      const lineItemId = createResponse.data.cart.items.find(
+        (i) => i.variant_id === "test-variant-sale-cg"
+      ).id
+
+      const response = await api
+        .post(
+          `/store/carts/test-cart/line-items/${lineItemId}`,
+          {
+            quantity: 5,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      const lineItemIdCount = response.data.cart.items.filter(
+        (i) => i.variant_id === "test-variant-sale-cg"
+      )
+
+      expect(lineItemIdCount.length).toEqual(2)
     })
   })
 

@@ -334,7 +334,7 @@ class LineItemService extends TransactionBaseService {
   ): Promise<LineItem> {
     let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
     let unitPriceIncludesTax = false
-    let shouldMerge = context.should_merge ?? false
+    let shouldMerge = false
 
     if (context.unit_price == null) {
       shouldMerge = true
@@ -343,6 +343,8 @@ class LineItemService extends TransactionBaseService {
         !!context.variantPricing?.calculated_price_includes_tax
       unit_price = context.variantPricing?.calculated_price ?? undefined
     }
+
+    shouldMerge = context.should_merge ?? shouldMerge
 
     if (unit_price == null) {
       throw new MedusaError(
