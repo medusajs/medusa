@@ -4,6 +4,7 @@ import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-steps"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
@@ -85,16 +86,19 @@ export default async (req, res) => {
         )
       }
 
-      const lineItemUpdate = {
-        variant_id: existing.variant.id,
-        region_id: cart.region_id,
-        quantity: validated.quantity,
-        metadata: validated.metadata || {},
-      }
-
-      await cartService
-        .withTransaction(m)
-        .updateLineItem(id, line_id, lineItemUpdate)
+      await handleAddOrUpdateLineItem(
+        id,
+        {
+          customer_id: cart.customer_id,
+          metadata: validated.metadata,
+          quantity: validated.quantity,
+          variant_id: existing.variant_id!,
+        },
+        {
+          manager: m,
+          container: req.scope,
+        }
+      )
     }
 
     // If the cart has payment sessions update these

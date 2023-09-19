@@ -22,6 +22,7 @@ const {
   simpleShippingOptionFactory,
   simpleLineItemFactory,
   simpleSalesChannelFactory,
+  simplePriceListFactory,
 } = require("../../../../factories")
 const {
   simpleDiscountFactory,
@@ -974,6 +975,43 @@ describe("/store/carts", () => {
                 description: "discount",
               }),
             ],
+          }),
+        ])
+      )
+    })
+
+    it("updates line item quantity with unit price reflected", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        id: "pl_current",
+        prices: [
+          {
+            variant_id: "test-variant-sale-cg",
+            amount: 10,
+            min_quantity: 5,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-3/line-items/test-item3/",
+          {
+            quantity: 5,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-3",
+            unit_price: 10,
+            variant_id: "test-variant-sale-cg",
+            quantity: 5,
           }),
         ])
       )
