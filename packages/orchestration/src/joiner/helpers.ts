@@ -16,7 +16,10 @@ export function toRemoteJoinerQuery(obj: any): RemoteJoinerQuery {
         !["fields", "__args", "__directives"].includes(key)
 
       if (canExpand) {
-        const entityName = parentName ? `${parentName}.${key}` : key
+        const entityName =
+          parentName && parentName !== remoteJoinerQuery.alias
+            ? `${parentName}.${key}`
+            : key
         const expandObj: any = {
           property: entityName,
         }
