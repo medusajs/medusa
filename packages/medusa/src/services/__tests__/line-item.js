@@ -4,6 +4,9 @@ import LineItemService from "../line-item"
 import { PricingServiceMock } from "../__mocks__/pricing"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
+
+const unknownVariantId = "unknown-variant"
+
 ;[true, false].forEach((isTaxInclusiveEnabled) => {
   describe(`tax inclusive flag set to: ${isTaxInclusiveEnabled}`, () => {
     describe("LineItemService", () => {
@@ -480,6 +483,7 @@ describe("LineItemService", () => {
         })
       })
     })
+
     describe("generate", () => {
       const lineItemRepository = MockRepository({
         create: (data) => data,
@@ -525,16 +529,22 @@ describe("LineItemService", () => {
         },
         getRegionPrice: () => 100,
         list: jest.fn().mockImplementation(async (selector) => {
-          return (selector.id || []).map((id) => {
-            return {
-              id,
-              title: "Test variant",
-              product: {
-                title: "Test product",
-                thumbnail: "",
-              },
-            }
-          })
+          return (selector.id || [])
+            .map((id) => {
+              if (id === unknownVariantId) {
+                return null
+              }
+
+              return {
+                id,
+                title: "Test variant",
+                product: {
+                  title: "Test product",
+                  thumbnail: "",
+                },
+              }
+            })
+            .filter(Boolean)
         }),
       }
 
@@ -579,7 +589,7 @@ describe("LineItemService", () => {
           .generate(
             [
               {
-                variant_id: "",
+                variantId: "",
                 quantity: 1,
               },
             ],
@@ -591,7 +601,28 @@ describe("LineItemService", () => {
 
         expect(err).toBeDefined()
         expect(err.message).toEqual(
-          "Unable to generate some line items because variant id is missing. Please provide a variant id for each line item."
+          "Unable to generate some line items because variant id is missing. Please provide a variant id for each line item"
+        )
+      })
+
+      it("should not succeed to generate a line item if a variant id is not found", async () => {
+        const err = await lineItemService
+          .generate(
+            [
+              {
+                variantId: unknownVariantId,
+                quantity: 1,
+              },
+            ],
+            {
+              region_id: IdMap.getId("test-region"),
+            }
+          )
+          .catch((e) => e)
+
+        expect(err).toBeDefined()
+        expect(err.message).toEqual(
+          "Unable to generate the line items, some variant has not been found: unknown-variant"
         )
       })
 

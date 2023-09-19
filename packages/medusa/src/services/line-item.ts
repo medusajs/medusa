@@ -210,6 +210,7 @@ class LineItemService extends TransactionBaseService {
           quantity
         )
 
+        // Resolve data
         const data = isString(variantIdOrData)
           ? {
               variantId: variantIdOrData,
@@ -235,6 +236,7 @@ class LineItemService extends TransactionBaseService {
           resolvedData.map((d) => [d.variantId, d])
         )
 
+        // Retrieve variants
         const variants = await this.productVariantService_.list(
           {
             id: resolvedData.map((d) => d.variantId),
@@ -244,6 +246,23 @@ class LineItemService extends TransactionBaseService {
           }
         )
 
+        // Validate that all variants has been found
+        const inputDataVariantId = new Set(resolvedData.map((d) => d.variantId))
+        const foundVariants = new Set(variants.map((v) => v.id))
+        const notFoundVariants = new Set(
+          [...inputDataVariantId].filter((x) => !foundVariants.has(x))
+        )
+
+        if (notFoundVariants.size) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Unable to generate the line items, some variant has not been found: ${[
+              ...notFoundVariants,
+            ].join(", ")}`
+          )
+        }
+
+        // Prepare data to retrieve variant pricing
         const variantsMap = new Map<string, ProductVariant>()
         const variantsToCalculatePricingFor: {
           variantId: string
@@ -277,6 +296,7 @@ class LineItemService extends TransactionBaseService {
             })
         }
 
+        // Generate line items
         const generatedItems: LineItem[] = []
 
         for (const variantData of resolvedData) {
@@ -605,14 +625,14 @@ class LineItemService extends TransactionBaseService {
       if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
-          "The generate method has been called with a variant id but one of the argument quantity or regionId is missing. Please, provide the variantId, quantity and regionId."
+          "The generate method has been called with a variant id but one of the argument quantity or regionId is missing. Please, provide the variantId, quantity and regionId"
         )
       }
 
       if (!variantIdOrData) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "Unbable to generate the line item because it is missing a variant id. Please provide a variant id for the line item."
+          "Unbable to generate the line item because it is missing a variant id. Please provide a variant id for the line item"
         )
       }
     } else {
@@ -621,7 +641,7 @@ class LineItemService extends TransactionBaseService {
       if (!resolvedContext?.region_id) {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
-          "The generate method has been called with the data but the context is missing either region_id or region. Please provide at least one of region or region_id."
+          "The generate method has been called with the data but the context is missing either region_id or region. Please provide at least one of region or region_id"
         )
       }
 
@@ -634,7 +654,7 @@ class LineItemService extends TransactionBaseService {
       if (hasMissingVariantId) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          "Unable to generate some line items because variant id is missing. Please provide a variant id for each line item."
+          "Unable to generate some line items because variant id is missing. Please provide a variant id for each line item"
         )
       }
     }
