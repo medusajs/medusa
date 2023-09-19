@@ -292,6 +292,7 @@ class LineItemService extends TransactionBaseService {
               ...resolvedContext,
               unit_price: variantData.unit_price ?? resolvedContext.unit_price,
               metadata: variantData.metadata ?? resolvedContext.metadata,
+              should_merge: resolvedContext.should_merge,
               variantPricing,
             }
           )
@@ -333,7 +334,7 @@ class LineItemService extends TransactionBaseService {
   ): Promise<LineItem> {
     let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
     let unitPriceIncludesTax = false
-    let shouldMerge = false
+    let shouldMerge = context.should_merge ?? false
 
     if (context.unit_price == null) {
       shouldMerge = true

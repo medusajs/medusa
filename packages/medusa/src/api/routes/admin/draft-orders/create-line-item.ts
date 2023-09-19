@@ -1,4 +1,10 @@
-import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  IsBoolean,
+  IsInt,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
@@ -114,7 +120,11 @@ export default async (req, res) => {
           validated.variant_id,
           draftOrder.cart.region_id,
           validated.quantity,
-          { metadata: validated.metadata, unit_price: validated.unit_price }
+          {
+            metadata: validated.metadata,
+            unit_price: validated.unit_price,
+            should_merge: validated.should_merge,
+          }
         )
 
       await cartService
@@ -193,4 +203,8 @@ export class AdminPostDraftOrdersDraftOrderLineItemsReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown> = {}
+
+  @IsBoolean()
+  @IsOptional()
+  should_merge?: boolean
 }
