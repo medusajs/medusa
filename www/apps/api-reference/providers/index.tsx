@@ -5,11 +5,11 @@ import {
   ColorModeProvider,
   MobileProvider,
   ModalProvider,
+  NavbarProvider,
   PageLoadingProvider,
 } from "docs-ui"
 import BaseSpecsProvider from "./base-specs"
 import SidebarProvider from "./sidebar"
-import NavbarProvider from "./navbar"
 import { ScrollControllerProvider } from "../hooks/scroll-utils"
 import SearchProvider from "./search"
 

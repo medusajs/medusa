@@ -26,11 +26,11 @@ export const NotificationItemLayoutDefault: React.FC<
 }) => {
   return (
     <>
-      <div className={clsx("flex gap-1 p-1")}>
+      <div className={clsx("flex gap-docs_1 p-docs_1")}>
         {type !== "none" && (
           <div
             className={clsx(
-              type !== "custom" && "w-2 flex justify-center items-center"
+              type !== "custom" && "w-docs_2 flex justify-center items-center"
             )}
           >
             {type === "info" && (
@@ -60,12 +60,12 @@ export const NotificationItemLayoutDefault: React.FC<
       {(text || children) && (
         <div
           className={clsx(
-            "flex pt-0 pr-1 pb-1.5 pl-1 gap-1",
+            "flex pt-0 pr-docs_1 pb-docs_1.5 pl-docs_1 gap-docs_1",
             "border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark"
           )}
         >
-          <div className="w-2 flex-none"></div>
-          <div className={clsx("flex flex-col", children && "gap-1")}>
+          <div className="w-docs_2 flex-none"></div>
+          <div className={clsx("flex flex-col", children && "gap-docs_1")}>
             {text && (
               <span
                 className={clsx(
@@ -80,7 +80,7 @@ export const NotificationItemLayoutDefault: React.FC<
         </div>
       )}
       {isClosable && (
-        <div className={clsx("p-1 flex justify-end items-center")}>
+        <div className={clsx("p-docs_1 flex justify-end items-center")}>
           <Button onClick={handleClose}>Close</Button>
         </div>
       )}

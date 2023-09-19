@@ -13,7 +13,7 @@ import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
 import getSectionId from "@/utils/get-section-id"
 import { ExpandedDocument } from "@/types/openapi"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
-import { useNavbar } from "@/providers/navbar"
+import { useNavbar } from "docs-ui"
 
 const TagSection = dynamic<TagSectionProps>(
   async () => import("./Section")

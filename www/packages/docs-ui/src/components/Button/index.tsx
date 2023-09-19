@@ -25,7 +25,7 @@ export const Button = ({
   const variantClasses = {
     primary: [
       "inline-flex flex-row justify-center items-center",
-      "py-[5px] px-0.75 rounded-sm cursor-pointer",
+      "py-[5px] px-docs_0.75 rounded-docs_sm cursor-pointer",
       "bg-button-inverted bg-medusa-button-inverted dark:bg-button-inverted-dark dark:bg-medusa-button-inverted-dark",
       "hover:bg-medusa-button-inverted-hover hover:bg-no-image dark:hover:bg-medusa-button-inverted-hover-dark hover:no-underline",
       "active:bg-medusa-button-inverted-pressed active:bg-no-image dark:active:bg-medusa-button-inverted-pressed-dark",
@@ -43,7 +43,7 @@ export const Button = ({
     ],
     secondary: [
       "inline-flex flex-row justify-center items-center",
-      "py-[5px] px-0.75 rounded-sm cursor-pointer",
+      "py-[5px] px-docs_0.75 rounded-docs_sm cursor-pointer",
       "bg-button-neutral bg-medusa-button-neutral dark:bg-button-neutral-dark dark:bg-medusa-button-neutral-dark",
       "hover:bg-medusa-button-neutral-hover hover:bg-no-image dark:hover:bg-medusa-button-neutral-hover-dark hover:no-underline",
       "active:bg-medusa-button-neutral-pressed active:bg-no-image dark:active:bg-medusa-button-neutral-pressed-dark",
@@ -66,7 +66,7 @@ export const Button = ({
         variant === "primary" && variantClasses.primary,
         variant === "secondary" && variantClasses.secondary,
         variant === "clear" && variantClasses.clear,
-        buttonType === "icon" && "!px-0.25",
+        buttonType === "icon" && "!px-docs_0.25",
         className
       )}
       ref={buttonRef}

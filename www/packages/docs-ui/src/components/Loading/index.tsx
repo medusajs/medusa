@@ -18,7 +18,7 @@ export const Loading = ({
       bars.push(
         <span
           className={clsx(
-            "bg-medusa-bg-subtle-pressed dark:bg-medusa-bg-subtle-pressed-dark h-1 w-full rounded-full",
+            "bg-medusa-bg-subtle-pressed dark:bg-medusa-bg-subtle-pressed-dark h-docs_1 w-full rounded-full",
             barClassName
           )}
           key={i}
@@ -32,7 +32,7 @@ export const Loading = ({
     <span
       role="status"
       className={clsx(
-        "my-1 flex w-full animate-pulse flex-col gap-1",
+        "my-docs_1 flex w-full animate-pulse flex-col gap-docs_1",
         className
       )}
     >

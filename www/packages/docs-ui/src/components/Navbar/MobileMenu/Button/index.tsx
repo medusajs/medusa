@@ -1,23 +1,28 @@
 "use client"
 
-import NavbarIconButton, { NavbarIconButtonProps } from "../IconButton"
-import { useSidebar } from "@/providers/sidebar"
+import React from "react"
+import { NavbarIconButton, NavbarIconButtonProps } from "../../IconButton"
 import clsx from "clsx"
-import { usePageLoading } from "docs-ui"
+import { usePageLoading } from "@/providers"
 import { Sidebar, XMark } from "@medusajs/icons"
 
-type NavbarMenuButtonProps = {
+export type NavbarMobileMenuButtonProps = {
   buttonProps?: NavbarIconButtonProps
+  mobileSidebarOpen: boolean
+  setMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const NavbarMenuButton = ({ buttonProps }: NavbarMenuButtonProps) => {
-  const { setMobileSidebarOpen, mobileSidebarOpen } = useSidebar()
+export const NavbarMobileMenuButton = ({
+  buttonProps,
+  mobileSidebarOpen,
+  setMobileSidebarOpen,
+}: NavbarMobileMenuButtonProps) => {
   const { isLoading } = usePageLoading()
 
   return (
     <NavbarIconButton
       {...buttonProps}
-      className={clsx("mr-1 lg:!hidden", buttonProps?.className)}
+      className={clsx("mr-docs_1 lg:!hidden", buttonProps?.className)}
       onClick={() => {
         if (!isLoading) {
           setMobileSidebarOpen((prevValue) => !prevValue)
@@ -29,5 +34,3 @@ const NavbarMenuButton = ({ buttonProps }: NavbarMenuButtonProps) => {
     </NavbarIconButton>
   )
 }
-
-export default NavbarMenuButton

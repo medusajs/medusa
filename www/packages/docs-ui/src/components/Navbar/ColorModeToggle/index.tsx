@@ -1,8 +1,9 @@
 "use client"
 
+import React from "react"
 import { IconProps } from "@medusajs/icons/dist/types"
-import NavbarIconButton, { NavbarIconButtonProps } from "../IconButton"
-import { useColorMode } from "docs-ui"
+import { NavbarIconButton, NavbarIconButtonProps } from "../IconButton"
+import { useColorMode } from "@/providers"
 import dynamic from "next/dynamic"
 
 const IconLightMode = dynamic<IconProps>(
@@ -13,11 +14,13 @@ const IconDarkMode = dynamic<IconProps>(
   async () => (await import("@medusajs/icons")).Moon
 ) as React.FC<IconProps>
 
-type NavbarColorModeToggleProps = {
+export type NavbarColorModeToggleProps = {
   buttonProps?: NavbarIconButtonProps
 }
 
-const NavbarColorModeToggle = ({ buttonProps }: NavbarColorModeToggleProps) => {
+export const NavbarColorModeToggle = ({
+  buttonProps,
+}: NavbarColorModeToggleProps) => {
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
@@ -27,5 +30,3 @@ const NavbarColorModeToggle = ({ buttonProps }: NavbarColorModeToggleProps) => {
     </NavbarIconButton>
   )
 }
-
-export default NavbarColorModeToggle

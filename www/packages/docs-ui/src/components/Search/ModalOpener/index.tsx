@@ -58,7 +58,7 @@ export const SearchModalOpener = ({
         >
           <MagnifyingGlass
             className={clsx(
-              "absolute left-0.5 top-[5px]",
+              "absolute left-docs_0.5 top-[5px]",
               "text-medusa-fg-muted dark:text-medusa-fg-muted-dark"
             )}
           />
@@ -66,7 +66,7 @@ export const SearchModalOpener = ({
             type="search"
             className={clsx(
               "placeholder:text-compact-small",
-              "!py-[5px] !pl-[36px] !pr-[8px]",
+              "!py-[5px] !pl-[36px] !pr-docs_0.5",
               "cursor-pointer select-none"
             )}
             placeholder="Find something"
@@ -75,7 +75,10 @@ export const SearchModalOpener = ({
             tabIndex={-1}
           />
           <span
-            className={clsx("gap-0.25 flex", "absolute right-0.5 top-[5px]")}
+            className={clsx(
+              "gap-docs_0.25 flex",
+              "absolute right-docs_0.5 top-[5px]"
+            )}
           >
             <Kbd>{isApple ? "⌘" : "Ctrl"}</Kbd>
             <Kbd>K</Kbd>

@@ -1,5 +1,5 @@
 import path from "path"
-import coreConfig from "./base.tailwind.config"
+import coreConfig from "./modified.tailwind.config"
 
 // Get two levels up from require.resolve("@medusajs/ui")
 const root = path.join(require.resolve("docs-ui"), "../..")

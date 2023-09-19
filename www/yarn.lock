@@ -19038,6 +19038,7 @@ __metadata:
   resolution: "tailwind@workspace:packages/tailwind"
   dependencies:
     "@medusajs/ui-preset": ^1.0.0
+    docs-ui: "*"
     eslint-config-docs: "*"
   languageName: unknown
   linkType: soft

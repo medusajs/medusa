@@ -28,7 +28,7 @@ declare module "@medusajs/docs" {
     PropSidebarItemHtml,
   } from "@docusaurus/plugin-content-docs"
   import { BadgeProps, ButtonType, ButtonVariants } from "docs-ui"
-  import { IconProps } from "../theme/Icon/index"
+  import { IconProps } from "@medusajs/icons/dist/types"
   import { DocContextValue as DocusaurusDocContextValue } from "@docusaurus/theme-common/internal"
   import { ReactNode } from "react"
   import { NavbarLogo } from "@docusaurus/theme-common"

@@ -35,11 +35,11 @@ export const NotificationItem = ({
   return (
     <div
       className={clsx(
-        "md:max-w-[320px] md:w-[320px] w-full bg-medusa-bg-base dark:bg-medusa-bg-base-dark rounded",
+        "md:max-w-[320px] md:w-[320px] w-full bg-medusa-bg-base dark:bg-medusa-bg-base-dark rounded-docs_DEFAULT",
         "shadow-flyout dark:shadow-flyout-dark max-h-[calc(100vh-90px)]",
-        "fixed md:right-1 left-0 z-[400] md:m-1",
-        placement === "bottom" && "md:bottom-1 bottom-0",
-        placement === "top" && "md:top-1 top-0",
+        "fixed md:right-docs_1 left-0 z-[400] md:m-docs_1",
+        placement === "bottom" && "md:bottom-docs_1 bottom-0",
+        placement === "top" && "md:top-docs_1 top-0",
         "opacity-100 transition-opacity duration-200 ease-ease",
         !show && "!opacity-0",
         className

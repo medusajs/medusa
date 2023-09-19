@@ -14,8 +14,8 @@ export const TextArea = (props: TextAreaProps) => {
       {...props}
       className={clsx(
         "bg-medusa-bg-field dark:bg-medusa-bg-field-dark shadow-button-secondary dark:shadow-button-secondary-dark",
-        "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border border-solid",
-        "pt-0.4 px-0.75 text-medium font-base pb-[9px]",
+        "border-medusa-border-base dark:border-medusa-border-base-dark rounded-docs_sm border border-solid",
+        "pt-docs_0.4 px-docs_0.75 text-medium font-base pb-[9px]",
         "hover:bg-medusa-bg-field-hover dark:hover:bg-medusa-bg-field-hover-dark",
         "focus:border-medusa-border-interactive dark:focus:border-medusa-border-interactive-dark",
         "active:border-medusa-border-interactive dark:active:border-medusa-border-interactive-dark",

@@ -25,7 +25,7 @@ export const DetailsSummary = ({
   return (
     <summary
       className={clsx(
-        "py-0.75 flex items-center justify-between",
+        "py-docs_0.75 flex items-center justify-between",
         expandable && "cursor-pointer",
         !expandable &&
           "border-medusa-border-base dark:border-medusa-border-base-dark border-y",
@@ -34,7 +34,7 @@ export const DetailsSummary = ({
       )}
       {...rest}
     >
-      <span className="gap-0.25 flex flex-col">
+      <span className="gap-docs_0.25 flex flex-col">
         <span
           className={clsx(
             "text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark",
@@ -50,7 +50,7 @@ export const DetailsSummary = ({
         )}
       </span>
       {(badge || expandable) && (
-        <span className="flex gap-0.5">
+        <span className="flex gap-docs_0.5">
           {badge}
           {expandable && (
             <PlusMini

@@ -33,15 +33,17 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
               <div className="w-2 flex-none flex items-center justify-center">
                 {index === currentStep && (
                   <IconCircleDottedLine
-                    className="shadow-active dark:shadow-active-dark rounded-full"
-                    iconColorClassName="stroke-medusa-fg-interactive dark:stroke-medusa-fg-interactive-dark"
+                    className={clsx(
+                      "shadow-active dark:shadow-active-dark rounded-full",
+                      "text-ui-fg-interactive"
+                    )}
                   />
                 )}
                 {index < currentStep && (
-                  <CheckCircleSolid className="text-medusa-fg-interactive dark:text-medusa-fg-interactive-dark" />
+                  <CheckCircleSolid className="text-ui-fg-interactive" />
                 )}
                 {index > currentStep && (
-                  <CircleMiniSolid className="text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark" />
+                  <CircleMiniSolid className="text-ui-fg-subtle" />
                 )}
               </div>
               <span
@@ -55,11 +57,7 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
             {index === currentStep && (
               <div className={clsx("flex items-center gap-1")}>
                 <div className="w-2 flex-none"></div>
-                <div
-                  className={clsx(
-                    "text-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark mt-1"
-                  )}
-                >
+                <div className={clsx("text-medium text-ui-fg-subtle mt-1")}>
                   {step.descriptionJSX ?? step.description}
                 </div>
               </div>

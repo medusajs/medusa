@@ -4,5 +4,9 @@
   "compilerOptions": {
     "outDir": "./dist/esm",
     "module": "ES2020"
-  }
+  },
+  "exclude": [
+    "tailwind.config.js",
+    "postcss.config.js"
+  ]
 }

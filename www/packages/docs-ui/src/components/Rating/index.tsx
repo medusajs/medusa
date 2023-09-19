@@ -42,7 +42,7 @@ export const Rating: React.FC<RatingProps> = ({
   }
 
   return (
-    <div className={clsx("flex gap-0.5", className)}>
+    <div className={clsx("flex gap-docs_0.5", className)}>
       {starArr.map((i) => {
         const isSelected =
           (rating !== 0 && rating - 1 >= i) ||

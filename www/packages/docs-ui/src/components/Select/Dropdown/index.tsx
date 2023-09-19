@@ -86,9 +86,9 @@ export const SelectDropdown = ({
       <li
         key={index}
         className={clsx(
-          "pr-0.75 relative rounded-sm py-0.5 pl-2.5",
+          "pr-docs_0.75 relative rounded-docs_sm py-docs_0.5 pl-docs_2.5",
           "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
-          "[&>svg]:left-0.75 cursor-pointer [&>svg]:absolute [&>svg]:top-0.5",
+          "[&>svg]:left-docs_0.75 cursor-pointer [&>svg]:absolute [&>svg]:top-docs_0.5",
           !isSelected && "text-compact-small",
           isSelected && "text-compact-small-plus"
         )}
@@ -120,14 +120,14 @@ export const SelectDropdown = ({
       className={clsx(
         "absolute top-full left-0 w-full",
         "z-10 h-0 translate-y-0 overflow-hidden transition-transform",
-        open && "h-auto translate-y-0.5 !overflow-visible",
+        open && "h-auto translate-y-docs_0.5 !overflow-visible",
         className
       )}
       ref={setRefs}
     >
       <ul
         className={clsx(
-          "p-0.25 mb-0 w-full overflow-auto rounded",
+          "p-docs_0.25 mb-0 w-full overflow-auto rounded-docs_DEFAULT",
           "bg-medusa-bg-base dark:bg-medusa-bg-base-dark text-medusa-fg-base dark:text-medusa-fg-base-dark",
           "shadow-flyout dark:shadow-flyout-dark list-none"
         )}

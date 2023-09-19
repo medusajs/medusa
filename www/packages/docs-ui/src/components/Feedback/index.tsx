@@ -111,7 +111,7 @@ export const Feedback = ({
   }
 
   return (
-    <div className={clsx("mt-3", className)}>
+    <div className={clsx("mt-docs_3", className)}>
       <SwitchTransition mode="out-in">
         <CSSTransition
           key={
@@ -137,12 +137,14 @@ export const Feedback = ({
                 className={clsx(
                   "flex",
                   !vertical && "flex-row items-center",
-                  vertical && "flex-col justify-center gap-1"
+                  vertical && "flex-col justify-center gap-docs_1"
                 )}
                 ref={inlineFeedbackRef}
               >
-                <Label className="mr-1.5">{question}</Label>
-                <div className={clsx("flex flex-row items-center gap-0.5")}>
+                <Label className="mr-docs_1.5">{question}</Label>
+                <div
+                  className={clsx("flex flex-row items-center gap-docs_0.5")}
+                >
                   <Button
                     onClick={handleFeedback}
                     className="positive w-fit"
@@ -166,7 +168,7 @@ export const Feedback = ({
               </div>
             )}
             {showForm && !submittedFeedback && (
-              <div className="flex flex-col gap-1" ref={inlineQuestionRef}>
+              <div className="flex flex-col gap-docs_1" ref={inlineQuestionRef}>
                 <Label>
                   {positiveFeedback ? positiveQuestion : negativeQuestion}
                 </Label>
@@ -176,9 +178,9 @@ export const Feedback = ({
                   onChange={(e) => setMessage(e.target.value)}
                 />
                 {showLongForm && !positiveFeedback && (
-                  <Details summaryContent="More Details" className="mt-1">
-                    <div className="flex flex-col gap-0.5">
-                      <div className="flex flex-col gap-0.5">
+                  <Details summaryContent="More Details" className="mt-docs_1">
+                    <div className="flex flex-col gap-docs_0.5">
+                      <div className="flex flex-col gap-docs_0.5">
                         <Label>
                           Can you provide the exact steps you took before
                           receiving the error? For example, the commands you
@@ -191,7 +193,7 @@ export const Feedback = ({
                           placeholder="1. I ran npm dev..."
                         />
                       </div>
-                      <div className="flex flex-col gap-0.5">
+                      <div className="flex flex-col gap-docs_0.5">
                         <Label>
                           If applicable, what version of Medusa are you using?
                           If a plugin is related to the error, please provide a
@@ -204,7 +206,7 @@ export const Feedback = ({
                           placeholder="@medusajs/medusa: vX"
                         />
                       </div>
-                      <div className="flex flex-col gap-0.5">
+                      <div className="flex flex-col gap-docs_0.5">
                         <Label>
                           Were you able to fix the error? If so, what steps did
                           you follow?
@@ -216,7 +218,7 @@ export const Feedback = ({
                           placeholder="@medusajs/medusa: vX"
                         />
                       </div>
-                      <div className="flex flex-col gap-0.5">
+                      <div className="flex flex-col gap-docs_0.5">
                         <Label>
                           Can you provide your email or discord username? This
                           would allow us to contact you for further info or

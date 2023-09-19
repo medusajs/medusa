@@ -5,6 +5,7 @@
   "license": "MIT",
   "main": "tailwind.config.js",
   "devDependencies": {
+    "docs-ui": "*",
     "eslint-config-docs": "*"
   },
   "publishConfig": {

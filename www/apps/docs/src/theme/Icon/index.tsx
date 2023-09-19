@@ -102,13 +102,6 @@ import {
 import IconPuzzleSolid from "./PuzzleSolid"
 import IconNextjs from "./Nextjs"
 
-export type IconProps = {
-  width?: number
-  height?: number
-  strokeWidth?: number | string
-  iconColorClassName?: string
-} & React.HTMLAttributes<SVGElement>
-
 export default {
   "academic-cap-solid": AcademicCapSolid,
   adjustments: Adjustments,

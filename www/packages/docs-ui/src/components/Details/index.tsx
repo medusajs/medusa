@@ -71,20 +71,20 @@ export const Details = ({
         timeout={150}
         onEnter={(node: HTMLElement) => {
           node.classList.add(
-            "!mb-2",
+            "!mb-docs_2",
             "!mt-0",
-            "translate-y-1",
+            "translate-y-docs_1",
             "transition-transform"
           )
         }}
         onExit={(node: HTMLElement) => {
-          node.classList.add("transition-transform", "!-translate-y-1")
+          node.classList.add("transition-transform", "!-translate-y-docs_1")
           setTimeout(() => {
             setOpen(false)
           }, 100)
         }}
       >
-        <Suspense fallback={<Loading className="!mb-2 !mt-0" />}>
+        <Suspense fallback={<Loading className="!mb-docs_2 !mt-0" />}>
           {children}
         </Suspense>
       </CSSTransition>

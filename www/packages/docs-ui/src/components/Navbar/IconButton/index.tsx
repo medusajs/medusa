@@ -1,9 +1,10 @@
+import React from "react"
 import clsx from "clsx"
-import { Button, ButtonProps } from "docs-ui"
+import { Button, ButtonProps } from "@/components"
 
 export type NavbarIconButtonProps = ButtonProps
 
-const NavbarIconButton = ({
+export const NavbarIconButton = ({
   children,
   className,
   ...props
@@ -21,5 +22,3 @@ const NavbarIconButton = ({
     </Button>
   )
 }
-
-export default NavbarIconButton

@@ -62,13 +62,13 @@ export const Solutions = ({ feedback, message }: SolutionsProps) => {
     <>
       {possibleSolutions.length > 0 && (
         <div className="text-compact-large-plus font-normal">
-          <span className="my-1 mx-0 inline-block">
+          <span className="my-docs_1 mx-0 inline-block">
             If you faced a problem, here are some possible solutions from
             GitHub:
           </span>
           <ul>
             {possibleSolutions.map((solution) => (
-              <li key={solution.url} className="mb-0.5 last:mb-0">
+              <li key={solution.url} className="mb-docs_0.5 last:mb-0">
                 <Link href={solution.html_url} target="_blank" rel="noreferrer">
                   {solution.title}
                 </Link>

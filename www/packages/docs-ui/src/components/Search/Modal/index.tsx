@@ -224,9 +224,9 @@ export const SearchModal = ({
     <Modal
       contentClassName={clsx(
         "!p-0 overflow-hidden relative h-full",
-        "rounded-none md:rounded-lg flex flex-col justify-between"
+        "rounded-none md:rounded-docs_lg flex flex-col justify-between"
       )}
-      modalContainerClassName="w-screen h-screen !rounded-none md:!rounded-lg"
+      modalContainerClassName="w-screen h-screen !rounded-none md:!rounded-docs_lg"
       open={isOpen}
       onClose={() => setIsOpen(false)}
       passedRef={modalRef}
@@ -241,23 +241,23 @@ export const SearchModal = ({
           <SearchBox
             classNames={{
               root: clsx(
-                "h-[56px] w-full md:rounded-t-xl relative border-0 border-solid",
+                "h-[56px] w-full md:rounded-t-docs_xl relative border-0 border-solid",
                 "border-b border-medusa-border-base dark:border-medusa-border-base-dark",
                 "bg-transparent"
               ),
-              form: clsx("h-full md:rounded-t-xl bg-transparent"),
+              form: clsx("h-full md:rounded-t-docs_xl bg-transparent"),
               input: clsx(
-                "w-full h-full pl-3 text-medusa-fg-base dark:text-medusa-fg-base-dark",
+                "w-full h-full pl-docs_3 text-medusa-fg-base dark:text-medusa-fg-base-dark",
                 "placeholder:text-medusa-fg-muted dark:placeholder:text-medusa-fg-muted-dark",
-                "md:rounded-t-xl text-compact-medium bg-transparent",
+                "md:rounded-t-docs_xl text-compact-medium bg-transparent",
                 "appearance-none search-cancel:hidden border-0 active:outline-none focus:outline-none"
               ),
-              submit: clsx("absolute top-[18px] left-1 btn-clear p-0"),
+              submit: clsx("absolute top-[18px] left-docs_1 btn-clear p-0"),
               reset: clsx(
-                "absolute top-0.75 right-1 hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
-                "p-[5px] md:rounded btn-clear"
+                "absolute top-docs_0.75 right-docs_1 hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
+                "p-[5px] md:rounded-docs_DEFAULT btn-clear"
               ),
-              loadingIndicator: clsx("absolute top-[18px] right-1"),
+              loadingIndicator: clsx("absolute top-[18px] right-docs_1"),
             }}
             submitIconComponent={() => (
               <MagnifyingGlass className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
@@ -275,14 +275,14 @@ export const SearchModal = ({
               "bg-medusa-bg-base dark:bg-medusa-bg-base-dark block md:hidden",
               "border-0 border-solid",
               "border-medusa-border-base dark:border-medusa-border-base-dark border-b",
-              "pr-1"
+              "pr-docs_1"
             )}
             onClick={() => setIsOpen(false)}
           >
             <XMark className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
           </Button>
         </div>
-        <div className="mx-0.5 h-[calc(100%-120px)] md:h-[332px] md:flex-initial lg:max-h-[332px] lg:min-h-[332px]">
+        <div className="mx-docs_0.5 h-[calc(100%-120px)] md:h-[332px] md:flex-initial lg:max-h-[332px] lg:min-h-[332px]">
           <SearchEmptyQueryBoundary
             fallback={<SearchSuggestions suggestions={suggestions} />}
           >
@@ -308,7 +308,7 @@ export const SearchModal = ({
       </InstantSearch>
       <div
         className={clsx(
-          "py-0.75 flex items-center justify-between px-1",
+          "py-docs_0.75 flex items-center justify-between px-docs_1",
           "border-0 border-solid",
           "border-medusa-border-base dark:border-medusa-border-base-dark border-t",
           "bg-medusa-bg-base dark:bg-medusa-bg-base-dark"
@@ -337,8 +337,8 @@ export const SearchModal = ({
             }}
           />
         )}
-        <div className="hidden items-center gap-1 md:flex">
-          <div className="flex items-center gap-0.5">
+        <div className="hidden items-center gap-docs_1 md:flex">
+          <div className="flex items-center gap-docs_0.5">
             <span
               className={clsx(
                 "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
@@ -347,12 +347,12 @@ export const SearchModal = ({
             >
               Navigation
             </span>
-            <span className="gap-0.25 flex">
+            <span className="gap-docs_0.25 flex">
               <Kbd>↑</Kbd>
               <Kbd>↓</Kbd>
             </span>
           </div>
-          <div className="flex items-center gap-0.5">
+          <div className="flex items-center gap-docs_0.5">
             <span
               className={clsx(
                 "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",

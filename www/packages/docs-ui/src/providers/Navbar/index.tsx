@@ -1,21 +1,20 @@
 "use client"
 
-import type { Area } from "@/types/openapi"
-import { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useState } from "react"
 
-type NavbarContextType = {
-  activeItem: Area | null
-  setActiveItem: (value: Area) => void
+export type NavbarContextType = {
+  activeItem: string | null
+  setActiveItem: (value: string) => void
 }
 
 const NavbarContext = createContext<NavbarContextType | null>(null)
 
-type NavbarProviderProps = {
+export type NavbarProviderProps = {
   children: React.ReactNode
 }
 
-const NavbarProvider = ({ children }: NavbarProviderProps) => {
-  const [activeItem, setActiveItem] = useState<Area | null>(null)
+export const NavbarProvider = ({ children }: NavbarProviderProps) => {
+  const [activeItem, setActiveItem] = useState<string | null>(null)
 
   return (
     <NavbarContext.Provider
@@ -28,8 +27,6 @@ const NavbarProvider = ({ children }: NavbarProviderProps) => {
     </NavbarContext.Provider>
   )
 }
-
-export default NavbarProvider
 
 export const useNavbar = (): NavbarContextType => {
   const context = useContext(NavbarContext)

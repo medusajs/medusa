@@ -16,7 +16,7 @@ export default function NavbarColorModeToggle({
 
   return (
     <ColorModeToggle
-      className={className}
+      className={clsx("text-ui-fg-muted", className)}
       buttonClassName={clsx(
         "hover:!bg-medusa-button-neutral-hover dark:hover:!bg-medusa-button-neutral-hover-dark"
       )}

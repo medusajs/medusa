@@ -25,10 +25,10 @@ export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
             <div
               className={clsx(
                 "flex items-center justify-between",
-                "cursor-pointer rounded-sm p-0.5",
+                "cursor-pointer rounded-docs_sm p-docs_0.5",
                 "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
                 "focus:bg-medusa-bg-base-hover dark:focus:bg-medusa-bg-base-hover-dark",
-                "focus:outline-none last:mb-1"
+                "focus:outline-none last:mb-docs_1"
               )}
               onClick={() =>
                 setIndexUiState({

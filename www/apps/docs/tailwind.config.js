@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import coreConfig from "../../packages/tailwind/tailwind.config"
+import coreConfig from "tailwind"
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {

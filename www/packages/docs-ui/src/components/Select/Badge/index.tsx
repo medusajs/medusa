@@ -82,7 +82,7 @@ export const SelectBadge = ({
         className={clsx(
           "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border border-solid",
           "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-subtle-hover-dark",
-          "py-0.25 h-fit cursor-pointer px-0.5",
+          "py-docs_0.25 h-fit cursor-pointer px-docs_0.5",
           "flex items-center gap-[6px] whitespace-nowrap",
           "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
           !open && "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark",
@@ -126,7 +126,7 @@ export const SelectBadge = ({
         passedRef={dropdownRef}
         className={clsx(
           "!top-[unset] !bottom-full",
-          open && "!-translate-y-0.5"
+          open && "!-translate-y-docs_0.5"
         )}
       />
     </div>

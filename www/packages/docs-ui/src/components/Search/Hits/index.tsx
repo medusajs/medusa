@@ -145,11 +145,11 @@ export const SearchHits = ({
           {grouped[groupName].map((item, index) => (
             <div
               className={clsx(
-                "gap-0.25 relative flex flex-1 flex-col p-0.5",
+                "gap-docs_0.25 relative flex flex-1 flex-col p-docs_0.5",
                 "overflow-x-hidden text-ellipsis whitespace-nowrap break-words",
                 "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
                 "focus:bg-medusa-bg-base-hover dark:focus:bg-medusa-bg-base-hover-dark",
-                "last:mb-1 focus:outline-none"
+                "last:mb-docs_1 focus:outline-none"
               )}
               key={index}
               tabIndex={index}

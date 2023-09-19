@@ -1,7 +1,7 @@
 import React from "react"
 import { Bordered } from "@/components/Bordered"
 import clsx from "clsx"
-import { IconProps } from "@/types"
+import { IconProps } from "@medusajs/icons/dist/types"
 
 export type BorderedIconProps = {
   icon?: string
@@ -24,7 +24,7 @@ export const BorderedIcon = ({
     <Bordered wrapperClassName={wrapperClassName}>
       <span
         className={clsx(
-          "rounded-xs p-0.125 bg-medusa-bg-component dark:bg-medusa-bg-component-dark inline-flex items-center justify-center",
+          "rounded-docs_xs p-docs_0.125 bg-medusa-bg-component dark:bg-medusa-bg-component-dark inline-flex items-center justify-center",
           iconWrapperClassName
         )}
       >
@@ -40,9 +40,9 @@ export const BorderedIcon = ({
             className={clsx(
               "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
               iconClassName,
-              "bordered-icon"
+              "bordered-icon",
+              iconColorClassName
             )}
-            iconColorClassName={iconColorClassName}
           />
         )}
       </span>

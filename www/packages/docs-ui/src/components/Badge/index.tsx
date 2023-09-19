@@ -22,7 +22,7 @@ export const Badge = ({ className, variant, children }: BadgeProps) => {
   return (
     <span
       className={clsx(
-        "text-compact-x-small-plus px-0.4 rounded-sm border border-solid py-px text-center",
+        "text-compact-x-small-plus px-docs_0.4 rounded-docs_sm border border-solid py-px text-center",
         variant === "purple" &&
           "bg-medusa-tag-purple-bg dark:bg-medusa-tag-purple-bg-dark text-medusa-tag-purple-text dark:text-medusa-tag-purple-text-dark border-medusa-tag-purple-border dark:border-medusa-tag-purple-border-dark",
         variant === "purple-dark" &&

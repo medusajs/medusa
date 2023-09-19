@@ -44,8 +44,8 @@ export const SelectInput = ({
   return (
     <div
       className={clsx(
-        "px-0.75 relative py-[9px]",
-        "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border border-solid",
+        "px-docs_0.75 relative py-[9px]",
+        "border-medusa-border-base dark:border-medusa-border-base-dark rounded-docs_sm border border-solid",
         "bg-medusa-bg-field dark:bg-medusa-bg-field-dark shadow-button-neutral dark:shadow-button-neutral-dark",
         "hover:bg-medusa-bg-field-hover dark:hover:bg-medusa-bg-field-hover-dark",
         "active:shadow-active dark:active:shadow-active-dark",
@@ -53,7 +53,7 @@ export const SelectInput = ({
         "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium",
         "disabled:bg-medusa-bg-disabled dark:disabled:bg-medusa-bg-disabled-dark",
         "disabled:text-medusa-fg-disabled dark:disabled:text-medusa-fg-disabled-dark",
-        "flex items-center gap-0.5",
+        "flex items-center gap-docs_0.5",
         !hasSelectedValues &&
           "placeholder:text-medusa-fg-muted dark:placeholder:text-medusa-fg-muted-dark",
         hasSelectedValues &&
@@ -75,7 +75,7 @@ export const SelectInput = ({
           <span
             className={clsx(
               "text-compact-medium-plus inline-block",
-              showClearButton && "mr-0.125"
+              showClearButton && "mr-docs_0.125"
             )}
           >
             {(value as string[]).length}

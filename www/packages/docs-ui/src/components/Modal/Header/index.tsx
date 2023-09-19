@@ -14,7 +14,7 @@ export const ModalHeader = ({ title }: ModalHeaderProps) => {
   return (
     <div
       className={clsx(
-        "border-medusa-border-base dark:border-medusa-border-base-dark border-0 border-b border-solid py-1.5 px-2",
+        "border-medusa-border-base dark:border-medusa-border-base-dark border-0 border-b border-solid py-docs_1.5 px-docs_2",
         "flex items-center justify-between"
       )}
     >

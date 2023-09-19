@@ -28,7 +28,7 @@ export const InlineCode = (props: InlineCodeProps) => {
             className={clsx(
               "border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark border",
               "text-medusa-tag-neutral-text dark:text-medusa-tag-neutral-text-dark",
-              "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark font-monospace text-code-label rounded-sm py-0 px-[6px]",
+              "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark font-monospace text-code-label rounded-docs_sm py-0 px-[6px]",
               props.className
             )}
           />
