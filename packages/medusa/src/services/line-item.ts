@@ -622,12 +622,12 @@ class LineItemService extends TransactionBaseService {
     quantity?: number
   ): void | never {
     const errorMessage =
-      "Unable to generate the line item because one or more required argument(s) are missing."
+      "Unable to generate the line item because one or more required argument(s) are missing"
 
     if (isString(variantIdOrData)) {
       if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
         throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
+          MedusaError.Types.INVALID_DATA,
           `${errorMessage}. Ensure quantity, regionId, and variantId are passed`
         )
       }
@@ -645,7 +645,7 @@ class LineItemService extends TransactionBaseService {
 
     if (!resolvedContext?.region_id) {
       throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
+        MedusaError.Types.INVALID_DATA,
         `${errorMessage}. Ensure region or region_id are passed`
       )
     }
