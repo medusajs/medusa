@@ -5,8 +5,7 @@ import fetcher from "@/utils/swr-fetcher"
 import type { OpenAPIV3 } from "openapi-types"
 import useSWR from "swr"
 import type { Operation, PathsObject } from "@/types/openapi"
-import type { SidebarItemType } from "@/providers/sidebar"
-import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
+import { SidebarItemSections, useSidebar, type SidebarItemType } from "docs-ui"
 import { Fragment, useEffect, useMemo } from "react"
 import dynamic from "next/dynamic"
 import type { TagOperationProps } from "../Operation"
@@ -58,7 +57,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
     if (paths) {
       const parentItem = findItemInSection(
         items[SidebarItemSections.BOTTOM],
-        tagSlugName,
+        { path: tagSlugName },
         false
       )
       if (!parentItem?.children?.length) {

@@ -54,7 +54,13 @@ export const Navbar = ({
           {showColorModeToggle && <NavbarColorModeToggle />}
           {additionalActions}
         </div>
-        <NavbarMobileMenu logo={logo} menuButton={mobileMenuButton} />
+        <NavbarMobileMenu
+          logo={logo}
+          menuButton={{
+            ...mobileMenuButton,
+            isLoading,
+          }}
+        />
       </div>
     </nav>
   )

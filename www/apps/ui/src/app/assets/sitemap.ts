@@ -15,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return absoluteUrl(path)
   }
 
-  docsConfig.sidebarNav.forEach((item) => {
+  docsConfig.sidebar.forEach((item) => {
     if (item.href && !item.disabled) {
       items.push({
         url: createUrl(item.href),

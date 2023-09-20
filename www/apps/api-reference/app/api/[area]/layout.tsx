@@ -1,10 +1,10 @@
-import Sidebar from "@/components/Sidebar"
 import clsx from "clsx"
 import "../../../css/globals.css"
 import Navbar from "@/components/Navbar"
 import { Inter } from "next/font/google"
 import { Roboto_Mono } from "next/font/google"
 import Providers from "../../../providers"
+import { Sidebar } from "docs-ui"
 
 export const metadata = {
   title: "Medusa API Reference",

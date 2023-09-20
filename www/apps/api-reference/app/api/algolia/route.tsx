@@ -6,8 +6,8 @@ import getPathsOfTag from "../../../utils/get-paths-of-tag"
 import getSectionId from "../../../utils/get-section-id"
 import { NextResponse } from "next/server"
 import { JSDOM } from "jsdom"
-import capitalize from "../../../utils/capitalize"
 import getUrl from "../../../utils/get-url"
+import { capitalize } from "docs-ui"
 
 export async function GET() {
   const algoliaClient = algoliasearch(

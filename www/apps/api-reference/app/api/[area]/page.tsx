@@ -6,7 +6,7 @@ import Section from "@/components/Section"
 import Tags from "@/components/Tags"
 import type { Area } from "@/types/openapi"
 import DividedLayout from "@/layouts/Divided"
-import capitalize from "@/utils/capitalize"
+import { capitalize } from "docs-ui"
 import PageTitleProvider from "../../../providers/page-title"
 
 type ReferencePageProps = {

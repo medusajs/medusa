@@ -7,7 +7,8 @@ import {
   NavbarProvider,
   AnalyticsProvider,
 } from "docs-ui"
-import SearchProvider from "./search-provider"
+import SearchProvider from "./search"
+import SidebarProvider from "./sidebar"
 
 type ProvidersProps = {
   children: React.ReactNode
@@ -19,9 +20,11 @@ const Providers = ({ children }: ProvidersProps) => {
       <MobileProvider>
         <ColorModeProvider>
           <ModalProvider>
-            <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
-              <SearchProvider>{children}</SearchProvider>
-            </NavbarProvider>
+            <SidebarProvider>
+              <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
+                <SearchProvider>{children}</SearchProvider>
+              </NavbarProvider>
+            </SidebarProvider>
           </ModalProvider>
         </ColorModeProvider>
       </MobileProvider>

@@ -1,7 +1,13 @@
-import type { SidebarItemType } from "@/providers/sidebar"
+import type { SidebarItemType } from "docs-ui"
 import type { Operation, PathsObject } from "@/types/openapi"
 import type { OpenAPIV3 } from "openapi-types"
+import dynamic from "next/dynamic"
+import type { MethodLabelProps } from "@/components/MethodLabel"
 import getSectionId from "./get-section-id"
+
+const MethodLabel = dynamic<MethodLabelProps>(
+  async () => import("../components/MethodLabel")
+) as React.FC<MethodLabelProps>
 
 export default function getTagChildSidebarItems(
   paths: PathsObject
@@ -17,7 +23,9 @@ export default function getTagChildSidebarItems(
           definedOperation.operationId,
         ]),
         title: definedOperation.summary || definedOperation.operationId,
-        method: definedMethod,
+        additionalElms: (
+          <MethodLabel method={definedMethod} className="h-fit" />
+        ),
         loaded: true,
       })
     })

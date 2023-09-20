@@ -1,12 +1,11 @@
 "use client"
 
 import { docsConfig } from "@/config/docs"
-import { Navbar as UiNavbar } from "docs-ui"
-import { useState } from "react"
+import { Navbar as UiNavbar, useSidebar } from "docs-ui"
 import { basePathUrl } from "@/lib/base-path-url"
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false)
+  const { mobileSidebarOpen, setMobileSidebarOpen } = useSidebar()
 
   return (
     <UiNavbar
@@ -16,8 +15,8 @@ const Navbar = () => {
       }}
       items={docsConfig.mainNav}
       mobileMenuButton={{
-        setMobileSidebarOpen: setOpen,
-        mobileSidebarOpen: open,
+        setMobileSidebarOpen,
+        mobileSidebarOpen,
       }}
       className="!z-[99]"
     />

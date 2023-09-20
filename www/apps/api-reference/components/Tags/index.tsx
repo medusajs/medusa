@@ -9,11 +9,10 @@ import dynamic from "next/dynamic"
 import type { TagSectionProps } from "./Section"
 import { useArea } from "@/providers/area"
 import getLinkWithBasePath from "@/utils/get-link-with-base-path"
-import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
+import { SidebarItemSections, useSidebar } from "docs-ui"
 import getSectionId from "@/utils/get-section-id"
 import { ExpandedDocument } from "@/types/openapi"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
-import { useNavbar } from "docs-ui"
 
 const TagSection = dynamic<TagSectionProps>(
   async () => import("./Section")
@@ -77,7 +76,6 @@ const Tags = () => {
             title: tag.name,
             children: childItems,
             loaded: childItems.length > 0,
-            hasChildren: true,
           }
         }) || [],
         {

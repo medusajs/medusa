@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState } from "react"
 
 export type PageLoadingContextType = {
   isLoading: boolean
-  setIsLoading: (value: boolean) => void
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const PageLoadingContext = createContext<PageLoadingContextType | null>(null)

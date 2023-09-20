@@ -3,22 +3,21 @@
 import React from "react"
 import { NavbarIconButton, NavbarIconButtonProps } from "../../IconButton"
 import clsx from "clsx"
-import { usePageLoading } from "@/providers"
 import { Sidebar, XMark } from "@medusajs/icons"
 
 export type NavbarMobileMenuButtonProps = {
   buttonProps?: NavbarIconButtonProps
   mobileSidebarOpen: boolean
   setMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isLoading?: boolean
 }
 
 export const NavbarMobileMenuButton = ({
   buttonProps,
   mobileSidebarOpen,
   setMobileSidebarOpen,
+  isLoading = false,
 }: NavbarMobileMenuButtonProps) => {
-  const { isLoading } = usePageLoading()
-
   return (
     <NavbarIconButton
       {...buttonProps}

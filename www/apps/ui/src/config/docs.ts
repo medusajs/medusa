@@ -1,9 +1,8 @@
-import { NavbarLinkProps } from "docs-ui"
-import { SidebarNavItem } from "../types/nav"
+import { NavbarLinkProps, SidebarSectionItemsType } from "docs-ui"
 
 type DocsConfig = {
   mainNav: NavbarLinkProps[]
-  sidebarNav: SidebarNavItem[]
+  sidebar: SidebarSectionItemsType
 }
 
 export const docsConfig: DocsConfig = {
@@ -40,217 +39,248 @@ export const docsConfig: DocsConfig = {
       activeValuePattern: new RegExp("/ui"),
     },
   ],
-  sidebarNav: [
-    {
-      title: "Getting Started",
-      items: [
-        {
-          title: "Introduction",
-          href: "/",
-          items: [],
-        },
-      ],
-    },
-    {
-      title: "Installation",
-      items: [
-        {
-          title: "Medusa Admin Extension",
-          href: "/installation/medusa-admin-extension",
-          items: [],
-        },
-        {
-          title: "Standalone Project",
-          href: "/installation/standalone-project",
-          items: [],
-        },
-      ],
-    },
-    // TODO enable once colors export is fixed
-    {
-      title: "Colors",
-      items: [
-        {
-          title: "Overview",
-          href: "/colors/overview",
-          items: [],
-        },
-      ],
-    },
-    {
-      title: "Icons",
-      items: [
-        {
-          title: "Overview",
-          href: "/icons/overview",
-          items: [],
-        },
-      ],
-    },
-    {
-      title: "Components",
-      items: [
-        {
-          title: "Avatar",
-          href: "/components/avatar",
-          items: [],
-        },
-        {
-          title: "Badge",
-          href: "/components/badge",
-          items: [],
-        },
-        {
-          title: "Button",
-          href: "/components/button",
-          items: [],
-        },
-        {
-          title: "Calendar",
-          href: "/components/calendar",
-          items: [],
-        },
-        {
-          title: "Checkbox",
-          href: "/components/checkbox",
-          items: [],
-        },
-        {
-          title: "Code Block",
-          href: "/components/code-block",
-          items: [],
-        },
-        {
-          title: "Command",
-          href: "/components/command",
-          items: [],
-        },
-        {
-          title: "Container",
-          href: "/components/container",
-          items: [],
-        },
-        {
-          title: "Copy",
-          href: "/components/copy",
-          items: [],
-        },
-        {
-          title: "Date Picker",
-          href: "/components/date-picker",
-          items: [],
-        },
-        {
-          title: "Drawer",
-          href: "/components/drawer",
-          items: [],
-        },
-        {
-          title: "Dropdown Menu",
-          href: "/components/dropdown-menu",
-          items: [],
-        },
-        {
-          title: "Focus Modal",
-          href: "/components/focus-modal",
-          items: [],
-        },
-        {
-          title: "Heading",
-          href: "/components/heading",
-          items: [],
-        },
-        {
-          title: "Input",
-          href: "/components/input",
-          items: [],
-        },
-        {
-          title: "Kbd",
-          href: "/components/kbd",
-          items: [],
-        },
-        {
-          title: "Label",
-          href: "/components/label",
-          items: [],
-        },
-        {
-          title: "Prompt",
-          href: "/components/prompt",
-          items: [],
-        },
-        {
-          title: "Radio Group",
-          href: "/components/radio-group",
-          items: [],
-        },
-        {
-          title: "Select",
-          href: "/components/select",
-          items: [],
-        },
-        {
-          title: "Switch",
-          href: "/components/switch",
-          items: [],
-        },
-        {
-          title: "Table",
-          href: "/components/table",
-          items: [],
-        },
-        {
-          title: "Text",
-          href: "/components/text",
-          items: [],
-        },
-        {
-          title: "Textarea",
-          href: "/components/textarea",
-          items: [],
-        },
-        {
-          title: "Toast",
-          href: "/components/toast",
-          items: [],
-        },
-        {
-          title: "Tooltip",
-          href: "/components/tooltip",
-          items: [],
-        },
-      ],
-    },
-    {
-      title: "Hooks",
-      items: [
-        {
-          title: "usePrompt",
-          href: "/hooks/use-prompt",
-          items: [],
-        },
-        {
-          title: "useToast",
-          href: "/hooks/use-toast",
-          items: [],
-        },
-        {
-          title: "useToggleState",
-          href: "/hooks/use-toggle-state",
-          items: [],
-        },
-      ],
-    },
-    {
-      title: "Utils",
-      items: [
-        {
-          title: "clx",
-          href: "/utils/clx",
-          items: [],
-        },
-      ],
-    },
-  ],
+  sidebar: {
+    top: [
+      {
+        title: "Getting Started",
+        children: [
+          {
+            title: "Introduction",
+            path: "/",
+            loaded: true,
+            isPathHref: true,
+          },
+        ],
+      },
+      {
+        title: "Installation",
+        children: [
+          {
+            title: "Medusa Admin Extension",
+            path: "/installation/medusa-admin-extension",
+            isPathHref: true,
+          },
+          {
+            title: "Standalone Project",
+            path: "/installation/standalone-project",
+            isPathHref: true,
+          },
+        ],
+      },
+    ],
+    bottom: [
+      {
+        title: "Colors",
+        children: [
+          {
+            title: "Overview",
+            path: "/colors/overview",
+            isPathHref: true,
+          },
+        ],
+      },
+      {
+        title: "Icons",
+        children: [
+          {
+            title: "Overview",
+            path: "/icons/overview",
+            isPathHref: true,
+          },
+        ],
+      },
+      {
+        title: "Components",
+        children: [
+          {
+            title: "Avatar",
+            path: "/components/avatar",
+            isPathHref: true,
+          },
+          {
+            title: "Badge",
+            path: "/components/badge",
+            isPathHref: true,
+          },
+          {
+            title: "Button",
+            path: "/components/button",
+            isPathHref: true,
+          },
+          {
+            title: "Calendar",
+            path: "/components/calendar",
+            isPathHref: true,
+          },
+          {
+            title: "Checkbox",
+            path: "/components/checkbox",
+            isPathHref: true,
+          },
+          {
+            title: "Code Block",
+            path: "/components/code-block",
+            isPathHref: true,
+          },
+          {
+            title: "Command",
+            path: "/components/command",
+            isPathHref: true,
+          },
+          {
+            title: "Container",
+            path: "/components/container",
+            isPathHref: true,
+          },
+          {
+            title: "Copy",
+            path: "/components/copy",
+            isPathHref: true,
+          },
+          {
+            title: "Date Picker",
+            path: "/components/date-picker",
+            isPathHref: true,
+          },
+          {
+            title: "Drawer",
+            path: "/components/drawer",
+            isPathHref: true,
+          },
+          {
+            title: "Dropdown Menu",
+            path: "/components/dropdown-menu",
+            isPathHref: true,
+          },
+          {
+            title: "Focus Modal",
+            path: "/components/focus-modal",
+            isPathHref: true,
+          },
+          {
+            title: "Heading",
+            path: "/components/heading",
+            isPathHref: true,
+          },
+          {
+            title: "Input",
+            path: "/components/input",
+            isPathHref: true,
+          },
+          {
+            title: "Kbd",
+            path: "/components/kbd",
+            isPathHref: true,
+          },
+          {
+            title: "Label",
+            path: "/components/label",
+            isPathHref: true,
+          },
+          {
+            title: "Prompt",
+            path: "/components/prompt",
+            isPathHref: true,
+          },
+          {
+            title: "Radio Group",
+            path: "/components/radio-group",
+            isPathHref: true,
+          },
+          {
+            title: "Select",
+            path: "/components/select",
+            isPathHref: true,
+          },
+          {
+            title: "Switch",
+            path: "/components/switch",
+            isPathHref: true,
+          },
+          {
+            title: "Table",
+            path: "/components/table",
+            isPathHref: true,
+          },
+          {
+            title: "Text",
+            path: "/components/text",
+            isPathHref: true,
+          },
+          {
+            title: "Textarea",
+            path: "/components/textarea",
+            isPathHref: true,
+          },
+          {
+            title: "Toast",
+            path: "/components/toast",
+            isPathHref: true,
+          },
+          {
+            title: "Tooltip",
+            path: "/components/tooltip",
+            isPathHref: true,
+          },
+        ],
+      },
+      {
+        title: "Hooks",
+        children: [
+          {
+            title: "usePrompt",
+            path: "/hooks/use-prompt",
+            isPathHref: true,
+          },
+          {
+            title: "useToast",
+            path: "/hooks/use-toast",
+            isPathHref: true,
+          },
+          {
+            title: "useToggleState",
+            path: "/hooks/use-toggle-state",
+            isPathHref: true,
+          },
+        ],
+      },
+      {
+        title: "Utils",
+        children: [
+          {
+            title: "clx",
+            path: "/utils/clx",
+            isPathHref: true,
+          },
+        ],
+      },
+    ],
+    mobile: [
+      {
+        title: "Docs",
+        path: `${process.env.NEXT_PUBLIC_DOCS_URL}`,
+        isPathHref: true,
+      },
+      {
+        title: "User Guide",
+        path: `${process.env.NEXT_PUBLIC_DOCS_URL}/user-guide`,
+        isPathHref: true,
+      },
+      {
+        title: "Store API",
+        path: `${process.env.NEXT_PUBLIC_DOCS_URL}/api/store`,
+        isPathHref: true,
+      },
+      {
+        title: "Admin API",
+        path: `${process.env.NEXT_PUBLIC_DOCS_URL}/api/admin`,
+        isPathHref: true,
+      },
+      {
+        title: "UI",
+        path: `${process.env.NEXT_PUBLIC_DOCS_URL}/ui`,
+        isPathHref: true,
+      },
+    ],
+  },
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { InView } from "react-intersection-observer"
-import { useSidebar } from "../../../providers/sidebar"
+import { useSidebar } from "docs-ui"
 import checkElementInViewport from "../../../utils/check-element-in-viewport"
 import { useEffect } from "react"
 import getSectionId from "../../../utils/get-section-id"

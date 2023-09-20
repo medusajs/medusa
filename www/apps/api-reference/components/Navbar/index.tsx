@@ -2,7 +2,7 @@
 
 import { Navbar as UiNavbar, usePageLoading } from "docs-ui"
 import getLinkWithBasePath from "../../utils/get-link-with-base-path"
-import { useSidebar } from "../../providers/sidebar"
+import { useSidebar } from "docs-ui"
 import FeedbackModal from "./FeedbackModal"
 
 const Navbar = () => {

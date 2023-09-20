@@ -1,5 +1,4 @@
-import capitalize from "@/utils/capitalize"
-import { Badge } from "docs-ui"
+import { Badge, capitalize } from "docs-ui"
 
 export type MethodLabelProps = {
   method: string

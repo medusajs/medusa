@@ -1,20 +1,20 @@
 "use client"
 
-import { useSidebar } from "@/providers/sidebar"
+import React from "react"
+import { useSidebar } from "@/providers"
 import clsx from "clsx"
-import dynamic from "next/dynamic"
-import { SidebarItemProps } from "./Item"
-import { Loading } from "docs-ui"
+import { Loading } from "@/components"
+import { SidebarItem } from "./Item"
 
-const SidebarItem = dynamic<SidebarItemProps>(async () => import("./Item"), {
-  loading: () => <Loading count={1} />,
-}) as React.FC<SidebarItemProps>
-
-type SidebarProps = {
+export type SidebarProps = {
   className?: string
+  expandItems?: boolean
 }
 
-const Sidebar = ({ className = "" }: SidebarProps) => {
+export const Sidebar = ({
+  className = "",
+  expandItems = false,
+}: SidebarProps) => {
   const { items, mobileSidebarOpen, desktopSidebarOpen } = useSidebar()
 
   return (
@@ -35,31 +35,29 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
       <ul
         className={clsx(
           "sticky top-[57px] h-screen max-h-screen w-full list-none overflow-auto p-0",
-          "px-1.5 pb-[57px] pt-1.5"
+          "px-docs_1.5 pb-[57px] pt-docs_1.5"
         )}
         id="sidebar"
       >
-        <div className="mb-1.5 lg:hidden">
+        <div className="mb-docs_1.5 lg:hidden">
           {!items.mobile.length && <Loading className="px-0" />}
           {items.mobile.map((item, index) => (
-            <SidebarItem item={item} key={index} />
+            <SidebarItem item={item} key={index} expandItems={expandItems} />
           ))}
         </div>
-        <div className="mb-1.5">
+        <div className="mb-docs_1.5">
           {!items.top.length && <Loading className="px-0" />}
           {items.top.map((item, index) => (
-            <SidebarItem item={item} key={index} />
+            <SidebarItem item={item} key={index} expandItems={expandItems} />
           ))}
         </div>
-        <div className="mb-1.5">
+        <div className="mb-docs_1.5">
           {!items.bottom.length && <Loading className="px-0" />}
           {items.bottom.map((item, index) => (
-            <SidebarItem item={item} key={index} />
+            <SidebarItem item={item} key={index} expandItems={expandItems} />
           ))}
         </div>
       </ul>
     </aside>
   )
 }
-
-export default Sidebar

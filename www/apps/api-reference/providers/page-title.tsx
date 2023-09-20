@@ -1,9 +1,8 @@
 "use client"
 
 import { createContext, useEffect } from "react"
-import { useSidebar } from "./sidebar"
+import { capitalize, useSidebar } from "docs-ui"
 import { useArea } from "./area"
-import capitalize from "../utils/capitalize"
 
 const PageTitleContext = createContext(null)
 

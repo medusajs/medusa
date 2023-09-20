@@ -1,4 +1,4 @@
-export default function checkSidebarItemVisibility(
+export function checkSidebarItemVisibility(
   item: Element,
   options?: {
     topMargin?: number
