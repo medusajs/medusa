@@ -351,12 +351,14 @@ describe("PricingModule Service - PriceSet", () => {
         ])
       })
 
-      it("retrieves the calculated prices when multiple context is set", async () => {
+      it("retrieves the null calculated prices when multiple context is set that does not exist", async () => {
         const priceSetsResult = await service.calculatePrices(
-          { id: ["price-set-1", "price-set-2"] },
+          { id: ["price-set-1"] },
           {
             context: {
+              currency_code: "USD",
               region_id: "US",
+              doesnotexist: "doesnotexist",
             },
           }
         )
@@ -369,8 +371,23 @@ describe("PricingModule Service - PriceSet", () => {
             min_quantity: null,
             max_quantity: null,
           },
+        ])
+      })
+
+      it("returns null conditions for a singular rule type that is part of a compound rule", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-1"] },
           {
-            id: "price-set-2",
+            context: {
+              // A rule with region_id alone is not seeded
+              region_id: "US",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
             amount: null,
             currency_code: null,
             min_quantity: null,
@@ -398,7 +415,7 @@ describe("PricingModule Service - PriceSet", () => {
         ])
       })
 
-      it("retrieves the calculated prices when a context is set, but not present in the db", async () => {
+      it("retrieves the calculated prices when a context is set, but price rule value is not present in the db", async () => {
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-1", "price-set-2"] },
           {

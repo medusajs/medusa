@@ -117,7 +117,7 @@ export default class PricingModuleService<
 
     // A subquery that counts the price rules with the price_set_money_amount of the parent
     // This is used to do an exact match of "rules" to "context"
-    const priceRulesCountQb = manager
+    const priceRulesCountSubquery = manager
       .createQueryBuilder(PriceRule, "pr_count")
       .count(["id"])
       .where({
@@ -126,38 +126,36 @@ export default class PricingModuleService<
 
     // Get all psma from rules where rule type exact matches the context conditions
     // Here we are scoping the price rules by exact matching with the context to the db values
-    const priceRulesQb = manager
+    const priceRulesSubquery = manager
       .createQueryBuilder(PriceRule, "pr")
       .select(["pr.price_set_money_amount_id"], false)
       .join("pr.rule_type", "rt")
       .where({
-        "rt.id": {
-          $in: ruleTypesQb.getKnexQuery(),
-        },
-        "pr.value": {
-          $in: priceRuleValues,
-        },
-        [Object.entries(context).length]: priceRulesCountQb.getKnexQuery(),
+        "rt.id": { $in: ruleTypesQb.getKnexQuery() },
+        "pr.value": { $in: priceRuleValues },
+        [Object.entries(context).length]:
+          priceRulesCountSubquery.getKnexQuery(),
       })
 
     // Apply the build subqueries and join it with price set money amounts and price rules
     // via the price set
-    const qb = manager
+    // This will give the price sets where the rules match
+    const priceSetQuery = manager
       .createQueryBuilder(PriceSet, "ps")
       .select(["ps.id"], true)
       .join("ps.price_set_money_amounts", "psma", {})
       .leftJoinAndSelect("psma.money_amount", "ma", {
-        "psma.id": [priceRulesQb.getKnexQuery()],
+        "psma.id": [priceRulesSubquery.getKnexQuery()],
       })
       .where(priceSetFilters)
 
     // this is a missed implementation in mikroORM that mimics
     // entity building and merging of duplicated rows.
-    const joinedProps = (qb as any)._joinedProps
-    const driver = (qb as any).driver
-    const mainAlias = (qb as any).mainAlias
+    const joinedProps = (priceSetQuery as any)._joinedProps
+    const driver = (priceSetQuery as any).driver
+    const mainAlias = (priceSetQuery as any).mainAlias
 
-    let queryBuilderResults = await qb.execute()
+    let queryBuilderResults = await priceSetQuery.execute()
 
     if (joinedProps.size > 0) {
       queryBuilderResults = driver.mergeJoinedResult(
