@@ -107,6 +107,7 @@ export default class PricingModuleService<
     const priceRuleValues = Object.entries(context).map(([k, v]) => v)
     const knex = manager.getKnex()
 
+    // Gets all the rule_type records from the context
     const ruleTypesQb = manager
       .createQueryBuilder(RuleType, "rt")
       .select(["id"])
@@ -114,6 +115,8 @@ export default class PricingModuleService<
         rule_attribute: ruleAttributes,
       })
 
+    // A subquery that counts the price rules with the price_set_money_amount of the parent
+    // This is used to do an exact match of "rules" to "context"
     const priceRulesCountQb = manager
       .createQueryBuilder(PriceRule, "pr_count")
       .count(["id"])
@@ -122,7 +125,8 @@ export default class PricingModuleService<
       })
 
     // Get all psma from rules where rule type exact matches the context conditions
-    const prQb = manager
+    // Here we are scoping the price rules by exact matching with the context to the db values
+    const priceRulesQb = manager
       .createQueryBuilder(PriceRule, "pr")
       .select(["pr.price_set_money_amount_id"], false)
       .join("pr.rule_type", "rt")
@@ -144,7 +148,7 @@ export default class PricingModuleService<
       .where({ id: { $in: pricingFilters.id } })
       .join("ps.price_set_money_amounts", "psma", {})
       .leftJoinAndSelect("psma.money_amount", "ma", {
-        "psma.id": [prQb.getKnexQuery()],
+        "psma.id": [priceRulesQb.getKnexQuery()],
       })
       .where(priceSetFilters)
 
