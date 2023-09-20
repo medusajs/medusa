@@ -243,6 +243,7 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
  */
 function CustomerGroupDetails() {
   const { id } = useParams()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const { customer_group, isLoading, error } = useAdminCustomerGroup(id!)
