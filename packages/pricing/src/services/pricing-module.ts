@@ -104,29 +104,32 @@ export default class PricingModuleService<
 
     const manager = sharedContext.manager as EntityManager
 
-    const where: any[] = Object.entries(context).map(([key, value]) => {
-      return {
-        $and: [
-          { "rt.rule_attribute": key },
-          {
-            "pr.value": value,
-          },
-        ],
-      }
-    })
+    const ruleAttributeKeys = Object.entries(context).map(([k, v]) => k)
+    const priceRuleValues = Object.entries(context).map(([k, v]) => v)
+    // TODO: Remove this when query building
+    const inClause = (ids) => ids.map((id) => "'" + id + "'").join()
 
-    // Get all the prices rules that matches the count of pricing contexts
-    // and the attributes provided in the context
-    const psmqQb = manager
+    // Get all psma from rules where rule type exact matches the context conditions
+    const prQb = manager
       .createQueryBuilder(PriceRule, "pr")
       .select(["pr.price_set_money_amount_id"], false)
-      .leftJoin("pr.rule_type", "rt", {})
-      .where(where)
-      .groupBy(["pr.price_set_money_amount_id"])
-      .having(
-        `COUNT(pr.price_set_money_amount_id) = ${
-          Object.entries(context).length
-        }`
+      .join("pr.rule_type", "rt")
+      // TODO: build this to query building format
+      .where(
+        `
+          rt.id IN (
+                      SELECT id FROM rule_type
+                      WHERE rule_attribute IN (${
+                        inClause(ruleAttributeKeys) || null
+                      })
+                    )
+          AND pr.value IN (${inClause(priceRuleValues) || null})
+          AND (
+            SELECT COUNT(pr2.id)
+            FROM price_rule pr2
+            WHERE pr.price_set_money_amount_id = pr2.price_set_money_amount_id
+          ) = ${Object.entries(context).length}
+        `
       )
 
     // Apply the build subqueries and join it with price set money amounts and price rules
@@ -137,7 +140,7 @@ export default class PricingModuleService<
       .where({ id: { $in: pricingFilters.id } })
       .leftJoin("ps.price_set_money_amounts", "psma", {})
       .leftJoinAndSelect("psma.money_amount", "ma", {
-        "psma.id": [psmqQb.getKnexQuery()],
+        "psma.id": [prQb.getKnexQuery()],
       })
 
     // this is a missed implementation in mikroORM that mimics

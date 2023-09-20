@@ -46,7 +46,6 @@ describe("PricingModule Service - PriceSet", () => {
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = MikroOrmWrapper.forkManager()
-
     service = await initialize({
       database: {
         clientUrl: DB_URL,
