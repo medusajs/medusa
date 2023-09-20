@@ -745,6 +745,32 @@ describe("Inventory Items endpoints", () => {
         )
       })
 
+      it("should get inventoryLevel by id", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevels([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            stocked_quantity: 10,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            stocked_quantity: 10,
+          },
+        ])
+
+        const [[inventoryLevel]] = await inventoryService.listInventoryLevels()
+
+        const retrievedInventoryLevel =
+          await inventoryService.retrieveInventoryLevel(inventoryLevel.id)
+
+        expect(retrievedInventoryLevel).toEqual(inventoryLevel)
+      })
+
       it("should bulk remove the inventory items", async () => {
         const [items] = await inventoryService.listInventoryItems()
 

@@ -162,20 +162,41 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return the retrieved inventory level
    */
+
   async retrieveInventoryLevel(
-    inventoryItemId: string,
+    inventoryLevelId: string,
+    context?: SharedContext
+  )
+  async retrieveInventoryLevel(
+    inventoryLevelId: string,
     locationId: string,
+    context: SharedContext
+  )
+  async retrieveInventoryLevel(
+    inventoryItemOrInventoryLevelId: string,
+    locationIdOrContext: string | SharedContext | undefined,
     context: SharedContext = {}
   ): Promise<InventoryLevelDTO> {
+    if (typeof locationIdOrContext !== "string") {
+      return await this.inventoryLevelService_.retrieve(
+        inventoryItemOrInventoryLevelId,
+        {},
+        locationIdOrContext as SharedContext
+      )
+    }
+
     const [inventoryLevel] = await this.inventoryLevelService_.list(
-      { inventory_item_id: inventoryItemId, location_id: locationId },
+      {
+        inventory_item_id: inventoryItemOrInventoryLevelId,
+        location_id: locationIdOrContext,
+      },
       { take: 1 },
       context
     )
     if (!inventoryLevel) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Inventory level for item ${inventoryItemId} and location ${locationId} not found`
+        `Inventory level for item ${inventoryItemOrInventoryLevelId} and location ${locationIdOrContext} not found`
       )
     }
     return inventoryLevel

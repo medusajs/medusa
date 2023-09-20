@@ -42,6 +42,7 @@ export interface IInventoryService {
     context?: SharedContext
   ): Promise<InventoryItemDTO>
 
+  retrieveInventoryLevel(inventoryLevelId: string, context: SharedContext): Promise<InventoryLevelDTO>
   retrieveInventoryLevel(
     inventoryItemId: string,
     locationId: string,
