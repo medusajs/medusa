@@ -11,7 +11,7 @@ import {
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
-  defaultAdminRemoteQueryFields,
+  defaultAdminProductRemoteQueryObject,
 } from "."
 import {
   PricingService,
@@ -288,7 +288,7 @@ async function getProductWithIsolatedProductModule(req, id) {
   const query = {
     product: {
       __args: variables,
-      ...defaultAdminRemoteQueryFields,
+      ...defaultAdminProductRemoteQueryObject,
     },
   }
 
