@@ -14,7 +14,7 @@ import Table from "../molecules/table"
 import DeletePrompt from "../organisms/delete-prompt"
 import EditUser from "../organisms/edit-user-modal"
 import { useTranslation } from "react-i18next"
-import { getAdminPath, getFullAdminPath } from "../../utils/get-admin-path"
+import { getFullAdminPath } from "../../utils/get-admin-path"
 
 type UserListElement = {
   entity: any
