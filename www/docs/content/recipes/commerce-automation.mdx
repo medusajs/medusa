@@ -12,9 +12,9 @@ This document guides you on how you can implement different forms of commerce au
 
 ## Overview
 
-Commerce automation is essential for businesses that want to save costs, provide better user experience, and avoid manual, repetitive tasks that can lead to human errors. Businesses can utilize it in different domains, including marketing, customer support, order management, and more.
+Commerce automation is essential for businesses that want to save costs, provide a better user experience, and avoid manual, repetitive tasks that can lead to human errors. Businesses can utilize it in different domains, including marketing, customer support, order management, and more.
 
-Medusa provides you with the necessary architecture and resources to implement commerce automation related to order management, customer service, and more. Mainly, it utilizes an event bus that allows you to listen to certain event triggers and perform asynchronously actions.
+Medusa provides the necessary architecture and resources to implement commerce automation related to order management, customer service, and more. It mainly utilizes an event bus that allows you to listen to specific event triggers and perform asynchronous actions.
 
 This document gives a high-level overview of how you can implement different types of commerce automation.
 
@@ -69,11 +69,11 @@ Medusa already provides a [Re-stock notifications plugin](../plugins/other/resto
 
 ## Automated Customer Support
 
-Customer support is essential to build a store’s brand and customer loyalty. This can include integrating with third-party services or automating notifications sent to customers when changes happen related to their orders, returns, exchanges, and more.
+Customer support is essential to build a store's brand and customer loyalty. This can include integrating with third-party services or automating notifications sent to customers when changes happen related to their orders, returns, exchanges, and more.
 
-Using Medusa’s Notification Service, you can handle notifications triggered from actions on the customer’s orders or profile.
+You can use Medusa's Notification Service to handle notifications triggered by actions on customer orders or profiles.
 
-For example, when an order's status is updated, the `order.updated` event is triggered. You can create a Notification Service that handles this event by sending the customer an email informing them of the status update.
+For example, when an order's status is updated, the `order.updated` event is triggered. You can create a Notification Service that handles this event by emailing the customer about the status update.
 
 The [Event reference](../development/events/events-list.md) includes an extensive list of events triggered by the Medusa core.
 
@@ -164,7 +164,7 @@ class NewNoteSubscriber {
       templateId: "order-update",
       from: "hello@medusajs.com",
       to: order.email,
-      data: {
+      dynamic_template_data: {
         // any data necessary for your template...
         note_text: note.value,
         note_author: note.author.first_name,
@@ -184,7 +184,7 @@ export default NewNoteSubscriber
 
 ## Automatic Data Synchronization
 
-As your commerce store gets bigger, you’ll likely need to synchronize data across different systems. For example, synchronizing data with an ERP system or a data warehouse.
+As your commerce store grows, you'll likely need to synchronize data across different systems. For example, you can synchronize data with an ERP system or a data warehouse.
 
 You can implement automatic synchronization in Medusa using scheduled jobs. A scheduled job runs at a specified date and time interval in the background of your Medusa backend. Within the scheduled job, you can synchronize your internal or external data.
 
@@ -272,11 +272,11 @@ Notice that here it’s assumed that:
 
 ## Order Management Automation
 
-Using Medusa’s architecture and commerce features, you can automate a large amount of order management functionalities.
+Using Medusa's architecture and commerce features, you can automate a large amount of order management functionalities.
 
-By utilizing the event bus service, you can handle events within an order workflow to automate actions. For example, when an order is placed, you can listen to the `order.placed` event and automatically create a fulfillment if a set of predefined conditions are met.
+Using the event bus service, you can handle events within an order workflow to automate actions. For example, when an order is placed, you can listen to the `order.placed` event and automatically creates a fulfillment if predefined conditions are met.
 
-Another example is automatically capturing payment when an order is fully shipped and the `order.shipment_created` is triggered.
+Another example is automatically capturing payment when an order is fully shipped, and the `order.shipment_created` is triggered.
 
 <DocCardList colSize={4} items={[
   {
@@ -312,15 +312,15 @@ Another example is automatically capturing payment when an order is fully shippe
 
 ## Automated RMA Flow
 
-Business need to optimize their Return Merchandise Authorization (RMA) flow to ensure a good customer experience and service. By automating the flow, customers can request to return their received items, and businesses can quickly support them.
+Businesses must optimize their Return Merchandise Authorization (RMA) flow to ensure a good customer experience and service. By automating the flow, customers can request to return their received items, and businesses can quickly support them.
 
-Medusa’s commerce features are geared towards automating RMA flows and ensuring a good customer experience.
+Medusa's commerce features are geared towards automating RMA flows and ensuring a good customer experience.
 
 For example, customers can create returns for their orders without direct involvement from the store operator. The store operator will then receive a notification regarding the return and handle it accordingly. The same applies to order exchanges.
 
 Medusa also allows the store operator to edit orders, receive customer approval for the edits, and authorize additional payment if necessary, all within a seamless workflow.
 
-Similar to the examples mentioned earlier, each of these actions trigger events that you can listen to and perform additional actions based on your use case.
+Similar to the examples mentioned earlier, each action triggers events you can listen to and perform additional actions based on your use case.
 
 <DocCardList colSize={4} items={[
   {
@@ -383,11 +383,11 @@ Similar to the examples mentioned earlier, each of these actions trigger events 
 
 ## Customer Segmentation
 
-Businesses use Customer Segmentation to oragnize customers into different groups, then apply different price rules to these groups. For example, you may group customers by their product preferences, the number of orders they’ve placed, or geographical location.
+Businesses use Customer Segmentation to organize customers into different groups and then apply different price rules to these groups. For example, you may group customers by their product preferences, the number of orders they've placed, or geographical location.
 
-Based on your use case and the logic of segmentation, you can use different Medusa automation development tools to detect a customer’s segment. Medusa also provides a Customer Groups feature that allows you to segment customers, whether you do it manually or automatically.
+Based on your use case and the segmentation logic, you can use different Medusa automation development tools to detect a customer's segment. Medusa also provides a Customer Groups feature that allows you to segment customers, whether you do it manually or automatically.
 
-For example, if you’re grouping together customers with more than twenty orders, you can use a Subscriber that listens to the `order.placed` event and checks the number of orders the customer has so far. Then, using Medusa’s Customer Groups feature, you can add that customer to the VIP group. Finally, you can utilize the Price Lists feature to provide different prices or discounts for customers in the VIP group.
+For example, if you're grouping customers with over twenty orders, you can use a Subscriber that listens to the `order.placed` event and checks the number of orders the customer has so far. Then, you can add that customer to the VIP group using Medusa's Customer Groups feature. Finally, you can utilize the Price Lists feature to provide different prices or discounts for customers in the VIP group.
 
 <DocCardList colSize={4} items={[
   {
@@ -623,7 +623,7 @@ class SendProductsNewsletterSubscriber {
           name: customer.first_name,
           email: customer.email,
         })),
-        data: {
+        dynamic_template_data: {
           // any data necessary for your template...
           products,
         },
@@ -647,7 +647,7 @@ export default SendProductsNewsletterSubscriber
 
 ## Automation Development Toolkit
 
-The use cases mentioned in this guide are just some examples of what commerce automation you can perform or implement with Medusa. Medusa provides the necessary development tools and mechanisms that allow you to automate tasks and manual work.
+The use cases mentioned in this guide exemplify what commerce automation you can perform or implement with Medusa. Medusa provides the necessary development tools and mechanisms to automate tasks and manual work.
 
 <DocCardList colSize={6} items={[
   {

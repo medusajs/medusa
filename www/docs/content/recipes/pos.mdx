@@ -7,15 +7,13 @@ import Icons from '@theme/Icon';
 
 # POS
 
-This document guides you through the different features and resources available in Medusa to create a point-of-sale (POS) system.
+This document guides you through Medusa's different features and resources to create a point-of-sale (POS) system.
 
 ## Overview
 
-A POS system can be used in a business’s retail or offline stores to access and manage products and their inventories, and place orders for customers. Based on your use case, you can provide more features that can improve the customer experience. For example, customer discounts or Return Merchandise Authorization (RMA) features.
+Building a POS system on top of an ecommerce engine introduces challenges related to the tech stack used, data sync across channels, and feature availability relevant to offline sales in a POS, not just online sales.
 
-Medusa’s architecture, commerce features, and customization capabilities allow you to build a POS system without any limitations or restrictions.
-
-Medusa’s headless backend facilitates creating any type of frontend that can communicate with the backend, including a POS system. Also, Medusa’s commerce features, including mutli-warehouse, sales channels, and order management features, can power your POS system to provide essential features for both store operators and customers making their purchase.
+Medusa's modular architecture solves these challenges. Any frontend can utilize Medusa's commerce features through its REST APIs. Medusa's commerce features include multi-warehouse and sales channel features that facilitate integrating a POS system.
 
 :::tip
 
@@ -27,11 +25,11 @@ Recommended read: [How Tekla built a POS system with Medusa](https://medusajs.co
 
 ## Freedom in Choosing Your POS Tech Stack
 
-When you decide to build a POS system, you have to make an important choice of which programming framework, language, or tool you want to use. In most cases, this can be interdependent on the commerce engine, as it can limit your choices.
+When you build a POS system, you must choose which programming framework, language, or tool you want to use.
 
-Medusa’s modular architecture removes any restrictions you may have while making this choice. Regardless of what you choose, any client or front end can connect to the Medusa backend using its headless REST APIs. So, when building the POS system, you’ll be interacting with the [Admin REST APIs](https://docs.medusajs.com/api/admin).
+Medusa's modular architecture removes any restrictions you may have while making this choice. Any client or front end can connect to the Medusa backend using its headless REST APIs.
 
-For example, you can use [Expo](https://expo.dev/) with [React Native](https://reactnative.dev/) to build a cross-platform POS app. In this case, you can also utilize [Medusa’s JavaScript client](../js-client/overview.md) to make it even easier to send requests to the backend.
+![POS Tech Stack](https://res.cloudinary.com/dza7lstvk/image/upload/v1695114981/Medusa%20Docs/Diagrams/pos-tech-stack_j6mkyc.jpg)
 
 <DocCardList colSize={4} items={[
   {
@@ -67,13 +65,13 @@ For example, you can use [Expo](https://expo.dev/) with [React Native](https://r
 
 ## Integrate a Barcode Scanner
 
-An essential feature a POS system needs is the capability to search and find products by scanning their barcode. You can then check their inventory information or add them to the customer’s order.
+POS systems make the checkout process smoother by integrating a barcode scanner. Merchants can scan a product by its barcode to check its details or add it to the customer's purchase.
 
-Medusa’s [Product Variant entity](../references/entities/classes/ProductVariant.md), which represents a saleable stock item, already includes the necessary attributes to implement this integration, mainly the `barcode` attribute. Other notable attributes include `ean`, `upc`, and `hs_code`, among others.
+Medusa’s [Product Variant entity](../references/entities/classes/ProductVariant.md) includes the necessary attributes to implement this integration, mainly the `barcode` attribute. Other notable attributes include `ean`, `upc`, and `hs_code`, among others.
 
-To search through product variants by their barcode, you can create a custom endpoint and use it within your POS. The endpoint can receive the item’s barcode, and return all product variants having that barcode.
+To search through product variants by their barcode, you can create a custom endpoint and call it within your POS.
 
-You can also create another custom endpoint that allows you to scan products in your store by their barcode and automatically add them to your backend. This eliminates the need to enter your product details manually.
+![Example flow of integrating a barcode scanner](https://res.cloudinary.com/dza7lstvk/image/upload/v1695115066/Medusa%20Docs/Diagrams/pos-scan-barcode_xaa61c.jpg)
 
 <DocCardList colSize={6} items={[
   {
@@ -133,7 +131,7 @@ export default (rootDirectory: string): Router | Router[] => {
   const router = Router()
   
   router.get(
-    "/store/search-barcode", 
+    "/pos/search-barcode", 
     cors(storeCorsOptions), 
     wrapHandler(
       async (req: Request, res: Response) => {
@@ -174,15 +172,13 @@ export default (rootDirectory: string): Router | Router[] => {
 
 ## Access Accurate Inventory Details
 
-As you manage an online and offline store, it’s important to make a separation between inventory quantity across different locations. For example, when an online order is made, the change in the inventory quantity of the order items should be made from the warehouse’s inventory, and not from the retail store’s.
+As you manage an online and offline store, it's essential to separate inventory quantity across different locations.
 
-Medusa’s multi-warehouse features allow you to manage the inventory items and their availability across locations and sales channels. You can create a sales channel for your online store and a sales channel for your POS system, then manage the inventory quantity of product variants in each of those sales channels. You can also have different sales channels for different retail stores that use the POS system.
+Using Medusa's multi-warehouse features, merchants can manage the inventory items and their availability across locations and sales channels. They can create a sales channel for their online store and a sales channel for their POS system, then manage the inventory quantity of product variants in each channel.
 
-When a customer browses your online store and wants to make a purchase, they can only buy items that are available in stock in the location associated with the online store’s channel.
+![Using Multi-warehouse features with POS](https://res.cloudinary.com/dza7lstvk/image/upload/v1695115132/Medusa%20Docs/Diagrams/pos-multiwarehouse__1_jscw9e.jpg)
 
-In the POS system, you can use the admin [stock location](https://docs.medusajs.com/api/admin#stock-locations) and [inventory item APIs](https://docs.medusajs.com/api/admin#inventory-items) to check whether an item is available in inventory or not. This helps store operators provide better and quicker customer service.
-
-This also opens the door for other business opportunities, such as an endless aisle experience. If a product isn’t available in-store but is available in other warehouses, you can allow a customer to purchase that item in-store and have it delivered to their address.
+This also opens the door for other business opportunities, such as an endless aisle experience. Suppose a product isn't available in-store but is available in different warehouses. In that case, you can allow customers to purchase that item in-store and deliver it to their address.
 
 <DocCardList colSize={4} items={[
   {
@@ -218,13 +214,9 @@ This also opens the door for other business opportunities, such as an endless ai
 
 ## Build an Omni-channel Customer Experience
 
-A customer making a purchase in-store should have the same benefits as an online customer. You can find their customer details, if they’re registered in the ecommerce store, and provide them with applicable discounts if necessary.
+Using Medusa's Customer APIs and features, you can retrieve a customer's details from the backend and place an order on the POS under their account. The customer can then view their order details on their online profile as if they had placed the order online.
 
-Using Medusa’s Customer APIs and features, you can easily query customers and place an order under their account. The customer can then view their order details on their profile as if they had placed the order online.
-
-In addition, using Medusa’s dynamic discounts feature, store operators can create discounts on the fly for customers using the POS system and apply them to their orders. This improves customer experience and builds customer loyalty.
-
-You can further customize your setup to provide a better customer experience. For example, you can create a rewards system or loyalty points that your customers can benefit from when they make purchases either through the POS system or the online store.
+In addition, using Medusa's dynamic discounts feature, store operators can create discounts on the fly for customers using the POS system and apply them to their orders. You can also extend Medusa to provide features for a better customer experience, such as a rewards system or loyalty points.
 
 <DocCardList colSize={6} items={[
   {
@@ -251,13 +243,11 @@ You can further customize your setup to provide a better customer experience. Fo
 
 ## Accept Payment, Place Order, and Use RMA Features
 
-The first element to placing an order is accepting the customer’s payment. This is handled differently based on the payment methods you want to provide.
+Medusa's architecture allows you to integrate any third-party payment processor for your POS and online storefront. For example, you can integrate [Stripe Terminal](https://stripe.com/terminal) to accept in-store payments.
 
-Medusa provides a [manual payment processor](https://github.com/medusajs/medusa/tree/develop/packages/medusa-payment-manual) with a minimal implementation that assumes merchants handle all payment operations manually. Alternatively, you can integrate payment processors that allow you to accept in-store payments, such as [Stripe Terminal](https://stripe.com/terminal), by creating a payment processor.
+Once you accept the payment, you can place an order in the POS system using the [Draft Order APIs](https://docs.medusajs.com/api/admin#draft-orders). Draft orders provide similar features to an online checkout experience, including discounts, payment processing, and more.
 
-To place an order in the POS system, you can use the [Draft Order APIs](https://docs.medusajs.com/api/admin#draft-orders). This would allow the store operator to place the order under the customer’s account if they’re registered, and add all the necessary details related to discounts and more, similar to placing an order through the online store.
-
-Using the Medusa admin dashboard, merchants can view all orders coming from different sales channels. This keeps logistics and order handling consistent throughout orders. This also allows customers who place their order in-store to benefit from features like returns and exchanges or swaps that are already available for online store orders.
+Then, merchants can view all orders coming from different sales channels using the Medusa admin dashboard. This keeps logistics and order handling consistent and allows businesses to provide return and exchange features to online and in-store customers.
 
 <DocCardList colSize={6} items={[
   {

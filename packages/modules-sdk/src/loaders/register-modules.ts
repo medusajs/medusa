@@ -73,12 +73,6 @@ export const registerMedusaModule = (
     throw new Error(`Module: ${moduleKey} is not defined.`)
   }
 
-  if (modDefinition.isLegacy) {
-    throw new Error(
-      `Module: ${moduleKey} is a legacy module. Please use registerModules instead.`
-    )
-  }
-
   if (
     isObject(moduleDeclaration) &&
     moduleDeclaration?.scope === MODULE_SCOPE.EXTERNAL
