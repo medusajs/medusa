@@ -13,7 +13,7 @@ import {
 import MoneyAmount from "./money-amount"
 import { PriceListStatus, PriceListType } from "@medusajs/types"
 
-type OptionalRelations = "prices"
+type OptionalRelations = "money_amounts"
 type OptionalFields =
   | "type"
   | "status"
@@ -54,7 +54,7 @@ class PriceList {
   ends_at: Date | null
 
   @OneToMany({ entity: () => MoneyAmount, mappedBy: "price_list", orphanRemoval: true })
-  prices: MoneyAmount[]
+  money_amounts: MoneyAmount[]
 
   @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
   created_at: Date

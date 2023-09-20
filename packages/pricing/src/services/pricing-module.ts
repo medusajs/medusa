@@ -614,7 +614,7 @@ export default class PricingModuleService<
               sharedContext
             )
 
-          createdPriceList.prices = moneyAmounts
+          createdPriceList.money_amounts = moneyAmounts
         }
 
         return createdPriceList
@@ -659,11 +659,18 @@ export default class PricingModuleService<
       sharedContext
     )
 
-    const [existingPrices, newPrices]: [
+    const [existingPrices, newPrices] = prices.reduce((acc, price) => {
+      if (price.id) {
+        acc[0].push(price as PricingTypes.UpdateMoneyAmountDTO )
+      } else {
+        acc[1].push(price as PricingTypes.CreateMoneyAmountDTO )
+      }
+      return acc
+    }, ([[], []] as [
       PricingTypes.UpdateMoneyAmountDTO[],
       PricingTypes.CreateMoneyAmountDTO[]
-    ] = partition(prices, (p): p is PricingTypes.UpdateMoneyAmountDTO => !!p['id'])
-
+    ]))
+    
     await Promise.all([
       this.moneyAmountService_.update(existingPrices, sharedContext),
       this.moneyAmountService_.create(newPrices, sharedContext),
