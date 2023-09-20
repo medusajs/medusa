@@ -145,7 +145,6 @@ export default class PricingModuleService<
     const qb = manager
       .createQueryBuilder(PriceSet, "ps")
       .select(["ps.id"], true)
-      .where({ id: { $in: pricingFilters.id } })
       .join("ps.price_set_money_amounts", "psma", {})
       .leftJoinAndSelect("psma.money_amount", "ma", {
         "psma.id": [priceRulesQb.getKnexQuery()],
