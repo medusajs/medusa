@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "description": "Building blocks for digital commerce",
   "main": "dist/index.js",
   "bin": "./cli.js",
@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@medusajs/medusa-cli": "^1.3.21",
-    "@medusajs/modules-sdk": "^1.11.0",
+    "@medusajs/modules-sdk": "^1.11.2",
     "@medusajs/orchestration": "^0.4.0",
     "@medusajs/utils": "^1.10.1",
     "@medusajs/workflows": "^0.2.2",
