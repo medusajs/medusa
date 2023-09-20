@@ -75,8 +75,8 @@ describe("PriceList Service", () => {
           id: ["price-list-1"],
         },
         {
-          select: ["id", "name", "prices.id"],
-          relations: ["prices"],
+          select: ["id", "name", "money_amounts.id"],
+          relations: ["money_amounts"],
         }
       )
 
@@ -86,7 +86,7 @@ describe("PriceList Service", () => {
         {
           id: "price-list-1",
           name: "Default Price List",
-          prices: [
+          money_amounts: [
             {
               id: "pl-money-amount-USD",
               price_list_id: "price-list-1", // TODO: this is not correct
@@ -149,8 +149,8 @@ describe("PriceList Service", () => {
           id: ["price-list-1"],
         },
         {
-          select: ["id", "name", "prices.id"],
-          relations: ["prices"],
+          select: ["id", "name", "money_amounts.id"],
+          relations: ["money_amounts"],
         }
       )
 
@@ -161,7 +161,7 @@ describe("PriceList Service", () => {
         {
           id: "price-list-1",
           name: "Default Price List",
-          prices: [
+          money_amounts: [
             {
               id: "pl-money-amount-USD",
               price_list_id: "price-list-1", // TODO: this is not correct
@@ -321,10 +321,10 @@ describe("PriceList Service", () => {
   })
 
   describe("create", () => {
-    it("should create a price list successfully without prices", async () => {
+    it("should create a price list successfully without money_amounts", async () => {
       const data = {
         id: "price-list-3",
-        name: "no prices",
+        name: "no money_amounts",
         description: "created description",
         type: PriceListType.OVERRIDE,
         status: PriceListStatus.DRAFT,
@@ -341,10 +341,10 @@ describe("PriceList Service", () => {
       )
     })
 
-    it("should create a price list successfully with prices", async () => {
+    it("should create a price list successfully with money_amounts", async () => {
       const data = {
         id: "price-list-3",
-        name: "no prices",
+        name: "no money_amounts",
         description: "created description",
         type: PriceListType.OVERRIDE,
         status: PriceListStatus.DRAFT,
@@ -358,13 +358,13 @@ describe("PriceList Service", () => {
           amount: 333,
         }
 
-      await service.create([{...data, prices: [price]}])
+      await service.create([{...data, money_amounts: [price]}])
 
       const priceList = await service.retrieve("price-list-3", { 
-        relations: ["prices"]
+        relations: ["money_amounts"]
       })
 
-      expect(priceList.prices.getItems()).toEqual([
+      expect(priceList.money_amounts.getItems()).toEqual([
         expect.objectContaining({...price, amount: '333'})
       ])
       expect(priceList).toEqual(

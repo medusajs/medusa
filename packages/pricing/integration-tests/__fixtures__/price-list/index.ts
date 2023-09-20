@@ -20,7 +20,7 @@ export async function createPriceLists(
         createdPrices.push(createdPrice)
       }
 
-      priceList.prices = createdPrices
+      priceList.money_amounts = createdPrices
     }
 
     priceLists.push(priceList)
