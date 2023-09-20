@@ -352,6 +352,34 @@ describe("PricingModule Service - PriceSet", () => {
         ])
       })
 
+      it("retrieves the calculated prices when multiple context is set", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-1", "price-set-2"] },
+          {
+            context: {
+              region_id: "US",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-1",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          {
+            id: "price-set-2",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
+
       it("retrieves the calculated prices only when id exists in the database", async () => {
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-doesnotexist", "price-set-1"] },
