@@ -14,12 +14,15 @@ import {
   CartService,
   DraftOrderService,
   LineItemService,
+  ProductVariantService,
 } from "../../../../services"
 
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { validator } from "../../../../utils/validator"
+import { prepareLineItemData } from "@medusajs/utils"
+import { ProductVariantDTO } from "@medusajs/types"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/line-items
@@ -98,6 +101,10 @@ export default async (req, res) => {
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const entityManager: EntityManager = req.scope.resolve("manager")
 
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
+
   await entityManager.transaction(async (manager) => {
     const draftOrder = await draftOrderService
       .withTransaction(manager)
@@ -114,15 +121,15 @@ export default async (req, res) => {
     }
 
     if (validated.variant_id) {
+      const variant = (await productVariantService
+        .withTransaction(manager)
+        .retrieve(validated.variant_id!)) as unknown as ProductVariantDTO
+
       const line = await lineItemService
         .withTransaction(manager)
-        .generate(
-          validated.variant_id,
-          draftOrder.cart.region_id,
-          validated.quantity,
-          {
-            metadata: validated.metadata,
-            unit_price: validated.unit_price,
+        .generate(prepareLineItemData(variant, validated.quantity), {
+          metadata: validated.metadata,
+          unit_price: validated.unit_price,
           }
         )
 

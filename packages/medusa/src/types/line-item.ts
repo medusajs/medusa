@@ -1,19 +1,8 @@
+import { LineItemCreateData } from "@medusajs/utils"
+
 import { CalculationContextData } from "./totals"
 
-export type GenerateInputData = {
-  variantId: string
-  title: string
-  product_id: string
-  product: {
-    title: string
-    thumbnail: string | null
-    discountable: boolean
-    is_giftcard: boolean
-  }
-  quantity: number
-  metadata?: Record<string, unknown>
-  unit_price?: number
-}
+export type GenerateInputData = LineItemCreateData
 
 export type GenerateLineItemContext = {
   region_id?: string

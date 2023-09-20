@@ -30,9 +30,11 @@ import { isDefined, MedusaError } from "medusa-core-utils"
 import { buildQuery, isString } from "../utils"
 
 import EventBusService from "./event-bus"
-import { IInventoryService } from "@medusajs/types"
+import { IInventoryService, ProductVariantDTO } from "@medusajs/types"
 import { OrderEditRepository } from "../repositories/order-edit"
 import { TransactionBaseService } from "../interfaces"
+import ProductVariantService from "./product-variant"
+import { prepareLineItemData } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -44,6 +46,7 @@ type InjectedDependencies = {
   lineItemService: LineItemService
   eventBusService: EventBusService
   taxProviderService: TaxProviderService
+  productVariantService: ProductVariantService
   lineItemAdjustmentService: LineItemAdjustmentService
   orderEditItemChangeService: OrderEditItemChangeService
 
@@ -68,6 +71,7 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly lineItemService_: LineItemService
   protected readonly eventBusService_: EventBusService
   protected readonly taxProviderService_: TaxProviderService
+  protected readonly productVariantService_: ProductVariantService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService
   protected readonly inventoryService_: IInventoryService | undefined
@@ -79,6 +83,7 @@ export default class OrderEditService extends TransactionBaseService {
     eventBusService,
     totalsService,
     newTotalsService,
+    productVariantService,
     orderEditItemChangeService,
     lineItemAdjustmentService,
     taxProviderService,
@@ -93,6 +98,7 @@ export default class OrderEditService extends TransactionBaseService {
     this.eventBusService_ = eventBusService
     this.totalsService_ = totalsService
     this.newTotalsService_ = newTotalsService
+    this.productVariantService_ = productVariantService
     this.orderEditItemChangeService_ = orderEditItemChangeService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.taxProviderService_ = taxProviderService
@@ -549,6 +555,12 @@ export default class OrderEditService extends TransactionBaseService {
         relations: ["order", "order.region"],
       })
 
+      const variant = (await this.productVariantService_
+        .withTransaction(manager)
+        .retrieve(data.variant_id, {
+          relations: ["product"],
+        })) as unknown as ProductVariantDTO
+
       if (!OrderEditService.isOrderEditActive(orderEdit)) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
@@ -563,13 +575,12 @@ export default class OrderEditService extends TransactionBaseService {
        */
 
       const lineItemData = await lineItemServiceTx.generate(
-        data.variant_id,
-        regionId,
-        data.quantity,
+        prepareLineItemData(variant, data.quantity),
         {
           customer_id: orderEdit.order.customer_id,
           metadata: data.metadata,
           order_edit_id: orderEditId,
+          region_id: regionId,
         }
       )
 

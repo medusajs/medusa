@@ -29,7 +29,8 @@ import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
-import { isDefined } from "@medusajs/utils"
+import { isDefined, prepareLineItemData } from "@medusajs/utils"
+import { ProductVariantDTO } from "@medusajs/types"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -309,14 +310,16 @@ class DraftOrderService extends TransactionBaseService {
         const itemsToCreate: Partial<LineItem>[] = []
 
         // prepare that for next steps
-        ;(items ?? []).forEach((item) => {
+        ;(items ?? []).forEach(async (item) => {
           if (item.variant_id) {
-            itemsToGenerate.push({
-              variantId: item.variant_id,
-              quantity: item.quantity,
-              metadata: item.metadata,
-              unit_price: item.unit_price,
-            })
+            const variant = (await this.productVariantService_.retrieve(
+              item.variant_id,
+              { relations: ["products"] }
+            )) as unknown as ProductVariantDTO
+
+            itemsToGenerate.push(
+              prepareLineItemData(variant, item.quantity, item.unit_price)
+            )
             return
           }
 

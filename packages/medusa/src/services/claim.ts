@@ -1,5 +1,8 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { prepareLineItemData } from "@medusajs/utils"
+import { ProductVariantDTO } from "@medusajs/types"
+
 import { TransactionBaseService } from "../interfaces"
 import {
   ClaimFulfillmentStatus,
@@ -34,6 +37,7 @@ import ReturnService from "./return"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import ProductVariantService from "./product-variant"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -46,6 +50,7 @@ type InjectedDependencies = {
   fulfillmentProviderService: FulfillmentProviderService
   fulfillmentService: FulfillmentService
   productVariantInventoryService: ProductVariantInventoryService
+  productVariantService: ProductVariantService
   lineItemService: LineItemService
   paymentProviderService: PaymentProviderService
   regionService: RegionService
@@ -72,6 +77,7 @@ export default class ClaimService extends TransactionBaseService {
   protected readonly claimItemService_: ClaimItemService
   protected readonly eventBus_: EventBusService
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
+  protected readonly productVariantService_: ProductVariantService
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly lineItemService_: LineItemService
   protected readonly paymentProviderService_: PaymentProviderService
@@ -92,6 +98,7 @@ export default class ClaimService extends TransactionBaseService {
     eventBusService,
     fulfillmentProviderService,
     fulfillmentService,
+    productVariantService,
     productVariantInventoryService,
     lineItemService,
     paymentProviderService,
@@ -111,6 +118,7 @@ export default class ClaimService extends TransactionBaseService {
     this.claimItemService_ = claimItemService
     this.eventBus_ = eventBusService
     this.fulfillmentProviderService_ = fulfillmentProviderService
+    this.productVariantService_ = productVariantService
     this.fulfillmentService_ = fulfillmentService
     this.productVariantInventoryService_ = productVariantInventoryService
     this.lineItemService_ = lineItemService
@@ -378,13 +386,18 @@ export default class ClaimService extends TransactionBaseService {
 
         if (isDefined(additional_items)) {
           newItems = await Promise.all(
-            additional_items.map(async (i) =>
-              lineItemServiceTx.generate(
-                i.variant_id,
-                order.region_id,
-                i.quantity
+            additional_items.map(async (i) => {
+              const variant = (await this.productVariantService_
+                .withTransaction(transactionManager)
+                .retrieve(i.variant_id, {
+                  relations: ["product"],
+                })) as unknown as ProductVariantDTO
+
+              return lineItemServiceTx.generate(
+                prepareLineItemData(variant, i.quantity),
+                { region_id: order.region_id }
               )
-            )
+            })
           )
 
           await Promise.all(
