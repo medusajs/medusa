@@ -87,17 +87,17 @@ describe("PriceList Service", () => {
           prices: [
             {
               id: "pl-money-amount-USD",
-              price_list_id: "price-list-1", // TODO: this is not correct
+              price_list_id: "price-list-1", 
               price_list: { id: "price-list-1", name: "Default Price List" },
             },
             {
               id: "pl-money-amount-EUR",
-              price_list_id: "price-list-1", // TODO:
+              price_list_id: "price-list-1",
               price_list: { id: "price-list-1", name: "Default Price List" },
             },
             {
               id: "pl-money-amount-CAD",
-              price_list_id: "price-list-1", // TODO:
+              price_list_id: "price-list-1", 
               price_list: { id: "price-list-1", name: "Default Price List" },
             },
           ],
@@ -162,17 +162,17 @@ describe("PriceList Service", () => {
           prices: [
             {
               id: "pl-money-amount-USD",
-              price_list_id: "price-list-1", // TODO: this is not correct
+              price_list_id: "price-list-1", 
               price_list: { id: "price-list-1", name: "Default Price List" },
             },
             {
               id: "pl-money-amount-EUR",
-              price_list_id: "price-list-1", // TODO:
+              price_list_id: "price-list-1",
               price_list: { id: "price-list-1", name: "Default Price List" },
             },
             {
               id: "pl-money-amount-CAD",
-              price_list_id: "price-list-1", // TODO:
+              price_list_id: "price-list-1",
               price_list: { id: "price-list-1", name: "Default Price List" },
             },
           ],
