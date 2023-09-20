@@ -98,39 +98,43 @@ export default class PricingModuleService<
     // Keeping this whole logic raw in here for now as they will undergo
     // some changes, will abstract them out once we have a final version
     const context = pricingContext.context || {}
+    const manager = sharedContext.manager as EntityManager
     const priceSetFilters: PricingTypes.FilterablePriceSetProps = {
       id: pricingFilters.id,
     }
 
-    const manager = sharedContext.manager as EntityManager
-
-    const ruleAttributeKeys = Object.entries(context).map(([k, v]) => k)
+    const ruleAttributes = Object.entries(context).map(([k, v]) => k)
     const priceRuleValues = Object.entries(context).map(([k, v]) => v)
-    // TODO: Remove this when query building
-    const inClause = (ids) => ids.map((id) => "'" + id + "'").join()
+    const knex = manager.getKnex()
+
+    const ruleTypesQb = manager
+      .createQueryBuilder(RuleType, "rt")
+      .select(["id"])
+      .where({
+        rule_attribute: ruleAttributes,
+      })
+
+    const priceRulesCountQb = manager
+      .createQueryBuilder(PriceRule, "pr_count")
+      .count(["id"])
+      .where({
+        price_set_money_amount_id: knex.ref("pr.price_set_money_amount_id"),
+      })
 
     // Get all psma from rules where rule type exact matches the context conditions
     const prQb = manager
       .createQueryBuilder(PriceRule, "pr")
       .select(["pr.price_set_money_amount_id"], false)
       .join("pr.rule_type", "rt")
-      // TODO: build this to query building format
-      .where(
-        `
-          rt.id IN (
-                      SELECT id FROM rule_type
-                      WHERE rule_attribute IN (${
-                        inClause(ruleAttributeKeys) || null
-                      })
-                    )
-          AND pr.value IN (${inClause(priceRuleValues) || null})
-          AND (
-            SELECT COUNT(pr2.id)
-            FROM price_rule pr2
-            WHERE pr.price_set_money_amount_id = pr2.price_set_money_amount_id
-          ) = ${Object.entries(context).length}
-        `
-      )
+      .where({
+        "rt.id": {
+          $in: ruleTypesQb.getKnexQuery(),
+        },
+        "pr.value": {
+          $in: priceRuleValues,
+        },
+        [Object.entries(context).length]: priceRulesCountQb.getKnexQuery(),
+      })
 
     // Apply the build subqueries and join it with price set money amounts and price rules
     // via the price set
@@ -138,10 +142,11 @@ export default class PricingModuleService<
       .createQueryBuilder(PriceSet, "ps")
       .select(["ps.id"], true)
       .where({ id: { $in: pricingFilters.id } })
-      .leftJoin("ps.price_set_money_amounts", "psma", {})
+      .join("ps.price_set_money_amounts", "psma", {})
       .leftJoinAndSelect("psma.money_amount", "ma", {
         "psma.id": [prQb.getKnexQuery()],
       })
+      .where(priceSetFilters)
 
     // this is a missed implementation in mikroORM that mimics
     // entity building and merging of duplicated rows.
@@ -159,7 +164,6 @@ export default class PricingModuleService<
     }
 
     const priceSets = JSON.parse(JSON.stringify(queryBuilderResults))
-
     const calculatedPrices = priceSets.map(
       (priceSet): PricingTypes.CalculatedPriceSetDTO => {
         // TODO: This will change with the rules engine selection,
