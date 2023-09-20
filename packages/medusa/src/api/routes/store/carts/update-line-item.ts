@@ -100,15 +100,6 @@ export default async (req, res) => {
         }
       )
     }
-
-    // If the cart has payment sessions update these
-    const updated = await cartService.withTransaction(m).retrieve(id, {
-      relations: ["payment_sessions"],
-    })
-
-    if (updated.payment_sessions?.length) {
-      await cartService.withTransaction(m).setPaymentSessions(id)
-    }
   })
 
   const data = await cartService.retrieveWithTotals(id, {
