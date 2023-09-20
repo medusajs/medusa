@@ -29,6 +29,30 @@ const config = {
         },
       }
     },
+    function webpackPlugin() {
+      return {
+        name: "custom-webpack-plugin",
+        configureWebpack() {
+          return {
+            devServer: {
+              client: {
+                overlay: {
+                  runtimeErrors: (error) => {
+                    if (
+                      error.message ===
+                      "ResizeObserver loop completed with undelivered notifications."
+                    ) {
+                      return false
+                    }
+                    return true
+                  },
+                },
+              },
+            },
+          }
+        },
+      }
+    },
   ],
   themeConfig: {
     image: "img/docs-meta.jpg",

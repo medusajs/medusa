@@ -29,8 +29,12 @@ export const NavbarMobileMenuButton = ({
         }
       }}
     >
-      {!mobileSidebarOpen && <Sidebar className="text-ui-fg-muted" />}
-      {mobileSidebarOpen && <XMark className="text-ui-fg-muted" />}
+      {!mobileSidebarOpen && (
+        <Sidebar className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
+      )}
+      {mobileSidebarOpen && (
+        <XMark className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
+      )}
     </NavbarIconButton>
   )
 }

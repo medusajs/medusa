@@ -355,6 +355,11 @@ module.exports = {
               base: {
                 DEFAULT: "#111827",
                 dark: "#1B1B1F",
+                // Need this one for color-fade
+                transparent: {
+                  DEFAULT: "#11182700",
+                  dark: "#1B1B1F00",
+                },
               },
               header: {
                 DEFAULT: "#1F2937",
@@ -371,10 +376,10 @@ module.exports = {
         docs: {
           bg: {
             DEFAULT: "#FFFFFF",
-            dark: "#161618",
+            dark: "#18181A",
             surface: {
-              DEFAULT: "#F8F9FA",
-              dark: "#1C1C1F",
+              DEFAULT: "#F9FAFB",
+              dark: "#1B1B1F",
             },
           },
         },
@@ -442,7 +447,7 @@ module.exports = {
       lineHeight: {
         DEFAULT: "24px",
       },
-      backgroundImage: {
+      backgroundImage: ({ theme }) => ({
         "button-neutral":
           "linear-gradient(180deg, rgba(3, 7, 18, 0.00) 0%, rgba(3, 7, 18, 0.03) 100%)",
         "button-neutral-dark":
@@ -464,12 +469,16 @@ module.exports = {
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
         "button-danger-pressed-dark":
           "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.14) 100%)",
-        "code-fade": "linear-gradient(90deg, #11182700, #111827 24px)",
-        "code-fade-dark": "linear-gradient(90deg, #1B1B1F00, #1B1B1F 24px)",
+        "code-fade": `linear-gradient(90deg, ${theme(
+          "colors.medusa.code.bg.base.transparent.DEFAULT"
+        )}, ${theme("colors.medusa.code.bg.base.DEFAULT")} 24px)`,
+        "code-fade-dark": `linear-gradient(90deg, ${theme(
+          "colors.medusa.code.bg.base.transparent.dark"
+        )}, ${theme("colors.medusa.code.bg.base.dark")} 24px)`,
         fade: "linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))",
         "fade-dark":
           "linear-gradient(to top, rgba(27, 27, 31, 1), rgba(27, 27, 31, 0))",
-      },
+      }),
       screens: {
         xs: "576px",
         lg: "1025px",
@@ -755,7 +764,7 @@ module.exports = {
         ".animation-fill-forwards": {
           animationFillMode: "forwards",
         },
-        "animate-fast": {
+        ".animate-fast": {
           animationDuration: "300ms",
         },
       })

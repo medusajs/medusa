@@ -6,7 +6,7 @@ export default function FocusModalDemo() {
       <FocusModal.Trigger asChild>
         <Button>Edit Variant</Button>
       </FocusModal.Trigger>
-      <FocusModal.Content>
+      <FocusModal.Content className="z-[100]">
         <FocusModal.Header>
           <Button>Save</Button>
         </FocusModal.Header>

@@ -1,6 +1,6 @@
 import { useBaseSpecs } from "@/providers/base-specs"
 import type { OpenAPIV3 } from "openapi-types"
-import Card from "../../../../Card"
+import { Card } from "docs-ui"
 
 export type TagsOperationDescriptionSectionSecurityProps = {
   security: OpenAPIV3.SecurityRequirementObject[]

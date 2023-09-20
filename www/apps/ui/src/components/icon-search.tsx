@@ -2,6 +2,7 @@
 
 import * as Icons from "@medusajs/icons"
 import { Container, Input, Text, Tooltip } from "@medusajs/ui"
+import clsx from "clsx"
 import * as React from "react"
 
 const iconNames = Object.keys(Icons).filter((name) => name !== "default")
@@ -31,7 +32,12 @@ const SearchResults = ({ query = "" }: { query?: string }) => {
 
   if (results.length === 0) {
     return (
-      <div className="text-ui-text-muted flex min-h-[300px] items-center justify-center">
+      <div
+        className={clsx(
+          "text-medusa-text-muted dark:text-medusa-text-muted-dark",
+          "flex min-h-[300px] items-center justify-center"
+        )}
+      >
         <Text>
           No results found for{" "}
           <Text weight={"plus"} asChild>
@@ -51,9 +57,20 @@ const SearchResults = ({ query = "" }: { query?: string }) => {
             className="flex h-full w-full items-center justify-center"
           >
             <Tooltip content={name}>
-              <div className="border-ui-border-base flex h-10 w-10 items-center justify-center rounded-lg border">
+              <div
+                className={clsx(
+                  "border-medusa-border-base dark:border-medusa-border-base-dark",
+                  "flex h-10 w-10 items-center justify-center rounded-lg border"
+                )}
+              >
                 <span className="sr-only">Icon named {name}</span>
-                <div className="bg-ui-bg-component flex h-8 w-8 items-center justify-center rounded-[4px] text-ui-fg-base">
+                <div
+                  className={clsx(
+                    "bg-medusa-bg-component text-medusa-fg-base",
+                    "dark:bg-medusa-bg-component-dark dark:text-medusa-fg-base-dark",
+                    "flex h-8 w-8 items-center justify-center rounded-[4px]"
+                  )}
+                >
                   {React.createElement(Icons[name as keyof typeof Icons])}
                 </div>
               </div>

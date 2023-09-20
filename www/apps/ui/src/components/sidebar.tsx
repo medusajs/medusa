@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 
 import { SidebarNavItem } from "@/types/nav"
 import { ScrollArea } from "./scroll-area"
+import clsx from "clsx"
 
 export interface DocsSidebarNavProps {
   items: SidebarNavItem[]
@@ -15,14 +16,24 @@ export function Sidebar({ items }: DocsSidebarNavProps) {
   const pathname = usePathname()
 
   return (
-    <aside className="border-ui-border-base lg:w-ref-sidebar relative hidden h-full w-full border-r lg:block">
+    <aside
+      className={clsx(
+        "border-medusa-border-base dark:border-medusa-border-base-dark",
+        "lg:w-ref-sidebar relative hidden h-full w-full border-r lg:block"
+      )}
+    >
       {items.length ? (
         <div className="sticky inset-x-0 bottom-0 top-[56px] h-screen max-h-[calc(100vh-56px)] w-full">
           <ScrollArea>
             <div className="h-full w-full p-6">
               {items.map((item, index) => (
                 <div key={index} className={clx("pb-6")}>
-                  <h4 className="text-ui-fg-muted mb-0.5 rounded-md px-3 py-1.5 text-xs font-medium uppercase leading-5">
+                  <h4
+                    className={clsx(
+                      "text-medusa-fg-muted dark:text-medusa-fg-muted-dark",
+                      "mb-0.5 rounded-md px-3 py-1.5 text-xs font-medium uppercase leading-5"
+                    )}
+                  >
                     {item.title}
                   </h4>
                   <SidebarNavItems items={item.items} pathname={pathname} />
@@ -51,14 +62,18 @@ export function SidebarNavItems({ items, pathname }: SidebarItemsProps) {
               <Link
                 href={item.href}
                 className={clx(
-                  "bg-ui-bg-base text-ui-fg-muted group flex w-full items-center justify-between rounded-md border border-transparent px-3 py-1.5 transition-all",
-                  "hover:bg-ui-bg-base-hover text-ui-fg-subtle",
-                  item.disabled &&
-                    "bg-ui-bg-base-disabled text-ui-fg-disabled cursor-not-allowed",
-                  {
-                    "bg-ui-bg-base-pressed text-ui-fg-base border-ui-border-base":
-                      pathname === item.href,
-                  }
+                  "bg-docs-bg text-medusa-fg-muted group flex w-full items-center justify-between rounded-md border border-transparent px-3 py-1.5 transition-all",
+                  "dark:bg-docs-bg-dark dark:text-medusa-fg-muted-dark",
+                  "hover:bg-medusa-bg-base-hover text-medusa-fg-subtle",
+                  "dark:hover:bg-medusa-bg-base-hover-dark dark:text-medusa-fg-subtle-dark",
+                  item.disabled && [
+                    "bg-medusa-bg-base-disabled text-medusa-fg-disabled cursor-not-allowed",
+                    "dark:bg-medusa-bg-base-disabled-dark dark:text-medusa-fg-disabled cursor-not-allowed-dark",
+                  ],
+                  pathname === item.href && [
+                    "bg-medusa-bg-base-pressed text-medusa-fg-base border-medusa-border-base",
+                    "dark:bg-medusa-bg-base-pressed-dark dark:text-medusa-fg-base-dark dark:border-medusa-border-base-dark",
+                  ]
                 )}
                 target={item.external ? "_blank" : ""}
                 rel={item.external ? "noreferrer" : ""}
@@ -69,8 +84,9 @@ export function SidebarNavItems({ items, pathname }: SidebarItemsProps) {
             ) : (
               <span
                 className={clx(
-                  "text-ui-fg-muted flex w-full items-center justify-between rounded-md px-3 py-1.5",
-                  item.disabled && "text-ui-fg-disabled"
+                  "text-medusa-fg-muted dark:text-medusa-fg-muted-dark flex w-full items-center justify-between rounded-md px-3 py-1.5",
+                  item.disabled &&
+                    "text-medusa-fg-disabled dark:text-medusa-fg-disabled-dark"
                 )}
               >
                 {item.title}

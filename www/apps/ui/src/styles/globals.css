@@ -7,7 +7,7 @@
     -webkit-font-smoothing: antialiased;
   }
   .html {
-    @apply text-ui-fg-base;
+    @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
   }
 
   *::selection {

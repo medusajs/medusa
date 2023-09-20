@@ -32,10 +32,10 @@ export const NavbarLink = ({
     <NextLink
       href={href}
       className={clsx(
-        isActive && "!text-ui-fg-base",
-        !isActive && "!text-ui-fg-subtle",
+        isActive && "!text-medusa-fg-base dark:!text-medusa-fg-base-dark",
+        !isActive && "!text-medusa-fg-subtle dark:!text-medusa-fg-subtle-dark",
         "text-compact-small-plus inline-block",
-        "hover:!text-ui-fg-base",
+        "hover:!text-medusa-fg-base dark:hover:!text-medusa-fg-base-dark",
         className
       )}
     >

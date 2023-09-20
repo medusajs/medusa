@@ -74,9 +74,14 @@ const TagOperationParamatersOneOf = ({
                 className={clsx(
                   "rounded-xs cursor-pointer p-0.5",
                   "border border-solid",
-                  activeTab === index &&
-                    "bg-ui-bg-subtle border-ui-border-strong",
-                  activeTab !== index && "bg-ui-bg-base border-ui-border-base"
+                  activeTab === index && [
+                    "bg-medusa-bg-subtle border-medusa-border-strong",
+                    "dark:bg-medusa-bg-subtle-dark dark:border-medusa-border-strong-dark",
+                  ],
+                  activeTab !== index && [
+                    "bg-medusa-bg-base border-medusa-border-base",
+                    "dark:bg-medusa-bg-base-dark dark:border-medusa-border-base-dark",
+                  ]
                 )}
                 onClick={() => setActiveTab(index)}
               >

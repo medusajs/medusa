@@ -42,7 +42,10 @@ export const useKeyboardShortcut = ({
 
   const sidebarShortcut = useCallback(
     (e: KeyboardEvent) => {
-      if (isLoading) {
+      // the event is triggered when an input
+      // autocompletes, and in that case
+      // e.key will be empty
+      if (isLoading || !e.key) {
         return
       }
       if (

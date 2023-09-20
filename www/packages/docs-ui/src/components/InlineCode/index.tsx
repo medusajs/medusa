@@ -2,7 +2,7 @@
 
 import React from "react"
 import clsx from "clsx"
-import { CopyButton } from "docs-ui"
+import { CopyButton } from "@/components"
 
 export type InlineCodeProps = React.ComponentProps<"code">
 

@@ -15,6 +15,7 @@ export type NavbarProps = {
   additionalActions?: React.ReactNode
   mobileMenuButton: NavbarMobileMenuButtonProps
   isLoading?: boolean
+  className?: string
 }
 
 export const Navbar = ({
@@ -25,12 +26,14 @@ export const Navbar = ({
   additionalActions,
   mobileMenuButton,
   isLoading,
+  className,
 }: NavbarProps) => {
   return (
     <nav
       className={clsx(
         "h-navbar sticky top-0 w-full justify-between",
-        "bg-docs-bg dark:bg-docs-bg-dark border-ui-border-base z-[400] border-b"
+        "bg-docs-bg dark:bg-docs-bg-dark border-medusa-border-base dark:border-medusa-border-base-dark z-[400] border-b",
+        className
       )}
     >
       <div

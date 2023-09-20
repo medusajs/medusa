@@ -1,8 +1,7 @@
 "use client"
 
-import { Code, Text, clx } from "@medusajs/ui"
+import { Text, clx } from "@medusajs/ui"
 import { useMDXComponent } from "next-contentlayer/hooks"
-import Link from "next/link"
 import * as React from "react"
 
 import { CodeBlock } from "@/components/code-block"
@@ -13,9 +12,10 @@ import { HookValues } from "@/components/hook-values"
 import { IconSearch } from "@/components/icon-search"
 import { PackageInstall } from "@/components/package-install"
 import { Snippet } from "@/components/snippet"
-import { Feedback } from "./feedback"
+import { Feedback } from "@/components/feedback"
+import { FigmaIcon } from "@/components/figma-icon"
 import clsx from "clsx"
-import { InlineCode } from "docs-ui"
+import { InlineCode, NextLink, Card, BorderedIcon } from "docs-ui"
 
 interface MdxProps {
   code: string
@@ -24,13 +24,22 @@ interface MdxProps {
 const components = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
     return (
-      <h1 className={clx("h1-docs text-ui-fg-base", className)} {...props} />
+      <h1
+        className={clx(
+          "h1-docs text-medusa-fg-base dark:text-medusa-fg-base-dark",
+          className
+        )}
+        {...props}
+      />
     )
   },
   h2: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
     return (
       <h2
-        className={clx("h2-docs mb-4 mt-16 text-ui-fg-base", className)}
+        className={clx(
+          "h2-docs mb-4 mt-16 text-medusa-fg-base dark:text-medusa-fg-base-dark",
+          className
+        )}
         {...props}
       />
     )
@@ -38,7 +47,10 @@ const components = {
   h3: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
     return (
       <h3
-        className={clx("h3-docs mb-2 mt-10 text-ui-fg-base", className)}
+        className={clx(
+          "h3-docs mb-2 mt-10 text-medusa-fg-base dark:text-medusa-fg-base-dark",
+          className
+        )}
         {...props}
       />
     )
@@ -46,7 +58,10 @@ const components = {
   p: ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => {
     return (
       <Text
-        className={clx("text-ui-fg-subtle mb-docs_1.5", className)}
+        className={clx(
+          "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark mb-docs_1.5",
+          className
+        )}
         {...props}
       />
     )
@@ -55,22 +70,14 @@ const components = {
     const isInternal = href && href?.startsWith("/")
 
     if (isInternal) {
-      return (
-        <Link
-          className={clx(
-            "txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover",
-            className
-          )}
-          href={href}
-          {...props}
-        />
-      )
+      return <NextLink className={className} href={href} {...props} />
     }
 
     return (
       <a
         className={clx(
-          "txt-medium text-ui-fg-interactive hover:text-ui-fg-interactive-hover",
+          "txt-medium text-medusa-fg-interactive hover:text-medusa-fg-interactive-hover",
+          "dark:text-medusa-fg-interactive-dark dark:hover:text-medusa-fg-interactive-hover-dark",
           className
         )}
         href={href}
@@ -101,7 +108,13 @@ const components = {
     ...props
   }: React.HTMLAttributes<HTMLElement>) => {
     return (
-      <li className={clx("text-ui-fg-subtle", className)} {...props}>
+      <li
+        className={clx(
+          "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+          className
+        )}
+        {...props}
+      >
         <Text>{children}</Text>
       </li>
     )
@@ -118,6 +131,9 @@ const components = {
   IconSearch,
   Feedback,
   Colors,
+  Card,
+  BorderedIcon,
+  FigmaIcon,
 }
 
 const Mdx = ({ code }: MdxProps) => {

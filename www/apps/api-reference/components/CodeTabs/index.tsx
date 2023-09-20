@@ -68,15 +68,15 @@ const CodeTabs = ({ tabs, className, group = "client" }: CodeTabsProps) => {
     >
       <span
         className={clsx(
-          "xs:absolute xs:border xs:border-solid xs:border-ui-code-border xs:bg-ui-code-bg-base ",
+          "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border dark:xs:border-medusa-code-border-dark xs:bg-medusa-code-bg-base dark:xs:bg-medusa-code-bg-base-dark ",
           "xs:transition-all xs:duration-200 xs:ease-ease xs:top-[13px] xs:z-[1] xs:rounded-full"
         )}
         ref={codeTabSelectorRef}
       ></span>
       <ul
         className={clsx(
-          "bg-ui-code-bg-header py-0.75 flex !list-none rounded-t px-1",
-          "border-ui-code-border border border-b-0",
+          "bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark py-0.75 flex !list-none rounded-t px-1",
+          "border-medusa-code-border dark:border-medusa-code-border-dark border border-b-0",
           "gap-0.25 mb-0"
         )}
       >
@@ -86,11 +86,13 @@ const CodeTabs = ({ tabs, className, group = "client" }: CodeTabsProps) => {
               className={clsx(
                 "text-compact-small-plus xs:border-0 py-0.25 px-0.75 relative z-[2] rounded-full border",
                 (!selectedTab || selectedTab.value !== tab.value) && [
-                  "text-ui-code-text-subtle border-transparent",
-                  "hover:bg-ui-code-bg-base",
+                  "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark border-transparent",
+                  "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base-dark",
                 ],
-                selectedTab?.value === tab.value &&
-                  "text-ui-code-text-base bg-ui-code-bg-base xs:!bg-transparent"
+                selectedTab?.value === tab.value && [
+                  "text-medusa-code-text-base bg-medusa-code-bg-base xs:!bg-transparent",
+                  "dark:text-medusa-code-text-base-dark dark:bg-medusa-code-bg-base-dark xs:!bg-transparent",
+                ]
               )}
               ref={(tabControl) => tabRefs.push(tabControl)}
               onClick={(e) => {
