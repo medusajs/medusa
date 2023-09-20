@@ -109,7 +109,6 @@ export function stringToRemoteQueryObject({
 
       const deepConfigRef = fieldSegments.reduce((acc, curr) => {
         acc[curr] ??= {}
-
         return acc[curr]
       }, remoteJoinerConfig[entryPoint])
 
