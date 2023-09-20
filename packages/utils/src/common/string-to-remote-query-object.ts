@@ -108,13 +108,12 @@ export function stringToRemoteQueryObject({
       const fieldProperty = fieldSegments.pop()
 
       const deepConfigRef = fieldSegments.reduce((acc, curr) => {
-        acc[curr] ??= {
-          fields: [],
-        }
+        acc[curr] ??= {}
 
         return acc[curr]
       }, remoteJoinerConfig[entryPoint])
 
+      deepConfigRef["fields"] ??= []
       deepConfigRef["fields"].push(fieldProperty)
     } else {
       remoteJoinerConfig[entryPoint]["fields"].push(field)
