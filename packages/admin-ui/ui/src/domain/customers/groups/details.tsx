@@ -66,6 +66,8 @@ function CustomerGroupCustomersList(props: CustomerGroupCustomersListProps) {
   // toggle to show/hide "edit customers" modal
   const [showCustomersModal, setShowCustomersModal] = useState(false)
 
+  const { t } = useTranslation()
+
   const { q, queryObject, paginate, setQuery } =
     useQueryFilters(defaultQueryProps)
 
