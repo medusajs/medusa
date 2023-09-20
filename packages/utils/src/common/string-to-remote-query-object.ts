@@ -103,20 +103,21 @@ export function stringToRemoteQueryObject({
   }
 
   for (const field of fields) {
-    if (field.includes(".")) {
-      const fieldSegments = field.split(".")
-      const fieldProperty = fieldSegments.pop()
-
-      const deepConfigRef = fieldSegments.reduce((acc, curr) => {
-        acc[curr] ??= {}
-        return acc[curr]
-      }, remoteJoinerConfig[entryPoint])
-
-      deepConfigRef["fields"] ??= []
-      deepConfigRef["fields"].push(fieldProperty)
-    } else {
+    if (!field.includes(".")) {
       remoteJoinerConfig[entryPoint]["fields"].push(field)
+      continue
     }
+
+    const fieldSegments = field.split(".")
+    const fieldProperty = fieldSegments.pop()
+
+    const deepConfigRef = fieldSegments.reduce((acc, curr) => {
+      acc[curr] ??= {}
+      return acc[curr]
+    }, remoteJoinerConfig[entryPoint])
+
+    deepConfigRef["fields"] ??= []
+    deepConfigRef["fields"].push(fieldProperty)
   }
 
   return remoteJoinerConfig
