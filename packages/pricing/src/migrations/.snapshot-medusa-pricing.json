@@ -172,6 +172,15 @@
       "indexes": [
         {
           "columnNames": [
+            "status"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_list_status",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
             "deleted_at"
           ],
           "composite": false,
@@ -294,7 +303,7 @@
           "referencedTableName": "public.currency",
           "deleteRule": "set null",
           "updateRule": "cascade"
-        }, 
+        },
         "money_amount_price_list_id_foreign": {
           "constraintName": "money_amount_price_list_id_foreign",
           "columnNames": [

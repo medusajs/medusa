@@ -44,6 +44,7 @@ class PriceList {
   @Enum({
     items: () => PriceListStatus,
     default: PriceListStatus.DRAFT,
+    index: "IDX_price_list_status"
   })
   status: PriceListStatus
 
