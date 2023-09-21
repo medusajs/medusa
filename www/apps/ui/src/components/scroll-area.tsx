@@ -6,13 +6,14 @@ import clsx from "clsx"
 
 type ScrollbarProps = React.ComponentProps<typeof Primitives.Scrollbar>
 
-const Scrollbar = (props: ScrollbarProps) => {
+const Scrollbar = ({ key, ...props }: ScrollbarProps) => {
   return (
     <Primitives.Scrollbar
       className={clsx(
         "bg-medusa-bg-base dark:bg-medusa-bg-base-dark flex touch-none select-none p-0.5 transition-colors ease-out",
         "data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col"
       )}
+      key={key as string}
       {...props}
     />
   )
@@ -20,7 +21,7 @@ const Scrollbar = (props: ScrollbarProps) => {
 
 type ThumbProps = React.ComponentProps<typeof Primitives.Thumb>
 
-const Thumb = ({ className, ...props }: ThumbProps) => {
+const Thumb = ({ className, key, ...props }: ThumbProps) => {
   return (
     <Primitives.Thumb
       className={clx(
@@ -28,6 +29,7 @@ const Thumb = ({ className, ...props }: ThumbProps) => {
         "before:min-h-[44px] before:w-full before:min-w-[44px] before:-translate-x-1/2 before:-translate-y-1/2 before:content-['']",
         className
       )}
+      key={key as string}
       {...props}
     />
   )
