@@ -107,8 +107,6 @@ class CartService extends TransactionBaseService {
     UPDATED: "cart.updated",
   }
 
-  private readonly container_: InjectedDependencies
-
   protected readonly shippingMethodRepository_: typeof ShippingMethodRepository
   protected readonly cartRepository_: typeof CartRepository
   protected readonly addressRepository_: typeof AddressRepository
