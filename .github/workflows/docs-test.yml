@@ -39,7 +39,7 @@ jobs:
           API_URL: "https://docs.medusajs.com"
         run: yarn build
         
-  lint:
+  vale-docs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -53,8 +53,62 @@ jobs:
           fetch-depth: 0
 
       - name: Get Directories to Scan
-        working-directory: www/apps/docs/vale
-        run: ./get-files.sh
+        working-directory: www/vale
+        run: ./get-files.sh docs content references
+        id: directories
+
+      - name: Vale Linter
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          files: ${{ steps.directories.outputs.LIST }}
+          fail_on_error: true
+          vale_flags: '--minAlertLevel=error'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        
+  vale-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Directories to Scan
+        working-directory: www/vale
+        run: ./get-files.sh ui src/content/docs
+        id: directories
+
+      - name: Vale Linter
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          files: ${{ steps.directories.outputs.LIST }}
+          fail_on_error: true
+          vale_flags: '--minAlertLevel=error'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        
+  vale-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Directories to Scan
+        working-directory: www/vale
+        run: ./get-files.sh api-reference app/_mdx
         id: directories
 
       - name: Vale Linter
