@@ -37,7 +37,6 @@ import {
   LineItem,
   PaymentSession,
   PaymentSessionStatus,
-  ProductVariant,
   SalesChannel,
   ShippingMethod,
 } from "../models"
@@ -63,7 +62,6 @@ import {
 import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { validateEmail } from "../utils/is-email"
-import { RemoteJoinerQuery } from "@medusajs/types"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -93,10 +91,6 @@ type InjectedDependencies = {
   lineItemAdjustmentService: LineItemAdjustmentService
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
-  remoteQuery: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any> // temporary until the cart update becomes a workflow
 }
 
 type TotalsConfig = {
@@ -143,48 +137,36 @@ class CartService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
-  // temporary until the cart update becomes a workflow
-  protected get remoteQuery_(): (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any> {
-    return this.container_.remoteQuery
-  }
-
-  constructor(container: InjectedDependencies) {
+  constructor({
+    cartRepository,
+    shippingMethodRepository,
+    lineItemRepository,
+    eventBusService,
+    paymentProviderService,
+    productService,
+    productVariantService,
+    taxProviderService,
+    regionService,
+    lineItemService,
+    shippingOptionService,
+    shippingProfileService,
+    customerService,
+    discountService,
+    giftCardService,
+    totalsService,
+    newTotalsService,
+    addressRepository,
+    paymentSessionRepository,
+    customShippingOptionService,
+    lineItemAdjustmentService,
+    priceSelectionStrategy,
+    salesChannelService,
+    featureFlagRouter,
+    storeService,
+    productVariantInventoryService,
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-
-    const {
-      cartRepository,
-      shippingMethodRepository,
-      lineItemRepository,
-      eventBusService,
-      paymentProviderService,
-      productService,
-      productVariantService,
-      taxProviderService,
-      regionService,
-      lineItemService,
-      shippingOptionService,
-      shippingProfileService,
-      customerService,
-      discountService,
-      giftCardService,
-      totalsService,
-      newTotalsService,
-      addressRepository,
-      paymentSessionRepository,
-      customShippingOptionService,
-      lineItemAdjustmentService,
-      priceSelectionStrategy,
-      salesChannelService,
-      featureFlagRouter,
-      storeService,
-      productVariantInventoryService,
-    } = container
-
-    this.container_ = container
 
     this.shippingMethodRepository_ = shippingMethodRepository
     this.cartRepository_ = cartRepository
@@ -1118,12 +1100,12 @@ class CartService extends TransactionBaseService {
     }
   }
 
-  async update(cartId: string, data: CartUpdateProps): Promise<Cart> {
+  async update(cartOrId: string | Cart, data: CartUpdateProps): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cartRepo = transactionManager.withRepository(this.cartRepository_)
         const relations = [
-          "items",
+          "items.variant.product.profiles",
           "shipping_methods",
           "shipping_methods.shipping_option",
           "shipping_address",
@@ -1137,50 +1119,11 @@ class CartService extends TransactionBaseService {
           "discounts.rule",
         ]
 
-        if (
-          !this.featureFlagRouter_.isFeatureEnabled(
-            IsolateProductDomainFeatureFlag.key
-          )
-        ) {
-          relations.push("items.variant.product.profiles")
-        }
-
-        const cart = await this.retrieve(cartId, {
-          relations,
-        })
-
-        // In product domain isolation we need to retrieve the product using the remote query
-        // This is temporary until we migrate the update cart end point to a proper workflow
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            IsolateProductDomainFeatureFlag.key
-          )
-        ) {
-          const products = await this.remoteQuery_({
-            products: {
-              __args: {
-                id: cart.items.map((i) => i.product_id),
-              },
-              fields: ["id"],
-              variants: {
-                fields: ["id"],
-              },
-            },
-          })
-
-          const variantsMap = new Map(
-            products.flatMap((p) => p.variants).map((v) => [v.id, v])
-          )
-
-          cart.items.forEach((item) => {
-            if (!item.variant_id) {
-              return
-            }
-
-            const variant = variantsMap.get(item.variant_id)
-            item.variant = variant as ProductVariant
-          })
-        }
+        const cart = !isString(cartOrId)
+          ? cartOrId
+          : await this.retrieve(cartOrId, {
+              relations,
+            })
 
         const originalCartCustomer = { ...(cart.customer ?? {}) }
         if (data.customer_id) {
