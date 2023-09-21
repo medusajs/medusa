@@ -150,9 +150,18 @@ const unknownVariantId = "unknown-variant"
 
         it("successfully create a line item giftcard", async () => {
           const line = await lineItemService.generate(
-            IdMap.getId("test-giftcard"),
-            IdMap.getId("test-region"),
-            1
+            {
+              variantId: IdMap.getId("test-giftcard"),
+              title: "Test variant",
+              quantity: 1,
+              product: {
+                thumbnail: "",
+                title: "Test product",
+                discountable: false,
+                is_giftcard: true,
+              },
+            },
+            { region_id: IdMap.getId("test-region") }
           )
 
           await lineItemService.create({
