@@ -94,7 +94,7 @@ type InjectedDependencies = {
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
   remoteQuery: (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => Promise<any> // temporary until the cart update becomes a workflow
 }
@@ -112,6 +112,8 @@ class CartService extends TransactionBaseService {
     CREATED: "cart.created",
     UPDATED: "cart.updated",
   }
+
+  private readonly container_: InjectedDependencies
 
   protected readonly shippingMethodRepository_: typeof ShippingMethodRepository
   protected readonly cartRepository_: typeof CartRepository
@@ -141,42 +143,48 @@ class CartService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
-  protected readonly remoteQuery_: (
-    query: string | RemoteJoinerQuery,
+  // temporary until the cart update becomes a workflow
+  protected get remoteQuery_(): (
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
-  ) => Promise<any> // temporary until the cart update becomes a workflow
+  ) => Promise<any> {
+    return this.container_.remoteQuery
+  }
 
-  constructor({
-    cartRepository,
-    shippingMethodRepository,
-    lineItemRepository,
-    eventBusService,
-    paymentProviderService,
-    productService,
-    productVariantService,
-    taxProviderService,
-    regionService,
-    lineItemService,
-    shippingOptionService,
-    shippingProfileService,
-    customerService,
-    discountService,
-    giftCardService,
-    totalsService,
-    newTotalsService,
-    addressRepository,
-    paymentSessionRepository,
-    customShippingOptionService,
-    lineItemAdjustmentService,
-    priceSelectionStrategy,
-    salesChannelService,
-    featureFlagRouter,
-    storeService,
-    productVariantInventoryService,
-    remoteQuery, // temporary until the cart update becomes a workflow
-  }: InjectedDependencies) {
+  constructor(container: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
+
+    const {
+      cartRepository,
+      shippingMethodRepository,
+      lineItemRepository,
+      eventBusService,
+      paymentProviderService,
+      productService,
+      productVariantService,
+      taxProviderService,
+      regionService,
+      lineItemService,
+      shippingOptionService,
+      shippingProfileService,
+      customerService,
+      discountService,
+      giftCardService,
+      totalsService,
+      newTotalsService,
+      addressRepository,
+      paymentSessionRepository,
+      customShippingOptionService,
+      lineItemAdjustmentService,
+      priceSelectionStrategy,
+      salesChannelService,
+      featureFlagRouter,
+      storeService,
+      productVariantInventoryService,
+    } = container
+
+    this.container_ = container
 
     this.shippingMethodRepository_ = shippingMethodRepository
     this.cartRepository_ = cartRepository
@@ -204,8 +212,6 @@ class CartService extends TransactionBaseService {
     this.featureFlagRouter_ = featureFlagRouter
     this.storeService_ = storeService
     this.productVariantInventoryService_ = productVariantInventoryService
-
-    this.remoteQuery_ = remoteQuery // temporary until the cart update becomes a workflow
   }
 
   /**
@@ -1149,8 +1155,11 @@ class CartService extends TransactionBaseService {
             IsolateProductDomainFeatureFlag.key
           )
         ) {
-          const { rows: products } = await this.remoteQuery_({
+          const products = await this.remoteQuery_({
             products: {
+              __args: {
+                id: cart.items.map((i) => i.product_id),
+              },
               fields: ["id"],
               variants: {
                 fields: ["id"],
