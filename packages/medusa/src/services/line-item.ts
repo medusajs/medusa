@@ -18,7 +18,7 @@ import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { FindConfig, Selector } from "../types/common"
 import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
-import { buildQuery, isString, setMetadata } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import {
   PricingService,
   ProductService,

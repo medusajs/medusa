@@ -4,7 +4,6 @@ import { MedusaError } from "medusa-core-utils"
 import pick from "lodash/pick"
 
 const VARIANT_PROPERTIES = [
-  // "id",
   "title",
   "metadata",
   "product_id",

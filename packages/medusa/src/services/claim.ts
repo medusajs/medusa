@@ -385,13 +385,18 @@ export default class ClaimService extends TransactionBaseService {
         let newItems: LineItem[] = []
 
         if (isDefined(additional_items)) {
+          const variants = (await this.productVariantService_
+            .withTransaction(transactionManager)
+            .list(
+              { id: additional_items.map((i) => i.variant_id) },
+              {
+                relations: ["product"],
+              }
+            )) as unknown as ProductVariantDTO[]
+
           newItems = await Promise.all(
             additional_items.map(async (i) => {
-              const variant = (await this.productVariantService_
-                .withTransaction(transactionManager)
-                .retrieve(i.variant_id, {
-                  relations: ["product"],
-                })) as unknown as ProductVariantDTO
+              const variant = variants.find((v) => v.id === i.variant_id)!
 
               return lineItemServiceTx.generate(
                 prepareLineItemData(variant, i.quantity),
