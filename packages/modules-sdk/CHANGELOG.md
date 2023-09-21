@@ -1,5 +1,11 @@
 # @medusajs/modules-sdk
 
+## 1.11.2
+
+### Patch Changes
+
+- [#5115](https://github.com/medusajs/medusa/pull/5115) [`47603f479`](https://github.com/medusajs/medusa/commit/47603f479731ad495938b056da7a493991a1d9a9) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Allow MedusaApp load legacy modules
+
 ## 1.11.1
 
 ### Patch Changes
