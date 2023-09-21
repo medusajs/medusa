@@ -37,7 +37,7 @@ jobs:
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
           API_URL: "https://docs.medusajs.com"
-        run: yarn build#docs
+        run: yarn build:docs
         
   vale-docs:
     runs-on: ubuntu-latest
@@ -81,7 +81,7 @@ jobs:
 
       - name: Get Directories to Scan
         working-directory: www/vale
-        run: ./get-files.sh ui src/content/docs
+        run: ./get-files.sh ui src/content/docs src/content/docs/index.mdx
         id: directories
 
       - name: Vale Linter

@@ -3,7 +3,6 @@
   "pipeline": {
     "build": {
       "dependsOn": [
-
         "^build"
       ],
       "outputs": [
@@ -23,6 +22,7 @@
     "lint:content": { },
     "dev:monorepo": {
       "dependsOn": [
+        "build#docs-ui",
         "^dev:monorepo"
       ],
       "cache": false,
