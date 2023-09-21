@@ -65,6 +65,7 @@ jobs:
           vale_flags: '--minAlertLevel=error'
           reporter: github-pr-check
           token: ${{ github.token }}
+          filter_mode: nofilter
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
         
@@ -94,6 +95,7 @@ jobs:
           vale_flags: '--minAlertLevel=error'
           reporter: github-pr-check
           token: ${{ github.token }}
+          filter_mode: nofilter
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
         
@@ -123,6 +125,7 @@ jobs:
           vale_flags: '--minAlertLevel=error'
           reporter: github-pr-check
           token: ${{ github.token }}
+          filter_mode: nofilter
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
         
