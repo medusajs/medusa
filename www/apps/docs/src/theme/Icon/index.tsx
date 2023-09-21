@@ -97,6 +97,7 @@ import {
   XCircleSolid,
   XMark,
   XMarkMini,
+  PhotoSolid,
 } from "@medusajs/icons"
 import IconPuzzleSolid from "./PuzzleSolid"
 import IconNextjs from "./Nextjs"
@@ -174,6 +175,7 @@ export default {
   newspaper: Newspaper,
   nextjs: IconNextjs,
   "pencil-square-solid": PencilSquareSolid,
+  "photo-solid": PhotoSolid,
   puzzle: Puzzle,
   // TODO change once available in Icons package
   "puzzle-solid": IconPuzzleSolid,
