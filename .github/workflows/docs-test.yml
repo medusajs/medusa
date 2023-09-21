@@ -2,8 +2,8 @@ name: Documentation Tests
 on: 
   pull_request:
     paths:
-      - www/docs/**
-      - www/api-reference/**
+      - www/**
+
 jobs:
   docs-test:
     runs-on: ubuntu-latest
@@ -29,15 +29,15 @@ jobs:
         with:
           extension: docs
 
-      - name: Install Docusaurus dependencies
+      - name: Install Workspace dependencies
         working-directory: www
         run: yarn install
       - name: Build Docusaurus website
-        working-directory: www/apps/docs
+        working-directory: www
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
           API_URL: "https://docs.medusajs.com"
-        run: yarn build
+        run: yarn build#docs
         
   vale-docs:
     runs-on: ubuntu-latest
