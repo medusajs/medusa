@@ -1,5 +1,5 @@
 import type { Code } from "@/types/openapi"
-import CodeTabs from "@/components/CodeTabs"
+import { CodeTabs } from "docs-ui"
 import slugify from "slugify"
 
 export type TagOperationCodeSectionRequestSamplesProps = {

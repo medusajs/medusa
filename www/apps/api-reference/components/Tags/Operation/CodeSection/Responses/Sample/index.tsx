@@ -1,14 +1,9 @@
-import type { CodeBlockProps } from "@/components/CodeBlock"
+import { CodeBlock } from "docs-ui"
 import type { ExampleObject, ResponseObject } from "@/types/openapi"
 import type { JSONSchema7 } from "json-schema"
 import stringify from "json-stringify-pretty-compact"
-import dynamic from "next/dynamic"
 import { sample } from "openapi-sampler"
 import { useCallback, useEffect, useState } from "react"
-
-const CodeBlock = dynamic<CodeBlockProps>(
-  async () => import("../../../../../CodeBlock")
-) as React.FC<CodeBlockProps>
 
 export type TagsOperationCodeSectionResponsesSampleProps = {
   response: ResponseObject

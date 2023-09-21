@@ -10,19 +10,19 @@ This hook can be used to prompt the user for confirmation of an action.
 
 ---
 
-<Snippet>`import {usePrompt} from "@medusajs/ui"`</Snippet>
-
-<Snippet>
+```tsx
+import { usePrompt } from "@medusajs/ui"
 ```
+
+```tsx
 const dialog = usePrompt()
-const actionFunction = async () {
+const actionFunction = async () => {
   const confirmed = await dialog({
     title: "Are you sure?",
-    description: "Please confirm this action"
+    description: "Please confirm this action",
   })
 }
 ```
-</Snippet>
 
 ## API Reference
 

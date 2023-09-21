@@ -12,20 +12,21 @@ component: true
 
 Add the Toaster component somewhere in your tree
 
-<Snippet>```import {Toaster} from "@medusajs/ui"```</Snippet>
+```tsx
+import { Toaster } from "@medusajs/ui"
+```
 
-<Snippet>
-  ```
-  <Toaster />
-  ```
-</Snippet>
+```tsx
+<Toaster />
+```
 
 The `useToast` hook returns a `toast` function that you can use to display a toast.
 
-<Snippet>```import {useToast} from "@medusajs/ui"```</Snippet>
-
-<Snippet>
+```tsx
+import { useToast } from "@medusajs/ui"
 ```
+
+```tsx
 const { toast } = useToast()
 
 return (
@@ -42,7 +43,6 @@ return (
   </Button>
 )
 ```
-</Snippet>
 
 ## API Reference
 

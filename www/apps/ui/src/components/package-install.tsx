@@ -1,4 +1,5 @@
-import { CodeBlock, clx } from "@medusajs/ui"
+import { clx } from "@medusajs/ui"
+import { CodeTabs } from "docs-ui"
 
 type PackageInstallProps = {
   packageName: string
@@ -20,17 +21,14 @@ const PackageInstall = ({
   const pnpm = `pnpm add ${devDependency ? "-D " : ""}${pkg}`
 
   return (
-    <CodeBlock
-      snippets={[
-        { language: "bash", label: "yarn", code: yarn },
-        { language: "bash", label: "npm", code: npm },
-        { language: "bash", label: "pnpm", code: pnpm },
+    <CodeTabs
+      tabs={[
+        { code: { lang: "bash", source: yarn }, label: "npm", value: "npm" },
+        { code: { lang: "bash", source: npm }, label: "yarn", value: "yarn" },
+        { code: { lang: "bash", source: pnpm }, label: "pnpm", value: "pnpm" },
       ]}
-      className={clx("mb-6 mt-8", className)}
-    >
-      <CodeBlock.Header className="py-3" />
-      <CodeBlock.Body hideLineNumbers />
-    </CodeBlock>
+      className={clx("my-4", className)}
+    />
   )
 }
 

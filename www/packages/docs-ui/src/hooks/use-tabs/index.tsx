@@ -1,3 +1,5 @@
+"use client"
+
 import {
   useCallback,
   useEffect,
@@ -12,16 +14,16 @@ export type BaseTabType = {
   value: string
 }
 
-type EventData = {
+export type EventData = {
   storageValue: string
 }
 
-type TabProps<T> = {
+export type TabProps<T> = {
   tabs: T[]
   group?: string
 }
 
-function useTabs<T extends BaseTabType>({ tabs, group }: TabProps<T>) {
+export function useTabs<T extends BaseTabType>({ tabs, group }: TabProps<T>) {
   const [selectedTab, setSelectedTab] = useState<T | null>(null)
   const storageKey = useMemo(() => `tab_${group}`, [group])
   const eventKey = useMemo(() => `tab_${group}_changed`, [group])
@@ -88,5 +90,3 @@ function useTabs<T extends BaseTabType>({ tabs, group }: TabProps<T>) {
 
   return { selectedTab, changeSelectedTab }
 }
-
-export default useTabs

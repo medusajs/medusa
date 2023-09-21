@@ -10,25 +10,25 @@ component: true
 
 ---
 
-<Snippet>```import {CodeBlock} from "@medusajs/ui"```</Snippet>
+```tsx
+import { CodeBlock } from "@medusajs/ui"
+```
 
-<Snippet>
-  ```
-  <CodeBlock 
-    snippets={[
-      { 
-        language: "tsx", 
-        label: "Label", 
-        code: 'import { useProduct } from "medusa-react"'
-      },
-    ]}
-  >
-    <CodeBlock.Header />
-    <CodeBlock.Body />
-  </CodeBlock.Body>
-  
-  ```
-</Snippet>
+```tsx
+<CodeBlock 
+  snippets={[
+    { 
+      language: "tsx", 
+      label: "Label", 
+      code: "import { useProduct } from \"medusa-react\"",
+    },
+  ]}
+>
+  <CodeBlock.Header />
+  <CodeBlock.Body />
+</CodeBlock>
+```
+
 
 ## API Reference
 

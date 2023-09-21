@@ -7,10 +7,10 @@ import {
   ModalProvider,
   NavbarProvider,
   PageLoadingProvider,
+  ScrollControllerProvider,
 } from "docs-ui"
 import BaseSpecsProvider from "./base-specs"
 import SidebarProvider from "./sidebar"
-import { ScrollControllerProvider } from "../hooks/scroll-utils"
 import SearchProvider from "./search"
 
 type ProvidersProps = {

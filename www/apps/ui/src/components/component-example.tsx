@@ -4,10 +4,10 @@ import { Spinner } from "@medusajs/icons"
 import * as React from "react"
 import { ExampleRegistry } from "../registries/example-registry"
 
-import { CodeBlock } from "@/components/code-block"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs"
 import { Feedback } from "./feedback"
 import clsx from "clsx"
+import { CodeBlock } from "docs-ui"
 
 interface ComponentExampleProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -59,7 +59,7 @@ export function ComponentExample({
             </div>
           </TabsContent>
           <TabsContent value="code" className="relative ">
-            <CodeBlock code={Code} />
+            <CodeBlock source={Code} lang="tsx" />
           </TabsContent>
         </div>
       </Tabs>

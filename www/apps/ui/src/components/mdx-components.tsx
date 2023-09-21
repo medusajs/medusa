@@ -4,18 +4,16 @@ import { Text, clx } from "@medusajs/ui"
 import { useMDXComponent } from "next-contentlayer/hooks"
 import * as React from "react"
 
-import { CodeBlock } from "@/components/code-block"
 import { Colors } from "@/components/colors"
 import { ComponentExample } from "@/components/component-example"
 import { ComponentProps } from "@/components/component-props"
 import { HookValues } from "@/components/hook-values"
 import { IconSearch } from "@/components/icon-search"
 import { PackageInstall } from "@/components/package-install"
-import { Snippet } from "@/components/snippet"
 import { Feedback } from "@/components/feedback"
 import { FigmaIcon } from "@/components/figma-icon"
 import clsx from "clsx"
-import { InlineCode, NextLink, Card, BorderedIcon } from "docs-ui"
+import { NextLink, Card, BorderedIcon, CodeMdx, CodeBlock } from "docs-ui"
 
 interface MdxProps {
   code: string
@@ -66,7 +64,11 @@ const components = {
       />
     )
   },
-  a: ({ className, href, ...props }: React.ComponentPropsWithoutRef<"a">) => {
+  a: ({
+    className,
+    href,
+    ...props
+  }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
     const isInternal = href && href?.startsWith("/")
 
     if (isInternal) {
@@ -87,7 +89,7 @@ const components = {
       />
     )
   },
-  code: InlineCode,
+  code: CodeMdx,
   ul: ({
     className,
     children,
@@ -126,7 +128,6 @@ const components = {
   ComponentProps,
   CodeBlock,
   ComponentExample,
-  Snippet,
   PackageInstall,
   IconSearch,
   Feedback,

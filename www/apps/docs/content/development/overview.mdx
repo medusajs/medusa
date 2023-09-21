@@ -36,7 +36,7 @@ When you build a commerce application with Medusa, you’ll typically interact w
 For example, imagine an Inventory module that contains lightweight logic to increment and decrement stock levels for a Stock-Keeping Unit (SKU). In a commerce application, you typically want to associate the stock levels with a specific product. Medusa offers both an Inventory module and a Product module, and the core package creates associations between these modules and executing the related business logic. So, the core package contains code similar to this:
 
 ```ts
-function handler(req, res) {
+async function handler(req, res) {
   // ...
 
   // associate a product with an inventory item

@@ -10,24 +10,24 @@ component: true
 
 ---
 
-<Snippet>```import {Select} from "@medusajs/ui"```</Snippet>
+```tsx
+import { Select } from "@medusajs/ui"
+```
 
-<Snippet>
-  ```
-  <Select>
-    <Select.Trigger>
-      <Select.Value placeholder="Placeholder" />
-    </Select.Trigger>
-    <Select.Content>
-      {items.map((item) => (
-        <Select.Item key={item.value} value={item.value}>
-          {item.label}
-        </Select.Item>
-      ))}
-    </Select.Content>
-  </Select>
-  ```
-</Snippet>
+```tsx
+<Select>
+  <Select.Trigger>
+    <Select.Value placeholder="Placeholder" />
+  </Select.Trigger>
+  <Select.Content>
+    {items.map((item) => (
+      <Select.Item key={item.value} value={item.value}>
+        {item.label}
+      </Select.Item>
+    ))}
+  </Select.Content>
+</Select>
+```
 
 ## API Reference
 

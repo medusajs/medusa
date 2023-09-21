@@ -1,4 +1,25 @@
 module.exports = {
+  parser: "@babel/eslint-parser",
+  parserOptions: {
+    requireConfigFile: false,
+    ecmaFeatures: {
+      experimentalDecorators: true,
+    },
+  },
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
+  env: {
+    es6: true,
+    node: true,
+  },
+  plugins: ["prettier", "markdown"],
+  ignorePatterns: [
+    "**/content/references/**",
+    "**/content/**/events-list.md"
+  ],
   rules: {
     "no-undef": "off",
     "no-unused-expressions": "off",
@@ -54,7 +75,7 @@ module.exports = {
     "space-infix-ops": "off",
     "eol-last": ["error", "always"],
     "react/prop-types": "off",
-    "react/jsx-no-undef": "off",
+    "react/jsx-no-undef": "off"
   },
   overrides: [
     {
@@ -84,6 +105,7 @@ module.exports = {
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-var-requires": "off",
       },
     },
   ],

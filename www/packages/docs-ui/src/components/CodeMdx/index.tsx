@@ -1,7 +1,7 @@
-import CodeBlock from "@/components/CodeBlock"
-import { InlineCode } from "docs-ui"
+import React from "react"
+import { CodeBlock, InlineCode } from "@/components"
 
-type CodeWrapperProps = {
+export type CodeMdxProps = {
   className?: string
   children?: React.ReactNode
 }
@@ -10,7 +10,7 @@ type CodeWrapperProps = {
 // it is required that a code block specify a language
 // to be considered a block. Otherwise, it will be
 // considered as inline code
-const CodeWrapper = ({ className, children }: CodeWrapperProps) => {
+export const CodeMdx = ({ className, children }: CodeMdxProps) => {
   if (!children) {
     return <></>
   }
@@ -23,5 +23,3 @@ const CodeWrapper = ({ className, children }: CodeWrapperProps) => {
 
   return <InlineCode>{children}</InlineCode>
 }
-
-export default CodeWrapper

@@ -27,37 +27,36 @@ You can install it with the following command:
 
 After you have installed Tailwind CSS and the Medusa UI preset, you need to add the following to your `tailwind.config.js`file:
 
-<Snippet>
-```
+```tsx
 module.exports = {
   presets: [require("@medusajs/ui-preset")],
   // ...
-};
+}
 ```
-</Snippet>
 
 In order for the styles to be applied correctly to the components, you will also need to ensure that
 `@medusajs/ui` is included in the content field of your `tailwind.config.js` file:
 
-<Snippet>
-```
+```tsx
 module.exports = {
   content: [
     // ...
     "./node_modules/@medusajs/ui/dist/**/*.{js,jsx,ts,tsx}",
   ],
   // ...
-};
+}
 ```
-</Snippet>
 
 If you are working within a monorepo, you may need to add the path to the `@medusajs/ui` package in your `tailwind.config.js` like so:
 
-<Snippet>
-```
+```tsx
 const path = require("path")
 
-const uiPath = path.resolve(require.resolve("@medusajs/ui"), "../..", "\*_/_.{js,jsx,ts,tsx}")
+const uiPath = path.resolve(
+  require.resolve("@medusajs/ui"),
+  "../..",
+  "\*_/_.{js,jsx,ts,tsx}"
+)
 
 module.exports = {
   content: [
@@ -65,10 +64,9 @@ module.exports = {
     uiPath,
   ],
   // ...
-};
+}
 
 ```
-</Snippet>
 
 ## Start building
 
@@ -76,10 +74,8 @@ module.exports = {
 
 You are now ready to start building your application with Medusa UI. You can import the components like so:
 
-<Snippet>
+```tsx
+import { Button, Drawer } from "@medusajs/ui"
 ```
-import {Button, Drawer} from "@medusajs/ui"
-```
-</Snippet>
 
 <Feedback title={"Install in Standalone Project"} />

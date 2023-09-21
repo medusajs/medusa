@@ -6,6 +6,7 @@ import {
   ModalProvider,
   NavbarProvider,
   AnalyticsProvider,
+  ScrollControllerProvider,
 } from "docs-ui"
 import SearchProvider from "./search"
 import SidebarProvider from "./sidebar"
@@ -22,7 +23,11 @@ const Providers = ({ children }: ProvidersProps) => {
           <ModalProvider>
             <SidebarProvider>
               <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
-                <SearchProvider>{children}</SearchProvider>
+                <SearchProvider>
+                  <ScrollControllerProvider>
+                    {children}
+                  </ScrollControllerProvider>
+                </SearchProvider>
               </NavbarProvider>
             </SidebarProvider>
           </ModalProvider>

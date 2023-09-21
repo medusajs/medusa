@@ -1,23 +1,26 @@
 "use client"
 
+import React, { useCallback, useEffect, useMemo, useRef } from "react"
 import clsx from "clsx"
-import { useCallback, useEffect, useMemo, useRef } from "react"
-import CodeBlock, { CodeBlockProps } from "../CodeBlock"
-import useTabs, { BaseTabType } from "../../hooks/use-tabs"
-import { useScrollPositionBlocker } from "../../hooks/scroll-utils"
+import { CodeBlock, CodeBlockProps } from "@/components"
+import { useTabs, BaseTabType, useScrollPositionBlocker } from "@/hooks"
 
-type TabType = {
+export type TabType = {
   code?: CodeBlockProps
   codeBlock?: React.ReactNode
 } & BaseTabType
 
-type CodeTabsProps = {
+export type CodeTabsProps = {
   tabs: TabType[]
   className?: string
   group?: string
 }
 
-const CodeTabs = ({ tabs, className, group = "client" }: CodeTabsProps) => {
+export const CodeTabs = ({
+  tabs,
+  className,
+  group = "client",
+}: CodeTabsProps) => {
   const { selectedTab, changeSelectedTab } = useTabs<TabType>({
     tabs,
     group,
@@ -61,7 +64,7 @@ const CodeTabs = ({ tabs, className, group = "client" }: CodeTabsProps) => {
   return (
     <div
       className={clsx(
-        "relative my-1 w-full max-w-full overflow-auto",
+        "relative my-docs_1 w-full max-w-full overflow-auto",
         className
       )}
       ref={codeTabsWrapperRef}
@@ -75,16 +78,16 @@ const CodeTabs = ({ tabs, className, group = "client" }: CodeTabsProps) => {
       ></span>
       <ul
         className={clsx(
-          "bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark py-0.75 flex !list-none rounded-t px-1",
+          "bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark py-docs_0.75 flex !list-none rounded-t-docs_DEFAULT px-docs_1",
           "border-medusa-code-border dark:border-medusa-code-border-dark border border-b-0",
-          "gap-0.25 mb-0"
+          "gap-docs_0.25 mb-0"
         )}
       >
         {tabs.map((tab, index) => (
           <li key={index}>
             <button
               className={clsx(
-                "text-compact-small-plus xs:border-0 py-0.25 px-0.75 relative z-[2] rounded-full border",
+                "text-compact-small-plus xs:border-0 py-docs_0.25 px-docs_0.75 relative z-[2] rounded-full border",
                 (!selectedTab || selectedTab.value !== tab.value) && [
                   "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark border-transparent",
                   "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base-dark",
@@ -124,5 +127,3 @@ const CodeTabs = ({ tabs, className, group = "client" }: CodeTabsProps) => {
     </div>
   )
 }
-
-export default CodeTabs
