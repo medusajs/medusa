@@ -81,7 +81,7 @@ jobs:
 
       - name: Get Directories to Scan
         working-directory: www/vale
-        run: ./get-files.sh ui src/content/docs src/content/docs/index.mdx
+        run: ./get-files.sh ui src/content/docs
         id: directories
 
       - name: Vale Linter
