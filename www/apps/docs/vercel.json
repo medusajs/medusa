@@ -477,5 +477,11 @@
       "source": "/recipes/rbac",
       "destination": "/modules/users/backend/rbac"
     }
-  ]
+  ],
+  "framework": "docusaurus-2",
+  "installCommand": "yarn install",
+  "buildCommand": "turbo run build",
+  "output": "build",
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ../../packages",
+  "rootDirectory": "www/apps/docs"
 }

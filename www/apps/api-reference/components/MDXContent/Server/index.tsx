@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use server"
 
 import { MDXRemote } from "next-mdx-remote/rsc"
@@ -13,6 +14,7 @@ export type MDXContentServerProps = {
 const MDXContentServer = ({ content, ...props }: MDXContentServerProps) => {
   return (
     <>
+      {/* @ts-ignore promise error */}
       <MDXRemote
         source={content}
         components={getCustomComponents((props.scope as ScopeType) || {})}

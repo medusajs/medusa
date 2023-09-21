@@ -2,6 +2,7 @@ import { MetadataRoute } from "next"
 
 import { docsConfig } from "@/config/docs"
 import { absoluteUrl } from "@/lib/absolute-url"
+import { SidebarItemType } from "docs-ui"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
@@ -11,29 +12,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified?: string | Date
   }> = []
 
-  const createUrl = (path: string) => {
-    return absoluteUrl(path)
+  function pushItems(newItems: SidebarItemType[]) {
+    newItems.forEach((item) => {
+      if (item.path) {
+        items.push({
+          url: absoluteUrl(item.path),
+          lastModified: now,
+        })
+      }
+
+      if (item.children) {
+        pushItems(item.children)
+      }
+    })
   }
 
-  docsConfig.sidebar.forEach((item) => {
-    if (item.href && !item.disabled) {
-      items.push({
-        url: createUrl(item.href),
-        lastModified: now,
-      })
-    }
-
-    if (item.items) {
-      item.items.forEach((subItem) => {
-        if (subItem.href && !subItem.disabled) {
-          items.push({
-            url: createUrl(subItem.href),
-            lastModified: now,
-          })
-        }
-      })
-    }
-  })
+  pushItems(docsConfig.sidebar.top)
+  pushItems(docsConfig.sidebar.bottom)
 
   return items
 }

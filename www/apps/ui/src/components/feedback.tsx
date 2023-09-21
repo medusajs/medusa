@@ -18,7 +18,7 @@ export const Feedback = ({ title, ...props }: FeedbackProps) => {
 
   return (
     <UiFeedback
-      event="survey_ui"
+      event="survey"
       pathName={absoluteUrl(pathname)}
       reportLink={formatReportLink("UI Docs", title)}
       extraData={{

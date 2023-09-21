@@ -5,7 +5,6 @@
   "license": "MIT",
   "main": "tailwind.config.js",
   "devDependencies": {
-    "docs-ui": "*",
     "eslint-config-docs": "*"
   },
   "publishConfig": {
@@ -18,5 +17,8 @@
   "dependencies": {
     "@medusajs/ui-preset": "^1.0.0",
     "tailwindcss-animate": "^1.0.7"
+  },
+  "peerDependencies": {
+    "docs-ui": "*"
   }
 }

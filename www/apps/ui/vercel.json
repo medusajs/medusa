@@ -1,12 +1,8 @@
 {
-  "crons": [{
-    "path": "/api/algolia",
-    "schedule": "0 0 * * 4"
-  }],
   "framework": "nextjs",
   "installCommand": "yarn install",
   "buildCommand": "turbo run build",
   "output": ".next",
   "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ../../packages",
-  "rootDirectory": "www/apps/api-reference"
+  "rootDirectory": "www/apps/ui"
 }

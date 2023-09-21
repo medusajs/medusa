@@ -7,10 +7,11 @@
       ]
     },
     "typeRoots": [
+      "../../node_modules/@types",
       "./node_modules/@types",
       "./types"
     ],
-    "jsx": "preserve"
+    "jsx": "preserve",
   },
   "include": [
     "next-env.d.ts",

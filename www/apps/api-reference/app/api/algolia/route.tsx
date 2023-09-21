@@ -148,3 +148,5 @@ function getHierarchy(area: string, levels: string[]): Record<string, string> {
 
   return heirarchy
 }
+
+export const dynamic = "force-dynamic"

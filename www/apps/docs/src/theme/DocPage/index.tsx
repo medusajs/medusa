@@ -15,7 +15,6 @@ import DocPageLayout from "@theme/DocPage/Layout"
 import NotFound from "@theme/NotFound"
 import SearchMetadata from "@theme/SearchMetadata"
 import type { Props } from "@theme/DocPage"
-import LearningPathProvider from "@site/src/providers/LearningPath"
 import SidebarProvider from "@site/src/providers/Sidebar"
 import DocsProviders from "../../providers/DocsProviders"
 

@@ -1943,7 +1943,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docsearch/react@npm:^3.1.1, @docsearch/react@npm:^3.5.1":
+"@docsearch/react@npm:^3.1.1":
   version: 3.5.2
   resolution: "@docsearch/react@npm:3.5.2"
   dependencies:
@@ -3298,31 +3298,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ndhoule/each@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@ndhoule/each@npm:2.0.1"
-  dependencies:
-    "@ndhoule/keys": ^2.0.0
-  checksum: 062c55cb95f55eaf3d0f19f5a0bf058b3402ae2b8295fd55ce76ed68efe0d622fc641eb90efa3a1b93bd9c8b0e7517e98c351fcf2246f5853f24507d7372c7c8
-  languageName: node
-  linkType: hard
-
-"@ndhoule/keys@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@ndhoule/keys@npm:2.0.0"
-  checksum: 458f2c30471bdec8e15636adad2c753c67317fb5a8f9ad6ace2898dc7eb4e4bd2da38483570fd3e33bacd6847ec8be8778a5f555ff7f06045f6399dd6c34284c
-  languageName: node
-  linkType: hard
-
-"@ndhoule/map@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@ndhoule/map@npm:2.0.1"
-  dependencies:
-    "@ndhoule/each": ^2.0.1
-  checksum: 598ee0b0014f29a33fc83261946af38e77099dad8adcc00db3d320522a0f424b0c5668996d3bc9fa7125c082a8f92aa38776db4bb92e86abf1a292d01ac912e7
-  languageName: node
-  linkType: hard
-
 "@next/bundle-analyzer@npm:^13.4.19":
   version: 13.4.19
   resolution: "@next/bundle-analyzer@npm:13.4.19"
@@ -3543,17 +3518,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/endpoint@npm:^7.0.0":
-  version: 7.0.6
-  resolution: "@octokit/endpoint@npm:7.0.6"
-  dependencies:
-    "@octokit/types": ^9.0.0
-    is-plain-object: ^5.0.0
-    universal-user-agent: ^6.0.0
-  checksum: fd147a55010b54af7567bf90791359f7096a1c9916a2b7c72f8afd0c53141338b3d78da3a4ab3e3bdfeb26218a1b73735432d8987ccc04996b1019219299f115
-  languageName: node
-  linkType: hard
-
 "@octokit/endpoint@npm:^9.0.0":
   version: 9.0.0
   resolution: "@octokit/endpoint@npm:9.0.0"
@@ -3572,17 +3536,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/request-error@npm:^3.0.0":
-  version: 3.0.3
-  resolution: "@octokit/request-error@npm:3.0.3"
-  dependencies:
-    "@octokit/types": ^9.0.0
-    deprecation: ^2.0.0
-    once: ^1.4.0
-  checksum: 1e252ac193c8af23b709909911aa327ed5372cbafcba09e4aff41e0f640a7c152579ab0a60311a92e37b4e7936392d59ee4c2feae5cdc387ee8587a33d8afa60
-  languageName: node
-  linkType: hard
-
 "@octokit/request-error@npm:^5.0.0":
   version: 5.0.0
   resolution: "@octokit/request-error@npm:5.0.0"
@@ -3591,20 +3544,6 @@ __metadata:
     deprecation: ^2.0.0
     once: ^1.4.0
   checksum: c681fede406b6338e22c8dcc57ab306558201e1f35545dde09a4d6edae279a874393081c5f28b165dbfc3f9367cc627050b06a87229904cfd2083b186e508c34
-  languageName: node
-  linkType: hard
-
-"@octokit/request@npm:^6.2.3":
-  version: 6.2.8
-  resolution: "@octokit/request@npm:6.2.8"
-  dependencies:
-    "@octokit/endpoint": ^7.0.0
-    "@octokit/request-error": ^3.0.0
-    "@octokit/types": ^9.0.0
-    is-plain-object: ^5.0.0
-    node-fetch: ^2.6.7
-    universal-user-agent: ^6.0.0
-  checksum: 6b6079ed45bac44c4579b40990bfd1905b03d4bc4e5255f3d5a10cf5182171578ebe19abeab32ebb11a806f1131947f2a06b7a077bd7e77ade7b15fe2882174b
   languageName: node
   linkType: hard
 
@@ -3627,15 +3566,6 @@ __metadata:
   dependencies:
     "@octokit/openapi-types": ^18.0.0
   checksum: c2b6e6a8c3ed5ecd5619e71ebc10676f928c16bce9665ec56661a79d998fb5a8f3796ff58311b41b63328c1976d2a45f7c6d8ef6f831629547fccbd601b98424
-  languageName: node
-  linkType: hard
-
-"@octokit/types@npm:^9.0.0":
-  version: 9.3.2
-  resolution: "@octokit/types@npm:9.3.2"
-  dependencies:
-    "@octokit/openapi-types": ^18.0.0
-  checksum: 2925479aa378a4491762b4fcf381bdc7daca39b4e0b2dd7062bce5d74a32ed7d79d20d3c65ceaca6d105cf4b1f7417fea634219bf90f79a57d03e2dac629ec45
   languageName: node
   linkType: hard
 
@@ -5176,7 +5106,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@segment/analytics-next@npm:^1.53.2, @segment/analytics-next@npm:^1.55.0":
+"@segment/analytics-next@npm:^1.55.0":
   version: 1.55.0
   resolution: "@segment/analytics-next@npm:1.55.0"
   dependencies:
@@ -5229,15 +5159,6 @@ __metadata:
   version: 1.0.3
   resolution: "@segment/isodate@npm:1.0.3"
   checksum: 0b2e9e580fe505e617d7dfbd2d046a3f3bcc7f1f1d1fbaba7728ad1c9da9e47d13a60ec344e2d80b0694d3ed93129d168108e91d4ce2f48012f87dbb40925e8d
-  languageName: node
-  linkType: hard
-
-"@segment/snippet@npm:^4.13.2":
-  version: 4.16.2
-  resolution: "@segment/snippet@npm:4.16.2"
-  dependencies:
-    "@ndhoule/map": ^2.0.1
-  checksum: 3ecf3e203a218741acc50bd0d50998bed2d5f84b53f7f197bac8aefce1aa1f5f530cdd9e67b4239084998d0662c0eed0fc078c1c2b1e2c11eccda8b6b6220cfd
   languageName: node
   linkType: hard
 
@@ -7368,13 +7289,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^9.0.1, @types/uuid@npm:^9.0.2":
-  version: 9.0.3
-  resolution: "@types/uuid@npm:9.0.3"
-  checksum: a2d8a769952f5795c74d594b5fdbdc09972f6fb5e389a52854f5adc27aab85109dea38c09419c2283b14be78271b55eaac7b2300f59d8c058b5ed298a6844768
-  languageName: node
-  linkType: hard
-
 "@types/ws@npm:^8.5.5":
   version: 8.5.5
   resolution: "@types/ws@npm:8.5.5"
@@ -7929,7 +7843,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"algoliasearch-helper@npm:3.14.1, algoliasearch-helper@npm:^3.10.0, algoliasearch-helper@npm:^3.11.3":
+"algoliasearch-helper@npm:3.14.1, algoliasearch-helper@npm:^3.10.0":
   version: 3.14.1
   resolution: "algoliasearch-helper@npm:3.14.1"
   dependencies:
@@ -7959,13 +7873,6 @@ __metadata:
     "@algolia/requester-node-http": 4.20.0
     "@algolia/transporter": 4.20.0
   checksum: 39c1e5391560ba019a845440c00f770e41b3462860214f45b678f976e3de61108eb7abafab610f26adde7d3057df1f8f65d465bcd114612546b935880e43f1dd
-  languageName: node
-  linkType: hard
-
-"animate.css@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "animate.css@npm:4.1.1"
-  checksum: 28fcf5a5f502e4c12186846d22aa1cd63b835955160a97116930c78bff8a89135aa5c57f94010252a29456ada7cfc8ed8791cac02521ec6402befaf883937159
   languageName: node
   linkType: hard
 
@@ -8047,15 +7954,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api-reference@workspace:apps/api-reference"
   dependencies:
-    "@docsearch/react": ^3.5.1
     "@mdx-js/loader": ^2.3.0
     "@mdx-js/react": ^2.3.0
     "@medusajs/icons": ^1.0.0
     "@next/bundle-analyzer": ^13.4.19
     "@next/mdx": ^13.4.12
-    "@octokit/request": ^8.1.1
     "@readme/openapi-parser": ^2.5.0
-    "@segment/analytics-next": ^1.53.2
     "@types/jsdom": ^21.1.1
     "@types/mapbox__rehype-prism": ^0.8.0
     "@types/mdx": ^2.0.5
@@ -8063,11 +7967,8 @@ __metadata:
     "@types/react": 18.2.17
     "@types/react-dom": 18.2.7
     "@types/react-transition-group": ^4.4.6
-    "@types/uuid": ^9.0.2
-    algoliasearch: ^4.19.1
     autoprefixer: 10.4.14
     clsx: ^2.0.0
-    copy-text-to-clipboard: ^3.2.0
     docs-ui: "*"
     eslint-config-docs: "*"
     jsdom: ^22.1.0
@@ -8090,7 +7991,6 @@ __metadata:
     tailwind: "*"
     tailwindcss: 3.3.3
     typescript: 5.1.6
-    uuid: ^9.0.0
     yaml: ^2.3.1
   languageName: unknown
   linkType: soft
@@ -9375,7 +9275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copy-text-to-clipboard@npm:^3.0.1, copy-text-to-clipboard@npm:^3.2.0":
+"copy-text-to-clipboard@npm:^3.0.1":
   version: 3.2.0
   resolution: "copy-text-to-clipboard@npm:3.2.0"
   checksum: d60fdadc59d526e19d56ad23cec2b292d33c771a5091621bd322d138804edd3c10eb2367d46ec71b39f5f7f7116a2910b332281aeb36a5b679199d746a8a5381
@@ -10147,18 +10047,13 @@ __metadata:
     "@docusaurus/preset-classic": latest
     "@docusaurus/remark-plugin-npm2yarn": latest
     "@medusajs/icons": ^1.0.0
-    "@octokit/request": ^6.2.3
     "@svgr/webpack": 6.2.1
     "@tsconfig/docusaurus": ^1.0.7
     "@types/react-transition-group": ^4.4.6
-    "@types/uuid": ^9.0.1
-    algoliasearch-helper: ^3.11.3
-    animate.css: ^4.1.1
     autoprefixer: ^10.4.14
     clsx: ^1.1.1
     docs-ui: "*"
     docusaurus-plugin-image-zoom: ^0.1.1
-    docusaurus-plugin-segment: ^1.0.3
     dotenv: ^16.0.3
     eslint: ^8.49.0
     eslint-config-docs: "*"
@@ -10168,16 +10063,13 @@ __metadata:
     prism-react-renderer: ^1.3.1
     react: ^17.0.1
     react-dom: ^17.0.1
-    react-instantsearch: ^7.0.1
     react-tooltip: 5.7.4
     react-transition-group: ^4.4.5
-    react-uuid: ^2.0.0
     tailwind: "*"
     tailwindcss: ^3.3.2
     tsconfig: "*"
     typescript: ^5.0.2
     url-loader: ^4.1.1
-    uuid: ^9.0.0
   languageName: unknown
   linkType: soft
 
@@ -10205,15 +10097,6 @@ __metadata:
   dependencies:
     medium-zoom: ^1.0.6
   checksum: ffe40bca157f440bde0d4831350a22dad5d8febfc62363f55466392ee0a161795edfb49c5a49931488ac09ee3f3b18c8eb0f9927393f65bc2eacb740513ff2b1
-  languageName: node
-  linkType: hard
-
-"docusaurus-plugin-segment@npm:^1.0.3":
-  version: 1.0.4
-  resolution: "docusaurus-plugin-segment@npm:1.0.4"
-  dependencies:
-    "@segment/snippet": ^4.13.2
-  checksum: 58d9ea99d5a9e79da61de0c1451bf1e5e6f8234c37afe04b6cc64ecf6746b024c95e68472908d27a06542ab2a246d7df14b72857150fede1ed3867031c14761d
   languageName: node
   linkType: hard
 
@@ -19113,9 +18996,10 @@ __metadata:
   resolution: "tailwind@workspace:packages/tailwind"
   dependencies:
     "@medusajs/ui-preset": ^1.0.0
-    docs-ui: "*"
     eslint-config-docs: "*"
     tailwindcss-animate: ^1.0.7
+  peerDependencies:
+    docs-ui: "*"
   languageName: unknown
   linkType: soft
 
@@ -20397,15 +20281,6 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: bcbb807a917d374a49f475fae2e87fdca7da5e5530820ef53f65ba1d12131bd81a92ecf259cc7ce317cbe0f289e7d79fdfebcef9bfa3087c8c8a2fa304c9be54
-  languageName: node
-  linkType: hard
-
-"uuid@npm:^9.0.0":
-  version: 9.0.1
-  resolution: "uuid@npm:9.0.1"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 1607dd32ac7fc22f2d8f77051e6a64845c9bce5cd3dd8aa0070c074ec73e666a1f63c7b4e0f4bf2bc8b9d59dc85a15e17807446d9d2b17c8485fbc2147b27f9b
   languageName: node
   linkType: hard
 
