@@ -1,10 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -29,14 +29,15 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
   LineItem,
   PaymentSession,
   PaymentSessionStatus,
+  ProductVariant,
   SalesChannel,
   ShippingMethod,
 } from "../models"
@@ -49,9 +50,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -62,6 +63,7 @@ import {
 import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { validateEmail } from "../utils/is-email"
+import { RemoteJoinerQuery } from "@medusajs/types"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -91,6 +93,10 @@ type InjectedDependencies = {
   lineItemAdjustmentService: LineItemAdjustmentService
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
+  remoteQuery: (
+    query: string | RemoteJoinerQuery,
+    variables?: Record<string, unknown>
+  ) => Promise<any> // temporary until the cart update becomes a workflow
 }
 
 type TotalsConfig = {
@@ -135,6 +141,11 @@ class CartService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
+  protected readonly remoteQuery_: (
+    query: string | RemoteJoinerQuery,
+    variables?: Record<string, unknown>
+  ) => Promise<any> // temporary until the cart update becomes a workflow
+
   constructor({
     cartRepository,
     shippingMethodRepository,
@@ -162,6 +173,7 @@ class CartService extends TransactionBaseService {
     featureFlagRouter,
     storeService,
     productVariantInventoryService,
+    remoteQuery, // temporary until the cart update becomes a workflow
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -192,6 +204,8 @@ class CartService extends TransactionBaseService {
     this.featureFlagRouter_ = featureFlagRouter
     this.storeService_ = storeService
     this.productVariantInventoryService_ = productVariantInventoryService
+
+    this.remoteQuery_ = remoteQuery // temporary until the cart update becomes a workflow
   }
 
   /**
@@ -1103,7 +1117,7 @@ class CartService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const cartRepo = transactionManager.withRepository(this.cartRepository_)
         const relations = [
-          "items.variant.product.profiles",
+          "items",
           "shipping_methods",
           "shipping_methods.shipping_option",
           "shipping_address",
@@ -1117,9 +1131,46 @@ class CartService extends TransactionBaseService {
           "discounts.rule",
         ]
 
+        if (
+          !this.featureFlagRouter_.isFeatureEnabled(
+            IsolateProductDomainFeatureFlag.key
+          )
+        ) {
+          relations.push("items.variant.product.profiles")
+        }
+
         const cart = await this.retrieve(cartId, {
           relations,
         })
+
+        // In product domain isolation we need to retrieve the product, variants and profiles using the remote query
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            IsolateProductDomainFeatureFlag.key
+          )
+        ) {
+          const { rows: products } = await this.remoteQuery_({
+            products: {
+              fields: ["id"],
+              variants: {
+                fields: ["id"],
+              },
+            },
+          })
+
+          const variantsMap = new Map(
+            products.flatMap((p) => p.variants).map((v) => [v.id, v])
+          )
+
+          cart.items.forEach((item) => {
+            if (!item.variant_id) {
+              return
+            }
+
+            const variant = variantsMap.get(item.variant_id)
+            item.variant = variant as ProductVariant
+          })
+        }
 
         const originalCartCustomer = { ...(cart.customer ?? {}) }
         if (data.customer_id) {
