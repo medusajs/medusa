@@ -7,6 +7,5 @@
   "installCommand": "yarn install",
   "buildCommand": "turbo run build",
   "outputDirectory": ".next",
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ../../packages",
-  "rootDirectory": "www/apps/api-reference"
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ../../packages"
 }
