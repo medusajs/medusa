@@ -3,13 +3,15 @@
   "pipeline": {
     "build": {
       "dependsOn": [
+
         "^build"
       ],
       "outputs": [
         ".next/**",
         "!.next/cache/**",
         ".docusaurus/**",
-        "build"
+        "build",
+        "dist"
       ]
     },
     "start:monorepo": {
