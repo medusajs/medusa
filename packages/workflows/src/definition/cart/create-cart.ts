@@ -17,7 +17,8 @@ import { exportWorkflow, pipe } from "../../helper"
 
 enum CreateCartActions {
   setContext = "setContext",
-  prepareLineItems = "prepareLineItems",
+  prepareLineItemsGeneration = "prepareLineItemsGeneration",
+  generateLineItems = "generateLineItems",
   attachLineItems = "attachLineItems",
   findRegion = "findRegion",
   findSalesChannel = "findSalesChannel",
@@ -60,8 +61,16 @@ const workflowSteps: TransactionStepsDefinition = {
         next: {
           action: CreateCartActions.createCart,
           next: {
-            action: CreateCartActions.attachLineItems,
+            action: CreateCartActions.prepareLineItemsGeneration,
             noCompensation: true,
+            next: {
+              action: CreateCartActions.generateLineItems,
+              noCompensation: true,
+              next: {
+                action: CreateCartActions.attachLineItems,
+                noCompensation: true,
+              },
+            },
           },
         },
       },
@@ -169,16 +178,31 @@ const handlers = new Map([
     },
   ],
   [
-    CreateCartActions.prepareLineItems,
+    CreateCartActions.prepareLineItemsGeneration,
+    {
+      invoke: pipe(
+        {
+          invoke: getWorkflowInput(
+            CartHandlers.prepareLineItemsGeneration.aliases.items
+          ).invoke,
+        },
+        CartHandlers.prepareLineItemsGeneration
+      ),
+    },
+  ],
+  [
+    CreateCartActions.generateLineItems,
     {
       invoke: pipe(
         {
           invoke: [
-            getWorkflowInput(CartHandlers.generateLineItems.aliases.items)
-              .invoke,
             {
               from: CreateCartActions.createCart,
               alias: CartHandlers.generateLineItems.aliases.cart,
+            },
+            {
+              from: CreateCartActions.prepareLineItemsGeneration,
+              alias: CartHandlers.generateLineItems.aliases.items,
             },
           ],
         },
@@ -197,7 +221,7 @@ const handlers = new Map([
               alias: CartHandlers.attachLineItemsToCart.aliases.Cart,
             },
             {
-              from: CreateCartActions.prepareLineItems,
+              from: CreateCartActions.generateLineItems,
               alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
             },
           ],
