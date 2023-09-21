@@ -200,7 +200,7 @@ export default async (req, res) => {
             {
               id: validated.items.map((i) => i.variant_id).filter(Boolean),
             },
-            { relations: ["products"] }
+            { relations: ["product"] }
           )) as unknown as ProductVariantDTO[]
 
         const generateInputData = validated.items.map((item) => {
