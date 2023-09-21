@@ -483,5 +483,6 @@
   "buildCommand": "turbo run build",
   "output": "build",
   "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ../../packages",
-  "rootDirectory": "www/apps/docs"
+  "rootDirectory": "www/apps/docs",
+  "devCommand": "yarn dev"
 }
