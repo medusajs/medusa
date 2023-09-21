@@ -403,24 +403,6 @@ npm run start
 
 The code snippet must be written using NPM, and the `npm2yarn` plugin will automatically transform it to Yarn.
 
-### Expand Commands
-
-<!-- vale off -->
-
-Don't use commands in their abbreviated terms. For example, instead of `npm i` use `npm install`.
-
-<!-- vale on -->
-
-### Run Command
-
-Make sure to always use the `run` command when the command runs a script.
-
-<!-- vale off -->
-
-For example, even though you can run the `start` script using NPM with `npm start`, to make sure it’s transformed properly to a Yarn command, you must add the `run` keyword before `start`.
-
-<!-- vale on -->
-
 ### Global Option
 
 When a command uses the global option `-g`, add it at the end of the NPM command to ensure that it’s transformed to a Yarn command properly. For example:
