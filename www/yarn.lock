@@ -3298,7 +3298,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/bundle-analyzer@npm:^13.4.19":
+"@next/bundle-analyzer@npm:13.4.19":
   version: 13.4.19
   resolution: "@next/bundle-analyzer@npm:13.4.19"
   dependencies:
@@ -3330,7 +3330,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/mdx@npm:^13.4.12":
+"@next/mdx@npm:13.4.19":
   version: 13.4.19
   resolution: "@next/mdx@npm:13.4.19"
   dependencies:
@@ -7957,8 +7957,8 @@ __metadata:
     "@mdx-js/loader": ^2.3.0
     "@mdx-js/react": ^2.3.0
     "@medusajs/icons": ^1.0.0
-    "@next/bundle-analyzer": ^13.4.19
-    "@next/mdx": ^13.4.12
+    "@next/bundle-analyzer": 13.4.19
+    "@next/mdx": 13.4.19
     "@readme/openapi-parser": ^2.5.0
     "@types/jsdom": ^21.1.1
     "@types/mapbox__rehype-prism": ^0.8.0
@@ -7974,7 +7974,7 @@ __metadata:
     jsdom: ^22.1.0
     json-schema: ^0.4.0
     json-stringify-pretty-compact: ^4.0.0
-    next: latest
+    next: 13.4.19
     next-mdx-remote: ^4.4.1
     openapi-sampler: ^1.3.1
     openapi-types: ^12.1.3
@@ -15382,7 +15382,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:latest":
+"next@npm:13.4.19, next@npm:latest":
   version: 13.4.19
   resolution: "next@npm:13.4.19"
   dependencies:
