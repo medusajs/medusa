@@ -4,6 +4,8 @@ import {
   Workflows,
 } from "@medusajs/workflows"
 import { Type } from "class-transformer"
+import { ProductVariantDTO } from "@medusajs/types"
+
 import {
   IsArray,
   IsInt,
@@ -15,13 +17,14 @@ import {
 import { isDefined, MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, prepareLineItemData } from "@medusajs/utils"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { LineItem } from "../../../../models"
 import {
   CartService,
   LineItemService,
+  ProductVariantService,
   RegionService,
 } from "../../../../services"
 import { CartCreateProps } from "../../../../types/cart"
@@ -187,12 +190,25 @@ export default async (req, res) => {
       const createdCart = await cartServiceTx.create(toCreate)
 
       if (validated.items?.length) {
+        const productVariantService: ProductVariantService = req.scope.resolve(
+          "productVariantService"
+        )
+
+        const variants = (await productVariantService
+          .withTransaction(manager)
+          .list(
+            {
+              id: validated.items.map((i) => i.variant_id).filter(Boolean),
+            },
+            { relations: ["products"] }
+          )) as unknown as ProductVariantDTO[]
+
         const generateInputData = validated.items.map((item) => {
-          return {
-            variantId: item.variant_id,
-            quantity: item.quantity,
-          }
+          const variant = variants.find((v) => v.id === item.variant_id)!
+
+          return prepareLineItemData(variant, item.quantity)
         })
+
         const generatedLineItems: LineItem[] = await lineItemServiceTx.generate(
           generateInputData,
           {
