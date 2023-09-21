@@ -2,7 +2,7 @@ extends: substitution
 message: Use '%s' instead of '%s'
 link: https://docs.medusajs.com/contribution-guidelines#expand-commands
 level: error
-scope: code
+scope: raw
 ignorecase: false
 # swap maps tokens in form of bad: good
 swap:
