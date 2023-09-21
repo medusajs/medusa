@@ -171,9 +171,8 @@ describe("DraftOrderService", () => {
       expect(lineItemService.generate).toHaveBeenCalledWith(
         [
           {
-            variantId: "test-variant",
+            variant_id: "test-variant",
             quantity: 2,
-            metadata: {},
             unit_price: undefined,
           },
         ],
@@ -231,9 +230,8 @@ describe("DraftOrderService", () => {
       expect(lineItemService.generate).toHaveBeenCalledWith(
         [
           {
-            variantId: "test-variant",
+            variant_id: "test-variant",
             quantity: 2,
-            metadata: {},
             unit_price: undefined,
           },
         ],
