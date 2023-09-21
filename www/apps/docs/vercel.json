@@ -485,7 +485,7 @@
   "framework": "docusaurus-2",
   "installCommand": "yarn install",
   "buildCommand": "turbo run build",
-  "output": "build",
+  "outputDirectory": "build",
   "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ../../packages",
   "rootDirectory": "www/apps/docs",
   "devCommand": "yarn dev"

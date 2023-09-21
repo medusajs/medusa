@@ -2,7 +2,7 @@
   "framework": "nextjs",
   "installCommand": "yarn install",
   "buildCommand": "turbo run build",
-  "output": ".next",
+  "outputDirectory": ".next",
   "ignoreCommand": "git diff HEAD^ HEAD --quiet -- . ../../packages",
   "rootDirectory": "www/apps/ui"
 }
