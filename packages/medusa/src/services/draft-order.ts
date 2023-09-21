@@ -310,36 +310,39 @@ class DraftOrderService extends TransactionBaseService {
         const itemsToCreate: Partial<LineItem>[] = []
 
         // prepare that for next steps
-        ;(items ?? []).forEach(async (item) => {
-          if (item.variant_id) {
-            const variant = (await this.productVariantService_.retrieve(
-              item.variant_id,
-              { relations: ["products"] }
-            )) as unknown as ProductVariantDTO
+        await Promise.all(
+          (items ?? []).map(async (item) => {
+            if (item.variant_id) {
+              const variant = (await this.productVariantService_.retrieve(
+                item.variant_id,
+                { relations: ["product"] }
+              )) as unknown as ProductVariantDTO
 
-            itemsToGenerate.push(
-              prepareLineItemData(variant, item.quantity, item.unit_price)
-            )
-            return
-          }
+              itemsToGenerate.push(
+                prepareLineItemData(variant, item.quantity, item.unit_price)
+              )
 
-          let price
-          if (!isDefined(item.unit_price) || item.unit_price < 0) {
-            price = 0
-          } else {
-            price = item.unit_price
-          }
+              return
+            }
 
-          itemsToCreate.push({
-            cart_id: createdCart.id,
-            has_shipping: true,
-            title: item.title || "Custom item",
-            allow_discounts: false,
-            unit_price: price,
-            quantity: item.quantity,
-            metadata: item.metadata,
+            let price
+            if (!isDefined(item.unit_price) || item.unit_price < 0) {
+              price = 0
+            } else {
+              price = item.unit_price
+            }
+
+            itemsToCreate.push({
+              cart_id: createdCart.id,
+              has_shipping: true,
+              title: item.title || "Custom item",
+              allow_discounts: false,
+              unit_price: price,
+              quantity: item.quantity,
+              metadata: item.metadata,
+            })
           })
-        })
+        )
 
         const promises: Promise<any>[] = []
 

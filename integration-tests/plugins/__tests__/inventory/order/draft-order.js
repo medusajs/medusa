@@ -51,11 +51,9 @@ describe("/store/carts", () => {
     const variantId = "test-variant"
 
     let region
-    let order
     let invItemId
     let prodVarInventoryService
     let inventoryService
-    let lineItemService
     let stockLocationService
     let salesChannelLocationService
 
@@ -70,7 +68,6 @@ describe("/store/carts", () => {
       prodVarInventoryService = appContainer.resolve(
         "productVariantInventoryService"
       )
-      lineItemService = appContainer.resolve("lineItemService")
       inventoryService = appContainer.resolve("inventoryService")
       stockLocationService = appContainer.resolve("stockLocationService")
       salesChannelLocationService = appContainer.resolve(
