@@ -119,7 +119,7 @@ async function retrieveCartWithIsolatedProductModule(req, id: string) {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
   const relations = [
-    "items.variant.product.profiles",
+    "items",
     "shipping_methods",
     "shipping_methods.shipping_option",
     "shipping_address",
