@@ -3,6 +3,16 @@ import { request } from "../../../../../helpers/test-request"
 import { CartServiceMock } from "../../../../../services/__mocks__/cart"
 import { LineItemServiceMock } from "../../../../../services/__mocks__/line-item"
 
+jest.mock("@medusajs/utils", () => {
+  const original = jest.requireActual("@medusajs/utils")
+  return {
+    ...original,
+    prepareLineItemData: jest
+      .fn()
+      .mockReturnValue({ variant_id: "item-variant", quantity: 3 }),
+  }
+})
+
 describe("POST /store/carts/:id", () => {
   describe("successfully creates a line item", () => {
     let subject
@@ -32,10 +42,12 @@ describe("POST /store/carts/:id", () => {
     it("calls LineItemService generate", () => {
       expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("testVariant"),
-        IdMap.getId("testRegion"),
-        3,
-        { metadata: undefined }
+        { quantity: 3, variant_id: "item-variant" },
+        {
+          customer_id: undefined,
+          metadata: undefined,
+          region_id: IdMap.getId("testRegion"),
+        }
       )
     })
 
