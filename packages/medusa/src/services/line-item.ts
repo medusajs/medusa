@@ -204,7 +204,7 @@ class LineItemService extends TransactionBaseService {
         ) as GenerateInputData[]
 
         const resolvedDataMap = new Map(
-          resolvedData.map((d) => [d.variantId, d])
+          resolvedData.map((d) => [d.variant_id, d])
         )
 
         const variantsToCalculatePricingFor: {
@@ -213,13 +213,13 @@ class LineItemService extends TransactionBaseService {
         }[] = []
 
         for (const variant of resolvedData) {
-          const variantResolvedData = resolvedDataMap.get(variant.variantId)
+          const variantResolvedData = resolvedDataMap.get(variant.variant_id)
           if (
             resolvedContext.unit_price == null &&
             variantResolvedData?.unit_price == null
           ) {
             variantsToCalculatePricingFor.push({
-              variantId: variant.variantId,
+              variantId: variant.variant_id,
               quantity: variantResolvedData!.quantity,
             })
           }
@@ -241,10 +241,10 @@ class LineItemService extends TransactionBaseService {
         const generatedItems: LineItem[] = []
 
         for (const variantData of resolvedData) {
-          const variantPricing = variantsPricing[variantData.variantId]
+          const variantPricing = variantsPricing[variantData.variant_id]
 
           const lineItem = await this.generateLineItem(
-            { ...variantData, id: variantData.variantId },
+            { ...variantData, id: variantData.variant_id },
             variantData.quantity,
             {
               ...resolvedContext,

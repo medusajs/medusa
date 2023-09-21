@@ -376,9 +376,7 @@ class SwapService extends TransactionBaseService {
           .withTransaction(manager)
           .list(
             {
-              id: additionalItems
-                .map((i) => i.variant_id)
-                .filter(Boolean) as string[],
+              id: additionalItems.map((i) => i.variant_id) as string[],
             },
             {
               relations: ["product"],

@@ -13,7 +13,7 @@ const VARIANT_PROPERTIES = [
 ]
 
 export type LineItemCreateData = {
-  variantId: string
+  variant_id: string
   title: string
   product_id: string
   product: {
@@ -49,7 +49,7 @@ export function prepareLineItemData(
 
   return {
     ...pick(variantData, VARIANT_PROPERTIES),
-    variantId: variantData.id!,
+    variant_id: variantData.id!,
     quantity,
     unit_price,
   } as LineItemCreateData

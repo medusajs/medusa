@@ -10,6 +10,7 @@ import {
   OrderService,
   PaymentProviderService,
   ProductVariantInventoryService,
+  ProductVariantService,
   ReturnService,
   ShippingOptionService,
   TotalsService,
@@ -109,6 +110,14 @@ const productVariantInventoryService =
 const fulfillmentService = {} as unknown as FulfillmentService
 const lineItemAdjustmentService = {} as unknown as LineItemAdjustmentService
 
+const productVariantService = {
+  list: () =>
+    Promise.resolve([{ id: IdMap.getId("new-variant"), product: {} }]),
+  withTransaction: function () {
+    return this
+  },
+} as unknown as ProductVariantService
+
 const defaultProps = {
   manager: MockManager,
   swapRepository: swapRepo,
@@ -120,6 +129,7 @@ const defaultProps = {
   totalsService: totalsService,
   eventBusService: eventBusService,
   lineItemService: lineItemService,
+  productVariantService: productVariantService,
   productVariantInventoryService: productVariantInventoryService,
   fulfillmentService: fulfillmentService,
   shippingOptionService: shippingOptionService,
@@ -255,6 +265,7 @@ describe("SwapService", () => {
         swapRepository: swapRepo,
         cartService,
         lineItemService,
+        productVariantService,
         customShippingOptionService,
         lineItemAdjustmentService:
           LineItemAdjustmentServiceMock as unknown as LineItemAdjustmentService,
@@ -412,12 +423,14 @@ describe("SwapService", () => {
 
     describe("success", () => {
       const lineItemService = {
-        generate: jest.fn().mockImplementation(({ variantId, quantity }) => {
-          return {
-            unit_price: 100,
-            variant_id: variantId,
-            quantity,
-          }
+        generate: jest.fn().mockImplementation(([{ variant_id, quantity }]) => {
+          return [
+            {
+              unit_price: 100,
+              variant_id: variant_id,
+              quantity,
+            },
+          ]
         }),
         retrieve: () => Promise.resolve({}),
         list: () => Promise.resolve([]),
@@ -455,10 +468,12 @@ describe("SwapService", () => {
 
         expect(lineItemService.generate).toHaveBeenCalledTimes(1)
         expect(lineItemService.generate).toHaveBeenCalledWith(
-          {
-            quantity: 1,
-            variantId: IdMap.getId("new-variant"),
-          },
+          [
+            {
+              quantity: 1,
+              variant_id: IdMap.getId("new-variant"),
+            },
+          ],
           {
             cart: undefined,
             region_id: IdMap.getId("region"),
