@@ -9,12 +9,13 @@
         ".next/**",
         "!.next/cache/**",
         ".docusaurus/**",
-        "build",
-        "dist"
+        "build/**",
+        "dist/**"
       ]
     },
     "start:monorepo": {
       "dependsOn": [
+        "build#docs-ui",
         "^start:monorepo"
       ]
     },
