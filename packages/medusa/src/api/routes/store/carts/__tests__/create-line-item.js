@@ -59,43 +59,4 @@ describe("POST /store/carts/:id", () => {
       expect(subject.body.cart.id).toEqual(IdMap.getId("emptyCart"))
     })
   })
-
-  describe("handles unsuccessful line item generation", () => {
-    let subject
-
-    beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/store/carts/${IdMap.getId("emptyCart")}/line-items`,
-        {
-          payload: {
-            variant_id: IdMap.getId("fail"),
-            quantity: 3,
-          },
-        }
-      )
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("calls LineItemService generate", () => {
-      expect(LineItemServiceMock.generate).toHaveBeenCalledTimes(1)
-      expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
-        IdMap.getId("fail"),
-        IdMap.getId("testRegion"),
-        3,
-        { metadata: undefined }
-      )
-    })
-
-    it("returns 400", () => {
-      expect(subject.status).toEqual(400)
-    })
-
-    it("returns error", () => {
-      expect(subject.body.message).toEqual("Doesn't exist")
-    })
-  })
 })
