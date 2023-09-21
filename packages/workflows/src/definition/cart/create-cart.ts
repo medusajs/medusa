@@ -68,7 +68,7 @@ const workflowSteps: TransactionStepsDefinition = {
               noCompensation: true,
               next: {
                 action: CreateCartActions.attachLineItems,
-                noCompensation: true,
+                noCompensation: true, // TODO: we still need compensation in case this workflow is extended
               },
             },
           },
@@ -181,11 +181,9 @@ const handlers = new Map([
     CreateCartActions.prepareLineItemsGeneration,
     {
       invoke: pipe(
-        {
-          invoke: getWorkflowInput(
-            CartHandlers.prepareLineItemsGeneration.aliases.items
-          ).invoke,
-        },
+        getWorkflowInput(
+          CartHandlers.prepareLineItemsGeneration.aliases.CreateCartInput
+        ),
         CartHandlers.prepareLineItemsGeneration
       ),
     },
@@ -198,11 +196,11 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.createCart,
-              alias: CartHandlers.generateLineItems.aliases.cart,
+              alias: CartHandlers.generateLineItems.aliases.Cart,
             },
             {
               from: CreateCartActions.prepareLineItemsGeneration,
-              alias: CartHandlers.generateLineItems.aliases.items,
+              alias: CartHandlers.generateLineItems.aliases.Items,
             },
           ],
         },

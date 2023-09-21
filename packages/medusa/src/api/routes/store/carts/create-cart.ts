@@ -97,6 +97,7 @@ export default async (req, res) => {
   let cart
 
   if (isWorkflowEnabled) {
+    // TODO: is product module enabled
     const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
     const input = {
       ...validated,

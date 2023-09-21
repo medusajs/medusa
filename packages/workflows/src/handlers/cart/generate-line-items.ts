@@ -14,19 +14,25 @@ type HandlerInputData = {
   }
 }
 
+type LineItemDTO = {} // TODO type
+
 enum Aliases {
-  items = "items",
-  cart = "cart",
+  Items = "items",
+  Cart = "cart",
 }
 
 export async function generateLineItems({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInputData>): Promise<void> {
+}: WorkflowArguments<HandlerInputData>): Promise<LineItemDTO[]> {
   const { manager } = context
 
   const { items, cart } = data
+
+  if (!items.length) {
+    return []
+  }
 
   const lineItemService = container.resolve("lineItemService")
   const lineItemServiceTx = lineItemService.withTransaction(manager)

@@ -227,7 +227,7 @@ class LineItemService extends TransactionBaseService {
 
         let variantsPricing = {}
 
-        // TODO: check pricing
+        // TODO: remove this call and receive prices as input
         if (variantsToCalculatePricingFor.length) {
           variantsPricing = await this.pricingService_
             .withTransaction(transactionManager)
