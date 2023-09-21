@@ -16,6 +16,7 @@ describe("module definitions loader", () => {
     registrationName: "testService",
     defaultPackage: "@medusajs/test-service",
     label: "TestService",
+    isLegacy: true,
     isRequired: false,
     canOverride: true,
     defaultModuleDeclaration: {

@@ -176,7 +176,7 @@ class InviteSubscriber {
       templateId: "send-invite",
       from: "hello@medusajs.com",
       to: data.user_email,
-      data: {
+      dynamic_template_data: {
         // any data necessary for your template...
         token: data.token,
       },

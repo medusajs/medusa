@@ -36,6 +36,24 @@ To edit your profile details:
 
 ---
 
+## Change Admin Language
+
+The Medusa admin supports multiple languages, and you can change the default language from your profile settings.
+
+To change the language:
+
+1. Go to Settings → Personal Information.
+2. For the Language field, select the language you want from the dropdown.
+3. The language will be saved and changed.
+
+:::tip
+
+Can't find your language? Learn how you can contribute by translating the admin to other languages [here](../../contribution/admin-translations.md).
+
+:::
+
+---
+
 ## Edit Analytics Preferences
 
 To edit your analytics collection preferences:

@@ -36,5 +36,6 @@ export async function mikroOrmCreateConnection(
     migrations: {
       path: pathToMigrations,
     },
+    pool: database.pool as any,
   })
 }

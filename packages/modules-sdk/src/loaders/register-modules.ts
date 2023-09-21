@@ -11,18 +11,29 @@ import { isObject } from "@medusajs/utils"
 import resolveCwd from "resolve-cwd"
 import { MODULE_DEFINITIONS, ModulesDefinition } from "../definitions"
 
+/**
+ *
+ * @param modules
+ * @param isolatedModules Will be removed once the isolated flag is being removed
+ */
 export const registerModules = (
   modules?: Record<
     string,
     | false
     | string
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-  >
+  >,
+  { loadLegacyOnly } = { loadLegacyOnly: false }
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
   const projectModules = modules ?? {}
 
   for (const definition of MODULE_DEFINITIONS) {
+    // Skip non legacy modules
+    if (loadLegacyOnly && !definition.isLegacy) {
+      continue
+    }
+
     const customConfig = projectModules[definition.key]
 
     const canSkip =

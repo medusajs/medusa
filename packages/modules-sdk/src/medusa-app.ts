@@ -1,9 +1,11 @@
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
+  ExternalModuleDeclaration,
+  InternalModuleDeclaration,
   LoadedModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-  ModuleConfig,
+  ModuleDefinition,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   RemoteJoinerQuery,
@@ -18,21 +20,29 @@ import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 
-export type MedusaModuleConfig = (Partial<ModuleConfig> | Modules)[]
+export type MedusaModuleConfig = {
+  [key: string | Modules]:
+    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+    | true
+}
+
 export type SharedResources = {
   database?: ModuleServiceInitializeOptions["database"] & {
-    pool?: {
-      name?: string
-      afterCreate?: Function
-      min?: number
-      max?: number
-      refreshIdle?: boolean
-      idleTimeoutMillis?: number
-      reapIntervalMillis?: number
-      returnToHead?: boolean
-      priorityRange?: number
-      log?: (message: string, logLevel: string) => void
-    }
+    /**
+     * {
+     *   name?: string
+     *   afterCreate?: Function
+     *   min?: number
+     *   max?: number
+     *   refreshIdle?: boolean
+     *   idleTimeoutMillis?: number
+     *   reapIntervalMillis?: number
+     *   returnToHead?: boolean
+     *   priorityRange?: number
+     *   log?: (message: string, logLevel: string) => void
+     * }
+     */
+    pool?: Record<string, unknown>
   }
 }
 
@@ -77,53 +87,35 @@ export async function MedusaApp({
     sharedResourcesConfig as ModuleServiceInitializeOptions,
     true
   )!
-  const { pool } = sharedResourcesConfig?.database ?? {}
 
-  if (dbData?.clientUrl) {
-    const { knex } = await import("knex")
-    const dbConnection = knex({
-      client: "pg",
-      searchPath: dbData.schema || "public",
-      connection: {
-        connectionString: dbData.clientUrl,
-        ssl: (dbData.driverOptions?.connection as any).ssl! ?? false,
-      },
-      pool: {
-        // https://knexjs.org/guide/#pool
-        ...(pool ?? {}),
-        min: pool?.min ?? 0,
-      },
-    })
-
-    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] = dbConnection
+  if (
+    dbData.clientUrl &&
+    !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
+  ) {
+    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
+      ModulesSdkUtils.createPgConnection({
+        ...(sharedResourcesConfig?.database ?? {}),
+        ...dbData,
+      })
   }
 
   const allModules: Record<string, LoadedModule | LoadedModule[]> = {}
 
   await Promise.all(
-    modules.map(async (mod: Partial<ModuleConfig> | Modules) => {
-      let key: Modules | string = mod as Modules
+    Object.keys(modules).map(async (moduleName) => {
+      const mod = modules[moduleName] as MedusaModuleConfig
+
       let path: string
       let declaration: any = {}
 
       if (isObject(mod)) {
-        if (!mod.module) {
-          throw new Error(
-            `Module ${JSON.stringify(mod)} is missing module name.`
-          )
-        }
-
-        key = mod.module
-        path = mod.path ?? MODULE_PACKAGE_NAMES[key]
+        const mod_ = mod as unknown as InternalModuleDeclaration
+        path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]
 
         declaration = { ...mod }
         delete declaration.definition
       } else {
-        path = MODULE_PACKAGE_NAMES[mod as Modules]
-      }
-
-      if (!path) {
-        throw new Error(`Module ${key} is missing path.`)
+        path = MODULE_PACKAGE_NAMES[moduleName]
       }
 
       declaration.scope ??= MODULE_SCOPE.INTERNAL
@@ -136,22 +128,22 @@ export async function MedusaApp({
       }
 
       const loaded = (await MedusaModule.bootstrap(
-        key,
+        moduleName,
         path,
         declaration,
         undefined,
         injectedDependencies,
-        isObject(mod) ? mod.definition : undefined
+        (isObject(mod) ? mod.definition : undefined) as ModuleDefinition
       )) as LoadedModule
 
-      if (allModules[key] && !Array.isArray(allModules[key])) {
-        allModules[key] = []
+      if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
+        allModules[moduleName] = []
       }
 
-      if (allModules[key]) {
-        ;(allModules[key] as LoadedModule[]).push(loaded[key])
+      if (allModules[moduleName]) {
+        ;(allModules[moduleName] as LoadedModule[]).push(loaded[moduleName])
       } else {
-        allModules[key] = loaded[key]
+        allModules[moduleName] = loaded[moduleName]
       }
 
       return loaded

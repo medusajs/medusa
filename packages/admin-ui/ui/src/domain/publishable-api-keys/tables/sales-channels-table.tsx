@@ -6,6 +6,7 @@ import {
 } from "react-table"
 import React, { forwardRef, useEffect, useImperativeHandle } from "react"
 import { SalesChannel } from "@medusajs/medusa"
+import { useTranslation, Translation } from "react-i18next"
 
 import Table from "../../../components/molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
@@ -36,7 +37,7 @@ const COLUMNS = [
     },
   },
   {
-    Header: "Title",
+    Header: <Translation>{(t) => t("tables-title", "Title")}</Translation>,
     accessor: "name",
     maxWidth: 160,
     width: 160,
@@ -52,7 +53,9 @@ const COLUMNS = [
     },
   },
   {
-    Header: "Description",
+    Header: (
+      <Translation>{(t) => t("tables-description", "Description")}</Translation>
+    ),
     accessor: "description",
     Cell: ({ row }) => {
       return (
@@ -85,6 +88,7 @@ type SalesChannelTableProps = {
  */
 const SalesChannelTable = forwardRef(
   (props: SalesChannelTableProps, ref: React.Ref<any>) => {
+    const { t } = useTranslation()
     const {
       query,
       offset,
@@ -210,7 +214,7 @@ const SalesChannelTable = forwardRef(
           {!isLoading && !data?.length && (
             <div className="absolute flex h-full w-full items-center justify-center">
               <span className="text-sma text-grey-40">
-                No added sales channels
+                {t("tables-no-added-sales-channels", "No added sales channels")}
               </span>
             </div>
           )}
@@ -220,7 +224,7 @@ const SalesChannelTable = forwardRef(
             pagingState={{
               count,
               offset,
-              title: "Sales Channels",
+              title: t("tables-sales-channels", "Sales Channels"),
               pageSize: offset + table.rows.length,
               currentPage: table.state.pageIndex + 1,
               pageCount: table.pageCount,

@@ -32,6 +32,7 @@ const {
 const {
   simpleCustomerGroupFactory,
 } = require("../../../../factories/simple-customer-group-factory")
+const { ProductVariantMoneyAmount } = require("@medusajs/medusa")
 
 jest.setTimeout(30000)
 
@@ -144,13 +145,18 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(priceList1)
 
       const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
-        variant_id: prodSale.variants[0].id,
         currency_code: "usd",
         amount: 800,
         price_list_id: "pl_current",
       })
 
       await dbConnection.manager.save(ma_sale_1)
+
+      await dbConnection.manager.insert(ProductVariantMoneyAmount, {
+        id: `${prodSale.variants[0].id}-${ma_sale_1.id}`,
+        variant_id: prodSale.variants[0].id,
+        money_amount_id: ma_sale_1.id,
+      })
 
       const api = useApi()
 
@@ -2289,7 +2295,7 @@ describe("/store/carts", () => {
       await cartSeeder(dbConnection)
       const manager = dbConnection.manager
 
-      const _cart = await manager.create(Cart, {
+      const _cart = manager.create(Cart, {
         id: "test-cart-with-cso",
         customer_id: "some-customer",
         email: "some-customer@email.com",

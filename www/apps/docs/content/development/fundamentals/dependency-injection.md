@@ -693,13 +693,13 @@ Its camel-case name.
 
 ---
 
-## Loading Resources
+## Resolve Resources
 
-This section covers how to load resources that the Medusa backend registers when it starts running.
+This section covers how to resolve resources from the dependency container to use them in endpoints and classes in general.
 
 ### In Endpoints
 
-To load resources, such as services, in endpoints, use the `req.scope.resolve` function. The function receives the registration name of the resource as a parameter.
+To resolve resources, such as services, in endpoints, use the `req.scope.resolve` method. The method receives the registration name of the resource as a parameter.
 
 For example:
 
@@ -707,7 +707,7 @@ For example:
 const logger = req.scope.resolve("logger")
 ```
 
-Please note that in endpoints some resources, such as repositories, are not available.
+Please note that in endpoints some resources, such as repositories, are not available. Refer to the [repositories](../entities/repositories.md) documentation to learn how you can load them.
 
 ### In Classes
 

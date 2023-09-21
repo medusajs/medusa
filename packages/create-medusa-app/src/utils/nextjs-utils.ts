@@ -2,10 +2,10 @@ import inquirer from "inquirer"
 import promiseExec from "./promise-exec.js"
 import { FactBoxOptions, displayFactBox } from "./facts.js"
 import fs from "fs"
+import path from "path"
 import { customAlphabet, nanoid } from "nanoid"
 import { isAbortError } from "./create-abort-controller.js"
 import logMessage from "./log-message.js"
-import { EOL } from "os"
 
 const NEXTJS_REPO = "https://github.com/medusajs/nextjs-starter-medusa"
 
@@ -74,10 +74,10 @@ export async function installNextjsStarter({
     })
   }
 
-  await promiseExec(`mv .env.template .env.local`, {
-    cwd: nextjsDirectory,
-    signal: abortController?.signal,
-  })
+  fs.renameSync(
+    path.join(nextjsDirectory, ".env.template"),
+    path.join(nextjsDirectory, ".env.local")
+  )
 
   displayFactBox({
     ...factBoxOptions,
