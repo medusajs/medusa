@@ -149,8 +149,6 @@ import {
   BeforeInsert, 
   Column, 
   Entity,
-  JoinColumn,
-  ManyToOne,
 } from "typeorm"
 import { BaseEntity, ProductVariant } from "@medusajs/medusa"
 import { generateEntityId } from "@medusajs/medusa/dist/utils"
@@ -173,6 +171,8 @@ export class ProductMedia extends BaseEntity {
 
   @Column({ type: "varchar" })
   variant_id: string
+
+  variant?: ProductVariant
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -275,17 +275,45 @@ Before creating the endpoints, you’ll create the `ProductMediaService`. Create
 ```ts title=src/services/product-media.ts
 import { 
   FindConfig,
+  ProductVariantService,
   Selector,
   TransactionBaseService,
   buildQuery,
 } from "@medusajs/medusa"
+import { 
+  ProductMediaRepository,
+} from "../repositories/product-media"
 import { ProductMedia } from "../models/product-media"
 import { MedusaError } from "@medusajs/utils"
 
-class ProductMediaService extends TransactionBaseService {
+type InjectedDependencies = {
+  productMediaRepository: typeof ProductMediaRepository
+  productVariantService: ProductVariantService
+}
 
-  constructor(container) {
+class ProductMediaService extends TransactionBaseService {
+  protected productMediaRepository_: 
+    typeof ProductMediaRepository
+  protected productVariantService_: ProductVariantService
+
+  constructor(container: InjectedDependencies) {
     super(container)
+    this.productMediaRepository_ = 
+      container.productMediaRepository
+    this.productVariantService_ = 
+      container.productVariantService
+  }
+
+  private checkVariantInRelations(
+    relations: string[]
+  ): [string[], boolean] {
+    const variantsRelationIndex = relations.indexOf("variant")
+    const isVariantsEnabled = variantsRelationIndex !== -1
+    if (isVariantsEnabled) {
+      relations.splice(variantsRelationIndex, 1)
+    }
+
+    return [relations, isVariantsEnabled]
   }
 
   async listAndCount(
@@ -294,14 +322,39 @@ class ProductMediaService extends TransactionBaseService {
       skip: 0,
       take: 20,
       relations: [],
-  }): Promise<[ProductMedia[], number]> {
-    const productMediaRepo = this.activeManager_.getRepository(
-      ProductMedia
+    }
+  ): Promise<[ProductMedia[], number]> {
+    const productMediaRepo = this.activeManager_.withRepository(
+      this.productMediaRepository_
     )
+
+    const [
+      relations, 
+      isVariantsEnabled,
+    ] = this.checkVariantInRelations(
+      config.relations || []
+    )
+
+    config.relations = relations
 
     const query = buildQuery(selector, config)
 
-    return productMediaRepo.findAndCount(query)
+    const [
+      productMedias,
+      count,
+    ] = await productMediaRepo.findAndCount(query)
+
+    if (isVariantsEnabled) {
+      // retrieve product variants
+      await Promise.all(productMedias.map(
+        async (media, index) => {
+          productMedias[index].variant = 
+            await this.retrieveVariantByMedia(media)
+        })
+      )
+    }
+
+    return [productMedias, count]
   }
   
   async list(
@@ -310,7 +363,8 @@ class ProductMediaService extends TransactionBaseService {
       skip: 0,
       take: 20,
       relations: [],
-  }): Promise<ProductMedia[]> {
+    }
+  ): Promise<ProductMedia[]> {
     const [productMedias] = await this.listAndCount(
       selector,
       config
@@ -323,9 +377,10 @@ class ProductMediaService extends TransactionBaseService {
     id: string,
     config?: FindConfig<ProductMedia>
   ): Promise<ProductMedia> {
-    const productMediaRepo = this.activeManager_.getRepository(
-      ProductMedia
-    )
+    const productMediaRepo = 
+      this.activeManager_.withRepository(
+        this.productMediaRepository_
+      )
 
     const query = buildQuery({
       id,
@@ -340,7 +395,20 @@ class ProductMediaService extends TransactionBaseService {
       )
     }
 
+    if (config.relations.includes("variant")) {
+      productMedia.variant = 
+        await this.retrieveVariantByMedia(productMedia)
+    }
+
     return productMedia
+  }
+
+  async retrieveVariantByMedia(productMedia: ProductMedia) {
+    return await this.productVariantService_.retrieve(
+      productMedia.variant_id, {
+        relations: ["product"],
+      }
+    )
   }
 
   async create(
@@ -350,8 +418,8 @@ class ProductMediaService extends TransactionBaseService {
     >
   ): Promise<ProductMedia> {
     return this.atomicPhase_(async (manager) => {
-      const productMediaRepo = manager.getRepository(
-        ProductMedia
+      const productMediaRepo = manager.withRepository(
+        this.productMediaRepository_
       )
       const productMedia = productMediaRepo.create(data)
       const result = await productMediaRepo.save(productMedia)
@@ -365,8 +433,8 @@ class ProductMediaService extends TransactionBaseService {
     data: Omit<Partial<ProductMedia>, "id">
   ): Promise<ProductMedia> {
     return await this.atomicPhase_(async (manager) => {
-      const productMediaRepo = manager.getRepository(
-        ProductMedia
+      const productMediaRepo = manager.withRepository(
+        this.productMediaRepository_
       )
       const productMedia = await this.retrieve(id)
 
@@ -378,8 +446,8 @@ class ProductMediaService extends TransactionBaseService {
 
   async delete(id: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productMediaRepo = manager.getRepository(
-        ProductMedia
+      const productMediaRepo = manager.withRepository(
+        this.productMediaRepository_
       )
       const productMedia = await this.retrieve(id)
       
@@ -446,7 +514,7 @@ export default async (req: Request, res: Response) => {
     .listAndCount({
       type: MediaType.MAIN,
     }, {
-      relations: ["variant", "variant.product"],
+      relations: ["variant"],
     }
   )
 
