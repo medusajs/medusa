@@ -52,14 +52,14 @@ const EditReservationDrawer = ({
   const form = useForm<EditReservationLineItemForm>({
     defaultValues: {
       item: {
-        description: reservation - description,
+        description: reservation.description,
       },
       metadata: getMetadataFormValues(reservation?.metadata),
     },
   })
 
   const { state: hasMetadata, toggle: toggleHasMetadata } = useToggleState(
-    !!reservation - metadata
+    !!reservation.metadata
   )
 
   const { control, setValue, handleSubmit, register } = form
@@ -124,7 +124,7 @@ const EditReservationDrawer = ({
   useEffect(() => {
     if (stock_locations?.length && reservation) {
       const defaultLocation = stock_locations.find(
-        (sl: StockLocationDTO) => sl.id === reservation - location_id
+        (sl: StockLocationDTO) => sl.id === reservation.location_id
       )
 
       if (defaultLocation) {
