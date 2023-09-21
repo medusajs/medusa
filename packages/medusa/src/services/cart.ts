@@ -1149,7 +1149,8 @@ class CartService extends TransactionBaseService {
           relations,
         })
 
-        // In product domain isolation we need to retrieve the product, variants and profiles using the remote query
+        // In product domain isolation we need to retrieve the product using the remote query
+        // This is temporary until we migrate the update cart end point to a proper workflow
         if (
           this.featureFlagRouter_.isFeatureEnabled(
             IsolateProductDomainFeatureFlag.key
