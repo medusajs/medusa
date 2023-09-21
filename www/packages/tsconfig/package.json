@@ -1,0 +1,12 @@
+{
+  "name": "tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@tsconfig/docusaurus": "^1.0.7"
+  }
+}

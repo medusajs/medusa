@@ -1,0 +1,29 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+    "paths": {
+      "docs-ui": ["./src/index.ts"],
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "outDir": "dist",
+    "tsBuildInfoFile": "./dist/.tsbuildinfo-client",
+    "noEmit": false,
+    "jsx": "react",
+    "lib": ["dom", "ES2015"],
+    "module": "ESNext",
+    "target": "es6",
+    "declaration": true,
+    "declarationMap": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
+  },
+  "include": [
+    "src/**/*",
+    "tailwind.config.js",
+    "postcss.config.js"
+  ]
+}
