@@ -1,5 +1,5 @@
 {
-  "name": "@medusajs/admin-ui",
+  "name": "uc-custom-medusajs-admin-ui",
   "author": "Stanislav Bondar <stanislav@unitedchargers.com> forked from Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
   "version": "2.0.6",
