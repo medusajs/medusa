@@ -24,7 +24,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultStoreProductsFields } from "./index"
+import { defaultStoreRemoteQueryFields } from "./index"
 
 /**
  * @oas [get] /store/products
@@ -394,125 +394,17 @@ async function listAndCountProductWithIsolatedProductModule(
     take: listConfig.take,
   }
 
-  // prettier-ignore
-  const args = `
-    filters: $filters,
-    order: $order,
-    skip: $skip, 
-    take: $take
-  `
-
-  const query = `
-      query ($filters: any, $order: any, $skip: Int, $take: Int) {
-        product (${args}) {
-          ${defaultStoreProductsFields.join("\n")}
-          
-          images {
-            id
-            created_at
-            updated_at
-            deleted_at
-            url
-            metadata
-          }
-          
-          tags {
-            id
-            created_at
-            updated_at
-            deleted_at
-            value
-          }
-          
-          type {
-            id
-            created_at
-            updated_at
-            deleted_at
-            value
-          }
-          
-          collection {
-            title
-            handle
-            id
-            created_at
-            updated_at
-            deleted_at
-          }
-          
-          options {
-            id
-            created_at
-            updated_at
-            deleted_at
-            title
-            product_id
-            metadata
-            values {
-              id
-              created_at
-              updated_at
-              deleted_at
-              value
-              option_id
-              variant_id
-              metadata
-            }
-          }
-          
-          variants {
-            id
-            created_at
-            updated_at
-            deleted_at
-            title
-            product_id
-            sku
-            barcode
-            ean
-            upc
-            variant_rank
-            inventory_quantity
-            allow_backorder
-            manage_inventory
-            hs_code
-            origin_country
-            mid_code
-            material
-            weight
-            length
-            height
-            width
-            metadata
-            options {
-              id
-              created_at
-              updated_at
-              deleted_at
-              value
-              option_id
-              variant_id
-              metadata
-            }
-          }
-          
-          profile {
-            id
-            created_at
-            updated_at
-            deleted_at
-            name
-            type
-          }
-        } 
-      }
-    `
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultStoreRemoteQueryFields,
+    },
+  }
 
   const {
     rows: products,
     metadata: { count },
-  } = await remoteQuery(query, variables)
+  } = await remoteQuery(query)
 
   products.forEach((product) => {
     product.profile_id = product.profile?.id

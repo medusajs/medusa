@@ -1,8 +1,0 @@
-!content
-**/node_modules/*
-**/.docusaurus/*
-**/build/*
-.eslintrc.js
-babel.config.js
-content/references/**
-content/**/events-list.md

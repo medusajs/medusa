@@ -41,6 +41,6 @@ jobs:
           base: "develop"
           title: "chore(docs): Removed Docs Announcement Bar (automated)"
           labels: "type: chore"
-          add-paths: www/docs/**
+          add-paths: www/apps/docs/**
           branch: "chore/remove-announcement"
           branch-suffix: "timestamp"
