@@ -1,10 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -29,8 +29,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -49,9 +49,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -1098,7 +1098,7 @@ class CartService extends TransactionBaseService {
     }
   }
 
-  async update(cartId: string, data: CartUpdateProps): Promise<Cart> {
+  async update(cartOrId: string | Cart, data: CartUpdateProps): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cartRepo = transactionManager.withRepository(this.cartRepository_)
@@ -1117,9 +1117,11 @@ class CartService extends TransactionBaseService {
           "discounts.rule",
         ]
 
-        const cart = await this.retrieve(cartId, {
-          relations,
-        })
+        const cart = !isString(cartOrId)
+          ? cartOrId
+          : await this.retrieve(cartOrId, {
+              relations,
+            })
 
         const originalCartCustomer = { ...(cart.customer ?? {}) }
         if (data.customer_id) {
