@@ -24,7 +24,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultStoreRemoteQueryFields } from "./index"
+import { defaultStoreProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /store/products
@@ -397,7 +397,7 @@ async function listAndCountProductWithIsolatedProductModule(
   const query = {
     product: {
       __args: variables,
-      ...defaultStoreRemoteQueryFields,
+      ...defaultStoreProductRemoteQueryObject,
     },
   }
 
