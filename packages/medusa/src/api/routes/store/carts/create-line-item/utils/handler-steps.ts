@@ -1,4 +1,4 @@
-import { FlagRouter, MedusaError } from "@medusajs/utils"
+import { FlagRouter } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import { EntityManager } from "typeorm"
 import { Cart } from "../../../../../../models"
@@ -19,7 +19,6 @@ export async function handleAddOrUpdateLineItem(
     customer_id?: string
     variant_id: string
     quantity: number
-    should_merge?: boolean
   },
   { container, manager }: { container: AwilixContainer; manager: EntityManager }
 ): Promise<IdempotencyCallbackResult> {
@@ -38,7 +37,6 @@ export async function handleAddOrUpdateLineItem(
     .generate(data.variant_id, cart.region_id, data.quantity, {
       customer_id: data.customer_id || cart.customer_id,
       metadata: data.metadata,
-      should_merge: data.should_merge,
     })
 
   await txCartService.addOrUpdateLineItems(cart.id, line, {

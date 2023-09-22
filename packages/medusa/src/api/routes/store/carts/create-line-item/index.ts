@@ -1,4 +1,4 @@
-import { IsBoolean, IsInt, IsOptional, IsString } from "class-validator"
+import { IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../../utils/validator"
 import {
@@ -107,7 +107,6 @@ export default async (req, res) => {
               metadata: validated.metadata,
               quantity: validated.quantity,
               variant_id: validated.variant_id,
-              should_merge: validated.should_merge,
             },
             {
               manager,
@@ -171,8 +170,4 @@ export class StorePostCartsCartLineItemsReq {
 
   @IsOptional()
   metadata?: Record<string, unknown> | undefined
-
-  @IsBoolean()
-  @IsOptional()
-  should_merge?: boolean
 }
