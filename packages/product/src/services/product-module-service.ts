@@ -815,7 +815,7 @@ export default class ProductModuleService<
       [...productVariantsMap].map(async ([handle, variants]) => {
         return await this.productVariantService_.create(
           productByHandleMap.get(handle)!,
-          variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
+          variants as unknown as ProductServiceTypes.CreateProductVariantOnlyDTO[],
           sharedContext
         )
       })
@@ -829,7 +829,7 @@ export default class ProductModuleService<
     data: ProductTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const productIds = data.map((pd) => pd.id)
+    const productIds = data.map((pd) => pd.id!)
     const existingProductVariants = await this.productVariantService_.list(
       { product_id: productIds },
       {},

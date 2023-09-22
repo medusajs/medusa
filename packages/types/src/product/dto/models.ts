@@ -6,7 +6,7 @@ import { ProductStatus } from "../common"
 /********************************************************************************/
 export interface ProductDTO extends ProductBaseDTO<ProductVariantDTO> {
   title: string
-  handle: string
+  handle?: string
   subtitle?: string
   description?: string
   is_giftcard: boolean
@@ -102,7 +102,7 @@ export interface ProductImageDTO {
 export interface ProductOptionDTO {
   id: string
   title: string
-  product_id: string | null
+  product_id?: string | null
   product?: ProductDTO
   values?: ProductOptionValueDTO[]
   metadata?: Record<string, unknown> | null

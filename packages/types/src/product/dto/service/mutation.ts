@@ -14,12 +14,10 @@ export interface UpdateProductTypeDTO {
   metadata?: Record<string, unknown>
 }
 
-export interface CreateProductOptionDTO extends Partial<ProductOptionDTO> {}
+export interface CreateProductOptionDTO extends DeepPartial<ProductOptionDTO> {}
 
-export interface UpdateProductOptionDTO {
+export interface UpdateProductOptionDTO extends DeepPartial<ProductOptionDTO> {
   id: string
-  title?: string
-  product_id?: string
 }
 
 export interface CreateProductCollectionDTO<
@@ -68,10 +66,17 @@ export interface UpdateProductCategoryDTO {
 
 export interface CreateProductDTO extends DeepPartial<ProductDTO> {}
 
-export interface UpdateProductDTO extends DeepPartial<ProductDTO> {}
+export interface UpdateProductDTO extends DeepPartial<ProductDTO> {
+  id: string
+}
 
 export interface CreateProductVariantDTO
   extends DeepPartial<ProductVariantDTO> {}
+
+export interface UpdateProductVariantDTO
+  extends DeepPartial<ProductVariantDTO> {
+  id: string
+}
 
 export interface CreateProductTagDTO {
   value: string
