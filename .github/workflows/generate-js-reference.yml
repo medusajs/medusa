@@ -42,6 +42,6 @@ jobs:
           base: "develop"
           title: "chore(docs): Generated JS Client Reference"
           labels: "type: chore"
-          add-paths: www/docs/content/references/js-client/**
+          add-paths: www/apps/docs/content/references/js-client/**
           branch: "chore/generate-js-client"
           branch-suffix: "timestamp"
