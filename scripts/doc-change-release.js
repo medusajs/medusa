@@ -18,7 +18,7 @@ async function main () {
       const commitResponse = await octokit.request('GET /repos/{owner}/{repo}/commits', {
         owner: 'medusajs',
         repo: 'medusa',
-        path: path.join('www', 'docs', 'announcement.json'),
+        path: path.join('www', "apps", 'docs', 'announcement.json'),
         per_page: 1
       })
       
@@ -47,7 +47,7 @@ async function main () {
   }
 
   //write new config file
-  fs.writeFileSync(path.join(__dirname, '..', 'www', 'docs', 'announcement.json'), JSON.stringify(announcement));
+  fs.writeFileSync(path.join(__dirname, '..', 'www', "apps", 'docs', 'announcement.json'), JSON.stringify(announcement));
   console.log(`Announcement Bar has been ${shouldExpire ? 'removed' : 'added'}`);
 }
 

@@ -17,7 +17,7 @@ export async function attachInventoryItems({
     .resolve("productVariantInventoryService")
     .withTransaction(manager)
 
-  if (!data?.inventoryItems.length) {
+  if (!data?.inventoryItems?.length) {
     return
   }
 

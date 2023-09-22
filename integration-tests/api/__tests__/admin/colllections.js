@@ -18,7 +18,7 @@ jest.setTimeout(30000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Token test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -57,7 +57,7 @@ describe("/admin/collections", () => {
         {
           title: "test",
         },
-        { headers: { Authorization: "Token test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       const response = await api.post(
@@ -66,7 +66,7 @@ describe("/admin/collections", () => {
           title: "test collection creation",
           handle: "test-handle-creation",
         },
-        { headers: { Authorization: "Token test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(response.status).toEqual(200)
@@ -91,12 +91,12 @@ describe("/admin/collections", () => {
         {
           title: "test",
         },
-        { headers: { Authorization: "Token test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       const response = await api.delete(
         `/admin/collections/${creationResponse.data.collection.id}`,
-        { headers: { Authorization: "Token test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(response.status).toEqual(200)
@@ -111,7 +111,7 @@ describe("/admin/collections", () => {
       const api = useApi()
 
       const response = await api.get("/admin/collections/test-collection", {
-        headers: { Authorization: "Token test_token" },
+        headers: { "x-medusa-access-token": "test_token" },
       })
 
       expect(response.data).toEqual(
@@ -160,7 +160,7 @@ describe("/admin/collections", () => {
           title: "test collection creation",
           handle: "test-handle-creation",
         },
-        { headers: { Authorization: "Token test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(response.status).toEqual(200)
@@ -181,7 +181,7 @@ describe("/admin/collections", () => {
       const api = useApi()
 
       const response = await api.get("/admin/collections", {
-        headers: { Authorization: "Token test_token" },
+        headers: { "x-medusa-access-token": "test_token" },
       })
 
       expect(response.data).toEqual(
@@ -261,7 +261,7 @@ describe("/admin/collections", () => {
             product_ids: ["test-product_filtering_1"],
           },
           {
-            headers: { Authorization: "Token test_token" },
+            headers: { "x-medusa-access-token": "test_token" },
           }
         )
         .catch((err) => console.warn(err))
@@ -307,7 +307,7 @@ describe("/admin/collections", () => {
 
       const response = await api
         .delete("/admin/collections/test-collection/products/batch", {
-          headers: { Authorization: "Token test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
           data: { product_ids: ["test-product"] },
         })
         .catch((err) => console.warn(err))
@@ -328,7 +328,7 @@ describe("/admin/collections", () => {
 
       const response = await api
         .get("/admin/collections?title=Test%20collection", {
-          headers: { Authorization: "Token test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
         })
         .catch((err) => console.log(err))
 

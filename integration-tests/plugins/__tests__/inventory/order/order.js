@@ -20,7 +20,7 @@ const {
 
 jest.setTimeout(150000)
 
-const adminHeaders = { headers: { Authorization: "Token test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("/store/carts", () => {
   let express
