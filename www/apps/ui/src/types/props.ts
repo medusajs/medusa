@@ -37,3 +37,7 @@ export type PropDataMap = PropData[]
 export type PropRegistryItem = {
   table: LazyExoticComponent<ComponentType>
 }
+
+// resolve type errors related to
+// key with radix components
+export type Key = string | number | null | undefined

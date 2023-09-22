@@ -64,7 +64,7 @@ export const CodeBlock = ({
                 className={clsx(
                   "text-code-body font-monospace table min-w-full pb-docs_1.5 print:whitespace-pre-wrap",
                   tokens.length > 1 && "pt-docs_1 pr-docs_1",
-                  tokens.length <= 1 && "py-docs_0.5 px-docs_1"
+                  tokens.length <= 1 && "!py-docs_0.5 px-docs_1"
                 )}
               >
                 {tokens.map((line, i) => {
