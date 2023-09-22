@@ -3,5 +3,5 @@
   "installCommand": "yarn install",
   "buildCommand": "turbo run build",
   "outputDirectory": ".next",
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- ../../.."
+  "ignoreCommand": "bash ../../ignore-build-script.sh"
 }
