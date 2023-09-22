@@ -5,3 +5,8 @@ export { default as PriceSet } from "./price-set"
 export { default as PriceSetMoneyAmount } from "./price-set-money-amount"
 export { default as PriceSetMoneyAmountRules } from "./price-set-money-amount-rules"
 export { default as RuleType } from "./rule-type"
+<<<<<<< HEAD
+=======
+export { default as PriceRule } from "./price-rule"
+export { default as PriceSetRuleType }from './price-set-rule-type'
+>>>>>>> 79a939e89 (add migration for price_set_rule_type table)

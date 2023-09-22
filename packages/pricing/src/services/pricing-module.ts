@@ -248,6 +248,19 @@ export default class PricingModuleService<
     ]
   }
 
+  /**
+   * 
+   * { 
+   *   rules: ['attribute_rule']
+   *   data: [ { 
+   *    amount: 100,
+   *    currency_code: 'USD',
+   *    context: { 
+   *     attribute_rule: 'prod_1',
+   *    }
+   *   } ]
+   * }
+   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async create(
     data: PricingTypes.CreatePriceSetDTO[],

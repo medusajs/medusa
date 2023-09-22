@@ -23,6 +23,13 @@ export class Migration20230915120914 extends Migration {
 
     this.addSql('create table "price_rule" ("id" text not null, "price_set_id" text not null, "rule_type_id" text not null, "is_dynamic" boolean not null default false, "value" text not null, "priority" integer not null default 0, "price_set_money_amount_id" text not null, "price_list_id" text not null, constraint "price_rule_pkey" primary key ("id"));');
 
+    this.addSql('create table "price_set_rule_type" ("id" text not null, "price_set_id" text not null, "rule_type_id" text not null, constraint "price_set_rule_type_pkey" primary key ("id"));');
+    this.addSql('create index "IDX_price_set_rule_type_price_set_id" on "price_set_rule_type" ("price_set_id");');
+    this.addSql('create index "IDX_price_set_rule_type_rule_type_id" on "price_set_rule_type" ("rule_type_id");');
+
+    this.addSql('alter table "price_set_rule_type" add constraint "price_set_rule_type_price_set_id_foreign" foreign key ("price_set_id") references "price_set" ("id") on update cascade;');
+    this.addSql('alter table "price_set_rule_type" add constraint "price_set_rule_type_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;');
+
     this.addSql('alter table "money_amount" add constraint "money_amount_currency_code_foreign" foreign key ("currency_code") references "currency" ("code") on update cascade on delete set null;');
 
     this.addSql('alter table "price_set_money_amount" add constraint "price_set_money_amount_price_set_id_foreign" foreign key ("price_set_id") references "price_set" ("id") on update cascade on delete cascade;');
@@ -31,7 +38,7 @@ export class Migration20230915120914 extends Migration {
     this.addSql('alter table "price_set_money_amount_rules" add constraint "price_set_money_amount_rules_price_set_money_amount_id_foreign" foreign key ("price_set_money_amount_id") references "price_set_money_amount" ("id") on update cascade;');
     this.addSql('alter table "price_set_money_amount_rules" add constraint "price_set_money_amount_rules_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;');
 
-    this.addSql('alter table "price_rule" add constraint "price_rule_price_set_id_foreign" foreign key ("price_set_id") references "price_set" ("id") on update cascade;');
+    this.addSql('alter table "price_rule" add constraint "price_rule_price_set_id_foreign" foreign key ("price_set_id") references "price_set" ("id") on update cascade on delete cascade;');
     this.addSql('alter table "price_rule" add constraint "price_rule_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;');
     this.addSql('alter table "price_rule" add constraint "price_rule_price_set_money_amount_id_foreign" foreign key ("price_set_money_amount_id") references "price_set_money_amount" ("id") on update cascade;');
   }
