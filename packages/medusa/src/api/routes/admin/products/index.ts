@@ -141,7 +141,7 @@ export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 /**
  * This is temporary.
  */
-export const defaultAdminRemoteQueryFields = {
+export const defaultAdminProductRemoteQueryObject = {
   fields: defaultAdminProductFields,
   images: {
     fields: ["id", "created_at", "updated_at", "deleted_at", "url", "metadata"],
