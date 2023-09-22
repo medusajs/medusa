@@ -1,10 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomerService,
   CustomShippingOptionService,
+  CustomerService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -29,8 +29,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  Customer,
   CustomShippingOption,
+  Customer,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -49,9 +49,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
-  isCart,
   LineItemUpdate,
   LineItemValidateData,
+  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -519,7 +519,7 @@ class CartService extends TransactionBaseService {
           relations: [
             "items.variant.product.profiles",
             "payment_sessions",
-            "shipping_methods",
+            "shipping_methods.shipping_option.requirements",
           ],
         })
 
@@ -529,9 +529,18 @@ class CartService extends TransactionBaseService {
         }
 
         if (cart.shipping_methods?.length) {
-          await this.shippingOptionService_
-            .withTransaction(transactionManager)
-            .deleteShippingMethods(cart.shipping_methods)
+          for (const sm of cart.shipping_methods) {
+            try {
+              await this.shippingOptionService_
+                .withTransaction(transactionManager)
+                .validateCartOption(sm.shipping_option, cart)
+            } catch (err) {
+              // in case the shipping option is no longer valid, we remove it
+              await this.shippingOptionService_
+                .withTransaction(transactionManager)
+                .deleteShippingMethods(sm)
+            }
+          }
         }
 
         const lineItemRepository = transactionManager.withRepository(
@@ -751,9 +760,18 @@ class CartService extends TransactionBaseService {
           })
 
         if (cart.shipping_methods?.length) {
-          await this.shippingOptionService_
-            .withTransaction(transactionManager)
-            .deleteShippingMethods(cart.shipping_methods)
+          for (const sm of cart.shipping_methods) {
+            try {
+              await this.shippingOptionService_
+                .withTransaction(transactionManager)
+                .validateCartOption(sm.shipping_option, cart)
+            } catch (err) {
+              // in case the shipping option is no longer valid, we remove it
+              await this.shippingOptionService_
+                .withTransaction(transactionManager)
+                .deleteShippingMethods(sm)
+            }
+          }
         }
 
         cart = await this.retrieve(cart.id, {
@@ -938,9 +956,18 @@ class CartService extends TransactionBaseService {
           })
 
         if (cart.shipping_methods?.length) {
-          await this.shippingOptionService_
-            .withTransaction(transactionManager)
-            .deleteShippingMethods(cart.shipping_methods)
+          for (const sm of cart.shipping_methods) {
+            try {
+              await this.shippingOptionService_
+                .withTransaction(transactionManager)
+                .validateCartOption(sm.shipping_option, cart)
+            } catch (err) {
+              // in case the shipping option is no longer valid, we remove it
+              await this.shippingOptionService_
+                .withTransaction(transactionManager)
+                .deleteShippingMethods(sm)
+            }
+          }
         }
 
         cart = await this.retrieve(cart.id, {
@@ -1018,9 +1045,18 @@ class CartService extends TransactionBaseService {
         }
 
         if (cart.shipping_methods?.length) {
-          await this.shippingOptionService_
-            .withTransaction(transactionManager)
-            .deleteShippingMethods(cart.shipping_methods)
+          for (const sm of cart.shipping_methods) {
+            try {
+              await this.shippingOptionService_
+                .withTransaction(transactionManager)
+                .validateCartOption(sm.shipping_option, cart)
+            } catch (err) {
+              // in case the shipping option is no longer valid, we remove it
+              await this.shippingOptionService_
+                .withTransaction(transactionManager)
+                .deleteShippingMethods(sm)
+            }
+          }
         }
 
         await this.lineItemService_

@@ -7,6 +7,7 @@ const {
   CustomShippingOption,
   PriceList,
   MoneyAmount,
+  ShippingOptionRequirement,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../../environment-helpers/setup-server")
@@ -1668,7 +1669,7 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
     })
 
-    it("should remove shipping on line item remove", async () => {
+    it("should keep shipping on line item remove if shipping option is still valid", async () => {
       const api = useApi()
 
       const cartId = "test-cart-2"
@@ -1686,6 +1687,41 @@ describe("/store/carts", () => {
       const cart = await api.get(`/store/carts/${cartId}`)
 
       expect(cart.data.cart.shipping_total).toEqual(1000)
+
+      const response = await api.delete(
+        `/store/carts/${cartId}/line-items/${lineId}`
+      )
+
+      expect(response.data.cart.shipping_total).toEqual(1000)
+    })
+
+    it("should remove shipping on line item remove if shipping option is no longer valid", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart-2"
+      const lineId = "test-item"
+      const optionId = "test-option"
+
+      await api.post(
+        `/store/carts/${cartId}/shipping-methods`,
+        {
+          option_id: optionId,
+        },
+        { withCredentials: true }
+      )
+
+      const cart = await api.get(`/store/carts/${cartId}`)
+
+      expect(cart.data.cart.shipping_total).toEqual(1000)
+
+      const manager = dbConnection.manager
+
+      await manager.insert(ShippingOptionRequirement, {
+        id: "shipping_requirement_id_test",
+        shipping_option_id: optionId,
+        amount: 5000,
+        type: "min_subtotal",
+      })
 
       const response = await api.delete(
         `/store/carts/${cartId}/line-items/${lineId}`
