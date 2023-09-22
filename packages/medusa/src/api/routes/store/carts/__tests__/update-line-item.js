@@ -1,7 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { CartServiceMock } from "../../../../../services/__mocks__/cart"
-import { LineItemServiceMock } from "../../../../../services/__mocks__/line-item"
 
 describe("POST /store/carts/:id/line-items/:line_id", () => {
   describe("successfully updates a line item", () => {
@@ -25,21 +24,23 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls cartService.addOrUpdateLineItems", () => {
-      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledWith(
+    it("calls cartService.updateLineItem", () => {
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
         IdMap.getId("fr-cart"),
-        expect.objectContaining({
+        IdMap.getId("existingLine"),
+        {
           variant_id: IdMap.getId("eur-10-us-12"),
+          region_id: IdMap.getId("region-france"),
           quantity: 3,
-        }),
-        { validateSalesChannels: true }
+          metadata: {},
+        }
       )
     })
 
     it("calls CartService retrieve", () => {
       expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
-      expect(CartServiceMock.retrieveWithTotals).toHaveBeenCalledTimes(2)
+      expect(CartServiceMock.retrieveWithTotals).toHaveBeenCalledTimes(1)
     })
 
     it("returns 200", () => {
@@ -114,16 +115,18 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     })
 
     it("calls CartService updateLineItem", () => {
-      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledWith(
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
         IdMap.getId("fr-cart"),
-        expect.objectContaining({
+        IdMap.getId("existingLine"),
+        {
           metadata: {
             potato: "tomato",
           },
           quantity: 3,
-        }),
-        { validateSalesChannels: true }
+          region_id: expect.any(String),
+          variant_id: expect.any(String),
+        }
       )
     })
 
@@ -158,14 +161,16 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     })
 
     it("calls CartService updateLineItem", () => {
-      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledWith(
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
         IdMap.getId("cartLineItemMetadata"),
-        expect.objectContaining({
-          metadata: undefined,
+        IdMap.getId("lineWithMetadata"),
+        {
+          metadata: {},
           quantity: 3,
-        }),
-        { validateSalesChannels: true }
+          region_id: expect.any(String),
+          variant_id: expect.any(String),
+        }
       )
     })
 
@@ -201,14 +206,16 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     })
 
     it("calls CartService updateLineItem", () => {
-      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.addOrUpdateLineItems).toHaveBeenCalledWith(
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
         IdMap.getId("cartLineItemMetadata"),
-        expect.objectContaining({
+        IdMap.getId("lineWithMetadata"),
+        {
           metadata: { test: "this" },
           quantity: 3,
-        }),
-        { validateSalesChannels: true }
+          region_id: expect.any(String),
+          variant_id: expect.any(String),
+        }
       )
     })
 
