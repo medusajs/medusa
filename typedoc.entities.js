@@ -3,7 +3,7 @@ const globalTypedocOptions = require("./typedoc")
 module.exports = {
   ...globalTypedocOptions,
   entryPoints: ["packages/medusa/src/models/index.ts"],
-  out: ["www/docs/content/references/entities"],
+  out: ["www/apps/docs/content/references/entities"],
   tsconfig: "packages/medusa/tsconfig.json",
   name: "Entities Reference",
   indexTitle: "Entities Reference",
