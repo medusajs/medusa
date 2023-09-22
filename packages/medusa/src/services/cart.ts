@@ -850,9 +850,7 @@ class CartService extends TransactionBaseService {
             variant_id: In(items.map((item) => item.variant_id)),
             should_merge: true,
           },
-          {
-            select: ["id", "metadata", "quantity", "variant_id"],
-          }
+          { select: ["id", "metadata", "quantity", "variant_id"] }
         )
 
         const existingItemsVariantMap = new Map()
@@ -866,13 +864,17 @@ class CartService extends TransactionBaseService {
           let currentItem: LineItem | undefined
 
           const existingItem = existingItemsVariantMap.get(item.variant_id)
-          if (item.should_merge && existingItem) {
-            currentItem = existingItem
-            currentItem!.metadata = setMetadata(currentItem, item.metadata)
+          if (item.should_merge) {
+            if (existingItem && isEqual(existingItem.metadata, item.metadata)) {
+              currentItem = existingItem
+            }
           }
 
           // If content matches one of the line items currently in the cart we can
           // simply update the quantity of the existing line item
+          item.quantity = currentItem
+            ? (currentItem.quantity += item.quantity)
+            : item.quantity
 
           if (item.variant_id) {
             const isSufficient =
@@ -895,8 +897,6 @@ class CartService extends TransactionBaseService {
             lineItemsToUpdate[currentItem.id] = {
               quantity: item.quantity,
               has_shipping: false,
-              unit_price: item.unit_price,
-              metadata: currentItem.metadata,
             }
           } else {
             // Since the variant is eager loaded, we are removing it before the line item is being created.
