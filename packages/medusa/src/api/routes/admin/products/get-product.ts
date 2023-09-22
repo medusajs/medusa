@@ -1,6 +1,6 @@
 import { PricingService, ProductService } from "../../../../services"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultAdminRemoteQueryFields } from "./index"
+import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /admin/products/{id}
@@ -94,7 +94,7 @@ async function getProductWithIsolatedProductModule(req, id, retrieveConfig) {
   const query = {
     product: {
       __args: variables,
-      ...defaultAdminRemoteQueryFields,
+      ...defaultAdminProductRemoteQueryObject,
     },
   }
 
