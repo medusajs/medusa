@@ -1,0 +1,52 @@
+---
+title: "Table"
+description: "A Table component for displaying data."
+---
+
+<ComponentExample name="table-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { Table } from "@medusajs/ui"
+```
+
+```tsx
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>#</Table.HeaderCell>
+      <Table.HeaderCell>Customer</Table.HeaderCell>
+      <Table.HeaderCell>Email</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>1</Table.Cell>
+      <Table.Cell>Emil Larsson</Table.Cell>
+      <Table.Cell>emil2738@gmail.com</Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+```
+
+## API Reference
+
+---
+
+This component is based on the `table` element and its various children, and supports all props of those elements.
+
+- `Table`: `table`
+- `Table.Header`: `thead`
+- `Table.Row`: `tr`
+- `Table.HeaderCell`: `th`
+- `Table.Body`: `tbody`
+- `Table.Cell`: `td`
+
+### Pagination
+
+This component is based on the `div` element and supports all props of this element.
+
+<ComponentProps component="table-pagination" />

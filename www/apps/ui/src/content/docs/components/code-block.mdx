@@ -1,0 +1,77 @@
+---
+title: "Code Block"
+description: "Allows you to render highlighted code snippets"
+component: true
+---
+
+<ComponentExample name="code-block-demo" />
+
+## Usage
+
+---
+
+```tsx
+import { CodeBlock } from "@medusajs/ui"
+```
+
+```tsx
+<CodeBlock 
+  snippets={[
+    { 
+      language: "tsx", 
+      label: "Label", 
+      code: "import { useProduct } from \"medusa-react\"",
+    },
+  ]}
+>
+  <CodeBlock.Header />
+  <CodeBlock.Body />
+</CodeBlock>
+```
+
+
+## API Reference
+
+---
+
+### CodeBlock
+
+This component is based on the `div` element and supports all props of this element.
+
+<ComponentProps component="code-block" />
+
+### CodeBlock.Header
+
+This component is based on the `div` element and supports all props of this element.
+
+<ComponentProps component="code-block-header" />
+
+### CodeBlock.Header.Meta
+
+This component is based on the `div` element and supports all props of this element.
+
+### CodeBlock.Body
+
+This component is based on the `div` element and supports all props of this element.
+
+<ComponentProps component="code-block-body" />
+
+## Examples
+
+---
+
+### Single snippet
+
+If you want to only show a code sample for one language or API, you can choose to hide the snippet labels:
+
+<ComponentExample name="code-block-single" />
+
+### No Header
+
+You could also choose to omit the header entirely:
+
+<ComponentExample name="code-block-no-header" />
+
+### No Line Numbers
+
+<ComponentExample name="code-block-no-lines" />
