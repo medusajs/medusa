@@ -126,7 +126,7 @@ class Client {
     if (this.config.apiKey && this.requiresAuthentication(path, method)) {
       defaultHeaders = {
         ...defaultHeaders,
-        Authorization: `Token ${this.config.apiKey}`,
+        "x-medusa-access-token": this.config.apiKey,
       }
     }
 
