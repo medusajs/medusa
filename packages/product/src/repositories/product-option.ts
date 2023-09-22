@@ -95,9 +95,9 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
       delete optionData.product_id
 
       if (productId) {
-        const product = existingProductsMap.get(productId)
+        const product = existingProductsMap.get(productId)!
 
-        optionData.product = product
+        optionData.product = product as unknown as ProductTypes.ProductDTO
       }
 
       return manager.create(ProductOption, optionData)

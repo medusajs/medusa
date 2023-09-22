@@ -45,7 +45,7 @@ export async function updateProductsVariantsPrices({
     }
 
     variantData.forEach((item, index) => {
-      const variant = product.variants[index]
+      const variant = product.variants![index]
       variantIdsPricesData.push({
         variantId: variant.id,
         prices: item.prices,

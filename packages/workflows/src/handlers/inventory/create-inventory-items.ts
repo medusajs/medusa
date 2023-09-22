@@ -33,7 +33,7 @@ export async function createInventoryItems({
       acc: ProductTypes.ProductVariantDTO[],
       product: ProductTypes.ProductDTO
     ) => {
-      return acc.concat(product.variants)
+      return acc.concat(product.variants!)
     },
     []
   )

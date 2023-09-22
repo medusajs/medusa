@@ -1,18 +1,10 @@
-import { BaseFilterable } from "../dal"
-import { OperatorMap } from "../dal/utils"
+export type ProductStatus = "draft" | "proposed" | "published" | "rejected"
+/*
 
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
-
-/**
+/!**
  * DTO in and out of the module (module API)
- */
+ *!/
 
-// TODO: This DTO should represent the product, when used in config we should use Partial<ProductDTO>, it means that some props like handle should be updated to not be optional
 export interface ProductDTO {
   id: string
   title: string
@@ -153,9 +145,9 @@ export interface ProductOptionValueDTO {
   deleted_at?: string | Date
 }
 
-/**
+/!**
  * Filters/Config (module API input filters and config)
- */
+ *!/
 export interface FilterableProductProps
   extends BaseFilterable<FilterableProductProps> {
   q?: string
@@ -215,9 +207,9 @@ export interface FilterableProductCategoryProps
   include_descendants_tree?: boolean
 }
 
-/**
+/!**
  * Write DTO (module API input)
- */
+ *!/
 
 export interface CreateProductCollectionDTO {
   title: string
@@ -455,3 +447,4 @@ export interface CreateProductOptionOnlyDTO {
   product?: Record<any, any>
   title: string
 }
+*/

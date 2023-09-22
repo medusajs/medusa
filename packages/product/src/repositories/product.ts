@@ -12,16 +12,11 @@ import {
   LoadStrategy,
 } from "@mikro-orm/core"
 
-import {
-  Context,
-  DAL,
-  ProductTypes,
-  WithRequiredProperty,
-} from "@medusajs/types"
+import { Context, DAL, WithRequiredProperty } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
 
-import { ProductServiceTypes } from "../types/services"
+import { ProductServiceTypes } from "../types"
 
 // eslint-disable-next-line max-len
 export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<Product> {
@@ -133,7 +128,10 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
   }
 
   async create(
-    data: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">[],
+    data: WithRequiredProperty<
+      ProductServiceTypes.CreateProductOnlyDTO,
+      "status"
+    >[],
     context: Context = {}
   ): Promise<Product[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)

@@ -8,11 +8,11 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
+  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   ProductUtils,
-  isDefined,
 } from "@medusajs/utils"
 import { Product } from "@models"
 import { ProductRepository } from "@repositories"
@@ -120,7 +120,7 @@ export default class ProductService<TEntity extends Product = Product> {
 
   @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async create(
-    data: ProductTypes.CreateProductOnlyDTO[],
+    data: ProductServiceTypes.CreateProductOnlyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     data.forEach((product) => {
@@ -129,7 +129,7 @@ export default class ProductService<TEntity extends Product = Product> {
 
     return (await (this.productRepository_ as ProductRepository).create(
       data as WithRequiredProperty<
-        ProductTypes.CreateProductOnlyDTO,
+        ProductServiceTypes.CreateProductOnlyDTO,
         "status"
       >[],
       {

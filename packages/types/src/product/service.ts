@@ -1,10 +1,9 @@
+import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
+import { ModuleJoinerConfig } from "../modules-sdk"
+import { Context } from "../shared-context"
+import { ProductBaseDTO, ProductVariantBaseDTO } from "./dto/base"
 import {
-  CreateProductCategoryDTO,
-  CreateProductCollectionDTO,
-  CreateProductDTO,
-  CreateProductOptionDTO,
-  CreateProductTagDTO,
-  CreateProductTypeDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductOptionProps,
@@ -12,6 +11,22 @@ import {
   FilterableProductTagProps,
   FilterableProductTypeProps,
   FilterableProductVariantProps,
+} from "./dto/service/read"
+import {
+  CreateProductCategoryDTO,
+  CreateProductCollectionDTO,
+  CreateProductDTO,
+  CreateProductOptionDTO,
+  CreateProductTagDTO,
+  CreateProductTypeDTO,
+  UpdateProductCategoryDTO,
+  UpdateProductCollectionDTO,
+  UpdateProductDTO,
+  UpdateProductOptionDTO,
+  UpdateProductTagDTO,
+  UpdateProductTypeDTO,
+} from "./dto/service/mutation"
+import {
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
@@ -19,20 +34,81 @@ import {
   ProductTagDTO,
   ProductTypeDTO,
   ProductVariantDTO,
-  UpdateProductCategoryDTO,
-  UpdateProductCollectionDTO,
-  UpdateProductDTO,
-  UpdateProductOptionDTO,
-  UpdateProductTagDTO,
-  UpdateProductTypeDTO,
-} from "./common"
+} from "./dto/models"
 
-import { FindConfig } from "../common"
-import { RestoreReturn, SoftDeleteReturn } from "../dal"
-import { ModuleJoinerConfig } from "../modules-sdk"
-import { Context } from "../shared-context"
+/**
+ * Base interface that can be respected by any custom product module.
+ * The custom module can also provide a custom interface that needs to extends this one as a base.
+ */
 
-export interface IProductModuleService {
+export interface IProductModuleBaseService {
+  __joinerConfig(): ModuleJoinerConfig
+
+  retrieve(
+    productId: string,
+    config?: FindConfig<ProductBaseDTO>,
+    sharedContext?: Context
+  ): Promise<ProductBaseDTO>
+
+  list(
+    filters?: FilterableProductProps,
+    config?: FindConfig<ProductBaseDTO>,
+    sharedContext?: Context
+  ): Promise<ProductBaseDTO[]>
+
+  listAndCount(
+    filters?: FilterableProductProps,
+    config?: FindConfig<ProductBaseDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductBaseDTO[], number]>
+
+  retrieveVariant(
+    productVariantId: string,
+    config?: FindConfig<ProductVariantBaseDTO>,
+    sharedContext?: Context
+  ): Promise<ProductVariantBaseDTO>
+
+  listVariants(
+    filters?: FilterableProductVariantProps,
+    config?: FindConfig<ProductVariantBaseDTO>,
+    sharedContext?: Context
+  ): Promise<ProductVariantBaseDTO[]>
+
+  listAndCountVariants(
+    filters?: FilterableProductVariantProps,
+    config?: FindConfig<ProductVariantBaseDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductVariantBaseDTO[], number]>
+
+  create(
+    data: CreateProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductBaseDTO[]>
+
+  update(
+    data: UpdateProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductBaseDTO[]>
+
+  delete(productIds: string[], sharedContext?: Context): Promise<void>
+
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    productIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restore<TReturnableLinkableKeys extends string = string>(
+    productIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+}
+
+/**
+ * Interface that represent the medusa Product module service.
+ */
+export interface IProductModuleService extends IProductModuleBaseService {
   __joinerConfig(): ModuleJoinerConfig
 
   retrieve(

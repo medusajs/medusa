@@ -69,6 +69,7 @@ import {
   joinerConfig,
   LinkableKeys,
 } from "./../joiner-config"
+import { ProductServiceTypes } from "src/types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -774,9 +775,11 @@ export default class ProductModuleService<
     const productOptionsData = [...productOptionsMap]
       .map(([handle, options]) => {
         return options.map((option) => {
-          const productOptionsData: ProductTypes.CreateProductOptionOnlyDTO = {
-            ...option,
-          }
+          // eslint-disable-next-line max-len
+          const productOptionsData: ProductServiceTypes.CreateProductOptionOnlyDTO =
+            {
+              ...option,
+            }
           const product = productByHandleMap.get(handle)
           const productId = product?.id
 

@@ -27,7 +27,7 @@ import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
 import ProductImage from "./product-image"
-import { DAL } from "@medusajs/types"
+import { DAL, ProductTypes } from "@medusajs/types"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -65,7 +65,7 @@ class Product {
   is_giftcard!: boolean
 
   @Enum(() => ProductUtils.ProductStatus)
-  status!: ProductUtils.ProductStatus
+  status!: ProductTypes.ProductStatus
 
   @Property({ columnType: "text", nullable: true })
   thumbnail?: string | null
@@ -105,7 +105,7 @@ class Product {
   material?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  collection_id!: string
+  collection_id!: string | null
 
   @ManyToOne(() => ProductCollection, {
     nullable: true,
@@ -114,7 +114,7 @@ class Product {
   collection!: ProductCollection | null
 
   @Property({ columnType: "text", nullable: true })
-  type_id!: string
+  type_id!: string | null
 
   @ManyToOne(() => ProductType, {
     nullable: true,
