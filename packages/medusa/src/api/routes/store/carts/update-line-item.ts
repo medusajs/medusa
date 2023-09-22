@@ -86,19 +86,25 @@ export default async (req, res) => {
         )
       }
 
-      await handleAddOrUpdateLineItem(
-        id,
-        {
-          customer_id: cart.customer_id,
-          metadata: validated.metadata,
-          quantity: validated.quantity,
-          variant_id: existing.variant_id!,
-        },
-        {
-          manager: m,
-          container: req.scope,
-        }
-      )
+      const lineItemUpdate = {
+        variant_id: existing.variant.id,
+        region_id: cart.region_id,
+        quantity: validated.quantity,
+        metadata: validated.metadata || {},
+      }
+
+      await cartService
+        .withTransaction(m)
+        .updateLineItem(id, line_id, lineItemUpdate)
+    }
+
+    // If the cart has payment sessions update these
+    const updated = await cartService.withTransaction(m).retrieve(id, {
+      relations: ["payment_sessions"],
+    })
+
+    if (updated.payment_sessions?.length) {
+      await cartService.withTransaction(m).setPaymentSessions(id)
     }
   })
 
