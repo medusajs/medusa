@@ -12,8 +12,8 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModulesSdkUtils,
   isObject,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
@@ -69,7 +69,7 @@ export async function MedusaApp({
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
   query: (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => Promise<any>
 }> {
@@ -152,7 +152,7 @@ export async function MedusaApp({
 
   let link: RemoteLink | undefined = undefined
   let query: (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => Promise<any>
 
@@ -172,7 +172,7 @@ export async function MedusaApp({
     customRemoteFetchData: remoteFetchData,
   })
   query = async (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => {
     return await remoteQuery.query(query, variables)

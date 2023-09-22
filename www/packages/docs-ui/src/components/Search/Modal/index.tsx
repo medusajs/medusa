@@ -257,11 +257,13 @@ export const SearchModal = ({
                   "content",
                   "hierarchy.lvl1",
                   "hierarchy.lvl2",
+                  "hierarchy.lvl3",
                 ],
                 attributesToHighlight: [
                   "content",
                   "hierarchy.lvl1",
                   "hierarchy.lvl2",
+                  "hierarchy.lvl3",
                 ],
               }}
               indices={algolia.indices}
