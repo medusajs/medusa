@@ -103,7 +103,7 @@ export default async ({
     !skipDb && migrations ? await askForAdminEmail(seed, boilerplate) : ""
   const installNextjs = withNextjsStarter || (await askForNextjsStarter())
 
-  const { client, dbConnectionString } = !skipDb
+  let { client, dbConnectionString } = !skipDb
     ? await getDbClientAndCredentials({
         dbName,
         dbUrl,
@@ -153,7 +153,7 @@ export default async ({
       ...factBoxOptions,
       title: "Creating database...",
     })
-    await runCreateDb({ client, dbName, spinner })
+    client = await runCreateDb({ client, dbName, spinner })
 
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
@@ -179,6 +179,7 @@ export default async ({
       migrations,
       onboardingType: installNextjs ? "nextjs" : "default",
       nextjsDirectory,
+      client,
     })
   } catch (e: any) {
     if (isAbortError(e)) {
