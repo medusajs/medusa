@@ -26,10 +26,46 @@ const ProductAttributesSection = ({ product }: Props) => {
         <div className="gap-y-xsmall mb-large mt-base flex flex-col">
           <h2 className="inter-base-semibold">Dimensions</h2>
           <div className="gap-y-xsmall flex flex-col">
-            <Attribute attribute="Height" value={product.height} />
-            <Attribute attribute="Width" value={product.width} />
-            <Attribute attribute="Length" value={product.length} />
-            <Attribute attribute="Weight" value={product.weight} />
+            <Attribute
+              attribute="Height"
+              value={
+                product.height
+                  ? `${product.height}(mm)/${Number.parseFloat(
+                      `${product.height / 25.4}`
+                    ).toFixed(2)}(in)`
+                  : null
+              }
+            />
+            <Attribute
+              attribute="Width"
+              value={
+                product.width
+                  ? `${product.width}(mm)/${Number.parseFloat(
+                      `${product.width / 25.4}`
+                    ).toFixed(2)}(in)`
+                  : null
+              }
+            />
+            <Attribute
+              attribute="Length"
+              value={
+                product.length
+                  ? `${product.length}(mm)/${Number.parseFloat(
+                      `${product.length / 25.4}`
+                    ).toFixed(2)}(in)`
+                  : null
+              }
+            />
+            <Attribute
+              attribute="Weight"
+              value={
+                product.weight
+                  ? `${product.weight}(g)/${Number.parseFloat(
+                      `${product.weight / 453.6}`
+                    ).toFixed(2)}(lbs)`
+                  : null
+              }
+            />
           </div>
         </div>
         <div className="gap-y-xsmall flex flex-col">
