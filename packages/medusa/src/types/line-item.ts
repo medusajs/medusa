@@ -12,7 +12,6 @@ export type GenerateLineItemContext = {
   unit_price?: number
   includes_tax?: boolean
   metadata?: Record<string, unknown>
-  should_merge?: boolean
   customer_id?: string
   order_edit_id?: string
   cart?: CalculationContextData

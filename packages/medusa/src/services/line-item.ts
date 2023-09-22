@@ -312,7 +312,6 @@ class LineItemService extends TransactionBaseService {
               ...resolvedContext,
               unit_price: variantData.unit_price ?? resolvedContext.unit_price,
               metadata: variantData.metadata ?? resolvedContext.metadata,
-              should_merge: resolvedContext.should_merge,
               variantPricing,
             }
           )
@@ -363,8 +362,6 @@ class LineItemService extends TransactionBaseService {
         !!context.variantPricing?.calculated_price_includes_tax
       unit_price = context.variantPricing?.calculated_price ?? undefined
     }
-
-    shouldMerge = context.should_merge ?? shouldMerge
 
     if (unit_price == null) {
       throw new MedusaError(
