@@ -1,10 +1,10 @@
-import { CartWorkflow } from "@medusajs/types"
+import { LineItemDTO } from "@medusajs/types"
 import { SalesChannelFeatureFlag } from "@medusajs/utils"
 
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInputData = {
-  line_items: CartWorkflow.CreateLineItemInputDTO[] // TODO: LineItemDTO
+  line_items: LineItemDTO[]
   cart: {
     id: string
     customer_id: string

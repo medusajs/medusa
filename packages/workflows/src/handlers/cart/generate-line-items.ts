@@ -1,4 +1,4 @@
-import { ProductVariantDTO } from "@medusajs/types"
+import { LineItemDTO, ProductVariantDTO } from "@medusajs/types"
 
 import { WorkflowArguments } from "../../helper"
 
@@ -13,8 +13,6 @@ type HandlerInputData = {
     region_id: string
   }
 }
-
-type LineItemDTO = {} // TODO type
 
 enum Aliases {
   Items = "items",
