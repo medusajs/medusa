@@ -17,4 +17,8 @@
   pre *::selection {
     @apply !bg-medusa-code-text-highlight;
   }
+
+  body[data-modal="opened"] {
+    @apply !overflow-hidden;
+  }
 }

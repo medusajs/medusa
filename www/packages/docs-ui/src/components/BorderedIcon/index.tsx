@@ -5,7 +5,8 @@ import { IconProps } from "@medusajs/icons/dist/types"
 
 export type BorderedIconProps = {
   icon?: string
-  IconComponent?: React.FC<IconProps> | null
+  IconComponent?: ((props: IconProps) => React.JSX.Element) | null
+  // IconComponent?: React.FC<IconProps> | null
   wrapperClassName?: string
   iconWrapperClassName?: string
   iconClassName?: string
