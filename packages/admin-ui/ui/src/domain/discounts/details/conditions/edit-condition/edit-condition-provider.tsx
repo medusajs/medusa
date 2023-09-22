@@ -134,6 +134,7 @@ export const EditConditionProvider = ({
 }
 
 export const useEditConditionContext = () => {
+  const { t } = useTranslation()
   const context = useContext(EditConditionContext)
   if (context === null) {
     throw new Error(
