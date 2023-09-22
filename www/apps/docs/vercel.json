@@ -486,6 +486,6 @@
   "installCommand": "yarn install",
   "buildCommand": "turbo run build",
   "outputDirectory": "build",
-  "ignoreCommand": "bash ../../ignore-build-script.sh || exit 0",
+  "ignoreCommand": "bash ../../ignore-build-script.sh",
   "devCommand": "yarn dev"
 }
