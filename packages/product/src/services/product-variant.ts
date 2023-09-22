@@ -10,7 +10,7 @@ import {
   retrieveEntity,
 } from "@medusajs/utils"
 
-import { ProductVariantServiceTypes } from "../types/services"
+import { ProductServiceTypes, ProductVariantServiceTypes } from "../types"
 import ProductService from "./product"
 import { doNotForceTransaction } from "../utils"
 
@@ -89,7 +89,7 @@ export default class ProductVariantService<
   @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
   async create(
     productOrId: TProduct | string,
-    data: ProductTypes.CreateProductVariantOnlyDTO[],
+    data: ProductServiceTypes.CreateProductVariantOnlyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     let product = productOrId as unknown as Product

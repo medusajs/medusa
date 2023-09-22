@@ -1,6 +1,5 @@
 import {
   Context,
-  CreateProductOnlyDTO,
   DAL,
   FindConfig,
   IEventBusModuleService,
@@ -759,7 +758,7 @@ export default class ProductModuleService<
           sharedContext
         )
 
-        return productData as CreateProductOnlyDTO
+        return productData as ProductTypes.CreateProductOnlyDTO
       })
     )
 
@@ -815,6 +814,7 @@ export default class ProductModuleService<
       [...productVariantsMap].map(async ([handle, variants]) => {
         return await this.productVariantService_.create(
           productByHandleMap.get(handle)!,
+          // eslint-disable-next-line max-len
           variants as unknown as ProductServiceTypes.CreateProductVariantOnlyDTO[],
           sharedContext
         )
@@ -946,7 +946,7 @@ export default class ProductModuleService<
           const productOption = productOptions[index]
           return {
             option: productOption,
-            value: option.value,
+            value: option!.value,
           }
         })
 
@@ -1034,10 +1034,10 @@ export default class ProductModuleService<
     sharedContext: Context = {}
   ) {
     if (productData.tags?.length) {
-      productData.tags = await this.productTagService_.upsert(
+      productData.tags = (await this.productTagService_.upsert(
         productData.tags,
         sharedContext
-      )
+      )) as unknown as ProductTypes.ProductTagDTO[]
     }
   }
 
@@ -1047,11 +1047,11 @@ export default class ProductModuleService<
   ) {
     if (isDefined(productData.type)) {
       const productType = await this.productTypeService_.upsert(
-        [productData.type!],
+        [productData.type as ProductTypes.CreateProductTypeDTO],
         sharedContext
       )
 
-      productData.type = productType?.[0] as ProductTypes.CreateProductTypeDTO
+      productData.type = productType?.[0]
     }
   }
 

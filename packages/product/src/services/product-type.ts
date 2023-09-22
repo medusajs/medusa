@@ -1,13 +1,5 @@
 import { ProductType } from "@models"
-import {
-  Context,
-  CreateProductTypeDTO,
-  UpsertProductTypeDTO,
-  UpdateProductTypeDTO,
-  DAL,
-  FindConfig,
-  ProductTypes,
-} from "@medusajs/types"
+import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { ProductTypeRepository } from "@repositories"
 import {
   InjectManager,
@@ -89,7 +81,7 @@ export default class ProductTypeService<
 
   @InjectTransactionManager(doNotForceTransaction, "productTypeRepository_")
   async upsert(
-    types: UpsertProductTypeDTO[],
+    types: ProductTypes.UpsertProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.productTypeRepository_ as ProductTypeRepository)
@@ -98,7 +90,7 @@ export default class ProductTypeService<
 
   @InjectTransactionManager(shouldForceTransaction, "productTypeRepository_")
   async create(
-    data: CreateProductTypeDTO[],
+    data: ProductTypes.CreateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.productTypeRepository_ as ProductTypeRepository).create(
@@ -109,7 +101,7 @@ export default class ProductTypeService<
 
   @InjectTransactionManager(shouldForceTransaction, "productTypeRepository_")
   async update(
-    data: UpdateProductTypeDTO[],
+    data: ProductTypes.UpdateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.productTypeRepository_ as ProductTypeRepository).update(

@@ -119,16 +119,16 @@ export interface ProductOptionValueDTO {
   variant_id: string | null
   variants?: ProductVariantDTO[]
   metadata?: Record<string, unknown> | null
-  created_at: Date
-  updated_at: Date
+  created_at?: Date
+  updated_at?: Date
   deleted_at?: Date
 }
 
 export interface ProductTagDTO {
   id: string
   value: string
-  created_at: Date
-  updated_at: Date
+  created_at?: Date
+  updated_at?: Date
   deleted_at?: Date
   products?: ProductDTO[]
 }
@@ -136,8 +136,8 @@ export interface ProductTagDTO {
 export interface ProductTypeDTO {
   id: string
   value: string
-  created_at: Date
-  updated_at: Date
+  created_at?: Date
+  updated_at?: Date
   deleted_at?: Date
   metadata?: Record<string, unknown> | null
 }

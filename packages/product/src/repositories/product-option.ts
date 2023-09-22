@@ -1,7 +1,9 @@
 import {
+  EntityDTO,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
+  RequiredEntityData,
 } from "@mikro-orm/core"
 import { Product, ProductOption } from "@models"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
@@ -100,7 +102,10 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
         optionData.product = product as unknown as ProductTypes.ProductDTO
       }
 
-      return manager.create(ProductOption, optionData)
+      return manager.create(
+        ProductOption,
+        optionData as RequiredEntityData<ProductOption>
+      )
     })
 
     manager.persist(productOptions)
@@ -142,7 +147,10 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
         )
       }
 
-      return manager.assign(existingOption, optionData)
+      return manager.assign(
+        existingOption,
+        optionData as Partial<EntityDTO<ProductOption>>
+      )
     })
 
     manager.persist(productOptions)

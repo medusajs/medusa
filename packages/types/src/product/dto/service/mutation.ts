@@ -1,5 +1,12 @@
 import { ProductBaseDTO } from "../base"
-import { ProductDTO, ProductOptionDTO, ProductVariantDTO } from "../models"
+import {
+  ProductDTO,
+  ProductImageDTO,
+  ProductOptionDTO,
+  ProductTagDTO,
+  ProductTypeDTO,
+  ProductVariantDTO,
+} from "../models"
 import { DeepPartial } from "../../../common"
 
 export interface CreateProductTypeDTO {
@@ -18,6 +25,7 @@ export interface CreateProductOptionDTO extends DeepPartial<ProductOptionDTO> {}
 
 export interface UpdateProductOptionDTO extends DeepPartial<ProductOptionDTO> {
   id: string
+  value: string
 }
 
 export interface CreateProductCollectionDTO<
@@ -64,10 +72,21 @@ export interface UpdateProductCategoryDTO {
   metadata?: Record<string, unknown>
 }
 
-export interface CreateProductDTO extends DeepPartial<ProductDTO> {}
+export interface CreateProductDTO extends DeepPartial<ProductDTO> {
+  variants?: CreateProductVariantDTO[]
+  options?: CreateProductOptionDTO[]
+  type?: ProductTypeDTO
+  tags?: ProductTagDTO[]
+  images?: ProductImageDTO[]
+}
 
 export interface UpdateProductDTO extends DeepPartial<ProductDTO> {
   id: string
+  variants?: CreateProductVariantDTO[]
+  options?: CreateProductOptionDTO[]
+  type?: ProductTypeDTO
+  tags?: ProductTagDTO[]
+  images?: ProductImageDTO[]
 }
 
 export interface CreateProductVariantDTO
@@ -90,4 +109,9 @@ export interface UpsertProductTagDTO {
 export interface UpdateProductTagDTO {
   id: string
   value?: string
+}
+
+export interface UpsertProductTypeDTO {
+  id?: string
+  value: string
 }
