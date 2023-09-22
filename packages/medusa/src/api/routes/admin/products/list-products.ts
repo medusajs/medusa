@@ -13,7 +13,7 @@ import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../../models"
 import { Type } from "class-transformer"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultAdminRemoteQueryFields } from "./index"
+import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /admin/products
@@ -396,7 +396,7 @@ async function listAndCountProductWithIsolatedProductModule(
   const query = {
     product: {
       __args: variables,
-      ...defaultAdminRemoteQueryFields,
+      ...defaultAdminProductRemoteQueryObject,
     },
   }
 
