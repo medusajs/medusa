@@ -2,7 +2,7 @@ const { useApi } = require("../../helpers/use-api")
 
 const header = {
   headers: {
-    Authorization: "Token test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 

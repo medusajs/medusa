@@ -20,7 +20,7 @@ jest.setTimeout(30000)
 
 const adminHeaders = {
   headers: {
-    Authorization: "Token test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 

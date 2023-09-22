@@ -63,7 +63,7 @@ describe("Swaps", () => {
       },
       {
         headers: {
-          Authorization: "Token test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -122,7 +122,7 @@ describe("Swaps", () => {
       },
       {
         headers: {
-          Authorization: "Token test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -182,7 +182,7 @@ describe("Swaps", () => {
       },
       {
         headers: {
-          Authorization: "Token test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -193,7 +193,7 @@ describe("Swaps", () => {
       `/admin/swaps/${response.data.order.swaps[0].id}`,
       {
         headers: {
-          Authorization: "Token test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -281,7 +281,7 @@ describe("Swaps", () => {
       },
       {
         headers: {
-          Authorization: "Token test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )

@@ -75,20 +75,20 @@ export default async ({
     )
   )
 
-  // Alternatively use bearer token to authenticate to the admin api
+  // Alternatively use API token to authenticate to the admin api
   passport.use(
     "admin-api-token",
     new CustomStrategy(async (req, done) => {
       // extract the token from the header
-      const header = req.headers.authorization
+      const token = req.headers["x-medusa-access-token"];
 
-      if (!header || !header.toLowerCase().startsWith("token ")) {
+      // check if header exists and is string
+      // typescript will complain if we don't check for type
+      if (!token || typeof token !== "string") {
         return done(null, false)
       }
 
-      const token = header.substring(6).trim()
-
-      const auth = await authService.authenticateAPIToken(token)
+      const auth = await authService.authenticateAPIToken(token);
       if (auth.success) {
         done(null, auth.user)
       } else {
