@@ -114,7 +114,7 @@ export const allowedStoreProductsRelations = [
 /**
  * This is temporary.
  */
-export const defaultStoreRemoteQueryFields = {
+export const defaultStoreProductRemoteQueryObject = {
   fields: defaultStoreProductsFields,
   images: {
     fields: ["id", "created_at", "updated_at", "deleted_at", "url", "metadata"],
