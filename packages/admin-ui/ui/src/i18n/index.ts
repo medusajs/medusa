@@ -21,6 +21,10 @@ export const supportedLanguages = [
     locale: "pl",
     name: "Polski",
   },
+  {
+    locale: "bn",
+    name: "বাংলা (Bangladesh)",
+  },
 ]
 
 const adminPath = getFullAdminPath()
