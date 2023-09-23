@@ -43,6 +43,6 @@ jobs:
           base: "develop"
           title: "chore(docs): Generated Docs Announcement Bar (automated)"
           labels: "type: chore"
-          add-paths: www/docs/**
+          add-paths: www/apps/docs/**
           branch: "chore/generate-announcement"
           branch-suffix: "timestamp"
