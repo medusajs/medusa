@@ -173,6 +173,9 @@ export default async ({
     })
   }
 
+  // close db connection
+  await client?.end()
+
   // prepare project
   let inviteToken: string | undefined = undefined
   try {
@@ -204,9 +207,6 @@ export default async ({
     })
 
     return
-  } finally {
-    // close db connection
-    await client?.end()
   }
 
   spinner.succeed(chalk.green("Project Prepared"))
