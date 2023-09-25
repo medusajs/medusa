@@ -31,7 +31,7 @@ export interface CreateProductVariantPricesInputDTO {
   max_quantity?: number
 }
 
-export interface CraeteProductVariantOptionInputDTO {
+export interface CreteProductVariantOptionInputDTO {
   value: string
   option_id: string
 }
@@ -57,7 +57,7 @@ export interface CreateProductVariantInputDTO {
   metadata?: Record<string, unknown>
 
   prices?: CreateProductVariantPricesInputDTO[]
-  options?: CraeteProductVariantOptionInputDTO[]
+  options?: CreteProductVariantOptionInputDTO[]
 }
 
 export interface CreateProductInputDTO {

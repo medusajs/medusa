@@ -5,7 +5,6 @@ import { WorkflowArguments } from "../../helper"
 
 type HandlerInput = {
   products: ProductTypes.UpdateProductDTO[]
-  config: { listConfig: { relations?: string[]; select?: string[] } }
 }
 
 export async function updateProducts({
@@ -22,10 +21,7 @@ export async function updateProducts({
 
   const products = await productModuleService.update(data.products)
 
-  return await productModuleService.list(
-    { id: products.map((p) => p.id) },
-    { relations: data.config.listConfig?.relations }
-  )
+  return await productModuleService.list({ id: products.map((p) => p.id) })
 }
 
 updateProducts.aliases = {
