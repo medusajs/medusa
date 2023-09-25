@@ -103,7 +103,7 @@ The first command runs the migrations, and the second command allows you to opti
 <summary>
 Seed file
 </summary>
-    
+
 ```js title=pricing-seed-data.js
 const currenciesData = [
   {
