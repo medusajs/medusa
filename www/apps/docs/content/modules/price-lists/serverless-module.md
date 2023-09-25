@@ -55,7 +55,7 @@ Refer to the [Next.js documentation](https://nextjs.org/docs/getting-started/in
 In the root directory of your Next.js project, run the following command to install the Pricing module:
 
 ```bash npm2yarn
-npm install @medusajs/product
+npm install @medusajs/pricing
 ```
 
 ### Step 2: Add Database Configurations
@@ -195,7 +195,7 @@ npm run price:seed
 
 ### Step 4: Adjust Next.js Configurations
 
-Next.js uses Webpack for compilation. Since quite a few of the dependencies used by the product module are not Webpack optimized, you have to add the Pricing module as an external dependency.
+Next.js uses Webpack for compilation. Since quite a few of the dependencies used by the pricing module are not Webpack optimized, you have to add the Pricing module as an external dependency.
 
 To do that, add the `serverComponentsExternalPackages` option in `next.config.js`:
 
