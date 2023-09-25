@@ -17,4 +17,10 @@ export const defaultPriceSetMoneyAmountRulesData = [
     price_set_money_amount: "price-set-money-amount-CAD",
     rule_type: "rule-type-2",
   },
+  {
+    id: "psmar-4",
+    value: "USD",
+    price_set_money_amount: "price-set-money-amount-USD",
+    rule_type: "rule-type-1",
+  },
 ]

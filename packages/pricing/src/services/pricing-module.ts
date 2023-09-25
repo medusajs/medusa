@@ -106,56 +106,79 @@ export default class PricingModuleService<
     const ruleAttributes = Object.entries(context).map(([k, v]) => k)
     const priceRuleValues = Object.entries(context).map(([k, v]) => v)
     const knex = manager.getKnex()
+    const em = manager
+    // console.log(
+    //   "ALL price set money amount - ",
+    //   await manager.find(PriceSetMoneyAmount, {})
+    // )
+    // console.log(
+    //   "ALL price set money amount rules - ",
+    //   await manager.find(PriceSetMoneyAmountRules, {})
+    // )
 
-    // Gets all the rule_type records from the context
-    const ruleTypesQb = manager
-      .createQueryBuilder(RuleType, "rt")
-      .select(["id"])
+    // console.log("ALL rule types - ", await manager.find(RuleType, {}))
+
+    // Subquery for price_set_money_amount
+    const psmaSubQuery = em
+      .createQueryBuilder("PriceSetMoneyAmount", "psma")
+      .select(["id", "price_set_id", "money_amount_id", "title"])
+      .leftJoin("price_set_money_amount_rules", "psmar")
+      .leftJoin("rule_types", "rt")
       .where({
-        rule_attribute: ruleAttributes,
+        $or: [
+          { "rt.rule_attribute": "currency_code", "psmar.value": "USD" },
+          // { "rt.rule_attribute": "currency_code", "psmar.value": "EUR" },
+        ],
       })
-
-    // A subquery that counts the price rules with the price_set_money_amount of the parent
-    // This is used to do an exact match of "rules" to "context"
-    const priceRulesCountSubquery = manager
-      .createQueryBuilder(PriceRule, "pr_count")
-      .count(["id"])
-      .where({
-        price_set_money_amount_id: knex.ref("pr.price_set_money_amount_id"),
+      .groupBy("id")
+    // .having("COUNT(DISTINCT rt.rule_attribute) = psma.number_rules")
+    // console.log("running 2 - ", await psmaSubQuery.getQuery())
+    // console.log("psmaSubQuery - ", await psmaSubQuery.execute())
+    // Main query for price_set
+    console.log("blah")
+    const mainQuery = em
+      .createQueryBuilder("PriceSetMoneyAmount", "psma1")
+      .select([
+        "psma.id",
+        // "ma.amount",
+        // "ma.currency_code",
+        // "psma.title",
+        // "pr.is_dynamic",
+        // "prt.rule_attribute",
+        // "pr.value",
+        // "pr.priority",
+      ])
+      // .withSubQuery(psmaSubQuery.getKnexQuery(), "psma")
+      .from(psmaSubQuery, "psma")
+      .joinAndSelect("price_set", "s", {
+        "psma.price_set_id": "s.id",
       })
+    // .join("money_amount", "ma", "ma.id = psma.money_amount_id")
+    // .leftJoin(
+    //   "price_rules",
+    //   "pr",
+    //   "pr.price_set_id = s.id AND pr.price_set_money_amount_id = psma.id"
+    // )
+    // .leftJoin("rule_type", "prt", "prt.id = pr.rule_type_id")
+    // .where({
+    //   $or: [
+    //     { "prt.rule_attribute": "customer_group_id", "pr.value": "VIP" },
+    //     { "prt.rule_attribute": "customer_id", "pr.value": "cus_123" },
+    //     { "prt.rule_attribute": "city_id", "pr.value": "copenhagen" },
+    //   ],
+    //   $and: [{ "pr.is_dynamic": true }, { "pr.priority": null }],
+    // })
+    // .orderBy({ "s.id": "ASC", "pr.priority": "DESC NULLS LAST" })
 
-    // Get all psma from rules where rule type exact matches the context conditions
-    // Here we are scoping the price rules by exact matching with the context to the db values
-    const priceRulesSubquery = manager
-      .createQueryBuilder(PriceRule, "pr")
-      .select(["pr.price_set_money_amount_id"], false)
-      .join("pr.rule_type", "rt")
-      .where({
-        "rt.id": { $in: ruleTypesQb.getKnexQuery() },
-        "pr.value": { $in: priceRuleValues },
-        [Object.entries(context).length]:
-          priceRulesCountSubquery.getKnexQuery(),
-      })
-
-    // Apply the build subqueries and join it with price set money amounts and price rules
-    // via the price set
-    // This will give the price sets where the rules match
-    const priceSetQuery = manager
-      .createQueryBuilder(PriceSet, "ps")
-      .select(["ps.id"], true)
-      .join("ps.price_set_money_amounts", "psma", {})
-      .leftJoinAndSelect("psma.money_amount", "ma", {
-        "psma.id": [priceRulesSubquery.getKnexQuery()],
-      })
-      .where(priceSetFilters)
-
+    console.log("mainQuery.getQuery() - ", await mainQuery.getQuery())
+    console.log("mainQuery.execute() - ", await mainQuery.execute())
     // this is a missed implementation in mikroORM that mimics
     // entity building and merging of duplicated rows.
-    const joinedProps = (priceSetQuery as any)._joinedProps
-    const driver = (priceSetQuery as any).driver
-    const mainAlias = (priceSetQuery as any).mainAlias
+    const joinedProps = (mainQuery as any)._joinedProps
+    const driver = (mainQuery as any).driver
+    const mainAlias = (mainQuery as any).mainAlias
 
-    let queryBuilderResults = await priceSetQuery.execute()
+    let queryBuilderResults = await mainQuery.execute()
 
     if (joinedProps.size > 0) {
       queryBuilderResults = driver.mergeJoinedResult(

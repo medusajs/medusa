@@ -2,6 +2,8 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSetMoneyAmountRules } from "@models"
 import { defaultPriceSetMoneyAmountRulesData } from "./data"
 
+export * from "./data"
+
 export async function createPriceSetMoneyAmountRules(
   manager: SqlEntityManager,
   psmarData: any[] = defaultPriceSetMoneyAmountRulesData
