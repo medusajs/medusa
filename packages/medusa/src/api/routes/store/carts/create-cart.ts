@@ -30,6 +30,7 @@ import {
 import { CartCreateProps } from "../../../../types/cart"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { Logger } from "../../../../types/global"
 
 /**
  * @oas [post] /store/carts
@@ -82,9 +83,11 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
+  const logger: Logger = req.scope.resolve("logger")
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const cartService: CartService = req.scope.resolve("cartService")
+  const productModuleService = req.scope.resolve("productModuleService")
 
   const validated = req.validatedBody as StorePostCartReq
 
@@ -99,7 +102,13 @@ export default async (req, res) => {
 
   let cart
 
-  if (isWorkflowEnabled) {
+  if (isWorkflowEnabled && !productModuleService) {
+    logger.warn(
+      `Cannot run ${Workflows.CreateCart} workflow without '@medusajs/product' installed`
+    )
+  }
+
+  if (isWorkflowEnabled && productModuleService) {
     // TODO: is product module enabled
     const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
     const input = {
