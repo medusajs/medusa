@@ -44,8 +44,7 @@ export function ComponentExample({
               className={clsx(
                 "bg-docs-bg border-medusa-border-base flex max-h-[400px] min-h-[400px]",
                 "dark:bg-docs-bg-dark dark:border-medusa-border-base-dark",
-                "w-full items-center justify-center overflow-auto rounded-md border px-10 py-5",
-                "text-ui-fg-subtle"
+                "w-full items-center justify-center overflow-auto rounded-md border px-10 py-5"
               )}
             >
               <React.Suspense

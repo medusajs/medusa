@@ -10,7 +10,7 @@ export default function DrawerDemo() {
         <Drawer.Header>
           <Drawer.Title>Edit Variant</Drawer.Title>
         </Drawer.Header>
-        <Drawer.Body className="p-4 text-ui-fg-subtle">
+        <Drawer.Body className="p-4">
           <Text>This is where you edit the variant&apos;s details</Text>
         </Drawer.Body>
         <Drawer.Footer>

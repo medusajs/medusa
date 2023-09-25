@@ -13,7 +13,7 @@ export default function FocusModalDemo() {
         <FocusModal.Body className="flex flex-col items-center py-16">
           <div className="flex w-full max-w-lg flex-col gap-y-8">
             <div className="flex flex-col gap-y-1">
-              <Heading className="text-ui-fg-base">Create API key</Heading>
+              <Heading>Create API key</Heading>
               <Text className="text-ui-fg-subtle">
                 Create and manage API keys. You can create multiple keys to
                 organize your applications.
