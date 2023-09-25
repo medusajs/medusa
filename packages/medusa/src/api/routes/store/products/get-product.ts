@@ -10,7 +10,7 @@ import { IsOptional, IsString } from "class-validator"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultStoreRemoteQueryFields } from "./index"
+import { defaultStoreProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /store/products/{id}
@@ -170,7 +170,7 @@ async function getProductWithIsolatedProductModule(req, id: string) {
   const query = {
     product: {
       __args: variables,
-      ...defaultStoreRemoteQueryFields,
+      ...defaultStoreProductRemoteQueryObject,
     },
   }
 

@@ -140,7 +140,7 @@ const errorMessage = (t: TFunction, status?: number) => {
     401: t("error-boundary-you-are-not-logged-in", "You are not logged in"),
     403: t(
       "error-boundary-you-do-not-have-permission-perform-this-action",
-      "You do not have permission perform this action"
+      "You do not have permission to perform this action"
     ),
     404: t("error-boundary-page-was-not-found", "Page was not found"),
     500: t(
@@ -174,7 +174,7 @@ const errorDescription = (t: TFunction, status?: number) => {
     ),
     403: t(
       "error-boundary-403",
-      "You do not have permission perform this action, if you think this is a mistake, contact your administrator."
+      "You do not have permission to perform this action, if you think this is a mistake, contact your administrator."
     ),
     404: t(
       "error-boundary-404",

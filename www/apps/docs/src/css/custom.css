@@ -6,11 +6,6 @@
   body[data-modal="opened"] {
     @apply !overflow-hidden;
   }
-
-  mark {
-    @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
-    @apply text-medusa-fg-interactive dark:text-medusa-fg-interactive-dark;
-  }
 }
 
 @layer components {

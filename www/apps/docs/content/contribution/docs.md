@@ -13,33 +13,50 @@ This guide is specific to contributing to the documentation. If you’re interes
 
 :::
 
-## Site Setup
+## Documentation Workspace
 
-The documentation website is built with [Docusaurus](https://docusaurus.io/), a framework that optimizes documentation creation. If you’re not familiar with Docusaurus, it’s recommended to check out the [Installation documentation](https://docusaurus.io/docs/installation) on their website. This will help you better understand Docusaurus, how it works, its structure, and more details.
+Medusa's documentation projects are all part of the documentation yarn workspace, which you can find in the [medusa repository](https://github.com/medusajs/medusa) under the `www` directory.
 
-The documentation codebase is hosted as part of the [medusa repository](https://github.com/medusajs/medusa) on GitHub. You’ll find the code that runs the Docusaurus website under the [www/docs](https://github.com/medusajs/medusa/tree/develop/www/docs) directory.
+The workspace has the following two directories:
+
+- `apps`: this directory holds the different documentation websites and projects.
+  - `docs`: includes the codebase for the main documentation website (the one you're viewing this documentation on). It's built with [Docusaurus](https://docusaurus.io/).
+  - `api-reference`: includes the codebase for the API reference website. It's built with [Next.js 13](https://nextjs.org/).
+  - `ui`: includes the codebase for the Medusa UI documentation website. It's built with [Next.js 13](https://nextjs.org/).
+- `packages`: this directory holds the shared packages and components necessary for the development of the projects in the `apps` directory.
+  - `docs-ui` includes the shared React components between the different apps.
+  - `eslint-config-docs` includes the shared ESLint configuration between the different apps and packages.
+  - `tailwind` includes the shared Tailwind CSS configuration between the different apps and packages.
+  - `tsconfig` includes the shared TypeScript configuration between the different apps and packages.
 
 ---
 
 ## Documentation Content
 
-The documentation content is written in Markdown format and is located in the [www/docs/docs](https://github.com/medusajs/medusa/tree/develop/www/docs/docs) directory of the same repository. If you’re not familiar with Markdown, check out [this cheat sheet](https://www.markdownguide.org/cheat-sheet/) for a quick start.
+### Main Documentation Website
 
-You’ll also find MDX files. MDX files combine the power of Markdown with React. So, the content of the file can contain JSX components and import statements, among other features. You can learn more about [MDX in docusaurus’s guide.](https://docusaurus.io/docs/markdown-features/react)
+The documentation content is written in Markdown format and is located in the [www/apps/docs/content](https://github.com/medusajs/medusa/tree/develop/www/apps/docs/content) directory of the Medusa repository. If you’re not familiar with Markdown, check out [this cheat sheet](https://www.markdownguide.org/cheat-sheet/) for a quick start.
 
----
+You’ll also find MDX files. MDX files combine the power of Markdown with React. So, the content of the file can contain JSX components and import statements, among other features. You can learn more about [MDX in docusaurus’s guide.](https://docusaurus.io/docs/markdown-features/react).
 
-## What You Can Contribute To
+:::note
 
-- You can contribute to the Docusaurus codebase to add a new feature or fix a bug in the documentation website.
-- You can contribute to the documentation content either by fixing errors you find or by adding documentation pages.
+Documentation pages under the `www/apps/docs/content/references` directory are generated automatically from the source code under the `packages/medusa` directory. So, you can't directly make changes to them. Instead, you'll have to make changes to the comments in the original source code.
 
----
+:::
 
-## What You Can’t Contribute To
+### API Reference
 
-- All references under the `www/docs/docs/reference` directory are automatically generated using Typedoc. So, you can’t contribute to it by making changes to its markdown files.
-- The API reference is generated from OpenApi Spec (OAS) comments added on endpoints in the core Medusa package. So, you can't contribute to it by making changes to files under `www/api-reference/specs`. You can, however, contribute by making changes to the endpoint's comments. Endpoints are located under the `packages/medusa/src/api` directory.
+The API reference's content is split into two types:
+
+1. Static content, which are the content related to getting started, expanding fields, and more. These are located in the [www/apps/api-reference/app/_mdx](https://github.com/medusajs/medusa/tree/develop/www/apps/api-reference/app/_mdx) directory. They are MDX files.
+2. OpenAPI specs that are shown to developers when checking the reference of an endpoint. These are automatically generated from comments on endpoints. So, if you find issues in them or want to make improvements, you have to find the endpoint under the [`packages/medusa/src/api`](https://github.com/medusajs/medusa/tree/develop/packages/medusa/src/api) directory and make changes to its comments.
+
+### Medusa UI Documentation
+
+The content of the Medusa UI documentation are located under the [www/apps/ui/src/content/docs](https://github.com/medusajs/medusa/tree/develop/www/apps/ui/src/content/docs) directory. They are MDX files.
+
+The UI documentation also shows code examples, which you can find under the [www/apps/ui/src/examples](https://github.com/medusajs/medusa/tree/develop/www/apps/ui/src/examples) directory.
 
 ---
 
@@ -55,8 +72,6 @@ If you’re fixing errors in an existing documentation page, you can scroll down
 
 If you’re adding a new page or contributing to the codebase, you need to fork the repository, create a new branch, and make all changes necessary in your repository. Then, once you’re done,  create a PR in the Medusa repository.
 
-For more details on how to contribute, check out [the contribution guidelines in the Medusa repository](https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md).
-
 ### Base Branch
 
 When you make an edit to an existing documentation page or fork the repository to make changes to the documentation, you have to create a new branch.
@@ -65,11 +80,11 @@ Documentation contributions always use `develop` as the base branch. Make sure t
 
 ### Branch Name
 
-Make sure that the branch name starts with `docs/`. For example, `docs/fix-services`.
+Make sure that the branch name starts with `docs/`. For example, `docs/fix-services`. Vercel deployed previews are only triggered for branches starting with `docs/`.
 
 ### Pull Request Conventions
 
-When you create a pull request, prefix the title with “docs:”. Make sure to keep “docs” in small letters.
+When you create a pull request, prefix the title with `docs:` or `docs(PROJECT_NAME):`, where `PROJECT_NAME` is the name of the documentation project this pull request pertains to. For example, `docs(ui): fix titles`.
 
 <!-- vale off -->
 
@@ -79,9 +94,9 @@ In the body of the PR, explain clearly what the PR does. If the PR solves an iss
 
 ---
 
-## Sidebar
+## Main Documentation Sidebar
 
-When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js`. In this file, an object is exported. This object holds more than one sidebar. The properties of the object indicate the internal sidebar name, and the value is an array of sidebar items in that sidebar.
+When you add a new page to the documentation, you must add the new page in `www/apps/docs/sidebars.js`. In this file, an object is exported. This object holds more than one sidebar. The properties of the object indicate the internal sidebar name, and the value is an array of sidebar items in that sidebar.
 
 You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
 
@@ -101,30 +116,37 @@ How-to guides in the sidebar for documentation pages under the Commerce Modules 
 
 ### Sidebar Icon
 
-To add an icon to the sidebar item, start by checking if the icon already exists under `www/docs/src/theme/Icon`. If not, add the item as a React component under `www/docs/src/theme/Icon/Icon<Name>/index.tsx`, where `<Name>` is the camel-case name of your icon. The icon must be added to the React component as an SVG element. For example:
+To add an icon to the sidebar item, start by checking if the icon is already exported in the file `www/apps/docs/src/theme/Icon`. If not, you can either export the icon from the [@medusajs/icons](https://docs.medusajs.com/ui/icons/overview), or add the new icon as a React component in the `www/apps/docs/src/theme/Icon/Icon<Name>/index.tsx` file, where `<Name>` is the camel-case name of your icon. The icon must be added to the React component as an SVG element.
+
+For example:
   
 ```tsx title=www/docs/src/theme/Icon/Bolt/index.tsx
 import React from "react"
+import { IconProps } from "@medusajs/icons/dist/types"
 
-export default function IconBolt(props) {
+export default function IconBolt(props: IconProps) {
   return (
-    <svg width={20} height={20} viewBox="0 0 20 20" 
+    <svg 
+      width={props.width || 20}
+      height={props.height || 20}
+      viewBox="0 0 20 20" 
       fill="none" xmlns="http://www.w3.org/2000/svg"
-      {...props}>
+      {...props}
+    >
       <path 
         d="M3.125..."
         strokeWidth="1.5" 
         strokeLinecap="round" 
         strokeLinejoin="round"
-        stroke="var(--ifm-icon-color)" />
+        stroke="currentColor" />
     </svg>
   )
 }
 ```
 
-Make sure to set the `stroke` or `fill` of the icon to `var(--ifm-icon-color)` as shown in the example above.
+Make sure to set the `stroke` or `fill` of the icon to `currentColor` as shown in the example above. The source code for the Sidebar passes the icon a color. So, this ensures the color is correctly used.
 
-If you added a new icon, add it in the object in the file `www/docs/src/theme/Icon/index.ts`, where the property is the kebab-case version of the icon's name, and the value being the component you created. Make sure to add it in the correct alphabetical position as well. For example:
+If you added a new icon, add it in the exported object in the file `www/apps/docs/src/theme/Icon/index.ts`, where the property is the kebab-case version of the icon's name, and the value being the component you created. Make sure to add it in the correct alphabetical position as well. For example:
 
 ```ts title=www/docs/src/theme/Icon/index.ts
 import IconBolt from "./Bolt"
@@ -285,6 +307,12 @@ There are different sidebar item types used in the documentation:
 
 ## Notes and Additional Information
 
+:::note
+
+This only works in the main documentation website.
+
+:::
+
 When displaying notes and additional information on a documentation page, use [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions). Make sure the type of admonition used matches the note’s importance to the current document.
 
 If the note is something developers have to be careful of doing or not doing, use the `danger` admonition based on how critical it is.
@@ -297,11 +325,17 @@ For all other note types, use the `note` admonition.
 
 ## Images
 
-If you are adding images to a documentation page, you can host the image on [Imgur](https://imgur.com) for free.
+If you are adding images to a documentation page, you can host the image on [Imgur](https://imgur.com) for free to include it in the PR. Our team will later upload it to our image hosting.
 
 ---
 
 ## Code Blocks
+
+:::note
+
+These sections only works in the main documentation website.
+
+:::
 
 ### Use Tabs with Code Blocks
 
@@ -415,7 +449,7 @@ npm install @medusajs/medusa-cli -g
 
 ## Linting with Vale
 
-Medusa uses Vale to lint documentation pages and perform checks on incoming PRs into the repository.
+Medusa uses [Vale](https://vale.sh/) to lint documentation pages and perform checks on incoming PRs into the repository.
 
 ### Result of Vale PR Checks
 
@@ -426,16 +460,21 @@ You can check the result of running the "lint" action on your PR by clicking the
 If you want to check your work locally, you can do that by:
 
 1. [Installing Vale](https://vale.sh/docs/vale-cli/installation/) on your machine.
-2. Changing to the `www/docs` directory:
+2. Changing to the `www/vale` directory:
 
 ```bash
-cd docs
+cd www/vale
 ```
 
 3\. Running the `run-vale` script:
 
 ```bash
-./run-vale.sh error
+# to lint content for the main documentation
+./run-vale.sh docs content error references
+# to lint content for the API reference
+./run-vale.sh api-reference app/_mdx error
+# to lint content for the Medusa UI documentation
+./run-vale.sh ui src/content/docs error
 ```
 
 ### VS Code Extension
@@ -470,31 +509,55 @@ If you use this in your PR, you must justify its usage.
 
 ## Linting with ESLint
 
-Medusa uses ESlint to lint code blocks in the documentation and perform checks on incoming PRs into the repository.
+Medusa uses ESlint to lint code blocks both in the content and the code base of the documentation apps.
 
-### Result of ESLint PR Checks
+### Linting Content with ESLint
 
-You can check the result of running the "eslint" action on your PR by clicking the Details link next to it. You can find there all errors that you need to fix.
+Each PR runs through a check that lints the code in the content files using ESLint. The action's name is `content-eslint`.
 
-### Running ESLint locally
+If you want to check content ESLint errors locally and fix them, you can do that by:
 
-If you want to check ESLint errors locally and fix them, you can do that by:
-
-1. Installing the dependencies in the root directory:
+1\. Install the dependencies in the `www` directory:
 
 ```bash
 yarn install
 ```
 
-2\. Run the lint command:
+2\. Run the turbo command in the `www` directory:
 
 ```bash
-yarn lint:docs --fix
+turbo run lint:content
 ```
 
-The `--fix` option automatically fixes some errors. Other errors will be shown which you'll have to resolve yourself.
+This will fix any fixable errors, and show errors that require your action.
+
+### Linting Code with ESLint
+
+Each PR runs through a check that lints the code in the content files using ESLint. The action's name is `code-docs-eslint`.
+
+If you want to check code ESLint errors locally and fix them, you can do that by:
+
+1\. Install the dependencies in the `www` directory:
+
+```bash
+yarn install
+```
+
+2\. Run the turbo command in the `www` directory:
+
+```bash
+turbo run lint
+```
+
+This will fix any fixable errors, and show errors that require your action.
 
 ### ESLint Exceptions
+
+:::note
+
+These exceptions only work in the main documentation website.
+
+:::
 
 If some code blocks have errors that can't or shouldn't be fixed, you can add the following command before the code block:
 

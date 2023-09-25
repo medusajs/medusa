@@ -126,7 +126,11 @@ export const SearchHits = ({
     return (
       Object.keys(item.hierarchy)
         .reverse()
-        .find((key) => item.hierarchy[key as Hierarchy] !== null) || ""
+        .find(
+          (key) =>
+            item.hierarchy[key as Hierarchy] !== null &&
+            item.hierarchy[key as Hierarchy] !== item.content
+        ) || ""
     )
   }
 
@@ -138,7 +142,13 @@ export const SearchHits = ({
   }
 
   return (
-    <div className="overflow-auto">
+    <div
+      className={clsx(
+        "overflow-auto",
+        "[&_mark]:bg-medusa-bg-highlight dark:[&_mark]:bg-medusa-bg-highlight-dark",
+        "[&_mark]:text-medusa-fg-interactive dark:[&_mark]:text-medusa-fg-interactive-dark"
+      )}
+    >
       {Object.keys(grouped).map((groupName, index) => (
         <Fragment key={index}>
           <SearchHitGroupName name={groupName} />
@@ -172,11 +182,12 @@ export const SearchHits = ({
                     "hierarchy",
                     item.type && item.type !== "content"
                       ? item.type
-                      : item.hierarchy.lvl1
-                      ? "lvl1"
-                      : getLastAvailableHeirarchy(item),
+                      : getLastAvailableHeirarchy(item) ||
+                        item.hierarchy.lvl1 ||
+                        "",
                   ]}
                   hit={item}
+                  separator="."
                 />
               </span>
               {item.type !== "lvl1" && (
