@@ -20,6 +20,7 @@
   "devDependencies": {
     "awilix": "^8.0.0",
     "cross-env": "^5.2.1",
+    "express": "^4.17.1",
     "ioredis": "^5.2.5",
     "rimraf": "^5.0.1",
     "typeorm": "^0.3.16",

@@ -6,6 +6,7 @@ import {
   ModulesDefinition,
   registerModules,
 } from "@medusajs/modules-sdk"
+import { ConfigModule, MedusaRequest } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
@@ -37,7 +38,6 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   directory: string
@@ -181,9 +181,9 @@ export default async ({
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
 
   // Add the registered services to the request scope
-  expressApp.use((req: Request, res: Response, next: NextFunction) => {
+  expressApp.use((req: MedusaRequest, res: Response, next: NextFunction) => {
     container.register({ manager: asValue(dataSource.manager) })
-    ;(req as any).scope = container.createScope()
+    req.scope = container.createScope() as MedusaContainer
     next()
   })
 

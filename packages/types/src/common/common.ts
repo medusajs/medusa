@@ -1,3 +1,4 @@
+import { Request } from "express"
 import {
   FindManyOptions,
   FindOneOptions,
@@ -6,9 +7,9 @@ import {
   FindOptionsWhere,
   OrderByCondition,
 } from "typeorm"
-
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
+import { MedusaContainer } from "./medusa-container"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -190,4 +191,8 @@ export interface FindParams {
 export interface FindPaginationParams {
   offset?: number
   limit?: number
+}
+
+export interface MedusaRequest extends Request {
+  scope?: MedusaContainer
 }
