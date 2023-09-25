@@ -24,12 +24,6 @@ This guide explains how to use the Product Module in a Next.js application as an
 - Make it easier to integrate modules into an ecosystem of existing commerce services.
 - Make it easier to customize or extend core logic in Medusa.
 
-:::info
-
-The product module is currently in beta, and it provides only functionalities related to browsing products. In later versions, the product module would include more powerful ecommerce features.
-
-:::
-
 ---
 
 ## Prerequisites
@@ -101,98 +95,100 @@ Migrations are used to create your database schema. Before you can run migration
 The first command runs the migrations, and the second command allows you to optionally seed your database with demo products. However, you’d need the following seed file added in the root of your Next.js directory:
 
 <details>
-  <summary>Seed file</summary>
+<summary>
+Seed file
+</summary>
 
-  ```js title=seed-data.js
-  const productCategoriesData = [
-    {
-      id: "category-0",
-      name: "category 0",
-      parent_category_id: null,
-    },
-    {
-      id: "category-1",
-      name: "category 1",
-      parent_category_id: "category-0",
-    },
-    {
-      id: "category-1-a",
-      name: "category 1 a",
-      parent_category_id: "category-1",
-    },
-    {
-      id: "category-1-b",
-      name: "category 1 b",
-      parent_category_id: "category-1",
-      is_internal: true,
-    },
-    {
-      id: "category-1-b-1",
-      name: "category 1 b 1",
-      parent_category_id: "category-1-b",
-    },
-  ]
-  
-  const productsData = [
-    {
-      id: "test-1",
-      title: "product 1",
-      status: "published",
-      descriptions: "Lorem ipsum dolor sit amet, consectetur.",
-      tags: [
-        {
-          id: "tag-1",
-          value: "France",
-        },
-      ],
-      categories: [
-        {
-          id: "category-0",
-        },
-      ],
-    },
-    {
-      id: "test-2",
-      title: "product",
-      status: "published",
-      descriptions: "Lorem ipsum dolor sit amet, consectetur.",
-      tags: [
-        {
-          id: "tag-2",
-          value: "Germany",
-        },
-      ],
-      categories: [
-        {
-          id: "category-1",
-        },
-      ],
-    },
-  ]
-  
-  const variantsData = [
-    {
-      id: "test-1",
-      title: "variant title",
-      sku: "sku 1",
-      product: { id: productsData[0].id },
-      inventory_quantity: 10,
-    },
-    {
-      id: "test-2",
-      title: "variant title",
-      sku: "sku 2",
-      product: { id: productsData[1].id },
-      inventory_quantity: 10,
-    },
-  ]
-  
-  module.exports = {
-    productCategoriesData,
-    productsData,
-    variantsData,
-  }
-  ```
+```js title=seed-data.js
+const productCategoriesData = [
+  {
+    id: "category-0",
+    name: "category 0",
+    parent_category_id: null,
+  },
+  {
+    id: "category-1",
+    name: "category 1",
+    parent_category_id: "category-0",
+  },
+  {
+    id: "category-1-a",
+    name: "category 1 a",
+    parent_category_id: "category-1",
+  },
+  {
+    id: "category-1-b",
+    name: "category 1 b",
+    parent_category_id: "category-1",
+    is_internal: true,
+  },
+  {
+    id: "category-1-b-1",
+    name: "category 1 b 1",
+    parent_category_id: "category-1-b",
+  },
+]
+
+const productsData = [
+  {
+    id: "test-1",
+    title: "product 1",
+    status: "published",
+    descriptions: "Lorem ipsum dolor sit amet, consectetur.",
+    tags: [
+      {
+        id: "tag-1",
+        value: "France",
+      },
+    ],
+    categories: [
+      {
+        id: "category-0",
+      },
+    ],
+  },
+  {
+    id: "test-2",
+    title: "product",
+    status: "published",
+    descriptions: "Lorem ipsum dolor sit amet, consectetur.",
+    tags: [
+      {
+        id: "tag-2",
+        value: "Germany",
+      },
+    ],
+    categories: [
+      {
+        id: "category-1",
+      },
+    ],
+  },
+]
+
+const variantsData = [
+  {
+    id: "test-1",
+    title: "variant title",
+    sku: "sku 1",
+    product: { id: productsData[0].id },
+    inventory_quantity: 10,
+  },
+  {
+    id: "test-2",
+    title: "variant title",
+    sku: "sku 2",
+    product: { id: productsData[1].id },
+    inventory_quantity: 10,
+  },
+]
+
+module.exports = {
+  productCategoriesData,
+  productsData,
+  variantsData,
+}
+```
 
 </details>
 

@@ -1153,6 +1153,11 @@ module.exports = {
           id: "modules/price-lists/admin/import-prices",
           label: "Admin: Import Prices",
         },
+        {
+          type: "doc",
+          id: "modules/price-lists/serverless-module",
+          label: "Storefront: Serverless Module",
+        },
       ],
     },
     {
