@@ -21,7 +21,22 @@ export async function updateProducts({
 
   const products = await productModuleService.update(data.products)
 
-  return await productModuleService.list({ id: products.map((p) => p.id) })
+  return await productModuleService.list(
+    { id: products.map((p) => p.id) },
+    {
+      relations: [
+        "variants",
+        "variants.options",
+        "images",
+        "options",
+        "tags",
+        "type",
+        "collection",
+        // "profiles",
+        // "sales_channels",
+      ],
+    }
+  )
 }
 
 updateProducts.aliases = {
