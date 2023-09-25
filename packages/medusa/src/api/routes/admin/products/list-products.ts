@@ -1,5 +1,6 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import {
+  PriceListService,
   PricingService,
   ProductService,
   ProductVariantInventoryService,
@@ -11,6 +12,8 @@ import { IInventoryService } from "@medusajs/types"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../../models"
 import { Type } from "class-transformer"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /admin/products
@@ -235,16 +238,33 @@ export default async (req, res) => {
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
   const { skip, take, relations } = req.listConfig
 
-  const manager = req.scope.resolve("manager")
+  let rawProducts
+  let count
 
-  const [rawProducts, count] = await productService.listAndCount(
-    req.filterableFields,
-    req.listConfig
-  )
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    const [products, count_] =
+      await listAndCountProductWithIsolatedProductModule(
+        req,
+        req.filterableFields,
+        req.listConfig
+      )
+
+    rawProducts = products
+    count = count_
+  } else {
+    const [products, count_] = await productService.listAndCount(
+      req.filterableFields,
+      req.listConfig
+    )
+
+    rawProducts = products
+    count = count_
+  }
 
   let products: (Product | PricedProduct)[] = rawProducts
 
@@ -278,6 +298,118 @@ export default async (req, res) => {
     offset: skip,
     limit: take,
   })
+}
+
+async function listAndCountProductWithIsolatedProductModule(
+  req,
+  filterableFields,
+  listConfig
+) {
+  // TODO: Add support for fields/expands
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const productIdsFilter: Set<string> = new Set()
+  const variantIdsFilter: Set<string> = new Set()
+
+  const promises: Promise<void>[] = []
+
+  // This is not the best way of handling cross filtering but for now I would say it is fine
+  const salesChannelIdFilter = filterableFields.sales_channel_id
+  delete filterableFields.sales_channel_id
+
+  if (salesChannelIdFilter) {
+    const salesChannelService = req.scope.resolve(
+      "salesChannelService"
+    ) as SalesChannelService
+
+    promises.push(
+      salesChannelService
+        .listProductIdsBySalesChannelIds(salesChannelIdFilter)
+        .then((productIdsInSalesChannel) => {
+          let filteredProductIds =
+            productIdsInSalesChannel[salesChannelIdFilter]
+
+          if (filterableFields.id) {
+            filterableFields.id = Array.isArray(filterableFields.id)
+              ? filterableFields.id
+              : [filterableFields.id]
+
+            const salesChannelProductIdsSet = new Set(filteredProductIds)
+
+            filteredProductIds = filterableFields.id.filter((productId) =>
+              salesChannelProductIdsSet.has(productId)
+            )
+          }
+
+          filteredProductIds.map((id) => productIdsFilter.add(id))
+        })
+    )
+  }
+
+  const priceListId = filterableFields.price_list_id
+  delete filterableFields.price_list_id
+
+  if (priceListId) {
+    // TODO: it is working but validate the behaviour.
+    // e.g pricing context properly set.
+    // At the moment filtering by price list but not having any customer id or
+    // include discount forces the query to filter with price list id is null
+    const priceListService = req.scope.resolve(
+      "priceListService"
+    ) as PriceListService
+    promises.push(
+      priceListService
+        .listPriceListsVariantIdsMap(priceListId)
+        .then((priceListVariantIdsMap) => {
+          priceListVariantIdsMap[priceListId].map((variantId) =>
+            variantIdsFilter.add(variantId)
+          )
+        })
+    )
+  }
+
+  const discountConditionId = filterableFields.discount_condition_id
+  delete filterableFields.discount_condition_id
+
+  if (discountConditionId) {
+    // TODO implement later
+  }
+
+  await Promise.all(promises)
+
+  if (productIdsFilter.size > 0) {
+    filterableFields.id = Array.from(productIdsFilter)
+  }
+
+  if (variantIdsFilter.size > 0) {
+    filterableFields.variants = { id: Array.from(variantIdsFilter) }
+  }
+
+  const variables = {
+    filters: filterableFields,
+    order: listConfig.order,
+    skip: listConfig.skip,
+    take: listConfig.take,
+  }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultAdminProductRemoteQueryObject,
+    },
+  }
+
+  const {
+    rows: products,
+    metadata: { count },
+  } = await remoteQuery(query)
+
+  products.forEach((product) => {
+    product.profile_id = product.profile?.id
+  })
+
+  return [products, count]
 }
 
 export class AdminGetProductsParams extends FilterableProductProps {
