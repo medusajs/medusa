@@ -135,7 +135,9 @@ async function getNeonForDbName(
           })
         } else {
           logMessage({
-            message: `An error occurred while creating a project in Neon: ${e}`,
+            message: `An error occurred while creating a project in Neon: ${JSON.stringify(
+              e
+            )}`,
             type: "error",
           })
         }
