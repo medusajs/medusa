@@ -83,7 +83,7 @@ async function getNeonForDbName(
 
   await processManager.runProcess({
     process: async () => {
-      const proc = await promiseExec("npx neonctl auth", npxOptions)
+      const proc = await promiseExec("npx neonctl@latest auth", npxOptions)
 
       // the message is outputted by neonctl as an error for some reason
       if (
@@ -105,7 +105,7 @@ async function getNeonForDbName(
     process: async () => {
       try {
         const proc = await promiseExec(
-          `npx neonctl projects create --name ${dbName} --output json`,
+          `npx neonctl@latest projects create --name ${dbName} --output json`,
           npxOptions
         )
 
