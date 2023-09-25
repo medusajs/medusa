@@ -8,7 +8,6 @@ import { Ora } from "ora"
 import { getCurrentOs } from "./get-current-os.js"
 import ProcessManager from "./process-manager.js"
 import promiseExec from "./promise-exec.js"
-import { track } from "medusa-telemetry"
 
 type CreateDbOptions = {
   client: pg.Client
@@ -53,36 +52,15 @@ async function getForDbName(
   dbName: string,
   processManager: ProcessManager,
   abortController: AbortController,
-  spinner: Ora
+  spinner: Ora,
+  neonDb = false
 ): Promise<DbResponse> {
-  // allow to choose between local and remote
-  const { dbType } = await inquirer.prompt([
-    {
-      type: "list",
-      name: "dbType",
-      message: "Which type of database would you like to create?",
-      default: "local",
-      choices: [
-        {
-          name: "Local PostgreSQL database (Requires PostgreSQL to be installed)",
-          value: "local",
-        },
-        {
-          name: "Remote PostgreSQL database hosted by Neon (Neon provides a free plan with one project).",
-          value: "remote",
-        },
-      ],
-    },
-  ])
-
-  track("SELECTED_DB_TYPE", dbType)
-
-  return dbType === "local"
+  return !neonDb
     ? getLocalForDbName(dbName)
-    : getRemoteForDbName(dbName, processManager, abortController, spinner)
+    : getNeonForDbName(dbName, processManager, abortController, spinner)
 }
 
-async function getRemoteForDbName(
+async function getNeonForDbName(
   dbName: string,
   processManager: ProcessManager,
   abortController: AbortController,
@@ -253,15 +231,23 @@ export async function getDbClientAndCredentials({
   processManager,
   abortController,
   spinner,
+  neonDb = false,
 }: {
   dbName?: string
   dbUrl?: string
   processManager: ProcessManager
   abortController: AbortController
   spinner: Ora
+  neonDb?: boolean
 }): Promise<DbResponse> {
   if (dbName) {
-    return await getForDbName(dbName, processManager, abortController, spinner)
+    return await getForDbName(
+      dbName,
+      processManager,
+      abortController,
+      spinner,
+      neonDb
+    )
   } else {
     return await getForDbUrl(dbUrl)
   }

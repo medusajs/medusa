@@ -38,6 +38,7 @@ program
     "Install the Next.js starter along with the Medusa backend",
     false
   )
+  .option("--neon-db", "Setup a remote database with neon", false)
   .parse()
 
 void create(program.opts())

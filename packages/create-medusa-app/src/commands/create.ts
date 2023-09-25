@@ -42,6 +42,7 @@ export type CreateOptions = {
   migrations?: boolean
   directoryPath?: string
   withNextjsStarter?: boolean
+  neonDb?: boolean
 }
 
 export default async ({
@@ -54,6 +55,7 @@ export default async ({
   migrations,
   directoryPath,
   withNextjsStarter = false,
+  neonDb = false,
 }: CreateOptions) => {
   track("CREATE_CLI")
   if (repoUrl) {
@@ -62,6 +64,8 @@ export default async ({
   if (seed) {
     track("SEED_SELECTED", { seed })
   }
+
+  track("CMA_EXPERIMENT_NEON", neonDb)
 
   const spinner: Ora = ora()
   const processManager = new ProcessManager()
@@ -114,6 +118,7 @@ export default async ({
         processManager,
         abortController,
         spinner,
+        neonDb,
       })
     : { client: null, dbConnectionString: "" }
   isDbInitialized = true
@@ -146,7 +151,7 @@ export default async ({
     ...factBoxOptions,
     message: "Created project directory",
   })
-  
+
   nextjsDirectory = installNextjs
     ? await installNextjsStarter({
         directoryName: projectPath,
@@ -156,8 +161,6 @@ export default async ({
     : ""
 
   if (client && !dbUrl && !isRemote) {
-
-  if (client && !dbUrl) {
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
       title: "Creating database...",
