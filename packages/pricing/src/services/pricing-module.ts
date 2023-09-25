@@ -266,7 +266,30 @@ export default class PricingModuleService<
     data: PricingTypes.CreatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
+    const ruleAttributes = data.map(d => d.rules.map(r => r.rule_attribute)).flat()
+
+    const ruleTypes = await this.listRuleTypes({
+      rule_attribute: ruleAttributes,
+    }, {}, sharedContext)
+
+    const ruleTypeMap = ruleTypes.reduce((acc, curr) => {
+      acc.set(curr.rule_attribute, curr)
+      return acc
+    }, new Map())
+
+    const invalidRuleAttributes = ruleAttributes.filter(r => !ruleTypeMap.has(r))
+
+    if(invalidRuleAttributes.length > 0) {
+      throw new Error(`Rule types don't exist for: ${invalidRuleAttributes.join(", ")}`)
+    }
+
+    // if()
+    // validate prices
+
     const priceSets = await this.priceSetService_.create(data, sharedContext)
+
+    // create price set rules types
+
 
     return this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
       priceSets,

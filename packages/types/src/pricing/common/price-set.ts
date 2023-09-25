@@ -23,7 +23,8 @@ export interface CalculatedPriceSetDTO {
 }
 
 export interface CreatePriceSetDTO {
-  money_amounts?: MoneyAmountDTO[]
+  rules: { rule_attribute: string }[]
+  money_amounts?: MoneyAmountDTO & {rules: Record<string, string>}[]
 }
 
 export interface UpdatePriceSetDTO {
