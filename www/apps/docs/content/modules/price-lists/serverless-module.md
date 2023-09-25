@@ -124,7 +124,7 @@ const currenciesData = [
     symbol_native: "€",
     name: "Euro",
   },
-];
+]
 
 const moneyAmountsData = [
   {
@@ -148,7 +148,7 @@ const moneyAmountsData = [
     min_quantity: 1,
     max_quantity: 8,
   },
-];
+]
 
 const priceSetsData = [
   {
@@ -160,7 +160,7 @@ const priceSetsData = [
   {
     id: "price-set-CAD",
   },
-];
+]
 
 const priceSetMoneyAmountsData = [
   {
@@ -173,14 +173,14 @@ const priceSetMoneyAmountsData = [
     price_set: "price-set-EUR",
     money_amount: "money-amount-EUR",
   },
-];
+]
 
 module.exports = {
   currenciesData,
   moneyAmountsData,
   priceSetsData,
   priceSetMoneyAmountsData,
-};
+}
 ```
 
 </details>
@@ -275,7 +275,10 @@ type ContextType = {
   }
 }
 
-export async function GET(request: Request, { params }: ContextType) {
+export async function GET(
+  request: Request,
+  { params }: ContextType
+) {
   const pricingService = await initializePricingModule()
 
   const price = await pricingService.retrieve(params.id)
@@ -300,15 +303,18 @@ type ContextType = {
   }
 }
 
-export async function GET(request: Request, { params }: ContextType) {
+export async function GET(
+  request: Request,
+  { params }: ContextType
+) {
   const pricingService = await initializePricingModule()
 
   const price = await pricingService.calculatePrices({
-    id: [params.id]
+    id: [params.id],
   }, {
     context: {
-      currency_code: params.currency_code
-    }
+      currency_code: params.currency_code,
+    },
   })
 
   return NextResponse.json({ price })
@@ -319,7 +325,7 @@ export async function GET(request: Request, { params }: ContextType) {
 
 ```ts title=app/api/prices/route.ts
 import { NextResponse } from "next/server"
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from "uuid"
 
 import { 
   initialize as initializePricingModule,
@@ -336,10 +342,10 @@ export async function POST(request: Request) {
           // TODO generate a random ID
           id: uuidv4(),
           currency_code: body.currency_code,
-          amount: body.amount
-        }
-      ]
-    }
+          amount: body.amount,
+        },
+      ],
+    },
   ])
 
   return NextResponse.json({ price })
@@ -363,7 +369,7 @@ export async function POST(request: Request) {
     code: "EUR",
     symbol: "€",
     symbol_native: "€",
-    name: "Euro"
+    name: "Euro",
   }])
 
   return NextResponse.json({ currencies })
