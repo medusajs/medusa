@@ -69,7 +69,7 @@ export async function MedusaApp({
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
   query: (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => Promise<any>
 }> {
@@ -115,7 +115,7 @@ export async function MedusaApp({
         declaration = { ...mod }
         delete declaration.definition
       } else {
-        path = MODULE_PACKAGE_NAMES[mod as Modules]
+        path = MODULE_PACKAGE_NAMES[moduleName]
       }
 
       declaration.scope ??= MODULE_SCOPE.INTERNAL
@@ -152,7 +152,7 @@ export async function MedusaApp({
 
   let link: RemoteLink | undefined = undefined
   let query: (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => Promise<any>
 
@@ -172,7 +172,7 @@ export async function MedusaApp({
     customRemoteFetchData: remoteFetchData,
   })
   query = async (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => {
     return await remoteQuery.query(query, variables)
