@@ -15,6 +15,7 @@ export type DetailsSummaryProps = {
 export const DetailsSummary = ({
   title,
   subtitle,
+  children,
   badge,
   expandable = true,
   open = false,
@@ -41,7 +42,7 @@ export const DetailsSummary = ({
             titleClassName
           )}
         >
-          {title}
+          {title || children}
         </span>
         {subtitle && (
           <span className="text-compact-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark">
