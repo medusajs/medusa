@@ -135,7 +135,7 @@ export default async (req, res) => {
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.CreateProducts,
+    workflows: Workflows.UpdateProducts,
   })
 
   if (isWorkflowEnabled && !productModuleService) {
