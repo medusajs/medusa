@@ -1,5 +1,59 @@
 # @medusajs/modules-sdk
 
+## 1.11.2
+
+### Patch Changes
+
+- [#5115](https://github.com/medusajs/medusa/pull/5115) [`47603f479`](https://github.com/medusajs/medusa/commit/47603f479731ad495938b056da7a493991a1d9a9) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Allow MedusaApp load legacy modules
+
+## 1.11.1
+
+### Patch Changes
+
+- [#5114](https://github.com/medusajs/medusa/pull/5114) [`1e5a6d435`](https://github.com/medusajs/medusa/commit/1e5a6d4359135b82bb34f1dff184b508810443ac) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Fix default module path
+
+## 1.11.0
+
+### Minor Changes
+
+- [#4974](https://github.com/medusajs/medusa/pull/4974) [`d8649baca`](https://github.com/medusajs/medusa/commit/d8649bacaa2ed784b9e7b2b0e1f1194d3697bb92) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - object to remote joiner query
+
+### Patch Changes
+
+- [#5018](https://github.com/medusajs/medusa/pull/5018) [`4fa675ec2`](https://github.com/medusajs/medusa/commit/4fa675ec25b3d6fccd881c4f5a5b91f0e9e13e82) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa, modules-sdk, types): Refactor modules loading from medusa
+
+- [#4961](https://github.com/medusajs/medusa/pull/4961) [`6273b4b16`](https://github.com/medusajs/medusa/commit/6273b4b160493463e1199e5db4e9cfa4cff6fbe4) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils, module-sdk, medusa, types): Extract pg connection utils to utils package
+
+- [#4969](https://github.com/medusajs/medusa/pull/4969) [`30863fee5`](https://github.com/medusajs/medusa/commit/30863fee529ed035f161c749fda3cd64fa48efb1) Thanks [@adrien2p](https://github.com/adrien2p)! - feat: store List products remote query with product isolation
+
+- Updated dependencies [[`d8649baca`](https://github.com/medusajs/medusa/commit/d8649bacaa2ed784b9e7b2b0e1f1194d3697bb92), [`4fa675ec2`](https://github.com/medusajs/medusa/commit/4fa675ec25b3d6fccd881c4f5a5b91f0e9e13e82), [`6273b4b16`](https://github.com/medusajs/medusa/commit/6273b4b160493463e1199e5db4e9cfa4cff6fbe4), [`30863fee5`](https://github.com/medusajs/medusa/commit/30863fee529ed035f161c749fda3cd64fa48efb1), [`3d68be2b6`](https://github.com/medusajs/medusa/commit/3d68be2b6b93ae928f5c955e102ebdf2c34fb364), [`a87d07655`](https://github.com/medusajs/medusa/commit/a87d07655bd8a1da8b90feb739daddd09295f724), [`edf90eecb`](https://github.com/medusajs/medusa/commit/edf90eecb487f6e031f2e2d0899de5ca2504cb12), [`107aaa371`](https://github.com/medusajs/medusa/commit/107aaa371c444843874d125bf8bd493ef89f5756), [`834da5c41`](https://github.com/medusajs/medusa/commit/834da5c41a7c043373f72239b6fdbf7815d9b4aa)]:
+  - @medusajs/orchestration@0.4.0
+  - @medusajs/types@1.11.1
+  - @medusajs/utils@1.10.1
+
+## 1.10.0
+
+### Minor Changes
+
+- [#4695](https://github.com/medusajs/medusa/pull/4695) [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Medusa App Loader
+
+- [#4695](https://github.com/medusajs/medusa/pull/4695) [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - introduce @medusajs/link-modules
+
+- [#4925](https://github.com/medusajs/medusa/pull/4925) [`a4906d0ac`](https://github.com/medusajs/medusa/commit/a4906d0ac0af36b1382d3befe64281b404387bd7) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Use MedusaApp on core and initial JoinerConfig for internal services
+
+### Patch Changes
+
+- [#4930](https://github.com/medusajs/medusa/pull/4930) [`c3dba0694`](https://github.com/medusajs/medusa/commit/c3dba069488952945150117a30b1306a2e0bb3ce) Thanks [@riqwan](https://github.com/riqwan)! - fix(modules-sdk, orchestration): add missing dependencies
+
+- [#4860](https://github.com/medusajs/medusa/pull/4860) [`460161a69`](https://github.com/medusajs/medusa/commit/460161a69f22cf6d561952e92e7d9b56912113e6) Thanks [@riqwan](https://github.com/riqwan)! - feat(pricing, types, utils, medusa-sdk): Pricing Module Setup + Currency service
+
+- [#4695](https://github.com/medusajs/medusa/pull/4695) [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Add extra fields to link modules
+
+- Updated dependencies [[`c3dba0694`](https://github.com/medusajs/medusa/commit/c3dba069488952945150117a30b1306a2e0bb3ce), [`460161a69`](https://github.com/medusajs/medusa/commit/460161a69f22cf6d561952e92e7d9b56912113e6), [`fcb6b4f51`](https://github.com/medusajs/medusa/commit/fcb6b4f510dba2757570625acb5da9476b7544fd), [`66bd9a835`](https://github.com/medusajs/medusa/commit/66bd9a835c61b139af7051e5faf6c9de3c7134bb), [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef), [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef), [`87bade096`](https://github.com/medusajs/medusa/commit/87bade096e3d536f29ddc57dbc4c04e5d7a46e4b), [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef), [`a4906d0ac`](https://github.com/medusajs/medusa/commit/a4906d0ac0af36b1382d3befe64281b404387bd7)]:
+  - @medusajs/orchestration@0.3.0
+  - @medusajs/types@1.11.0
+  - @medusajs/utils@1.10.0
+
 ## 1.9.2
 
 ### Patch Changes

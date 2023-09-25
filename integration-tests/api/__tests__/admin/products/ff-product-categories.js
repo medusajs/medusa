@@ -27,6 +27,8 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
   let categoryWithoutProduct
   let nestedCategoryWithProduct
   let nested2CategoryWithProduct
+  let categoryWithMultipleProducts
+  const categoryWithMultipleProductsId = "category-with-multiple-products-id"
   const nestedCategoryWithProductId = "nested-category-with-product-id"
   const nested2CategoryWithProductId = "nested2-category-with-product-id"
   const categoryWithProductId = "category-with-product-id"
@@ -67,6 +69,17 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
         is_active: false,
         is_internal: false,
       })
+
+      categoryWithMultipleProducts = await simpleProductCategoryFactory(
+        dbConnection,
+        {
+          id: categoryWithMultipleProductsId,
+          name: "category with multiple Products",
+          products: [{ id: testProductId }, { id: testProduct1Id }],
+          is_active: true,
+          is_internal: false,
+        }
+      )
 
       nestedCategoryWithProduct = await simpleProductCategoryFactory(
         dbConnection,
@@ -118,6 +131,33 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       expect(response.data.products).toEqual([
         expect.objectContaining({
           id: testProductId,
+        }),
+      ])
+    })
+
+    it("should return a list of products queried by category_id and q", async () => {
+      const api = useApi()
+      const productName = "Test product1"
+      // The other product under this category is with the title "Test product"
+      // By querying for "Test product1", the "Test product" should not be shown
+      const params = `category_id[]=${categoryWithMultipleProductsId}&q=${productName}&expand=categories`
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
+
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: testProduct1Id,
+          title: productName,
+          categories: [
+            expect.objectContaining({
+              id: categoryWithMultipleProductsId,
+            }),
+            expect.objectContaining({
+              id: nestedCategoryWithProductId,
+            }),
+          ],
         }),
       ])
     })
@@ -182,14 +222,14 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       })
 
       const manager = dbConnection.manager
-      categoryWithProduct = await manager.create(ProductCategory, {
+      categoryWithProduct = manager.create(ProductCategory, {
         id: categoryWithProductId,
         name: "category with Product",
         products: [{ id: testProductId }],
       })
       await manager.save(categoryWithProduct)
 
-      categoryWithoutProduct = await manager.create(ProductCategory, {
+      categoryWithoutProduct = manager.create(ProductCategory, {
         id: categoryWithoutProductId,
         name: "category without product",
       })

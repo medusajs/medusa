@@ -1,0 +1,342 @@
+{
+  "namespaces": [
+    "public"
+  ],
+  "name": "public",
+  "tables": [
+    {
+      "columns": {
+        "code": {
+          "name": "code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "symbol": {
+          "name": "symbol",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "symbol_native": {
+          "name": "symbol_native",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "currency",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "currency_pkey",
+          "columnNames": [
+            "code"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "currency_code": {
+          "name": "currency_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "min_quantity": {
+          "name": "min_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "max_quantity": {
+          "name": "max_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        }
+      },
+      "name": "money_amount",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "currency_code"
+          ],
+          "composite": false,
+          "keyName": "IDX_money_amount_currency_code",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "money_amount_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "money_amount_currency_code_foreign": {
+          "constraintName": "money_amount_currency_code_foreign",
+          "columnNames": [
+            "currency_code"
+          ],
+          "localTableName": "public.money_amount",
+          "referencedColumnNames": [
+            "code"
+          ],
+          "referencedTableName": "public.currency",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "price_set",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "price_set_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "price_set_id": {
+          "name": "price_set_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "money_amount_id": {
+          "name": "money_amount_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "price_set_money_amount",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "price_set_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_set_money_amount_price_set_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "money_amount_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_set_money_amount_money_amount_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "price_set_money_amount_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "price_set_money_amount_price_set_id_foreign": {
+          "constraintName": "price_set_money_amount_price_set_id_foreign",
+          "columnNames": [
+            "price_set_id"
+          ],
+          "localTableName": "public.price_set_money_amount",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.price_set",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "price_set_money_amount_money_amount_id_foreign": {
+          "constraintName": "price_set_money_amount_money_amount_id_foreign",
+          "columnNames": [
+            "money_amount_id"
+          ],
+          "localTableName": "public.price_set_money_amount",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.money_amount",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "rule_attribute": {
+          "name": "rule_attribute",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "default_priority": {
+          "name": "default_priority",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "integer"
+        }
+      },
+      "name": "rule_type",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "rule_attribute"
+          ],
+          "composite": false,
+          "keyName": "IDX_rule_type_rule_attribute",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "rule_type_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    }
+  ]
+}

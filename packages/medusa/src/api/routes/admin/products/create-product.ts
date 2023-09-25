@@ -8,7 +8,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
+} from "."
 import {
   PricingService,
   ProductService,
@@ -43,6 +47,7 @@ import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
 import { validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /admin/products
@@ -259,14 +264,39 @@ export default async (req, res) => {
     })
   }
 
-  const rawProduct = await productService.retrieve(product.id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  let rawProduct
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    rawProduct = await getProductWithIsolatedProductModule(req, product.id)
+  } else {
+    rawProduct = await productService.retrieve(product.id, {
+      select: defaultAdminProductFields,
+      relations: defaultAdminProductRelations,
+    })
+  }
 
   const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product: pricedProduct })
+}
+
+async function getProductWithIsolatedProductModule(req, id) {
+  // TODO: Add support for fields/expands
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultAdminProductRemoteQueryObject,
+    },
+  }
+
+  const [product] = await remoteQuery(query)
+
+  product.profile_id = product.profile?.id
+
+  return product
 }
 
 class ProductVariantOptionReq {

@@ -1,7 +1,8 @@
-import { JoinerServiceConfig } from "../joiner"
-import { Logger } from "../logger"
+import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
+
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
+import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
@@ -30,21 +31,36 @@ export type InternalModuleDeclaration = {
   scope: MODULE_SCOPE.INTERNAL
   resources: MODULE_RESOURCE_TYPE
   dependencies?: string[]
+  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   resolve?: string
   options?: Record<string, unknown>
-  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
-  main?: boolean // If the module is the main module for the key when multiple ones are registered
+  /**
+   * If multiple modules are registered with the same key, the alias can be used to differentiate them
+   */
+  alias?: string
+  /**
+   * If the module is the main module for the key when multiple ones are registered
+   */
+  main?: boolean
 }
 
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
+  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   server?: {
     type: "http"
     url: string
     keepAlive: boolean
   }
-  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
-  main?: boolean // If the module is the main module for the key when multiple ones are registered
+  options?: Record<string, unknown>
+  /**
+   * If multiple modules are registered with the same key, the alias can be used to differentiate them
+   */
+  alias?: string
+  /**
+   * If the module is the main module for the key when multiple ones are registered
+   */
+  main?: boolean
 }
 
 export type ModuleResolution = {
@@ -61,17 +77,39 @@ export type ModuleDefinition = {
   registrationName: string
   defaultPackage: string | false
   label: string
+  /**
+   * @deprecated property will be removed in future versions
+   */
   canOverride?: boolean
+  /**
+   * @deprecated property will be removed in future versions
+   */
   isRequired?: boolean
-  isQueryable?: boolean // If the modules should be queryable via Remote Joiner
+  isQueryable?: boolean // If the module is queryable via Remote Joiner
+  isLegacy?: boolean // If the module is a legacy module TODO: Remove once all the legacy modules are migrated
   dependencies?: string[]
   defaultModuleDeclaration:
     | InternalModuleDeclaration
     | ExternalModuleDeclaration
 }
 
+export type LinkModuleDefinition = {
+  key: string
+  registrationName: string
+  label: string
+  dependencies?: string[]
+  defaultModuleDeclaration: InternalModuleDeclaration
+}
+
+type ModuleDeclaration = ExternalModuleDeclaration | InternalModuleDeclaration
+export type ModuleConfig = ModuleDeclaration & {
+  module: string
+  path: string
+  definition: ModuleDefinition
+}
+
 export type LoadedModule = unknown & {
-  __joinerConfig: JoinerServiceConfig
+  __joinerConfig: ModuleJoinerConfig
   __definition: ModuleDefinition
 }
 
@@ -90,6 +128,93 @@ export type ModulesResponse = {
   module: string
   resolution: string | false
 }[]
+
+export type ModuleJoinerConfig = Omit<
+  JoinerServiceConfig,
+  "serviceName" | "primaryKeys" | "relationships" | "extends"
+> & {
+  relationships?: ModuleJoinerRelationship[]
+  extends?: {
+    serviceName: string
+    fieldAlias?: Record<
+      string,
+      | string
+      | {
+          path: string
+          forwardArgumentsOnPath: string[]
+        }
+    > // alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
+    relationship: ModuleJoinerRelationship
+  }[]
+  serviceName?: string
+  primaryKeys?: string[]
+  /**
+   * If the module is a link module
+   */
+  isLink?: boolean
+  /**
+   * Keys that can be used to link to other modules
+   */
+  linkableKeys?: string[]
+  /**
+   * If true it expands a RemoteQuery property but doesn't create a pivot table
+   */
+  isReadOnlyLink?: boolean
+  databaseConfig?: {
+    /**
+     * Name of the pivot table. If not provided it is auto generated
+     */
+    tableName?: string
+    /**
+     * Prefix for the id column. If not provided it is "link"
+     */
+    idPrefix?: string
+    extraFields?: Record<
+      string,
+      {
+        type:
+          | "date"
+          | "time"
+          | "datetime"
+          | "bigint"
+          | "blob"
+          | "uint8array"
+          | "array"
+          | "enumArray"
+          | "enum"
+          | "json"
+          | "integer"
+          | "smallint"
+          | "tinyint"
+          | "mediumint"
+          | "float"
+          | "double"
+          | "boolean"
+          | "decimal"
+          | "string"
+          | "uuid"
+          | "text"
+        defaultValue?: string
+        nullable?: boolean
+        /**
+         * Mikro-orm options for the column
+         */
+        options?: Record<string, unknown>
+      }
+    >
+  }
+}
+
+export declare type ModuleJoinerRelationship = JoinerRelationship & {
+  /**
+   * If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more "internal" services
+   */
+  isInternalService?: boolean
+  /**
+   * If true, the link joiner will cascade deleting the relationship
+   */
+  deleteCascade?: boolean
+}
 
 export type ModuleExports = {
   service: Constructor<any>
@@ -114,8 +239,14 @@ export interface ModuleServiceInitializeOptions {
     connection?: any
     clientUrl?: string
     schema?: string
+    host?: string
+    port?: number
+    user?: string
+    password?: string
+    database?: string
     driverOptions?: Record<string, unknown>
     debug?: boolean
+    pool?: Record<string, unknown>
   }
 }
 

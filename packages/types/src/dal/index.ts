@@ -2,8 +2,8 @@ import { Dictionary, FilterQuery, Order } from "./utils"
 
 export { FilterQuery } from "./utils"
 export interface BaseFilterable<T> {
-  $and?: T
-  $or?: T
+  $and?: (T | BaseFilterable<T>)[]
+  $or?: (T | BaseFilterable<T>)[]
 }
 
 export interface OptionsQuery<T, P extends string = never> {
@@ -17,8 +17,9 @@ export interface OptionsQuery<T, P extends string = never> {
 }
 
 export type FindOptions<T = any> = {
-  where: FilterQuery<T>
+  where: FilterQuery<T> & BaseFilterable<FilterQuery<T>>
   options?: OptionsQuery<T, any>
 }
 
 export * from "./repository-service"
+export * from "./entity"

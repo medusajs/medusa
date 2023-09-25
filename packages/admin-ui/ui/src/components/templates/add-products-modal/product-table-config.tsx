@@ -1,13 +1,20 @@
 import { Product } from "@medusajs/medusa"
 import clsx from "clsx"
 import { Column, HeaderGroup, Row } from "react-table"
+import { Translation } from "react-i18next"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
 import Table from "../../molecules/table"
 import { decideStatus } from "../collection-product-table/utils"
 
 export const columns: Column<Product>[] = [
   {
-    Header: <div className="pl-4">Product Details</div>,
+    Header: (
+      <div className="pl-4">
+        <Translation>
+          {(t) => t("add-products-modal-product-details", "Product Details")}
+        </Translation>
+      </div>
+    ),
     accessor: "title",
     Cell: ({ row: { original } }) => (
       <div className="flex w-[400px] items-center pl-4">
@@ -33,7 +40,13 @@ export const columns: Column<Product>[] = [
     ),
   },
   {
-    Header: <div>Status</div>,
+    Header: (
+      <div>
+        <Translation>
+          {(t) => t("add-products-modal-status", "Status")}
+        </Translation>
+      </div>
+    ),
     accessor: "status",
     Cell: ({ cell: { value } }) => (
       <Table.Cell className="pr-base w-[10%]">
@@ -42,7 +55,13 @@ export const columns: Column<Product>[] = [
     ),
   },
   {
-    Header: <div className="flex items-center justify-end pr-4">Variants</div>,
+    Header: (
+      <div className="flex items-center justify-end pr-4">
+        <Translation>
+          {(t) => t("add-products-modal-variants", "Variants")}
+        </Translation>
+      </div>
+    ),
     accessor: "variants",
     Cell: ({ row: { original } }) => (
       <Table.Cell className="flex items-center justify-end pr-4">

@@ -1,3 +1,5 @@
+import { TFunction } from "i18next"
+
 enum DiscountConditionType {
   PRODUCTS = "products",
   PRODUCT_TYPES = "product_types",
@@ -6,17 +8,17 @@ enum DiscountConditionType {
   CUSTOMER_GROUPS = "customer_groups",
 }
 
-export const getTitle = (view: DiscountConditionType) => {
+export const getTitle = (view: DiscountConditionType, t: TFunction) => {
   switch (view) {
     case DiscountConditionType.PRODUCTS:
-      return "products"
+      return t("utils-products", "products")
     case DiscountConditionType.CUSTOMER_GROUPS:
-      return "groups"
+      return t("utils-groups", "groups")
     case DiscountConditionType.PRODUCT_TAGS:
-      return "tags"
+      return t("utils-tags", "tags")
     case DiscountConditionType.PRODUCT_COLLECTIONS:
-      return "collections"
+      return t("utils-collections", "collections")
     case DiscountConditionType.PRODUCT_TYPES:
-      return "types"
+      return t("utils-types", "types")
   }
 }

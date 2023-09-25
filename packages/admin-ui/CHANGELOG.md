@@ -1,5 +1,72 @@
 # @medusajs/admin-ui
 
+## 2.1.2
+
+### Patch Changes
+
+- [#5163](https://github.com/medusajs/medusa/pull/5163) [`78b50ac0c`](https://github.com/medusajs/medusa/commit/78b50ac0c433a104370ee7d2415ac2609761b802) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Add hook to customer group table
+
+- [#5101](https://github.com/medusajs/medusa/pull/5101) [`15a1c55de`](https://github.com/medusajs/medusa/commit/15a1c55def5e8b51d78e35dad804c040a557b676) Thanks [@chemicalkosek](https://github.com/chemicalkosek)! - feat(admin-ui): Add Polish translation
+
+- [#5162](https://github.com/medusajs/medusa/pull/5162) [`ef2a12e45`](https://github.com/medusajs/medusa/commit/ef2a12e451b06838a5cb3cb3ee06e405d409be38) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Undefined vars in admin
+
+- [#5154](https://github.com/medusajs/medusa/pull/5154) [`54531e38b`](https://github.com/medusajs/medusa/commit/54531e38bc331662cfcb1bdcbb2cdb0e647439b3) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Patch admin path issue
+
+- [#5155](https://github.com/medusajs/medusa/pull/5155) [`8b189d2b9`](https://github.com/medusajs/medusa/commit/8b189d2b90bd585a7cc0b43f2e40e679818c6b4b) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(admin, admin-ui): Add missing attributes translations
+
+## 2.1.1
+
+### Patch Changes
+
+- [#5113](https://github.com/medusajs/medusa/pull/5113) [`4dd11c886`](https://github.com/medusajs/medusa/commit/4dd11c88675c304b46806bbe28ef3574b02f0476) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): modal pointer events
+
+- [#5111](https://github.com/medusajs/medusa/pull/5111) [`8772a0722`](https://github.com/medusajs/medusa/commit/8772a0722ecfb6bceed0cfccfce66d0e7cdba331) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Wrap invite route in AnalyticsProvider
+
+- [#5103](https://github.com/medusajs/medusa/pull/5103) [`4710520c3`](https://github.com/medusajs/medusa/commit/4710520c35886c1df7dd934e7950b6309e1f78df) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): import modal template
+
+## 2.1.0
+
+### Minor Changes
+
+- [#4962](https://github.com/medusajs/medusa/pull/4962) [`afd4e72cd`](https://github.com/medusajs/medusa/commit/afd4e72cdf69781924bae642f2e225ef9572e9a5) Thanks [@gempain](https://github.com/gempain)! - feat(admin-ui): Multi-language support
+
+### Patch Changes
+
+- [#5064](https://github.com/medusajs/medusa/pull/5064) [`c722440c3`](https://github.com/medusajs/medusa/commit/c722440c30d51719c83a6f4c419690b2078cb79c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Load translations from path
+
+- [#5057](https://github.com/medusajs/medusa/pull/5057) [`cb67760f7`](https://github.com/medusajs/medusa/commit/cb67760f715436f82d9271464228ffdfb3c9cba7) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin,admin-ui): Copy `/public` folder to admin build folder during build, in order for the build to include translation files. Also bumps the version of `dotenv` to match the version used in other Medusa dependencies.
+
+- [#5028](https://github.com/medusajs/medusa/pull/5028) [`d4432dd18`](https://github.com/medusajs/medusa/commit/d4432dd1838f28ee2f3637114ff97ff63e22b0de) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(admin-ui): Add display name + pull supported languages from config
+
+- [#5066](https://github.com/medusajs/medusa/pull/5066) [`53ffd614b`](https://github.com/medusajs/medusa/commit/53ffd614b599eb14d3f3d339b5a90335c32e9e77) Thanks [@dahorarodrigo](https://github.com/dahorarodrigo)! - feat(admin-ui): pt-BR translations and en version text fixes
+
+- [#4939](https://github.com/medusajs/medusa/pull/4939) [`87e3a7d06`](https://github.com/medusajs/medusa/commit/87e3a7d06ae76b6bee92b1bb97d0c8f8da07d4e9) Thanks [@jporsay](https://github.com/jporsay)! - correctly skipping analytics when user opted out
+
+- [#5080](https://github.com/medusajs/medusa/pull/5080) [`a7459029f`](https://github.com/medusajs/medusa/commit/a7459029fe9549b3845ee9e01d0d88ea5e85635f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(admin-ui): Add pt-BR to supported languages
+
+- Updated dependencies [[`7d3572302`](https://github.com/medusajs/medusa/commit/7d35723023ed5bcfaf06ff2480e97508527e8665)]:
+  - medusa-react@9.0.5
+
+## 2.0.2
+
+### Patch Changes
+
+- [#4888](https://github.com/medusajs/medusa/pull/4888) [`50798d118`](https://github.com/medusajs/medusa/commit/50798d118986ccd18e1504129773ca40e63abd68) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): bulk editor cell separators
+
+- [#4886](https://github.com/medusajs/medusa/pull/4886) [`b7de679e9`](https://github.com/medusajs/medusa/commit/b7de679e9b665368074d406ac5d9b3fbb0187a68) Thanks [@fPolic](https://github.com/fPolic)! - feat(admin-ui): batch job completed notification
+
+- [#4834](https://github.com/medusajs/medusa/pull/4834) [`470379e63`](https://github.com/medusajs/medusa/commit/470379e631ca17ee486a28c50ec828344c61d727) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(medusa, admin-ui): Allow soft-deleted return reason restoration
+
+## 2.0.1
+
+### Patch Changes
+
+- [#4837](https://github.com/medusajs/medusa/pull/4837) [`57e199ef5`](https://github.com/medusajs/medusa/commit/57e199ef522e45c45ba5d79287a4c258e6f3914c) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(admin-ui): Fix sign out in admin panel not redirecting correctly
+
+- [#4843](https://github.com/medusajs/medusa/pull/4843) [`f4bf9ee16`](https://github.com/medusajs/medusa/commit/f4bf9ee16915a88548c1666b182df478e4f5ed74) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(admin-ui): Fix variant creation when no stock locations provided
+
+- [#4840](https://github.com/medusajs/medusa/pull/4840) [`0c7c2eeea`](https://github.com/medusajs/medusa/commit/0c7c2eeeabad684c31a18d6f5579f30820b29efb) Thanks [@fPolic](https://github.com/fPolic)! - feat(admin-ui): refresh products when import is complete
+
 ## 2.0.0
 
 ### Major Changes

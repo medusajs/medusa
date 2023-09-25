@@ -1,6 +1,6 @@
 {
   "name": "medusa-file-minio",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "MinIO server file connector for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -14,7 +14,8 @@
   "author": "Edin Skeja",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "^1.12.3",
+    "@medusajs/medusa": "^1.16.0",
+    "@medusajs/types": "workspace:^",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^5.0.1",

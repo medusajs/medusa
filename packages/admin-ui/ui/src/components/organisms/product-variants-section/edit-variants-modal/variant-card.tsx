@@ -4,6 +4,7 @@ import type { Identifier, XYCoord } from "dnd-core"
 import { useContext, useMemo, useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
 import { useFormContext } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { VariantItem } from "."
 import { DragItem } from "../../../../types/shared"
 import FormValidator from "../../../../utils/form-validator"
@@ -35,6 +36,7 @@ export const VariantCard = ({
   moveCard,
   product,
 }: VariantCardProps) => {
+  const { t } = useTranslation()
   const {
     register,
     formState: { errors },
@@ -49,7 +51,7 @@ export const VariantCard = ({
   const actions: ActionType[] = useMemo(() => {
     return [
       {
-        label: "Edit Variant",
+        label: t("edit-variants-modal-edit-variant", "Edit Variant"),
         icon: <EditIcon size={20} className="text-grey-50" />,
         onClick: () => push(editVariantScreen),
       },

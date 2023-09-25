@@ -18,6 +18,7 @@ const getDevServerConfig = () => {
       path: "/",
     },
     template: path.resolve(__dirname, "ui", "index.html"),
+    publicFolder: path.resolve(__dirname, "ui", "public"),
   })
 
   if (analyzeBundle) {
@@ -34,6 +35,10 @@ const getDevServerConfig = () => {
       devServer: {
         port: 7001,
         historyApiFallback: true,
+        static: {
+          directory: path.resolve(__dirname, "./ui/public"),
+          publicPath: "/",
+        },
       } as Configuration,
     },
   }

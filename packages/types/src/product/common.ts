@@ -158,13 +158,17 @@ export interface ProductOptionValueDTO {
  */
 export interface FilterableProductProps
   extends BaseFilterable<FilterableProductProps> {
+  q?: string
   handle?: string | string[]
   id?: string | string[]
   tags?: { value?: string[] }
   categories?: {
     id?: string | string[] | OperatorMap<string>
+    is_internal?: boolean
+    is_active?: boolean
   }
-  category_ids?: string | string[] | OperatorMap<string>
+  category_id?: string | string[] | OperatorMap<string>
+  collection_id?: string | string[] | OperatorMap<string>
 }
 
 export interface FilterableProductTagProps

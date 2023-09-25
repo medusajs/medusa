@@ -4,12 +4,13 @@ import { DeepPartial } from "typeorm/common/DeepPartial"
 
 import { FlagRouter } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-    LineItem,
-    LineItemAdjustment,
-    LineItemTaxLine,
-    ProductVariant,
+  LineItem,
+  LineItemAdjustment,
+  LineItemTaxLine,
+  ProductVariant,
 } from "../models"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
@@ -19,11 +20,11 @@ import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
 import { buildQuery, isString, setMetadata } from "../utils"
 import {
-    PricingService,
-    ProductService,
-    ProductVariantService,
-    RegionService,
-    TaxProviderService,
+  PricingService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  TaxProviderService,
 } from "./index"
 import LineItemAdjustmentService from "./line-item-adjustment"
 
@@ -209,6 +210,7 @@ class LineItemService extends TransactionBaseService {
           quantity
         )
 
+        // Resolve data
         const data = isString(variantIdOrData)
           ? {
               variantId: variantIdOrData,
@@ -234,6 +236,7 @@ class LineItemService extends TransactionBaseService {
           resolvedData.map((d) => [d.variantId, d])
         )
 
+        // Retrieve variants
         const variants = await this.productVariantService_.list(
           {
             id: resolvedData.map((d) => d.variantId),
@@ -243,6 +246,23 @@ class LineItemService extends TransactionBaseService {
           }
         )
 
+        // Validate that all variants has been found
+        const inputDataVariantId = new Set(resolvedData.map((d) => d.variantId))
+        const foundVariants = new Set(variants.map((v) => v.id))
+        const notFoundVariants = new Set(
+          [...inputDataVariantId].filter((x) => !foundVariants.has(x))
+        )
+
+        if (notFoundVariants.size) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Unable to generate the line items, some variant has not been found: ${[
+              ...notFoundVariants,
+            ].join(", ")}`
+          )
+        }
+
+        // Prepare data to retrieve variant pricing
         const variantsMap = new Map<string, ProductVariant>()
         const variantsToCalculatePricingFor: {
           variantId: string
@@ -276,6 +296,7 @@ class LineItemService extends TransactionBaseService {
             })
         }
 
+        // Generate line items
         const generatedItems: LineItem[] = []
 
         for (const variantData of resolvedData) {
@@ -362,6 +383,14 @@ class LineItemService extends TransactionBaseService {
       is_giftcard: variant.product.is_giftcard,
       metadata: context?.metadata || {},
       should_merge: shouldMerge,
+    }
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      )
+    ) {
+      rawLineItem.product_id = variant.product_id
     }
 
     if (
@@ -471,7 +500,9 @@ class LineItemService extends TransactionBaseService {
 
         return await lineItemRepository
           .findOne({ where: { id } })
-          .then((lineItem) => lineItem && lineItemRepository.remove(lineItem))
+          .then(
+            async (lineItem) => lineItem && lineItemRepository.remove(lineItem)
+          )
       }
     )
   }
@@ -590,22 +621,46 @@ class LineItemService extends TransactionBaseService {
     regionIdOrContext: T extends string ? string : GenerateLineItemContext,
     quantity?: number
   ): void | never {
+    const errorMessage =
+      "Unable to generate the line item because one or more required argument(s) are missing"
+
     if (isString(variantIdOrData)) {
       if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
         throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "The generate method has been called with a variant id but one of the argument quantity or regionId is missing. Please, provide the variantId, quantity and regionId."
+          MedusaError.Types.INVALID_DATA,
+          `${errorMessage}. Ensure quantity, regionId, and variantId are passed`
         )
       }
-    } else {
-      const resolvedContext = regionIdOrContext as GenerateLineItemContext
 
-      if (!resolvedContext.region_id) {
+      if (!variantIdOrData) {
         throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "The generate method has been called with the data but the context is missing either region_id or region. Please provide at least one of region or region_id."
+          MedusaError.Types.INVALID_DATA,
+          `${errorMessage}. Ensure variant id is passed`
         )
       }
+      return
+    }
+
+    const resolvedContext = regionIdOrContext as GenerateLineItemContext
+
+    if (!resolvedContext?.region_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `${errorMessage}. Ensure region or region_id are passed`
+      )
+    }
+
+    const variantsData = Array.isArray(variantIdOrData)
+      ? variantIdOrData
+      : [variantIdOrData]
+
+    const hasMissingVariantId = variantsData.some((d) => !d?.variantId)
+
+    if (hasMissingVariantId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `${errorMessage}. Ensure a variant id is passed for each variant`
+      )
     }
   }
 }

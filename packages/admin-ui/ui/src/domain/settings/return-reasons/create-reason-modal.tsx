@@ -1,6 +1,7 @@
 import { ReturnReason } from "@medusajs/medusa"
 import { useAdminCreateReturnReason } from "medusa-react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../components/fundamentals/button"
 import Input from "../../../components/molecules/input"
 import Modal from "../../../components/molecules/modal"
@@ -36,27 +37,33 @@ const CreateReturnReasonModal = ({
     },
   })
   const notification = useNotification()
-  const { mutate, isLoading } = useAdminCreateReturnReason()
+  const { mutateAsync, isLoading } = useAdminCreateReturnReason()
+  const { t } = useTranslation()
 
-  const onCreate = (data: CreateReturnReasonFormData) => {
-    mutate(
-      {
+  const onCreate = async (data: CreateReturnReasonFormData) => {
+    try {
+      await mutateAsync({
         ...data,
         description: data.description || undefined,
-      },
-      {
-        onSuccess: () => {
-          notification("Success", "Created a new return reason", "success")
-        },
-        onError: () => {
-          notification(
-            "Error",
-            "Cant create a Return reason with an existing code",
-            "error"
-          )
-        },
-      }
-    )
+      })
+      notification(
+        t("return-reasons-notification-success", "Success"),
+        t(
+          "return-reasons-created-a-new-return-reason",
+          "Created a new return reason"
+        ),
+        t("return-reasons-success", "success")
+      )
+    } catch {
+      notification(
+        t("return-reasons-error", "Error"),
+        t(
+          "return-reasons-cannot-create-a-return-reason-with-an-existing-value",
+          "Cannot create a return reason with an existing value"
+        ),
+        "error"
+      )
+    }
     handleClose()
   }
 
@@ -64,29 +71,37 @@ const CreateReturnReasonModal = ({
     <Modal handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <span className="inter-xlarge-semibold">Add Reason</span>
+          <span className="inter-xlarge-semibold">
+            {t("return-reasons-add-reason", "Add Reason")}
+          </span>
         </Modal.Header>
         <form onSubmit={handleSubmit(onCreate)}>
           <Modal.Content>
             <div className="gap-large mb-large grid grid-cols-2">
               <Input
                 {...register("value", {
-                  required: "Value is required",
+                  required: t(
+                    "return-reasons-value-is-required",
+                    "Value is required"
+                  ),
                   pattern: FormValidator.whiteSpaceRule("Value"),
                   minLength: FormValidator.minOneCharRule("Value"),
                 })}
-                label="Value"
+                label={t("return-reasons-value", "Value")}
                 required
                 placeholder="wrong_size"
                 errors={errors}
               />
               <Input
                 {...register("label", {
-                  required: "Label is required",
+                  required: t(
+                    "return-reasons-label-is-required",
+                    "Label is required"
+                  ),
                   pattern: FormValidator.whiteSpaceRule("Label"),
                   minLength: FormValidator.minOneCharRule("Label"),
                 })}
-                label="Label"
+                label={t("return-reasons-label", "Label")}
                 required
                 placeholder="Wrong size"
                 errors={errors}
@@ -96,8 +111,11 @@ const CreateReturnReasonModal = ({
               className="mt-large"
               rows={3}
               {...register("description")}
-              label="Description"
-              placeholder="Customer received the wrong size"
+              label={t("return-reasons-description", "Description")}
+              placeholder={t(
+                "return-reasons-customer-received-the-wrong-size",
+                "Customer received the wrong size"
+              )}
               errors={errors}
             />
           </Modal.Content>
@@ -110,7 +128,7 @@ const CreateReturnReasonModal = ({
                 onClick={handleClose}
                 type="button"
               >
-                Cancel
+                {t("return-reasons-cancel", "Cancel")}
               </Button>
               <Button
                 loading={isLoading}
@@ -119,7 +137,7 @@ const CreateReturnReasonModal = ({
                 className="text-small w-32 justify-center"
                 variant="primary"
               >
-                Create
+                {t("return-reasons-create", "Create")}
               </Button>
             </div>
           </Modal.Footer>
