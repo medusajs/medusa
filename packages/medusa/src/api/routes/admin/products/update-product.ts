@@ -151,19 +151,6 @@ export default async (req, res) => {
       products: [
         { id, ...validated },
       ] as WorkflowTypes.ProductWorkflow.UpdateProductInputDTO[],
-      config: {
-        listConfig: {
-          select: defaultAdminProductFields,
-          relations: [
-            "variants",
-            "images",
-            "options",
-            "tags",
-            "type",
-            "collection",
-          ],
-        },
-      },
     }
 
     const { result } = await updateProductWorkflow.run({
