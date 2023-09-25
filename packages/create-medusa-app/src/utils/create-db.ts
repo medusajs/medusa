@@ -111,6 +111,11 @@ async function getNeonForDbName(
 
         // the response by neonctl is outputted as an error for some reason
         const response = JSON.parse(proc.stdout || proc.stderr)
+        if (!response?.connection_uris) {
+          // some error or other issue was uncaught,
+          // throw an error with it
+          throw new Error(response)
+        }
         dbConnectionString = `${response?.connection_uris[0]?.connection_uri}?sslmode=require`
 
         client = (await getForDbUrl(dbConnectionString)).client
