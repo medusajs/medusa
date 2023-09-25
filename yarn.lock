@@ -6478,7 +6478,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/link-modules@workspace:packages/link-modules":
+"@medusajs/link-modules@workspace:^, @medusajs/link-modules@workspace:packages/link-modules":
   version: 0.0.0-use.local
   resolution: "@medusajs/link-modules@workspace:packages/link-modules"
   dependencies:
@@ -6671,6 +6671,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
+    "@medusajs/link-modules": "workspace:^"
     "@medusajs/orchestration": ^0.4.0
     "@medusajs/types": ^1.11.1
     "@medusajs/utils": ^1.10.1
