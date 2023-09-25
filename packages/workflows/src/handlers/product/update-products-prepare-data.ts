@@ -29,7 +29,6 @@ export async function updateProductsPrepareData({
     { id: ids },
     {
       relations: [
-        ...(data.config.listConfig?.relations || []),
         "sales_channels", // TODO: remove this and use product module
       ],
     }
