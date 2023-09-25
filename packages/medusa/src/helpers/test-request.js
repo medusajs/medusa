@@ -84,7 +84,7 @@ container.register("modulesHelper", asValue(moduleHelper))
 container.register("configModule", asValue(config))
 container.register({
   logger: asValue({
-    error: () => {},
+    error: () => { },
   }),
   manager: asValue(MockManager),
 })
@@ -145,31 +145,20 @@ export async function request(method, url, opts = {}) {
   )
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
-    const adminSession = { ...opts.adminSession }
+    const token = jwt.sign(
+      { user_id: opts.adminSession.userId || opts.adminSession.jwt?.userId, domain: "admin" },
+      config.projectConfig.jwt_secret
+    )
 
-    if (adminSession.jwt) {
-      adminSession.jwt = jwt.sign(
-        adminSession.jwt,
-        config.projectConfig.jwt_secret,
-        {
-          expiresIn: "30m",
-        }
-      )
-    }
-    headers.Cookie = JSON.stringify(adminSession) || ""
+    headers.Authorization = `Bearer ${token}`
   }
   if (opts.clientSession) {
-    if (opts.clientSession.jwt) {
-      opts.clientSession.jwt_store = jwt.sign(
-        opts.clientSession.jwt,
-        config.projectConfig.jwt_secret,
-        {
-          expiresIn: "30d",
-        }
-      )
-    }
+    const token = jwt.sign(
+      { customer_id: opts.clientSession.customer_id || opts.clientSession.jwt?.customer_id, domain: "store" },
+      config.projectConfig.jwt_secret
+    )
 
-    headers.Cookie = JSON.stringify(opts.clientSession) || ""
+    headers.Authorization = `Bearer ${token}`
   }
 
   for (const name in headers) {

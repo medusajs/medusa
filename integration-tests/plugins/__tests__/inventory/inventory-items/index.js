@@ -14,7 +14,7 @@ const {
   simpleProductFactory,
   simpleOrderFactory,
 } = require("../../../../factories")
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("Inventory Items endpoints", () => {
   let appContainer
@@ -682,7 +682,7 @@ describe("Inventory Items endpoints", () => {
           ],
           prices: [{ currency_code: "usd", amount: 100 }],
         },
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       const secondVariantId = response.data.product.variants.find(
@@ -720,7 +720,7 @@ describe("Inventory Items endpoints", () => {
       ).toHaveLength(2)
 
       await api.delete(`/admin/inventory-items/${invItem2.id}`, {
-        headers: { Authorization: "Bearer test_token" },
+        headers: { "x-medusa-access-token": "test_token" },
       })
 
       expect(

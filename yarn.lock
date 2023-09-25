@@ -6640,7 +6640,7 @@ __metadata:
     node-schedule: ^2.1.1
     papaparse: 5.3.2
     passport: ^0.6.0
-    passport-http-bearer: ^1.0.1
+    passport-custom: ^1.1.1
     passport-jwt: ^4.0.1
     passport-local: ^1.0.0
     pg: ^8.11.2
@@ -35100,12 +35100,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport-http-bearer@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "passport-http-bearer@npm:1.0.1"
+"passport-custom@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "passport-custom@npm:1.1.1"
   dependencies:
     passport-strategy: 1.x.x
-  checksum: e6de1de6a940857581c5add7c54ecb3a8573a17b0d2b78e21e888b6a4b375f85cad8d482dcb3cbf313b479e303c337e720028feb9ff9fb26d2ecef55a6b2f55a
+  checksum: 49b6fcd125dcd60272d4f02c27acb3b61b2659f3148bc10b31b7c439314054ce32c83a12f422215bdfa83d0463668a1f38ca6e8d68ccd32c922f73ccaa5ac9b3
   languageName: node
   linkType: hard
 

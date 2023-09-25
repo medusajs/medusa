@@ -18,7 +18,7 @@ jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -599,7 +599,7 @@ describe("Publishable API keys", () => {
 
       const response = await api.get(`/store/products`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           "x-publishable-api-key": pubKeyId,
         },
       })
@@ -630,7 +630,7 @@ describe("Publishable API keys", () => {
 
       const response = await api.get(`/store/products`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           "x-publishable-api-key": pubKeyId,
         },
       })
@@ -666,7 +666,7 @@ describe("Publishable API keys", () => {
         `/store/products?sales_channel_id[0]=${salesChannel2.id}`,
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         }
@@ -698,7 +698,7 @@ describe("Publishable API keys", () => {
 
       const response = await api.get(`/store/products`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           // "x-publishable-api-key": pubKeyId,
         },
       })
@@ -718,7 +718,7 @@ describe("Publishable API keys", () => {
 
       const response = await api.get(`/store/products`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           "x-publishable-api-key": pubKeyId,
         },
       })
@@ -755,7 +755,7 @@ describe("Publishable API keys", () => {
           `/store/products?sales_channel_id[]=${salesChannel2.id}`,
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
               "x-publishable-api-key": pubKeyId,
             },
           }
@@ -819,7 +819,7 @@ describe("Publishable API keys", () => {
 
       const response = await api.get(`/store/products/${product1.id}`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
           "x-publishable-api-key": pubKeyId,
         },
       })
@@ -845,7 +845,7 @@ describe("Publishable API keys", () => {
       const response = await api
         .get(`/store/products/${product2.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         })
@@ -862,7 +862,7 @@ describe("Publishable API keys", () => {
       let response = await api
         .get(`/store/products/${product1.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         })
@@ -875,7 +875,7 @@ describe("Publishable API keys", () => {
       response = await api
         .get(`/store/products/${product2.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         })
@@ -952,7 +952,7 @@ describe("Publishable API keys", () => {
         },
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         }
@@ -1011,7 +1011,7 @@ describe("Publishable API keys", () => {
         },
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
             "x-publishable-api-key": pubKeyId,
           },
         }
@@ -1064,7 +1064,7 @@ describe("Publishable API keys", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
               "x-publishable-api-key": pubKeyId,
             },
           }
