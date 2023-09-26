@@ -6,6 +6,7 @@ import { NavbarLogo, NavbarLogoProps } from "./Logo"
 import { NavbarMobileMenu } from "./MobileMenu"
 import { NavbarSearchModalOpener } from "./SearchModalOpener"
 import { NavbarMobileMenuButtonProps } from "./MobileMenu/Button"
+import { NavbarAiAssistantButton } from "./AiAssistantButton"
 
 export type NavbarProps = {
   logo: NavbarLogoProps
@@ -53,6 +54,7 @@ export const Navbar = ({
           )}
           {showColorModeToggle && <NavbarColorModeToggle />}
           {additionalActions}
+          <NavbarAiAssistantButton />
         </div>
         <NavbarMobileMenu
           logo={logo}

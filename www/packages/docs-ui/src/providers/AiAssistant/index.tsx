@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useState } from "react"
+import { useAnalytics } from "../Analytics"
 
 export type AiAssistantContextType = {
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   getAnswer: (question: string, thread_id?: string) => Promise<Response>
+  sendFeedback: (questionId: string, reaction: string) => Promise<Response>
 }
 
 const AiAssistantContext = createContext<AiAssistantContextType | null>(null)
@@ -20,27 +22,47 @@ export const AiAssistantProvider = ({
   children,
 }: AiAssistantProviderProps) => {
   const [open, setOpen] = useState(false)
+  const { analytics } = useAnalytics()
 
-  // const sendRequest
-
-  const getAnswer = async (question: string, thread_id?: string) => {
-    const questionParam = encodeURI(question)
-    const result = await fetch(
-      thread_id
-        ? `${apiUrl}/query/v1/thread/${thread_id}/stream?query=${questionParam}`
-        : `${apiUrl}/query/v1/stream?query=${questionParam}`,
-      {
-        method: "GET",
-        headers: {
-          "X-API-TOKEN": apiToken,
-        },
-      }
-    )
-
-    return result
+  const sendRequest = async (
+    apiPath: string,
+    method = "GET",
+    headers?: HeadersInit,
+    body?: BodyInit
+  ) => {
+    return await fetch(`${apiUrl}${apiPath}`, {
+      method,
+      headers: {
+        "X-API-TOKEN": apiToken,
+        ...headers,
+      },
+      body,
+    })
   }
 
-  // const sendFeedback = () => {}
+  const getAnswer = async (question: string, threadId?: string) => {
+    const questionParam = encodeURI(question)
+    return await sendRequest(
+      threadId
+        ? `/query/v1/thread/${threadId}/stream?query=${questionParam}`
+        : `/query/v1/stream?query=${questionParam}`
+    )
+  }
+
+  const sendFeedback = async (questionId: string, reaction: string) => {
+    return await sendRequest(
+      `/query/v1/question-answer/${questionId}/feedback`,
+      "POST",
+      {
+        "Content-Type": "application/json",
+      },
+      JSON.stringify({
+        question_id: questionId,
+        reaction,
+        user_identifier: analytics?.user().anonymousId() || "",
+      })
+    )
+  }
 
   return (
     <AiAssistantContext.Provider
@@ -48,6 +70,7 @@ export const AiAssistantProvider = ({
         open,
         setOpen,
         getAnswer,
+        sendFeedback,
       }}
     >
       {children}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react"
 import { Button, InputText, Modal } from "@/components"
 import { useAiAssistant } from "../../providers/AiAssistant"
-import { useAnalytics } from "../../providers"
 
 export type ChunkType = {
   stream_end: boolean
@@ -51,8 +50,7 @@ export const AiAssistant = () => {
   const [error, setError] = useState<ErrorType | null>(null)
   const [loading, setLoading] = useState(false)
   const [feedback, setFeedback] = useState("")
-  const { open, setOpen, getAnswer: sendRequest } = useAiAssistant()
-  const { analytics } = useAnalytics()
+  const { open, setOpen, getAnswer, sendFeedback } = useAiAssistant()
 
   const process_stream = async (response: Response) => {
     const reader = response.body?.getReader()
@@ -119,7 +117,7 @@ export const AiAssistant = () => {
 
   const fetchAnswer = useCallback(async () => {
     try {
-      const response = await sendRequest(question, identifiers?.thread_id)
+      const response = await getAnswer(question, identifiers?.thread_id)
 
       if (response.status === 200) {
         await process_stream(response)
@@ -139,22 +137,8 @@ export const AiAssistant = () => {
   }, [question, identifiers])
 
   const handleFeedback = async (question_id: string, reaction: string) => {
-    const apiUrl = `<KAPA_API_ENDPOINT>/query/v1/question-answer/${question_id}/feedback`
-    const feedbackData = {
-      question_id,
-      reaction,
-      user_identifier: analytics?.user().anonymousId() || "",
-    }
-
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-TOKEN": "<YOUR_API_TOKEN>",
-        },
-        body: JSON.stringify(feedbackData),
-      })
+      const response = await sendFeedback(question_id, reaction)
 
       if (response.status === 200) {
         setFeedback(reaction)
