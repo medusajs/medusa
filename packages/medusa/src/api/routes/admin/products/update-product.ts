@@ -39,7 +39,11 @@ import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
+} from "."
 
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
@@ -47,6 +51,7 @@ import { Logger } from "../../../../types/global"
 import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { validator } from "../../../../utils/validator"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /admin/products/{id}
@@ -280,14 +285,40 @@ export default async (req, res) => {
     })
   }
 
-  const rawProduct = await productService.retrieve(id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  let rawProduct
+
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    rawProduct = await getProductWithIsolatedProductModule(req, id)
+  } else {
+    rawProduct = await productService.retrieve(id, {
+      select: defaultAdminProductFields,
+      relations: defaultAdminProductRelations,
+    })
+  }
 
   const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
+}
+
+async function getProductWithIsolatedProductModule(req, id) {
+  // TODO: Add support for fields/expands
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultAdminProductRemoteQueryObject,
+    },
+  }
+
+  const [product] = await remoteQuery(query)
+
+  product.profile_id = product.profile?.id
+
+  return product
 }
 
 class ProductVariantOptionReq {
