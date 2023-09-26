@@ -15,7 +15,6 @@ type HandlerInput = UpdateProductsPreparedData & {
 
 export async function revertUpdateProducts({
   container,
-  context,
   data,
 }: WorkflowArguments<HandlerInput>): Promise<ProductDTO[]> {
   const productModuleService: ProductTypes.IProductModuleService =

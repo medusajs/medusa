@@ -75,7 +75,7 @@ describe("UpdateProduct workflow", function () {
       manager,
     }
 
-    const { result, errors, transaction } = await workflow.run({
+    const { errors, transaction } = await workflow.run({
       input,
       context,
       throwOnError: false,
@@ -96,6 +96,7 @@ describe("UpdateProduct workflow", function () {
       context,
       data: {
         ids: ["to-update"],
+        config: { listConfig: { relations: ["variants"] } },
       },
     } as any)
 
