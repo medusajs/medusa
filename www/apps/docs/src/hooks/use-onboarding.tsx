@@ -22,9 +22,12 @@ const useOnboarding = () => {
         children: (
           <Rating
             event="rating_onboarding"
-            onRating={() => {
-              setTimeout(() => removeNotification(id), 1500)
+            onRating={(rating?: number) => {
+              if (rating >= 4) {
+                setTimeout(() => removeNotification(id), 1500)
+              }
             }}
+            parentNotificationId={id}
           />
         ),
       })
