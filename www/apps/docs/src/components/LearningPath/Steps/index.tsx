@@ -24,7 +24,7 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
         {path.steps.map((step, index) => (
           <div
             className={clsx(
-              "border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark",
+              "border-0 border-b border-solid border-medusa-border-base",
               "relative p-1"
             )}
             key={index}
@@ -35,7 +35,7 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
                   <IconCircleDottedLine
                     className={clsx(
                       "shadow-active dark:shadow-active-dark rounded-full",
-                      "text-ui-fg-interactive"
+                      "!text-ui-fg-interactive"
                     )}
                   />
                 )}
@@ -47,9 +47,7 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
                 )}
               </div>
               <span
-                className={clsx(
-                  "text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark"
-                )}
+                className={clsx("text-compact-medium-plus text-medusa-fg-base")}
               >
                 {step.title}
               </span>

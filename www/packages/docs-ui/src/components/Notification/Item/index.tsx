@@ -35,7 +35,7 @@ export const NotificationItem = ({
   return (
     <div
       className={clsx(
-        "md:max-w-[320px] md:w-[320px] w-full bg-medusa-bg-base dark:bg-medusa-bg-base-dark rounded-docs_DEFAULT",
+        "md:max-w-[320px] md:w-[320px] w-full bg-medusa-bg-base rounded-docs_DEFAULT",
         "shadow-flyout dark:shadow-flyout-dark max-h-[calc(100vh-90px)]",
         "fixed md:right-docs_1 left-0 z-[400] md:m-docs_1",
         placement === "bottom" && "md:bottom-docs_1 bottom-0",

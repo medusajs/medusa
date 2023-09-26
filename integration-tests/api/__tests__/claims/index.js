@@ -59,7 +59,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -100,7 +100,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -144,7 +144,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -183,7 +183,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -219,7 +219,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -284,7 +284,7 @@ describe("Claims", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -294,7 +294,7 @@ describe("Claims", () => {
       {},
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -333,7 +333,7 @@ describe("Claims", () => {
         },
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )

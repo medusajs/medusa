@@ -83,7 +83,7 @@ describe("Create Variant", () => {
           ],
           prices: [{ currency_code: "usd", amount: 2300 }],
         },
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { "x-medusa-access-token": "test_token" } }
       )
 
       expect(response.status).toEqual(200)
@@ -160,7 +160,7 @@ describe("Create Variant", () => {
             ],
             prices: [{ currency_code: "usd", amount: 2300 }],
           },
-          { headers: { Authorization: "Bearer test_token" } }
+          { headers: { "x-medusa-access-token": "test_token" } }
         )
         .catch((e) => e)
 
