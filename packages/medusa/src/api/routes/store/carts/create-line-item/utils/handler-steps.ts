@@ -12,6 +12,8 @@ import {
 import { WithRequiredProperty } from "../../../../../../types/common"
 import { IdempotencyCallbackResult } from "../../../../../../types/idempotency-key"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../../index"
+import IsolateProductDomainFeatureFlag from "../../../../../../loaders/feature-flags/isolate-product-domain"
+import { retrieveVariantsWithIsolatedProductModule } from "../../../../../../utils"
 
 export const CreateLineItemSteps = {
   STARTED: "started",
@@ -33,6 +35,7 @@ export async function handleAddOrUpdateLineItem(
   const productVariantService: ProductVariantService = container.resolve(
     "productVariantService"
   )
+
   const featureFlagRouter: FlagRouter = container.resolve("featureFlagRouter")
 
   const txCartService = cartService.withTransaction(manager)
@@ -41,11 +44,20 @@ export async function handleAddOrUpdateLineItem(
     select: ["id", "region_id", "customer_id"],
   })
 
-  const variant = (await productVariantService
-    .withTransaction(manager)
-    .retrieve(data.variant_id, {
-      relations: ["product"],
-    })) as unknown as ProductVariantDTO
+  let variant
+
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    const remoteQuery = container.resolve("remoteQuery")
+    ;[variant] = await retrieveVariantsWithIsolatedProductModule(remoteQuery, [
+      data.variant_id,
+    ])
+  } else {
+    variant = (await productVariantService
+      .withTransaction(manager)
+      .retrieve(data.variant_id, {
+        relations: ["product"],
+      })) as unknown as ProductVariantDTO
+  }
 
   const line = await lineItemService
     .withTransaction(manager)

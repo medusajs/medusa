@@ -21,8 +21,10 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { validator } from "../../../../utils/validator"
-import { prepareLineItemData } from "@medusajs/utils"
+import { FlagRouter, prepareLineItemData } from "@medusajs/utils"
 import { ProductVariantDTO } from "@medusajs/types"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/line-items
@@ -99,6 +101,7 @@ export default async (req, res) => {
     req.scope.resolve("draftOrderService")
   const cartService: CartService = req.scope.resolve("cartService")
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   const productVariantService: ProductVariantService = req.scope.resolve(
@@ -121,9 +124,23 @@ export default async (req, res) => {
     }
 
     if (validated.variant_id) {
-      const variant = (await productVariantService
-        .withTransaction(manager)
-        .retrieve(validated.variant_id!)) as unknown as ProductVariantDTO
+      let variant
+
+      if (
+        featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
+      ) {
+        const remoteQuery = req.scope.resolve("remoteQuery")
+        ;[variant] = await retrieveVariantsWithIsolatedProductModule(
+          remoteQuery,
+          [validated.variant_id]
+        )
+      } else {
+        variant = (await productVariantService
+          .withTransaction(manager)
+          .retrieve(validated.variant_id!, {
+            relations: ["product"],
+          })) as unknown as ProductVariantDTO
+      }
 
       const line = await lineItemService
         .withTransaction(manager)
