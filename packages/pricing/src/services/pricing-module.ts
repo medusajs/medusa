@@ -354,7 +354,7 @@ export default class PricingModuleService<
             sharedContext
           )
 
-          const moneyAmountPriceSets = await this.createPriceSetMoneyAmountRules
+          // const moneyAmountPriceSets = await this.priceSetMoneyAmountRulesService_
 
           console.warn(moneyAmounts)
           console.warn(moneyAmounts[0].id)

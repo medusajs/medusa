@@ -6,3 +6,4 @@ export { default as PriceSetMoneyAmountRulesService } from "./price-set-money-am
 export { default as PricingModuleService } from "./pricing-module"
 export { default as RuleTypeService } from "./rule-type"
 export { default as PriceSetRuleTypeService } from "./price-set-rule-type"
+export { default as PriceSetMoneyAmountService } from "./price-set-money-amount"

@@ -8,14 +8,10 @@ import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
-import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-<<<<<<< HEAD
 import { MikroOrmWrapper } from "../../../utils"
-=======
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
 import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
->>>>>>> 28821dd43 (update tests)
 
 jest.setTimeout(30000)
 
@@ -38,16 +34,10 @@ describe("PriceRule Service", () => {
     })
     await createCurrencies(testManager)
     await createMoneyAmounts(testManager)
-<<<<<<< HEAD
-    await createRuleTypes(testManager)
-    await createPriceSets(testManager)
-    await createPriceSetMoneyAmounts(testManager)
-=======
     await createPriceSets(testManager)
     await createRuleTypes(testManager)
     await createPriceSetMoneyAmounts(testManager)
     await createPriceSetMoneyAmountRules(testManager)
->>>>>>> 28821dd43 (update tests)
     await createPriceRules(testManager)
   })
 
