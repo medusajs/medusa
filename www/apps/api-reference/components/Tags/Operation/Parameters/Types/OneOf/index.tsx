@@ -76,11 +76,9 @@ const TagOperationParamatersOneOf = ({
                   "border border-solid",
                   activeTab === index && [
                     "bg-medusa-bg-subtle border-medusa-border-strong",
-                    "dark:bg-medusa-bg-subtle-dark dark:border-medusa-border-strong-dark",
                   ],
                   activeTab !== index && [
                     "bg-medusa-bg-base border-medusa-border-base",
-                    "dark:bg-medusa-bg-base-dark dark:border-medusa-border-base-dark",
                   ]
                 )}
                 onClick={() => setActiveTab(index)}

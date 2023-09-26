@@ -16,12 +16,8 @@ export const NavbarColorModeToggle = ({
 
   return (
     <NavbarIconButton {...buttonProps} onClick={() => toggleColorMode()}>
-      {colorMode === "light" && (
-        <Sun className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
-      )}
-      {colorMode === "dark" && (
-        <Moon className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
-      )}
+      {colorMode === "light" && <Sun className="text-medusa-fg-muted" />}
+      {colorMode === "dark" && <Moon className="text-medusa-fg-muted" />}
     </NavbarIconButton>
   )
 }
