@@ -30,7 +30,7 @@ export async function updateProducts({
         "images",
         "options",
         "tags",
-        "type",
+        // "type",
         "collection",
         // "profiles",
         // "sales_channels",

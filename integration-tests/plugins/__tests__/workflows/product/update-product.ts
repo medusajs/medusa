@@ -68,7 +68,6 @@ describe("UpdateProduct workflow", function () {
             ],
           },
         ],
-        config: { listConfig: { relations: ["variants"] } },
       }
 
     const manager = medusaContainer.resolve("manager")
@@ -97,7 +96,6 @@ describe("UpdateProduct workflow", function () {
       context,
       data: {
         ids: ["to-update"],
-        config: { listConfig: { relations: ["variants"] } },
       },
     } as any)
 

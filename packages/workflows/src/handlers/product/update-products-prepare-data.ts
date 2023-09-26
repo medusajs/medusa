@@ -31,11 +31,9 @@ export async function updateProductsPrepareData({
       relations: [
         "variants",
         "variants.options",
-        "profiles",
         "images",
         "options",
         "tags",
-        "type",
         "collection",
         "sales_channels", // TODO: remove this and use product module
       ],
