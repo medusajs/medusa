@@ -43,6 +43,7 @@ import { groupBy } from "lodash"
 import { joinerConfig } from "../joiner-config"
 import { MedusaError } from "@medusajs/utils"
 import { CreateMoneyAmountDTO } from "@medusajs/types"
+import { MoneyAmountDTO } from "@medusajs/types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -273,7 +274,7 @@ export default class PricingModuleService<
     return this.list(
       { id: priceSets.filter((p) => !!p).map((p) => p!.id) },
       {
-        relations: ["rule_types"],
+        relations: ["rule_types", "money_amounts"],
       }
     )
   }
@@ -355,25 +356,42 @@ export default class PricingModuleService<
         }
 
         if (d.money_amounts?.length) {
-          // create money amounts
-          const moneyAmounts = await this.moneyAmountService_.create(
-            d.money_amounts as unknown as CreateMoneyAmountDTO[],
-            sharedContext
-          )
+          await d.money_amounts.forEach(async (ma) => {
+            const [moneyAmount] = await this.moneyAmountService_.create(
+              [ma] as unknown as CreateMoneyAmountDTO[],
+              sharedContext
+            )
 
-          const moneyAmountPriceSets = await this.priceSetMoneyAmountService_.create(moneyAmounts.map((ma) => { 
-            return {
-              price_set: priceSet,
-              money_amount: ma,
-            } as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO
-          }), sharedContext)
+            const numberOfRules = Object.entries(ma.rules).length
 
-          console.warn(moneyAmountPriceSets)
-          console.warn(moneyAmounts)
-          console.warn(moneyAmounts[0].id)
-          // create price set money amounts
+            const moneyAmountPriceSet =
+              await this.priceSetMoneyAmountService_.create(
+                [
+                  {
+                    price_set: priceSet,
+                    money_amount: moneyAmount,
+                    title: "test",
+                    number_rules: numberOfRules,
+                  },
+                ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
+                sharedContext
+              )
 
-          // create price rules
+            if (numberOfRules) {
+              const priceSetMoneyAmountRulesCreate = Object.entries(
+                ma.rules
+              ).map(([k, v]) => ({
+                price_set_money_amount: moneyAmountPriceSet[0],
+                rule_type: ruleTypeMap.get(k),
+                value: v,
+              }))
+
+              await this.priceSetMoneyAmountRulesService_.create(
+                priceSetMoneyAmountRulesCreate as unknown as PricingTypes.CreatePriceSetMoneyAmountRulesDTO[],
+                sharedContext
+              )
+            }
+          })
         }
 
         return priceSet
