@@ -18,7 +18,7 @@ import PriceSetRuleType from "./price-set-rule-type"
 
 @Entity()
 export default class PriceSet {
-  [OptionalProps]?: "price_set_money_amounts"
+  [OptionalProps]?: "price_set_money_amounts" | "rule_types"
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -43,6 +43,7 @@ export default class PriceSet {
     entity: () => RuleType,
     pivotEntity: () => PriceSetRuleType,
     owner: true,
+    cascade: [Cascade.REMOVE],
   })
   rule_types = new Collection<RuleType>(this)
 

@@ -14,6 +14,7 @@ import {
   PriceRule,
   PriceSet,
   PriceSetMoneyAmountRules,
+  PriceSetRuleType,
   RuleType,
 } from "@models"
 import {
@@ -21,6 +22,7 @@ import {
   MoneyAmountService,
   PriceRuleService,
   PriceSetMoneyAmountRulesService,
+  PriceSetRuleTypeService,
   PriceSetService,
   RuleTypeService,
 } from "@services"
@@ -37,6 +39,7 @@ import {
 import { groupBy } from "lodash"
 
 import { joinerConfig } from "../joiner-config"
+import { MedusaError } from "@medusajs/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -46,6 +49,7 @@ type InjectedDependencies = {
   priceSetMoneyAmountRulesService: PriceSetMoneyAmountRulesService<any>
   ruleTypeService: RuleTypeService<any>
   priceRuleService: PriceRuleService<any>
+  priceSetRuleTypeService: PriceSetRuleTypeService<any>
 }
 
 export default class PricingModuleService<
@@ -54,7 +58,8 @@ export default class PricingModuleService<
   TCurrency extends Currency = Currency,
   TRuleType extends RuleType = RuleType,
   TPriceSetMoneyAmountRules extends PriceSetMoneyAmountRules = PriceSetMoneyAmountRules,
-  TPriceRule extends PriceRule = PriceRule
+  TPriceRule extends PriceRule = PriceRule,
+  TPriceSetRuleType extends PriceSetRuleType = PriceSetRuleType
 > implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -64,6 +69,7 @@ export default class PricingModuleService<
   protected readonly priceSetService_: PriceSetService<TPriceSet>
   protected readonly priceSetMoneyAmountRulesService_: PriceSetMoneyAmountRulesService<TPriceSetMoneyAmountRules>
   protected readonly priceRuleService_: PriceRuleService<TPriceRule>
+  protected readonly priceSetRuleTypeService_: PriceSetRuleTypeService<TPriceSetRuleType>
 
   constructor(
     {
@@ -74,6 +80,7 @@ export default class PricingModuleService<
       priceSetService,
       priceSetMoneyAmountRulesService,
       priceRuleService,
+      priceSetRuleTypeService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -85,6 +92,7 @@ export default class PricingModuleService<
     this.priceSetMoneyAmountRulesService_ = priceSetMoneyAmountRulesService
     this.ruleTypeService_ = ruleTypeService
     this.priceRuleService_ = priceRuleService
+    this.priceSetRuleTypeService_ = priceSetRuleTypeService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -249,13 +257,13 @@ export default class PricingModuleService<
   }
 
   /**
-   * 
-   * { 
+   *
+   * {
    *   rules: ['attribute_rule']
-   *   data: [ { 
+   *   data: [ {
    *    amount: 100,
    *    currency_code: 'USD',
-   *    context: { 
+   *    context: {
    *     attribute_rule: 'prod_1',
    *    }
    *   } ]
@@ -266,30 +274,76 @@ export default class PricingModuleService<
     data: PricingTypes.CreatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const ruleAttributes = data.map(d => d.rules.map(r => r.rule_attribute)).flat()
+    const ruleAttributes = data
+      .map((d) => d.rules?.map((r) => r.rule_attribute) ?? [])
+      .flat()
 
-    const ruleTypes = await this.listRuleTypes({
-      rule_attribute: ruleAttributes,
-    }, {}, sharedContext)
+    const ruleTypes = await this.listRuleTypes(
+      {
+        rule_attribute: ruleAttributes,
+      },
+      {},
+      sharedContext
+    )
 
     const ruleTypeMap = ruleTypes.reduce((acc, curr) => {
       acc.set(curr.rule_attribute, curr)
       return acc
     }, new Map())
 
-    const invalidRuleAttributes = ruleAttributes.filter(r => !ruleTypeMap.has(r))
+    const invalidRuleAttributes = ruleAttributes.filter(
+      (r) => !ruleTypeMap.has(r)
+    )
 
-    if(invalidRuleAttributes.length > 0) {
-      throw new Error(`Rule types don't exist for: ${invalidRuleAttributes.join(", ")}`)
+    if (invalidRuleAttributes.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Rule types don't exist for: ${invalidRuleAttributes.join(", ")}`
+      )
     }
 
-    // if()
-    // validate prices
+    const invalidMoneyAmountRule = data
+      .map(
+        (d) => d.money_amounts?.map((ma) => Object.keys(ma.rules)).flat() ?? []
+      )
+      .flat()
+      .filter((r) => !ruleTypeMap.has(r))
 
-    const priceSets = await this.priceSetService_.create(data, sharedContext)
+    if (invalidMoneyAmountRule.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Rule types don't exist for money amounts with rule attribute: ${invalidMoneyAmountRule.join(
+          ", "
+        )}`
+      )
+    }
+
+    const priceSets = await Promise.all(
+      data.map(async (d) => {
+        const [priceSet] = await this.priceSetService_.create(
+          [{}],
+          sharedContext
+        )
+
+        if(!d.rules?.length) { 
+          return
+        }
+
+        const priceSetRuleTypesCreate = d.rules!.map((r) => ({rule_type: ruleTypeMap.get(r.rule_attribute), price_set: priceSet}))
+
+        console.warn(priceSetRuleTypesCreate)
+        priceSet.rule_types = await this.priceSetRuleTypeService_.create(
+          priceSetRuleTypesCreate as unknown as PricingTypes.CreatePriceSetRuleTypeDTO[],
+          sharedContext
+        ) as any
+       
+        return priceSet
+      })
+    )
+
+    // const priceSets = await this.priceSetService_.create(toCreate, sharedContext)
 
     // create price set rules types
-
 
     return this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
       priceSets,

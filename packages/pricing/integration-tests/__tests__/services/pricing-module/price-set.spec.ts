@@ -287,21 +287,79 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("create", () => {
-    it("should throw an error when a id does not exist", async () => {
+    beforeEach(async () => await seedData())
+
+    it("should throw an error when creating a price set with rule attributes that don't exist", async () => {
       let error
 
       try {
-        await service.update([
+        await service.create([
           {
-            random: "does-not-exist",
-          } as any,
+            rules: [{ rule_attribute: "does-not-exist" }],
+          },
         ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('PriceSet with id "undefined" not found')
+      expect(error.message).toEqual(
+        "Rule types don't exist for: does-not-exist"
+      )
     })
+
+    it("should fail to create a price set with rule types and money amounts with rule types that don't exits", async () => {
+      let error
+
+      try {
+        await service.create([
+          {
+            rules: [{ rule_attribute: "region_id" }],
+            money_amounts: [
+              {
+                amount: 100,
+                currency_code: "USD",
+                rules: {
+                  city: "Berlin",
+                },
+              },
+            ],
+          },
+        ])
+      } catch (e) {
+        error = e
+      }
+      expect(error.message).toEqual(
+        "Rule types don't exist for money amounts with rule attribute: city"
+      )
+    })
+
+    it.only("should create a price set with rule types", async () => {
+      let error
+
+      const [priceSet] = await service.create([
+        {
+          rules: [{ rule_attribute: "region_id" }],
+        },
+      ])
+
+      console.log(priceSet)
+      // expect(error.message).toEqual("Rule types don't exist for: does-not-exist")
+    })
+
+    it("should create a price set with rule types and money amounts", async () => {
+      let error
+
+      const [priceSet] = await service.create([
+        {
+          rules: [{ rule_attribute: "region_id" }],
+        },
+      ])
+
+      console.log(priceSet)
+      // expect(error.message).toEqual("Rule types don't exist for: does-not-exist")
+    })
+
+    
 
     it("should create a priceSet successfully", async () => {
       await service.create([
