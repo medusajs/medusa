@@ -2,8 +2,8 @@ name: Documentation Tests
 on: 
   pull_request:
     paths:
-      - www/docs/**
-      - www/api-reference/**
+      - www/**
+
 jobs:
   docs-test:
     runs-on: ubuntu-latest
@@ -29,17 +29,17 @@ jobs:
         with:
           extension: docs
 
-      - name: Install Docusaurus dependencies
-        working-directory: www/docs
+      - name: Install Workspace dependencies
+        working-directory: www
         run: yarn install
       - name: Build Docusaurus website
-        working-directory: www/docs
+        working-directory: www
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
           API_URL: "https://docs.medusajs.com"
-        run: yarn build
+        run: yarn build:docs
         
-  lint:
+  vale-docs:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -53,8 +53,8 @@ jobs:
           fetch-depth: 0
 
       - name: Get Directories to Scan
-        working-directory: www/docs/vale
-        run: ./get-files.sh
+        working-directory: www/vale
+        run: ./get-files.sh docs content references
         id: directories
 
       - name: Vale Linter
@@ -63,10 +63,73 @@ jobs:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
           vale_flags: '--minAlertLevel=error'
+          reporter: github-pr-check
+          token: ${{ github.token }}
+          filter_mode: nofilter
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
         
-  eslint:
+  vale-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Directories to Scan
+        working-directory: www/vale
+        run: ./get-files.sh ui src/content/docs
+        id: directories
+
+      - name: Vale Linter
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          files: ${{ steps.directories.outputs.LIST }}
+          fail_on_error: true
+          vale_flags: '--minAlertLevel=error'
+          reporter: github-pr-check
+          token: ${{ github.token }}
+          filter_mode: nofilter
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
+        
+  vale-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Directories to Scan
+        working-directory: www/vale
+        run: ./get-files.sh api-reference app/_mdx
+        id: directories
+
+      - name: Vale Linter
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          files: ${{ steps.directories.outputs.LIST }}
+          fail_on_error: true
+          vale_flags: '--minAlertLevel=error'
+          reporter: github-pr-check
+          token: ${{ github.token }}
+          filter_mode: nofilter
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
+        
+  content-eslint:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -80,11 +143,11 @@ jobs:
           fetch-depth: 0
 
       - name: Install dependencies
-        working-directory: www/docs
+        working-directory: www
         run: yarn install
 
       - name: Run Eslint
-        working-directory: www/docs
+        working-directory: www
         run: yarn lint:content
   
   code-docs-eslint:
@@ -104,33 +167,9 @@ jobs:
         run: yarn install
 
       - name: Install dependencies
-        working-directory: www/docs
+        working-directory: www
         run: yarn install
 
       - name: Run Eslint
-        working-directory: www/docs
-        run: yarn lint
-
-  code-api-ref-eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Install Monorepo dependencies
-        run: yarn install
-
-      - name: Install dependencies
-        working-directory: www/api-reference
-        run: yarn install
-
-      - name: Run Eslint
-        working-directory: www/api-reference
+        working-directory: www
         run: yarn lint
