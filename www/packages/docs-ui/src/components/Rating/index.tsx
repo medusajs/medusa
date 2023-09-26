@@ -102,7 +102,7 @@ export const Rating: React.FC<RatingProps> = ({
             >
               {!isSelected && <Star />}
               {isSelected && (
-                <StarSolid className="text-medusa-tag-orange-icon dark:text-medusa-tag-orange-icon-dark" />
+                <StarSolid className="text-medusa-tag-orange-icon" />
               )}
             </Button>
           )
@@ -111,7 +111,7 @@ export const Rating: React.FC<RatingProps> = ({
       {rating !== 0 && rating < 4 && (
         <div
           className={clsx(
-            "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+            "text-medusa-fg-subtle",
             "flex flex-col gap-docs_0.5"
           )}
         >
