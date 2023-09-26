@@ -32,20 +32,20 @@ const LearningPath: React.FC<LearningPathProps> = ({
   return (
     <div
       className={clsx(
-        "rounded shadow-card-rest dark:shadow-card-rest-dark bg-docs-bg-surface dark:bg-docs-bg-surface-dark mt-1.5 mb-4",
+        "rounded shadow-card-rest dark:shadow-card-rest-dark bg-docs-bg-surface mt-1.5 mb-4",
         className
       )}
     >
       <div
         className={clsx(
-          "flex items-center gap-1 p-1 border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark"
+          "flex items-center gap-1 p-1 border-0 border-b border-solid border-medusa-border-base"
         )}
       >
         <LearningPathIcon />
         <div className={clsx("basis-3/4")}>
           <span
             className={clsx(
-              "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-large-plus block"
+              "text-medusa-fg-base text-compact-large-plus block"
             )}
           >
             {path.label}
@@ -53,7 +53,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
           {path.description && (
             <span
               className={clsx(
-                "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark text-compact-medium mt-0.25 inline-block"
+                "text-medusa-fg-subtle text-compact-medium mt-0.25 inline-block"
               )}
             >
               {path.description}
@@ -69,17 +69,15 @@ const LearningPath: React.FC<LearningPathProps> = ({
           className={clsx(
             "flex items-center p-1 gap-1",
             index !== path.steps.length - 1 &&
-              "border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark"
+              "border-0 border-b border-solid border-medusa-border-base"
           )}
           key={index}
         >
           <div className={clsx("w-3 flex items-center justify-center")}>
-            <CircleMiniSolid className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
+            <CircleMiniSolid className="text-medusa-fg-muted" />
           </div>
           <span
-            className={clsx(
-              "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium-plus"
-            )}
+            className={clsx("text-medusa-fg-base text-compact-medium-plus")}
           >
             {step.title}
           </span>

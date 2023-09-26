@@ -43,13 +43,12 @@ export function ComponentExample({
             <div
               className={clsx(
                 "bg-docs-bg border-medusa-border-base flex max-h-[400px] min-h-[400px]",
-                "dark:bg-docs-bg-dark dark:border-medusa-border-base-dark",
                 "w-full items-center justify-center overflow-auto rounded-md border px-10 py-5"
               )}
             >
               <React.Suspense
                 fallback={
-                  <div className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark flex items-center text-sm">
+                  <div className="text-medusa-fg-muted flex items-center text-sm">
                     <Spinner className="animate-spin" />
                   </div>
                 }
