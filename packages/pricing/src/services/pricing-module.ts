@@ -97,16 +97,19 @@ export default class PricingModuleService<
     pricingContext: PricingContext = { context: {} },
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.CalculatedPriceSetDTO> {
-    // Keeping this whole logic raw in here for now as they will undergo
-    // some changes, will abstract them out once we have a final version
-    const context = pricingContext.context || {}
     const manager = sharedContext.manager as EntityManager
     const knex = manager.getKnex()
 
-    const ruleConditions = Object.entries(context).map(([k, v]) => ({
-      "rt.rule_attribute": k,
-      "pr.value": v,
-    }))
+    // Keeping this whole logic raw in here for now as they will undergo
+    // some changes, will abstract them out once we have a final version
+    const context = pricingContext.context || {}
+
+    // Quantity is used to scope money amounts based on min_quantity and max_quantity.
+    // We should potentially think of reserved words in pricingContext that can't be used in rules
+    // or have a separate pricing options that accept things like quantity, price_list_id and other
+    // pricing module features
+    const quantity = context.quantity
+    delete context.quantity
 
     // Gets all the price set money amounts where rules match for each of the contexts
     // that the price set is configured for
@@ -123,8 +126,11 @@ export default class PricingModuleService<
       .join("rule_type as rt", "rt.id", "pr.rule_type_id")
       .orderBy("number_rules", "desc")
 
-    for (const ruleCondition of ruleConditions) {
-      psmaSubQueryKnex.orWhere(ruleCondition)
+    for (const [key, value] of Object.entries(context)) {
+      psmaSubQueryKnex.orWhere({
+        "rt.rule_attribute": key,
+        "pr.value": value,
+      })
     }
 
     psmaSubQueryKnex
@@ -132,7 +138,7 @@ export default class PricingModuleService<
       .having(knex.raw("count(DISTINCT rt.rule_attribute) = psma.number_rules"))
       .andHaving(knex.raw(`${Object.entries(context).length} > 0`))
 
-    const mainQueryKnex = knex({
+    const priceSetQueryKnex = knex({
       ps: "price_set",
     })
       .select({
@@ -154,8 +160,14 @@ export default class PricingModuleService<
         { column: "default_priority", order: "desc" },
       ])
 
-    const queryBuilderResults = await mainQueryKnex
+    if (quantity) {
+      priceSetQueryKnex.where("ma.min_quantity", "<=", quantity)
+      priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
+    }
+
+    const queryBuilderResults = await priceSetQueryKnex
     const groupedPricesByPriceSetId = groupBy(queryBuilderResults, "id")
+
     const calculatedPrices = pricingFilters.id.map(
       (priceSetId): PricingTypes.CalculatedPriceSetDTO => {
         // This is where we select prices, for now we just do a first match based on the database results

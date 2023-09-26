@@ -123,6 +123,13 @@ describe("PricingModule Service - Calculate Price", () => {
           max_quantity: 3,
         },
         {
+          id: "money-amount-region_id-PL-EUR-4-qty",
+          currency_code: "EUR",
+          amount: 50,
+          min_quantity: 4,
+          max_quantity: 10,
+        },
+        {
           id: "money-amount-region_id-PL-EUR-customer-group",
           currency_code: "EUR",
           amount: 100,
@@ -167,6 +174,13 @@ describe("PricingModule Service - Calculate Price", () => {
           title: "psma PLN - region_id PL with EUR currency",
           price_set: "price-set-PLN",
           money_amount: "money-amount-region_id-PL-EUR",
+          number_rules: 2,
+        },
+        {
+          id: "psma-region_id_currency_code-PL-EUR-4-qty",
+          title: "psma PLN - region_id PL with EUR currency for quantity 4",
+          price_set: "price-set-PLN",
+          money_amount: "money-amount-region_id-PL-EUR-4-qty",
           number_rules: 2,
         },
         {
@@ -239,6 +253,24 @@ describe("PricingModule Service - Calculate Price", () => {
           value: "EUR",
           price_list_id: "test",
           price_set_money_amount_id: "psma-region_id_currency_code-PL-EUR",
+        },
+        {
+          id: "price-rule-region_id-currency_code-PL-4-qty",
+          price_set_id: "price-set-PLN",
+          rule_type_id: "rule-type-region_id",
+          value: "PL",
+          price_list_id: "test",
+          price_set_money_amount_id:
+            "psma-region_id_currency_code-PL-EUR-4-qty",
+        },
+        {
+          id: "price-rule-region_id-currency_code-PLN-4-qty",
+          price_set_id: "price-set-PLN",
+          rule_type_id: "rule-type-currency_code",
+          value: "EUR",
+          price_list_id: "test",
+          price_set_money_amount_id:
+            "psma-region_id_currency_code-PL-EUR-4-qty",
         },
         {
           id: "price-rule-region_id-currency_customer_group_code-PL",
@@ -429,6 +461,25 @@ describe("PricingModule Service - Calculate Price", () => {
           currency_code: "EUR",
           min_quantity: "1",
           max_quantity: "3",
+        },
+      ])
+    })
+
+    it("should return filled prices when 2 contexts are present and price is setup along with declaring quantity", async () => {
+      const priceSetsResult = await service.calculatePrices(
+        { id: ["price-set-PLN"] },
+        {
+          context: { currency_code: "EUR", region_id: "PL", quantity: 5 },
+        }
+      )
+
+      expect(priceSetsResult).toEqual([
+        {
+          id: "price-set-PLN",
+          amount: "50",
+          currency_code: "EUR",
+          min_quantity: "4",
+          max_quantity: "10",
         },
       ])
     })
