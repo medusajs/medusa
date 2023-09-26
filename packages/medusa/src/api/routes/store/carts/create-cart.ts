@@ -280,16 +280,14 @@ async function retrieveVariantsWithIsolatedProductModule(
 
   const { rows: products } = await remoteQuery(query)
 
+  const variants: ProductVariantDTO[] = []
+
   products.forEach((product) => {
     product.profile_id = product.profile?.id
-  })
-
-  const variants = []
-
-  products.forEach((product) => {
     product.variants.forEach((variant) => {
       if (variantIdsMap.has(variant.id)) {
         variant.product = product
+        variants.push(variant)
       }
     })
   })
