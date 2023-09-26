@@ -104,6 +104,20 @@ const components = {
       </ul>
     )
   },
+  ol: ({
+    className,
+    children,
+    ...props
+  }: React.HTMLAttributes<HTMLOListElement>) => {
+    return (
+      <ul
+        {...props}
+        className={clsx("list-decimal px-docs_1 mb-docs_1.5", className)}
+      >
+        {children}
+      </ul>
+    )
+  },
   li: ({
     className,
     children,

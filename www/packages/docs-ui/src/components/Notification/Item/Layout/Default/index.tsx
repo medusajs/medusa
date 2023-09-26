@@ -11,6 +11,7 @@ import { Button } from "@/components"
 
 export type NotificationItemLayoutDefaultProps = NotificationItemProps & {
   handleClose: () => void
+  closeButtonText?: string
 }
 
 export const NotificationItemLayoutDefault: React.FC<
@@ -23,6 +24,7 @@ export const NotificationItemLayoutDefault: React.FC<
   isClosable = true,
   handleClose,
   CustomIcon,
+  closeButtonText = "Close",
 }) => {
   return (
     <>
@@ -81,7 +83,7 @@ export const NotificationItemLayoutDefault: React.FC<
       )}
       {isClosable && (
         <div className={clsx("p-docs_1 flex justify-end items-center")}>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose}>{closeButtonText}</Button>
         </div>
       )}
     </>

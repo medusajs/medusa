@@ -37,3 +37,37 @@ This component is based on the `div` element and supports all props of this elem
 ### FocusModal.Body
 
 This component is based on the `div` element and supports all props of this element.
+
+## Controlling Open State
+
+---
+
+If you want to control whether the Focus Modal is open, you have to pass the `FocusModal` component the following props:
+
+1. Set `defaultOpen` to `false` to ensure it's not open by default.
+2. Set `open` to your value. Typically, this would be a state value that can be changed by the function provided to `onOpenChange`.
+3. Set `onOpenChange` to the function that changes the open value. Typically, this would be a state function that changes the value provided to `open`. If this prop is not provided, the Focus Modal will not open or close as expected.
+
+For example:
+
+```tsx
+import { useState } from "react"
+
+const MyModal = () => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <FocusModal 
+      defaultOpen={false} 
+      open={open} 
+      onOpenChange={setOpen}
+    >
+      <FocusModal.Trigger>Trigger</FocusModal.Trigger>
+      <FocusModal.Content>
+        <FocusModal.Header>Title</FocusModal.Header>
+        <FocusModal.Body>Content</FocusModal.Body>
+      </FocusModal.Content>
+    </FocusModal>
+  )
+}
+```

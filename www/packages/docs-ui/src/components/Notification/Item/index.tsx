@@ -15,6 +15,7 @@ export type NotificationItemProps = {
   show?: boolean
   setShow?: (value: boolean) => void
   onClose?: () => void
+  closeButtonText?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 export const NotificationItem = ({
