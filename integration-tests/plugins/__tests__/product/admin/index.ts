@@ -375,6 +375,10 @@ describe("/admin/products", () => {
   })
 
   describe("POST /admin/products/:id", () => {
+    const toUpdateWithSalesChannels = "to-update-with-sales-channels"
+    const toUpdateWithVariants = "to-update-with-variants"
+    const toUpdate = "to-update"
+
     beforeEach(async () => {
       await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
@@ -393,12 +397,12 @@ describe("/admin/products", () => {
 
       await simpleProductFactory(dbConnection, {
         title: "To update product",
-        id: "to-update",
+        id: toUpdate,
       })
 
       await simpleProductFactory(dbConnection, {
         title: "To update product with channels",
-        id: "to-update-with-sales-channels",
+        id: toUpdateWithSalesChannels,
         sales_channels: [
           { name: "channel 1", id: "channel-1" },
           { name: "channel 2", id: "channel-2" },
@@ -412,7 +416,7 @@ describe("/admin/products", () => {
 
       await simpleProductFactory(dbConnection, {
         title: "To update product with variants",
-        id: "to-update-with-variants",
+        id: toUpdateWithVariants,
         variants: [
           {
             id: "variant-1",
@@ -440,7 +444,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/to-update", payload, adminHeaders)
+        .post(`/admin/products/${toUpdate}`, payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -448,7 +452,7 @@ describe("/admin/products", () => {
       expect(response?.status).toEqual(200)
       expect(response?.data.product).toEqual(
         expect.objectContaining({
-          id: "to-update",
+          id: toUpdate,
           title: "New title",
           description: "test-product-description",
         })
@@ -473,7 +477,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/to-update-with-variants", payload, adminHeaders)
+        .post(`/admin/products/${toUpdateWithVariants}`, payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -481,7 +485,7 @@ describe("/admin/products", () => {
       expect(response?.status).toEqual(200)
       expect(response?.data.product).toEqual(
         expect.objectContaining({
-          id: "to-update-with-variants",
+          id: toUpdateWithVariants,
           title: "New title",
           description: "test-product-description",
           variants: expect.arrayContaining([
@@ -508,7 +512,7 @@ describe("/admin/products", () => {
 
       const response = await api
         .post(
-          "/admin/products/to-update-with-sales-channels",
+          `/admin/products/${toUpdateWithSalesChannels}`,
           payload,
           adminHeaders
         )
@@ -519,7 +523,7 @@ describe("/admin/products", () => {
       expect(response?.status).toEqual(200)
       expect(response?.data.product).toEqual(
         expect.objectContaining({
-          id: "to-update-with-sales-channels",
+          id: toUpdateWithSalesChannels,
           sales_channels: [
             expect.objectContaining({ id: "channel-2" }),
             expect.objectContaining({ id: "channel-3" }),
@@ -550,7 +554,7 @@ describe("/admin/products", () => {
       }
 
       const response = await api
-        .post("/admin/products/to-update-with-variants", payload, adminHeaders)
+        .post(`/admin/products/${toUpdateWithVariants}`, payload, adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -562,7 +566,7 @@ describe("/admin/products", () => {
       expect(response?.status).toEqual(200)
       expect(response?.data.product).toEqual(
         expect.objectContaining({
-          id: "to-update-with-variants",
+          id: toUpdateWithVariants,
           title: "New title",
           description: "test-product-description",
           variants: expect.arrayContaining([
