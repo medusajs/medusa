@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  AiAssistantProvider,
   AnalyticsProvider,
   ColorModeProvider,
   MobileProvider,
@@ -28,7 +29,17 @@ const Providers = ({ children }: ProvidersProps) => {
                 <NavbarProvider>
                   <ScrollControllerProvider>
                     <SearchProvider>
-                      <MobileProvider>{children}</MobileProvider>
+                      <AiAssistantProvider
+                        apiUrl={
+                          process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"
+                        }
+                        apiToken={
+                          process.env.NEXT_PUBLIC_AI_API_ASSISTANT_TOKEN ||
+                          "temp"
+                        }
+                      >
+                        <MobileProvider>{children}</MobileProvider>
+                      </AiAssistantProvider>
                     </SearchProvider>
                   </ScrollControllerProvider>
                 </NavbarProvider>

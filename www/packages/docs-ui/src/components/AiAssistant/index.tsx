@@ -1,13 +1,19 @@
+"use client"
+
 import React, { useState, useEffect, useCallback } from "react"
-import { Button, InputText, Modal } from "@/components"
-import { useAiAssistant } from "../../providers/AiAssistant"
+import { Badge, Button, InputText, Modal } from "@/components"
+import { useAiAssistant } from "@/providers"
+import { ArrowUpCircleSolid, Sparkles } from "@medusajs/icons"
+import ReactMarkdown from "react-markdown"
 
 export type ChunkType = {
   stream_end: boolean
 } & (
   | {
       type: "relevant_sources"
-      content: RelevantSourcesType[]
+      content: {
+        relevant_sources: RelevantSourcesType[]
+      }
     }
   | {
       type: "partial_answer"
@@ -95,7 +101,7 @@ export const AiAssistant = () => {
         const chunk = JSON.parse(chunkText).chunk as ChunkType
 
         if (chunk.type === "relevant_sources") {
-          setRelevantSources(chunk.content)
+          setRelevantSources(chunk.content.relevant_sources)
         } else if (chunk.type === "partial_answer") {
           setAnswer((prevAnswer) => prevAnswer + chunk.content.text)
         } else if (chunk.type === "identifiers") {
@@ -107,6 +113,8 @@ export const AiAssistant = () => {
         }
       }
     }
+
+    setLoading(false)
   }
 
   const handleSubmit = () => {
@@ -165,70 +173,68 @@ export const AiAssistant = () => {
   }, [loading, question, answer, fetchAnswer])
 
   return (
-    <Modal open={open} onClose={() => setOpen(false)}>
-      <div>
-        {error ? (
-          <div>
-            <h2>Error:</h2>
-            <p>{error}</p>
-          </div>
-        ) : (
+    <Modal
+      open={open}
+      onClose={() => setOpen(false)}
+      title={
+        <span className="flex gap-docs_0.75 items-center">
+          <span className="p-[6px] bg-medusa-button-inverted bg-button-inverted dark:bg-button-inverted-dark rounded-docs_DEFAULT">
+            <Sparkles className="text-medusa-fg-on-color" />
+          </span>
+          <span>Medusa AI Assistant</span>
+          <Badge variant="orange">Beta</Badge>
+        </span>
+      }
+      contentClassName="!p-0"
+      className="!px-docs_1 !py-docs_0.75"
+    >
+      <div className="flex gap-docs_1 px-docs_1 py-docs_0.75">
+        <InputText
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          className="bg-transparent border-0 focus:outline-none hover:!bg-medusa-bg-field"
+        />
+        <Button
+          variant="clear"
+          className="rounded-full p-[5px]"
+          onClick={handleSubmit}
+        >
+          <ArrowUpCircleSolid className="text-medusa-fg-base" />
+        </Button>
+      </div>
+      {answer ||
+        (error && (
           <>
-            <InputText
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-            <Button
-              onClick={handleSubmit}
-              disabled={!question.length || loading}
-            >
-              Submit
-            </Button>
-            <h2>Relevant Sources:</h2>
-            <ul>
-              {relevantSources.map((source, index) => (
-                <li key={index}>
-                  <a
-                    href={source.source_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {source.source_url}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <h2>Answer:</h2>
-            <p>{answer}</p>
-            {identifiers && (
-              <div>
-                <h2>
-                  Identifiers (for demo purposes only, not to be displayed
-                  normally):
-                </h2>
-                <p>Thread ID: {identifiers.thread_id}</p>
-                <p>Question Answer ID: {identifiers.question_answer_id}</p>
-                <h3>Submit your feedback:</h3>
-                <button
-                  onClick={async () =>
-                    handleFeedback(identifiers.question_answer_id, "upvote")
-                  }
-                >
-                  Upvote
-                </button>
-                <button
-                  onClick={async () =>
-                    handleFeedback(identifiers.question_answer_id, "downvote")
-                  }
-                >
-                  Downvote
-                </button>
-                {feedback && <p>Your feedback: {feedback}</p>}
-              </div>
+            {error && (
+              <span className="text-medusa-fg-error">
+                An error occurred, please try again later.
+              </span>
+            )}
+            {answer && (
+              <p>
+                <ReactMarkdown>{answer}</ReactMarkdown>
+              </p>
+            )}
+            {!loading && relevantSources.length > 0 && (
+              <>
+                <strong>Find more details in these resources</strong>
+                <ul>
+                  {relevantSources.map((source, index) => (
+                    <li key={index}>
+                      <a
+                        href={source.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {source.source_url}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
             )}
           </>
-        )}
-      </div>
+        ))}
     </Modal>
   )
 }

@@ -1,7 +1,9 @@
+"use client"
+
 import React from "react"
 import { Button } from "@/components"
 import { Sparkles } from "@medusajs/icons"
-import { useAiAssistant } from "../../../providers/AiAssistant"
+import { useAiAssistant } from "@/providers"
 
 export const NavbarAiAssistantButton = () => {
   const { setOpen } = useAiAssistant()

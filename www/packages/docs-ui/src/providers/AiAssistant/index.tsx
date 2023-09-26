@@ -1,5 +1,8 @@
+"use client"
+
 import React, { createContext, useContext, useState } from "react"
-import { useAnalytics } from "../Analytics"
+import { useAnalytics } from "@/providers"
+import { AiAssistant } from "@/components"
 
 export type AiAssistantContextType = {
   open: boolean
@@ -74,6 +77,7 @@ export const AiAssistantProvider = ({
       }}
     >
       {children}
+      <AiAssistant />
     </AiAssistantContext.Provider>
   )
 }

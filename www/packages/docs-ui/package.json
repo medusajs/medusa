@@ -63,6 +63,7 @@
     "algoliasearch": "^4.20.0",
     "prism-react-renderer": "^2.0.6",
     "react-instantsearch": "^7.0.3",
+    "react-markdown": "^8.0.7",
     "react-tooltip": "^5.21.3",
     "react-transition-group": "^4.4.5",
     "react-uuid": "^2.0.0"
