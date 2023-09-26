@@ -179,7 +179,7 @@ describe("/store/carts", () => {
           stocked_quantity: 100,
         })
 
-        const customer = await simpleCustomerFactory(dbConnection, {})
+        const customer = await simpleCustomerFactory(dbConnection, {}, 100)
 
         const cart = await simpleCartFactory(dbConnection, {
           email: "testme@email.com",
