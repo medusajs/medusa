@@ -31,6 +31,8 @@ import { CartCreateProps } from "../../../../types/cart"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { Logger } from "../../../../types/global"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { defaultAdminProductRemoteQueryObject } from "../../admin/products"
 
 /**
  * @oas [post] /store/carts
@@ -109,7 +111,6 @@ export default async (req, res) => {
   }
 
   if (isWorkflowEnabled && productModuleService) {
-    // TODO: is product module enabled
     const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
     const input = {
       ...validated,
@@ -203,14 +204,28 @@ export default async (req, res) => {
           "productVariantService"
         )
 
-        const variants = (await productVariantService
-          .withTransaction(manager)
-          .list(
+        let variants
+        const variantIds = validated.items
+          .map((i) => i.variant_id)
+          .filter(Boolean)
+
+        if (
+          featureFlagRouter.isFeatureEnabled(
+            IsolateProductDomainFeatureFlag.key
+          )
+        ) {
+          variants = await retrieveVariantsWithIsolatedProductModule(
+            req,
+            variantIds
+          )
+        } else {
+          variants = (await productVariantService.withTransaction(manager).list(
             {
-              id: validated.items.map((i) => i.variant_id).filter(Boolean),
+              id: variantIds,
             },
             { relations: ["product"] }
           )) as unknown as ProductVariantDTO[]
+        }
 
         const generateInputData = validated.items.map((item) => {
           const variant = variants.find((v) => v.id === item.variant_id)!
@@ -246,6 +261,40 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ cart: cleanResponseData(cart, []) })
+}
+
+async function retrieveVariantsWithIsolatedProductModule(
+  req,
+  variantsIds: string[]
+) {
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variantIdsMap = new Map(variantsIds.map((v) => [v, true]))
+
+  const query = {
+    product: {
+      __args: { filters: { variants: { id: variantsIds } } },
+      ...defaultAdminProductRemoteQueryObject,
+    },
+  }
+
+  const { rows: products } = await remoteQuery(query)
+
+  products.forEach((product) => {
+    product.profile_id = product.profile?.id
+  })
+
+  const variants = []
+
+  products.forEach((product) => {
+    product.variants.forEach((variant) => {
+      if (variantIdsMap.has(variant.id)) {
+        variant.product = product
+      }
+    })
+  })
+
+  return variants
 }
 
 export class Item {
