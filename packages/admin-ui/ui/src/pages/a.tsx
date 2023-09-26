@@ -15,6 +15,7 @@ import Inventory from "../domain/inventory"
 import Oauth from "../domain/oauth"
 import Orders from "../domain/orders"
 import DraftOrders from "../domain/orders/draft-orders"
+import PriceListRoute from "../domain/price-list"
 import Pricing from "../domain/pricing"
 import ProductCategories from "../domain/product-categories"
 import ProductsRoute from "../domain/products"
@@ -56,6 +57,7 @@ const DashboardRoutes = () => {
           <Route path="discounts/*" element={<Discounts />} />
           <Route path="customers/*" element={<Customers />} />
           <Route path="pricing/*" element={<Pricing />} />
+          <Route path="price-lists/*" element={<PriceListRoute />} />
           <Route path="settings/*" element={<Settings />} />
           <Route path="sales-channels/*" element={<SalesChannels />} />
           <Route

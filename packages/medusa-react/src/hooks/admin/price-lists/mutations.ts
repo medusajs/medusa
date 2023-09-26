@@ -1,5 +1,6 @@
 import {
   AdminDeletePriceListPricesPricesReq,
+  AdminDeletePriceListsPriceListProductsPricesBatchReq,
   AdminPostPriceListPricesPricesReq,
   AdminPostPriceListsPriceListPriceListReq,
   AdminPostPriceListsPriceListReq,
@@ -11,8 +12,8 @@ import {
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import {
-  useMutation,
   UseMutationOptions,
+  useMutation,
   useQueryClient,
 } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
@@ -122,6 +123,28 @@ export const useAdminDeletePriceListPrices = (
         adminPriceListKeys.lists(),
         adminPriceListKeys.detailProducts(id),
       ],
+      options
+    )
+  )
+}
+
+export const useAdminDeletePriceListProductsPrices = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminPriceListDeleteBatchRes>,
+    Error,
+    AdminDeletePriceListsPriceListProductsPricesBatchReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    (payload: AdminDeletePriceListsPriceListProductsPricesBatchReq) =>
+      client.admin.priceLists.deleteProductsPrices(id, payload),
+    buildOptions(
+      queryClient,
+      [adminPriceListKeys.detail(id), adminPriceListKeys.lists()],
       options
     )
   )
