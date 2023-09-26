@@ -25,7 +25,7 @@ export const BorderedIcon = ({
     <Bordered wrapperClassName={wrapperClassName}>
       <span
         className={clsx(
-          "rounded-docs_xs p-docs_0.125 bg-medusa-bg-component dark:bg-medusa-bg-component-dark inline-flex items-center justify-center",
+          "rounded-docs_xs p-docs_0.125 bg-medusa-bg-component inline-flex items-center justify-center",
           iconWrapperClassName
         )}
       >
@@ -39,7 +39,7 @@ export const BorderedIcon = ({
         {IconComponent && (
           <IconComponent
             className={clsx(
-              "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+              "text-medusa-fg-subtle",
               iconClassName,
               "bordered-icon",
               iconColorClassName

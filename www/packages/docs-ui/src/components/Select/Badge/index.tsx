@@ -54,7 +54,7 @@ export const SelectBadge = ({
       <>
         <span
           className={clsx(
-            "text-medusa-fg-base dark:text-medusa-fg-base-dark",
+            "text-medusa-fg-base",
             "text-compact-x-small-plus",
             "inline-block max-w-[60px] overflow-hidden text-ellipsis"
           )}
@@ -63,10 +63,7 @@ export const SelectBadge = ({
         </span>
         {!isAllSelected && selectedOptions.length > 1 && (
           <span
-            className={clsx(
-              "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-              "text-compact-x-small"
-            )}
+            className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}
           >
             {" "}
             + {selectedOptions.length}
@@ -80,14 +77,13 @@ export const SelectBadge = ({
     <div className={clsx("relative", className)}>
       <div
         className={clsx(
-          "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border border-solid",
-          "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-subtle-hover-dark",
+          "border-medusa-border-base rounded-sm border border-solid",
+          "hover:bg-medusa-bg-subtle-hover",
           "py-docs_0.25 h-fit cursor-pointer px-docs_0.5",
           "flex items-center gap-[6px] whitespace-nowrap",
-          "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-          !open && "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark",
-          open &&
-            "bg-medusa-bg-subtle-hover dark:bg-medusa-bg-subtle-hover-dark",
+          "text-medusa-fg-subtle",
+          !open && "bg-medusa-bg-subtle",
+          open && "bg-medusa-bg-subtle-hover",
           className
         )}
         ref={ref}
@@ -97,12 +93,7 @@ export const SelectBadge = ({
           }
         }}
       >
-        <span
-          className={clsx(
-            "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-            "text-compact-x-small"
-          )}
-        >
+        <span className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}>
           Show results from:{" "}
         </span>
         {getSelectedText()}

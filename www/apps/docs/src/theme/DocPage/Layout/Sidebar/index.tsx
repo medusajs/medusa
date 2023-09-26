@@ -36,10 +36,10 @@ export default function DocPageLayoutSidebar({
         "min-[997px]:block min-[997px]:w-sidebar min-[997px]:transition-[left] min-[997px]:ease-ease min-[997px]:duration-200 min-[997px]:left-0 hidden",
         !hiddenSidebarContainer && "clip",
         hiddenSidebarContainer &&
-          "min-[997px]:fixed min-[997px]:left-[-100%] min-[997px]:rounded min-[997px]:border-0 min-[997px]:border-medusa-border-strong min-[997px]:dark:border-medusa-border-strong-dark",
+          "min-[997px]:fixed min-[997px]:left-[-100%] min-[997px]:rounded min-[997px]:border-0 min-[997px]:border-medusa-border-strong",
         hiddenSidebarContainer &&
           sidebarContext?.floatingSidebar &&
-          "min-[997px]:!left-0.5 min-[997px]:top-[65px] min-[997px]:z-20 min-[997px]:bg-docs-bg min-[997px]:dark:bg-docs-bg-dark min-[997px]:shadow-flyout min-[997px]:dark:shadow-flyout-dark"
+          "min-[997px]:!left-0.5 min-[997px]:top-[65px] min-[997px]:z-20 min-[997px]:bg-docs-bg min-[997px]:shadow-flyout min-[997px]:dark:shadow-flyout-dark"
       )}
       onTransitionEnd={(e) => {
         if (

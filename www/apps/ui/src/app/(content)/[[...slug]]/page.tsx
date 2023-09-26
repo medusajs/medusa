@@ -61,13 +61,8 @@ export default async function DocPage({ params }: DocPageProps) {
 
   return (
     <div className="flex flex-col">
-      <h1 className="h1-docs text-medusa-fg-base dark:text-medusa-fg-base-dark mb-2">
-        {doc.title}
-      </h1>
-      <Text
-        className="text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark mb-6"
-        size="large"
-      >
+      <h1 className="h1-docs text-medusa-fg-base mb-2">{doc.title}</h1>
+      <Text className="text-medusa-fg-subtle mb-6" size="large">
         {doc.description}
       </Text>
       <div>
