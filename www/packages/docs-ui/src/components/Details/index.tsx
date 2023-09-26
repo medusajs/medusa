@@ -48,7 +48,7 @@ export const Details = ({
         event.stopPropagation()
       }}
       className={clsx(
-        "border-medusa-border-base dark:border-medusa-border-base-dark border-y border-solid border-x-0",
+        "border-medusa-border-base border-y border-solid border-x-0",
         "overflow-hidden [&>summary]:relative [&>summary]:z-[398]",
         props.className
       )}

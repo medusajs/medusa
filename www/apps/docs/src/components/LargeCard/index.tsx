@@ -34,15 +34,15 @@ const LargeCard: React.FC<LargeCardProps> = ({
   return (
     <article
       className={clsx(
-        "group bg-docs-bg-surface dark:bg-docs-bg-surface-dark",
+        "group bg-docs-bg-surface",
         "rounded",
         "p-1 !pb-1.5 shadow-card-rest dark:shadow-card-rest-dark",
         "flex flex-col justify-between relative",
         "[&:nth-child(3n+1):before]:bg-[2%_52%] [&:nth-child(3n+2):before]:bg-[19%_16%] [&:nth-child(3n+3):before]:bg-[17%_50%]",
-        !isSoon &&
-          "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover-dark hover:shadow-card-hover dark:hover:shadow-card-hover-dark",
-        !isSoon &&
-          "group-hover:bg-medusa-bg-subtle-hover dark:group-hover:bg-medusa-bg-base-hover-dark group-hover:shadow-card-hover dark:group-hover:shadow-card-hover-dark",
+        !isSoon && [
+          "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover hover:shadow-card-hover dark:hover:shadow-card-hover-dark",
+          "group-hover:bg-medusa-bg-subtle-hover dark:group-hover:bg-medusa-bg-base-hover group-hover:shadow-card-hover dark:group-hover:shadow-card-hover-dark",
+        ],
         "transition-all duration-200 ease-ease",
         "large-card",
         className
@@ -66,9 +66,8 @@ const LargeCard: React.FC<LargeCardProps> = ({
         <div className="mb-0.25">
           <span
             className={clsx(
-              isSoon &&
-                "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
-              "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium-plus",
+              isSoon && "group-hover:text-medusa-fg-disabled",
+              "text-medusa-fg-base text-compact-medium-plus",
               "transition-all duration-200 ease-ease"
             )}
           >
@@ -77,8 +76,7 @@ const LargeCard: React.FC<LargeCardProps> = ({
         </div>
         <div
           className={clsx(
-            isSoon &&
-              "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
+            isSoon && "group-hover:text-medusa-fg-disabled",
             "transition-all duration-200 ease-ease text-medium"
           )}
         >
