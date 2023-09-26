@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en" className="h-full w-full">
       <head />
       <body
-        className={` bg-docs-bg dark:bg-docs-bg-dark h-screen w-full ${inter.variable} ${robotoMono.variable}`}
+        className={`bg-docs-bg h-screen w-full ${inter.variable} ${robotoMono.variable}`}
       >
         <Providers>
           <div className="w-full">

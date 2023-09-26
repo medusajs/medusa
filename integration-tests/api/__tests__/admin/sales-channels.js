@@ -19,7 +19,7 @@ const startServerWithEnvironment =
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -214,7 +214,7 @@ describe("sales channels", () => {
         payload,
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -856,7 +856,7 @@ describe("sales channels", () => {
           `/admin/orders?sales_channel_id[]=${order.sales_channel_id}`,
           {
             headers: {
-              authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -904,7 +904,7 @@ describe("sales channels", () => {
         const response = await api
           .get(`/admin/products?sales_channel_id[]=${salesChannel.id}`, {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -964,7 +964,7 @@ describe("sales channels", () => {
         const response = await api
           .post("/admin/products", payload, {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -1005,7 +1005,7 @@ describe("sales channels", () => {
         const response = await api
           .post("/admin/products", payload, {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -1054,7 +1054,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1077,7 +1077,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1103,7 +1103,7 @@ describe("sales channels", () => {
             {},
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1131,7 +1131,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1158,7 +1158,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )

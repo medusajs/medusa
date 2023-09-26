@@ -25,10 +25,7 @@ export const Feedback = ({ title, ...props }: FeedbackProps) => {
         section: title,
       }}
       {...props}
-      className={clsx(
-        "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-        props.className
-      )}
+      className={clsx("text-medusa-fg-subtle", props.className)}
     />
   )
 }
