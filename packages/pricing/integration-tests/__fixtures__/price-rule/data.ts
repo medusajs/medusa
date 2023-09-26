@@ -1,5 +1,7 @@
 import { CreatePriceRuleDTO } from "@medusajs/types"
 
+export * from "./data"
+
 export const defaultPriceRuleData = [
   {
     id: "price-rule-1",

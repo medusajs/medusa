@@ -34,6 +34,8 @@ import {
   shouldForceTransaction,
 } from "@medusajs/utils"
 
+import { groupBy } from "lodash"
+
 import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
@@ -99,108 +101,79 @@ export default class PricingModuleService<
     // some changes, will abstract them out once we have a final version
     const context = pricingContext.context || {}
     const manager = sharedContext.manager as EntityManager
-    const priceSetFilters: PricingTypes.FilterablePriceSetProps = {
-      id: pricingFilters.id,
-    }
-
-    const ruleAttributes = Object.entries(context).map(([k, v]) => k)
-    const priceRuleValues = Object.entries(context).map(([k, v]) => v)
     const knex = manager.getKnex()
-    const em = manager
-    // console.log(
-    //   "ALL price set money amount - ",
-    //   await manager.find(PriceSetMoneyAmount, {})
-    // )
-    // console.log(
-    //   "ALL price set money amount rules - ",
-    //   await manager.find(PriceSetMoneyAmountRules, {})
-    // )
 
-    // console.log("ALL rule types - ", await manager.find(RuleType, {}))
+    const ruleConditions = Object.entries(context).map(([k, v]) => ({
+      "rt.rule_attribute": k,
+      "pr.value": v,
+    }))
 
-    // Subquery for price_set_money_amount
-    const psmaSubQuery = em
-      .createQueryBuilder("PriceSetMoneyAmount", "psma")
-      .select(["id", "price_set_id", "money_amount_id", "title"])
-      .leftJoin("price_set_money_amount_rules", "psmar")
-      .leftJoin("rule_types", "rt")
-      .where({
-        $or: [
-          { "rt.rule_attribute": "currency_code", "psmar.value": "USD" },
-          // { "rt.rule_attribute": "currency_code", "psmar.value": "EUR" },
-        ],
+    const psmaSubQueryKnex = knex({
+      psma: "price_set_money_amount",
+    })
+      .select({
+        id: "psma.id",
+        price_set_id: "psma.price_set_id",
+        money_amount_id: "psma.money_amount_id",
+        title: "psma.title",
+        number_rules: "psma.number_rules",
       })
-      .groupBy("id")
-    // .having("COUNT(DISTINCT rt.rule_attribute) = psma.number_rules")
-    // console.log("running 2 - ", await psmaSubQuery.getQuery())
-    // console.log("psmaSubQuery - ", await psmaSubQuery.execute())
-    // Main query for price_set
-    console.log("blah")
-    const mainQuery = em
-      .createQueryBuilder("PriceSetMoneyAmount", "psma1")
-      .select([
-        "psma.id",
-        // "ma.amount",
-        // "ma.currency_code",
-        // "psma.title",
-        // "pr.is_dynamic",
-        // "prt.rule_attribute",
-        // "pr.value",
-        // "pr.priority",
-      ])
-      // .withSubQuery(psmaSubQuery.getKnexQuery(), "psma")
-      .from(psmaSubQuery, "psma")
-      .joinAndSelect("price_set", "s", {
-        "psma.price_set_id": "s.id",
-      })
-    // .join("money_amount", "ma", "ma.id = psma.money_amount_id")
-    // .leftJoin(
-    //   "price_rules",
-    //   "pr",
-    //   "pr.price_set_id = s.id AND pr.price_set_money_amount_id = psma.id"
-    // )
-    // .leftJoin("rule_type", "prt", "prt.id = pr.rule_type_id")
-    // .where({
-    //   $or: [
-    //     { "prt.rule_attribute": "customer_group_id", "pr.value": "VIP" },
-    //     { "prt.rule_attribute": "customer_id", "pr.value": "cus_123" },
-    //     { "prt.rule_attribute": "city_id", "pr.value": "copenhagen" },
-    //   ],
-    //   $and: [{ "pr.is_dynamic": true }, { "pr.priority": null }],
-    // })
-    // .orderBy({ "s.id": "ASC", "pr.priority": "DESC NULLS LAST" })
+      .join("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
+      .join("rule_type as rt", "rt.id", "pr.rule_type_id")
+      .countDistinct({ count_distinct: "rt.rule_attribute" })
+      .count({ count: "rt.rule_attribute" })
+      .orderBy("number_rules", "desc")
 
-    console.log("mainQuery.getQuery() - ", await mainQuery.getQuery())
-    console.log("mainQuery.execute() - ", await mainQuery.execute())
-    // this is a missed implementation in mikroORM that mimics
-    // entity building and merging of duplicated rows.
-    const joinedProps = (mainQuery as any)._joinedProps
-    const driver = (mainQuery as any).driver
-    const mainAlias = (mainQuery as any).mainAlias
-
-    let queryBuilderResults = await mainQuery.execute()
-
-    if (joinedProps.size > 0) {
-      queryBuilderResults = driver.mergeJoinedResult(
-        queryBuilderResults,
-        mainAlias.metadata
-      )
+    for (const ruleCondition of ruleConditions) {
+      psmaSubQueryKnex.orWhere(ruleCondition)
     }
 
-    const priceSets = JSON.parse(JSON.stringify(queryBuilderResults))
-    const calculatedPrices = priceSets.map(
-      (priceSet): PricingTypes.CalculatedPriceSetDTO => {
-        // TODO: This will change with the rules engine selection,
-        // making a DB query directly instead
-        // This should look for a default price when no rules apply
-        // When no price is set, return null values for all cases
+    psmaSubQueryKnex
+      .groupBy("psma.id")
+      .having(knex.raw("count(DISTINCT rt.rule_attribute) = psma.number_rules"))
+      .andHaving(knex.raw(`${Object.entries(context).length} > 0`))
+
+    const mainQueryKnex = knex({
+      ps: "price_set",
+    })
+      .select({
+        id: "ps.id",
+        ma_id: "ma.id",
+        amount: "ma.amount",
+        min_quantity: "ma.min_quantity",
+        max_quantity: "ma.max_quantity",
+        currency_code: "ma.currency_code",
+        title: "psma.title",
+        rule_attribute: "rt.rule_attribute",
+        value: "pr.value",
+        default_priority: "rt.default_priority",
+        number_rules: "psma.number_rules",
+      })
+      .join(psmaSubQueryKnex.as("psma"), "psma.price_set_id", "ps.id")
+      .join("money_amount as ma", "ma.id", "psma.money_amount_id")
+      .join("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
+      .join("rule_type as rt", "rt.id", "pr.rule_type_id")
+      .whereIn("ps.id", pricingFilters.id)
+      .orderBy([
+        { column: "number_rules", order: "desc" },
+        { column: "default_priority", order: "desc" },
+      ])
+
+    const queryBuilderResults = await mainQueryKnex
+    const groupedPricesByPriceSetId = groupBy(queryBuilderResults, "id")
+
+    const calculatedPrices = pricingFilters.id.map(
+      (priceSetId): PricingTypes.CalculatedPriceSetDTO => {
+        // This is where we select prices, for now we just do a first match based on the database results
+        // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
+        const price = groupedPricesByPriceSetId[priceSetId]?.[0]
 
         return {
-          id: priceSet.id,
-          amount: priceSet?.ma__amount || null,
-          currency_code: priceSet?.ma__currency_code || null,
-          min_quantity: priceSet?.ma__min_quantity || null,
-          max_quantity: priceSet?.ma__max_quantity || null,
+          id: priceSetId,
+          amount: price?.amount || null,
+          currency_code: price?.currency_code || null,
+          min_quantity: price?.min_quantity || null,
+          max_quantity: price?.max_quantity || null,
         }
       }
     )
