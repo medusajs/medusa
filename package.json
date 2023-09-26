@@ -61,7 +61,9 @@
     "typeorm": "^0.3.16"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "yarn run lint",
+    "*.{js,jsx,ts,tsx}": [
+      "yarn run sync:i18n"
+    ],
     "*.{md,yaml,yml}": "prettier --write"
   },
   "scripts": {
@@ -72,6 +74,7 @@
     "prettier": "prettier",
     "jest": "jest",
     "test": "turbo run test --no-daemon",
+    "lint-staged": "lint-staged",
     "test:integration:packages": "turbo run test:integration --no-daemon --filter='./packages/*'",
     "test:integration:api": "turbo run test:integration --no-daemon --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test:integration --no-daemon --filter=integration-tests-plugins",
@@ -89,7 +92,8 @@
     "version:next": "changeset version --snapshot next",
     "release": "changeset publish",
     "version": "changeset version && yarn install --no-immutable",
-    "check:freshness": "node ./scripts/freshness-check.js"
+    "check:freshness": "node ./scripts/freshness-check.js",
+    "sync:i18n": "cd packages/admin-ui && i18next 'ui/src/**/*.{ts,tsx,js,jsx}' -c 'ui/i18next-parser.config.js'"
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.4.8",
