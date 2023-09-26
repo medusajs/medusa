@@ -32,7 +32,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { Logger } from "../../../../types/global"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultAdminProductRemoteQueryObject } from "../../admin/products"
+import { defaultStoreProductRemoteQueryObject } from "../products"
 
 /**
  * @oas [post] /store/carts
@@ -265,31 +265,33 @@ export default async (req, res) => {
 
 async function retrieveVariantsWithIsolatedProductModule(
   req,
-  variantsIds: string[]
+  variantIds: string[]
 ) {
+  const variantIdsMap = new Map(variantIds.map((id) => [id, true]))
+
   const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const variantIdsMap = new Map(variantsIds.map((v) => [v, true]))
-
-  const query = {
-    product: {
-      __args: { filters: { variants: { id: variantsIds } } },
-      ...defaultAdminProductRemoteQueryObject,
+  const variables = {
+    filters: {
+      variants: {
+        id: [...variantIds],
+      },
     },
   }
 
-  const { rows: products } = await remoteQuery(query)
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultStoreProductRemoteQueryObject,
+    },
+  }
+
+  const products = await remoteQuery(query)
 
   const variants: ProductVariantDTO[] = []
 
   products.forEach((product) => {
     product.profile_id = product.profile?.id
-    product.variants.forEach((variant) => {
-      if (variantIdsMap.has(variant.id)) {
-        variant.product = product
-        variants.push(variant)
-      }
-    })
+    variants.push(...product.variants.filter((v) => variantIdsMap.has(v.id)))
   })
 
   return variants
