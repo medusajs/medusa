@@ -70,7 +70,7 @@ export const Rating: React.FC<RatingProps> = ({
           >
             {!isSelected && <Star />}
             {isSelected && (
-              <StarSolid className="text-medusa-tag-orange-icon dark:text-medusa-tag-orange-icon-dark" />
+              <StarSolid className="text-medusa-tag-orange-icon" />
             )}
           </Button>
         )

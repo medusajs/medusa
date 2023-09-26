@@ -29,7 +29,7 @@ const MDXA = (props: Props) => {
     <Tooltip
       tooltipChildren={
         <span className="flex flex-col gap-0.25 max-w-[200px]">
-          <span className="text-compact-small-plus text-medusa-fg-base dark:text-medusa-fg-base-dark">
+          <span className="text-compact-small-plus text-medusa-fg-base">
             {glossary.title}
           </span>
           <span className="text-compact-small">{glossary.content}</span>

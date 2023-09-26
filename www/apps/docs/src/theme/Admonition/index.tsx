@@ -10,19 +10,19 @@ import {
 
 function NoteIcon() {
   return (
-    <InformationCircleSolid className="inline-block mr-0.125 text-medusa-fg-interactive-dark" />
+    <InformationCircleSolid className="inline-block mr-0.125 text-medusa-tag-blue-icon" />
   )
 }
 
 function TipIcon() {
   return (
-    <LightBulbSolid className="inline-block mr-0.125 text-medusa-tag-orange-icon-dark" />
+    <LightBulbSolid className="inline-block mr-0.125 text-medusa-tag-orange-icon" />
   )
 }
 
 function DangerIcon() {
   return (
-    <ExclamationCircleSolid className="inline-block mr-0.125 text-medusa-fg-error dark:text-medusa-fg-error-dark" />
+    <ExclamationCircleSolid className="inline-block mr-0.125 text-medusa-fg-error" />
   )
 }
 
@@ -165,9 +165,9 @@ export default function Admonition(props: Props): JSX.Element {
   return (
     <div
       className={clsx(
-        "p-1 border border-solid border-medusa-border-base dark:border-medusa-border-base-dark rounded",
-        "bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark shadow-none",
-        "[&_a]:no-underline [&_a]:text-medusa-fg-interactive dark:[&_a]:text-medusa-fg-interactive-dark hover:[&_a]:text-medusa-fg-interactive-hover dark:hover:[&_a]:text-medusa-fg-interactive-hover-dark",
+        "p-1 border border-solid border-medusa-border-base rounded",
+        "bg-medusa-bg-subtle dark:bg-medusa-bg-base shadow-none",
+        "[&_a]:no-underline [&_a]:text-medusa-fg-interactive hover:[&_a]:text-medusa-fg-interactive-hover ",
         "mb-2 alert"
       )}
     >
@@ -175,7 +175,7 @@ export default function Admonition(props: Props): JSX.Element {
         <span className={clsx("inline-block h-1.5 w-1.5 mr-1")}>{icon}</span>
         <div
           className={clsx(
-            "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+            "text-medusa-fg-subtle",
             "text-medium flex-1 [&>*:last-child]:mb-0",
             "[&>p>code]:px-0.5 [&>p>code]:text-code-label"
           )}
