@@ -1,3 +1,4 @@
+import { IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -5,11 +6,11 @@ import {
   ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
-import { IsOptional, IsString } from "class-validator"
 
+import { MedusaError } from "@medusajs/utils"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils"
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultStoreProductRemoteQueryObject } from "./index"
 
 /**
@@ -175,6 +176,13 @@ async function getProductWithIsolatedProductModule(req, id: string) {
   }
 
   const [product] = await remoteQuery(query)
+
+  if (!product) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product with id: ${id} was not found`
+    )
+  }
 
   product.profile_id = product.profile?.id
 
