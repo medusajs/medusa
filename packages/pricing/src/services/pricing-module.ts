@@ -699,15 +699,18 @@ export default class PricingModuleService<
     config: FindConfig<PricingTypes.PriceRuleDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceRuleDTO> {
-    const ruleType = await this.priceRuleService_.retrieve(
+    const priceRule = await this.priceRuleService_.retrieve(
       id,
       config,
       sharedContext
     )
 
-    return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO>(ruleType, {
-      populate: true,
-    })
+    return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO>(
+      priceRule,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectManager("baseRepository_")
@@ -716,14 +719,14 @@ export default class PricingModuleService<
     config: FindConfig<PricingTypes.PriceRuleDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceRuleDTO[]> {
-    const ruleTypes = await this.priceRuleService_.list(
+    const priceRules = await this.priceRuleService_.list(
       filters,
       config,
       sharedContext
     )
 
     return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
-      ruleTypes,
+      priceRules,
       {
         populate: true,
       }
@@ -736,7 +739,7 @@ export default class PricingModuleService<
     config: FindConfig<PricingTypes.PriceRuleDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[PricingTypes.PriceRuleDTO[], number]> {
-    const [ruleTypes, count] = await this.priceRuleService_.listAndCount(
+    const [priceRules, count] = await this.priceRuleService_.listAndCount(
       filters,
       config,
       sharedContext
@@ -744,7 +747,7 @@ export default class PricingModuleService<
 
     return [
       await this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
-        ruleTypes,
+        priceRules,
         {
           populate: true,
         }
@@ -758,10 +761,10 @@ export default class PricingModuleService<
     data: PricingTypes.CreatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceRuleDTO[]> {
-    const ruleTypes = await this.priceRuleService_.create(data, sharedContext)
+    const priceRules = await this.priceRuleService_.create(data, sharedContext)
 
     return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
-      ruleTypes,
+      priceRules,
       {
         populate: true,
       }
@@ -773,10 +776,10 @@ export default class PricingModuleService<
     data: PricingTypes.UpdatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceRuleDTO[]> {
-    const ruleTypes = await this.priceRuleService_.update(data, sharedContext)
+    const priceRules = await this.priceRuleService_.update(data, sharedContext)
 
     return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
-      ruleTypes,
+      priceRules,
       {
         populate: true,
       }

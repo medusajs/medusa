@@ -161,7 +161,7 @@ export interface IPricingModuleService {
     sharedContext?: Context
   ): Promise<RuleTypeDTO[]>
 
-  deleteRuleTypes(ruleTypes: string[], sharedContext?: Context): Promise<void>
+  deleteRuleTypes(ruleTypeIds: string[], sharedContext?: Context): Promise<void>
 
   retrievePriceSetMoneyAmountRules(
     id: string,

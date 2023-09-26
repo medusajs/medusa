@@ -15,6 +15,7 @@ export async function createRuleTypes(
 
     ruleTypes.push(ruleType)
   }
+
   await manager.persistAndFlush(ruleTypes)
 
   return ruleTypes

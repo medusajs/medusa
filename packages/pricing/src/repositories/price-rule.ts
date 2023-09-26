@@ -10,7 +10,7 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
-import { PriceRule, PriceSet, PriceSetMoneyAmount, RuleType } from "@models"
+import { PriceRule } from "@models"
 
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
@@ -76,28 +76,26 @@ export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
     const manager: SqlEntityManager =
       this.getActiveManager<SqlEntityManager>(context)
 
-    const toCreate = await Promise.all(data.map(async (ruleData) => {
-      const ruleDataClone = { ...ruleData } as unknown as PriceRule
-      ruleDataClone.rule_type = manager.getReference(
-        RuleType,
-        ruleData.rule_type_id
-      )
+    const toCreate = await Promise.all(
+      data.map(async (ruleData) => {
+        const ruleDataClone = { ...ruleData } as CreatePriceRuleDTO & {
+          rule_type: string
+          price_set: string
+          price_set_money_amount: string
+        }
+        ruleDataClone.rule_type = ruleData.rule_type_id
 
-      ruleDataClone.price_set = manager.getReference(
-        PriceSet,
-        ruleData.price_set_id
-      )
+        ruleDataClone.price_set = ruleData.price_set_id
 
-      ruleDataClone.price_set_money_amount = await manager.findOne(
-        PriceSetMoneyAmount,
-        { id: ruleData.price_set_money_amount_id }
-      ) as PriceSetMoneyAmount
+        ruleDataClone.price_set_money_amount =
+          ruleData.price_set_money_amount_id
 
-      return ruleDataClone
-    }))
+        return ruleDataClone
+      })
+    )
 
     const priceRules = toCreate.map((ruleData) => {
-      return manager.create(PriceRule, ruleData)
+      return manager.create(PriceRule, ruleData as CreatePriceRuleDTO)
     })
 
     manager.persist(priceRules)

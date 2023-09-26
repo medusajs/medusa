@@ -43,6 +43,6 @@ jobs:
           base: "develop"
           title: "chore(docs): Updated API Reference"
           labels: "type: chore"
-          add-paths: www/api-reference/specs
+          add-paths: www/apps/api-reference/specs
           branch: "chore/generate-api-ref"
           branch-suffix: "timestamp"

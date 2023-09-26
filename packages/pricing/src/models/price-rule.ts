@@ -14,9 +14,11 @@ import RuleType from "./rule-type"
 
 type OptionalFields = "id" | "is_dynamic" | "priority"
 type OptionalRelations = "price_set" | "rule_type" | "price_set_money_amount"
+
 @Entity()
 export default class PriceRule {
   [OptionalProps]: OptionalFields | OptionalRelations
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -57,7 +59,7 @@ export default class PriceRule {
   // TODO: Add price list
 
   @BeforeCreate()
-  onCreate() {
+  beforeCreate() {
     this.id = generateEntityId(this.id, "pset")
   }
 }
