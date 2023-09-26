@@ -43,8 +43,10 @@ export default class PriceRuleService<TEntity extends PriceRule = PriceRule> {
     config: FindConfig<PricingTypes.PriceRuleDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
+    const queryConfig = ModulesSdkUtils.buildQuery<PriceRule>(filters, config)
+
     return (await this.priceRuleRepository_.find(
-      this.buildQueryForList(filters, config),
+      queryConfig,
       sharedContext
     )) as TEntity[]
   }
@@ -55,23 +57,12 @@ export default class PriceRuleService<TEntity extends PriceRule = PriceRule> {
     config: FindConfig<PricingTypes.PriceRuleDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
+    const queryConfig = ModulesSdkUtils.buildQuery<PriceRule>(filters, config)
+    
     return (await this.priceRuleRepository_.findAndCount(
-      this.buildQueryForList(filters, config),
+      queryConfig,
       sharedContext
     )) as [TEntity[], number]
-  }
-
-  private buildQueryForList(
-    filters: PricingTypes.FilterablePriceRuleProps = {},
-    config: FindConfig<PricingTypes.PriceRuleDTO> = {}
-  ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<PriceRule>(filters, config)
-
-    if (filters.id) {
-      queryOptions.where.id = { $in: filters.id }
-    }
-
-    return queryOptions
   }
 
   @InjectTransactionManager(shouldForceTransaction, "priceRuleRepository_")

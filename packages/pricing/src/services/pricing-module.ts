@@ -607,10 +607,10 @@ export default class PricingModuleService<
     data: PricingTypes.UpdatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceRuleDTO[]> {
-    const ruleTypes = await this.priceRuleService_.update(data, sharedContext)
+    const priceRules = await this.priceRuleService_.update(data, sharedContext)
 
     return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
-      ruleTypes,
+      priceRules,
       {
         populate: true,
       }
