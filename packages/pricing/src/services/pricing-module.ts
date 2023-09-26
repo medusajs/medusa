@@ -255,22 +255,20 @@ export default class PricingModuleService<
       count,
     ]
   }
-
-  /**
-   *
-   * {
-   *   rules: ['attribute_rule']
-   *   data: [ {
-   *    amount: 100,
-   *    currency_code: 'USD',
-   *    context: {
-   *     attribute_rule: 'prod_1',
-   *    }
-   *   } ]
-   * }
-   */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectManager("baseRepository_")
   async create(
+    data: PricingTypes.CreatePriceSetDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceSetDTO[]> {
+    const priceSets = await this.create_(data, sharedContext)
+
+    return this.list({id: priceSets.filter(p => !!p).map((p) => p!.id)}, {
+      relations: ['rule_types']
+    })
+  }
+  
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async create_(
     data: PricingTypes.CreatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -329,7 +327,7 @@ export default class PricingModuleService<
           return
         }
 
-        if(!priceSet.rule_types.isInitialized) { 
+        if (!priceSet.rule_types.isInitialized) {
           priceSet.rule_types.init()
         }
 
@@ -338,30 +336,16 @@ export default class PricingModuleService<
           price_set: priceSet,
         }))
 
-        const prt = await this.priceSetRuleTypeService_.create(
+        await this.priceSetRuleTypeService_.create(
           priceSetRuleTypesCreate as unknown as PricingTypes.CreatePriceSetRuleTypeDTO[],
           sharedContext
         )
-
-        // priceSet.rule_types = prt.map((p) => p.rule_type)
-        console.warn(prt)
-
-        // priceSet.rule_types = d.rules!.map((r) => ruleTypeMap.get(r.rule_attribute))
 
         return priceSet
       })
     )
 
-    // const priceSets = await this.priceSetService_.create(toCreate, sharedContext)
-
-    // create price set rules types
-
-    return this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
-      priceSets,
-      {
-        populate: true,
-      }
-    )
+    return priceSets
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")

@@ -343,7 +343,15 @@ describe("PricingModule Service - PriceSet", () => {
       ])
 
       console.log(priceSet)
-      // expect(error.message).toEqual("Rule types don't exist for: does-not-exist")
+      expect(priceSet).toEqual(
+        expect.objectContaining({
+          rule_types: [ 
+            expect.objectContaining({ 
+              rule_attribute: "region_id"
+            })
+          ]
+        })
+      )
     })
 
     it("should create a price set with rule types and money amounts", async () => {
