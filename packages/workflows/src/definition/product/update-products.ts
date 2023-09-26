@@ -8,13 +8,7 @@ import {
 import { exportWorkflow, pipe } from "../../helper"
 import { CreateProductsActions } from "./create-products"
 import { InventoryHandlers, ProductHandlers } from "../../handlers"
-import { updateProductsExtractCreatedVariants } from "../../handlers/middlewares/update-products-extract-created-variants"
-import { updateProductsExtractDeletedVariants } from "../../handlers/middlewares/update-products-extract-deleted-variants"
-import { useVariantsInventoryItems } from "../../handlers/middlewares/use-variants-inventory-items"
-import {
-  reshapeAttachSalesChannelsData,
-  reshapeDetachSalesChannelsData,
-} from "../../handlers/middlewares/update-prodcut-reshape-sales-channes-data"
+import * as MiddlewareHandlers from "../../handlers/middlewares"
 import { detachSalesChannelFromProducts } from "../../handlers/product"
 
 export enum UpdateProductsActions {
@@ -108,11 +102,13 @@ const handlers = new Map([
             },
             {
               from: UpdateProductsActions.updateProducts,
-              alias: updateProductsExtractDeletedVariants.aliases.products,
+              alias:
+                MiddlewareHandlers.updateProductsExtractDeletedVariants.aliases
+                  .products,
             },
           ],
         },
-        updateProductsExtractDeletedVariants,
+        MiddlewareHandlers.updateProductsExtractDeletedVariants,
         ProductHandlers.revertUpdateProducts
       ),
     },
@@ -126,7 +122,9 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: reshapeAttachSalesChannelsData.aliases.preparedData,
+              alias:
+                MiddlewareHandlers.reshapeAttachSalesChannelsData.aliases
+                  .preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
@@ -135,7 +133,7 @@ const handlers = new Map([
             },
           ],
         },
-        reshapeAttachSalesChannelsData,
+        MiddlewareHandlers.reshapeAttachSalesChannelsData,
         ProductHandlers.attachSalesChannelToProducts
       ),
       compensate: pipe(
@@ -144,7 +142,9 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: reshapeAttachSalesChannelsData.aliases.preparedData,
+              alias:
+                MiddlewareHandlers.reshapeAttachSalesChannelsData.aliases
+                  .preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
@@ -152,7 +152,7 @@ const handlers = new Map([
             },
           ],
         },
-        reshapeAttachSalesChannelsData,
+        MiddlewareHandlers.reshapeAttachSalesChannelsData,
         ProductHandlers.detachSalesChannelFromProducts
       ),
     },
@@ -166,7 +166,9 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: reshapeDetachSalesChannelsData.aliases.preparedData,
+              alias:
+                MiddlewareHandlers.reshapeDetachSalesChannelsData.aliases
+                  .preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
@@ -175,7 +177,7 @@ const handlers = new Map([
             },
           ],
         },
-        reshapeDetachSalesChannelsData,
+        MiddlewareHandlers.reshapeDetachSalesChannelsData,
         ProductHandlers.detachSalesChannelFromProducts
       ),
       compensate: pipe(
@@ -184,16 +186,18 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: reshapeDetachSalesChannelsData.aliases.preparedData,
+              alias:
+                MiddlewareHandlers.reshapeDetachSalesChannelsData.aliases
+                  .preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
               alias:
-                ProductHandlers.detachSalesChannelFromProducts.aliases.products,
+                ProductHandlers.attachSalesChannelToProducts.aliases.products,
             },
           ],
         },
-        reshapeDetachSalesChannelsData,
+        MiddlewareHandlers.reshapeDetachSalesChannelsData,
         ProductHandlers.attachSalesChannelToProducts
       ),
     },
@@ -207,15 +211,19 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: updateProductsExtractCreatedVariants.aliases.preparedData,
+              alias:
+                MiddlewareHandlers.updateProductsExtractCreatedVariants.aliases
+                  .preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
-              alias: updateProductsExtractCreatedVariants.aliases.products,
+              alias:
+                MiddlewareHandlers.updateProductsExtractCreatedVariants.aliases
+                  .products,
             },
           ],
         },
-        updateProductsExtractCreatedVariants,
+        MiddlewareHandlers.updateProductsExtractCreatedVariants,
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(
@@ -267,16 +275,20 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: updateProductsExtractDeletedVariants.aliases.preparedData,
+              alias:
+                MiddlewareHandlers.updateProductsExtractDeletedVariants.aliases
+                  .preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
-              alias: updateProductsExtractDeletedVariants.aliases.products,
+              alias:
+                MiddlewareHandlers.updateProductsExtractDeletedVariants.aliases
+                  .products,
             },
           ],
         },
-        updateProductsExtractDeletedVariants,
-        useVariantsInventoryItems,
+        MiddlewareHandlers.updateProductsExtractDeletedVariants,
+        MiddlewareHandlers.useVariantsInventoryItems,
         InventoryHandlers.detachInventoryItems
       ),
       compensate: pipe(
@@ -285,16 +297,20 @@ const handlers = new Map([
           invoke: [
             {
               from: UpdateProductsActions.prepare,
-              alias: updateProductsExtractDeletedVariants.aliases.preparedData,
+              alias:
+                MiddlewareHandlers.updateProductsExtractDeletedVariants.aliases
+                  .preparedData,
             },
             {
               from: UpdateProductsActions.updateProducts,
-              alias: updateProductsExtractDeletedVariants.aliases.products,
+              alias:
+                MiddlewareHandlers.updateProductsExtractDeletedVariants.aliases
+                  .products,
             },
           ],
         },
-        updateProductsExtractDeletedVariants,
-        useVariantsInventoryItems,
+        MiddlewareHandlers.updateProductsExtractDeletedVariants,
+        MiddlewareHandlers.useVariantsInventoryItems,
         InventoryHandlers.attachInventoryItems
       ),
     },
