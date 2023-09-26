@@ -14,7 +14,7 @@ const LearningPathIcon: React.FC<LearningPathIconProps> = ({
   return (
     <div
       className={clsx(
-        "rounded-full shadow-card-rest dark:shadow-card-rest-dark w-3 h-3 bg-medusa-bg-base dark:bg-medusa-bg-base-dark",
+        "rounded-full shadow-card-rest dark:shadow-card-rest-dark w-3 h-3 bg-medusa-bg-base",
         "flex justify-center items-center flex-none",
         className
       )}

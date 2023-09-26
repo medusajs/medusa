@@ -26,8 +26,8 @@ export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
               className={clsx(
                 "flex items-center justify-between",
                 "cursor-pointer rounded-docs_sm p-docs_0.5",
-                "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
-                "focus:bg-medusa-bg-base-hover dark:focus:bg-medusa-bg-base-hover-dark",
+                "hover:bg-medusa-bg-base-hover",
+                "focus:bg-medusa-bg-base-hover",
                 "focus:outline-none last:mb-docs_1"
               )}
               onClick={() =>
@@ -40,10 +40,7 @@ export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
               data-hit
             >
               <span
-                className={clsx(
-                  "text-medusa-fg-base dark:text-medusa-fg-base-dark",
-                  "text-compact-small"
-                )}
+                className={clsx("text-medusa-fg-base", "text-compact-small")}
               >
                 {item}
               </span>

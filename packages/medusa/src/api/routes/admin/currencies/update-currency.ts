@@ -43,6 +43,9 @@ import { EntityManager } from "typeorm"
  *       --data-raw '{
  *           "includes_tax": true
  *       }'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Currencies
  * responses:
