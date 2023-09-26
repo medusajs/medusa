@@ -67,10 +67,6 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
   ) {
     const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
 
-    if (filters.id) {
-      queryOptions.where["id"] = { $in: filters.id }
-    }
-
     return queryOptions
   }
 

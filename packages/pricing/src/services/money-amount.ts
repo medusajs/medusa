@@ -72,10 +72,6 @@ export default class MoneyAmountService<
       config
     )
 
-    if (filters.id) {
-      queryOptions.where["id"] = { $in: filters.id }
-    }
-
     return queryOptions
   }
 

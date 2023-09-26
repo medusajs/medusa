@@ -76,10 +76,6 @@ export default class PriceSetMoneyAmountRulesService<
       config
     )
 
-    if (filters.id) {
-      queryOptions.where["id"] = { $in: filters.id }
-    }
-
     return queryOptions
   }
 

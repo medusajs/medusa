@@ -67,10 +67,6 @@ export default class PriceSetService<TEntity extends PriceSet = PriceSet> {
   ) {
     const queryOptions = ModulesSdkUtils.buildQuery<PriceSet>(filters, config)
 
-    if (filters.id) {
-      queryOptions.where.id = { $in: filters.id }
-    }
-
     return queryOptions
   }
 

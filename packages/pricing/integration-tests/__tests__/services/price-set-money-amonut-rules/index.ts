@@ -202,14 +202,14 @@ describe("PriceSetMoneyAmountRules Service", () => {
   describe("delete", () => {
     const id = "psmar-1"
 
-    it("should delete the priceSetMoneyAmountRuless given an id successfully", async () => {
+    it("should delete the priceSetMoneyAmountRules given an id successfully", async () => {
       await service.delete([id])
 
-      const currencies = await service.list({
+      const priceSetMoneyAmountRules = await service.list({
         id: [id],
       })
 
-      expect(currencies).toHaveLength(0)
+      expect(priceSetMoneyAmountRules).toHaveLength(0)
     })
   })
 
