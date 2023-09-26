@@ -63,9 +63,9 @@ export class PriceSetMoneyAmountRepository extends DALUtils.MikroOrmBaseReposito
     )
   }
 
-  async delete(codes: string[], context: Context = {}): Promise<void> {
+  async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    await manager.nativeDelete(PriceSetMoneyAmount, { id: { $in: codes } }, {})
+    await manager.nativeDelete(PriceSetMoneyAmount, { id: { $in: ids } }, {})
   }
 
   async create(
@@ -88,40 +88,40 @@ export class PriceSetMoneyAmountRepository extends DALUtils.MikroOrmBaseReposito
     context: Context = {}
   ): Promise<PriceSetMoneyAmount[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const currencyCodes = data.map((currencyData) => currencyData.id)
-    const existingCurrencies = await this.find(
+    const ids = data.map((psmaData) => psmaData.id)
+    const existingPriceSetMoneyAmounts = await this.find(
       {
         where: {
           id: {
-            $in: currencyCodes,
+            $in: ids,
           },
         },
       },
       context
     )
 
-    const existingCurrencyMap = new Map(
-      existingCurrencies.map<[string, PriceSetMoneyAmount]>((currency) => [
-        currency.id,
-        currency,
+    const existingPSMAMap = new Map(
+      existingPriceSetMoneyAmounts.map<[string, PriceSetMoneyAmount]>((psma) => [
+        psma.id,
+        psma,
       ])
     )
 
-    const currencies = data.map((currencyData) => {
-      const existingCurrency = existingCurrencyMap.get(currencyData.id)
+    const priceSetMoneyAmounts = data.map((currencyData) => {
+      const existingPSMA = existingPSMAMap.get(currencyData.id)
 
-      if (!existingCurrency) {
+      if (!existingPSMA) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
           `PriceSetMoneyAmount with id "${currencyData.id}" not found`
         )
       }
 
-      return manager.assign(existingCurrency, currencyData)
+      return manager.assign(existingPSMA, currencyData)
     })
 
-    manager.persist(currencies)
+    manager.persist(priceSetMoneyAmounts)
 
-    return currencies
+    return priceSetMoneyAmounts
   }
 }

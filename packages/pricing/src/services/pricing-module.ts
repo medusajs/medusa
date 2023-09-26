@@ -13,6 +13,7 @@ import {
   MoneyAmount,
   PriceRule,
   PriceSet,
+  PriceSetMoneyAmount,
   PriceSetMoneyAmountRules,
   PriceSetRuleType,
   RuleType,
@@ -22,6 +23,7 @@ import {
   MoneyAmountService,
   PriceRuleService,
   PriceSetMoneyAmountRulesService,
+  PriceSetMoneyAmountService,
   PriceSetRuleTypeService,
   PriceSetService,
   RuleTypeService,
@@ -51,6 +53,7 @@ type InjectedDependencies = {
   ruleTypeService: RuleTypeService<any>
   priceRuleService: PriceRuleService<any>
   priceSetRuleTypeService: PriceSetRuleTypeService<any>
+  priceSetMoneyAmountService: PriceSetMoneyAmountService<any>
 }
 
 export default class PricingModuleService<
@@ -60,7 +63,8 @@ export default class PricingModuleService<
   TRuleType extends RuleType = RuleType,
   TPriceSetMoneyAmountRules extends PriceSetMoneyAmountRules = PriceSetMoneyAmountRules,
   TPriceRule extends PriceRule = PriceRule,
-  TPriceSetRuleType extends PriceSetRuleType = PriceSetRuleType
+  TPriceSetRuleType extends PriceSetRuleType = PriceSetRuleType,
+  TPriceSetMoneyAmount extends PriceSetMoneyAmount = PriceSetMoneyAmount
 > implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -71,6 +75,7 @@ export default class PricingModuleService<
   protected readonly priceSetMoneyAmountRulesService_: PriceSetMoneyAmountRulesService<TPriceSetMoneyAmountRules>
   protected readonly priceRuleService_: PriceRuleService<TPriceRule>
   protected readonly priceSetRuleTypeService_: PriceSetRuleTypeService<TPriceSetRuleType>
+  protected readonly priceSetMoneyAmountService_: PriceSetMoneyAmountService<TPriceSetMoneyAmount>
 
   constructor(
     {
@@ -82,6 +87,7 @@ export default class PricingModuleService<
       priceSetMoneyAmountRulesService,
       priceRuleService,
       priceSetRuleTypeService,
+      priceSetMoneyAmountService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -94,6 +100,7 @@ export default class PricingModuleService<
     this.ruleTypeService_ = ruleTypeService
     this.priceRuleService_ = priceRuleService
     this.priceSetRuleTypeService_ = priceSetRuleTypeService
+    this.priceSetMoneyAmountService_ = priceSetMoneyAmountService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -354,8 +361,14 @@ export default class PricingModuleService<
             sharedContext
           )
 
-          // const moneyAmountPriceSets = await this.priceSetMoneyAmountRulesService_
+          const moneyAmountPriceSets = await this.priceSetMoneyAmountService_.create(moneyAmounts.map((ma) => { 
+            return {
+              price_set: priceSet,
+              money_amount: ma,
+            } as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO
+          }), sharedContext)
 
+          console.warn(moneyAmountPriceSets)
           console.warn(moneyAmounts)
           console.warn(moneyAmounts[0].id)
           // create price set money amounts
