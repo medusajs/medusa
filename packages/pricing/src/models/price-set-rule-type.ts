@@ -16,6 +16,7 @@ export default class PriceSetRuleType {
   id!: string
 
   @ManyToOne(() => PriceSet, {
+    onDelete: "cascade",
     index: "IDX_price_set_rule_type_price_set_id",
   })
   price_set: PriceSet
@@ -25,13 +26,12 @@ export default class PriceSetRuleType {
   })
   rule_type: RuleType
 
-  [PrimaryKeyType]?: [string, string]
+  // [PrimaryKeyType]?: [string, string]
 
-  constructor(price_set: PriceSet, rule_type: RuleType) {
-    this.price_set = price_set
-    this.rule_type = rule_type
-  }
-
+  // constructor(price_set: PriceSet, rule_type: RuleType) {
+  //   this.price_set = price_set
+  //   this.rule_type = rule_type
+  // }
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "psrt")

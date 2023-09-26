@@ -75,6 +75,8 @@ export class PriceSetRuleTypeRepository extends DALUtils.MikroOrmBaseRepository 
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const priceSets = data.map((priceSetData) => {
+      console.warn(priceSetData)
+
       return manager.create(PriceSetRuleType, priceSetData)
     })
 

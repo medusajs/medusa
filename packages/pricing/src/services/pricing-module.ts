@@ -278,7 +278,7 @@ export default class PricingModuleService<
       .map((d) => d.rules?.map((r) => r.rule_attribute) ?? [])
       .flat()
 
-    const ruleTypes = await this.listRuleTypes(
+    const ruleTypes = await this.ruleTypeService_.list(
       {
         rule_attribute: ruleAttributes,
       },
@@ -325,18 +325,29 @@ export default class PricingModuleService<
           sharedContext
         )
 
-        if(!d.rules?.length) { 
+        if (!d.rules?.length) {
           return
         }
 
-        const priceSetRuleTypesCreate = d.rules!.map((r) => ({rule_type: ruleTypeMap.get(r.rule_attribute), price_set: priceSet}))
+        if(!priceSet.rule_types.isInitialized) { 
+          priceSet.rule_types.init()
+        }
 
-        console.warn(priceSetRuleTypesCreate)
-        priceSet.rule_types = await this.priceSetRuleTypeService_.create(
+        const priceSetRuleTypesCreate = d.rules!.map((r) => ({
+          rule_type: ruleTypeMap.get(r.rule_attribute),
+          price_set: priceSet,
+        }))
+
+        const prt = await this.priceSetRuleTypeService_.create(
           priceSetRuleTypesCreate as unknown as PricingTypes.CreatePriceSetRuleTypeDTO[],
           sharedContext
-        ) as any
-       
+        )
+
+        // priceSet.rule_types = prt.map((p) => p.rule_type)
+        console.warn(prt)
+
+        // priceSet.rule_types = d.rules!.map((r) => ruleTypeMap.get(r.rule_attribute))
+
         return priceSet
       })
     )
