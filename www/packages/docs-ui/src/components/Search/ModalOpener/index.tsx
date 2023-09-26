@@ -48,7 +48,7 @@ export const SearchModalOpener = ({
     <>
       {isMobile && (
         <Button variant="clear" onClick={handleOpen}>
-          <MagnifyingGlass className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
+          <MagnifyingGlass className="text-medusa-fg-muted" />
         </Button>
       )}
       {!isMobile && (
@@ -59,7 +59,7 @@ export const SearchModalOpener = ({
           <MagnifyingGlass
             className={clsx(
               "absolute left-docs_0.5 top-[5px]",
-              "text-medusa-fg-muted dark:text-medusa-fg-muted-dark"
+              "text-medusa-fg-muted"
             )}
           />
           <InputText

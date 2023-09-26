@@ -24,9 +24,8 @@ const DocSidebarItemIcon: React.FC<DocSidebarItemIconProps> = ({
           IconComponent={IconComponent}
           iconClassName={clsx("sidebar-item-icon")}
           iconColorClassName={clsx(
-            "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-            is_disabled &&
-              "text-medusa-fg-disabled dark:text-medusa-fg-disabled-dark"
+            "text-medusa-fg-subtle",
+            is_disabled && "text-medusa-fg-disabled"
           )}
         />
       )}
@@ -34,9 +33,8 @@ const DocSidebarItemIcon: React.FC<DocSidebarItemIconProps> = ({
         <IconComponent
           className={clsx(
             "sidebar-item-icon",
-            "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-            is_disabled &&
-              "text-medusa-fg-disabled dark:text-medusa-fg-disabled-dark"
+            "text-medusa-fg-subtle",
+            is_disabled && "text-medusa-fg-disabled"
           )}
         />
       )}

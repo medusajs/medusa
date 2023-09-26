@@ -59,7 +59,7 @@ const SearchResults = ({ query = "" }: { query?: string }) => {
             <Tooltip content={name}>
               <div
                 className={clsx(
-                  "border-medusa-border-base dark:border-medusa-border-base-dark",
+                  "border-medusa-border-base",
                   "flex h-10 w-10 items-center justify-center rounded-lg border"
                 )}
               >
@@ -67,7 +67,6 @@ const SearchResults = ({ query = "" }: { query?: string }) => {
                 <div
                   className={clsx(
                     "bg-medusa-bg-component text-medusa-fg-base",
-                    "dark:bg-medusa-bg-component-dark dark:text-medusa-fg-base-dark",
                     "flex h-8 w-8 items-center justify-center rounded-[4px]"
                   )}
                 >
