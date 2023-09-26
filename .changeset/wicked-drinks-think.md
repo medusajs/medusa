@@ -3,4 +3,4 @@
 "@medusajs/types": patch
 ---
 
-feat(types,pricing): add price set money amount rules to pricing module
+feat(types,pricing): Exact match based on context + fallback on rule priority if not
