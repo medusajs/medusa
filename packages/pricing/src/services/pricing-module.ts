@@ -115,13 +115,10 @@ export default class PricingModuleService<
         id: "psma.id",
         price_set_id: "psma.price_set_id",
         money_amount_id: "psma.money_amount_id",
-        title: "psma.title",
         number_rules: "psma.number_rules",
       })
       .join("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
       .join("rule_type as rt", "rt.id", "pr.rule_type_id")
-      .countDistinct({ count_distinct: "rt.rule_attribute" })
-      .count({ count: "rt.rule_attribute" })
       .orderBy("number_rules", "desc")
 
     for (const ruleCondition of ruleConditions) {
@@ -138,14 +135,10 @@ export default class PricingModuleService<
     })
       .select({
         id: "ps.id",
-        ma_id: "ma.id",
         amount: "ma.amount",
         min_quantity: "ma.min_quantity",
         max_quantity: "ma.max_quantity",
         currency_code: "ma.currency_code",
-        title: "psma.title",
-        rule_attribute: "rt.rule_attribute",
-        value: "pr.value",
         default_priority: "rt.default_priority",
         number_rules: "psma.number_rules",
       })
@@ -161,7 +154,6 @@ export default class PricingModuleService<
 
     const queryBuilderResults = await mainQueryKnex
     const groupedPricesByPriceSetId = groupBy(queryBuilderResults, "id")
-
     const calculatedPrices = pricingFilters.id.map(
       (priceSetId): PricingTypes.CalculatedPriceSetDTO => {
         // This is where we select prices, for now we just do a first match based on the database results
