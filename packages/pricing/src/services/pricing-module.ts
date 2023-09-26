@@ -108,6 +108,8 @@ export default class PricingModuleService<
       "pr.value": v,
     }))
 
+    // Gets all the price set money amounts where rules match for each of the contexts
+    // that the price set is configured for
     const psmaSubQueryKnex = knex({
       psma: "price_set_money_amount",
     })
@@ -158,6 +160,7 @@ export default class PricingModuleService<
       (priceSetId): PricingTypes.CalculatedPriceSetDTO => {
         // This is where we select prices, for now we just do a first match based on the database results
         // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
+        // inject custom price selection here
         const price = groupedPricesByPriceSetId[priceSetId]?.[0]
 
         return {
