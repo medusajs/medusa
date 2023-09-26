@@ -106,7 +106,7 @@ function TabList({
         {isCodeTabs && (
           <span
             className={clsx(
-              "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border dark:xs:border-medusa-code-border-dark xs:bg-medusa-code-bg-base dark:xs:bg-medusa-code-bg-base-dark xs:transition-all xs:duration-200 xs:ease-ease xs:top-0 xs:z-[1] xs:rounded-full"
+              "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border xs:bg-medusa-code-bg-base xs:transition-all xs:duration-200 xs:ease-ease xs:top-0 xs:z-[1] xs:rounded-full"
             )}
             ref={codeTabSelectorRef}
           ></span>
@@ -140,18 +140,18 @@ function TabList({
                 isCodeTabs && "z-[2] flex justify-center items-center",
                 isCodeTabs &&
                   selectedValue !== value &&
-                  "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark hover:!bg-medusa-code-bg-base dark:hover:!bg-medusa-code-bg-base-dark",
+                  "text-medusa-code-text-subtle hover:!bg-medusa-code-bg-base",
                 isCodeTabs &&
                   selectedValue === value &&
-                  "text-medusa-code-text-base dark:text-medusa-code-text-base-dark border border-solid border-medusa-code-border dark:border-medusa-code-border-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark xs:!border-none xs:!bg-transparent",
+                  "text-medusa-code-text-base border border-solid border-medusa-code-border bg-medusa-code-bg-base xs:!border-none xs:!bg-transparent",
                 !isCodeTabs &&
                   "border-0 border-b-[3px] rounded inline-flex p-1 transition-[background-color] duration-200 ease-ease",
                 !isCodeTabs &&
                   selectedValue === value &&
-                  "border-solid border-medusa-fg-base dark:border-medusa-fg-base-dark rounded-b-none",
+                  "border-solid border-medusa-fg-base rounded-b-none",
                 !isCodeTabs &&
                   selectedValue !== value &&
-                  "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+                  "text-medusa-fg-subtle",
                 (!isCodeTabs || !attributes?.badge) && "px-0.75",
                 isCodeTabs &&
                   attributes?.badge &&
@@ -166,7 +166,7 @@ function TabList({
       {isCodeTabs && (
         <span
           className={clsx(
-            "text-compact-small-plus text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark hidden xs:block"
+            "text-compact-small-plus text-medusa-code-text-subtle hidden xs:block"
           )}
         >
           {codeTitle}
@@ -246,7 +246,7 @@ export default function Tabs(props: TabsProps): JSX.Element {
         props.wrapperClassName,
         isCodeTabs && "code-tabs",
         !isCodeTabs &&
-          "bg-docs-bg-surface dark:bg-docs-bg-surface-dark p-1 border border-solid border-medusa-border-base dark:border-medusa-border-base-dark rounded"
+          "bg-docs-bg-surface p-1 border border-solid border-medusa-border-base rounded"
       )}
     >
       <TabsComponent
