@@ -133,6 +133,10 @@ export type ModuleJoinerConfig = Omit<
   JoinerServiceConfig,
   "serviceName" | "primaryKeys" | "relationships" | "extends"
 > & {
+  /**
+   * GraphQL schema for the all module's available entities and fields
+   */
+  schema?: string
   relationships?: ModuleJoinerRelationship[]
   extends?: {
     serviceName: string

@@ -11,6 +11,7 @@ import {
   ProductVariant,
 } from "@models"
 import ProductImage from "./models/product-image"
+import moduleSchema from "./schema"
 
 export enum LinkableKeys {
   PRODUCT_ID = "product_id", // Main service ID must the first
@@ -59,6 +60,7 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
   linkableKeys: Object.values(LinkableKeys),
+  schema: moduleSchema,
   alias: [
     {
       name: "product",
