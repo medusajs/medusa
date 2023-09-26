@@ -72,7 +72,7 @@ describe("Sales channels", () => {
       ).toHaveLength(2)
 
       await api.delete(`/admin/sales-channels/${sc.id}`, {
-        headers: { Authorization: "Bearer test_token" },
+        headers: { "x-medusa-access-token": "test_token" },
       })
 
       await expect(salesChannelService.retrieve(sc.id)).rejects.toThrowError()

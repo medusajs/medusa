@@ -17,7 +17,7 @@ export default function FooterLayout({
     <footer
       className={clsx(
         "footer",
-        "border-t border-x-0 border-b-0 border-solid border-medusa-border-base dark:border-medusa-border-base-dark",
+        "border-t border-x-0 border-b-0 border-solid border-medusa-border-base",
         "pt-[108px] pb-4 mt-2",
         {
           "footer--dark": style === "dark",
