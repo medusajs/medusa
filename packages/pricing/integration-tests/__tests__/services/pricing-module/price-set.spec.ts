@@ -287,7 +287,7 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("create", () => {
-    beforeEach(async () => await seedData())
+    // beforeEach(async () => await seedData())
 
     it("should throw an error when creating a price set with rule attributes that don't exist", async () => {
       let error
@@ -333,7 +333,7 @@ describe("PricingModule Service - PriceSet", () => {
       )
     })
 
-    it.only("should create a price set with rule types", async () => {
+    it("should create a price set with rule types", async () => {
       let error
 
       const [priceSet] = await service.create([
@@ -354,12 +354,19 @@ describe("PricingModule Service - PriceSet", () => {
       )
     })
 
-    it("should create a price set with rule types and money amounts", async () => {
+    it.only("should create a price set with rule types and money amounts", async () => {
       let error
 
       const [priceSet] = await service.create([
         {
           rules: [{ rule_attribute: "region_id" }],
+          money_amounts: [{
+            amount: 100, 
+            currency_code: "USD",
+            rules: {
+              region_id: "1"
+            }
+          }]
         },
       ])
 
