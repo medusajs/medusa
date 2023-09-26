@@ -16,7 +16,7 @@ const {
   simpleRegionFactory,
 } = require("../../../../factories")
 const { simpleSalesChannelFactory } = require("../../../../factories")
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("Inventory Items endpoints", () => {
   let appContainer

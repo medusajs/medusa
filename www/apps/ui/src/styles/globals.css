@@ -18,7 +18,11 @@
     @apply !bg-medusa-code-text-highlight;
   }
 
+  body {
+    @apply text-ui-fg-subtle;
+  }
+
   body[data-modal="opened"] {
-    @apply !overflow-hidden;
+    @apply !overflow-hidden text-ui-fg-base;
   }
 }

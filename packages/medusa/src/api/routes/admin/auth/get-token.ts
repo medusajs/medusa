@@ -1,44 +1,44 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator"
-
 import jwt from "jsonwebtoken"
-import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import AuthService from "../../../../services/auth"
 import { validator } from "../../../../utils/validator"
+import { AdminPostAuthReq } from "./create-session"
 
 /**
- * @oas [post] /admin/auth
- * operationId: "PostAuth"
- * summary: "User Login"
+ * @oas [post] /admin/token
+ * operationId: "PostToken"
+ * summary: "User Login (JWT)"
  * x-authenticated: false
- * description: "Log a User in and includes the Cookie session in the response header. The cookie session can be used in subsequent requests to authorize the user to perform admin functionalities.
- * When using Medusa's JS or Medusa React clients, the cookie is automatically attached to subsequent requests."
+ * description: "After a successful login, a JWT token is returned for subsequent authorization."
+ * parameters:
+ *   - (body) email=* {string} The User's email.
+ *   - (body) password=* {string} The User's password.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         $ref: "#/components/schemas/AdminPostAuthReq"
  * x-codegen:
- *   method: createSession
+ *   method: getToken
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.admin.auth.createSession({
- *         email: "user@example.com",
- *         password: "supersecret"
+ *       medusa.admin.auth.getToken({
+ *         email: 'user@example.com',
+ *         password: 'supersecret'
  *       })
- *       .then(({ user }) => {
- *         console.log(user.id);
+ *       .then(({ accessToken }) => {
+ *         console.log(accessToekn);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST '{backend_url}/admin/auth' \
- *       -H 'Content-Type: application/json' \
+ *       curl --location --request POST 'https://medusa-url.com/admin/auth/token' \
+ *       --header 'Content-Type: application/json' \
  *       --data-raw '{
  *         "email": "user@example.com",
  *         "password": "supersecret"
@@ -51,7 +51,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
- *          $ref: "#/components/schemas/AdminAuthRes"
+ *          $ref: "#/components/schemas/AdminBearerAuthRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -66,6 +66,15 @@ import { validator } from "../../../../utils/validator"
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
+  const {
+    projectConfig: { jwt_secret },
+  } = req.scope.resolve("configModule")
+  if (!jwt_secret) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      "Please configure jwt_secret in your environment"
+    )
+  }
   const validated = await validator(AdminPostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")
@@ -77,39 +86,17 @@ export default async (req, res) => {
   })
 
   if (result.success && result.user) {
-    // Set user id on session, this is stored on the server.
-    req.session.user_id = result.user.id
+    // Create jwt token to send back
+    const token = jwt.sign(
+      { user_id: result.user.id, domain: "admin" },
+      jwt_secret,
+      {
+        expiresIn: "24h",
+      }
+    )
 
-    const cleanRes = _.omit(result.user, ["password_hash"])
-
-    res.json({ user: cleanRes })
+    res.json({ access_token: token })
   } else {
     res.sendStatus(401)
   }
-}
-
-/**
- * @schema AdminPostAuthReq
- * type: object
- * required:
- *   - email
- *   - password
- * properties:
- *   email:
- *     type: string
- *     description: The user's email.
- *     format: email
- *   password:
- *     type: string
- *     description: The user's password.
- *     format: password
- */
-export class AdminPostAuthReq {
-  @IsEmail()
-  @IsNotEmpty()
-  email: string
-
-  @IsString()
-  @IsNotEmpty()
-  password: string
 }
