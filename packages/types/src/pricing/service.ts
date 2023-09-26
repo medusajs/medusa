@@ -158,7 +158,7 @@ export interface IPricingModuleService {
   ): Promise<RuleTypeDTO[]>
 
   deleteRuleTypes(
-    ruleTypes: string[],
+    ruleTypeIds: string[],
     sharedContext?: Context
   ): Promise<void>
   
