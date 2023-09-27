@@ -1,7 +1,11 @@
-import { ModuleJoinerConfig, ModuleJoinerRelationship } from "@medusajs/types"
+import { MedusaModule } from "@medusajs/modules-sdk"
+import {
+  LoadedModule,
+  ModuleJoinerConfig,
+  ModuleJoinerRelationship,
+} from "@medusajs/types"
 import { camelToSnakeCase, lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 import { composeTableName } from "./compose-link-name"
-import { MedusaModule } from "@medusajs/modules-sdk"
 
 export function generateGraphQLSchema(
   joinerConfig: ModuleJoinerConfig,
@@ -68,7 +72,7 @@ export function generateGraphQLSchema(
 
   for (const extend of joinerConfig.extends ?? []) {
     const extendedModule = MedusaModule.getModuleInstance(extend.serviceName)
-    if (!extendedModule) {
+    if (!extendedModule && !extend.relationship.isInternalService) {
       throw new Error(
         `Module ${extend.serviceName} not found. Please verify that the module is configured and installed, also the module must be loaded before the link modules.`
       )
@@ -78,10 +82,16 @@ export function generateGraphQLSchema(
     // in the mean time infer it from the service name.
     let extendedEntityName = toPascalCase(composeTableName(extend.serviceName))
     if (!extend.relationship.isInternalService) {
+      const mod = Object.values(extendedModule)[0] as LoadedModule
+
       extendedEntityName =
-        extendedModule.__joinerConfig?.linkableKeys[
-          extend.relationship.primaryKey
-        ]
+        mod.__joinerConfig?.linkableKeys?.[extend.relationship.primaryKey]!
+
+      if (!extendedEntityName) {
+        continue
+      }
+
+      extendedEntityName = toPascalCase(extendedEntityName)
     }
 
     const linkTableFieldName = camelToSnakeCase(
@@ -89,8 +99,7 @@ export function generateGraphQLSchema(
     )
     const type = extend.relationship.isList ? `[${entityName}]` : entityName
 
-    typeDef += `
-    
+    typeDef += `    
       extend type ${extendedEntityName} {
         ${linkTableFieldName}: ${type}
       }
