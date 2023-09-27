@@ -274,7 +274,7 @@ export default class PricingModuleService<
     return this.list(
       { id: priceSets.filter((p) => !!p).map((p) => p!.id) },
       {
-        relations: ["rule_types", "money_amounts"],
+        relations: ["rule_types", "money_amounts", "price_rules"],
       }
     )
   }
@@ -365,7 +365,7 @@ export default class PricingModuleService<
 
             const numberOfRules = Object.entries(ma.rules).length
 
-            const moneyAmountPriceSet =
+            const [priceSetMoneyAmount] =
               await this.priceSetMoneyAmountService_.create(
                 [
                   {
@@ -382,15 +382,19 @@ export default class PricingModuleService<
               const priceSetMoneyAmountRulesCreate = Object.entries(
                 ma.rules
               ).map(([k, v]) => ({
-                price_set_money_amount: moneyAmountPriceSet[0],
+                price_set_money_amount: priceSetMoneyAmount,
                 rule_type: ruleTypeMap.get(k),
+                price_set: priceSet,
                 value: v,
+                price_list_id: 'test'
               }))
 
-              await this.priceSetMoneyAmountRulesService_.create(
-                priceSetMoneyAmountRulesCreate as unknown as PricingTypes.CreatePriceSetMoneyAmountRulesDTO[],
+              const created = await this.priceRuleService_.create(
+                priceSetMoneyAmountRulesCreate as unknown as PricingTypes.CreatePriceRuleDTO[],
                 sharedContext
               )
+
+              priceSet.price_rules.add(created)
             }
           })
         }

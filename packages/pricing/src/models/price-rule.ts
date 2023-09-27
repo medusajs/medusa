@@ -59,7 +59,7 @@ export default class PriceRule {
   // TODO: Add price list
 
   @BeforeCreate()
-  beforeCreate() {
-    this.id = generateEntityId(this.id, "pset")
+  onCreate() {
+    this.id = generateEntityId(this.id, "prule")
   }
 }
