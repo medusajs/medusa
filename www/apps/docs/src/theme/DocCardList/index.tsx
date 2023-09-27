@@ -28,8 +28,6 @@ export default function DocCardList(props: ModifiedProps): JSX.Element {
     (item) => !item.customProps?.exclude_from_doclist
   )
 
-  console.log(props.colSize)
-
   return (
     <section
       className={clsx("cards-grid", `grid-${props.colSize || "4"}`, className)}
