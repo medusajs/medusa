@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require("dotenv").config()
 const fs = require("fs")
-const reverseSidebar = require("./src/utils/reverseSidebar")
+const reverseSidebar = require("./src/utils/reverse-sidebar")
+const excludeSidebarResults = require("./src/utils/exclude-sidebar-results")
 
 const announcementBar = JSON.parse(fs.readFileSync("./announcement.json"))
 
@@ -237,7 +238,8 @@ const config = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/medusajs/medusa/edit/develop/www/docs",
+          editUrl:
+            "https://github.com/medusajs/medusa/edit/develop/www/apps/docs",
           path: "content",
           routeBasePath: "/",
           remarkPlugins: [
@@ -250,7 +252,10 @@ const config = {
             ...args
           }) {
             const sidebarItems = await defaultSidebarItemsGenerator(args)
-            return reverseSidebar(sidebarItems, args.item)
+            return reverseSidebar(
+              excludeSidebarResults(sidebarItems, args.item),
+              args.item
+            )
           },
         },
         theme: {
