@@ -31,10 +31,9 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  groupBy,
   shouldForceTransaction,
 } from "@medusajs/utils"
-
-import { groupBy } from "lodash"
 
 import { joinerConfig } from "../joiner-config"
 
@@ -136,7 +135,6 @@ export default class PricingModuleService<
     psmaSubQueryKnex
       .groupBy("psma.id")
       .having(knex.raw("count(DISTINCT rt.rule_attribute) = psma.number_rules"))
-      .andHaving(knex.raw(`${Object.entries(context).length} > 0`))
 
     const priceSetQueryKnex = knex({
       ps: "price_set",
@@ -165,15 +163,17 @@ export default class PricingModuleService<
       priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
     }
 
-    const queryBuilderResults = await priceSetQueryKnex
-    const groupedPricesByPriceSetId = groupBy(queryBuilderResults, "id")
+    const isContextPresent = Object.entries(context).length
+    // Only if the context is present do we need to query the database.
+    const queryBuilderResults = isContextPresent ? await priceSetQueryKnex : []
+    const pricesSetPricesMap = groupBy(queryBuilderResults, "id")
 
     const calculatedPrices = pricingFilters.id.map(
-      (priceSetId): PricingTypes.CalculatedPriceSetDTO => {
+      (priceSetId: string): PricingTypes.CalculatedPriceSetDTO => {
         // This is where we select prices, for now we just do a first match based on the database results
         // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
         // inject custom price selection here
-        const price = groupedPricesByPriceSetId[priceSetId]?.[0]
+        const price = pricesSetPricesMap.get(priceSetId)?.[0]
 
         return {
           id: priceSetId,
