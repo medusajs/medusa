@@ -26,12 +26,6 @@ export default class PriceSetRuleType {
   })
   rule_type: RuleType
 
-  // [PrimaryKeyType]?: [string, string]
-
-  // constructor(price_set: PriceSet, rule_type: RuleType) {
-  //   this.price_set = price_set
-  //   this.rule_type = rule_type
-  // }
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "psrt")
