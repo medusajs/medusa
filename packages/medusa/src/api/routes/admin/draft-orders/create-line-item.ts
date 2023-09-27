@@ -134,6 +134,13 @@ export default async (req, res) => {
           [validated.variant_id]
         )
 
+        if (!variant) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Variant with id: ${validated.variant_id} not found`
+          )
+        }
+
         line = await lineItemService
           .withTransaction(manager)
           .generateLineItem(prepareLineItemData(variant, validated.quantity), {

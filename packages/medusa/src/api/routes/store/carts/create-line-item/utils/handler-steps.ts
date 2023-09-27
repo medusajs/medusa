@@ -9,6 +9,7 @@ import { IdempotencyCallbackResult } from "../../../../../../types/idempotency-k
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../../index"
 import IsolateProductDomainFeatureFlag from "../../../../../../loaders/feature-flags/isolate-product-domain"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../../../utils"
+import { MedusaError } from "medusa-core-utils"
 
 export const CreateLineItemSteps = {
   STARTED: "started",
@@ -44,6 +45,13 @@ export async function handleAddOrUpdateLineItem(
       remoteQuery,
       [data.variant_id]
     )
+
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Variant with id: ${data.variant_id} not found`
+      )
+    }
 
     line = await lineItemService
       .withTransaction(manager)

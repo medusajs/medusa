@@ -218,8 +218,17 @@ export default async (req, res) => {
             variantIds
           )
 
+          const variantsIdsMap = new Map(variants.map((v) => [v.id, v]))
+
           const generateInputData = validated.items.map((item) => {
-            const variant = variants.find((v) => v.id === item.variant_id)!
+            const variant = variantsIdsMap.get(item.variant_id)
+
+            if (!variant) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Variant with id: ${item.variant_id} not found`
+              )
+            }
 
             return prepareLineItemData(variant, item.quantity)
           })
