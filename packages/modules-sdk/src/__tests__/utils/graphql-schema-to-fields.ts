@@ -1,6 +1,6 @@
 import { mergeTypeDefs } from "@graphql-tools/merge"
 import { makeExecutableSchema } from "@graphql-tools/schema"
-import { getFieldsAndRelations } from "../../utils"
+import { graphqlSchemaToFields } from "../../utils"
 
 const userModule = `
 type User {
@@ -38,14 +38,14 @@ const schema = makeExecutableSchema({
 
 const types = schema.getTypeMap()
 
-describe("getFieldsAndRelations", function () {
+describe("graphqlSchemaToFields", function () {
   it("Should get all fields of a given entity", async function () {
-    const fields = getFieldsAndRelations(types, "User")
+    const fields = graphqlSchemaToFields(types, "User")
     expect(fields).toEqual(expect.arrayContaining(["id", "name"]))
   })
 
   it("Should get all fields of a given entity and a relation", async function () {
-    const fields = getFieldsAndRelations(types, "User", ["posts"])
+    const fields = graphqlSchemaToFields(types, "User", ["posts"])
     expect(fields).toEqual(
       expect.arrayContaining([
         "id",
@@ -58,7 +58,7 @@ describe("getFieldsAndRelations", function () {
   })
 
   it("Should get all fields of a given entity and many relations", async function () {
-    const fields = getFieldsAndRelations(types, "User", [
+    const fields = graphqlSchemaToFields(types, "User", [
       "posts",
       "blabla",
       "blabla.post",
@@ -79,7 +79,7 @@ describe("getFieldsAndRelations", function () {
   })
 
   it("Should get all fields of a given entity and many relations limited to the relations given", async function () {
-    const fields = getFieldsAndRelations(types, "User", ["posts", "blabla"])
+    const fields = graphqlSchemaToFields(types, "User", ["posts", "blabla"])
     expect(fields).toEqual(
       expect.arrayContaining([
         "id",
