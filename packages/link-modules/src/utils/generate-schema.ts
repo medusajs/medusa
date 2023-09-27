@@ -1,7 +1,6 @@
 import { ModuleJoinerConfig, ModuleJoinerRelationship } from "@medusajs/types"
 import { camelToSnakeCase, lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 import { composeTableName } from "./compose-link-name"
-import { ProductShippingProfile } from "../definitions"
 
 export function generateGraphQLSchema(
   joinerConfig: ModuleJoinerConfig,
@@ -117,9 +116,9 @@ function getGraphQLType(type) {
 }
 
 // Testing output
-const typeDefs = generateGraphQLSchema(
+/*const typeDefs = generateGraphQLSchema(
   ProductShippingProfile,
   ProductShippingProfile.relationships![0],
   ProductShippingProfile.relationships![1]
 )
-console.log(typeDefs)
+console.log(typeDefs)*/
