@@ -1147,7 +1147,7 @@ export default class ProductModuleService<
   @InjectManager("baseRepository_")
   async restoreVariants<
     TReturnableLinkableKeys extends string = Lowercase<
-      keyof typeof LinkableKeys // TODO: wrong keys type
+      keyof typeof LinkableKeys
     >
   >(
     variantIds: string[],
@@ -1164,7 +1164,6 @@ export default class ProductModuleService<
       mappedCascadedEntitiesMap = mapObjectTo<
         Record<Lowercase<keyof typeof LinkableKeys>, string[]>
       >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
-        // TODO: wrong entity map
         pick: returnLinkableKeys,
       })
     }
