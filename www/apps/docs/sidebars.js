@@ -53,7 +53,7 @@ module.exports = {
           label: "Ecommerce",
           customProps: {
             iconName: "shopping-cart",
-            excludeFromDocList: true,
+            exclude_from_doc_list: true,
           },
         },
         {
@@ -1950,6 +1950,10 @@ module.exports = {
       collapsible: false,
       customProps: {
         sidebar_is_group_headline: true,
+      },
+      link: {
+        type: "doc",
+        id: "upgrade-guides/medusa-ui/index",
       },
       items: [
         {
