@@ -279,10 +279,6 @@ export default class PricingModuleService<
     )
   }
 
-  // addPrices
-
-  // addPrices during create
-
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async create_(
     data: PricingTypes.CreatePriceSetDTO[],
