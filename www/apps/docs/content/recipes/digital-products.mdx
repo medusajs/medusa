@@ -916,7 +916,7 @@ const ProductMediaCreateForm = ({
               name,
               file_key: uploads[0].key as string,
               type: type as MediaType,
-              mime_type: file.type
+              mime_type: file.type,
             }, {
               onSuccess: () => {
                 notify.success(
@@ -1058,7 +1058,11 @@ Finally, you can send a notification, such as an email, to the customer using th
 Example: Using SendGrid
 </summary>
 
-Before you implement the email sending mechanism, you 
+:::note
+
+An alternative solution is to create a store download endpoint that allows authenticated customers to download products they've purchased, then add the link to the endpoint or a storefront page that calls the endpoint in the email. Learn how to implement the download endpoint [here](#download-product-after-purchase).
+
+:::
 
 Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the SendGrid plugin:
     
@@ -1182,25 +1186,32 @@ Before you customize the Next.js storefront, you need to add a store endpoint in
 Create the file `src/api/routes/store/product-media/list.ts` with the following content:
 
 ```ts title=src/api/routes/store/product-media/list.ts
-import { Request, Response } from "express";
-import ProductMediaService from "../../../../services/product-media";
-import { MediaType } from "../../../../models/product-media";
+import { Request, Response } from "express"
+import ProductMediaService 
+  from "../../../../services/product-media"
+import { MediaType } 
+  from "../../../../models/product-media"
 
 
 // retrieve a list of product medias
 export default async (req: Request, res: Response) => {
-  const productMediaService = req.scope.resolve<ProductMediaService>("productMediaService")
+  const productMediaService = req.scope.resolve<
+    ProductMediaService
+  >("productMediaService")
   // omitting pagination for simplicity
-  const [productMedias, count] = await productMediaService.listAndCount({
+  const [
+    productMedias,
+    count,
+  ] = await productMediaService.listAndCount({
     type: MediaType.PREVIEW,
-    ...(req.query)
+    ...(req.query),
   }, {
-    relations: ["variant"]
+    relations: ["variant"],
   })
 
   res.json({
     product_medias: productMedias,
-    count
+    count,
   })
 }
 ```
@@ -1210,14 +1221,14 @@ This adds a store endpoint that returns a list of product medias of type `previe
 To use this endpoint, you need to export it in a router that’s returned by `src/api/index.ts`. First, create the file `src/api/routes/store/product-media/index.ts` that registers the product media endpoint you created:
 
 ```ts title=src/api/routes/store/product-media/index.ts
-import { wrapHandler } from "@medusajs/utils";
-import { Router } from "express";
-import list from "./list";
+import { wrapHandler } from "@medusajs/utils"
+import { Router } from "express"
+import list from "./list"
 
-const router = Router();
+const router = Router()
 
 export default (storeRouter: Router) => {
-  storeRouter.use("/product-media", router);
+  storeRouter.use("/product-media", router)
 
   router.get("/", wrapHandler(list))
 }
@@ -1230,7 +1241,7 @@ import { Router } from "express"
 import productMediaRoutes from "./product-media"
 
 // Initialize a custom router
-const router = Router();
+const router = Router()
 
 export function attachStoreRoutes(storeRouter: Router) {
   productMediaRoutes(storeRouter)
@@ -1345,22 +1356,31 @@ export type DigitalProductVariant = ProductVariant & {
 Then, add in `src/lib/data/index.ts` a new function that retrieves the product media of the product variant being viewed:
 
 ```ts title=src/lib/data/index.ts
-import { DigitalProduct, ProductMedia } from "types/product-media"
+import { 
+  DigitalProduct, 
+  ProductMedia,
+} from "types/product-media"
 
 // ... rest of the functions
 
 export async function getProductMediaPreviewByVariant(
   variant: Variant
 ): Promise<ProductMedia> {
-  const { product_medias } = await medusaRequest("GET", `/product-media`, {
-    query: {
-      variant_ids: variant.id,
-    },
+  const { 
+    product_medias,
+  } = await medusaRequest(
+    "GET", 
+    `/product-media`,
+    {
+      query: {
+        variant_ids: variant.id,
+      },
+    }
+  )
+  .then((res) => res.body)
+  .catch((err) => {
+    throw err
   })
-    .then((res) => res.body)
-    .catch((err) => {
-      throw err
-    })
 
   return product_medias[0]
 }
@@ -1373,26 +1393,34 @@ import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest) {
   // Get the file info from the URL
-  const { filepath, filename } = Object.fromEntries(req.nextUrl.searchParams)
+  const { 
+    file_path, 
+    file_name, 
+    mime_type,
+  } = Object.fromEntries(req.nextUrl.searchParams)
 
-  // Fetch the PDF file
-  const pdfResponse = await fetch(filepath)
+  // Fetch the file
+  const response = await fetch(file_path)
 
-  // Handle the case where the PDF could not be fetched
-  if (!pdfResponse.ok) return new NextResponse("PDF not found", { status: 404 })
+  // Handle the case where the file could not be fetched
+  if (!response.ok) {
+    return new NextResponse("File not found", { status: 404 })
+  }
 
-  // Get the PDF content as a buffer
-  const pdfBuffer = await pdfResponse.arrayBuffer()
+  // Get the file content as a buffer
+  const fileBuffer = await response.arrayBuffer()
 
   // Define response headers
   const headers = {
-    "Content-Type": "application/pdf",
+    "Content-Type": mime_type,
      // This sets the file name for the download
-    "Content-Disposition": `attachment; filename="${filename}"`,
+    "Content-Disposition": `attachment; filename="${
+      file_name
+    }"`,
   }
 
-  // Create a NextResponse with the PDF content and headers
-  const response = new NextResponse(pdfBuffer, {
+  // Create a NextResponse with the file content and headers
+  const response = new NextResponse(fileBuffer, {
     status: 200,
     headers,
   })
@@ -1400,8 +1428,6 @@ export async function GET(req: NextRequest) {
   return response
 }
 ```
-
-Note that in the example above, it's assumed that the file is a PDF. You can instead use the mime-type of the file to specify the downloaded file's content type.
 
 Next, create the preview button in the file `src/modules/products/components/product-media-preview/index.tsx`:
 
@@ -1415,7 +1441,15 @@ type Props = {
 
 const ProductMediaPreview: React.FC<Props> = ({ media }) => {
   const downloadPreview = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/download/preview?filepath=${media.file_key}&filename=${media.name}`
+    window.location.href = `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/api/download/preview?file_path=${
+      media.file_key
+      }&file_name=${
+        media.name
+        }&mime_type=${
+          media.mime_type
+        }`
   }
 
   return (
@@ -1439,15 +1473,20 @@ import { getProductMediaPreviewByVariant } from "@lib/data"
 import { ProductMedia } from "types/product-media"
 
 
-const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
+const ProductActions: React.FC<ProductActionsProps> = ({
+  product,
+}) => {
 	// other code...
 
-  const [productMedia, setProductMedia] = useState({} as ProductMedia)
+  const [productMedia, setProductMedia] = useState<
+    ProductMedia
+  >({})
 
   useEffect(() => {
     const getProductMedia = async () => {
-      if (!variant) return
-      await getProductMediaPreviewByVariant(variant).then((res) => {
+      if (!variant) {return}
+      await getProductMediaPreviewByVariant(variant)
+      .then((res) => {
         setProductMedia(res)
       })
     }
@@ -1455,9 +1494,12 @@ const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
   }, [variant])
 
   return (
-			// other code...
+    <div>
+			{/* other code... */}
 
-      {productMedia && <ProductMediaPreview media={productMedia} />}
+      {productMedia && (
+        <ProductMediaPreview media={productMedia} />
+      )}
 
       <Button onClick={addToCart}>
         {!inStock ? "Out of stock" : "Add to cart"}
@@ -1520,7 +1562,7 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
   // map the metadata object to an array 
   const metadata = useMemo(() => {
-    if (!product.metadata) return []
+    if (!product.metadata) {return []}
     return Object.keys(product.metadata).map((key) => {
       return [key, product.metadata?.[key]]
     })
@@ -1567,19 +1609,25 @@ const ShippingInfoTab = () => {
         <div className="flex items-start gap-x-2">
           <FastDelivery />
           <div>
-            <span className="font-semibold">Instant delivery</span>
+            <span className="font-semibold">
+              Instant delivery
+            </span>
             <p className="max-w-sm">
-              Your e-book will be delivered instantly via email. You can also
-              download it from your account anytime.
+              Your e-book will be delivered instantly via
+              email. You can also download it from your 
+              account anytime.
             </p>
           </div>
         </div>
         <div className="flex items-start gap-x-2">
           <Refresh />
           <div>
-            <span className="font-semibold">Free previews</span>
+            <span className="font-semibold">
+              Free previews
+            </span>
             <p className="max-w-sm">
-              Get a free preview of the e-book before you buy it. Just click the
+              Get a free preview of the e-book before 
+              you buy it. Just click the
               button above to download it.
             </p>
           </div>
@@ -1605,13 +1653,22 @@ Example
 
 The checkout flow is managed by a checkout context defined in `src/lib/context/checkout-context.tsx`. Change the content of the file to the following:
 
+<!-- eslint-skip -->
+
 ```tsx title=src/lib/context/checkout-context.tsx
 "use client"
 
 import { medusaClient } from "@lib/config"
-import useToggleState, { StateType } from "@lib/hooks/use-toggle-state"
-import { Cart, Customer, StorePostCartsCartReq } from "@medusajs/medusa"
-import Wrapper from "@modules/checkout/components/payment-wrapper"
+import useToggleState, { 
+  StateType,
+} from "@lib/hooks/use-toggle-state"
+import { 
+  Cart,
+  Customer,
+  StorePostCartsCartReq,
+} from "@medusajs/medusa"
+import Wrapper 
+  from "@modules/checkout/components/payment-wrapper"
 import { isEqual } from "lodash"
 import {
   formatAmount,
@@ -1623,8 +1680,17 @@ import {
   useUpdateCart,
 } from "medusa-react"
 import { useRouter } from "next/navigation"
-import React, { createContext, useContext, useEffect, useMemo } from "react"
-import { FormProvider, useForm, useFormContext } from "react-hook-form"
+import React, { 
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react"
+import { 
+  FormProvider, 
+  useForm, 
+  useFormContext,
+} from "react-hook-form"
 import { useStore } from "./store-context"
 
 type AddressValues = {
@@ -1641,7 +1707,11 @@ export type CheckoutFormValues = {
 
 interface CheckoutContext {
   cart?: Omit<Cart, "refundable_amount" | "refunded_total">
-  shippingMethods: { label?: string; value?: string; price: string }[]
+  shippingMethods: { 
+    label?: string;
+    value?: string;
+    price: string
+  }[]
   isLoading: boolean
   readyToComplete: boolean
   sameAsBilling: StateType
@@ -1654,7 +1724,9 @@ interface CheckoutContext {
   onPaymentCompleted: () => void
 }
 
-const CheckoutContext = createContext<CheckoutContext | null>(null)
+const CheckoutContext = createContext<
+  CheckoutContext | null
+>(null)
 
 interface CheckoutProviderProps {
   children?: React.ReactNode
@@ -1662,7 +1734,9 @@ interface CheckoutProviderProps {
 
 const IDEMPOTENCY_KEY = "create_payment_session_key"
 
-export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
+export const CheckoutProvider = ({
+  children,
+}: CheckoutProviderProps) => {
   const {
     cart,
     setCart,
@@ -1670,7 +1744,10 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
       mutate: setShippingMethod,
       isLoading: addingShippingMethod,
     },
-    completeCheckout: { mutate: complete, isLoading: completingCheckout },
+    completeCheckout: { 
+      mutate: complete, 
+      isLoading: completingCheckout,
+    },
   } = useCart()
 
   const { customer } = useMeCustomer()
@@ -1686,11 +1763,16 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
     isLoading: settingPaymentSession,
   } = useSetPaymentSession(cart?.id!)
 
-  const { mutate: updateCart, isLoading: updatingCart } = useUpdateCart(
+  const { 
+    mutate: updateCart,
+    isLoading: updatingCart,
+  } = useUpdateCart(
     cart?.id!
   )
 
-  const { shipping_options } = useCartShippingOptions(cart?.id!, {
+  const { 
+    shipping_options,
+  } = useCartShippingOptions(cart?.id!, {
     enabled: !!cart?.id,
   })
 
@@ -1707,7 +1789,8 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   )
 
   /**
-   * Boolean that indicates if a part of the checkout is loading.
+   * Boolean that indicates if a 
+   * part of the checkout is loading.
    */
   const isLoading = useMemo(() => {
     return (
@@ -1724,8 +1807,10 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   ])
 
   /**
-   * Boolean that indicates if the checkout is ready to be completed. A checkout is ready to be completed if
-   * the user has supplied a email, shipping address, billing address, shipping method, and a method of payment.
+   * Boolean that indicates if the checkout is ready to be
+   * completed. A checkout is ready to be completed if
+   * the user has supplied a email, shipping address, 
+   * billing address, shipping method, and a method of payment.
    */
   const readyToComplete = useMemo(() => {
     return (
@@ -1778,7 +1863,9 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   }, [cart])
 
   /**
-   * Method to set the selected shipping method for the cart. This is called when the user selects a shipping method, such as UPS, FedEx, etc.
+   * Method to set the selected shipping method for the cart.
+   * This is called when the user selects a shipping method,
+   * such as UPS, FedEx, etc.
    */
   const setShippingOption = (soId: string) => {
     if (cart) {
@@ -1792,7 +1879,9 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   }
 
   /**
-   * Method to create the payment sessions available for the cart. Uses a idempotency key to prevent duplicate requests.
+   * Method to create the payment sessions available for the
+   * cart. Uses a idempotency key to prevent 
+   * duplicate requests.
    */
   const createPaymentSession = async (cartId: string) => {
     return medusaClient.carts
@@ -1804,7 +1893,8 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   }
 
   /**
-   * Method that calls the createPaymentSession method and updates the cart with the payment session.
+   * Method that calls the createPaymentSession method and
+   * updates the cart with the payment session.
    */
   const initPayment = async () => {
     if (cart?.id && !cart.payment_sessions?.length && cart?.items?.length) {
@@ -1820,7 +1910,9 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   }
 
   /**
-   * Method to set the selected payment session for the cart. This is called when the user selects a payment provider, such as Stripe, PayPal, etc.
+   * Method to set the selected payment session for the cart.
+   * This is called when the user selects a payment provider,
+   * such as Stripe, PayPal, etc.
    */
   const setPaymentSession = (providerId: string) => {
     if (cart) {
@@ -1840,7 +1932,9 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   const prepareFinalSteps = () => {
     initPayment()
 
-    if (shippingMethods?.length && shippingMethods?.[0]?.value) {
+    if (
+      shippingMethods?.length && shippingMethods?.[0]?.value
+    ) {
       setShippingOption(shippingMethods[0].value)
     }
   }
@@ -1856,7 +1950,9 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   }
 
   /**
-   * Method that validates if the cart's region matches the shipping address's region. If not, it will update the cart region.
+   * Method that validates if the cart's region matches the 
+   * shipping address's region. If not, it will update the
+   * cart region.
    */
   const validateRegion = (countryCode: string) => {
     if (regions && cart) {
@@ -1900,7 +1996,8 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
   }
 
   /**
-   * Method to complete the checkout process. This is called when the user clicks the "Complete Checkout" button.
+   * Method to complete the checkout process. This is called
+   * when the user clicks the "Complete Checkout" button.
    */
   const onPaymentCompleted = () => {
     complete(undefined, {
@@ -1929,7 +2026,11 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
           onPaymentCompleted,
         }}
       >
-        <Wrapper paymentSession={cart?.payment_session}>{children}</Wrapper>
+        <Wrapper
+          paymentSession={cart?.payment_session}
+        >
+          {children}
+        </Wrapper>
       </CheckoutContext.Provider>
     </FormProvider>
   )
@@ -1947,7 +2048,9 @@ export const useCheckout = () => {
 }
 
 /**
- * Method to map the fields of a potential customer and the cart to the checkout form values. Information is assigned with the following priority:
+ * Method to map the fields of a potential customer and 
+ * the cart to the checkout form values. Information is 
+ * assigned with the following priority:
  * 1. Cart information
  * 2. Customer information
  * 3. Default values - null
@@ -1957,8 +2060,10 @@ const mapFormValues = (
   cart?: Omit<Cart, "refundable_amount" | "refunded_total">,
   currentCountry?: string
 ): CheckoutFormValues => {
-  const customerShippingAddress = customer?.shipping_addresses?.[0]
-  const customerBillingAddress = customer?.billing_address
+  const customerShippingAddress = 
+    customer?.shipping_addresses?.[0]
+  const customerBillingAddress = 
+    customer?.billing_address
 
   return {
     shipping_address: {
@@ -1999,6 +2104,8 @@ This removes all references to shipping fields that you don't need for digital p
 
 Next, update the content of `src/modules/checkout/components/addresses/index.tsx` to remove the unnecessary address fields:
 
+<!-- eslint-disable max-len -->
+
 ```tsx title=src/modules/checkout/components/addresses/index.tsx
 import { useCheckout } from "@lib/context/checkout-context"
 import Button from "@modules/common/components/button"
@@ -2014,7 +2121,7 @@ const Addresses = () => {
   } = useCheckout()
   return (
     <div className="bg-white">
-      <div className="text-xl-semi flex items-center gap-x-4 px-8 pb-6 pt-8">
+      <div className={"text-xl-semi flex items-center gap-x-4 px-8 pb-6 pt-8"}>
         <div className="bg-gray-900 w-8 h-8 rounded-full text-white flex justify-center items-center text-sm">
           1
         </div>
@@ -2089,17 +2196,27 @@ const ShippingDetails = ({
     <div className="text-base-regular">
       <h2 className="text-base-semi">Delivery</h2>
       <div className="my-2">
-        <h3 className="text-small-regular text-gray-700">Details</h3>
+        <h3 className="text-small-regular text-gray-700">
+          Details
+        </h3>
         <div className="flex flex-col">
-          <span>{`${address.first_name} ${address.last_name}`}</span>
+          <span>
+            {`${address.first_name} ${address.last_name}`}
+          </span>
           <span>{email}</span>
         </div>
       </div>
       <div className="my-2">
-        <h3 className="text-small-regular text-gray-700">Delivery method</h3>
+        <h3 className="text-small-regular text-gray-700">
+          Delivery method
+        </h3>
         <div>
           {shippingMethods.map((sm) => {
-            return <div key={sm.id}>{sm.shipping_option.name}</div>
+            return (
+              <div key={sm.id}>
+                {sm.shipping_option.name}
+              </div>
+            )
           })}
         </div>
       </div>
@@ -2126,10 +2243,18 @@ Before you implement the storefront changes, you need to create a new endpoint i
 Create the file `src/api/routes/store/product-media/download.ts` with the following content:
 
 ```ts title=src/api/routes/store/product-media/download.ts
-import { Request, Response } from "express";
-import ProductMediaService from "../../../../services/product-media";
-import { MediaType } from "../../../../models/product-media";
-import { AbstractFileService, CustomerService, OrderService, ProductVariant } from "@medusajs/medusa";
+import { Request, Response } from "express"
+import ProductMediaService 
+  from "../../../../services/product-media"
+import { 
+  MediaType,
+} from "../../../../models/product-media"
+import { 
+  AbstractFileService,
+  CustomerService,
+  OrderService,
+  ProductVariant,
+} from "@medusajs/medusa"
 
 
 // download a purchased product
@@ -2138,11 +2263,13 @@ export default async (req: Request, res: Response) => {
   if (!variantId) {
     throw new Error("Variant ID is required")
   }
-  const ordersService = req.scope.resolve<OrderService>("orderService")
+  const ordersService = req.scope.resolve<
+    OrderService
+  >("orderService")
   const orders = await ordersService.list({
     customer_id: req.user.customer_id,
   }, {
-    relations: ["items", "items.variant"]
+    relations: ["items", "items.variant"],
   })
   
   let variant: ProductVariant
@@ -2162,19 +2289,25 @@ export default async (req: Request, res: Response) => {
   }
 
   // get the product media and the presigned URL
-  const productMediaService = req.scope.resolve<ProductMediaService>("productMediaService")
+  const productMediaService = req.scope.resolve<
+    ProductMediaService
+  >("productMediaService")
   const productMedias = await productMediaService.list({
     type: MediaType.MAIN,
-    variant_id: variant.id
+    variant_id: variant.id,
   })
 
-  const fileService = req.scope.resolve<AbstractFileService>("fileService")
+  const fileService = req.scope.resolve<
+    AbstractFileService
+  >("fileService")
 
   res.json({
     url: await fileService.getPresignedDownloadUrl({
       fileKey: productMedias[0].file_key,
       isPrivate: true,
-    })
+    }),
+    name: productMedias[0].name,
+    mime_type: productMedias[0].mime_type,
   })
 }
 ```
@@ -2182,9 +2315,11 @@ export default async (req: Request, res: Response) => {
 Then, register the new endpoint in `src/api/routes/store/product-media/index.ts`:
 
 ```ts title=src/api/routes/store/product-media/index.ts
-import { wrapHandler } from "@medusajs/utils";
-import { requireCustomerAuthentication } from "@medusajs/medusa"
-import download from "./download";
+import { wrapHandler } from "@medusajs/utils"
+import { 
+  requireCustomerAuthentication,
+} from "@medusajs/medusa"
+import download from "./download"
 
 // ...
 
@@ -2203,7 +2338,76 @@ Note that you use the `requireCustomerAuthentication` middleware to ensure only 
 
 You can use this endpoint in your storefront to add a button that allows downloading the purchased digital product.
 
+To mask the presigned URL, create a Next.js API route at `src/app/api/download/main/[variant_id]/route.ts` with the following content:
+
+```ts title=src/app/api/download/main/[variant_id]/route.ts
+import { NextRequest, NextResponse } from "next/server"
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Record<string, any> }
+) {
+  // Get the variant ID from the URL
+  const { variant_id } = params
+
+  // Define the API URL
+  const apiUrl = `${
+    process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+  }/store/product-media/download/${variant_id}`
+
+  // Fetch the file data
+  const { 
+    url,
+    name,
+    mime_type,
+  } = await fetch(apiUrl)
+    .then((res) => res.json())
+
+  // Handle the case where the file doesn't exist
+  // or the customer didn't purchase the product
+  if (!url) {
+    return new NextResponse(
+      "File doesn't exist", 
+      { status: 401 }
+    )
+  }
+
+  // Fetch the file
+  const response = await fetch(url)
+
+  // Handle the case where the file could not be fetched
+  if (!response.ok) {
+    return new NextResponse(
+      "File not found",
+      { status: 404 }
+    )
+  }
+
+  // Get the file content as a buffer
+  const fileBuffer = await response.arrayBuffer()
+
+  // Define response headers
+  const headers = {
+    "Content-Type": mime_type,
+     // This sets the file name for the download
+    "Content-Disposition": `attachment; filename="${name}"`,
+  }
+
+  // Create a NextResponse with the PDF content and headers
+  const response = new NextResponse(fileBuffer, {
+    status: 200,
+    headers,
+  })
+
+  return response
+}
+```
+
+Finally, add a button in the storefront that uses this route to allow customers to download the digital product after purchase.
+
 For example, you can change the `src/modules/order/components/items/index.tsx` file that shows the items to the customer in the order confirmation page to include a new download button:
+
+<!-- eslint-disable max-len -->
 
 ```tsx title=src/modules/order/components/items/index.tsx
 import useEnrichedLineItems from "@lib/hooks/use-enrich-line-items"
@@ -2225,16 +2429,7 @@ const Items = ({ items, region, cartId }: ItemsProps) => {
   const enrichedItems = useEnrichedLineItems(items, cartId)
 
   const handleDownload = async (variantId: string) => {
-    const { url } = await medusaRequest(
-      "GET",
-      `/product-media/download/${item.variant.id}`
-    )
-    .then((res) => res.body)
-    .catch((err) => {
-      throw err
-    })
-
-    window.location.href = url
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/download/main/${variant_id}`
   }
 
   return (
