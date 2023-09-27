@@ -56,8 +56,8 @@ export function generateGraphQLSchema(
         )
         .join("\n      ")}
         
-      ${primaryField}!
-      ${foreignField}!
+      ${primaryField}
+      ${foreignField}
       
       createdAt: String!
       updatedAt: String!
@@ -70,12 +70,12 @@ export function generateGraphQLSchema(
       composeTableName(extend.serviceName)
     )
     const linkTableFieldName = lowerCaseFirst(entityName)
-    const type = extend.relationship.isList ? `[${entityName}!]` : entityName
+    const type = extend.relationship.isList ? `[${entityName}]` : entityName
 
     typeDef += `
     
       extend type ${extendedEntityName} {
-        ${linkTableFieldName}: ${type}!
+        ${linkTableFieldName}: ${type}
       }
     `
   }
