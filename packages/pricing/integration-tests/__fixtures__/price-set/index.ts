@@ -18,7 +18,7 @@ export async function createPriceSets(
 
     let priceSet = manager.create(PriceSet, priceSetDataClone) as PriceSet
 
-    await manager.persistAndFlush(priceSet)
+    await manager.persist(priceSet).flush()
 
     for (let moneyAmount of moneyAmountsData) {
       const price_set = (await manager.findOne(
@@ -32,7 +32,7 @@ export async function createPriceSets(
         title: "test",
       })
 
-    await manager.persistAndFlush(psma)
+      manager.persist(psma).flush()
     }
   }
 

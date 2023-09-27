@@ -13,12 +13,10 @@ import {
 import MoneyAmount from "./money-amount"
 import PriceRule from "./price-rule"
 import PriceSetMoneyAmount from "./price-set-money-amount"
-import RuleType from "./rule-type"
-import PriceSetRuleType from "./price-set-rule-type"
 
 @Entity()
 export default class PriceSet {
-  [OptionalProps]?: "price_set_money_amounts" | "rule_types"
+  [OptionalProps]?: "price_set_money_amounts"
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -38,13 +36,6 @@ export default class PriceSet {
     pivotEntity: () => PriceSetMoneyAmount,
   })
   money_amounts = new Collection<MoneyAmount>(this)
-
-  @ManyToMany({
-    entity: () => RuleType,
-    pivotEntity: () => PriceSetRuleType,
-    cascade: [Cascade.REMOVE],
-  })
-  rule_types = new Collection<RuleType>(this)
 
   @BeforeCreate()
   onCreate() {

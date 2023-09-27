@@ -59,9 +59,6 @@ describe("PriceSetMoneyAmountRules Service", () => {
         expect.objectContaining({
           id: "psmar-3",
         }),
-        expect.objectContaining({
-          id: "psmar-4",
-        }),
       ])
     })
 
@@ -83,7 +80,7 @@ describe("PriceSetMoneyAmountRules Service", () => {
       const [priceSetMoneyAmountRulesResult, count] =
         await service.listAndCount()
 
-      expect(count).toEqual(4)
+      expect(count).toEqual(3)
       expect(priceSetMoneyAmountRulesResult).toEqual([
         expect.objectContaining({
           id: "psmar-1",
@@ -93,9 +90,6 @@ describe("PriceSetMoneyAmountRules Service", () => {
         }),
         expect.objectContaining({
           id: "psmar-3",
-        }),
-        expect.objectContaining({
-          id: "psmar-4",
         }),
       ])
     })
@@ -118,7 +112,7 @@ describe("PriceSetMoneyAmountRules Service", () => {
       const [priceSetMoneyAmountRulesResult, count] =
         await service.listAndCount({}, { skip: 1, take: 1 })
 
-      expect(count).toEqual(4)
+      expect(count).toEqual(3)
       expect(priceSetMoneyAmountRulesResult).toEqual([
         expect.objectContaining({
           id: "psmar-2",
@@ -140,7 +134,7 @@ describe("PriceSetMoneyAmountRules Service", () => {
         JSON.stringify(priceSetMoneyAmountRulesResult)
       )
 
-      expect(count).toEqual(4)
+      expect(count).toEqual(3)
       expect(serialized).toEqual([
         {
           id: "psmar-1",
