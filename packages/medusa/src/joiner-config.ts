@@ -5,7 +5,7 @@ export const joinerConfig: ModuleJoinerConfig[] = [
   {
     serviceName: "cartService",
     primaryKeys: ["id"],
-    linkableKeys: ["cart_id"],
+    linkableKeys: { cart_id: "Cart" },
     alias: [
       {
         name: "cart",
@@ -65,7 +65,7 @@ export const joinerConfig: ModuleJoinerConfig[] = [
   {
     serviceName: "regionService",
     primaryKeys: ["id"],
-    linkableKeys: ["region_id"],
+    linkableKeys: { region_id: "Region" },
     alias: [
       {
         name: "region",
@@ -78,7 +78,7 @@ export const joinerConfig: ModuleJoinerConfig[] = [
   {
     serviceName: "customerService",
     primaryKeys: ["id"],
-    linkableKeys: ["customer_id"],
+    linkableKeys: { customer_id: "Customer" },
     alias: [
       {
         name: "customer",
