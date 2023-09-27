@@ -24,6 +24,7 @@ describe("/store/products", () => {
   const giftCardId = "giftcard"
   const testProductId = "test-product"
   const testProductId1 = "test-product1"
+  const testProductId2 = "test-product2"
   const testProductFilteringId1 = "test-product_filtering_1"
   const testProductFilteringId2 = "test-product_filtering_2"
 
@@ -156,7 +157,7 @@ describe("/store/products", () => {
         response.data.products.find((p) => p.id === testProductId1)
       )
       const testProduct2Index = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product2")
+        response.data.products.find((p) => p.id === testProductId2)
       )
 
       expect(testProduct2Index).toBe(3) // 200
@@ -972,7 +973,7 @@ describe("/store/products", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )

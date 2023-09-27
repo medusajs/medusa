@@ -44,6 +44,9 @@ export const PropRegistry: Record<string, PropRegistryItem> = {
   "status-badge": {
     table: React.lazy(async () => import("../props/status-badge")),
   },
+  "focus-modal": {
+    table: React.lazy(async () => import("../props/focus-modal")),
+  },
   heading: {
     table: React.lazy(async () => import("../props/heading")),
   },

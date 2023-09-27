@@ -91,7 +91,7 @@ const TagsOperationCodeSectionResponsesSample = ({
                   examples.find((ex) => ex.value === event.target.value)
                 )
               }
-              className="border-medusa-border-base dark:border-medusa-border-base-dark my-1 w-full rounded-sm border p-0.5"
+              className="border-medusa-border-base my-1 w-full rounded-sm border p-0.5"
             >
               {examples.map((example, index) => (
                 <option value={example.value} key={index}>

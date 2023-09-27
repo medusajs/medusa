@@ -11,6 +11,7 @@ import { Button } from "@/components"
 
 export type NotificationItemLayoutDefaultProps = NotificationItemProps & {
   handleClose: () => void
+  closeButtonText?: string
 }
 
 export const NotificationItemLayoutDefault: React.FC<
@@ -23,6 +24,7 @@ export const NotificationItemLayoutDefault: React.FC<
   isClosable = true,
   handleClose,
   CustomIcon,
+  closeButtonText = "Close",
 }) => {
   return (
     <>
@@ -34,25 +36,22 @@ export const NotificationItemLayoutDefault: React.FC<
             )}
           >
             {type === "info" && (
-              <InformationCircleSolid className="text-medusa-fg-interactive-dark" />
+              <InformationCircleSolid className="text-medusa-tag-blue-icon" />
             )}
             {type === "error" && (
-              <XCircleSolid className="text-medusa-tag-red-icon dark:text-medusa-tag-red-icon-dark" />
+              <XCircleSolid className="text-medusa-tag-red-icon" />
             )}
             {type === "warning" && (
-              <ExclamationCircleSolid className="text-medusa-tag-orange-icon dark:text-medusa-tag-orange-icon-dark" />
+              <ExclamationCircleSolid className="text-medusa-tag-orange-icon" />
             )}
             {type === "success" && (
-              <CheckCircleSolid className="text-medusa-tag-green-icon dark:text-medusa-tag-green-icon-dark" />
+              <CheckCircleSolid className="text-medusa-tag-green-icon" />
             )}
             {type === "custom" && CustomIcon}
           </div>
         )}
         <span
-          className={clsx(
-            "text-compact-medium-plus",
-            "text-medusa-fg-base dark:text-medusa-fg-base-dark"
-          )}
+          className={clsx("text-compact-medium-plus", "text-medusa-fg-base")}
         >
           {title}
         </span>
@@ -61,17 +60,13 @@ export const NotificationItemLayoutDefault: React.FC<
         <div
           className={clsx(
             "flex pt-0 pr-docs_1 pb-docs_1.5 pl-docs_1 gap-docs_1",
-            "border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark"
+            "border-0 border-b border-solid border-medusa-border-base"
           )}
         >
           <div className="w-docs_2 flex-none"></div>
           <div className={clsx("flex flex-col", children && "gap-docs_1")}>
             {text && (
-              <span
-                className={clsx(
-                  "text-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
-                )}
-              >
+              <span className={clsx("text-medium text-medusa-fg-subtle")}>
                 {text}
               </span>
             )}
@@ -81,7 +76,7 @@ export const NotificationItemLayoutDefault: React.FC<
       )}
       {isClosable && (
         <div className={clsx("p-docs_1 flex justify-end items-center")}>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose}>{closeButtonText}</Button>
         </div>
       )}
     </>

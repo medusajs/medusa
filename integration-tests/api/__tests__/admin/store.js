@@ -40,7 +40,7 @@ describe("/admin/store", () => {
       const api = useApi()
 
       const response = await api.get("/admin/store", {
-        headers: { Authorization: "Bearer test_token " },
+        headers: { "x-medusa-access-token": "test_token " },
       })
 
       expect(response.status).toEqual(200)
@@ -99,7 +99,7 @@ describe("/admin/store", () => {
             default_currency_code: "eur",
           },
           {
-            headers: { Authorization: "Bearer test_token " },
+            headers: { "x-medusa-access-token": "test_token " },
           }
         )
       } catch (e) {
@@ -121,7 +121,7 @@ describe("/admin/store", () => {
             currencies: ["usd"],
           },
           {
-            headers: { Authorization: "Bearer test_token " },
+            headers: { "x-medusa-access-token": "test_token " },
           }
         )
       } catch (e) {
@@ -144,7 +144,7 @@ describe("/admin/store", () => {
             default_currency_code: "dkk",
           },
           {
-            headers: { Authorization: "Bearer test_token " },
+            headers: { "x-medusa-access-token": "test_token " },
           }
         )
         .catch((err) => console.log(err))
@@ -180,7 +180,7 @@ describe("/admin/store", () => {
           currencies: ["jpy", "usd"],
         },
         {
-          headers: { Authorization: "Bearer test_token " },
+          headers: { "x-medusa-access-token": "test_token " },
         }
       )
 
@@ -214,7 +214,7 @@ describe("/admin/store", () => {
           currencies: ["jpy", "usd"],
         },
         {
-          headers: { Authorization: "Bearer test_token " },
+          headers: { "x-medusa-access-token": "test_token " },
         }
       )
 

@@ -48,18 +48,18 @@ export const SearchModalOpener = ({
     <>
       {isMobile && (
         <Button variant="clear" onClick={handleOpen}>
-          <MagnifyingGlass className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
+          <MagnifyingGlass className="text-medusa-fg-muted" />
         </Button>
       )}
       {!isMobile && (
         <div
-          className={clsx("relative w-min hover:cursor-pointer")}
+          className={clsx("relative w-min hover:cursor-pointer group")}
           onClick={handleOpen}
         >
           <MagnifyingGlass
             className={clsx(
               "absolute left-docs_0.5 top-[5px]",
-              "text-medusa-fg-muted dark:text-medusa-fg-muted-dark"
+              "text-medusa-fg-muted"
             )}
           />
           <InputText
@@ -73,6 +73,7 @@ export const SearchModalOpener = ({
             onClick={handleOpen}
             onFocus={(e) => e.target.blur()}
             tabIndex={-1}
+            addGroupStyling={true}
           />
           <span
             className={clsx(

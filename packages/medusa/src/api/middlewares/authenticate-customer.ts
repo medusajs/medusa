@@ -7,7 +7,7 @@ import passport from "passport"
 export default (): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction): void => {
     passport.authenticate(
-      ["store-jwt", "bearer"],
+      ["store-session", "store-bearer"],
       { session: false },
       (err, user) => {
         if (err) {

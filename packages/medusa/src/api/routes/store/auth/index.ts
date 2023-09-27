@@ -15,6 +15,7 @@ export default (app) => {
   route.get("/:email", middlewares.wrap(require("./exists").default))
   route.delete("/", middlewares.wrap(require("./delete-session").default))
   route.post("/", middlewares.wrap(require("./create-session").default))
+  route.post("/token", middlewares.wrap(require("./get-token").default))
 
   return app
 }
@@ -42,6 +43,18 @@ export type StoreAuthRes = {
 }
 
 /**
+ * @schema StoreBearerAuthRes
+ * type: object
+ * properties:
+ *   accessToken:
+ *     description: Access token for subsequent authorization.
+ *     type: string
+ */
+export type StoreBearerAuthRes = {
+  access_token: string
+}
+
+/**
  * @schema StoreGetAuthEmailRes
  * type: object
  * required:
@@ -59,3 +72,4 @@ export * from "./create-session"
 export * from "./delete-session"
 export * from "./exists"
 export * from "./get-session"
+export * from "./get-token"
