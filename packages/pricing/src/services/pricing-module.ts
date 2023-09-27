@@ -334,17 +334,18 @@ export default class PricingModuleService<
 
     const priceSets = await Promise.all(
       data.map(async (d) => {
+        const { rules, money_amounts, ...rest } = d
         const [priceSet] = await this.priceSetService_.create(
-          [{}],
+          [rest],
           sharedContext
         )
 
-        if (d.rules?.length) {
+        if (rules?.length) {
           if (!priceSet.rule_types.isInitialized) {
             priceSet.rule_types.init()
           }
 
-          const priceSetRuleTypesCreate = d.rules!.map((r) => ({
+          const priceSetRuleTypesCreate = rules!.map((r) => ({
             rule_type: ruleTypeMap.get(r.rule_attribute),
             price_set: priceSet,
           }))
@@ -355,8 +356,8 @@ export default class PricingModuleService<
           )
         }
 
-        if (d.money_amounts?.length) {
-          await d.money_amounts.forEach(async (ma) => {
+        if (money_amounts?.length) {
+          await money_amounts.forEach(async (ma) => {
             const [moneyAmount] = await this.moneyAmountService_.create(
               [ma] as unknown as CreateMoneyAmountDTO[],
               sharedContext
