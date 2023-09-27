@@ -78,13 +78,16 @@ export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
 
     const toCreate = await Promise.all(
       data.map(async (ruleData) => {
-        const ruleDataClone = { ...ruleData } as any
+        const ruleDataClone = { ...ruleData } as CreatePriceRuleDTO & {
+          rule_type: string
+          price_set: string
+          price_set_money_amount: string
+        }
+        ruleDataClone.rule_type = ruleData.rule_type_id
 
-        ruleDataClone.rule_type ??= ruleData.rule_type_id
+        ruleDataClone.price_set = ruleData.price_set_id
 
-        ruleDataClone.price_set ??= ruleData.price_set_id
-
-        ruleDataClone.price_set_money_amount ??=
+        ruleDataClone.price_set_money_amount =
           ruleData.price_set_money_amount_id
 
         return ruleDataClone
@@ -95,7 +98,7 @@ export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
       return manager.create(PriceRule, ruleData as CreatePriceRuleDTO)
     })
 
-    manager.persistAndFlush(priceRules)
+    manager.persist(priceRules)
 
     return priceRules
   }

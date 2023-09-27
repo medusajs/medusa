@@ -2,7 +2,7 @@ import { CreatePriceSetDTO, IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
-import { PriceSetRuleType, initialize } from "../../../../src"
+import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import {
   createMoneyAmounts,
@@ -19,7 +19,6 @@ import {
 } from "../../../__fixtures__/price-set-money-amount"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
-import { CreatePriceSetRuleTypeDTO } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
@@ -36,24 +35,6 @@ async function seedData({
   await createPriceSetMoneyAmounts(testManager, priceSetMoneyAmountsData)
   await createRuleTypes(testManager)
   await createPriceRules(testManager, priceRuleData)
-  await createPriceSetPriceRules(testManager, [
-    { id: "test", price_set: "price-set-1", rule_type: "rule-type-1" },
-  ])
-}
-
-async function createPriceSetPriceRules(
-  manager: SqlEntityManager,
-  priceSetRulesData: CreatePriceSetRuleTypeDTO[]
-): Promise<void> {
-  const priceSetRules: PriceSetRuleType[] = []
-
-  for (let priceSetRuleData of priceSetRulesData) {
-    const priceRule = manager.create(PriceSetRuleType, priceSetRuleData)
-
-    priceSetRules.push(priceRule)
-  }
-
-  await manager.persistAndFlush(priceSetRules)
 }
 
 describe("PricingModule Service - PriceSet", () => {
@@ -71,9 +52,9 @@ describe("PricingModule Service - PriceSet", () => {
         schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
       },
     })
-
-    await seedData()
   })
+
+  beforeEach(async () => await seedData())
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
@@ -306,137 +287,20 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("create", () => {
-    it("should throw an error when creating a price set with rule attributes that don't exist", async () => {
+    it("should throw an error when a id does not exist", async () => {
       let error
 
       try {
-        await service.create([
+        await service.update([
           {
-            rules: [{ rule_attribute: "does-not-exist" }],
-          },
+            random: "does-not-exist",
+          } as any,
         ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual(
-        "Rule types don't exist for: does-not-exist"
-      )
-    })
-
-    it("should fail to create a price set with rule types and money amounts with rule types that don't exits", async () => {
-      let error
-
-      try {
-        await service.create([
-          {
-            rules: [{ rule_attribute: "region_id" }],
-            money_amounts: [
-              {
-                amount: 100,
-                currency_code: "USD",
-                rules: {
-                  city: "Berlin",
-                },
-              },
-            ],
-          },
-        ])
-      } catch (e) {
-        error = e
-      }
-      expect(error.message).toEqual(
-        "Rule types don't exist for money amounts with rule attribute: city"
-      )
-    })
-
-    it("should create a price set with rule types", async () => {
-      const [priceSet] = await service.create([
-        {
-          rules: [{ rule_attribute: "region_id" }],
-        },
-      ])
-
-      expect(priceSet).toEqual(
-        expect.objectContaining({
-          rule_types: [
-            expect.objectContaining({
-              rule_attribute: "region_id",
-            }),
-          ],
-        })
-      )
-    })
-
-    it("should create a price set with rule types and money amounts", async () => {
-      const [priceSet] = await service.create([
-        {
-          rules: [{ rule_attribute: "region_id" }],
-          money_amounts: [
-            {
-              amount: 100,
-              currency_code: "USD",
-              rules: {
-                region_id: "1",
-              },
-            },
-          ],
-        },
-      ])
-
-      expect(priceSet).toEqual(
-        expect.objectContaining({
-          rule_types: [
-            expect.objectContaining({
-              rule_attribute: "region_id",
-            }),
-          ],
-          money_amounts: [
-            expect.objectContaining({
-              amount: "100",
-              currency_code: "USD",
-            }),
-          ],
-        })
-      )
-    })
-
-    it("should create a price set with rule types and money amountss", async () => {
-      const [priceSet] = await service.create([
-        {
-          rules: [{ rule_attribute: "region_id" }],
-          money_amounts: [
-            {
-              amount: 100,
-              currency_code: "USD",
-              rules: {
-                region_id: "10",
-              },
-            },
-          ],
-        },
-      ])
-
-      expect(priceSet).toEqual(
-        expect.objectContaining({
-          rule_types: [
-            expect.objectContaining({
-              rule_attribute: "region_id",
-            }),
-          ],
-          money_amounts: [
-            expect.objectContaining({
-              amount: "100",
-              currency_code: "USD",
-            }),
-          ],
-          price_rules: [
-            expect.objectContaining({
-              value: "10",
-            }),
-          ],
-        })
-      )
+      expect(error.message).toEqual('PriceSet with id "undefined" not found')
     })
 
     it("should create a priceSet successfully", async () => {
@@ -454,55 +318,6 @@ describe("PricingModule Service - PriceSet", () => {
         expect.objectContaining({
           id: "price-set-new",
         })
-      )
-    })
-  })
-
-  describe("addPrices", () => {
-    it("should add prices to existing price set", async () => {
-      await service.addPrices("price-set-1", [
-        {
-          amount: 100,
-          currency_code: "USD",
-          rules: { currency_code: "USD" },
-        },
-      ])
-
-      const [priceSet] = await service.list(
-        { id: "price-set-1" },
-        { relations: ["money_amounts"] }
-      )
-
-      expect(priceSet).toEqual(
-        expect.objectContaining({
-          id: 'price-set-1',
-          money_amounts: expect.arrayContaining([
-            expect.objectContaining({
-              amount: "100",
-              currency_code: "USD",
-            }),
-          ]),
-        }),
-      )
-    })
-
-    it("should fail with an appropriate error when trying to add a price with rule that doesn't exist", async () => {
-      let error
-      try{
-
-        await service.addPrices("price-set-1", [
-          {
-            amount: 100,
-            currency_code: "USD",
-            rules: { city: "Paris" },
-          },
-        ])
-      } catch(e) { 
-        error = e
-      }
-
-      expect(error.message).toEqual(
-        "Rule types don't exist for: city"
       )
     })
   })

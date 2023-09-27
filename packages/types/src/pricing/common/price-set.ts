@@ -1,6 +1,5 @@
 import { BaseFilterable } from "../../dal"
-import { CreateMoneyAmountDTO, FilterableMoneyAmountProps, MoneyAmountDTO } from "./money-amount"
-import { RuleTypeDTO } from "./rule-type"
+import { FilterableMoneyAmountProps, MoneyAmountDTO } from "./money-amount"
 
 export interface PricingContext {
   context?: Record<string, string | number>
@@ -13,7 +12,6 @@ export interface PricingFilters {
 export interface PriceSetDTO {
   id: string
   money_amounts?: MoneyAmountDTO[]
-  rule_types?: RuleTypeDTO[]
 }
 
 export interface CalculatedPriceSetDTO {
@@ -25,8 +23,7 @@ export interface CalculatedPriceSetDTO {
 }
 
 export interface CreatePriceSetDTO {
-  rules?: { rule_attribute: string }[]
-  money_amounts?: (CreateMoneyAmountDTO & {rules: Record<string, string>})[]
+  money_amounts?: MoneyAmountDTO[]
 }
 
 export interface UpdatePriceSetDTO {
