@@ -1,7 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
-import * as Models from "@models"
 import { Currency, MoneyAmount, PriceSet } from "@models"
 
 export const LinkableKeys = {
@@ -9,18 +8,15 @@ export const LinkableKeys = {
   currency_code: Currency.name,
   price_set_id: PriceSet.name,
 }
-
-export const entityNameToLinkableKeysMap: MapToConfig = {
-  [Models.PriceSet.name]: [
-    { mapTo: LinkableKeys.price_set_id, valueFrom: "id" },
-  ],
-  [Models.Currency.name]: [
-    { mapTo: LinkableKeys.currency_code, valueFrom: "code" },
-  ],
-  [Models.MoneyAmount.name]: [
-    { mapTo: LinkableKeys.money_amount_id, valueFrom: "id" },
-  ],
-}
+const entityLinkableKeysMap: MapToConfig = {}
+Object.entries(LinkableKeys).forEach(([key, value]) => {
+  entityLinkableKeysMap[value] ??= []
+  entityLinkableKeysMap[value].push({
+    mapTo: key,
+    valueFrom: key.split("_").pop()!,
+  })
+})
+export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
 export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRICING,
