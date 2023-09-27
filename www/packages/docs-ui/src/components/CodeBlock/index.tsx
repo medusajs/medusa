@@ -97,7 +97,7 @@ export const CodeBlock = ({
             </pre>
             <div
               className={clsx(
-                "absolute z-50 hidden gap-docs_1 md:flex",
+                "absolute z-[1] hidden gap-docs_1 md:flex",
                 tokens.length === 1 && "right-docs_0.75 top-[10px]",
                 tokens.length > 1 && "right-docs_1 top-docs_1"
               )}

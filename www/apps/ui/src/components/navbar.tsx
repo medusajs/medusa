@@ -18,7 +18,7 @@ const Navbar = () => {
         setMobileSidebarOpen,
         mobileSidebarOpen,
       }}
-      className="!z-[49]"
+      // className="!z-[49]"
     />
   )
 }
