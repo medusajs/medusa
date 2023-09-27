@@ -49,7 +49,7 @@ export const Details = ({
       }}
       className={clsx(
         "border-medusa-border-base border-y border-solid border-x-0",
-        "overflow-hidden [&>summary]:relative [&>summary]:z-[398]",
+        "overflow-hidden [&>summary]:relative",
         props.className
       )}
     >
