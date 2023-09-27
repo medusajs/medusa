@@ -57,7 +57,9 @@ export const Button = ({
       "dark:shadow-button-neutral dark:focus:shadow-button-neutral-focused dark:active:shadow-button-neutral-focused",
       "select-none",
     ],
-    clear: ["bg-transparent shadow-none border-0 outline-none cursor-pointer"],
+    clear: [
+      "bg-transparent shadow-none border-0 outline-none cursor-pointer text-fg-medusa-subtle",
+    ],
   }
 
   return (
