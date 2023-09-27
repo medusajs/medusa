@@ -6,7 +6,7 @@ export default function DrawerDemo() {
       <Drawer.Trigger asChild>
         <Button>Edit Variant</Button>
       </Drawer.Trigger>
-      <Drawer.Content>
+      <Drawer.Content className="z-50">
         <Drawer.Header>
           <Drawer.Title>Edit Variant</Drawer.Title>
         </Drawer.Header>
