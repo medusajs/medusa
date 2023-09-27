@@ -196,7 +196,7 @@ class LineItemService extends TransactionBaseService {
   >(variantData: T, context: GenerateLineItemContext = {}): Promise<TResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        // this.validateGenerateArguments(variantData, context) // TODO: validate for this data shape
+        this.validateGenerateLineItemArguments(variantData, context)
 
         const data = variantData
         const resolvedContext = context as GenerateLineItemContext
@@ -705,12 +705,7 @@ class LineItemService extends TransactionBaseService {
   }
 
   protected validateGenerateArguments<
-    T = string | GenerateInputData | GenerateInputData[],
-    TResult = T extends string
-      ? LineItem
-      : T extends LineItem
-      ? LineItem
-      : LineItem[]
+    T = string | GenerateInputData | GenerateInputData[]
   >(
     variantIdOrData: string | T,
     regionIdOrContext: T extends string ? string : GenerateLineItemContext,
@@ -756,6 +751,40 @@ class LineItemService extends TransactionBaseService {
         MedusaError.Types.INVALID_DATA,
         `${errorMessage}. Ensure a variant id is passed for each variant`
       )
+    }
+  }
+
+  protected validateGenerateLineItemArguments<
+    T = LineItemCreateData | LineItemCreateData[]
+  >(variantData: T, context: GenerateLineItemContext): void | never {
+    const errorMessage =
+      "Unable to generate the line item because one or more required argument(s) are missing"
+
+    if (!context?.region_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `${errorMessage}. Ensure region or region_id are passed`
+      )
+    }
+
+    if (!Array.isArray(variantData)) {
+      variantData = [variantData] as T
+    }
+
+    for (const data of variantData as LineItemCreateData[]) {
+      if (!data.quantity) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `${errorMessage}. Ensure quantity is passed`
+        )
+      }
+
+      if (!data.variant_id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `${errorMessage}. Ensure a variant id is passed for each variant`
+        )
+      }
     }
   }
 }
