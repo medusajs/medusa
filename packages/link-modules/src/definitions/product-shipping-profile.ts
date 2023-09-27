@@ -15,20 +15,6 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
     },
   ],
   primaryKeys: ["id", "product_id", "profile_id"],
-  schema: `
-    scalar Date
-    scalar JSON
-    
-    type ShippingProfile {
-      id: ID!
-      name: String!
-      type: String!
-      created_at: String!
-      updated_at: String!  
-      deleted_at: String
-      metadata: JSON   
-    }
-  `,
   relationships: [
     {
       serviceName: Modules.PRODUCT,

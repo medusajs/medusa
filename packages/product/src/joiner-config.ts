@@ -13,8 +13,8 @@ import {
 import ProductImage from "./models/product-image"
 import moduleSchema from "./schema"
 
-export enum LinkableKeys {
-  PRODUCT_ID = "product_id", // Main service ID must the first
+export const LinkableKeys = {
+  product_id: "Product", // Main service ID must the first
   PRODUCT_HANDLE = "product_handle",
   VARIANT_ID = "variant_id",
   VARIANT_SKU = "variant_sku",

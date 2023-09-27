@@ -39,6 +39,20 @@ export const joinerConfig: ModuleJoinerConfig[] = [
     serviceName: "shippingProfileService",
     primaryKeys: ["id"],
     linkableKeys: ["profile_id"],
+    schema: `
+      scalar Date
+      scalar JSON
+      
+      type ShippingProfile {
+        id: ID!
+        name: String!
+        type: String!
+        created_at: String!
+        updated_at: String!  
+        deleted_at: String
+        metadata: JSON   
+      }
+    `,
     alias: [
       {
         name: "shipping_profile",
