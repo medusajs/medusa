@@ -22,6 +22,10 @@ export const CodeBlock = ({
 }: CodeBlockProps) => {
   const { colorMode } = useColorMode()
 
+  if (!source.length) {
+    return <></>
+  }
+
   return (
     <div
       className={clsx(

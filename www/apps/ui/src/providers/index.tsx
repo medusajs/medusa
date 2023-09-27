@@ -7,6 +7,7 @@ import {
   NavbarProvider,
   AnalyticsProvider,
   ScrollControllerProvider,
+  AiAssistantProvider,
 } from "docs-ui"
 import SearchProvider from "./search"
 import SidebarProvider from "./sidebar"
@@ -25,7 +26,16 @@ const Providers = ({ children }: ProvidersProps) => {
               <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
                 <SearchProvider>
                   <ScrollControllerProvider>
-                    {children}
+                    <AiAssistantProvider
+                      apiUrl={
+                        process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"
+                      }
+                      apiToken={
+                        process.env.NEXT_PUBLIC_AI_API_ASSISTANT_TOKEN || "temp"
+                      }
+                    >
+                      {children}
+                    </AiAssistantProvider>
                   </ScrollControllerProvider>
                 </SearchProvider>
               </NavbarProvider>

@@ -19,6 +19,7 @@ export type ModalProps = {
   open?: boolean
   footerContent?: React.ReactNode
   passedRef?: Ref<HTMLDialogElement>
+  headerClassName?: string
 } & Omit<React.ComponentProps<"dialog">, "ref" | "title">
 
 export const Modal = ({

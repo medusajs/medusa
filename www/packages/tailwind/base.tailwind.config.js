@@ -459,10 +459,31 @@ module.exports = {
             transform: "scale3d(1, 1, 1)",
           },
         },
+        fadeInDown: {
+          from: {
+            opacity: "0",
+            transform: "translate3d(0, -100%, 0)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        fadeOutUp: {
+          from: {
+            opacity: "1",
+          },
+          to: {
+            opacity: "0",
+            transform: "translate3d(0, -100%, 0)",
+          },
+        },
       },
       animation: {
         fadeIn: "fadeIn 500ms",
         fadeOut: "fadeOut 500ms",
+        fadeInDown: "fadeInDown 500ms",
+        fadeOutUp: "fadeOutUp 500ms",
         tada: "tada 1s",
       },
     },
