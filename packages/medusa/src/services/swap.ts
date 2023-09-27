@@ -36,9 +36,6 @@ import { CreateShipmentConfig } from "../types/fulfillment"
 import { OrdersReturnItem } from "../types/orders"
 import { SwapRepository } from "../repositories/swap"
 import { TransactionBaseService } from "../interfaces"
-import ProductVariantService from "./product-variant"
-import { ProductVariantDTO } from "@medusajs/types"
-import { prepareLineItemData } from "@medusajs/utils"
 
 type InjectedProps = {
   manager: EntityManager
@@ -51,7 +48,6 @@ type InjectedProps = {
   totalsService: TotalsService
   eventBusService: EventBusService
   lineItemService: LineItemService
-  productVariantService: ProductVariantService
   productVariantInventoryService: ProductVariantInventoryService
   fulfillmentService: FulfillmentService
   shippingOptionService: ShippingOptionService
@@ -86,7 +82,6 @@ class SwapService extends TransactionBaseService {
   protected readonly lineItemService_: LineItemService
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly shippingOptionService_: ShippingOptionService
-  protected readonly productVariantService_: ProductVariantService
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly customShippingOptionService_: CustomShippingOptionService
@@ -100,7 +95,6 @@ class SwapService extends TransactionBaseService {
     totalsService,
     returnService,
     lineItemService,
-    productVariantService,
     paymentProviderService,
     shippingOptionService,
     fulfillmentService,
@@ -120,7 +114,6 @@ class SwapService extends TransactionBaseService {
     this.cartService_ = cartService
     this.fulfillmentService_ = fulfillmentService
     this.orderService_ = orderService
-    this.productVariantService_ = productVariantService
     this.shippingOptionService_ = shippingOptionService
     this.productVariantInventoryService_ = productVariantInventoryService
     this.eventBus_ = eventBusService
@@ -365,35 +358,23 @@ class SwapService extends TransactionBaseService {
       let newItems: LineItem[] = []
 
       if (additionalItems) {
-        if (additionalItems.some((i) => !i.variant_id)) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            "You must include a variant when creating additional items on a swap"
-          )
-        }
-
-        const variants = (await this.productVariantService_
-          .withTransaction(manager)
-          .list(
-            {
-              id: additionalItems.map((i) => i.variant_id) as string[],
-            },
-            {
-              relations: ["product"],
+        newItems = await Promise.all(
+          additionalItems.map(async ({ variant_id, quantity }) => {
+            if (variant_id === null) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                "You must include a variant when creating additional items on a swap"
+              )
             }
-          )) as unknown as ProductVariantDTO[]
-
-        const generatedData = additionalItems.map((item) => {
-          const variant = variants.find((v) => v.id === item.variant_id)!
-          return prepareLineItemData(variant, item.quantity)
-        })
-
-        newItems = await this.lineItemService_
-          .withTransaction(manager)
-          .generate(generatedData, {
-            region_id: order.region_id,
-            cart: order.cart,
+            return this.lineItemService_.withTransaction(manager).generate(
+              { variantId: variant_id, quantity },
+              {
+                region_id: order.region_id,
+                cart: order.cart,
+              }
+            )
           })
+        )
       }
 
       const evaluatedNoNotification =

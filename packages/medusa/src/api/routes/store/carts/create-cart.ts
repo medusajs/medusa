@@ -204,44 +204,54 @@ export default async (req, res) => {
           "productVariantService"
         )
 
-        let variants
-        const variantIds = validated.items
-          .map((i) => i.variant_id)
-          .filter(Boolean)
+        let generatedLineItems: LineItem[]
 
         if (
           featureFlagRouter.isFeatureEnabled(
             IsolateProductDomainFeatureFlag.key
           )
         ) {
+          const variantIds = validated.items
+            .map((i) => i.variant_id)
+            .filter(Boolean)
+
           const remoteQuery = req.scope.resolve("remoteQuery")
 
-          variants = await retrieveVariantsWithIsolatedProductModule(
+          const variants = await retrieveVariantsWithIsolatedProductModule(
             remoteQuery,
             variantIds
           )
-        } else {
-          variants = (await productVariantService.withTransaction(manager).list(
+
+          const generateInputData = validated.items.map((item) => {
+            const variant = variants.find((v) => v.id === item.variant_id)!
+
+            return prepareLineItemData(variant, item.quantity)
+          })
+
+          // TODO: use `generateWithIsolatedProductModule` directly
+          generatedLineItems = await lineItemServiceTx.generate(
+            generateInputData,
             {
-              id: variantIds,
-            },
-            { relations: ["product"] }
-          )) as unknown as ProductVariantDTO[]
+              region_id: regionId,
+              customer_id: req.user?.customer_id,
+            }
+          )
+        } else {
+          const generateInputData = validated.items.map((item) => {
+            return {
+              variantId: item.variant_id,
+              quantity: item.quantity,
+            }
+          })
+
+          generatedLineItems = await lineItemServiceTx.generate(
+            generateInputData,
+            {
+              region_id: regionId,
+              customer_id: req.user?.customer_id,
+            }
+          )
         }
-
-        const generateInputData = validated.items.map((item) => {
-          const variant = variants.find((v) => v.id === item.variant_id)!
-
-          return prepareLineItemData(variant, item.quantity)
-        })
-
-        const generatedLineItems: LineItem[] = await lineItemServiceTx.generate(
-          generateInputData,
-          {
-            region_id: regionId,
-            customer_id: req.user?.customer_id,
-          }
-        )
 
         await cartServiceTx.addOrUpdateLineItems(
           createdCart.id,

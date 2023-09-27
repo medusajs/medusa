@@ -81,10 +81,10 @@ describe("ClaimService", () => {
     }
 
     const lineItemService = {
-      generate: jest.fn((d) => ({
+      generate: jest.fn((d, _, q) => ({
         id: "test_item",
-        variant_id: d.variant_id,
-        quantity: d.quantity,
+        variant_id: d,
+        quantity: q,
       })),
       retrieve: () => Promise.resolve({}),
       list: () => Promise.resolve([{}]),
@@ -110,18 +110,6 @@ describe("ClaimService", () => {
       },
     }
 
-    const productVariantService = {
-      list: jest.fn(() => [{ id: "var_123", product: {} }]),
-      retrieve: jest.fn(() => ({
-        id: "var_123",
-        product: { id: "product-id" },
-      })),
-      withTransaction: function () {
-        withTransactionMock("productVariant")
-        return this
-      },
-    }
-
     const claimService = new ClaimService({
       manager: MockManager,
       claimRepository: claimRepo,
@@ -131,7 +119,6 @@ describe("ClaimService", () => {
       returnService,
       lineItemService,
       claimItemService,
-      productVariantService,
       productVariantInventoryService,
       eventBusService,
     })
@@ -166,8 +153,9 @@ describe("ClaimService", () => {
       expect(withTransactionMock).toHaveBeenCalledWith("lineItem")
       expect(lineItemService.generate).toHaveBeenCalledTimes(1)
       expect(lineItemService.generate).toHaveBeenCalledWith(
-        { quantity: 1, unit_price: undefined, variant_id: "var_123" },
-        { region_id: "order_region" }
+        "var_123",
+        "order_region",
+        1
       )
 
       expect(

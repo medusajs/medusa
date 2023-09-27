@@ -150,18 +150,9 @@ const unknownVariantId = "unknown-variant"
 
         it("successfully create a line item giftcard", async () => {
           const line = await lineItemService.generate(
-            {
-              variant_id: IdMap.getId("test-giftcard"),
-              title: "Test variant",
-              quantity: 1,
-              product: {
-                thumbnail: "",
-                title: "Test product",
-                discountable: false,
-                is_giftcard: true,
-              },
-            },
-            { region_id: IdMap.getId("test-region") }
+            IdMap.getId("test-giftcard"),
+            IdMap.getId("test-region"),
+            1
           )
 
           await lineItemService.create({
@@ -327,7 +318,7 @@ const unknownVariantId = "unknown-variant"
 })
 
 describe("LineItemService", () => {
-  describe(`tax inclusive pricing tests`, () => {
+  describe(`tax inclusive pricing tests `, () => {
     describe("generate", () => {
       const lineItemRepository = MockRepository({
         create: (data) => data,
@@ -426,13 +417,9 @@ describe("LineItemService", () => {
 
       it("successfully create a line item with tax inclusive set to true", async () => {
         await lineItemService.generate(
-          {
-            variant_id: IdMap.getId("test-variant"),
-            title: "Test variant",
-            quantity: 1,
-            product: { title: "Test product", thumbnail: "" },
-          },
-          { region_id: IdMap.getId("test-region") }
+          IdMap.getId("test-variant"),
+          IdMap.getId("test-region"),
+          1
         )
 
         expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
@@ -445,6 +432,42 @@ describe("LineItemService", () => {
           quantity: 1,
           order_edit_id: null,
           allow_discounts: undefined,
+          is_giftcard: undefined,
+          metadata: {},
+          should_merge: true,
+          includes_tax: true,
+          variant: expect.objectContaining({
+            id: expect.any(String),
+            product: expect.objectContaining({
+              thumbnail: "",
+              title: "Test product",
+            }),
+            title: "Test variant",
+          }),
+        })
+      })
+
+      it("successfully create a line item with tax inclusive set to true by passing an object", async () => {
+        await lineItemService.generate(
+          {
+            variantId: IdMap.getId("test-variant"),
+            quantity: 1,
+          },
+          {
+            region_id: IdMap.getId("test-region"),
+          }
+        )
+
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith({
+          unit_price: 100,
+          title: "Test product",
+          description: "Test variant",
+          thumbnail: "",
+          variant_id: IdMap.getId("test-variant"),
+          quantity: 1,
+          allow_discounts: undefined,
+          order_edit_id: null,
           is_giftcard: undefined,
           metadata: {},
           should_merge: true,
@@ -561,15 +584,53 @@ describe("LineItemService", () => {
         jest.clearAllMocks()
       })
 
+      it("should not succeed to generate a line item if a variant id is not provided", async () => {
+        const err = await lineItemService
+          .generate(
+            [
+              {
+                variantId: "",
+                quantity: 1,
+              },
+            ],
+            {
+              region_id: IdMap.getId("test-region"),
+            }
+          )
+          .catch((e) => e)
+
+        expect(err).toBeDefined()
+        expect(err.message).toEqual(
+          "Unable to generate the line item because one or more required argument(s) are missing. Ensure a variant id is passed for each variant"
+        )
+      })
+
+      it("should not succeed to generate a line item if a variant id is not found", async () => {
+        const err = await lineItemService
+          .generate(
+            [
+              {
+                variantId: unknownVariantId,
+                quantity: 1,
+              },
+            ],
+            {
+              region_id: IdMap.getId("test-region"),
+            }
+          )
+          .catch((e) => e)
+
+        expect(err).toBeDefined()
+        expect(err.message).toEqual(
+          "Unable to generate the line items, some variant has not been found: unknown-variant"
+        )
+      })
+
       it("successfully create a line item with tax inclusive set to false", async () => {
         await lineItemService.generate(
-          {
-            variant_id: IdMap.getId("test-variant"),
-            quantity: 1,
-            title: "Test variant",
-            product: { title: "Test product", thumbnail: "" },
-          },
-          { region_id: IdMap.getId("test-region") }
+          IdMap.getId("test-variant"),
+          IdMap.getId("test-region"),
+          1
         )
 
         expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
@@ -583,6 +644,42 @@ describe("LineItemService", () => {
           allow_discounts: undefined,
           order_edit_id: null,
           is_giftcard: undefined,
+          metadata: {},
+          should_merge: true,
+          includes_tax: false,
+          variant: expect.objectContaining({
+            id: expect.any(String),
+            product: expect.objectContaining({
+              thumbnail: "",
+              title: "Test product",
+            }),
+            title: "Test variant",
+          }),
+        })
+      })
+
+      it("successfully create a line item with tax inclusive set to false by passing an object", async () => {
+        await lineItemService.generate(
+          {
+            variantId: IdMap.getId("test-variant"),
+            quantity: 1,
+          },
+          {
+            region_id: IdMap.getId("test-region"),
+          }
+        )
+
+        expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
+        expect(lineItemRepository.create).toHaveBeenCalledWith({
+          unit_price: 100,
+          title: "Test product",
+          description: "Test variant",
+          thumbnail: "",
+          variant_id: IdMap.getId("test-variant"),
+          quantity: 1,
+          allow_discounts: undefined,
+          is_giftcard: undefined,
+          order_edit_id: null,
           metadata: {},
           should_merge: true,
           includes_tax: false,

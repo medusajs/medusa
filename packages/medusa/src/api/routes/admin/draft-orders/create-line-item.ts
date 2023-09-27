@@ -124,31 +124,34 @@ export default async (req, res) => {
     }
 
     if (validated.variant_id) {
-      let variant
+      let line
 
       if (
         featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
       ) {
         const remoteQuery = req.scope.resolve("remoteQuery")
-        ;[variant] = await retrieveVariantsWithIsolatedProductModule(
+        const [variant] = await retrieveVariantsWithIsolatedProductModule(
           remoteQuery,
           [validated.variant_id]
         )
-      } else {
-        variant = (await productVariantService
-          .withTransaction(manager)
-          .retrieve(validated.variant_id!, {
-            relations: ["product"],
-          })) as unknown as ProductVariantDTO
-      }
 
-      const line = await lineItemService
-        .withTransaction(manager)
-        .generate(prepareLineItemData(variant, validated.quantity), {
-          metadata: validated.metadata,
-          unit_price: validated.unit_price,
-          }
-        )
+        line = await lineItemService
+          .withTransaction(manager)
+          // TODO: can we use generateWithIsolatedProductModule directly
+          .generate(prepareLineItemData(variant, validated.quantity), {
+            metadata: validated.metadata,
+            unit_price: validated.unit_price,
+          })
+      } else {
+        line = await lineItemService
+          .withTransaction(manager)
+          .generate(
+            validated.variant_id,
+            draftOrder.cart.region_id,
+            validated.quantity,
+            { metadata: validated.metadata, unit_price: validated.unit_price }
+          )
+      }
 
       await cartService
         .withTransaction(manager)

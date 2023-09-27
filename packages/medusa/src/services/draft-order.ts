@@ -29,8 +29,7 @@ import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
-import { isDefined, prepareLineItemData } from "@medusajs/utils"
-import { ProductVariantDTO } from "@medusajs/types"
+import { isDefined } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -306,47 +305,38 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        let itemsToGenerate: GenerateInputData[] = []
+        const itemsToGenerate: GenerateInputData[] = []
         const itemsToCreate: Partial<LineItem>[] = []
 
-        if (items) {
-          const itemsWithVariants = items.filter((i) => i.variant_id)
-          const itemsWithoutVariants = items.filter((i) => !i.variant_id)
-
-          const variants = (await this.productVariantService_.list(
-            { id: itemsWithVariants.map((i) => i.variant_id) as string[] },
-            { relations: ["product"] }
-          )) as unknown as ProductVariantDTO[]
-
-          const variantIdsMap = new Map(variants.map((v) => [v.id, v]))
-
-          itemsToGenerate = itemsWithVariants.map((item) =>
-            prepareLineItemData(
-              variantIdsMap[item.variant_id!],
-              item.quantity,
-              item.unit_price
-            )
-          )
-
-          itemsWithoutVariants.forEach((item) => {
-            let price
-            if (!isDefined(item.unit_price) || item.unit_price < 0) {
-              price = 0
-            } else {
-              price = item.unit_price
-            }
-
-            itemsToCreate.push({
-              cart_id: createdCart.id,
-              has_shipping: true,
-              title: item.title || "Custom item",
-              allow_discounts: false,
-              unit_price: price,
+        // prepare that for next steps
+        ;(items ?? []).forEach((item) => {
+          if (item.variant_id) {
+            itemsToGenerate.push({
+              variantId: item.variant_id,
               quantity: item.quantity,
               metadata: item.metadata,
+              unit_price: item.unit_price,
             })
+            return
+          }
+
+          let price
+          if (!isDefined(item.unit_price) || item.unit_price < 0) {
+            price = 0
+          } else {
+            price = item.unit_price
+          }
+
+          itemsToCreate.push({
+            cart_id: createdCart.id,
+            has_shipping: true,
+            title: item.title || "Custom item",
+            allow_discounts: false,
+            unit_price: price,
+            quantity: item.quantity,
+            metadata: item.metadata,
           })
-        }
+        })
 
         const promises: Promise<any>[] = []
 

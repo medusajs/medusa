@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, LineItemCreateData } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
@@ -18,7 +18,7 @@ import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { FindConfig, Selector } from "../types/common"
 import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import {
   PricingService,
   ProductService,
@@ -184,16 +184,17 @@ class LineItemService extends TransactionBaseService {
 
   /**
    * Generate a single or multiple line item without persisting the data into the db
+   *
    * @param variantData
    * @param context
    */
-  async generate<
-    T = GenerateInputData | GenerateInputData[],
-    TResult = T extends Array<GenerateInputData> ? LineItem[] : LineItem
+  async generateWithIsolatedProductModule<
+    T = LineItemCreateData | LineItemCreateData[],
+    TResult = T extends Array<LineItemCreateData> ? LineItem[] : LineItem
   >(variantData: T, context: GenerateLineItemContext = {}): Promise<TResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        this.validateGenerateArguments(variantData, context)
+        // this.validateGenerateArguments(variantData, context) // TODO: validate for this data shape
 
         const data = variantData
         const resolvedContext = context as GenerateLineItemContext
@@ -201,7 +202,7 @@ class LineItemService extends TransactionBaseService {
 
         const resolvedData = (
           Array.isArray(data) ? data : [data]
-        ) as GenerateInputData[]
+        ) as LineItemCreateData[]
 
         const resolvedDataMap = new Map(
           resolvedData.map((d) => [d.variant_id, d])
@@ -260,6 +261,173 @@ class LineItemService extends TransactionBaseService {
               .generateAdjustments(resolvedContext.cart, lineItem, {
                 variant: { product_id: variantData.product_id },
               })
+            lineItem.adjustments =
+              adjustments as unknown as LineItemAdjustment[]
+          }
+
+          generatedItems.push(lineItem)
+        }
+
+        return (Array.isArray(data)
+          ? generatedItems
+          : generatedItems[0]) as unknown as TResult
+      }
+    )
+  }
+
+  /**
+   * Generate a single or multiple line item without persisting the data into the db
+   * @param variantIdOrData
+   * @param regionIdOrContext
+   * @param quantity
+   * @param context
+   */
+  async generate<
+    T = string | GenerateInputData | GenerateInputData[] | LineItemCreateData[],
+    TResult = T extends string
+      ? LineItem
+      : T extends LineItem
+      ? LineItem
+      : LineItem[]
+  >(
+    variantIdOrData: T,
+    regionIdOrContext: T extends string ? string : GenerateLineItemContext,
+    quantity?: number,
+    context: GenerateLineItemContext = {}
+  ): Promise<TResult> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        if (!isString(variantIdOrData)) {
+          if (
+            (Array.isArray(variantIdOrData) &&
+              (variantIdOrData as LineItemCreateData[]).some(
+                (v) => v.variant_id
+              )) ||
+            (variantIdOrData as LineItemCreateData).variant_id
+          ) {
+            return await this.generateWithIsolatedProductModule(
+              variantIdOrData,
+              context
+            )
+          }
+        }
+
+        this.validateGenerateArguments(
+          variantIdOrData,
+          regionIdOrContext,
+          quantity
+        )
+
+        // Resolve data
+        const data = isString(variantIdOrData)
+          ? {
+              variantId: variantIdOrData,
+              quantity: quantity as number,
+            }
+          : variantIdOrData
+
+        const resolvedContext = isString(variantIdOrData)
+          ? context
+          : (regionIdOrContext as GenerateLineItemContext)
+
+        const regionId = (
+          isString(variantIdOrData)
+            ? regionIdOrContext
+            : resolvedContext.region_id
+        ) as string
+
+        const resolvedData = (
+          Array.isArray(data) ? data : [data]
+        ) as GenerateInputData[]
+
+        const resolvedDataMap = new Map(
+          resolvedData.map((d) => [d.variantId, d])
+        )
+
+        // Retrieve variants
+        const variants = await this.productVariantService_.list(
+          {
+            id: resolvedData.map((d) => d.variantId),
+          },
+          {
+            relations: ["product"],
+          }
+        )
+
+        // Validate that all variants has been found
+        const inputDataVariantId = new Set(resolvedData.map((d) => d.variantId))
+        const foundVariants = new Set(variants.map((v) => v.id))
+        const notFoundVariants = new Set(
+          [...inputDataVariantId].filter((x) => !foundVariants.has(x))
+        )
+
+        if (notFoundVariants.size) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Unable to generate the line items, some variant has not been found: ${[
+              ...notFoundVariants,
+            ].join(", ")}`
+          )
+        }
+
+        // Prepare data to retrieve variant pricing
+        const variantsMap = new Map<string, ProductVariant>()
+        const variantsToCalculatePricingFor: {
+          variantId: string
+          quantity: number
+        }[] = []
+
+        for (const variant of variants) {
+          variantsMap.set(variant.id, variant)
+
+          const variantResolvedData = resolvedDataMap.get(variant.id)
+          if (
+            resolvedContext.unit_price == null &&
+            variantResolvedData?.unit_price == null
+          ) {
+            variantsToCalculatePricingFor.push({
+              variantId: variant.id,
+              quantity: variantResolvedData!.quantity,
+            })
+          }
+        }
+
+        let variantsPricing = {}
+
+        if (variantsToCalculatePricingFor.length) {
+          variantsPricing = await this.pricingService_
+            .withTransaction(transactionManager)
+            .getProductVariantsPricing(variantsToCalculatePricingFor, {
+              region_id: regionId,
+              customer_id: context?.customer_id,
+              include_discount_prices: true,
+            })
+        }
+
+        // Generate line items
+        const generatedItems: LineItem[] = []
+
+        for (const variantData of resolvedData) {
+          const variant = variantsMap.get(
+            variantData.variantId
+          ) as ProductVariant
+          const variantPricing = variantsPricing[variantData.variantId]
+
+          const lineItem = await this.generateLineItem(
+            variant,
+            variantData.quantity,
+            {
+              ...resolvedContext,
+              unit_price: variantData.unit_price ?? resolvedContext.unit_price,
+              metadata: variantData.metadata ?? resolvedContext.metadata,
+              variantPricing,
+            }
+          )
+
+          if (resolvedContext.cart) {
+            const adjustments = await this.lineItemAdjustmentService_
+              .withTransaction(transactionManager)
+              .generateAdjustments(resolvedContext.cart, lineItem, { variant })
             lineItem.adjustments =
               adjustments as unknown as LineItemAdjustment[]
           }
@@ -550,15 +718,56 @@ class LineItemService extends TransactionBaseService {
   }
 
   protected validateGenerateArguments<
-    T = GenerateInputData | GenerateInputData[],
-    TResult = T extends Array<ProductVariant> ? LineItem[] : LineItem
-  >(variantData: string | T, context: GenerateLineItemContext): void | never {
-    const resolvedContext = context as GenerateLineItemContext
+    T = string | GenerateInputData | GenerateInputData[],
+    TResult = T extends string
+      ? LineItem
+      : T extends LineItem
+      ? LineItem
+      : LineItem[]
+  >(
+    variantIdOrData: string | T,
+    regionIdOrContext: T extends string ? string : GenerateLineItemContext,
+    quantity?: number
+  ): void | never {
+    const errorMessage =
+      "Unable to generate the line item because one or more required argument(s) are missing"
 
-    if (!resolvedContext.region_id) {
+    if (isString(variantIdOrData)) {
+      if (!quantity || !regionIdOrContext || !isString(regionIdOrContext)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `${errorMessage}. Ensure quantity, regionId, and variantId are passed`
+        )
+      }
+
+      if (!variantIdOrData) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `${errorMessage}. Ensure variant id is passed`
+        )
+      }
+      return
+    }
+
+    const resolvedContext = regionIdOrContext as GenerateLineItemContext
+
+    if (!resolvedContext?.region_id) {
       throw new MedusaError(
-        MedusaError.Types.UNEXPECTED_STATE,
-        "The generate method has been called with the data but the context is missing either region_id or region. Please provide at least one of region or region_id."
+        MedusaError.Types.INVALID_DATA,
+        `${errorMessage}. Ensure region or region_id are passed`
+      )
+    }
+
+    const variantsData = Array.isArray(variantIdOrData)
+      ? variantIdOrData
+      : [variantIdOrData]
+
+    const hasMissingVariantId = variantsData.some((d) => !d?.variantId)
+
+    if (hasMissingVariantId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `${errorMessage}. Ensure a variant id is passed for each variant`
       )
     }
   }

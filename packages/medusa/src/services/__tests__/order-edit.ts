@@ -5,7 +5,6 @@ import {
   OrderEditItemChangeService,
   OrderEditService,
   OrderService,
-  ProductVariantService,
   TaxProviderService,
   TotalsService,
 } from "../index"
@@ -21,7 +20,6 @@ import { OrderServiceMock } from "../__mocks__/order"
 import { TotalsServiceMock } from "../__mocks__/totals"
 import { orderEditItemChangeServiceMock } from "../__mocks__/order-edit-item-change"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
-import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 
 const orderEditToUpdate = {
   id: IdMap.getId("order-edit-to-update"),
@@ -93,17 +91,6 @@ const orderEditWithAddedLineItem = {
     },
     region: { id: IdMap.getId("test-region") },
   },
-}
-
-const productVariantServiceMock = {
-  ...ProductVariantServiceMock,
-  retrieve: jest.fn().mockImplementation((data) => {
-    return Promise.resolve({
-      id: IdMap.getId("to-be-added-variant"),
-      title: "test variant",
-      product: { title: "Test product", thumbnail: "" },
-    })
-  }),
 }
 
 const lineItemServiceMock = {
@@ -203,8 +190,6 @@ describe("OrderEditService", () => {
     orderEditRepository,
     orderService: OrderServiceMock as unknown as OrderService,
     eventBusService: EventBusServiceMock as unknown as EventBusService,
-    productVariantService:
-      productVariantServiceMock as unknown as ProductVariantService,
     totalsService: TotalsServiceMock as unknown as TotalsService,
     newTotalsService: NewTotalsServiceMock as unknown as NewTotalsService,
     lineItemService: lineItemServiceMock as unknown as LineItemService,
