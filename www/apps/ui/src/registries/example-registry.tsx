@@ -518,6 +518,20 @@ export const ExampleRegistry: Record<string, ExampleType> = {
     ),
     file: "src/examples/progress-accordion-demo.tsx",
   },
+  "progress-accordion-single": {
+    name: "progress-accordion-single",
+    component: React.lazy(
+      async () => import("@/examples/progress-accordion-single")
+    ),
+    file: "src/examples/progress-accordion-single.tsx",
+  },
+  "progress-accordion-multiple": {
+    name: "progress-accordion-multiple",
+    component: React.lazy(
+      async () => import("@/examples/progress-accordion-multiple")
+    ),
+    file: "src/examples/progress-accordion-multiple.tsx",
+  },
   "progress-tabs-demo": {
     name: "progress-tabs-demo",
     component: React.lazy(async () => import("@/examples/progress-tabs-demo")),

@@ -1,6 +1,6 @@
 import { ProgressAccordion, Text } from "@medusajs/ui"
 
-export default function ProgressAccordionDemo() {
+export default function ProgressAccordionSingle() {
   return (
     <div className="w-full px-4">
       <ProgressAccordion type="single">

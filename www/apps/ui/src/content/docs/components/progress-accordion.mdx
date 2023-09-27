@@ -14,7 +14,7 @@ component: true
 import { ProgressAccordion } from '@medusajs/ui'
 ```
 ```tsx
-<ProgressAccordion>
+<ProgressAccordion type="single">
   <ProgressAccordion.Item value="general">
     <ProgressAccordion.Header>General</ProgressAccordion.Header>
     <ProgressAccordion.Content>
@@ -41,3 +41,15 @@ This component is based on the [Radix UI Accordion](https://radix-ui.com/primiti
 ---
 
 <ComponentProps component="progress-accordion-header" />
+
+## Examples
+
+---
+
+### Single
+
+<ComponentExample name="progress-accordion-single" />
+
+### Multiple
+
+<ComponentExample name="progress-accordion-multiple" />
