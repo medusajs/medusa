@@ -29,6 +29,9 @@ export const PropRegistry: Record<string, PropRegistryItem> = {
   "date-picker": {
     table: React.lazy(async () => import("../props/date-picker")),
   },
+  "focus-modal": {
+    table: React.lazy(async () => import("../props/focus-modal")),
+  },
   heading: {
     table: React.lazy(async () => import("../props/heading")),
   },

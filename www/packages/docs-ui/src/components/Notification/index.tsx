@@ -1,11 +1,16 @@
-import { NotificationItemType, useNotifications } from "@/providers"
+import {
+  NotificationContextType,
+  NotificationItemType,
+  useNotifications,
+} from "@/providers"
 import React from "react"
 import { NotificationItem } from "./Item"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import clsx from "clsx"
 
 export const NotificationContainer = () => {
-  const { notifications, removeNotification } = useNotifications()
+  const { notifications, removeNotification } =
+    useNotifications() as NotificationContextType
 
   const handleClose = (notification: NotificationItemType) => {
     notification.onClose?.()
@@ -25,8 +30,8 @@ export const NotificationContainer = () => {
             key={notification.id}
             timeout={200}
             classNames={{
-              enter: "animate__animated animate__slideInRight animate__fastest",
-              exit: "animate__animated animate__slideOutRight animate__fastest",
+              enter: "animate-slideInRight animate-fast",
+              exit: "animate-slideOutRight animate-fast",
             }}
           >
             <NotificationItem
