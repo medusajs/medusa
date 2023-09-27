@@ -7,52 +7,12 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
 import { initialize } from "../../../../src"
-import {
-  createCurrencies,
-  defaultCurrencyData,
-} from "../../../__fixtures__/currency"
-import {
-  createMoneyAmounts,
-  defaultMoneyAmountsData,
-} from "../../../__fixtures__/money-amount"
-import {
-  createPriceRules,
-  defaultPriceRuleData,
-} from "../../../__fixtures__/price-rule"
-import {
-  createPriceSets,
-  defaultPriceSetsData,
-} from "../../../__fixtures__/price-set"
-import {
-  createPriceSetMoneyAmounts,
-  defaultPriceSetMoneyAmountsData,
-} from "../../../__fixtures__/price-set-money-amount"
 
-import {
-  createRuleTypes,
-  defaultRuleTypesData,
-} from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
+import { seedPriceData } from "../../../__fixtures__/seed-price-data"
+
 jest.setTimeout(30000)
-
-async function seedData({
-  moneyAmountsData = defaultMoneyAmountsData,
-  priceSetsData = defaultPriceSetsData,
-  currencyData = defaultCurrencyData,
-  priceRuleData = defaultPriceRuleData,
-  priceSetMoneyAmountsData = defaultPriceSetMoneyAmountsData,
-  ruleTypesData = defaultRuleTypesData,
-} = {}) {
-  const testManager = MikroOrmWrapper.forkManager()
-
-  await createCurrencies(testManager, currencyData)
-  await createMoneyAmounts(testManager, moneyAmountsData)
-  await createPriceSets(testManager, priceSetsData)
-  await createPriceSetMoneyAmounts(testManager, priceSetMoneyAmountsData)
-  await createRuleTypes(testManager, ruleTypesData)
-  await createPriceRules(testManager, priceRuleData)
-}
 
 describe("PricingModule Service - Calculate Price", () => {
   let service: IPricingModuleService
@@ -301,11 +261,12 @@ describe("PricingModule Service - Calculate Price", () => {
         },
       ] as unknown as CreatePriceRuleDTO[]
 
-      await seedData({
+      await seedPriceData(MikroOrmWrapper.forkManager(), {
         currencyData,
         moneyAmountsData,
         priceSetsData,
         priceSetMoneyAmountsData,
+        priceSetMoneyAmountRulesData: [],
         priceRuleData,
         ruleTypesData,
       })

@@ -35,15 +35,13 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  groupBy,
   shouldForceTransaction,
 } from "@medusajs/utils"
 
-import { groupBy } from "lodash"
-
-import { joinerConfig } from "../joiner-config"
-import { MedusaError } from "@medusajs/utils"
 import { CreateMoneyAmountDTO } from "@medusajs/types"
-import { MoneyAmountDTO } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -153,7 +151,6 @@ export default class PricingModuleService<
     psmaSubQueryKnex
       .groupBy("psma.id")
       .having(knex.raw("count(DISTINCT rt.rule_attribute) = psma.number_rules"))
-      .andHaving(knex.raw(`${Object.entries(context).length} > 0`))
 
     const priceSetQueryKnex = knex({
       ps: "price_set",
@@ -182,15 +179,17 @@ export default class PricingModuleService<
       priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
     }
 
-    const queryBuilderResults = await priceSetQueryKnex
-    const groupedPricesByPriceSetId = groupBy(queryBuilderResults, "id")
+    const isContextPresent = Object.entries(context).length
+    // Only if the context is present do we need to query the database.
+    const queryBuilderResults = isContextPresent ? await priceSetQueryKnex : []
+    const pricesSetPricesMap = groupBy(queryBuilderResults, "id")
 
     const calculatedPrices = pricingFilters.id.map(
-      (priceSetId): PricingTypes.CalculatedPriceSetDTO => {
+      (priceSetId: string): PricingTypes.CalculatedPriceSetDTO => {
         // This is where we select prices, for now we just do a first match based on the database results
         // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
         // inject custom price selection here
-        const price = groupedPricesByPriceSetId[priceSetId]?.[0]
+        const price = pricesSetPricesMap.get(priceSetId)?.[0]
 
         return {
           id: priceSetId,
@@ -487,7 +486,6 @@ export default class PricingModuleService<
             priceSetRulesCreate as unknown as PricingTypes.CreatePriceRuleDTO[],
             sharedContext
           )
-
         }
 
         return moneyAmount
@@ -495,6 +493,47 @@ export default class PricingModuleService<
     )
 
     return priceSet
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async removeRules(
+    data: PricingTypes.RemovePriceSetRulesDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const priceSets = await this.priceSetService_.list({
+      id: data.map((d) => d.id),
+    })
+    const priceSetIds = priceSets.map((ps) => ps.id)
+
+    const ruleTypes = await this.ruleTypeService_.list({
+      rule_attribute: data.map((d) => d.rules || []).flat(),
+    })
+    const ruleTypeIds = ruleTypes.map((rt) => rt.id)
+
+    const priceSetRuleTypes = await this.priceSetRuleTypeService_.list({
+      price_set_id: priceSetIds,
+      rule_type_id: ruleTypeIds,
+    })
+
+    const priceRules = await this.priceRuleService_.list(
+      {
+        price_set_id: priceSetIds,
+        rule_type_id: ruleTypeIds,
+      },
+      {
+        select: ["price_set_money_amount"],
+      }
+    )
+
+    await this.priceSetRuleTypeService_.delete(
+      priceSetRuleTypes.map((psrt) => psrt.id),
+      sharedContext
+    )
+
+    await this.priceSetMoneyAmountService_.delete(
+      priceRules.map((pr) => pr.price_set_money_amount.id),
+      sharedContext
+    )
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
