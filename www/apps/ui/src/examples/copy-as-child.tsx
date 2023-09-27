@@ -6,7 +6,7 @@ export default function CopyAsChild() {
     <div className="flex items-center gap-x-2">
       <Text>Copy command</Text>
       <Copy content="yarn add @medusajs/ui" asChild>
-        <IconButton className="text-ui-fg-on-inverted">
+        <IconButton>
           <PlusMini />
         </IconButton>
       </Copy>
