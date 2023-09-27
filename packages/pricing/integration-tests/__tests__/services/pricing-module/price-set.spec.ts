@@ -1,12 +1,31 @@
-import { CreatePriceSetDTO, IPricingModuleService } from "@medusajs/types"
+import {
+  CreatePriceSetDTO,
+  CreatePriceSetRuleTypeDTO,
+  IPricingModuleService,
+} from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
-import { initialize } from "../../../../src"
+import { PriceSetRuleType, initialize } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
+
+async function createPriceSetPriceRules(
+  manager: SqlEntityManager,
+  priceSetRulesData: CreatePriceSetRuleTypeDTO[]
+): Promise<void> {
+  const priceSetRules: PriceSetRuleType[] = []
+
+  for (let priceSetRuleData of priceSetRulesData) {
+    const priceRule = manager.create(PriceSetRuleType, priceSetRuleData)
+
+    priceSetRules.push(priceRule)
+  }
+
+  await manager.persistAndFlush(priceSetRules)
+}
 
 describe("PricingModule Service - PriceSet", () => {
   let service: IPricingModuleService
@@ -22,9 +41,17 @@ describe("PricingModule Service - PriceSet", () => {
         schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
       },
     })
-  })
 
-  beforeEach(async () => await seedPriceData(MikroOrmWrapper.forkManager()))
+    const testManager = MikroOrmWrapper.forkManager()
+
+    await seedPriceData(testManager)
+    await createPriceSetPriceRules(testManager, [
+      {
+        price_set: "price-set-1",
+        rule_type: "rule-type-1",
+      },
+    ] as unknown as CreatePriceSetRuleTypeDTO[])
+  })
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
@@ -257,8 +284,6 @@ describe("PricingModule Service - PriceSet", () => {
   })
 
   describe("create", () => {
-    // beforeEach(async () => await seedData())
-
     it("should throw an error when creating a price set with rule attributes that don't exist", async () => {
       let error
 
@@ -509,6 +534,52 @@ describe("PricingModule Service - PriceSet", () => {
           rule_types: [],
         },
       ])
+    })
+  })
+
+  describe("addPrices", () => {
+    it("should add prices to existing price set", async () => {
+      await service.addPrices("price-set-1", [
+        {
+          amount: 100,
+          currency_code: "USD",
+          rules: { currency_code: "USD" },
+        },
+      ])
+
+      const [priceSet] = await service.list(
+        { id: ["price-set-1"] },
+        { relations: ["money_amounts"] }
+      )
+
+      expect(priceSet).toEqual(
+        expect.objectContaining({
+          id: "price-set-1",
+          money_amounts: expect.arrayContaining([
+            expect.objectContaining({
+              amount: "100",
+              currency_code: "USD",
+            }),
+          ]),
+        })
+      )
+    })
+
+    it("should fail with an appropriate error when trying to add a price with rule that doesn't exist", async () => {
+      let error
+      try {
+        await service.addPrices("price-set-1", [
+          {
+            amount: 100,
+            currency_code: "USD",
+            rules: { city: "Paris" },
+          },
+        ])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual("Rule types don't exist for: city")
     })
   })
 })

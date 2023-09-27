@@ -266,6 +266,7 @@ describe("PricingModule Service - Calculate Price", () => {
         moneyAmountsData,
         priceSetsData,
         priceSetMoneyAmountsData,
+        priceSetMoneyAmountRulesData: [],
         priceRuleData,
         ruleTypesData,
       })

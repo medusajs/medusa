@@ -3,12 +3,7 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSetMoneyAmountRulesRepository } from "@repositories"
 import { PriceSetMoneyAmountRulesService } from "@services"
 
-import { createCurrencies } from "../../../__fixtures__/currency"
-import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
-import { createPriceSets } from "../../../__fixtures__/price-set"
-import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
-import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
-import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 import { MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
@@ -33,12 +28,7 @@ describe("PriceSetMoneyAmountRules Service", () => {
 
     testManager = await MikroOrmWrapper.forkManager()
 
-    await createCurrencies(testManager)
-    await createMoneyAmounts(testManager)
-    await createPriceSets(testManager)
-    await createRuleTypes(testManager)
-    await createPriceSetMoneyAmounts(testManager)
-    await createPriceSetMoneyAmountRules(testManager)
+    await seedPriceData(testManager)
   })
 
   afterEach(async () => {
@@ -58,9 +48,6 @@ describe("PriceSetMoneyAmountRules Service", () => {
         }),
         expect.objectContaining({
           id: "psmar-3",
-        }),
-        expect.objectContaining({
-          id: "psmar-4",
         }),
       ])
     })
@@ -83,7 +70,7 @@ describe("PriceSetMoneyAmountRules Service", () => {
       const [priceSetMoneyAmountRulesResult, count] =
         await service.listAndCount()
 
-      expect(count).toEqual(4)
+      expect(count).toEqual(3)
       expect(priceSetMoneyAmountRulesResult).toEqual([
         expect.objectContaining({
           id: "psmar-1",
@@ -93,9 +80,6 @@ describe("PriceSetMoneyAmountRules Service", () => {
         }),
         expect.objectContaining({
           id: "psmar-3",
-        }),
-        expect.objectContaining({
-          id: "psmar-4",
         }),
       ])
     })
@@ -118,7 +102,7 @@ describe("PriceSetMoneyAmountRules Service", () => {
       const [priceSetMoneyAmountRulesResult, count] =
         await service.listAndCount({}, { skip: 1, take: 1 })
 
-      expect(count).toEqual(4)
+      expect(count).toEqual(3)
       expect(priceSetMoneyAmountRulesResult).toEqual([
         expect.objectContaining({
           id: "psmar-2",
@@ -140,7 +124,7 @@ describe("PriceSetMoneyAmountRules Service", () => {
         JSON.stringify(priceSetMoneyAmountRulesResult)
       )
 
-      expect(count).toEqual(4)
+      expect(count).toEqual(3)
       expect(serialized).toEqual([
         {
           id: "psmar-1",

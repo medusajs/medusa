@@ -278,10 +278,6 @@ export default class PricingModuleService<
     )
   }
 
-  // addPrices
-
-  // addPrices during create
-
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async create_(
     data: PricingTypes.CreatePriceSetDTO[],
@@ -378,18 +374,18 @@ export default class PricingModuleService<
               )
 
             if (numberOfRules) {
-              const priceSetMoneyAmountRulesCreate = Object.entries(
-                ma.rules
-              ).map(([k, v]) => ({
-                price_set_money_amount: priceSetMoneyAmount,
-                rule_type: ruleTypeMap.get(k),
-                price_set: priceSet,
-                value: v,
-                price_list_id: "test",
-              }))
+              const priceSetRulesCreate = Object.entries(ma.rules).map(
+                ([k, v]) => ({
+                  price_set_money_amount: priceSetMoneyAmount,
+                  rule_type: ruleTypeMap.get(k),
+                  price_set: priceSet,
+                  value: v,
+                  price_list_id: "test",
+                })
+              )
 
               const created = await this.priceRuleService_.create(
-                priceSetMoneyAmountRulesCreate as unknown as PricingTypes.CreatePriceRuleDTO[],
+                priceSetRulesCreate as unknown as PricingTypes.CreatePriceRuleDTO[],
                 sharedContext
               )
 
@@ -403,6 +399,100 @@ export default class PricingModuleService<
     )
 
     return priceSets
+  }
+
+  @InjectManager("baseRepository_")
+  async addPrices(
+    priceSetId: string,
+    data: (PricingTypes.CreateMoneyAmountDTO & {
+      rules?: Record<string, string>
+    })[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceSetDTO> {
+    await this.addPrices_(priceSetId, data, sharedContext)
+
+    return this.retrieve(priceSetId, { relations: ["money_amounts"] })
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async addPrices_(
+    priceSetId: string,
+    data: (PricingTypes.CreateMoneyAmountDTO & {
+      rules?: Record<string, string>
+    })[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const priceSet = await this.retrieve(
+      priceSetId,
+      { relations: ["rule_types"] },
+      sharedContext
+    )
+
+    const ruleAttributes = data
+      .map((d) => (d.rules ? Object.keys(d.rules) : []))
+      .flat()
+
+    const ruleTypeMap =
+      priceSet.rule_types?.reduce((acc, curr) => {
+        acc.set(curr.rule_attribute, curr)
+        return acc
+      }, new Map()) ?? new Map()
+
+    const invalidRuleAttributes = ruleAttributes.filter(
+      (r) => !ruleTypeMap.has(r)
+    )
+
+    if (invalidRuleAttributes.length > 0) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Rule types don't exist for: ${invalidRuleAttributes.join(", ")}`
+      )
+    }
+
+    await Promise.all(
+      data.map(async (ma) => {
+        const [moneyAmount] = await this.moneyAmountService_.create(
+          [ma] as unknown as CreateMoneyAmountDTO[],
+          sharedContext
+        )
+
+        const numberOfRules = Object.entries(ma?.rules ?? {}).length
+
+        const [priceSetMoneyAmount] =
+          await this.priceSetMoneyAmountService_.create(
+            [
+              {
+                price_set: priceSetId,
+                money_amount: moneyAmount,
+                title: "test",
+                number_rules: numberOfRules,
+              },
+            ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
+            sharedContext
+          )
+
+        if (numberOfRules) {
+          const priceSetRulesCreate = Object.entries(ma.rules!).map(
+            ([k, v]) => ({
+              price_set_money_amount: priceSetMoneyAmount,
+              rule_type: ruleTypeMap.get(k),
+              price_set: priceSetId,
+              value: v,
+              price_list_id: "test",
+            })
+          )
+
+          await this.priceRuleService_.create(
+            priceSetRulesCreate as unknown as PricingTypes.CreatePriceRuleDTO[],
+            sharedContext
+          )
+        }
+
+        return moneyAmount
+      })
+    )
+
+    return priceSet
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")

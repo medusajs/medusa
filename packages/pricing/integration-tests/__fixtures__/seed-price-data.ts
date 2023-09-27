@@ -8,6 +8,10 @@ import {
   createPriceSetMoneyAmounts,
   defaultPriceSetMoneyAmountsData,
 } from "./price-set-money-amount"
+import {
+  createPriceSetMoneyAmountRules,
+  defaultPriceSetMoneyAmountRulesData,
+} from "./price-set-money-amount-rules"
 import { createRuleTypes, defaultRuleTypesData } from "./rule-type"
 
 jest.setTimeout(30000)
@@ -20,6 +24,7 @@ export async function seedPriceData(
     currencyData = defaultCurrencyData,
     priceRuleData = defaultPriceRuleData,
     priceSetMoneyAmountsData = defaultPriceSetMoneyAmountsData,
+    priceSetMoneyAmountRulesData = defaultPriceSetMoneyAmountRulesData,
     ruleTypesData = defaultRuleTypesData,
   } = {}
 ) {
@@ -29,4 +34,8 @@ export async function seedPriceData(
   await createPriceSetMoneyAmounts(testManager, priceSetMoneyAmountsData)
   await createRuleTypes(testManager, ruleTypesData)
   await createPriceRules(testManager, priceRuleData)
+  await createPriceSetMoneyAmountRules(
+    testManager,
+    priceSetMoneyAmountRulesData
+  )
 }
