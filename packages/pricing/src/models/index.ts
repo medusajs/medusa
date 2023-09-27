@@ -5,3 +5,4 @@ export { default as PriceSet } from "./price-set"
 export { default as PriceSetMoneyAmount } from "./price-set-money-amount"
 export { default as PriceSetMoneyAmountRules } from "./price-set-money-amount-rules"
 export { default as RuleType } from "./rule-type"
+export { default as PriceSetRuleType }from './price-set-rule-type'

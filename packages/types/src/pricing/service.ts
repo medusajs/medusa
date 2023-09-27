@@ -71,6 +71,14 @@ export interface IPricingModuleService {
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
 
+  addPrices(
+    priceSetId: string,
+    data: (CreateMoneyAmountDTO & {
+      rules?: Record<string, string>
+    })[], 
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
+
   retrieveMoneyAmount(
     id: string,
     config?: FindConfig<MoneyAmountDTO>,
