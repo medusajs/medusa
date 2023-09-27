@@ -7,6 +7,7 @@ import { ArrowUpCircleSolid, Sparkles, XMark } from "@medusajs/icons"
 import clsx from "clsx"
 import { useKeyboardShortcut } from "../../hooks"
 import { CSSTransition } from "react-transition-group"
+import { Drawer } from "@medusajs/ui"
 
 export type ChunkType = {
   stream_end: boolean
@@ -183,88 +184,81 @@ export const AiAssistant = () => {
   })
 
   return (
-    <Modal
-      open={open}
-      onClose={() => setOpen(false)}
-      contentClassName="!p-0"
-      modalContainerClassName="rounded-docs_DEFAULT"
-    >
-      <div
-        className={clsx(
-          "flex justify-between items-center px-docs_1 py-docs_0.75",
-          "border-b border-solid border-medusa-border-base"
-        )}
-      >
-        <div className={clsx("flex gap-docs_0.75 items-center")}>
-          <span className="p-[6px] bg-medusa-button-inverted bg-button-inverted dark:bg-button-inverted-dark rounded-docs_DEFAULT">
-            <Sparkles className="text-medusa-fg-on-color" />
-          </span>
-          <span>Medusa AI Assistant</span>
-          <Badge variant="orange">Beta</Badge>
-        </div>
-        <Button variant="clear" onClick={() => setOpen(false)}>
-          <XMark className="text-medusa-fg-subtle" />
-        </Button>
-      </div>
-      <div className="flex gap-docs_1 px-docs_1 py-docs_0.75">
-        <InputText
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          className={clsx(
-            "bg-transparent border-0 focus:outline-none hover:!bg-transparent",
-            "shadow-none flex-1"
-          )}
-          placeholder="Ask me a question about Medusa..."
-        />
-        <Button
-          variant="clear"
-          onClick={handleSubmit}
-          disabled={loading || !question}
-          className="text-medusa-fg-base disabled:text-medusa-fg-disabled rounded-full p-[5px]"
-        >
-          <ArrowUpCircleSolid />
-        </Button>
-      </div>
-      <CSSTransition
-        classNames={{
-          enter: "animate-fadeInDown animate-fast",
-          exit: "animate-fadeOutUp animate-fast",
-        }}
-        timeout={300}
-        in={answer.length > 0 || error !== null}
-        unmountOnExit
-      >
-        <div className="px-docs_1 py-docs_0.75 h-[332px] max-h-[332px] overflow-auto">
-          {error && (
-            <span className="text-medusa-fg-error">
-              An error occurred, please try again later.
-            </span>
-          )}
-          {answer && (
-            <p>
-              <MarkdownContent>{answer}</MarkdownContent>
-            </p>
-          )}
-          {!loading && relevantSources.length > 0 && (
-            <>
-              <strong>Find more details in these resources</strong>
-              <ul>
-                {relevantSources.map((source, index) => (
-                  <li key={index}>
-                    <a
-                      href={source.source_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {source.source_url}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </div>
-      </CSSTransition>
-    </Modal>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <Drawer.Content>
+        <Drawer.Header>
+          <Drawer.Title>
+            <div className={clsx("flex gap-docs_0.75 items-center")}>
+              <span className="p-[6px] bg-medusa-button-inverted bg-button-inverted dark:bg-button-inverted-dark rounded-docs_DEFAULT">
+                <Sparkles className="text-medusa-fg-on-color" />
+              </span>
+              <span>Medusa AI Assistant</span>
+              <Badge variant="purple">Beta</Badge>
+            </div>
+          </Drawer.Title>
+        </Drawer.Header>
+        <Drawer.Body>
+          <div className="flex gap-docs_1 px-docs_1 py-docs_0.75">
+            <InputText
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              className={clsx(
+                "bg-transparent border-0 focus:outline-none hover:!bg-transparent",
+                "shadow-none flex-1"
+              )}
+              placeholder="Ask me a question about Medusa..."
+            />
+            <Button
+              variant="clear"
+              onClick={handleSubmit}
+              disabled={loading || !question}
+              className="text-medusa-fg-base disabled:text-medusa-fg-disabled rounded-full p-[5px]"
+            >
+              <ArrowUpCircleSolid />
+            </Button>
+          </div>
+          <CSSTransition
+            classNames={{
+              enter: "animate-fadeInDown animate-fast",
+              exit: "animate-fadeOutUp animate-fast",
+            }}
+            timeout={300}
+            in={answer.length > 0 || error !== null}
+            unmountOnExit
+          >
+            <div className="px-docs_1 py-docs_0.75 h-[332px] max-h-[332px] overflow-auto">
+              {error && (
+                <span className="text-medusa-fg-error">
+                  An error occurred, please try again later.
+                </span>
+              )}
+              {answer && (
+                <p>
+                  <MarkdownContent>{answer}</MarkdownContent>
+                </p>
+              )}
+              {!loading && relevantSources.length > 0 && (
+                <>
+                  <strong>Find more details in these resources</strong>
+                  <ul>
+                    {relevantSources.map((source, index) => (
+                      <li key={index}>
+                        <a
+                          href={source.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {source.source_url}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+          </CSSTransition>
+        </Drawer.Body>
+      </Drawer.Content>
+    </Drawer>
   )
 }
