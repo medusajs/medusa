@@ -38,6 +38,11 @@ import { GraphQLNamedType, GraphQLObjectType, isObjectType } from "graphql"
  * }
  * `
  *
+ * const mergedSchema = mergeTypeDefs([userModule, postModule])
+ * const schema = makeExecutableSchema({
+ *   typeDefs: mergedSchema,
+ * })
+ *
  * const fields = graphqlSchemaToFields(types, "User", ["posts"])
  *
  * console.log(fields)
@@ -57,7 +62,7 @@ export function graphqlSchemaToFields(
 ) {
   const result: string[] = []
 
-  function traverseFields(typeName, prefix) {
+  function traverseFields(typeName, parent = "") {
     const type = schemaTypeMap[typeName]
 
     if (!(type instanceof GraphQLObjectType)) {
@@ -74,14 +79,15 @@ export function graphqlSchemaToFields(
         fieldType = fieldType.ofType
       }
 
+      const composedField = parent ? `${parent}.${fieldName}` : fieldName
       if (!isObjectType(fieldType)) {
-        result.push(`${prefix}${fieldName}`)
-      } else if (relations.includes(prefix + fieldName)) {
-        traverseFields(fieldType.name, `${prefix}${fieldName}.`)
+        result.push(composedField)
+      } else if (relations.includes(composedField)) {
+        traverseFields(fieldType.name, composedField)
       }
     }
   }
 
-  traverseFields(typeName, "")
+  traverseFields(typeName)
   return result
 }

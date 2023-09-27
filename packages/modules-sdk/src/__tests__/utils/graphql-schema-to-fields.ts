@@ -91,4 +91,20 @@ describe("graphqlSchemaToFields", function () {
       ])
     )
   })
+
+  it("Should get all fields of a given entity and many relations limited to the relations given if they exists", async function () {
+    const fields = graphqlSchemaToFields(types, "User", [
+      "posts",
+      "doNotExists",
+    ])
+    expect(fields).toEqual(
+      expect.arrayContaining([
+        "id",
+        "name",
+        "posts.id",
+        "posts.title",
+        "posts.date",
+      ])
+    )
+  })
 })
