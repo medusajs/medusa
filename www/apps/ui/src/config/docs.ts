@@ -128,6 +128,11 @@ export const docsConfig: DocsConfig = {
             isPathHref: true,
           },
           {
+            title: "Command Bar",
+            path: "/components/command-bar",
+            isPathHref: true,
+          },
+          {
             title: "Container",
             path: "/components/container",
             isPathHref: true,
@@ -135,6 +140,11 @@ export const docsConfig: DocsConfig = {
           {
             title: "Copy",
             path: "/components/copy",
+            isPathHref: true,
+          },
+          {
+            title: "Currency Input",
+            path: "/components/currency-input",
             isPathHref: true,
           },
           {
@@ -163,6 +173,16 @@ export const docsConfig: DocsConfig = {
             isPathHref: true,
           },
           {
+            title: "Icon Badge",
+            path: "/components/icon-badge",
+            isPathHref: true,
+          },
+          {
+            title: "Icon Button",
+            path: "/components/icon-button",
+            isPathHref: true,
+          },
+          {
             title: "Input",
             path: "/components/input",
             isPathHref: true,
@@ -175,6 +195,16 @@ export const docsConfig: DocsConfig = {
           {
             title: "Label",
             path: "/components/label",
+            isPathHref: true,
+          },
+          {
+            title: "Progress Accordion",
+            path: "/components/progress-accordion",
+            isPathHref: true,
+          },
+          {
+            title: "Progress Tabs",
+            path: "/components/progress-tabs",
             isPathHref: true,
           },
           {
@@ -193,6 +223,11 @@ export const docsConfig: DocsConfig = {
             isPathHref: true,
           },
           {
+            title: "Status Badge",
+            path: "/components/status-badge",
+            isPathHref: true,
+          },
+          {
             title: "Switch",
             path: "/components/switch",
             isPathHref: true,
@@ -200,6 +235,11 @@ export const docsConfig: DocsConfig = {
           {
             title: "Table",
             path: "/components/table",
+            isPathHref: true,
+          },
+          {
+            title: "Tabs",
+            path: "/components/tabs",
             isPathHref: true,
           },
           {

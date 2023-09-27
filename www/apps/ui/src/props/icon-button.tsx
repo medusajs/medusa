@@ -1,12 +1,12 @@
 import { PropTable } from "@/components/props-table"
 import { PropDataMap } from "@/types/props"
 
-const buttonProps: PropDataMap = [
+const iconButtonProps: PropDataMap = [
   {
     prop: "variant",
     type: {
       type: "enum",
-      values: ["primary", "secondary", "transparent", "danger"],
+      values: ["primary", "transparent"],
     },
     defaultValue: "primary",
   },
@@ -14,7 +14,7 @@ const buttonProps: PropDataMap = [
     prop: "size",
     type: {
       type: "enum",
-      values: ["small", "base", "large", "xlarge"],
+      values: ["base", "large", "xlarge"],
     },
     defaultValue: "base",
   },
@@ -26,7 +26,7 @@ const buttonProps: PropDataMap = [
 ]
 
 const Props = () => {
-  return <PropTable props={buttonProps} />
+  return <PropTable props={iconButtonProps} />
 }
 
 export default Props
