@@ -585,8 +585,7 @@ const EditPricesModal = ({
               <React.Fragment>
                 <ProgressTabs.Content
                   value={Tab.PRICES}
-                  forceMount
-                  className="hidden h-full w-full data-[state='active']:block"
+                  className="h-full w-full"
                 >
                   <PriceListPricesForm
                     setProduct={onSetProduct}
@@ -598,7 +597,7 @@ const EditPricesModal = ({
                 {product && (
                   <ProgressTabs.Content
                     value={Tab.EDIT}
-                    className="hidden h-full w-full data-[state='active']:block"
+                    className="h-full w-full"
                   >
                     <PriceListProductPricesForm
                       product={product}

@@ -1415,8 +1415,6 @@
   "price-list-add-products-modal-success-title": "New prices added",
   "price-list-add-products-modal-success-message": "The new prices have been added to the price list.",
   "price-list-add-products-modal-error-title": "An error occurred",
-  "price-list-add-products-modal-are-you-sure": "Are you sure?",
-  "price-list-add-products-modal-unsaved-changes": "You have unsaved changes, are you sure you want to go back?",
   "price-list-add-products-modal-back-button-cancel": "Cancel",
   "price-list-add-products-modal-back-button": "Back",
   "price-list-add-products-modal-next-button-continue": "Continue",

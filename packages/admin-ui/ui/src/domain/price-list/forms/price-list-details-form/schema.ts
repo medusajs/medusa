@@ -13,8 +13,8 @@ export const priceListDetailsSchema = z.object({
   }),
   dates: z
     .object({
-      starts_at: z.date().optional(),
-      ends_at: z.date().optional(),
+      starts_at: z.date().nullable().optional(),
+      ends_at: z.date().nullable().optional(),
     })
     .superRefine((data, ctx) => {
       if (data.starts_at && data.ends_at && data.starts_at > data.ends_at) {

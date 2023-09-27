@@ -570,7 +570,6 @@ const AddProductsModal = ({
             <Form {...form}>
               <ProgressTabs.Content
                 value={Tab.PRODUCTS}
-                forceMount
                 className="h-full w-full"
               >
                 <PriceListProductsForm
@@ -598,7 +597,6 @@ const AddProductsModal = ({
                 <React.Fragment>
                   <ProgressTabs.Content
                     value={Tab.PRICES}
-                    forceMount
                     className="h-full w-full"
                   >
                     <PriceListPricesForm

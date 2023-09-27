@@ -114,9 +114,16 @@ const PriceListNew = () => {
         customer_groups: {
           ids: [],
         },
+        dates: {
+          ends_at: null,
+          starts_at: null,
+        },
       },
       products: {
         ids: [],
+      },
+      prices: {
+        products: {},
       },
     },
   })
@@ -128,7 +135,7 @@ const PriceListNew = () => {
     getValues,
     setValue,
     handleSubmit,
-    formState: { isDirty },
+    formState: { isDirty, dirtyFields },
   } = form
 
   const {
@@ -165,6 +172,9 @@ const PriceListNew = () => {
   const onModalStateChange = React.useCallback(
     async (open: boolean) => {
       if (!open && (isDirty || isEditDirty)) {
+        console.log("Form is Dirty", isDirty ? "true" : "false", dirtyFields)
+        console.log("Edit Form is Dirty", isEditDirty ? "true" : "false")
+
         const response = await prompt({
           title: promptTitle,
           description: promptExitDescription,
@@ -312,8 +322,8 @@ const PriceListNew = () => {
               id,
             })),
             status: status,
-            ends_at: data.details.dates.ends_at,
-            starts_at: data.details.dates.starts_at,
+            ends_at: data.details.dates.ends_at || undefined,
+            starts_at: data.details.dates.starts_at || undefined,
             prices,
           },
           {
@@ -554,13 +564,15 @@ const PriceListNew = () => {
       >
         <FocusModal.Content>
           <FocusModal.Header className="flex w-full items-center justify-start">
-            <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 flex-1 border-l">
+            <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 border-l">
               <ProgressTabs.Trigger
                 value={Tab.DETAILS}
                 className="group flex items-center gap-x-2"
                 status={status[Tab.DETAILS]}
               >
-                {t("price-list-new-form-details-tab", "Create Price List")}
+                <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                  {t("price-list-new-form-details-tab", "Create Price List")}
+                </span>
               </ProgressTabs.Trigger>
               <ProgressTabs.Trigger
                 value={Tab.PRODUCTS}
@@ -568,7 +580,9 @@ const PriceListNew = () => {
                 className="group flex items-center gap-x-2"
                 status={status[Tab.PRODUCTS]}
               >
-                {t("price-list-new-form-products-tab", "Choose Products")}
+                <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                  {t("price-list-new-form-products-tab", "Choose Products")}
+                </span>
               </ProgressTabs.Trigger>
               <ProgressTabs.Trigger
                 value={Tab.PRICES}
@@ -579,7 +593,9 @@ const PriceListNew = () => {
                 className="group flex items-center gap-x-2"
                 status={status[Tab.PRICES]}
               >
-                {t("price-list-new-form-prices-tab", "Edit Prices")}
+                <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                  {t("price-list-new-form-prices-tab", "Edit Prices")}
+                </span>
               </ProgressTabs.Trigger>
               {product && (
                 <ProgressTabs.Trigger
@@ -588,13 +604,13 @@ const PriceListNew = () => {
                   className="group flex items-center gap-x-2"
                   status={isEditDirty ? "in-progress" : "not-started"}
                 >
-                  <span className="w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+                  <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
                     {product?.title}
                   </span>
                 </ProgressTabs.Trigger>
               )}
             </ProgressTabs.List>
-            <div className="flex items-center justify-end gap-x-2">
+            <div className="ml-auto flex items-center justify-end gap-x-2">
               <Button
                 variant="secondary"
                 onClick={onBack}
@@ -617,8 +633,7 @@ const PriceListNew = () => {
               <Form {...form}>
                 <ProgressTabs.Content
                   value={Tab.DETAILS}
-                  forceMount
-                  className="hidden h-full w-full max-w-[720px] data-[state='active']:block"
+                  className="h-full w-full max-w-[720px]"
                 >
                   <div className="px-8 py-12">
                     <PriceListDetailsForm
@@ -630,8 +645,7 @@ const PriceListNew = () => {
                 </ProgressTabs.Content>
                 <ProgressTabs.Content
                   value={Tab.PRODUCTS}
-                  forceMount
-                  className="hidden h-full w-full data-[state='active']:block"
+                  className="h-full w-full"
                 >
                   <PriceListProductsForm form={nestedForm(form, "products")} />
                 </ProgressTabs.Content>
@@ -655,8 +669,7 @@ const PriceListNew = () => {
                   <React.Fragment>
                     <ProgressTabs.Content
                       value={Tab.PRICES}
-                      forceMount
-                      className="hidden h-full w-full data-[state='active']:block"
+                      className="h-full w-full"
                     >
                       <PriceListPricesForm
                         setProduct={onSetProduct}
@@ -667,7 +680,7 @@ const PriceListNew = () => {
                     {product && (
                       <ProgressTabs.Content
                         value={Tab.EDIT}
-                        className="hidden h-full w-full data-[state='active']:block"
+                        className="h-full w-full"
                       >
                         <PriceListProductPricesForm
                           product={product}
