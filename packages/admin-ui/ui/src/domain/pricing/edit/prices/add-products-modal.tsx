@@ -299,6 +299,8 @@ const AddProductsModal = ({
             ),
             "success"
           )
+
+          onCloseModal()
         },
         onError: (err) => {
           notification(

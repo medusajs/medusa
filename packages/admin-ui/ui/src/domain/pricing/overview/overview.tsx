@@ -46,7 +46,7 @@ import {
   getStringArrayFromSearchParams,
   getStringFromSearchParams,
 } from "../../../utils/search-param-utils"
-import { PriceListStatus } from "../../pricing/pricing-form/types"
+import { PriceListStatus } from "../forms/price-list-details-form"
 import { PriceListNew } from "../new"
 
 const PAGE_SIZE = 10
@@ -249,7 +249,7 @@ const PriceListOverview = () => {
                   key={row.id}
                   className={clx("cursor-pointer [&_td:last-of-type]:w-[1%]")}
                   onClick={() => {
-                    navigate(`/a/price-lists/${row.original.id}`)
+                    navigate(`/a/pricing/${row.original.id}`)
                   }}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -410,7 +410,7 @@ const PriceListTableRowActions = ({ row }: PriceListTableRowActionsProps) => {
   const handleNavigate = (e: React.MouseEvent) => {
     e.stopPropagation()
 
-    navigate(`/a/price-lists/${row.original.id}`)
+    navigate(`/a/pricing/${row.original.id}`)
   }
 
   const isExpired = row.original.ends_at
