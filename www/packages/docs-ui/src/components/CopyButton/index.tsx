@@ -16,6 +16,7 @@ export const CopyButton = ({
   buttonClassName = "",
   tooltipClassName = "",
   children,
+  className,
 }: CopyButtonProps) => {
   const [isCopied, setIsCopied] = useState(false)
   const copyTimeout = useRef<number>(0)
@@ -34,6 +35,7 @@ export const CopyButton = ({
     <Tooltip
       text={isCopied ? `Copied!` : `Copy to Clipboard`}
       tooltipClassName={tooltipClassName}
+      className={className}
     >
       <span
         className={clsx("cursor-pointer", buttonClassName)}
