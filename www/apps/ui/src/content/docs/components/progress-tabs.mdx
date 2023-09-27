@@ -11,16 +11,20 @@ component: true
 ---
 
 ```tsx
-import { ProgressTabs } from '@medusajs/ui'
+import { ProgressTabs } from "@medusajs/ui"
 ```
 ```tsx
 <ProgressTabs defaultValue="general">
   <ProgressTabs.List>
-    <ProgressTabs.Trigger value="general">General</ProgressTabs.Trigger>
+    <ProgressTabs.Trigger value="general">
+      General
+    </ProgressTabs.Trigger>
     <ProgressTabs.Trigger value="shipping">
         Shipping
     </ProgressTabs.Trigger>
-    <ProgressTabs.Trigger value="payment">Payment</ProgressTabs.Trigger>
+    <ProgressTabs.Trigger value="payment">
+      Payment
+    </ProgressTabs.Trigger>
   </ProgressTabs.List>
   <ProgressTabs.Content value="general">
     {/* Content */}

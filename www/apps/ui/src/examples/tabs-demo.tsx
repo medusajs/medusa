@@ -12,7 +12,7 @@ export default function TabsDemo() {
         <div className="mt-2">
           <Tabs.Content value="general">
             <Text size="small">
-              At ACME, we're dedicated to providing you with an exceptional
+              At ACME, we&apos;re dedicated to providing you with an exceptional
               shopping experience. Our wide selection of products caters to your
               every need, from fashion to electronics and beyond. We take pride
               in our commitment to quality, customer satisfaction, and timely
