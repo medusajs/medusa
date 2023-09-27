@@ -200,10 +200,6 @@ export default async (req, res) => {
       const createdCart = await cartServiceTx.create(toCreate)
 
       if (validated.items?.length) {
-        const productVariantService: ProductVariantService = req.scope.resolve(
-          "productVariantService"
-        )
-
         let generatedLineItems: LineItem[]
 
         if (
@@ -251,16 +247,16 @@ export default async (req, res) => {
               customer_id: req.user?.customer_id,
             }
           )
-        }
 
-        await cartServiceTx.addOrUpdateLineItems(
-          createdCart.id,
-          generatedLineItems,
-          {
-            validateSalesChannels:
-              featureFlagRouter.isFeatureEnabled("sales_channels"),
-          }
-        )
+          await cartServiceTx.addOrUpdateLineItems(
+            createdCart.id,
+            generatedLineItems,
+            {
+              validateSalesChannels:
+                featureFlagRouter.isFeatureEnabled("sales_channels"),
+            }
+          )
+        }
       }
 
       return createdCart
