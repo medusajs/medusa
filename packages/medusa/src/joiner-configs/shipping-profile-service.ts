@@ -15,7 +15,7 @@ export default {
         created_at: Date!
         updated_at: Date!  
         deleted_at: Date
-        metadata: JSON   
+        metadata: JSON
       }
     `,
   alias: [

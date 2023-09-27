@@ -26,35 +26,15 @@ export const LinkableKeys = {
   product_image_id: ProductImage.name,
 }
 
-export const entityNameToLinkableKeysMap: MapToConfig = {
-  [Product.name]: [
-    { mapTo: LinkableKeys.product_id, valueFrom: "id" },
-    {
-      mapTo: LinkableKeys.product_handle,
-      valueFrom: "handle",
-    },
-  ],
-  [ProductVariant.name]: [
-    { mapTo: LinkableKeys.variant_id, valueFrom: "id" },
-    { mapTo: LinkableKeys.variant_sku, valueFrom: "sku" },
-  ],
-  [ProductOption.name]: [
-    { mapTo: LinkableKeys.product_option_id, valueFrom: "id" },
-  ],
-  [ProductType.name]: [
-    { mapTo: LinkableKeys.product_type_id, valueFrom: "id" },
-  ],
-  [ProductCategory.name]: [
-    { mapTo: LinkableKeys.product_category_id, valueFrom: "id" },
-  ],
-  [ProductCollection.name]: [
-    { mapTo: LinkableKeys.product_collection_id, valueFrom: "id" },
-  ],
-  [ProductTag.name]: [{ mapTo: LinkableKeys.product_tag_id, valueFrom: "id" }],
-  [ProductImage.name]: [
-    { mapTo: LinkableKeys.product_image_id, valueFrom: "id" },
-  ],
-}
+const entityLinkableKeysMap: MapToConfig = {}
+Object.entries(LinkableKeys).forEach(([key, value]) => {
+  entityLinkableKeysMap[value] ??= []
+  entityLinkableKeysMap[value].push({
+    mapTo: key,
+    valueFrom: key.split("_").pop()!,
+  })
+})
+export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
 export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRODUCT,
