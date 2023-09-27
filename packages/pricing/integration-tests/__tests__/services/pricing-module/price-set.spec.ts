@@ -3,43 +3,13 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
 import { initialize } from "../../../../src"
-import { createCurrencies } from "../../../__fixtures__/currency"
-import {
-  createMoneyAmounts,
-  defaultMoneyAmountsData,
-} from "../../../__fixtures__/money-amount"
-import {
-  createPriceRules,
-  defaultPriceRuleData,
-} from "../../../__fixtures__/price-rule"
-import { createPriceSets } from "../../../__fixtures__/price-set"
-import {
-  createPriceSetMoneyAmounts,
-  defaultPriceSetMoneyAmountsData,
-} from "../../../__fixtures__/price-set-money-amount"
-import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
-async function seedData({
-  moneyAmountsData = defaultMoneyAmountsData,
-  priceRuleData = defaultPriceRuleData,
-  priceSetMoneyAmountsData = defaultPriceSetMoneyAmountsData,
-} = {}) {
-  const testManager = MikroOrmWrapper.forkManager()
-
-  await createCurrencies(testManager)
-  await createMoneyAmounts(testManager, moneyAmountsData)
-  await createPriceSets(testManager)
-  await createPriceSetMoneyAmounts(testManager, priceSetMoneyAmountsData)
-  await createRuleTypes(testManager)
-  await createPriceRules(testManager, priceRuleData)
-}
-
 describe("PricingModule Service - PriceSet", () => {
   let service: IPricingModuleService
-  let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let data!: PriceSet[]
 
@@ -54,7 +24,7 @@ describe("PricingModule Service - PriceSet", () => {
     })
   })
 
-  beforeEach(async () => await seedData())
+  beforeEach(async () => await seedPriceData(MikroOrmWrapper.forkManager()))
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
@@ -342,11 +312,11 @@ describe("PricingModule Service - PriceSet", () => {
 
       expect(priceSet).toEqual(
         expect.objectContaining({
-          rule_types: [ 
-            expect.objectContaining({ 
-              rule_attribute: "region_id"
-            })
-          ]
+          rule_types: [
+            expect.objectContaining({
+              rule_attribute: "region_id",
+            }),
+          ],
         })
       )
     })
@@ -355,65 +325,69 @@ describe("PricingModule Service - PriceSet", () => {
       const [priceSet] = await service.create([
         {
           rules: [{ rule_attribute: "region_id" }],
-          money_amounts: [{
-            amount: 100, 
-            currency_code: "USD",
-            rules: {
-              region_id: "1"
-            }
-          }]
+          money_amounts: [
+            {
+              amount: 100,
+              currency_code: "USD",
+              rules: {
+                region_id: "1",
+              },
+            },
+          ],
         },
       ])
 
       expect(priceSet).toEqual(
         expect.objectContaining({
-          rule_types: [ 
-            expect.objectContaining({ 
-              rule_attribute: "region_id"
-            })
+          rule_types: [
+            expect.objectContaining({
+              rule_attribute: "region_id",
+            }),
           ],
           money_amounts: [
             expect.objectContaining({
               amount: "100",
               currency_code: "USD",
-            })
-          ]
+            }),
+          ],
         })
       )
     })
-    
+
     it("should create a price set with rule types and money amountss", async () => {
       const [priceSet] = await service.create([
         {
           rules: [{ rule_attribute: "region_id" }],
-          money_amounts: [{
-            amount: 100, 
-            currency_code: "USD",
-            rules: {
-              region_id: "10"
-            }
-          }]
+          money_amounts: [
+            {
+              amount: 100,
+              currency_code: "USD",
+              rules: {
+                region_id: "10",
+              },
+            },
+          ],
         },
       ])
 
       expect(priceSet).toEqual(
         expect.objectContaining({
-          rule_types: [ 
-            expect.objectContaining({ 
-              rule_attribute: "region_id"
-            })
+          rule_types: [
+            expect.objectContaining({
+              rule_attribute: "region_id",
+            }),
           ],
           money_amounts: [
             expect.objectContaining({
               amount: "100",
               currency_code: "USD",
-            })
+            }),
           ],
           price_rules: [
             expect.objectContaining({
-              value: "10"
-            })
-          ]
+              value: "10",
+            }),
+          ],
         })
       )
     })
@@ -434,6 +408,107 @@ describe("PricingModule Service - PriceSet", () => {
           id: "price-set-new",
         })
       )
+    })
+  })
+
+  describe("removeRules", () => {
+    it("should delete prices for a price set associated to the rules that are deleted", async () => {
+      const createdPriceSet = await service.create([
+        {
+          rules: [
+            {
+              rule_attribute: "region_id",
+            },
+            {
+              rule_attribute: "currency_code",
+            },
+          ],
+          money_amounts: [
+            {
+              currency_code: "EUR",
+              amount: 100,
+              rules: {
+                region_id: "test-region",
+                currency_code: "test-currency",
+              },
+            },
+            {
+              currency_code: "EUR",
+              amount: 500,
+              rules: {
+                currency_code: "test-currency",
+              },
+            },
+          ],
+        },
+      ])
+
+      await service.removeRules([
+        {
+          id: createdPriceSet[0].id,
+          rules: ["region_id"],
+        },
+      ])
+
+      let priceSet = await service.list(
+        {
+          id: [createdPriceSet[0].id],
+        },
+        {
+          relations: ["rule_types", "money_amounts", "price_rules"],
+        }
+      )
+
+      expect(
+        expect.arrayContaining(
+          expect.objectContaining({
+            id: priceSet[0].id,
+            price_rules: [
+              {
+                id: expect.any(String),
+                rule_type: expect.objectContaining({
+                  rule_attribute: "currency_code",
+                }),
+              },
+            ],
+            money_amounts: [
+              expect.objectContaining({
+                amount: "500",
+                currency_code: "EUR",
+              }),
+            ],
+            rule_types: [
+              expect.objectContaining({
+                rule_attribute: "currency_code",
+              }),
+            ],
+          })
+        )
+      )
+
+      await service.removeRules([
+        {
+          id: createdPriceSet[0].id,
+          rules: ["currency_code"],
+        },
+      ])
+
+      priceSet = await service.list(
+        {
+          id: [createdPriceSet[0].id],
+        },
+        {
+          relations: ["rule_types", "money_amounts", "price_rules"],
+        }
+      )
+      expect(priceSet).toEqual([
+        {
+          id: expect.any(String),
+          price_rules: [],
+          money_amounts: [],
+          rule_types: [],
+        },
+      ])
     })
   })
 })

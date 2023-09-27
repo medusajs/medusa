@@ -69,6 +69,8 @@ export interface IPricingModuleService {
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
 
+  removeRules(data: Record<any, any>[], sharedContext?: Context): Promise<void>
+
   delete(ids: string[], sharedContext?: Context): Promise<void>
 
   retrieveMoneyAmount(
