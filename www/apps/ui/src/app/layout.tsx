@@ -35,7 +35,10 @@ export default function RootLayout({
       >
         <Providers>
           <Navbar />
-          <div className="w-full h-[calc(100%-57px)] overflow-y-scroll">
+          <div
+            className="w-full h-[calc(100%-57px)] overflow-y-scroll"
+            id="main"
+          >
             <div className="max-w-xxl grid w-full grid-cols-1 px-6 lg:mx-auto lg:grid-cols-[280px_1fr]">
               <Sidebar expandItems={true} />
               <div className="relative flex w-full flex-1 items-start justify-center px-4 pb-8 pt-16 md:px-8 lg:px-16 lg:py-[112px]">
