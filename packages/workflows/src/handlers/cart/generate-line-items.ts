@@ -34,7 +34,7 @@ export async function generateLineItems({
   const lineItemService = container.resolve("lineItemService")
   const lineItemServiceTx = lineItemService.withTransaction(manager)
 
-  return await lineItemServiceTx.generate(items, {
+  return await lineItemServiceTx.generateLineItem(items, {
     region_id: cart.region_id,
     customer_id: cart.customer_id,
   })
