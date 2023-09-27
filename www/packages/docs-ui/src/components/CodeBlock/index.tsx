@@ -27,7 +27,6 @@ export const CodeBlock = ({
       className={clsx(
         "bg-medusa-code-bg-base relative mb-docs_1 rounded-docs_DEFAULT",
         "border-medusa-code-border w-full max-w-full border",
-        "xs:after:content-[''] xs:after:rounded xs:after:absolute xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade",
         collapsed && "max-h-[400px] overflow-auto",
         className
       )}
@@ -97,12 +96,19 @@ export const CodeBlock = ({
             </pre>
             <div
               className={clsx(
-                "absolute z-[1] hidden gap-docs_1 md:flex",
-                tokens.length === 1 && "right-docs_0.75 top-[10px]",
-                tokens.length > 1 && "right-docs_1 top-docs_1"
+                "absolute hidden gap-docs_1 md:flex",
+                "xs:rounded xs:absolute xs:right-0 xs:top-0 xs:w-[calc(10%+24px)] xs:h-full xs:bg-code-fade"
               )}
             >
-              <CopyButton text={source} tooltipClassName="font-base">
+              <CopyButton
+                text={source}
+                tooltipClassName="font-base"
+                className={clsx(
+                  "absolute",
+                  tokens.length === 1 && "right-docs_0.75 top-[10px]",
+                  tokens.length > 1 && "right-docs_1 top-docs_1"
+                )}
+              >
                 <SquareTwoStackSolid className="text-medusa-code-icon" />
               </CopyButton>
             </div>
