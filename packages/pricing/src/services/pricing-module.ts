@@ -7,6 +7,9 @@ import {
   PricingContext,
   PricingFilters,
   PricingTypes,
+  RuleTypeDTO, 
+  CreateMoneyAmountDTO,
+  PriceSetDTO,
 } from "@medusajs/types"
 import {
   Currency,
@@ -39,7 +42,6 @@ import {
   shouldForceTransaction,
 } from "@medusajs/utils"
 
-import { CreateMoneyAmountDTO } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"
 
@@ -399,6 +401,47 @@ export default class PricingModuleService<
     )
 
     return priceSets
+  }
+
+  async addRules(
+    data: { priceSetId: string; rules: { attribute: string }[] }[], 
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const priceSets = await this.priceSetService_.list(
+      { id: data.map((d) => d.priceSetId) },
+      { relations: ["rule_types"] }
+    )
+
+    const priceSetMap = new Map(priceSets.map((p) => [p.id, p]))
+
+    const ruleTypes = await this.ruleTypeService_.list(
+      {
+        rule_attribute: data.map((d) => d.rules.map((r) => r.attribute)).flat(),
+      },
+      {},
+      sharedContext
+    )
+
+    const ruleTypeMap: Map<string, RuleTypeDTO> = ruleTypes.reduce((acc, curr) => {
+      acc.set(curr.rule_attribute, curr)
+      return acc
+    }, new Map())
+    
+    const priceSetRuleTypesCreate: PricingTypes.CreatePriceSetRuleTypeDTO[] = []
+
+    data.forEach((d) => { 
+      const priceSet = priceSetMap.get(d.priceSetId)
+      d.rules.forEach((r) => {
+        priceSetRuleTypesCreate.push({
+          rule_type: ruleTypeMap.get(r.attribute) as RuleTypeDTO,
+          price_set: priceSet as unknown as PriceSetDTO,
+        })
+      })
+    })
+    await this.priceSetRuleTypeService_.create(
+      priceSetRuleTypesCreate as unknown as PricingTypes.CreatePriceSetRuleTypeDTO[],
+      sharedContext
+    )
   }
 
   @InjectManager("baseRepository_")

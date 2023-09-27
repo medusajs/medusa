@@ -42,5 +42,4 @@ export class Migration20230915120914 extends Migration {
     this.addSql('alter table "price_rule" add constraint "price_rule_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;');
     this.addSql('alter table "price_rule" add constraint "price_rule_price_set_money_amount_id_foreign" foreign key ("price_set_money_amount_id") references "price_set_money_amount" ("id") on update cascade;');
   }
-
 }
