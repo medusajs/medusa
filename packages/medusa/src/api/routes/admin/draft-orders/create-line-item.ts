@@ -21,7 +21,11 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { validator } from "../../../../utils/validator"
-import { FlagRouter, prepareLineItemData } from "@medusajs/utils"
+import {
+  FlagRouter,
+  prepareLineItemData,
+  validateItemsInput,
+} from "@medusajs/utils"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
 
@@ -140,6 +144,8 @@ export default async (req, res) => {
             `Variant with id: ${validated.variant_id} not found`
           )
         }
+
+        validateItemsInput([validated], [variant])
 
         line = await lineItemService
           .withTransaction(manager)

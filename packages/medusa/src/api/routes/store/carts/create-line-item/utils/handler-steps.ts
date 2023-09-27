@@ -1,4 +1,8 @@
-import { FlagRouter, prepareLineItemData } from "@medusajs/utils"
+import {
+  FlagRouter,
+  prepareLineItemData,
+  validateItemsInput,
+} from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import { EntityManager } from "typeorm"
 
@@ -52,6 +56,8 @@ export async function handleAddOrUpdateLineItem(
         `Variant with id: ${data.variant_id} not found`
       )
     }
+
+    validateItemsInput([data], [variant])
 
     line = await lineItemService
       .withTransaction(manager)

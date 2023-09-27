@@ -17,7 +17,11 @@ import {
 import { isDefined, MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
-import { FlagRouter, prepareLineItemData } from "@medusajs/utils"
+import {
+  FlagRouter,
+  prepareLineItemData,
+  validateItemsInput,
+} from "@medusajs/utils"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { LineItem } from "../../../../models"
@@ -217,6 +221,8 @@ export default async (req, res) => {
             remoteQuery,
             variantIds
           )
+
+          validateItemsInput(validated.items, variants)
 
           const variantsIdsMap = new Map(variants.map((v) => [v.id, v]))
 
