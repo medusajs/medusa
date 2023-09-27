@@ -9,7 +9,7 @@ import {
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInputData = {
-  createCartInput: {
+  cart: {
     items: {
       variant_id: string
       quantity: number
