@@ -306,25 +306,29 @@ class DraftOrderService extends TransactionBaseService {
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)
 
-        const itemsToGenerate: GenerateInputData[] = []
+        let itemsToGenerate: GenerateInputData[] = []
         const itemsToCreate: Partial<LineItem>[] = []
 
-        // prepare that for next steps
-        await Promise.all(
-          (items ?? []).map(async (item) => {
-            if (item.variant_id) {
-              const variant = (await this.productVariantService_.retrieve(
-                item.variant_id,
-                { relations: ["product"] }
-              )) as unknown as ProductVariantDTO
+        if (items) {
+          const itemsWithVariants = items.filter((i) => i.variant_id)
+          const itemsWithoutVariants = items.filter((i) => !i.variant_id)
 
-              itemsToGenerate.push(
-                prepareLineItemData(variant, item.quantity, item.unit_price)
-              )
+          const variants = (await this.productVariantService_.list(
+            { id: itemsWithVariants.map((i) => i.variant_id) as string[] },
+            { relations: ["product"] }
+          )) as unknown as ProductVariantDTO[]
 
-              return
-            }
+          const variantIdsMap = new Map(variants.map((v) => [v.id, v]))
 
+          itemsToGenerate = itemsWithVariants.map((item) =>
+            prepareLineItemData(
+              variantIdsMap[item.variant_id!],
+              item.quantity,
+              item.unit_price
+            )
+          )
+
+          itemsWithoutVariants.forEach((item) => {
             let price
             if (!isDefined(item.unit_price) || item.unit_price < 0) {
               price = 0
@@ -342,7 +346,7 @@ class DraftOrderService extends TransactionBaseService {
               metadata: item.metadata,
             })
           })
-        )
+        }
 
         const promises: Promise<any>[] = []
 
