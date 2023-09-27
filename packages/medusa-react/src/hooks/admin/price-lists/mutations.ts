@@ -96,7 +96,11 @@ export const useAdminCreatePriceListPrices = (
       client.admin.priceLists.addPrices(id, payload),
     buildOptions(
       queryClient,
-      [adminPriceListKeys.lists(), adminPriceListKeys.detailProducts(id)],
+      [
+        adminPriceListKeys.detail(id),
+        adminPriceListKeys.lists(),
+        adminPriceListKeys.detailProducts(id),
+      ],
       options
     )
   )
