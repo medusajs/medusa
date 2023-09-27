@@ -183,12 +183,14 @@ class LineItemService extends TransactionBaseService {
   }
 
   /**
-   * Generate a single or multiple line item without persisting the data into the db
+   * Generate a single or multiple line item without persisting the data into the db.
+   *
+   * NOTE: this currently work with IsolatedProductModule flag
    *
    * @param variantData
    * @param context
    */
-  async generateWithIsolatedProductModule<
+  async generateLineItem<
     T = LineItemCreateData | LineItemCreateData[],
     TResult = T extends Array<LineItemCreateData> ? LineItem[] : LineItem
   >(variantData: T, context: GenerateLineItemContext = {}): Promise<TResult> {
@@ -244,7 +246,7 @@ class LineItemService extends TransactionBaseService {
         for (const variantData of resolvedData) {
           const variantPricing = variantsPricing[variantData.variant_id]
 
-          const lineItem = await this.generateLineItem(
+          const lineItem = await this.generateLineItem_(
             { ...variantData, id: variantData.variant_id },
             variantData.quantity,
             {
@@ -283,7 +285,7 @@ class LineItemService extends TransactionBaseService {
    * @param context
    */
   async generate<
-    T = string | GenerateInputData | GenerateInputData[] | LineItemCreateData[],
+    T = string | GenerateInputData | GenerateInputData[],
     TResult = T extends string
       ? LineItem
       : T extends LineItem
@@ -297,21 +299,6 @@ class LineItemService extends TransactionBaseService {
   ): Promise<TResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        if (!isString(variantIdOrData)) {
-          if (
-            (Array.isArray(variantIdOrData) &&
-              (variantIdOrData as LineItemCreateData[]).some(
-                (v) => v.variant_id
-              )) ||
-            (variantIdOrData as LineItemCreateData).variant_id
-          ) {
-            return await this.generateWithIsolatedProductModule(
-              variantIdOrData,
-              context
-            )
-          }
-        }
-
         this.validateGenerateArguments(
           variantIdOrData,
           regionIdOrContext,
@@ -413,7 +400,7 @@ class LineItemService extends TransactionBaseService {
           ) as ProductVariant
           const variantPricing = variantsPricing[variantData.variantId]
 
-          const lineItem = await this.generateLineItem(
+          const lineItem = await this.generateLineItem_(
             variant,
             variantData.quantity,
             {
@@ -442,7 +429,7 @@ class LineItemService extends TransactionBaseService {
     )
   }
 
-  protected async generateLineItem(
+  protected async generateLineItem_(
     variant: {
       id: string
       title: string

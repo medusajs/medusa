@@ -22,7 +22,6 @@ import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { validator } from "../../../../utils/validator"
 import { FlagRouter, prepareLineItemData } from "@medusajs/utils"
-import { ProductVariantDTO } from "@medusajs/types"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
 
@@ -137,8 +136,7 @@ export default async (req, res) => {
 
         line = await lineItemService
           .withTransaction(manager)
-          // TODO: can we use generateWithIsolatedProductModule directly
-          .generate(prepareLineItemData(variant, validated.quantity), {
+          .generateLineItem(prepareLineItemData(variant, validated.quantity), {
             metadata: validated.metadata,
             unit_price: validated.unit_price,
           })

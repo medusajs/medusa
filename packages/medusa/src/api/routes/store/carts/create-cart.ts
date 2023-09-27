@@ -224,8 +224,7 @@ export default async (req, res) => {
             return prepareLineItemData(variant, item.quantity)
           })
 
-          // TODO: use `generateWithIsolatedProductModule` directly
-          generatedLineItems = await lineItemServiceTx.generate(
+          generatedLineItems = await lineItemServiceTx.generateLineItem(
             generateInputData,
             {
               region_id: regionId,
