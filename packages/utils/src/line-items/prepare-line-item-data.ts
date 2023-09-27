@@ -7,6 +7,7 @@ const VARIANT_PROPERTIES = [
   "title",
   "metadata",
   "product_id",
+  "product.id",
   "product.title",
   "product.discountable",
   "product.is_giftcard",
@@ -17,6 +18,7 @@ export type LineItemCreateData = {
   title: string
   product_id: string
   product: {
+    id: string
     title: string
     thumbnail: string | null
     discountable: boolean

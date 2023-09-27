@@ -13,7 +13,7 @@ import { WithRequiredProperty } from "../../../../../../types/common"
 import { IdempotencyCallbackResult } from "../../../../../../types/idempotency-key"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../../index"
 import IsolateProductDomainFeatureFlag from "../../../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultStoreProductRemoteQueryObject } from "../../../products"
+import { retrieveVariantsWithIsolatedProductModule } from "../../../../../../utils"
 
 export const CreateLineItemSteps = {
   STARTED: "started",
@@ -92,37 +92,4 @@ export async function handleAddOrUpdateLineItem(
     response_code: 200,
     response_body: { cart },
   }
-}
-
-async function retrieveVariantsWithIsolatedProductModule(
-  remoteQuery,
-  variantIds: string[]
-) {
-  const variantIdsMap = new Map(variantIds.map((id) => [id, true]))
-
-  const variables = {
-    filters: {
-      variants: {
-        id: [...variantIds],
-      },
-    },
-  }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultStoreProductRemoteQueryObject,
-    },
-  }
-
-  const products = await remoteQuery(query)
-
-  const variants: ProductVariantDTO[] = []
-
-  products.forEach((product) => {
-    product.profile_id = product.profile?.id
-    variants.push(...product.variants.filter((v) => variantIdsMap.has(v.id)))
-  })
-
-  return variants
 }

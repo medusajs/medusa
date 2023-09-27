@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
 import { FlagRouter, prepareLineItemData } from "@medusajs/utils"
 import { ProductVariantDTO } from "@medusajs/types"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultAdminProductRemoteQueryObject } from "../products"
+import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/line-items
@@ -179,39 +179,6 @@ export default async (req, res) => {
       draft_order: cleanResponseData(draftOrder, []),
     })
   })
-}
-
-async function retrieveVariantsWithIsolatedProductModule(
-  remoteQuery,
-  variantIds: string[]
-) {
-  const variantIdsMap = new Map(variantIds.map((id) => [id, true]))
-
-  const variables = {
-    filters: {
-      variants: {
-        id: [...variantIds],
-      },
-    },
-  }
-
-  const query = {
-    product: {
-      __args: variables,
-      ...defaultAdminProductRemoteQueryObject,
-    },
-  }
-
-  const products = await remoteQuery(query)
-
-  const variants: ProductVariantDTO[] = []
-
-  products.forEach((product) => {
-    product.profile_id = product.profile?.id
-    variants.push(...product.variants.filter((v) => variantIdsMap.has(v.id)))
-  })
-
-  return variants
 }
 
 /**
