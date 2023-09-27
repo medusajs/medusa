@@ -1,3 +1,4 @@
+import { ArrowUpRightOnBox } from "@medusajs/icons"
 import { NavbarLinkProps, SidebarSectionItemsType } from "docs-ui"
 
 type DocsConfig = {
@@ -64,6 +65,16 @@ export const docsConfig: DocsConfig = {
             title: "Standalone Project",
             path: "/installation/standalone-project",
             isPathHref: true,
+          },
+          {
+            title: "Upgrade Guides",
+            path: `${process.env.NEXT_PUBLIC_DOCS_URL}/upgrade-guides/medusa-ui`,
+            isPathHref: true,
+            additionalElms: <ArrowUpRightOnBox />,
+            linkProps: {
+              target: "_blank",
+              rel: "noreferrer",
+            },
           },
         ],
       },
