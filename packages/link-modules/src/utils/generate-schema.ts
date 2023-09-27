@@ -1,6 +1,7 @@
 import { ModuleJoinerConfig, ModuleJoinerRelationship } from "@medusajs/types"
-import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
+import { camelToSnakeCase, lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 import { composeTableName } from "./compose-link-name"
+import { ProductShippingProfile } from "../definitions"
 
 export function generateGraphQLSchema(
   joinerConfig: ModuleJoinerConfig,
@@ -39,13 +40,13 @@ export function generateGraphQLSchema(
   }
 
   // Link table relationships
-  const primaryField = `${lowerCaseFirst(
+  const primaryField = `${camelToSnakeCase(primary.alias)}: ${toPascalCase(
     composeTableName(primary.serviceName)
-  )}: ${toPascalCase(composeTableName(primary.serviceName))}`
+  )}`
 
-  const foreignField = `${lowerCaseFirst(
-    toPascalCase(composeTableName(foreign.serviceName))
-  )}: ${toPascalCase(composeTableName(foreign.serviceName))}`
+  const foreignField = `${camelToSnakeCase(foreign.alias)}: ${toPascalCase(
+    composeTableName(foreign.serviceName)
+  )}`
 
   let typeDef = `
     type ${entityName} {
@@ -69,7 +70,9 @@ export function generateGraphQLSchema(
     const extendedEntityName = toPascalCase(
       composeTableName(extend.serviceName)
     )
-    const linkTableFieldName = lowerCaseFirst(entityName)
+    const linkTableFieldName = camelToSnakeCase(
+      lowerCaseFirst(extend.relationship.alias)
+    )
     const type = extend.relationship.isList ? `[${entityName}]` : entityName
 
     typeDef += `
@@ -114,9 +117,9 @@ function getGraphQLType(type) {
 }
 
 // Testing output
-/*const typeDefs = generateGraphQLSchema(
+const typeDefs = generateGraphQLSchema(
   ProductShippingProfile,
   ProductShippingProfile.relationships![0],
   ProductShippingProfile.relationships![1]
 )
-console.log(typeDefs)*/
+console.log(typeDefs)
