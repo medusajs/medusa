@@ -19,6 +19,7 @@ import {
   PriceSetMoneyAmountRulesDTO,
   PricingContext,
   PricingFilters,
+  RemovePriceSetRulesDTO,
   RuleTypeDTO,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
@@ -69,7 +70,10 @@ export interface IPricingModuleService {
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
 
-  removeRules(data: Record<any, any>[], sharedContext?: Context): Promise<void>
+  removeRules(
+    data: RemovePriceSetRulesDTO[],
+    sharedContext?: Context
+  ): Promise<void>
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
 

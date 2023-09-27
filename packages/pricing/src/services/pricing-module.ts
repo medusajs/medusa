@@ -44,11 +44,6 @@ import { CreateMoneyAmountDTO } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"
 
-type RemoveRulesType = {
-  id: string
-  rules: string[]
-}
-
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   currencyService: CurrencyService<any>
@@ -412,7 +407,7 @@ export default class PricingModuleService<
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async removeRules(
-    data: RemoveRulesType[],
+    data: PricingTypes.RemovePriceSetRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const priceSets = await this.priceSetService_.list({
