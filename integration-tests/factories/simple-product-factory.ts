@@ -27,7 +27,6 @@ export type ProductFactoryData = {
   title?: string
   type?: string
   tags?: string[]
-  handle?: string
   options?: { id: string; title: string }[]
   variants?: Omit<ProductVariantFactoryData, "product_id">[]
   sales_channels?: SalesChannelFactoryData[]
@@ -99,10 +98,6 @@ export const simpleProductFactory = async (
     ] as ShippingProfile[],
     metadata: data.metadata || null,
   } as unknown as Product
-
-  if (data.handle) {
-    productToCreate.handle = data.handle
-  }
 
   if (typeof data.tags !== "undefined") {
     for (let i = 0; i < data.tags.length; i++) {
