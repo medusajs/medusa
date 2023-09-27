@@ -1,5 +1,5 @@
 import { ModuleJoinerConfig, ModuleJoinerRelationship } from "@medusajs/types"
-import { toPascalCase } from "@medusajs/utils"
+import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 import { composeTableName } from "./compose-link-name"
 
 export function generateGraphQLSchema(
@@ -10,7 +10,7 @@ export function generateGraphQLSchema(
   const fieldNames = primary.foreignKey.split(",").concat(foreign.foreignKey)
 
   const entityName = toPascalCase(
-    "Link " +
+    "Link_" +
       (joinerConfig.databaseConfig?.tableName ??
         composeTableName(
           primary.serviceName,
@@ -20,9 +20,10 @@ export function generateGraphQLSchema(
         ))
   )
 
+  // Pivot table fields
   const fields = fieldNames.reduce((acc, curr) => {
     acc[curr] = {
-      type: "String!",
+      type: "String",
       nullable: false,
     }
     return acc
@@ -37,21 +38,47 @@ export function generateGraphQLSchema(
     }
   }
 
-  const typeDef = `
-type ${entityName} {
-  ${(Object.entries(fields) as any)
-    .map(
-      ([field, { type, nullable }]) =>
-        `${field}: ${nullable ? type : `${type}!`}`
+  // Link table relationships
+  const primaryField = `${lowerCaseFirst(
+    composeTableName(primary.serviceName)
+  )}: ${toPascalCase(composeTableName(primary.serviceName))}`
+
+  const foreignField = `${lowerCaseFirst(
+    toPascalCase(composeTableName(foreign.serviceName))
+  )}: ${toPascalCase(composeTableName(foreign.serviceName))}`
+
+  let typeDef = `
+    type ${entityName} {
+      ${(Object.entries(fields) as any)
+        .map(
+          ([field, { type, nullable }]) =>
+            `${field}: ${nullable ? type : `${type}!`}`
+        )
+        .join("\n      ")}
+        
+      ${primaryField}!
+      ${foreignField}!
+      
+      createdAt: String!
+      updatedAt: String!
+      deletedAt: String
+    }
+  `
+
+  for (const extend of joinerConfig.extends ?? []) {
+    const extendedEntityName = toPascalCase(
+      composeTableName(extend.serviceName)
     )
-    .join("\n  ")}
-  createdAt: String!
-  updatedAt: String!
-  deletedAt: String
-}
-`
-  // TODO: read extends from joinerConfig to inject relations in other modules
-  // Add Entity to the relation, so fields can be linked directly to Entities of other modules.
+    const linkTableFieldName = lowerCaseFirst(entityName)
+    const type = extend.relationship.isList ? `[${entityName}!]` : entityName
+
+    typeDef += `
+    
+      extend type ${extendedEntityName} {
+        ${linkTableFieldName}: ${type}!
+      }
+    `
+  }
 
   return typeDef
 }
@@ -85,3 +112,11 @@ function getGraphQLType(type) {
 
   return typeDef[type] ?? "String"
 }
+
+// Testing output
+/*const typeDefs = generateGraphQLSchema(
+  ProductShippingProfile,
+  ProductShippingProfile.relationships![0],
+  ProductShippingProfile.relationships![1]
+)
+console.log(typeDefs)*/
