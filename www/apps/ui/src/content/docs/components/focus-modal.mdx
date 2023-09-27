@@ -30,6 +30,8 @@ import { FocusModal } from "@medusajs/ui"
 
 This component is based on the [Radix UI Dialog](https://www.radix-ui.com/primitives/docs/components/dialog) primitives.
 
+<ComponentProps component="focus-modal" />
+
 ### FocusModal.Header
 
 This component is based on the `div` element and supports all props of this element.
@@ -37,3 +39,28 @@ This component is based on the `div` element and supports all props of this elem
 ### FocusModal.Body
 
 This component is based on the `div` element and supports all props of this element.
+
+## Example: Control Open State
+
+---
+
+```tsx
+import { useState } from "react"
+
+const MyModal = () => {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <FocusModal 
+      open={open} 
+      onOpenChange={setOpen}
+    >
+      <FocusModal.Trigger>Trigger</FocusModal.Trigger>
+      <FocusModal.Content>
+        <FocusModal.Header>Title</FocusModal.Header>
+        <FocusModal.Body>Content</FocusModal.Body>
+      </FocusModal.Content>
+    </FocusModal>
+  )
+}
+```
