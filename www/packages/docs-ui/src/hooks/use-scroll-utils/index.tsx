@@ -53,10 +53,18 @@ type ScrollController = {
   enableScrollEvents: () => void
   /** Disable scroll events in `useScrollPosition`. */
   disableScrollEvents: () => void
+  /** Retrieves the scrollable element. By default, it's window. */
+  getScrollableElement: () => Element | Window
 }
 
-function useScrollControllerContextValue(): ScrollController {
+function useScrollControllerContextValue(
+  scrollableSelector: string
+): ScrollController {
   const scrollEventsEnabledRef = useRef(true)
+
+  const getScrollableElement = useCallback(() => {
+    return (document.querySelector(scrollableSelector) as Element) || window
+  }, [scrollableSelector])
 
   return useMemo(
     () => ({
@@ -67,8 +75,9 @@ function useScrollControllerContextValue(): ScrollController {
       disableScrollEvents: () => {
         scrollEventsEnabledRef.current = false
       },
+      getScrollableElement,
     }),
-    []
+    [getScrollableElement]
   )
 }
 
@@ -78,10 +87,12 @@ const ScrollMonitorContext = React.createContext<ScrollController | undefined>(
 
 export function ScrollControllerProvider({
   children,
+  scrollableSelector = "",
 }: {
   children: ReactNode
+  scrollableSelector?: string
 }): JSX.Element {
-  const value = useScrollControllerContextValue()
+  const value = useScrollControllerContextValue(scrollableSelector)
   return (
     <ScrollMonitorContext.Provider value={value}>
       {children}
@@ -165,6 +176,7 @@ type UseScrollPositionSaver = {
 }
 
 function useScrollPositionSaver(): UseScrollPositionSaver {
+  const { getScrollableElement } = useScrollController()
   const lastElementRef = useRef<{ elem: HTMLElement | null; top: number }>({
     elem: null,
     top: 0,
@@ -187,7 +199,7 @@ function useScrollPositionSaver(): UseScrollPositionSaver {
     const newTop = elem.getBoundingClientRect().top
     const heightDiff = newTop - top
     if (heightDiff) {
-      window.scrollBy({ left: 0, top: heightDiff })
+      getScrollableElement().scrollBy({ left: 0, top: heightDiff })
     }
     lastElementRef.current = { elem: null, top: 0 }
 

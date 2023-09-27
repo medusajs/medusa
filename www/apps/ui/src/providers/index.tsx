@@ -24,7 +24,7 @@ const Providers = ({ children }: ProvidersProps) => {
             <SidebarProvider>
               <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
                 <SearchProvider>
-                  <ScrollControllerProvider>
+                  <ScrollControllerProvider scrollableSelector="#main">
                     {children}
                   </ScrollControllerProvider>
                 </SearchProvider>
