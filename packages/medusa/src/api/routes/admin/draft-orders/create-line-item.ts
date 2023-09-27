@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
 import { FlagRouter, prepareLineItemData } from "@medusajs/utils"
 import { ProductVariantDTO } from "@medusajs/types"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultStoreProductRemoteQueryObject } from "../../store/products"
+import { defaultAdminProductRemoteQueryObject } from "../products"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/line-items
@@ -198,7 +198,7 @@ async function retrieveVariantsWithIsolatedProductModule(
   const query = {
     product: {
       __args: variables,
-      ...defaultStoreProductRemoteQueryObject,
+      ...defaultAdminProductRemoteQueryObject,
     },
   }
 

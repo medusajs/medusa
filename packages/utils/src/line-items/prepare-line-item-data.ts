@@ -29,7 +29,7 @@ export type LineItemCreateData = {
 }
 
 /**
- * Extract from data need to generate line item from a variant.
+ * Generate the expected shaped data to generate a line item from the variant data.
  *
  * @param variantData
  * @param quantity

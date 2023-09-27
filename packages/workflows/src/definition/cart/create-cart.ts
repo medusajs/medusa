@@ -181,9 +181,7 @@ const handlers = new Map([
     CreateCartActions.prepareLineItemsGeneration,
     {
       invoke: pipe(
-        getWorkflowInput(
-          CartHandlers.prepareLineItemsGeneration.aliases.CreateCartInput
-        ),
+        getWorkflowInput(CartHandlers.prepareLineItemsGeneration.aliases.Cart),
         CartHandlers.prepareLineItemsGeneration
       ),
     },

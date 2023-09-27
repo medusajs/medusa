@@ -3,13 +3,15 @@ import { request } from "../../../../../helpers/test-request"
 import { CartServiceMock } from "../../../../../services/__mocks__/cart"
 import { LineItemServiceMock } from "../../../../../services/__mocks__/line-item"
 
+const variantId = "item-variant"
+
 jest.mock("@medusajs/utils", () => {
   const original = jest.requireActual("@medusajs/utils")
   return {
     ...original,
     prepareLineItemData: jest
       .fn()
-      .mockReturnValue({ variant_id: "item-variant", quantity: 3 }),
+      .mockReturnValue({ variant_id: variantId, quantity: 3 }),
   }
 })
 
@@ -87,7 +89,7 @@ describe("POST /store/carts", () => {
           region_id: IdMap.getId("testRegion"),
           items: [
             {
-              variant_id: "item-variant",
+              variant_id: variantId,
               quantity: 3,
             },
           ],
@@ -109,7 +111,7 @@ describe("POST /store/carts", () => {
       expect(LineItemServiceMock.generate).toHaveBeenCalledWith(
         [
           {
-            variant_id: "item-variant",
+            variant_id: variantId,
             quantity: 3,
           },
         ],

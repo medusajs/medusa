@@ -8,7 +8,6 @@ type HandlerInputData = {
     unit_price?: number
   })[]
   cart: {
-    id: string
     customer_id: string
     region_id: string
   }

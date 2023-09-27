@@ -19,14 +19,14 @@ type HandlerInputData = {
 }
 
 enum Aliases {
-  CreateCartInput = "createCartInput",
+  Cart = "cart",
 }
 
 export async function prepareLineItemsGeneration({
   container,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<LineItemCreateData[]> {
-  const items = data[Aliases.CreateCartInput].items
+  const items = data[Aliases.Cart].items
 
   if (!items?.length) {
     return []

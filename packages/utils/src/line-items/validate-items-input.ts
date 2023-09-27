@@ -8,7 +8,7 @@ import { MedusaError } from "medusa-core-utils"
  * @param variants - variants queried based on variant ids from the input
  */
 export function validateItemsInput(
-  input: Partial<{ variant_id?: string }>[],
+  input: { variant_id?: string }[],
   variants: ProductVariantDTO[]
 ) {
   const idsMap = new Map(variants.map((v) => [v.id, true]))
