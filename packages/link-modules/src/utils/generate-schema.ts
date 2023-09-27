@@ -1,6 +1,7 @@
 import { ModuleJoinerConfig, ModuleJoinerRelationship } from "@medusajs/types"
 import { camelToSnakeCase, lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 import { composeTableName } from "./compose-link-name"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 export function generateGraphQLSchema(
   joinerConfig: ModuleJoinerConfig,
@@ -66,9 +67,23 @@ export function generateGraphQLSchema(
   `
 
   for (const extend of joinerConfig.extends ?? []) {
-    const extendedEntityName = toPascalCase(
-      composeTableName(extend.serviceName)
-    )
+    const extendedModule = MedusaModule.getModuleInstance(extend.serviceName)
+    if (!extendedModule) {
+      throw new Error(
+        `Module ${extend.serviceName} not found. Please verify that the module is configured and installed, also the module must be loaded before the link modules.`
+      )
+    }
+
+    // TODO: internal service cannot resolve their joiner config as they are not module
+    // in the mean time infer it from the service name.
+    let extendedEntityName = toPascalCase(composeTableName(extend.serviceName))
+    if (!extend.relationship.isInternalService) {
+      extendedEntityName =
+        extendedModule.__joinerConfig?.linkableKeys[
+          extend.relationship.primaryKey
+        ]
+    }
+
     const linkTableFieldName = camelToSnakeCase(
       lowerCaseFirst(extend.relationship.alias)
     )
@@ -114,11 +129,3 @@ function getGraphQLType(type) {
 
   return typeDef[type] ?? "String"
 }
-
-// Testing output
-/*const typeDefs = generateGraphQLSchema(
-  ProductShippingProfile,
-  ProductShippingProfile.relationships![0],
-  ProductShippingProfile.relationships![1]
-)
-console.log(typeDefs)*/

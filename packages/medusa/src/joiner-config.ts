@@ -38,7 +38,7 @@ export const joinerConfig: ModuleJoinerConfig[] = [
   {
     serviceName: "shippingProfileService",
     primaryKeys: ["id"],
-    linkableKeys: ["profile_id"],
+    linkableKeys: { profile_id: "ShippingProfile" },
     schema: `
       scalar Date
       scalar JSON
