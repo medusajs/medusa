@@ -1002,14 +1002,6 @@ export default class ProductModuleService<
     return products
   }
 
-  @InjectManager("baseRepository_")
-  async restoreVariants(
-    ids: string[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productVariantService_.restore(ids, sharedContext)
-  }
-
   protected async upsertAndAssignImagesToProductData(
     productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
     sharedContext: Context = {}
@@ -1145,6 +1137,34 @@ export default class ProductModuleService<
       mappedCascadedEntitiesMap = mapObjectTo<
         Record<Lowercase<keyof typeof LinkableKeys>, string[]>
       >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectManager("baseRepository_")
+  async restoreVariants<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys // TODO: wrong keys type
+    >
+  >(
+    variantIds: string[],
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const [_, cascadedEntitiesMap] = await this.productVariantService_.restore(
+      variantIds,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        // TODO: wrong entity map
         pick: returnLinkableKeys,
       })
     }

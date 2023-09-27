@@ -169,8 +169,8 @@ export default class ProductVariantService<
   async restore(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productVariantRepository_.restore(ids, {
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.productVariantRepository_.restore(ids, {
       transactionManager: sharedContext.transactionManager,
     })
   }

@@ -164,8 +164,6 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<[ProductVariantDTO[], number]>
 
-  restoreVariants(ids: string[], sharedContext?: Context): Promise<void>
-
   retrieveCollection(
     productCollectionId: string,
     config?: FindConfig<ProductCollectionDTO>,
@@ -253,4 +251,10 @@ export interface IProductModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+
+  restoreVariants<TReturnableLinkableKeys extends string = string>(
+    variantIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<void>
 }
