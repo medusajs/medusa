@@ -1,4 +1,5 @@
 import {
+  AddRulesDTO,
   CalculatedPriceSetDTO,
   CreateCurrencyDTO,
   CreateMoneyAmountDTO,
@@ -84,6 +85,11 @@ export interface IPricingModuleService {
     })[], 
     sharedContext?: Context
   ): Promise<PriceSetDTO>
+
+  addRules(
+    data: AddRulesDTO | AddRulesDTO[], 
+    sharedContext?: Context
+  ): Promise<void> 
 
   retrieveMoneyAmount(
     id: string,

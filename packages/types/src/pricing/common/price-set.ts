@@ -28,6 +28,10 @@ export interface CalculatedPriceSetDTO {
   max_quantity: number | null
 }
 
+export interface AddRulesDTO { 
+  priceSetId: string
+  rules: { attribute: string }[]
+}
 export interface RemovePriceSetRulesDTO {
   id: string
   rules: string[]
