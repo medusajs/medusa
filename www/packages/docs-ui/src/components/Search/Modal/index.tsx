@@ -19,6 +19,7 @@ export type SearchModalProps = {
   suggestions: SearchSuggestionType[]
   checkInternalPattern?: RegExp
   filterOptions?: OptionType[]
+  className?: string
 }
 
 export const SearchModal = ({
@@ -27,6 +28,7 @@ export const SearchModal = ({
   isLoading = false,
   checkInternalPattern,
   filterOptions = [],
+  className,
 }: SearchModalProps) => {
   const modalRef = useRef<HTMLDialogElement | null>(null)
   const { isOpen, setIsOpen, defaultFilters, searchClient } = useSearch()
@@ -194,6 +196,7 @@ export const SearchModal = ({
       open={isOpen}
       onClose={() => setIsOpen(false)}
       passedRef={modalRef}
+      className={className}
     >
       <InstantSearch
         indexName={algolia.mainIndexName}
