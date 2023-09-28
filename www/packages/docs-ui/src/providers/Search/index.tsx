@@ -6,10 +6,20 @@ import React, {
   useEffect,
   useState,
   useMemo,
+  useRef,
 } from "react"
-import { SearchModal, SearchModalProps } from "@/components"
+import { Modal, SearchModal, SearchModalProps } from "@/components"
 import { checkArraySameElms } from "../../utils"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
+import clsx from "clsx"
+import { CSSTransition, SwitchTransition } from "react-transition-group"
+
+export type SearchCommand = {
+  name: string
+  component: React.ReactNode
+  icon?: React.ReactNode
+  title: string
+}
 
 export type SearchContextType = {
   isOpen: boolean
@@ -17,6 +27,10 @@ export type SearchContextType = {
   defaultFilters: string[]
   setDefaultFilters: (value: string[]) => void
   searchClient: SearchClient
+  commands: SearchCommand[]
+  command: SearchCommand | null
+  setCommand: React.Dispatch<React.SetStateAction<SearchCommand | null>>
+  modalRef: React.MutableRefObject<HTMLDialogElement | null>
 }
 
 const SearchContext = createContext<SearchContextType | null>(null)
@@ -33,6 +47,8 @@ export type SearchProviderProps = {
   initialDefaultFilters?: string[]
   algolia: AlgoliaProps
   searchProps: Omit<SearchModalProps, "algolia">
+  commands?: SearchCommand[]
+  modalClassName?: string
 }
 
 export const SearchProvider = ({
@@ -40,11 +56,16 @@ export const SearchProvider = ({
   initialDefaultFilters = [],
   searchProps,
   algolia,
+  commands = [],
+  modalClassName,
 }: SearchProviderProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [defaultFilters, setDefaultFilters] = useState<string[]>(
     initialDefaultFilters
   )
+  const [command, setCommand] = useState<SearchCommand | null>(null)
+
+  const modalRef = useRef<HTMLDialogElement | null>(null)
 
   const searchClient: SearchClient = useMemo(() => {
     const algoliaClient = algoliasearch(algolia.appId, algolia.apiKey)
@@ -89,10 +110,53 @@ export const SearchProvider = ({
         defaultFilters,
         setDefaultFilters,
         searchClient,
+        commands,
+        command,
+        setCommand,
+        modalRef,
       }}
     >
       {children}
-      <SearchModal {...searchProps} algolia={algolia} />
+      <Modal
+        contentClassName={clsx(
+          "!p-0 overflow-hidden relative h-full",
+          "rounded-none md:rounded-docs_lg flex flex-col justify-between"
+        )}
+        modalContainerClassName={clsx(
+          "!rounded-none md:!rounded-docs_lg",
+          "md:!h-[480px] h-screen",
+          "md:!w-[640px] w-screen",
+          "bg-medusa-bg-base"
+        )}
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        passedRef={modalRef}
+        className={modalClassName}
+      >
+        <SwitchTransition>
+          <CSSTransition
+            classNames={{
+              enter:
+                command === null
+                  ? "animate-fadeInLeft animate-fast"
+                  : "animate-fadeInRight animate-fast",
+              exit:
+                command === null
+                  ? "animate-fadeOutLeft animate-fast"
+                  : "animate-fadeOutRight animate-fast",
+            }}
+            timeout={300}
+            key={command?.name || "search"}
+          >
+            <>
+              {command === null && (
+                <SearchModal {...searchProps} algolia={algolia} />
+              )}
+              {command?.component}
+            </>
+          </CSSTransition>
+        </SwitchTransition>
+      </Modal>
     </SearchContext.Provider>
   )
 }

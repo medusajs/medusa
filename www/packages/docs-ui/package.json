@@ -59,6 +59,7 @@
     "@medusajs/icons": "latest",
     "@medusajs/ui": "latest",
     "@octokit/request": "^8.1.1",
+    "@react-hook/resize-observer": "^1.2.6",
     "@segment/analytics-next": "^1.55.0",
     "algoliasearch": "^4.20.0",
     "prism-react-renderer": "^2.0.6",

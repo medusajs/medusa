@@ -1,13 +1,22 @@
 "use client"
 
-import React, { useState, useEffect, useCallback } from "react"
-import { Badge, Button, InputText, MarkdownContent, Modal } from "@/components"
-import { useAiAssistant } from "@/providers"
-import { ArrowUpCircleSolid, Sparkles, XMark } from "@medusajs/icons"
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react"
+import {
+  AiAssistantCommandIcon,
+  Badge,
+  Button,
+  InputText,
+  Kbd,
+  SearchSuggestionItem,
+  SearchSuggestionType,
+  SearchHitGroupName,
+} from "@/components"
+import { useAiAssistant, useSearch } from "@/providers"
+import { ArrowUturnLeft } from "@medusajs/icons"
 import clsx from "clsx"
-import { useKeyboardShortcut } from "../../hooks"
-import { CSSTransition } from "react-transition-group"
-import { Drawer } from "@medusajs/ui"
+import { useSearchNavigation } from "@/hooks"
+import { AiAssistantThreadItem } from "./ThreadItem"
+import useResizeObserver from "@react-hook/resize-observer"
 
 export type ChunkType = {
   stream_end: boolean
@@ -49,82 +58,128 @@ export type ErrorType = {
   reason: string
 }
 
+export type ThreadType = {
+  type: "question" | "answer"
+  content: string
+  question_id?: string
+}
+
 export const AiAssistant = () => {
   const [question, setQuestion] = useState("")
-  const [relevantSources, setRelevantSources] = useState<RelevantSourcesType[]>(
-    []
-  )
+  const [thread, setThread] = useState<ThreadType[]>([])
   const [answer, setAnswer] = useState("")
   const [identifiers, setIdentifiers] = useState<IdentifierType | null>(null)
   const [error, setError] = useState<ErrorType | null>(null)
   const [loading, setLoading] = useState(false)
-  const [feedback, setFeedback] = useState("")
-  const { open, setOpen, getAnswer, sendFeedback } = useAiAssistant()
+  const { getAnswer } = useAiAssistant()
+  const { setCommand } = useSearch()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
 
-  const process_stream = async (response: Response) => {
-    const reader = response.body?.getReader()
-    if (!reader) {
-      return
-    }
-    const decoder = new TextDecoder("utf-8")
-    const delimiter = "\u241E"
-    const delimiterBytes = new TextEncoder().encode(delimiter)
-    let buffer = new Uint8Array()
+  const suggestions: SearchSuggestionType[] = [
+    {
+      title: "FAQ",
+      items: [
+        "What is Medusa?",
+        "How do I install Medusa?",
+        "What is Medusa admin?",
+        "How do I configure the database in Medusa?",
+        "How do I seed data in Medusa",
+        "How do I create an endpoint in Medusa?",
+      ],
+    },
+  ]
 
-    const findDelimiterIndex = (arr: Uint8Array) => {
-      for (let i = 0; i < arr.length - delimiterBytes.length + 1; i++) {
-        let found = true
-        for (let j = 0; j < delimiterBytes.length; j++) {
-          if (arr[i + j] !== delimiterBytes[j]) {
-            found = false
+  const handleSubmit = (selectedQuestion?: string) => {
+    setLoading(true)
+    setAnswer("")
+    setThread((prevThread) => [
+      ...prevThread,
+      {
+        type: "question",
+        content: selectedQuestion || question,
+      },
+    ])
+  }
+
+  useSearchNavigation({
+    getInputElm: () => inputRef.current,
+    focusInput: () => inputRef.current?.focus(),
+    handleSubmit,
+  })
+
+  const scrollToBottom = () => {
+    const parent = contentRef.current?.parentElement as HTMLElement
+
+    parent.scrollTop = parent.scrollHeight
+  }
+
+  const lastAnswerIndex = useMemo(() => {
+    const index = thread.reverse().findIndex((item) => item.type === "answer")
+    return index !== -1 ? index : 0
+  }, [thread])
+
+  const process_stream = useCallback(
+    async (response: Response) => {
+      const reader = response.body?.getReader()
+      if (!reader) {
+        return
+      }
+      const decoder = new TextDecoder("utf-8")
+      const delimiter = "\u241E"
+      const delimiterBytes = new TextEncoder().encode(delimiter)
+      let buffer = new Uint8Array()
+
+      const findDelimiterIndex = (arr: Uint8Array) => {
+        for (let i = 0; i < arr.length - delimiterBytes.length + 1; i++) {
+          let found = true
+          for (let j = 0; j < delimiterBytes.length; j++) {
+            if (arr[i + j] !== delimiterBytes[j]) {
+              found = false
+              break
+            }
+          }
+          if (found) {
+            return i
+          }
+        }
+        return -1
+      }
+
+      let result
+      let loop = true
+      while (loop) {
+        result = await reader.read()
+        if (result.done) {
+          loop = false
+          continue
+        }
+        buffer = new Uint8Array([...buffer, ...result.value])
+        let delimiterIndex
+        while ((delimiterIndex = findDelimiterIndex(buffer)) !== -1) {
+          const chunkBytes = buffer.slice(0, delimiterIndex)
+          const chunkText = decoder.decode(chunkBytes)
+          buffer = buffer.slice(delimiterIndex + delimiterBytes.length)
+          const chunk = JSON.parse(chunkText).chunk as ChunkType
+
+          if (chunk.type === "partial_answer") {
+            setAnswer((prevAnswer) => prevAnswer + chunk.content.text)
+          } else if (chunk.type === "identifiers") {
+            setIdentifiers(chunk.content)
+          } else if (chunk.type === "error") {
+            setError(chunk.content)
+            loop = false
             break
           }
         }
-        if (found) {
-          return i
-        }
       }
-      return -1
-    }
 
-    let result
-    let loop = true
-    while (loop) {
-      result = await reader.read()
-      if (result.done) {
-        loop = false
-        continue
-      }
-      buffer = new Uint8Array([...buffer, ...result.value])
-      let delimiterIndex
-      while ((delimiterIndex = findDelimiterIndex(buffer)) !== -1) {
-        const chunkBytes = buffer.slice(0, delimiterIndex)
-        const chunkText = decoder.decode(chunkBytes)
-        buffer = buffer.slice(delimiterIndex + delimiterBytes.length)
-        const chunk = JSON.parse(chunkText).chunk as ChunkType
-
-        if (chunk.type === "relevant_sources") {
-          setRelevantSources(chunk.content.relevant_sources)
-        } else if (chunk.type === "partial_answer") {
-          setAnswer((prevAnswer) => prevAnswer + chunk.content.text)
-        } else if (chunk.type === "identifiers") {
-          setIdentifiers(chunk.content)
-        } else if (chunk.type === "error") {
-          setError(chunk.content)
-          loop = false
-          break
-        }
-      }
-    }
-
-    setLoading(false)
-  }
-
-  const handleSubmit = () => {
-    setLoading(true)
-    setAnswer("")
-    setRelevantSources([])
-  }
+      setLoading(false)
+      setQuestion("")
+      inputRef.current?.focus()
+    },
+    [thread]
+  )
 
   const fetchAnswer = useCallback(async () => {
     try {
@@ -145,120 +200,149 @@ export const AiAssistant = () => {
         reason: `Thread request failed: ${error.message}`,
       })
     }
-  }, [question, identifiers])
-
-  const handleFeedback = async (question_id: string, reaction: string) => {
-    try {
-      const response = await sendFeedback(question_id, reaction)
-
-      if (response.status === 200) {
-        setFeedback(reaction)
-      } else {
-        setError({
-          reason:
-            "There was an error in submitting your feedback. Please refresh the page and try again.",
-        })
-        console.error("Error sending feedback:", response.status)
-      }
-    } catch (error) {
-      setError({
-        reason:
-          "There was an error in submitting your feedback. Please refresh the page and try again.",
-      })
-      console.error("Error sending feedback:", error)
-    }
-  }
+  }, [question, identifiers, process_stream])
 
   useEffect(() => {
-    if (loading && question && !answer) {
+    if (loading && !answer) {
       void fetchAnswer()
     }
-  }, [loading, question, answer, fetchAnswer])
+  }, [loading, fetchAnswer])
 
-  useKeyboardShortcut({
-    shortcutKeys: ["Escape"],
-    checkEditing: true,
-    preventDefault: false,
-    isLoading: false,
-    action: () => setOpen(false),
+  useEffect(() => {
+    if (
+      !loading &&
+      answer.length &&
+      thread[lastAnswerIndex]?.content !== answer
+    ) {
+      setThread((prevThread) => [
+        ...prevThread,
+        {
+          type: "answer",
+          content: answer,
+          question_id: identifiers?.question_answer_id,
+        },
+      ])
+      setAnswer("")
+    }
+  }, [loading])
+
+  useResizeObserver(contentRef, () => {
+    if (!loading) {
+      return
+    }
+
+    scrollToBottom()
   })
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <Drawer.Content>
-        <Drawer.Header>
-          <Drawer.Title>
-            <div className={clsx("flex gap-docs_0.75 items-center")}>
-              <span className="p-[6px] bg-medusa-button-inverted bg-button-inverted dark:bg-button-inverted-dark rounded-docs_DEFAULT">
-                <Sparkles className="text-medusa-fg-on-color" />
-              </span>
-              <span>Medusa AI Assistant</span>
-              <Badge variant="purple">Beta</Badge>
+    <div className="h-full">
+      <div
+        className={clsx(
+          "flex gap-docs_1 px-docs_1 py-docs_0.75",
+          "h-[57px] w-full md:rounded-t-docs_xl relative border-0 border-solid",
+          "border-b border-medusa-border-base"
+        )}
+      >
+        <Button
+          variant="clear"
+          onClick={() => setCommand(null)}
+          className="text-medusa-fg-subtle p-[5px]"
+        >
+          <ArrowUturnLeft />
+        </Button>
+        <InputText
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          className={clsx(
+            "bg-transparent border-0 focus:outline-none hover:!bg-transparent",
+            "shadow-none flex-1 text-medusa-fg-base"
+          )}
+          placeholder="Ask me a question about Medusa..."
+          autoFocus={true}
+          passedRef={inputRef}
+        />
+      </div>
+      <div className="h-[calc(100%-120px)] md:h-[calc(100%-114px)] lg:max-h-[calc(100%-114px)] lg:min-h-[calc(100%-114px)] overflow-auto">
+        <div ref={contentRef}>
+          {error && (
+            <span className="text-medusa-fg-error">
+              An error occurred, please try again later.
+            </span>
+          )}
+          {!thread.length && (
+            <div className="mx-docs_0.5">
+              {suggestions.map((suggestion, index) => (
+                <React.Fragment key={index}>
+                  <SearchHitGroupName name={suggestion.title} />
+                  {suggestion.items.map((item, itemIndex) => (
+                    <SearchSuggestionItem
+                      onClick={() => {
+                        setQuestion(item)
+                        handleSubmit(item)
+                      }}
+                      key={itemIndex}
+                      tabIndex={itemIndex}
+                    >
+                      {item}
+                    </SearchSuggestionItem>
+                  ))}
+                </React.Fragment>
+              ))}
             </div>
-          </Drawer.Title>
-        </Drawer.Header>
-        <Drawer.Body>
-          <div className="flex gap-docs_1 px-docs_1 py-docs_0.75">
-            <InputText
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              className={clsx(
-                "bg-transparent border-0 focus:outline-none hover:!bg-transparent",
-                "shadow-none flex-1"
-              )}
-              placeholder="Ask me a question about Medusa..."
+          )}
+          {thread.map((threadItem, index) => (
+            <AiAssistantThreadItem item={threadItem} key={index} />
+          ))}
+          {(answer.length || loading) && (
+            <AiAssistantThreadItem
+              item={{
+                type: "answer",
+                content: answer,
+              }}
+              isCurrentAnswer={true}
             />
-            <Button
-              variant="clear"
-              onClick={handleSubmit}
-              disabled={loading || !question}
-              className="text-medusa-fg-base disabled:text-medusa-fg-disabled rounded-full p-[5px]"
+          )}
+        </div>
+      </div>
+      <div
+        className={clsx(
+          "py-docs_0.75 flex items-center justify-between px-docs_1",
+          "border-0 border-solid",
+          "border-medusa-border-base border-t",
+          "bg-medusa-bg-base h-[57px]"
+        )}
+      >
+        <div
+          className={clsx(
+            "flex items-center gap-docs_0.75 text-compact-small-plus"
+          )}
+        >
+          <AiAssistantCommandIcon />
+          <span className="text-medusa-fg-subtle">Medusa AI Assistant</span>
+          <Badge variant="purple">Beta</Badge>
+        </div>
+        <div className="hidden items-center gap-docs_1 md:flex">
+          <div className="flex items-center gap-docs_0.5">
+            <span
+              className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}
             >
-              <ArrowUpCircleSolid />
-            </Button>
+              Navigate FAQ
+            </span>
+            <span className="gap-docs_0.25 flex">
+              <Kbd>↑</Kbd>
+              <Kbd>↓</Kbd>
+            </span>
           </div>
-          <CSSTransition
-            classNames={{
-              enter: "animate-fadeInDown animate-fast",
-              exit: "animate-fadeOutUp animate-fast",
-            }}
-            timeout={300}
-            in={answer.length > 0 || error !== null}
-            unmountOnExit
-          >
-            <div className="px-docs_1 py-docs_0.75 h-[332px] max-h-[332px] overflow-auto">
-              {error && (
-                <span className="text-medusa-fg-error">
-                  An error occurred, please try again later.
-                </span>
-              )}
-              {answer && (
-                <p>
-                  <MarkdownContent>{answer}</MarkdownContent>
-                </p>
-              )}
-              {!loading && relevantSources.length > 0 && (
-                <>
-                  <strong>Find more details in these resources</strong>
-                  <ul>
-                    {relevantSources.map((source, index) => (
-                      <li key={index}>
-                        <a
-                          href={source.source_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {source.source_url}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </div>
-          </CSSTransition>
-        </Drawer.Body>
-      </Drawer.Content>
-    </Drawer>
+          <div className="flex items-center gap-docs_0.5">
+            <span
+              className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}
+            >
+              Ask Question
+            </span>
+            <Kbd>↵</Kbd>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

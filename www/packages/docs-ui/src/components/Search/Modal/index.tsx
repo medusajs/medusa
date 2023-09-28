@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { InstantSearch, SearchBox } from "react-instantsearch"
 import clsx from "clsx"
 import { SearchEmptyQueryBoundary } from "../EmptyQueryBoundary"
@@ -8,10 +8,9 @@ import { SearchSuggestions, type SearchSuggestionType } from "../Suggestions"
 import { AlgoliaProps, useSearch } from "@/providers"
 import { checkArraySameElms } from "@/utils"
 import { SearchHitsWrapper } from "../Hits"
-import { findNextSibling, findPrevSibling } from "@/utils"
-import { Button, Kbd, Modal, SelectBadge } from "@/components"
+import { Button, Kbd, SelectBadge } from "@/components"
 import { MagnifyingGlass, XMark } from "@medusajs/icons"
-import { useKeyboardShortcut, type OptionType } from "@/hooks"
+import { useSearchNavigation, type OptionType } from "@/hooks"
 
 export type SearchModalProps = {
   algolia: AlgoliaProps
@@ -19,7 +18,6 @@ export type SearchModalProps = {
   suggestions: SearchSuggestionType[]
   checkInternalPattern?: RegExp
   filterOptions?: OptionType[]
-  className?: string
 }
 
 export const SearchModal = ({
@@ -28,10 +26,9 @@ export const SearchModal = ({
   isLoading = false,
   checkInternalPattern,
   filterOptions = [],
-  className,
 }: SearchModalProps) => {
-  const modalRef = useRef<HTMLDialogElement | null>(null)
-  const { isOpen, setIsOpen, defaultFilters, searchClient } = useSearch()
+  const { isOpen, setIsOpen, defaultFilters, searchClient, modalRef } =
+    useSearch()
   const [filters, setFilters] = useState<string[]>(defaultFilters)
   const formattedFilters: string = useMemo(() => {
     let formatted = ""
@@ -74,130 +71,129 @@ export const SearchModal = ({
     }
   }, [isOpen])
 
-  const handleKeyAction = (e: KeyboardEvent) => {
-    if (!isOpen) {
-      return
-    }
-    e.preventDefault()
-    const focusedItem = modalRef.current?.querySelector(":focus") as HTMLElement
-    if (!focusedItem) {
-      // focus the first data-hit
-      const nextItem = modalRef.current?.querySelector(
-        "[data-hit]"
-      ) as HTMLElement
-      nextItem?.focus()
-      return
-    }
-
-    const isHit = focusedItem.hasAttribute("data-hit")
-    const isInput = focusedItem.tagName.toLowerCase() === "input"
-
-    if (!isHit && !isInput) {
-      // ignore if focused items aren't input/data-hit
-      return
-    }
-
-    const lowerPressedKey = e.key.toLowerCase()
-
-    if (lowerPressedKey === "enter") {
-      if (isHit) {
-        // trigger click event of the focused element
-        focusedItem.click()
-      }
-      return
-    }
-
-    if (lowerPressedKey === "arrowup") {
-      // only hit items has action on arrow up
-      if (isHit) {
-        // find if there's a data-hit item before this one
-        const beforeItem = findPrevSibling(focusedItem, "[data-hit]")
-        if (!beforeItem) {
-          // focus the input
-          focusSearchInput()
-        } else {
-          // focus the previous item
-          beforeItem.focus()
-        }
-      }
-    } else if (lowerPressedKey === "arrowdown") {
-      // check if item is input or hit
-      if (isInput) {
-        // go to the first data-hit item
-        const nextItem = modalRef.current?.querySelector(
-          "[data-hit]"
-        ) as HTMLElement
-        nextItem?.focus()
-      } else {
-        // handle go down for hit items
-        // find if there's a data-hit item after this one
-        const afterItem = findNextSibling(focusedItem, "[data-hit]")
-        if (afterItem) {
-          // focus the next item
-          afterItem.focus()
-        }
-      }
-    }
-  }
-
-  const shortcutKeys = useMemo(() => ["ArrowUp", "ArrowDown", "Enter"], [])
-
-  useKeyboardShortcut({
-    metakey: false,
-    shortcutKeys,
-    action: handleKeyAction,
-    checkEditing: false,
-    preventDefault: false,
-    isLoading,
+  useSearchNavigation({
+    getInputElm: () =>
+      searchBoxRef.current?.querySelector("input") as HTMLInputElement,
+    focusInput: focusSearchInput,
+    keyboardProps: {
+      isLoading,
+    },
   })
 
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (!isOpen) {
-        return
-      }
-      // check if shortcut keys were pressed
-      const lowerPressedKey = e.key.toLowerCase()
-      const pressedShortcut = [...shortcutKeys, "Escape"].some(
-        (s) => s.toLowerCase() === lowerPressedKey
-      )
-      if (pressedShortcut) {
-        return
-      }
+  // const handleKeyAction = (e: KeyboardEvent) => {
+  //   if (!isOpen) {
+  //     return
+  //   }
+  //   e.preventDefault()
+  //   const focusedItem = modalRef.current?.querySelector(":focus") as HTMLElement
+  //   if (!focusedItem) {
+  //     // focus the first data-hit
+  //     const nextItem = modalRef.current?.querySelector(
+  //       "[data-hit]"
+  //     ) as HTMLElement
+  //     nextItem?.focus()
+  //     return
+  //   }
 
-      const focusedItem = modalRef.current?.querySelector(
-        ":focus"
-      ) as HTMLElement
-      const searchInput = searchBoxRef.current?.querySelector(
-        "input"
-      ) as HTMLInputElement
-      if (searchInput && focusedItem !== searchInput) {
-        searchInput.focus()
-      }
-    },
-    [shortcutKeys, isOpen]
-  )
+  //   const isHit = focusedItem.hasAttribute("data-hit")
+  //   const isInput = focusedItem.tagName.toLowerCase() === "input"
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown)
+  //   if (!isHit && !isInput) {
+  //     // ignore if focused items aren't input/data-hit
+  //     return
+  //   }
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [handleKeyDown])
+  //   const lowerPressedKey = e.key.toLowerCase()
+
+  //   if (lowerPressedKey === "enter") {
+  //     if (isHit) {
+  //       // trigger click event of the focused element
+  //       focusedItem.click()
+  //     }
+  //     return
+  //   }
+
+  //   if (lowerPressedKey === "arrowup") {
+  //     // only hit items has action on arrow up
+  //     if (isHit) {
+  //       // find if there's a data-hit item before this one
+  //       const beforeItem = findPrevSibling(focusedItem, "[data-hit]")
+  //       if (!beforeItem) {
+  //         // focus the input
+  //         focusSearchInput()
+  //       } else {
+  //         // focus the previous item
+  //         beforeItem.focus()
+  //       }
+  //     }
+  //   } else if (lowerPressedKey === "arrowdown") {
+  //     // check if item is input or hit
+  //     if (isInput) {
+  //       // go to the first data-hit item
+  //       const nextItem = modalRef.current?.querySelector(
+  //         "[data-hit]"
+  //       ) as HTMLElement
+  //       nextItem?.focus()
+  //     } else {
+  //       // handle go down for hit items
+  //       // find if there's a data-hit item after this one
+  //       const afterItem = findNextSibling(focusedItem, "[data-hit]")
+  //       if (afterItem) {
+  //         // focus the next item
+  //         afterItem.focus()
+  //       }
+  //     }
+  //   }
+  // }
+
+  // const shortcutKeys = useMemo(() => ["ArrowUp", "ArrowDown", "Enter"], [])
+
+  // useKeyboardShortcut({
+  //   metakey: false,
+  //   shortcutKeys,
+  //   action: handleKeyAction,
+  //   checkEditing: false,
+  //   preventDefault: false,
+  //   isLoading,
+  // })
+
+  // const handleKeyDown = useCallback(
+  //   (e: KeyboardEvent) => {
+  //     if (!isOpen) {
+  //       return
+  //     }
+  //     // check if shortcut keys were pressed
+  //     const lowerPressedKey = e.key.toLowerCase()
+  //     const pressedShortcut = [...shortcutKeys, "Escape"].some(
+  //       (s) => s.toLowerCase() === lowerPressedKey
+  //     )
+  //     if (pressedShortcut) {
+  //       return
+  //     }
+
+  //     const focusedItem = modalRef.current?.querySelector(
+  //       ":focus"
+  //     ) as HTMLElement
+  //     const searchInput = searchBoxRef.current?.querySelector(
+  //       "input"
+  //     ) as HTMLInputElement
+  //     if (searchInput && focusedItem !== searchInput) {
+  //       searchInput.focus()
+  //     }
+  //   },
+  //   [shortcutKeys, isOpen]
+  // )
+
+  // useEffect(() => {
+  //   window.addEventListener("keydown", handleKeyDown)
+
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown)
+  //   }
+  // }, [handleKeyDown])
 
   return (
-    <Modal
-      contentClassName={clsx(
-        "!p-0 overflow-hidden relative h-full",
-        "rounded-none md:rounded-docs_lg flex flex-col justify-between"
-      )}
-      modalContainerClassName="w-screen h-screen !rounded-none md:!rounded-docs_lg"
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
-      passedRef={modalRef}
-      className={className}
-    >
+    <div className="h-full">
       <InstantSearch
         indexName={algolia.mainIndexName}
         searchClient={searchClient}
@@ -206,7 +202,7 @@ export const SearchModal = ({
           <SearchBox
             classNames={{
               root: clsx(
-                "h-[56px] w-full md:rounded-t-docs_xl relative border-0 border-solid",
+                "h-[57px] w-full md:rounded-t-docs_xl relative border-0 border-solid",
                 "border-b border-medusa-border-base",
                 "bg-transparent"
               ),
@@ -247,7 +243,7 @@ export const SearchModal = ({
             <XMark className="text-medusa-fg-muted" />
           </Button>
         </div>
-        <div className="mx-docs_0.5 h-[calc(100%-120px)] md:h-[332px] md:flex-initial lg:max-h-[332px] lg:min-h-[332px]">
+        <div className="mx-docs_0.5 md:flex-initial h-[calc(100%-120px)] md:h-[calc(100%-114px)] lg:max-h-[calc(100%-114px)] lg:min-h-[calc(100%-114px)]">
           <SearchEmptyQueryBoundary
             fallback={<SearchSuggestions suggestions={suggestions} />}
           >
@@ -276,7 +272,7 @@ export const SearchModal = ({
       <div
         className={clsx(
           "py-docs_0.75 flex items-center justify-between px-docs_1",
-          "border-0 border-solid",
+          "border-0 border-solid h-[57px]",
           "border-medusa-border-base border-t",
           "bg-medusa-bg-base"
         )}
@@ -326,6 +322,6 @@ export const SearchModal = ({
           </div>
         </div>
       </div>
-    </Modal>
+    </div>
   )
 }

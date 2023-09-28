@@ -1,14 +1,17 @@
 "use client"
 
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext } from "react"
 import { useAnalytics } from "@/providers"
 import { AiAssistant } from "@/components"
 
+export type AiAssistantFeedbackType = "upvote" | "downvote"
+
 export type AiAssistantContextType = {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
   getAnswer: (question: string, thread_id?: string) => Promise<Response>
-  sendFeedback: (questionId: string, reaction: string) => Promise<Response>
+  sendFeedback: (
+    questionId: string,
+    reaction: AiAssistantFeedbackType
+  ) => Promise<Response>
 }
 
 const AiAssistantContext = createContext<AiAssistantContextType | null>(null)
@@ -24,7 +27,6 @@ export const AiAssistantProvider = ({
   apiToken,
   children,
 }: AiAssistantProviderProps) => {
-  const [open, setOpen] = useState(false)
   const { analytics } = useAnalytics()
 
   const sendRequest = async (
@@ -52,7 +54,10 @@ export const AiAssistantProvider = ({
     )
   }
 
-  const sendFeedback = async (questionId: string, reaction: string) => {
+  const sendFeedback = async (
+    questionId: string,
+    reaction: AiAssistantFeedbackType
+  ) => {
     return await sendRequest(
       `/query/v1/question-answer/${questionId}/feedback`,
       "POST",
@@ -70,8 +75,6 @@ export const AiAssistantProvider = ({
   return (
     <AiAssistantContext.Provider
       value={{
-        open,
-        setOpen,
         getAnswer,
         sendFeedback,
       }}

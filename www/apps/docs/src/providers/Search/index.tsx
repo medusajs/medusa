@@ -60,9 +60,9 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             ],
           },
         ],
-        className: "z-[500]",
       }}
       initialDefaultFilters={defaultFilters}
+      modalClassName="z-[500]"
     >
       {children}
     </UiSearchProvider>

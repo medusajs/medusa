@@ -26,16 +26,7 @@ const Providers = ({ children }: ProvidersProps) => {
               <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
                 <SearchProvider>
                   <ScrollControllerProvider scrollableSelector="#main">
-                    <AiAssistantProvider
-                      apiUrl={
-                        process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"
-                      }
-                      apiToken={
-                        process.env.NEXT_PUBLIC_AI_API_ASSISTANT_TOKEN || "temp"
-                      }
-                    >
-                      {children}
-                    </AiAssistantProvider>
+                    {children}
                   </ScrollControllerProvider>
                 </SearchProvider>
               </NavbarProvider>
