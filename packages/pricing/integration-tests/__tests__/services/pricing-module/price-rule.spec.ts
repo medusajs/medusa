@@ -1,6 +1,5 @@
 import { CreatePriceRuleDTO, IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PriceSet } from "@models"
 
 import { PriceSetMoneyAmount, initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
@@ -292,7 +291,7 @@ describe("PricingModule Service - PriceRule", () => {
         const psma: PriceSetMoneyAmount = testManager.create(
           PriceSetMoneyAmount,
           {
-            price_set: testManager.getReference(PriceSet, "price-set-1"),
+            price_set: "price-set-1",
             money_amount: ma.id,
             title: "test",
           }

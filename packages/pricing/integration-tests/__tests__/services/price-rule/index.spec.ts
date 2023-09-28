@@ -1,4 +1,4 @@
-import { PriceSet, PriceSetMoneyAmount } from "@models"
+import { PriceSetMoneyAmount } from "@models"
 
 import { CreatePriceRuleDTO } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
@@ -296,7 +296,7 @@ describe("PriceRule Service", () => {
         const psma: PriceSetMoneyAmount = testManager.create(
           PriceSetMoneyAmount,
           {
-            price_set: testManager.getReference(PriceSet, "price-set-1"),
+            price_set: "price-set-1",
             money_amount: ma.id,
             title: "test",
           }

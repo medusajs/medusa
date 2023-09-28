@@ -76,23 +76,19 @@ export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
     const manager: SqlEntityManager =
       this.getActiveManager<SqlEntityManager>(context)
 
-    const toCreate = await Promise.all(
-      data.map(async (ruleData) => {
-        const ruleDataClone = { ...ruleData } as CreatePriceRuleDTO & {
-          rule_type: string
-          price_set: string
-          price_set_money_amount: string
-        }
-        ruleDataClone.rule_type = ruleData.rule_type_id
+    const toCreate = data.map((ruleData) => {
+      const ruleDataClone = { ...ruleData } as CreatePriceRuleDTO & {
+        rule_type: string
+        price_set: string
+        price_set_money_amount: string
+      }
 
-        ruleDataClone.price_set = ruleData.price_set_id
+      ruleDataClone.rule_type = ruleData.rule_type_id
+      ruleDataClone.price_set = ruleData.price_set_id
+      ruleDataClone.price_set_money_amount = ruleData.price_set_money_amount_id
 
-        ruleDataClone.price_set_money_amount =
-          ruleData.price_set_money_amount_id
-
-        return ruleDataClone
-      })
-    )
+      return ruleDataClone
+    })
 
     const priceRules = toCreate.map((ruleData) => {
       return manager.create(PriceRule, ruleData as CreatePriceRuleDTO)
