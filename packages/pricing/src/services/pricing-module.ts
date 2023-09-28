@@ -424,13 +424,14 @@ export default class PricingModuleService<
 
     const priceSetMap = new Map(priceSets.map((p) => [p.id, p]))
 
+    const invalidPriceSetInputs = inputs.filter(
+      (d) => !priceSetMap.has(d.priceSetId)
+    )
 
-    const invalidInputs = inputs.filter((d) => !priceSetMap.has(d.priceSetId))
-    
-    if (invalidInputs.length) {
+    if (invalidPriceSetInputs.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `PriceSets with ids: ${invalidInputs
+        `PriceSets with ids: ${invalidPriceSetInputs
           .map((d) => d.priceSetId)
           .join(", ")} was not found`
       )
@@ -449,6 +450,20 @@ export default class PricingModuleService<
     const ruleTypeMap: Map<string, RuleTypeDTO> = new Map(
       ruleTypes.map((rt) => [rt.rule_attribute, rt])
     )
+
+    const invalidRuleAttributeInputs = inputs
+      .map((d) => d.rules.map((r) => r.attribute))
+      .flat()
+      .filter((r) => !ruleTypeMap.has(r))
+
+    if (invalidRuleAttributeInputs.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Rule types don't exist for attributes: ${[
+          ...new Set(invalidRuleAttributeInputs),
+        ].join(", ")}`
+      )
+    }
 
     const priceSetRuleTypesCreate: PricingTypes.CreatePriceSetRuleTypeDTO[] = []
 
