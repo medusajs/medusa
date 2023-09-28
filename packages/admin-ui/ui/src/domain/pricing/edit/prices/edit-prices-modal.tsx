@@ -415,6 +415,10 @@ const EditPricesModal = ({
       }
     )
 
+    /**
+     * If the first update failed, we don't want to
+     * continue with the delete request.
+     */
     if (!updateSuccess) {
       return
     }
@@ -437,6 +441,11 @@ const EditPricesModal = ({
       )
     }
 
+    /**
+     * If the delete request failed, we want to
+     * notify the user that some prices were not
+     * updated correctly.
+     */
     if (!removeSuccess) {
       notification(
         t(
