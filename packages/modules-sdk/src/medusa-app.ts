@@ -119,15 +119,19 @@ function cleanAndMergeSchema(loadedSchema) {
 }
 
 function getLoadedSchema(): string {
-  const loadedModules = MedusaModule.getLoadedModules().map(
-    (mod) => Object.values(mod)[0]
-  )
-
-  return loadedModules
-    .map((mod) => {
-      return mod.__joinerConfig?.schema ?? ""
-    })
+  return MedusaModule.getAllJoinerConfigs()
+    .map((joinerConfig) => joinerConfig?.schema ?? "")
     .join("\n")
+}
+
+function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
+  for (const config of servicesConfig) {
+    if (!config.serviceName || config.isReadOnlyLink) {
+      continue
+    }
+
+    MedusaModule.setJoinerConfig(config.serviceName, config)
+  }
 }
 
 export async function MedusaApp(
@@ -177,6 +181,8 @@ export async function MedusaApp(
     true
   )!
 
+  registerCustomJoinerConfigs(servicesConfig ?? [])
+
   if (
     dbData.clientUrl &&
     !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
@@ -190,6 +196,7 @@ export async function MedusaApp(
 
   const allModules = await loadModules(modules, injectedDependencies)
   const link = await initializeLinks(linkModules, injectedDependencies)
+
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
 

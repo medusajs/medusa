@@ -1,9 +1,5 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
-import {
-  LoadedModule,
-  ModuleJoinerConfig,
-  ModuleJoinerRelationship,
-} from "@medusajs/types"
+import { ModuleJoinerConfig, ModuleJoinerRelationship } from "@medusajs/types"
 import { camelToSnakeCase, lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 import { composeTableName } from "./compose-link-name"
 
@@ -78,21 +74,15 @@ export function generateGraphQLSchema(
       )
     }
 
-    // TODO: internal service cannot resolve their joiner config as they are not module
-    // in the mean time infer it from the service name.
-    let extendedEntityName = toPascalCase(composeTableName(extend.serviceName))
-    if (!extend.relationship.isInternalService) {
-      const mod = Object.values(extendedModule)[0] as LoadedModule
+    const joinerConfig = MedusaModule.getJoinerConfig(extend.serviceName)
+    let extendedEntityName =
+      joinerConfig?.linkableKeys?.[extend.relationship.primaryKey]!
 
-      extendedEntityName =
-        mod.__joinerConfig?.linkableKeys?.[extend.relationship.primaryKey]!
-
-      if (!extendedEntityName) {
-        continue
-      }
-
-      extendedEntityName = toPascalCase(extendedEntityName)
+    if (!extendedEntityName) {
+      continue
     }
+
+    extendedEntityName = toPascalCase(extendedEntityName)
 
     const linkTableFieldName = camelToSnakeCase(
       lowerCaseFirst(extend.relationship.alias)

@@ -1,4 +1,5 @@
-import { ModuleJoinerConfig } from "@medusajs/types"
 import * as joinerConfigs from "./joiner-configs"
 
-export const joinerConfig = Object.values(joinerConfigs) as ModuleJoinerConfig[]
+export const joinerConfig = Object.values(joinerConfigs).map(
+  (config) => config.default
+)
