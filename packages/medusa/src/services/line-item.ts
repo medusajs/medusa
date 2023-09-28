@@ -185,8 +185,6 @@ class LineItemService extends TransactionBaseService {
   /**
    * Generate a single or multiple line item without persisting the data into the db.
    *
-   * NOTE: this currently work with IsolatedProductModule flag
-   *
    * @param variantData
    * @param context
    */
@@ -213,6 +211,7 @@ class LineItemService extends TransactionBaseService {
         const variantsToCalculatePricingFor: {
           variantId: string
           quantity: number
+          product_id: string
         }[] = []
 
         for (const variant of resolvedData) {
@@ -224,13 +223,13 @@ class LineItemService extends TransactionBaseService {
             variantsToCalculatePricingFor.push({
               variantId: variant.variant_id,
               quantity: variantResolvedData!.quantity,
+              product_id: variant.product_id,
             })
           }
         }
 
         let variantsPricing = {}
 
-        // TODO: remove this call and receive prices as input
         if (variantsToCalculatePricingFor.length) {
           variantsPricing = await this.pricingService_
             .withTransaction(transactionManager)

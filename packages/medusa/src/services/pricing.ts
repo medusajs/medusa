@@ -19,6 +19,7 @@ import {
 } from "../types/pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { calculatePriceTaxAmount } from "../utils"
+import { ProductVariantDTO } from "@medusajs/types"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -308,7 +309,7 @@ class PricingService extends TransactionBaseService {
    * @return The product variant prices
    */
   async getProductVariantsPricing(
-    data: { variantId: string; quantity?: number }[],
+    data: { variantId: string; quantity?: number; product_id?: string }[],
     context: PriceSelectionContext | PricingContext
   ): Promise<{ [variant_id: string]: ProductVariantPricing }> {
     let pricingContext: PricingContext
@@ -319,13 +320,22 @@ class PricingService extends TransactionBaseService {
     }
 
     const dataMap = new Map(data.map((d) => [d.variantId, d]))
+    let variants: Pick<ProductVariantDTO, "id" | "product_id">[]
 
-    const variants = await this.productVariantService
-      .withTransaction(this.activeManager_)
-      .list(
-        { id: data.map((d) => d.variantId) },
-        { select: ["id", "product_id"] }
-      )
+    if (!data[0]?.product_id) {
+      // if product id is passed no need to fetch variants since we have all the data we need
+      variants = (await this.productVariantService
+        .withTransaction(this.activeManager_)
+        .list(
+          { id: data.map((d) => d.variantId) },
+          { select: ["id", "product_id"] }
+        )) as unknown as ProductVariantDTO[]
+    } else {
+      variants = data.map((v) => ({
+        id: v.variantId,
+        product_id: v.product_id!,
+      }))
+    }
 
     let productsRatesMap: Map<string, TaxServiceRate[]> = new Map()
 
