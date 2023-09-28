@@ -279,6 +279,7 @@
             "id"
           ],
           "referencedTableName": "public.money_amount",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
@@ -421,6 +422,7 @@
             "id"
           ],
           "referencedTableName": "public.price_set",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "price_set_rule_type_rule_type_id_foreign": {
@@ -519,6 +521,7 @@
             "id"
           ],
           "referencedTableName": "public.price_set_money_amount",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "price_set_money_amount_rules_rule_type_id_foreign": {
@@ -689,6 +692,7 @@
             "id"
           ],
           "referencedTableName": "public.price_set_money_amount",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }
