@@ -4,6 +4,7 @@ import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-steps"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
