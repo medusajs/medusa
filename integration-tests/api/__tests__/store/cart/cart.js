@@ -22,6 +22,7 @@ const {
   simpleShippingOptionFactory,
   simpleLineItemFactory,
   simpleSalesChannelFactory,
+  simplePriceListFactory,
 } = require("../../../../factories")
 const {
   simpleDiscountFactory,
@@ -650,7 +651,7 @@ describe("/store/carts", () => {
           {
             id: "line-item-2",
             cart_id: discountCart.id,
-            variant_id: "test-variant-quantity",
+            variant_id: "test-variant-quantity-1",
             product_id: "test-product",
             unit_price: 950,
             quantity: 1,
@@ -790,7 +791,7 @@ describe("/store/carts", () => {
         expect.arrayContaining([
           expect.objectContaining({
             cart_id: "test-cart-3",
-            unit_price: 8000,
+            unit_price: 500,
             variant_id: "test-variant-sale-cg",
             quantity: 3,
             adjustments: [],
@@ -854,7 +855,7 @@ describe("/store/carts", () => {
         allow_discounts: true,
         title: "Line Item Disc",
         thumbnail: "https://test.js/1234",
-        unit_price: 1000,
+        unit_price: 800,
         quantity: 1,
         variant_id: "test-variant-quantity",
         product_id: "test-product",
@@ -876,12 +877,12 @@ describe("/store/carts", () => {
         expect.arrayContaining([
           expect.objectContaining({
             cart_id: "test-cart-w-total-percentage-discount",
-            unit_price: 1000,
+            unit_price: 800,
             variant_id: "test-variant-quantity",
             quantity: 10,
             adjustments: [
               expect.objectContaining({
-                amount: 1000,
+                amount: 800,
                 discount_id: "10Percent",
                 description: "discount",
               }),
@@ -974,6 +975,111 @@ describe("/store/carts", () => {
                 description: "discount",
               }),
             ],
+          }),
+        ])
+      )
+    })
+
+    it("updates line item quantity with unit price reflected", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        id: "pl_current",
+        prices: [
+          {
+            variant_id: "test-variant-sale-cg",
+            amount: 10,
+            min_quantity: 5,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-3/line-items/test-item3/",
+          {
+            quantity: 5,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-3",
+            unit_price: 10,
+            variant_id: "test-variant-sale-cg",
+            quantity: 5,
+          }),
+        ])
+      )
+    })
+
+    it("creates and updates line item quantity with unit price reflected", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        id: "pl_current",
+        prices: [
+          {
+            variant_id: "test-variant-sale-cg",
+            amount: 10,
+            min_quantity: 5,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const createResponse = await api
+        .post(
+          "/store/carts/test-cart/line-items/",
+          {
+            quantity: 1,
+            variant_id: "test-variant-sale-cg",
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(createResponse.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 500,
+            variant_id: "test-variant-sale-cg",
+            quantity: 1,
+          }),
+        ])
+      )
+
+      const lineItemId = createResponse.data.cart.items.find(
+        (i) => i.variant_id === "test-variant-sale-cg"
+      ).id
+
+      const response = await api
+        .post(
+          `/store/carts/test-cart/line-items/${lineItemId}`,
+          {
+            quantity: 5,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      const lineItemIdCount = response.data.cart.items.filter(
+        (i) => i.variant_id === "test-variant-sale-cg"
+      )
+
+      expect(lineItemIdCount.length).toEqual(1)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart",
+            unit_price: 10,
+            variant_id: "test-variant-sale-cg",
+            quantity: 5,
           }),
         ])
       )
