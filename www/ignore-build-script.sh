@@ -3,7 +3,10 @@
 echo "VERCEL_ENV: $VERCEL_ENV"
 echo "VERCEL_GIT_COMMIT_REF: $VERCEL_GIT_COMMIT_REF"
 
-$(git diff HEAD^ HEAD --quiet .)
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+echo "SCRIPT_DIR: $SCRIPT_DIR"
+
+$(git diff HEAD^ HEAD --quiet ${SCRIPT_DIR})
 diffResult=$?
 
 echo "DIFF RESULT: $diffResult"

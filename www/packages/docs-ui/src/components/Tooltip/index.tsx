@@ -21,6 +21,7 @@ export const Tooltip = ({
   children,
   html = "",
   tooltipChildren,
+  className,
   ...tooltipProps
 }: TooltipProps) => {
   const [elementId, setElementId] = useState<string>("")
@@ -38,6 +39,7 @@ export const Tooltip = ({
         data-tooltip-content={text}
         data-tooltip-html={html}
         data-tooltip-id={elementId}
+        className={className}
       >
         {children}
       </span>

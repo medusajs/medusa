@@ -11,6 +11,7 @@ import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultStoreProductRemoteQueryObject } from "./index"
+import { MedusaError } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/products/{id}
@@ -175,6 +176,13 @@ async function getProductWithIsolatedProductModule(req, id: string) {
   }
 
   const [product] = await remoteQuery(query)
+
+  if (!product) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product with id: ${id} not found`
+    )
+  }
 
   product.profile_id = product.profile?.id
 
