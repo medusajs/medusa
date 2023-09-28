@@ -81,9 +81,7 @@ export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
         const ruleDataClone = { ...ruleData } as any
 
         ruleDataClone.rule_type ??= ruleData.rule_type_id
-
         ruleDataClone.price_set ??= ruleData.price_set_id
-
         ruleDataClone.price_set_money_amount ??=
           ruleData.price_set_money_amount_id
 

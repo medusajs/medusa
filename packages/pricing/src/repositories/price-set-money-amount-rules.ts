@@ -65,11 +65,7 @@ export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRep
 
   async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    await manager.nativeDelete(
-      PriceSetMoneyAmountRules,
-      { id: { $in: ids } },
-      {}
-    )
+    await manager.nativeDelete(PriceSetMoneyAmountRules, { id: { $in: ids } })
   }
 
   async create(

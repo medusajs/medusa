@@ -27,6 +27,7 @@ export default class PriceRule {
     fieldName: "price_set_id",
     name: "price_rule_price_set_id_unique",
     onDelete: "cascade",
+    index: "IDX_price_rule_price_set_id",
   })
   price_set: PriceSet
 
@@ -34,6 +35,7 @@ export default class PriceRule {
     entity: () => RuleType,
     fieldName: "rule_type_id",
     name: "price_rule_rule_type_id_unique",
+    index: "IDX_price_rule_rule_type_id",
   })
   rule_type: RuleType
 
@@ -51,6 +53,7 @@ export default class PriceRule {
     entity: () => PriceSetMoneyAmount,
     fieldName: "price_set_money_amount_id",
     name: "price_set_money_amount_id_unique",
+    index: "IDX_price_rule_price_set_money_amount_id",
   })
   price_set_money_amount: PriceSetMoneyAmount
 

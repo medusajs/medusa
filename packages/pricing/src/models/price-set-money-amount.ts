@@ -3,7 +3,6 @@ import {
   BeforeCreate,
   Collection,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryKey,
@@ -15,7 +14,6 @@ import MoneyAmount from "./money-amount"
 import PriceRule from "./price-rule"
 import PriceSet from "./price-set"
 import PriceSetMoneyAmountRules from "./price-set-money-amount-rules"
-import RuleType from "./rule-type"
 
 @Entity()
 export default class PriceSetMoneyAmount {
@@ -37,27 +35,20 @@ export default class PriceSetMoneyAmount {
   })
   money_amount?: MoneyAmount
 
-  @Property({ columnType: "numeric", default: 0 })
-  number_rules?: string
+  @Property({ columnType: "integer", default: 0 })
+  number_rules?: number
 
   @OneToMany({
     entity: () => PriceRule,
-    mappedBy: (ps) => ps.price_set_money_amount,
+    mappedBy: (pr) => pr.price_set_money_amount,
   })
   price_rules = new Collection<PriceRule>(this)
 
   @OneToMany({
     entity: () => PriceSetMoneyAmountRules,
-    mappedBy: (ps) => ps.price_set_money_amount,
+    mappedBy: (psmar) => psmar.price_set_money_amount,
   })
   price_set_money_amount_rules = new Collection<PriceSetMoneyAmountRules>(this)
-
-  @ManyToMany({
-    entity: () => RuleType,
-    pivotEntity: () => PriceRule,
-    nullable: true,
-  })
-  rule_types = new Collection<RuleType>(this)
 
   @BeforeCreate()
   onCreate() {

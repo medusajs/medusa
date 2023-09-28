@@ -1,5 +1,7 @@
 {
-  "namespaces": ["public"],
+  "namespaces": [
+    "public"
+  ],
   "name": "public",
   "tables": [
     {
@@ -46,7 +48,9 @@
       "indexes": [
         {
           "keyName": "currency_pkey",
-          "columnNames": ["code"],
+          "columnNames": [
+            "code"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -107,7 +111,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["currency_code"],
+          "columnNames": [
+            "currency_code"
+          ],
           "composite": false,
           "keyName": "IDX_money_amount_currency_code",
           "primary": false,
@@ -115,7 +121,9 @@
         },
         {
           "keyName": "money_amount_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -125,9 +133,13 @@
       "foreignKeys": {
         "money_amount_currency_code_foreign": {
           "constraintName": "money_amount_currency_code_foreign",
-          "columnNames": ["currency_code"],
+          "columnNames": [
+            "currency_code"
+          ],
           "localTableName": "public.money_amount",
-          "referencedColumnNames": ["code"],
+          "referencedColumnNames": [
+            "code"
+          ],
           "referencedTableName": "public.currency",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -151,7 +163,9 @@
       "indexes": [
         {
           "keyName": "price_set_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -197,20 +211,34 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "number_rules": {
+          "name": "number_rules",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "integer"
         }
       },
       "name": "price_set_money_amount",
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["price_set_id"],
+          "columnNames": [
+            "price_set_id"
+          ],
           "composite": false,
           "keyName": "IDX_price_set_money_amount_price_set_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": ["money_amount_id"],
+          "columnNames": [
+            "money_amount_id"
+          ],
           "composite": false,
           "keyName": "IDX_price_set_money_amount_money_amount_id",
           "primary": false,
@@ -218,7 +246,9 @@
         },
         {
           "keyName": "price_set_money_amount_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -228,18 +258,26 @@
       "foreignKeys": {
         "price_set_money_amount_price_set_id_foreign": {
           "constraintName": "price_set_money_amount_price_set_id_foreign",
-          "columnNames": ["price_set_id"],
+          "columnNames": [
+            "price_set_id"
+          ],
           "localTableName": "public.price_set_money_amount",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.price_set",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "price_set_money_amount_money_amount_id_foreign": {
           "constraintName": "price_set_money_amount_money_amount_id_foreign",
-          "columnNames": ["money_amount_id"],
+          "columnNames": [
+            "money_amount_id"
+          ],
           "localTableName": "public.price_set_money_amount",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.money_amount",
           "updateRule": "cascade"
         }
@@ -289,7 +327,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["rule_attribute"],
+          "columnNames": [
+            "rule_attribute"
+          ],
           "composite": false,
           "keyName": "IDX_rule_type_rule_attribute",
           "primary": false,
@@ -297,7 +337,9 @@
         },
         {
           "keyName": "rule_type_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -438,14 +480,18 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["price_set_money_amount_id"],
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
           "composite": false,
           "keyName": "IDX_price_set_money_amount_rules_price_set_money_amount_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": ["rule_type_id"],
+          "columnNames": [
+            "rule_type_id"
+          ],
           "composite": false,
           "keyName": "IDX_price_set_money_amount_rules_rule_type_id",
           "primary": false,
@@ -453,7 +499,9 @@
         },
         {
           "keyName": "price_set_money_amount_rules_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -463,17 +511,25 @@
       "foreignKeys": {
         "price_set_money_amount_rules_price_set_money_amount_id_foreign": {
           "constraintName": "price_set_money_amount_rules_price_set_money_amount_id_foreign",
-          "columnNames": ["price_set_money_amount_id"],
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
           "localTableName": "public.price_set_money_amount_rules",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.price_set_money_amount",
           "updateRule": "cascade"
         },
         "price_set_money_amount_rules_rule_type_id_foreign": {
           "constraintName": "price_set_money_amount_rules_rule_type_id_foreign",
-          "columnNames": ["rule_type_id"],
+          "columnNames": [
+            "rule_type_id"
+          ],
           "localTableName": "public.price_set_money_amount_rules",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.rule_type",
           "updateRule": "cascade"
         }
@@ -560,15 +616,37 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["rule_type_id"],
+          "columnNames": [
+            "price_set_id"
+          ],
           "composite": false,
-          "keyName": "price_rule_rule_type_id_unique",
+          "keyName": "IDX_price_rule_price_set_id",
           "primary": false,
-          "unique": true
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "rule_type_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_rule_type_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_price_set_money_amount_id",
+          "primary": false,
+          "unique": false
         },
         {
           "keyName": "price_rule_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -578,26 +656,38 @@
       "foreignKeys": {
         "price_rule_price_set_id_foreign": {
           "constraintName": "price_rule_price_set_id_foreign",
-          "columnNames": ["price_set_id"],
+          "columnNames": [
+            "price_set_id"
+          ],
           "localTableName": "public.price_rule",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.price_set",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "price_rule_rule_type_id_foreign": {
           "constraintName": "price_rule_rule_type_id_foreign",
-          "columnNames": ["rule_type_id"],
+          "columnNames": [
+            "rule_type_id"
+          ],
           "localTableName": "public.price_rule",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.rule_type",
           "updateRule": "cascade"
         },
         "price_rule_price_set_money_amount_id_foreign": {
           "constraintName": "price_rule_price_set_money_amount_id_foreign",
-          "columnNames": ["price_set_money_amount_id"],
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
           "localTableName": "public.price_rule",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.price_set_money_amount",
           "updateRule": "cascade"
         }

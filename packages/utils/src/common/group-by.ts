@@ -5,6 +5,10 @@ export function groupBy(
   return array.reduce<Map<any, any>>((map, obj) => {
     const key = obj[attribute]
 
+    if (!key) {
+      return map
+    }
+
     if (!map.get(key)) {
       map.set(key, [])
     }
