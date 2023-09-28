@@ -26,7 +26,7 @@ const Providers = ({ children }: ProvidersProps) => {
             <BaseSpecsProvider>
               <SidebarProvider>
                 <NavbarProvider>
-                  <ScrollControllerProvider>
+                  <ScrollControllerProvider scrollableSelector="#main">
                     <SearchProvider>
                       <MobileProvider>{children}</MobileProvider>
                     </SearchProvider>
