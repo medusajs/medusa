@@ -50,13 +50,6 @@ export async function handleAddOrUpdateLineItem(
       [data.variant_id]
     )
 
-    if (!variant) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Variant with id: ${data.variant_id} not found`
-      )
-    }
-
     validateItemsInput([data], [variant])
 
     line = await lineItemService
