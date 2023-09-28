@@ -42,6 +42,9 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *     source: |
  *       curl -X POST '{backend_url}/admin/currencies' \
  *       -H 'Authorization: Bearer {api_token}'
+ * security:
+ *   - api_token: []
+ *   - cookie_auth: []
  * tags:
  *   - Currencies
  * responses:

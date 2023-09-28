@@ -20,7 +20,7 @@
   
   .sidebar-title .menu__link,
   .sidebar-title span {
-    @apply !text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark;
+    @apply !text-compact-medium-plus text-medusa-fg-base;
   }
   
   .sidebar-title .menu__link--active,
@@ -37,7 +37,7 @@
   }
   
   .sidebar-group-headline > .menu__list-item-collapsible > .menu__link {
-    @apply text-medusa-fg-base dark:text-medusa-fg-base-dark !p-0;
+    @apply text-medusa-fg-base !p-0;
   }
   
   .sidebar-group-headline > .menu__list-item-collapsible > .menu__link:not([href]) {
@@ -55,12 +55,12 @@
   }
 
   .sidebar-group-divider {
-    @apply pb-[6px] uppercase text-medusa-fg-muted dark:text-medusa-fg-muted-dark text-compact-x-small-plus;
+    @apply pb-[6px] uppercase text-medusa-fg-muted text-compact-x-small-plus;
     @apply first:pt-[6px] [&:not(:first-child)]:!pt-1;
   }
   
   .sidebar-divider-line {
-    @apply h-[1px] w-full bg-medusa-border-base dark:bg-medusa-border-base-dark my-1 mx-0;
+    @apply h-[1px] w-full bg-medusa-border-base my-1 mx-0;
   }
 
   .sidebar-back-link {
@@ -69,11 +69,11 @@
 
   .sidebar-back-link,
   .sidebar-title {
-    @apply lg:sticky lg:bg-medusa-bg-base dark:lg:bg-medusa-bg-subtle-dark lg:z-[100];
+    @apply lg:sticky lg:bg-medusa-bg-base dark:lg:bg-medusa-bg-subtle lg:z-[100];
   }
 
   .sidebar-back-link .menu__link {
-    @apply !p-0 hover:!bg-transparent hover:text-medusa-fg-base dark:hover:text-medusa-fg-base-dark;
+    @apply !p-0 hover:!bg-transparent hover:text-medusa-fg-base;
   }
 
   .sidebar-back-link .menu__link,
@@ -86,7 +86,7 @@
   }
 
   .sidebar-soon-link {
-    @apply pointer-events-none [&_*]:text-medusa-fg-disabled dark:[&_*]:text-medusa-fg-disabled-dark;
+    @apply pointer-events-none [&_*]:text-medusa-fg-disabled;
   }
 
 
@@ -95,69 +95,31 @@
   }
 
   .search-page-input {
-    @apply rounded border border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
-    @apply font-base text-medium p-0.75 w-full bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark;
-    @apply text-medusa-fg-base dark:text-medusa-fg-base-dark mb-1;
+    @apply rounded border border-solid border-medusa-border-base;
+    @apply font-base text-medium p-0.75 w-full bg-medusa-bg-subtle;
+    @apply text-medusa-fg-base mb-1;
     @apply transition-[border] duration-200 ease-ease;
-    @apply focus:border-medusa-border-base dark:focus:border-medusa-border-base-dark;
+    @apply focus:border-medusa-border-base;
     @apply focus:outline-none !shadow-none;
   }
 
   .code-header {
-    @apply py-0.75 px-1 bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark text-medusa-code-text-subtle dark:text-medusa-code-text-subtle;
+    @apply py-0.75 px-1 bg-medusa-code-bg-header text-medusa-code-text-subtle;
     @apply flex justify-between items-center;
     @apply rounded-tl rounded-tr rounded-br-none rounded-bl-none border-b-0;
-    @apply border border-solid border-medusa-code-border dark:border-medusa-code-border-dark border-b-0;
+    @apply border border-solid border-medusa-code-border border-b-0;
   }
 
   .no-scrollbar::-webkit-scrollbar {
     @apply hidden;
   }
 
-  .animate__fastest {
-    --animate-duration: 0.2s;
-  }
-
-  /* .btn-secondary {
-    @apply inline-flex flex-row justify-center items-center;
-    @apply py-[5px] px-0.75 rounded-sm cursor-pointer;
-    @apply bg-button-neutral bg-medusa-button-neutral dark:bg-button-neutral-dark dark:bg-medusa-button-neutral-dark;
-    @apply hover:bg-medusa-button-neutral-hover hover:bg-no-image dark:hover:bg-medusa-button-neutral-hover-dark hover:no-underline;
-    @apply active:bg-medusa-button-neutral-pressed active:bg-no-image dark:active:bg-medusa-button-neutral-pressed-dark;
-    @apply focus:bg-medusa-button-neutral-pressed focus:bg-no-image dark:focus:bg-medusa-button-neutral-pressed-dark;
-    @apply disabled:!bg-no-image disabled:bg-medusa-bg-disabled dark:disabled:bg-medusa-bg-disabled-dark;
-    @apply disabled:cursor-not-allowed;
-    @apply border border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
-    @apply text-compact-small-plus text-medusa-fg-base dark:text-medusa-fg-base-dark;
-    @apply hover:text-medusa-fg-base hover:dark:text-medusa-fg-base-dark;
-    @apply shadow-button-neutral focus:shadow-button-neutral-focused active:shadow-button-neutral-focused transition-shadow;
-    @apply dark:shadow-button-neutral dark:focus:shadow-button-neutral-focused dark:active:shadow-button-neutral-focused;
-    @apply select-none;
-  }
-
-  .btn-primary {
-    @apply inline-flex flex-row justify-center items-center;
-    @apply py-[5px] px-0.75 rounded-sm cursor-pointer;
-    @apply bg-button-inverted bg-medusa-button-inverted dark:bg-button-inverted-dark dark:bg-medusa-button-inverted-dark;
-    @apply hover:bg-medusa-button-inverted-hover hover:bg-no-image dark:hover:bg-medusa-button-inverted-hover-dark hover:no-underline;
-    @apply active:bg-medusa-button-inverted-pressed active:bg-no-image dark:active:bg-medusa-button-inverted-pressed-dark;
-    @apply focus:bg-medusa-button-inverted-pressed focus:bg-no-image dark:focus:bg-medusa-button-inverted-pressed-dark;
-    @apply shadow-button-colored active:shadow-button-colored-focused focus:shadow-button-colored-focused transition-shadow;
-    @apply dark:shadow-button-colored-dark dark:active:shadow-button-colored-focused-dark dark:focus:shadow-button-colored-focused-dark;
-    @apply disabled:!bg-no-image disabled:bg-medusa-button-disabled dark:disabled:bg-medusa-button-disabled-dark;
-    @apply disabled:cursor-not-allowed disabled:border-medusa-border-base dark:disabled:border-medusa-border-base-dark;
-    @apply text-compact-small-plus text-medusa-fg-on-inverted dark:text-medusa-fg-on-inverted-dark;
-    @apply disabled:text-medusa-fg-disabled dark:disabled:text-medusa-fg-disabled-dark;
-    @apply border border-medusa-border-loud dark:border-medusa-border-loud-dark;
-    @apply select-none;
-  } */
-
   .navbar-action-icon-item {
-    @apply lg:bg-button-neutral lg:bg-medusa-button-neutral lg:dark:bg-button-neutral-dark lg:dark:bg-medusa-button-neutral-dark;
-    @apply lg:hover:bg-medusa-button-neutral-hover lg:hover:bg-no-image lg:dark:hover:bg-medusa-button-neutral-hover-dark lg:hover:no-underline;
-    @apply lg:active:bg-medusa-button-neutral-pressed lg:active:bg-no-image lg:dark:active:bg-medusa-button-neutral-pressed-dark;
-    @apply lg:focus:bg-medusa-button-neutral-pressed lg:focus:bg-no-image lg:dark:focus:bg-medusa-button-neutral-pressed-dark;
-    @apply lg:lg:border lg:border-solid lg:border-medusa-border-base lg:dark:border-medusa-border-base-dark rounded;
+    @apply lg:bg-button-neutral lg:bg-medusa-button-neutral lg:dark:bg-button-neutral-dark;
+    @apply lg:hover:bg-medusa-button-neutral-hover lg:hover:bg-no-image lg:hover:no-underline;
+    @apply lg:active:bg-medusa-button-neutral-pressed lg:active:bg-no-image;
+    @apply lg:focus:bg-medusa-button-neutral-pressed lg:focus:bg-no-image;
+    @apply lg:lg:border lg:border-solid lg:border-medusa-border-base rounded;
     @apply w-2 h-2 flex justify-center items-center cursor-pointer;
   }
 

@@ -7,18 +7,22 @@
     -webkit-font-smoothing: antialiased;
   }
   .html {
-    @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
+    @apply text-medusa-fg-base;
   }
 
   *::selection {
-    @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
+    @apply bg-medusa-bg-highlight;
   }
 
   pre *::selection {
     @apply !bg-medusa-code-text-highlight;
   }
 
+  body {
+    @apply text-ui-fg-subtle;
+  }
+
   body[data-modal="opened"] {
-    @apply !overflow-hidden;
+    @apply !overflow-hidden text-ui-fg-base;
   }
 }

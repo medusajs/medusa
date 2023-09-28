@@ -21,10 +21,10 @@ export const Sidebar = ({
     <aside
       className={clsx(
         "clip bg-docs-bg dark:bg-docs-bg-dark w-ref-sidebar block",
-        "border-medusa-border-base dark:border-medusa-border-base-dark border-0 border-r border-solid",
-        "fixed -left-full top-[57px] h-screen transition-[left] lg:relative lg:left-0 lg:top-auto lg:h-auto",
-        "lg:w-sidebar z-[100] w-full lg:z-0",
-        mobileSidebarOpen && "!left-0",
+        "border-medusa-border-base border-0 border-r border-solid",
+        "fixed -left-full top-0 h-screen transition-[left] lg:relative lg:left-0 lg:top-auto lg:h-auto",
+        "lg:w-sidebar w-full",
+        mobileSidebarOpen && "!left-0 z-50 top-[57px]",
         !desktopSidebarOpen && "!absolute !-left-full",
         className
       )}
@@ -34,7 +34,7 @@ export const Sidebar = ({
     >
       <ul
         className={clsx(
-          "sticky top-[57px] h-screen max-h-screen w-full list-none overflow-auto p-0",
+          "sticky top-0 h-screen max-h-screen w-full list-none overflow-auto p-0",
           "px-docs_1.5 pb-[57px] pt-docs_1.5"
         )}
         id="sidebar"

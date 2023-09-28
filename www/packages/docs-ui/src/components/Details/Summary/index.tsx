@@ -15,6 +15,7 @@ export type DetailsSummaryProps = {
 export const DetailsSummary = ({
   title,
   subtitle,
+  children,
   badge,
   expandable = true,
   open = false,
@@ -27,8 +28,7 @@ export const DetailsSummary = ({
       className={clsx(
         "py-docs_0.75 flex items-center justify-between",
         expandable && "cursor-pointer",
-        !expandable &&
-          "border-medusa-border-base dark:border-medusa-border-base-dark border-y",
+        !expandable && "border-medusa-border-base border-y",
         "no-marker",
         className
       )}
@@ -37,14 +37,14 @@ export const DetailsSummary = ({
       <span className="gap-docs_0.25 flex flex-col">
         <span
           className={clsx(
-            "text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark",
+            "text-compact-medium-plus text-medusa-fg-base",
             titleClassName
           )}
         >
-          {title}
+          {title || children}
         </span>
         {subtitle && (
-          <span className="text-compact-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark">
+          <span className="text-compact-medium text-medusa-fg-subtle">
             {subtitle}
           </span>
         )}

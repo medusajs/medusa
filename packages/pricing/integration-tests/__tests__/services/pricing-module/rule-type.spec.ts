@@ -1,3 +1,6 @@
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
+
+import { Currency } from "@models"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
