@@ -10,7 +10,6 @@ export async function createPriceSetMoneyAmounts(
 ): Promise<PriceSetMoneyAmount[]> {
   const priceSetMoneyAmount: PriceSetMoneyAmount[] = []
 
-  console.warn(psmaData)
   for (let data of psmaData) {
     const psmar = manager.create(PriceSetMoneyAmount, data)
 

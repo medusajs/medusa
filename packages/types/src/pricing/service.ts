@@ -1,4 +1,5 @@
 import {
+  AddPricesDTO,
   AddRulesDTO,
   CalculatedPriceSetDTO,
   CreateCurrencyDTO,
@@ -79,12 +80,9 @@ export interface IPricingModuleService {
   delete(ids: string[], sharedContext?: Context): Promise<void>
 
   addPrices(
-    priceSetId: string,
-    data: (CreateMoneyAmountDTO & {
-      rules?: Record<string, string>
-    })[], 
+    data: AddPricesDTO | AddPricesDTO[], 
     sharedContext?: Context
-  ): Promise<PriceSetDTO>
+  ): Promise<PriceSetDTO[]>
 
   addRules(
     data: AddRulesDTO | AddRulesDTO[], 
