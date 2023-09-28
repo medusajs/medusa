@@ -115,7 +115,7 @@ export const SelectDropdown = ({
     <div
       className={clsx(
         "absolute top-full left-0 w-full",
-        "z-10 h-0 translate-y-0 overflow-hidden transition-transform",
+        "h-0 translate-y-0 overflow-hidden transition-transform",
         open && "h-auto translate-y-docs_0.5 !overflow-visible",
         className
       )}

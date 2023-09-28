@@ -478,6 +478,24 @@ module.exports = {
             transform: "translate3d(0, -100%, 0)",
           },
         },
+        slideInRight: {
+          from: {
+            transform: "translate3d(100%, 0, 0)",
+            visibility: "visible",
+          },
+          to: {
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        slideOutRight: {
+          from: {
+            transform: "translate3d(0, 0, 0)",
+          },
+          to: {
+            visibility: "hidden",
+            transform: "translate3d(100%, 0, 0)",
+          },
+        },
       },
       animation: {
         fadeIn: "fadeIn 500ms",
@@ -485,6 +503,8 @@ module.exports = {
         fadeInDown: "fadeInDown 500ms",
         fadeOutUp: "fadeOutUp 500ms",
         tada: "tada 1s",
+        slideInRight: "slideInRight 500ms",
+        slideOutRight: "slideOutRight 500ms",
       },
     },
     fontFamily: {

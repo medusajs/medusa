@@ -94,6 +94,7 @@ export const SidebarItem = ({
           }}
           replace
           shallow
+          {...item.linkProps}
         >
           <span>{item.title}</span>
           {item.additionalElms}

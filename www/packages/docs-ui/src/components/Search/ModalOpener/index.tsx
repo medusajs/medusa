@@ -53,7 +53,7 @@ export const SearchModalOpener = ({
       )}
       {!isMobile && (
         <div
-          className={clsx("relative w-min hover:cursor-pointer")}
+          className={clsx("relative w-min hover:cursor-pointer group")}
           onClick={handleOpen}
         >
           <MagnifyingGlass
@@ -73,6 +73,7 @@ export const SearchModalOpener = ({
             onClick={handleOpen}
             onFocus={(e) => e.target.blur()}
             tabIndex={-1}
+            addGroupStyling={true}
           />
           <span
             className={clsx(
