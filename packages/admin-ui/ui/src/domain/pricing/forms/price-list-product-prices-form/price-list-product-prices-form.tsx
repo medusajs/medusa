@@ -1292,6 +1292,17 @@ const PriceListProductPricesForm = ({
       }
 
       setSingleRange({ row: firstRow, col: firstCol })
+      const element = getElementFromPoint(
+        { row: firstRow, col: firstCol },
+        table
+      )
+
+      if (!element) {
+        return
+      }
+
+      element.scrollIntoView({ block: "nearest" })
+      element.focus()
     }
 
     table.addEventListener("focusin", onFocus)
@@ -1300,6 +1311,21 @@ const PriceListProductPricesForm = ({
       table.removeEventListener("focusin", onFocus)
     }
   }, [setSingleRange, clearRange, anchor, rows, cols])
+
+  React.useEffect(() => {
+    if (!anchor) {
+      return
+    }
+
+    const table = tableRef.current
+    const element = getElementFromPoint(anchor, table)
+
+    if (!element) {
+      return
+    }
+
+    element.focus()
+  }, [anchor])
 
   const [selectionRect, setSelectionRect] = React.useState<RectStyles | null>(
     null
@@ -2181,7 +2207,7 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
       <td
         ref={cellRef}
         className={clx(
-          "relative h-[10] min-w-[220px]",
+          "relative h-[10] min-w-[220px] outline-none",
           {
             "!bg-ui-bg-highlight": isSelected && !isActive,
           },
@@ -2201,6 +2227,7 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
         data-col-index={cellIndex}
         aria-colindex={cellIndex}
         aria-rowindex={rowIndex}
+        tabIndex={0}
       >
         <div className="flex items-center px-4 py-2.5">
           {symbol && (
@@ -2216,6 +2243,7 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
             onValueChange={onValueChange}
             decimalScale={isActive ? undefined : decimalScale}
             autoFocus={false}
+            tabIndex={-1}
             placeholder="-"
             className={clx(
               "h-full flex-1 cursor-default bg-transparent text-right outline-none"
