@@ -348,7 +348,7 @@ const PriceListDates = ({ form, layout }: PriceListDetailsFormProps) => {
               <Form.Field
                 control={form.control}
                 name={form.path("dates.starts_at")}
-                render={({ field: { ref: _ref, ...rest } }) => {
+                render={({ field: { ref: _ref, value, ...rest } }) => {
                   return (
                     <Form.Item>
                       <Form.Label>
@@ -358,7 +358,11 @@ const PriceListDates = ({ form, layout }: PriceListDetailsFormProps) => {
                         )}
                       </Form.Label>
                       <Form.Control>
-                        <DatePicker {...rest} showTimePicker />
+                        <DatePicker
+                          {...rest}
+                          value={value ?? undefined}
+                          showTimePicker
+                        />
                       </Form.Control>
                       <Form.ErrorMessage />
                     </Form.Item>
@@ -401,14 +405,18 @@ const PriceListDates = ({ form, layout }: PriceListDetailsFormProps) => {
               <Form.Field
                 control={form.control}
                 name={form.path("dates.ends_at")}
-                render={({ field: { ref: _ref, ...rest } }) => {
+                render={({ field: { ref: _ref, value, ...rest } }) => {
                   return (
                     <Form.Item>
                       <Form.Label>
                         {t("price-list-details-form-ends-at-label", "End date")}
                       </Form.Label>
                       <Form.Control>
-                        <DatePicker {...rest} showTimePicker />
+                        <DatePicker
+                          {...rest}
+                          value={value ?? undefined}
+                          showTimePicker
+                        />
                       </Form.Control>
                       <Form.ErrorMessage />
                     </Form.Item>
@@ -628,11 +636,19 @@ const PriceListCustomerGroups = ({
     <div className="w-full">
       <div>
         <div className="flex items-center justify-between">
-          <Heading level="h2">Customer availability</Heading>
+          <Heading level="h2">
+            {t(
+              "price-list-details-form-customer-groups-heading",
+              "Customer availability"
+            )}
+          </Heading>
           <Switch checked={open} onCheckedChange={setOpen} />
         </div>
         <Text className="text-ui-fg-subtle">
-          Specify which customer groups the price overrides should apply for.
+          {t(
+            "price-list-details-form-customer-groups-description",
+            "Specify which customer groups the price overrides should apply for."
+          )}
         </Text>
       </div>
       <Collapsible.Root open={open} onOpenChange={setOpen}>
@@ -645,7 +661,12 @@ const PriceListCustomerGroups = ({
                   "flex-col gap-y-4": layout === "drawer",
                 })}
               >
-                <Heading>Customer Groups</Heading>
+                <Heading>
+                  {t(
+                    "price-list-details-form-customer-groups-content-heading",
+                    "Customer Groups"
+                  )}
+                </Heading>
                 <div
                   className={clx("flex items-center gap-x-2", {
                     "w-full": layout === "drawer",
@@ -660,7 +681,12 @@ const PriceListCustomerGroups = ({
                       "w-full": layout === "drawer",
                     })}
                     type="search"
-                    placeholder="Search"
+                    placeholder={
+                      t(
+                        "price-list-details-form-customer-groups-search-placeholder",
+                        "Search"
+                      ) ?? undefined
+                    }
                     size="small"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}

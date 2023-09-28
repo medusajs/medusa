@@ -131,11 +131,10 @@ const PriceListNew = () => {
   const {
     trigger,
     reset,
-    unregister,
     getValues,
     setValue,
     handleSubmit,
-    formState: { isDirty, dirtyFields },
+    formState: { isDirty },
   } = form
 
   const {
@@ -172,9 +171,6 @@ const PriceListNew = () => {
   const onModalStateChange = React.useCallback(
     async (open: boolean) => {
       if (!open && (isDirty || isEditDirty)) {
-        console.log("Form is Dirty", isDirty ? "true" : "false", dirtyFields)
-        console.log("Edit Form is Dirty", isEditDirty ? "true" : "false")
-
         const response = await prompt({
           title: promptTitle,
           description: promptExitDescription,
@@ -444,14 +440,14 @@ const PriceListNew = () => {
          */
         for (const id of prev) {
           if (!ids.includes(id)) {
-            unregister(`prices.products.${id}`)
+            setValue(`prices.products.${id}`, { variants: {} })
           }
         }
 
         return ids
       })
     },
-    [unregister]
+    [setValue]
   )
 
   /**
@@ -460,13 +456,20 @@ const PriceListNew = () => {
   const onValidateDetails = React.useCallback(async () => {
     const result = await trigger("details")
 
-    if (result) {
-      setTab(Tab.PRODUCTS)
+    if (!result) {
       setStatus((prev) => ({
         ...prev,
-        [Tab.DETAILS]: "completed",
+        [Tab.DETAILS]: "in-progress",
       }))
+
+      return
     }
+
+    setTab(Tab.PRODUCTS)
+    setStatus((prev) => ({
+      ...prev,
+      [Tab.DETAILS]: "completed",
+    }))
   }, [trigger])
 
   /**
@@ -475,17 +478,24 @@ const PriceListNew = () => {
   const onValidateProducts = React.useCallback(async () => {
     const result = await trigger("products")
 
-    if (result) {
-      const ids = getValues("products.ids")
-
-      onUpdateSelectedProductIds(ids)
-
-      setTab(Tab.PRICES)
+    if (!result) {
       setStatus((prev) => ({
         ...prev,
-        [Tab.PRODUCTS]: "completed",
+        [Tab.PRODUCTS]: "in-progress",
       }))
+
+      return
     }
+
+    const ids = getValues("products.ids")
+
+    onUpdateSelectedProductIds(ids)
+
+    setTab(Tab.PRICES)
+    setStatus((prev) => ({
+      ...prev,
+      [Tab.PRODUCTS]: "completed",
+    }))
   }, [trigger, getValues, onUpdateSelectedProductIds])
 
   /**
@@ -564,10 +574,10 @@ const PriceListNew = () => {
       >
         <FocusModal.Content>
           <FocusModal.Header className="flex w-full items-center justify-start">
-            <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 border-l">
+            <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 min-w-0 flex-1 border-l">
               <ProgressTabs.Trigger
                 value={Tab.DETAILS}
-                className="group flex items-center gap-x-2"
+                className="w-full min-w-0 max-w-[200px]"
                 status={status[Tab.DETAILS]}
               >
                 <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
@@ -577,7 +587,7 @@ const PriceListNew = () => {
               <ProgressTabs.Trigger
                 value={Tab.PRODUCTS}
                 disabled={status[Tab.DETAILS] !== "completed"}
-                className="group flex items-center gap-x-2"
+                className="w-full min-w-0  max-w-[200px]"
                 status={status[Tab.PRODUCTS]}
               >
                 <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
@@ -590,7 +600,7 @@ const PriceListNew = () => {
                   status[Tab.DETAILS] !== "completed" &&
                   status[Tab.PRODUCTS] !== "completed"
                 }
-                className="group flex items-center gap-x-2"
+                className="w-full min-w-0 max-w-[200px]"
                 status={status[Tab.PRICES]}
               >
                 <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
@@ -601,7 +611,7 @@ const PriceListNew = () => {
                 <ProgressTabs.Trigger
                   value={Tab.EDIT}
                   disabled={isLoading || isError}
-                  className="group flex items-center gap-x-2"
+                  className="w-full min-w-0 max-w-[200px]"
                   status={isEditDirty ? "in-progress" : "not-started"}
                 >
                   <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">

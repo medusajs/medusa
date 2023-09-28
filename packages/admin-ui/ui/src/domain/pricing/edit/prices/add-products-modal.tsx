@@ -73,8 +73,6 @@ const AddProductsModal = ({
   const [product, setProduct] = React.useState<Product | null>(null)
   const [selectedIds, setSelectedIds] = React.useState<string[]>([])
 
-  const [completedSteps, setCompletedSteps] = React.useState<Tab[]>([])
-
   const [tab, setTab] = React.useState<Tab>(Tab.PRODUCTS)
   const [status, setStatus] = React.useState<StepStatus>({
     [Tab.PRODUCTS]: "not-started",
@@ -113,7 +111,6 @@ const AddProductsModal = ({
     handleSubmit,
     setValue,
     getValues,
-    unregister,
     reset,
     formState: { isDirty },
   } = form
@@ -124,6 +121,7 @@ const AddProductsModal = ({
     reset: resetEdit,
     setValue: setEditValue,
     getValues: getEditValues,
+
     formState: { isDirty: isEditDirty },
   } = useForm<PriceListProductPricesSchema>({
     resolver: zodResolver(priceListProductPricesSchema),
@@ -140,7 +138,6 @@ const AddProductsModal = ({
   const onCloseModal = React.useCallback(() => {
     onOpenChange(false)
     setTab(Tab.PRODUCTS)
-    setCompletedSteps([])
     setStatus({
       [Tab.PRODUCTS]: "not-started",
       [Tab.PRICES]: "not-started",
@@ -200,6 +197,10 @@ const AddProductsModal = ({
       keepDirty: false,
       keepTouched: false,
     })
+    setStatus((prev) => ({
+      ...prev,
+      [Tab.PRICES]: "in-progress",
+    }))
     setTab(Tab.PRICES)
   })
 
@@ -397,19 +398,19 @@ const AddProductsModal = ({
       setSelectedIds((prev) => {
         /**
          * If the previous ids are the same as the new ids,
-         * we need to unregister the old ids that are no
+         * we need to clear the values the old ids that are no
          * longer selected.
          */
         for (const id of prev) {
           if (!ids.includes(id)) {
-            unregister(`prices.products.${id}`)
+            setValue(`prices.products.${id}`, { variants: {} })
           }
         }
 
         return ids
       })
     },
-    [unregister]
+    [setValue]
   )
 
   const onCancelPriceEdit = React.useCallback(async () => {
@@ -442,17 +443,23 @@ const AddProductsModal = ({
   const onValidateProducts = React.useCallback(async () => {
     const result = await trigger("products")
 
-    if (result) {
-      const ids = getValues("products.ids")
-
-      onUpdateSelectedProductIds(ids)
-
-      setTab(Tab.PRICES)
+    if (!result) {
       setStatus((prev) => ({
         ...prev,
-        [Tab.PRODUCTS]: "completed",
+        [Tab.PRODUCTS]: "in-progress",
       }))
+      return
     }
+
+    const ids = getValues("products.ids")
+
+    onUpdateSelectedProductIds(ids)
+
+    setTab(Tab.PRICES)
+    setStatus((prev) => ({
+      ...prev,
+      [Tab.PRODUCTS]: "completed",
+    }))
   }, [trigger, getValues, onUpdateSelectedProductIds])
 
   const onBack = React.useCallback(async () => {
@@ -520,31 +527,35 @@ const AddProductsModal = ({
       >
         <FocusModal.Content>
           <FocusModal.Header className="flex w-full items-center justify-between">
-            <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 w-full border-l">
+            <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 min-w-0 flex-1 border-l">
               <ProgressTabs.Trigger
                 value={Tab.PRODUCTS}
-                className="group flex items-center gap-x-2"
-                status={"not-started"}
+                className="w-full max-w-[200px]"
+                status={status[Tab.PRODUCTS]}
               >
-                {t(
-                  "price-list-add-products-modal-products-tab",
-                  "Choose Products"
-                )}
+                <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                  {t(
+                    "price-list-add-products-modal-products-tab",
+                    "Choose Products"
+                  )}
+                </span>
               </ProgressTabs.Trigger>
               <ProgressTabs.Trigger
                 value={Tab.PRICES}
-                className="group flex items-center gap-x-2"
-                status={"not-started"}
+                className="w-full max-w-[200px]"
+                status={status[Tab.PRICES]}
               >
-                {t("price-list-add-products-modal-prices-tab", "Edit Prices")}
+                <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                  {t("price-list-add-products-modal-prices-tab", "Edit Prices")}
+                </span>
               </ProgressTabs.Trigger>
               {product && (
                 <ProgressTabs.Trigger
                   value={Tab.EDIT}
-                  className="group flex items-center gap-x-2"
+                  className="w-full max-w-[200px]"
                   status={isEditDirty ? "in-progress" : "not-started"}
                 >
-                  <span className="w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+                  <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
                     {product.title}
                   </span>
                 </ProgressTabs.Trigger>

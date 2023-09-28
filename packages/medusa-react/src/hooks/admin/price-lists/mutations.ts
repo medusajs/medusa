@@ -34,7 +34,7 @@ export const useAdminCreatePriceList = (
   return useMutation(
     (payload: AdminPostPriceListsPriceListReq) =>
       client.admin.priceLists.create(payload),
-    buildOptions(queryClient, adminPriceListKeys.lists(), options)
+    buildOptions(queryClient, [adminPriceListKeys.lists()], options)
   )
 }
 

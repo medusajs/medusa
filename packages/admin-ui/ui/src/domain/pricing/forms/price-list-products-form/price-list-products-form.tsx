@@ -21,6 +21,7 @@ import {
 import { useAdminProducts } from "medusa-react"
 import * as React from "react"
 
+import { useTranslation } from "react-i18next"
 import { Form } from "../../../../components/helpers/form"
 import { useDebounce } from "../../../../hooks/use-debounce"
 import { NestedForm } from "../../../../utils/nested-form"
@@ -39,127 +40,179 @@ const PAGE_SIZE = 20
 
 const columnHelper = createColumnHelper<Product>()
 
-const columns = [
-  columnHelper.display({
-    id: "select",
-    header: ({ table }) => {
-      return (
-        <Checkbox
-          checked={
-            table.getIsSomePageRowsSelected()
-              ? "indeterminate"
-              : table.getIsAllPageRowsSelected()
+const usePriceListProductsFormColumns = () => {
+  const { t } = useTranslation()
+
+  const columns = React.useMemo(
+    () => [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => {
+          return (
+            <Checkbox
+              checked={
+                table.getIsSomePageRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllPageRowsSelected()
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+              aria-label={
+                t(
+                  "price-list-products-form-select-all",
+                  "Select all products on the current page"
+                ) ?? undefined
+              }
+            />
+          )
+        },
+        cell: ({ table, row }) => {
+          const { productIds } = table.options.meta as {
+            productIds: string[]
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all products on the current page"
-        />
-      )
-    },
-    cell: ({ table, row }) => {
-      const { productIds } = table.options.meta as {
-        productIds: string[]
-      }
 
-      const isSelected = row.getIsSelected() || productIds.includes(row.id)
+          const isSelected = row.getIsSelected() || productIds.includes(row.id)
 
-      return (
-        <Checkbox
-          checked={isSelected}
-          disabled={productIds.includes(row.id)}
-          onCheckedChange={(value) => {
-            row.toggleSelected(!!value)
-          }}
-          aria-label="Select row"
-        />
-      )
-    },
-  }),
-  columnHelper.accessor("title", {
-    header: "Product",
-    cell: (info) => {
-      const title = info.getValue()
-      const thumbnail = info.row.original.thumbnail
+          return (
+            <Checkbox
+              checked={isSelected}
+              disabled={productIds.includes(row.id)}
+              onCheckedChange={(value) => {
+                row.toggleSelected(!!value)
+              }}
+              aria-label={
+                t("price-list-products-form-select-row", "Select row") ??
+                undefined
+              }
+            />
+          )
+        },
+      }),
+      columnHelper.accessor("title", {
+        header: () => t("price-list-products-form-product-label", "Product"),
+        cell: (info) => {
+          const title = info.getValue()
+          const thumbnail = info.row.original.thumbnail
 
-      return (
-        <div className="flex items-center gap-x-3">
-          <div className="bg-ui-bg-subtle flex h-8 w-6 items-center justify-center overflow-hidden rounded-[4px]">
-            {thumbnail ? (
-              <img
-                src={thumbnail}
-                alt={`${title} thumbnail`}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <PhotoSolid />
-            )}
+          return (
+            <div className="flex items-center gap-x-3">
+              <div className="bg-ui-bg-subtle flex h-8 w-6 items-center justify-center overflow-hidden rounded-[4px]">
+                {thumbnail ? (
+                  <img
+                    src={thumbnail}
+                    alt={
+                      t(
+                        "price-list-products-form-product-thumbnail",
+                        "{{title}} thumbnail",
+                        {
+                          title,
+                        }
+                      ) ?? undefined
+                    }
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <PhotoSolid />
+                )}
+              </div>
+              <Text size="small" className="text-ui-fg-base">
+                {title}
+              </Text>
+            </div>
+          )
+        },
+      }),
+      columnHelper.accessor("collection", {
+        header: () =>
+          t("price-list-products-form-collection-label", "Collection"),
+        cell: (info) => info.getValue()?.title ?? "-",
+      }),
+      columnHelper.accessor("sales_channels", {
+        header: () =>
+          t("price-list-products-form-sales-channels-label", "Availability"),
+        cell: (info) => {
+          const salesChannels = info.getValue()
+
+          if (!salesChannels || salesChannels.length === 0) {
+            return "-"
+          }
+
+          const first = salesChannels[0].name
+
+          const remaining = salesChannels.length - 1
+
+          if (!remaining) {
+            return <span>{first}</span>
+          }
+
+          return (
+            <span>
+              {t(
+                "price-list-products-form-sales-channels-value",
+                "{{first}} + {{remaining}} more",
+                {
+                  first,
+                  remaining,
+                }
+              )}
+            </span>
+          )
+        },
+      }),
+      columnHelper.accessor("status", {
+        header: () => t("price-list-products-form-status-label", "Status"),
+        cell: (info) => {
+          const status = info.getValue()
+
+          return (
+            <StatusBadge
+              color={status === "published" ? "green" : "grey"}
+              className="capitalize"
+            >
+              {status}
+            </StatusBadge>
+          )
+        },
+      }),
+      columnHelper.accessor("variants", {
+        header: () => (
+          <div className="text-right">
+            {t("price-list-products-form-inventory-label", "Inventory")}
           </div>
-          <Text size="small" className="text-ui-fg-base">
-            {title}
-          </Text>
-        </div>
-      )
-    },
-  }),
-  columnHelper.accessor("collection", {
-    header: "Collection",
-    cell: (info) => info.getValue()?.title ?? "-",
-  }),
-  columnHelper.accessor("sales_channels", {
-    header: "Availability",
-    cell: (info) => {
-      const salesChannels = info.getValue()
+        ),
+        cell: (info) => {
+          let content: string | undefined = "-"
 
-      if (!salesChannels || salesChannels.length === 0) {
-        return "-"
-      }
+          const variants = info.getValue()
 
-      const first = salesChannels[0].name
+          if (!variants || variants.length === 0) {
+            content = "-"
+          }
 
-      const remaining = salesChannels.length - 1
+          const totalStock = variants.reduce((acc, curr) => {
+            return acc + curr.inventory_quantity
+          }, 0)
 
-      if (!remaining) {
-        return <span>{first}</span>
-      }
+          content =
+            t(
+              "price-list-products-form-inventory-value",
+              "{{totalStock}} in stock across {{variants}} variants",
+              {
+                totalStock,
+                variants: variants.length,
+              }
+            ) ?? undefined
 
-      return <span>{`${first} + ${remaining} more`}</span>
-    },
-  }),
-  columnHelper.accessor("status", {
-    header: "Status",
-    cell: (info) => {
-      const status = info.getValue()
+          return <div className="text-right">{content}</div>
+        },
+      }),
+    ],
+    [t]
+  )
 
-      return (
-        <StatusBadge
-          color={status === "published" ? "green" : "grey"}
-          className="capitalize"
-        >
-          {status}
-        </StatusBadge>
-      )
-    },
-  }),
-  columnHelper.accessor("variants", {
-    header: () => <div className="text-right">Inventory</div>,
-    cell: (info) => {
-      let content: string | undefined = "-"
-
-      const variants = info.getValue()
-
-      if (!variants || variants.length === 0) {
-        content = "-"
-      }
-
-      const totalStock = variants.reduce((acc, curr) => {
-        return acc + curr.inventory_quantity
-      }, 0)
-
-      content = `${totalStock} in stock across ${variants.length} variants`
-
-      return <div className="text-right">{content}</div>
-    },
-  }),
-]
+  return { columns }
+}
 
 const PriceListProductsForm = ({
   form,
@@ -174,7 +227,7 @@ const PriceListProductsForm = ({
     formState: { isDirty },
   } = form
 
-  console.log("Re-rendering PriceListProductsForm")
+  const { t } = useTranslation()
 
   /**
    * Table state.
@@ -190,8 +243,6 @@ const PriceListProductsForm = ({
 
   React.useEffect(() => {
     const values = getValues(path("ids")) ?? []
-
-    console.log("Setting row selection", values)
 
     setRowSelection(
       values.reduce((acc, curr) => {
@@ -244,6 +295,8 @@ const PriceListProductsForm = ({
     return count ? Math.ceil(count / PAGE_SIZE) : 0
   }, [count])
 
+  const { columns } = usePriceListProductsFormColumns()
+
   const table = useReactTable({
     columns,
     data: (products as Product[] | undefined) ?? [],
@@ -289,6 +342,9 @@ const PriceListProductsForm = ({
     return (
       <div className="flex h-full w-full items-center justify-center">
         <Spinner className="animate-spin" />
+        <span className="sr-only">
+          {t("price-list-products-form-loading", "Loading products")}
+        </span>
       </div>
     )
   }
@@ -298,8 +354,10 @@ const PriceListProductsForm = ({
       <div className="flex h-full w-full items-center justify-center gap-x-2">
         <ExclamationCircle />
         <Text className="text-ui-fg-subtle">
-          An error occurred while loading products. Reload the page and try
-          again. If the issue persists, try again later.
+          {t(
+            "price-list-products-form-error",
+            "An error occurred while loading products. Reload the page and try again. If the issue persists, try again later."
+          )}
         </Text>
       </div>
     )
@@ -309,7 +367,9 @@ const PriceListProductsForm = ({
     return (
       <div className="flex h-full w-full items-center justify-center gap-x-2">
         <ExclamationCircle />
-        <Text className="text-ui-fg-subtle">No products were found.</Text>
+        <Text className="text-ui-fg-subtle">
+          {t("price-list-products-form-no-products", "No products found.")}
+        </Text>
       </div>
     )
   }
@@ -318,7 +378,9 @@ const PriceListProductsForm = ({
     <div className="flex h-full flex-col">
       <div className="border-ui-border-base flex items-center justify-between border-b px-8 pt-6 pb-4">
         <div className="flex items-center gap-x-3">
-          <Heading>Choose products</Heading>
+          <Heading>
+            {t("price-list-products-form-heading", "Choose products")}
+          </Heading>
           {isDirty && (
             <Form.Field
               control={control}
@@ -346,7 +408,10 @@ const PriceListProductsForm = ({
           />
           <Input
             type="search"
-            placeholder="Search"
+            placeholder={
+              t("price-list-products-form-search-placeholder", "Search") ??
+              undefined
+            }
             size="small"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

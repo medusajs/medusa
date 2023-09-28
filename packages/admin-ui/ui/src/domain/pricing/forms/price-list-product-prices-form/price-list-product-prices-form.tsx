@@ -11,6 +11,7 @@ import {
   type Control,
 } from "react-hook-form"
 
+import { useTranslation } from "react-i18next"
 import { useCommandHistory } from "../../../../hooks/use-command-history"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 import {
@@ -62,6 +63,8 @@ const PriceListProductPricesForm = ({
   setValue,
   getValues,
 }: BulkEditorProps) => {
+  const { t } = useTranslation()
+
   /**
    * Reference to the table element.
    */
@@ -436,38 +439,6 @@ const PriceListProductPricesForm = ({
       if (!isDragToFill || !anchor || !rangeEnd) {
         return
       }
-
-      // const target = e.target as HTMLElement | null
-
-      // const cell = validateFillTarget(target, anchor, rangeEnd)
-
-      // if (!cell) {
-      //   return
-      // }
-
-      // const point = getPointFromElement(cell)
-      // const key = point ? getKey(point) : null
-
-      // if (key && selection[key]) {
-      //   return
-      // }
-
-      // let animationFrameId: number | null = null
-
-      // const updateRangeEnd = () => {
-      //   setDragToFillRangeEnd(point)
-      // }
-
-      // if (animationFrameId === null) {
-      //   animationFrameId = requestAnimationFrame(updateRangeEnd)
-      // }
-
-      // // Cancel the previous animation frame if a new mousemove event occurs
-      // return () => {
-      //   if (animationFrameId !== null) {
-      //     cancelAnimationFrame(animationFrameId)
-      //   }
-      // }
 
       const target = e.target as HTMLElement | null
 
@@ -1369,11 +1340,19 @@ const PriceListProductPricesForm = ({
           <DropdownMenu.Trigger asChild>
             <Button variant="secondary" type="button">
               <Adjustments className="text-ui-fg-subtle" />
-              View
+              {t(
+                "price-list-product-prices-form-column-visibility-button",
+                "View"
+              )}
             </Button>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>
-            <DropdownMenu.Label>Currencies</DropdownMenu.Label>
+            <DropdownMenu.Label>
+              {t(
+                "price-list-product-prices-form-column-visibility-currencies-label",
+                "Currencies"
+              )}
+            </DropdownMenu.Label>
             {currencies.map((currency) => {
               return (
                 <DropdownMenu.CheckboxItem
@@ -1395,7 +1374,12 @@ const PriceListProductPricesForm = ({
               )
             })}
             <DropdownMenu.Separator />
-            <DropdownMenu.Label>Regions</DropdownMenu.Label>
+            <DropdownMenu.Label>
+              {t(
+                "price-list-product-prices-form-column-visibility-regions-label",
+                "Regions"
+              )}
+            </DropdownMenu.Label>
             {regions.map((region) => {
               return (
                 <DropdownMenu.CheckboxItem
@@ -1473,7 +1457,13 @@ const PriceListProductPricesForm = ({
           <thead>
             <tr className="[&_th]:txt-compact-small-plus text-ui-fg-subtle [&_th]:border-ui-border-base h-10 [&_th]:min-w-[220px] [&_th]:border-r [&_th]:border-b [&_th:last-of-type]:border-r-0">
               <th className="max-w-[220px] text-left">
-                <div className="px-4 py-2.5">Product</div>
+                <div className="px-4 py-2.5">
+                  {" "}
+                  {t(
+                    "price-list-product-prices-form-column-product-label",
+                    "Currencies"
+                  )}
+                </div>
               </th>
               {currencies.map((currency) => {
                 const isTaxIncluded =
@@ -1487,7 +1477,15 @@ const PriceListProductPricesForm = ({
                   <React.Fragment key={currency.code}>
                     <th className="text-left">
                       <div className="flex items-center justify-between px-4 py-2.5">
-                        <span>Price {currency.code.toUpperCase()}</span>
+                        <span>
+                          {t(
+                            "price-list-product-prices-form-column-currencies-price-label",
+                            "Price {{code}}",
+                            {
+                              code: currency.code.toUpperCase(),
+                            }
+                          )}
+                        </span>
                         {taxInclEnabled && (
                           <div>
                             {isTaxIncluded && (
@@ -1499,12 +1497,24 @@ const PriceListProductPricesForm = ({
                     </th>
                     <th className="text-left">
                       <div className="px-4 py-2.5">
-                        Min Quantity {currency.code.toUpperCase()}
+                        {t(
+                          "price-list-product-prices-form-column-currencies-min-quantity-label",
+                          "Min Quantity {{code}}",
+                          {
+                            code: currency.code.toUpperCase(),
+                          }
+                        )}
                       </div>
                     </th>
                     <th className="text-left">
                       <div className="px-4 py-2.5">
-                        Max Quantity {currency.code.toUpperCase()}
+                        {t(
+                          "price-list-product-prices-form-column-currencies-max-quantity-label",
+                          "Max Quantity {{code}}",
+                          {
+                            code: currency.code.toUpperCase(),
+                          }
+                        )}
                       </div>
                     </th>
                   </React.Fragment>
@@ -1522,7 +1532,15 @@ const PriceListProductPricesForm = ({
                   <React.Fragment key={region.id}>
                     <th className="text-left">
                       <div className="flex items-center justify-between px-4 py-2.5">
-                        <span>Price {region.name.toUpperCase()}</span>
+                        <span>
+                          {t(
+                            "price-list-product-prices-form-column-regions-price-label",
+                            "Price {{code}}",
+                            {
+                              code: region.currency_code.toUpperCase(),
+                            }
+                          )}
+                        </span>
                         {taxInclEnabled && (
                           <div>
                             {isTaxIncluded && (
@@ -1534,12 +1552,24 @@ const PriceListProductPricesForm = ({
                     </th>
                     <th className="text-left">
                       <div className="px-4 py-2.5">
-                        Min Quantity {region.name.toUpperCase()}
+                        {t(
+                          "price-list-product-prices-form-column-regions-min-quantity-label",
+                          "Min Quantity {{code}}",
+                          {
+                            code: region.currency_code.toUpperCase(),
+                          }
+                        )}
                       </div>
                     </th>
                     <th className="text-left">
                       <div className="px-4 py-2.5">
-                        Max Quantity {region.name.toUpperCase()}
+                        {t(
+                          "price-list-product-prices-form-column-regions-max-quantity-label",
+                          "Max Quantity {{code}}",
+                          {
+                            code: region.currency_code.toUpperCase(),
+                          }
+                        )}
                       </div>
                     </th>
                   </React.Fragment>

@@ -8,11 +8,7 @@ import {
   Tag,
   Trash,
 } from "@medusajs/icons"
-import type {
-  DateComparisonOperator,
-  PriceList,
-  Product,
-} from "@medusajs/medusa"
+import type { PriceList, Product } from "@medusajs/medusa"
 import {
   Checkbox,
   CommandBar,
@@ -43,8 +39,8 @@ import {
 } from "medusa-react"
 import * as React from "react"
 
+import { useTranslation } from "react-i18next"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { FilterMenu } from "../../../../components/molecules/filter-menu"
 import { useDebouncedSearchParam } from "../../../../hooks/use-debounced-search-param"
 import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
@@ -63,59 +59,11 @@ type PriceListPricesSectionProps = {
 const PAGE_SIZE = 10
 const TABLE_HEIGHT = (PAGE_SIZE + 1) * 48
 
-const PriceListPricesSectionFilters = () => {
-  const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-
-  const onDateChange = (
-    key: "updated_at" | "created_at",
-    value?: DateComparisonOperator
-  ) => {
-    const current = new URLSearchParams(searchParams)
-
-    if (value) {
-      current.set(key, JSON.stringify(value))
-    } else {
-      current.delete(key)
-    }
-
-    navigate({ search: current.toString() }, { replace: true })
-  }
-
-  const onClearFilters = () => {
-    const reset = new URLSearchParams()
-
-    navigate({ search: reset.toString() }, { replace: true })
-  }
-
-  return (
-    <FilterMenu onClearFilters={onClearFilters}>
-      <FilterMenu.Content>
-        <FilterMenu.DateItem
-          name="Created at"
-          value={getDateComparisonOperatorFromSearchParams(
-            "created_at",
-            searchParams
-          )}
-          onChange={(dc) => onDateChange("created_at", dc)}
-        />
-        <FilterMenu.Seperator />
-        <FilterMenu.DateItem
-          name="Updated at"
-          value={getDateComparisonOperatorFromSearchParams(
-            "updated_at",
-            searchParams
-          )}
-          onChange={(dc) => onDateChange("updated_at", dc)}
-        />
-      </FilterMenu.Content>
-    </FilterMenu>
-  )
-}
-
 const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+
+  const { t } = useTranslation()
 
   const [showAddProductsModal, setShowAddProductsModal] = React.useState(false)
   const [showEditPricesModal, setShowEditPricesModal] = React.useState(false)
@@ -178,9 +126,11 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
 
   const handleDeleteProductPrices = async () => {
     const res = await prompt({
-      title: "Are you sure?",
-      description:
-        "This will permanently delete the product prices from the list",
+      title: t("price-list-prices-section-prompt-title", "Are you sure?"),
+      description: t(
+        "price-list-prices-section-prompt-description",
+        "This will permanently delete the product prices from the list"
+      ),
     })
 
     if (!res) {
@@ -194,17 +144,30 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
       {
         onSuccess: () => {
           notification(
-            "Prices deleted",
-            `Successfully deleted prices for ${
-              Object.keys(rowSelection).length
-            } products`,
+            t(
+              "price-list-prices-secton-delete-success-title",
+              "Prices deleted"
+            ),
+            t(
+              "price-list-prices-section-delete-success-description",
+              `Successfully deleted prices for {{count}} products`,
+              {
+                count: Object.keys(rowSelection).length,
+              }
+            ),
             "success"
           )
           setRowSelection({})
         },
         onError: (err) => {
-          console.log(err)
-          notification("An error occurred", getErrorMessage(err), "error")
+          notification(
+            t(
+              "price-list-prices-section-delete-error-title",
+              "An error occurred"
+            ),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )
@@ -242,9 +205,41 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
     }
   )
 
+  const onEditPricesModalOpenChange = React.useCallback((open: boolean) => {
+    switch (open) {
+      case true:
+        setShowEditPricesModal(true)
+        break
+      case false:
+        setShowEditPricesModal(false)
+        setProductIdsToEdit(null)
+        setRowSelection({})
+        break
+    }
+  }, [])
+
+  const onEditAllProductPrices = React.useCallback(() => {
+    setProductIdsToEdit(allProducts?.map((p) => p.id) as string[])
+    setShowEditPricesModal(true)
+  }, [allProducts])
+
+  const onEditSelectedProductPrices = React.useCallback(() => {
+    setProductIdsToEdit(Object.keys(rowSelection))
+    setShowEditPricesModal(true)
+  }, [rowSelection])
+
+  const onEditSingleProductPrices = (id: string) => {
+    setProductIdsToEdit([id])
+    setShowEditPricesModal(true)
+  }
+
   const pageCount = React.useMemo(() => {
     return count ? Math.ceil(count / PAGE_SIZE) : 0
   }, [count])
+
+  const { columns } = usePriceListProudctColumns({
+    onEditProductPrices: onEditSingleProductPrices,
+  })
 
   const table = useReactTable({
     columns,
@@ -266,33 +261,10 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
     onPaginationChange: setPagination,
   })
 
-  const handleEditPricesOpenChange = React.useCallback((open: boolean) => {
-    switch (open) {
-      case true:
-        setShowEditPricesModal(true)
-        break
-      case false:
-        setShowEditPricesModal(false)
-        setProductIdsToEdit(null)
-        setRowSelection({})
-        break
-    }
-  }, [])
-
-  const handleEditAllPrices = React.useCallback(() => {
-    setProductIdsToEdit(allProducts?.map((p) => p.id) as string[])
-    setShowEditPricesModal(true)
-  }, [allProducts])
-
-  const handleEditSelectedPrices = React.useCallback(() => {
-    setProductIdsToEdit(Object.keys(rowSelection))
-    setShowEditPricesModal(true)
-  }, [rowSelection])
-
   return (
     <Container className="p-0">
       <div className="flex items-center justify-between px-8 pt-6 pb-4">
-        <Heading>Prices</Heading>
+        <Heading>{t("price-list-prices-section-heading", "Prices")}</Heading>
         <div className="flex items-center gap-x-2">
           <ProductFilterMenu
             value={{
@@ -311,7 +283,12 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
           <Input
             type="search"
             size="small"
-            placeholder="Search products"
+            placeholder={
+              t(
+                "price-list-prices-section-search-placeholder",
+                "Search products"
+              ) ?? undefined
+            }
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
@@ -322,13 +299,23 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
               </IconButton>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content align="end" side="bottom">
-              <DropdownMenu.Item onClick={handleEditAllPrices}>
+              <DropdownMenu.Item onClick={onEditAllProductPrices}>
                 <CurrencyDollar className="text-ui-fg-subtle" />
-                <span className="ml-2">Edit prices</span>
+                <span className="ml-2">
+                  {t(
+                    "price-list-prices-section-prices-menu-edit",
+                    "Edit prices"
+                  )}
+                </span>
               </DropdownMenu.Item>
               <DropdownMenu.Item onClick={() => setShowAddProductsModal(true)}>
                 <Tag className="text-ui-fg-subtle" />
-                <span className="ml-2">Add products</span>
+                <span className="ml-2">
+                  {t(
+                    "price-list-prices-section-prices-menu-add",
+                    "Add products"
+                  )}
+                </span>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu>
@@ -349,8 +336,10 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
           <div className="text-ui-fg-subtle absolute inset-0 flex items-center justify-center gap-x-2">
             <ExclamationCircle />
             <Text size="small">
-              An error occured while fetching the products. Try to reload the
-              page, or if the issue persists, try again later.
+              {t(
+                "price-list-prices-section-table-load-error",
+                "An error occured while fetching the products. Try to reload the page, or if the issue persists, try again later."
+              )}
             </Text>
           </div>
         )}
@@ -417,7 +406,7 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
       {productIdsToEdit && (
         <EditPricesModal
           open={showEditPricesModal}
-          onOpenChange={handleEditPricesOpenChange}
+          onOpenChange={onEditPricesModalOpenChange}
           productIds={productIdsToEdit}
           priceList={priceList}
         />
@@ -425,13 +414,15 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
       <CommandBar open={Object.keys(rowSelection).length > 0}>
         <CommandBar.Bar>
           <CommandBar.Value>
-            {Object.keys(rowSelection).length} selected
+            {t("price-list-prices-section-bar-count", "{{count}} selected", {
+              count: Object.keys(rowSelection).length,
+            })}
           </CommandBar.Value>
           <CommandBar.Seperator />
           <CommandBar.Command
             shortcut="e"
-            label="Edit"
-            action={handleEditSelectedPrices}
+            label={t("price-list-prices-section-edit-command", "Edit")}
+            action={onEditSelectedProductPrices}
             disabled={
               isDeletingProductPrices ||
               showAddProductsModal ||
@@ -441,7 +432,7 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
           <CommandBar.Seperator />
           <CommandBar.Command
             shortcut="d"
-            label="Delete"
+            label={t("price-list-prices-section-delete-command", "Delete")}
             action={handleDeleteProductPrices}
             disabled={
               isDeletingProductPrices ||
@@ -457,89 +448,133 @@ const PriceListPricesSection = ({ priceList }: PriceListPricesSectionProps) => {
 
 const columnHelper = createColumnHelper<Product>()
 
-const columns = [
-  columnHelper.display({
-    id: "select",
-    header: ({ table }) => {
-      return (
-        <Checkbox
-          checked={
-            table.getIsSomePageRowsSelected()
-              ? "indeterminate"
-              : table.getIsAllPageRowsSelected()
+type UsePriceListProudctColumnsProps = {
+  onEditProductPrices: (id: string) => void
+}
+
+const usePriceListProudctColumns = ({
+  onEditProductPrices,
+}: UsePriceListProudctColumnsProps) => {
+  const { t } = useTranslation()
+
+  const columns = React.useMemo(
+    () => [
+      columnHelper.display({
+        id: "select",
+        header: ({ table }) => {
+          return (
+            <Checkbox
+              checked={
+                table.getIsSomePageRowsSelected()
+                  ? "indeterminate"
+                  : table.getIsAllPageRowsSelected()
+              }
+              onCheckedChange={(value) =>
+                table.toggleAllPageRowsSelected(!!value)
+              }
+              aria-label={
+                t(
+                  "price-list-prices-section-select-all-checkbox-label",
+                  "Select all products on the current page"
+                ) ?? undefined
+              }
+            />
+          )
+        },
+        cell: ({ row }) => {
+          return (
+            <Checkbox
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+              aria-label={
+                t(
+                  "price-list-prices-section-select-checkbox-label",
+                  "Select row"
+                ) ?? undefined
+              }
+            />
+          )
+        },
+      }),
+      columnHelper.accessor("title", {
+        header: () => t("price-list-prices-section-table-product", "Product"),
+        cell: (info) => {
+          const title = info.getValue()
+          const thumbnail = info.row.original.thumbnail
+
+          return (
+            <div className="flex items-center gap-x-3">
+              <div className="bg-ui-bg-subtle flex h-8 w-6 items-center justify-center overflow-hidden rounded-[4px]">
+                {thumbnail ? (
+                  <img
+                    src={thumbnail}
+                    alt={
+                      t(
+                        "price-list-prices-section-table-thumbnail-alt",
+                        "{{title}} thumbnail",
+                        {
+                          title,
+                        }
+                      ) ?? undefined
+                    }
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <PhotoSolid />
+                )}
+              </div>
+              <Text size="small" className="text-ui-fg-base">
+                {title}
+              </Text>
+            </div>
+          )
+        },
+      }),
+      columnHelper.accessor("collection", {
+        header: () =>
+          t("price-list-prices-section-table-collection", "Collection"),
+        cell: (info) => info.getValue()?.title ?? "-",
+      }),
+      columnHelper.accessor("variants", {
+        header: () => t("price-list-prices-section-table-variants", "Variants"),
+        cell: (info) => {
+          const variants = info.getValue()
+          return variants?.length ?? "-"
+        },
+      }),
+      columnHelper.display({
+        id: "actions",
+        cell: ({ table, row }) => {
+          const { priceListId } = table.options.meta as {
+            priceListId: string | undefined
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all products on the current page"
-        />
-      )
-    },
-    cell: ({ row }) => {
-      return (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      )
-    },
-  }),
-  columnHelper.accessor("title", {
-    header: "Product",
-    cell: (info) => {
-      const title = info.getValue()
-      const thumbnail = info.row.original.thumbnail
 
-      return (
-        <div className="flex items-center gap-x-3">
-          <div className="bg-ui-bg-subtle flex h-8 w-6 items-center justify-center overflow-hidden rounded-[4px]">
-            {thumbnail ? (
-              <img
-                src={thumbnail}
-                alt={`${title} thumbnail`}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <PhotoSolid />
-            )}
-          </div>
-          <Text size="small" className="text-ui-fg-base">
-            {title}
-          </Text>
-        </div>
-      )
-    },
-  }),
-  columnHelper.accessor("collection", {
-    header: "Collection",
-    cell: (info) => info.getValue()?.title ?? "-",
-  }),
-  columnHelper.accessor("variants", {
-    header: "Variants",
-    cell: (info) => {
-      const variants = info.getValue()
-      return variants?.length ?? "-"
-    },
-  }),
-  columnHelper.display({
-    id: "actions",
-    cell: ({ table, row }) => {
-      const { priceListId } = table.options.meta as {
-        priceListId: string | undefined
-      }
+          return (
+            <PriceListProductRowActions
+              row={row}
+              priceListId={priceListId}
+              onEditProductPrices={onEditProductPrices}
+            />
+          )
+        },
+      }),
+    ],
+    [t, onEditProductPrices]
+  )
 
-      return <PriceListProductRowActions row={row} priceListId={priceListId} />
-    },
-  }),
-]
+  return { columns }
+}
 
 type PriceListProductRowActionsProps = {
   row: Row<Product>
   priceListId?: string
+  onEditProductPrices: (id: string) => void
 }
 
 const PriceListProductRowActions = ({
   row,
   priceListId,
+  onEditProductPrices,
 }: PriceListProductRowActionsProps) => {
   const { mutateAsync } = useAdminDeletePriceListProductPrices(
     priceListId!,
@@ -554,7 +589,6 @@ const PriceListProductRowActions = ({
       title: "Are you sure?",
       description:
         "This will permanently delete the product prices from the list",
-      verificationText: row.original.title,
     })
 
     if (!response) {
@@ -585,6 +619,10 @@ const PriceListProductRowActions = ({
     })
   }
 
+  const onEdit = () => {
+    onEditProductPrices(row.original.id)
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger asChild>
@@ -593,7 +631,7 @@ const PriceListProductRowActions = ({
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content align="end" side="bottom">
-        <DropdownMenu.Item>
+        <DropdownMenu.Item onClick={onEdit}>
           <PencilSquare className="text-ui-fg-subtle" />
           <span className="ml-2">Edit prices</span>
         </DropdownMenu.Item>

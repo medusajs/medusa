@@ -525,29 +525,34 @@ const EditPricesModal = ({
       >
         <FocusModal.Content>
           <FocusModal.Header className="flex w-full items-center justify-start">
-            <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 flex-1 border-l">
+            <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 min-w-0 flex-1 border-l">
               <ProgressTabs.Trigger
                 value={Tab.PRICES}
                 disabled={isLoading || isError}
-                className="group flex items-center gap-x-2"
+                className="w-full max-w-[200px]"
                 status={isPricesDirty ? "in-progress" : "not-started"}
               >
-                {t("price-list-edit-prices-modal-overview-tab", "Edit Prices")}
+                <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                  {t(
+                    "price-list-edit-prices-modal-overview-tab",
+                    "Edit Prices"
+                  )}
+                </span>
               </ProgressTabs.Trigger>
               {product && (
                 <ProgressTabs.Trigger
                   value={Tab.EDIT}
                   disabled={isLoading || isError}
-                  className="group flex items-center gap-x-2"
+                  className="w-full max-w-[200px]"
                   status={isProductDirty ? "in-progress" : "not-started"}
                 >
-                  <span className="w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+                  <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
                     {product?.title}
                   </span>
                 </ProgressTabs.Trigger>
               )}
             </ProgressTabs.List>
-            <div className="flex items-center justify-end gap-x-2">
+            <div className="ml-auto flex items-center justify-end gap-x-2">
               <Button
                 variant="secondary"
                 onClick={onBack}
