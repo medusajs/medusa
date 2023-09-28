@@ -239,6 +239,10 @@ export default async (req, res) => {
               customer_id: req.user?.customer_id,
             }
           )
+
+          generatedLineItems.forEach(
+            (item) => (item.variant = variantsIdsMap[item.variant_id!])
+          )
         } else {
           const generateInputData = validated.items.map((item) => {
             return {

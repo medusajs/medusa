@@ -19,6 +19,7 @@ import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
 import { TransactionBaseService } from "../interfaces"
 import { getSetDifference } from "../utils/diff-set"
+import { isString } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -68,30 +69,34 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   /**
    * confirms if requested inventory is available
-   * @param variantId id of the variant to confirm inventory for
+   * @param variantOrVariantId id of the variant to confirm inventory for
    * @param quantity quantity of inventory to confirm is available
    * @param context optionally include a sales channel if applicable
    * @returns boolean indicating if inventory is available
    */
   async confirmInventory(
-    variantId: string,
+    variantOrVariantId: string | ProductVariant,
     quantity: number,
     context: { salesChannelId?: string | null } = {}
   ): Promise<Boolean> {
-    if (!variantId) {
+    if (!variantOrVariantId) {
       return true
     }
 
-    const productVariant = await this.productVariantService_
-      .withTransaction(this.activeManager_)
-      .retrieve(variantId, {
-        select: [
-          "id",
-          "allow_backorder",
-          "manage_inventory",
-          "inventory_quantity",
-        ],
-      })
+    let productVariant = variantOrVariantId as ProductVariant
+
+    if (isString(variantOrVariantId)) {
+      productVariant = (await this.productVariantService_
+        .withTransaction(this.activeManager_)
+        .retrieve(variantOrVariantId, {
+          select: [
+            "id",
+            "allow_backorder",
+            "manage_inventory",
+            "inventory_quantity",
+          ],
+        })) as unknown as ProductVariant
+    }
 
     // If the variant allows backorders or if inventory isn't managed we
     // don't need to check inventory
@@ -103,7 +108,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return productVariant.inventory_quantity >= quantity
     }
 
-    const variantInventory = await this.listByVariant(variantId)
+    const variantInventory = await this.listByVariant(productVariant.id)
 
     // If there are no inventory items attached to the variant we default
     // to true

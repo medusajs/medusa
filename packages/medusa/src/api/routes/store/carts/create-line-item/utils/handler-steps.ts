@@ -59,6 +59,8 @@ export async function handleAddOrUpdateLineItem(
         metadata: data.metadata,
         region_id: cart.region_id,
       })
+
+    line.variant = variant
   } else {
     line = await lineItemService
       .withTransaction(manager)

@@ -25,7 +25,15 @@ export async function retrieveVariantsWithIsolatedProductModule(
       __args: variables,
       fields: ["id", "title", "thumbnail", "discountable", "is_giftcard"],
       variants: {
-        fields: ["id", "title", "product_id", "metadata"],
+        fields: [
+          "id",
+          "title",
+          "product_id",
+          "metadata",
+          "allow_backorder",
+          "manage_inventory",
+          "inventory_quantity",
+        ],
       },
     },
   }

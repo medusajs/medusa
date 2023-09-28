@@ -1,1 +1,1 @@
-export * from "./retrieve-variants-woth-isolated-product-module"
+export * from "./retrieve-variants-with-isolated-product-module"
