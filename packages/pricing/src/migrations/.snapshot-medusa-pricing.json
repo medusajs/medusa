@@ -527,6 +527,33 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "price_set_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_price_set_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "rule_type_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_rule_type_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_price_set_money_amount_id",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "price_rule_pkey",
           "columnNames": [
             "id"
