@@ -49,9 +49,16 @@ export async function build({
         logger.error(JSON.stringify(info.errors))
       }
 
-      return resolve({
-        stats,
-        warnings: info.warnings,
+      compiler.close((closeErr) => {
+        if (closeErr) {
+          logger.error(closeErr.message)
+          reject(closeErr)
+        }
+
+        resolve({
+          stats,
+          warnings: info.warnings,
+        })
       })
     })
   })
