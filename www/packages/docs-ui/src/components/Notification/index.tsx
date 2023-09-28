@@ -52,11 +52,11 @@ export const NotificationContainer = () => {
     <>
       {renderFilteredNotifications(
         (notification) => notification.placement === "top",
-        "flex fixed flex-col gap-docs_0.5 right-0 top-0 z-[400] md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
+        "flex fixed flex-col gap-docs_0.5 right-0 top-0 md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
       )}
       {renderFilteredNotifications(
         (notification) => notification.placement !== "top",
-        "flex flex-col gap-docs_0.5 fixed right-0 bottom-0 z-[400] md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
+        "flex flex-col gap-docs_0.5 fixed right-0 bottom-0 md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
       )}
     </>
   )
