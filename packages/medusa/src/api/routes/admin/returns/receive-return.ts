@@ -49,7 +49,7 @@ import { defaultRelations } from "."
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/returns/{id}/receive' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "items": [
@@ -62,6 +62,7 @@ import { defaultRelations } from "."
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Returns
  * responses:
