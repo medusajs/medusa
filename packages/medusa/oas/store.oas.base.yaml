@@ -243,7 +243,7 @@ components:
   securitySchemes:
     jwt_token:
       type: http
-      x-displayName: Cookie Session ID
+      x-displayName: JWT Token
       scheme: bearer
     cookie_auth:
       type: apiKey
