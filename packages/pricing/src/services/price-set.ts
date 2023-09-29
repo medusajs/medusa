@@ -43,8 +43,10 @@ export default class PriceSetService<TEntity extends PriceSet = PriceSet> {
     config: FindConfig<PricingTypes.PriceSetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<PriceSet>(filters, config)
+
     return (await this.priceSetRepository_.find(
-      this.buildQueryForList(filters, config),
+      queryOptions,
       sharedContext
     )) as TEntity[]
   }
@@ -55,23 +57,12 @@ export default class PriceSetService<TEntity extends PriceSet = PriceSet> {
     config: FindConfig<PricingTypes.PriceSetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    return (await this.priceSetRepository_.findAndCount(
-      this.buildQueryForList(filters, config),
-      sharedContext
-    )) as [TEntity[], number]
-  }
-
-  private buildQueryForList(
-    filters: PricingTypes.FilterablePriceSetProps = {},
-    config: FindConfig<PricingTypes.PriceSetDTO> = {}
-  ) {
     const queryOptions = ModulesSdkUtils.buildQuery<PriceSet>(filters, config)
 
-    if (filters.id) {
-      queryOptions.where.id = { $in: filters.id }
-    }
-
-    return queryOptions
+    return (await this.priceSetRepository_.findAndCount(
+      queryOptions,
+      sharedContext
+    )) as [TEntity[], number]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "priceSetRepository_")

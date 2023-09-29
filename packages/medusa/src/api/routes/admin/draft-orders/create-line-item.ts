@@ -1,4 +1,10 @@
-import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  IsBoolean,
+  IsInt,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
@@ -114,7 +120,10 @@ export default async (req, res) => {
           validated.variant_id,
           draftOrder.cart.region_id,
           validated.quantity,
-          { metadata: validated.metadata, unit_price: validated.unit_price }
+          {
+            metadata: validated.metadata,
+            unit_price: validated.unit_price,
+          }
         )
 
       await cartService

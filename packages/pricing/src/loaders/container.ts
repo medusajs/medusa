@@ -3,8 +3,8 @@ import * as defaultServices from "@services"
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import { ModulesSdkTypes } from "@medusajs/types"
-import { asClass } from "awilix"
 import { loadCustomRepositories } from "@medusajs/utils"
+import { asClass } from "awilix"
 
 export default async ({
   container,
@@ -22,6 +22,9 @@ export default async ({
     moneyAmountService: asClass(defaultServices.MoneyAmountService).singleton(),
     priceSetService: asClass(defaultServices.PriceSetService).singleton(),
     ruleTypeService: asClass(defaultServices.RuleTypeService).singleton(),
+    priceSetMoneyAmountRulesService: asClass(
+      defaultServices.PriceSetMoneyAmountRulesService
+    ).singleton(),
     priceRuleService: asClass(defaultServices.PriceRuleService).singleton(),
   })
 
@@ -50,6 +53,9 @@ function loadDefaultRepositories({ container }) {
     ).singleton(),
     ruleTypeRepository: asClass(
       defaultRepositories.RuleTypeRepository
+    ).singleton(),
+    priceSetMoneyAmountRulesRepository: asClass(
+      defaultRepositories.PriceSetMoneyAmountRulesRepository
     ).singleton(),
     priceRuleRepository: asClass(
       defaultRepositories.PriceRuleRepository

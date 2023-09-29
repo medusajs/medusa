@@ -4,11 +4,38 @@ import { PriceSet } from "@models"
 
 import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
-import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
+import {
+  createMoneyAmounts,
+  defaultMoneyAmountsData,
+} from "../../../__fixtures__/money-amount"
+import {
+  createPriceRules,
+  defaultPriceRuleData,
+} from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
+import {
+  createPriceSetMoneyAmounts,
+  defaultPriceSetMoneyAmountsData,
+} from "../../../__fixtures__/price-set-money-amount"
+import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
+
+async function seedData({
+  moneyAmountsData = defaultMoneyAmountsData,
+  priceRuleData = defaultPriceRuleData,
+  priceSetMoneyAmountsData = defaultPriceSetMoneyAmountsData,
+} = {}) {
+  const testManager = MikroOrmWrapper.forkManager()
+
+  await createCurrencies(testManager)
+  await createMoneyAmounts(testManager, moneyAmountsData)
+  await createPriceSets(testManager)
+  await createPriceSetMoneyAmounts(testManager, priceSetMoneyAmountsData)
+  await createRuleTypes(testManager)
+  await createPriceRules(testManager, priceRuleData)
+}
 
 describe("PricingModule Service - PriceSet", () => {
   let service: IPricingModuleService
@@ -16,130 +43,21 @@ describe("PricingModule Service - PriceSet", () => {
   let repositoryManager: SqlEntityManager
   let data!: PriceSet[]
 
-  const moneyAmountsInputData = [
-    {
-      id: "money-amount-USD",
-      currency_code: "USD",
-      amount: 500,
-      min_quantity: 1,
-      max_quantity: 10,
-    },
-    {
-      id: "money-amount-EUR",
-      currency_code: "EUR",
-      amount: 500,
-      min_quantity: 1,
-      max_quantity: 10,
-    },
-  ]
-
-  const priceSetInputData = [
-    {
-      id: "price-set-1",
-      money_amounts: [{ id: "money-amount-USD" }],
-    },
-    {
-      id: "price-set-2",
-      money_amounts: [{ id: "money-amount-EUR" }],
-    },
-    {
-      id: "price-set-3",
-      money_amounts: [],
-    },
-  ]
-
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = MikroOrmWrapper.forkManager()
-
     service = await initialize({
       database: {
         clientUrl: DB_URL,
         schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
       },
     })
-
-    testManager = MikroOrmWrapper.forkManager()
-    await createCurrencies(testManager)
-    await createMoneyAmounts(testManager, moneyAmountsInputData)
-    data = await createPriceSets(testManager, priceSetInputData)
   })
+
+  beforeEach(async () => await seedData())
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
-  })
-
-  describe("calculatePrices", () => {
-    it("retrieves the calculated prices when no context is set", async () => {
-      const priceSetsResult = await service.calculatePrices(
-        { id: ["price-set-1", "price-set-2"] },
-        {}
-      )
-
-      expect(priceSetsResult).toEqual([
-        {
-          id: "price-set-1",
-          amount: null,
-          currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
-        },
-        {
-          id: "price-set-2",
-          amount: null,
-          currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
-        },
-      ])
-    })
-
-    it("retrieves the calculated prices when a context is set", async () => {
-      const priceSetsResult = await service.calculatePrices(
-        { id: ["price-set-1", "price-set-2"] },
-        {
-          context: {
-            currency_code: "USD",
-          },
-        }
-      )
-
-      expect(priceSetsResult).toEqual([
-        {
-          id: "price-set-1",
-          amount: "500",
-          currency_code: "USD",
-          min_quantity: "1",
-          max_quantity: "10",
-        },
-        {
-          id: "price-set-2",
-          amount: null,
-          currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
-        },
-      ])
-    })
-
-    it("retrieves the calculated prices only when id exists in the database", async () => {
-      const priceSetsResult = await service.calculatePrices(
-        { id: ["price-set-doesnotexist", "price-set-1"] },
-        {
-          context: { currency_code: "USD" },
-        }
-      )
-
-      expect(priceSetsResult).toEqual([
-        {
-          id: "price-set-1",
-          amount: "500",
-          currency_code: "USD",
-          min_quantity: "1",
-          max_quantity: "10",
-        },
-      ])
-    })
   })
 
   describe("list", () => {

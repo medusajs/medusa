@@ -531,6 +531,33 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant-quantity",
   })
 
+  const quantityVariant1 = manager.create(ProductVariant, {
+    id: "test-variant-quantity-1",
+    title: "test variant quantity 1",
+    product_id: "test-product",
+    inventory_quantity: 1000,
+    options: [
+      {
+        option_id: "test-option",
+        value: "Fit",
+      },
+    ],
+  })
+
+  await manager.save(quantityVariant1)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_quantity-1.5",
+    currency_code: "usd",
+    amount: 950,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-quantity-1.5",
+    money_amount_id: "test-price_quantity-1.5",
+    variant_id: "test-variant-quantity-1",
+  })
+
   await manager.insert(MoneyAmount, {
     id: "test-price_quantity-2",
     currency_code: "usd",
