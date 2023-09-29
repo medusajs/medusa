@@ -300,6 +300,74 @@ export function productVariantMigration(
 ```
 
 </details>
+
+<details>
+<summary>
+collection Content Model
+</summary>
+
+Create the file `src/loaders/contentful-migrations/product-collection.ts` with the following content:
+
+```ts title=src/loaders/contentful-migrations/product-collection.ts
+import Migration, { 
+  MigrationContext
+} from "contentful-migration";
+
+export function productCollectionMigration (
+  migration: Migration,
+  context?: MigrationContext
+) {
+  const collection = migration
+    .createContentType("collection")
+    .name("Product Collection")
+    .displayField("title");
+
+    collection
+      .createField("title")
+      .name("Title")
+      .type("Symbol")
+      .required(true);
+    collection
+      .createField("medusaId")
+      .name("Medusa ID")
+      .type("Symbol");
+};
+```
+</details>
+
+<details>
+<summary>
+productType Content Model
+</summary>
+
+Create the file `src/loaders/contentful-migrations/product-type.ts` with the following content:
+
+```ts title=src/loaders/contentful-migrations/product-type.ts
+import Migration, { 
+  MigrationContext
+} from "contentful-migration";
+
+export function productTypeMigration (
+  migration: Migration,
+  context?: MigrationContext
+) {
+  const collection = migration
+    .createContentType("productType")
+    .name("Product Type")
+    .displayField("title");
+
+    collection
+      .createField("title")
+      .name("Title")
+      .type("Symbol")
+      .required(true);
+    collection
+      .createField("medusaId")
+      .name("Medusa ID")
+      .type("Symbol");
+};
+```
+</details>
     
 <details>
 <summary>
@@ -359,11 +427,17 @@ import { ConfigModule, StoreService } from "@medusajs/medusa"
 import { AwilixContainer } from "awilix"
 import { runMigration } from "contentful-migration"
 import { 
+  productMigration,
+} from "./contentful-migrations/product"
+import { 
   productVariantMigration,
 } from "./contentful-migrations/product-variant"
 import { 
-  productMigration,
-} from "./contentful-migrations/product"
+  productCollectionMigration,
+} from "./contentful-migrations/product-collection"
+import { 
+  productTypeMigration,
+} from "./contentful-migrations/product-type"
 import { 
   regionMigration,
 } from "./contentful-migrations/region"
@@ -416,12 +490,20 @@ export default async (
 
   const migrationFunctions = [
     {
+      name: "Product",
+      function: productMigration,
+    },
+    {
       name: "Product Variant",
       function: productVariantMigration,
     },
     {
-      name: "Product",
-      function: productMigration,
+      name: "Product Collection",
+      function: productCollectionMigration,
+    },
+    {
+      name: "Product Type",
+      function: productTypeMigration,
     },
     {
       name: "Region",
