@@ -79,20 +79,16 @@ export interface IPricingModuleService {
 
   delete(ids: string[], sharedContext?: Context): Promise<void>
 
+  addPrices(data: AddPricesDTO, sharedContext?: Context): Promise<PriceSetDTO>
+
   addPrices(
-    data: AddPricesDTO | AddPricesDTO[], 
+    data: AddPricesDTO | AddPricesDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO | PriceSetDTO[]>
 
-  addRules(
-    data: AddRulesDTO, 
-    sharedContext?: Context
-  ): Promise<PriceSetDTO> 
+  addRules(data: AddRulesDTO, sharedContext?: Context): Promise<PriceSetDTO>
 
-  addRules(
-    data: AddRulesDTO[], 
-    sharedContext?: Context
-  ): Promise<PriceSetDTO[]> 
+  addRules(data: AddRulesDTO[], sharedContext?: Context): Promise<PriceSetDTO[]>
 
   retrieveMoneyAmount(
     id: string,

@@ -523,10 +523,15 @@ export default class PricingModuleService<
   }
 
   @InjectManager("baseRepository_")
-  async addPrices(
+  async addPrices<
+    TInput extends AddPricesDTO | AddPricesDTO[],
+    TOutput = TInput extends PricingTypes.AddRulesDTO[]
+      ? PricingTypes.PriceSetDTO[]
+      : PricingTypes.PriceSetDTO
+  >(
     data: AddPricesDTO | AddPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceSetDTO[]> {
+  ): Promise<TOutput> {
     const input = Array.isArray(data) ? data : [data]
 
     await this.addPrices_(input, sharedContext)
@@ -534,7 +539,7 @@ export default class PricingModuleService<
     return await this.list(
       { id: input.map((d) => d.priceSetId) },
       { relations: ["money_amounts"] }
-    )
+    ) as unknown as TOutput
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
