@@ -456,12 +456,12 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   /**
    * Reserves a quantity of a variant
-   * @param variantId variant id
+   * @param variantOrId variant id
    * @param quantity quantity to reserve
    * @param context optional parameters
    */
   async reserveQuantity(
-    variantId: string,
+    variantOrId: string | { id: string; inventory_quantity: number },
     quantity: number,
     context: ReserveQuantityContext = {}
   ): Promise<void | ReservationItemDTO[]> {
@@ -469,9 +469,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return this.atomicPhase_(async (manager) => {
         const variantServiceTx =
           this.productVariantService_.withTransaction(manager)
-        const variant = await variantServiceTx.retrieve(variantId, {
-          select: ["id", "inventory_quantity"],
-        })
+
+        const variant = isString(variantOrId)
+          ? await variantServiceTx.retrieve(variantOrId, {
+              select: ["id", "inventory_quantity"],
+            })
+          : variantOrId
+
         await variantServiceTx.update(variant.id, {
           inventory_quantity: variant.inventory_quantity - quantity,
         })
@@ -483,7 +487,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       line_item_id: context.lineItemId,
     }
 
-    const variantInventory = await this.listByVariant(variantId)
+    const variantInventory = await this.listByVariant(
+      isString(variantOrId) ? variantOrId : variantOrId.id
+    )
 
     if (variantInventory.length === 0) {
       return
