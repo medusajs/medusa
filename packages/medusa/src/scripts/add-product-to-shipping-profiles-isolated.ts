@@ -86,3 +86,10 @@ async function addProductToShippingProfilesIsolated({ directory }) {
 addProductToShippingProfilesIsolated({
   directory: process.cwd(),
 })
+  .then(() => {
+    process.exit()
+  })
+  .catch((err) => {
+    console.error(err)
+    process.exit(1)
+  })
