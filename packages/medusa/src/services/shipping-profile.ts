@@ -1,6 +1,6 @@
 import { FlagRouter, isDefined } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
+import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import {
@@ -87,37 +87,12 @@ class ShippingProfileService extends TransactionBaseService {
 
   async getMapProfileIdsByProductIds(
     productIds: string[]
-  ): Promise<Map<string, string>> {
-    const mappedProfiles = new Map<string, string>()
-
+  ): Promise<{ [product_id: string]: ShippingProfile[] }> {
     if (!productIds?.length) {
-      return mappedProfiles
+      return {}
     }
 
-    const shippingProfiles = await this.shippingProfileRepository_.find({
-      select: {
-        id: true,
-        products: {
-          id: true,
-        },
-      },
-      where: {
-        products: {
-          id: In(productIds),
-        },
-      },
-      relations: {
-        products: true,
-      },
-    })
-
-    shippingProfiles.forEach((profile) => {
-      profile.products.forEach((product) => {
-        mappedProfiles.set(product.id, profile.id)
-      })
-    })
-
-    return mappedProfiles
+    return await this.shippingProfileRepository_.findByProducts(productIds)
   }
 
   /**
@@ -539,7 +514,11 @@ class ShippingProfileService extends TransactionBaseService {
       const productShippinProfileMap = await this.getMapProfileIdsByProductIds(
         cart.items.map((item) => item.variant?.product_id)
       )
-      profileIds = new Set([...productShippinProfileMap.values()])
+      profileIds = new Set(
+        ...Object.values(productShippinProfileMap)
+          .map((p) => p.map((s) => s.id))
+          .flat()
+      )
     } else {
       cart.items.forEach((item) => {
         if (item.variant?.product) {
