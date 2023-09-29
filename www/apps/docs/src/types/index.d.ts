@@ -180,6 +180,10 @@ declare module "@medusajs/docs" {
     analytics?: {
       apiKey: string
     }
+    aiAssistant?: {
+      apiUrl: string
+      apiKey: string
+    }
   } & DocusaurusThemeConfig
 
   export declare type MedusaDocusaurusConfig = {

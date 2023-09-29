@@ -43,7 +43,11 @@ export const AiAssistantThreadItemActions = ({
 
   return (
     <div
-      className={clsx("hidden md:flex gap-docs_0.25", "text-medusa-fg-muted")}
+      className={clsx(
+        "hidden md:flex gap-docs_0.25",
+        "text-medusa-fg-muted",
+        "sticky top-docs_1"
+      )}
     >
       <ActionButton onClick={handleCopy}>
         {isCopied ? <Check /> : <SquareTwoStack />}

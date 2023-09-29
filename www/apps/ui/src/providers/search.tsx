@@ -80,6 +80,10 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             />
           ),
           title: "AI Assistant",
+          badge: {
+            variant: "purple",
+            children: "Beta",
+          },
         },
       ]}
     >

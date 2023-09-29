@@ -1,11 +1,11 @@
 "use client"
 
 import React from "react"
-import clsx from "clsx"
 import { useInstantSearch } from "react-instantsearch"
 import { SearchHitGroupName } from "../Hits/GroupName"
 import { useSearch } from "@/providers"
 import { SearchSuggestionItem } from "./Item"
+import { Badge } from "@/components"
 
 export type SearchSuggestionType = {
   title: string
@@ -24,7 +24,7 @@ export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
     <div className="h-full overflow-auto">
       {commands.length > 0 && (
         <>
-          <SearchHitGroupName name={"Actions"} />
+          <SearchHitGroupName name={"Commands"} />
           {commands.map((command, index) => (
             <SearchSuggestionItem
               onClick={() => setCommand(command)}
@@ -35,6 +35,7 @@ export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
               <>
                 {command.icon}
                 <span>{command.title}</span>
+                {command.badge && <Badge {...command.badge} />}
               </>
             </SearchSuggestionItem>
           ))}

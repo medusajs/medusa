@@ -115,7 +115,14 @@ export const useSearchNavigation = ({
         focusInput()
       }
     },
-    [shortcutKeys]
+    [
+      shortcutKeys,
+      isOpen,
+      modalRef.current,
+      shortcutKeys,
+      getInputElm,
+      focusInput,
+    ]
   )
 
   useEffect(() => {

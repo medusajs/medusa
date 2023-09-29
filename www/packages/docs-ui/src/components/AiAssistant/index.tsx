@@ -12,7 +12,7 @@ import {
   SearchHitGroupName,
 } from "@/components"
 import { useAiAssistant, useSearch } from "@/providers"
-import { ArrowUturnLeft } from "@medusajs/icons"
+import { ArrowUturnLeft, XMarkMini } from "@medusajs/icons"
 import clsx from "clsx"
 import { useSearchNavigation } from "@/hooks"
 import { AiAssistantThreadItem } from "./ThreadItem"
@@ -62,10 +62,15 @@ export type ThreadType = {
   type: "question" | "answer"
   content: string
   question_id?: string
+  // for some reason, items in the array get reordered
+  // sometimes, so this is one way to avoid it
+  order: number
 }
 
 export const AiAssistant = () => {
   const [question, setQuestion] = useState("")
+  // this helps set the `order` field of the threadtype
+  const [messagesCount, setMessagesCount] = useState(0)
   const [thread, setThread] = useState<ThreadType[]>([])
   const [answer, setAnswer] = useState("")
   const [identifiers, setIdentifiers] = useState<IdentifierType | null>(null)
@@ -82,7 +87,7 @@ export const AiAssistant = () => {
       items: [
         "What is Medusa?",
         "How do I install Medusa?",
-        "What is Medusa admin?",
+        "What is Medusa Admin?",
         "How do I configure the database in Medusa?",
         "How do I seed data in Medusa",
         "How do I create an endpoint in Medusa?",
@@ -91,6 +96,9 @@ export const AiAssistant = () => {
   ]
 
   const handleSubmit = (selectedQuestion?: string) => {
+    if (!selectedQuestion?.length && !question.length) {
+      return
+    }
     setLoading(true)
     setAnswer("")
     setThread((prevThread) => [
@@ -98,8 +106,10 @@ export const AiAssistant = () => {
       {
         type: "question",
         content: selectedQuestion || question,
+        order: messagesCount + 1,
       },
     ])
+    setMessagesCount((prev) => prev + 1)
   }
 
   useSearchNavigation({
@@ -119,67 +129,65 @@ export const AiAssistant = () => {
     return index !== -1 ? index : 0
   }, [thread])
 
-  const process_stream = useCallback(
-    async (response: Response) => {
-      const reader = response.body?.getReader()
-      if (!reader) {
-        return
-      }
-      const decoder = new TextDecoder("utf-8")
-      const delimiter = "\u241E"
-      const delimiterBytes = new TextEncoder().encode(delimiter)
-      let buffer = new Uint8Array()
+  const process_stream = useCallback(async (response: Response) => {
+    const reader = response.body?.getReader()
+    if (!reader) {
+      return
+    }
+    const decoder = new TextDecoder("utf-8")
+    const delimiter = "\u241E"
+    const delimiterBytes = new TextEncoder().encode(delimiter)
+    let buffer = new Uint8Array()
 
-      const findDelimiterIndex = (arr: Uint8Array) => {
-        for (let i = 0; i < arr.length - delimiterBytes.length + 1; i++) {
-          let found = true
-          for (let j = 0; j < delimiterBytes.length; j++) {
-            if (arr[i + j] !== delimiterBytes[j]) {
-              found = false
-              break
-            }
-          }
-          if (found) {
-            return i
-          }
-        }
-        return -1
-      }
-
-      let result
-      let loop = true
-      while (loop) {
-        result = await reader.read()
-        if (result.done) {
-          loop = false
-          continue
-        }
-        buffer = new Uint8Array([...buffer, ...result.value])
-        let delimiterIndex
-        while ((delimiterIndex = findDelimiterIndex(buffer)) !== -1) {
-          const chunkBytes = buffer.slice(0, delimiterIndex)
-          const chunkText = decoder.decode(chunkBytes)
-          buffer = buffer.slice(delimiterIndex + delimiterBytes.length)
-          const chunk = JSON.parse(chunkText).chunk as ChunkType
-
-          if (chunk.type === "partial_answer") {
-            setAnswer((prevAnswer) => prevAnswer + chunk.content.text)
-          } else if (chunk.type === "identifiers") {
-            setIdentifiers(chunk.content)
-          } else if (chunk.type === "error") {
-            setError(chunk.content)
-            loop = false
+    const findDelimiterIndex = (arr: Uint8Array) => {
+      for (let i = 0; i < arr.length - delimiterBytes.length + 1; i++) {
+        let found = true
+        for (let j = 0; j < delimiterBytes.length; j++) {
+          if (arr[i + j] !== delimiterBytes[j]) {
+            found = false
             break
           }
         }
+        if (found) {
+          return i
+        }
       }
+      return -1
+    }
 
-      setLoading(false)
-      setQuestion("")
-      inputRef.current?.focus()
-    },
-    [thread]
-  )
+    let result
+    let loop = true
+    while (loop) {
+      result = await reader.read()
+      if (result.done) {
+        loop = false
+        continue
+      }
+      buffer = new Uint8Array([...buffer, ...result.value])
+      let delimiterIndex
+      while ((delimiterIndex = findDelimiterIndex(buffer)) !== -1) {
+        const chunkBytes = buffer.slice(0, delimiterIndex)
+        const chunkText = decoder.decode(chunkBytes)
+        buffer = buffer.slice(delimiterIndex + delimiterBytes.length)
+        const chunk = JSON.parse(chunkText).chunk as ChunkType
+
+        if (chunk.type === "partial_answer") {
+          setAnswer((prevAnswer) => {
+            return prevAnswer + chunk.content.text
+          })
+        } else if (chunk.type === "identifiers") {
+          setIdentifiers(chunk.content)
+        } else if (chunk.type === "error") {
+          setError(chunk.content)
+          loop = false
+          break
+        }
+      }
+    }
+
+    setLoading(false)
+    setQuestion("")
+  }, [])
 
   const fetchAnswer = useCallback(async () => {
     try {
@@ -220,11 +228,14 @@ export const AiAssistant = () => {
           type: "answer",
           content: answer,
           question_id: identifiers?.question_answer_id,
+          order: messagesCount + 1,
         },
       ])
       setAnswer("")
+      setMessagesCount((prev) => prev + 1)
+      inputRef.current?.focus()
     }
-  }, [loading])
+  }, [loading, answer, thread, lastAnswerIndex, inputRef.current])
 
   useResizeObserver(contentRef, () => {
     if (!loading) {
@@ -234,13 +245,28 @@ export const AiAssistant = () => {
     scrollToBottom()
   })
 
+  const getThreadItems = useCallback(() => {
+    const sortedThread = [...thread]
+    sortedThread.sort((itemA, itemB) => {
+      if (itemA.order < itemB.order) {
+        return -1
+      }
+
+      return itemA.order < itemB.order ? 1 : 0
+    })
+
+    return sortedThread.map((item, index) => (
+      <AiAssistantThreadItem item={item} key={index} />
+    ))
+  }, [thread])
+
   return (
     <div className="h-full">
       <div
         className={clsx(
           "flex gap-docs_1 px-docs_1 py-docs_0.75",
           "h-[57px] w-full md:rounded-t-docs_xl relative border-0 border-solid",
-          "border-b border-medusa-border-base"
+          "border-b border-medusa-border-base relative"
         )}
       >
         <Button
@@ -255,12 +281,29 @@ export const AiAssistant = () => {
           onChange={(e) => setQuestion(e.target.value)}
           className={clsx(
             "bg-transparent border-0 focus:outline-none hover:!bg-transparent",
-            "shadow-none flex-1 text-medusa-fg-base"
+            "shadow-none flex-1 text-medusa-fg-base",
+            "disabled:!bg-transparent disabled:cursor-not-allowed"
           )}
           placeholder="Ask me a question about Medusa..."
           autoFocus={true}
           passedRef={inputRef}
+          disabled={loading}
         />
+        <Button
+          variant="clear"
+          onClick={() => {
+            setQuestion("")
+            inputRef.current?.focus()
+          }}
+          className={clsx(
+            "text-medusa-fg-subtle p-[5px]",
+            "absolute top-docs_0.75 right-docs_1",
+            "hover:bg-medusa-bg-base-hover rounded-docs_sm",
+            question.length === 0 && "hidden"
+          )}
+        >
+          <XMarkMini />
+        </Button>
       </div>
       <div className="h-[calc(100%-120px)] md:h-[calc(100%-114px)] lg:max-h-[calc(100%-114px)] lg:min-h-[calc(100%-114px)] overflow-auto">
         <div ref={contentRef}>
@@ -290,16 +333,14 @@ export const AiAssistant = () => {
               ))}
             </div>
           )}
-          {thread.map((threadItem, index) => (
-            <AiAssistantThreadItem item={threadItem} key={index} />
-          ))}
+          {getThreadItems()}
           {(answer.length || loading) && (
             <AiAssistantThreadItem
               item={{
                 type: "answer",
                 content: answer,
+                order: 0,
               }}
-              isCurrentAnswer={true}
             />
           )}
         </div>
@@ -323,15 +364,29 @@ export const AiAssistant = () => {
         </div>
         <div className="hidden items-center gap-docs_1 md:flex">
           <div className="flex items-center gap-docs_0.5">
-            <span
-              className={clsx("text-medusa-fg-subtle", "text-compact-x-small")}
-            >
-              Navigate FAQ
-            </span>
-            <span className="gap-docs_0.25 flex">
-              <Kbd>↑</Kbd>
-              <Kbd>↓</Kbd>
-            </span>
+            {thread.length === 0 && (
+              <>
+                <span
+                  className={clsx(
+                    "text-medusa-fg-subtle",
+                    "text-compact-x-small"
+                  )}
+                >
+                  Navigate FAQ
+                </span>
+                <span className="gap-docs_0.25 flex">
+                  <Kbd>↑</Kbd>
+                  <Kbd>↓</Kbd>
+                </span>
+              </>
+            )}
+            {thread.length > 0 && (
+              <span
+                className={clsx("text-medusa-fg-muted", "text-compact-x-small")}
+              >
+                Chat is cleared on exit
+              </span>
+            )}
           </div>
           <div className="flex items-center gap-docs_0.5">
             <span

@@ -12,6 +12,17 @@ export const MarkdownContent = ({ children }: MarkdownContentProps) => {
     <ReactMarkdown
       components={{
         code: CodeMdx,
+        pre: ({
+          className,
+          children,
+          ...props
+        }: React.HTMLAttributes<HTMLPreElement>) => {
+          return (
+            <pre className={clsx("p-0", className)} {...props}>
+              {children}
+            </pre>
+          )
+        },
         kbd: Kbd,
         details: Details,
         a: Link,
@@ -35,22 +46,22 @@ export const MarkdownContent = ({ children }: MarkdownContentProps) => {
           ...props
         }: React.HTMLAttributes<HTMLOListElement>) => {
           return (
-            <ul
+            <ol
               {...props}
               className={clsx("list-decimal px-docs_1 mb-docs_1.5", className)}
             >
               {children}
-            </ul>
+            </ol>
           )
         },
         li: ({
           className,
           children,
           ...props
-        }: React.HTMLAttributes<HTMLElement>) => {
+        }: React.HTMLAttributes<HTMLLIElement>) => {
           return (
             <li className={clsx("text-medusa-fg-subtle", className)} {...props}>
-              <Text>{children}</Text>
+              <Text as="span">{children}</Text>
             </li>
           )
         },
@@ -61,7 +72,7 @@ export const MarkdownContent = ({ children }: MarkdownContentProps) => {
           return (
             <Text
               className={clsx(
-                "text-medusa-fg-subtle [&:not(:last-child)]:mb-docs_1.5",
+                "text-medusa-fg-subtle [&:not(:last-child)]:mb-docs_1.5 last:!mb-0",
                 className
               )}
               {...props}

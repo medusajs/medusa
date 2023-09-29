@@ -13,7 +13,7 @@ export const AiAssistantCommandIcon = ({
     <span
       className={clsx(
         "bg-button-inverted bg-medusa-button-inverted dark:bg-button-inverted-dark",
-        "rounded-md p-[2px] text-medusa-fg-on-inverted",
+        "rounded-md p-[2px] text-medusa-fg-on-inverted flex",
         className
       )}
       {...props}

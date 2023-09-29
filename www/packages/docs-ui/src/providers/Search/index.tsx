@@ -8,7 +8,7 @@ import React, {
   useMemo,
   useRef,
 } from "react"
-import { Modal, SearchModal, SearchModalProps } from "@/components"
+import { BadgeProps, Modal, Search, SearchProps } from "@/components"
 import { checkArraySameElms } from "../../utils"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
 import clsx from "clsx"
@@ -19,6 +19,7 @@ export type SearchCommand = {
   component: React.ReactNode
   icon?: React.ReactNode
   title: string
+  badge?: BadgeProps
 }
 
 export type SearchContextType = {
@@ -46,7 +47,7 @@ export type SearchProviderProps = {
   children: React.ReactNode
   initialDefaultFilters?: string[]
   algolia: AlgoliaProps
-  searchProps: Omit<SearchModalProps, "algolia">
+  searchProps: Omit<SearchProps, "algolia">
   commands?: SearchCommand[]
   modalClassName?: string
 }
@@ -150,7 +151,7 @@ export const SearchProvider = ({
           >
             <>
               {command === null && (
-                <SearchModal {...searchProps} algolia={algolia} />
+                <Search {...searchProps} algolia={algolia} />
               )}
               {command?.component}
             </>
