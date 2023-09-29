@@ -21,5 +21,24 @@ export const ShippingProfileRepository = dataSource
         return acc
       }, {})
     },
+
+    addProducts: async function (
+      profileId: string,
+      productIds: string | string[]
+    ) {
+      productIds = Array.isArray(productIds) ? productIds : [productIds]
+
+      const values = productIds.map((productId) => ({
+        profile_id: profileId,
+        product_id: productId,
+      }))
+
+      return await this.manager
+        .createQueryBuilder("product_shipping_profile", "psp")
+        .insert()
+        .into("product_shipping_profile")
+        .values(values)
+        .execute()
+    },
   })
 export default ShippingProfileRepository

@@ -386,6 +386,19 @@ class ShippingProfileService extends TransactionBaseService {
     productId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          IsolateProductDomainFeatureFlag.key
+        )
+      ) {
+        const shippingProfileRepo = manager.withRepository(
+          this.shippingProfileRepository_
+        )
+
+        await shippingProfileRepo.addProducts(profileId, productId)
+        return await this.retrieve(profileId)
+      }
+
       const productServiceTx = this.productService_.withTransaction(manager)
 
       await productServiceTx.updateShippingProfile(
