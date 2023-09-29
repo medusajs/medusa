@@ -182,7 +182,8 @@ declare module "@medusajs/docs" {
     }
     aiAssistant?: {
       apiUrl: string
-      apiKey: string
+      websiteId: string
+      recaptchaSiteKey: string
     }
   } & DocusaurusThemeConfig
 

@@ -74,7 +74,8 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           component: (
             <AiAssistantProvider
               apiUrl={aiAssistant.apiUrl}
-              apiToken={aiAssistant.apiKey}
+              websiteId={aiAssistant.websiteId}
+              recaptchaSiteKey={aiAssistant.recaptchaSiteKey}
             />
           ),
           title: "AI Assistant",
