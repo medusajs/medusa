@@ -393,7 +393,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
               return [
                 await productVariantInventoryServiceTx.reserveQuantity(
-                  item.variant_id,
+                  variantsMap
+                    ? variantsMap.get(item.variant_id)!
+                    : item.variant_id,
                   item.quantity,
                   {
                     lineItemId: item.id,
