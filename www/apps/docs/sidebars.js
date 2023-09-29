@@ -2187,24 +2187,14 @@ module.exports = {
         },
         items: [
           {
-            type: "category",
+            type: "doc",
             label: "Contentful",
-            link: {
-              type: "doc",
-              id: "plugins/cms/contentful/index",
-            },
+            id: "plugins/cms/contentful",
             customProps: {
               iconName: "bolt-solid",
               description:
                 "Learn how to integrate Contentful with the Medusa backend.",
             },
-            items: [
-              {
-                type: "doc",
-                id: "plugins/cms/contentful/customize-contentful",
-                label: "Customize Integration",
-              },
-            ],
           },
           {
             type: "doc",
