@@ -343,7 +343,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         >()
 
         const variantIds = cart.items.map((item) => item.variant_id)
-        const [products] = await this.remoteQuery_(
+        const products = await this.remoteQuery_(
           stringToRemoteQueryObject({
             entryPoint: "product",
             variables: {
