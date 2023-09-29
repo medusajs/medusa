@@ -1,9 +1,11 @@
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
+  ExternalModuleDeclaration,
+  InternalModuleDeclaration,
   LoadedModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-  ModuleConfig,
+  ModuleDefinition,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   RemoteJoinerQuery,
@@ -18,13 +20,30 @@ import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 
-export type MedusaModuleConfig = (Partial<ModuleConfig> | Modules)[]
-type SharedResources = {
-  database?: ModuleServiceInitializeOptions["database"]
+export type MedusaModuleConfig = {
+  [key: string | Modules]:
+    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+    | true
 }
 
-const isModuleConfig = (obj: any): obj is ModuleConfig => {
-  return isObject(obj)
+export type SharedResources = {
+  database?: ModuleServiceInitializeOptions["database"] & {
+    /**
+     * {
+     *   name?: string
+     *   afterCreate?: Function
+     *   min?: number
+     *   max?: number
+     *   refreshIdle?: boolean
+     *   idleTimeoutMillis?: number
+     *   reapIntervalMillis?: number
+     *   returnToHead?: boolean
+     *   priorityRange?: number
+     *   log?: (message: string, logLevel: string) => void
+     * }
+     */
+    pool?: Record<string, unknown>
+  }
 }
 
 export async function MedusaApp({
@@ -50,7 +69,7 @@ export async function MedusaApp({
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
   query: (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => Promise<any>
 }> {
@@ -83,29 +102,20 @@ export async function MedusaApp({
   const allModules: Record<string, LoadedModule | LoadedModule[]> = {}
 
   await Promise.all(
-    modules.map(async (mod: Partial<ModuleConfig> | Modules) => {
-      let key: Modules | string = mod as Modules
+    Object.keys(modules).map(async (moduleName) => {
+      const mod = modules[moduleName] as MedusaModuleConfig
+
       let path: string
       let declaration: any = {}
 
-      if (isModuleConfig(mod)) {
-        if (!mod.module) {
-          throw new Error(
-            `Module ${JSON.stringify(mod)} is missing module name.`
-          )
-        }
-
-        key = mod.module
-        path = mod.path ?? MODULE_PACKAGE_NAMES[key]
+      if (isObject(mod)) {
+        const mod_ = mod as unknown as InternalModuleDeclaration
+        path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]
 
         declaration = { ...mod }
         delete declaration.definition
       } else {
-        path = MODULE_PACKAGE_NAMES[mod as Modules]
-      }
-
-      if (!path) {
-        throw new Error(`Module ${key} is missing path.`)
+        path = MODULE_PACKAGE_NAMES[moduleName]
       }
 
       declaration.scope ??= MODULE_SCOPE.INTERNAL
@@ -118,22 +128,22 @@ export async function MedusaApp({
       }
 
       const loaded = (await MedusaModule.bootstrap(
-        key,
+        moduleName,
         path,
         declaration,
         undefined,
         injectedDependencies,
-        isModuleConfig(mod) ? mod.definition : undefined
+        (isObject(mod) ? mod.definition : undefined) as ModuleDefinition
       )) as LoadedModule
 
-      if (allModules[key] && !Array.isArray(allModules[key])) {
-        allModules[key] = []
+      if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
+        allModules[moduleName] = []
       }
 
-      if (allModules[key]) {
-        ;(allModules[key] as LoadedModule[]).push(loaded[key])
+      if (allModules[moduleName]) {
+        ;(allModules[moduleName] as LoadedModule[]).push(loaded[moduleName])
       } else {
-        allModules[key] = loaded[key]
+        allModules[moduleName] = loaded[moduleName]
       }
 
       return loaded
@@ -142,7 +152,7 @@ export async function MedusaApp({
 
   let link: RemoteLink | undefined = undefined
   let query: (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => Promise<any>
 
@@ -162,7 +172,7 @@ export async function MedusaApp({
     customRemoteFetchData: remoteFetchData,
   })
   query = async (
-    query: string | RemoteJoinerQuery,
+    query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
   ) => {
     return await remoteQuery.query(query, variables)

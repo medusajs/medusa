@@ -3,6 +3,7 @@ import { useAdminSalesChannels } from "medusa-react"
 import React from "react"
 import Tooltip from "../../atoms/tooltip"
 import Badge from "../../fundamentals/badge"
+import { Trans, useTranslation } from "react-i18next"
 
 type Props = {
   channels?: SalesChannel[]
@@ -11,7 +12,10 @@ type Props = {
 const SalesChannelsDisplay = ({ channels = [] }: Props) => {
   const { count } = useAdminSalesChannels()
   const remainder = Math.max(channels.length - 3, 0)
+  const { t } = useTranslation()
 
+  const availableChannelsCount = channels.length ? channels.length : 0
+  const totalChannelsCount = count || 0
   return (
     <div className="gap-y-small flex flex-col">
       {channels.length > 0 && (
@@ -41,13 +45,21 @@ const SalesChannelsDisplay = ({ channels = [] }: Props) => {
         </div>
       )}
       <p className="inter-base-regular text-grey-50">
-        Available in{" "}
-        <span className="inter-base-semibold text-grey-90">
-          {channels.length ? channels.length : 0}
-        </span>{" "}
-        out of{" "}
-        <span className="inter-base-semibold text-grey-90">{count || 0}</span>{" "}
-        Sales Channels
+        <Trans
+          i18nKey="sales-channels-display-available-count"
+          availableChannelsCount={availableChannelsCount}
+          totalChannelsCount={totalChannelsCount}
+        >
+          Available in{" "}
+          <span className="inter-base-semibold text-grey-90">
+            {{ availableChannelsCount }}
+          </span>{" "}
+          out of{" "}
+          <span className="inter-base-semibold text-grey-90">
+            {{ totalChannelsCount }}
+          </span>{" "}
+          Sales Channels
+        </Trans>
       </p>
     </div>
   )

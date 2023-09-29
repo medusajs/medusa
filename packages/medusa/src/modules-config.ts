@@ -1,9 +1,7 @@
 import { MedusaModuleConfig, Modules } from "@medusajs/modules-sdk"
 
-const modules: MedusaModuleConfig = [
-  {
-    module: Modules.PRODUCT,
-  },
-]
+const modules: MedusaModuleConfig = {
+  [Modules.PRODUCT]: true,
+}
 
 export default modules

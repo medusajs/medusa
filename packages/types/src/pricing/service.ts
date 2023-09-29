@@ -1,29 +1,39 @@
-import { FindConfig } from "../common"
-import { ModuleJoinerConfig } from "../modules-sdk"
-import { Context } from "../shared-context"
 import {
   CalculatedPriceSetDTO,
   CreateCurrencyDTO,
   CreateMoneyAmountDTO,
+  CreatePriceRuleDTO,
   CreatePriceSetDTO,
+  CreateRuleTypeDTO,
   CurrencyDTO,
   FilterableCurrencyProps,
   FilterableMoneyAmountProps,
+  FilterablePriceRuleProps,
   FilterablePriceSetProps,
+  FilterableRuleTypeProps,
   MoneyAmountDTO,
+  PriceRuleDTO,
   PriceSetDTO,
   PricingContext,
+  PricingFilters,
+  RuleTypeDTO,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
+  UpdatePriceRuleDTO,
   UpdatePriceSetDTO,
+  UpdateRuleTypeDTO,
 } from "./common"
+
+import { Context } from "../shared-context"
+import { FindConfig } from "../common"
+import { ModuleJoinerConfig } from "../modules-sdk"
 
 export interface IPricingModuleService {
   __joinerConfig(): ModuleJoinerConfig
 
   calculatePrices(
-    priceSetIds: string[],
-    pricingContext: PricingContext,
+    filters: PricingFilters,
+    context?: PricingContext,
     sharedContext?: Context
   ): Promise<CalculatedPriceSetDTO>
 
@@ -117,6 +127,71 @@ export interface IPricingModuleService {
 
   deleteCurrencies(
     currencyCodes: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  retrieveRuleType(
+    code: string,
+    config?: FindConfig<RuleTypeDTO>,
+    sharedContext?: Context
+  ): Promise<RuleTypeDTO>
+
+  listRuleTypes(
+    filters?: FilterableRuleTypeProps,
+    config?: FindConfig<RuleTypeDTO>,
+    sharedContext?: Context
+  ): Promise<RuleTypeDTO[]>
+
+  listAndCountRuleTypes(
+    filters?: FilterableRuleTypeProps,
+    config?: FindConfig<RuleTypeDTO>,
+    sharedContext?: Context
+  ): Promise<[RuleTypeDTO[], number]>
+
+  createRuleTypes(
+    data: CreateRuleTypeDTO[],
+    sharedContext?: Context
+  ): Promise<RuleTypeDTO[]>
+
+  updateRuleTypes(
+    data: UpdateRuleTypeDTO[],
+    sharedContext?: Context
+  ): Promise<RuleTypeDTO[]>
+
+  deleteRuleTypes(
+    ruleTypeIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+  
+  retrievePriceRule(
+    id: string,
+    config?: FindConfig<PriceRuleDTO>,
+    sharedContext?: Context
+  ): Promise<PriceRuleDTO>
+
+  listPriceRules(
+    filters?: FilterablePriceRuleProps,
+    config?: FindConfig<PriceRuleDTO>,
+    sharedContext?: Context
+  ): Promise<PriceRuleDTO[]>
+
+  listAndCountPriceRules(
+    filters?: FilterablePriceRuleProps,
+    config?: FindConfig<PriceRuleDTO>,
+    sharedContext?: Context
+  ): Promise<[PriceRuleDTO[], number]>
+
+  createPriceRules(
+    data: CreatePriceRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PriceRuleDTO[]>
+
+  updatePriceRules(
+    data: UpdatePriceRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PriceRuleDTO[]>
+
+  deletePriceRules(
+    priceRuleIds: string[],
     sharedContext?: Context
   ): Promise<void>
 }

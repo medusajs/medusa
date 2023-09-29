@@ -4,18 +4,26 @@ import {
   FindConfig,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  PricingContext,
+  PricingFilters,
   PricingTypes,
 } from "@medusajs/types"
-import { Currency, MoneyAmount, PriceSet } from "@models"
-import { CurrencyService, MoneyAmountService, PriceSetService } from "@services"
+import {
+  CurrencyService,
+  MoneyAmountService,
+  PriceSetService,
+  RuleTypeService,
+  PriceRuleService
+} from "@services"
+import { Currency, MoneyAmount, PriceRule, PriceSet, RuleType } from "@models"
 
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  shouldForceTransaction,
 } from "@medusajs/utils"
 
-import { shouldForceTransaction } from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
@@ -23,36 +31,42 @@ type InjectedDependencies = {
   currencyService: CurrencyService<any>
   moneyAmountService: MoneyAmountService<any>
   priceSetService: PriceSetService<any>
-}
-
-type PricingContext = {
-  currency_code?: string
+  ruleTypeService: RuleTypeService<any>
+  priceRuleService: PriceRuleService<any>
 }
 
 export default class PricingModuleService<
   TPriceSet extends PriceSet = PriceSet,
   TMoneyAmount extends MoneyAmount = MoneyAmount,
-  TCurrency extends Currency = Currency
+  TCurrency extends Currency = Currency,
+  TRuleType extends RuleType = RuleType,
+  TPriceRule extends PriceRule = PriceRule,
 > implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected readonly currencyService_: CurrencyService<TCurrency>
   protected readonly moneyAmountService_: MoneyAmountService<TMoneyAmount>
+  protected readonly ruleTypeService_: RuleTypeService<TRuleType>
   protected readonly priceSetService_: PriceSetService<TPriceSet>
+  protected readonly priceRuleService_: PriceRuleService<TPriceRule>
 
   constructor(
     {
       baseRepository,
       moneyAmountService,
       currencyService,
+      ruleTypeService,
       priceSetService,
+      priceRuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.currencyService_ = currencyService
     this.moneyAmountService_ = moneyAmountService
+    this.ruleTypeService_ = ruleTypeService
     this.priceSetService_ = priceSetService
+    this.priceRuleService_ = priceRuleService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -61,14 +75,15 @@ export default class PricingModuleService<
 
   @InjectManager("baseRepository_")
   async calculatePrices(
-    priceSetIds: string[],
-    pricingContext: PricingContext,
+    pricingFilters: PricingFilters,
+    pricingContext: PricingContext = { context: {} },
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.CalculatedPriceSetDTO> {
     // Keeping this whole logic raw in here for now as they will undergo
     // some changes, will abstract them out once we have a final version
+    const context = pricingContext.context || {}
     const priceSetFilters: PricingTypes.FilterablePriceSetProps = {
-      id: priceSetIds,
+      id: pricingFilters.id,
     }
 
     const priceSets = await this.list(
@@ -95,8 +110,7 @@ export default class PricingModuleService<
         // When no price is set, return null values for all cases
         const selectedMoneyAmount = priceSet.money_amounts?.find(
           (ma) =>
-            pricingContext.currency_code &&
-            ma.currency_code === pricingContext.currency_code
+            context.currency_code && ma.currency_code === context.currency_code
         )
 
         return {
@@ -413,5 +427,201 @@ export default class PricingModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.currencyService_.delete(currencyCodes, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async retrieveRuleType(
+    id: string,
+    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.RuleTypeDTO> {
+    const ruleType = await this.ruleTypeService_.retrieve(
+      id,
+      config,
+      sharedContext
+    )
+
+    return this.baseRepository_.serialize<PricingTypes.RuleTypeDTO>(ruleType, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  async listRuleTypes(
+    filters: PricingTypes.FilterableRuleTypeProps = {},
+    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.RuleTypeDTO[]> {
+    const ruleTypes = await this.ruleTypeService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
+      ruleTypes,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountRuleTypes(
+    filters: PricingTypes.FilterableRuleTypeProps = {},
+    config: FindConfig<PricingTypes.RuleTypeDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[PricingTypes.RuleTypeDTO[], number]> {
+    const [ruleTypes, count] = await this.ruleTypeService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
+        ruleTypes,
+        {
+          populate: true,
+        }
+      ),
+      count,
+    ]
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async createRuleTypes(
+    data: PricingTypes.CreateRuleTypeDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.RuleTypeDTO[]> {
+    const ruleTypes = await this.ruleTypeService_.create(data, sharedContext)
+
+    return this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
+      ruleTypes,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async updateRuleTypes(
+    data: PricingTypes.UpdateRuleTypeDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.RuleTypeDTO[]> {
+    const ruleTypes = await this.ruleTypeService_.update(data, sharedContext)
+
+    return this.baseRepository_.serialize<PricingTypes.RuleTypeDTO[]>(
+      ruleTypes,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async deleteRuleTypes(
+    ruleTypes: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.ruleTypeService_.delete(ruleTypes, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async retrievePriceRule(
+    id: string,
+    config: FindConfig<PricingTypes.PriceRuleDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceRuleDTO> {
+    const priceRule = await this.priceRuleService_.retrieve(
+      id,
+      config,
+      sharedContext
+    )
+
+    return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO>(priceRule, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  async listPriceRules(
+    filters: PricingTypes.FilterablePriceRuleProps = {},
+    config: FindConfig<PricingTypes.PriceRuleDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceRuleDTO[]> {
+    const priceRules = await this.priceRuleService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
+      priceRules,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountPriceRules(
+    filters: PricingTypes.FilterablePriceRuleProps = {},
+    config: FindConfig<PricingTypes.PriceRuleDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[PricingTypes.PriceRuleDTO[], number]> {
+    const [priceRules, count] = await this.priceRuleService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [
+      await this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
+        priceRules,
+        {
+          populate: true,
+        }
+      ),
+      count,
+    ]
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async createPriceRules(
+    data: PricingTypes.CreatePriceRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceRuleDTO[]> {
+    const priceRules = await this.priceRuleService_.create(data, sharedContext)
+
+    return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
+      priceRules,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async updatePriceRules(
+    data: PricingTypes.UpdatePriceRuleDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceRuleDTO[]> {
+    const priceRules = await this.priceRuleService_.update(data, sharedContext)
+
+    return this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
+      priceRules,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async deletePriceRules(
+    priceRuleIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.priceRuleService_.delete(priceRuleIds, sharedContext)
   }
 }

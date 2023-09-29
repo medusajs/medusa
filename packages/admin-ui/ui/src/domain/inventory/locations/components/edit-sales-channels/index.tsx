@@ -2,8 +2,9 @@ import { SalesChannel } from "@medusajs/medusa"
 import { StockLocationExpandedDTO } from "@medusajs/types"
 import {
   useAdminAddLocationToSalesChannel,
-  useAdminRemoveLocationFromSalesChannel
+  useAdminRemoveLocationFromSalesChannel,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import SalesChannelsModal from "../../../../../components/forms/product/sales-channels-modal"
 import Button from "../../../../../components/fundamentals/button"
 import useToggleState from "../../../../../hooks/use-toggle-state"
@@ -18,6 +19,7 @@ const EditSalesChannels = ({
     close: closeSalesChannelsModal,
     open: openSalesChannelsModal,
   } = useToggleState()
+  const { t } = useTranslation()
 
   const { mutateAsync: addLocationToSalesChannel } =
     useAdminAddLocationToSalesChannel()
@@ -62,7 +64,9 @@ const EditSalesChannels = ({
         type="button"
         onClick={openSalesChannelsModal}
       >
-        {location.sales_channels?.length ? "Edit channels" : "Add channels"}
+        {location.sales_channels?.length
+          ? t("edit-sales-channels-edit-channels", "Edit channels")
+          : t("edit-sales-channels-add-channels", "Add channels")}
       </Button>
       <SalesChannelsModal
         open={showSalesChannelsModal}

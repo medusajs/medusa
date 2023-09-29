@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.1
+
+### Patch Changes
+
+- [#5061](https://github.com/medusajs/medusa/pull/5061) [`5b09f816c`](https://github.com/medusajs/medusa/commit/5b09f816cbb44d457c8cbdee803d9f84bd3fed0d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix command for windows OS
+
 ## 1.2.0
 
 ### Minor Changes

@@ -31,25 +31,36 @@ export type InternalModuleDeclaration = {
   scope: MODULE_SCOPE.INTERNAL
   resources: MODULE_RESOURCE_TYPE
   dependencies?: string[]
-  /**
-   * @deprecated The property should not be used.
-   */
+  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   resolve?: string
   options?: Record<string, unknown>
-  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
-  main?: boolean // If the module is the main module for the key when multiple ones are registered
+  /**
+   * If multiple modules are registered with the same key, the alias can be used to differentiate them
+   */
+  alias?: string
+  /**
+   * If the module is the main module for the key when multiple ones are registered
+   */
+  main?: boolean
 }
 
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
+  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   server?: {
     type: "http"
     url: string
     keepAlive: boolean
   }
   options?: Record<string, unknown>
-  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
-  main?: boolean // If the module is the main module for the key when multiple ones are registered
+  /**
+   * If multiple modules are registered with the same key, the alias can be used to differentiate them
+   */
+  alias?: string
+  /**
+   * If the module is the main module for the key when multiple ones are registered
+   */
+  main?: boolean
 }
 
 export type ModuleResolution = {
@@ -75,6 +86,7 @@ export type ModuleDefinition = {
    */
   isRequired?: boolean
   isQueryable?: boolean // If the module is queryable via Remote Joiner
+  isLegacy?: boolean // If the module is a legacy module TODO: Remove once all the legacy modules are migrated
   dependencies?: string[]
   defaultModuleDeclaration:
     | InternalModuleDeclaration
@@ -124,16 +136,39 @@ export type ModuleJoinerConfig = Omit<
   relationships?: ModuleJoinerRelationship[]
   extends?: {
     serviceName: string
+    fieldAlias?: Record<
+      string,
+      | string
+      | {
+          path: string
+          forwardArgumentsOnPath: string[]
+        }
+    > // alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
     relationship: ModuleJoinerRelationship
   }[]
   serviceName?: string
   primaryKeys?: string[]
-  isLink?: boolean // If the module is a link module
-  linkableKeys?: string[] // Keys that can be used to link to other modules
-  isReadOnlyLink?: boolean // If true it expands a RemoteQuery property but doesn't create a pivot table
+  /**
+   * If the module is a link module
+   */
+  isLink?: boolean
+  /**
+   * Keys that can be used to link to other modules
+   */
+  linkableKeys?: string[]
+  /**
+   * If true it expands a RemoteQuery property but doesn't create a pivot table
+   */
+  isReadOnlyLink?: boolean
   databaseConfig?: {
-    tableName?: string // Name of the pivot table. If not provided it is auto generated
-    idPrefix?: string // Prefix for the id column. If not provided it is "link"
+    /**
+     * Name of the pivot table. If not provided it is auto generated
+     */
+    tableName?: string
+    /**
+     * Prefix for the id column. If not provided it is "link"
+     */
+    idPrefix?: string
     extraFields?: Record<
       string,
       {
@@ -161,15 +196,24 @@ export type ModuleJoinerConfig = Omit<
           | "text"
         defaultValue?: string
         nullable?: boolean
-        options?: Record<string, unknown> // Mikro-orm options for the column
+        /**
+         * Mikro-orm options for the column
+         */
+        options?: Record<string, unknown>
       }
     >
   }
 }
 
 export declare type ModuleJoinerRelationship = JoinerRelationship & {
-  isInternalService?: boolean // If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more "internal" services
-  deleteCascade?: boolean // If true, the link joiner will cascade deleting the relationship
+  /**
+   * If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more "internal" services
+   */
+  isInternalService?: boolean
+  /**
+   * If true, the link joiner will cascade deleting the relationship
+   */
+  deleteCascade?: boolean
 }
 
 export type ModuleExports = {
