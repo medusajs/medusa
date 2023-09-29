@@ -87,11 +87,13 @@ export const AiAssistant = () => {
       title: "FAQ",
       items: [
         "What is Medusa?",
-        "How do I install Medusa?",
+        "How can I create an ecommerce store with Medusa?",
+        "How can I build a marketplace with Medusa?",
+        "How can I build subscription-based purchases with Medusa?",
+        "How can I build digital products with Medusa?",
+        "What can I build with Medusa?",
         "What is Medusa Admin?",
         "How do I configure the database in Medusa?",
-        "How do I seed data in Medusa",
-        "How do I create an endpoint in Medusa?",
       ],
     },
   ]
