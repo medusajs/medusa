@@ -330,7 +330,10 @@ export default class PricingModuleService<
 
     const invalidMoneyAmountRule = data
       .map(
-        (d) => d.money_amounts?.map((ma) => Object.keys(ma.rules)).flat() ?? []
+        (d) =>
+          d.money_amounts
+            ?.map((ma) => (ma?.rules ? Object.keys(ma.rules) : []))
+            .flat() ?? []
       )
       .flat()
       .filter((r) => !ruleTypeMap.has(r))
@@ -371,7 +374,7 @@ export default class PricingModuleService<
               sharedContext
             )
 
-            const numberOfRules = Object.entries(ma.rules).length
+            const numberOfRules = ma.rules ? Object.entries(ma.rules).length : 0
 
             const [priceSetMoneyAmount] =
               await this.priceSetMoneyAmountService_.create(

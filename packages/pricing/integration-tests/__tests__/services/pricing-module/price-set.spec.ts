@@ -383,6 +383,49 @@ describe("PricingModule Service - PriceSet", () => {
       )
     })
 
+    it("should create a price set with money amounts with and without rules", async () => {
+      const [priceSet] = await service.create([
+        {
+          rules: [{ rule_attribute: "region_id" }],
+          money_amounts: [
+            {
+              amount: 100,
+              currency_code: "USD",
+              rules: {
+                region_id: "1",
+              },
+            },
+            {
+              amount: 150,
+              currency_code: "USD"
+            },
+          ],
+        },
+      ])
+
+      console.warn(priceSet)
+
+      expect(priceSet).toEqual(
+        expect.objectContaining({
+          rule_types: [
+            expect.objectContaining({
+              rule_attribute: "region_id",
+            }),
+          ],
+          money_amounts: expect.arrayContaining([
+            expect.objectContaining({
+              amount: "100",
+              currency_code: "USD",
+            }),
+            expect.objectContaining({
+              amount: "150",
+              currency_code: "USD",
+            }),
+          ]),
+        })
+      )
+    })
+
     it("should create a price set with rule types and money amountss", async () => {
       const [priceSet] = await service.create([
         {
