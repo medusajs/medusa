@@ -33,13 +33,17 @@ export default function RootLayout({
         className={clsx(
           inter.variable,
           robotoMono.variable,
-          "bg-docs-bg dark:bg-docs-bg-dark font-base text-medium h-full w-full",
-          "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
+          "bg-docs-bg font-base text-medium w-full",
+          "text-medusa-fg-subtle",
+          "h-screen overflow-hidden"
         )}
       >
         <Providers>
-          <div className="w-full">
-            <Navbar />
+          <Navbar />
+          <div
+            className="w-full h-[calc(100%-57px)] overflow-y-scroll"
+            id="main"
+          >
             <div className="max-w-xxl mx-auto flex w-full px-1.5">
               <Sidebar />
               <main className="lg:w-ref-main relative mt-4 w-full flex-1 lg:mt-7">

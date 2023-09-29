@@ -23,10 +23,7 @@ const components = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
     return (
       <h1
-        className={clx(
-          "h1-docs text-medusa-fg-base dark:text-medusa-fg-base-dark",
-          className
-        )}
+        className={clx("h1-docs text-medusa-fg-base", className)}
         {...props}
       />
     )
@@ -34,10 +31,7 @@ const components = {
   h2: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
     return (
       <h2
-        className={clx(
-          "h2-docs mb-4 mt-16 text-medusa-fg-base dark:text-medusa-fg-base-dark",
-          className
-        )}
+        className={clx("h2-docs mb-4 mt-16 text-medusa-fg-base", className)}
         {...props}
       />
     )
@@ -45,10 +39,7 @@ const components = {
   h3: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
     return (
       <h3
-        className={clx(
-          "h3-docs mb-2 mt-10 text-medusa-fg-base dark:text-medusa-fg-base-dark",
-          className
-        )}
+        className={clx("h3-docs mb-2 mt-10 text-medusa-fg-base", className)}
         {...props}
       />
     )
@@ -56,10 +47,7 @@ const components = {
   p: ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => {
     return (
       <Text
-        className={clx(
-          "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark mb-docs_1.5",
-          className
-        )}
+        className={clx("text-medusa-fg-subtle mb-docs_1.5", className)}
         {...props}
       />
     )
@@ -79,7 +67,6 @@ const components = {
       <a
         className={clx(
           "txt-medium text-medusa-fg-interactive hover:text-medusa-fg-interactive-hover",
-          "dark:text-medusa-fg-interactive-dark dark:hover:text-medusa-fg-interactive-hover-dark",
           className
         )}
         href={href}
@@ -104,19 +91,27 @@ const components = {
       </ul>
     )
   },
+  ol: ({
+    className,
+    children,
+    ...props
+  }: React.HTMLAttributes<HTMLOListElement>) => {
+    return (
+      <ul
+        {...props}
+        className={clsx("list-decimal px-docs_1 mb-docs_1.5", className)}
+      >
+        {children}
+      </ul>
+    )
+  },
   li: ({
     className,
     children,
     ...props
   }: React.HTMLAttributes<HTMLElement>) => {
     return (
-      <li
-        className={clx(
-          "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-          className
-        )}
-        {...props}
-      >
+      <li className={clx("text-medusa-fg-subtle", className)} {...props}>
         <Text>{children}</Text>
       </li>
     )

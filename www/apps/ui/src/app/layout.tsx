@@ -31,11 +31,14 @@ export default function RootLayout({
     <html lang="en" className="h-full w-full">
       <head />
       <body
-        className={` bg-docs-bg dark:bg-docs-bg-dark h-screen w-full ${inter.variable} ${robotoMono.variable}`}
+        className={`bg-docs-bg h-screen overflow-hidden w-full ${inter.variable} ${robotoMono.variable}`}
       >
         <Providers>
-          <div className="w-full">
-            <Navbar />
+          <Navbar />
+          <div
+            className="w-full h-[calc(100%-57px)] overflow-y-scroll"
+            id="main"
+          >
             <div className="max-w-xxl grid w-full grid-cols-1 px-6 lg:mx-auto lg:grid-cols-[280px_1fr]">
               <Sidebar expandItems={true} />
               <div className="relative flex w-full flex-1 items-start justify-center px-4 pb-8 pt-16 md:px-8 lg:px-16 lg:py-[112px]">

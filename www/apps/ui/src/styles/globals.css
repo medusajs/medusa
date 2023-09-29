@@ -7,11 +7,11 @@
     -webkit-font-smoothing: antialiased;
   }
   .html {
-    @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
+    @apply text-medusa-fg-base;
   }
 
   *::selection {
-    @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
+    @apply bg-medusa-bg-highlight;
   }
 
   pre *::selection {
