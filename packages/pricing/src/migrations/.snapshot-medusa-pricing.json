@@ -211,6 +211,16 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "number_rules": {
+          "name": "number_rules",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "integer"
         }
       },
       "name": "price_set_money_amount",
@@ -337,6 +347,262 @@
       ],
       "checks": [],
       "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "price_set_money_amount_id": {
+          "name": "price_set_money_amount_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "rule_type_id": {
+          "name": "rule_type_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "price_set_money_amount_rules",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_set_money_amount_rules_price_set_money_amount_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "rule_type_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_set_money_amount_rules_rule_type_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "price_set_money_amount_rules_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "price_set_money_amount_rules_price_set_money_amount_id_foreign": {
+          "constraintName": "price_set_money_amount_rules_price_set_money_amount_id_foreign",
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
+          "localTableName": "public.price_set_money_amount_rules",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.price_set_money_amount",
+          "updateRule": "cascade"
+        },
+        "price_set_money_amount_rules_rule_type_id_foreign": {
+          "constraintName": "price_set_money_amount_rules_rule_type_id_foreign",
+          "columnNames": [
+            "rule_type_id"
+          ],
+          "localTableName": "public.price_set_money_amount_rules",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.rule_type",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "price_set_id": {
+          "name": "price_set_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "rule_type_id": {
+          "name": "rule_type_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "is_dynamic": {
+          "name": "is_dynamic",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "priority": {
+          "name": "priority",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "integer"
+        },
+        "price_set_money_amount_id": {
+          "name": "price_set_money_amount_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "price_list_id": {
+          "name": "price_list_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "price_rule",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "price_set_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_price_set_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "rule_type_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_rule_type_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_rule_price_set_money_amount_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "price_rule_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "price_rule_price_set_id_foreign": {
+          "constraintName": "price_rule_price_set_id_foreign",
+          "columnNames": [
+            "price_set_id"
+          ],
+          "localTableName": "public.price_rule",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.price_set",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "price_rule_rule_type_id_foreign": {
+          "constraintName": "price_rule_rule_type_id_foreign",
+          "columnNames": [
+            "rule_type_id"
+          ],
+          "localTableName": "public.price_rule",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.rule_type",
+          "updateRule": "cascade"
+        },
+        "price_rule_price_set_money_amount_id_foreign": {
+          "constraintName": "price_rule_price_set_money_amount_id_foreign",
+          "columnNames": [
+            "price_set_money_amount_id"
+          ],
+          "localTableName": "public.price_rule",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.price_set_money_amount",
+          "updateRule": "cascade"
+        }
+      }
     }
   ]
 }

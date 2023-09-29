@@ -2,6 +2,7 @@ import i18n from "i18next"
 import LanguageDetector from "i18next-browser-languagedetector"
 import Backend from "i18next-http-backend"
 import { initReactI18next } from "react-i18next"
+import { getFullAdminPath } from "../utils/get-admin-path"
 
 export const supportedLanguages = [
   {
@@ -16,12 +17,18 @@ export const supportedLanguages = [
     locale: "pt",
     name: "Português (Brasil)",
   },
+  {
+    locale: "ar",
+    name: "العربية",
+  },
+  {
+    locale: "pl",
+    name: "Polski",
+  },
 ]
 
-const backendUrl = window.location.origin
-const adminPath = process.env.ADMIN_PATH ? `${process.env.ADMIN_PATH}/` : "/"
-
-const pathToLoadFrom = `${backendUrl}${adminPath}public/locales/{{lng}}/{{ns}}.json`
+const adminPath = getFullAdminPath()
+const pathToLoadFrom = `${adminPath}public/locales/{{lng}}/{{ns}}.json`
 
 void i18n
   .use(Backend)

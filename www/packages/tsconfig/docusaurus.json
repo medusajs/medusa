@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Docusaurus",
+  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "lib": [
+      "es2022",
+      "dom",
+      "dom.iterable"
+    ],
+    "allowJs": true,
+    "module": "Node16"
+  }
+}
