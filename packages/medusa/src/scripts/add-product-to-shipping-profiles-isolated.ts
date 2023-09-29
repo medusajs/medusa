@@ -82,3 +82,7 @@ async function addProductToShippingProfilesIsolated({ directory }) {
     }
   })
 }
+
+addProductToShippingProfilesIsolated({
+  directory: process.cwd(),
+})
