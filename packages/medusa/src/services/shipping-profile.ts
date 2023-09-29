@@ -511,11 +511,11 @@ class ShippingProfileService extends TransactionBaseService {
         IsolateProductDomainFeatureFlag.key
       )
     ) {
-      const productShippinProfileMap = await this.getMapProfileIdsByProductIds(
+      const productShippingProfileMap = await this.getMapProfileIdsByProductIds(
         cart.items.map((item) => item.variant?.product_id)
       )
       profileIds = new Set(
-        Object.values(productShippinProfileMap)
+        Object.values(productShippingProfileMap)
           .map((p) => p.map((s) => s.id))
           .flat()
       )
