@@ -262,6 +262,8 @@ paths:
     $ref: paths/store_swaps.yaml
   /store/swaps/{cart_id}:
     $ref: paths/store_swaps_{cart_id}.yaml
+  /store/token:
+    $ref: paths/store_token.yaml
   /store/variants:
     $ref: paths/store_variants.yaml
   /store/variants/{id}:

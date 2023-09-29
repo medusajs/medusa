@@ -645,6 +645,8 @@ paths:
     $ref: paths/admin_tax-rates_{id}_products_batch.yaml
   /admin/tax-rates/{id}/shipping-options/batch:
     $ref: paths/admin_tax-rates_{id}_shipping-options_batch.yaml
+  /admin/token:
+    $ref: paths/admin_token.yaml
   /admin/uploads:
     $ref: paths/admin_uploads.yaml
   /admin/uploads/download-url:

@@ -26,6 +26,9 @@ post:
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_currencies_{code}/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
   tags:
     - Currencies
   responses:
