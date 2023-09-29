@@ -339,10 +339,6 @@ export default class PricingModuleService<
         )
 
         if (rules?.length) {
-          if (!priceSet.rule_types.isInitialized) {
-            priceSet.rule_types.init()
-          }
-
           const priceSetRuleTypesCreate = rules!.map((r) => ({
             rule_type: ruleTypeMap.get(r.rule_attribute),
             price_set: priceSet,
