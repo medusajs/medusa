@@ -48,6 +48,7 @@ import {
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:

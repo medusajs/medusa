@@ -17,6 +17,7 @@ get:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Auth
   responses:
@@ -107,6 +108,7 @@ delete:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Auth
   responses:

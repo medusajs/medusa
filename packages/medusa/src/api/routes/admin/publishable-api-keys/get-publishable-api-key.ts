@@ -27,10 +27,11 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/publishable-api-keys/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Publishable Api Keys
  * responses:

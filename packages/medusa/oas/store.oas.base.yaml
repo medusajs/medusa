@@ -241,6 +241,10 @@ components:
         message: "An unknown error occurred."
         type: "unknown_error"
   securitySchemes:
+    jwt_token:
+      type: http
+      x-displayName: JWT Token
+      scheme: bearer
     cookie_auth:
       type: apiKey
       x-displayName: Cookie Session ID
