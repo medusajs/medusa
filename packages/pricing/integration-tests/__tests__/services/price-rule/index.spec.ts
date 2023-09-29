@@ -1,15 +1,16 @@
-import { PriceSet, PriceSetMoneyAmount } from "@models"
+import { PriceSetMoneyAmount } from "@models"
 
 import { CreatePriceRuleDTO } from "@medusajs/types"
-import { MikroOrmWrapper } from "../../../utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceRuleRepository } from "@repositories"
 import { PriceRuleService } from "@services"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
+import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -32,9 +33,10 @@ describe("PriceRule Service", () => {
     })
 
     await createCurrencies(testManager)
-
+    await createMoneyAmounts(testManager)
     await createRuleTypes(testManager)
     await createPriceSets(testManager)
+    await createPriceSetMoneyAmounts(testManager)
     await createPriceRules(testManager)
   })
 
@@ -291,11 +293,14 @@ describe("PriceRule Service", () => {
           },
         ])
 
-        const psma: PriceSetMoneyAmount = testManager.create(PriceSetMoneyAmount, {
-          price_set: testManager.getReference(PriceSet, "price-set-1"),
-          money_amount: ma.id,
-          title: "test",
-        })
+        const psma: PriceSetMoneyAmount = testManager.create(
+          PriceSetMoneyAmount,
+          {
+            price_set: "price-set-1",
+            money_amount: ma.id,
+            title: "test",
+          }
+        )
 
         await testManager.persist(psma).flush()
 
