@@ -3,7 +3,6 @@ import ReactMarkdown from "react-markdown"
 import { ReactMarkdownOptions } from "react-markdown/lib/react-markdown"
 import { CodeMdx, Details, Kbd, Link } from "@/components"
 import clsx from "clsx"
-import { Text } from "@medusajs/ui"
 
 export type MarkdownContentProps = ReactMarkdownOptions
 
@@ -61,7 +60,7 @@ export const MarkdownContent = ({ children }: MarkdownContentProps) => {
         }: React.HTMLAttributes<HTMLLIElement>) => {
           return (
             <li className={clsx("text-medusa-fg-subtle", className)} {...props}>
-              <Text as="span">{children}</Text>
+              <span>{children}</span>
             </li>
           )
         },
@@ -70,7 +69,7 @@ export const MarkdownContent = ({ children }: MarkdownContentProps) => {
           ...props
         }: React.HTMLAttributes<HTMLParagraphElement>) => {
           return (
-            <Text
+            <p
               className={clsx(
                 "text-medusa-fg-subtle [&:not(:last-child)]:mb-docs_1.5 last:!mb-0",
                 className
