@@ -17,7 +17,7 @@ export const MarkdownContent = ({ children }: MarkdownContentProps) => {
           ...props
         }: React.HTMLAttributes<HTMLPreElement>) => {
           return (
-            <pre className={clsx("p-0", className)} {...props}>
+            <pre className={clsx("p-0 bg-transparent", className)} {...props}>
               {children}
             </pre>
           )
