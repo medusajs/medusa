@@ -22,6 +22,9 @@ import IdempotencyKeyService from "../services/idempotency-key"
 import { MedusaError } from "medusa-core-utils"
 import { RequestContext } from "../types/request"
 import SwapService from "../services/swap"
+import { stringToRemoteQueryObject } from "@medusajs/utils/dist/common/string-to-remote-query-object"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
+import { FlagRouter } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productVariantInventoryService: ProductVariantInventoryService
@@ -33,6 +36,8 @@ type InjectedDependencies = {
   manager: EntityManager
   inventoryService: IInventoryService
   eventBusService: IEventBusService
+  featureFlagRouter: FlagRouter
+  remoteQuery: (query: any) => Promise<any>
 }
 
 class CartCompletionStrategy extends AbstractCartCompletionStrategy {
@@ -46,6 +51,12 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
   protected readonly inventoryService_: IInventoryService
   protected readonly eventBusService_: IEventBusService
 
+  protected readonly featureFlagRouter_: FlagRouter
+
+  private get remoteQuery_() {
+    return this.__container__.remoteQuery
+  }
+
   constructor({
     productVariantInventoryService,
     paymentProviderService,
@@ -55,6 +66,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     swapService,
     inventoryService,
     eventBusService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -67,6 +79,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
     this.swapService_ = swapService
     this.inventoryService_ = inventoryService
     this.eventBusService_ = eventBusService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   async complete(
@@ -312,13 +325,58 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
       const productVariantInventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
 
+      let variantsMap: Map<string, any> | undefined
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          IsolateProductDomainFeatureFlag.key
+        )
+      ) {
+        variantsMap = new Map<
+          string,
+          {
+            id: string
+            allow_backorder: boolean
+            manage_inventory: boolean
+            inventory_quantity: number
+          }
+        >()
+
+        const variantIds = cart.items.map((item) => item.variant_id)
+        const [products] = await this.remoteQuery_(
+          stringToRemoteQueryObject({
+            entryPoint: "product",
+            variables: {
+              filters: {
+                variant_id: variantIds,
+              },
+            },
+            fields: [
+              "id",
+              "variants.id",
+              "variants.allow_backorder",
+              "variants.manage_inventory",
+              "variants.inventory_quantity",
+            ],
+          })
+        )
+
+        products.forEach((product) => {
+          product.variants.forEach((variant) => {
+            variantsMap!.set(variant.id, variant)
+          })
+        })
+      }
+
       reservations = await Promise.all(
         cart.items.map(async (item) => {
           if (item.variant_id) {
             try {
               const inventoryConfirmed =
                 await productVariantInventoryServiceTx.confirmInventory(
-                  item.variant_id,
+                  variantsMap
+                    ? variantsMap.get(item.variant_id)!
+                    : item.variant_id,
                   item.quantity,
                   { salesChannelId: cart.sales_channel_id }
                 )

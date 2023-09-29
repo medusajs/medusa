@@ -1023,7 +1023,7 @@ class CartService extends TransactionBaseService {
                 IsolateProductDomainFeatureFlag.key
               )
             ) {
-              ;[variantOrId] = await this.remoteQuery_(
+              const [product] = await this.remoteQuery_(
                 stringToRemoteQueryObject({
                   entryPoint: "product",
                   variables: {
@@ -1039,6 +1039,10 @@ class CartService extends TransactionBaseService {
                     "variants.inventory_quantity",
                   ],
                 })
+              )
+
+              variantOrId = product?.variants.find(
+                (variant) => variant.id === lineItem.variant_id
               )
 
               if (!variantOrId) {
