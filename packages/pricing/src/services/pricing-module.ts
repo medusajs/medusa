@@ -365,7 +365,7 @@ export default class PricingModuleService<
         }
 
         if (money_amounts?.length) {
-          await money_amounts.forEach(async (ma) => {
+          for (const ma of money_amounts) {
             const [moneyAmount] = await this.moneyAmountService_.create(
               [ma] as unknown as CreateMoneyAmountDTO[],
               sharedContext
@@ -402,7 +402,7 @@ export default class PricingModuleService<
                 sharedContext
               )
             }
-          })
+          }
         }
 
         return priceSet
@@ -582,7 +582,7 @@ export default class PricingModuleService<
       }
     })
 
-    for(const { priceSetId, prices } of input) {
+    for (const { priceSetId, prices } of input) {
       await Promise.all(
         prices.map(async (ma) => {
           const [moneyAmount] = await this.moneyAmountService_.create(
