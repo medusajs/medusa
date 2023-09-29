@@ -3,8 +3,8 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { RuleTypeRepository } from "@repositories"
 import { RuleTypeService } from "@services"
 
-import { MikroOrmWrapper } from "../../../utils"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -12,7 +12,6 @@ describe("RuleType Service", () => {
   let service: RuleTypeService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
-
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
@@ -131,9 +130,8 @@ describe("RuleType Service", () => {
   })
 
   describe("retrieve", () => {
-
     it("should return ruleType for the given id", async () => {
-      const ruleType = await service.retrieve('rule-type-1')
+      const ruleType = await service.retrieve("rule-type-1")
 
       expect(ruleType).toEqual(
         expect.objectContaining({
@@ -170,15 +168,15 @@ describe("RuleType Service", () => {
     })
 
     it("should return ruleType based on config select param", async () => {
-      const ruleTypeResult = await service.retrieve('rule-type-1', {
+      const ruleTypeResult = await service.retrieve("rule-type-1", {
         select: ["name"],
       })
 
       const serialized = JSON.parse(JSON.stringify(ruleTypeResult))
 
       expect(serialized).toEqual({
-        name: 'rule 1',
-        id: 'rule-type-1'
+        name: "rule 1",
+        id: "rule-type-1",
       })
     })
   })
@@ -189,11 +187,11 @@ describe("RuleType Service", () => {
     it("should delete the ruleTypes given an id successfully", async () => {
       await service.delete([id])
 
-      const currencies = await service.list({
+      const ruleTypes = await service.list({
         id: [id],
       })
 
-      expect(currencies).toHaveLength(0)
+      expect(ruleTypes).toHaveLength(0)
     })
   })
 
@@ -238,7 +236,7 @@ describe("RuleType Service", () => {
       await service.create([
         {
           name: "Test Rule",
-          rule_attribute: 'region_id',
+          rule_attribute: "region_id",
         },
       ])
 
@@ -249,7 +247,7 @@ describe("RuleType Service", () => {
       expect(ruleType).toEqual(
         expect.objectContaining({
           name: "Test Rule",
-          rule_attribute: 'region_id',
+          rule_attribute: "region_id",
         })
       )
     })

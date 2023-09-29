@@ -3,6 +3,8 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet, PriceSetMoneyAmount } from "@models"
 import { defaultPriceSetsData } from "./data"
 
+export * from "./data"
+
 export async function createPriceSets(
   manager: SqlEntityManager,
   priceSetsData: CreatePriceSetDTO[] = defaultPriceSetsData
