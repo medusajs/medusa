@@ -461,7 +461,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param context optional parameters
    */
   async reserveQuantity(
-    variantOrId: string | { id: string; inventory_quantity: number },
+    variantOrId:
+      | string
+      | { id: string; manage_inventory: boolean; inventory_quantity: number },
     quantity: number,
     context: ReserveQuantityContext = {}
   ): Promise<void | ReservationItemDTO[]> {
@@ -472,13 +474,16 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
         const variant = isString(variantOrId)
           ? await variantServiceTx.retrieve(variantOrId, {
-              select: ["id", "inventory_quantity"],
+              select: ["id", "manage_inventory", "inventory_quantity"],
             })
           : variantOrId
 
-        await variantServiceTx.update(variant.id, {
-          inventory_quantity: variant.inventory_quantity - quantity,
-        })
+        if (variant.manage_inventory) {
+          await variantServiceTx.update(variant.id, {
+            inventory_quantity: variant.inventory_quantity - quantity,
+          })
+        }
+
         return
       })
     }

@@ -356,7 +356,6 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
             fields: [
               "id",
               "variants.id",
-              "variants.allow_backorder",
               "variants.manage_inventory",
               "variants.inventory_quantity",
             ],

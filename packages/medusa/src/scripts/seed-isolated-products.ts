@@ -23,6 +23,7 @@ const seedProducts = [
         upc: "test-variant",
         barcode: "test-variant",
         inventory_quantity: 10,
+        manage_inventory: false,
         prices: [
           {
             amount: 100,
@@ -52,6 +53,7 @@ const seedProducts = [
         upc: "test-variant 2",
         barcode: "test-variant 2",
         inventory_quantity: 10,
+        manage_inventory: false,
         prices: [
           {
             amount: 100,
@@ -81,6 +83,7 @@ const seedProducts = [
         upc: "test-variant 3",
         barcode: "test-variant 3",
         inventory_quantity: 10,
+        manage_inventory: false,
         prices: [
           {
             amount: 100,
