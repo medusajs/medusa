@@ -14,6 +14,7 @@
  *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Auth
  * responses:
