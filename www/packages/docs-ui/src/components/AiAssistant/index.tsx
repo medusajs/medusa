@@ -59,7 +59,7 @@ export type ErrorType = {
 }
 
 export type ThreadType = {
-  type: "question" | "answer"
+  type: "question" | "answer" | "error"
   content: string
   question_id?: string
   // for some reason, items in the array get reordered
@@ -74,7 +74,6 @@ export const AiAssistant = () => {
   const [thread, setThread] = useState<ThreadType[]>([])
   const [answer, setAnswer] = useState("")
   const [identifiers, setIdentifiers] = useState<IdentifierType | null>(null)
-  const [error, setError] = useState<ErrorType | null>(null)
   const [loading, setLoading] = useState(false)
   const { getAnswer } = useAiAssistant()
   const { setCommand } = useSearch()
@@ -106,7 +105,7 @@ export const AiAssistant = () => {
       {
         type: "question",
         content: selectedQuestion || question,
-        order: messagesCount + 1,
+        order: getNewOrder(prevThread),
       },
     ])
     setMessagesCount((prev) => prev + 1)
@@ -117,6 +116,46 @@ export const AiAssistant = () => {
     focusInput: () => inputRef.current?.focus(),
     handleSubmit,
   })
+
+  const sortThread = (threadArr: ThreadType[]) => {
+    const sortedThread = [...threadArr]
+    sortedThread.sort((itemA, itemB) => {
+      if (itemA.order < itemB.order) {
+        return -1
+      }
+
+      return itemA.order < itemB.order ? 1 : 0
+    })
+    return sortedThread
+  }
+
+  const getNewOrder = (prevThread: ThreadType[]) => {
+    const sortedThread = sortThread(prevThread)
+
+    return sortedThread.length === 0
+      ? messagesCount + 1
+      : sortedThread[prevThread.length - 1].order + 1
+  }
+
+  const setError = (logMessage?: string) => {
+    if (logMessage?.length) {
+      console.error(`[AI ERROR]: ${logMessage}`)
+    }
+    setThread((prevThread) => [
+      ...prevThread,
+      {
+        type: "error",
+        content:
+          "I'm sorry, but I'm having trouble connecting to my knowledge base. Please try again. If the issue keeps persisting, please consider reporting an issue.",
+        order: getNewOrder(prevThread),
+      },
+    ])
+    setMessagesCount((prev) => prev + 1)
+    setLoading(false)
+    setQuestion("")
+    setAnswer("")
+    inputRef.current?.focus()
+  }
 
   const scrollToBottom = () => {
     const parent = contentRef.current?.parentElement as HTMLElement
@@ -178,9 +217,9 @@ export const AiAssistant = () => {
         } else if (chunk.type === "identifiers") {
           setIdentifiers(chunk.content)
         } else if (chunk.type === "error") {
-          setError(chunk.content)
+          setError(chunk.content.reason)
           loop = false
-          break
+          return
         }
       }
     }
@@ -197,16 +236,10 @@ export const AiAssistant = () => {
         await process_stream(response)
       } else {
         const message = await response.text()
-        console.error("Error fetching data:", message)
-        setError({
-          reason: `Request failed with status code ${response.status}. Message: ${message}`,
-        })
+        setError(message)
       }
     } catch (error: any) {
-      console.error("Error fetching thread data:", error)
-      setError({
-        reason: `Thread request failed: ${error.message}`,
-      })
+      setError(JSON.stringify(error))
     }
   }, [question, identifiers, process_stream])
 
@@ -228,7 +261,7 @@ export const AiAssistant = () => {
           type: "answer",
           content: answer,
           question_id: identifiers?.question_answer_id,
-          order: messagesCount + 1,
+          order: getNewOrder(prevThread),
         },
       ])
       setAnswer("")
@@ -246,14 +279,7 @@ export const AiAssistant = () => {
   })
 
   const getThreadItems = useCallback(() => {
-    const sortedThread = [...thread]
-    sortedThread.sort((itemA, itemB) => {
-      if (itemA.order < itemB.order) {
-        return -1
-      }
-
-      return itemA.order < itemB.order ? 1 : 0
-    })
+    const sortedThread = sortThread(thread)
 
     return sortedThread.map((item, index) => (
       <AiAssistantThreadItem item={item} key={index} />
@@ -307,11 +333,6 @@ export const AiAssistant = () => {
       </div>
       <div className="h-[calc(100%-120px)] md:h-[calc(100%-114px)] lg:max-h-[calc(100%-114px)] lg:min-h-[calc(100%-114px)] overflow-auto">
         <div ref={contentRef}>
-          {error && (
-            <span className="text-medusa-fg-error">
-              An error occurred, please try again later.
-            </span>
-          )}
           {!thread.length && (
             <div className="mx-docs_0.5">
               {suggestions.map((suggestion, index) => (

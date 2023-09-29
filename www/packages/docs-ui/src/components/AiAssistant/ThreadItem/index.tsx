@@ -2,7 +2,7 @@ import clsx from "clsx"
 import React from "react"
 import { ThreadType } from ".."
 import { DotsLoading, MarkdownContent, QuestionMarkIcon } from "@/components"
-import { Sparkles } from "@medusajs/icons"
+import { ExclamationCircle, Sparkles } from "@medusajs/icons"
 import { AiAssistantThreadItemActions } from "./Actions"
 
 export type AiAssistantThreadItemProps = {
@@ -29,6 +29,7 @@ export const AiAssistantThreadItem = ({ item }: AiAssistantThreadItemProps) => {
       >
         {item.type === "question" && <QuestionMarkIcon />}
         {item.type === "answer" && <Sparkles />}
+        {item.type === "error" && <ExclamationCircle />}
       </span>
       <div className="md:max-w-[calc(100%-134px)] md:w-[calc(100%-134px)]">
         {item.type === "question" && <>{item.content}</>}
@@ -37,6 +38,9 @@ export const AiAssistantThreadItem = ({ item }: AiAssistantThreadItemProps) => {
             {!item.question_id && item.content.length === 0 && <DotsLoading />}
             <MarkdownContent>{item.content}</MarkdownContent>
           </>
+        )}
+        {item.type === "error" && (
+          <span className="text-medusa-fg-error">{item.content}</span>
         )}
       </div>
       {item.type === "answer" && item.question_id && (
