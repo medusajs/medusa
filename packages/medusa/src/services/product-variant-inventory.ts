@@ -10,7 +10,7 @@ import {
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { FlagRouter, isDefined, MedusaError } from "@medusajs/utils"
+import { FlagRouter, isDefined, isString, MedusaError } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
@@ -73,30 +73,39 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   /**
    * confirms if requested inventory is available
-   * @param variantId id of the variant to confirm inventory for
+   * @param variantOrId
    * @param quantity quantity of inventory to confirm is available
    * @param context optionally include a sales channel if applicable
    * @returns boolean indicating if inventory is available
    */
   async confirmInventory(
-    variantId: string,
+    variantOrId:
+      | string
+      | {
+          id: string
+          allow_backorder: boolean
+          manage_inventory: boolean
+          inventory_quantity: number
+        },
     quantity: number,
     context: { salesChannelId?: string | null } = {}
   ): Promise<Boolean> {
-    if (!variantId) {
+    if (!variantOrId) {
       return true
     }
 
-    const productVariant = await this.productVariantService_
-      .withTransaction(this.activeManager_)
-      .retrieve(variantId, {
-        select: [
-          "id",
-          "allow_backorder",
-          "manage_inventory",
-          "inventory_quantity",
-        ],
-      })
+    const productVariant = isString(variantOrId)
+      ? await this.productVariantService_
+          .withTransaction(this.activeManager_)
+          .retrieve(variantOrId, {
+            select: [
+              "id",
+              "allow_backorder",
+              "manage_inventory",
+              "inventory_quantity",
+            ],
+          })
+      : variantOrId
 
     // If the variant allows backorders or if inventory isn't managed we
     // don't need to check inventory
@@ -108,7 +117,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return productVariant.inventory_quantity >= quantity
     }
 
-    const variantInventory = await this.listByVariant(variantId)
+    const variantInventory = await this.listByVariant(productVariant.id)
 
     // If there are no inventory items attached to the variant we default
     // to true

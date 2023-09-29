@@ -63,7 +63,8 @@ import {
 import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { validateEmail } from "../utils/is-email"
-import { IsNumber } from "class-validator"
+import { RemoteJoinerQuery } from "@medusajs/types"
+import { stringToRemoteQueryObject } from "@medusajs/utils/dist/common/string-to-remote-query-object"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -94,6 +95,10 @@ type InjectedDependencies = {
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
   pricingService: PricingService
+  remoteQuery: (
+    query: string | RemoteJoinerQuery | object,
+    variables?: Record<string, unknown>
+  ) => Promise<any>
 }
 
 type TotalsConfig = {
@@ -138,6 +143,10 @@ class CartService extends TransactionBaseService {
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
   protected readonly pricingService_: PricingService
+
+  private get remoteQuery_() {
+    return this.__container__.remoteQuery
+  }
 
   constructor({
     cartRepository,
@@ -1007,9 +1016,42 @@ class CartService extends TransactionBaseService {
 
         if (lineItemUpdate.quantity) {
           if (lineItem.variant_id) {
+            let variantOrId = lineItem.variant_id
+
+            if (
+              this.featureFlagRouter_.isFeatureEnabled(
+                IsolateProductDomainFeatureFlag.key
+              )
+            ) {
+              ;[variantOrId] = await this.remoteQuery_(
+                stringToRemoteQueryObject({
+                  entryPoint: "product",
+                  variables: {
+                    filters: {
+                      variant_id: lineItem.variant_id,
+                    },
+                  },
+                  fields: [
+                    "id",
+                    "variants.id",
+                    "variants.allow_backorder",
+                    "variants.manage_inventory",
+                    "variants.inventory_quantity",
+                  ],
+                })
+              )
+
+              if (!variantOrId) {
+                throw new MedusaError(
+                  MedusaError.Types.NOT_FOUND,
+                  "Variant with id: ${lineItem.variant_id} not found"
+                )
+              }
+            }
+
             const hasInventory =
               await this.productVariantInventoryService_.confirmInventory(
-                lineItem.variant_id,
+                variantOrId,
                 lineItemUpdate.quantity,
                 { salesChannelId: cart.sales_channel_id }
               )
