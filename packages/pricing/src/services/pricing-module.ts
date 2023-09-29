@@ -582,7 +582,7 @@ export default class PricingModuleService<
       }
     })
 
-    await input.forEach(async ({ priceSetId, prices }) => {
+    for(const { priceSetId, prices } of input) {
       await Promise.all(
         prices.map(async (ma) => {
           const [moneyAmount] = await this.moneyAmountService_.create(
@@ -625,7 +625,7 @@ export default class PricingModuleService<
           return moneyAmount
         })
       )
-    })
+    }
 
     return priceSets
   }
