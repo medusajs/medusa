@@ -96,6 +96,7 @@ get:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Tax Rates
   responses:
@@ -163,6 +164,7 @@ post:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Tax Rates
   responses:
