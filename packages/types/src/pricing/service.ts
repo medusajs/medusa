@@ -63,6 +63,11 @@ export interface IPricingModuleService {
   ): Promise<[PriceSetDTO[], number]>
 
   create(
+    data: CreatePriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
+
+  create(
     data: CreatePriceSetDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>

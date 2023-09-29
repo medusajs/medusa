@@ -280,19 +280,33 @@ export default class PricingModuleService<
       count,
     ]
   }
-  @InjectManager("baseRepository_")
-  async create(
-    data: PricingTypes.CreatePriceSetDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceSetDTO[]> {
-    const priceSets = await this.create_(data, sharedContext)
 
-    return this.list(
+  @InjectManager("baseRepository_")
+  async create<
+    TInput extends
+      | PricingTypes.CreatePriceSetDTO
+      | PricingTypes.CreatePriceSetDTO[],
+    TOutput = TInput extends PricingTypes.CreatePriceSetDTO[]
+      ? PricingTypes.PriceSetDTO[]
+      : PricingTypes.PriceSetDTO
+  >(
+    data: PricingTypes.CreatePriceSetDTO | PricingTypes.CreatePriceSetDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TOutput> {
+    const input = Array.isArray(data) ? data : [data]
+
+    const priceSets = await this.create_(input, sharedContext)
+
+    const dbPriceSets = await this.list(
       { id: priceSets.filter((p) => !!p).map((p) => p!.id) },
       {
         relations: ["rule_types", "money_amounts", "price_rules"],
       }
     )
+
+    return (Array.isArray(data)
+      ? dbPriceSets
+      : dbPriceSets[0]) as unknown as TOutput
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -536,10 +550,10 @@ export default class PricingModuleService<
 
     await this.addPrices_(input, sharedContext)
 
-    return await this.list(
+    return (await this.list(
       { id: input.map((d) => d.priceSetId) },
       { relations: ["money_amounts"] }
-    ) as unknown as TOutput
+    )) as unknown as TOutput
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
