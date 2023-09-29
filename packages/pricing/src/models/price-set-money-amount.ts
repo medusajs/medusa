@@ -1,15 +1,19 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Collection,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryKey,
   PrimaryKeyType,
   Property,
 } from "@mikro-orm/core"
 
 import MoneyAmount from "./money-amount"
+import PriceRule from "./price-rule"
 import PriceSet from "./price-set"
+import PriceSetMoneyAmountRules from "./price-set-money-amount-rules"
 
 @Entity()
 export default class PriceSetMoneyAmount {
@@ -29,6 +33,21 @@ export default class PriceSetMoneyAmount {
     index: "IDX_price_set_money_amount_money_amount_id",
   })
   money_amount?: MoneyAmount
+
+  @Property({ columnType: "integer", default: 0 })
+  number_rules?: number
+
+  @OneToMany({
+    entity: () => PriceRule,
+    mappedBy: (pr) => pr.price_set_money_amount,
+  })
+  price_rules = new Collection<PriceRule>(this)
+
+  @OneToMany({
+    entity: () => PriceSetMoneyAmountRules,
+    mappedBy: (psmar) => psmar.price_set_money_amount,
+  })
+  price_set_money_amount_rules = new Collection<PriceSetMoneyAmountRules>(this)
 
   @BeforeCreate()
   onCreate() {
