@@ -28,6 +28,10 @@ const seedProducts = [
             amount: 100,
             currency_code: "eur",
           },
+          {
+            amount: 100,
+            currency_code: "usd",
+          },
         ],
       },
     ],
@@ -53,6 +57,10 @@ const seedProducts = [
             amount: 100,
             currency_code: "eur",
           },
+          {
+            amount: 100,
+            currency_code: "usd",
+          },
         ],
       },
     ],
@@ -77,6 +85,10 @@ const seedProducts = [
           {
             amount: 100,
             currency_code: "eur",
+          },
+          {
+            amount: 100,
+            currency_code: "usd",
           },
         ],
       },
