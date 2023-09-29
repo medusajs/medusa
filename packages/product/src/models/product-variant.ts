@@ -11,6 +11,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Unique,
 } from "@mikro-orm/core"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
@@ -35,35 +36,39 @@ class ProductVariant {
   title: string
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
+  @Unique({
     name: "IDX_product_variant_sku_unique",
-    expression:
-      'CREATE UNIQUE INDEX "IDX_product_variant_sku_unique" ON "product_variant" ("sku") WHERE deleted_at IS NULL',
+    properties: ["sku"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   sku?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
+  @Unique({
     name: "IDX_product_variant_barcode_unique",
-    expression:
-      'CREATE UNIQUE INDEX "IDX_product_variant_barcode_unique" ON "product_variant" ("barcode") WHERE deleted_at IS NULL',
+    properties: ["barcode"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   barcode?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
+  @Unique({
     name: "IDX_product_variant_ean_unique",
-    expression:
-      'CREATE UNIQUE INDEX "IDX_product_variant_ean_unique" ON "product_variant" ("ean") WHERE deleted_at IS NULL',
+    properties: ["ean"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   ean?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
+  @Unique({
     name: "IDX_product_variant_upc_unique",
-    expression:
-      'CREATE UNIQUE INDEX "IDX_product_variant_upc_unique" ON "product_variant" ("upc") WHERE deleted_at IS NULL',
+    properties: ["upc"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   upc?: string | null
 
   // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose

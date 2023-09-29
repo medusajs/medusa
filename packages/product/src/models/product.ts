@@ -11,6 +11,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Unique,
 } from "@mikro-orm/core"
 
 import {
@@ -48,11 +49,12 @@ class Product {
   title: string
 
   @Property({ columnType: "text" })
-  @Index({
+  @Unique({
     name: "IDX_product_handle_unique",
-    expression:
-      'CREATE UNIQUE INDEX "IDX_product_handle_unique" ON "product" ("handle") WHERE deleted_at IS NULL',
+    properties: ["handle"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   handle?: string | null
 
   @Property({ columnType: "text", nullable: true })

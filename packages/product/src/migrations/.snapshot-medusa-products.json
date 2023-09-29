@@ -797,8 +797,7 @@
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_product_handle_unique\" ON \"product\" (\"handle\") WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
           "keyName": "product_pkey",
@@ -1400,8 +1399,7 @@
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_product_variant_sku_unique\" ON \"product_variant\" (\"sku\") WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
           "keyName": "IDX_product_variant_barcode_unique",
@@ -1410,8 +1408,7 @@
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_product_variant_barcode_unique\" ON \"product_variant\" (\"barcode\") WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
           "keyName": "IDX_product_variant_ean_unique",
@@ -1420,8 +1417,7 @@
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_product_variant_ean_unique\" ON \"product_variant\" (\"ean\") WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
           "keyName": "IDX_product_variant_upc_unique",
@@ -1430,8 +1426,7 @@
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_product_variant_upc_unique\" ON \"product_variant\" (\"upc\") WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
           "keyName": "product_variant_pkey",
