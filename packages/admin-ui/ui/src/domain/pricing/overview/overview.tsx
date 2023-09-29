@@ -37,9 +37,11 @@ import * as React from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 
 import Spacer from "../../../components/atoms/spacer"
+import WidgetContainer from "../../../components/extensions/widget-container"
 import { FilterMenu } from "../../../components/molecules/filter-menu"
 import { useDebouncedSearchParam } from "../../../hooks/use-debounced-search-param"
 import useNotification from "../../../hooks/use-notification"
+import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import {
   getDateComparisonOperatorFromSearchParams,
@@ -131,6 +133,8 @@ const PriceListTableFilters = () => {
 }
 
 const PriceListOverview = () => {
+  const { getWidgets } = useWidgets()
+
   const [searchParams] = useSearchParams()
 
   const { query, setQuery } = useDebouncedSearchParam()
@@ -199,86 +203,109 @@ const PriceListOverview = () => {
 
   return (
     <div>
-      <Container className="overflow-hidden p-0">
-        <div className="flex items-center justify-between px-8 pt-6 pb-4">
-          <Heading>Price Lists</Heading>
-          <div className="flex items-center gap-x-2">
-            <PriceListTableFilters />
-            <Input
-              size="small"
-              type="search"
-              placeholder="Search"
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value)
-              }}
+      <div className="flex flex-col gap-y-2">
+        {getWidgets("price_list.list.before").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"price_list.list.before"}
+              widget={w}
+              entity={undefined}
             />
-            <PriceListNew />
+          )
+        })}
+        <Container className="overflow-hidden p-0">
+          <div className="flex items-center justify-between px-8 pt-6 pb-4">
+            <Heading>Price Lists</Heading>
+            <div className="flex items-center gap-x-2">
+              <PriceListTableFilters />
+              <Input
+                size="small"
+                type="search"
+                placeholder="Search"
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value)
+                }}
+              />
+              <PriceListNew />
+            </div>
           </div>
-        </div>
-        <div
-          style={{
-            height: TABLE_HEIGHT,
-          }}
-        >
-          <Table>
-            <Table.Header>
-              {table.getHeaderGroups().map((headerGroup) => {
-                return (
+          <div
+            style={{
+              height: TABLE_HEIGHT,
+            }}
+          >
+            <Table>
+              <Table.Header>
+                {table.getHeaderGroups().map((headerGroup) => {
+                  return (
+                    <Table.Row
+                      key={headerGroup.id}
+                      className="[&_th]:w-1/5 [&_th:last-of-type]:w-[1%]"
+                    >
+                      {headerGroup.headers.map((header) => {
+                        return (
+                          <Table.HeaderCell key={header.id}>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                          </Table.HeaderCell>
+                        )
+                      })}
+                    </Table.Row>
+                  )
+                })}
+              </Table.Header>
+              <Table.Body className="border-b-0">
+                {table.getRowModel().rows.map((row) => (
                   <Table.Row
-                    key={headerGroup.id}
-                    className="[&_th]:w-1/5 [&_th:last-of-type]:w-[1%]"
+                    key={row.id}
+                    className={clx("cursor-pointer [&_td:last-of-type]:w-[1%]")}
+                    onClick={() => {
+                      navigate(`/a/pricing/${row.original.id}`)
+                    }}
                   >
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <Table.HeaderCell key={header.id}>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </Table.HeaderCell>
-                      )
-                    })}
+                    {row.getVisibleCells().map((cell) => (
+                      <Table.Cell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Table.Cell>
+                    ))}
                   </Table.Row>
-                )
-              })}
-            </Table.Header>
-            <Table.Body className="border-b-0">
-              {table.getRowModel().rows.map((row) => (
-                <Table.Row
-                  key={row.id}
-                  className={clx("cursor-pointer [&_td:last-of-type]:w-[1%]")}
-                  onClick={() => {
-                    navigate(`/a/pricing/${row.original.id}`)
-                  }}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <Table.Cell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Table.Cell>
-                  ))}
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        </div>
-        <Table.Pagination
-          className={clx({
-            "border-ui-border-base border-t": price_lists?.length !== PAGE_SIZE,
-          })}
-          count={count ?? 0}
-          canNextPage={table.getCanNextPage()}
-          canPreviousPage={table.getCanPreviousPage()}
-          nextPage={table.nextPage}
-          previousPage={table.previousPage}
-          pageIndex={table.getState().pagination.pageIndex}
-          pageCount={table.getPageCount()}
-          pageSize={PAGE_SIZE}
-        />
-      </Container>
+                ))}
+              </Table.Body>
+            </Table>
+          </div>
+          <Table.Pagination
+            className={clx({
+              "border-ui-border-base border-t":
+                price_lists?.length !== PAGE_SIZE,
+            })}
+            count={count ?? 0}
+            canNextPage={table.getCanNextPage()}
+            canPreviousPage={table.getCanPreviousPage()}
+            nextPage={table.nextPage}
+            previousPage={table.previousPage}
+            pageIndex={table.getState().pagination.pageIndex}
+            pageCount={table.getPageCount()}
+            pageSize={PAGE_SIZE}
+          />
+        </Container>
+        {getWidgets("price_list.list.after").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"price_list.list.after"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
+      </div>
       <Spacer />
     </div>
   )
