@@ -89,11 +89,11 @@ export default async (req, res) => {
     if (
       featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
     ) {
-      const productShippinProfileMap =
+      const productShippingProfileMap =
         await shippingProfileService.getMapProfileIdsByProductIds(productIds)
 
       query.profile_id = new Set(
-        Object.values(productShippinProfileMap)
+        Object.values(productShippingProfileMap)
           .map((p) => p.map((s) => s.id))
           .flat()
       )
