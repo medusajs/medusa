@@ -4,6 +4,7 @@ import { EntityManager } from "typeorm"
 import { createProducts, Workflows } from "@medusajs/workflows"
 import express from "express"
 import loaders from "../loaders"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 
 const seedProducts = [
   {
@@ -100,6 +101,16 @@ async function seedIsolatedProduct({ directory }) {
   const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
     workflows: Workflows.CreateProducts,
   })
+
+  const isProductIsolatedEnabled = featureFlagRouter.isFeatureEnabled(
+    IsolateProductDomainFeatureFlag.key
+  )
+
+  if (!isProductIsolatedEnabled) {
+    throw new Error(
+      `Cannot run script 'seed-isolated-product without the '${IsolateProductDomainFeatureFlag.key}' feature flag enabled`
+    )
+  }
 
   if (!isWorkflowEnabled) {
     throw new Error(
