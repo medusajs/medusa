@@ -160,7 +160,7 @@ async function seedIsolatedProduct({ directory }) {
   logger.info(
     `Created ${
       createdVariants.length
-    } products with the following ids: [${createdVariants
+    } variants with the following ids: [${createdVariants
       .map((v) => v.id)
       .join(", ")}]`
   )
