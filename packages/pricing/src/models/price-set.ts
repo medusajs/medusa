@@ -13,8 +13,8 @@ import {
 import MoneyAmount from "./money-amount"
 import PriceRule from "./price-rule"
 import PriceSetMoneyAmount from "./price-set-money-amount"
-import RuleType from "./rule-type"
 import PriceSetRuleType from "./price-set-rule-type"
+import RuleType from "./rule-type"
 
 @Entity()
 export default class PriceSet {

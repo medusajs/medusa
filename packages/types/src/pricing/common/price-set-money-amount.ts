@@ -20,4 +20,3 @@ export interface CreatePriceSetMoneyAmountDTO {
   price_set?: PriceSetDTO | string
   money_amount?: MoneyAmountDTO | string
 }
-

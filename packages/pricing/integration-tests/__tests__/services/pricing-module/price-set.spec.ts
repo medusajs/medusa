@@ -678,12 +678,11 @@ describe("PricingModule Service - PriceSet", () => {
         })
       )
     })
-    
+
     it("should fail to add rules to non-existent price sets", async () => {
       let error
 
-      try{ 
-
+      try {
         await service.addRules([
           {
             priceSetId: "price-set-doesn't-exist",
@@ -694,7 +693,7 @@ describe("PricingModule Service - PriceSet", () => {
             ],
           },
         ])
-      } catch(e) { 
+      } catch (e) {
         error = e
       }
 
@@ -702,12 +701,11 @@ describe("PricingModule Service - PriceSet", () => {
         "PriceSets with ids: price-set-doesn't-exist was not found"
       )
     })
-    
+
     it("should fail to add rules with non-existent attributes", async () => {
       let error
 
-      try{ 
-
+      try {
         await service.addRules([
           {
             priceSetId: "price-set-1",
@@ -718,7 +716,7 @@ describe("PricingModule Service - PriceSet", () => {
             ],
           },
         ])
-      } catch(e) { 
+      } catch (e) {
         error = e
       }
 
