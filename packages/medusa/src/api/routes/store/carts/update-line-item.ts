@@ -1,10 +1,13 @@
 import { IsInt, IsOptional } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { FlagRouter } from "@medusajs/utils"
+
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-steps"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
@@ -68,6 +71,7 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   await manager.transaction(async (m) => {
     // If the quantity is 0 that is effectively deletion
@@ -91,6 +95,20 @@ export default async (req, res) => {
         region_id: cart.region_id,
         quantity: validated.quantity,
         metadata: validated.metadata || {},
+      }
+
+      if (
+        featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
+      ) {
+        const remoteQuery = req.scope.resolve("remoteQuery")
+
+        const variants = await retrieveVariantsWithIsolatedProductModule(
+          remoteQuery,
+          [validated.variant_id]
+        )
+
+        // @ts-ignore
+        lineItemUpdate.variant = variants[0]
       }
 
       await cartService

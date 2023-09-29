@@ -1009,7 +1009,7 @@ class CartService extends TransactionBaseService {
           if (lineItem.variant_id) {
             const hasInventory =
               await this.productVariantInventoryService_.confirmInventory(
-                lineItem.variant_id,
+                lineItem.variant || lineItem.variant_id,
                 lineItemUpdate.quantity,
                 { salesChannelId: cart.sales_channel_id }
               )
