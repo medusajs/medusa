@@ -52,7 +52,7 @@ async function addProductToShippingProfilesIsolated({ directory }) {
     }
 
     let skip = 0
-    let take = 100
+    let take = 500
 
     let products = await productModuleService.list(
       {},
@@ -69,6 +69,8 @@ async function addProductToShippingProfilesIsolated({ directory }) {
       const productIds = products.map((p) => p.id)
       await shippingProfileServiceTx.addProducts(defaultProfile!.id, productIds)
 
+      skip += products.length
+
       products = await productModuleService.list(
         {},
         {
@@ -77,8 +79,6 @@ async function addProductToShippingProfilesIsolated({ directory }) {
           take,
         }
       )
-
-      skip += products.length
     }
   })
 }
