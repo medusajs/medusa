@@ -11,7 +11,6 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
-  Unique,
 } from "@mikro-orm/core"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
@@ -36,34 +35,34 @@ class ProductVariant {
   title: string
 
   @Property({ columnType: "text", nullable: true })
-  @Unique({
+  @Index({
     name: "IDX_product_variant_sku_unique",
-    properties: ["sku"],
-    options: { where: { deleted_at: null } },
+    expression:
+      'CREATE UNIQUE INDEX "IDX_product_variant_sku_unique" ON "product_variant" ("sku") WHERE deleted_at IS NULL',
   })
   sku?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  @Unique({
+  @Index({
     name: "IDX_product_variant_barcode_unique",
-    properties: ["barcode"],
-    options: { where: { deleted_at: null } },
+    expression:
+      'CREATE UNIQUE INDEX "IDX_product_variant_barcode_unique" ON "product_variant" ("barcode") WHERE deleted_at IS NULL',
   })
   barcode?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  @Unique({
+  @Index({
     name: "IDX_product_variant_ean_unique",
-    properties: ["ean"],
-    options: { where: { deleted_at: null } },
+    expression:
+      'CREATE UNIQUE INDEX "IDX_product_variant_ean_unique" ON "product_variant" ("ean") WHERE deleted_at IS NULL',
   })
   ean?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  @Unique({
+  @Index({
     name: "IDX_product_variant_upc_unique",
-    properties: ["upc"],
-    options: { where: { deleted_at: null } },
+    expression:
+      'CREATE UNIQUE INDEX "IDX_product_variant_upc_unique" ON "product_variant" ("upc") WHERE deleted_at IS NULL',
   })
   upc?: string | null
 

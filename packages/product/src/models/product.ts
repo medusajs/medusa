@@ -11,7 +11,6 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
-  Unique,
 } from "@mikro-orm/core"
 
 import {
@@ -49,10 +48,10 @@ class Product {
   title: string
 
   @Property({ columnType: "text" })
-  @Unique({
+  @Index({
     name: "IDX_product_handle_unique",
-    properties: ["handle"],
-    options: { where: { deleted_at: null } },
+    expression:
+      'CREATE UNIQUE INDEX "IDX_product_handle_unique" ON "product" ("handle") WHERE deleted_at IS NULL',
   })
   handle?: string | null
 

@@ -13,6 +13,7 @@ const seedProducts = [
     is_giftcard: false,
     thumbnail:
       "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-front.png",
+    status: "published",
     variants: [
       {
         title: "Test Variant",
@@ -37,6 +38,7 @@ const seedProducts = [
     is_giftcard: false,
     thumbnail:
       "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-front.png",
+    status: "published",
     variants: [
       {
         title: "Test Variant 2",
@@ -61,6 +63,7 @@ const seedProducts = [
     is_giftcard: false,
     thumbnail:
       "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-front.png",
+    status: "published",
     variants: [
       {
         title: "Test Variant 3",
