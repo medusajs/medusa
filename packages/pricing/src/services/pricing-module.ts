@@ -383,12 +383,10 @@ export default class PricingModuleService<
                 })
               )
 
-              const created = await this.priceRuleService_.create(
+              await this.priceRuleService_.create(
                 priceSetRulesCreate as unknown as PricingTypes.CreatePriceRuleDTO[],
                 sharedContext
               )
-
-              priceSet.price_rules.add(created)
             }
           })
         }
@@ -400,12 +398,26 @@ export default class PricingModuleService<
     return priceSets
   }
 
-  async addRules(
-    data: PricingTypes.AddRulesDTO[] | PricingTypes.AddRulesDTO,
+  async addRules<
+    TInput extends PricingTypes.AddRulesDTO | PricingTypes.AddRulesDTO[],
+    TOutput = TInput extends PricingTypes.AddRulesDTO[]
+      ? PricingTypes.PriceSetDTO[]
+      : PricingTypes.PriceSetDTO
+  >(
+    data: PricingTypes.AddRulesDTO | PricingTypes.AddRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<TOutput> {
     const inputs = Array.isArray(data) ? data : [data]
 
+    const priceSets = await this.addRules_(inputs, sharedContext)
+
+    return (Array.isArray(data) ? priceSets : priceSets[0] )as unknown as TOutput
+   }
+
+  protected async addRules_(
+    inputs: PricingTypes.AddRulesDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceSetDTO[]> {
     const priceSets = await this.priceSetService_.list(
       { id: inputs.map((d) => d.priceSetId) },
       { relations: ["rule_types"] }
@@ -481,6 +493,13 @@ export default class PricingModuleService<
     await this.priceSetRuleTypeService_.create(
       priceSetRuleTypesCreate as unknown as PricingTypes.CreatePriceSetRuleTypeDTO[],
       sharedContext
+    )
+
+    return this.baseRepository_.serialize<PricingTypes.PriceSetDTO[]>(
+      priceSets,
+      {
+        populate: true,
+      }
     )
   }
 
