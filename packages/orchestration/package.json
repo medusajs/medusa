@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/orchestration",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Medusa utilities to orchestrate modules",
   "main": "dist/index.js",
   "repository": {
@@ -24,8 +24,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/types": "^1.11.1",
-    "@medusajs/utils": "^1.10.1",
+    "@medusajs/types": "^1.11.2",
+    "@medusajs/utils": "^1.10.2",
     "awilix": "^8.0.0",
     "graphql": "^16.6.0"
   },
