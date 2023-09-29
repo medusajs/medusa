@@ -348,7 +348,9 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
             entryPoint: "product",
             variables: {
               filters: {
-                variant_id: variantIds,
+                variants: {
+                  variant_id: variantIds,
+                },
               },
             },
             fields: [

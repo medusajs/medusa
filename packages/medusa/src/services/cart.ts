@@ -1028,7 +1028,9 @@ class CartService extends TransactionBaseService {
                   entryPoint: "product",
                   variables: {
                     filters: {
-                      variant_id: lineItem.variant_id,
+                      variants: {
+                        variant_id: lineItem.variant_id,
+                      },
                     },
                   },
                   fields: [
