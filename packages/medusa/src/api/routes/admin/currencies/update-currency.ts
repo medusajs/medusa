@@ -38,7 +38,7 @@ import { EntityManager } from "typeorm"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/currencies/{code}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "includes_tax": true
@@ -46,6 +46,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Currencies
  * responses:

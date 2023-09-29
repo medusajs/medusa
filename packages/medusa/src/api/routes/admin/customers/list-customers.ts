@@ -42,10 +42,11 @@ import customerController from "../../../../controllers/customers"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/customers' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:

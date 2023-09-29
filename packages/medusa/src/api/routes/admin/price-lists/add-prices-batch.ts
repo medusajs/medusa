@@ -46,7 +46,7 @@ import { EntityManager } from "typeorm"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/price-lists/{id}/prices/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "prices": [
@@ -60,6 +60,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:
