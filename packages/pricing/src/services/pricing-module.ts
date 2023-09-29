@@ -343,12 +343,7 @@ export default class PricingModuleService<
     }
 
     const invalidMoneyAmountRule = data
-      .map(
-        (d) =>
-          d.money_amounts
-            ?.map((ma) => (ma?.rules ? Object.keys(ma.rules) : []))
-            .flat() ?? []
-      )
+      .map((d) => d.prices?.map((ma) => Object.keys(ma.rules)).flat() ?? [])
       .flat()
       .filter((r) => !ruleTypeMap.has(r))
 
@@ -363,7 +358,7 @@ export default class PricingModuleService<
 
     const priceSets = await Promise.all(
       data.map(async (d) => {
-        const { rules, money_amounts, ...rest } = d
+        const { rules, prices, ...rest } = d
         const [priceSet] = await this.priceSetService_.create(
           [rest],
           sharedContext
@@ -381,8 +376,8 @@ export default class PricingModuleService<
           )
         }
 
-        if (money_amounts?.length) {
-          for (const ma of money_amounts) {
+        if (prices?.length) {
+          for (const ma of prices) {
             const [moneyAmount] = await this.moneyAmountService_.create(
               [ma] as unknown as CreateMoneyAmountDTO[],
               sharedContext

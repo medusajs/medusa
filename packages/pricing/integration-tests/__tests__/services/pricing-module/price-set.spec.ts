@@ -313,7 +313,7 @@ describe("PricingModule Service - PriceSet", () => {
         await service.create([
           {
             rules: [{ rule_attribute: "region_id" }],
-            money_amounts: [
+            prices: [
               {
                 amount: 100,
                 currency_code: "USD",
@@ -354,7 +354,7 @@ describe("PricingModule Service - PriceSet", () => {
       const [priceSet] = await service.create([
         {
           rules: [{ rule_attribute: "region_id" }],
-          money_amounts: [
+          prices: [
             {
               amount: 100,
               currency_code: "USD",
@@ -387,7 +387,7 @@ describe("PricingModule Service - PriceSet", () => {
       const [priceSet] = await service.create([
         {
           rules: [{ rule_attribute: "region_id" }],
-          money_amounts: [
+          prices: [
             {
               amount: 100,
               currency_code: "USD",
@@ -397,7 +397,8 @@ describe("PricingModule Service - PriceSet", () => {
             },
             {
               amount: 150,
-              currency_code: "USD"
+              currency_code: "USD",
+              rules: {},
             },
           ],
         },
@@ -430,7 +431,7 @@ describe("PricingModule Service - PriceSet", () => {
       const [priceSet] = await service.create([
         {
           rules: [{ rule_attribute: "region_id" }],
-          money_amounts: [
+          prices: [
             {
               amount: 100,
               currency_code: "USD",
@@ -495,7 +496,7 @@ describe("PricingModule Service - PriceSet", () => {
               rule_attribute: "currency_code",
             },
           ],
-          money_amounts: [
+          prices: [
             {
               currency_code: "EUR",
               amount: 100,

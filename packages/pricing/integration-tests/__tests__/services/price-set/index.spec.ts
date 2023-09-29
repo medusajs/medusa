@@ -31,7 +31,7 @@ describe("PriceSet Service", () => {
   const priceSetInputData = [
     {
       id: "price-set-1",
-      money_amounts: [
+      prices: [
         {
           id: "money-amount-USD",
           currency_code: "EUR",
@@ -42,11 +42,11 @@ describe("PriceSet Service", () => {
     },
     {
       id: "price-set-2",
-      money_amounts: [],
+      prices: [],
     },
     {
       id: "price-set-3",
-      money_amounts: [],
+      prices: [],
     },
   ]
 

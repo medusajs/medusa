@@ -13,8 +13,8 @@ export async function createPriceSets(
 
   for (let priceSetData of priceSetsData) {
     const priceSetDataClone = { ...priceSetData }
-    const moneyAmountsData = priceSetDataClone.money_amounts || []
-    delete priceSetDataClone.money_amounts
+    const moneyAmountsData = priceSetDataClone.prices || []
+    delete priceSetDataClone.prices
 
     let priceSet = manager.create(PriceSet, priceSetDataClone) as PriceSet
 
@@ -32,7 +32,7 @@ export async function createPriceSets(
         title: "test",
       })
 
-    await manager.persistAndFlush(psma)
+      await manager.persistAndFlush(psma)
     }
   }
 

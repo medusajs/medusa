@@ -46,7 +46,7 @@ export interface RemovePriceSetRulesDTO {
 
 export interface CreatePriceSetDTO {
   rules?: { rule_attribute: string }[]
-  money_amounts?: (CreateMoneyAmountDTO & { rules: Record<string, string> })[]
+  prices?: (CreateMoneyAmountDTO & { rules: Record<string, string> })[]
 }
 
 export interface UpdatePriceSetDTO {
