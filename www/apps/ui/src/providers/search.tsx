@@ -74,8 +74,10 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           component: (
             <AiAssistantProvider
               apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
-              apiToken={
-                process.env.NEXT_PUBLIC_AI_API_ASSISTANT_TOKEN || "temp"
+              websiteId={process.env.NEXT_PUBLIC_AI_WEBSITE_ID || "temp"}
+              recaptchaSiteKey={
+                process.env.NEXT_PUBLIC_AI_API_ASSISTANT_RECAPTCHA_SITE_KEY ||
+                "temp"
               }
             />
           ),

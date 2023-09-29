@@ -10,6 +10,8 @@ import {
   SearchSuggestionItem,
   SearchSuggestionType,
   SearchHitGroupName,
+  Tooltip,
+  Link,
 } from "@/components"
 import { useAiAssistant, useSearch } from "@/providers"
 import { ArrowUturnLeft, XMarkMini } from "@medusajs/icons"
@@ -374,15 +376,28 @@ export const AiAssistant = () => {
           "bg-medusa-bg-base h-[57px]"
         )}
       >
-        <div
-          className={clsx(
-            "flex items-center gap-docs_0.75 text-compact-small-plus"
-          )}
+        <Tooltip
+          tooltipChildren={
+            <>
+              This site is protected by reCAPTCHA and the{" "}
+              <Link href="https://policies.google.com/privacy">
+                Google Privacy Policy
+              </Link>{" "}
+              and <Link href="https://policies.google.com/terms">ToS</Link>{" "}
+              apply
+            </>
+          }
         >
-          <AiAssistantCommandIcon />
-          <span className="text-medusa-fg-subtle">Medusa AI Assistant</span>
-          <Badge variant="purple">Beta</Badge>
-        </div>
+          <div
+            className={clsx(
+              "flex items-center gap-docs_0.75 text-compact-small-plus"
+            )}
+          >
+            <AiAssistantCommandIcon />
+            <span className="text-medusa-fg-subtle">Medusa AI Assistant</span>
+            <Badge variant="purple">Beta</Badge>
+          </div>
+        </Tooltip>
         <div className="hidden items-center gap-docs_1 md:flex">
           <div className="flex items-center gap-docs_0.5">
             {thread.length === 0 && (

@@ -3,6 +3,7 @@
 import React, { createContext, useContext } from "react"
 import { useAnalytics } from "@/providers"
 import { AiAssistant } from "@/components"
+import ReCAPTCHA from "react-google-recaptcha"
 
 export type AiAssistantFeedbackType = "upvote" | "downvote"
 
@@ -19,15 +20,26 @@ const AiAssistantContext = createContext<AiAssistantContextType | null>(null)
 export type AiAssistantProviderProps = {
   children?: React.ReactNode
   apiUrl: string
-  apiToken: string
+  recaptchaSiteKey: string
+  websiteId: string
 }
 
 export const AiAssistantProvider = ({
   apiUrl,
-  apiToken,
+  recaptchaSiteKey,
+  websiteId,
   children,
 }: AiAssistantProviderProps) => {
   const { analytics } = useAnalytics()
+  const recaptchaRef = React.createRef<ReCAPTCHA>()
+
+  const getReCaptchaToken = async () => {
+    if (recaptchaRef?.current) {
+      const recaptchaToken = await recaptchaRef.current.executeAsync()
+      return recaptchaToken || ""
+    }
+    return ""
+  }
 
   const sendRequest = async (
     apiPath: string,
@@ -38,7 +50,8 @@ export const AiAssistantProvider = ({
     return await fetch(`${apiUrl}${apiPath}`, {
       method,
       headers: {
-        "X-API-TOKEN": apiToken,
+        "X-RECAPTCHA-TOKEN": await getReCaptchaToken(),
+        "X-WEBSITE-ID": websiteId,
         ...headers,
       },
       body,
@@ -81,6 +94,17 @@ export const AiAssistantProvider = ({
     >
       {children}
       <AiAssistant />
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        size="invisible"
+        sitekey={recaptchaSiteKey}
+        onErrored={() =>
+          console.error(
+            "ReCAPTCHA token not yet configured. Please reach out to the kapa team at founders@kapa.ai to complete the setup."
+          )
+        }
+        className="grecaptcha-badge"
+      />
     </AiAssistantContext.Provider>
   )
 }

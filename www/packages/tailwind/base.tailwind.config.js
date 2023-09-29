@@ -688,6 +688,9 @@ module.exports = {
             outlineColor: "transparent",
             cursor: "pointer",
           },
+          ".grecaptcha-badge": {
+            visibility: "hidden",
+          },
         })
 
         matchUtilities(

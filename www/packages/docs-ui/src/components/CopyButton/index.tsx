@@ -2,7 +2,7 @@
 
 import React from "react"
 import clsx from "clsx"
-import { Tooltip } from "@/components/Tooltip"
+import { Tooltip } from "@/components"
 import { useCopy } from "../../hooks"
 
 export type CopyButtonProps = {
