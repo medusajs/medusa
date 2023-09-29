@@ -1,15 +1,19 @@
-import { IInventoryService, IStockLocationService } from "@medusajs/types"
+import {
+  IInventoryService,
+  IStockLocationService,
+  StockLocationDTO,
+} from "@medusajs/types"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../services"
 
 import { AwilixContainer } from "awilix"
-import { EntityManager } from "typeorm"
-import { ProductVariant } from "../models"
 import dotenv from "dotenv"
 import express from "express"
+import { EntityManager } from "typeorm"
 import loaders from "../loaders"
+import { ProductVariant } from "../models"
 
 dotenv.config()
 
@@ -81,15 +85,25 @@ const migrateStockLocation = async (container: AwilixContainer) => {
   const stockLocationService: IStockLocationService = container.resolve(
     "stockLocationService"
   )
-  const existing = await stockLocationService.list({}, { take: 1 })
 
-  if (existing.length) {
-    return existing[0].id
+  let location: StockLocationDTO | StockLocationDTO[] =
+    await stockLocationService.list({}, { take: 1 })
+
+  if (location.length) {
+    location = location[0]
   }
 
-  const stockLocation = await stockLocationService.create({ name: "Default" })
+  location = await stockLocationService.create({ name: "Default" })
 
-  return stockLocation.id
+  const salesChannelService = container.resolve("salesChannelService")
+  const defaultSalesChannel = await salesChannelService.retrieveDefault()
+
+  await salesChannelService.associateLocation(
+    defaultSalesChannel.id,
+    location.id
+  )
+
+  return location.id
 }
 
 const processBatch = async (
