@@ -1029,7 +1029,7 @@ class CartService extends TransactionBaseService {
                   variables: {
                     filters: {
                       variants: {
-                        variant_id: lineItem.variant_id,
+                        id: lineItem.variant_id,
                       },
                     },
                   },

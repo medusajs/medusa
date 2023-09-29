@@ -349,7 +349,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
             variables: {
               filters: {
                 variants: {
-                  variant_id: variantIds,
+                  id: variantIds,
                 },
               },
             },
