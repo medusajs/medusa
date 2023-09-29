@@ -2264,10 +2264,17 @@ class CartService extends TransactionBaseService {
               IsolateProductDomainFeatureFlag.key
             )
           ) {
-            productShippinProfileMap =
+            const profilesMap =
               await this.shippingProfileService_.getMapProfileIdsByProductIds(
                 cart.items.map((item) => item.variant.product_id)
               )
+            productShippinProfileMap = new Map(
+              Object.entries(profilesMap).map(
+                ([productId, shippingProfiles]) => {
+                  return [productId, shippingProfiles?.[0].id]
+                }
+              )
+            )
           } else {
             productShippinProfileMap = new Map<string, string>(
               cart.items.map((item) => [
