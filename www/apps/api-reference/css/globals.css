@@ -51,17 +51,3 @@
     @apply !overflow-hidden;
   }
 }
-
-@layer utilities {
-  .clip {
-    clip-path: inset(0);
-  }
-
-  .no-marker {
-    @apply marker:content-none;
-  }
-
-  .no-marker::-webkit-details-marker {
-    @apply hidden;
-  }
-}
