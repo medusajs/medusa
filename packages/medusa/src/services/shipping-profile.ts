@@ -515,7 +515,7 @@ class ShippingProfileService extends TransactionBaseService {
         cart.items.map((item) => item.variant?.product_id)
       )
       profileIds = new Set(
-        ...Object.values(productShippinProfileMap)
+        Object.values(productShippinProfileMap)
           .map((p) => p.map((s) => s.id))
           .flat()
       )

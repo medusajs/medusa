@@ -93,7 +93,7 @@ export default async (req, res) => {
         await shippingProfileService.getMapProfileIdsByProductIds(productIds)
 
       query.profile_id = new Set(
-        ...Object.values(productShippinProfileMap)
+        Object.values(productShippinProfileMap)
           .map((p) => p.map((s) => s.id))
           .flat()
       )
