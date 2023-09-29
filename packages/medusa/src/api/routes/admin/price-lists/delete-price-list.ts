@@ -26,10 +26,11 @@ import PriceListService from "../../../../services/price-list"
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/price-lists/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:
