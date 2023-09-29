@@ -52,6 +52,7 @@ class Product {
   @Unique({
     name: "IDX_product_handle_unique",
     properties: ["handle"],
+    options: { where: { deleted_at: null } },
   })
   handle?: string | null
 

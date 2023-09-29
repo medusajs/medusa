@@ -39,6 +39,7 @@ class ProductVariant {
   @Unique({
     name: "IDX_product_variant_sku_unique",
     properties: ["sku"],
+    options: { where: { deleted_at: null } },
   })
   sku?: string | null
 
@@ -46,6 +47,7 @@ class ProductVariant {
   @Unique({
     name: "IDX_product_variant_barcode_unique",
     properties: ["barcode"],
+    options: { where: { deleted_at: null } },
   })
   barcode?: string | null
 
@@ -53,6 +55,7 @@ class ProductVariant {
   @Unique({
     name: "IDX_product_variant_ean_unique",
     properties: ["ean"],
+    options: { where: { deleted_at: null } },
   })
   ean?: string | null
 
@@ -60,6 +63,7 @@ class ProductVariant {
   @Unique({
     name: "IDX_product_variant_upc_unique",
     properties: ["upc"],
+    options: { where: { deleted_at: null } },
   })
   upc?: string | null
 
