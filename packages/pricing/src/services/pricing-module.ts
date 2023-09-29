@@ -1,16 +1,17 @@
 import {
   Context,
+  CreateMoneyAmountDTO,
   DAL,
   FindConfig,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  PriceSetDTO,
   PricingContext,
   PricingFilters,
   PricingTypes,
   RuleTypeDTO,
-  CreateMoneyAmountDTO,
-  PriceSetDTO,
 } from "@medusajs/types"
+
 import {
   Currency,
   MoneyAmount,
@@ -21,6 +22,7 @@ import {
   PriceSetRuleType,
   RuleType,
 } from "@models"
+
 import {
   CurrencyService,
   MoneyAmountService,
@@ -38,13 +40,13 @@ import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   groupBy,
   shouldForceTransaction,
-  MedusaError,
 } from "@medusajs/utils"
 
-import { joinerConfig } from "../joiner-config"
 import { AddPricesDTO } from "@medusajs/types"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -129,6 +131,17 @@ export default class PricingModuleService<
     const quantity = context.quantity
     delete context.quantity
 
+    // Currency code here is a required param.
+    const currencyCode = context.currency_code
+    delete context.currency_code
+
+    if (!currencyCode) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `currency_code is a required input in the pricing context`
+      )
+    }
+
     // Gets all the price set money amounts where rules match for each of the contexts
     // that the price set is configured for
     const psmaSubQueryKnex = knex({
@@ -140,9 +153,13 @@ export default class PricingModuleService<
         money_amount_id: "psma.money_amount_id",
         number_rules: "psma.number_rules",
       })
-      .join("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
-      .join("rule_type as rt", "rt.id", "pr.rule_type_id")
+      .leftJoin("price_set_money_amount as psma1", "psma1.id", "psma.id")
+      .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
+      .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
       .orderBy("number_rules", "desc")
+      .orWhere("psma1.number_rules", "=", 0)
+      .groupBy("psma.id")
+      .having(knex.raw("count(DISTINCT rt.rule_attribute) = psma.number_rules"))
 
     for (const [key, value] of Object.entries(context)) {
       psmaSubQueryKnex.orWhere({
@@ -150,10 +167,6 @@ export default class PricingModuleService<
         "pr.value": value,
       })
     }
-
-    psmaSubQueryKnex
-      .groupBy("psma.id")
-      .having(knex.raw("count(DISTINCT rt.rule_attribute) = psma.number_rules"))
 
     const priceSetQueryKnex = knex({
       ps: "price_set",
@@ -169,9 +182,10 @@ export default class PricingModuleService<
       })
       .join(psmaSubQueryKnex.as("psma"), "psma.price_set_id", "ps.id")
       .join("money_amount as ma", "ma.id", "psma.money_amount_id")
-      .join("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
-      .join("rule_type as rt", "rt.id", "pr.rule_type_id")
+      .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
+      .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
       .whereIn("ps.id", pricingFilters.id)
+      .andWhere("ma.currency_code", "=", currencyCode)
       .orderBy([
         { column: "number_rules", order: "desc" },
         { column: "default_priority", order: "desc" },
@@ -182,7 +196,7 @@ export default class PricingModuleService<
       priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
     }
 
-    const isContextPresent = Object.entries(context).length
+    const isContextPresent = Object.entries(context).length || !!currencyCode
     // Only if the context is present do we need to query the database.
     const queryBuilderResults = isContextPresent ? await priceSetQueryKnex : []
     const pricesSetPricesMap = groupBy(queryBuilderResults, "id")
@@ -411,8 +425,10 @@ export default class PricingModuleService<
 
     const priceSets = await this.addRules_(inputs, sharedContext)
 
-    return (Array.isArray(data) ? priceSets : priceSets[0] )as unknown as TOutput
-   }
+    return (Array.isArray(data)
+      ? priceSets
+      : priceSets[0]) as unknown as TOutput
+  }
 
   protected async addRules_(
     inputs: PricingTypes.AddRulesDTO[],
