@@ -91,7 +91,7 @@ export class PriceRuleRepository extends DALUtils.MikroOrmBaseRepository {
       return manager.create(PriceRule, ruleData)
     })
 
-    manager.persistAndFlush(priceRules)
+    manager.persist(priceRules)
 
     return priceRules
   }
