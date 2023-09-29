@@ -25,7 +25,7 @@ const seedProducts = [
         prices: [
           {
             amount: 100,
-            currency_code: "usd",
+            currency_code: "eur",
           },
         ],
       },
@@ -50,7 +50,7 @@ const seedProducts = [
         prices: [
           {
             amount: 100,
-            currency_code: "usd",
+            currency_code: "eur",
           },
         ],
       },
@@ -75,7 +75,7 @@ const seedProducts = [
         prices: [
           {
             amount: 100,
-            currency_code: "usd",
+            currency_code: "eur",
           },
         ],
       },
