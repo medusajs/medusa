@@ -10,7 +10,7 @@ import {
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { isDefined, MedusaError } from "@medusajs/utils"
+import { FlagRouter, isDefined, MedusaError } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
@@ -19,6 +19,7 @@ import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
 import { TransactionBaseService } from "../interfaces"
 import { getSetDifference } from "../utils/diff-set"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -28,6 +29,7 @@ type InjectedDependencies = {
   stockLocationService: IStockLocationService
   inventoryService: IInventoryService
   eventBusService: IEventBusService
+  featureFlagRouter: FlagRouter
 }
 
 type AvailabilityContext = {
@@ -46,6 +48,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly inventoryService_: IInventoryService
   protected readonly eventBusService_: IEventBusService
   protected readonly cacheService_: ICacheService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     stockLocationService,
@@ -54,6 +57,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     productVariantService,
     inventoryService,
     eventBusService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -64,6 +68,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     this.productVariantService_ = productVariantService
     this.inventoryService_ = inventoryService
     this.eventBusService_ = eventBusService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -300,29 +305,39 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
     }
 
-    // Verify that variant exists
-    const variants = await this.productVariantService_
-      .withTransaction(this.activeManager_)
-      .list(
-        {
-          id: data.map((d) => d.variantId),
-        },
-        {
-          select: ["id"],
-        }
+    // We should be able to just attach the inventory to the variant id provided without constraints
+    if (
+      !this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
       )
+    ) {
+      // Verify that variant exists
+      const variants = await this.productVariantService_
+        .withTransaction(this.activeManager_)
+        .list(
+          {
+            id: data.map((d) => d.variantId),
+          },
+          {
+            select: ["id"],
+          }
+        )
 
-    const foundVariantIds = new Set(variants.map((v) => v.id))
-    const requestedVariantIds = new Set(data.map((v) => v.variantId))
-    if (foundVariantIds.size !== requestedVariantIds.size) {
-      const difference = getSetDifference(requestedVariantIds, foundVariantIds)
+      const foundVariantIds = new Set(variants.map((v) => v.id))
+      const requestedVariantIds = new Set(data.map((v) => v.variantId))
+      if (foundVariantIds.size !== requestedVariantIds.size) {
+        const difference = getSetDifference(
+          requestedVariantIds,
+          foundVariantIds
+        )
 
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variants not found for the following ids: ${[...difference].join(
-          ", "
-        )}`
-      )
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Variants not found for the following ids: ${[...difference].join(
+            ", "
+          )}`
+        )
+      }
     }
 
     // Verify that item exists
