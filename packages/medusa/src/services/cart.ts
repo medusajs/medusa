@@ -1003,7 +1003,7 @@ class CartService extends TransactionBaseService {
         })
 
         const lineItem = await this.lineItemService_.retrieve(lineItemId, {
-          select: ["id", "quantity", "variant_id", "cart_id"],
+          select: ["id", "quantity", "variant_id", "cart_id", "product_id"],
         })
 
         if (lineItem.cart_id !== cartId) {
@@ -1076,6 +1076,7 @@ class CartService extends TransactionBaseService {
                   {
                     variantId: lineItem.variant_id,
                     quantity: lineItemUpdate.quantity,
+                    product_id: lineItem.product_id!,
                   },
                 ],
                 {
