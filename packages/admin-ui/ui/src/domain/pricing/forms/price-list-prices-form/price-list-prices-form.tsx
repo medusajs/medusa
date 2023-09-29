@@ -109,10 +109,7 @@ const PriceListPricesForm = ({
           <table className="w-full text-left">
             <thead>
               <tr className="[&_th]:text-ui-fg-subtle [&_th]:txt-compact-small-plus border-ui-border-base [&_th]:w-1/3 [&_th]:border-r [&_th]:px-4 [&_th]:py-2.5 [&_th:last-of-type]:border-r-0">
-                <th>
-                  Variant
-                  {t("price-list-prices-form-variant", "Variant")}
-                </th>
+                <th>{t("price-list-prices-form-variant", "Variant")}</th>
                 <th>{t("price-list-prices-form-sku", "SKU")}</th>
                 <th className="text-right">
                   {t("price-list-prices-form-prices", "Prices")}

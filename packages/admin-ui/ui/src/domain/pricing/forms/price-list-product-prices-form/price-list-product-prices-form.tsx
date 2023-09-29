@@ -1372,7 +1372,10 @@ const PriceListProductPricesForm = ({
               )}
             </Button>
           </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
+          <DropdownMenu.Content
+            className="no-scrollbar max-h-[var(--radix-popper-available-height)] overflow-y-auto"
+            collisionPadding={16}
+          >
             <DropdownMenu.Label>
               {t(
                 "price-list-product-prices-form-column-visibility-currencies-label",
