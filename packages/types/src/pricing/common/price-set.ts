@@ -2,9 +2,7 @@ import { BaseFilterable } from "../../dal"
 import { FilterableMoneyAmountProps, MoneyAmountDTO } from "./money-amount"
 
 export interface PricingContext {
-  context?: {
-    currency_code?: string
-  }
+  context?: Record<string, string | number>
 }
 
 export interface PricingFilters {
