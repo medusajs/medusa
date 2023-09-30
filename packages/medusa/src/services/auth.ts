@@ -1,4 +1,6 @@
 import Scrypt from "scrypt-kdf"
+import { NextFunction, Request, Response } from "express"
+import passport from "passport"
 import { AuthenticateResult } from "../types/auth"
 import { Customer, User } from "../models"
 import { TransactionBaseService } from "../interfaces"
@@ -118,6 +120,22 @@ class AuthService extends TransactionBaseService {
   }
 
   /**
+   * Middleware function to verify a user session using passwport.
+   * Can be overridden to apply custom session verification.
+   * @param {Request} req - the request object
+   * @param {Response} res - the response object
+   * @param {NextFunction} next - the next request handler
+   * @return {void}
+   */
+  async verifySession(req: Request, res: Response, next: NextFunction): Promise<void> {
+    passport.authenticate(["admin-session", "admin-bearer", "admin-api-token"], { session: false })(
+      req,
+      res,
+      next
+    ) 
+  }
+
+  /**
    * Authenticates a customer based on an email, password combination. Uses
    * scrypt to match password with hashed value.
    * @param {string} email - the email of the user
@@ -165,6 +183,32 @@ class AuthService extends TransactionBaseService {
       }
     })
   }
+
+  /**
+   * Middleware function to verify a customer session using passwport.
+   * Can be overridden to apply custom session verification.
+   * @param {Request} req - the request object
+   * @param {Response} res - the response object
+   * @param {NextFunction} next - the next request handler
+   * @return {void}
+   */
+    async verifyCustomerSession(req: Request, res: Response, next: NextFunction): Promise<void> {
+      passport.authenticate(
+        ["store-session", "store-bearer"],
+        { session: false },
+        (err, user) => {
+          if (err) {
+            return next(err)
+          }
+  
+          if (user) {
+            req.user = user
+          }
+  
+          return next()
+        }
+      )(req, res, next)
+    }
 }
 
 export default AuthService
