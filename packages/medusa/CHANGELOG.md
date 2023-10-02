@@ -1,5 +1,39 @@
 # Change Log
 
+## 1.17.0
+
+### Minor Changes
+
+- [#4064](https://github.com/medusajs/medusa/pull/4064) [`2caff2efc`](https://github.com/medusajs/medusa/commit/2caff2efc757a3738ae8b7ee6fde77ee7100f995) Thanks [@dPreininger](https://github.com/dPreininger)! - feat(medusa): Authentication overhaul
+
+### Patch Changes
+
+- [#5200](https://github.com/medusajs/medusa/pull/5200) [`240c439be`](https://github.com/medusajs/medusa/commit/240c439beb76626e58006ceb86a1cd425f14d4fa) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Product model before insert hook
+
+- [#5137](https://github.com/medusajs/medusa/pull/5137) [`2b91049f5`](https://github.com/medusajs/medusa/commit/2b91049f58b2bd70cbee53e1ace7d36f59da6fa4) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): quantity prices for line item updates
+
+- [#5046](https://github.com/medusajs/medusa/pull/5046) [`f1512605d`](https://github.com/medusajs/medusa/commit/f1512605d2d8b758be21f21d0b118e14b914d7d2) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): admin list product with product isolated module
+
+- [#5168](https://github.com/medusajs/medusa/pull/5168) [`dfa5d041c`](https://github.com/medusajs/medusa/commit/dfa5d041c90b849b288f8ae9f5a0a1aa3ee1b32e) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat/update cart product isolation
+
+- [#5081](https://github.com/medusajs/medusa/pull/5081) [`202049f8a`](https://github.com/medusajs/medusa/commit/202049f8aa3682df7e545b1c42ab0bdab1c52639) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, workflows): Create product workflow with Isolated modules + module registration
+
+- [#5054](https://github.com/medusajs/medusa/pull/5054) [`5f76b967d`](https://github.com/medusajs/medusa/commit/5f76b967d9c6ae3a3f554c2d854299f5e22ee83e) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Admin get product with isolated module
+
+- [#5196](https://github.com/medusajs/medusa/pull/5196) [`f285a6712`](https://github.com/medusajs/medusa/commit/f285a671232f34a35d9cd9c9a0e6faa8a899a674) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Remove create product unnecessary input config workflow
+
+- [#5207](https://github.com/medusajs/medusa/pull/5207) [`a9972d7d6`](https://github.com/medusajs/medusa/commit/a9972d7d6fa5c9698318a55173440f635ebf0a11) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-react): `@medusajs/medusa-js` import
+
+- [#5224](https://github.com/medusajs/medusa/pull/5224) [`c68ba63c1`](https://github.com/medusajs/medusa/commit/c68ba63c1b4ac551cb53bfb494bf7046e652e083) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): In product isolation, throw if product not found
+
+- [#5177](https://github.com/medusajs/medusa/pull/5177) [`c1b8f089e`](https://github.com/medusajs/medusa/commit/c1b8f089e3277f2aa4b7188bf914253e4ad0fe95) Thanks [@srindom](https://github.com/srindom)! - fix(medusa-payment-stripe): adds missing undefined check
+
+- Updated dependencies [[`cc4169a94`](https://github.com/medusajs/medusa/commit/cc4169a94c7c5f5bf4d04f7b6e815b409a0a8192), [`30233712c`](https://github.com/medusajs/medusa/commit/30233712cb93b38de50c266a9841cea413949611), [`dfa5d041c`](https://github.com/medusajs/medusa/commit/dfa5d041c90b849b288f8ae9f5a0a1aa3ee1b32e), [`202049f8a`](https://github.com/medusajs/medusa/commit/202049f8aa3682df7e545b1c42ab0bdab1c52639), [`1e7db5a5c`](https://github.com/medusajs/medusa/commit/1e7db5a5cb7c955e72c52e64df8a16b1607eef70)]:
+  - @medusajs/utils@1.10.2
+  - @medusajs/orchestration@0.4.1
+  - @medusajs/modules-sdk@1.11.3
+  - @medusajs/workflows@0.2.3
+
 ## 1.16.1
 
 ### Patch Changes

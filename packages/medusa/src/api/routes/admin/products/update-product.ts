@@ -85,7 +85,7 @@ import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/i
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/products/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Size"
@@ -93,6 +93,7 @@ import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/i
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:

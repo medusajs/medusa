@@ -58,7 +58,7 @@ export default class PriceRuleService<TEntity extends PriceRule = PriceRule> {
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     const queryConfig = ModulesSdkUtils.buildQuery<PriceRule>(filters, config)
-    
+
     return (await this.priceRuleRepository_.findAndCount(
       queryConfig,
       sharedContext

@@ -26,6 +26,7 @@ post:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Uploads
   responses:
@@ -71,6 +72,7 @@ delete:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Uploads
   responses:

@@ -26,10 +26,11 @@ import { EntityManager } from "typeorm"
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/draft-orders/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Draft Orders
  * responses:
