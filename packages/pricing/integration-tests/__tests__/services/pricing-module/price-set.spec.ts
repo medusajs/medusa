@@ -404,8 +404,6 @@ describe("PricingModule Service - PriceSet", () => {
         },
       ])
 
-      console.warn(priceSet)
-
       expect(priceSet).toEqual(
         expect.objectContaining({
           rule_types: [
