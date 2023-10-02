@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/modules-sdk",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "description": "SDK for medusa modules",
   "main": "dist/index.js",
   "repository": {
@@ -24,9 +24,9 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/orchestration": "^0.4.0",
-    "@medusajs/types": "^1.11.1",
-    "@medusajs/utils": "^1.10.1",
+    "@medusajs/orchestration": "^0.4.1",
+    "@medusajs/types": "^1.11.2",
+    "@medusajs/utils": "^1.10.2",
     "awilix": "^8.0.0",
     "knex": "2.4.2",
     "pg": "^8.11.2",

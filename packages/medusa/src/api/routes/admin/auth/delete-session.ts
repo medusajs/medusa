@@ -19,10 +19,11 @@
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/auth' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Auth
  * responses:
@@ -42,9 +43,11 @@
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  if (req.session.customer_id) { // if we are also logged in as a customer, persist that session
+  if (req.session.customer_id) {
+    // if we are also logged in as a customer, persist that session
     delete req.session.user_id
-  } else { // otherwise, destroy the session
+  } else {
+    // otherwise, destroy the session
     req.session.destroy()
   }
 

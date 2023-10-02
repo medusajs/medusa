@@ -35,7 +35,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/reservations' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "line_item_id": "item_123",
@@ -46,6 +46,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Reservations
  * responses:
