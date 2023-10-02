@@ -1,6 +1,7 @@
+import { Express } from "express"
 import { readdir } from "fs/promises"
 import { extname, join } from "path"
-import { Express } from "express"
+import logger from "../../logger"
 import {
   Config,
   GlobalMiddlewareConfig,
@@ -10,7 +11,6 @@ import {
   RouteConfig,
   RouteDescriptor,
 } from "./types"
-import logger from "../../logger"
 
 const log = ({
   activityId,
@@ -369,7 +369,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
             const fullPath = join(dirPath, entry.name)
             return !this.excludes.some((exclude) => exclude.test(fullPath))
           })
-          .map((entry) => {
+          .map(async (entry) => {
             const childPath = join(dirPath, entry.name)
             isInMiddlewaresDirectory = isMiddlewaresDir(dirPath)
 
