@@ -13,12 +13,12 @@
     "build": "tsc"
   },
   "peerDependencies": {
-    "typedoc": "0.22.x"
+    "typedoc": "0.25.x"
   },
   "devDependencies": {
     "@types/node": "^16.11.10",
-    "typedoc": "^0.22.10",
-    "typescript": "4.5.2"
+    "typedoc": "^0.25.1",
+    "typescript": "^4.6"
   },
   "keywords": [
     "typedocplugin",
