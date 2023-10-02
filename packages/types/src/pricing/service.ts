@@ -41,7 +41,6 @@ export interface IPricingModuleService {
   /**
  * Calculates prices based on the provided filters and context.
  *
- * @async
  * @param {PricingFilters} filters - PriceSet filters
  * @param {PricingContext=} context - Optional pricing context to select prices.
  * @param {Context=} sharedContext - Optional shared context.
@@ -56,7 +55,6 @@ export interface IPricingModuleService {
   /**
  * Retrieves a priceSet by its ID.
  *
- * @async
  * @param {string} id - The ID of the priceSet to retrieve.
  * @param {FindConfig<PriceSetDTO>=} config - Optional configuration for the retrieval.
  * @param {Context=} sharedContext - Optional shared context.
@@ -71,7 +69,6 @@ export interface IPricingModuleService {
   /**
  * Lists price sets based on optional filters and configuration.
  *
- * @async
  * @param {FilterablePriceSetProps=} filters - Optional filters to narrow down the list.
  * @param {FindConfig<PriceSetDTO>=} config - Optional configuration.
  * @param {Context=} sharedContext - Optional shared context.
@@ -85,6 +82,7 @@ export interface IPricingModuleService {
 
   /**
  * List priceSets and provide the total count.
+ * 
  * @param filters - Optional filters for listing.
  * @param config - Optional configuration.
  * @param sharedContext - Optional shared context.
@@ -98,6 +96,7 @@ export interface IPricingModuleService {
 
   /**
  * Create a new priceSet.
+ * 
  * @param data - Data for creating a priceSet.
  * @param sharedContext - Optional shared context.
  * @returns A promise resolving to the created PriceSetDTO.
@@ -109,6 +108,7 @@ export interface IPricingModuleService {
 
 /**
  * Create multiple new priceSets.
+ * 
  * @param data - Array of data for creating priceSets.
  * @param sharedContext - Optional shared context.
  * @returns A promise resolving to an array of created PriceSetDTOs.
@@ -120,6 +120,7 @@ export interface IPricingModuleService {
 
   /**
  * Update existing priceSets.
+ * 
  * @param data - Array of data for updating priceSets.
  * @param sharedContext - Optional shared context.
  * @returns A promise resolving to an array of updated PriceSetDTOs.
@@ -131,6 +132,7 @@ export interface IPricingModuleService {
 
   /**
  * Remove rules from priceSet.
+ * 
  * @param data - Array of data for removing priceSet rules.
  * @param sharedContext - Optional shared context.
  * @returns A promise that resolves when rules are successfully removed.
@@ -142,6 +144,7 @@ export interface IPricingModuleService {
 
   /**
  * Delete priceSets by their IDs.
+ * 
  * @param ids - An array of IDs for priceSets to delete.
  * @param sharedContext - Optional shared context.
  * @returns A promise that resolves when the price sets are successfully deleted.
@@ -150,6 +153,7 @@ export interface IPricingModuleService {
 
   /**
  * Add prices to a price set.
+ * 
  * @param data - Data for adding prices to a price set.
  * @param sharedContext - Optional shared context.
  * @returns A promise resolving to the updated PriceSetDTO.
@@ -158,6 +162,7 @@ export interface IPricingModuleService {
 
   /**
  * Add prices to multiple price sets.
+ * 
  * @param data - An array of data for adding prices to price sets.
  * @param sharedContext - Optional shared context.
  * @returns A promise resolving to an array of updated PriceSetDTOs.
@@ -169,6 +174,7 @@ export interface IPricingModuleService {
 
   /**
  * Add rules to a price set.
+ * 
  * @param data - Data for adding rules to a price set.
  * @param sharedContext - Optional shared context.
  * @returns A promise resolving to the updated PriceSetDTO.
@@ -177,40 +183,87 @@ export interface IPricingModuleService {
 
   /**
  * Add rules to multiple price sets.
+ * 
  * @param data - An array of data for adding rules to price sets.
  * @param sharedContext - Optional shared context.
  * @returns A promise resolving to an array of updated PriceSetDTOs.
  */
   addRules(data: AddRulesDTO[], sharedContext?: Context): Promise<PriceSetDTO[]>
 
+  /**
+ * Retrieves a money amount by its ID.
+ *
+ * @param {string} id - The ID of the money amount to retrieve.
+ * @param {FindConfig<MoneyAmountDTO>=} config - Optional configuration for the retrieval operation.
+ * @param sharedContext - Optional shared context.
+ * @returns {Promise<MoneyAmountDTO>} A promise that resolves to a MoneyAmountDTO.
+ */
   retrieveMoneyAmount(
     id: string,
     config?: FindConfig<MoneyAmountDTO>,
     sharedContext?: Context
   ): Promise<MoneyAmountDTO>
 
+  /**
+ * Lists money amounts based on optional filters and configuration.
+ *
+ * @param {FilterableMoneyAmountProps=} filters - Optional filters to narrow down the list.
+ * @param {FindConfig<MoneyAmountDTO>=} config - Optional configuration for the listing operation.
+ * @param sharedContext - Optional shared context.
+ * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of MoneyAmountDTOs.
+ */
   listMoneyAmounts(
     filters?: FilterableMoneyAmountProps,
     config?: FindConfig<MoneyAmountDTO>,
     sharedContext?: Context
   ): Promise<MoneyAmountDTO[]>
 
+  /**
+ * Lists money amounts based on optional filters and configuration and provides the total count.
+ * 
+ * @param {FilterableMoneyAmountProps=} filters - Optional filters to narrow down the list.
+ * @param {FindConfig<MoneyAmountDTO>=} config - Optional configuration for the listing operation.
+ * @param sharedContext - Optional shared context.
+ * @returns {Promise<[MoneyAmountDTO[], number]>} A promise that resolves to an array of MoneyAmountDTOs and the total count.
+ */
   listAndCountMoneyAmounts(
     filters?: FilterableMoneyAmountProps,
     config?: FindConfig<MoneyAmountDTO>,
     sharedContext?: Context
   ): Promise<[MoneyAmountDTO[], number]>
 
+
+/**
+ * Creates new money amounts based on the provided data.
+ * 
+ * @param {CreateMoneyAmountDTO[]} data - An array of data objects for creating money amounts.
+ * @param sharedContext - Optional shared context.
+ * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of created MoneyAmountDTOs.
+ */
   createMoneyAmounts(
     data: CreateMoneyAmountDTO[],
     sharedContext?: Context
   ): Promise<MoneyAmountDTO[]>
 
+  /**
+ * Updates existing money amounts based on the provided data.
+ * 
+ * @param {UpdateMoneyAmountDTO[]} data - An array of data objects for updating money amounts.
+ * @param sharedContext - Optional shared context.
+ * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of updated MoneyAmountDTOs.
+ */
   updateMoneyAmounts(
     data: UpdateMoneyAmountDTO[],
     sharedContext?: Context
   ): Promise<MoneyAmountDTO[]>
 
+  /**
+ * Deletes money amounts by their IDs.
+ * 
+ * @param {string[]} ids - An array of IDs for money amounts to delete.
+ * @param sharedContext - Optional shared context.
+ * @returns {Promise<void>} A promise that resolves when the money amounts are successfully deleted.
+ */
   deleteMoneyAmounts(ids: string[], sharedContext?: Context): Promise<void>
 
   retrieveCurrency(

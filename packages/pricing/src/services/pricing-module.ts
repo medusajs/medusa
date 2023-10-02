@@ -111,6 +111,7 @@ export default class PricingModuleService<
     return joinerConfig
   }
 
+  
   @InjectManager("baseRepository_")
   async calculatePrices(
     pricingFilters: PricingFilters,
