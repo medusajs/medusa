@@ -1023,29 +1023,24 @@ class CartService extends TransactionBaseService {
                 IsolateProductDomainFeatureFlag.key
               )
             ) {
-              const [product] = await this.remoteQuery_(
+              const [variant] = await this.remoteQuery_(
                 stringToRemoteQueryObject({
-                  entryPoint: "product",
+                  entryPoint: "variants",
                   variables: {
                     filters: {
-                      variants: {
-                        id: lineItem.variant_id,
-                      },
+                      id: lineItem.variant_id,
                     },
                   },
                   fields: [
                     "id",
-                    "variants.id",
-                    "variants.allow_backorder",
-                    "variants.manage_inventory",
-                    "variants.inventory_quantity",
+                    "allow_backorder",
+                    "manage_inventory",
+                    "inventory_quantity",
                   ],
                 })
               )
 
-              variantOrId = product?.variants.find(
-                (variant) => variant.id === lineItem.variant_id
-              )
+              variantOrId = variant
 
               if (!variantOrId) {
                 throw new MedusaError(

@@ -166,7 +166,7 @@ export default async (req, res) => {
 async function getProductWithIsolatedProductModule(req, id: string) {
   const remoteQuery = req.scope.resolve("remoteQuery")
 
-  const variables = { id }
+  const variables = { filters: { id } }
 
   const query = {
     product: {

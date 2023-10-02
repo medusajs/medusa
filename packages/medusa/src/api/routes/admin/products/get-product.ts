@@ -90,7 +90,7 @@ async function getProductWithIsolatedProductModule(req, id, retrieveConfig) {
   // TODO: Add support for fields/expands
   const remoteQuery = req.scope.resolve("remoteQuery")
 
-  const variables = { id }
+  const variables = { filters: { id } }
 
   const query = {
     product: {

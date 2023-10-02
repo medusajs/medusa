@@ -137,21 +137,18 @@ async function retrieveCartWithIsolatedProductModule(req, id: string) {
     relations,
   })
 
-  const products = await remoteQuery({
-    products: {
+  const variants = await remoteQuery({
+    variants: {
       __args: {
-        id: cart.items.map((i) => i.product_id),
+        filters: {
+          product_id: cart.items.map((i) => i.product_id),
+        },
       },
       fields: ["id"],
-      variants: {
-        fields: ["id"],
-      },
     },
   })
 
-  const variantsMap = new Map(
-    products.flatMap((p) => p.variants).map((v) => [v.id, v])
-  )
+  const variantsMap = new Map(variants.map((v) => [v.id, v]))
 
   cart.items.forEach((item) => {
     if (!item.variant_id) {

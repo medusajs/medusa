@@ -1,5 +1,3 @@
-import { ProductVariantDTO } from "@medusajs/types"
-
 /**
  * Retrieve variants for generating line items when isolated product module flag is on.
  *
@@ -10,20 +8,15 @@ export async function retrieveVariantsWithIsolatedProductModule(
   remoteQuery,
   variantIds: string[]
 ) {
-  const variantIdsMap = new Map(variantIds.map((id) => [id, true]))
-
   const variables = {
     filters: {
-      variants: {
-        id: [...variantIds],
-      },
+      id: variantIds,
     },
   }
 
   const query = {
-    product: {
+    variants: {
       __args: variables,
-      fields: ["id", "title", "thumbnail", "discountable", "is_giftcard"],
       variants: {
         fields: [
           "id",
@@ -34,24 +27,13 @@ export async function retrieveVariantsWithIsolatedProductModule(
           "manage_inventory",
           "inventory_quantity",
         ],
+
+        product: {
+          fields: ["id", "title", "thumbnail", "discountable", "is_giftcard"],
+        },
       },
     },
   }
 
-  const products = await remoteQuery(query)
-
-  const variants: ProductVariantDTO[] = []
-
-  products.forEach((product) => {
-    variants.push(
-      ...product.variants
-        .filter((v) => variantIdsMap.has(v.id))
-        .map((v) => {
-          v.product = { ...product }
-          return v
-        })
-    )
-  })
-
-  return variants
+  return await remoteQuery(query)
 }
