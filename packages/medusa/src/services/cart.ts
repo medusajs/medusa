@@ -2,11 +2,11 @@ import { RemoteJoinerQuery } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
 import { stringToRemoteQueryObject } from "@medusajs/utils/dist/common/string-to-remote-query-object"
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -32,8 +32,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -52,9 +52,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -1023,34 +1023,29 @@ class CartService extends TransactionBaseService {
                 IsolateProductDomainFeatureFlag.key
               )
             ) {
-              const [product] = await this.remoteQuery_(
+              const [variant] = await this.remoteQuery_(
                 stringToRemoteQueryObject({
-                  entryPoint: "product",
+                  entryPoint: "variants",
                   variables: {
                     filters: {
-                      variants: {
-                        id: lineItem.variant_id,
-                      },
+                      id: lineItem.variant_id,
                     },
                   },
                   fields: [
                     "id",
-                    "variants.id",
-                    "variants.allow_backorder",
-                    "variants.manage_inventory",
-                    "variants.inventory_quantity",
+                    "allow_backorder",
+                    "manage_inventory",
+                    "inventory_quantity",
                   ],
                 })
               )
 
-              variantOrId = product?.variants.find(
-                (variant) => variant.id === lineItem.variant_id
-              )
+              variantOrId = variant
 
               if (!variantOrId) {
                 throw new MedusaError(
                   MedusaError.Types.NOT_FOUND,
-                  "Variant with id: ${lineItem.variant_id} not found"
+                  `Variant with id: ${lineItem.variant_id} not found`
                 )
               }
             }
