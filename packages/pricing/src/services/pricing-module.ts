@@ -818,6 +818,14 @@ export default class PricingModuleService<
     await this.moneyAmountService_.delete(ids, sharedContext)
   }
 
+  /**
+   * Retrieves a currency by its code based on the provided configuration.
+   *
+   * @param {string} code - The code of the currency to retrieve.
+   * @param {FindConfig<PricingTypes.CurrencyDTO>} [config={}] - Optional configuration for retrieving the currency.
+   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
+   * @returns {Promise<PricingTypes.CurrencyDTO>} A Promise that resolves to the retrieved currency object.
+   */
   @InjectManager("baseRepository_")
   async retrieveCurrency(
     code: string,
@@ -835,6 +843,14 @@ export default class PricingModuleService<
     })
   }
 
+  /**
+   * Lists currencies based on the provided filters and configuration.
+   *
+   * @param {PricingTypes.FilterableCurrencyProps} [filters={}] - Optional filters to apply when listing currencies.
+   * @param {FindConfig<PricingTypes.CurrencyDTO>} [config={}] - Optional configuration for listing currencies.
+   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
+   * @returns {Promise<PricingTypes.CurrencyDTO[]>} A Promise that resolves to an array containing the list of currency objects.
+   */
   @InjectManager("baseRepository_")
   async listCurrencies(
     filters: PricingTypes.FilterableCurrencyProps = {},
@@ -855,6 +871,14 @@ export default class PricingModuleService<
     )
   }
 
+  /**
+   * Lists and counts currencies based on the provided filters and configuration.
+   *
+   * @param {PricingTypes.FilterableCurrencyProps} [filters={}] - Optional filters to apply when listing currencies.
+   * @param {FindConfig<PricingTypes.CurrencyDTO>} [config={}] - Optional configuration for listing currencies.
+   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
+   * @returns {Promise<[PricingTypes.CurrencyDTO[], number]>} A Promise that resolves to an array containing the list of currency objects and the total count.
+   */
   @InjectManager("baseRepository_")
   async listAndCountCurrencies(
     filters: PricingTypes.FilterableCurrencyProps = {},
@@ -878,6 +902,13 @@ export default class PricingModuleService<
     ]
   }
 
+  /**
+   * Creates new currencies based on the provided data.
+   *
+   * @param {PricingTypes.CreateCurrencyDTO[]} data - An array of objects containing the data to create new currencies.
+   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
+   * @returns {Promise<PricingTypes.CurrencyDTO[]>} A Promise that resolves to an array of newly created currency objects.
+   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async createCurrencies(
     data: PricingTypes.CreateCurrencyDTO[],
@@ -893,6 +924,13 @@ export default class PricingModuleService<
     )
   }
 
+  /**
+   * Updates currencies with the provided data.
+   *
+   * @param {PricingTypes.UpdateCurrencyDTO[]} data - An array of objects containing the data to update the currencies.
+   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
+   * @returns {Promise<PricingTypes.CurrencyDTO[]>} A Promise that resolves to an array of updated currency objects.
+   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async updateCurrencies(
     data: PricingTypes.UpdateCurrencyDTO[],
@@ -908,6 +946,13 @@ export default class PricingModuleService<
     )
   }
 
+  /**
+   * Deletes currencies with the specified codes.
+   *
+   * @param {string[]} currencyCodes - An array of string codes representing the currencies to delete.
+   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
+   * @returns {Promise<void>} A Promise that resolves once the currencies are deleted.
+   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async deleteCurrencies(
     currencyCodes: string[],
