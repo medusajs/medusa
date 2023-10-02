@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ShippingOption } from "./ShippingOption"
 
 /**
- * A requirement that a Cart must satisfy for the Shipping Option to be available to the Cart.
+ * A shipping option requirement defines conditions that a Cart must satisfy for the Shipping Option to be available for usage in the Cart.
  */
 export interface ShippingOptionRequirement {
   /**
@@ -14,11 +14,11 @@ export interface ShippingOptionRequirement {
    */
   id: string
   /**
-   * The id of the Shipping Option that the hipping option requirement belongs to
+   * The ID of the shipping option that the requirements belong to.
    */
   shipping_option_id: string
   /**
-   * Available if the relation `shipping_option` is expanded.
+   * The details of the shipping option that the requirements belong to.
    */
   shipping_option?: ShippingOption | null
   /**

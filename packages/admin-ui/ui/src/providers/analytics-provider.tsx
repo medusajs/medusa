@@ -28,6 +28,7 @@ type Event =
   | "regions"
   | "currencies"
   | "storeName"
+  | "userEmail"
 
 type AnalyticsContextType = {
   trackCurrencies: (properties: TrackCurrenciesPayload) => void
@@ -35,6 +36,7 @@ type AnalyticsContextType = {
   trackNumberOfDiscounts: (properties: TrackCountPayload) => void
   trackNumberOfProducts: (properties: TrackCountPayload) => void
   trackRegions: (properties: TrackRegionsPayload) => void
+  trackUserEmail: (properties: TrackUserEmailPayload) => void
   setSubmittingConfig: (status: boolean) => void
 }
 
@@ -140,6 +142,10 @@ export const AnalyticsProvider = ({ writeKey, children }: Props) => {
     track("numDiscounts", properties)
   }
 
+  const trackUserEmail = (properties: TrackUserEmailPayload) => {
+    track("userEmail", properties)
+  }
+
   // Track number of users
   useEffect(() => {
     if (users) {
@@ -171,6 +177,7 @@ export const AnalyticsProvider = ({ writeKey, children }: Props) => {
         trackNumberOfOrders,
         trackNumberOfProducts,
         trackNumberOfDiscounts,
+        trackUserEmail,
         setSubmittingConfig,
       }}
     >
@@ -199,6 +206,10 @@ type TrackCountPayload = {
 type TrackRegionsPayload = {
   regions: string[]
   count: number
+}
+
+type TrackUserEmailPayload = {
+  email: string | undefined
 }
 
 export const useAnalytics = () => {

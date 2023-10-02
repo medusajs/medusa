@@ -10,6 +10,9 @@ import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
 export interface AdminSwapsRes {
+  /**
+   * Swap details.
+   */
   swap: Merge<
     SetRelation<
       Swap,

@@ -12,7 +12,7 @@ import type { ShippingOption } from "./ShippingOption"
 import type { Swap } from "./Swap"
 
 /**
- * Shipping Methods represent a way in which an Order or Return can be shipped. Shipping Methods are built from a Shipping Option, but may contain additional details, that can be necessary for the Fulfillment Provider to handle the shipment.
+ * A Shipping Method represents a way in which an Order or Return can be shipped. Shipping Methods are created from a Shipping Option, but may contain additional details that can be necessary for the Fulfillment Provider to handle the shipment. If the shipping method is created for a return, it may be associated with a claim or a swap that the return is part of.
  */
 export interface ShippingMethod {
   /**
@@ -20,55 +20,55 @@ export interface ShippingMethod {
    */
   id: string
   /**
-   * The id of the Shipping Option that the Shipping Method is built from.
+   * The ID of the Shipping Option that the Shipping Method is built from.
    */
   shipping_option_id: string
   /**
-   * The id of the Order that the Shipping Method is used on.
+   * The ID of the order that the shipping method is used in.
    */
   order_id: string | null
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order that the shipping method is used in.
    */
   order?: Order | null
   /**
-   * The id of the Claim that the Shipping Method is used on.
+   * The ID of the claim that the shipping method is used in.
    */
   claim_order_id: string | null
   /**
-   * A claim order object. Available if the relation `claim_order` is expanded.
+   * The details of the claim that the shipping method is used in.
    */
   claim_order?: ClaimOrder | null
   /**
-   * The id of the Cart that the Shipping Method is used on.
+   * The ID of the cart that the shipping method is used in.
    */
   cart_id: string | null
   /**
-   * A cart object. Available if the relation `cart` is expanded.
+   * The details of the cart that the shipping method is used in.
    */
   cart?: Cart | null
   /**
-   * The id of the Swap that the Shipping Method is used on.
+   * The ID of the swap that the shipping method is used in.
    */
   swap_id: string | null
   /**
-   * A swap object. Available if the relation `swap` is expanded.
+   * The details of the swap that the shipping method is used in.
    */
   swap?: Swap | null
   /**
-   * The id of the Return that the Shipping Method is used on.
+   * The ID of the return that the shipping method is used in.
    */
   return_id: string | null
   /**
-   * A return object. Available if the relation `return_order` is expanded.
+   * The details of the return that the shipping method is used in.
    */
   return_order?: Return | null
   /**
-   * Available if the relation `shipping_option` is expanded.
+   * The details of the shipping option the method was created from.
    */
   shipping_option?: ShippingOption | null
   /**
-   * Available if the relation `tax_lines` is expanded.
+   * The details of the tax lines applied on the shipping method.
    */
   tax_lines?: Array<ShippingMethodTaxLine>
   /**
@@ -80,7 +80,7 @@ export interface ShippingMethod {
    */
   data: Record<string, any>
   /**
-   * [EXPERIMENTAL] Indicates if the shipping method price include tax
+   * Whether the shipping method price include tax
    */
   includes_tax?: boolean
   /**

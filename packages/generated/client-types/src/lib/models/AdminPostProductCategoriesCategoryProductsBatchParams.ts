@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostProductCategoriesCategoryProductsBatchParams {
   /**
-   * (Comma separated) Category fields to be expanded in the response.
+   * Comma-separated relations that should be expanded in the returned product category.
    */
   expand?: string
   /**
-   * (Comma separated) Category fields to be retrieved in the response.
+   * Comma-separated fields that should be included in the returned product category.
    */
   fields?: string
 }

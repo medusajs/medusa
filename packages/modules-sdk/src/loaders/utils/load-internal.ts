@@ -2,13 +2,16 @@ import {
   Constructor,
   InternalModuleDeclaration,
   Logger,
-  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  MedusaContainer,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+} from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 
 export async function loadInternalModule(
@@ -27,9 +30,14 @@ export async function loadInternalModule(
     // the exports. This is useful when a package export an initialize function which will bootstrap itself and therefore
     // does not need to import the package that is currently being loaded as it would create a
     // circular reference.
-    loadedModule =
-      resolution.moduleExports ??
-      (await import(resolution.resolutionPath as string)).default
+    const path = resolution.resolutionPath as string
+
+    if (resolution.moduleExports) {
+      loadedModule = resolution.moduleExports
+    } else {
+      loadedModule = await import(path)
+      loadedModule = (loadedModule as any).default
+    }
   } catch (error) {
     if (
       resolution.definition.isRequired &&
@@ -69,24 +77,25 @@ export async function loadInternalModule(
     }
   }
 
-  const localContainer =
-    resources === MODULE_RESOURCE_TYPE.ISOLATED
-      ? createMedusaContainer()
-      : (container.createScope() as MedusaContainer)
+  const localContainer = createMedusaContainer()
 
-  if (resources === MODULE_RESOURCE_TYPE.ISOLATED) {
-    const moduleDependencies = resolution?.dependencies ?? []
+  const dependencies = resolution?.dependencies ?? []
+  if (resources === MODULE_RESOURCE_TYPE.SHARED) {
+    dependencies.push(
+      ContainerRegistrationKeys.MANAGER,
+      ContainerRegistrationKeys.CONFIG_MODULE,
+      ContainerRegistrationKeys.LOGGER,
+      ContainerRegistrationKeys.PG_CONNECTION
+    )
+  }
 
-    for (const dependency of moduleDependencies) {
-      localContainer.register(
-        dependency,
-        asFunction(() => {
-          return container.hasRegistration(dependency)
-            ? container.resolve(dependency)
-            : undefined
-        })
-      )
-    }
+  for (const dependency of dependencies) {
+    localContainer.register(
+      dependency,
+      asFunction(() => {
+        return container.resolve(dependency, { allowUnregistered: true })
+      })
+    )
   }
 
   const moduleLoaders = loadedModule?.loaders ?? []

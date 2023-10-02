@@ -1,5 +1,86 @@
 # @medusajs/oas-github-ci
 
+## 1.0.20
+
+### Patch Changes
+
+- [#5174](https://github.com/medusajs/medusa/pull/5174) [`fa7c94b4c`](https://github.com/medusajs/medusa/commit/fa7c94b4ccf864d7a6c7ed4bba26b7086ed99b2f) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(@medusajs/oas-github-ci): changed output path to match new docs workspace
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.20
+
+## 1.0.19
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.19
+
+## 1.0.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.18
+
+## 1.0.17
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.17
+
+## 1.0.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.16
+
+## 1.0.15
+
+### Patch Changes
+
+- [#4770](https://github.com/medusajs/medusa/pull/4770) [`914d773d3`](https://github.com/medusajs/medusa/commit/914d773d3a82c86685b66c0c33ab1d7a9bad7dd4) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(@medusajs/oas-github-ci): Improvements for custom API reference
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.15
+
+## 1.0.14
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.14
+
+## 1.0.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.13
+
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.12
+
+## 1.0.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.11
+
+## 1.0.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.10
+
 ## 1.0.9
 
 ### Patch Changes

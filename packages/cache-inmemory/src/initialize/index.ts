@@ -11,12 +11,12 @@ export const initialize = async (
   options?: InMemoryCacheModuleOptions | ExternalModuleDeclaration
 ): Promise<ICacheService> => {
   const serviceKey = Modules.CACHE
-  const loaded = await MedusaModule.bootstrap(
+  const loaded = await MedusaModule.bootstrap<ICacheService>(
     serviceKey,
     "@medusajs/cache-inmemory",
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
     undefined
   )
 
-  return loaded[serviceKey] as ICacheService
+  return loaded[serviceKey]
 }

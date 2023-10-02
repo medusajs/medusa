@@ -1,0 +1,9 @@
+type: object
+required:
+  - shipping_profiles
+properties:
+  shipping_profiles:
+    type: array
+    description: An array of shipping profiles details.
+    items:
+      $ref: ./ShippingProfile.yaml

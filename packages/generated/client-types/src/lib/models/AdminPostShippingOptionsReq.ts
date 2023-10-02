@@ -25,11 +25,11 @@ export interface AdminPostShippingOptionsReq {
    */
   data: Record<string, any>
   /**
-   * The type of the Shipping Option price.
+   * The type of the Shipping Option price. `flat_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider.
    */
   price_type: "flat_rate" | "calculated"
   /**
-   * The amount to charge for the Shipping Option.
+   * The amount to charge for the Shipping Option. If the `price_type` is set to `calculated`, this amount will not actually be used.
    */
   amount?: number
   /**
@@ -46,11 +46,11 @@ export interface AdminPostShippingOptionsReq {
     amount: number
   }>
   /**
-   * Whether the Shipping Option defines a return shipment.
+   * Whether the Shipping Option can be used for returns or during checkout.
    */
   is_return?: boolean
   /**
-   * If true, the option can be used for draft orders
+   * If set to `true`, the shipping option can only be used when creating draft orders.
    */
   admin_only?: boolean
   /**
@@ -58,7 +58,7 @@ export interface AdminPostShippingOptionsReq {
    */
   metadata?: Record<string, any>
   /**
-   * [EXPERIMENTAL] Tax included in prices of shipping option
+   * Tax included in prices of shipping option
    */
   includes_tax?: boolean
 }

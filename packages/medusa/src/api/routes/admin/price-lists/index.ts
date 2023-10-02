@@ -1,19 +1,21 @@
-import { Router } from "express"
 import "reflect-metadata"
-import { PriceList, Product } from "../../../.."
+
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, {
-  transformBody,
-  transformQuery,
-} from "../../../middlewares"
-import { AdminGetPriceListPaginationParams } from "./list-price-lists"
-import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
+import { PriceList, Product } from "../../../.."
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
+
+import { AdminGetPriceListPaginationParams } from "./list-price-lists"
+import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
 import { AdminPostPriceListsPriceListReq } from "./create-price-list"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
+import { Router } from "express"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
@@ -91,7 +93,11 @@ export const defaultAdminPriceListFields = [
   "deleted_at",
 ]
 
-export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
+export const defaultAdminPriceListRelations = [
+  "prices",
+  "prices.variants",
+  "customer_groups",
+]
 
 /**
  * @schema AdminPriceListRes
@@ -105,6 +111,7 @@ export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
  *   - price_list
  * properties:
  *   price_list:
+ *     description: "Price List details."
  *     $ref: "#/components/schemas/PriceList"
  */
 export type AdminPriceListRes = {
@@ -123,10 +130,10 @@ export type AdminPriceListRes = {
  *     type: array
  *     items:
  *       type: string
- *       description: The IDs of the deleted Money Amounts (Prices).
+ *       description: The IDs of the deleted prices.
  *   object:
  *     type: string
- *     description: The type of the object that was deleted.
+ *     description: The type of the object that was deleted. A price is also named `money-amount`.
  *     default: money-amount
  *   deleted:
  *     type: boolean
@@ -149,12 +156,12 @@ export type AdminPriceListDeleteBatchRes = {
  * properties:
  *    ids:
  *     type: array
- *     description: The price ids that have been deleted.
+ *     description: The IDs of the deleted prices.
  *     items:
  *       type: string
  *    object:
  *      type: string
- *      description: The type of the object that was deleted.
+ *      description: The type of the object that was deleted. A price is also named `money-amount`.
  *      default: money-amount
  *    deleted:
  *      type: boolean
@@ -173,12 +180,12 @@ export type AdminPriceListDeleteProductPricesRes = AdminPriceListDeleteBatchRes
  * properties:
  *    ids:
  *     type: array
- *     description: The price ids that have been deleted.
+ *     description: The IDs of the deleted prices.
  *     items:
  *       type: string
  *    object:
  *      type: string
- *      description: The type of the object that was deleted.
+ *      description: The type of the object that was deleted. A price is also named `money-amount`.
  *      default: money-amount
  *    deleted:
  *      type: boolean
@@ -220,6 +227,7 @@ export type AdminPriceListDeleteRes = DeleteResponse
  * properties:
  *   price_lists:
  *    type: array
+ *    description: "An array of price lists details."
  *    items:
  *      $ref: "#/components/schemas/PriceList"
  *   count:
@@ -227,7 +235,7 @@ export type AdminPriceListDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of price lists skipped when retrieving the price lists.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -258,6 +266,7 @@ export type AdminPriceListsListRes = PaginatedResponse & {
  * properties:
  *   products:
  *     type: array
+ *     description: "An array of products details."
  *     items:
  *       $ref: "#/components/schemas/Product"
  *   count:
@@ -265,7 +274,7 @@ export type AdminPriceListsListRes = PaginatedResponse & {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of price lists skipped when retrieving the price lists.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -277,8 +286,8 @@ export type AdminPriceListsProductsListRes = PaginatedResponse & {
 export * from "./add-prices-batch"
 export * from "./create-price-list"
 export * from "./delete-price-list"
+export * from "./delete-prices-batch"
 export * from "./get-price-list"
+export * from "./list-price-list-products"
 export * from "./list-price-lists"
 export * from "./update-price-list"
-export * from "./delete-prices-batch"
-export * from "./list-price-list-products"

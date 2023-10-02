@@ -1,17 +1,19 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
+const {
+  bootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const cartSeeder = require("../../../helpers/cart-seeder")
-const { simpleProductFactory } = require("../../../../api/factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const cartSeeder = require("../../../../helpers/cart-seeder")
+const { simpleProductFactory } = require("../../../../factories")
+const { simpleSalesChannelFactory } = require("../../../../factories")
 
 jest.setTimeout(30000)
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("/store/carts", () => {
   let express

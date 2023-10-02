@@ -1,18 +1,10 @@
-import { Constructor, DAL, IEventBusService } from "@medusajs/types"
+export * from "./services"
 
-export type ProductServiceInitializeOptions = {
-  database: {
-    clientUrl: string
-    schema?: string
-    driverOptions?: Record<string, unknown>
-  }
-}
-
-export type ProductServiceInitializeCustomDataLayerOptions = {
-  manager?: any
-  repositories?: { [key: string]: Constructor<DAL.RepositoryService> }
-}
+import { IEventBusModuleService, Logger } from "@medusajs/types"
 
 export type InitializeModuleInjectableDependencies = {
-  eventBusService?: IEventBusService
+  logger?: Logger
+  eventBusModuleService?: IEventBusModuleService
 }
+
+export * from "./services"

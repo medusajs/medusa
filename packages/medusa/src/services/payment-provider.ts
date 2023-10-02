@@ -1,22 +1,24 @@
+import { FlagRouter } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { BasePaymentService } from "medusa-interfaces"
+import { EOL } from "os"
 import { EntityManager } from "typeorm"
 import {
-  AbstractPaymentProcessor,
-  AbstractPaymentService,
-  isPaymentProcessorError,
-  PaymentContext,
-  PaymentProcessorError,
-  PaymentSessionResponse,
-  TransactionBaseService,
+    AbstractPaymentProcessor,
+    AbstractPaymentService,
+    isPaymentProcessorError,
+    PaymentContext,
+    PaymentProcessorError,
+    PaymentSessionResponse,
+    TransactionBaseService,
 } from "../interfaces"
 import {
-  Cart,
-  Payment,
-  PaymentProvider,
-  PaymentSession,
-  PaymentSessionStatus,
-  Refund,
+    Cart,
+    Payment,
+    PaymentProvider,
+    PaymentSession,
+    PaymentSessionStatus,
+    Refund,
 } from "../models"
 import { PaymentRepository } from "../repositories/payment"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
@@ -26,10 +28,8 @@ import { FindConfig, Selector } from "../types/common"
 import { Logger } from "../types/global"
 import { CreatePaymentInput, PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import { CustomerService } from "./index"
 import PaymentService from "./payment"
-import { EOL } from "os"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {
@@ -575,17 +575,22 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
+      let updatedData
       if (provider instanceof AbstractPaymentProcessor) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `The payment provider ${paymentSession.provider_id} is of type PaymentProcessor. PaymentProcessors cannot update payment session data.`
-        )
+        const res = await provider.updatePaymentData(paymentSession.id, data)
+        if ("error" in res) {
+          this.throwFromPaymentProcessorError(res as PaymentProcessorError)
+        } else {
+          updatedData = res
+        }
       } else {
-        session.data = await provider
+        updatedData = await provider
           .withTransaction(transactionManager)
           .updatePaymentData(paymentSession.data, data)
-        session.status = paymentSession.status
       }
+
+      Object.assign(session.data, updatedData)
+      session.status = paymentSession.status
 
       const sessionRepo = transactionManager.withRepository(
         this.paymentSessionRepository_

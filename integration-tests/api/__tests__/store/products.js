@@ -1,15 +1,15 @@
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 const {
   simpleProductFactory,
   simpleSalesChannelFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
-const productSeeder = require("../../helpers/store-product-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/store-product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   allowedStoreProductsFields,
   defaultStoreProductsRelations,
@@ -24,6 +24,7 @@ describe("/store/products", () => {
   const giftCardId = "giftcard"
   const testProductId = "test-product"
   const testProductId1 = "test-product1"
+  const testProductId2 = "test-product2"
   const testProductFilteringId1 = "test-product_filtering_1"
   const testProductFilteringId2 = "test-product_filtering_2"
 
@@ -156,7 +157,7 @@ describe("/store/products", () => {
         response.data.products.find((p) => p.id === testProductId1)
       )
       const testProduct2Index = response.data.products.indexOf(
-        response.data.products.find((p) => p.id === "test-product2")
+        response.data.products.find((p) => p.id === testProductId2)
       )
 
       expect(testProduct2Index).toBe(3) // 200
@@ -212,17 +213,21 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.products[0])).toEqual([
-        // fields
-        "handle",
-        // relations
-        "variants",
-        "options",
-        "images",
-        "tags",
-        "collection",
-        "type",
-      ])
+      expect(Object.keys(response.data.products[0])).toHaveLength(8)
+      expect(Object.keys(response.data.products[0])).toEqual(
+        expect.arrayContaining([
+          // fields
+          "handle",
+          // relations
+          "variants",
+          "options",
+          "images",
+          "tags",
+          "collection",
+          "type",
+          "profiles",
+        ])
+      )
     })
 
     it("returns a list of ordered products by id ASC and filtered with free text search", async () => {
@@ -968,7 +973,7 @@ describe("/store/products", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -992,7 +997,12 @@ describe("/store/products", () => {
     it("response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
-      const fields = allowedStoreProductsFields
+      // profile_id is not a column in the products table, so it should be ignored as it
+      // will be rejected by typeorm as invalid, though, it is an entity property
+      // that we want to return, so it part of the allowedStoreProductsFields
+      const fields = allowedStoreProductsFields.filter(
+        (f) => f !== "profile_id"
+      )
 
       const response = await api.get(
         `/store/products/test-product?fields=${fields.join(",")}`

@@ -70,7 +70,7 @@ export class PaymentSession extends BaseEntity {
 /**
  * @schema PaymentSession
  * title: "Payment Session"
- * description: "Payment Sessions are created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, who is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for capture/refunds/etc."
+ * description: "A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections."
  * type: object
  * required:
  *   - amount
@@ -91,16 +91,17 @@ export class PaymentSession extends BaseEntity {
  *     type: string
  *     example: ps_01G901XNSRM2YS3ASN9H5KG3FZ
  *   cart_id:
- *     description: The id of the Cart that the Payment Session is created for.
+ *     description: The ID of the cart that the payment session was created for.
  *     nullable: true
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
+ *     description: The details of the cart that the payment session was created for.
+ *     x-expandable: "cart"
  *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   provider_id:
- *     description: The id of the Payment Provider that is responsible for the Payment Session
+ *     description: The ID of the Payment Provider that is responsible for the Payment Session
  *     type: string
  *     example: manual
  *   is_selected:

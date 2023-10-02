@@ -59,6 +59,7 @@ export const defaultPaymentFields = [
  *   - payment
  * properties:
  *   payment:
+ *     description: "Payment details"
  *     $ref: "#/components/schemas/Payment"
  */
 export type AdminPaymentRes = {
@@ -72,6 +73,7 @@ export type AdminPaymentRes = {
  *   - refund
  * properties:
  *   refund:
+ *     description: "Refund details"
  *     $ref: "#/components/schemas/Refund"
  */
 export type AdminRefundRes = {

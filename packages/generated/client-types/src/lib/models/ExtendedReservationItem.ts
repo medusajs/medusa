@@ -9,11 +9,11 @@ import type { ReservationItemDTO } from "./ReservationItemDTO"
 
 export type ExtendedReservationItem = ReservationItemDTO & {
   /**
-   * optional line item
+   * The line item associated with the reservation.
    */
   line_item?: LineItem
   /**
-   * inventory item from inventory module
+   * The inventory item associated with the reservation.
    */
   inventory_item?: InventoryItemDTO
 }

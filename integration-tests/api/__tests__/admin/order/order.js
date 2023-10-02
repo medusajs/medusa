@@ -9,32 +9,32 @@ const {
 } = require("@medusajs/medusa")
 const idMap = require("medusa-test-utils/src/id-map").default
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const orderSeeder = require("../../../helpers/order-seeder")
-const swapSeeder = require("../../../helpers/swap-seeder")
-const adminSeeder = require("../../../helpers/admin-seeder")
-const claimSeeder = require("../../../helpers/claim-seeder")
+const orderSeeder = require("../../../../helpers/order-seeder")
+const swapSeeder = require("../../../../helpers/swap-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const claimSeeder = require("../../../../helpers/claim-seeder")
 
 const {
   expectPostCallToReturn,
   expectAllPostCallsToReturn,
   callGet,
   partial,
-} = require("../../../helpers/call-helpers")
+} = require("../../../../helpers/call-helpers")
 const {
   simpleShippingOptionFactory,
   simpleOrderFactory,
   simplePaymentFactory,
   simpleProductFactory,
   simpleLineItemFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -1177,7 +1177,7 @@ describe("/admin/orders", () => {
       const manager = dbConnection.manager
 
       // add a shipping method so we can fulfill the swap
-      const sm = await manager.create(ShippingMethod, {
+      const sm = manager.create(ShippingMethod, {
         id: "test-method-swap-cart",
         swap_id: sid,
         shipping_option_id: "test-option",
@@ -1654,7 +1654,7 @@ describe("/admin/orders", () => {
       )
     })
 
-    it.only("fails to lists all orders with an invalid status", async () => {
+    it("fails to lists all orders with an invalid status", async () => {
       expect.assertions(3)
       const api = useApi()
 

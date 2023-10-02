@@ -8,20 +8,26 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OptionalProps,
   PrimaryKey,
   Property,
   Unique,
 } from "@mikro-orm/core"
 
 import Product from "./product"
+import { DAL } from "@medusajs/types"
+
+type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product_category" })
 class ProductCategory {
+  [OptionalProps]?: OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 
   @Property({ columnType: "text", nullable: false })
-  name: string
+  name?: string
 
   @Property({ columnType: "text", default: "", nullable: false })
   description?: string
@@ -50,10 +56,10 @@ class ProductCategory {
   rank?: number
 
   @Property({ columnType: "text", nullable: true })
-  parent_category_id?: string
+  parent_category_id?: string | null
 
   @ManyToOne(() => ProductCategory, { nullable: true })
-  parent_category: ProductCategory
+  parent_category?: ProductCategory
 
   @OneToMany({
     entity: () => ProductCategory,
@@ -61,15 +67,20 @@ class ProductCategory {
   })
   category_children = new Collection<ProductCategory>(this)
 
-  @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
-  created_at: Date
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at?: Date
 
   @Property({
     onCreate: () => new Date(),
     onUpdate: () => new Date(),
     columnType: "timestamptz",
+    defaultRaw: "now()",
   })
-  updated_at: Date
+  updated_at?: Date
 
   @ManyToMany(() => Product, (product) => product.categories)
   products = new Collection<Product>(this)

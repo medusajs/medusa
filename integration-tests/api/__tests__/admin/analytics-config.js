@@ -1,16 +1,16 @@
 const path = require("path")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb } = require("../../../environment-helpers/use-db")
 const {
   simpleAnalyticsConfigFactory,
-} = require("../../factories/simple-analytics-config-factory")
-const adminSeeder = require("../../helpers/admin-seeder")
+} = require("../../../factories/simple-analytics-config-factory")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 

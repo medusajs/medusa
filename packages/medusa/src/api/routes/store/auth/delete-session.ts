@@ -2,7 +2,7 @@
  * @oas [delete] /store/auth
  * operationId: "DeleteAuth"
  * summary: "Customer Log out"
- * description: "Destroys a Customer's authenticated session."
+ * description: "Delete the current session for the logged in customer."
  * x-authenticated: true
  * x-codegen:
  *   method: deleteSession
@@ -10,10 +10,11 @@
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/store/auth' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl -X DELETE '{backend_url}/store/auth' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Auth
  * responses:
@@ -33,6 +34,11 @@
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  req.session.jwt_store = {}
-  res.json({})
+  if(req.session.user_id) { // if we are also logged in as a user, persist that session
+    delete req.session.customer_id
+  } else { // otherwise, destroy the session
+    req.session.destroy()
+  }
+
+  res.sendStatus(200)
 }

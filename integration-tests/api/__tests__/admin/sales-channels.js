@@ -2,24 +2,24 @@ const path = require("path")
 
 const { SalesChannel, Product } = require("@medusajs/medusa")
 
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simpleSalesChannelFactory,
   simpleProductFactory,
-} = require("../../factories")
-const { simpleOrderFactory } = require("../../factories")
-const orderSeeder = require("../../helpers/order-seeder")
-const productSeeder = require("../../helpers/product-seeder")
+} = require("../../../factories")
+const { simpleOrderFactory } = require("../../../factories")
+const orderSeeder = require("../../../helpers/order-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
 
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
+  require("../../../environment-helpers/start-server-with-environment").default
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -214,7 +214,7 @@ describe("sales channels", () => {
         payload,
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -856,7 +856,7 @@ describe("sales channels", () => {
           `/admin/orders?sales_channel_id[]=${order.sales_channel_id}`,
           {
             headers: {
-              authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -904,7 +904,7 @@ describe("sales channels", () => {
         const response = await api
           .get(`/admin/products?sales_channel_id[]=${salesChannel.id}`, {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -964,7 +964,7 @@ describe("sales channels", () => {
         const response = await api
           .post("/admin/products", payload, {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -1005,7 +1005,7 @@ describe("sales channels", () => {
         const response = await api
           .post("/admin/products", payload, {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -1054,7 +1054,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1077,7 +1077,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1103,7 +1103,7 @@ describe("sales channels", () => {
             {},
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1131,7 +1131,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )
@@ -1158,7 +1158,7 @@ describe("sales channels", () => {
             },
             {
               headers: {
-                Authorization: "Bearer test_token",
+                "x-medusa-access-token": "test_token",
               },
             }
           )

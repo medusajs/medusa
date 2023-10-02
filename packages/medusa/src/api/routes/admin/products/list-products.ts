@@ -1,26 +1,29 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import {
+  PriceListService,
   PricingService,
   ProductService,
   ProductVariantInventoryService,
   SalesChannelService,
 } from "../../../../services"
 
-import { IInventoryService } from "@medusajs/types"
-import { Type } from "class-transformer"
-import { Product } from "../../../../models"
-import { PricedProduct } from "../../../../types/pricing"
 import { FilterableProductProps } from "../../../../types/product"
+import { IInventoryService } from "@medusajs/types"
+import { PricedProduct } from "../../../../types/pricing"
+import { Product } from "../../../../models"
+import { Type } from "class-transformer"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /admin/products
  * operationId: "GetProducts"
  * summary: "List Products"
- * description: "Retrieves a list of Product"
+ * description: "Retrieve a list of products. The products can be filtered by fields such as `q` or `status`. The products can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
- *   - (query) discount_condition_id {string} The discount condition id on which to filter the product.
+ *   - (query) q {string} term to search products' title, description, variants' title and sku, and collections' title.
+ *   - (query) discount_condition_id {string} Filter by the ID of a discount condition. Only products that this discount condition is applied to will be retrieved.
  *   - in: query
  *     name: id
  *     style: form
@@ -29,7 +32,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *     schema:
  *       oneOf:
  *         - type: string
- *           description: ID of the product to search for.
+ *           description: ID of the product.
  *         - type: array
  *           items:
  *             type: string
@@ -38,7 +41,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *     name: status
  *     style: form
  *     explode: false
- *     description: Status to search for
+ *     description: Filter by status.
  *     schema:
  *       type: array
  *       items:
@@ -48,7 +51,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *     name: collection_id
  *     style: form
  *     explode: false
- *     description: Collection ids to search for.
+ *     description: Filter by product collection IDs. Only products that are associated with the specified collections will be retrieved.
  *     schema:
  *       type: array
  *       items:
@@ -57,7 +60,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *     name: tags
  *     style: form
  *     explode: false
- *     description: Tag IDs to search for
+ *     description: Filter by product tag IDs. Only products that are associated with the specified tags will be retrieved.
  *     schema:
  *       type: array
  *       items:
@@ -66,7 +69,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *     name: price_list_id
  *     style: form
  *     explode: false
- *     description: Price List IDs to search for
+ *     description: Filter by IDs of price lists. Only products that these price lists are applied to will be retrieved.
  *     schema:
  *       type: array
  *       items:
@@ -75,7 +78,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *     name: sales_channel_id
  *     style: form
  *     explode: false
- *     description: Sales Channel IDs to filter products by
+ *     description: Filter by sales channel IDs. Only products that are available in the specified sales channels will be retrieved.
  *     schema:
  *       type: array
  *       items:
@@ -84,7 +87,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *     name: type_id
  *     style: form
  *     explode: false
- *     description: Type IDs to filter products by
+ *     description: Filter by product type IDs. Only products that are associated with the specified types will be retrieved.
  *     schema:
  *       type: array
  *       items:
@@ -93,19 +96,27 @@ import { FilterableProductProps } from "../../../../types/product"
  *     name: category_id
  *     style: form
  *     explode: false
- *     description: Category IDs to filter products by
+ *     description: Filter by product category IDs. Only products that are associated with the specified categories will be retrieved.
  *     schema:
  *       type: array
+ *       x-featureFlag: "product_categories"
  *       items:
  *         type: string
- *   - (query) include_category_children {boolean} Include category children when filtering by category_id
- *   - (query) title {string} title to search for.
- *   - (query) description {string} description to search for.
- *   - (query) handle {string} handle to search for.
- *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
+ *   - in: query
+ *     name: include_category_children
+ *     style: form
+ *     explode: false
+ *     description: whether to include product category children when filtering by `category_id`
+ *     schema:
+ *       type: boolean
+ *       x-featureFlag: "product_categories"
+ *   - (query) title {string} Filter by title.
+ *   - (query) description {string} Filter by description.
+ *   - (query) handle {string} Filter by handle.
+ *   - (query) is_giftcard {boolean} Whether to retrieve gift cards or regular products.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting products were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -127,7 +138,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting products were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -149,7 +160,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *            format: date
  *   - in: query
  *     name: deleted_at
- *     description: Date comparison for when resulting products were deleted.
+ *     description: Filter by a deletion date range.
  *     schema:
  *       type: object
  *       properties:
@@ -169,11 +180,11 @@ import { FilterableProductProps } from "../../../../types/product"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) offset=0 {integer} How many products to skip in the result.
+ *   - (query) offset=0 {integer} The number of products to skip when retrieving the products.
  *   - (query) limit=50 {integer} Limit the number of products returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
- *   - (query) order {string} the field used to order the products.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned products.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned products.
+ *   - (query) order {string} A product field to sort-order the retrieved products by.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetProductsParams
@@ -191,11 +202,12 @@ import { FilterableProductProps } from "../../../../types/product"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/products' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/products' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -227,16 +239,33 @@ export default async (req, res) => {
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
   const { skip, take, relations } = req.listConfig
 
-  const manager = req.scope.resolve("manager")
+  let rawProducts
+  let count
 
-  const [rawProducts, count] = await productService.listAndCount(
-    req.filterableFields,
-    req.listConfig
-  )
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    const [products, count_] =
+      await listAndCountProductWithIsolatedProductModule(
+        req,
+        req.filterableFields,
+        req.listConfig
+      )
+
+    rawProducts = products
+    count = count_
+  } else {
+    const [products, count_] = await productService.listAndCount(
+      req.filterableFields,
+      req.listConfig
+    )
+
+    rawProducts = products
+    count = count_
+  }
 
   let products: (Product | PricedProduct)[] = rawProducts
 
@@ -270,6 +299,118 @@ export default async (req, res) => {
     offset: skip,
     limit: take,
   })
+}
+
+async function listAndCountProductWithIsolatedProductModule(
+  req,
+  filterableFields,
+  listConfig
+) {
+  // TODO: Add support for fields/expands
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const productIdsFilter: Set<string> = new Set()
+  const variantIdsFilter: Set<string> = new Set()
+
+  const promises: Promise<void>[] = []
+
+  // This is not the best way of handling cross filtering but for now I would say it is fine
+  const salesChannelIdFilter = filterableFields.sales_channel_id
+  delete filterableFields.sales_channel_id
+
+  if (salesChannelIdFilter) {
+    const salesChannelService = req.scope.resolve(
+      "salesChannelService"
+    ) as SalesChannelService
+
+    promises.push(
+      salesChannelService
+        .listProductIdsBySalesChannelIds(salesChannelIdFilter)
+        .then((productIdsInSalesChannel) => {
+          let filteredProductIds =
+            productIdsInSalesChannel[salesChannelIdFilter]
+
+          if (filterableFields.id) {
+            filterableFields.id = Array.isArray(filterableFields.id)
+              ? filterableFields.id
+              : [filterableFields.id]
+
+            const salesChannelProductIdsSet = new Set(filteredProductIds)
+
+            filteredProductIds = filterableFields.id.filter((productId) =>
+              salesChannelProductIdsSet.has(productId)
+            )
+          }
+
+          filteredProductIds.map((id) => productIdsFilter.add(id))
+        })
+    )
+  }
+
+  const priceListId = filterableFields.price_list_id
+  delete filterableFields.price_list_id
+
+  if (priceListId) {
+    // TODO: it is working but validate the behaviour.
+    // e.g pricing context properly set.
+    // At the moment filtering by price list but not having any customer id or
+    // include discount forces the query to filter with price list id is null
+    const priceListService = req.scope.resolve(
+      "priceListService"
+    ) as PriceListService
+    promises.push(
+      priceListService
+        .listPriceListsVariantIdsMap(priceListId)
+        .then((priceListVariantIdsMap) => {
+          priceListVariantIdsMap[priceListId].map((variantId) =>
+            variantIdsFilter.add(variantId)
+          )
+        })
+    )
+  }
+
+  const discountConditionId = filterableFields.discount_condition_id
+  delete filterableFields.discount_condition_id
+
+  if (discountConditionId) {
+    // TODO implement later
+  }
+
+  await Promise.all(promises)
+
+  if (productIdsFilter.size > 0) {
+    filterableFields.id = Array.from(productIdsFilter)
+  }
+
+  if (variantIdsFilter.size > 0) {
+    filterableFields.variants = { id: Array.from(variantIdsFilter) }
+  }
+
+  const variables = {
+    filters: filterableFields,
+    order: listConfig.order,
+    skip: listConfig.skip,
+    take: listConfig.take,
+  }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultAdminProductRemoteQueryObject,
+    },
+  }
+
+  const {
+    rows: products,
+    metadata: { count },
+  } = await remoteQuery(query)
+
+  products.forEach((product) => {
+    product.profile_id = product.profile?.id
+  })
+
+  return [products, count]
 }
 
 export class AdminGetProductsParams extends FilterableProductProps {

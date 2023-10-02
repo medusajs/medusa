@@ -1,6 +1,7 @@
 import qs from "query-string"
 import { useContext, useEffect, useMemo, useState } from "react"
 import { Controller, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 
 import { useAdminCustomer } from "medusa-react"
 
@@ -22,6 +23,7 @@ import { isValidEmail } from "../../../../utils/email"
 import { useNewOrderForm } from "../form"
 
 const ShippingDetails = () => {
+  const { t } = useTranslation()
   const [addNew, setAddNew] = useState(false)
   const { disableNextPage, enableNextPage } = useContext(SteppedContext)
 
@@ -158,7 +160,10 @@ const ShippingDetails = () => {
     <div className="flex min-h-[705px] flex-col gap-y-8">
       <div>
         <span className="inter-base-semibold">
-          Customer and shipping details
+          {t(
+            "components-customer-and-shipping-details",
+            "Customer and shipping details"
+          )}
         </span>
         <Controller
           control={form.control}
@@ -167,7 +172,10 @@ const ShippingDetails = () => {
             return (
               <Select
                 className="mt-4"
-                label="Find existing customer"
+                label={t(
+                  "components-find-existing-customer",
+                  "Find existing customer"
+                )}
                 options={[]}
                 enableSearch
                 value={value || null}
@@ -184,10 +192,12 @@ const ShippingDetails = () => {
       </div>
 
       <div className="flex flex-col gap-y-4">
-        <span className="inter-base-semibold">Email</span>
+        <span className="inter-base-semibold">
+          {t("components-email", "Email")}
+        </span>
         <InputField
           {...form.register("email")}
-          label="Email"
+          label={t("components-email", "Email")}
           placeholder="lebron@james.com"
           disabled={!!customerId}
           required
@@ -203,7 +213,12 @@ const ShippingDetails = () => {
 
       {validAddresses.length && !addNew ? (
         <div>
-          <span className="inter-base-semibold">Choose existing addresses</span>
+          <span className="inter-base-semibold">
+            {t(
+              "components-choose-existing-addresses",
+              "Choose existing addresses"
+            )}
+          </span>
           <Controller
             control={form.control}
             name="shipping_address_id"
@@ -239,7 +254,7 @@ const ShippingDetails = () => {
               className="border-grey-20 w-[112px] border"
               onClick={onCreateNew}
             >
-              Create new
+              {t("components-create-new", "Create new")}
             </Button>
           </div>
         </div>

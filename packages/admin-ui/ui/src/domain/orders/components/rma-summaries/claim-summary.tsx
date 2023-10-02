@@ -1,6 +1,7 @@
 import { Order } from "@medusajs/medusa"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import IconTooltip from "../../../../components/molecules/icon-tooltip"
 import { nestedForm } from "../../../../utils/nested-form"
 import { formatAmountWithSymbol } from "../../../../utils/prices"
@@ -15,6 +16,7 @@ type Props = {
 }
 
 export const ClaimSummary = ({ form, order }: Props) => {
+  const { t } = useTranslation()
   const { control } = form
 
   const claimItems = useWatch({
@@ -77,7 +79,9 @@ export const ClaimSummary = ({ form, order }: Props) => {
       <div className="gap-y-base border-grey-20 py-large flex flex-col border-y">
         {selectedClaimItems.length > 0 && (
           <div>
-            <p className="inter-base-semibold mb-small">Claimed items</p>
+            <p className="inter-base-semibold mb-small">
+              {t("rma-summaries-claimed-items", "Claimed items")}
+            </p>
             <div className="gap-y-xsmall flex flex-col">
               {selectedClaimItems.map((item, index) => {
                 return (
@@ -110,12 +114,15 @@ export const ClaimSummary = ({ form, order }: Props) => {
         {claimType !== "refund" && replacementItems.length > 0 && (
           <div>
             <div className="mb-small gap-x-2xsmall flex items-center">
-              <p className="inter-base-semibold">Replacement items</p>
+              <p className="inter-base-semibold">
+                {t("rma-summaries-replacement-items", "Replacement items")}
+              </p>
               <IconTooltip
                 type="warning"
-                content={
+                content={t(
+                  "rma-summaries-customer-refund-description",
                   "The customer will receive a full refund for the claimed items, as the cost of replacement items and shipping will not be deducted. Alternatively, you can choose to set a custom refund amount when you receive the returned items or create an exchange instead."
-                }
+                )}
               />
             </div>
             <div className="gap-y-xsmall flex flex-col">
@@ -153,13 +160,21 @@ export const ClaimSummary = ({ form, order }: Props) => {
           data-testid="refund-amount-container"
         >
           <div className="gap-x-2xsmall flex items-center">
-            <p className="inter-base-semibold">Refund amount</p>
+            <p className="inter-base-semibold">
+              {t("rma-summaries-refund-amount", "Refund amount")}
+            </p>
             <IconTooltip
               type="info"
               content={
                 claimType === "replace" && claimItemShipping.option
-                  ? "The customer will be refunded once the returned items are received"
-                  : "The customer will be refunded immediately"
+                  ? t(
+                      "rma-summaries-the-customer-will-be-refunded-once-the-returned-items-are-received",
+                      "The customer will be refunded once the returned items are received"
+                    )
+                  : t(
+                      "rma-summaries-the-customer-will-be-refunded-immediately",
+                      "The customer will be refunded immediately"
+                    )
               }
             />
           </div>

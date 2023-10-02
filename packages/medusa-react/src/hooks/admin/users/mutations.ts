@@ -14,7 +14,7 @@ import {
   UseMutationOptions,
   useQueryClient,
 } from "@tanstack/react-query"
-import { adminCustomerKeys } from ".."
+import { adminUserKeys } from "./queries"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 
@@ -30,7 +30,7 @@ export const useAdminCreateUser = (
 
   return useMutation(
     (payload: AdminCreateUserPayload) => client.admin.users.create(payload),
-    buildOptions(queryClient, adminCustomerKeys.lists(), options)
+    buildOptions(queryClient, adminUserKeys.lists(), options)
   )
 }
 
@@ -49,7 +49,7 @@ export const useAdminUpdateUser = (
     (payload: AdminUpdateUserPayload) => client.admin.users.update(id, payload),
     buildOptions(
       queryClient,
-      [adminCustomerKeys.lists(), adminCustomerKeys.detail(id)],
+      [adminUserKeys.lists(), adminUserKeys.detail(id)],
       options
     )
   )
@@ -66,7 +66,7 @@ export const useAdminDeleteUser = (
     () => client.admin.users.delete(id),
     buildOptions(
       queryClient,
-      [adminCustomerKeys.detail(id), adminCustomerKeys.lists()],
+      [adminUserKeys.detail(id), adminUserKeys.lists()],
       options
     )
   )

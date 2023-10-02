@@ -1,3 +1,4 @@
+import { FlagRouter } from "@medusajs/utils"
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
 import { MedusaError, isDefined } from "medusa-core-utils"
@@ -44,7 +45,6 @@ import {
 import { CalculationContextData } from "../types/totals"
 import { buildQuery, setMetadata } from "../utils"
 import { isFuture, isPast } from "../utils/date-helpers"
-import { FlagRouter } from "../utils/flag-router"
 import CustomerService from "./customer"
 import DiscountConditionService from "./discount-condition"
 import EventBusService from "./event-bus"
@@ -576,7 +576,7 @@ class DiscountService extends TransactionBaseService {
 
   async validateDiscountForProduct(
     discountRuleId: string,
-    productId: string | undefined
+    productId?: string
   ): Promise<boolean> {
     return await this.atomicPhase_(async (manager) => {
       const discountConditionRepo = manager.withRepository(
@@ -589,15 +589,9 @@ class DiscountService extends TransactionBaseService {
         return false
       }
 
-      const product = await this.productService_
-        .withTransaction(manager)
-        .retrieve(productId, {
-          relations: ["tags"],
-        })
-
       return await discountConditionRepo.isValidForProduct(
         discountRuleId,
-        product.id
+        productId
       )
     })
   }

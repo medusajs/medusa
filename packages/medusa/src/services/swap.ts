@@ -29,7 +29,7 @@ import {
 } from "./index"
 import { EntityManager, In } from "typeorm"
 import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { buildQuery, setMetadata, validateId } from "../utils"
 
 import { CreateShipmentConfig } from "../types/fulfillment"
@@ -278,11 +278,31 @@ class SwapService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Swap[]> {
+    const [swaps] = await this.listAndCount(selector, config)
+
+    return swaps
+  }
+
+  /**
+   * List swaps.
+   *
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return the result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Swap>,
+    config: FindConfig<Swap> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Swap[], number]> {
     const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
     const query = buildQuery(selector, config)
     query.relationLoadStrategy = "query"
 
-    return await swapRepo.find(query)
+    return await swapRepo.findAndCount(query)
   }
 
   /**
@@ -564,10 +584,7 @@ class SwapService extends TransactionBaseService {
 
       const swap = await this.retrieve(swapId, {
         relations: [
-          "order",
-          "order.items",
-          "order.items.variant",
-          "order.items.variant.product",
+          "order.items.variant.product.profiles",
           "order.swaps",
           "order.swaps.additional_items",
           "order.discounts",
@@ -914,10 +931,8 @@ class SwapService extends TransactionBaseService {
         relations: [
           "payment",
           "shipping_address",
-          "additional_items",
           "additional_items.tax_lines",
-          "additional_items.variant",
-          "additional_items.variant.product",
+          "additional_items.variant.product.profiles",
           "shipping_methods",
           "shipping_methods.shipping_option",
           "shipping_methods.tax_lines",

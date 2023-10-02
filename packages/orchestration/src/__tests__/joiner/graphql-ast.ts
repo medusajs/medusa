@@ -19,7 +19,7 @@ describe("RemoteJoiner.parseQuery", () => {
     const rjQuery = parser.parseQuery()
 
     expect(rjQuery).toEqual({
-      service: "order",
+      alias: "order",
       fields: ["id", "number", "date"],
       expands: [],
     })
@@ -50,7 +50,7 @@ describe("RemoteJoiner.parseQuery", () => {
     const rjQuery = parser.parseQuery()
 
     expect(rjQuery).toEqual({
-      service: "order",
+      alias: "order",
       fields: ["id", "number", "date"],
       expands: [],
       args: [
@@ -72,6 +72,44 @@ describe("RemoteJoiner.parseQuery", () => {
               num: 123,
             },
           },
+        },
+      ],
+    })
+  })
+
+  it("Simple query with mapping fields to services", async () => {
+    const graphqlQuery = `
+      query {
+          order {
+              id
+              number
+              date
+              products {
+                product_id
+                variant_id
+                order
+                variant {
+                  name
+                  sku
+                }
+              }
+          }
+      }
+    `
+    const parser = new GraphQLParser(graphqlQuery, {})
+    const rjQuery = parser.parseQuery()
+
+    expect(rjQuery).toEqual({
+      alias: "order",
+      fields: ["id", "number", "date", "products"],
+      expands: [
+        {
+          property: "products",
+          fields: ["product_id", "variant_id", "order", "variant"],
+        },
+        {
+          property: "products.variant",
+          fields: ["name", "sku"],
         },
       ],
     })
@@ -100,7 +138,7 @@ describe("RemoteJoiner.parseQuery", () => {
     const rjQuery = parser.parseQuery()
 
     expect(rjQuery).toEqual({
-      service: "order",
+      alias: "order",
       fields: ["id", "number", "date", "products"],
       expands: [
         {
@@ -138,7 +176,7 @@ describe("RemoteJoiner.parseQuery", () => {
     const rjQuery = parser.parseQuery()
 
     expect(rjQuery).toEqual({
-      service: "order",
+      alias: "order",
       fields: ["id", "number", "date", "products"],
       expands: [
         {
@@ -205,7 +243,7 @@ describe("RemoteJoiner.parseQuery", () => {
     const rjQuery = parser.parseQuery()
 
     expect(rjQuery).toEqual({
-      service: "order",
+      alias: "order",
       fields: ["id", "number", "date", "products"],
       expands: [
         {
@@ -234,6 +272,87 @@ describe("RemoteJoiner.parseQuery", () => {
           value: "any string",
         },
       ],
+    })
+  })
+
+  it("Nested query with fields and directives", async () => {
+    const graphqlQuery = `
+      query {
+        order(regularArgs: 123) {
+          id
+          number @include(if: "date > '2020-01-01'")
+          date
+          products {
+            product_id 
+            variant_id
+            variant @count {
+              name @lowerCase
+              sku @include(if: "name == 'test'")
+            }
+          }
+        }
+      }
+    `
+    const parser = new GraphQLParser(graphqlQuery)
+    const rjQuery = parser.parseQuery()
+
+    expect(rjQuery).toEqual({
+      alias: "order",
+      fields: ["id", "number", "date", "products"],
+      expands: [
+        {
+          property: "products",
+          fields: ["product_id", "variant_id", "variant"],
+          directives: {
+            variant: [
+              {
+                name: "count",
+              },
+            ],
+          },
+        },
+        {
+          property: "products.variant",
+          fields: ["name", "sku"],
+          directives: {
+            name: [
+              {
+                name: "lowerCase",
+              },
+            ],
+            sku: [
+              {
+                name: "include",
+                args: [
+                  {
+                    name: "if",
+                    value: "name == 'test'",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+      args: [
+        {
+          name: "regularArgs",
+          value: 123,
+        },
+      ],
+      directives: {
+        number: [
+          {
+            name: "include",
+            args: [
+              {
+                name: "if",
+                value: "date > '2020-01-01'",
+              },
+            ],
+          },
+        ],
+      },
     })
   })
 })

@@ -1,19 +1,6 @@
 import { SearchUtils, upperCaseFirst } from "@medusajs/utils"
-import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
-import { Express } from "express"
-import fs from "fs"
-import { sync as existsSync } from "fs-exists-cached"
-import glob from "glob"
-import _ from "lodash"
-import { createRequireFromPath } from "medusa-core-utils"
-import {
-  FileService,
-  FulfillmentService,
-  OauthService,
-} from "medusa-interfaces"
-import { trackInstallation } from "medusa-telemetry"
-import path from "path"
-import { EntitySchema } from "typeorm"
+import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
+import { FileService, OauthService } from "medusa-interfaces"
 import {
   AbstractTaxService,
   isBatchJobStrategy,
@@ -23,7 +10,6 @@ import {
   isPriceSelectionStrategy,
   isTaxCalculationStrategy,
 } from "../interfaces"
-import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
   ConfigModule,
@@ -34,11 +20,24 @@ import {
   formatRegistrationName,
   formatRegistrationNameWithoutNamespace,
 } from "../utils/format-registration-name"
-import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import {
+  registerAbstractFulfillmentServiceFromClass,
+  registerFulfillmentServiceFromClass,
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
+
+import { Express } from "express"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import glob from "glob"
+import _ from "lodash"
+import { createRequireFromPath } from "medusa-core-utils"
+import { trackInstallation } from "medusa-telemetry"
+import path from "path"
+import { EntitySchema } from "typeorm"
+import { MiddlewareService } from "../services"
+import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import logger from "./logger"
 import { RoutesLoader } from "./helpers/routing"
 
@@ -426,6 +425,9 @@ export async function registerServices(
       registerPaymentServiceFromClass(loaded, context)
       registerPaymentProcessorFromClass(loaded, context)
 
+      registerFulfillmentServiceFromClass(loaded, context)
+      registerAbstractFulfillmentServiceFromClass(loaded, context)
+
       if (loaded.prototype instanceof OauthService) {
         const appDetails = loaded.getAppDetails(pluginDetails.options)
 
@@ -441,26 +443,6 @@ export async function registerServices(
               lifetime: loaded.LIFE_TIME || Lifetime.SINGLETON,
             }
           ),
-        })
-      } else if (loaded.prototype instanceof FulfillmentService) {
-        // Register our payment providers to paymentProviders
-        container.registerAdd(
-          "fulfillmentProviders",
-          asFunction((cradle) => new loaded(cradle, pluginDetails.options), {
-            lifetime: loaded.LIFE_TIME || Lifetime.SINGLETON,
-          })
-        )
-
-        // Add the service directly to the container in order to make simple
-        // resolution if we already know which fulfillment provider we need to use
-        container.register({
-          [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options),
-            {
-              lifetime: loaded.LIFE_TIME || Lifetime.SINGLETON,
-            }
-          ),
-          [`fp_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (isNotificationService(loaded.prototype)) {
         container.registerAdd(

@@ -1,14 +1,10 @@
-import { createConnection, loadDatabaseConfig } from "../utils"
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
+import { EntitySchema } from "@mikro-orm/core"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import * as ProductModels from "@models"
 import { Product, ProductCategory, ProductVariant } from "@models"
-import { EntitySchema } from "@mikro-orm/core"
-import { LoaderOptions, Logger } from "@medusajs/types"
-import {
-  ProductServiceInitializeCustomDataLayerOptions,
-  ProductServiceInitializeOptions,
-} from "../types"
 import { EOL } from "os"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { resolve } from "path"
 
 export async function run({
@@ -17,10 +13,7 @@ export async function run({
   path,
 }: Partial<
   Pick<
-    LoaderOptions<
-      | ProductServiceInitializeOptions
-      | ProductServiceInitializeCustomDataLayerOptions
-    >,
+    LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
     "options" | "logger"
   >
 > & {
@@ -38,10 +31,15 @@ export async function run({
 
   logger ??= console as unknown as Logger
 
-  const dbData = loadDatabaseConfig(options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)!
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
+  const pathToMigrations = __dirname + "/../migrations"
 
-  const orm = await createConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(
+    dbData,
+    entities,
+    pathToMigrations
+  )
   const manager = orm.em.fork()
 
   try {
@@ -74,7 +72,7 @@ async function createProductCategories(
       parentCategory = await manager.findOne(ProductCategory, parentCategoryId)
     }
 
-    const category = await manager.create(ProductCategory, {
+    const category = manager.create(ProductCategory, {
       ...categoryDataClone,
       parent_category: parentCategory,
     })

@@ -1,11 +1,11 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const productSeeder = require("../../helpers/product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
 
 const {
   ProductVariant,
@@ -14,24 +14,21 @@ const {
   DiscountConditionType,
   DiscountConditionOperator,
 } = require("@medusajs/medusa")
-const priceListSeeder = require("../../helpers/price-list-seeder")
+const priceListSeeder = require("../../../helpers/price-list-seeder")
 const {
   simpleProductFactory,
   simpleDiscountFactory,
   simpleSalesChannelFactory,
   simpleRegionFactory,
-} = require("../../factories")
+} = require("../../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(50000)
 
-const testProductId = "test-product"
-const testProduct1Id = "test-product1"
-const testProductFilteringId1 = "test-product_filtering_1"
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -375,10 +372,10 @@ describe("/admin/products", () => {
       expect(expectedVariantPrices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price4",
+            id: "test-price_4",
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price_3",
           }),
         ])
       )
@@ -1668,6 +1665,7 @@ describe("/admin/products", () => {
 
     it("successfully updates a variant's price by changing an existing price (given a region_id)", async () => {
       const api = useApi()
+
       const data = {
         prices: [
           {
@@ -1748,6 +1746,7 @@ describe("/admin/products", () => {
                   expect.objectContaining({
                     amount: 100,
                     currency_code: "usd",
+                    id: "test-price",
                   }),
                   expect.objectContaining({
                     amount: 4500,
