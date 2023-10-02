@@ -13,7 +13,6 @@ import { IdempotencyCallbackResult } from "../../../../../../types/idempotency-k
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../../index"
 import IsolateProductDomainFeatureFlag from "../../../../../../loaders/feature-flags/isolate-product-domain"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../../../utils"
-import { MedusaError } from "medusa-core-utils"
 
 export const CreateLineItemSteps = {
   STARTED: "started",

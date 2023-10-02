@@ -1001,8 +1001,18 @@ class CartService extends TransactionBaseService {
           relations: ["shipping_methods"],
         })
 
+        const lineItemFields = ["id", "quantity", "variant_id", "cart_id"]
+
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            IsolateProductDomainFeatureFlag.key
+          )
+        ) {
+          lineItemFields.push("product_id")
+        }
+
         const lineItem = await this.lineItemService_.retrieve(lineItemId, {
-          select: ["id", "quantity", "variant_id", "cart_id", "product_id"],
+          select: lineItemFields,
         })
 
         if (lineItem.cart_id !== cartId) {
@@ -1070,7 +1080,7 @@ class CartService extends TransactionBaseService {
                   {
                     variantId: lineItem.variant_id,
                     quantity: lineItemUpdate.quantity,
-                    product_id: lineItem.product_id!,
+                    product_id: lineItem.product_id as string | undefined,
                   },
                 ],
                 {
