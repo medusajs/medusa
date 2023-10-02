@@ -111,7 +111,6 @@ export default class PricingModuleService<
     return joinerConfig
   }
 
-  
   @InjectManager("baseRepository_")
   async calculatePrices(
     pricingFilters: PricingFilters,
@@ -819,14 +818,6 @@ export default class PricingModuleService<
     await this.moneyAmountService_.delete(ids, sharedContext)
   }
 
-  /**
-   * Retrieves a currency by its code based on the provided configuration.
-   *
-   * @param {string} code - The code of the currency to retrieve.
-   * @param {FindConfig<PricingTypes.CurrencyDTO>} [config={}] - Optional configuration for retrieving the currency.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.CurrencyDTO>} A Promise that resolves to the retrieved currency object.
-   */
   @InjectManager("baseRepository_")
   async retrieveCurrency(
     code: string,
@@ -844,14 +835,6 @@ export default class PricingModuleService<
     })
   }
 
-  /**
-   * Lists currencies based on the provided filters and configuration.
-   *
-   * @param {PricingTypes.FilterableCurrencyProps} [filters={}] - Optional filters to apply when listing currencies.
-   * @param {FindConfig<PricingTypes.CurrencyDTO>} [config={}] - Optional configuration for listing currencies.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.CurrencyDTO[]>} A Promise that resolves to an array containing the list of currency objects.
-   */
   @InjectManager("baseRepository_")
   async listCurrencies(
     filters: PricingTypes.FilterableCurrencyProps = {},
@@ -872,14 +855,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Lists and counts currencies based on the provided filters and configuration.
-   *
-   * @param {PricingTypes.FilterableCurrencyProps} [filters={}] - Optional filters to apply when listing currencies.
-   * @param {FindConfig<PricingTypes.CurrencyDTO>} [config={}] - Optional configuration for listing currencies.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<[PricingTypes.CurrencyDTO[], number]>} A Promise that resolves to an array containing the list of currency objects and the total count.
-   */
   @InjectManager("baseRepository_")
   async listAndCountCurrencies(
     filters: PricingTypes.FilterableCurrencyProps = {},
@@ -903,13 +878,6 @@ export default class PricingModuleService<
     ]
   }
 
-  /**
-   * Creates new currencies based on the provided data.
-   *
-   * @param {PricingTypes.CreateCurrencyDTO[]} data - An array of objects containing the data to create new currencies.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.CurrencyDTO[]>} A Promise that resolves to an array of newly created currency objects.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async createCurrencies(
     data: PricingTypes.CreateCurrencyDTO[],
@@ -925,13 +893,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Updates currencies with the provided data.
-   *
-   * @param {PricingTypes.UpdateCurrencyDTO[]} data - An array of objects containing the data to update the currencies.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.CurrencyDTO[]>} A Promise that resolves to an array of updated currency objects.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async updateCurrencies(
     data: PricingTypes.UpdateCurrencyDTO[],
@@ -947,13 +908,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Deletes currencies with the specified codes.
-   *
-   * @param {string[]} currencyCodes - An array of string codes representing the currencies to delete.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<void>} A Promise that resolves once the currencies are deleted.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async deleteCurrencies(
     currencyCodes: string[],
@@ -962,14 +916,6 @@ export default class PricingModuleService<
     await this.currencyService_.delete(currencyCodes, sharedContext)
   }
 
-  /**
-   * Retrieves a rule type by its ID based on the provided configuration.
-   *
-   * @param {string} id - The ID of the rule type to retrieve.
-   * @param {FindConfig<PricingTypes.RuleTypeDTO>} [config={}] - Optional configuration for retrieving the rule type.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.RuleTypeDTO>} A Promise that resolves to the retrieved rule type object.
-   */
   @InjectManager("baseRepository_")
   async retrieveRuleType(
     id: string,
@@ -987,14 +933,6 @@ export default class PricingModuleService<
     })
   }
 
-  /**
-   * Lists rule types based on the provided filters and configuration.
-   *
-   * @param {PricingTypes.FilterableRuleTypeProps} [filters={}] - Optional filters to apply when listing rule types.
-   * @param {FindConfig<PricingTypes.RuleTypeDTO>} [config={}] - Optional configuration for listing rule types.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.RuleTypeDTO[]>} A Promise that resolves to an array containing the list of rule type objects.
-   */
   @InjectManager("baseRepository_")
   async listRuleTypes(
     filters: PricingTypes.FilterableRuleTypeProps = {},
@@ -1015,14 +953,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Lists and counts rule types based on the provided filters and configuration.
-   *
-   * @param {PricingTypes.FilterableRuleTypeProps} [filters={}] - Optional filters to apply when listing rule types.
-   * @param {FindConfig<PricingTypes.RuleTypeDTO>} [config={}] - Optional configuration for listing rule types.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<[PricingTypes.RuleTypeDTO[], number]>} A Promise that resolves to an array containing the list of rule type objects and the total count.
-   */
   @InjectManager("baseRepository_")
   async listAndCountRuleTypes(
     filters: PricingTypes.FilterableRuleTypeProps = {},
@@ -1046,13 +976,6 @@ export default class PricingModuleService<
     ]
   }
 
-  /**
-   * Creates new rule types based on the provided data.
-   *
-   * @param {PricingTypes.CreateRuleTypeDTO[]} data - An array of objects containing the data to create new rule types.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.RuleTypeDTO[]>} A Promise that resolves to an array of newly created rule type objects.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async createRuleTypes(
     data: PricingTypes.CreateRuleTypeDTO[],
@@ -1068,13 +991,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Updates rule types with the provided data.
-   *
-   * @param {PricingTypes.UpdateRuleTypeDTO[]} data - An array of objects containing the data to update the rule types.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.RuleTypeDTO[]>} A Promise that resolves to an array of updated rule type objects.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async updateRuleTypes(
     data: PricingTypes.UpdateRuleTypeDTO[],
@@ -1090,13 +1006,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Deletes rule types with the specified IDs.
-   *
-   * @param {string[]} ruleTypeIds - An array of string IDs representing the rule types to delete.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<void>} A Promise that resolves once the rule types are deleted.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async deleteRuleTypes(
     ruleTypeIds: string[],
@@ -1105,14 +1014,6 @@ export default class PricingModuleService<
     await this.ruleTypeService_.delete(ruleTypeIds, sharedContext)
   }
 
-  /**
-   * Retrieves a price set money amount rule by its ID based on the provided configuration.
-   *
-   * @param {string} id - The ID of the price set money amount rule to retrieve.
-   * @param {FindConfig<PricingTypes.PriceSetMoneyAmountRulesDTO>} [config={}] - Optional configuration for retrieving the price set money amount rule.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.PriceSetMoneyAmountRulesDTO>} A Promise that resolves to the retrieved price set money amount rule object.
-   */
   @InjectManager("baseRepository_")
   async retrievePriceSetMoneyAmountRules(
     id: string,
@@ -1133,14 +1034,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Lists price set money amount rules based on the provided filters and configuration.
-   *
-   * @param {PricingTypes.FilterablePriceSetMoneyAmountRulesProps} [filters={}] - Optional filters to apply when listing price set money amount rules.
-   * @param {FindConfig<PricingTypes.PriceSetMoneyAmountRulesDTO>} [config={}] - Optional configuration for listing price set money amount rules.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.PriceSetMoneyAmountRulesDTO[]>} A Promise that resolves to an array containing the list of price set money amount rule objects.
-   */
   @InjectManager("baseRepository_")
   async listPriceSetMoneyAmountRules(
     filters: PricingTypes.FilterablePriceSetMoneyAmountRulesProps = {},
@@ -1160,14 +1053,6 @@ export default class PricingModuleService<
     })
   }
 
-  /**
-   * Lists and counts price set money amount rules based on the provided filters and configuration.
-   *
-   * @param {PricingTypes.FilterablePriceSetMoneyAmountRulesProps} [filters={}] - Optional filters to apply when listing price set money amount rules.
-   * @param {FindConfig<PricingTypes.PriceSetMoneyAmountRulesDTO>} [config={}] - Optional configuration for listing price set money amount rules.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<[PricingTypes.PriceSetMoneyAmountRulesDTO[], number]>} A Promise that resolves to an array containing the list of price set money amount rule objects and the total count.
-   */
   @InjectManager("baseRepository_")
   async listAndCountPriceSetMoneyAmountRules(
     filters: PricingTypes.FilterablePriceSetMoneyAmountRulesProps = {},
@@ -1191,13 +1076,6 @@ export default class PricingModuleService<
     ]
   }
 
-  /**
-   * Creates new price set money amount rules based on the provided data.
-   *
-   * @param {PricingTypes.CreatePriceSetMoneyAmountRulesDTO[]} data - An array of objects containing the data to create new price set money amount rules.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.PriceSetMoneyAmountRulesDTO[]>} A Promise that resolves to an array of newly created price set money amount rule objects.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async createPriceSetMoneyAmountRules(
     data: PricingTypes.CreatePriceSetMoneyAmountRulesDTO[],
@@ -1215,13 +1093,6 @@ export default class PricingModuleService<
     })
   }
 
-  /**
-   * Updates price set money amount rules with the provided data.
-   *
-   * @param {PricingTypes.UpdatePriceSetMoneyAmountRulesDTO[]} data - An array of objects containing the data to update the price set money amount rules.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.PriceSetMoneyAmountRulesDTO[]>} A Promise that resolves to an array of updated price set money amount rule objects.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async updatePriceSetMoneyAmountRules(
     data: PricingTypes.UpdatePriceSetMoneyAmountRulesDTO[],
@@ -1239,13 +1110,6 @@ export default class PricingModuleService<
     })
   }
 
-  /**
-   * Deletes price set money amount rules with the specified IDs.
-   *
-   * @param {string[]} ids - An array of string IDs representing the price set money amount rules to delete.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<void>} A Promise that resolves once the price set money amount rules are deleted.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async deletePriceSetMoneyAmountRules(
     ids: string[],
@@ -1254,14 +1118,6 @@ export default class PricingModuleService<
     await this.priceSetMoneyAmountRulesService_.delete(ids, sharedContext)
   }
 
-  /**
-   * Retrieves a price rule by its ID
-   *
-   * @param {string} id - The ID of the price rule to retrieve.
-   * @param {FindConfig<PricingTypes.PriceRuleDTO>} [config={}] - Optional configuration for retrieving the price rule.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.PriceRuleDTO>} A Promise that resolves to the retrieved price rule object.
-   */
   @InjectManager("baseRepository_")
   async retrievePriceRule(
     id: string,
@@ -1282,14 +1138,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Lists price rules based on the provided filters and configuration.
-   *
-   * @param {PricingTypes.FilterablePriceRuleProps} [filters={}] - Optional filters to apply when listing price rules.
-   * @param {FindConfig<PricingTypes.PriceRuleDTO>} [config={}] - Optional configuration for listing price rules.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.PriceRuleDTO[]>} A Promise that resolves to an array containing the list of price rule objects.
-   */
   @InjectManager("baseRepository_")
   async listPriceRules(
     filters: PricingTypes.FilterablePriceRuleProps = {},
@@ -1310,14 +1158,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Lists and counts price rules based on the provided filters and configuration.
-   *
-   * @param {PricingTypes.FilterablePriceRuleProps} [filters={}] - Optional filters to apply when listing price rules.
-   * @param {FindConfig<PricingTypes.PriceRuleDTO>} [config={}] - Optional configuration for listing price rules.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<[PricingTypes.PriceRuleDTO[], number]>} A Promise that resolves to an array containing the list of price rule objects and the total count.
-   */
   @InjectManager("baseRepository_")
   async listAndCountPriceRules(
     filters: PricingTypes.FilterablePriceRuleProps = {},
@@ -1341,13 +1181,6 @@ export default class PricingModuleService<
     ]
   }
 
-  /**
-   * Creates new price rules based on the provided data.
-   *
-   * @param {PricingTypes.CreatePriceRuleDTO[]} data - An array of objects containing the data to create new price rules.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.PriceRuleDTO[]>} A Promise that resolves to an array of newly created price rule objects.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async createPriceRules(
     data: PricingTypes.CreatePriceRuleDTO[],
@@ -1363,13 +1196,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Updates price rules with the provided data.
-   *
-   * @param {PricingTypes.UpdatePriceRuleDTO[]} data - An array of objects containing the data to update the price rules.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<PricingTypes.PriceRuleDTO[]>} A Promise that resolves to an array of updated price rule objects.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async updatePriceRules(
     data: PricingTypes.UpdatePriceRuleDTO[],
@@ -1385,13 +1211,6 @@ export default class PricingModuleService<
     )
   }
 
-  /**
-   * Deletes price rules with the specified IDs.
-   *
-   * @param {string[]} priceRuleIds - An array of string IDs representing the price rules to delete.
-   * @param {Context} [sharedContext={}] - An optional shared MedusaContext object.
-   * @returns {Promise<void>} A Promise that resolves once the price rules are deleted.
-   */
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async deletePriceRules(
     priceRuleIds: string[],
