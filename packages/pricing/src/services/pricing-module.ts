@@ -281,18 +281,21 @@ export default class PricingModuleService<
     ]
   }
 
+  async create(
+    data: PricingTypes.CreatePriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
+
+  async create(
+    data: PricingTypes.CreatePriceSetDTO[],
+    sharedContext?: Context
+  ): Promise<PriceSetDTO[]>
+
   @InjectManager("baseRepository_")
-  async create<
-    TInput extends
-      | PricingTypes.CreatePriceSetDTO
-      | PricingTypes.CreatePriceSetDTO[],
-    TOutput = TInput extends PricingTypes.CreatePriceSetDTO[]
-      ? PricingTypes.PriceSetDTO[]
-      : PricingTypes.PriceSetDTO
-  >(
+  async create(
     data: PricingTypes.CreatePriceSetDTO | PricingTypes.CreatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TOutput> {
+  ): Promise<PriceSetDTO | PriceSetDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
     const priceSets = await this.create_(input, sharedContext)
@@ -304,9 +307,9 @@ export default class PricingModuleService<
       }
     )
 
-    return (Array.isArray(data)
-      ? dbPriceSets
-      : dbPriceSets[0]) as unknown as TOutput
+    return (Array.isArray(data) ? dbPriceSets : dbPriceSets[0]) as unknown as
+      | PriceSetDTO
+      | PriceSetDTO[]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -424,24 +427,31 @@ export default class PricingModuleService<
     return priceSets
   }
 
-  async addRules<
-    TInput extends PricingTypes.AddRulesDTO | PricingTypes.AddRulesDTO[],
-    TOutput = TInput extends PricingTypes.AddRulesDTO[]
-      ? PricingTypes.PriceSetDTO[]
-      : PricingTypes.PriceSetDTO
-  >(
+  async addRules(
+    data: PricingTypes.AddRulesDTO,
+    sharedContext?: Context
+  ): Promise<PricingTypes.PriceSetDTO>
+
+  async addRules(
+    data: PricingTypes.AddRulesDTO[],
+    sharedContext?: Context
+  ): Promise<PricingTypes.PriceSetDTO[]>
+
+  @InjectManager("baseRepository_")
+  async addRules(
     data: PricingTypes.AddRulesDTO | PricingTypes.AddRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TOutput> {
+  ): Promise<PricingTypes.PriceSetDTO[] | PricingTypes.PriceSetDTO> {
     const inputs = Array.isArray(data) ? data : [data]
 
     const priceSets = await this.addRules_(inputs, sharedContext)
 
-    return (Array.isArray(data)
-      ? priceSets
-      : priceSets[0]) as unknown as TOutput
+    return (Array.isArray(data) ? priceSets : priceSets[0]) as unknown as
+      | PricingTypes.PriceSetDTO[]
+      | PricingTypes.PriceSetDTO
   }
 
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async addRules_(
     inputs: PricingTypes.AddRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -531,16 +541,21 @@ export default class PricingModuleService<
     )
   }
 
+  async addPrices(
+    data: AddPricesDTO,
+    sharedContext?: Context
+  ): Promise<PricingTypes.PriceSetDTO>
+
+  async addPrices(
+    data: AddPricesDTO[],
+    sharedContext?: Context
+  ): Promise<PricingTypes.PriceSetDTO[]>
+
   @InjectManager("baseRepository_")
-  async addPrices<
-    TInput extends AddPricesDTO | AddPricesDTO[],
-    TOutput = TInput extends PricingTypes.AddRulesDTO[]
-      ? PricingTypes.PriceSetDTO[]
-      : PricingTypes.PriceSetDTO
-  >(
+  async addPrices(
     data: AddPricesDTO | AddPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TOutput> {
+  ): Promise<PricingTypes.PriceSetDTO[] | PricingTypes.PriceSetDTO> {
     const input = Array.isArray(data) ? data : [data]
 
     await this.addPrices_(input, sharedContext)
@@ -548,7 +563,7 @@ export default class PricingModuleService<
     return (await this.list(
       { id: input.map((d) => d.priceSetId) },
       { relations: ["money_amounts"] }
-    )) as unknown as TOutput
+    )) as unknown as PricingTypes.PriceSetDTO[] | PricingTypes.PriceSetDTO
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
