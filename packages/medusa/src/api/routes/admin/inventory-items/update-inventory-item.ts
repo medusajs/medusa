@@ -40,7 +40,7 @@ import { IInventoryService } from "@medusajs/types"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/inventory-items/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "origin_country": "US"
@@ -48,6 +48,7 @@ import { IInventoryService } from "@medusajs/types"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Inventory Items
  * responses:
