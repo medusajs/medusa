@@ -20,11 +20,11 @@
   }
   
   h1, h2, h3, h4 {
-    @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
+    @apply text-medusa-fg-base;
   }
   
   hr {
-    @apply h-[1px] w-full border-0 bg-medusa-border-base dark:bg-medusa-border-base-dark my-2;
+    @apply h-[1px] w-full border-0 bg-medusa-border-base my-2;
   }
   
   p, ul, ol {
@@ -40,7 +40,7 @@
   }
 
   *::selection {
-    @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
+    @apply bg-medusa-bg-highlight;
   }
 
   pre *::selection {
@@ -49,19 +49,5 @@
 
   body[data-modal="opened"] {
     @apply !overflow-hidden;
-  }
-}
-
-@layer utilities {
-  .clip {
-    clip-path: inset(0);
-  }
-
-  .no-marker {
-    @apply marker:content-none;
-  }
-
-  .no-marker::-webkit-details-marker {
-    @apply hidden;
   }
 }

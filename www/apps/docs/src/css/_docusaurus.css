@@ -42,20 +42,20 @@ video {
 }
 
 .theme-code-block {
-  @apply border border-solid border-medusa-code-border dark:border-medusa-code-border-dark;
+  @apply border border-solid border-medusa-code-border;
 }
 
 .markdown p + .card-wrapper {
   @apply mt-1.5;
 }
 
-.card + p {
+.card + p,
+details + p {
   @apply mt-2;
 }
 
 .card-highlighted {
- 
-  @apply relative mb-4 bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-subtle-hover-dark;
+  @apply relative mb-4 bg-medusa-bg-subtle dark:bg-medusa-bg-base hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover;
 }
 
 .col.toc-wrapper {
@@ -79,12 +79,12 @@ video {
 }
 
 [class*=codeLineNumber] {
-  @apply text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark !pl-0;
+  @apply text-medusa-code-text-subtle !pl-0;
 }
 
 .prism-code {
   @apply xs:max-w-[90%] text-code-body [&_*]:text-code-body xs:after:content-[''] xs:after:rounded xs:after:absolute;
-  @apply xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade dark:xs:after:bg-code-fade-dark;
+  @apply xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade;
 }
 
 .prism-code:not(:hover)::-webkit-scrollbar-thumb,
@@ -166,7 +166,7 @@ details summary {
 }
 
 .theme-code-block {
-  @apply !bg-medusa-code-bg-base dark:!bg-medusa-code-bg-base-dark
+  @apply !bg-medusa-code-bg-base;
 }
 
 .reference-table .code-block-numbering {
@@ -182,7 +182,7 @@ details summary {
 }
 
 .theme-doc-footer {
-  @apply !mt-0 border-0 !border-t border-solid !border-medusa-border-base dark:!border-medusa-border-base-dark;
+  @apply !mt-0 border-0 !border-t border-solid !border-medusa-border-base;
   @apply pt-2;
 }
 
@@ -216,12 +216,12 @@ details > div {
 }
 
 .search-result-match {
-  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
-  @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark py-0.25 px-0;
+  @apply text-medusa-fg-base;
+  @apply bg-medusa-bg-highlight py-0.25 px-0;
 }
 
 .navbar {
-  @apply z-[399] p-0 border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
+  @apply z-[399] p-0 border-0 border-b border-solid border-medusa-border-base;
 }
 
 html:not(.plugin-redoc) .navbar:not(.navbar-sidebar--show) {
@@ -257,7 +257,7 @@ h3 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
+  @apply text-medusa-fg-base;
 }
 
 .markdown > h1:first-child,
@@ -279,7 +279,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 *::selection {
-  @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
+  @apply bg-medusa-bg-highlight;
 }
 
 .prism-code *::selection, .code-header::selection {

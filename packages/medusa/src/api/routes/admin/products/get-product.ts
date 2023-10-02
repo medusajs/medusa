@@ -1,6 +1,7 @@
 import { PricingService, ProductService } from "../../../../services"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultAdminProductRemoteQueryObject } from "./index"
+import { MedusaError } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/products/{id}
@@ -27,10 +28,11 @@ import { defaultAdminProductRemoteQueryObject } from "./index"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/products/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -99,6 +101,13 @@ async function getProductWithIsolatedProductModule(req, id, retrieveConfig) {
   }
 
   const [product] = await remoteQuery(query)
+
+  if (!product) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product with id: ${id} not found`
+    )
+  }
 
   product.profile_id = product.profile?.id
 

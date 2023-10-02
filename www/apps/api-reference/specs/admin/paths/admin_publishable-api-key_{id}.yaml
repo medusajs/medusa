@@ -30,6 +30,7 @@ post:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Publishable Api Keys
   responses:

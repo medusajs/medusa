@@ -1,5 +1,5 @@
 import { EllipsisHorizontal } from "@medusajs/icons"
-import { Button, DropdownMenu } from "@medusajs/ui"
+import { DropdownMenu, IconButton } from "@medusajs/ui"
 import React from "react"
 
 type SortingState = "asc" | "desc" | "alpha" | "alpha-reverse" | "none"
@@ -11,9 +11,9 @@ export default function DropdownMenuSorting() {
     <div className="flex flex-col items-center gap-y-2">
       <DropdownMenu>
         <DropdownMenu.Trigger asChild>
-          <Button variant="secondary" format={"icon"}>
+          <IconButton>
             <EllipsisHorizontal />
-          </Button>
+          </IconButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content className="w-[300px]">
           <DropdownMenu.RadioGroup

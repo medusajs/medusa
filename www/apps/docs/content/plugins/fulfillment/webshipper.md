@@ -34,13 +34,13 @@ In the directory of your Medusa backend, run the following command to install th
 npm install medusa-fulfillment-webshipper
 ```
 
-Finally, add the plugin to the `plugins` array in `medusa-config.js`:
+Next, add the plugin to the `plugins` array in `medusa-config.js`:
 
 ```js title=medusa-config.js
 const plugins = [
   // ...
   {
-    resolve: `install medusa-fulfillment-webshipper`,
+    resolve: `medusa-fulfillment-webshipper`,
     options: {
       account: process.env.WEBSHIPPER_ACCOUNT,
       api_token: process.env.WEBSHIPPER_API_TOKEN,
