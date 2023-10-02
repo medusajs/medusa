@@ -25,4 +25,5 @@ export interface FilterableRuleTypeProps
   extends BaseFilterable<FilterableRuleTypeProps> {
   id?: string[]
   name?: string[]
+  rule_attribute?: string[]
 }
