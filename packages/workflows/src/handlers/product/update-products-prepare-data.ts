@@ -26,6 +26,7 @@ export async function updateProductsPrepareData({
   const productServiceTx = productService.withTransaction(context.manager)
 
   const products = await productServiceTx.list(
+    // TODO: use RemoteQuery - sales_channels needs to be added to the joiner config
     { id: ids },
     {
       relations: [
@@ -35,7 +36,7 @@ export async function updateProductsPrepareData({
         "options",
         "tags",
         "collection",
-        "sales_channels", // TODO: remove this and use product module
+        "sales_channels",
       ],
     }
   )
