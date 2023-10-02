@@ -5,5 +5,6 @@ export const variantKeys = [
   "ean",
   "mid_code",
   "hs_code",
+  "inventory_quantity",
   "options",
 ]
