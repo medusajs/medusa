@@ -10,7 +10,7 @@ import {
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { isDefined, MedusaError } from "@medusajs/utils"
+import { FlagRouter, isDefined, isString, MedusaError } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
@@ -19,7 +19,7 @@ import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
 import { TransactionBaseService } from "../interfaces"
 import { getSetDifference } from "../utils/diff-set"
-import { isString } from "../utils"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -29,6 +29,7 @@ type InjectedDependencies = {
   stockLocationService: IStockLocationService
   inventoryService: IInventoryService
   eventBusService: IEventBusService
+  featureFlagRouter: FlagRouter
 }
 
 type AvailabilityContext = {
@@ -47,6 +48,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly inventoryService_: IInventoryService
   protected readonly eventBusService_: IEventBusService
   protected readonly cacheService_: ICacheService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     stockLocationService,
@@ -55,6 +57,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     productVariantService,
     inventoryService,
     eventBusService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -65,38 +68,44 @@ class ProductVariantInventoryService extends TransactionBaseService {
     this.productVariantService_ = productVariantService
     this.inventoryService_ = inventoryService
     this.eventBusService_ = eventBusService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
    * confirms if requested inventory is available
-   * @param variantOrVariantId id of the variant to confirm inventory for
+   * @param variantOrId
    * @param quantity quantity of inventory to confirm is available
    * @param context optionally include a sales channel if applicable
    * @returns boolean indicating if inventory is available
    */
   async confirmInventory(
-    variantOrVariantId: string | ProductVariant,
+    variantOrId:
+      | string
+      | {
+          id: string
+          allow_backorder: boolean
+          manage_inventory: boolean
+          inventory_quantity: number
+        },
     quantity: number,
     context: { salesChannelId?: string | null } = {}
   ): Promise<Boolean> {
-    if (!variantOrVariantId) {
+    if (!variantOrId) {
       return true
     }
 
-    let productVariant = variantOrVariantId as ProductVariant
-
-    if (isString(variantOrVariantId)) {
-      productVariant = (await this.productVariantService_
-        .withTransaction(this.activeManager_)
-        .retrieve(variantOrVariantId, {
-          select: [
-            "id",
-            "allow_backorder",
-            "manage_inventory",
-            "inventory_quantity",
-          ],
-        })) as unknown as ProductVariant
-    }
+    const productVariant = isString(variantOrId)
+      ? await this.productVariantService_
+          .withTransaction(this.activeManager_)
+          .retrieve(variantOrId, {
+            select: [
+              "id",
+              "allow_backorder",
+              "manage_inventory",
+              "inventory_quantity",
+            ],
+          })
+      : variantOrId
 
     // If the variant allows backorders or if inventory isn't managed we
     // don't need to check inventory
@@ -305,29 +314,39 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
     }
 
-    // Verify that variant exists
-    const variants = await this.productVariantService_
-      .withTransaction(this.activeManager_)
-      .list(
-        {
-          id: data.map((d) => d.variantId),
-        },
-        {
-          select: ["id"],
-        }
+    // We should be able to just attach the inventory to the variant id provided without constraints
+    if (
+      !this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
       )
+    ) {
+      // Verify that variant exists
+      const variants = await this.productVariantService_
+        .withTransaction(this.activeManager_)
+        .list(
+          {
+            id: data.map((d) => d.variantId),
+          },
+          {
+            select: ["id"],
+          }
+        )
 
-    const foundVariantIds = new Set(variants.map((v) => v.id))
-    const requestedVariantIds = new Set(data.map((v) => v.variantId))
-    if (foundVariantIds.size !== requestedVariantIds.size) {
-      const difference = getSetDifference(requestedVariantIds, foundVariantIds)
+      const foundVariantIds = new Set(variants.map((v) => v.id))
+      const requestedVariantIds = new Set(data.map((v) => v.variantId))
+      if (foundVariantIds.size !== requestedVariantIds.size) {
+        const difference = getSetDifference(
+          requestedVariantIds,
+          foundVariantIds
+        )
 
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variants not found for the following ids: ${[...difference].join(
-          ", "
-        )}`
-      )
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Variants not found for the following ids: ${[...difference].join(
+            ", "
+          )}`
+        )
+      }
     }
 
     // Verify that item exists
@@ -437,12 +456,14 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
   /**
    * Reserves a quantity of a variant
-   * @param variantId variant id
+   * @param variantOrId variant id
    * @param quantity quantity to reserve
    * @param context optional parameters
    */
   async reserveQuantity(
-    variantId: string,
+    variantOrId:
+      | string
+      | { id: string; manage_inventory: boolean; inventory_quantity: number },
     quantity: number,
     context: ReserveQuantityContext = {}
   ): Promise<void | ReservationItemDTO[]> {
@@ -450,12 +471,19 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return this.atomicPhase_(async (manager) => {
         const variantServiceTx =
           this.productVariantService_.withTransaction(manager)
-        const variant = await variantServiceTx.retrieve(variantId, {
-          select: ["id", "inventory_quantity"],
-        })
-        await variantServiceTx.update(variant.id, {
-          inventory_quantity: variant.inventory_quantity - quantity,
-        })
+
+        const variant = isString(variantOrId)
+          ? await variantServiceTx.retrieve(variantOrId, {
+              select: ["id", "manage_inventory", "inventory_quantity"],
+            })
+          : variantOrId
+
+        if (variant.manage_inventory) {
+          await variantServiceTx.update(variant.id, {
+            inventory_quantity: variant.inventory_quantity - quantity,
+          })
+        }
+
         return
       })
     }
@@ -464,7 +492,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       line_item_id: context.lineItemId,
     }
 
-    const variantInventory = await this.listByVariant(variantId)
+    const variantInventory = await this.listByVariant(
+      isString(variantOrId) ? variantOrId : variantOrId.id
+    )
 
     if (variantInventory.length === 0) {
       return

@@ -1,4 +1,5 @@
-import { FlagRouter } from "@medusajs/utils"
+import { RemoteJoinerQuery } from "@medusajs/types"
+import { FlagRouter, stringToRemoteQueryObject } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
@@ -63,8 +64,6 @@ import {
 import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { validateEmail } from "../utils/is-email"
-import { RemoteJoinerQuery } from "@medusajs/types"
-import { stringToRemoteQueryObject } from "@medusajs/utils/dist/common/string-to-remote-query-object"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -1045,7 +1044,7 @@ class CartService extends TransactionBaseService {
               if (!variantOrId) {
                 throw new MedusaError(
                   MedusaError.Types.NOT_FOUND,
-                  "Variant with id: ${lineItem.variant_id} not found"
+                  `Variant with id: ${lineItem.variant_id} not found`
                 )
               }
             }
@@ -2259,7 +2258,7 @@ class CartService extends TransactionBaseService {
           const lineItemServiceTx =
             this.lineItemService_.withTransaction(transactionManager)
 
-          let productShippinProfileMap = new Map<string, string>()
+          let productShippingProfileMap = new Map<string, string>()
 
           if (
             this.featureFlagRouter_.isFeatureEnabled(
@@ -2270,7 +2269,7 @@ class CartService extends TransactionBaseService {
               await this.shippingProfileService_.getMapProfileIdsByProductIds(
                 cart.items.map((item) => item.variant.product_id)
               )
-            productShippinProfileMap = new Map(
+            productShippingProfileMap = new Map(
               Object.entries(profilesMap).map(
                 ([productId, shippingProfiles]) => {
                   return [productId, shippingProfiles?.[0].id]
@@ -2278,7 +2277,7 @@ class CartService extends TransactionBaseService {
               )
             )
           } else {
-            productShippinProfileMap = new Map<string, string>(
+            productShippingProfileMap = new Map<string, string>(
               cart.items.map((item) => [
                 item.variant?.product?.id,
                 item.variant?.product?.profile_id,
@@ -2291,7 +2290,7 @@ class CartService extends TransactionBaseService {
               return lineItemServiceTx.update(item.id, {
                 has_shipping: this.validateLineItemShipping_(
                   methods,
-                  productShippinProfileMap.get(item.variant?.product_id)!
+                  productShippingProfileMap.get(item.variant?.product_id)!
                 ),
               })
             })

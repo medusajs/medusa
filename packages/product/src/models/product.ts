@@ -53,6 +53,8 @@ class Product {
     name: "IDX_product_handle_unique",
     properties: ["handle"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   handle?: string | null
 
   @Property({ columnType: "text", nullable: true })

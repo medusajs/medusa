@@ -99,18 +99,17 @@ export async function createProductsPrepareData({
       )
     }
 
-    if (
-      featureFlagRouter.isFeatureEnabled(salesChannelFeatureFlagKey) &&
-      !product.sales_channels?.length
-    ) {
-      productsHandleSalesChannelsMap.set(product.handle!, [
-        defaultSalesChannel!.id,
-      ])
-    } else {
-      productsHandleSalesChannelsMap.set(
-        product.handle!,
-        product.sales_channels!.map((s) => s.id)
-      )
+    if (featureFlagRouter.isFeatureEnabled(salesChannelFeatureFlagKey)) {
+      if (!product.sales_channels?.length) {
+        productsHandleSalesChannelsMap.set(product.handle!, [
+          defaultSalesChannel!.id,
+        ])
+      } else {
+        productsHandleSalesChannelsMap.set(
+          product.handle!,
+          product.sales_channels!.map((s) => s.id)
+        )
+      }
     }
 
     if (product.variants) {

@@ -1,7 +1,8 @@
+import { FlagRouter } from "@medusajs/utils"
 import { MockManager } from "medusa-test-utils"
-import CartCompletionStrategy from "../cart-completion"
 import { newTotalsServiceMock } from "../../services/__mocks__/new-totals"
 import { ProductVariantInventoryServiceMock } from "../../services/__mocks__/product-variant-inventory"
+import CartCompletionStrategy from "../cart-completion"
 
 const IdempotencyKeyServiceMock = {
   withTransaction: function () {
@@ -225,6 +226,7 @@ describe("CartCompletionStrategy", () => {
           orderService: orderServiceMock,
           swapService: swapServiceMock,
           manager: MockManager,
+          featureFlagRouter: new FlagRouter({}),
         })
 
         const val = await completionStrat.complete(cart.id, idempotencyKey, {})

@@ -40,6 +40,8 @@ class ProductVariant {
     name: "IDX_product_variant_sku_unique",
     properties: ["sku"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   sku?: string | null
 
   @Property({ columnType: "text", nullable: true })
@@ -47,6 +49,8 @@ class ProductVariant {
     name: "IDX_product_variant_barcode_unique",
     properties: ["barcode"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   barcode?: string | null
 
   @Property({ columnType: "text", nullable: true })
@@ -54,6 +58,8 @@ class ProductVariant {
     name: "IDX_product_variant_ean_unique",
     properties: ["ean"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   ean?: string | null
 
   @Property({ columnType: "text", nullable: true })
@@ -61,6 +67,8 @@ class ProductVariant {
     name: "IDX_product_variant_upc_unique",
     properties: ["upc"],
   })
+  // when generating migrations always check that those indexes are not removed Migration20230908084538
+  // Mikro orm does not support unique index with constraint
   upc?: string | null
 
   // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose
