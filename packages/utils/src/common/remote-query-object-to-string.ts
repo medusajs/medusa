@@ -6,7 +6,7 @@
  *
  * @example
  *
- * const remoteQueryObject = = {
+ * const remoteQueryObject = {
  *   fields: [
  *     "id",
  *     "title",

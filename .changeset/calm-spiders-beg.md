@@ -3,4 +3,4 @@
 "@medusajs/modules-sdk": patch
 ---
 
-feat(utils): Remote query object to string array and fields and relations from GQL schema
+feat(utils): Convert remote query object to string array of fields and relations from GQL schema
