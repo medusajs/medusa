@@ -15575,6 +15575,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ansi-sequence-parser@npm:^1.1.0":
+  version: 1.1.1
+  resolution: "ansi-sequence-parser@npm:1.1.1"
+  checksum: ab2259ccf69f145ecf1418d4e71524158828f44afdf37c7536677871f4cebaa8b176fcb95de8f94a68129357dddc59586597da25f9d4ebf9968f6ef022bf0b31
+  languageName: node
+  linkType: hard
+
 "ansi-styles@npm:^2.2.1":
   version: 2.2.1
   resolution: "ansi-styles@npm:2.2.1"
@@ -30297,7 +30304,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonc-parser@npm:^3.0.0, jsonc-parser@npm:^3.2.0":
+"jsonc-parser@npm:^3.2.0":
   version: 3.2.0
   resolution: "jsonc-parser@npm:3.2.0"
   checksum: 5a12d4d04dad381852476872a29dcee03a57439574e4181d91dca71904fcdcc5e8e4706c0a68a2c61ad9810e1e1c5806b5100d52d3e727b78f5cdc595401045b
@@ -31621,7 +31628,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^4.0.15, marked@npm:^4.0.18":
+"marked@npm:^4.0.15, marked@npm:^4.3.0":
   version: 4.3.0
   resolution: "marked@npm:4.3.0"
   bin:
@@ -32993,7 +33000,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^5.0.1, minimatch@npm:^5.1.0":
+"minimatch@npm:^5.0.1":
   version: 5.1.6
   resolution: "minimatch@npm:5.1.6"
   dependencies:
@@ -33008,6 +33015,15 @@ __metadata:
   dependencies:
     brace-expansion: ^2.0.1
   checksum: 39157d5fd831a7981f7c0c5b22a0e0c2ae8a987ec4a4aeaacc21d3e85da24ce812808cbf7c07cde0d63ad1cf307f73be581131a7a84eeda65f00be1f51972471
+  languageName: node
+  linkType: hard
+
+"minimatch@npm:^9.0.3":
+  version: 9.0.3
+  resolution: "minimatch@npm:9.0.3"
+  dependencies:
+    brace-expansion: ^2.0.1
+  checksum: 85f407dcd38ac3e180f425e86553911d101455ca3ad5544d6a7cec16286657e4f8a9aa6695803025c55e31e35a91a2252b5dc8e7d527211278b8b65b4dbd5eac
   languageName: node
   linkType: hard
 
@@ -39402,12 +39418,12 @@ __metadata:
     ts-jest: ^26.5.6
     ts-node: ^10.9.1
     turbo: ^1.6.3
-    typedoc: 0.23.10
+    typedoc: latest
     typedoc-frontmatter-plugin: "link:docs-util/typedoc-plugins/typedoc-frontmatter-plugin"
     typedoc-monorepo-link-types: ^0.0.2
-    typedoc-plugin-markdown: ^3.13.4
-    typedoc-plugin-merge-modules: ^4.0.1
-    typedoc-plugin-reference-excluder: ^1.0.0
+    typedoc-plugin-markdown: latest
+    typedoc-plugin-merge-modules: latest
+    typedoc-plugin-reference-excluder: latest
     typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
@@ -40107,14 +40123,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shiki@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "shiki@npm:0.10.1"
+"shiki@npm:^0.14.1":
+  version: 0.14.4
+  resolution: "shiki@npm:0.14.4"
   dependencies:
-    jsonc-parser: ^3.0.0
-    vscode-oniguruma: ^1.6.1
-    vscode-textmate: 5.2.0
-  checksum: cc4db3462722261cb9ce0f7c0dbe278af3b99ad57dfab77b80c4dc9c8e3198f1d3f3c3433044a731c16f7afede9e60747f8a62290fbbaa18c26026f7b94cde8b
+    ansi-sequence-parser: ^1.1.0
+    jsonc-parser: ^3.2.0
+    vscode-oniguruma: ^1.7.0
+    vscode-textmate: ^8.0.0
+  checksum: 9d1609fde8b7d361b0a9bce62dd72fc5cb2be566f215b14427d0d04bbd272bcfe0662cd6a158db56391daa55f246017f0fa8a8a78b8c8611c3cc03923587b6f4
   languageName: node
   linkType: hard
 
@@ -43099,27 +43116,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc-plugin-markdown@npm:^3.13.4":
-  version: 3.15.3
-  resolution: "typedoc-plugin-markdown@npm:3.15.3"
+"typedoc-plugin-markdown@npm:latest":
+  version: 3.16.0
+  resolution: "typedoc-plugin-markdown@npm:3.16.0"
   dependencies:
     handlebars: ^4.7.7
   peerDependencies:
     typedoc: ">=0.24.0"
-  checksum: 573a5c103843b7b0035bedb0bac8ea34f842e8e63ade154d680c58fe6720e6fe7f9a48e3c3062021411d4710a4b06af32a6687d9d50b2c7a0512147dafeac060
+  checksum: 0daa8290e7b8f03e9e1e79efdd564a61db3dbb8f20eb15ef89cc3bce0c14ff2061b7f35452b06e2c31644f33f0cc53c06570c9c1a20245f7458b1f88a3438588
   languageName: node
   linkType: hard
 
-"typedoc-plugin-merge-modules@npm:^4.0.1":
-  version: 4.1.0
-  resolution: "typedoc-plugin-merge-modules@npm:4.1.0"
+"typedoc-plugin-merge-modules@npm:latest":
+  version: 5.1.0
+  resolution: "typedoc-plugin-merge-modules@npm:5.1.0"
   peerDependencies:
-    typedoc: 0.23.x || 0.24.x
-  checksum: e57fdef4a07e8fb83ff6e3c49e6f6461fa6412552346c16ad6f861f9343255cc55aa6e55d9ff69bc90fc5ccd2a95b476169097d1fc6d2c3ee729bf6983364e84
+    typedoc: 0.24.x || 0.25.x
+  checksum: 59b44c5afe02372367db2be237546c9ab1a755ff8eab9b696ff8649f0eee87d5c7290b931642371907877fdf4754875076056d8cc29cfef582a665aaf49894ca
   languageName: node
   linkType: hard
 
-"typedoc-plugin-reference-excluder@npm:^1.0.0":
+"typedoc-plugin-reference-excluder@npm:latest":
   version: 1.1.3
   resolution: "typedoc-plugin-reference-excluder@npm:1.1.3"
   peerDependencies:
@@ -43128,19 +43145,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:0.23.10":
-  version: 0.23.10
-  resolution: "typedoc@npm:0.23.10"
+"typedoc@npm:latest":
+  version: 0.25.1
+  resolution: "typedoc@npm:0.25.1"
   dependencies:
     lunr: ^2.3.9
-    marked: ^4.0.18
-    minimatch: ^5.1.0
-    shiki: ^0.10.1
+    marked: ^4.3.0
+    minimatch: ^9.0.3
+    shiki: ^0.14.1
   peerDependencies:
-    typescript: 4.6.x || 4.7.x
+    typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x
   bin:
     typedoc: bin/typedoc
-  checksum: 634e805a608c699811a0fa10944823504f0023afd599037298700179f2293cd717a937b32cf885c6bcf4808334f3132aaa9c946e63b9131789a9a9b240cb0115
+  checksum: 11d91302378d618ce451cc5857fcfd4d7923a20075c15ef7b7be663f827d3c2e01260b23ddb97d0d2d47b414b5ed3953a8fabc1adcb582c093d667cf704b5e48
   languageName: node
   linkType: hard
 
@@ -44320,17 +44337,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vscode-oniguruma@npm:^1.6.1":
+"vscode-oniguruma@npm:^1.7.0":
   version: 1.7.0
   resolution: "vscode-oniguruma@npm:1.7.0"
   checksum: bef0073c665ddf8c86e51da94529c905856559e9aba97a9882f951acd572da560384775941ab6e7e8db94d9c578b25fefb951e4b73c37e8712e16b0231de2689
   languageName: node
   linkType: hard
 
-"vscode-textmate@npm:5.2.0":
-  version: 5.2.0
-  resolution: "vscode-textmate@npm:5.2.0"
-  checksum: 87c4786606cf7a49d78b690b37236f919db594ff81f1a405f9d9a0a9ee66ff3450fe51c0d8731f270268f7be550adffb6711a4bbc6f56d76b71abe41949817c7
+"vscode-textmate@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "vscode-textmate@npm:8.0.0"
+  checksum: 836f7fe73fc94998a38ca193df48173a2b6eab08b4943d83c8cac9a2a0c3546cfdab4cf1b10b890ec4a4374c5bee03a885ef0e83e7fd2bd618cf00781c017c04
   languageName: node
   linkType: hard
 

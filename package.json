@@ -52,12 +52,12 @@
     "ts-jest": "^26.5.6",
     "ts-node": "^10.9.1",
     "turbo": "^1.6.3",
-    "typedoc": "0.23.10",
+    "typedoc": "latest",
     "typedoc-frontmatter-plugin": "link:docs-util/typedoc-plugins/typedoc-frontmatter-plugin",
     "typedoc-monorepo-link-types": "^0.0.2",
-    "typedoc-plugin-markdown": "^3.13.4",
-    "typedoc-plugin-merge-modules": "^4.0.1",
-    "typedoc-plugin-reference-excluder": "^1.0.0",
+    "typedoc-plugin-markdown": "latest",
+    "typedoc-plugin-merge-modules": "latest",
+    "typedoc-plugin-reference-excluder": "latest",
     "typeorm": "^0.3.16"
   },
   "lint-staged": {
