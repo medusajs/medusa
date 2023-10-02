@@ -17,20 +17,18 @@ export async function retrieveVariantsWithIsolatedProductModule(
   const query = {
     variants: {
       __args: variables,
-      variants: {
-        fields: [
-          "id",
-          "title",
-          "product_id",
-          "metadata",
-          "allow_backorder",
-          "manage_inventory",
-          "inventory_quantity",
-        ],
+      fields: [
+        "id",
+        "title",
+        "product_id",
+        "metadata",
+        "allow_backorder",
+        "manage_inventory",
+        "inventory_quantity",
+      ],
 
-        product: {
-          fields: ["id", "title", "thumbnail", "discountable", "is_giftcard"],
-        },
+      product: {
+        fields: ["id", "title", "thumbnail", "discountable", "is_giftcard"],
       },
     },
   }
