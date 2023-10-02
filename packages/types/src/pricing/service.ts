@@ -140,17 +140,47 @@ export interface IPricingModuleService {
     sharedContext?: Context
   ): Promise<void>
 
+  /**
+ * Delete priceSets by their IDs.
+ * @param ids - An array of IDs for priceSets to delete.
+ * @param sharedContext - Optional shared context.
+ * @returns A promise that resolves when the price sets are successfully deleted.
+ */
   delete(ids: string[], sharedContext?: Context): Promise<void>
 
+  /**
+ * Add prices to a price set.
+ * @param data - Data for adding prices to a price set.
+ * @param sharedContext - Optional shared context.
+ * @returns A promise resolving to the updated PriceSetDTO.
+ */
   addPrices(data: AddPricesDTO, sharedContext?: Context): Promise<PriceSetDTO>
 
+  /**
+ * Add prices to multiple price sets.
+ * @param data - An array of data for adding prices to price sets.
+ * @param sharedContext - Optional shared context.
+ * @returns A promise resolving to an array of updated PriceSetDTOs.
+ */
   addPrices(
     data: AddPricesDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
 
+  /**
+ * Add rules to a price set.
+ * @param data - Data for adding rules to a price set.
+ * @param sharedContext - Optional shared context.
+ * @returns A promise resolving to the updated PriceSetDTO.
+ */
   addRules(data: AddRulesDTO, sharedContext?: Context): Promise<PriceSetDTO>
 
+  /**
+ * Add rules to multiple price sets.
+ * @param data - An array of data for adding rules to price sets.
+ * @param sharedContext - Optional shared context.
+ * @returns A promise resolving to an array of updated PriceSetDTOs.
+ */
   addRules(data: AddRulesDTO[], sharedContext?: Context): Promise<PriceSetDTO[]>
 
   retrieveMoneyAmount(
