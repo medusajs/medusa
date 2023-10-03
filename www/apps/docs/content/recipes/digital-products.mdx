@@ -284,33 +284,22 @@ import {
   TransactionBaseService,
   buildQuery,
 } from "@medusajs/medusa"
-import { 
-  ProductMediaRepository,
-} from "../repositories/product-media"
 import { ProductMedia } from "../models/product-media"
 import { MedusaError } from "@medusajs/utils"
 
 type InjectedDependencies = {
-  productMediaRepository: typeof ProductMediaRepository
   productVariantService: ProductVariantService
 }
 
 class ProductMediaService extends TransactionBaseService {
-  protected productMediaRepository_: 
-    typeof ProductMediaRepository
   protected productVariantService_: ProductVariantService
 
   constructor(container: InjectedDependencies) {
     super(container)
-    this.productMediaRepository_ = 
-      container.productMediaRepository
-    this.productVariantService_ = 
-      container.productVariantService
+    this.productVariantService_ = container.productVariantService
   }
 
-  private checkVariantInRelations(
-    relations: string[]
-  ): [string[], boolean] {
+  private checkVariantInRelations (relations: string[]): [string[], boolean] {
     const variantsRelationIndex = relations.indexOf("variant")
     const isVariantsEnabled = variantsRelationIndex !== -1
     if (isVariantsEnabled) {
@@ -326,36 +315,23 @@ class ProductMediaService extends TransactionBaseService {
       skip: 0,
       take: 20,
       relations: [],
-    }
+    },
   ): Promise<[ProductMedia[], number]> {
-    const productMediaRepo = this.activeManager_.withRepository(
-      this.productMediaRepository_
-    )
+    const productMediaRepo = this.activeManager_.getRepository(ProductMedia)
 
-    const [
-      relations, 
-      isVariantsEnabled,
-    ] = this.checkVariantInRelations(
-      config.relations || []
-    )
+    const [relations, isVariantsEnabled] = this.checkVariantInRelations(config.relations || [])
 
     config.relations = relations
 
     const query = buildQuery(selector, config)
 
-    const [
-      productMedias,
-      count,
-    ] = await productMediaRepo.findAndCount(query)
+    const [productMedias, count] = await productMediaRepo.findAndCount(query)
 
     if (isVariantsEnabled) {
       // retrieve product variants
-      await Promise.all(productMedias.map(
-        async (media, index) => {
-          productMedias[index].variant = 
-            await this.retrieveVariantByMedia(media)
-        })
-      )
+      await Promise.all(productMedias.map(async (media, index) => {
+        productMedias[index].variant = await this.retrieveVariantByMedia(media)
+      }))
     }
 
     return [productMedias, count]
@@ -367,24 +343,18 @@ class ProductMediaService extends TransactionBaseService {
       skip: 0,
       take: 20,
       relations: [],
-    }
+    },
   ): Promise<ProductMedia[]> {
-    const [productMedias] = await this.listAndCount(
-      selector,
-      config
-    )
+    const [productMedias] = await this.listAndCount(selector, config)
 
     return productMedias
   }
 
   async retrieve(
     id: string,
-    config?: FindConfig<ProductMedia>
+    config?: FindConfig<ProductMedia>,
   ): Promise<ProductMedia> {
-    const productMediaRepo = 
-      this.activeManager_.withRepository(
-        this.productMediaRepository_
-      )
+    const productMediaRepo = this.activeManager_.getRepository(ProductMedia)
 
     const query = buildQuery({
       id,
@@ -400,31 +370,23 @@ class ProductMediaService extends TransactionBaseService {
     }
 
     if (config.relations.includes("variant")) {
-      productMedia.variant = 
-        await this.retrieveVariantByMedia(productMedia)
+      productMedia.variant = await this.retrieveVariantByMedia(productMedia)
     }
 
     return productMedia
   }
 
-  async retrieveVariantByMedia(productMedia: ProductMedia) {
-    return await this.productVariantService_.retrieve(
-      productMedia.variant_id, {
-        relations: ["product"],
-      }
-    )
+  async retrieveVariantByMedia (productMedia: ProductMedia) {
+    return await this.productVariantService_.retrieve(productMedia.variant_id, {
+      relations: ["product"]
+    })
   }
 
   async create(
-    data: Pick<
-      ProductMedia, 
-      "name" | "file_key" | "variant_id" | "type"
-    >
+    data: Pick<ProductMedia, "name" | "file_key" | "variant_id" | "type">
   ): Promise<ProductMedia> {
     return this.atomicPhase_(async (manager) => {
-      const productMediaRepo = manager.withRepository(
-        this.productMediaRepository_
-      )
+      const productMediaRepo = manager.getRepository(ProductMedia)
       const productMedia = productMediaRepo.create(data)
       const result = await productMediaRepo.save(productMedia)
 
@@ -437,9 +399,7 @@ class ProductMediaService extends TransactionBaseService {
     data: Omit<Partial<ProductMedia>, "id">
   ): Promise<ProductMedia> {
     return await this.atomicPhase_(async (manager) => {
-      const productMediaRepo = manager.withRepository(
-        this.productMediaRepository_
-      )
+      const productMediaRepo = manager.getRepository(ProductMedia)
       const productMedia = await this.retrieve(id)
 
       Object.assign(productMedia, data)
@@ -450,9 +410,7 @@ class ProductMediaService extends TransactionBaseService {
 
   async delete(id: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const productMediaRepo = manager.withRepository(
-        this.productMediaRepository_
-      )
+      const productMediaRepo = manager.getRepository(ProductMedia)
       const productMedia = await this.retrieve(id)
       
       await productMediaRepo.remove([productMedia])
