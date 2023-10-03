@@ -925,10 +925,7 @@ class CartService extends TransactionBaseService {
               has_shipping: false,
             }
 
-            if (
-              isDefined(calculated_price) &&
-              currentItem.unit_price !== calculated_price
-            ) {
+            if (isDefined(calculated_price)) {
               lineItemsToUpdate[currentItem.id].unit_price = calculated_price
             }
           } else {
