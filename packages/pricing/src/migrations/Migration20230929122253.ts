@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20230928154931 extends Migration {
+export class Migration20230929122253 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table "currency" ("code" text not null, "symbol" text not null, "symbol_native" text not null, "name" text not null, constraint "currency_pkey" primary key ("code"));'
@@ -35,6 +35,16 @@ export class Migration20230928154931 extends Migration {
     )
 
     this.addSql(
+      'create table "price_set_rule_type" ("id" text not null, "price_set_id" text not null, "rule_type_id" text not null, constraint "price_set_rule_type_pkey" primary key ("id"));'
+    )
+    this.addSql(
+      'create index "IDX_price_set_rule_type_price_set_id" on "price_set_rule_type" ("price_set_id");'
+    )
+    this.addSql(
+      'create index "IDX_price_set_rule_type_rule_type_id" on "price_set_rule_type" ("rule_type_id");'
+    )
+
+    this.addSql(
       'create table "price_set_money_amount_rules" ("id" text not null, "price_set_money_amount_id" text not null, "rule_type_id" text not null, "value" text not null, constraint "price_set_money_amount_rules_pkey" primary key ("id"));'
     )
     this.addSql(
@@ -65,11 +75,18 @@ export class Migration20230928154931 extends Migration {
       'alter table "price_set_money_amount" add constraint "price_set_money_amount_price_set_id_foreign" foreign key ("price_set_id") references "price_set" ("id") on update cascade on delete cascade;'
     )
     this.addSql(
-      'alter table "price_set_money_amount" add constraint "price_set_money_amount_money_amount_id_foreign" foreign key ("money_amount_id") references "money_amount" ("id") on update cascade;'
+      'alter table "price_set_money_amount" add constraint "price_set_money_amount_money_amount_id_foreign" foreign key ("money_amount_id") references "money_amount" ("id") on update cascade on delete cascade;'
     )
 
     this.addSql(
-      'alter table "price_set_money_amount_rules" add constraint "price_set_money_amount_rules_price_set_money_amount_id_foreign" foreign key ("price_set_money_amount_id") references "price_set_money_amount" ("id") on update cascade;'
+      'alter table "price_set_rule_type" add constraint "price_set_rule_type_price_set_id_foreign" foreign key ("price_set_id") references "price_set" ("id") on update cascade on delete cascade;'
+    )
+    this.addSql(
+      'alter table "price_set_rule_type" add constraint "price_set_rule_type_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;'
+    )
+
+    this.addSql(
+      'alter table "price_set_money_amount_rules" add constraint "price_set_money_amount_rules_price_set_money_amount_id_foreign" foreign key ("price_set_money_amount_id") references "price_set_money_amount" ("id") on update cascade on delete cascade;'
     )
     this.addSql(
       'alter table "price_set_money_amount_rules" add constraint "price_set_money_amount_rules_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;'
@@ -82,7 +99,7 @@ export class Migration20230928154931 extends Migration {
       'alter table "price_rule" add constraint "price_rule_rule_type_id_foreign" foreign key ("rule_type_id") references "rule_type" ("id") on update cascade;'
     )
     this.addSql(
-      'alter table "price_rule" add constraint "price_rule_price_set_money_amount_id_foreign" foreign key ("price_set_money_amount_id") references "price_set_money_amount" ("id") on update cascade;'
+      'alter table "price_rule" add constraint "price_rule_price_set_money_amount_id_foreign" foreign key ("price_set_money_amount_id") references "price_set_money_amount" ("id") on update cascade on delete cascade;'
     )
   }
 }
