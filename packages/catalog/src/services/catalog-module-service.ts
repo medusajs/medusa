@@ -78,9 +78,9 @@ type InjectedDependencies = {
 }
 
 export default class CatalogModuleService {
-  private readonly container_: InjectedDependencies
+  private static tree_: Tree
 
-  private tree_: Tree
+  private readonly container_: InjectedDependencies
   private readonly moduleConfig_: Config
 
   protected readonly baseRepository_: DAL.RepositoryService
@@ -125,7 +125,7 @@ export default class CatalogModuleService {
       orderBy?: { [column: string]: "ASC" | "DESC" }
     }
   }) {
-    this.buildObjectsTree(this.moduleConfig_.objects)
+    CatalogModuleService.buildObjectsTree(this.moduleConfig_.objects)
     /**
      * The data is stored in the catalog database,
      * they are all in the data column of type JSONB
@@ -147,7 +147,42 @@ export default class CatalogModuleService {
     }
   }
 
-  protected buildObjectsTree(objects: Config["objects"]) {
+  protected storeDataOnEvent(
+    objectConfig: Omit<Config["objects"][0], "listeners">
+  ) {
+    return async (data: any) => {
+      CatalogModuleService.buildObjectsTree(this.moduleConfig_.objects)
+
+      const ids: string[] = []
+
+      if ("id" in data) {
+        ids.push(data.id)
+      } else if ("ids" in data && data.ids.length) {
+        ids.push(...data.ids)
+      }
+
+      if (ids.length === 0) {
+        return
+      }
+
+      // Retrieve fields from tree and build remote query object
+      /*const entryPoint = ""
+      const query = stringToRemoteQueryObject({
+        entryPoint,
+        variables: {
+          id: ids,
+        },
+        fields: targetObject.fields,
+      })*/
+
+      // const result = await this.remoteQuery_(query)
+
+      // Insert data in the catalog database
+      // INSERT INTO catalog (type, data) VALUES ('products', '{"id": 1, "title": "Product 1"}')
+    }
+  }
+
+  protected static buildObjectsTree(objects: Config["objects"]) {
     if (Object.keys(this.tree_).length) {
       return
     }
@@ -205,40 +240,5 @@ export default class CatalogModuleService {
     }
 
     this.tree_ = tree
-  }
-
-  protected storeDataOnEvent(
-    objectConfig: Omit<Config["objects"][0], "listeners">
-  ) {
-    return async (data: any) => {
-      this.buildObjectsTree(this.moduleConfig_.objects)
-
-      const ids: string[] = []
-
-      if ("id" in data) {
-        ids.push(data.id)
-      } else if ("ids" in data && data.ids.length) {
-        ids.push(...data.ids)
-      }
-
-      if (ids.length === 0) {
-        return
-      }
-
-      // Retrieve fields from tree and build remote query object
-      /*const entryPoint = ""
-      const query = stringToRemoteQueryObject({
-        entryPoint,
-        variables: {
-          id: ids,
-        },
-        fields: targetObject.fields,
-      })*/
-
-      // const result = await this.remoteQuery_(query)
-
-      // Insert data in the catalog database
-      // INSERT INTO catalog (type, data) VALUES ('products', '{"id": 1, "title": "Product 1"}')
-    }
   }
 }
