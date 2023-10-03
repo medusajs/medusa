@@ -42,10 +42,11 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/inventory-items/{id}/location-levels' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Inventory Items
  * responses:

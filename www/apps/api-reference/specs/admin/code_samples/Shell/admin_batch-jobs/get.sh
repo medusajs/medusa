@@ -1,2 +1,2 @@
 curl '{backend_url}/admin/batch-jobs' \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'

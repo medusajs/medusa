@@ -38,6 +38,7 @@ post:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Draft Orders
   responses:
@@ -93,6 +94,7 @@ delete:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Draft Orders
   responses:

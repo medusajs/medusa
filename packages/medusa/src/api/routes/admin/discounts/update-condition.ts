@@ -44,7 +44,7 @@ import { FindParams } from "../../../../types/common"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/discounts/{id}/conditions/{condition}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "products": [
@@ -54,6 +54,7 @@ import { FindParams } from "../../../../types/common"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Discounts
  * responses:

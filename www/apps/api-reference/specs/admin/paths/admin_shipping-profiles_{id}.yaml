@@ -24,6 +24,7 @@ get:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Shipping Profiles
   responses:
@@ -75,6 +76,7 @@ post:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Shipping Profiles
   responses:
@@ -122,6 +124,7 @@ delete:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Shipping Profiles
   responses:

@@ -33,8 +33,37 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
 
 ## Authentication
 
-To send requests as an authenticated customer, you must use the Cookie
-Session ID.
+There are two ways to send authenticated requests to the Medusa server: Using a JWT token or using a Cookie Session ID.
+
+### JWT Token
+
+Use a JWT token to send authenticated requests. Authentication state is managed by the client, which is ideal for Jamstack applications and mobile applications.
+
+#### How to Obtain the JWT Token
+
+JWT tokens are obtained by sending a request to the [Customer Login (JWT) endpoint](#auth_authtoken) passing it the customer's email and password in the request body. For example:
+
+```bash
+curl -X POST 'https://medusa-url.com/store/auth/token' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "email": "user@example.com",
+  "password": "supersecret"
+}'
+
+```
+
+If authenticated successfully, an object is returned in the response with the property `access_token` being the JWT token.
+
+#### How to Use the JWT Token
+
+The JWT token can be used for Bearer Authentication. It's passed in the
+`Authorization` header as the following:
+
+
+```bash
+Authorization: Bearer {jwt_token}
+```
 
 ### Cookie Session ID
 

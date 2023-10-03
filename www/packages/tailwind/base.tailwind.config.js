@@ -459,11 +459,31 @@ module.exports = {
             transform: "scale3d(1, 1, 1)",
           },
         },
+        slideInRight: {
+          from: {
+            transform: "translate3d(100%, 0, 0)",
+            visibility: "visible",
+          },
+          to: {
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        slideOutRight: {
+          from: {
+            transform: "translate3d(0, 0, 0)",
+          },
+          to: {
+            visibility: "hidden",
+            transform: "translate3d(100%, 0, 0)",
+          },
+        },
       },
       animation: {
         fadeIn: "fadeIn 500ms",
         fadeOut: "fadeOut 500ms",
         tada: "tada 1s",
+        slideInRight: "slideInRight 500ms",
+        slideOutRight: "slideOutRight 500ms",
       },
     },
     fontFamily: {
@@ -549,6 +569,14 @@ module.exports = {
         },
         ".animate-fast": {
           animationDuration: "300ms",
+        },
+        ".clip": {
+          clipPath: "inset(0)",
+        },
+        ".no-marker": {
+          "&::-webkit-details-marker": {
+            display: "none",
+          },
         },
       })
       addComponents({

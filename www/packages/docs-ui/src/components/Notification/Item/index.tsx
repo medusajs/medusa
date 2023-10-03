@@ -15,6 +15,7 @@ export type NotificationItemProps = {
   show?: boolean
   setShow?: (value: boolean) => void
   onClose?: () => void
+  closeButtonText?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 export const NotificationItem = ({
@@ -37,7 +38,7 @@ export const NotificationItem = ({
       className={clsx(
         "md:max-w-[320px] md:w-[320px] w-full bg-medusa-bg-base rounded-docs_DEFAULT",
         "shadow-flyout dark:shadow-flyout-dark max-h-[calc(100vh-90px)]",
-        "fixed md:right-docs_1 left-0 z-[400] md:m-docs_1",
+        "fixed md:right-docs_1 left-0 md:m-docs_1",
         placement === "bottom" && "md:bottom-docs_1 bottom-0",
         placement === "top" && "md:top-docs_1 top-0",
         "opacity-100 transition-opacity duration-200 ease-ease",
