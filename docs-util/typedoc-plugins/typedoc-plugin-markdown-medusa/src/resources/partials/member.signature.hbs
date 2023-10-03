@@ -1,0 +1,143 @@
+{{#if (sectionEnabled "member_signature_title")}}
+
+{{{signatureTitle accessor}}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_comment")}}
+
+{{#with comment}}
+
+{{#if hasVisibleComponent}}
+
+{{{comments this true false}}}
+
+{{/if}}
+
+{{/with}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_typeParameters")}}
+
+{{#if typeParameters}}
+
+{{#with typeParameters}}
+
+{{{typeParameterTable}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_parameters")}}
+
+{{#if parameters}}
+
+{{#if showSources}}
+
+{{memberTitleLevel 4}} Parameters
+
+{{else}}
+
+{{memberTitleLevel 5}} Parameters
+
+{{/if}}
+
+{{#with parameters}}
+
+{{{parameterTable}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#ifShowReturns}}
+
+{{#if type}}
+
+{{#if showSources}}
+
+{{memberTitleLevel 4}} Returns
+
+{{else}}
+
+{{memberTitleLevel 5}} Returns
+
+{{/if}}
+
+{{#with type}}
+
+{{{type 'all'}}}
+
+{{/with}}
+
+{{#with comment}}
+
+{{{returns this}}}
+
+{{/with}}
+
+{{#with type}}
+
+{{#if (sectionEnabled "member_signature_declarationSignatures")}}
+
+{{#if declaration.signatures}}
+
+{{#each declaration.signatures}}
+
+{{> member.signature showSources=false }}
+
+{{/each}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_declarationChildren")}}
+
+{{#if declaration.children}}
+
+{{#with declaration.children}}
+
+{{{typeDeclarationMembers}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{/with}}
+
+{{/if}}
+
+{{/ifShowReturns}}
+
+{{#if (sectionEnabled "member_signature_comment")}}
+
+{{#with comment}}
+
+{{#if hasVisibleComponent}}
+
+{{{comments this false true}}}
+
+{{/if}}
+
+{{/with}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_signature_sources")}}
+
+{{#if showSources}}
+
+{{> member.sources}}
+
+{{/if}}
+
+{{/if}}

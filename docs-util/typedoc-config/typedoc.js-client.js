@@ -1,7 +1,7 @@
 const path = require("path")
 const globalTypedocOptions = require("./typedoc")
 
-const pathPrefix = "../.."
+const pathPrefix = path.join(__dirname, "..", "..")
 
 module.exports = {
   ...globalTypedocOptions,
