@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/catalog",
-  "version": "0.2.1",
+  "version": "0.0.1",
   "description": "Medusa Catalog module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
