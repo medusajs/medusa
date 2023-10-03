@@ -1,0 +1,5 @@
+type: object
+properties:
+  accessToken:
+    description: Access token for subsequent authorization.
+    type: string

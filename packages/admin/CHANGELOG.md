@@ -1,5 +1,14 @@
 # @medusajs/admin
 
+## 7.1.3
+
+### Patch Changes
+
+- [#5173](https://github.com/medusajs/medusa/pull/5173) [`adb6fb3f7`](https://github.com/medusajs/medusa/commit/adb6fb3f7d2bce941395516cd61bcfae2908a74f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Allow nullish values in update variant
+
+- Updated dependencies [[`25dad081b`](https://github.com/medusajs/medusa/commit/25dad081b7f99b5398d0d64eba50ebcb08e1138f), [`f88e3865a`](https://github.com/medusajs/medusa/commit/f88e3865a07eafe476c8d7295d806674de478c19), [`adb6fb3f7`](https://github.com/medusajs/medusa/commit/adb6fb3f7d2bce941395516cd61bcfae2908a74f)]:
+  - @medusajs/admin-ui@2.1.3
+
 ## 7.1.2
 
 ### Patch Changes

@@ -24,6 +24,7 @@ get:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Users
   responses:
@@ -76,6 +77,7 @@ post:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Users
   responses:
@@ -125,6 +127,7 @@ delete:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Users
   responses:
