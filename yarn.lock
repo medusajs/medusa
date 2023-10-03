@@ -6711,6 +6711,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
+    "@graphql-tools/merge": ^9.0.0
+    "@graphql-tools/schema": ^10.0.0
     "@medusajs/orchestration": ^0.4.1
     "@medusajs/types": ^1.11.2
     "@medusajs/utils": ^1.10.2

@@ -4,14 +4,14 @@ export function cleanGraphQLSchema(schema: string): {
   schema: string
   notFound: Record<string, Record<string, string>>
 } {
-  const extractTypeName = (type) => {
+  const extractTypeNameAndKind = (type) => {
     if (type.kind === Kind.NAMED_TYPE) {
-      return type.name.value
+      return [type.name.value, type.kind]
     }
     if (type.kind === Kind.NON_NULL_TYPE || type.kind === Kind.LIST_TYPE) {
-      return extractTypeName(type.type)
+      return extractTypeNameAndKind(type.type)
     }
-    return null
+    return [null, null]
   }
 
   const ast = parse(schema)
@@ -38,16 +38,25 @@ export function cleanGraphQLSchema(schema: string): {
   const nonExistingMap: Record<string, Record<string, string>> = {}
   const parentStack: string[] = []
 
+  /*
+    Traverse the graph mapping all the entities + fields and removing the ones that don't exist.
+    Extensions are not removed, but marked with a "__extended" key if the main entity doesn't exist. (example: Link modules injecting fields into another module)
+  */
   const cleanedAst = visit(ast, {
     ObjectTypeExtension: {
       enter(node) {
         const typeName = node.name.value
+
+        parentStack.push(typeName)
         if (!typeNames.has(typeName)) {
           nonExistingMap[typeName] ??= {}
           nonExistingMap[typeName]["__extended"] = ""
           return null
         }
         return
+      },
+      leave() {
+        parentStack.pop()
       },
     },
     ObjectTypeDefinition: {
@@ -60,9 +69,9 @@ export function cleanGraphQLSchema(schema: string): {
     },
     FieldDefinition: {
       leave(node) {
-        const typeName = extractTypeName(node.type)
+        const [typeName, kind] = extractTypeNameAndKind(node.type)
 
-        if (!typeNames.has(typeName) && node.type.kind === Kind.NAMED_TYPE) {
+        if (!typeNames.has(typeName) && kind === Kind.NAMED_TYPE) {
           const currentParent = parentStack[parentStack.length - 1]
 
           nonExistingMap[currentParent] ??= {}
@@ -74,6 +83,7 @@ export function cleanGraphQLSchema(schema: string): {
     },
   })
 
+  // Return the schema and the map of non existing entities and fields
   return {
     schema: print(cleanedAst),
     notFound: nonExistingMap,
