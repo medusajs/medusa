@@ -129,6 +129,7 @@ describe("/admin/products", () => {
           title: "Test",
           discountable: true,
           is_giftcard: false,
+          handle: "test",
           status: "draft",
           created_at: expect.any(String),
           updated_at: expect.any(String),
