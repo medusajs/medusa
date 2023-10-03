@@ -2,7 +2,7 @@ import {
   Context,
   DAL,
   UpdatePriceSetDTO,
-  CreatePriceSetDTO,
+  CreatePriceSetRuleTypeDTO,
 } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
@@ -11,9 +11,9 @@ import {
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PriceSet } from "@models"
+import { PriceSet, PriceSetRuleType, RuleType } from "@models"
 
-export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
+export class PriceSetRuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -24,9 +24,9 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async find(
-    findOptions: DAL.FindOptions<PriceSet> = { where: {} },
+    findOptions: DAL.FindOptions<PriceSetRuleType> = { where: {} },
     context: Context = {}
-  ): Promise<PriceSet[]> {
+  ): Promise<PriceSetRuleType[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
@@ -37,16 +37,16 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
     })
 
     return await manager.find(
-      PriceSet,
-      findOptions_.where as MikroFilterQuery<PriceSet>,
-      findOptions_.options as MikroOptions<PriceSet>
+      PriceSetRuleType,
+      findOptions_.where as MikroFilterQuery<PriceSetRuleType>,
+      findOptions_.options as MikroOptions<PriceSetRuleType>
     )
   }
 
   async findAndCount(
-    findOptions: DAL.FindOptions<PriceSet> = { where: {} },
+    findOptions: DAL.FindOptions<PriceSetRuleType> = { where: {} },
     context: Context = {}
-  ): Promise<[PriceSet[], number]> {
+  ): Promise<[PriceSetRuleType[], number]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
@@ -57,25 +57,25 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
     })
 
     return await manager.findAndCount(
-      PriceSet,
-      findOptions_.where as MikroFilterQuery<PriceSet>,
-      findOptions_.options as MikroOptions<PriceSet>
+      PriceSetRuleType,
+      findOptions_.where as MikroFilterQuery<PriceSetRuleType>,
+      findOptions_.options as MikroOptions<PriceSetRuleType>
     )
   }
 
   async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    await manager.nativeDelete(PriceSet, { id: { $in: ids } }, {})
+    await manager.nativeDelete(PriceSetRuleType, { id: { $in: ids } }, {})
   }
 
   async create(
-    data: Omit<CreatePriceSetDTO, "rules">[],
+    data: CreatePriceSetRuleTypeDTO[],
     context: Context = {}
-  ): Promise<PriceSet[]> {
+  ): Promise<PriceSetRuleType[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const priceSets = data.map((priceSetData) => {
-      return manager.create(PriceSet, priceSetData)
+      return manager.create(PriceSetRuleType, priceSetData)
     })
 
     manager.persist(priceSets)
@@ -86,7 +86,7 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
   async update(
     data: UpdatePriceSetDTO[],
     context: Context = {}
-  ): Promise<PriceSet[]> {
+  ): Promise<PriceSetRuleType[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
     const priceSetIds = data.map((priceSetData) => priceSetData.id)
     const existingPriceSets = await this.find(
@@ -101,7 +101,7 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
     )
 
     const existingPriceSetMap = new Map(
-      existingPriceSets.map<[string, PriceSet]>((priceSet) => [
+      existingPriceSets.map<[string, PriceSetRuleType]>((priceSet) => [
         priceSet.id,
         priceSet,
       ])
@@ -113,7 +113,7 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
       if (!existingPriceSet) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `PriceSet with id "${priceSetData.id}" not found`
+          `PriceSetRuleType with id "${priceSetData.id}" not found`
         )
       }
 

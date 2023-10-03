@@ -1017,6 +1017,44 @@ describe("/store/carts", () => {
       )
     })
 
+    it("updates line item quantity with unit price reflected when merging line-items", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        id: "pl_current",
+        prices: [
+          {
+            variant_id: "test-variant",
+            amount: 10,
+            min_quantity: 5,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-3/line-items",
+          {
+            variant_id: "test-variant",
+            quantity: 4,
+          },
+          { withCredentials: true }
+        )
+        .catch(console.log)
+
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-3",
+            unit_price: 10,
+            variant_id: "test-variant",
+            quantity: 5,
+          }),
+        ])
+      )
+    })
+
     it("creates and updates line item quantity with unit price reflected", async () => {
       const api = useApi()
 
