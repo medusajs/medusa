@@ -193,9 +193,8 @@ export class Product extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) return
-
     this.id = generateEntityId(this.id, "prod")
+
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
     }

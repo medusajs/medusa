@@ -42,7 +42,7 @@ describe("/admin/invites", () => {
       const response = await api
         .get("/admin/invites", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -92,7 +92,7 @@ describe("/admin/invites", () => {
             password: "test123453",
           },
           {
-            headers: { Authorization: "Bearer test_token" },
+            headers: { "x-medusa-access-token": "test_token" },
           }
         )
         .catch((err) => console.log(err))
@@ -116,14 +116,14 @@ describe("/admin/invites", () => {
 
         const createReponse = await api
           .post("/admin/invites", payload, {
-            headers: { Authorization: "Bearer test_token" },
+            headers: { "x-medusa-access-token": "test_token" },
           })
           .catch((err) => console.log(err))
 
         const response = await api
           .get("/admin/invites", {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -151,14 +151,14 @@ describe("/admin/invites", () => {
 
         const createReponse = await api
           .post("/admin/invites", payload, {
-            headers: { Authorization: "Bearer test_token" },
+            headers: { "x-medusa-access-token": "test_token" },
           })
           .catch((err) => console.log(err))
 
         const response = await api
           .get("/admin/invites", {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           })
           .catch((err) => {
@@ -189,7 +189,7 @@ describe("/admin/invites", () => {
             `/admin/invites/${id}/resend`,
             {},
             {
-              headers: { Authorization: "Bearer test_token" },
+              headers: { "x-medusa-access-token": "test_token" },
             }
           )
           .catch((err) => console.log(err))
@@ -201,7 +201,7 @@ describe("/admin/invites", () => {
         const api = useApi()
 
         const inviteResponse = await api.get("/admin/invites", {
-          headers: { Authorization: "Bearer test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
         })
 
         const { token, ...rest } = inviteResponse.data.invites[0]
@@ -219,7 +219,7 @@ describe("/admin/invites", () => {
           .catch((err) => console.log(err))
 
         const userResponse = await api.get("/admin/users", {
-          headers: { Authorization: "Bearer test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
         })
 
         const newUser = userResponse.data.users.find(
@@ -234,7 +234,7 @@ describe("/admin/invites", () => {
         const api = useApi()
 
         const inviteResponse = await api.get("/admin/invites", {
-          headers: { Authorization: "Bearer test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
         })
 
         const { token, ...rest } = inviteResponse.data.invites.find(
@@ -254,7 +254,7 @@ describe("/admin/invites", () => {
 
         const updateResponse = await api
           .post("/admin/invites", updatePayload, {
-            headers: { Authorization: "Bearer test_token" },
+            headers: { "x-medusa-access-token": "test_token" },
           })
           .catch((err) => console.log(err))
 
@@ -263,7 +263,7 @@ describe("/admin/invites", () => {
         const createResponse = await api.post("/admin/invites/accept", payload)
 
         const userResponse = await api.get("/admin/users", {
-          headers: { Authorization: "Bearer test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
         })
 
         const newUser = userResponse.data.users.find(
@@ -302,7 +302,7 @@ describe("/admin/invites", () => {
         const api = useApi()
 
         const inviteResponse = await api.get("/admin/invites", {
-          headers: { Authorization: "Bearer test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
         })
 
         const { token } = inviteResponse.data.invites[0]
@@ -353,7 +353,7 @@ describe("/admin/invites", () => {
 
       const invitesBeforeDeleteRequest = await api.get("/admin/invites", {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -361,13 +361,13 @@ describe("/admin/invites", () => {
 
       const response = await api
         .delete(`/admin/invites/${inviteId}`, {
-          headers: { Authorization: "Bearer test_token" },
+          headers: { "x-medusa-access-token": "test_token" },
         })
         .catch((err) => console.log(err))
 
       const invitesAfterDeleteRequest = await api.get("/admin/invites", {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 

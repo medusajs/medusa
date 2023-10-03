@@ -31,6 +31,7 @@ import { FindParams } from "../../../../types/common"
  *       curl '{backend_url}/store/payment-collections/{id}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:

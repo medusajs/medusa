@@ -17,10 +17,10 @@ export default function AnnouncementBar(): JSX.Element | null {
   return (
     <div
       className={clsx(
-        "relative flex items-center h-auto bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark p-0.75",
+        "relative flex items-center h-auto bg-medusa-bg-subtle dark:bg-medusa-bg-base p-0.75",
         "rounded mx-1.5 mb-1 shadow-card-rest dark:shadow-card-rest-dark",
         "transition-all duration-200 ease-ease",
-        "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover-dark",
+        "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover",
         "print:hidden"
       )}
     >
@@ -28,10 +28,10 @@ export default function AnnouncementBar(): JSX.Element | null {
         <div
           className={clsx(
             "p-[6px] flex justify-center items-center",
-            "rounded-xs bg-medusa-bg-component dark:bg-medusa-bg-component-dark"
+            "rounded-xs bg-medusa-bg-component"
           )}
         >
-          <BellAlertSolid className="text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark" />
+          <BellAlertSolid className="text-medusa-fg-subtle" />
         </div>
       </Bordered>
       <AnnouncementBarContent className={clsx("flex-1")} />

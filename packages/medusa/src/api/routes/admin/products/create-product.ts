@@ -81,7 +81,7 @@ import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/i
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/products' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Shirt"
@@ -89,6 +89,7 @@ import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/i
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -156,12 +157,6 @@ export default async (req, res) => {
       products: [
         validated,
       ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
-      config: {
-        listConfig: {
-          select: defaultAdminProductFields,
-          relations: defaultAdminProductRelations,
-        },
-      },
     }
 
     const { result } = await createProductWorkflow.run({
