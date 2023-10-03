@@ -1004,8 +1004,9 @@ class CartService extends TransactionBaseService {
   async updateLineItem(
     cartId: string,
     lineItemId: string,
-    lineItemUpdate: LineItemUpdate
+    update: LineItemUpdate
   ): Promise<Cart> {
+    const { should_calculate_prices, ...lineItemUpdate } = update
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const select: (keyof Cart)[] = ["id", "region_id", "customer_id"]
@@ -1048,24 +1049,26 @@ class CartService extends TransactionBaseService {
               )
             }
 
-            const variantsPricing = await this.pricingService_
-              .withTransaction(transactionManager)
-              .getProductVariantsPricing(
-                [
+            if (should_calculate_prices) {
+              const variantsPricing = await this.pricingService_
+                .withTransaction(transactionManager)
+                .getProductVariantsPricing(
+                  [
+                    {
+                      variantId: lineItem.variant_id,
+                      quantity: lineItemUpdate.quantity,
+                    },
+                  ],
                   {
-                    variantId: lineItem.variant_id,
-                    quantity: lineItemUpdate.quantity,
-                  },
-                ],
-                {
-                  region_id: cart.region_id,
-                  customer_id: cart.customer_id,
-                  include_discount_prices: true,
-                }
-              )
+                    region_id: cart.region_id,
+                    customer_id: cart.customer_id,
+                    include_discount_prices: true,
+                  }
+                )
 
-            const { calculated_price } = variantsPricing[lineItem.variant_id]
-            lineItemUpdate.unit_price = calculated_price ?? undefined
+              const { calculated_price } = variantsPricing[lineItem.variant_id]
+              lineItemUpdate.unit_price = calculated_price ?? undefined
+            }
           }
         }
 
