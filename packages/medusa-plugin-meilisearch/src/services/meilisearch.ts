@@ -1,5 +1,6 @@
 import { SearchTypes } from "@medusajs/types"
 import { SearchUtils } from "@medusajs/utils"
+import { flatten } from "lodash"
 import { MeiliSearch, Settings } from "meilisearch"
 import { meilisearchErrorCodes, MeilisearchPluginOptions } from "../types"
 import { transformProduct } from "../utils/transformer"
@@ -110,7 +111,7 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
           this.config_.settings?.[SearchUtils.indexTypes.PRODUCTS]
             ?.transformer ?? transformProduct
 
-        return documents.map(productsTransformer)
+        return flatten(documents.map(productsTransformer))
       default:
         return documents
     }
