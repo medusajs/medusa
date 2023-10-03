@@ -952,12 +952,18 @@ describe("/admin/draft-orders", () => {
 
     it("updates a line item on the draft order with quantity", async () => {
       const api = useApi()
+      await api.post(
+        "/admin/draft-orders/test-draft-order/line-items/test-item",
+        {
+          unit_price: 1000,
+        },
+        adminReqConfig
+      )
 
       const response = await api.post(
         "/admin/draft-orders/test-draft-order/line-items/test-item",
         {
           quantity: 2,
-          unit_price: 1000,
         },
         adminReqConfig
       )
