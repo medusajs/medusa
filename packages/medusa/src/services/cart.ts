@@ -901,6 +901,11 @@ class CartService extends TransactionBaseService {
           }
 
           if (currentItem) {
+            lineItemsToUpdate[currentItem.id] = {
+              quantity: item.quantity,
+              has_shipping: false,
+            }
+
             const variantsPricing = await this.pricingService_
               .withTransaction(transactionManager)
               .getProductVariantsPricing(
@@ -919,11 +924,6 @@ class CartService extends TransactionBaseService {
 
             const { calculated_price } =
               variantsPricing[currentItem.variant_id!]
-
-            lineItemsToUpdate[currentItem.id] = {
-              quantity: item.quantity,
-              has_shipping: false,
-            }
 
             if (isDefined(calculated_price)) {
               lineItemsToUpdate[currentItem.id].unit_price = calculated_price
