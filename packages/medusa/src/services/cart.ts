@@ -1,3 +1,5 @@
+import { RemoteJoinerQuery } from "@medusajs/types"
+import { FlagRouter, stringToRemoteQueryObject } from "@medusajs/utils"
 import {
   Address,
   Cart,
@@ -56,8 +58,6 @@ import { isEmpty, isEqual } from "lodash"
 
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
-import { FlagRouter } from "@medusajs/utils"
-import { IsNumber } from "class-validator"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import { LineItemRepository } from "../repositories/line-item"
 import { PaymentSessionInput } from "../types/payment"
@@ -1003,7 +1003,7 @@ class CartService extends TransactionBaseService {
    * Updates a cart's existing line item.
    * @param cartId - the id of the cart to update
    * @param lineItemId - the id of the line item to update.
-   * @param lineItemUpdate - the line item to update. Must include an id field.
+   * @param update - the line item to update. Must include an id field.
    * @return the result of the update operation
    */
   async updateLineItem(
@@ -1115,7 +1115,6 @@ class CartService extends TransactionBaseService {
                     include_discount_prices: true,
                   }
                 )
-            }
 
               const { calculated_price } = variantsPricing[lineItem.variant_id]
               lineItemUpdate.unit_price = calculated_price ?? undefined

@@ -6,12 +6,9 @@ import { FlagRouter } from "@medusajs/utils"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
 import { CartService } from "../../../../services"
-import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { retrieveVariantsWithIsolatedProductModule } from "../../../../utils"
-import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-steps"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
