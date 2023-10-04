@@ -238,8 +238,7 @@ const PriceListNew = () => {
 
             if (variant.currency) {
               for (const currencyCode of Object.keys(variant.currency)) {
-                const { amount, max_quantity, min_quantity } =
-                  variant.currency[currencyCode]
+                const { amount } = variant.currency[currencyCode]
 
                 if (!amount) {
                   continue
@@ -257,12 +256,6 @@ const PriceListNew = () => {
                 const payload: PricePayload = {
                   amount: dbSafeAmount,
                   variant_id: variantId,
-                  max_quantity: max_quantity
-                    ? parseFloat(max_quantity)
-                    : undefined,
-                  min_quantity: min_quantity
-                    ? parseFloat(min_quantity)
-                    : undefined,
                   currency_code: currencyCode,
                 }
 
@@ -272,8 +265,7 @@ const PriceListNew = () => {
 
             if (variant.region) {
               for (const regionId of Object.keys(variant.region)) {
-                const { amount, max_quantity, min_quantity } =
-                  variant.region[regionId]
+                const { amount } = variant.region[regionId]
 
                 if (!amount) {
                   continue
@@ -291,12 +283,6 @@ const PriceListNew = () => {
                 const payload: PricePayload = {
                   amount: dbSafeAmount,
                   variant_id: variantId,
-                  max_quantity: max_quantity
-                    ? parseFloat(max_quantity)
-                    : undefined,
-                  min_quantity: min_quantity
-                    ? parseFloat(min_quantity)
-                    : undefined,
                   region_id: regionId,
                 }
 

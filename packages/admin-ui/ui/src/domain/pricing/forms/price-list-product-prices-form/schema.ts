@@ -10,8 +10,6 @@ export const priceListProductPricesSchema = z.object({
           z.object({
             id: z.string().nullable().optional(),
             amount: z.string().nullable(),
-            max_quantity: z.string().nullable().optional(),
-            min_quantity: z.string().nullable().optional(),
           })
         )
         .optional(),
@@ -21,8 +19,6 @@ export const priceListProductPricesSchema = z.object({
           z.object({
             id: z.string().nullable().optional(),
             amount: z.string().nullable(),
-            max_quantity: z.string().nullable().optional(),
-            min_quantity: z.string().nullable().optional(),
           })
         )
         .optional(),

@@ -6,9 +6,7 @@ import {
   Container,
   DatePicker,
   Heading,
-  Hint,
   Input,
-  Label,
   RadioGroup,
   Switch,
   Table,
@@ -93,61 +91,29 @@ const PriceListType = ({ form, layout }: PriceListDetailsFormProps) => {
                     "grid-cols-1": layout === "drawer",
                   })}
                 >
-                  <div
-                    className={clx(
-                      "shadow-elevation-card-rest transition-fg flex items-start gap-x-3 rounded-lg px-3 py-4",
-                      {
-                        "shadow-borders-interactive-with-shadow":
-                          field.value === "sale",
-                      }
+                  <RadioGroup.ChoiceBox
+                    id="type_opt_sale"
+                    aria-describedby="type_opt_sale_desc"
+                    value="sale"
+                    label={t("price-list-details-form-type-label-sale", "Sale")}
+                    description={t(
+                      "price-list-details-form-type-hint-sale",
+                      "Use this if you are creating a sale."
                     )}
-                  >
-                    <RadioGroup.Item
-                      id="type_opt_sale"
-                      aria-describedby="type_opt_sale_desc"
-                      value="sale"
-                    />
-                    <div className="flex flex-col">
-                      <Label htmlFor="type_opt_sale" weight="plus">
-                        {t("price-list-details-form-type-label-sale", "Sale")}
-                      </Label>
-                      <Hint id="type_opt_sale_desc">
-                        {t(
-                          "price-list-details-form-type-hint-sale",
-                          "Use this if you are creating a sale."
-                        )}
-                      </Hint>
-                    </div>
-                  </div>
-                  <div
-                    className={clx(
-                      "shadow-elevation-card-rest transition-fg flex items-start gap-x-3 rounded-lg px-3 py-4",
-                      {
-                        "shadow-borders-interactive-with-shadow":
-                          field.value === "override",
-                      }
+                  />
+                  <RadioGroup.ChoiceBox
+                    id="type_opt_override"
+                    aria-describedby="type_opt_override_desc"
+                    value="override"
+                    label={t(
+                      "price-list-details-form-type-label-override",
+                      "Override"
                     )}
-                  >
-                    <RadioGroup.Item
-                      id="type_opt_override"
-                      aria-describedby="type_opt_override_desc"
-                      value="override"
-                    />
-                    <div className="flex flex-col">
-                      <Label htmlFor="type_opt_override" weight="plus">
-                        {t(
-                          "price-list-details-form-type-label-override",
-                          "Override"
-                        )}
-                      </Label>
-                      <Hint id="type_opt_override_desc">
-                        {t(
-                          "price-list-details-form-type-hint-override",
-                          "Use this if you are overriding prices."
-                        )}
-                      </Hint>
-                    </div>
-                  </div>
+                    description={t(
+                      "price-list-details-form-type-hint-override",
+                      "Use this if you are overriding prices."
+                    )}
+                  />
                 </RadioGroup>
               </Form.Control>
               <Form.ErrorMessage />

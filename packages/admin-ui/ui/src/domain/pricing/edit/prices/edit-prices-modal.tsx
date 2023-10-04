@@ -171,12 +171,6 @@ const EditPricesModal = ({
           productPrices.variants[variant.id!].region![region.id] = {
             id: existingPrice ? existingPrice.id : "",
             amount: amount ? `${amount}` : "",
-            max_quantity: existingPrice?.max_quantity
-              ? `${existingPrice.max_quantity}`
-              : "",
-            min_quantity: existingPrice?.min_quantity
-              ? `${existingPrice.min_quantity}`
-              : "",
           }
         }
 
@@ -195,12 +189,6 @@ const EditPricesModal = ({
           productPrices.variants[variant.id!].currency![currency.code] = {
             id: existingPrice ? existingPrice.id : "",
             amount: amount ? `${amount}` : "",
-            max_quantity: existingPrice?.max_quantity
-              ? `${existingPrice.max_quantity}`
-              : "",
-            min_quantity: existingPrice?.min_quantity
-              ? `${existingPrice.min_quantity}`
-              : "",
           }
         }
       }
@@ -314,8 +302,7 @@ const EditPricesModal = ({
 
         if (variant.currency) {
           for (const currencyCode of Object.keys(variant.currency)) {
-            const { id, amount, max_quantity, min_quantity } =
-              variant.currency[currencyCode]
+            const { id, amount } = variant.currency[currencyCode]
 
             if (!amount) {
               if (id) {
@@ -342,8 +329,6 @@ const EditPricesModal = ({
               id: id ? id : undefined,
               amount: dbSafeAmount,
               variant_id: variantId,
-              max_quantity: max_quantity ? parseFloat(max_quantity) : undefined,
-              min_quantity: min_quantity ? parseFloat(min_quantity) : undefined,
               currency_code: currencyCode,
             }
 
@@ -353,8 +338,7 @@ const EditPricesModal = ({
 
         if (variant.region) {
           for (const regionId of Object.keys(variant.region)) {
-            const { id, amount, max_quantity, min_quantity } =
-              variant.region[regionId]
+            const { id, amount } = variant.region[regionId]
 
             if (!amount) {
               if (id) {
@@ -381,8 +365,6 @@ const EditPricesModal = ({
               id: id ? id : undefined,
               amount: dbSafeAmount,
               variant_id: variantId,
-              max_quantity: max_quantity ? parseFloat(max_quantity) : undefined,
-              min_quantity: min_quantity ? parseFloat(min_quantity) : undefined,
               region_id: regionId,
             }
 

@@ -1503,50 +1503,26 @@ const PriceListProductPricesForm = ({
                 }
 
                 return (
-                  <React.Fragment key={currency.code}>
-                    <th className="text-left">
-                      <div className="flex items-center justify-between px-4 py-2.5">
-                        <span>
-                          {t(
-                            "price-list-product-prices-form-column-currencies-price-label",
-                            "Price {{code}}",
-                            {
-                              code: currency.code.toUpperCase(),
-                            }
+                  <th className="text-left" key={currency.code}>
+                    <div className="flex items-center justify-between px-4 py-2.5">
+                      <span>
+                        {t(
+                          "price-list-product-prices-form-column-currencies-price-label",
+                          "Price {{code}}",
+                          {
+                            code: currency.code.toUpperCase(),
+                          }
+                        )}
+                      </span>
+                      {taxInclEnabled && (
+                        <div>
+                          {isTaxIncluded && (
+                            <BuildingTax className="text-ui-fg-subtle" />
                           )}
-                        </span>
-                        {taxInclEnabled && (
-                          <div>
-                            {isTaxIncluded && (
-                              <BuildingTax className="text-ui-fg-subtle" />
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </th>
-                    <th className="text-left">
-                      <div className="px-4 py-2.5">
-                        {t(
-                          "price-list-product-prices-form-column-currencies-min-quantity-label",
-                          "Min Quantity {{code}}",
-                          {
-                            code: currency.code.toUpperCase(),
-                          }
-                        )}
-                      </div>
-                    </th>
-                    <th className="text-left">
-                      <div className="px-4 py-2.5">
-                        {t(
-                          "price-list-product-prices-form-column-currencies-max-quantity-label",
-                          "Max Quantity {{code}}",
-                          {
-                            code: currency.code.toUpperCase(),
-                          }
-                        )}
-                      </div>
-                    </th>
-                  </React.Fragment>
+                        </div>
+                      )}
+                    </div>
+                  </th>
                 )
               })}
               {regions.map((region) => {
@@ -1558,50 +1534,26 @@ const PriceListProductPricesForm = ({
                 }
 
                 return (
-                  <React.Fragment key={region.id}>
-                    <th className="text-left">
-                      <div className="flex items-center justify-between px-4 py-2.5">
-                        <span>
-                          {t(
-                            "price-list-product-prices-form-column-regions-price-label",
-                            "Price {{code}}",
-                            {
-                              code: region.currency_code.toUpperCase(),
-                            }
+                  <th className="text-left" key={region.id}>
+                    <div className="flex items-center justify-between px-4 py-2.5">
+                      <span>
+                        {t(
+                          "price-list-product-prices-form-column-regions-price-label",
+                          "Price {{code}}",
+                          {
+                            code: region.currency_code.toUpperCase(),
+                          }
+                        )}
+                      </span>
+                      {taxInclEnabled && (
+                        <div>
+                          {isTaxIncluded && (
+                            <BuildingTax className="text-ui-fg-subtle" />
                           )}
-                        </span>
-                        {taxInclEnabled && (
-                          <div>
-                            {isTaxIncluded && (
-                              <BuildingTax className="text-ui-fg-subtle" />
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </th>
-                    <th className="text-left">
-                      <div className="px-4 py-2.5">
-                        {t(
-                          "price-list-product-prices-form-column-regions-min-quantity-label",
-                          "Min Quantity {{code}}",
-                          {
-                            code: region.currency_code.toUpperCase(),
-                          }
-                        )}
-                      </div>
-                    </th>
-                    <th className="text-left">
-                      <div className="px-4 py-2.5">
-                        {t(
-                          "price-list-product-prices-form-column-regions-max-quantity-label",
-                          "Max Quantity {{code}}",
-                          {
-                            code: region.currency_code.toUpperCase(),
-                          }
-                        )}
-                      </div>
-                    </th>
-                  </React.Fragment>
+                        </div>
+                      )}
+                    </div>
+                  </th>
                 )
               })}
             </tr>
@@ -1629,17 +1581,11 @@ const PriceListProductPricesForm = ({
                 }
 
                 return (
-                  <React.Fragment key={currency.code}>
-                    {Array.from({ length: 3 }).map((_, i) => {
-                      return (
-                        <td key={i}>
-                          <div className="text-ui-fg-muted px-4 py-2.5 text-right">
-                            -
-                          </div>
-                        </td>
-                      )
-                    })}
-                  </React.Fragment>
+                  <td key={currency.code}>
+                    <div className="text-ui-fg-muted px-4 py-2.5 text-right">
+                      -
+                    </div>
+                  </td>
                 )
               })}
               {regions.map((region) => {
@@ -1648,17 +1594,11 @@ const PriceListProductPricesForm = ({
                 }
 
                 return (
-                  <React.Fragment key={region.id}>
-                    {Array.from({ length: 3 }).map((_, i) => {
-                      return (
-                        <td key={i}>
-                          <div className="text-ui-fg-muted px-4 py-2.5 text-right">
-                            -
-                          </div>
-                        </td>
-                      )
-                    })}
-                  </React.Fragment>
+                  <td key={region.id}>
+                    <div className="text-ui-fg-muted px-4 py-2.5 text-right">
+                      -
+                    </div>
+                  </td>
                 )
               })}
             </tr>
@@ -1694,80 +1634,31 @@ const PriceListProductPricesForm = ({
                     const meta = CURRENCY_MAP[currency.code.toUpperCase()]
 
                     return (
-                      <React.Fragment key={currency.code}>
-                        <Controller
-                          control={control}
-                          name={`variants.${variant.id}.currency.${currency.code}.amount`}
-                          render={({ field }) => {
-                            return (
-                              <Cell
-                                symbol={meta.symbol_native}
-                                decimalScale={meta.decimal_digits}
-                                type="amount"
-                                variantId={variant.id}
-                                currencyCode={currency.code}
-                                onRegisterCell={onRegisterCell}
-                                onUnregisterCell={onUnregisterCell}
-                                onDragToFillStart={onDragToFillStart}
-                                onCellMouseDown={onCellMouseDown}
-                                onCellOver={onCellOver}
-                                getCellState={getCellState}
-                                setIsEditing={setIsEditing}
-                                onNextRow={onNextRow}
-                                {...field}
-                              />
-                            )
-                          }}
-                        />
-
-                        <Controller
-                          control={control}
-                          name={`variants.${variant.id}.currency.${currency.code}.min_quantity`}
-                          render={({ field }) => {
-                            return (
-                              <Cell
-                                decimalScale={0}
-                                variantId={variant.id}
-                                currencyCode={currency.code}
-                                type="min_quantity"
-                                onRegisterCell={onRegisterCell}
-                                onUnregisterCell={onUnregisterCell}
-                                onDragToFillStart={onDragToFillStart}
-                                onCellMouseDown={onCellMouseDown}
-                                onCellOver={onCellOver}
-                                getCellState={getCellState}
-                                setIsEditing={setIsEditing}
-                                onNextRow={onNextRow}
-                                {...field}
-                              />
-                            )
-                          }}
-                        />
-
-                        <Controller
-                          control={control}
-                          name={`variants.${variant.id}.currency.${currency.code}.max_quantity`}
-                          render={({ field }) => {
-                            return (
-                              <Cell
-                                decimalScale={0}
-                                variantId={variant.id}
-                                currencyCode={currency.code}
-                                type="max_quantity"
-                                onRegisterCell={onRegisterCell}
-                                onUnregisterCell={onUnregisterCell}
-                                onDragToFillStart={onDragToFillStart}
-                                onCellMouseDown={onCellMouseDown}
-                                onCellOver={onCellOver}
-                                getCellState={getCellState}
-                                setIsEditing={setIsEditing}
-                                onNextRow={onNextRow}
-                                {...field}
-                              />
-                            )
-                          }}
-                        />
-                      </React.Fragment>
+                      <Controller
+                        key={currency.code}
+                        control={control}
+                        name={`variants.${variant.id}.currency.${currency.code}.amount`}
+                        render={({ field }) => {
+                          return (
+                            <Cell
+                              symbol={meta.symbol_native}
+                              decimalScale={meta.decimal_digits}
+                              type="amount"
+                              variantId={variant.id}
+                              currencyCode={currency.code}
+                              onRegisterCell={onRegisterCell}
+                              onUnregisterCell={onUnregisterCell}
+                              onDragToFillStart={onDragToFillStart}
+                              onCellMouseDown={onCellMouseDown}
+                              onCellOver={onCellOver}
+                              getCellState={getCellState}
+                              setIsEditing={setIsEditing}
+                              onNextRow={onNextRow}
+                              {...field}
+                            />
+                          )
+                        }}
+                      />
                     )
                   })}
                   {regions.map((region) => {
@@ -1779,78 +1670,31 @@ const PriceListProductPricesForm = ({
                       CURRENCY_MAP[region.currency_code.toUpperCase()]
 
                     return (
-                      <React.Fragment key={region.id}>
-                        <Controller
-                          control={control}
-                          name={`variants.${variant.id}.region.${region.id}.amount`}
-                          render={({ field }) => {
-                            return (
-                              <Cell
-                                symbol={meta.symbol_native}
-                                decimalScale={meta.decimal_digits}
-                                type="amount"
-                                variantId={variant.id}
-                                regionId={region.id}
-                                onRegisterCell={onRegisterCell}
-                                onUnregisterCell={onUnregisterCell}
-                                onDragToFillStart={onDragToFillStart}
-                                onCellMouseDown={onCellMouseDown}
-                                onCellOver={onCellOver}
-                                getCellState={getCellState}
-                                setIsEditing={setIsEditing}
-                                onNextRow={onNextRow}
-                                {...field}
-                              />
-                            )
-                          }}
-                        />
-                        <Controller
-                          control={control}
-                          name={`variants.${variant.id}.region.${region.id}.min_quantity`}
-                          render={({ field }) => {
-                            return (
-                              <Cell
-                                decimalScale={0}
-                                variantId={variant.id}
-                                regionId={region.id}
-                                type="min_quantity"
-                                onRegisterCell={onRegisterCell}
-                                onUnregisterCell={onUnregisterCell}
-                                onDragToFillStart={onDragToFillStart}
-                                onCellMouseDown={onCellMouseDown}
-                                onCellOver={onCellOver}
-                                getCellState={getCellState}
-                                setIsEditing={setIsEditing}
-                                onNextRow={onNextRow}
-                                {...field}
-                              />
-                            )
-                          }}
-                        />
-                        <Controller
-                          control={control}
-                          name={`variants.${variant.id}.region.${region.id}.max_quantity`}
-                          render={({ field }) => {
-                            return (
-                              <Cell
-                                decimalScale={0}
-                                variantId={variant.id}
-                                regionId={region.id}
-                                type="max_quantity"
-                                onRegisterCell={onRegisterCell}
-                                onUnregisterCell={onUnregisterCell}
-                                onDragToFillStart={onDragToFillStart}
-                                onCellMouseDown={onCellMouseDown}
-                                onCellOver={onCellOver}
-                                getCellState={getCellState}
-                                setIsEditing={setIsEditing}
-                                onNextRow={onNextRow}
-                                {...field}
-                              />
-                            )
-                          }}
-                        />
-                      </React.Fragment>
+                      <Controller
+                        key={region.id}
+                        control={control}
+                        name={`variants.${variant.id}.region.${region.id}.amount`}
+                        render={({ field }) => {
+                          return (
+                            <Cell
+                              symbol={meta.symbol_native}
+                              decimalScale={meta.decimal_digits}
+                              type="amount"
+                              variantId={variant.id}
+                              regionId={region.id}
+                              onRegisterCell={onRegisterCell}
+                              onUnregisterCell={onUnregisterCell}
+                              onDragToFillStart={onDragToFillStart}
+                              onCellMouseDown={onCellMouseDown}
+                              onCellOver={onCellOver}
+                              getCellState={getCellState}
+                              setIsEditing={setIsEditing}
+                              onNextRow={onNextRow}
+                              {...field}
+                            />
+                          )
+                        }}
+                      />
                     )
                   })}
                 </tr>
