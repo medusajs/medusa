@@ -396,28 +396,6 @@ const DateItem = ({ name, value, onChange }: DateItemProps) => {
 }
 DateItem.displayName = "FilterMenu.DateItem"
 
-type ListItemProps = {
-  name: string
-  value: string[]
-  query?: string
-  setQuery?: (query: string) => void
-  onChange: (value: string[]) => void
-  onNext: () => void
-  onPrevious: () => void
-  canNext?: boolean
-  canPrevious?: boolean
-  setPage: (page: number) => void
-}
-
-const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(() => {
-  return (
-    <div>
-      <ul></ul>
-    </div>
-  )
-})
-ListItem.displayName = "FilterMenu.ListItem"
-
 const Seperator = ({
   className,
   ...props
