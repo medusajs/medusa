@@ -15,8 +15,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "parent_ids": {
-          "name": "parent_ids",
+        "children_ids": {
+          "name": "children_ids",
           "type": "json",
           "unsigned": false,
           "autoincrement": false,
@@ -49,10 +49,10 @@
       "indexes": [
         {
           "columnNames": [
-            "parent_ids"
+            "children_ids"
           ],
           "composite": false,
-          "keyName": "IDX_catalog_parent_id",
+          "keyName": "IDX_catalog_children_ids",
           "primary": false,
           "unique": false
         },

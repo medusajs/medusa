@@ -56,6 +56,7 @@ const productData1 = [
 const productData2 = [
   {
     id: catalogIds.id5,
+    children_ids: [],
     entity: "Product",
     data: {
       id: "prod_2",

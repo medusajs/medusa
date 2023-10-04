@@ -9,24 +9,19 @@ import {
 } from "@medusajs/types"
 import { joinerConfig } from "./../joiner-config"
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { CatalogModuleOptions, ObjectsPartialTree } from "../types"
+import {
+  CatalogModuleOptions,
+  ObjectsPartialTree,
+  StorageProvider,
+} from "../types"
+import { lowerCaseFirst, stringToRemoteQueryObject } from "@medusajs/utils"
 
 const configMock: CatalogModuleOptions = {
   objects: [
     {
       entity: "Product",
       // Should contain the fields that can be returned and filtered by
-      fields: [
-        "id",
-        "title",
-        "subtitle",
-        "description",
-        // temp, in reality we will infer this by building a tree
-        // from the objects which will auto concatenate the relations to the parent
-        "variants.id",
-        "variants.prices.id",
-        "variants.options.id",
-      ],
+      fields: ["id", "title", "subtitle", "description"],
       listeners: ["product.created", "product.updated"],
     },
     {
@@ -40,15 +35,29 @@ const configMock: CatalogModuleOptions = {
       parents: ["ProductVariant"],
       entity: "MoneyAmount",
       // Should contain the fields that can be returned and filtered by
-      fields: ["id", "amount"],
+      fields: ["id", "amount"], //fields: ["id", "amount", "linkProductVariantMoney.variant_id", "car.id"],
       listeners: ["prices.created", "prices.updated"],
     },
   ],
 }
 
+/*const moneyAmount = {
+  id,
+  variants: [{}],
+  car: {},
+  metadata: {},
+}
+
+storage.create({ name, id, data, parents: [{ name, id }] })
+storage.update({ name, id, data })
+storage.delete({ name, id, data })
+storage.attach
+storage.detach*/
+
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   eventBusModuleService: IEventBusModuleService
+  storageProvider: StorageProvider
   remoteQuery: (
     query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
@@ -56,13 +65,14 @@ type InjectedDependencies = {
 }
 
 export default class CatalogModuleService {
-  private static tree_: ObjectsPartialTree
+  private static tree_: ObjectsPartialTree = {}
 
   private readonly container_: InjectedDependencies
   private readonly moduleOptions_: CatalogModuleOptions
 
   protected readonly baseRepository_: DAL.RepositoryService
   protected readonly eventBusModuleService_: IEventBusModuleService
+  protected readonly storageProvider_: StorageProvider
 
   protected get remoteQuery_(): (
     query: string | RemoteJoinerQuery | object,
@@ -79,14 +89,20 @@ export default class CatalogModuleService {
     this.moduleOptions_ =
       moduleDeclaration.options as unknown as CatalogModuleOptions
 
-    const { baseRepository, eventBusModuleService } = container
+    const { baseRepository, eventBusModuleService, storageProvider } = container
+
     this.baseRepository_ = baseRepository
     this.eventBusModuleService_ = eventBusModuleService
+    this.storageProvider_ = storageProvider
 
     if (!this.eventBusModuleService_) {
       throw new Error(
         "EventBusModuleService is required for the CatalogModule to work"
       )
+    }
+
+    if (!this.remoteQuery_) {
+      throw new Error("RemoteQuery is required for the CatalogModule to work")
     }
 
     this.registerListeners()
@@ -116,21 +132,25 @@ export default class CatalogModuleService {
   protected registerListeners() {
     const objects = this.moduleOptions_.objects ?? []
 
-    for (const { listeners, ...objectConfig } of objects) {
+    for (const { listeners } of objects) {
       listeners.forEach((listener) => {
         this.eventBusModuleService_.subscribe(
           listener,
-          this.storeDataOnEvent(objectConfig)
+          this.storeDataOnEvent(listener)
         )
       })
     }
   }
 
-  protected storeDataOnEvent(
-    objectConfig: Omit<CatalogModuleOptions["objects"][0], "listeners">
-  ) {
+  protected storeDataOnEvent(eventName: string) {
     return async (data: any) => {
       CatalogModuleService.buildObjectsTree(this.moduleOptions_.objects)
+
+      const eventRelatedEntity = Object.values(CatalogModuleService.tree_).find(
+        (object) => {
+          return object.listeners.includes(eventName)
+        }
+      )!
 
       const ids: string[] = []
 
@@ -144,26 +164,25 @@ export default class CatalogModuleService {
         return
       }
 
-      // Retrieve fields from tree and build remote query object
-      /*const entryPoint = ""
-      const query = stringToRemoteQueryObject({
+      const entryPoint = eventRelatedEntity.alias
+      const variables = {
+        id: ids,
+      }
+      const fields = eventRelatedEntity.fields
+      const remoteQueryObject = stringToRemoteQueryObject({
         entryPoint,
-        variables: {
-          id: ids,
-        },
-        fields: targetObject.fields,
-      })*/
+        variables,
+        fields,
+      })
 
-      // const result = await this.remoteQuery_(query)
-
-      // Insert data in the catalog database
-      // INSERT INTO catalog (type, data) VALUES ('products', '{"id": 1, "title": "Product 1"}')
+      const entries = await this.remoteQuery_(remoteQueryObject)
+      // await this.storageProvider_.store([{ entityName, id, data }])
     }
   }
 
-  protected static buildObjectsTree(objects: CatalogModuleOptions["objects"]) {
+  static buildObjectsTree(objects: CatalogModuleOptions["objects"]) {
     if (Object.keys(this.tree_).length) {
-      return
+      return this.tree_
     }
 
     const tree: ObjectsPartialTree = {}
@@ -173,16 +192,16 @@ export default class CatalogModuleService {
       tree[object.entity] ??= {
         ...object,
         alias: "",
+        __joinerConfig: {},
       }
 
       if (object.parents) {
-        object.parents.forEach((parent) => {
-          tree[object.entity].parents = object.parents
-        })
+        tree[object.entity].parents = object.parents
       }
     }
 
     const modules = MedusaModule.getLoadedModules()
+
     const findEntityAlias = (entity: string): string | undefined => {
       let alias
 
@@ -205,19 +224,25 @@ export default class CatalogModuleService {
 
     // Aggregate fields
     for (const object of Object.values(tree)) {
-      const entityAlias = findEntityAlias(object.entity)
+      const entityAlias =
+        findEntityAlias(object.entity) ?? lowerCaseFirst(object.entity)
       object.alias = entityAlias as string
 
       if (object.parents) {
-        const composedParentFields = object.fields.map(
+        // Instead attach the parent alias.id field to th object
+        // First look for parent module configuration and find out
+        // if there is any link relationShip if it is the case
+        // then attach the parent linkAlias.entityName_id otherwise parent module alias.id
+        /*const composedParentFields = object.fields.map(
           (field) => `${entityAlias}.${field}`
         )
         object.parents.forEach((parent) => {
           tree[parent].fields = [...object.fields, ...composedParentFields]
-        })
+        })*/
       }
     }
 
     this.tree_ = tree
+    return tree
   }
 }

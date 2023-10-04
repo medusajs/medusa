@@ -1,8 +1,9 @@
-import { ModulesSdkTypes } from "@medusajs/types"
+import { ModuleJoinerConfig, ModulesSdkTypes } from "@medusajs/types"
 
 export type ObjectsPartialTree = {
   [key: string]: {
     parents?: string[]
+    __joinerConfig: ModuleJoinerConfig
     alias: string
     entity: string
     fields: string[]
@@ -22,4 +23,8 @@ export interface CatalogModuleOptions {
     fields: string[]
     listeners: string[]
   }[]
+}
+
+export interface StorageProvider {
+  store: (objects: object) => Promise<void>
 }

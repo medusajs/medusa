@@ -10,12 +10,14 @@ import { generateEntityId } from "@medusajs/utils"
 
 @Entity({ tableName: "catalog" })
 export class Catalog {
+  // composite primary key id - entity
+  // the id and therefore the children ids, should be composed of {entityName}_{id}
   @PrimaryKey({ columnType: "text" })
   id!: string
 
   @Property({ columnType: "json", nullable: true })
-  @Index({ name: "IDX_catalog_parent_ids" })
-  parent_ids: string[] | null
+  @Index({ name: "IDX_catalog_children_ids" })
+  children_ids: string[] | null
 
   @Property({ columnType: "text", nullable: false })
   entity: string
