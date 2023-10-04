@@ -17,6 +17,7 @@ import {
 import * as Collapsible from "@radix-ui/react-collapsible"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 
 interface FilterMenuProps
   extends React.ComponentPropsWithoutRef<typeof DropdownMenu.Root> {
@@ -44,12 +45,14 @@ const useFilterMenuContext = () => {
 }
 
 const Root = ({ children, onClearFilters, ...props }: FilterMenuProps) => {
+  const { t } = useTranslation()
+
   return (
     <DropdownMenu.Root {...props}>
       <DropdownMenu.Trigger data-filter-component={true} asChild>
         <Button variant="secondary" className="relative overflow-visible">
           <Adjustments className="text-ui-fg-subtle" />
-          View
+          {t("filter-menu-trigger", "View")}
         </Button>
       </DropdownMenu.Trigger>
       <FilterMenuContext.Provider
@@ -78,6 +81,8 @@ const Content = ({
 }: React.ComponentPropsWithoutRef<typeof DropdownMenu.Content>) => {
   const { onClearFilters } = useFilterMenuContext()
 
+  const { t } = useTranslation()
+
   return (
     <DropdownMenu.Portal>
       <DropdownMenu.Content
@@ -100,7 +105,7 @@ const Content = ({
             className="w-full"
             onClick={onClearFilters}
           >
-            Clear
+            {t("filter-menu-clear-button", "Clear")}
           </Button>
         </div>
       </DropdownMenu.Content>
@@ -130,6 +135,8 @@ const SelectItem = ({
   const menuRef = React.useRef<HTMLDivElement>(null)
   const [open, setOpen] = React.useState(false)
 
+  const { t } = useTranslation()
+
   React.useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -143,6 +150,10 @@ const SelectItem = ({
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
+
+  const placeholderValue = placeholder
+    ? placeholder
+    : t("filter-menu-select-item-default-placeholder", "Select filter")
 
   return (
     <DropdownMenu.Sub open={open} data-filter-component={true}>
@@ -181,7 +192,12 @@ const SelectItem = ({
                     }
                   }}
                 >
-                  <span className="sr-only">Clear the selected options</span>
+                  <span className="sr-only">
+                    {t(
+                      "filter-menu-select-item-clear-button",
+                      "Clear the selected options"
+                    )}
+                  </span>
                   <XMarkMini />
                 </span>
               </Badge>
@@ -189,11 +205,11 @@ const SelectItem = ({
             <div className="flex-1">
               {value.length > 0 ? (
                 <span className="text-ui-fg-base txt-compact-medium">
-                  Selected
+                  {t("filter-menu-select-item-selected", "Selected")}
                 </span>
               ) : (
                 <span className="text-ui-fg-muted txt-compact-medium">
-                  {placeholder}
+                  {placeholderValue}
                 </span>
               )}
             </div>
@@ -249,6 +265,8 @@ type DateItemProps = {
 const DateItem = ({ name, value, onChange }: DateItemProps) => {
   const [operator, setOperator] = React.useState<string>("lt")
   const [expanded, setExpanded] = React.useState<boolean>(!!value)
+
+  const { t } = useTranslation()
 
   const handleExpandChange = (expanded: boolean) => {
     setExpanded(expanded)
@@ -334,9 +352,15 @@ const DateItem = ({ name, value, onChange }: DateItemProps) => {
                 <Select.Value />
               </Select.Trigger>
               <Select.Content className="z-10">
-                <Select.Item value="lt">Before</Select.Item>
-                <Select.Item value="gt">After</Select.Item>
-                <Select.Item value="btwn">Between</Select.Item>
+                <Select.Item value="lt">
+                  {t("filter-menu-date-item-before", "Before")}
+                </Select.Item>
+                <Select.Item value="gt">
+                  {t("filter-menu-date-item-after", "After")}
+                </Select.Item>
+                <Select.Item value="btwn">
+                  {t("filter-menu-date-item-between", "Between")}
+                </Select.Item>
               </Select.Content>
             </Select>
             {["lt", "gt"].includes(operator) ? (

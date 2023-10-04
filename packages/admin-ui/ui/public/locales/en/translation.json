@@ -1,5 +1,13 @@
 {
   "back-button-go-back": "Go back",
+  "filter-menu-trigger": "View",
+  "filter-menu-clear-button": "Clear",
+  "filter-menu-select-item-default-placeholder": "Select filter",
+  "filter-menu-select-item-clear-button": "Clear the selected options",
+  "filter-menu-select-item-selected": "Selected",
+  "filter-menu-date-item-before": "Before",
+  "filter-menu-date-item-after": "After",
+  "filter-menu-date-item-between": "Between",
   "sales-channels-display-available-count": "Available in <2>{{availableChannelsCount}}</2> out of <6>{{totalChannelsCount}}</6> Sales Channels",
   "activity-drawer-activity": "Activity",
   "activity-drawer-no-notifications-title": "It's quiet in here...",
