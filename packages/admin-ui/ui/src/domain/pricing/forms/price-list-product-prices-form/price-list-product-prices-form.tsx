@@ -13,6 +13,7 @@ import {
 
 import { useTranslation } from "react-i18next"
 import { useCommandHistory } from "../../../../hooks/use-command-history"
+import useNotification from "../../../../hooks/use-notification"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 import {
   calculateBoundingBoxes,
@@ -64,6 +65,7 @@ const PriceListProductPricesForm = ({
   getValues,
 }: BulkEditorProps) => {
   const { t } = useTranslation()
+  const notification = useNotification()
 
   /**
    * Reference to the table element.
@@ -1002,6 +1004,24 @@ const PriceListProductPricesForm = ({
         next.push(row.split("\t"))
       }
 
+      const isInvalid = next.some((row) => row.some((val) => isNaN(+val)))
+
+      if (isInvalid) {
+        notification(
+          t(
+            "price-list-product-prices-form-invalid-data-title",
+            "Invalid data"
+          ),
+          t(
+            "price-list-product-prices-form-invalid-data-body",
+            "The data you pasted contains values that are not numbers."
+          ),
+          "error"
+        )
+
+        return
+      }
+
       const pasteComand = new PasteCommand({
         selection,
         next,
@@ -1011,7 +1031,14 @@ const PriceListProductPricesForm = ({
 
       execute(pasteComand)
     },
-    [selection, setSelectionValues, getSelectionValues, execute]
+    [
+      selection,
+      setSelectionValues,
+      getSelectionValues,
+      execute,
+      notification,
+      t,
+    ]
   )
 
   const onCopy = React.useCallback(
