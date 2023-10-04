@@ -29,7 +29,7 @@ import typeAndParentHelper from './resources/helpers/type-and-parent';
 import typeParameterTableHelper from './resources/helpers/type-parameter-table';
 import sectionsHelper from './resources/helpers/section-enabled'
 import getOptionHelper from './resources/helpers/get-option';
-import memberTitleLevelHelper from './resources/helpers/member-title-level';
+import titleLevelHelper from './resources/helpers/title-level';
 import { MarkdownTheme } from './theme';
 
 const TEMPLATE_PATH = path.join(__dirname, 'resources', 'templates');
@@ -61,7 +61,7 @@ export function registerPartials() {
 export function registerHelpers(theme: MarkdownTheme) {
   breadcrumbsHelper(theme);
   commentHelper(theme);
-  commentsHelper();
+  commentsHelper(theme);
   declarationTitleHelper(theme);
   escapeHelper();
   hierarchyHelper();
@@ -87,5 +87,5 @@ export function registerHelpers(theme: MarkdownTheme) {
   typeParameterTableHelper();
   sectionsHelper(theme)
   getOptionHelper(theme)
-  memberTitleLevelHelper(theme)
+  titleLevelHelper(theme)
 }

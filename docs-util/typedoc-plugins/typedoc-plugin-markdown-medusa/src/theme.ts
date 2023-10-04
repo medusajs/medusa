@@ -52,6 +52,7 @@ export class MarkdownTheme extends Theme {
   reflectionGroups: Record<string, boolean> = {}
   reflectionTitle: ReflectionTitleOptions = {}
   expandMembers: Boolean = false
+  showCommentsAsHeader: Boolean = false
   
   project?: ProjectReflection;
   reflection?: DeclarationReflection;
@@ -89,6 +90,7 @@ export class MarkdownTheme extends Theme {
     this.reflectionGroups = this.getOption('reflectionGroups') as Record<string, boolean>
     this.reflectionTitle = this.getOption('reflectionTitle') as ReflectionTitleOptions
     this.expandMembers = this.getOption('expandMembers') as Boolean
+    this.showCommentsAsHeader = this.getOption('showCommentsAsHeader') as Boolean
 
     this.listenTo(this.owner, {
       [RendererEvent.BEGIN]: this.onBeginRenderer,

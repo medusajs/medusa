@@ -124,5 +124,12 @@ export function load(app: Application) {
     type: ParameterType.Boolean,
     defaultValue: false,
   });
+
+  app.options.addDeclaration({
+    help: '[Markdown Plugin] Enable/disable showing a comment or tag\'s title as a header',
+    name: 'showCommentsAsHeader',
+    type: ParameterType.Boolean,
+    defaultValue: false,
+  });
 }
 export { MarkdownTheme };

@@ -35,7 +35,8 @@ module.exports = {
     kind: false,
     typeParameters: false
   },
-  expandMembers: true
+  expandMembers: true,
+  showCommentsAsHeader: true
   // objectLiteralTypeDeclarationStyle: "list"
   // filesToExpandLinks: [
   //   "ProductModuleService"
