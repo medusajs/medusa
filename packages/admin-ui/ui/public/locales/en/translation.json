@@ -1507,6 +1507,8 @@
   "price-list-prices-form-add-prices-button": "Add prices",
   "price-list-prices-form-prices-count_one": "{{count}} prices",
   "price-list-prices-form-prices-count_other": "{{count}} prices",
+  "price-list-product-prices-form-invalid-data-title": "Invalid data",
+  "price-list-product-prices-form-invalid-data-body": "The data you pasted contains values that are not numbers.",
   "price-list-product-prices-form-column-visibility-button": "View",
   "price-list-product-prices-form-column-visibility-currencies-label": "Currencies",
   "price-list-product-prices-form-column-visibility-regions-label": "Regions",
