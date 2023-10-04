@@ -14,8 +14,11 @@ export class Catalog {
   id!: string
 
   @Property({ columnType: "json", nullable: true })
-  @Index({ name: "IDX_catalog_parent_id" })
-  parent_id: string[] | null
+  @Index({ name: "IDX_catalog_parent_ids" })
+  parent_ids: string[] | null
+
+  @Property({ columnType: "text", nullable: false })
+  entity: string
 
   @Property({ columnType: "jsonb", default: "{}" })
   data: Record<string, unknown>

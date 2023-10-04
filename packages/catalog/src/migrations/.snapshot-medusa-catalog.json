@@ -15,14 +15,23 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "parent_id": {
-          "name": "parent_id",
+        "parent_ids": {
+          "name": "parent_ids",
           "type": "json",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
           "mappedType": "json"
+        },
+        "entity": {
+          "name": "entity",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
         },
         "data": {
           "name": "data",
@@ -40,7 +49,7 @@
       "indexes": [
         {
           "columnNames": [
-            "parent_id"
+            "parent_ids"
           ],
           "composite": false,
           "keyName": "IDX_catalog_parent_id",
