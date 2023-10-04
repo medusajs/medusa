@@ -11,7 +11,7 @@ export const supportedLanguages = [
   },
   {
     locale: "de",
-    name: "German",
+    name: "Deutsch",
   },
   {
     locale: "fr",
