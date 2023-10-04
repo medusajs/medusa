@@ -24,7 +24,7 @@
 
 {{#with typeParameters}}
 
-{{{typeParameterTable}}}
+{{{typeParameter}}}
 
 {{/with}}
 
@@ -48,7 +48,7 @@
 
 {{#with parameters}}
 
-{{{parameterTable}}}
+{{{parameter}}}
 
 {{/with}}
 
@@ -70,11 +70,15 @@
 
 {{/if}}
 
+{{#if (getFormattingOption "showReturnSignature")}}
+
 {{#with type}}
 
 {{{type 'all'}}}
 
 {{/with}}
+
+{{/if}}
 
 {{#with comment}}
 

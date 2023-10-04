@@ -7,7 +7,7 @@ export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     'comments',
     function (comment: Comment, showSummary = true, showTags = true, commentLevel = 4) {
-      const { showCommentsAsHeader } = theme
+      const { showCommentsAsHeader } = theme.getFormattingOptionsForLocation()
       const md: string[] = [];
 
       if (showSummary && comment.summary) {

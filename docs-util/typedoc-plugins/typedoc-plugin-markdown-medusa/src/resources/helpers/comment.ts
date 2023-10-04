@@ -5,7 +5,7 @@ import { CommentDisplayPart } from 'typedoc/dist/lib/models/comments/comment';
 import { MarkdownTheme } from '../../theme';
 
 export default function (theme: MarkdownTheme) {
-  Handlebars.registerHelper('comment', function (parts: CommentDisplayPart[]) {
+  Handlebars.registerHelper('comment', function (parts: CommentDisplayPart[], showChildren = false) {
     const result: string[] = [];
     for (const part of parts) {
       switch (part.kind) {

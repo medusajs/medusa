@@ -132,7 +132,7 @@ export function getReflectionType(
     : getDeclarationType(root);
 }
 
-function getDeclarationType(model: DeclarationReflection) {
+export function getDeclarationType(model: DeclarationReflection) {
   if (model.indexSignature || model.children) {
     let indexSignature = '';
     const declarationIndexSignature = model.indexSignature;
@@ -191,7 +191,7 @@ export function getFunctionType(modelSignatures: SignatureReflection[]) {
   return functions.join('');
 }
 
-function getReferenceType(model: ReferenceType, emphasis: any) {
+export function getReferenceType(model: ReferenceType, emphasis: any) {
   if (model.reflection || (model.name && model.typeArguments)) {
     const reflection: string[] = [];
 
@@ -224,7 +224,7 @@ function getReferenceType(model: ReferenceType, emphasis: any) {
     : escapeChars(model.name);
 }
 
-function getArrayType(model: ArrayType, emphasis: boolean) {
+export function getArrayType(model: ArrayType, emphasis: boolean) {
   const arrayType = Handlebars.helpers.type.call(
     model.elementType,
     'none',
@@ -235,7 +235,7 @@ function getArrayType(model: ArrayType, emphasis: boolean) {
     : `${arrayType}[]`;
 }
 
-function getUnionType(model: UnionType, emphasis: boolean) {
+export function getUnionType(model: UnionType, emphasis: boolean) {
   return model.types
     .map((unionType) =>
       Handlebars.helpers.type.call(unionType, 'none', emphasis),
@@ -243,39 +243,39 @@ function getUnionType(model: UnionType, emphasis: boolean) {
     .join(` \\| `);
 }
 
-function getIntersectionType(model: IntersectionType) {
+export function getIntersectionType(model: IntersectionType) {
   return model.types
     .map((intersectionType) => Handlebars.helpers.type.call(intersectionType))
     .join(' & ');
 }
 
-function getTupleType(model: TupleType) {
+export function getTupleType(model: TupleType) {
   return `[${model.elements
     .map((element) => Handlebars.helpers.type.call(element))
     .join(', ')}]`;
 }
 
-function getIntrinsicType(model: IntrinsicType, emphasis: boolean) {
+export function getIntrinsicType(model: IntrinsicType, emphasis: boolean) {
   return emphasis ? `\`${model.name}\`` : escapeChars(model.name);
 }
 
-function getTypeOperatorType(model: TypeOperatorType) {
+export function getTypeOperatorType(model: TypeOperatorType) {
   return `${model.operator} ${Handlebars.helpers.type.call(model.target)}`;
 }
 
-function getQueryType(model: QueryType) {
+export function getQueryType(model: QueryType) {
   return `typeof ${Handlebars.helpers.type.call(model.queryType)}`;
 }
 
-function getInferredType(model: InferredType) {
+export function getInferredType(model: InferredType) {
   return `infer ${escapeChars(model.name)}`;
 }
 
-function getUnknownType(model: UnknownType) {
+export function getUnknownType(model: UnknownType) {
   return escapeChars(model.name);
 }
 
-function getConditionalType(model: ConditionalType) {
+export function getConditionalType(model: ConditionalType) {
   const md: string[] = [];
   if (model.checkType) {
     md.push(Handlebars.helpers.type.call(model.checkType));
@@ -295,7 +295,7 @@ function getConditionalType(model: ConditionalType) {
   return md.join(' ');
 }
 
-function getIndexAccessType(model: IndexedAccessType) {
+export function getIndexAccessType(model: IndexedAccessType) {
   const md: string[] = [];
   if (model.objectType) {
     md.push(Handlebars.helpers.type.call(model.objectType));

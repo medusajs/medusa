@@ -2,6 +2,7 @@ import * as Handlebars from 'handlebars';
 import { DeclarationReflection, ReflectionType } from 'typedoc';
 import { MarkdownTheme } from '../../theme';
 import { escapeChars, stripLineBreaks } from '../../utils';
+import reflectionFomatter from '../../utils/reflection-formatter';
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -55,43 +56,9 @@ export default function (theme: MarkdownTheme) {
 }
 
 function getListMarkdownContent(properties: DeclarationReflection[]) {
-  const propertyTable = getTableMarkdownContentWithoutComment(properties);
-  const propertyDescriptions = properties.map((property) => {
-    const name =
-      property.name.match(/[\\`\\|]/g) !== null
-        ? escapeChars(getName(property))
-        : `${getName(property)}`;
+  const items = properties.map((property) => reflectionFomatter(property));
 
-    const propertyType = getPropertyType(property);
-    const propertyTypeStr = Handlebars.helpers.type.call(propertyType);
-
-    const comments = getComments(property);
-    const commentsStr = comments
-      ? Handlebars.helpers.comments(comments)
-      : '\\-';
-
-    const md = `**${name}**: ${propertyTypeStr}
-
-${commentsStr}
-
------
-
-
-`;
-
-    return md;
-  });
-
-  const propertyComments = propertyDescriptions.join('\n\n');
-
-  const result = `
-${propertyTable}
-
-${propertyComments}
-
-`;
-
-  return result;
+  return items.join("\n")
 }
 
 function getTableMarkdownContent(

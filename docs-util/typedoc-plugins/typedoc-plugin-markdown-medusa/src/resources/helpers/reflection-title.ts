@@ -7,10 +7,10 @@ export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     'reflectionTitle',
     function (this: PageEvent<any>, shouldEscape = true) {
-      const { reflectionTitle } = theme
+      const { reflectionTitle } = theme.getFormattingOptionsForLocation()
 
       const title: string[] = [''];
-      if (reflectionTitle.kind && this.model?.kind && this.url !== this.project.url) {
+      if (reflectionTitle?.kind && this.model?.kind && this.url !== this.project.url) {
         title.push(`${ReflectionKind.singularString(this.model.kind)}: `);
       }
       if (this.url === this.project.url) {
@@ -19,7 +19,7 @@ export default function (theme: MarkdownTheme) {
         title.push(
           shouldEscape ? escapeChars(this.model.name) : this.model.name,
         );
-        if (reflectionTitle.typeParameters && this.model.typeParameters) {
+        if (reflectionTitle?.typeParameters && this.model.typeParameters) {
           const typeParameters = this.model.typeParameters
             .map((typeParameter: ParameterReflection) => typeParameter.name)
             .join(', ');

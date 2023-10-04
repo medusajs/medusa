@@ -148,12 +148,11 @@ export default class ProductModuleService<
   /**
    * This method is used to list all available products. It also allows filtering and paginating results.
    *
-   * @param filters - The filters to apply on the products' list.
-   * @param filters.q - test
-   * @param config - Selection configurations on the list of retrieved products.
-   * @param sharedContext - The shared context between modules, if there's any.
+   * @param filters - An object of type {@link FilterableProductProps} used to apply filters on the products' list.
+   * @param config - An object of type {@link FindConfig} used to provide more configurations over the retrieval of products from the database.
+   * @param sharedContext - An object of type {@link Context} used to share resources with the module.
    *
-   * @returns an array of products satisfying the supplied filters and selectors, if provided.
+   * @returns an array of {@link ProductDTO} satisfying the supplied filters and selectors, if provided.
    *
    * @example
    * async function listProducts () {
@@ -164,7 +163,7 @@ export default class ProductModuleService<
    */
   @InjectManager("baseRepository_")
   async list(
-    filters: { q: string },
+    filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {

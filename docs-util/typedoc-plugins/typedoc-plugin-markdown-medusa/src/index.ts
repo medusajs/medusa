@@ -1,6 +1,7 @@
 import { Application, ParameterType } from 'typedoc';
 import { MarkdownThemeOptionsReader } from './options-reader';
 import { MarkdownTheme } from './theme';
+import { FormattingOptionsType } from './types';
 
 export function load(app: Application) {
   app.renderer.defineTheme('markdown', MarkdownTheme);
@@ -95,41 +96,10 @@ export function load(app: Application) {
   });
 
   app.options.addDeclaration({
-    help: '[Markdown Plugin] Enable/disable sections',
-    name: 'sections',
+    help: '[Markdown Plugin] Formatting options that can be specified either on a specific document or to all documents',
+    name: 'formatting',
     type: ParameterType.Object,
-    defaultValue: {},
-  });
-
-  app.options.addDeclaration({
-    help: '[Markdown Plugin] Enable/disable reflection groups',
-    name: 'reflectionGroups',
-    type: ParameterType.Object,
-    defaultValue: {},
-  });
-
-  app.options.addDeclaration({
-    help: '[Markdown Plugin] Enable/disable reflection title attributes',
-    name: 'reflectionTitle',
-    type: ParameterType.Object,
-    defaultValue: {
-      kind: true,
-      typeParameters: true
-    },
-  });
-
-  app.options.addDeclaration({
-    help: '[Markdown Plugin] Removes section grouping between members and makes member childrens second-level headings.',
-    name: 'expandMembers',
-    type: ParameterType.Boolean,
-    defaultValue: false,
-  });
-
-  app.options.addDeclaration({
-    help: '[Markdown Plugin] Enable/disable showing a comment or tag\'s title as a header',
-    name: 'showCommentsAsHeader',
-    type: ParameterType.Boolean,
-    defaultValue: false,
-  });
+    defaultValue: {}
+  })
 }
 export { MarkdownTheme };

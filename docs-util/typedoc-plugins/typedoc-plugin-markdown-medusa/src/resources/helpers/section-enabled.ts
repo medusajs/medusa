@@ -3,8 +3,8 @@ import * as Handlebars from 'handlebars';
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper('sectionEnabled', function (sectionName: string): boolean {
-    const { sections } = theme
+    const { sections } = theme.getFormattingOptionsForLocation()
 
-    return !(sectionName in sections) || sections[sectionName]
+    return !sections || !(sectionName in sections) || sections[sectionName]
   })
 }

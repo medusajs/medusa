@@ -23,12 +23,7 @@ import {
   registerPartials,
 } from './render-utils';
 import { formatContents } from './utils';
-
-export type ObjectLiteralDeclarationStyle = 'table' | 'list';
-export type ReflectionTitleOptions = {
-  typeParameters?: boolean
-  kind?: boolean
-}
+import { FormattingOptionType, FormattingOptionsType, ObjectLiteralDeclarationStyle } from './types';
 
 export class MarkdownTheme extends Theme {
   allReflectionsHaveOwnDocument!: boolean;
@@ -47,12 +42,8 @@ export class MarkdownTheme extends Theme {
   out!: string;
   publicPath!: string;
   preserveAnchorCasing!: boolean;
-  objectLiteralTypeDeclarationStyle: ObjectLiteralDeclarationStyle;
-  sections: Record<string, boolean> = {}
-  reflectionGroups: Record<string, boolean> = {}
-  reflectionTitle: ReflectionTitleOptions = {}
-  expandMembers: Boolean = false
-  showCommentsAsHeader: Boolean = false
+  objectLiteralTypeDeclarationStyle: ObjectLiteralDeclarationStyle
+  formattingOptions: FormattingOptionsType
   
   project?: ProjectReflection;
   reflection?: DeclarationReflection;
@@ -86,11 +77,7 @@ export class MarkdownTheme extends Theme {
     this.objectLiteralTypeDeclarationStyle = this.getOption(
       'objectLiteralTypeDeclarationStyle',
     ) as ObjectLiteralDeclarationStyle;
-    this.sections = this.getOption('sections') as Record<string, boolean>
-    this.reflectionGroups = this.getOption('reflectionGroups') as Record<string, boolean>
-    this.reflectionTitle = this.getOption('reflectionTitle') as ReflectionTitleOptions
-    this.expandMembers = this.getOption('expandMembers') as Boolean
-    this.showCommentsAsHeader = this.getOption('showCommentsAsHeader') as Boolean
+    this.formattingOptions = this.getOption('formatting') as FormattingOptionsType
 
     this.listenTo(this.owner, {
       [RendererEvent.BEGIN]: this.onBeginRenderer,
@@ -407,14 +394,17 @@ export class MarkdownTheme extends Theme {
    * @param page  An event object describing the current render operation.
    */
   protected onBeginPage(page: PageEvent) {
+    console.log("changing location", page.url)
     this.location = page.url;
     this.reflection =
       page.model instanceof DeclarationReflection ? page.model : undefined;
-    if (this.reflection && this.reflection.groups && this.reflectionGroups) {
+    const options = this.getFormattingOptionsForLocation()
+    if (this.reflection && this.reflection.groups) {
       // filter out unwanted groups
       const tempGroups: ReflectionGroup[] = []
       this.reflection.groups.forEach((reflectionGroup) => {
-        if (!(reflectionGroup.title in this.reflectionGroups) || this.reflectionGroups[reflectionGroup.title]) {
+        // console.log(options)
+        if (!options.reflectionGroups || !(reflectionGroup.title in options.reflectionGroups) || options.reflectionGroups[reflectionGroup.title]) {
           tempGroups.push(reflectionGroup)
         }
       })
@@ -425,5 +415,25 @@ export class MarkdownTheme extends Theme {
 
   get globalsFile() {
     return 'modules.md';
+  }
+
+  getFormattingOptionsForLocation (): FormattingOptionType {
+    console.log("current location", this.location)
+    if (!this.location) {
+      return {}
+    }
+
+    let optionKey = Object.keys(this.formattingOptions).find((key) => {
+      if (key === "*") {
+        return false
+      }
+      
+      const keyPattern = new RegExp(key)
+      if (keyPattern.test(this.location)) {
+        return true
+      }
+    }) || "*"
+
+    return optionKey in this.formattingOptions ? this.formattingOptions[optionKey] : {}
   }
 }
