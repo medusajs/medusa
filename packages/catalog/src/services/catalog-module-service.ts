@@ -9,31 +9,9 @@ import {
 } from "@medusajs/types"
 import { joinerConfig } from "./../joiner-config"
 import { MedusaModule } from "@medusajs/modules-sdk"
+import { CatalogModuleOptions, ObjectsPartialTree } from "../types"
 
-type Config = {
-  adapter?: {
-    constructor: new (...args: any[]) => any
-    options: any
-  }
-  objects: {
-    parents?: string[]
-    entity: string
-    fields: string[]
-    listeners: string[]
-  }[]
-}
-
-type Tree = {
-  [key: string]: {
-    parents?: string[]
-    alias: string
-    entity: string
-    fields: string[]
-    listeners: string[]
-  }
-}
-
-const configMock: Config = {
+const configMock: CatalogModuleOptions = {
   objects: [
     {
       entity: "Product",
@@ -78,10 +56,10 @@ type InjectedDependencies = {
 }
 
 export default class CatalogModuleService {
-  private static tree_: Tree
+  private static tree_: ObjectsPartialTree
 
   private readonly container_: InjectedDependencies
-  private readonly moduleConfig_: Config
+  private readonly moduleOptions_: CatalogModuleOptions
 
   protected readonly baseRepository_: DAL.RepositoryService
   protected readonly eventBusModuleService_: IEventBusModuleService
@@ -98,7 +76,8 @@ export default class CatalogModuleService {
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.container_ = container
-    this.moduleConfig_ = moduleDeclaration.options as Config
+    this.moduleOptions_ =
+      moduleDeclaration.options as unknown as CatalogModuleOptions
 
     const { baseRepository, eventBusModuleService } = container
     this.baseRepository_ = baseRepository
@@ -125,7 +104,7 @@ export default class CatalogModuleService {
       orderBy?: { [column: string]: "ASC" | "DESC" }
     }
   }) {
-    CatalogModuleService.buildObjectsTree(this.moduleConfig_.objects)
+    CatalogModuleService.buildObjectsTree(this.moduleOptions_.objects)
     /**
      * The data is stored in the catalog database,
      * they are all in the data column of type JSONB
@@ -135,7 +114,7 @@ export default class CatalogModuleService {
   }
 
   protected registerListeners() {
-    const objects = this.moduleConfig_.objects ?? []
+    const objects = this.moduleOptions_.objects ?? []
 
     for (const { listeners, ...objectConfig } of objects) {
       listeners.forEach((listener) => {
@@ -148,10 +127,10 @@ export default class CatalogModuleService {
   }
 
   protected storeDataOnEvent(
-    objectConfig: Omit<Config["objects"][0], "listeners">
+    objectConfig: Omit<CatalogModuleOptions["objects"][0], "listeners">
   ) {
     return async (data: any) => {
-      CatalogModuleService.buildObjectsTree(this.moduleConfig_.objects)
+      CatalogModuleService.buildObjectsTree(this.moduleOptions_.objects)
 
       const ids: string[] = []
 
@@ -182,12 +161,12 @@ export default class CatalogModuleService {
     }
   }
 
-  protected static buildObjectsTree(objects: Config["objects"]) {
+  protected static buildObjectsTree(objects: CatalogModuleOptions["objects"]) {
     if (Object.keys(this.tree_).length) {
       return
     }
 
-    const tree: Tree = {}
+    const tree: ObjectsPartialTree = {}
 
     // initialize tree
     for (const object of objects) {
