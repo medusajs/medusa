@@ -4,4 +4,4 @@
 "@medusajs/types": patch
 ---
 
-feat(pricing,types,utils): Move calculate pricing query to a repository
+feat(pricing,types,utils): Move calculate pricing query to a repository + rule type validation
