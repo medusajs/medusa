@@ -10,7 +10,6 @@ import { CreateProductsActions } from "./create-products"
 import { InventoryHandlers, ProductHandlers } from "../../handlers"
 import * as MiddlewareHandlers from "../../handlers/middlewares"
 import { detachSalesChannelFromProducts } from "../../handlers/product"
-import { mapData } from "../../handlers/middlewares/map-data"
 
 export enum UpdateProductsActions {
   prepare = "prepare",
@@ -132,7 +131,7 @@ const handlers = new Map([
             },
           ],
         },
-        mapData((d) => ({
+        MiddlewareHandlers.mapData((d) => ({
           productsHandleSalesChannelsMap:
             d.preparedData.productHandleAddedChannelsMap,
         })),
@@ -152,7 +151,7 @@ const handlers = new Map([
             },
           ],
         },
-        mapData((d) => ({
+        MiddlewareHandlers.mapData((d) => ({
           productsHandleSalesChannelsMap:
             d.preparedData.productHandleAddedChannelsMap,
         })),
@@ -178,7 +177,7 @@ const handlers = new Map([
             },
           ],
         },
-        mapData((d) => ({
+        MiddlewareHandlers.mapData((d) => ({
           productsHandleSalesChannelsMap:
             d.preparedData.productHandleRemovedChannelsMap,
         })),
@@ -199,7 +198,7 @@ const handlers = new Map([
             },
           ],
         },
-        mapData((d) => ({
+        MiddlewareHandlers.mapData((d) => ({
           productsHandleSalesChannelsMap:
             d.preparedData.productHandleRemovedChannelsMap,
         })),
