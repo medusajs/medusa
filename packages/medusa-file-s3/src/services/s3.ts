@@ -20,7 +20,7 @@ import {
 import stream from "stream"
 
 class S3Service extends AbstractFileService implements IFileService {
-  protected directory_: string
+  protected prefix_: string
   protected bucket_: string
   protected s3Url_: string
   protected accessKeyId_: string
@@ -35,7 +35,7 @@ class S3Service extends AbstractFileService implements IFileService {
   constructor({ logger }, options) {
     super({}, options)
 
-    this.directory_ = options.directory ? `${options.directory}/` : ''
+    this.prefix_ = options.prefix ? `${options.prefix}/` : ''
     this.bucket_ = options.bucket
     this.s3Url_ = options.s3_url
     this.accessKeyId_ = options.access_key_id
@@ -81,7 +81,7 @@ class S3Service extends AbstractFileService implements IFileService {
 
     const parsedFilename = parse(file.originalname)
 
-    const fileKey = `${this.directory_}${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+    const fileKey = `${this.prefix_}${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     const command = new PutObjectCommand({
       ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
@@ -122,7 +122,7 @@ class S3Service extends AbstractFileService implements IFileService {
 
     const isPrivate = fileData.isPrivate ?? true // default to private
 
-    const fileKey = `${this.directory_}${fileData.name}.${fileData.ext}`
+    const fileKey = `${this.prefix_}${fileData.name}.${fileData.ext}`
     const params: PutObjectCommandInput = {
       ACL: isPrivate ? "private" : "public-read",
       Bucket: this.bucket_,
