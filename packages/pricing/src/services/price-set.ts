@@ -67,7 +67,7 @@ export default class PriceSetService<TEntity extends PriceSet = PriceSet> {
 
   @InjectTransactionManager(shouldForceTransaction, "priceSetRepository_")
   async create(
-    data: PricingTypes.CreatePriceSetDTO[],
+    data: Omit<PricingTypes.CreatePriceSetDTO, "rules">[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.priceSetRepository_ as PriceSetRepository).create(
@@ -78,7 +78,7 @@ export default class PriceSetService<TEntity extends PriceSet = PriceSet> {
 
   @InjectTransactionManager(shouldForceTransaction, "priceSetRepository_")
   async update(
-    data: PricingTypes.UpdatePriceSetDTO[],
+    data: Omit<PricingTypes.UpdatePriceSetDTO, "rules">[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.priceSetRepository_ as PriceSetRepository).update(

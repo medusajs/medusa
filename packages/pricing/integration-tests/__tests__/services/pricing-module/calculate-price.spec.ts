@@ -7,52 +7,12 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
 import { initialize } from "../../../../src"
-import {
-  createCurrencies,
-  defaultCurrencyData,
-} from "../../../__fixtures__/currency"
-import {
-  createMoneyAmounts,
-  defaultMoneyAmountsData,
-} from "../../../__fixtures__/money-amount"
-import {
-  createPriceRules,
-  defaultPriceRuleData,
-} from "../../../__fixtures__/price-rule"
-import {
-  createPriceSets,
-  defaultPriceSetsData,
-} from "../../../__fixtures__/price-set"
-import {
-  createPriceSetMoneyAmounts,
-  defaultPriceSetMoneyAmountsData,
-} from "../../../__fixtures__/price-set-money-amount"
 
-import {
-  createRuleTypes,
-  defaultRuleTypesData,
-} from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
+import { seedPriceData } from "../../../__fixtures__/seed-price-data"
+
 jest.setTimeout(30000)
-
-async function seedData({
-  moneyAmountsData = defaultMoneyAmountsData,
-  priceSetsData = defaultPriceSetsData,
-  currencyData = defaultCurrencyData,
-  priceRuleData = defaultPriceRuleData,
-  priceSetMoneyAmountsData = defaultPriceSetMoneyAmountsData,
-  ruleTypesData = defaultRuleTypesData,
-} = {}) {
-  const testManager = MikroOrmWrapper.forkManager()
-
-  await createCurrencies(testManager, currencyData)
-  await createMoneyAmounts(testManager, moneyAmountsData)
-  await createPriceSets(testManager, priceSetsData)
-  await createPriceSetMoneyAmounts(testManager, priceSetMoneyAmountsData)
-  await createRuleTypes(testManager, ruleTypesData)
-  await createPriceRules(testManager, priceRuleData)
-}
 
 describe("PricingModule Service - Calculate Price", () => {
   let service: IPricingModuleService
@@ -95,14 +55,21 @@ describe("PricingModule Service - Calculate Price", () => {
 
       const moneyAmountsData = [
         {
-          id: "money-amount-currency_code-EUR",
+          id: "money-amount-PLN",
+          currency_code: "PLN",
+          amount: 1000,
+          min_quantity: 1,
+          max_quantity: 10,
+        },
+        {
+          id: "money-amount-company_id-EUR",
           currency_code: "EUR",
           amount: 500,
           min_quantity: 1,
           max_quantity: 10,
         },
         {
-          id: "money-amount-currency_code-PLN",
+          id: "money-amount-company_id-PLN",
           currency_code: "PLN",
           amount: 400,
           min_quantity: 1,
@@ -114,6 +81,20 @@ describe("PricingModule Service - Calculate Price", () => {
           amount: 300,
           min_quantity: 1,
           max_quantity: 4,
+        },
+        {
+          id: "money-amount-region_id+company_id-PLN",
+          currency_code: "PLN",
+          amount: 999,
+          min_quantity: 1,
+          max_quantity: 10,
+        },
+        {
+          id: "money-amount-region_id-PLN-5-qty",
+          currency_code: "PLN",
+          amount: 250,
+          min_quantity: 4,
+          max_quantity: 10,
         },
         {
           id: "money-amount-region_id-PL-EUR",
@@ -149,17 +130,24 @@ describe("PricingModule Service - Calculate Price", () => {
 
       const priceSetMoneyAmountsData = [
         {
-          id: "psma-currency_code-EUR",
-          title: "psma EUR - currency_code",
+          id: "psma-PLN",
+          title: "psma PLN",
+          price_set: "price-set-PLN",
+          money_amount: "money-amount-PLN",
+          number_rules: 0,
+        },
+        {
+          id: "psma-company_id-EUR",
+          title: "psma EUR - company_id",
           price_set: "price-set-EUR",
-          money_amount: "money-amount-currency_code-EUR",
+          money_amount: "money-amount-company_id-EUR",
           number_rules: 1,
         },
         {
-          id: "psma-currency_code-PLN",
-          title: "psma PLN - currency_code",
+          id: "psma-company_id-PLN",
+          title: "psma PLN - company_id",
           price_set: "price-set-PLN",
-          money_amount: "money-amount-currency_code-PLN",
+          money_amount: "money-amount-company_id-PLN",
           number_rules: 1,
         },
         {
@@ -170,21 +158,35 @@ describe("PricingModule Service - Calculate Price", () => {
           number_rules: 1,
         },
         {
-          id: "psma-region_id_currency_code-PL-EUR",
+          id: "psma-region_id+company_id-PLN",
+          title: "psma region_id + company_id",
+          price_set: "price-set-PLN",
+          money_amount: "money-amount-region_id+company_id-PLN",
+          number_rules: 2,
+        },
+        {
+          id: "psma-region_id-PLN-5-qty",
+          title: "psma PLN - region_id 5 qty",
+          price_set: "price-set-PLN",
+          money_amount: "money-amount-region_id-PLN-5-qty",
+          number_rules: 1,
+        },
+        {
+          id: "psma-region_id_company_id-PL-EUR",
           title: "psma PLN - region_id PL with EUR currency",
           price_set: "price-set-PLN",
           money_amount: "money-amount-region_id-PL-EUR",
           number_rules: 2,
         },
         {
-          id: "psma-region_id_currency_code-PL-EUR-4-qty",
+          id: "psma-region_id_company_id-PL-EUR-4-qty",
           title: "psma PLN - region_id PL with EUR currency for quantity 4",
           price_set: "price-set-PLN",
           money_amount: "money-amount-region_id-PL-EUR-4-qty",
           number_rules: 2,
         },
         {
-          id: "psma-region_id_currency_code-PL-EUR-customer-group",
+          id: "psma-region_id_company_id-PL-EUR-customer-group",
           title: "psma PLN - region_id PL with EUR currency for customer group",
           price_set: "price-set-PLN",
           money_amount: "money-amount-region_id-PL-EUR-customer-group",
@@ -194,9 +196,9 @@ describe("PricingModule Service - Calculate Price", () => {
 
       const ruleTypesData = [
         {
-          id: "rule-type-currency_code",
-          name: "rule type currency code",
-          rule_attribute: "currency_code",
+          id: "rule-type-company_id",
+          name: "rule type company id",
+          rule_attribute: "company_id",
           default_priority: 2,
         },
         {
@@ -215,20 +217,20 @@ describe("PricingModule Service - Calculate Price", () => {
 
       const priceRuleData = [
         {
-          id: "price-rule-currency_code-EUR",
+          id: "price-rule-company_id-EUR",
           price_set_id: "price-set-EUR",
-          rule_type_id: "rule-type-currency_code",
+          rule_type_id: "rule-type-company_id",
           value: "EUR",
           price_list_id: "test",
-          price_set_money_amount_id: "psma-currency_code-EUR",
+          price_set_money_amount_id: "psma-company_id-EUR",
         },
         {
-          id: "price-rule-currency_code-PLN",
+          id: "price-rule-company_id-PLN",
           price_set_id: "price-set-PLN",
-          rule_type_id: "rule-type-currency_code",
-          value: "PLN",
+          rule_type_id: "rule-type-company_id",
+          value: "medusa-company-id",
           price_list_id: "test",
-          price_set_money_amount_id: "psma-currency_code-PLN",
+          price_set_money_amount_id: "psma-company_id-PLN",
         },
         {
           id: "price-rule-region_id-PLN",
@@ -239,38 +241,60 @@ describe("PricingModule Service - Calculate Price", () => {
           price_set_money_amount_id: "psma-region_id-PLN",
         },
         {
-          id: "price-rule-region_id-currency_code-PL",
+          id: "price-rule-region_id+company_id-PL",
           price_set_id: "price-set-PLN",
           rule_type_id: "rule-type-region_id",
           value: "PL",
           price_list_id: "test",
-          price_set_money_amount_id: "psma-region_id_currency_code-PL-EUR",
+          price_set_money_amount_id: "psma-region_id+company_id-PLN",
         },
         {
-          id: "price-rule-region_id-currency_code-PLN",
+          id: "price-rule-region_id+company_id-medusa-company-id",
           price_set_id: "price-set-PLN",
-          rule_type_id: "rule-type-currency_code",
-          value: "EUR",
+          rule_type_id: "rule-type-company_id",
+          value: "medusa-company-id",
           price_list_id: "test",
-          price_set_money_amount_id: "psma-region_id_currency_code-PL-EUR",
+          price_set_money_amount_id: "psma-region_id+company_id-PLN",
         },
         {
-          id: "price-rule-region_id-currency_code-PL-4-qty",
+          id: "price-rule-region_id-PLN-5-qty",
           price_set_id: "price-set-PLN",
           rule_type_id: "rule-type-region_id",
           value: "PL",
           price_list_id: "test",
-          price_set_money_amount_id:
-            "psma-region_id_currency_code-PL-EUR-4-qty",
+          price_set_money_amount_id: "psma-region_id-PLN-5-qty",
         },
         {
-          id: "price-rule-region_id-currency_code-PLN-4-qty",
+          id: "price-rule-region_id-company_id-PL",
           price_set_id: "price-set-PLN",
-          rule_type_id: "rule-type-currency_code",
-          value: "EUR",
+          rule_type_id: "rule-type-region_id",
+          value: "PL",
           price_list_id: "test",
-          price_set_money_amount_id:
-            "psma-region_id_currency_code-PL-EUR-4-qty",
+          price_set_money_amount_id: "psma-region_id_company_id-PL-EUR",
+        },
+        {
+          id: "price-rule-region_id-company_id-PLN",
+          price_set_id: "price-set-PLN",
+          rule_type_id: "rule-type-company_id",
+          value: "medusa-company-id",
+          price_list_id: "test",
+          price_set_money_amount_id: "psma-region_id_company_id-PL-EUR",
+        },
+        {
+          id: "price-rule-region_id-company_id-PL-4-qty",
+          price_set_id: "price-set-PLN",
+          rule_type_id: "rule-type-region_id",
+          value: "PL",
+          price_list_id: "test",
+          price_set_money_amount_id: "psma-region_id_company_id-PL-EUR-4-qty",
+        },
+        {
+          id: "price-rule-region_id-company_id-PLN-4-qty",
+          price_set_id: "price-set-PLN",
+          rule_type_id: "rule-type-company_id",
+          value: "medusa-company-id",
+          price_list_id: "test",
+          price_set_money_amount_id: "psma-region_id_company_id-PL-EUR-4-qty",
         },
         {
           id: "price-rule-region_id-currency_customer_group_code-PL",
@@ -279,16 +303,16 @@ describe("PricingModule Service - Calculate Price", () => {
           value: "PL",
           price_list_id: "test",
           price_set_money_amount_id:
-            "psma-region_id_currency_code-PL-EUR-customer-group",
+            "psma-region_id_company_id-PL-EUR-customer-group",
         },
         {
           id: "price-rule-region_id-currency_customer_group_code-PLN",
           price_set_id: "price-set-PLN",
-          rule_type_id: "rule-type-currency_code",
-          value: "EUR",
+          rule_type_id: "rule-type-company_id",
+          value: "medusa-company-id",
           price_list_id: "test",
           price_set_money_amount_id:
-            "psma-region_id_currency_code-PL-EUR-customer-group",
+            "psma-region_id_company_id-PL-EUR-customer-group",
         },
         {
           id: "price-rule-region_id-currency_customer_group_code-test_customer_group",
@@ -297,66 +321,63 @@ describe("PricingModule Service - Calculate Price", () => {
           value: "test-customer-group",
           price_list_id: "test",
           price_set_money_amount_id:
-            "psma-region_id_currency_code-PL-EUR-customer-group",
+            "psma-region_id_company_id-PL-EUR-customer-group",
         },
       ] as unknown as CreatePriceRuleDTO[]
 
-      await seedData({
+      await seedPriceData(MikroOrmWrapper.forkManager(), {
         currencyData,
         moneyAmountsData,
         priceSetsData,
         priceSetMoneyAmountsData,
+        priceSetMoneyAmountRulesData: [],
         priceRuleData,
         ruleTypesData,
       })
     })
 
-    it("should return null values when no context is set", async () => {
-      const priceSetsResult = await service.calculatePrices(
+    it("should throw an error when currency code is not set", async () => {
+      let result = service.calculatePrices(
         { id: ["price-set-EUR", "price-set-PLN"] },
         {}
       )
 
-      expect(priceSetsResult).toEqual([
-        {
-          id: "price-set-EUR",
-          amount: null,
-          currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
-        },
-        {
-          id: "price-set-PLN",
-          amount: null,
-          currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
-        },
-      ])
+      expect(result).rejects.toThrow(
+        "currency_code is a required input in the pricing context"
+      )
+
+      result = service.calculatePrices(
+        { id: ["price-set-EUR", "price-set-PLN"] },
+        { context: { region_id: "DE" } }
+      )
+
+      expect(result).rejects.toThrow(
+        "currency_code is a required input in the pricing context"
+      )
     })
 
-    it("should return filled prices when 1 context is present and price is setup for EUR", async () => {
+    it("should return filled prices when 1 context is present and price is setup for PLN", async () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-EUR", "price-set-PLN"] },
         {
-          context: { currency_code: "EUR" },
+          context: { currency_code: "PLN" },
         }
       )
 
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: "500",
-          currency_code: "EUR",
-          min_quantity: "1",
-          max_quantity: "10",
-        },
-        {
-          id: "price-set-PLN",
           amount: null,
           currency_code: null,
           min_quantity: null,
           max_quantity: null,
+        },
+        {
+          id: "price-set-PLN",
+          amount: "1000",
+          currency_code: "PLN",
+          min_quantity: "1",
+          max_quantity: "10",
         },
       ])
     })
@@ -365,7 +386,7 @@ describe("PricingModule Service - Calculate Price", () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-EUR", "price-set-PLN"] },
         {
-          context: { region_id: "PL" },
+          context: { currency_code: "PLN", region_id: "PL" },
         }
       )
 
@@ -405,10 +426,10 @@ describe("PricingModule Service - Calculate Price", () => {
         },
         {
           id: "price-set-PLN",
-          amount: "400",
+          amount: "1000",
           currency_code: "PLN",
           min_quantity: "1",
-          max_quantity: "5",
+          max_quantity: "10",
         },
       ])
     })
@@ -417,7 +438,7 @@ describe("PricingModule Service - Calculate Price", () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-EUR", "price-set-PLN"] },
         {
-          context: { does_not_exist: "EUR" },
+          context: { currency_code: "EUR", does_not_exist: "EUR" },
         }
       )
 
@@ -443,24 +464,50 @@ describe("PricingModule Service - Calculate Price", () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-EUR", "price-set-PLN"] },
         {
-          context: { currency_code: "EUR", region_id: "PL" },
+          context: { currency_code: "PLN", region_id: "PL" },
         }
       )
 
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: "500",
-          currency_code: "EUR",
-          min_quantity: "1",
-          max_quantity: "10",
+          amount: null,
+          currency_code: null,
+          min_quantity: null,
+          max_quantity: null,
         },
         {
           id: "price-set-PLN",
-          amount: "200",
-          currency_code: "EUR",
+          amount: "300",
+          currency_code: "PLN",
           min_quantity: "1",
-          max_quantity: "3",
+          max_quantity: "4",
+        },
+      ])
+    })
+
+    it("should return filled prices when 2 contexts are present and price is not setup", async () => {
+      const priceSetsResult = await service.calculatePrices(
+        { id: ["price-set-EUR", "price-set-PLN"] },
+        {
+          context: { currency_code: "PLN", company_id: "doesnotexist" },
+        }
+      )
+
+      expect(priceSetsResult).toEqual([
+        {
+          id: "price-set-EUR",
+          amount: null,
+          currency_code: null,
+          min_quantity: null,
+          max_quantity: null,
+        },
+        {
+          id: "price-set-PLN",
+          amount: "1000",
+          currency_code: "PLN",
+          min_quantity: "1",
+          max_quantity: "10",
         },
       ])
     })
@@ -469,15 +516,15 @@ describe("PricingModule Service - Calculate Price", () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-PLN"] },
         {
-          context: { currency_code: "EUR", region_id: "PL", quantity: 5 },
+          context: { currency_code: "PLN", region_id: "PL", quantity: 5 },
         }
       )
 
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-PLN",
-          amount: "50",
-          currency_code: "EUR",
+          amount: "250",
+          currency_code: "PLN",
           min_quantity: "4",
           max_quantity: "10",
         },
@@ -489,9 +536,10 @@ describe("PricingModule Service - Calculate Price", () => {
         { id: ["price-set-EUR", "price-set-PLN"] },
         {
           context: {
-            currency_code: "EUR",
+            currency_code: "PLN",
             region_id: "PL",
-            customer_group_id: "test",
+            customer_group_id: "test-customer-group",
+            company_id: "does-not-exist",
           },
         }
       )
@@ -499,17 +547,17 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: "500",
-          currency_code: "EUR",
-          min_quantity: "1",
-          max_quantity: "10",
+          amount: null,
+          currency_code: null,
+          min_quantity: null,
+          max_quantity: null,
         },
         {
           id: "price-set-PLN",
-          amount: "200",
-          currency_code: "EUR",
+          amount: "300",
+          currency_code: "PLN",
           min_quantity: "1",
-          max_quantity: "3",
+          max_quantity: "4",
         },
       ])
     })
@@ -522,6 +570,7 @@ describe("PricingModule Service - Calculate Price", () => {
             currency_code: "EUR",
             region_id: "PL",
             customer_group_id: "test-customer-group",
+            company_id: "medusa-company-id",
           },
         }
       )
@@ -529,10 +578,10 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: "500",
-          currency_code: "EUR",
-          min_quantity: "1",
-          max_quantity: "10",
+          amount: null,
+          currency_code: null,
+          min_quantity: null,
+          max_quantity: null,
         },
         // Currency Code + Region value + customer group id
         {
@@ -545,45 +594,15 @@ describe("PricingModule Service - Calculate Price", () => {
       ])
     })
 
-    it("should return filled prices when 3 contexts are present and price is setup for 3, but value is incorrect for 1. It falls back to 2 rule context", async () => {
-      const priceSetsResult = await service.calculatePrices(
-        { id: ["price-set-EUR", "price-set-PLN"] },
-        {
-          context: {
-            currency_code: "EUR",
-            region_id: "PL",
-            customer_group_id: "does-not-exist",
-          },
-        }
-      )
-
-      expect(priceSetsResult).toEqual([
-        {
-          id: "price-set-EUR",
-          amount: "500",
-          currency_code: "EUR",
-          min_quantity: "1",
-          max_quantity: "10",
-        },
-        // Currency Code + Region value
-        {
-          id: "price-set-PLN",
-          amount: "200",
-          currency_code: "EUR",
-          min_quantity: "1",
-          max_quantity: "3",
-        },
-      ])
-    })
-
     it("should return filled prices when 3 contexts are present and price is setup for 3, but value is incorrect for 2. It falls back to 1 rule context when 1 rule is not setup", async () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-EUR", "price-set-PLN"] },
         {
           context: {
-            currency_code: "does-not-exist",
+            currency_code: "PLN",
             region_id: "PL",
             customer_group_id: "does-not-exist",
+            company_id: "does-not-exist",
           },
         }
       )
@@ -607,14 +626,15 @@ describe("PricingModule Service - Calculate Price", () => {
       ])
     })
 
-    it("should return filled prices when 3 contexts are present and price is setup for 3, but value is incorrect for 2. It falls back to 1 rule context when 1 rule is setup", async () => {
+    it("should return filled prices when 3 contexts are present and price is setup for 3, but value is incorrect for 2. It falls back to default value", async () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-EUR", "price-set-PLN"] },
         {
           context: {
-            currency_code: "EUR",
+            currency_code: "PLN",
             region_id: "does-not-exist",
             customer_group_id: "does-not-exist",
+            company_id: "does-not-exist",
           },
         }
       )
@@ -622,18 +642,18 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: "500",
-          currency_code: "EUR",
-          min_quantity: "1",
-          max_quantity: "10",
-        },
-        // PLN price set is not setup for EUR currency_code so it will default to a null set
-        {
-          id: "price-set-PLN",
           amount: null,
           currency_code: null,
           min_quantity: null,
           max_quantity: null,
+        },
+        // PLN price set is not setup for EUR currency_code so it will default to a null set
+        {
+          id: "price-set-PLN",
+          amount: "1000",
+          currency_code: "PLN",
+          min_quantity: "1",
+          max_quantity: "10",
         },
       ])
     })
@@ -642,7 +662,7 @@ describe("PricingModule Service - Calculate Price", () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-EUR", "price-set-PLN"] },
         {
-          context: { does_not_exist: "EUR", does_not_exist_2: "Berlin" },
+          context: { currency_code: "EUR", does_not_exist_2: "Berlin" },
         }
       )
 
@@ -668,24 +688,24 @@ describe("PricingModule Service - Calculate Price", () => {
       const priceSetsResult = await service.calculatePrices(
         { id: ["price-set-EUR", "price-set-PLN"] },
         {
-          context: { currency_code: "EUR", does_not_exist: "Berlin" },
+          context: { currency_code: "PLN", region_id: "PL", city: "Berlin" },
         }
       )
 
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: "500",
-          currency_code: "EUR",
-          min_quantity: "1",
-          max_quantity: "10",
-        },
-        {
-          id: "price-set-PLN",
           amount: null,
           currency_code: null,
           min_quantity: null,
           max_quantity: null,
+        },
+        {
+          id: "price-set-PLN",
+          amount: "300",
+          currency_code: "PLN",
+          min_quantity: "1",
+          max_quantity: "4",
         },
       ])
     })

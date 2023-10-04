@@ -1,8 +1,9 @@
 import { IsInt, IsOptional } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
 import { CartService } from "../../../../services"
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-steps"
 
@@ -91,6 +92,7 @@ export default async (req, res) => {
         region_id: cart.region_id,
         quantity: validated.quantity,
         metadata: validated.metadata || {},
+        should_calculate_prices: true,
       }
 
       await cartService
