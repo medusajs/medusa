@@ -1,6 +1,5 @@
 export * from "./create-products-prepare-create-prices-compensation"
 export * from "./update-products-extract-created-variants"
 export * from "./update-products-extract-deleted-variants"
-export * from "./update-prodcut-reshape-sales-channels-data"
 export * from "./use-variants-inventory-items"
 export * from "./extract-variants"
