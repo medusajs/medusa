@@ -16,11 +16,11 @@ export const InventoryModule = {
   __joinerConfig: {
     serviceName: "inventoryService",
     primaryKeys: ["id"],
-    linkableKeys: [
-      "inventory_item_id",
-      "inventory_level_id",
-      "reservation_item_id",
-    ],
+    linkableKeys: {
+      inventory_item_id: "InventoryItem",
+      inventory_level_id: "InventoryLevel",
+      reservation_item_id: "ReservationItem",
+    },
   },
 
   softDelete: jest.fn(() => {}),
