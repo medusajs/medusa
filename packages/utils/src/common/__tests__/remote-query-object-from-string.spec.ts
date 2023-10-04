@@ -1,4 +1,4 @@
-import { stringToRemoteQueryObject } from "../string-to-remote-query-object"
+import { remoteQueryObjectFromString } from "../remote-query-object-from-string"
 
 const fields = [
   "id",
@@ -29,9 +29,9 @@ const fields = [
   "options.values.metadata",
 ]
 
-describe("stringToRemoteQueryObject", function () {
+describe("remoteQueryObjectFromString", function () {
   it("should return a remote query object", function () {
-    const output = stringToRemoteQueryObject({
+    const output = remoteQueryObjectFromString({
       entryPoint: "product",
       variables: {},
       fields,

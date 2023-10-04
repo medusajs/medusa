@@ -987,6 +987,8 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant",
     product_id: "test-product",
     cart_id: "test-cart-3",
+    should_merge: true,
+    metadata: {},
   })
   await manager.save(li2)
 

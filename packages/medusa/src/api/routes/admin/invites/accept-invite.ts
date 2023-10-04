@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsString, ValidateNested } from "class-validator"
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 
 import InviteService from "../../../../services/invite"
 import { Type } from "class-transformer"
@@ -92,9 +97,11 @@ export default async (req, res) => {
 
 export class AdminPostInvitesInviteAcceptUserReq {
   @IsString()
+  @IsOptional()
   first_name: string
 
   @IsString()
+  @IsOptional()
   last_name: string
 
   @IsString()
