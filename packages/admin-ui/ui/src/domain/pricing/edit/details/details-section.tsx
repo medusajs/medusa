@@ -20,13 +20,14 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
-import { useAdminDeletePriceList } from "medusa-react"
+import { useAdminDeletePriceList, useAdminUpdatePriceList } from "medusa-react"
 import * as React from "react"
 import { useNavigate } from "react-router-dom"
 
 import { useTranslation } from "react-i18next"
 import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
+import { PriceListStatus } from "../../forms/price-list-details-form"
 import { EditDetailsDrawer } from "./details-drawer"
 
 type PriceListDetailsSectionProps = {
@@ -114,6 +115,7 @@ const PriceListDetailsSection = ({
             <Heading>{priceList.name}</Heading>
             <div className="flex items-center gap-x-2">
               <PriceListStatusMenu
+                priceListId={priceList.id}
                 status={priceList.status}
                 endsAt={priceList.ends_at}
                 startsAt={priceList.starts_at}
@@ -136,7 +138,7 @@ const PriceListDetailsSection = ({
             </Text>
             {(priceList.customer_groups?.length ?? 0) > 0 ? (
               <div className="flex items-center justify-between">
-                <Text size="xlarge">
+                <Text size="large">
                   {priceList.customer_groups
                     .slice(0, 2)
                     .map((cg) => cg.name)
@@ -163,7 +165,7 @@ const PriceListDetailsSection = ({
                 )}
               </div>
             ) : (
-              <Text size="xlarge" className="text-ui-fg-muted">
+              <Text size="large" className="text-ui-fg-muted">
                 -
               </Text>
             )}
@@ -172,7 +174,7 @@ const PriceListDetailsSection = ({
             <Text size="base" className="text-ui-fg-subtle">
               {t("price-list-details-section-last-edited", "Last edited")}
             </Text>
-            <Text size="xlarge">
+            <Text size="large">
               {format(new Date(priceList.updated_at), "EEE d, MMM yyyy")}
             </Text>
           </div>
@@ -180,7 +182,7 @@ const PriceListDetailsSection = ({
             <Text size="base" className="text-ui-fg-subtle">
               {t("price-list-details-section-number-of-prices", "Prices")}
             </Text>
-            <Text size="xlarge">{priceList.prices.length ?? 0}</Text>
+            <Text size="large">{priceList.prices.length ?? 0}</Text>
           </div>
         </div>
       </Container>
@@ -197,14 +199,19 @@ type PriceListStatusMenuProps = {
   status: PriceList["status"]
   endsAt: PriceList["ends_at"]
   startsAt: PriceList["starts_at"]
+  priceListId: string
 }
 
 const PriceListStatusMenu = ({
   status,
   endsAt,
   startsAt,
+  priceListId,
 }: PriceListStatusMenuProps) => {
   const { t } = useTranslation()
+  const notification = useNotification()
+
+  const { mutateAsync } = useAdminUpdatePriceList(priceListId)
 
   const isActive = status === "active"
   const isExpired = endsAt ? new Date(endsAt) < new Date() : false
@@ -242,6 +249,42 @@ const PriceListStatusMenu = ({
     return <EllipseGreenSolid />
   }, [status, isExpired, isScheduled])
 
+  const onUpdateStatus = async () => {
+    const newStatus = isActive ? PriceListStatus.DRAFT : PriceListStatus.ACTIVE
+
+    mutateAsync(
+      {
+        status: newStatus,
+      },
+      {
+        onSuccess: () => {
+          notification(
+            t(
+              "price-list-details-section-status-menu-notification-success-title",
+              "Successfully updated price list status"
+            ),
+            t(
+              "price-list-details-section-status-menu-notification-success-message",
+              `The price list status was successfully updated to {{status}}`,
+              { status: newStatus }
+            ),
+            `success`
+          )
+        },
+        onError: (err) => {
+          notification(
+            t(
+              "price-list-details-section-status-menu-notification-error-title",
+              "Failed to update price list status"
+            ),
+            getErrorMessage(err),
+            `error`
+          )
+        },
+      }
+    )
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger asChild disabled={isExpired}>
@@ -253,7 +296,12 @@ const PriceListStatusMenu = ({
           {statusText}
         </Button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content align="end" side="bottom" className="min-w-[200px]">
+      <DropdownMenu.Content
+        align="end"
+        side="bottom"
+        className="min-w-[200px]"
+        onClick={onUpdateStatus}
+      >
         <DropdownMenu.Item>
           {isActive ? <EllipseGreySolid /> : <EllipseGreenSolid />}
           <span>
