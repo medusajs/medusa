@@ -33,6 +33,9 @@ import { ModuleJoinerConfig } from "../modules-sdk"
 import { Context } from "../shared-context"
 
 export interface IProductModuleService {
+  /**
+   * @ignore
+   */
   __joinerConfig(): ModuleJoinerConfig
 
   retrieve(
@@ -41,6 +44,22 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<ProductDTO>
 
+  /**
+   * This method is used to list all available products. It also allows filtering and paginating results.
+   *
+   * @param filters - An object of type {@link FilterableProductProps} used to apply filters on the products' list.
+   * @param config - An object of type {@link FindConfig} used to provide more configurations over the retrieval of products from the database.
+   * @param sharedContext - An object of type {@link Context} used to share resources with the module.
+   *
+   * @returns an array of {@link ProductDTO} satisfying the supplied filters and selectors, if provided.
+   *
+   * @example
+   * async function listProducts () {
+   * 	const productService = await initializeProductModule()
+   *
+   *   const data = await productService.list()
+   * }
+   */
   list(
     filters?: FilterableProductProps,
     config?: FindConfig<ProductDTO>,

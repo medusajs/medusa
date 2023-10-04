@@ -32,6 +32,7 @@ jobs:
       - name: Install Workspace dependencies
         working-directory: www
         run: yarn install
+
       - name: Build Docusaurus website
         working-directory: www
         env:
