@@ -1,3 +1,4 @@
+import { FlagRouter, remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   AbstractCartCompletionStrategy,
   CartCompletionResponse,
@@ -22,9 +23,7 @@ import IdempotencyKeyService from "../services/idempotency-key"
 import { MedusaError } from "medusa-core-utils"
 import { RequestContext } from "../types/request"
 import SwapService from "../services/swap"
-import { stringToRemoteQueryObject } from "@medusajs/utils/dist/common/string-to-remote-query-object"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
-import { FlagRouter } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productVariantInventoryService: ProductVariantInventoryService
@@ -344,7 +343,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
 
         const variantIds = cart.items.map((item) => item.variant_id)
         const variants = await this.remoteQuery_(
-          stringToRemoteQueryObject({
+          remoteQueryObjectFromString({
             entryPoint: "variants",
             variables: {
               filters: {

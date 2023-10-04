@@ -1,5 +1,5 @@
 import { RemoteJoinerQuery } from "@medusajs/types"
-import { FlagRouter, stringToRemoteQueryObject } from "@medusajs/utils"
+import { FlagRouter, remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   Address,
   Cart,
@@ -1058,7 +1058,7 @@ class CartService extends TransactionBaseService {
               )
             ) {
               const [variant] = await this.remoteQuery_(
-                stringToRemoteQueryObject({
+                remoteQueryObjectFromString({
                   entryPoint: "variants",
                   variables: {
                     filters: {
