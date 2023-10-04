@@ -1,5 +1,14 @@
 # Change Log
 
+## 9.0.6
+
+### Patch Changes
+
+- [#5207](https://github.com/medusajs/medusa/pull/5207) [`a9972d7d6`](https://github.com/medusajs/medusa/commit/a9972d7d6fa5c9698318a55173440f635ebf0a11) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-react): `@medusajs/medusa-js` import
+
+- Updated dependencies [[`2caff2efc`](https://github.com/medusajs/medusa/commit/2caff2efc757a3738ae8b7ee6fde77ee7100f995)]:
+  - @medusajs/medusa-js@6.1.0
+
 ## 9.0.5
 
 ### Patch Changes

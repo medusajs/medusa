@@ -570,6 +570,14 @@ module.exports = {
         ".animate-fast": {
           animationDuration: "300ms",
         },
+        ".clip": {
+          clipPath: "inset(0)",
+        },
+        ".no-marker": {
+          "&::-webkit-details-marker": {
+            display: "none",
+          },
+        },
       })
       addComponents({
         ".btn-secondary-icon": {

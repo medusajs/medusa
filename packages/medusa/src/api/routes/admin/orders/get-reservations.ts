@@ -18,10 +18,11 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/orders/{id}/reservations' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:
