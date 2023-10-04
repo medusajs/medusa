@@ -4644,6 +4644,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@graphql-tools/merge@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@graphql-tools/merge@npm:9.0.0"
+  dependencies:
+    "@graphql-tools/utils": ^10.0.0
+    tslib: ^2.4.0
+  peerDependencies:
+    graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 10376dbf1b64a3659dfa01d63bdafbb8addac829c0e772fc4596df4b46f249bee179692cc3f06b1157bdc3dccfe3a46caf5499786cce203eb0f7e124c88a5648
+  languageName: node
+  linkType: hard
+
 "@graphql-tools/optimize@npm:^1.3.0":
   version: 1.4.0
   resolution: "@graphql-tools/optimize@npm:1.4.0"
@@ -4668,6 +4680,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@graphql-tools/schema@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@graphql-tools/schema@npm:10.0.0"
+  dependencies:
+    "@graphql-tools/merge": ^9.0.0
+    "@graphql-tools/utils": ^10.0.0
+    tslib: ^2.4.0
+    value-or-promise: ^1.0.12
+  peerDependencies:
+    graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: b746c69cefb3b89fad13d56f0abb9e764efe1569836ea9ae5e5c510a6f0bce6e08f324b28aebcb5b2c11ba2ea1c308f18c204e322a188e254e2c7e426d3ccecb
+  languageName: node
+  linkType: hard
+
 "@graphql-tools/schema@npm:^9.0.0, @graphql-tools/schema@npm:^9.0.18":
   version: 9.0.19
   resolution: "@graphql-tools/schema@npm:9.0.19"
@@ -4679,6 +4705,19 @@ __metadata:
   peerDependencies:
     graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
   checksum: 42fd8ca8d3c8d60b583077c201980518482ff0cd5ed0c1f14bd9b835a2689ad41d02cbd3478f7d7dea7aec1227f7639fd5deb5e6360852a2e542b96b44bfb7a4
+  languageName: node
+  linkType: hard
+
+"@graphql-tools/utils@npm:^10.0.0":
+  version: 10.0.6
+  resolution: "@graphql-tools/utils@npm:10.0.6"
+  dependencies:
+    "@graphql-typed-document-node/core": ^3.1.1
+    dset: ^3.1.2
+    tslib: ^2.4.0
+  peerDependencies:
+    graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+  checksum: 85fb8faa73bd548e0dafe1d52710f246c0cacecf0f315488e7530fd3474f9642fc1cb75bd83965de1933cefc5aa5d2e579e4fd703d9113c8d95c0a67f0f401d2
   languageName: node
   linkType: hard
 
@@ -6672,6 +6711,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
+    "@graphql-tools/merge": ^9.0.0
+    "@graphql-tools/schema": ^10.0.0
     "@medusajs/orchestration": ^0.4.1
     "@medusajs/types": ^1.11.2
     "@medusajs/utils": ^1.10.2

@@ -310,28 +310,28 @@ Create the file `src/loaders/contentful-migrations/product-collection.ts` with t
 
 ```ts title=src/loaders/contentful-migrations/product-collection.ts
 import Migration, { 
-  MigrationContext
-} from "contentful-migration";
+  MigrationContext,
+} from "contentful-migration"
 
-export function productCollectionMigration (
+export function productCollectionMigration(
   migration: Migration,
   context?: MigrationContext
 ) {
   const collection = migration
     .createContentType("collection")
     .name("Product Collection")
-    .displayField("title");
+    .displayField("title")
 
     collection
       .createField("title")
       .name("Title")
       .type("Symbol")
-      .required(true);
+      .required(true)
     collection
       .createField("medusaId")
       .name("Medusa ID")
-      .type("Symbol");
-};
+      .type("Symbol")
+}
 ```
 </details>
 
@@ -344,28 +344,28 @@ Create the file `src/loaders/contentful-migrations/product-type.ts` with the fol
 
 ```ts title=src/loaders/contentful-migrations/product-type.ts
 import Migration, { 
-  MigrationContext
-} from "contentful-migration";
+  MigrationContext,
+} from "contentful-migration"
 
-export function productTypeMigration (
+export function productTypeMigration(
   migration: Migration,
   context?: MigrationContext
 ) {
   const collection = migration
     .createContentType("productType")
     .name("Product Type")
-    .displayField("title");
+    .displayField("title")
 
     collection
       .createField("title")
       .name("Title")
       .type("Symbol")
-      .required(true);
+      .required(true)
     collection
       .createField("medusaId")
       .name("Medusa ID")
-      .type("Symbol");
-};
+      .type("Symbol")
+}
 ```
 </details>
     

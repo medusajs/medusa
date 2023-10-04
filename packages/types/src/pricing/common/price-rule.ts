@@ -22,7 +22,7 @@ export interface CreatePriceRuleDTO {
   is_dynamic?: boolean
   value: string
   priority?: number
-  price_set_money_amount_id: string 
+  price_set_money_amount_id: string
   price_list_id: string
 }
 
@@ -41,4 +41,6 @@ export interface FilterablePriceRuleProps
   extends BaseFilterable<FilterablePriceRuleProps> {
   id?: string[]
   name?: string[]
+  price_set_id?: string[]
+  rule_type_id?: string[]
 }

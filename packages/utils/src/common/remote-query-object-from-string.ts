@@ -34,7 +34,7 @@
  *   "options.values.metadata",
  * ]
  *
- * const remoteQueryObject = stringToRemoteQueryObject({
+ * const remoteQueryObject = remoteQueryObjectFromString({
  *   entryPoint: "product",
  *   variables: {},
  *   fields,
@@ -83,7 +83,7 @@
  * //   },
  * // }
  */
-export function stringToRemoteQueryObject({
+export function remoteQueryObjectFromString({
   entryPoint,
   variables,
   fields,
