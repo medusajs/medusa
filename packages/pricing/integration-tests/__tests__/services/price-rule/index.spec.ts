@@ -9,6 +9,7 @@ import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
 import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
+import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { MikroOrmWrapper } from "../../../utils"
 
@@ -31,12 +32,12 @@ describe("PriceRule Service", () => {
     service = new PriceRuleService({
       priceRuleRepository: priceRuleRepository,
     })
-
     await createCurrencies(testManager)
     await createMoneyAmounts(testManager)
-    await createRuleTypes(testManager)
     await createPriceSets(testManager)
+    await createRuleTypes(testManager)
     await createPriceSetMoneyAmounts(testManager)
+    await createPriceSetMoneyAmountRules(testManager)
     await createPriceRules(testManager)
   })
 

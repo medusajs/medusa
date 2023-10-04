@@ -78,7 +78,7 @@ export class PriceSetMoneyAmountRulesRepository extends DALUtils.MikroOrmBaseRep
       return manager.create(PriceSetMoneyAmountRules, psmarData)
     })
 
-    manager.persistAndFlush(psmar)
+    manager.persist(psmar)
 
     return psmar
   }
