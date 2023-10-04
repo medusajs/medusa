@@ -81,23 +81,23 @@ module.exports = {
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: [
-          "./packages/medusa/tsconfig.json",
-          "./packages/medusa-payment-stripe/tsconfig.spec.json",
-          "./packages/medusa-payment-paypal/tsconfig.spec.json",
-          "./packages/admin-ui/tsconfig.json",
-          "./packages/admin-ui/tsconfig.spec.json",
-          "./packages/event-bus-local/tsconfig.spec.json",
-          "./packages/event-bus-redis/tsconfig.spec.json",
-          "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",
-          "./packages/medusa-plugin-algolia/tsconfig.spec.json",
-          "./packages/admin-ui/tsconfig.json",
-          "./packages/inventory/tsconfig.spec.json",
-          "./packages/stock-location/tsconfig.spec.json",
-          "./packages/cache-redis/tsconfig.spec.json",
-          "./packages/cache-inmemory/tsconfig.spec.json",
-          "./packages/admin-ui/tsconfig.json",
-          "./packages/create-medusa-app/tsconfig.json",
-          "./packages/product/tsconfig.json",
+          __dirname + "/packages/medusa/tsconfig.json",
+          __dirname + "/packages/medusa-payment-stripe/tsconfig.spec.json",
+          __dirname + "/packages/medusa-payment-paypal/tsconfig.spec.json",
+          __dirname + "/packages/admin-ui/tsconfig.json",
+          __dirname + "/packages/admin-ui/tsconfig.spec.json",
+          __dirname + "/packages/event-bus-local/tsconfig.spec.json",
+          __dirname + "/packages/event-bus-redis/tsconfig.spec.json",
+          __dirname + "/packages/medusa-plugin-meilisearch/tsconfig.spec.json",
+          __dirname + "/packages/medusa-plugin-algolia/tsconfig.spec.json",
+          __dirname + "/packages/admin-ui/tsconfig.json",
+          __dirname + "/packages/inventory/tsconfig.spec.json",
+          __dirname + "/packages/stock-location/tsconfig.spec.json",
+          __dirname + "/packages/cache-redis/tsconfig.spec.json",
+          __dirname + "/packages/cache-inmemory/tsconfig.spec.json",
+          __dirname + "/packages/admin-ui/tsconfig.json",
+          __dirname + "/packages/create-medusa-app/tsconfig.json",
+          __dirname + "/packages/product/tsconfig.json",
         ],
       },
       rules: {
@@ -141,7 +141,7 @@ module.exports = {
         },
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: "module", // Allows for the use of imports
-        project: "./packages/admin-ui/ui/tsconfig.json",
+        project: "/packages/admin-ui/ui/tsconfig.json",
       },
       globals: {
         __BASE__: "readonly",
@@ -172,14 +172,14 @@ module.exports = {
       files: ["packages/admin-ui/lib/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: "./packages/admin-ui/tsconfig.json",
+        project: "/packages/admin-ui/tsconfig.json",
       },
     },
     {
       files: ["packages/admin/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: "./packages/admin/tsconfig.json",
+        project: "/packages/admin/tsconfig.json",
       },
     },
     {
@@ -200,7 +200,7 @@ module.exports = {
         },
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: "module", // Allows for the use of imports
-        project: "./packages/medusa-payment-stripe/tsconfig.admin.json",
+        project: "/packages/medusa-payment-stripe/tsconfig.admin.json",
       },
       env: {
         browser: true,

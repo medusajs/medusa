@@ -39,6 +39,7 @@ import { EntitySchema } from "typeorm"
 import { MiddlewareService } from "../services"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import logger from "./logger"
+import { LoggerTypes } from "@medusajs/types"
 
 type Options = {
   rootDirectory: string
@@ -71,7 +72,7 @@ export default async ({
   activityId,
 }: Options): Promise<void> => {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
-
+  const logger = container.resolve("logger") as Logger
   await Promise.all(
     resolved.map(
       async (pluginDetails) => await runSetupFunctions(pluginDetails)
@@ -80,17 +81,27 @@ export default async ({
 
   await Promise.all(
     resolved.map(async (pluginDetails) => {
+      logger.activity(`initialzing plugins ${pluginDetails.name}...`)
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
       await registerMedusaApi(pluginDetails, container)
       registerApi(pluginDetails, app, rootDirectory, container, activityId)
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
+      logger.success(`initialzing plugins ${pluginDetails.name}...`, "done")
     })
   )
 
   await Promise.all(
-    resolved.map(async (pluginDetails) => runLoaders(pluginDetails, container))
+    resolved.map(async (pluginDetails) => {
+      logger.activity(`running loader of plugin ${pluginDetails.name}...`)
+      const result = await runLoaders(pluginDetails, container)
+      logger.success(
+        `running loader of plugin ${pluginDetails.name}...`,
+        "done"
+      )
+      return result
+    })
   )
 
   resolved.forEach((plugin) => trackInstallation(plugin.name, "plugin"))
