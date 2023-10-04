@@ -16,7 +16,7 @@ export const ProductModule = {
   __joinerConfig: {
     serviceName: "productService",
     primaryKeys: ["id", "handle"],
-    linkableKeys: ["product_id", "variant_id"],
+    linkableKeys: { product_id: "Product", variant_id: "ProductVariant" },
     alias: [],
   },
 

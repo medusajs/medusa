@@ -147,7 +147,10 @@ export class RemoteLink {
 
   private getLinkableKeys(mod: LoadedLinkModule) {
     return (
-      mod.__joinerConfig.linkableKeys ?? mod.__joinerConfig.primaryKeys ?? []
+      (mod.__joinerConfig.linkableKeys &&
+        Object.keys(mod.__joinerConfig.linkableKeys)) ||
+      mod.__joinerConfig.primaryKeys ||
+      []
     )
   }
 
