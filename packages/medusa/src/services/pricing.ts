@@ -1,14 +1,7 @@
-import { FlagRouter } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { ProductVariantService, RegionService, TaxProviderService } from "."
-import { TransactionBaseService } from "../interfaces"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { Product, ProductVariant, Region, ShippingOption } from "../models"
 import {
   PricedProduct,
   PricedShippingOption,
@@ -17,7 +10,15 @@ import {
   ProductVariantPricing,
   TaxedPricing,
 } from "../types/pricing"
+import { Product, ProductVariant, Region, ShippingOption } from "../models"
+import { ProductVariantService, RegionService, TaxProviderService } from "."
+
+import { EntityManager } from "typeorm"
+import { FlagRouter } from "@medusajs/utils"
+import { MedusaError } from "medusa-core-utils"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
+import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
 
 type InjectedDependencies = {
@@ -205,6 +206,25 @@ class PricingService extends TransactionBaseService {
     }
 
     return pricingResultMap
+  }
+
+  private async getPricingModulePricing(
+    data: {
+      variantId: string
+      quantity?: number
+    }[],
+    context: PricingContext
+  ) {
+    const variables = { id }
+
+    const query = {
+      product: {
+        __args: variables,
+        // ...defaultAdminProductRemoteQueryObject,
+      },
+    }
+
+    const [product] = await remoteQuery(query)
   }
 
   /**
