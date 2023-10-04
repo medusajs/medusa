@@ -1,7 +1,6 @@
-import { Adjustments, ExclamationCircle, Spinner } from "@medusajs/icons"
+import { ExclamationCircle, Spinner } from "@medusajs/icons"
 import type { CustomerGroup } from "@medusajs/medusa"
 import {
-  Button,
   Checkbox,
   Container,
   DatePicker,
@@ -27,8 +26,10 @@ import {
 import { useAdminCustomerGroups } from "medusa-react"
 import * as React from "react"
 
+import { DateComparisonOperator } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { Form } from "../../../../components/helpers/form"
+import { FilterMenu } from "../../../../components/molecules/filter-menu"
 import { useDebounce } from "../../../../hooks/use-debounce"
 import { type NestedForm } from "../../../../utils/nested-form"
 import { PriceListDetailsSchema } from "./types"
@@ -505,6 +506,17 @@ const PriceListCustomerGroups = ({
     [pagination.pageIndex, pagination.pageSize]
   )
 
+  const [filters, setFilters] = React.useState<{
+    created_at?: DateComparisonOperator
+    updated_at?: DateComparisonOperator
+  }>({})
+
+  React.useEffect(() => {
+    if (!open) {
+      setFilters({})
+    }
+  }, [open])
+
   const { customer_groups, count, isLoading, isError } = useAdminCustomerGroups(
     {
       limit: PAGE_SIZE,
@@ -638,10 +650,31 @@ const PriceListCustomerGroups = ({
                     "w-full": layout === "drawer",
                   })}
                 >
-                  <Button variant="secondary" className="shrink-0">
-                    <Adjustments />
-                    View
-                  </Button>
+                  <FilterMenu onClearFilters={() => setFilters({})}>
+                    <FilterMenu.Content side="top">
+                      <FilterMenu.DateItem
+                        name="Created at"
+                        value={filters.created_at}
+                        onChange={(v) => {
+                          setFilters((prev) => ({
+                            ...prev,
+                            created_at: v,
+                          }))
+                        }}
+                      />
+                      <FilterMenu.Seperator />
+                      <FilterMenu.DateItem
+                        name="Updated at"
+                        value={filters.updated_at}
+                        onChange={(v) => {
+                          setFilters((prev) => ({
+                            ...prev,
+                            updated_at: v,
+                          }))
+                        }}
+                      />
+                    </FilterMenu.Content>
+                  </FilterMenu>
                   <Input
                     className={clx({
                       "w-full": layout === "drawer",
