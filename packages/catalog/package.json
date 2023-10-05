@@ -33,7 +33,8 @@
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
     "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create",
     "migration:up": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:up",
-    "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm cache:clear"
+    "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm cache:clear",
+    "experiment": "ts-node src/_experiments/experiment.ts"
   },
   "devDependencies": {
     "@mikro-orm/cli": "5.7.12",
@@ -49,6 +50,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@graphql-tools/merge": "^9.0.0",
+    "@graphql-tools/schema": "^10.0.0",
     "@medusajs/modules-sdk": "^1.11.0",
     "@medusajs/types": "^1.11.1",
     "@medusajs/utils": "^1.10.1",
@@ -57,6 +60,7 @@
     "@mikro-orm/postgresql": "5.7.12",
     "awilix": "^8.0.0",
     "dotenv": "^16.1.4",
+    "graphql": "^16.8.1",
     "knex": "2.4.2",
     "lodash": "^4.17.21"
   }

@@ -91,11 +91,11 @@
           "mappedType": "text"
         }
       },
-      "name": "catalog_parent",
+      "name": "catalog_relation",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "catalog_parent_pkey",
+          "keyName": "catalog_relation_pkey",
           "columnNames": [
             "parent_id",
             "parent_name",
@@ -109,34 +109,34 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "catalog_parent_parent_id_parent_name_foreign": {
-          "constraintName": "catalog_parent_parent_id_parent_name_foreign",
+        "catalog_relation_parent_id_parent_name_foreign": {
+          "constraintName": "catalog_relation_parent_id_parent_name_foreign",
           "columnNames": [
             "parent_id",
             "parent_name"
           ],
-          "localTableName": "public.catalog_parent",
+          "localTableName": "public.catalog_relation",
           "referencedColumnNames": [
             "id",
             "name"
           ],
           "referencedTableName": "public.catalog",
-          "deleteRule": "remove",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "catalog_parent_child_id_child_name_foreign": {
-          "constraintName": "catalog_parent_child_id_child_name_foreign",
+        "catalog_relation_child_id_child_name_foreign": {
+          "constraintName": "catalog_relation_child_id_child_name_foreign",
           "columnNames": [
             "child_id",
             "child_name"
           ],
-          "localTableName": "public.catalog_parent",
+          "localTableName": "public.catalog_relation",
           "referencedColumnNames": [
             "id",
             "name"
           ],
           "referencedTableName": "public.catalog",
-          "deleteRule": "remove",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

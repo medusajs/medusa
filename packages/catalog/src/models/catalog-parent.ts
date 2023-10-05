@@ -1,8 +1,8 @@
 import { Entity, ManyToOne, PrimaryKey } from "@mikro-orm/core"
 import Catalog from "./catalog"
 
-@Entity({ tableName: "catalog_parent" })
-export class CatalogParent {
+@Entity({ tableName: "catalog_relation" })
+export class CatalogRelation {
   @PrimaryKey()
   parent_id: string
 
@@ -26,4 +26,4 @@ export class CatalogParent {
   child: Catalog
 }
 
-export default CatalogParent
+export default CatalogRelation
