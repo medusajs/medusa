@@ -10,7 +10,6 @@ export async function createInventoryItemsPrepareData({
   context,
   data,
 }: WorkflowArguments<WorkflowTypes.InventoryWorkflow.CreateInventoryItemsWorkflowInputDTO>): Promise<CreateInventoryItemsPreparedData> {
-  console.log("createInventoryItems", data)
   const inventoryItems = data.inventoryItems
   return {
     inventoryItems: inventoryItems as InventoryTypes.InventoryItemDTO[],

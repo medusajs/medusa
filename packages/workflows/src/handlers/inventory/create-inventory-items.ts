@@ -13,7 +13,6 @@ export async function createInventoryItems({
 }: WorkflowArguments<{
   inventoryItems: (InventoryItemDTO & { _associationTag?: string })[]
 }>): Promise<Result | void> {
-  console.log(data)
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
 

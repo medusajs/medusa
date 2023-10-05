@@ -78,7 +78,6 @@ describe("Inventory Items endpoints", () => {
 
       const inventoryService = appContainer.resolve("inventoryService")
       const inventoryItems = await inventoryService.list()
-      console.log(inventoryItems)
 
       expect(inventoryItems.length).toEqual(1)
     })
