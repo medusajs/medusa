@@ -1,31 +1,41 @@
-import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
+import {
+  Cascade,
+  Collection,
+  Entity,
+  ManyToMany,
+  OptionalProps,
+  PrimaryKey,
+  PrimaryKeyType,
+  Property,
+} from "@mikro-orm/core"
+import CatalogParent from "./catalog-parent"
 
-import { generateEntityId } from "@medusajs/utils"
+type OptionalRelations = "parents"
 
 @Entity({ tableName: "catalog" })
 export class Catalog {
-  // composite primary key id - name
-  // the id should be composed of {entityName}_{id}
-
-  // Create a catalog relation table that link the catalog row to the related parent rows
+  [OptionalProps]: OptionalRelations
 
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  /*@Property({ columnType: "json", nullable: true })
-  @Index({ name: "IDX_catalog_children_ids" })
-  children_ids: string[] | null*/
+  @PrimaryKey({ columnType: "text" })
+  name: string;
 
-  @Property({ columnType: "text", nullable: false })
-  name: string
+  [PrimaryKeyType]?: [string, string]
 
   @Property({ columnType: "jsonb", default: "{}" })
   data: Record<string, unknown>
 
-  @BeforeCreate()
-  beforeCreate() {
-    this.id = generateEntityId(this.id, "catalog")
-  }
+  @ManyToMany({
+    owner: true,
+    entity: () => Catalog,
+    pivotEntity: () => CatalogParent,
+    cascade: [Cascade.REMOVE],
+    inverseJoinColumns: ["parent_id", "parent_name"],
+    joinColumns: ["child_id", "child_name"],
+  })
+  parents = new Collection<Catalog>(this)
 }
 
 export default Catalog
