@@ -6278,11 +6278,11 @@ __metadata:
     "@babel/types": 7.22.5
     "@hookform/error-message": ^2.0.1
     "@hookform/resolvers": ^3.3.1
-    "@medusajs/icons": 0.0.0-snapshot-20231005111726
+    "@medusajs/icons": 1.1.0
     "@medusajs/medusa": "*"
     "@medusajs/types": "*"
-    "@medusajs/ui": 0.0.0-snapshot-20231005111726
-    "@medusajs/ui-preset": 0.0.0-snapshot-20231005111726
+    "@medusajs/ui": 2.1.0
+    "@medusajs/ui-preset": 1.0.2
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
@@ -6501,12 +6501,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/icons@npm:0.0.0-snapshot-20231005111726":
-  version: 0.0.0-snapshot-20231005111726
-  resolution: "@medusajs/icons@npm:0.0.0-snapshot-20231005111726"
+"@medusajs/icons@npm:*, @medusajs/icons@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@medusajs/icons@npm:1.1.0"
   peerDependencies:
     react: ^16.x || ^17.x || ^18.x
-  checksum: 535fa74e6bb4e1be3e2f523a4408772f8f5f5dee05f8294c1a76c5ba6ccb595fc0f142c1ce65defc783e4cc9960e330812b06a272140fedf3b951fb6bceb0b13
+  checksum: 875dbccf408dddb1ecf9d13fc1196e95fb125ad9b67e45725c07d93f05f21dfb5ba28ca62cdd009aa92850501fcd1e546f0224faf9eb999a5092e5f22c8965d9
   languageName: node
   linkType: hard
 
@@ -6892,23 +6892,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui-preset@npm:0.0.0-snapshot-20231005111726":
-  version: 0.0.0-snapshot-20231005111726
-  resolution: "@medusajs/ui-preset@npm:0.0.0-snapshot-20231005111726"
+"@medusajs/ui-preset@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@medusajs/ui-preset@npm:1.0.2"
   dependencies:
     "@tailwindcss/forms": ^0.5.3
     tailwindcss-animate: ^1.0.6
   peerDependencies:
     tailwindcss: ">=3.0.0"
-  checksum: 716fd10290f215ab85ecd238781357c94551934cef6f375344bb8fddefa53db31d59bc0f66c20bac98803fa630e52fda7826f49192643c08518fe061cd796ccb
+  checksum: 4536010bbb6000c09274c61bd7a3dabc1970e6e6274e153adea1ec7da5eb136dacbb079b39829f90905e71d79fda64f1f5577d457d1521cd60c81aced54f2c02
   languageName: node
   linkType: hard
 
-"@medusajs/ui@npm:0.0.0-snapshot-20231005111726":
-  version: 0.0.0-snapshot-20231005111726
-  resolution: "@medusajs/ui@npm:0.0.0-snapshot-20231005111726"
+"@medusajs/ui@npm:2.1.0":
+  version: 2.1.0
+  resolution: "@medusajs/ui@npm:2.1.0"
   dependencies:
-    "@medusajs/icons": 0.0.0-snapshot-20231005111726
+    "@medusajs/icons": "*"
     "@radix-ui/react-accordion": ^1.1.2
     "@radix-ui/react-alert-dialog": ^1.0.4
     "@radix-ui/react-avatar": ^1.0.3
@@ -6939,7 +6939,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: ea6bb27c7267f7e94e84707d451a07c0c3dbdac09ea39c3645521a3ef6ed14fab106c50c99bb3ca168e8d71c4b6dc70a80d82f63fbe3d89f98d53b8029691b4f
+  checksum: ab887dda6234f6913afecad180c1e3f40d159c3d6c8a13588b749814af977429c4b29964f53a74484997d14e606cab63839cb91249e9c682e2a3c8db335c0271
   languageName: node
   linkType: hard
 
