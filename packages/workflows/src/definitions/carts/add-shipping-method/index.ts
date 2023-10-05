@@ -263,6 +263,21 @@ const handlers = new Map([
           },
           merge: true,
         },
+        setRetrieveConfig({
+          relations: [
+            "items.variant.product.profiles",
+            "items.adjustments",
+            "discounts.rule",
+            "gift_cards",
+            "shipping_methods.shipping_option",
+            "billing_address",
+            "shipping_address",
+            "region.tax_rates",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ],
+        }),
         CartHandlers.upsertPaymentSessions
       ),
     },

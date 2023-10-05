@@ -34,10 +34,17 @@ export async function prepareAddShippingMethodToCartWorkflowData({
 
   const cart = await cartService.retrieveWithTotals(data_.cart_id, {
     relations: [
-      "shipping_methods",
-      "shipping_methods.shipping_option",
       "items.variant.product.profiles",
+      "items.adjustments",
+      "discounts.rule",
+      "gift_cards",
+      "shipping_methods.shipping_option",
+      "billing_address",
+      "shipping_address",
+      "region.tax_rates",
+      "region.payment_providers",
       "payment_sessions",
+      "customer",
     ],
   })
 
@@ -67,7 +74,6 @@ export async function prepareAddShippingMethodToCartWorkflowData({
 }
 
 prepareAddShippingMethodToCartWorkflowData.aliases = {
-  // input: "input",
   shippingMethodConfig: "shippingMethodConfig",
   cart: "cart",
   shippingOption: "shippingOption",

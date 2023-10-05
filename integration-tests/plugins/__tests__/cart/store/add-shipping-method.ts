@@ -91,7 +91,7 @@ describe("/store/carts", () => {
     expect(transaction.getState()).toEqual("done")
   })
 
-  it("should compensare correctly if add shipping method fails", async () => {
+  it("should compensate correctly if add shipping method fails", async () => {
     const manager = medusaContainer.resolve("manager")
     const cartService = medusaContainer.resolve("cartService")
 
