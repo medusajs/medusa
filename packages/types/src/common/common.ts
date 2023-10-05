@@ -40,22 +40,6 @@ export type Writable<T> = {
     | FindOperator<string[]>
 }
 
-/**
- * @{label FindConfig}
- * 
- * An interface used to implement generic properties to select and filter items when retrieved from the database
- * 
- * @typeParam Entity - The entity whose items are selected and filtered.
- * 
- * @param select - an optional array of attributes to select from the entity.
- * @param skip - an optional number indicating the items to skip before retrieving the results.
- * @param take - an optional number indicating the items to return in the result
- * @param relations - an array of strings indicating the entity's relation to retrieve for each item.
- * @param order - 
- * an optional object to sort the items by at least one attribute. The object key is an entity's attribute name, and the value can either be `ASC` for ascending order
- * or `DESC` for descending order.
- * @param withDeleted - an optional boolean indicating whether to retrieve deleted entities as well. Only works if the entity extends the `SoftDeletableEntity` class
- */
 export interface FindConfig<Entity> {
   select?: (keyof Entity | string)[]
   skip?: number

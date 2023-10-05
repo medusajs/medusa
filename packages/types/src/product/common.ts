@@ -1,10 +1,6 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 
-/**
- * An enum used to indicate the product's status
- * @enum
- */
 export enum ProductStatus {
   DRAFT = "draft",
   PROPOSED = "proposed",
@@ -13,42 +9,10 @@ export enum ProductStatus {
 }
 
 /**
- * Product attributes accepted as a parameter to different methods in the `ProductModuleService` class.
- * 
- * @interface
- * 
- * @privateRemarks
- * TODO: This DTO should represent the product, when used in config we should use Partial<ProductDTO>, it means that some props like handle should be updated to not be optional
- * 
- * @prop id - the ID of the product
- * @prop title - the title of the product
- * @prop handle - the handle of the product
- * @prop subtitle - the subtitle of the product
- * @prop description - the description of the product.
- * @prop is_giftcard - a flag indicating whether the product is a gift card.
- * @prop status - the status of the product
- * @prop thumbnail - the URL to the product's thumbnail
- * @prop weight - the product's weight
- * @prop length - the product's length
- * @prop height - the product's height
- * @prop origin_country - the product's origin country
- * @prop hs_code - the product's HS Code
- * @prop mid_code - the product's MID Code
- * @prop material - the product's material
- * @prop collection - the product's collection.
- * @prop categories - the product's associated categories
- * @prop type - the product's type
- * @prop tags - the product's tags
- * @prop variants - the product's variants
- * @prop options - the product's options
- * @prop images - the product's images
- * @prop discountable - a flag indicating whether the product can be discounted.
- * @prop external_id - the product's external ID. This is useful if the product is linked to an external service or platform.
- * @prop created_at - the date the product was created.
- * @prop updated_at - the date the product was updated.
- * @prop deleted_at - the date the product was deleted.
- * 
+ * DTO in and out of the module (module API)
  */
+
+// TODO: This DTO should represent the product, when used in config we should use Partial<ProductDTO>, it means that some props like handle should be updated to not be optional
 export interface ProductDTO {
   id: string
   title: string
@@ -79,37 +43,6 @@ export interface ProductDTO {
   deleted_at?: string | Date
 }
 
-/**
- * Product Variant attributes accepted as a parameter to different methods in the `ProductModuleService` class.
- * 
- * @interface
- * 
- * @prop id - the product variant's ID.
- * @prop title - the product variant's title.
- * @prop sku - the product variant's SKU.
- * @prop barcode - the product variant's barcode.
- * @prop ean - the product variant's EAN.
- * @prop upc - the product variant's UPC.
- * @prop inventory_quantity - the product variant's inventory quantity.
- * @prop allow_backorder - a flag indicating whether customers can order a variant when it's out of stock.
- * @prop manage_inventory - a flag indicating whether variant's inventory is managed by the system.
- * @prop hs_code - the product variant's HS Code.
- * @prop origin_country - the product variant's origin country.
- * @prop mid_code - the product variant's mid code.
- * @prop material - the product variant's material.
- * @prop weight - the product variant's weight.
- * @prop length - the product variant's length.
- * @prop height - the product variant's height.
- * @prop width - the product variant's width.
- * @prop options - the product variant's values of the product's options.
- * @prop metadata - an object of custom data associated with the product variant.
- * @prop product - the variant's product.
- * @prop product_id - the ID of the variant's product.
- * @prop variant_rank - the ranking of the product variant.
- * @prop created_at - the date the product variant was created.
- * @prop updated_at - the date the product variant was updated.
- * @prop deleted_at - the date the product variant was deleted.
- */
 export interface ProductVariantDTO {
   id: string
   title: string
@@ -138,23 +71,6 @@ export interface ProductVariantDTO {
   deleted_at: string | Date
 }
 
-/**
- * Product Category attributes accepted as a parameter to different methods in the `ProductModuleService` class.
- * 
- * @interface
- * 
- * @prop id - the product category's ID.
- * @prop name - the product category's name.
- * @prop description - the product category's description.
- * @prop handle - the product category's handle.
- * @prop is_active - a flag indicating whether the product category is active.
- * @prop is_internal - a flag indicating whether the product category is used for internal purposes.
- * @prop rank - a number indicating the ranking of the product category.
- * @prop parent_category - the parent of the product category, if it has any.
- * @prop category_children - the children of the product category.
- * @prop created_at - the date the product category was created.
- * @prop updated_at - the date the product category was updated.
- */
 export interface ProductCategoryDTO {
   id: string
   name: string
@@ -189,16 +105,6 @@ export interface UpdateProductCategoryDTO {
   metadata?: Record<string, unknown>
 }
 
-/**
- * Product Tag attributes accepted as a parameter to different methods in the `ProductModuleService` class.
- * 
- * @interface
- * 
- * @prop id - the ID of the product tag
- * @prop value - the value of the product tag
- * @prop metadata - an object of custom data to attach to the product tag
- * @prop products - the products associated with this product tag
- */
 export interface ProductTagDTO {
   id: string
   value: string
@@ -206,18 +112,6 @@ export interface ProductTagDTO {
   products?: ProductDTO[]
 }
 
-/**
- * Product Collection attributes accepted as a parameter to different methods in the `ProductModuleService` class.
- * 
- * @interface
- * 
- * @prop id - the ID of the product collection.
- * @prop title - the title of the product collection.
- * @prop handle - the handle of the product collection
- * @prop metadata - an object of custom data to attach to the product collection
- * @prop deleted_at - the date the product collection was deleted.
- * @prop products - an array of products that belong to this collection.
- */
 export interface ProductCollectionDTO {
   id: string
   title: string
@@ -227,16 +121,6 @@ export interface ProductCollectionDTO {
   products?: ProductDTO[]
 }
 
-/**
- * Product Type attributes accepted as a parameter to different methods in the `ProductModuleService` class.
- * 
- * @interface
- * 
- * @prop id - the ID of the product type
- * @prop value - the value of the product type
- * @prop metadata - an object of custom data to attach to the product type
- * @prop deleted_at - the date the product type was deleted.
- */
 export interface ProductTypeDTO {
   id: string
   value: string
@@ -244,18 +128,6 @@ export interface ProductTypeDTO {
   deleted_at?: string | Date
 }
 
-/**
- * Product Option attributes accepted as a parameter to different methods in the `ProductModuleService` class.
- * 
- * @interface
- * 
- * @prop id - the ID of the product option.
- * @prop title - the title of the product option.
- * @prop product - the option's product.
- * @prop values - the option's values that are associated with variants.
- * @prop metadata - an object of custom data to attach to the product option.
- * @prop deleted_at - the date the product option was deleted.
- */
 export interface ProductOptionDTO {
   id: string
   title: string
@@ -265,16 +137,6 @@ export interface ProductOptionDTO {
   deleted_at?: string | Date
 }
 
-/**
- * Product Image attributes accepted as a parameter to different methods in the `ProductModuleService` class.
- * 
- * @interface
- * 
- * @prop id - the product image's ID.
- * @prop url - the product image's URL.
- * @prop metadata - an object of custom data to attach to the product image.
- * @prop deleted_at - the date the product image was deleted at.
- */
 export interface ProductImageDTO {
   id: string
   url: string
@@ -282,18 +144,6 @@ export interface ProductImageDTO {
   deleted_at?: string | Date
 }
 
-/**
- * Product Option Value attributes accepted as a parameter to different methods in the `ProductModuleService` class.
- * 
- * @interface
- * 
- * @prop id - the product option value's ID.
- * @prop value - the value of the product option.
- * @prop option - the product option.
- * @prop variant - the product variant using this option value.
- * @prop metadata - an object of custom data to attach to the product option value.
- * @prop deleted_at - the date the product option value was deleted.
- */
 export interface ProductOptionValueDTO {
   id: string
   value: string
@@ -305,21 +155,6 @@ export interface ProductOptionValueDTO {
 
 /**
  * Filters/Config (module API input filters and config)
- * 
- * @interface
- * 
- * @prop q - a term to search products by.
- * @prop handle - a string or an array of strings to filter products by their handle.
- * @prop id - a string or an array of strings to filter products by their ID.
- * @prop tags - 
- * an object to filter products by their tags. The object accepts the property `value` which is an array of strings indicating the
- * tag values to filter the products by.
- * @prop categories - an object to filter products by associated categories.
- * @prop categories.id - a string or array of strings to filter products by their associated category ID.
- * @prop categories.is_internal - a boolean value that filters products by whether their category is internal.
- * @prop categories.is_active - a boolean value that filters products by whether their category is active.
- * @prop category_id - a string or array of strings that filters products by the ID of their associated category.
- * @prop collection_id - a string or array of strings that filters products by the ID of their associated collection.
  */
 export interface FilterableProductProps
   extends BaseFilterable<FilterableProductProps> {
