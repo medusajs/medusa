@@ -1,47 +1,28 @@
-# typedoc-plugin-markdown
+# typedoc-plugin-markdown-medusa
 
-A plugin for [TypeDoc](https://github.com/TypeStrong/typedoc) that renders TypeScript API documentation as Markdown files. (By default, TypeDoc will render API documentation as a webpage, e.g. HTML files.)
+A plugin that forks and customizes the [typedoc-plugin-markdown](https://github.com/tgreyuk/typedoc-plugin-markdown/tree/master/packages/typedoc-plugin-markdown) to create a theme with more formatting options.
 
-[![npm](https://img.shields.io/npm/v/typedoc-plugin-markdown.svg)](https://www.npmjs.com/package/typedoc-plugin-markdown)
-[![Build Status](https://github.com/tgreyuk/typedoc-plugin-markdown/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/tgreyuk/typedoc-plugin-markdown/actions/workflows/ci.yml)
+## Configurations
 
-## What does it do?
+Aside from the options detailed in [typedoc-plugin-markdown](https://github.com/tgreyuk/typedoc-plugin-markdown/tree/master/packages/typedoc-plugin-markdown#options), the following options are accepted:
 
-The plugin replaces the default HTML theme with a built-in Markdown theme and exposes some additional options.
+- `formatting`: An object whose keys are string patterns used to target specific files. You can also use the string `*` to target all files. The values are objects having the following properties:
+  - `sections`: (optional) an object whose keys are of type [`SectionKey`](./src/types.ts#L19) and values are boolean. This property is used to enable/disable certain sections in the outputted generated docs.
+  - `reflectionGroups`: (optional) an object whose keys are titles of reflection groups (for example, `Constructors`), and values are boolean. This property is used to enable/disable reflection group from being documented.
+  - `reflectionTitle`: (optional) an object used to customize how the title of a generated documentation page is rendered. It accepts the following properties:
+    - `kind`: a boolean value indicating whether the documented resource's kind should be shown in the title.
+    - `typeParameters`: a boolean value indicating whether the documented resource's type parameters should b shown in the title.
+    - `suffix`: a string used to add additional text to the end of the page's title.
+  - `reflectionDescription`: (optional) a string used to add description in a documentation page after the page's title.
+  - `expandMembers`: (optional) a boolean indicating whether members in a page should be expanded. When enabled, the member titles (for example, `Methods`) are removed and the heading level of nested titles whithin the member is elevated by `1`.
+  - `showCommentAsHeader`: (optional) a boolean indicating whether comments, for example, a method's name, are represented as headers.
+  - `parameterStyle`: (optional) a string indicating how parameters are displayed. Its value can be `table` (default) or `list`.
+  - `showReturnSignature`: (optional) a boolean indicating whether to show the signature for returned values.
 
-Useful if documentation is required to be included in project README files, Wikis and static site generators.
+## Build Plugin
 
-## Installation
+Before using any command that makes use of this plugin, make sure to run the `build` command:
 
 ```bash
-npm install --save-dev typedoc typedoc-plugin-markdown
+yarn build
 ```
-
-## Usage
-
-Usage is the same as documented at [TypeDoc](https://typedoc.org/guides/installation/#command-line-interface).
-
-```bash
-typedoc --plugin typedoc-plugin-markdown --out docs src/index.ts
-```
-
-## Options
-
-This plugin provides additional options beyond the normal options that are [provided by TypeDoc](https://typedoc.org/guides/options/), which are listed below. Note that any vanilla TypeDoc options that customize the HTML theme will be ignored.
-
-- `--entryDocument<string>`<br>
-  The file name of the entry document. Defaults to `README.md`.
-- `--hideBreadcrumbs<boolean>`<br>
-  Do not render breadcrumbs in template header. Defaults to `false`.
-- `--hideInPageTOC<boolean>`<br>
-  Do not render in-page table of contents items. Defaults to `false`.
-- `--publicPath<string>`<br>
-  Specify the base path for all urls. If undefined urls will be relative. Defaults to `.`.
-- `--namedAnchors<boolean>`<br>
-  Use HTML named anchors tags for implementations that do not assign header ids. Defaults to `false`.
-- `--preserveAnchorCasing<boolean>`<br>
-  Preserve anchor id casing for implementations where original case is desirable. Defaults to `false`.
-
-## License
-
-[MIT](https://github.com/tgreyuk/typedoc-plugin-markdown/blob/master/LICENSE)

@@ -14,7 +14,6 @@ import {
   UrlMapping,
 } from "typedoc"
 import { getKindPlural } from "./groups"
-import { NavigationItem } from "./navigation-item"
 import {
   indexTemplate,
   reflectionMemberTemplate,
@@ -27,6 +26,7 @@ import {
   FormattingOptionType,
   FormattingOptionsType,
   Mapping,
+  NavigationItem,
   ObjectLiteralDeclarationStyle,
 } from "./types"
 

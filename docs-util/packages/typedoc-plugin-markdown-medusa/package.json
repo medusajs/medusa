@@ -6,7 +6,7 @@
     "access": "public"
   },
   "version": "1.0.0",
-  "description": "A plugin that holds all necessary changes to generate a module reference",
+  "description": "A plugin that creates a theme with customization capabilities.",
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
   "files": [

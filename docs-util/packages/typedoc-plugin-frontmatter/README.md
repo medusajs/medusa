@@ -1,4 +1,4 @@
-# typedoc-frontmatter-plugin
+# typedoc-plugin-frontmatter
 
 A Typedoc plugin that allows inserting frontmatter key-value pairs at the top of the exported Markdown files.
 
@@ -34,7 +34,7 @@ frontmatterData: {
 },
 ```
 
-## Building the Plugin
+## Build the Plugin
 
 Before using any command that makes use of this plugin, make sure to run the `build` command:
 
