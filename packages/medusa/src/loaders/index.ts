@@ -1,43 +1,46 @@
+import "reflect-metadata"
+
+import { Express, NextFunction, Request, Response } from "express"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MedusaApp,
-  moduleLoader,
   ModulesDefinition,
+  moduleLoader,
   registerModules,
 } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { asValue } from "awilix"
-import { Express, NextFunction, Request, Response } from "express"
-import { createMedusaContainer } from "medusa-core-utils"
-import { track } from "medusa-telemetry"
-import { EOL } from "os"
-import "reflect-metadata"
-import requestIp from "request-ip"
-import { Connection } from "typeorm"
-import { joinerConfig } from "../joiner-config"
-import modulesConfig from "../modules-config"
-import { MedusaContainer } from "../types/global"
-import { isObject, remoteQueryFetchData } from "../utils"
-import apiLoader from "./api"
-import loadConfig from "./config"
 import databaseLoader, { dataSource } from "./database"
+import { isObject, remoteQueryFetchData } from "../utils"
+import pluginsLoader, { registerPluginModels } from "./plugins"
+
+import { ConfigModule } from "@medusajs/types"
+import { Connection } from "typeorm"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { EOL } from "os"
+import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
+import Logger from "./logger"
+import { MedusaContainer } from "../types/global"
+import PricingIntegrationFeatureFlag from "./feature-flags/pricing-integration"
+import apiLoader from "./api"
+import { asValue } from "awilix"
+import { createMedusaContainer } from "medusa-core-utils"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
-import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
-import Logger from "./logger"
+import { joinerConfig } from "../joiner-config"
+import loadConfig from "./config"
 import modelsLoader from "./models"
+import modulesConfig from "../modules-config"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
-import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
+import requestIp from "request-ip"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import { ConfigModule } from "@medusajs/types"
+import { track } from "medusa-telemetry"
 
 type Options = {
   directory: string
@@ -227,7 +230,10 @@ export default async ({
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (
+    featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
+    featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)
+  ) {
     mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
 
     const { query, modules } = await MedusaApp({
