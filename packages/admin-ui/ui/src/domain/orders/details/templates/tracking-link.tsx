@@ -24,7 +24,10 @@ export const TrackingLink = ({ trackingLink }: TProps) => {
         </a>
         &nbsp;-&nbsp;
         {trackingLink?.metadata?.labelBase64PDF &&
-        trackingLink?.metadata?.labelBase64PDF.length > 100 ? (
+        trackingLink?.metadata?.labelBase64PDF.length > 100 &&
+        trackingLink?.metadata?.labelBase64PDF.includes(
+          "data:application/pdf;base64,JVB"
+        ) ? (
           <a
             style={{ textDecoration: "none" }}
             target="_blank"
