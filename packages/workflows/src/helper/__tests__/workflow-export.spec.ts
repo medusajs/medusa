@@ -55,7 +55,11 @@ describe("Export Workflow", function () {
     })
 
     expect(transformedInput).toEqual({
-      test: "payload",
+      container: [],
+      context: undefined,
+      data: {
+        test: "payload",
+      },
       __transformed: true,
     })
 
