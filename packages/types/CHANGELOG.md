@@ -1,5 +1,11 @@
 # @medusajs/types
 
+## 1.11.2
+
+### Patch Changes
+
+- [#5214](https://github.com/medusajs/medusa/pull/5214) [`1e7db5a5c`](https://github.com/medusajs/medusa/commit/1e7db5a5cb7c955e72c52e64df8a16b1607eef70) Thanks [@riqwan](https://github.com/riqwan)! - feat(types,pricing,utils): Exact match based on context + fallback on rule priority if not
+
 ## 1.11.1
 
 ### Patch Changes
