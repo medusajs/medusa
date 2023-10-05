@@ -8,7 +8,7 @@ import {
   type ProgressStatus,
 } from "@medusajs/ui"
 import * as React from "react"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import * as z from "zod"
 
 import { ExclamationCircle, Spinner } from "@medusajs/icons"
@@ -96,8 +96,7 @@ const PriceListNew = () => {
   const notification = useNotification()
 
   const { isFeatureEnabled } = useFeatureFlag()
-
-  const isTaxInclPricingEnabled = isFeatureEnabled("tax-inclusive-pricing")
+  const isTaxInclPricesEnabled = isFeatureEnabled("tax_inclusive_pricing")
 
   const form = useForm<PriceListNewSchema>({
     resolver: zodResolver(priceListNewSchema),
@@ -136,6 +135,12 @@ const PriceListNew = () => {
     handleSubmit,
     formState: { isDirty },
   } = form
+
+  const taxToggleState = useWatch({
+    control: form.control,
+    name: "details.general.tax_inclusive",
+    defaultValue: false,
+  })
 
   const {
     control: editControl,
@@ -297,7 +302,7 @@ const PriceListNew = () => {
             name: data.details.general.name,
             description: data.details.general.description,
             type: data.details.type.value as PriceListType,
-            includes_tax: isTaxInclPricingEnabled
+            includes_tax: isTaxInclPricesEnabled
               ? data.details.general.tax_inclusive
               : undefined,
             customer_groups: data.details.customer_groups.ids.map((id) => ({
@@ -344,7 +349,7 @@ const PriceListNew = () => {
       notification,
       onCloseModal,
       t,
-      isTaxInclPricingEnabled,
+      isTaxInclPricesEnabled,
       regions,
     ]
   )
@@ -635,7 +640,7 @@ const PriceListNew = () => {
                     <PriceListDetailsForm
                       form={nestedForm(form, "details")}
                       layout="focus"
-                      enableTaxToggle={isTaxInclPricingEnabled}
+                      enableTaxToggle={isTaxInclPricesEnabled}
                     />
                   </div>
                 </ProgressTabs.Content>
@@ -679,6 +684,8 @@ const PriceListNew = () => {
                         className="h-full w-full"
                       >
                         <PriceListProductPricesForm
+                          priceListTaxInclusive={taxToggleState}
+                          taxInclEnabled={isTaxInclPricesEnabled}
                           product={product}
                           currencies={currencies}
                           regions={regions}

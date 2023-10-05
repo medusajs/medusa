@@ -1522,7 +1522,7 @@ const PriceListProductPricesForm = ({
               </th>
               {currencies.map((currency) => {
                 const isTaxIncluded =
-                  priceListTaxInclusive || currency.includes_tax
+                  priceListTaxInclusive ?? currency.includes_tax
 
                 if (!visibleCurrencies.includes(currency.code)) {
                   return null
@@ -1553,7 +1553,7 @@ const PriceListProductPricesForm = ({
               })}
               {regions.map((region) => {
                 const isTaxIncluded =
-                  priceListTaxInclusive || region.includes_tax
+                  priceListTaxInclusive ?? region.includes_tax
 
                 if (!visibleRegions.includes(region.id)) {
                   return null
