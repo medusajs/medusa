@@ -45,9 +45,6 @@ describe("Inventory Items endpoints", () => {
   })
 
   afterAll(async () => {
-    // UNSET FEATURE FLAG
-    const flagRouter = appContainer.resolve("featureFlagRouter")
-
     const db = useDb()
     await db.shutdown()
     express.close()
@@ -80,6 +77,8 @@ describe("Inventory Items endpoints", () => {
       const inventoryItems = await inventoryService.list()
 
       expect(inventoryItems.length).toEqual(1)
+
+      flagRouter.setFlag("many_to_many_inventory", false)
     })
   })
 })
