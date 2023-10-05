@@ -149,6 +149,7 @@ export default async (req, res) => {
   }
 
   let product
+
   if (isWorkflowEnabled && !!productModuleService) {
     const createProductWorkflow = createProducts(req.scope)
 
