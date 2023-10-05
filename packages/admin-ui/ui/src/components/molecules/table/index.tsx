@@ -247,7 +247,7 @@ Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
         {...props}
         {...(linkTo && {
           onClick: () => {
-            navigate(linkTo)
+            window.open(`${window.location.pathname}/${linkTo}`)
           },
         })}
       >
