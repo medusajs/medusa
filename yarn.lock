@@ -6952,7 +6952,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows@^0.2.3, @medusajs/workflows@workspace:packages/workflows":
+"@medusajs/workflows@^0.2.3, @medusajs/workflows@workspace:^, @medusajs/workflows@workspace:packages/workflows":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows@workspace:packages/workflows"
   dependencies:
@@ -26516,6 +26516,7 @@ __metadata:
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/product": "workspace:^"
+    "@medusajs/workflows": "workspace:^"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
