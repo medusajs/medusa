@@ -220,7 +220,7 @@ const OrderTable = ({ setContextFilters }: OrderTableProps) => {
               return (
                 <Table.Row
                   color={"inherit"}
-                  linkTo={row.original.id}
+                  linkTo={`/a/orders${row.original.id}`}
                   {...row.getRowProps()}
                   className="group"
                   key={index}
