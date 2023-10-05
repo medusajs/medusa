@@ -233,6 +233,7 @@ Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
     },
     ref
   ) => {
+    const navigate = useNavigate()
     return (
       <tr
         ref={ref}
@@ -246,7 +247,7 @@ Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
         {...props}
         {...(linkTo && {
           onClick: () => {
-            window.open(linkTo, "_blank")
+            navigate(linkTo)
           },
         })}
       >
