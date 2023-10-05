@@ -1514,10 +1514,9 @@ const PriceListProductPricesForm = ({
             <tr className="[&_th]:txt-compact-small-plus text-ui-fg-subtle [&_th]:border-ui-border-base h-10 [&_th]:min-w-[220px] [&_th]:border-r [&_th]:border-b [&_th:last-of-type]:border-r-0">
               <th className="max-w-[220px] text-left">
                 <div className="px-4 py-2.5">
-                  {" "}
                   {t(
                     "price-list-product-prices-form-column-product-label",
-                    "Currencies"
+                    "Product"
                   )}
                 </div>
               </th>
@@ -1588,7 +1587,7 @@ const PriceListProductPricesForm = ({
           <tbody>
             <tr className="bg-ui-bg-subtle h-10 [&_td:last-of-type]:border-r-0 [&_td]:border-r [&_td]:border-b">
               <td className="w-[220px] max-w-[220px]">
-                <div className="flex w-[220px] items-center gap-x-3 overflow-hidden px-4 py-2.5">
+                <div className="grid w-[220px] grid-cols-[16px_1fr] gap-x-3 overflow-hidden px-4 py-2.5">
                   <div className="bg-ui-bg-component h-[22px] w-4 rounded-[4px]">
                     {product.thumbnail && (
                       <img
@@ -1597,8 +1596,10 @@ const PriceListProductPricesForm = ({
                       />
                     )}
                   </div>
-                  <div className="overflow-hidden text-ellipsis whitespace-nowrap">
-                    <span className="flex-1">{product.title}</span>
+                  <div className="flex items-center">
+                    <p className="w-[160px] overflow-hidden text-ellipsis whitespace-nowrap">
+                      {product.title}
+                    </p>
                   </div>
                 </div>
               </td>
@@ -1638,19 +1639,11 @@ const PriceListProductPricesForm = ({
                   <td className="max-w-[220px]">
                     <div className="flex w-[220px] items-center gap-x-3 overflow-hidden px-4 py-2.5">
                       <div className="h-[22px] w-4" />
-                      <div className="text-ui-fg-subtle overflow-hidden text-ellipsis whitespace-nowrap">
-                        <div className="flex flex-1 items-center gap-x-2">
-                          <span>{variant.title}</span>
-                          {variant.sku && (
-                            <div className="flex items-center gap-x-2">
-                              <span className="text-ui-fg-subtle">·</span>
-                              <span className="text-ui-fg-subtle">
-                                {variant.sku}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
+                      <p className="text-ui-fg-subtle w-[160px] overflow-hidden text-ellipsis whitespace-nowrap">
+                        <span>{variant.title}</span>
+                        {variant.sku && <span className="px-2">·</span>}
+                        {variant.sku && <span>{variant.sku}</span>}
+                      </p>
                     </div>
                   </td>
                   {currencies.map((currency) => {

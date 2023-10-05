@@ -161,8 +161,8 @@ const SelectItem = ({
         <span className="txt-compact-xsmall-plus text-ui-fg-base">{name}</span>
         <DropdownMenu.SubTrigger
           className={clx(
-            "bg-ui-bg-field hover:bg-ui-bg-field-hover transition-fg border-ui-border-base shadow-buttons-neutral flex h-8 w-[152px] items-center gap-x-2 rounded-md border py-1 pr-2 text-left",
-            "focus:shadow-borders-active focus:border-ui-border-interactive data-[state=open]:!shadow-borders-active data-[state=open]:!border-ui-border-interactive outline-none",
+            "bg-ui-bg-field hover:bg-ui-bg-field-hover transition-fg shadow-buttons-neutral flex h-8 w-[152px] items-center gap-x-2 rounded-md py-1 pr-2 text-left",
+            "data-[state=open]:!shadow-borders-interactive-with-active outline-none",
             {
               "pl-2": value.length === 0,
               "pl-1": value.length > 0,

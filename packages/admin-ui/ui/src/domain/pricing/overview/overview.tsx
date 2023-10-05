@@ -450,25 +450,25 @@ const PriceListTableRowActions = ({ row }: PriceListTableRowActionsProps) => {
     <DropdownMenu>
       <DropdownMenu.Trigger asChild>
         <IconButton variant="transparent">
-          <EllipsisHorizontal />
+          <EllipsisHorizontal className="text-ui-fg-subtle" />
         </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         <DropdownMenu.Item onClick={handleNavigate}>
-          <PencilSquare />
+          <PencilSquare className="text-ui-fg-subtle" />
           <span className="ml-2">Edit</span>
         </DropdownMenu.Item>
         {!isExpired && (
           <DropdownMenu.Item onClick={toggleStatus}>
             {isActive ? <EllipseGreySolid /> : <EllipseGreenSolid />}
             <span className="ml-2">
-              {isActive ? "Set as draft" : "Set as active"}
+              {isActive ? "Mark as draft" : "Mark as active"}
             </span>
           </DropdownMenu.Item>
         )}
         <DropdownMenu.Separator />
-        <DropdownMenu.Item onClick={handleDelete} className="text-ui-fg-error">
-          <Trash />
+        <DropdownMenu.Item onClick={handleDelete}>
+          <Trash className="text-ui-fg-subtle" />
           <span className="ml-2">Delete</span>
         </DropdownMenu.Item>
       </DropdownMenu.Content>
