@@ -6,12 +6,17 @@ import {
   RegionService,
 } from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
+import { MoneyAmount, Product } from "../../../../models"
 
-import { PriceSelectionParams } from "../../../../types/price-selection"
-import { cleanResponseData } from "../../../../utils"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultStoreProductRemoteQueryObject } from "./index"
 import { MedusaError } from "@medusajs/utils"
+import { PriceSelectionContext } from "../../../../interfaces"
+import { PriceSelectionParams } from "../../../../types/price-selection"
+import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
+import { ProductVariantPricing } from "../../../../types/pricing"
+import { cleanResponseData } from "../../../../utils"
+import { defaultStoreProductRemoteQueryObject } from "./index"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /store/products/{id}
@@ -134,15 +139,32 @@ export default async (req, res) => {
   const decoratePromises: Promise<any>[] = []
 
   if (shouldSetPricing) {
-    decoratePromises.push(
-      pricingService.setProductPrices([decoratedProduct], {
+    if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
+      const context = await pricingService.collectPricingContext({
         cart_id: validated.cart_id,
         customer_id: customer_id,
         region_id: regionId,
         currency_code: currencyCode,
         include_discount_prices: true,
       })
-    )
+      decoratePromises.push(
+        getProductPricingWithPricingModule(
+          req,
+          [decoratedProduct],
+          context.price_selection
+        )
+      )
+    } else {
+      decoratePromises.push(
+        pricingService.setProductPrices([decoratedProduct], {
+          cart_id: validated.cart_id,
+          customer_id: customer_id,
+          region_id: regionId,
+          currency_code: currencyCode,
+          include_discount_prices: true,
+        })
+      )
+    }
   }
 
   if (shouldSetAvailability) {
@@ -193,4 +215,131 @@ export class StoreGetProductsProductParams extends PriceSelectionParams {
   @IsString()
   @IsOptional()
   sales_channel_id?: string
+}
+
+async function getProductPricingWithPricingModule(
+  req,
+  products: Product[],
+  context: PriceSelectionContext = {}
+) {
+  console.warn(context)
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
+  const pricingModule = req.scope.resolve("pricingModuleService")
+
+  const variables = {
+    variant_id: products.map((p) => p.variants.map((v) => v.id)).flat(),
+  }
+
+  const priceSetQuery = `
+    query {
+      variants {
+        id
+        title
+        price {
+          price_set {
+            id
+          }
+        }
+      }
+    }
+   `
+
+  const res: VariantsRes[] = await remoteQuery(priceSetQuery, {
+    context: variables,
+  })
+
+  const variantPriceSetsMap = new Map(
+    res.map((r) => {
+      if (!r.price) {
+        return [r.id, []]
+      }
+
+      const value = Array.isArray(r.price)
+        ? r.price.map((p) => p.price_set_id)
+        : [r.price.price_set_id]
+      return [r.id, value]
+    })
+  )
+
+  const priceSetIds = res
+    .map((r) => {
+      if (!r.price) {
+        return []
+      }
+      return Array.isArray(r.price)
+        ? r.price.map((p) => p.price_set_id)
+        : [r.price.price_set_id]
+    })
+    .flat()
+
+  const queryContext: PriceSelectionContext = removeNullish(context)
+
+  console.warn(queryContext)
+  if (queryContext.currency_code) {
+    queryContext.currency_code = queryContext.currency_code.toUpperCase()
+  }
+  console.warn(queryContext)
+
+  const prices = await pricingModule.calculatePrices(
+    { id: priceSetIds },
+    {
+      context: queryContext,
+    }
+  )
+
+  const priceSetMap = new Map<string, MoneyAmount>(prices.map((p) => [p.id, p]))
+
+  products.map((p) => {
+    p.variants.map((v) => {
+      const priceSetIds = variantPriceSetsMap.get(v.id)
+      const prices = priceSetIds
+        ?.map((id) => priceSetMap.get(id))
+        .filter(Boolean)
+      if (prices?.length) {
+        const calculatedPrice = prices.reduce((acc: number, curr): number => {
+          return !curr || acc < curr.amount ? acc : curr.amount
+        }, Infinity)
+
+        const pricingResult: ProductVariantPricing = {
+          prices: prices as MoneyAmount[],
+          original_price: calculatedPrice,
+          calculated_price: calculatedPrice,
+          calculated_price_type: null,
+          original_price_includes_tax: null,
+          calculated_price_includes_tax: null,
+          original_price_incl_tax: null,
+          calculated_price_incl_tax: null,
+          original_tax: null,
+          calculated_tax: null,
+          tax_rates: null,
+        }
+
+        Object.assign(v, pricingResult)
+      }
+    })
+  })
+
+  return products
+}
+
+export const removeNullish = (
+  obj: Record<string, unknown>
+): Record<string, unknown> =>
+  Object.entries(obj).reduce((a, [k, v]) => {
+    if (isDefined(v)) {
+      a[k] = v
+    }
+    return a
+  }, {})
+
+type VariantsRes = {
+  id: string
+  title: string
+  price: VariantsPriceRes | VariantsPriceRes[]
+}
+
+type VariantsPriceRes = {
+  variant_id: string
+  price_set_id: string
 }
