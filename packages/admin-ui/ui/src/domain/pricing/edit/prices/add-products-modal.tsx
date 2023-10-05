@@ -144,8 +144,6 @@ const AddProductsModal = ({
       [Tab.EDIT]: "not-started",
     })
 
-    console.log("Resetting form")
-
     resetEdit()
     reset({
       products: { ids: [] },
