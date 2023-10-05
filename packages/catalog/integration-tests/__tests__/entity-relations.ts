@@ -8,7 +8,7 @@ const beforeEach_ = async () => {
 }
 
 const afterEach_ = async () => {
-  //await TestDatabase.clearDatabase()
+  await TestDatabase.clearDatabase()
 }
 
 describe("Entity", function () {
