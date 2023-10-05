@@ -51,7 +51,6 @@ export class FlagRouter implements FeatureFlagTypes.IFlagRouter {
     key: string,
     value: boolean | { [key: string]: boolean }
   ): void {
-    console.log("Setting flag", key, value)
     if (isObject(value)) {
       const existing = this.flags[key]
 
