@@ -10,7 +10,8 @@ export default function (theme: MarkdownTheme) {
       comment: Comment,
       showSummary = true,
       showTags = true,
-      commentLevel = 4
+      commentLevel = 4,
+      parent = null
     ) {
       const { showCommentsAsHeader } = theme.getFormattingOptionsForLocation()
       const md: string[] = []
@@ -27,7 +28,10 @@ export default function (theme: MarkdownTheme) {
         const tags = filteredTags.map((tag) => {
           return `${
             showCommentsAsHeader
-              ? `${Handlebars.helpers.titleLevel(commentLevel)} `
+              ? `${Handlebars.helpers.titleLevel.call(
+                  parent || comment,
+                  commentLevel
+                )} `
               : "**`"
           }${camelToTitleCase(tag.tag.substring(1))}${
             showCommentsAsHeader ? "" : "`**"
