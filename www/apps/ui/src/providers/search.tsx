@@ -1,7 +1,13 @@
 "use client"
 
-import { SearchProvider as UiSearchProvider } from "docs-ui"
+import {
+  AiAssistantCommandIcon,
+  AiAssistantProvider,
+  SearchProvider as UiSearchProvider,
+} from "docs-ui"
 import { absoluteUrl } from "../lib/absolute-url"
+import clsx from "clsx"
+import { Sparkles } from "@medusajs/icons"
 
 type SearchProviderProps = {
   children: React.ReactNode
@@ -61,6 +67,27 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
         ],
       }}
       initialDefaultFilters={["ui"]}
+      commands={[
+        {
+          name: "ai-assistant",
+          icon: <AiAssistantCommandIcon />,
+          component: (
+            <AiAssistantProvider
+              apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
+              websiteId={process.env.NEXT_PUBLIC_AI_WEBSITE_ID || "temp"}
+              recaptchaSiteKey={
+                process.env.NEXT_PUBLIC_AI_API_ASSISTANT_RECAPTCHA_SITE_KEY ||
+                "temp"
+              }
+            />
+          ),
+          title: "AI Assistant",
+          badge: {
+            variant: "purple",
+            children: "Beta",
+          },
+        },
+      ]}
     >
       {children}
     </UiSearchProvider>

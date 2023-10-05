@@ -77,7 +77,7 @@ export const SelectBadge = ({
     <div className={clsx("relative", className)}>
       <div
         className={clsx(
-          "border-medusa-border-base rounded-sm border border-solid",
+          "border-medusa-border-base rounded-docs_sm border border-solid",
           "hover:bg-medusa-bg-subtle-hover",
           "py-docs_0.25 h-fit cursor-pointer px-docs_0.5",
           "flex items-center gap-[6px] whitespace-nowrap",
