@@ -208,25 +208,6 @@ class PricingService extends TransactionBaseService {
     return pricingResultMap
   }
 
-  private async getPricingModulePricing(
-    data: {
-      variantId: string
-      quantity?: number
-    }[],
-    context: PricingContext
-  ) {
-    const variables = { id }
-
-    const query = {
-      product: {
-        __args: variables,
-        // ...defaultAdminProductRemoteQueryObject,
-      },
-    }
-
-    const [product] = await remoteQuery(query)
-  }
-
   /**
    * Gets the prices for a product variant.
    * @param variant
