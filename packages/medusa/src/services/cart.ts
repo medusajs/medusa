@@ -1910,7 +1910,7 @@ class CartService extends TransactionBaseService {
           is_initiated: true,
         })
       } else {
-        await Promise.all(
+        return await Promise.all(
           region.payment_providers.map(async (pp) => {
             if (updatedSessions.find((p) => p.provider_id === pp.id)) {
               return
