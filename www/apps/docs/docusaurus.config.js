@@ -118,6 +118,12 @@ const config = {
     analytics: {
       apiKey: process.env.SEGMENT_API_KEY || "temp",
     },
+    aiAssistant: {
+      apiUrl: process.env.AI_ASSISTANT_URL || "temp",
+      websiteId: process.env.AI_WEBSITE_ID || "temp",
+      recaptchaSiteKey:
+        process.env.AI_API_ASSISTANT_RECAPTCHA_SITE_KEY || "temp",
+    },
     prism: {
       defaultLanguage: "js",
       plugins: ["line-numbers", "show-language"],
