@@ -41,8 +41,8 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/sales-channels/{id}/products/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X DELETE '{backend_url}/admin/sales-channels/{id}/products/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
@@ -54,6 +54,7 @@ import { Type } from "class-transformer"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Sales Channels
  * responses:

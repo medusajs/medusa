@@ -32,11 +32,12 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/notes' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/notes' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Notes
  * responses:

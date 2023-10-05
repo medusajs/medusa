@@ -9,10 +9,12 @@ import {
   useAdminDeleteFile,
   useAdminUploadFile,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 
 import UploadModal from "../../../components/organisms/upload-modal"
 import useNotification from "../../../hooks/use-notification"
 import { usePolling } from "../../../providers/polling-provider"
+import { downloadPricingImportCSVTemplate } from "./download-template"
 
 /**
  * Hook returns a batch job. The endpoint is polled every 2s while the job is processing.
@@ -47,6 +49,7 @@ type ImportPricesProps = {
  * Product import modal container.
  */
 function ImportPrices(props: ImportPricesProps) {
+  const { t } = useTranslation()
   const [fileKey, setFileKey] = useState<string | undefined>()
   const [batchJobId, setBatchJobId] = useState<string | undefined>()
 
@@ -174,10 +177,19 @@ function ImportPrices(props: ImportPricesProps) {
   return (
     <UploadModal
       type="prices"
-      fileTitle="Price List prices"
-      description1Text="Upload a CSV file with variants and prices to update your price list. Note that any existing prices will be deleted."
-      description2Title="Unsure about how to arrange your list?"
-      description2Text="Download the template file below and update your prices"
+      fileTitle={t("batch-job-price-list-prices", "Price List prices")}
+      description1Text={t(
+        "batch-job-upload-a-csv-file-with-variants",
+        "Upload a CSV file with variants and prices to update your price list. Note that any existing prices will be deleted."
+      )}
+      description2Title={t(
+        "batch-job-unsure-about-how-to-arrange-your-list",
+        "Unsure about how to arrange your list?"
+      )}
+      description2Text={t(
+        "batch-job-download-the-template-file-below-and-update-your-prices",
+        "Download the template file below and update your prices"
+      )}
       status={status}
       progress={progress}
       canImport={isPreprocessed}
@@ -186,7 +198,7 @@ function ImportPrices(props: ImportPricesProps) {
       summary={getSummary()}
       onFileRemove={onFileRemove}
       processUpload={processUpload}
-      templateLink="/temp/price-list-import-template.csv"
+      onDownloadTemplate={downloadPricingImportCSVTemplate}
     />
   )
 }

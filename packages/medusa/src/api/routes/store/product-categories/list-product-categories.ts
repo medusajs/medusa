@@ -42,11 +42,12 @@ import { defaultStoreCategoryScope } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/product-categories' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/store/product-categories' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Categories
  * responses:

@@ -1,5 +1,6 @@
 import { Product } from "@medusajs/medusa"
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 import Fade from "../../../../../components/atoms/fade-wrapper"
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
 import UploadIcon from "../../../../../components/fundamentals/icons/upload-icon"
@@ -11,6 +12,7 @@ import ImportPrices from "../../../batch-job/import"
 import PricesTable from "./prices-table"
 
 const Prices = ({ id }) => {
+  const { t } = useTranslation()
   const { state: showEdit, open: openEdit, close: closeEdit } = useToggleState()
   const [showUpload, openUpload, closeUpload] = useToggleState()
   const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(
@@ -18,12 +20,12 @@ const Prices = ({ id }) => {
   )
   const actionables = [
     {
-      label: "Edit manually",
+      label: t("prices-details-edit-manually", "Edit manually"),
       onClick: openEdit,
       icon: <EditIcon size={20} />,
     },
     {
-      label: "Import price list",
+      label: t("prices-details-import-price-list", "Import price list"),
       onClick: openUpload,
       icon: <UploadIcon size={20} />,
     },

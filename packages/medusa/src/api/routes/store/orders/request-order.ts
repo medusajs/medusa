@@ -42,7 +42,7 @@ import { TokenEvents } from "../../../../types/token"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/batch/customer/token' \
+ *       curl -X POST '{backend_url}/store/batch/customer/token' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "order_ids": ["id"],
@@ -50,6 +50,7 @@ import { TokenEvents } from "../../../../types/token"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:

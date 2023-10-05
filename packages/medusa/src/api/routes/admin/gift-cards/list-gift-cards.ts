@@ -33,11 +33,12 @@ import { isDefined } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/gift-cards' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/gift-cards' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Gift Cards
  * responses:

@@ -27,11 +27,12 @@ import PriceListService from "../../../../services/price-list"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/price-lists/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/price-lists/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:

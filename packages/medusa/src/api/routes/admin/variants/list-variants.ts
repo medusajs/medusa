@@ -129,11 +129,12 @@ import { omit } from "lodash"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/variants' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/variants' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Variants
  * responses:

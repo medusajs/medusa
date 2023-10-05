@@ -1,3 +1,4 @@
+import { IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -5,16 +6,12 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
-import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
-import { IsType } from "../../../../utils/validators/is-type"
+import { Type } from "class-transformer"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { Type } from "class-transformer"
-import { defaultStoreVariantRelations } from "."
-import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /store/variants
@@ -106,7 +103,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/variants'
+ *       curl '{backend_url}/store/variants'
  * tags:
  *   - Product Variants
  * responses:
@@ -129,38 +126,21 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   const validated = await validator(StoreGetVariantsParams, req.query)
-  const { expand, offset, limit } = validated
-
-  let expandFields: string[] = []
-  if (expand) {
-    expandFields = expand.split(",")
-  }
 
   const customer_id = req.user?.customer_id
 
-  const listConfig = {
-    relations: expandFields.length
-      ? expandFields
-      : defaultStoreVariantRelations,
-    skip: offset,
-    take: limit,
-  }
-
-  const filterableFields: FilterableProductVariantProps = omit(validated, [
-    "ids",
-    "limit",
-    "offset",
-    "expand",
-    "cart_id",
-    "region_id",
-    "currency_code",
-  ])
+  let {
+    cart_id,
+    region_id,
+    currency_code,
+    sales_channel_id,
+    ids,
+    ...filterableFields
+  } = req.filterableFields
 
   if (validated.ids) {
-    filterableFields.id = validated.ids.split(",")
+    filterableFields["id"] = validated.ids.split(",")
   }
-
-  let sales_channel_id = validated.sales_channel_id
 
   if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
     sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
@@ -175,7 +155,10 @@ export default async (req, res) => {
     req.scope.resolve("productVariantInventoryService")
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  const rawVariants = await variantService.list(filterableFields, listConfig)
+  const rawVariants = await variantService.list(
+    filterableFields,
+    req.listConfig
+  )
 
   let regionId = validated.region_id
   let currencyCode = validated.currency_code

@@ -227,11 +227,12 @@ import { isDefined } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/batch-jobs' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/batch-jobs' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Batch Jobs
  * responses:

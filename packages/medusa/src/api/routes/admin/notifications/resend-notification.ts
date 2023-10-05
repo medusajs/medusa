@@ -38,11 +38,12 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/notifications/{id}/resend' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X POST '{backend_url}/admin/notifications/{id}/resend' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Notifications
  * responses:

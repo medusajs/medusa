@@ -27,11 +27,12 @@ import { defaultAdminCollectionsRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/collections/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/collections/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Collections
  * responses:

@@ -33,11 +33,12 @@ import { IsOptional, IsString } from "class-validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/order-edits' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/order-edits' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Order Edits
  * responses:

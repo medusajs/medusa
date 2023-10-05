@@ -36,7 +36,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/customers/me' \
+ *       curl -X POST '{backend_url}/store/customers/me' \
  *       -H 'Cookie: connect.sid={sid}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
@@ -44,6 +44,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       }'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:

@@ -35,8 +35,8 @@ import { SalesChannelLocationService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X DELETE '{backend_url}/admin/sales-channels/{id}/stock-locations' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "locaton_id": "loc_id"
@@ -44,6 +44,7 @@ import { SalesChannelLocationService } from "../../../../services"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Sales Channels
  * responses:

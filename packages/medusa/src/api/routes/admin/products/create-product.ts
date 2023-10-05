@@ -8,7 +8,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
+} from "."
 import {
   PricingService,
   ProductService,
@@ -43,6 +47,7 @@ import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
 import { validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /admin/products
@@ -75,8 +80,8 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/products' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/products' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Shirt"
@@ -84,6 +89,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -151,12 +157,6 @@ export default async (req, res) => {
       products: [
         validated,
       ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
-      config: {
-        listConfig: {
-          select: defaultAdminProductFields,
-          relations: defaultAdminProductRelations,
-        },
-      },
     }
 
     const { result } = await createProductWorkflow.run({
@@ -259,14 +259,39 @@ export default async (req, res) => {
     })
   }
 
-  const rawProduct = await productService.retrieve(product.id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  let rawProduct
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    rawProduct = await getProductWithIsolatedProductModule(req, product.id)
+  } else {
+    rawProduct = await productService.retrieve(product.id, {
+      select: defaultAdminProductFields,
+      relations: defaultAdminProductRelations,
+    })
+  }
 
   const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product: pricedProduct })
+}
+
+async function getProductWithIsolatedProductModule(req, id) {
+  // TODO: Add support for fields/expands
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultAdminProductRemoteQueryObject,
+    },
+  }
+
+  const [product] = await remoteQuery(query)
+
+  product.profile_id = product.profile?.id
+
+  return product
 }
 
 class ProductVariantOptionReq {
@@ -443,6 +468,7 @@ class ProductVariantReq {
  *     x-featureFlag: "product_categories"
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

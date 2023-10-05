@@ -15,14 +15,14 @@ import {
 } from "@mikro-orm/core"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
+import { DAL } from "@medusajs/types"
 
 type OptionalFields =
-  | "created_at"
-  | "updated_at"
   | "allow_backorder"
   | "manage_inventory"
   | "product"
   | "product_id"
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "product_variant" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -108,13 +108,18 @@ class ProductVariant {
   @Property({ columnType: "text", nullable: true })
   product_id!: string
 
-  @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
   created_at: Date
 
   @Property({
     onCreate: () => new Date(),
     onUpdate: () => new Date(),
     columnType: "timestamptz",
+    defaultRaw: "now()",
   })
   updated_at: Date
 

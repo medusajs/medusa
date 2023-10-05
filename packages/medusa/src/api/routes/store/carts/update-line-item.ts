@@ -1,9 +1,11 @@
 import { IsInt, IsOptional } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
 import { CartService } from "../../../../services"
+import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-steps"
 
 /**
  * @oas [post] /store/carts/{id}/line-items/{line_id}
@@ -35,7 +37,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}' \
+ *       curl -X POST '{backend_url}/store/carts/{id}/line-items/{line_id}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "quantity": 1
@@ -90,6 +92,7 @@ export default async (req, res) => {
         region_id: cart.region_id,
         quantity: validated.quantity,
         metadata: validated.metadata || {},
+        should_calculate_prices: true,
       }
 
       await cartService

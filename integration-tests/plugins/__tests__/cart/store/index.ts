@@ -6,6 +6,7 @@ import setupServer from "../../../../environment-helpers/setup-server"
 import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
+import { ProductVariantMoneyAmount } from "@medusajs/medusa"
 
 jest.setTimeout(30000)
 
@@ -125,13 +126,18 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(priceList1)
 
       const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
-        variant_id: prodSale.variants[0].id,
         currency_code: "usd",
         amount: 800,
         price_list_id: "pl_current",
       })
 
       await dbConnection.manager.save(ma_sale_1)
+
+      await dbConnection.manager.insert(ProductVariantMoneyAmount, {
+        id: 'pvma-test', 
+        variant_id: prodSale.variants[0].id,
+        money_amount_id: ma_sale_1.id,
+      })
 
       const api = useApi()
 

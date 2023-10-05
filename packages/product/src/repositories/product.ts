@@ -35,7 +35,7 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
   }
 
   async find(
-    findOptions: DAL.FindOptions<Product> = { where: {} },
+    findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
     context: Context = {}
   ): Promise<Product[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -49,6 +49,11 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
 
     await this.mutateNotInCategoriesConstraints(findOptions_)
 
+    this.applyFreeTextSearchFilters<Product>(
+      findOptions_,
+      this.getFreeTextSearchConstraints
+    )
+
     return await manager.find(
       Product,
       findOptions_.where as MikroFilterQuery<Product>,
@@ -57,7 +62,7 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
   }
 
   async findAndCount(
-    findOptions: DAL.FindOptions<Product> = { where: {} },
+    findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
     context: Context = {}
   ): Promise<[Product[], number]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -70,6 +75,11 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
     })
 
     await this.mutateNotInCategoriesConstraints(findOptions_)
+
+    this.applyFreeTextSearchFilters<Product>(
+      findOptions_,
+      this.getFreeTextSearchConstraints
+    )
 
     return await manager.findAndCount(
       Product,
@@ -88,7 +98,10 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
   ): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    if (findOptions.where.categories?.id?.["$nin"]) {
+    if (
+      "categories" in findOptions.where &&
+      findOptions.where.categories?.id?.["$nin"]
+    ) {
       const productsInCategories = await manager.find(
         Product,
         {
@@ -306,5 +319,43 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
     manager.persist(products)
 
     return products
+  }
+
+  protected getFreeTextSearchConstraints(q: string) {
+    return [
+      {
+        description: {
+          $ilike: `%${q}%`,
+        },
+      },
+      {
+        title: {
+          $ilike: `%${q}%`,
+        },
+      },
+      {
+        collection: {
+          title: {
+            $ilike: `%${q}%`,
+          },
+        },
+      },
+      {
+        variants: {
+          $or: [
+            {
+              title: {
+                $ilike: `%${q}%`,
+              },
+            },
+            {
+              sku: {
+                $ilike: `%${q}%`,
+              },
+            },
+          ],
+        },
+      },
+    ]
   }
 }

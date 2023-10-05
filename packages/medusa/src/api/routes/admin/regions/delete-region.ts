@@ -25,11 +25,12 @@ import RegionService from "../../../../services/region"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/regions/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/regions/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Regions
  * responses:

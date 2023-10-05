@@ -55,8 +55,8 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/shipping-options/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/shipping-options/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "requirements": [
@@ -69,6 +69,7 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Shipping Options
  * responses:

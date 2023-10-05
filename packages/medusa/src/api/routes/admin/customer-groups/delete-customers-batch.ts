@@ -42,8 +42,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/customer-groups/{id}/customers/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X DELETE '{backend_url}/admin/customer-groups/{id}/customers/batch' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "customer_ids": [
@@ -55,6 +55,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customer Groups
  * responses:

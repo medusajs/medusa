@@ -1,4 +1,8 @@
+import { MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { DeleteResult, EntityTarget, In, Not } from "typeorm"
+import { dataSource } from "../loaders/database"
+import { featureFlagRouter } from "../loaders/feature-flags"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import {
   Discount,
   DiscountCondition,
@@ -11,7 +15,6 @@ import {
   DiscountConditionType,
 } from "../models"
 import { isString } from "../utils"
-import { dataSource } from "../loaders/database"
 
 export enum DiscountConditionJoinTableForeignKey {
   PRODUCT_ID = "product_id",
@@ -53,6 +56,7 @@ export const DiscountConditionRepository = dataSource
       joinTableForeignKey: DiscountConditionJoinTableForeignKey
       conditionTable: DiscountConditionResourceType
       joinTableKey: string
+      relatedTable: string
     } {
       let conditionTable: DiscountConditionResourceType =
         DiscountConditionProduct
@@ -61,6 +65,7 @@ export const DiscountConditionRepository = dataSource
       let joinTableForeignKey: DiscountConditionJoinTableForeignKey =
         DiscountConditionJoinTableForeignKey.PRODUCT_ID
       let joinTableKey = "id"
+      let relatedTable = ""
 
       // On the joined table (e.g. `product`), what key should be match on
       // (e.g `type_id` for product types and `id` for products)
@@ -80,6 +85,7 @@ export const DiscountConditionRepository = dataSource
           joinTableForeignKey =
             DiscountConditionJoinTableForeignKey.PRODUCT_TYPE_ID
           joinTable = "product"
+          relatedTable = "types"
 
           conditionTable = DiscountConditionProductType
           break
@@ -89,6 +95,7 @@ export const DiscountConditionRepository = dataSource
           joinTableForeignKey =
             DiscountConditionJoinTableForeignKey.PRODUCT_COLLECTION_ID
           joinTable = "product"
+          relatedTable = "collections"
 
           conditionTable = DiscountConditionProductCollection
           break
@@ -99,6 +106,7 @@ export const DiscountConditionRepository = dataSource
           joinTableForeignKey =
             DiscountConditionJoinTableForeignKey.PRODUCT_TAG_ID
           joinTable = "product_tags"
+          relatedTable = "tags"
 
           conditionTable = DiscountConditionProductTag
           break
@@ -123,6 +131,7 @@ export const DiscountConditionRepository = dataSource
         resourceKey,
         joinTableForeignKey,
         conditionTable,
+        relatedTable,
       }
     },
 
@@ -204,14 +213,55 @@ export const DiscountConditionRepository = dataSource
         .getMany()
     },
 
-    async queryConditionTable({ type, condId, resourceId }): Promise<number> {
+    async queryConditionTable({
+      type,
+      conditionId,
+      resourceId,
+    }): Promise<number> {
       const {
         conditionTable,
         joinTable,
         joinTableForeignKey,
         resourceKey,
         joinTableKey,
+        relatedTable,
       } = this.getJoinTableResourceIdentifiers(type)
+
+      if (
+        type !== DiscountConditionType.CUSTOMER_GROUPS &&
+        featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
+      ) {
+        const module = MedusaModule.getModuleInstance(Modules.PRODUCT)[
+          Modules.PRODUCT
+        ]
+        const prop = relatedTable
+        const resource = await module.retrieve(resourceId, {
+          select: [`${prop ? prop + "." : ""}id`],
+          relations: prop ? [prop] : [],
+        })
+        if (!resource) {
+          return 0
+        }
+
+        const relatedResourceIds = prop
+          ? resource[prop].map((relatedResource) => relatedResource.id)
+          : [resource.id]
+
+        if (!relatedResourceIds.length) {
+          return 0
+        }
+
+        return await this.manager
+          .createQueryBuilder(conditionTable, "dc")
+          .where(
+            `dc.condition_id = :conditionId AND dc.${joinTableForeignKey} IN (:...relatedResourceIds)`,
+            {
+              conditionId,
+              relatedResourceIds,
+            }
+          )
+          .getCount()
+      }
 
       return await this.manager
         .createQueryBuilder(conditionTable, "dc")
@@ -224,7 +274,7 @@ export const DiscountConditionRepository = dataSource
           }
         )
         .where(`dc.condition_id = :conditionId`, {
-          conditionId: condId,
+          conditionId,
         })
         .getCount()
     },
@@ -258,7 +308,7 @@ export const DiscountConditionRepository = dataSource
 
         const numConditions = await this.queryConditionTable({
           type: condition.type,
-          condId: condition.id,
+          conditionId: condition.id,
           resourceId: productId,
         })
 
@@ -307,7 +357,7 @@ export const DiscountConditionRepository = dataSource
       for (const condition of discountConditions) {
         const numConditions = await this.queryConditionTable({
           type: "customer_groups",
-          condId: condition.id,
+          conditionId: condition.id,
           resourceId: customerId,
         })
 

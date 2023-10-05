@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostCustomersCustomerReq {
   /**
-   * The Customer's email.
+   * The Customer's email. You can't update the email of a registered customer.
    */
   email?: string
   /**

@@ -26,11 +26,12 @@ import RegionService from "../../../../services/region"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/regions/{id}/fulfillment-options' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/regions/{id}/fulfillment-options' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Regions
  * responses:

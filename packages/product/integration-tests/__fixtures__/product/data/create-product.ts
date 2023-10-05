@@ -1,6 +1,6 @@
 import { ProductTypes } from "@medusajs/types"
-import faker from "faker"
 import { Image } from "@models"
+import faker from "faker"
 
 export const buildProductOnlyData = ({
   title,
@@ -46,6 +46,7 @@ export const buildProductAndRelationsData = ({
   tags,
   options,
   variants,
+  collection_id,
 }: Partial<ProductTypes.CreateProductDTO>) => {
   const defaultOptionTitle = faker.commerce.productName()
   return {
@@ -59,6 +60,7 @@ export const buildProductAndRelationsData = ({
     images: (images ?? []) as Image[],
     type: type ? { value: type } : { value: faker.commerce.productName() },
     tags: tags ?? [{ value: "tag-1" }],
+    collection_id,
     options: options ?? [
       {
         title: defaultOptionTitle,

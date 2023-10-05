@@ -1,11 +1,10 @@
+import { AbstractFileService, IFileService } from "@medusajs/medusa"
 import {
-  AbstractFileService,
   DeleteFileType,
   FileServiceUploadResult,
   GetUploadedFileType,
-  IFileService,
   UploadStreamDescriptorType,
-} from "@medusajs/medusa"
+} from "@medusajs/types"
 import { ClientConfiguration, PutObjectRequest } from "aws-sdk/clients/s3"
 
 import { MedusaError } from "medusa-core-utils"
@@ -120,11 +119,10 @@ class MinioService extends AbstractFileService implements IFileService {
 
   async getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType & {
-      usePrivateBucket?: boolean
       contentType?: string
     }
   ) {
-    const usePrivateBucket = fileData.usePrivateBucket ?? true
+    const usePrivateBucket = fileData.isPrivate ?? true
 
     this.validatePrivateBucketConfiguration_(usePrivateBucket)
 
@@ -149,10 +147,8 @@ class MinioService extends AbstractFileService implements IFileService {
     }
   }
 
-  async getDownloadStream(
-    fileData: GetUploadedFileType & { usePrivateBucket?: boolean }
-  ) {
-    const usePrivateBucket = !!fileData.usePrivateBucket
+  async getDownloadStream(fileData: GetUploadedFileType) {
+    const usePrivateBucket = fileData.isPrivate ?? true
     this.validatePrivateBucketConfiguration_(usePrivateBucket)
     const client = this.getClient(usePrivateBucket)
 
@@ -164,14 +160,17 @@ class MinioService extends AbstractFileService implements IFileService {
     return client.getObject(params).createReadStream()
   }
 
-  async getPresignedDownloadUrl({ usePrivateBucket = true, ...fileData }) {
-    this.validatePrivateBucketConfiguration_(usePrivateBucket)
-    const client = this.getClient(usePrivateBucket, {
+  async getPresignedDownloadUrl({
+    isPrivate = true,
+    ...fileData
+  }: GetUploadedFileType) {
+    this.validatePrivateBucketConfiguration_(isPrivate)
+    const client = this.getClient(isPrivate, {
       signatureVersion: "v4",
     })
 
     const params = {
-      Bucket: usePrivateBucket ? this.private_bucket_ : this.bucket_,
+      Bucket: isPrivate ? this.private_bucket_ : this.bucket_,
       Key: `${fileData.fileKey}`,
       Expires: this.downloadUrlDuration,
     }
@@ -179,7 +178,7 @@ class MinioService extends AbstractFileService implements IFileService {
     return await client.getSignedUrlPromise("getObject", params)
   }
 
-  validatePrivateBucketConfiguration_(usePrivateBucket) {
+  validatePrivateBucketConfiguration_(usePrivateBucket: boolean) {
     if (
       usePrivateBucket &&
       (!this.private_access_key_id_ || !this.private_bucket_)

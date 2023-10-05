@@ -11,10 +11,6 @@ program
     "Install a Medusa project without the boilerplate and demo files."
   )
   .option(
-    "--stable",
-    "Install the latest stable version. This removes all onboarding features"
-  )
-  .option(
     "--skip-db",
     "Skips creating the database, running migrations, and seeding, and subsequently skips opening the browser.",
     false
@@ -36,6 +32,11 @@ program
   .option(
     "--directory-path <path>",
     "Specify the directory path to install the project in."
+  )
+  .option(
+    "--with-nextjs-starter",
+    "Install the Next.js starter along with the Medusa backend",
+    false
   )
   .parse()
 

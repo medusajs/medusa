@@ -24,11 +24,12 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/gift-cards/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE '{backend_url}/admin/gift-cards/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Gift Cards
  * responses:

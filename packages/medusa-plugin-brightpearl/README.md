@@ -37,12 +37,15 @@ Manage and streamline your business processes using Brightpearl.
   BRIGHTPEARL_WAREHOUSE=<YOUR_WAREHOUSE>
   BRIGHTPEARL_DEFAULT_STATUS_ID=<YOUR_DEFAULT_STATUS_ID>
   BRIGHTPEARL_SWAP_STATUS_ID=<YOUR_SWAP_STATUS_ID>
+  BRIGHTPEARL_CLAIM_STATUS_ID=<YOUR_CLAIM_STATUS_ID>
   BRIGHTPEARL_PAYMENT_METHOD_CODE=<YOUR_PAYMENT_METHOD_CODE>
   BRIGHTPEARL_SALES_ACCOUNT_CODE=<YOUR_SALES_ACCOUNT_CODE>
   BRIGHTPEARL_SHIPPING_ACCOUNT_CODE=<YOUR_SHIPPING_ACCOUNT_CODE>
   BRIGHTPEARL_DISCOUNT_ACCOUNT_CODE=<YOUR_DISCOUNT_ACCOUNT_CODE>
   BRIGHTPEARL_GIFT_CARD_ACCOUNT_CODE=<YOUR_GIFT_CARD_ACCOUNT_CODE>
   BRIGHTPEARL_INVENTORY_SYNC_CRON=<YOUR_INVENTORY_SYNC_CRON>
+  BRIGHTPEARL_COST_PRICE_LIST=<YOUR_COST_PRICE_LIST>
+  BRIGHTPEARL_BASE_CURRENCY=<YOUR_BASE_CURRENCY>
   ```
 
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
@@ -58,14 +61,17 @@ Manage and streamline your business processes using Brightpearl.
         backend_url: process.env.BRIGHTPEARL_BACKEND_URL, // required, the url where the Medusa server is running, needed for webhooks
         event_owner: process.env.BRIGHTPEARL_EVENT_OWNER, // required, the id of the user who will own goods out events]
         warehouse: process.env.BRIGHTPEARL_WAREHOUSE, // required, the warehouse id to allocate orders from
-        default_status_id: process.env.BRIGHTPEARL_DEFAULT_STATUS_ID, // (optional: defaults to 1), the status id to assign new orders with
-        swap_status_id: process.env.BRIGHTPEARL_SWAP_STATUS_ID, // (optional: defaults to 1), the status id to assign new swaps]
-        payment_method_code: process.env.BRIGHTPEARL_PAYMENT_METHOD_CODE, // (optional: defaults to 1220), the method code to register payments with
-        sales_account_code: process.env.BRIGHTPEARL_SALES_ACCOUNT_CODE, // (optional: defaults to 4000), nominal code to assign line items to
-        shipping_account_code: process.env.BRIGHTPEARL_SHIPPING_ACCOUNT_CODE, // (optional: defaults to 4040), nominal code to assign shipping line to
+        default_status_id: process.env.BRIGHTPEARL_DEFAULT_STATUS_ID, // (default: `3`), the status id to assign new orders with
+        swap_status_id: process.env.BRIGHTPEARL_SWAP_STATUS_ID, // (default: `3`), the status id to assign new swaps
+        claim_status_id: process.env.BRIGHTPEARL_CLAIM_STATUS_ID, // (default: `3`), the status id to assign new claims
+        payment_method_code: process.env.BRIGHTPEARL_PAYMENT_METHOD_CODE, // (default: `1220`), the method code to register payments with
+        sales_account_code: process.env.BRIGHTPEARL_SALES_ACCOUNT_CODE, // (defaults: `4000`), nominal code to assign line items to
+        shipping_account_code: process.env.BRIGHTPEARL_SHIPPING_ACCOUNT_CODE, // (default: `4040`), nominal code to assign shipping line to
         discount_account_code: process.env.BRIGHTPEARL_DISCOUNT_ACCOUNT_CODE, // optional, nominal code to use for Discount-type refunds
-        gift_card_account_code: process.env.BRIGHTPEARL_GIFT_CARD_ACCOUNT_CODE, // (optional: default to 4000), nominal code to use for gift card products and redeems
-        inventory_sync_cron: process.env.BRIGHTPEARL_INVENTORY_SYNC_CRON, // (default: false), cron pattern for inventory sync, if left out the job will not be created
+        gift_card_account_code: process.env.BRIGHTPEARL_GIFT_CARD_ACCOUNT_CODE, // (default: `4000`), nominal code to use for gift card products and redeems
+        inventory_sync_cron: process.env.BRIGHTPEARL_INVENTORY_SYNC_CRON, // optional, cron pattern for inventory sync, if left out the job will not be created
+        cost_price_list: process.env.BRIGHTPEARL_COST_PRICE_LIST, // (default: `1`) the ID of the price list to assign to created claims
+        base_currency: process.env.BRIGHTPEARL_BASE_CURRENCY, // (default: `EUR`) the ISO 3 character code of the currency to assign to created claims.
       },
     },
   ]

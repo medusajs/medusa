@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsString, ValidateNested } from "class-validator"
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 
 import InviteService from "../../../../services/invite"
 import { Type } from "class-transformer"
@@ -42,8 +47,8 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/invites/accept' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/invites/accept' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "token": "{token}",
@@ -56,6 +61,7 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Invites
  * responses:
@@ -91,9 +97,11 @@ export default async (req, res) => {
 
 export class AdminPostInvitesInviteAcceptUserReq {
   @IsString()
+  @IsOptional()
   first_name: string
 
   @IsString()
+  @IsOptional()
   last_name: string
 
   @IsString()

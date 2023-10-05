@@ -23,10 +23,11 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/auth' \
+ *       curl '{backend_url}/store/auth' \
  *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Auth
  * responses:

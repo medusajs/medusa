@@ -30,14 +30,15 @@ import { IFileService } from "../../../../interfaces"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/uploads/protected' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/uploads/protected' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: image/jpeg' \
  *       --form 'files=@"<FILE_PATH_1>"' \
  *       --form 'files=@"<FILE_PATH_1>"'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Uploads
  * responses:

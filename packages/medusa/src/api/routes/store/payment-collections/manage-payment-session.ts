@@ -33,14 +33,14 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/payment-collections/{id}/sessions' \
+ *       curl -X POST '{backend_url}/store/payment-collections/{id}/sessions' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "provider_id": "stripe"
  *       }'
  * security:
- *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:

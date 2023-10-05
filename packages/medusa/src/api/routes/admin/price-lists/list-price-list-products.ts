@@ -10,6 +10,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { MedusaError, isDefined } from "medusa-core-utils"
 
 import { FilterableProductProps } from "../../../../types/product"
 import PriceListService from "../../../../services/price-list"
@@ -17,7 +18,6 @@ import { ProductStatus } from "../../../../models"
 import { Request } from "express"
 import { Type } from "class-transformer"
 import { pickBy } from "lodash"
-import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /admin/price-lists/{id}/products
@@ -150,11 +150,12 @@ import { isDefined } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/price-lists/{id}/products' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/price-lists/{id}/products' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:

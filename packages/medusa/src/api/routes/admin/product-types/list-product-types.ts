@@ -99,11 +99,12 @@ import ProductTypeService from "../../../../services/product-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/product-types' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/product-types' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Types
  * responses:

@@ -15,7 +15,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/inventory-items
  * operationId: "PostInventoryItems"
  * summary: "Create an Inventory Item"
- * description: "Create an Inventory Item."
+ * description: "Create an Inventory Item for a product variant."
  * x-authenticated: true
  * parameters:
  *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory item.
@@ -44,8 +44,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/inventory-items' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/inventory-items' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "variant_id": "variant_123",
@@ -53,6 +53,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Inventory Items
  * responses:
@@ -130,7 +131,12 @@ export default async (req, res) => {
 /**
  * @schema AdminPostInventoryItemsReq
  * type: object
+ * required:
+ *   - variant_id
  * properties:
+ *   variant_id:
+ *     description: The ID of the variant to create the inventory item for.
+ *     type: string
  *   sku:
  *     description: The unique SKU of the associated Product Variant.
  *     type: string

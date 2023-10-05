@@ -1,6 +1,7 @@
 import { Product } from "@medusajs/medusa"
 import { useMemo } from "react"
 import { Column, HeaderGroup, Row } from "react-table"
+import { useTranslation } from "react-i18next"
 import SortingIcon from "../../../../../../components/fundamentals/icons/sorting-icon"
 import ImagePlaceholder from "../../../../../../components/fundamentals/image-placeholder"
 import StatusIndicator from "../../../../../../components/fundamentals/status-indicator"
@@ -54,12 +55,13 @@ export const ProductsHeader = ({
 }
 
 export const useProductColumns = () => {
+  const { t } = useTranslation()
   const columns = useMemo<Column<Product>[]>(() => {
     return [
       {
         Header: () => (
           <div className="flex min-w-[443px] items-center gap-1">
-            Title <SortingIcon size={16} />
+            {t("shared-title", "Title")} <SortingIcon size={16} />
           </div>
         ),
         accessor: "title",
@@ -86,7 +88,7 @@ export const useProductColumns = () => {
       {
         Header: () => (
           <div className="flex items-center gap-1">
-            Status <SortingIcon size={16} />
+            {t("shared-status", "Status")} <SortingIcon size={16} />
           </div>
         ),
         accessor: "status",
@@ -102,7 +104,7 @@ export const useProductColumns = () => {
       {
         Header: () => (
           <div className="flex items-center justify-end gap-1">
-            Variants <SortingIcon size={16} />
+            {t("shared-variants", "Variants")} <SortingIcon size={16} />
           </div>
         ),
         id: "variants",

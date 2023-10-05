@@ -48,8 +48,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/customers/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       curl -X POST '{backend_url}/admin/customers/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Dolly"
@@ -57,6 +57,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:
@@ -130,7 +131,7 @@ class Group {
  * properties:
  *   email:
  *     type: string
- *     description: The Customer's email.
+ *     description: The Customer's email. You can't update the email of a registered customer.
  *     format: email
  *   first_name:
  *     type: string
