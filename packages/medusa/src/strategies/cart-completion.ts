@@ -6,7 +6,7 @@ import {
 import {
   IEventBusService,
   IInventoryService,
-  RemoteJoinerQuery,
+  RemoteQueryQuery,
   ReservationItemDTO,
 } from "@medusajs/types"
 import { IdempotencyKey, Order } from "../models"
@@ -37,10 +37,7 @@ type InjectedDependencies = {
   inventoryService: IInventoryService
   eventBusService: IEventBusService
   featureFlagRouter: FlagRouter
-  remoteQuery: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
+  remoteQuery: RemoteQueryQuery
 }
 
 class CartCompletionStrategy extends AbstractCartCompletionStrategy {

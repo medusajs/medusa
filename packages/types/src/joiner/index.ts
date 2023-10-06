@@ -83,6 +83,11 @@ export interface RemoteJoinerQuery {
   directives?: { [field: string]: JoinerDirective[] }
 }
 
+export type RemoteQueryQuery = (
+  query: string | RemoteJoinerQuery | object,
+  variables?: Record<string, unknown>
+) => Promise<any>
+
 export interface RemoteNestedExpands {
   [key: string]: {
     fields: string[]

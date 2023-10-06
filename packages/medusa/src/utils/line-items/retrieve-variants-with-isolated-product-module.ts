@@ -1,3 +1,5 @@
+import { RemoteQueryQuery } from "@medusajs/types"
+
 /**
  * Retrieve variants for generating line items when isolated product module flag is on.
  *
@@ -5,7 +7,7 @@
  * @param variantIds
  */
 export async function retrieveVariantsWithIsolatedProductModule(
-  remoteQuery,
+  remoteQuery: RemoteQueryQuery,
   variantIds: string[]
 ) {
   const variables = {

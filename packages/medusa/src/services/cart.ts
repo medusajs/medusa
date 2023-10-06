@@ -1,4 +1,4 @@
-import { RemoteJoinerQuery } from "@medusajs/types"
+import { RemoteQueryQuery } from "@medusajs/types"
 import { FlagRouter, remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   Address,
@@ -95,10 +95,7 @@ type InjectedDependencies = {
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
   pricingService: PricingService
-  remoteQuery: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
+  remoteQuery: RemoteQueryQuery
 }
 
 type TotalsConfig = {
