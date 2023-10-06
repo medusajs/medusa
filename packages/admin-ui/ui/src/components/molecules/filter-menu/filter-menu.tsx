@@ -6,6 +6,7 @@ import {
 } from "@medusajs/icons"
 import { DateComparisonOperator } from "@medusajs/medusa"
 import {
+  Popover,
   Badge,
   Button,
   DatePicker,
@@ -15,12 +16,11 @@ import {
   clx,
 } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import * as React from "react"
 import { useTranslation } from "react-i18next"
 
 interface FilterMenuProps
-  extends React.ComponentPropsWithoutRef<typeof DropdownMenu.Root> {
+  extends React.ComponentPropsWithoutRef<typeof Popover> {
   onClearFilters: () => void
 }
 
@@ -48,13 +48,13 @@ const Root = ({ children, onClearFilters, ...props }: FilterMenuProps) => {
   const { t } = useTranslation()
 
   return (
-    <DropdownMenu.Root {...props}>
-      <DropdownMenu.Trigger data-filter-component={true} asChild>
+    <Popover {...props}>
+      <Popover.Trigger data-filter-component={true} asChild>
         <Button variant="secondary" className="relative overflow-visible">
           <Adjustments className="text-ui-fg-subtle" />
           {t("filter-menu-trigger", "View")}
         </Button>
-      </DropdownMenu.Trigger>
+      </Popover.Trigger>
       <FilterMenuContext.Provider
         value={React.useMemo(
           () => ({
@@ -65,7 +65,7 @@ const Root = ({ children, onClearFilters, ...props }: FilterMenuProps) => {
       >
         {children}
       </FilterMenuContext.Provider>
-    </DropdownMenu.Root>
+    </Popover>
   )
 }
 Root.displayName = "FilterMenu"
@@ -78,38 +78,37 @@ const Content = ({
   align = "start",
   className,
   ...props
-}: React.ComponentPropsWithoutRef<typeof DropdownMenu.Content>) => {
+}: React.ComponentPropsWithoutRef<typeof Popover.Content>) => {
   const { onClearFilters } = useFilterMenuContext()
 
   const { t } = useTranslation()
 
   return (
-    <DropdownMenu.Portal>
-      <DropdownMenu.Content
-        data-filter-component={true}
-        sideOffset={sideOffset}
-        side={side}
-        alignOffset={alignOffset}
-        align={align}
-        className={clx(
-          "shadow-elevation-flyout bg-ui-bg-base min-w-[320px] rounded-lg",
-          className
-        )}
-        {...props}
-      >
-        {children}
-        <div className="border-ui-border-base border-t p-3" {...props}>
-          <Button
-            variant="secondary"
-            type="button"
-            className="w-full"
-            onClick={onClearFilters}
-          >
-            {t("filter-menu-clear-button", "Clear")}
-          </Button>
-        </div>
-      </DropdownMenu.Content>
-    </DropdownMenu.Portal>
+    <Popover.Content
+      data-filter-component={true}
+      sideOffset={sideOffset}
+      side={side}
+      alignOffset={alignOffset}
+      align={align}
+      className={clx(
+        "shadow-elevation-flyout bg-ui-bg-base min-w-[320px] rounded-lg",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <FilterMenu.Seperator />
+      <div className="px-3 py-2" {...props}>
+        <Button
+          variant="secondary"
+          type="button"
+          className="w-full"
+          onClick={onClearFilters}
+        >
+          {t("filter-menu-clear-button", "Clear")}
+        </Button>
+      </div>
+    </Popover.Content>
   )
 }
 Content.displayName = "FilterMenu.Content"
@@ -125,6 +124,35 @@ type SelectItemProps = {
   onChange: (value: string[]) => void
 }
 
+type SelectCheckItemProps = {
+  checked?: boolean
+  onCheckedChange: (checked: boolean) => void
+  label: string
+}
+
+const SelectCheckItem = ({
+  checked,
+  onCheckedChange,
+  label,
+}: SelectCheckItemProps) => {
+  const onClick = React.useCallback(() => {
+    onCheckedChange(!checked)
+  }, [checked, onCheckedChange])
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="hover:bg-ui-bg-field-hover focus:bg-ui-bg-field-hover transition-fg txt-compact-xsmall-plus flex w-full cursor-pointer items-center gap-x-2 rounded-md px-3 py-2 outline-none"
+    >
+      <div className="flex h-5 w-5 items-center justify-center">
+        {checked && <CheckMini />}
+      </div>
+      <span>{label}</span>
+    </button>
+  )
+}
+
 const SelectItem = ({
   name,
   placeholder = "Select filter",
@@ -133,6 +161,8 @@ const SelectItem = ({
   onChange,
 }: SelectItemProps) => {
   const menuRef = React.useRef<HTMLDivElement>(null)
+  const triggerRef = React.useRef<HTMLButtonElement>(null)
+
   const [open, setOpen] = React.useState(false)
 
   const { t } = useTranslation()
@@ -151,25 +181,75 @@ const SelectItem = ({
     }
   }, [])
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (open && e.key === "ArrowDown") {
+        e.preventDefault()
+        const next = e.target
+          ? (e.target as HTMLElement).nextElementSibling
+          : null
+        if (next) {
+          ;(next as HTMLElement).focus()
+        } else {
+          const first = menuRef.current?.firstElementChild
+          if (first) {
+            ;(first as HTMLElement).focus()
+          }
+        }
+      }
+
+      if (open && e.key === "ArrowUp") {
+        e.preventDefault()
+        const prev = e.target
+          ? (e.target as HTMLElement).previousElementSibling
+          : null
+        if (prev) {
+          ;(prev as HTMLElement).focus()
+        } else {
+          const last = menuRef.current?.lastElementChild
+          if (last) {
+            ;(last as HTMLElement).focus()
+          }
+        }
+      }
+
+      if (open && e.key === "Escape") {
+        e.preventDefault()
+        setOpen(false)
+
+        /**
+         * Attempt to restore focus to the trigger element
+         */
+        triggerRef.current?.focus()
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [open])
+
   const placeholderValue = placeholder
     ? placeholder
     : t("filter-menu-select-item-default-placeholder", "Select filter")
 
   return (
-    <DropdownMenu.Sub open={open} data-filter-component={true}>
-      <div className="flex w-full items-center justify-between px-3 py-3">
+    <Popover open={open} data-filter-component={true}>
+      <div className="flex w-full items-center justify-between px-3 py-2">
         <span className="txt-compact-xsmall-plus text-ui-fg-base">{name}</span>
-        <DropdownMenu.SubTrigger
+        <Popover.Trigger
+          ref={triggerRef}
           className={clx(
             "bg-ui-bg-field hover:bg-ui-bg-field-hover transition-fg shadow-buttons-neutral flex h-8 w-[152px] items-center gap-x-2 rounded-md py-1 pr-2 text-left",
-            "data-[state=open]:!shadow-borders-interactive-with-active outline-none",
+            "focus:!shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active outline-none",
             {
               "pl-2": value.length === 0,
               "pl-1": value.length > 0,
             }
           )}
           onClick={(e) => {
-            e.stopPropagation()
             setOpen(!open)
           }}
           asChild
@@ -215,10 +295,10 @@ const SelectItem = ({
             </div>
             <ChevronUpDown className="text-ui-fg-muted" />
           </button>
-        </DropdownMenu.SubTrigger>
+        </Popover.Trigger>
       </div>
 
-      <DropdownMenu.SubContent
+      <Popover.Content
         ref={menuRef}
         sideOffset={8}
         className="shadow-elevation-flyout bg-ui-bg-base min-w-[220px] overflow-hidden rounded-lg p-1"
@@ -226,7 +306,7 @@ const SelectItem = ({
       >
         {options.map((opt, index) => {
           return (
-            <DropdownMenu.CheckboxItem
+            <SelectCheckItem
               checked={value.includes(opt.value)}
               onCheckedChange={() => {
                 if (value.includes(opt.value)) {
@@ -238,20 +318,13 @@ const SelectItem = ({
                 const newValue = [...value, opt.value]
                 onChange(newValue)
               }}
-              className="hover:bg-ui-bg-field-hover transition-fg txt-compact-xsmall-plus flex cursor-pointer items-center gap-x-2 rounded-md px-3 py-2 outline-none"
               key={index}
-            >
-              <div className="h-5 w-5">
-                <DropdownMenu.ItemIndicator>
-                  <CheckMini />
-                </DropdownMenu.ItemIndicator>
-              </div>
-              {opt.label}
-            </DropdownMenu.CheckboxItem>
+              label={opt.label}
+            />
           )
         })}
-      </DropdownMenu.SubContent>
-    </DropdownMenu.Sub>
+      </Popover.Content>
+    </Popover>
   )
 }
 SelectItem.displayName = "FilterMenu.SelectItem"
@@ -335,7 +408,7 @@ const DateItem = ({ name, value, onChange }: DateItemProps) => {
   )
 
   return (
-    <div className="p-3">
+    <div className="px-3 py-2">
       <div className="flex items-center justify-between">
         <span className="txt-compact-xsmall-plus text-ui-fg-base">{name}</span>
         <Switch checked={expanded} onCheckedChange={handleExpandChange} />
@@ -396,17 +469,18 @@ const DateItem = ({ name, value, onChange }: DateItemProps) => {
 }
 DateItem.displayName = "FilterMenu.DateItem"
 
-const Seperator = ({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<typeof DropdownMenu.Separator>) => {
+const Seperator = React.forwardRef<
+  React.ElementRef<typeof Popover.Seperator>,
+  React.ComponentPropsWithoutRef<typeof Popover.Seperator>
+>(({ className, ...props }, ref) => {
   return (
-    <DropdownMenu.Separator
-      className={clx("bg-ui-border-base my-[3.5px] h-px w-full", className)}
+    <Popover.Seperator
+      ref={ref}
+      className={clx("border-ui-border-base border-t", className)}
       {...props}
     />
   )
-}
+})
 Seperator.displayName = "FilterMenu.Seperator"
 
 const FilterMenu = Object.assign(Root, {
