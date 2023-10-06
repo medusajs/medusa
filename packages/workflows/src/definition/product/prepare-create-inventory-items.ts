@@ -36,7 +36,7 @@ export async function prepareCreateInventoryItems({
   return {
     alias: prepareCreateInventoryItems.aliases.output,
     value: {
-      associationTaggedInventoryItems: taggedVariants,
+      inventoryItems: taggedVariants,
     },
   }
 }
