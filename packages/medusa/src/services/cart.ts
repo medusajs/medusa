@@ -1917,7 +1917,7 @@ class CartService extends TransactionBaseService {
       const paymentProviderServiceTx =
         this.paymentProviderService_.withTransaction(manager)
 
-      const { total, region, customer, payment_session } = cart
+      const { total, region, customer } = cart
 
       const result = await Promise.allSettled(
         cart.payment_sessions.map(async (session) => {

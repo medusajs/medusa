@@ -76,7 +76,6 @@ export function pipe<T>(
     (input.merge || input.mergeAlias || input.mergeFrom) &&
     functions.length
   ) {
-    // const handler = functions.pop()!
     functions.unshift(mergeData(input.mergeFrom, input.mergeAlias))
   }
 

@@ -16,7 +16,12 @@ export async function upsertPaymentSessions({
 
   const cartService = container.resolve("cartService").withTransaction(manager)
 
-  await cartService.upsertPaymentSessions(cart)
+  console.log(cart.shipping_methods)
+  try {
+    await cartService.upsertPaymentSessions(cart)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 upsertPaymentSessions.aliases = {

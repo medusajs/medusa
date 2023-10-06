@@ -234,50 +234,50 @@ const handlers = new Map([
     {
       invoke: pipe(
         {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-          },
+          invoke: [
+            {
+              from: AddShippingMethodWorkflowActions.prepare,
+            },
+            {
+              from: AddShippingMethodWorkflowActions.createShippingMethods,
+              alias: "shippingMethods",
+            },
+          ],
           merge: true,
         },
-        setRetrieveConfig({
-          relations: [
-            "items.variant.product.profiles",
-            "items.adjustments",
-            "discounts.rule",
-            "gift_cards",
-            "shipping_methods.shipping_option",
-            "billing_address",
-            "shipping_address",
-            "region.tax_rates",
-            "region.payment_providers",
-            "payment_sessions",
-            "customer",
-          ],
-        }),
+        async function ({ data }) {
+          return {
+            alias: "cart",
+            value: {
+              ...data.cart,
+              shipping_methods: data.shippingMethods,
+            },
+          }
+        },
         CartHandlers.upsertPaymentSessions
       ),
       compensate: pipe(
         {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-          },
+          invoke: [
+            {
+              from: AddShippingMethodWorkflowActions.prepare,
+            },
+            {
+              from: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
+              alias: "deletedShippingMethods",
+            },
+          ],
           merge: true,
         },
-        setRetrieveConfig({
-          relations: [
-            "items.variant.product.profiles",
-            "items.adjustments",
-            "discounts.rule",
-            "gift_cards",
-            "shipping_methods.shipping_option",
-            "billing_address",
-            "shipping_address",
-            "region.tax_rates",
-            "region.payment_providers",
-            "payment_sessions",
-            "customer",
-          ],
-        }),
+        // async function ({ data }) {
+        //   return {
+        //     alias: "cart",
+        //     value: {
+        //       ...data.cart,
+        //       shipping_methods: data.deletedShippingMethods,
+        //     },
+        //   }
+        // },
         CartHandlers.upsertPaymentSessions
       ),
     },
