@@ -395,10 +395,8 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
 
   /**
    * Register the routes to the express app
-   *
-   * @return {Promise<void>}
    */
-  protected async registerRoutesAndMiddlewares() {
+  protected async registerRoutesAndMiddlewares(): Promise<void> {
     const prioritizedMiddlewares = prioritize([
       ...this.globalMiddlewaresMap.values(),
     ])
@@ -440,6 +438,8 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
 
       const routes = descriptor.config.routes! as RouteConfig[]
 
+      console.log("Registering routes", descriptor.route, "routes", routes)
+
       for (const route of routes) {
         log({
           activityId: this.activityId,
@@ -465,6 +465,8 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     await this.walkThrough({ dirPath: this.rootDir })
     await this.retrieveFilesConfig()
     await this.registerRoutesAndMiddlewares()
+
+    console.log("routes loaded")
 
     performance.mark("file-base-routing-end" + this.rootDir)
     const timeSpent = performance
