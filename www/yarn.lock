@@ -3138,6 +3138,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@juggle/resize-observer@npm:^3.3.1":
+  version: 3.4.0
+  resolution: "@juggle/resize-observer@npm:3.4.0"
+  checksum: 12930242357298c6f2ad5d4ec7cf631dfb344ca7c8c830ab7f64e6ac11eb1aae486901d8d880fd08fb1b257800c160a0da3aee1e7ed9adac0ccbb9b7c5d93347
+  languageName: node
+  linkType: hard
+
 "@leichtgewicht/ip-codec@npm:^2.0.1":
   version: 2.0.4
   resolution: "@leichtgewicht/ip-codec@npm:2.0.4"
@@ -5099,6 +5106,37 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
   checksum: 40870a966af3e39032a3798da175ce927eefb551802a103cf361411e5dc26dd4a260e92640c57a706c80f8f9b767409ed6bede9dedc72c627f7c5c5fe3b8adc8
+  languageName: node
+  linkType: hard
+
+"@react-hook/latest@npm:^1.0.2":
+  version: 1.0.3
+  resolution: "@react-hook/latest@npm:1.0.3"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: d6a166c21121da519a516e8089ba28a2779d37b6017732ab55476c0d354754ad215394135765254f8752a7c6661c3fb868d088769a644848602f00f8821248ed
+  languageName: node
+  linkType: hard
+
+"@react-hook/passive-layout-effect@npm:^1.2.0":
+  version: 1.2.1
+  resolution: "@react-hook/passive-layout-effect@npm:1.2.1"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 5c9e6b3df1c91fc2b1d4f711ca96b5f8cb3f6a13a2e97dac7cce623e58d7ee57999c45db3778d0af0b2522b3a5b7463232ef21cb3ee9900437172d48f766d933
+  languageName: node
+  linkType: hard
+
+"@react-hook/resize-observer@npm:^1.2.6":
+  version: 1.2.6
+  resolution: "@react-hook/resize-observer@npm:1.2.6"
+  dependencies:
+    "@juggle/resize-observer": ^3.3.1
+    "@react-hook/latest": ^1.0.2
+    "@react-hook/passive-layout-effect": ^1.2.0
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 6ebe4ded4dc4602906c4c727871f93ea73754dd5758f90d50e5fc7382b1844324a46a4c2e0842d8ad5bf95886091ba8a0c9d3a1ef0f10bd0c9e011ecd7aeea42
   languageName: node
   linkType: hard
 
@@ -7252,6 +7290,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/prop-types@npm:^15.0.0":
+  version: 15.7.7
+  resolution: "@types/prop-types@npm:15.7.7"
+  checksum: 26d565ebae8c28dede71547d687367ce74eeccc645fdbef2d38478fe293996be24784fa6190586ba303ccd274aa94d8a631d36a5d9b8e0c08f5647ff3244d72c
+  languageName: node
+  linkType: hard
+
 "@types/qs@npm:*, @types/qs@npm:^6.5.3":
   version: 6.9.8
   resolution: "@types/qs@npm:6.9.8"
@@ -7281,6 +7326,15 @@ __metadata:
   dependencies:
     "@types/react": ^17
   checksum: 1389bfd96ec5f0c580bb1c237c8af137203de912cf403b4116cdfb026762bf31b4206cc1de0a5c20d0df2e07b0ba1b1b72ac51995d5ef45889d5d878321b7418
+  languageName: node
+  linkType: hard
+
+"@types/react-google-recaptcha@npm:^2.1.6":
+  version: 2.1.6
+  resolution: "@types/react-google-recaptcha@npm:2.1.6"
+  dependencies:
+    "@types/react": "*"
+  checksum: 07b0d14aaf9fb89063a2a91b80f088ab5eb99dfd76e6f24ad2deddf44eee53d620ebb93e9e5bcd0f4b1ff320c80b7bc1c5e2c7107f4fda01538323aeecf4c7b5
   languageName: node
   linkType: hard
 
@@ -10181,9 +10235,11 @@ __metadata:
     "@medusajs/icons": latest
     "@medusajs/ui": latest
     "@octokit/request": ^8.1.1
+    "@react-hook/resize-observer": ^1.2.6
     "@segment/analytics-next": ^1.55.0
     "@types/react": ^17.0.1
     "@types/react-dom": ^17.0.1
+    "@types/react-google-recaptcha": ^2.1.6
     algoliasearch: ^4.20.0
     clsx: ^2.0.0
     cpy-cli: ^5.0.0
@@ -10192,7 +10248,9 @@ __metadata:
     prism-react-renderer: ^2.0.6
     react: ^17.0.1
     react-dom: ^17.0.1
+    react-google-recaptcha: ^3.1.0
     react-instantsearch: ^7.0.3
+    react-markdown: ^8.0.7
     react-tooltip: ^5.21.3
     react-transition-group: ^4.4.5
     react-uuid: ^2.0.0
@@ -12702,7 +12760,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.1.0":
+"hoist-non-react-statics@npm:^3.1.0, hoist-non-react-statics@npm:^3.3.0":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -17092,7 +17150,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -17291,6 +17349,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-async-script@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "react-async-script@npm:1.2.0"
+  dependencies:
+    hoist-non-react-statics: ^3.3.0
+    prop-types: ^15.5.0
+  peerDependencies:
+    react: ">=16.4.1"
+  checksum: 89450912110c380abc08258ce17d2fb18d31d6b7179a74f6bc504c0761a4ca271edb671e402fa8e5ea4250b5c17fa953af80a9f1c4ebb26c9e81caee8476c903
+  languageName: node
+  linkType: hard
+
 "react-base16-styling@npm:^0.6.0":
   version: 0.6.0
   resolution: "react-base16-styling@npm:0.6.0"
@@ -17393,6 +17463,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-google-recaptcha@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "react-google-recaptcha@npm:3.1.0"
+  dependencies:
+    prop-types: ^15.5.0
+    react-async-script: ^1.2.0
+  peerDependencies:
+    react: ">=16.4.1"
+  checksum: 5ecaa6b88f238defd939012cb2671b4cbda59fe03f059158994b8c5215db482412e905eae6a67d23cef220d77cfe0430ab91ce7849d476515cda72f3a8a0a746
+  languageName: node
+  linkType: hard
+
 "react-helmet-async@npm:*, react-helmet-async@npm:^1.3.0":
   version: 1.3.0
   resolution: "react-helmet-async@npm:1.3.0"
@@ -17455,6 +17537,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-is@npm:^18.0.0":
+  version: 18.2.0
+  resolution: "react-is@npm:18.2.0"
+  checksum: 6eb5e4b28028c23e2bfcf73371e72cd4162e4ac7ab445ddae2afe24e347a37d6dc22fae6e1748632cd43c6d4f9b8f86dcf26bf9275e1874f436d129952528ae0
+  languageName: node
+  linkType: hard
+
 "react-json-view@npm:^1.21.3":
   version: 1.21.3
   resolution: "react-json-view@npm:1.21.3"
@@ -17486,6 +17575,32 @@ __metadata:
     react-loadable: "*"
     webpack: ">=4.41.1 || 5.x"
   checksum: 7b0645f66adec56646f985ba8094c66a1c0a4627d96ad80eea32431d773ef1f79aa47d3247a8f21db3b064a0c6091653c5b5d3483b7046722eb64e55bffe635c
+  languageName: node
+  linkType: hard
+
+"react-markdown@npm:^8.0.7":
+  version: 8.0.7
+  resolution: "react-markdown@npm:8.0.7"
+  dependencies:
+    "@types/hast": ^2.0.0
+    "@types/prop-types": ^15.0.0
+    "@types/unist": ^2.0.0
+    comma-separated-tokens: ^2.0.0
+    hast-util-whitespace: ^2.0.0
+    prop-types: ^15.0.0
+    property-information: ^6.0.0
+    react-is: ^18.0.0
+    remark-parse: ^10.0.0
+    remark-rehype: ^10.0.0
+    space-separated-tokens: ^2.0.0
+    style-to-object: ^0.4.0
+    unified: ^10.0.0
+    unist-util-visit: ^4.0.0
+    vfile: ^5.0.0
+  peerDependencies:
+    "@types/react": ">=16"
+    react: ">=16"
+  checksum: 016617fbd2f4c03c5ae017fe39e89202f2ff536b4921dc1a5f7283d4b9d5157f20797adda75a8c59a06787ad0bc8841e2e437915aec645ce528e0a04a6d450ac
   languageName: node
   linkType: hard
 
@@ -19072,7 +19187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"style-to-object@npm:^0.4.1":
+"style-to-object@npm:^0.4.0, style-to-object@npm:^0.4.1":
   version: 0.4.2
   resolution: "style-to-object@npm:0.4.2"
   dependencies:
