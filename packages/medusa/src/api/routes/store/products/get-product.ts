@@ -222,8 +222,6 @@ async function getProductPricingWithPricingModule(
   products: Product[],
   context: PriceSelectionContext = {}
 ) {
-  console.warn(context)
-
   const remoteQuery = req.scope.resolve("remoteQuery")
   const pricingModule = req.scope.resolve("pricingModuleService")
 
@@ -275,11 +273,9 @@ async function getProductPricingWithPricingModule(
 
   const queryContext: PriceSelectionContext = removeNullish(context)
 
-  console.warn(queryContext)
   if (queryContext.currency_code) {
     queryContext.currency_code = queryContext.currency_code.toUpperCase()
   }
-  console.warn(queryContext)
 
   const prices = await pricingModule.calculatePrices(
     { id: priceSetIds },
