@@ -13,7 +13,9 @@ export class QueryBuilder {
   constructor() {}
 
   private getStructureKeys(structure) {
-    return Object.keys(structure).filter((key) => key !== "entity")
+    return Object.keys(structure).filter(
+      (key) => key !== "entity" && key !== "_filter" && key !== "_order"
+    )
   }
 
   private buildQueryParts(
@@ -133,9 +135,6 @@ export class QueryBuilder {
     const filter = structure._filter || {}
     const order = structure._order || {}
 
-    delete structure._filter
-    delete structure._order
-
     const rootKey = this.getStructureKeys(structure)[0]
 
     const rootStructure = structure[rootKey] as EntityStructure
@@ -172,7 +171,7 @@ ${orderClause ? `ORDER BY\n    ${orderClause}` : ""}`
     resultSet: Record<string, any>[],
     inputStructure: EntityStructure
   ): Record<string, any>[] {
-    const rootKey = Object.keys(inputStructure)[0]
+    const rootKey = this.getStructureKeys(inputStructure)[0]
 
     const maps: { [key: string]: { [id: string]: Record<string, any> } } = {}
     const referenceMap: { [key: string]: any } = {}
@@ -180,7 +179,7 @@ ${orderClause ? `ORDER BY\n    ${orderClause}` : ""}`
       [key: string]: { property: string; parents: string[]; parentPath: string }
     } = {}
 
-    function createMaps(structure: EntityStructure, path: string[]) {
+    const initializeMaps = (structure: EntityStructure, path: string[]) => {
       const currentPath = path.join(".")
       maps[currentPath] = {}
 
@@ -191,14 +190,12 @@ ${orderClause ? `ORDER BY\n    ${orderClause}` : ""}`
         pathDetails[currentPath] = { property, parents, parentPath }
       }
 
-      delete structure.entity
-      delete structure._filter
-      delete structure._order
-      for (const key in structure) {
-        createMaps(structure[key] as EntityStructure, [...path, key])
+      const children = this.getStructureKeys(structure)
+      for (const key of children) {
+        initializeMaps(structure[key] as EntityStructure, [...path, key])
       }
     }
-    createMaps(inputStructure[rootKey] as EntityStructure, [rootKey])
+    initializeMaps(inputStructure[rootKey] as EntityStructure, [rootKey])
 
     function buildReferenceKey(
       path: string[],
@@ -222,7 +219,7 @@ ${orderClause ? `ORDER BY\n    ${orderClause}` : ""}`
         // root level
         if (!pathDetails[path]) {
           if (!maps[path][id]) {
-            maps[path][id] = row[path] ? JSON.parse(row[path]) : {}
+            maps[path][id] = row[path] ? JSON.parse(row[path]) : undefined
           }
           continue
         }
@@ -234,14 +231,21 @@ ${orderClause ? `ORDER BY\n    ${orderClause}` : ""}`
           continue
         }
 
-        maps[path][id] = row[path] ? JSON.parse(row[path]) : {}
+        maps[path][id] = row[path] ? JSON.parse(row[path]) : undefined
 
         const parentObj = maps[parentPath][row[`${parentPath}.id`]]
+
+        if (!parentObj) {
+          continue
+        }
 
         // TODO: check if relation is 1-1 or 1-n to decide if it should be an array
         parentObj[property] ??= []
 
-        parentObj[property].push(maps[path][id])
+        if (maps[path][id] !== undefined) {
+          parentObj[property].push(maps[path][id])
+        }
+
         referenceMap[referenceKey] = true
       }
     })
