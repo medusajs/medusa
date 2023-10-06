@@ -1042,7 +1042,8 @@ class CartService extends TransactionBaseService {
             if (!hasInventory) {
               throw new MedusaError(
                 MedusaError.Types.NOT_ALLOWED,
-                "Inventory doesn't cover the desired quantity"
+                "Inventory doesn't cover the desired quantity",
+                MedusaError.Codes.INSUFFICIENT_INVENTORY
               )
             }
 
