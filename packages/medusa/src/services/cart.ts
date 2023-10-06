@@ -1919,6 +1919,9 @@ class CartService extends TransactionBaseService {
 
       const { total, region, customer } = cart
 
+      // TODO: FIX this - check why `payment_sessions` are empty
+      cart.payment_sessions = await psRepo.find({ where: { cart_id: cart.id } })
+
       const result = await Promise.allSettled(
         cart.payment_sessions.map(async (session) => {
           /**
