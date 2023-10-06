@@ -1,17 +1,18 @@
 import { FlagRouter, ManyToManyInventoryFeatureFlag } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
-import { createInventoryItems, Workflows, pipe } from "@medusajs/workflows"
 import {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} from "../../../../services"
+  createInventoryItems,
+  CreateInventoryItemActions,
+  pipe,
+  Workflows,
+} from "@medusajs/workflows"
+import { ProductVariantInventoryService } from "../../../../services"
 
-import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
-import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+import { WorkflowTypes } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
-import { validator } from "../../../../utils/validator"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { LocalWorkflow } from "@medusajs/orchestration"
+import { ReturnTypeOf } from "@octokit/core/dist-types/types"
 
 /**
  * @oas [post] /admin/inventory-items
@@ -80,18 +81,13 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  */
 
 export default async (req, res) => {
-  const { variant_id, ...input } = req.validatedBody
+  const { variant_id, ...inventoryItemInput } = req.validatedBody
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
 
   const createInventoryItemWorkflow = createInventoryItems(req.scope)
-  const workflowInput = {
-    inventoryItems: [
-      input,
-    ] as WorkflowTypes.InventoryWorkflow.CreateInventoryItemInputDTO[],
-  }
 
   if (!featureFlagRouter.isFeatureEnabled(ManyToManyInventoryFeatureFlag.key)) {
     if (!variant_id) {
@@ -103,38 +99,80 @@ export default async (req, res) => {
 
     createInventoryItemWorkflow.appendAction(
       "attachInventoryItems",
-      "createInventoryItems",
+      CreateInventoryItemActions.createInventoryItems,
       {
         invoke: pipe(
-          { invoke: { from: "createInventoryItems", alias: "createdItems" } },
-          async ({ data }) => {
-            let inventoryItems =
-              await productVariantInventoryService.listByVariant(variant_id)
-
-            // TODO: this is a temporary fix to prevent duplicate inventory items since we don't support this functionality yet
-            if (inventoryItems.length) {
-              throw new MedusaError(
-                MedusaError.Types.NOT_ALLOWED,
-                "Inventory Item already exists for this variant"
-              )
-            }
-            const inventoryItemId = data.createdItems[0].inventoryItem.id
-            await productVariantInventoryService.attachInventoryItem(
-              variant_id,
-              inventoryItemId
-            )
-            return [variant_id, inventoryItemId]
-          }
+          {
+            invoke: {
+              from: CreateInventoryItemActions.createInventoryItems,
+              alias: "createdItems",
+            },
+          },
+          generateAttachInventoryToVariantHandler(
+            variant_id,
+            productVariantInventoryService
+          )
+        ),
+        compensate: pipe(
+          {
+            invoke: {
+              from: "attachInventoryItems",
+              alias: "attachedItems",
+            },
+          },
+          generateDetachInventoryItemFromVariantHandler(
+            productVariantInventoryService
+          )
         ),
       }
     )
   }
 
   const { result } = await createInventoryItemWorkflow.run({
-    input: workflowInput,
+    input: {
+      inventoryItems: [inventoryItemInput],
+    },
   })
 
   res.status(200).json({ inventory_item: result[0].inventoryItem })
+}
+
+function generateDetachInventoryItemFromVariantHandler(
+  productVariantInventoryService: ProductVariantInventoryService
+) {
+  return async ({ data }) => {
+    const [variantId, inventoryItemId] = data.attachedItems
+    return await productVariantInventoryService.detachInventoryItem(
+      inventoryItemId,
+      variantId
+    )
+  }
+}
+
+function generateAttachInventoryToVariantHandler(
+  variantId: string,
+  productVariantInventoryService: ProductVariantInventoryService
+) {
+  return async ({ data }) => {
+    let inventoryItems = await productVariantInventoryService.listByVariant(
+      variantId
+    )
+
+    // TODO: this is a temporary fix to prevent duplicate inventory
+    // items since we don't support this functionality yet
+    if (inventoryItems.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Inventory Item already exists for this variant"
+      )
+    }
+    const inventoryItemId = data.createdItems[0].inventoryItem.id
+    await productVariantInventoryService.attachInventoryItem(
+      variantId,
+      inventoryItemId
+    )
+    return [variantId, inventoryItemId]
+  }
 }
 
 /**
