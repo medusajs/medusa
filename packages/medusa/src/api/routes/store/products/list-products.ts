@@ -25,6 +25,8 @@ import { defaultStoreCategoryScope } from "../product-categories"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultStoreProductRemoteQueryObject } from "./index"
+import { getProductPricingWithPricingModule } from "../../../../utils/get-product-pricing-with-pricing-module"
+import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
 
 /**
  * @oas [get] /store/products
@@ -298,15 +300,32 @@ export default async (req, res) => {
   const decoratePromises: Promise<any>[] = []
 
   if (shouldSetPricing) {
-    decoratePromises.push(
-      pricingService.setProductPrices(computedProducts, {
+    if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
+      const context = await pricingService.collectPricingContext({
         cart_id: cart_id,
         region_id: regionId,
         currency_code: currencyCode,
         customer_id: req.user?.customer_id,
         include_discount_prices: true,
       })
-    )
+      decoratePromises.push(
+        getProductPricingWithPricingModule(
+          req,
+          rawProducts.map((p) => p.variants).flat(),
+          context.price_selection
+        )
+      )
+    } else {
+      decoratePromises.push(
+        pricingService.setProductPrices(computedProducts, {
+          cart_id: cart_id,
+          region_id: regionId,
+          currency_code: currencyCode,
+          customer_id: req.user?.customer_id,
+          include_discount_prices: true,
+        })
+      )
+    }
   }
 
   if (shouldSetAvailability) {
