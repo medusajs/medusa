@@ -1,7 +1,7 @@
 import { BeforeCreate, Entity, ManyToMany, PrimaryKey } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
-import Catalog from "./catalog"
+import Catalog from "../models/catalog"
 
 @Entity({ tableName: "catalog_relation" })
 export class CatalogRelation {

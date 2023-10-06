@@ -24,31 +24,16 @@ export const joinerConfig: ModuleJoinerConfig = {
   linkableKeys: LinkableKeys,
   alias: [
     {
-      name: "price_set",
+      name: ["price_set", "price_sets"],
     },
     {
-      name: "price_sets",
-    },
-    {
-      name: "money_amount",
+      name: ["money_amount", "money_amounts"],
       args: {
         methodSuffix: "MoneyAmounts",
       },
     },
     {
-      name: "money_amounts",
-      args: {
-        methodSuffix: "MoneyAmounts",
-      },
-    },
-    {
-      name: "currency",
-      args: {
-        methodSuffix: "Currencies",
-      },
-    },
-    {
-      name: "currencies",
+      name: ["currency", "currencies"],
       args: {
         methodSuffix: "Currencies",
       },

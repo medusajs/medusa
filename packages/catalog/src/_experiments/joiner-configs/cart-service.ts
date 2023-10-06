@@ -8,6 +8,9 @@ export default {
   alias: [
     {
       name: "cart",
+      args: {
+        entity: "Cart",
+      },
     },
   ],
   relationships: [

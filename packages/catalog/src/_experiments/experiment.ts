@@ -1,4 +1,3 @@
-import { ObjectTypeDefinitionNode } from "graphql/index"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import {
   cleanGraphQLSchema,
@@ -6,13 +5,11 @@ import {
   MedusaApp,
   MedusaModule,
 } from "@medusajs/modules-sdk"
-import modulesConfig from "./modules-config"
+import { JoinerServiceConfigAlias } from "@medusajs/types"
+import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
+import { ObjectTypeDefinitionNode } from "graphql/index"
 import { joinerConfig } from "./joiner-config"
-import {
-  ContainerRegistrationKeys,
-  isString,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import modulesConfig from "./modules-config"
 
 const CustomDirectives = {
   Listeners: {
@@ -233,12 +230,25 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
         let aliases = Array.isArray(moduleJoinerConfig.alias)
           ? moduleJoinerConfig.alias
           : [moduleJoinerConfig.alias]
-        aliases = aliases.filter(Boolean)
+
+        aliases = aliases
+          .filter(Boolean)
+          .map((alias) => {
+            const names = Array.isArray(alias?.name)
+              ? alias?.name
+              : [alias?.name]
+            return names?.map((name) => ({
+              name,
+              args: alias?.args,
+            }))
+          })
+          .flat() as JoinerServiceConfigAlias[]
+
+        console.log(aliases)
 
         const parentEntityCorrespondingAlias = aliases.find((alias) => {
-          // TODO: Change from name to entity once the migration of the aliases is done
-          const aliasName = isString(alias) ? alias : alias?.name
-          return aliasName!.toLowerCase() === entityName.toLowerCase()
+          const curEntity = alias!.args?.entity && alias?.name
+          return curEntity!.toLowerCase() === entityName.toLowerCase()
         })
 
         if (parentEntityCorrespondingAlias) {

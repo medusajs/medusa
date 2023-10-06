@@ -20,10 +20,10 @@ export default {
     `,
   alias: [
     {
-      name: "shipping_profile",
-    },
-    {
-      name: "shipping_profiles",
+      name: ["shipping_profile", "shipping_profiles"],
+      args: {
+        entity: "ShippingProfile",
+      },
     },
   ],
 } as ModuleJoinerConfig
