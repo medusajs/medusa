@@ -6270,7 +6270,7 @@ __metadata:
     "@medusajs/icons": 1.1.0
     "@medusajs/medusa": "*"
     "@medusajs/types": "*"
-    "@medusajs/ui": 0.0.0-snapshot-20231006072650
+    "@medusajs/ui": 0.0.0-snapshot-20231006140028
     "@medusajs/ui-preset": 1.0.2
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@radix-ui/react-accordion": ^1.0.1
@@ -6893,9 +6893,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/ui@npm:0.0.0-snapshot-20231006072650":
-  version: 0.0.0-snapshot-20231006072650
-  resolution: "@medusajs/ui@npm:0.0.0-snapshot-20231006072650"
+"@medusajs/ui@npm:0.0.0-snapshot-20231006140028":
+  version: 0.0.0-snapshot-20231006140028
+  resolution: "@medusajs/ui@npm:0.0.0-snapshot-20231006140028"
   dependencies:
     "@medusajs/icons": "*"
     "@radix-ui/react-accordion": ^1.1.2
@@ -6928,7 +6928,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 01d44a56a39f133f68074512b931d3f8f1703d143b8307ce4a417cd6087ed74e093547f952e4021fd9e003dd3ee2f33d0916dceaf2ab3c650b02004c6c3fa62e
+  checksum: 1c456c19d72f6da0fdceb63d8cdcb15bb0a5119f1989af0982a9e15e53bc8cfbf124bdc66bcb0f54a75f20bff32e80dbc82267b984983d37a4fb750f49a96994
   languageName: node
   linkType: hard
 
