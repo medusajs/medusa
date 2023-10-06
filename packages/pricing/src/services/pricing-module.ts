@@ -181,7 +181,7 @@ export default class PricingModuleService<
         number_rules: "psma.number_rules",
       })
       .join(psmaSubQueryKnex.as("psma"), "psma.price_set_id", "ps.id")
-      .join("money_amount as ma", "ma.id", "psma.money_amount_id")
+      .join("pricing_money_amount as ma", "ma.id", "psma.money_amount_id")
       .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
       .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
       .whereIn("ps.id", pricingFilters.id)

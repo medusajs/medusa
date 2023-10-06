@@ -1,6 +1,6 @@
 import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
 
-@Entity({ tableName: "currency" })
+@Entity({ tableName: "pricing_currency" })
 class Currency {
   @PrimaryKey({ columnType: "text" })
   code!: string

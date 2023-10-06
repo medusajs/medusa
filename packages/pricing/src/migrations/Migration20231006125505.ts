@@ -1,16 +1,16 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20230929122253 extends Migration {
+export class Migration20231006125505 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table "currency" ("code" text not null, "symbol" text not null, "symbol_native" text not null, "name" text not null, constraint "currency_pkey" primary key ("code"));'
+      'create table if not exists "pricing_currency" ("code" text not null, "symbol" text not null, "symbol_native" text not null, "name" text not null, constraint "pricing_currency_pkey" primary key ("code"));'
     )
 
     this.addSql(
-      'create table "money_amount" ("id" text not null, "currency_code" text null, "amount" numeric null, "min_quantity" numeric null, "max_quantity" numeric null, constraint "money_amount_pkey" primary key ("id"));'
+      'create table if not exists "pricing_money_amount" ("id" text not null, "currency_code" text null, "amount" numeric null, "min_quantity" numeric null, "max_quantity" numeric null, constraint "pricing_money_amount_pkey" primary key ("id"));'
     )
     this.addSql(
-      'create index "IDX_money_amount_currency_code" on "money_amount" ("currency_code");'
+      'create index "IDX_money_amount_currency_code" on "pricing_money_amount" ("currency_code");'
     )
 
     this.addSql(
@@ -68,14 +68,14 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'alter table "money_amount" add constraint "money_amount_currency_code_foreign" foreign key ("currency_code") references "currency" ("code") on update cascade on delete set null;'
+      'alter table "pricing_money_amount" add constraint "pricing_money_amount_currency_code_foreign" foreign key ("currency_code") references "pricing_currency" ("code") on update cascade on delete set null;'
     )
 
     this.addSql(
       'alter table "price_set_money_amount" add constraint "price_set_money_amount_price_set_id_foreign" foreign key ("price_set_id") references "price_set" ("id") on update cascade on delete cascade;'
     )
     this.addSql(
-      'alter table "price_set_money_amount" add constraint "price_set_money_amount_money_amount_id_foreign" foreign key ("money_amount_id") references "money_amount" ("id") on update cascade on delete cascade;'
+      'alter table "price_set_money_amount" add constraint "price_set_money_amount_money_amount_id_foreign" foreign key ("money_amount_id") references "pricing_money_amount" ("id") on update cascade on delete cascade;'
     )
 
     this.addSql(

@@ -43,11 +43,11 @@
           "mappedType": "text"
         }
       },
-      "name": "currency",
+      "name": "pricing_currency",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "currency_pkey",
+          "keyName": "pricing_currency_pkey",
           "columnNames": [
             "code"
           ],
@@ -107,7 +107,7 @@
           "mappedType": "decimal"
         }
       },
-      "name": "money_amount",
+      "name": "pricing_money_amount",
       "schema": "public",
       "indexes": [
         {
@@ -120,7 +120,7 @@
           "unique": false
         },
         {
-          "keyName": "money_amount_pkey",
+          "keyName": "pricing_money_amount_pkey",
           "columnNames": [
             "id"
           ],
@@ -131,16 +131,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "money_amount_currency_code_foreign": {
-          "constraintName": "money_amount_currency_code_foreign",
+        "pricing_money_amount_currency_code_foreign": {
+          "constraintName": "pricing_money_amount_currency_code_foreign",
           "columnNames": [
             "currency_code"
           ],
-          "localTableName": "public.money_amount",
+          "localTableName": "public.pricing_money_amount",
           "referencedColumnNames": [
             "code"
           ],
-          "referencedTableName": "public.currency",
+          "referencedTableName": "public.pricing_currency",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
@@ -278,7 +278,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.money_amount",
+          "referencedTableName": "public.pricing_money_amount",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }

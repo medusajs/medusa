@@ -12,7 +12,7 @@ import {
 import Currency from "./currency"
 import PriceSet from "./price-set"
 
-@Entity()
+@Entity({ tableName: "pricing_money_amount" })
 class MoneyAmount {
   @PrimaryKey({ columnType: "text" })
   id!: string
