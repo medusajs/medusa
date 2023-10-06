@@ -1,4 +1,5 @@
 const path = require("path")
+const { ProductVariantInventoryService } = require("@medusajs/medusa")
 
 const {
   bootstrapApp,
@@ -73,10 +74,20 @@ describe("Inventory Items endpoints", () => {
         adminHeaders
       )
 
+      /** @type {ProductVariantInventoryService} */
+      const productVariantInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
+      )
+
       const inventoryService = appContainer.resolve("inventoryService")
       const inventoryItems = await inventoryService.list()
 
       expect(inventoryItems.length).toEqual(1)
+
+      const variants = productVariantInventoryService.listByItem([
+        inventoryItems[0].id,
+      ])
+      expect(variants.length).toEqual(0)
 
       flagRouter.setFlag("many_to_many_inventory", false)
     })

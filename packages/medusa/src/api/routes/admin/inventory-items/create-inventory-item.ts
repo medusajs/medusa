@@ -137,7 +137,15 @@ function generateDetachInventoryItemFromVariantHandler(
   productVariantInventoryService: ProductVariantInventoryService
 ) {
   return async ({ data }) => {
+    if (!data.attachedItems || !data.attachedItems.length) {
+      return
+    }
+
     const [variantId, inventoryItemId] = data.attachedItems
+    if (!variantId || !inventoryItemId) {
+      return
+    }
+
     return await productVariantInventoryService.detachInventoryItem(
       inventoryItemId,
       variantId

@@ -69,6 +69,10 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
     query.order = buildOrder(config.order) as FindOptionsOrder<TEntity>
   }
 
+  if (config.withDeleted) {
+    query.withDeleted = config.withDeleted
+  }
+
   return query
 }
 
