@@ -22,10 +22,7 @@ export const ShippingProfileRepository = dataSource
       }, {})
     },
 
-    addProducts: async function (
-      profileId: string,
-      productIds: string | string[]
-    ) {
+    async addProducts(profileId: string, productIds: string | string[]) {
       productIds = Array.isArray(productIds) ? productIds : [productIds]
 
       const values = productIds.map((productId) => ({
