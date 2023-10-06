@@ -4,15 +4,11 @@ import {
   createInventoryItems,
   CreateInventoryItemActions,
   pipe,
-  Workflows,
 } from "@medusajs/workflows"
 import { ProductVariantInventoryService } from "../../../../services"
 
 import { FindParams } from "../../../../types/common"
-import { WorkflowTypes } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
-import { LocalWorkflow } from "@medusajs/orchestration"
-import { ReturnTypeOf } from "@octokit/core/dist-types/types"
 
 /**
  * @oas [post] /admin/inventory-items
