@@ -76,7 +76,8 @@ export function pipe<T>(
     (input.merge || input.mergeAlias || input.mergeFrom) &&
     functions.length
   ) {
-    functions.unshift(mergeData(input.mergeFrom, input.mergeAlias))
+    const handler = functions.pop()!
+    functions.push(mergeData(input.mergeFrom, input.mergeAlias), handler)
   }
 
   return async ({

@@ -176,6 +176,12 @@ const handlers = new Map([
           ],
           merge: true,
         },
+        async function ({ data }) {
+          return {
+            alias: "cart",
+            value: data.input.cart,
+          }
+        },
         prepareDeleteShippingMethodsData,
         ShippingMethodHandlers.deleteShippingMethods
       ),
@@ -203,6 +209,7 @@ const handlers = new Map([
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
+            alias: "input",
           },
           merge: true,
         },
@@ -213,6 +220,12 @@ const handlers = new Map([
             "shipping_methods.shipping_option",
           ],
         }),
+        async function ({ data }) {
+          return {
+            alias: "cart",
+            value: data.input.cart,
+          }
+        },
         CartHandlers.retrieveCart,
         CartHandlers.adjustFreeShippingOnCart
       ),
