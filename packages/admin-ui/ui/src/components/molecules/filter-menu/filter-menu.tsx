@@ -143,7 +143,7 @@ const SelectCheckItem = ({
     <button
       type="button"
       onClick={onClick}
-      className="hover:bg-ui-bg-field-hover focus:bg-ui-bg-field-hover transition-fg txt-compact-xsmall-plus flex w-full cursor-pointer items-center gap-x-2 rounded-md px-3 py-2 outline-none"
+      className="bg-ui-bg-base focus:bg-ui-bg-base-hover hover:bg-ui-bg-base-hover transition-fg txt-compact-xsmall-plus flex w-full cursor-pointer items-center gap-x-2 rounded-md px-3 py-2 outline-none"
     >
       <div className="flex h-5 w-5 items-center justify-center">
         {checked && <CheckMini />}
@@ -249,7 +249,7 @@ const SelectItem = ({
               "pl-1": value.length > 0,
             }
           )}
-          onClick={(e) => {
+          onClick={() => {
             setOpen(!open)
           }}
           asChild
@@ -301,6 +301,9 @@ const SelectItem = ({
       <Popover.Content
         ref={menuRef}
         sideOffset={8}
+        side="right"
+        align="start"
+        alignOffset={-8}
         className="shadow-elevation-flyout bg-ui-bg-base min-w-[220px] overflow-hidden rounded-lg p-1"
         data-filter-child={true}
       >
