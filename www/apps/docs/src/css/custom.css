@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply !overflow-x-hidden;
+  }
   body[data-modal="opened"] {
     @apply !overflow-hidden;
   }
