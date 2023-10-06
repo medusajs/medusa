@@ -1,5 +1,6 @@
 import { ProductVariantInfo, RegionInfo } from "../types"
 import { isEmpty } from "../utils"
+import { currencies } from "../utils/currencies"
 
 type FormatVariantPriceParams = {
   variant: ProductVariantInfo
@@ -113,6 +114,10 @@ export const formatAmount = ({
   includeTaxes = true,
   ...rest
 }: FormatAmountParams) => {
+  // to prevent return NaN for null/undefined amount 
+  if (amount == null) {
+    return "N/A"
+  }
   const taxAwareAmount = computeAmount({
     amount,
     region,
@@ -125,17 +130,10 @@ export const formatAmount = ({
   })
 }
 
-// we should probably add a more extensive list
-const noDivisionCurrencies = ["krw", "jpy", "vnd"]
-
 const convertToDecimal = (amount: number, region: RegionInfo) => {
-  const divisor = noDivisionCurrencies.includes(
-    region?.currency_code?.toLowerCase()
-  )
-    ? 1
-    : 100
+  const { decimal_digits } = currencies[region?.currency_code?.toUpperCase()]
 
-  return Math.floor(amount) / divisor
+  return Math.floor(amount) / 10 ** decimal_digits
 }
 
 const getTaxRate = (region?: RegionInfo) => {
