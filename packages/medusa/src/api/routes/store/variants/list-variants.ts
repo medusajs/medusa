@@ -12,6 +12,8 @@ import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
+import { getProductPricingWithPricingModule } from "../../../../utils/get-product-pricing-with-pricing-module"
 
 /**
  * @oas [get] /store/variants
@@ -154,11 +156,9 @@ export default async (req, res) => {
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
   const regionService: RegionService = req.scope.resolve("regionService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const rawVariants = await variantService.list(
-    filterableFields,
-    req.listConfig
-  )
+  const variants = await variantService.list(filterableFields, req.listConfig)
 
   let regionId = validated.region_id
   let currencyCode = validated.currency_code
@@ -173,20 +173,40 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const pricedVariants = await pricingService.setVariantPrices(rawVariants, {
-    cart_id: validated.cart_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    customer_id: customer_id,
-    include_discount_prices: true,
-  })
+  const decoratePromises: Promise<any>[] = []
 
-  const variants = await productVariantInventoryService.setVariantAvailability(
-    pricedVariants,
-    sales_channel_id
+  if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
+    const context = await pricingService.collectPricingContext({
+      cart_id: validated.cart_id,
+      customer_id: customer_id,
+      region_id: regionId,
+      currency_code: currencyCode,
+      include_discount_prices: true,
+    })
+    decoratePromises.push(
+      getProductPricingWithPricingModule(req, variants, context.price_selection)
+    )
+  } else {
+    decoratePromises.push(
+      (await pricingService.setVariantPrices(variants, {
+        cart_id: validated.cart_id,
+        region_id: regionId,
+        currency_code: currencyCode,
+        customer_id: customer_id,
+        include_discount_prices: true,
+      })) as any
+    )
+  }
+
+  decoratePromises.push(
+    (await productVariantInventoryService.setVariantAvailability(
+      variants,
+      sales_channel_id
+    )) as any
   )
+  await Promise.all(decoratePromises)
 
-  res.json({ variants })
+  res.json({ variants: variants })
 }
 
 export class StoreGetVariantsParams extends PriceSelectionParams {
