@@ -11,10 +11,14 @@ export async function attachInventoryItems({
     inventoryItem: InventoryItemDTO
   }[]
 }>) {
-  const { manager } = context
-  const productVariantInventoryService = container
-    .resolve("productVariantInventoryService")
-    .withTransaction(manager)
+  let productVariantInventoryService = container.resolve(
+    "productVariantInventoryService"
+  )
+
+  if (context && context.manager) {
+    productVariantInventoryService =
+      productVariantInventoryService.withTransaction(context.manager)
+  }
 
   if (!data?.inventoryItems?.length) {
     return

@@ -84,10 +84,55 @@ describe("Inventory Items endpoints", () => {
 
       expect(inventoryItems.length).toEqual(1)
 
-      const variants = productVariantInventoryService.listByItem([
+      const variants = await productVariantInventoryService.listByItem([
         inventoryItems[0].id,
       ])
       expect(variants.length).toEqual(0)
+
+      flagRouter.setFlag("many_to_many_inventory", false)
+    })
+
+    it("should associate inventory item with variant id", async () => {
+      // Set feature flag
+      const flagRouter = appContainer.resolve("featureFlagRouter")
+      flagRouter.setFlag("many_to_many_inventory", true)
+
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection)
+      const response = await api.post(
+        `/admin/inventory-items`,
+        {
+          sku: "TABLE_LEG",
+          description: "Table Leg",
+        },
+        adminHeaders
+      )
+
+      const variantId = product.variants[0].id
+      const inventoryItemId = response.data.inventory_item.id
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/variants`,
+        {
+          variant_id: variantId,
+        },
+        adminHeaders
+      )
+
+      // Expect the inventory item to be associated with the variants
+
+      /** @type {ProductVariantInventoryService} */
+      const productVariantInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
+      )
+
+      const variants = await productVariantInventoryService.listByItem([
+        inventoryItemId,
+      ])
+
+      expect(variants.length).toEqual(1)
+      expect(variants[0].variant_id).toEqual(variantId)
 
       flagRouter.setFlag("many_to_many_inventory", false)
     })
