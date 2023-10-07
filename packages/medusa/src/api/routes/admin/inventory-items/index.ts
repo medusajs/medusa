@@ -82,6 +82,12 @@ export default (app) => {
   )
 
   route.delete(
+    "/:id/variants/:variant_id",
+    isFeatureFlagEnabled(ManyToManyInventoryFeatureFlag.key),
+    middlewares.wrap(require("./detach-from-variant").default)
+  )
+
+  route.delete(
     "/:id",
     middlewares.wrap(require("./delete-inventory-item").default)
   )

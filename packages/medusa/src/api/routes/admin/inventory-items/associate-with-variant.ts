@@ -16,12 +16,12 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { IsType } from "../../../../utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantInventoryService } from "../../../../services"
+import { IsInt, IsOptional, IsString } from "class-validator"
 
 async function prepareAttachInventoryItems({ data }: WorkflowArguments) {
-  const { variantId, inventoryItemId } = data
+  const { variantId, inventoryItemId, requiredQuantity } = data
 
   let arrayOfVariantIds: string[] = variantId
   if (!Array.isArray(variantId)) {
@@ -32,6 +32,7 @@ async function prepareAttachInventoryItems({ data }: WorkflowArguments) {
     inventoryItems: arrayOfVariantIds.map((variantId) => ({
       tag: variantId,
       inventoryItem: { id: inventoryItemId },
+      requiredQuantity,
     })),
   }
 }
@@ -81,6 +82,7 @@ const handlers = new Map([
 interface AttachInventoryItemsWorkflowInput {
   variantId: string | string[]
   inventoryItemId: string
+  requiredQuantity?: number
 }
 
 WorkflowManager.register(
@@ -98,38 +100,18 @@ const attachInventoryItems = exportWorkflow<
 
 export default async (req, res) => {
   const { id } = req.params
-  const { variant_id } = req.validatedBody
+  const { variant_id, required_quantity } =
+    req.validatedBody as AdminPostInventoryItemsItemVariantsReq
 
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const entityManager: EntityManager = req.scope.resolve("manager")
-  const productVariantInventoryService: ProductVariantInventoryService =
-    req.scope.resolve("productVariantInventoryService")
-
   const attachInventoryItemsWorkflow = attachInventoryItems(req.scope)
 
-  if (!featureFlagRouter.isFeatureEnabled(ManyToManyInventoryFeatureFlag.key)) {
-    const inventoryItems = await productVariantInventoryService.listByVariant(
-      variant_id
-    )
-
-    if (inventoryItems.length) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Variant already associated with an inventory item."
-      )
-    }
-
-    const items = await productVariantInventoryService.listByItem([id])
-    if (items.length) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Inventory item already associated with a variant."
-      )
-    }
-  }
-
   const { result } = await attachInventoryItemsWorkflow.run({
-    input: { variantId: variant_id, inventoryItemId: id },
+    input: {
+      variantId: variant_id,
+      inventoryItemId: id,
+      requiredQuantity: required_quantity,
+    },
     context: {
       manager: entityManager,
     },
@@ -154,8 +136,12 @@ export default async (req, res) => {
  *     type: string
  */
 export class AdminPostInventoryItemsItemVariantsReq {
-  @IsType([String, [String]])
-  variant_id: string | string[]
+  @IsString()
+  variant_id: string
+
+  @IsInt()
+  @IsOptional()
+  required_quantity?: number
 }
 
 export class AdminPostInventoryItemsItemVariantsParams extends FindParams {}
