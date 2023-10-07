@@ -1,5 +1,14 @@
 # Change Log
 
+## 9.0.7
+
+### Patch Changes
+
+- [#5233](https://github.com/medusajs/medusa/pull/5233) [`0f34e0f38`](https://github.com/medusajs/medusa/commit/0f34e0f381833a4790ee590a9cbf93b7660634f3) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin-ui, medusa, medusa-react, medusa-js): Price List UI revamp
+
+- Updated dependencies [[`0f34e0f38`](https://github.com/medusajs/medusa/commit/0f34e0f381833a4790ee590a9cbf93b7660634f3)]:
+  - @medusajs/medusa-js@6.1.1
+
 ## 9.0.6
 
 ### Patch Changes
