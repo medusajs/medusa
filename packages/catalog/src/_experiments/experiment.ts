@@ -68,10 +68,10 @@ const configMock2 = {
       type Product @Listeners(values: ["product.created", "product.updated"]) {
         id: String
         title: String
-        variants: [Variant]
+        variants: [ProductVariant]
       }
       
-      type Variant @Listeners(values: ["variants.created", "variants.updated"]) {
+      type ProductVariant @Listeners(values: ["variants.created", "variants.updated"]) {
         id: String
         product_id: String
         sku: String
@@ -250,23 +250,18 @@ function retrieveModule(entityName, moduleJoinerConfigs) {
     const moduleAliases = moduleJoinerConfig.alias
 
     /**
-     * If the parent entity exist in the module schema, then the current module is the
+     * If the entity exist in the module schema, then the current module is the
      * one we are looking for.
      *
      * If the module does not have any schema, then we need to base the search
-     * on the provided aliases.
+     * on the provided aliases. in any case, we try to get both
      */
 
     if (moduleSchema) {
       const executableSchema = makeSchemaExecutable(moduleSchema)
       const entitiesMap = executableSchema.getTypeMap()
 
-      const entityExistsInModuleSchema = !!getFieldsAndRelations(
-        entitiesMap,
-        entityName
-      ).length
-
-      if (entityExistsInModuleSchema) {
+      if (entitiesMap[entityName]) {
         relatedModule = moduleJoinerConfig
       }
     }
@@ -290,8 +285,9 @@ function retrieveModule(entityName, moduleJoinerConfigs) {
 
       alias = aliases.find((alias) => {
         const curEntity = alias!.args?.entity && alias?.name
-        return curEntity!.toLowerCase() === entityName.toLowerCase()
+        return curEntity && curEntity.toLowerCase() === entityName.toLowerCase()
       })
+      alias = alias?.name
 
       if (alias) {
         relatedModule = moduleJoinerConfig
