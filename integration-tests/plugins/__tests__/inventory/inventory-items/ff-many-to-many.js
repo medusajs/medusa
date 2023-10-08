@@ -84,7 +84,7 @@ describe("Inventory Items endpoints", () => {
 
       expect(inventoryItems.length).toEqual(1)
 
-      const variants = productVariantInventoryService.listByItem([
+      const variants = await productVariantInventoryService.listByItem([
         inventoryItems[0].id,
       ])
       expect(variants.length).toEqual(0)
