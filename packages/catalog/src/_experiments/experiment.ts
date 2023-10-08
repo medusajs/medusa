@@ -9,6 +9,7 @@ import {
 import modulesConfig from "./modules-config"
 import { joinerConfig } from "./joiner-config"
 import {
+  camelToSnakeCase,
   ContainerRegistrationKeys,
   isString,
   ModulesSdkUtils,
@@ -22,6 +23,7 @@ const CustomDirectives = {
 }
 
 /*
+parents: { ref: objectRef, targetProp, isList }[]
 {
   Product: {
     alias: "product",
@@ -77,10 +79,10 @@ const configMock2 = {
         id: String
         product_id: String
         sku: String
-        prices: [Price]
+        money_amounts: [MoneyAmount]
       }
       
-      type Price @Listeners(values: ["prices.created", "prices.updated"]) {
+      type MoneyAmount @Listeners(values: ["prices.created", "prices.updated"]) {
         amount: Int
       }
   `,
@@ -140,9 +142,11 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
 
     const currentObjectConfigurationRef = (objectConfiguration[entityName] ??= {
       entity: entityName,
-      schemaParents: [],
+      parents: [],
+      alias: "",
       listeners: [],
-      relatedModule: null,
+      moduleConfig: null,
+      fields: [],
     })
 
     /**
@@ -167,6 +171,29 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
     ).map((v) => v.value)
 
     /**
+     * Get all the fields from the current type without any relation fields
+     */
+
+    currentObjectConfigurationRef.fields = getFieldsAndRelations(
+      entitiesMap,
+      entityName
+    )
+
+    /**
+     * This step will assign the related module config to the current entity.
+     * In a later step we will be able to verify if the parent and child are part of
+     * the same module or not in order to mutate the configuration and
+     * apply the correct configuration.
+     */
+
+    const { relatedModule, alias } = retrieveModule(
+      entityName,
+      moduleJoinerConfigs
+    )
+    currentObjectConfigurationRef.moduleConfig = relatedModule
+    currentObjectConfigurationRef.alias = alias
+
+    /**
      * Retrieve immediate parent in the provided schema configuration.
      * This is different from the real parent based on the module configuration, especially
      * if there is any link involved
@@ -183,81 +210,99 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
       }
     )
 
-    currentObjectConfigurationRef.schemaParents = (
-      schemaParentEntityNames ?? []
-    ).map((parent) => parent.name)
+    if (schemaParentEntityNames.length) {
+      const parentEntityNames = schemaParentEntityNames.map((parent) => {
+        return parent.name
+      })
 
-    /**
-     * Get all the fields from the current type without any relation fields
-     */
+      for (const parent of parentEntityNames) {
+        const parentObjectConfigurationRef = objectConfiguration[parent]
+        const parentModuleConfig = parentObjectConfigurationRef.moduleConfig
+        if (
+          currentObjectConfigurationRef.moduleConfig.serviceName ===
+          parentModuleConfig.serviceName
+        ) {
+          currentObjectConfigurationRef.parents.push({
+            ref: parentModuleConfig,
+          })
 
-    currentObjectConfigurationRef.fields = getFieldsAndRelations(
-      entitiesMap,
-      entityName
-    )
+          /**
+           * If the parent is in the same module, then we need to add the foreign key so that
+           * in a query we can join the tables and retrieve the parent id the entity is attached to.
+           */
 
-    /**
-     * This step will assign the related module config to the current entity.
-     * In a later step we will be able to verify if the parent and child are part of
-     * the same module or not in order to mutate the configuration and
-     * apply the correct configuration.
-     */
-
-    for (const moduleJoinerConfig of moduleJoinerConfigs) {
-      const moduleSchema = moduleJoinerConfig.schema
-      const moduleAliases = moduleJoinerConfig.alias
-
-      /**
-       * If the parent entity exist in the module schema, then the current module is the
-       * one we are looking for.
-       *
-       * If the module does not have any schema, then we need to base the search
-       * on the provided aliases.
-       */
-
-      let relatedModule
-
-      if (moduleSchema) {
-        const executableSchema = makeSchemaExecutable(moduleSchema)
-        const entitiesMap = executableSchema.getTypeMap()
-
-        const parentEntityExistsInModuleSchema = !!getFieldsAndRelations(
-          entitiesMap,
-          entityName
-        ).length
-
-        if (parentEntityExistsInModuleSchema) {
-          relatedModule = moduleJoinerConfig
+          currentObjectConfigurationRef.fields.push(
+            parentObjectConfigurationRef.alias + ".id"
+          )
+        } else {
+          // look for link module and build entity configuration as well as the link configuration and update
+          // parents configuration
         }
-      } else if (moduleAliases) {
-        let aliases = Array.isArray(moduleJoinerConfig.alias)
-          ? moduleJoinerConfig.alias
-          : [moduleJoinerConfig.alias]
-        aliases = aliases.filter(Boolean)
-
-        const parentEntityCorrespondingAlias = aliases.find((alias) => {
-          // TODO: Change from name to entity once the migration of the aliases is done
-          const aliasName = isString(alias) ? alias : alias?.name
-          return aliasName!.toLowerCase() === entityName.toLowerCase()
-        })
-
-        if (parentEntityCorrespondingAlias) {
-          relatedModule = moduleJoinerConfig
-        }
-      }
-
-      if (relatedModule) {
-        currentObjectConfigurationRef.relatedModule = relatedModule
-        break
       }
     }
-
-    // TODO: check if the entity and there parents are part of the same module
-    // otherwise create the link configuration, alter the parent configuration of each entity config
-    // and apply the parent fields to the entity config
   })
 
   console.log(objectConfiguration)
+}
+
+function retrieveModule(entityName, moduleJoinerConfigs) {
+  let relatedModule
+  let alias
+
+  for (const moduleJoinerConfig of moduleJoinerConfigs) {
+    const moduleSchema = moduleJoinerConfig.schema
+    const moduleAliases = moduleJoinerConfig.alias
+
+    /**
+     * If the parent entity exist in the module schema, then the current module is the
+     * one we are looking for.
+     *
+     * If the module does not have any schema, then we need to base the search
+     * on the provided aliases.
+     */
+
+    if (moduleSchema) {
+      const executableSchema = makeSchemaExecutable(moduleSchema)
+      const entitiesMap = executableSchema.getTypeMap()
+
+      const entityExistsInModuleSchema = !!getFieldsAndRelations(
+        entitiesMap,
+        entityName
+      ).length
+
+      if (entityExistsInModuleSchema) {
+        relatedModule = moduleJoinerConfig
+      }
+    }
+
+    if (moduleAliases) {
+      let aliases = Array.isArray(moduleJoinerConfig.alias)
+        ? moduleJoinerConfig.alias
+        : [moduleJoinerConfig.alias]
+      aliases = aliases.filter(Boolean)
+
+      alias = aliases.find((alias) => {
+        // TODO: Change from name to entity once the migration of the aliases is done
+        const aliasName = isString(alias) ? alias : alias?.name
+        console.log(camelToSnakeCase(entityName).toLowerCase())
+        return (
+          aliasName!.toLowerCase() ===
+          camelToSnakeCase(entityName).toLowerCase()
+        )
+      })
+      alias = isString(alias) ? alias : alias?.name
+
+      if (alias) {
+        relatedModule = moduleJoinerConfig
+      }
+    }
+
+    if (relatedModule) {
+      break
+    }
+  }
+
+  return { relatedModule, alias }
 }
 
 buildObjectConfigurationFromGraphQlSchema(configMock2.schema).then(() => {
