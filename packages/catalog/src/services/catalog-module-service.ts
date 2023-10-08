@@ -1,3 +1,4 @@
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   BaseFilterable,
   DAL,
@@ -7,14 +8,13 @@ import {
   ModuleJoinerConfig,
   RemoteJoinerQuery,
 } from "@medusajs/types"
-import { joinerConfig } from "./../joiner-config"
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { lowerCaseFirst, remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   CatalogModuleOptions,
   ObjectsPartialTree,
   StorageProvider,
 } from "../types"
-import { lowerCaseFirst, stringToRemoteQueryObject } from "@medusajs/utils"
+import { joinerConfig } from "./../joiner-config"
 
 const configMock: CatalogModuleOptions = {
   objects: [
@@ -169,7 +169,7 @@ export default class CatalogModuleService {
         id: ids,
       }
       const fields = eventRelatedEntity.fields
-      const remoteQueryObject = stringToRemoteQueryObject({
+      const remoteQueryObject = remoteQueryObjectFromString({
         entryPoint,
         variables,
         fields,
@@ -211,7 +211,9 @@ export default class CatalogModuleService {
           const aliases = Array.isArray(moduleJoinerConfig.alias)
             ? moduleJoinerConfig.alias
             : [moduleJoinerConfig.alias]
-          const aliasObj = aliases.find((alias_) => alias_!.entity === entity)
+          const aliasObj = aliases.find(
+            (alias_) => alias_!.args?.entity === entity
+          )
           if (aliasObj) {
             alias = aliasObj?.name[0]
             break

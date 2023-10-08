@@ -8,7 +8,7 @@ import {
   PrimaryKeyType,
   Property,
 } from "@mikro-orm/core"
-import CatalogParent from "./catalog-parent"
+import CatalogRelation from "./catalog-relation"
 
 type OptionalRelations = "parents"
 
@@ -30,7 +30,7 @@ export class Catalog {
   @ManyToMany({
     owner: true,
     entity: () => Catalog,
-    pivotEntity: () => CatalogParent,
+    pivotEntity: () => CatalogRelation,
     cascade: [Cascade.REMOVE],
     inverseJoinColumns: ["parent_id", "parent_name"],
     joinColumns: ["child_id", "child_name"],

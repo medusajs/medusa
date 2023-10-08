@@ -6,10 +6,10 @@ export default {
   linkableKeys: { customer_id: "Customer" },
   alias: [
     {
-      name: "customer",
-    },
-    {
-      name: "customers",
+      name: ["customer", "customers"],
+      args: {
+        entity: "Customer",
+      },
     },
   ],
 } as ModuleJoinerConfig

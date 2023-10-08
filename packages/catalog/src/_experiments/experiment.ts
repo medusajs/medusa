@@ -1,4 +1,3 @@
-import { ObjectTypeDefinitionNode } from "graphql/index"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import {
   cleanGraphQLSchema,
@@ -6,14 +5,11 @@ import {
   MedusaApp,
   MedusaModule,
 } from "@medusajs/modules-sdk"
-import modulesConfig from "./modules-config"
+import { JoinerServiceConfigAlias } from "@medusajs/types"
+import { ObjectTypeDefinitionNode } from "graphql/index"
 import { joinerConfig } from "./joiner-config"
-import {
-  camelToSnakeCase,
-  ContainerRegistrationKeys,
-  isString,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
+import modulesConfig from "./modules-config"
 
 const CustomDirectives = {
   Listeners: {
@@ -281,16 +277,21 @@ function retrieveModule(entityName, moduleJoinerConfigs) {
         : [moduleJoinerConfig.alias]
       aliases = aliases.filter(Boolean)
 
+      aliases = aliases
+        .filter(Boolean)
+        .map((alias) => {
+          const names = Array.isArray(alias?.name) ? alias?.name : [alias?.name]
+          return names?.map((name) => ({
+            name,
+            args: alias?.args,
+          }))
+        })
+        .flat() as JoinerServiceConfigAlias[]
+
       alias = aliases.find((alias) => {
-        // TODO: Change from name to entity once the migration of the aliases is done
-        const aliasName = isString(alias) ? alias : alias?.name
-        console.log(camelToSnakeCase(entityName).toLowerCase())
-        return (
-          aliasName!.toLowerCase() ===
-          camelToSnakeCase(entityName).toLowerCase()
-        )
+        const curEntity = alias!.args?.entity && alias?.name
+        return curEntity!.toLowerCase() === entityName.toLowerCase()
       })
-      alias = isString(alias) ? alias : alias?.name
 
       if (alias) {
         relatedModule = moduleJoinerConfig
