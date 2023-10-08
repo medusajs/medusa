@@ -20,6 +20,7 @@ export async function updateProductsVariantsPrices({
   context,
   data,
 }: WorkflowArguments<HandlerInput>) {
+  console.log("updateProductsVariantsPrices", data)
   const { manager } = context
   const products = data.products
   const productsHandleVariantsIndexPricesMap =

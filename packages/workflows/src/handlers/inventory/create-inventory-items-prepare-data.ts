@@ -1,18 +1,15 @@
-import { InventoryTypes, WorkflowTypes } from "@medusajs/types"
+import { WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
-export type CreateInventoryItemsPreparedData = {
-  inventoryItems: InventoryTypes.InventoryItemDTO[]
-}
+export type CreateInventoryItemsPreparedData =
+  WorkflowTypes.InventoryWorkflow.CreateInventoryItemsWorkflowInputDTO
 
 export async function createInventoryItemsPrepareData({
-  container,
-  context,
   data,
 }: WorkflowArguments<WorkflowTypes.InventoryWorkflow.CreateInventoryItemsWorkflowInputDTO>): Promise<CreateInventoryItemsPreparedData> {
   const inventoryItems = data.inventoryItems
   return {
-    inventoryItems: inventoryItems as InventoryTypes.InventoryItemDTO[],
+    inventoryItems: inventoryItems,
   }
 }
 

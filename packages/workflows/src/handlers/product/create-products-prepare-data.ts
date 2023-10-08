@@ -9,6 +9,10 @@ import { WorkflowArguments } from "../../helper"
 type ShippingProfileId = string
 type SalesChannelId = string
 type ProductHandle = string
+type VariantIndexAndInventoryItems = {
+  index: number
+  inventoryItems: WorkflowTypes.ProductWorkflow.CreateVariantInventoryInputDTO[]
+}
 type VariantIndexAndPrices = {
   index: number
   prices: {
@@ -22,6 +26,10 @@ type VariantIndexAndPrices = {
 
 export type CreateProductsPreparedData = {
   products: ProductTypes.CreateProductDTO[]
+  productsHandleVariantsIndexInventoryItemsMap: Map<
+    ProductHandle,
+    VariantIndexAndInventoryItems[]
+  >
   productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
   productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
   productsHandleVariantsIndexPricesMap: Map<
@@ -83,6 +91,10 @@ export async function createProductsPrepareData({
     ProductHandle,
     VariantIndexAndPrices[]
   >()
+  const productsHandleVariantsIndexInventoryItemsMap = new Map<
+    ProductHandle,
+    VariantIndexAndInventoryItems[]
+  >()
 
   for (const product of products) {
     product.handle ??= kebabCase(product.title)
@@ -118,6 +130,10 @@ export async function createProductsPrepareData({
         return (variant.prices?.length ?? 0) > 0
       })
 
+      const hasInventoryItems = product.variants.some((variant) => {
+        return (variant.inventory_items?.length ?? 0) > 0
+      })
+
       if (hasPrices) {
         const items =
           productsHandleVariantsIndexPricesMap.get(product.handle!) ?? []
@@ -130,6 +146,21 @@ export async function createProductsPrepareData({
         })
 
         productsHandleVariantsIndexPricesMap.set(product.handle!, items)
+      }
+
+      if (hasInventoryItems) {
+        const items =
+          productsHandleVariantsIndexInventoryItemsMap.get(product.handle!) ??
+          []
+
+        product.variants.forEach((variant, index) => {
+          items.push({
+            index,
+            inventoryItems: variant.inventory_items!,
+          })
+        })
+
+        productsHandleVariantsIndexInventoryItemsMap.set(product.handle!, items)
       }
     }
   }
@@ -144,6 +175,7 @@ export async function createProductsPrepareData({
     productsHandleShippingProfileIdMap,
     productsHandleSalesChannelsMap,
     productsHandleVariantsIndexPricesMap,
+    productsHandleVariantsIndexInventoryItemsMap,
   }
 }
 

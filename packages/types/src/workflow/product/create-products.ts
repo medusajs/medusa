@@ -36,6 +36,11 @@ export interface CraeteProductVariantOptionInputDTO {
   option_id: string
 }
 
+export interface CreateVariantInventoryInputDTO {
+  inventory_item_id: string
+  required_quantity?: number
+}
+
 export interface CreateProductVariantInputDTO {
   id?: string
   title?: string
@@ -58,6 +63,7 @@ export interface CreateProductVariantInputDTO {
 
   prices?: CreateProductVariantPricesInputDTO[]
   options?: CraeteProductVariantOptionInputDTO[]
+  inventory_items?: CreateVariantInventoryInputDTO[]
 }
 
 export interface CreateProductInputDTO {

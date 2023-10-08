@@ -174,10 +174,15 @@ const handlers = new Map([
       invoke: pipe(
         {
           merge: true,
-          invoke: {
-            from: CreateProductsActions.createProducts,
-            alias: prepareCreateInventoryItems.aliases.products,
-          },
+          invoke: [
+            {
+              from: CreateProductsActions.prepare,
+            },
+            {
+              from: CreateProductsActions.createProducts,
+              alias: prepareCreateInventoryItems.aliases.products,
+            },
+          ],
         },
         prepareCreateInventoryItems,
         InventoryHandlers.createInventoryItems

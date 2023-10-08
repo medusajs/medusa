@@ -9,6 +9,7 @@ import { ProductVariantInventoryService } from "../../../../services"
 
 import { FindParams } from "../../../../types/common"
 import { MedusaError } from "@medusajs/utils"
+import { WorkflowTypes } from "@medusajs/types"
 
 /**
  * @oas [post] /admin/inventory-items
@@ -126,7 +127,11 @@ export default async (req, res) => {
 
   const { result } = await createInventoryItemWorkflow.run({
     input: {
-      inventoryItems: [inventoryItemInput],
+      inventoryItems: [
+        {
+          creationInput: inventoryItemInput,
+        },
+      ],
     },
   })
 

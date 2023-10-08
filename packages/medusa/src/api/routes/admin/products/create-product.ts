@@ -38,7 +38,7 @@ import {
 
 import { DistributedTransaction } from "@medusajs/orchestration"
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, ManyToManyInventoryFeatureFlag } from "@medusajs/utils"
 import { createProducts, Workflows } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
@@ -304,6 +304,14 @@ class ProductOptionReq {
   title: string
 }
 
+class VariantInventoryReq {
+  @IsNumber()
+  required_quantity: number
+
+  @IsString()
+  inventory_item_id: string
+}
+
 class ProductVariantReq {
   @IsString()
   title: string
@@ -382,6 +390,14 @@ class ProductVariantReq {
   @ValidateNested({ each: true })
   @IsArray()
   options?: ProductVariantOptionReq[] = []
+
+  @FeatureFlagDecorators(ManyToManyInventoryFeatureFlag.key, [
+    IsOptional(),
+    Type(() => VariantInventoryReq),
+    ValidateNested({ each: true }),
+    IsArray(),
+  ])
+  inventory_items?: VariantInventoryReq[]
 }
 
 /**

@@ -1,17 +1,28 @@
-import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
+import {
+  IInventoryService,
+  InventoryItemDTO,
+  WorkflowTypes,
+} from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type Result = {
   tag: string
-  inventoryItem: InventoryItemDTO
+  createdInventoryItem?: InventoryItemDTO
+  inventoryItemId: string
 }[]
+
+type InventoryItemAssociation = {
+  /** The variant id that the inventory item should be associated with. */
+  _associationTag: string
+  creationInput?: InventoryItemDTO
+  existingItem?: WorkflowTypes.ProductWorkflow.CreateVariantInventoryInputDTO
+}
 
 export async function createInventoryItems({
   container,
-  context,
   data,
 }: WorkflowArguments<{
-  inventoryItems: (InventoryItemDTO & { _associationTag?: string })[]
+  inventoryItems: InventoryItemAssociation[]
 }>): Promise<Result | void> {
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
@@ -26,19 +37,33 @@ export async function createInventoryItems({
 
   const result = await Promise.all(
     data.inventoryItems.map(async (item) => {
+      // Pass through existing inventory items.
+      if (item.existingItem) {
+        return {
+          tag: item._associationTag,
+          inventoryItemId: item.existingItem.inventory_item_id,
+        }
+      }
+
+      const inputData = item.creationInput!
+
       const inventoryItem = await inventoryService!.createInventoryItem({
-        sku: item.sku!,
-        origin_country: item.origin_country!,
-        hs_code: item.hs_code!,
-        mid_code: item.mid_code!,
-        material: item.material!,
-        weight: item.weight!,
-        length: item.length!,
-        height: item.height!,
-        width: item.width!,
+        sku: inputData.sku!,
+        origin_country: inputData.origin_country!,
+        hs_code: inputData.hs_code!,
+        mid_code: inputData.mid_code!,
+        material: inputData.material!,
+        weight: inputData.weight!,
+        length: inputData.length!,
+        height: inputData.height!,
+        width: inputData.width!,
       })
 
-      return { tag: item._associationTag ?? inventoryItem.id, inventoryItem }
+      return {
+        tag: item._associationTag,
+        inventoryItem: inventoryItem,
+        inventoryItemId: inventoryItem.id,
+      }
     })
   )
 

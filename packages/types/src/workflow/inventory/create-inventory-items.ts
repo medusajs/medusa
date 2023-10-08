@@ -15,5 +15,7 @@ export interface CreateInventoryItemInputDTO {
 }
 
 export interface CreateInventoryItemsWorkflowInputDTO {
-  inventoryItems: CreateInventoryItemInputDTO[]
+  inventoryItems: {
+    creationInput: CreateInventoryItemInputDTO
+  }[]
 }

@@ -74,7 +74,10 @@ WorkflowManager.register(
 
 export const createInventoryItems = exportWorkflow<
   WorkflowTypes.InventoryWorkflow.CreateInventoryItemsWorkflowInputDTO,
-  { tag: string; inventoryItem: InventoryTypes.InventoryItemDTO }[]
+  {
+    tag?: string
+    inventoryItem: { creationData: InventoryTypes.InventoryItemDTO }
+  }[]
 >(
   Workflows.CreateInventoryItems,
   CreateInventoryItemActions.createInventoryItems
