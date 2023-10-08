@@ -371,7 +371,7 @@ describe("/admin/products", () => {
       )
     })
 
-    it.only("should create variants with inventory items", async () => {
+    it("should create variants with inventory items", async () => {
       const api = useApi()! as AxiosInstance
 
       const response = await api.post(
