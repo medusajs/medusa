@@ -13,7 +13,7 @@ export async function getProductPricingWithPricingModule(
   const pricingModule = req.scope.resolve("pricingModuleService")
 
   const variables = {
-    variant_id: variants.map((v) => v.id),
+    variant_id: variants.map((variant) => variant.id),
   }
 
   const priceSetQuery = `
@@ -30,31 +30,31 @@ export async function getProductPricingWithPricingModule(
     }
    `
 
-  const res: VariantsRes[] = await remoteQuery(priceSetQuery, {
+  const variantPriceSets: VariantsRes[] = await remoteQuery(priceSetQuery, {
     context: variables,
   })
 
   const variantIdToPriceSetIdsMap = new Map(
-    res.map((r) => {
-      if (!r.price) {
-        return [r.id, []]
+    variantPriceSets.map((variantPriceSet) => {
+      if (!variantPriceSet.price) {
+        return [variantPriceSet.id, []]
       }
 
-      const value = Array.isArray(r.price)
-        ? r.price.map((p) => p.price_set_id)
-        : [r.price.price_set_id]
-      return [r.id, value]
+      const value = Array.isArray(variantPriceSet.price)
+        ? variantPriceSet.price.map((price) => price.price_set_id)
+        : [variantPriceSet.price.price_set_id]
+      return [variantPriceSet.id, value]
     })
   )
 
-  const priceSetIds = res
-    .map((r) => {
-      if (!r.price) {
+  const priceSetIds = variantPriceSets
+    .map((variantPriceSet) => {
+      if (!variantPriceSet.price) {
         return []
       }
-      return Array.isArray(r.price)
-        ? r.price.map((p) => p.price_set_id)
-        : [r.price.price_set_id]
+      return Array.isArray(variantPriceSet.price)
+        ? variantPriceSet.price.map((price) => price.price_set_id)
+        : [variantPriceSet.price.price_set_id]
     })
     .flat()
 
@@ -71,20 +71,30 @@ export async function getProductPricingWithPricingModule(
     }
   )
 
-  const priceSetMap = new Map<string, MoneyAmount>(prices.map((p) => [p.id, p]))
+  const priceSetMap = new Map<string, MoneyAmount>(
+    prices.map((price) => [price.id, price])
+  )
 
-  variants.map((v) => {
-    const priceSetIds = variantIdToPriceSetIdsMap.get(v.id)
+  variants.map((variant) => {
+    const priceSetIds = variantIdToPriceSetIdsMap.get(variant.id)
     const prices = priceSetIds?.map((id) => priceSetMap.get(id)).filter(Boolean)
     if (prices?.length) {
-      const calculatedPrice = prices.reduce((acc: number, curr): number => {
-        return !curr || acc < curr.amount ? acc : curr.amount
-      }, Infinity)
+      let calculatedLowestPrice: number | null = prices.reduce(
+        (price: number, comparisonPrice): number => {
+          return !comparisonPrice || price < comparisonPrice.amount
+            ? price
+            : comparisonPrice.amount
+        },
+        Infinity
+      )
+
+      calculatedLowestPrice =
+        calculatedLowestPrice === Infinity ? null : calculatedLowestPrice
 
       const pricingResult: ProductVariantPricing = {
         prices: prices as MoneyAmount[],
-        original_price: calculatedPrice,
-        calculated_price: calculatedPrice,
+        original_price: calculatedLowestPrice,
+        calculated_price: calculatedLowestPrice,
         calculated_price_type: null,
         original_price_includes_tax: null,
         calculated_price_includes_tax: null,
@@ -95,7 +105,7 @@ export async function getProductPricingWithPricingModule(
         tax_rates: null,
       }
 
-      Object.assign(v, pricingResult)
+      Object.assign(variant, pricingResult)
     }
   })
 
@@ -105,11 +115,11 @@ export async function getProductPricingWithPricingModule(
 export const removeNullish = (
   obj: Record<string, unknown>
 ): Record<string, unknown> =>
-  Object.entries(obj).reduce((a, [k, v]) => {
-    if (isDefined(v)) {
-      a[k] = v
+  Object.entries(obj).reduce((resultObject, [currentKey, currentValue]) => {
+    if (isDefined(currentValue)) {
+      resultObject[currentKey] = currentValue
     }
-    return a
+    return resultObject
   }, {})
 
 type VariantsRes = {
