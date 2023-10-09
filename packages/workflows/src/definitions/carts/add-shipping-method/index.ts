@@ -17,6 +17,7 @@ import { Workflows } from "../../../workflows"
 import { prepareAddShippingMethodToCartWorkflowData } from "./prepare-add-shipping-method-to-cart-data"
 import { prepareDeleteShippingMethodsData } from "./prepare-delete-shipping-methods-data"
 import { setRetrieveConfig } from "./set-retrieve-config"
+import { compensateUpsertPaymentSessions } from "./compensate-upsert-payment-sessions"
 
 export enum AddShippingMethodWorkflowActions {
   prepare = "prepare",
@@ -280,25 +281,10 @@ const handlers = new Map([
         async function ({ data }) {
           return {
             alias: "cart",
-            value: {
-              id: data.input.cart.id,
-            },
+            value: data.input.cart,
           }
         },
-        setRetrieveConfig({
-          relations: ["payment_sessions"],
-        }),
-        CartHandlers.retrieveCart,
-        // async function ({ data }) {
-        //   return {
-        //     alias: "cart",
-        //     value: {
-        //       ...data.input.cart, // Use initial cart data
-        //       payment_sessions: data.cart.payment_sessions,
-        //     },
-        //   }
-        // },
-        CartHandlers.upsertPaymentSessions
+        compensateUpsertPaymentSessions
       ),
     },
   ],
