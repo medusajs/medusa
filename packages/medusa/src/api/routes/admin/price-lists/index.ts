@@ -1,22 +1,22 @@
 import "reflect-metadata"
 
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import { PriceList, Product } from "../../../.."
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-} from "../products"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+} from "../products"
 
-import { AdminGetPriceListPaginationParams } from "./list-price-lists"
-import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
-import { AdminPostPriceListsPriceListReq } from "./create-price-list"
 import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { AdminPostPriceListsPriceListReq } from "./create-price-list"
+import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
+import { AdminGetPriceListPaginationParams } from "./list-price-lists"
 
 const route = Router()
 
@@ -52,6 +52,12 @@ export default (app, featureFlagRouter: FlagRouter) => {
     "/:id/products/:product_id/prices",
     middlewares.wrap(require("./delete-product-prices").default)
   )
+
+  route.delete(
+    "/:id/products/prices/batch",
+    middlewares.wrap(require("./delete-products-prices-batch").default)
+  )
+
   route.delete(
     "/:id/variants/:variant_id/prices",
     middlewares.wrap(require("./delete-variant-prices").default)
@@ -287,6 +293,7 @@ export * from "./add-prices-batch"
 export * from "./create-price-list"
 export * from "./delete-price-list"
 export * from "./delete-prices-batch"
+export * from "./delete-products-prices-batch"
 export * from "./get-price-list"
 export * from "./list-price-list-products"
 export * from "./list-price-lists"
