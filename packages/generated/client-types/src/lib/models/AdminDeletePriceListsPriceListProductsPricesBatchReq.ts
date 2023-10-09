@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminDeletePriceListsPriceListProductsPricesBatchReq {
   /**
-   * The product IDs of the products to delete the associated prices.
+   * The IDs of the products to delete their associated prices.
    */
   product_ids?: Array<string>
 }
