@@ -1,7 +1,7 @@
+import { trim } from "lodash"
 import React from "react"
 import Button from "../../fundamentals/button"
 import InputField from "../input"
-import { trim } from "lodash"
 
 type SaveFilterItemProps = {
   saveFilter: () => void
@@ -9,6 +9,9 @@ type SaveFilterItemProps = {
   setName: (name: string) => void
 }
 
+/**
+ * @deprecated Use `FilterMenu` instead
+ */
 const SaveFilterItem: React.FC<SaveFilterItemProps> = ({
   saveFilter,
   setName,

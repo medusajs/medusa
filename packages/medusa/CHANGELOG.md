@@ -1,5 +1,22 @@
 # Change Log
 
+## 1.17.1
+
+### Patch Changes
+
+- [#5275](https://github.com/medusajs/medusa/pull/5275) [`90e24c593`](https://github.com/medusajs/medusa/commit/90e24c593f66276e8e93734e067f4e8c877f6001) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): update unit_price for line-items with quantity pricing when merging on create
+
+- [#5242](https://github.com/medusajs/medusa/pull/5242) [`130cbc1f4`](https://github.com/medusajs/medusa/commit/130cbc1f437af211b6d05f80128d90138abcd38d) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Modules exporting schema with entities and fields
+
+- [#5279](https://github.com/medusajs/medusa/pull/5279) [`f9264c479`](https://github.com/medusajs/medusa/commit/f9264c479e2628911bd3d753c99c141f97335fba) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Accept invite should not require first/last name
+
+- [#5233](https://github.com/medusajs/medusa/pull/5233) [`0f34e0f38`](https://github.com/medusajs/medusa/commit/0f34e0f381833a4790ee590a9cbf93b7660634f3) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin-ui, medusa, medusa-react, medusa-js): Price List UI revamp
+
+- Updated dependencies [[`eeceec791`](https://github.com/medusajs/medusa/commit/eeceec791c141996cf7fd06555afb6e738b52840), [`130cbc1f4`](https://github.com/medusajs/medusa/commit/130cbc1f437af211b6d05f80128d90138abcd38d), [`cb569c2df`](https://github.com/medusajs/medusa/commit/cb569c2dfe2d83e1ff72a49f2331450a83b73325)]:
+  - @medusajs/utils@1.10.3
+  - @medusajs/modules-sdk@1.12.0
+  - @medusajs/link-modules@0.2.0
+
 ## 1.17.0
 
 ### Minor Changes
