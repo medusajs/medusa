@@ -186,11 +186,9 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
      * apply the correct configuration.
      */
 
-    const { relatedModule, alias } = retrieveModuleAndAlias(
-      entityName,
-      moduleJoinerConfigs
-    )
-    currentObjectConfigurationRef.moduleConfig = relatedModule
+    const { relatedModule: currentEntityModule, alias } =
+      retrieveModuleAndAlias(entityName, moduleJoinerConfigs)
+    currentObjectConfigurationRef.moduleConfig = currentEntityModule
     currentObjectConfigurationRef.alias = alias
 
     /**
@@ -271,7 +269,7 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
            */
 
           // TODO: validate the entity name
-          const linkEntityName = toCamelCase(linkAlias)
+          const linkEntityName = linkAlias
           const linkObjectConfigurationRef = (objectConfiguration[
             linkEntityName
           ] ??= {
@@ -283,8 +281,8 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
             ],
             alias: linkAlias,
             listeners: [
-              `${linkEntityName}.attached`,
-              `${linkEntityName}.detached`,
+              `${toCamelCase(linkEntityName)}.attached`,
+              `${toCamelCase(linkEntityName)}.detached`,
             ],
             moduleConfig: linkModule,
             fields: [
@@ -293,7 +291,7 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
                   (relationship) =>
                     [
                       parentModuleConfig.serviceName,
-                      relatedModule.serviceName,
+                      currentEntityModule.serviceName,
                     ].includes(relationship.serviceName) &&
                     relationship.foreignKey
                 )
@@ -303,18 +301,63 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
           })
 
           /**
+           * If the current entity is not the entity linked from the link
+           * module we have to create a new configuration for that entity which
+           * will become the current entity parent.
+           */
+
+          let linkedEntityObjectConfigurationRef
+          if (currentObjectConfigurationRef.alias !== linkAlias) {
+            const linkedEntityNameAndAlias =
+              retrieveLinkedEntityNameAndAliasFromLinkModule(
+                linkModule,
+                currentEntityModule
+              )
+
+            const {
+              relatedModule: linkedEntityModule,
+              alias: linkedEntityAlias,
+            } = retrieveModuleAndAlias(
+              linkedEntityNameAndAlias.entityName,
+              moduleJoinerConfigs
+            )
+
+            linkedEntityObjectConfigurationRef = objectConfiguration[
+              linkedEntityNameAndAlias.entityName
+            ] ??= {
+              entity: linkedEntityNameAndAlias.entityName,
+              parents: [
+                {
+                  ref: linkObjectConfigurationRef,
+                  targetProp: linkedEntityNameAndAlias.alias,
+                  isList: true,
+                },
+              ],
+              alias: linkedEntityNameAndAlias.alias,
+              listeners: [
+                toCamelCase(linkedEntityAlias) + ".created",
+                toCamelCase(linkedEntityAlias) + ".updated",
+              ],
+              moduleConfig: linkedEntityModule,
+              fields: ["id", linkObjectConfigurationRef.alias + ".id"],
+            }
+          }
+
+          /**
            * The link entity configuration become the parent of the current entity
            */
 
           currentObjectConfigurationRef.parents.push({
-            ref: linkObjectConfigurationRef,
+            ref:
+              linkedEntityObjectConfigurationRef || linkObjectConfigurationRef,
             inConfiguration: parentObjectConfigurationRef,
             targetProp: entityTargetPropertyNameInParent,
             isList: isEntityListInParent,
           })
 
           currentObjectConfigurationRef.fields.push(
-            linkObjectConfigurationRef.alias + ".id"
+            (linkedEntityObjectConfigurationRef || linkObjectConfigurationRef)
+              .alias + ".id"
           )
         }
       }
@@ -322,6 +365,73 @@ const buildObjectConfigurationFromGraphQlSchema = async (schema) => {
   })
 
   console.log(objectConfiguration)
+}
+
+function retrieveLinkedEntityNameAndAliasFromLinkModule(
+  linkModuleJoinerConfig,
+  relatedModuleJoinerConfig
+) {
+  const linkRelationships = linkModuleJoinerConfig.relationships
+  const linkRelationship = linkRelationships.find((relationship) => {
+    return relatedModuleJoinerConfig.serviceName === relationship.serviceName
+  })
+
+  const foreignKey = linkRelationship.foreignKey
+
+  let alias
+  let entityName
+
+  const linkableKeys = relatedModuleJoinerConfig.linkableKeys
+  entityName = linkableKeys[foreignKey]
+
+  if (!entityName) {
+    throw new Error(
+      `CatalogModule error, unable to retrieve the entity name from the link module configuration for the linkable key ${foreignKey}.`
+    )
+  }
+
+  const moduleAliases = relatedModuleJoinerConfig.alias
+
+  if (moduleAliases) {
+    alias = retrieveAliasForEntity(
+      entityName,
+      relatedModuleJoinerConfig.serviceName,
+      relatedModuleJoinerConfig.alias
+    )
+  }
+
+  if (!alias) {
+    throw new Error(
+      `CatalogModule error, the module ${relatedModuleJoinerConfig.serviceName} has a schema but does not have any alias for the entity ${entityName}. Please add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
+    )
+  }
+
+  return { entityName, alias }
+}
+
+function retrieveAliasForEntity(entityName, serviceName, aliases) {
+  aliases = Array.isArray(aliases) ? aliases : [aliases]
+
+  aliases = aliases.filter(Boolean)
+
+  aliases = aliases
+    .filter(Boolean)
+    .map((alias) => {
+      const names = Array.isArray(alias?.name) ? alias?.name : [alias?.name]
+      return names?.map((name) => ({
+        name,
+        args: alias?.args,
+      }))
+    })
+    .flat() as JoinerServiceConfigAlias[]
+
+  let alias = aliases.find((alias) => {
+    const curEntity = alias!.args?.entity || alias?.name
+    return curEntity && curEntity.toLowerCase() === entityName.toLowerCase()
+  })
+  alias = alias?.name
+
+  return alias
 }
 
 function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
@@ -350,27 +460,11 @@ function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
     }
 
     if (moduleAliases) {
-      let aliases = Array.isArray(moduleJoinerConfig.alias)
-        ? moduleJoinerConfig.alias
-        : [moduleJoinerConfig.alias]
-      aliases = aliases.filter(Boolean)
-
-      aliases = aliases
-        .filter(Boolean)
-        .map((alias) => {
-          const names = Array.isArray(alias?.name) ? alias?.name : [alias?.name]
-          return names?.map((name) => ({
-            name,
-            args: alias?.args,
-          }))
-        })
-        .flat() as JoinerServiceConfigAlias[]
-
-      alias = aliases.find((alias) => {
-        const curEntity = alias!.args?.entity || alias?.name
-        return curEntity && curEntity.toLowerCase() === entityName.toLowerCase()
-      })
-      alias = alias?.name
+      alias = retrieveAliasForEntity(
+        entityName,
+        moduleJoinerConfig.serviceName,
+        moduleJoinerConfig.alias
+      )
 
       if (alias) {
         relatedModule = moduleJoinerConfig
@@ -390,7 +484,7 @@ function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
 
   if (!alias) {
     throw new Error(
-      `CatalogModule error, the module ${relatedModule.serviceName} has a schema but does not have any alias for the entity ${entityName}. Please add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
+      `CatalogModule error, the module ${relatedModule?.serviceName} has a schema but does not have any alias for the entity ${entityName}. Please add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
     )
   }
 
