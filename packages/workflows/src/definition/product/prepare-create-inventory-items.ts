@@ -21,7 +21,7 @@ export async function prepareCreateInventoryItems({
   data,
 }: WorkflowArguments<{
   prepare: {
-    productsHandleVariantsIndexPricesMap: Map<
+    productsHandleVariantsIndexInventoryItemsMap: Map<
       ProductHandle,
       VariantIndexAndInventoryItems[]
     >
@@ -31,7 +31,9 @@ export async function prepareCreateInventoryItems({
   const taggedVariants = data.products.reduce<InventoryItemAssociation[]>(
     (acc, product: ProductTypes.ProductDTO) => {
       const inventoryVariants =
-        data.prepare.productsHandleVariantsIndexPricesMap.get(product.handle!)
+        data.prepare.productsHandleVariantsIndexInventoryItemsMap.get(
+          product.handle!
+        )
 
       const cleanVariants = product.variants.reduce<InventoryItemAssociation[]>(
         (acc, variant: AssociationTaggedVariant, index: number) => {

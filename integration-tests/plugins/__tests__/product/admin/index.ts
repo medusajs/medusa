@@ -9,7 +9,10 @@ import productSeeder from "../../../../helpers/product-seeder"
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { Workflows } from "@medusajs/workflows"
 import { AxiosInstance } from "axios"
-import { simpleSalesChannelFactory } from "../../../../factories"
+import {
+  simpleSalesChannelFactory,
+  simpleInventoryItemFactory,
+} from "../../../../factories"
 
 jest.setTimeout(5000000)
 
@@ -368,6 +371,65 @@ describe("/admin/products", () => {
           title: "Test Giftcard",
           discountable: false,
         })
+      )
+    })
+
+    it("fails to use inventory_items without feature flag", async () => {
+      const api = useApi()! as AxiosInstance
+
+      const inventoryItemOne = await simpleInventoryItemFactory(dbConnection)
+      const inventoryItemTwo = await simpleInventoryItemFactory(dbConnection)
+
+      const payload = {
+        title: "Test product - 1",
+        description: "test-product-description 1",
+        images: ["test-image.png", "test-image-2.png"],
+        options: [{ title: "size" }, { title: "color" }],
+        variants: [
+          {
+            title: "Test variant 0",
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "large" }, { value: "green" }],
+            manage_inventory: true,
+          },
+          {
+            title: "Test variant 1",
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "large" }, { value: "green" }],
+            inventory_items: [
+              {
+                inventory_item_id: inventoryItemOne.id,
+                required_quantity: 1,
+              },
+            ],
+          },
+          {
+            title: "Test variant 2",
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "large" }, { value: "green" }],
+            inventory_items: [
+              {
+                inventory_item_id: inventoryItemOne.id,
+              },
+              {
+                inventory_item_id: inventoryItemTwo.id,
+                required_quantity: 3,
+              },
+            ],
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products", payload, adminHeaders)
+        .catch((err) => {
+          return err.response
+        })
+
+      expect(response?.status).toEqual(400)
+      expect(response?.data.type).toEqual("invalid_data")
+      expect(response?.data.message).toEqual(
+        "Inventory Item associations without using the ManyToManyInventory feature flag is not supported"
       )
     })
   })

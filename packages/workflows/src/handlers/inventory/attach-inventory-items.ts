@@ -8,7 +8,8 @@ export async function attachInventoryItems({
 }: WorkflowArguments<{
   inventoryItems: {
     tag: string
-    inventoryItem: InventoryItemDTO
+    inventoryItemId: string
+    inventoryItem?: InventoryItemDTO
     requiredQuantity?: number
   }[]
 }>) {
@@ -26,9 +27,9 @@ export async function attachInventoryItems({
   }
 
   const inventoryData = data.inventoryItems.map(
-    ({ tag, inventoryItem, requiredQuantity }) => ({
+    ({ tag, inventoryItemId, requiredQuantity }) => ({
       variantId: tag,
-      inventoryItemId: inventoryItem.id,
+      inventoryItemId: inventoryItemId,
       requiredQuantity,
     })
   )

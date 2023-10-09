@@ -38,7 +38,11 @@ import {
 
 import { DistributedTransaction } from "@medusajs/orchestration"
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { FlagRouter, ManyToManyInventoryFeatureFlag } from "@medusajs/utils"
+import {
+  FlagRouter,
+  ManyToManyInventoryFeatureFlag,
+  MedusaError,
+} from "@medusajs/utils"
 import { createProducts, Workflows } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
@@ -138,6 +142,9 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const productModuleService = req.scope.resolve("productModuleService")
 
+  const isManyToManyInventoryEnabled = featureFlagRouter.isFeatureEnabled(
+    ManyToManyInventoryFeatureFlag.key
+  )
   const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
     workflows: Workflows.CreateProducts,
   })
@@ -151,6 +158,17 @@ export default async (req, res) => {
   let product
 
   if (isWorkflowEnabled && !!productModuleService) {
+    if (!isManyToManyInventoryEnabled) {
+      const hasInventoryItems = validated.variants?.some(
+        (v) => v.inventory_items !== undefined
+      )
+      if (hasInventoryItems) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Inventory Item associations without using the ManyToManyInventory feature flag is not supported"
+        )
+      }
+    }
     const createProductWorkflow = createProducts(req.scope)
 
     const input = {
@@ -305,8 +323,9 @@ class ProductOptionReq {
 }
 
 class VariantInventoryReq {
+  @IsOptional()
   @IsNumber()
-  required_quantity: number
+  required_quantity?: number
 
   @IsString()
   inventory_item_id: string
@@ -391,12 +410,10 @@ class ProductVariantReq {
   @IsArray()
   options?: ProductVariantOptionReq[] = []
 
-  @FeatureFlagDecorators(ManyToManyInventoryFeatureFlag.key, [
-    IsOptional(),
-    Type(() => VariantInventoryReq),
-    ValidateNested({ each: true }),
-    IsArray(),
-  ])
+  @IsOptional()
+  @Type(() => VariantInventoryReq)
+  @ValidateNested({ each: true })
+  @IsArray()
   inventory_items?: VariantInventoryReq[]
 }
 

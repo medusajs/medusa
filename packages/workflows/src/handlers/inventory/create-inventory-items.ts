@@ -9,6 +9,7 @@ type Result = {
   tag: string
   createdInventoryItem?: InventoryItemDTO
   inventoryItemId: string
+  requiredQuantity?: number
 }[]
 
 type InventoryItemAssociation = {
@@ -42,6 +43,7 @@ export async function createInventoryItems({
         return {
           tag: item._associationTag,
           inventoryItemId: item.existingItem.inventory_item_id,
+          requiredQuantity: item.existingItem.required_quantity,
         }
       }
 
