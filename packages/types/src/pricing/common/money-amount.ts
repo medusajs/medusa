@@ -68,8 +68,8 @@ export interface UpdateMoneyAmountDTO {
  * 
  * An object that can be used to filter money amounts.
  * 
- * @prop id - An array of strings, each being the ID of a money amount to retrieve.
- * @prop currency_code - A string or an array of strings, each being the currency code of a money amount to retrieve.
+ * @prop id - An array of strings, each being an ID to filter money amounts.
+ * @prop currency_code - A string or an array of strings, each being a currency code to filter money amounts.
  */
 export interface FilterableMoneyAmountProps
   extends BaseFilterable<FilterableMoneyAmountProps> {

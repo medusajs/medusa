@@ -150,7 +150,7 @@ export interface UpdatePriceSetDTO {
  * 
  * An object that can be used to specify filters on price sets.
  * 
- * @prop id - An array of strings, each being an ID of a price list to retrieve.
+ * @prop id - An array of strings, each being an ID to filter price sets.
  * @prop money_amounts - An object of type {@link FilterableMoneyAmountProps} that is used to filter the price sets by their associated money amounts.
  */
 export interface FilterablePriceSetProps
