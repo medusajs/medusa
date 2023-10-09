@@ -16,7 +16,11 @@ export async function upsertPaymentSessions({
 
   const cartService = container.resolve("cartService").withTransaction(manager)
 
-  await cartService.upsertPaymentSessions(cart)
+  await cartService.upsertPaymentSessions(
+    // TODO: condition for testing, remove before merge after pipe is fixed
+    // @ts-ignore
+    data.retrieveConfig?.relations[0] === "payment_sessions" ? cart.id : cart
+  )
 }
 
 upsertPaymentSessions.aliases = {

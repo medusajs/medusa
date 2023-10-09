@@ -1,6 +1,6 @@
 export type ShippingOptionDTO = {
   id?: string
-  shipping_option_id?: string
+  profile_id?: string
   order_id?: string
   claim_order_id?: string | null
   cart_id?: string

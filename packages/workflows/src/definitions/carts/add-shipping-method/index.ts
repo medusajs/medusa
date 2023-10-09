@@ -271,23 +271,30 @@ const handlers = new Map([
       ),
       compensate: pipe(
         {
-          invoke: [
-            {
-              from: AddShippingMethodWorkflowActions.prepare,
-            },
-            {
-              from: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
-              alias: "deletedShippingMethods",
-            },
-          ],
+          invoke: {
+            from: AddShippingMethodWorkflowActions.prepare,
+            alias: "input",
+          },
           merge: true,
         },
+        async function ({ data }) {
+          return {
+            alias: "cart",
+            value: {
+              id: data.input.cart.id,
+            },
+          }
+        },
+        setRetrieveConfig({
+          relations: ["payment_sessions"],
+        }),
+        CartHandlers.retrieveCart,
         // async function ({ data }) {
         //   return {
         //     alias: "cart",
         //     value: {
-        //       ...data.cart,
-        //       shipping_methods: data.deletedShippingMethods,
+        //       ...data.input.cart, // Use initial cart data
+        //       payment_sessions: data.cart.payment_sessions,
         //     },
         //   }
         // },

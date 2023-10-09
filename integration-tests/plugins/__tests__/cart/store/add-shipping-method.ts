@@ -130,15 +130,18 @@ describe("/store/carts", () => {
     })
 
     const cartAfter = await cartService.retrieve("test-cart", {
-      relations: ["shipping_methods"],
+      relations: ["shipping_methods", "payment_sessions"],
     })
 
-    expect(cartBefore.shipping_methods[0]).toEqual(
+    expect(cartAfter.shipping_methods[0]).toEqual(
       expect.objectContaining({
-        id: cartAfter.shipping_methods[0].id,
-        shipping_option_id: cartAfter.shipping_methods[0].shipping_option_id,
+        id: cartBefore.shipping_methods[0].id,
+        shipping_option_id: cartBefore.shipping_methods[0].shipping_option_id,
       })
     )
+
+    // expect(cartAfter.payment_sessions).toEqual([])
+    // expect(cartAfter.payment_session).toEqual(null)
 
     expect(errors).toEqual([
       {
