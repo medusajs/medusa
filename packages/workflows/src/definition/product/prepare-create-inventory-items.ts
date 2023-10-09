@@ -39,17 +39,19 @@ export async function prepareCreateInventoryItems({
         (acc, variant: AssociationTaggedVariant, index: number) => {
           // We need to create and/or attach inventory items to variants in two
           // cases:
-          //  1. The consuming party has specified that inventory should be
+          //  1. The consuming party has specified inventory items that should
+          //     be associated with the variant.
+          //  2. The consuming party has specified that inventory should be
           //     managed for the variant and has not provided any existing
           //     inventory items to associate the variant with.
-          //  2. The consuming party has specified inventory items that should
-          //     be associated with the variant.
           //
           // We want to carry over inventory item ids and required quantities
-          // in the case of 2. and we want to create new inventory items in The
-          // case of 1.
+          // in the case of 1. and we want to create new inventory items in The
+          // case of 2.
 
-          // Return early if we don't need to perform inventory operations.
+          // Case 1.
+          // We check if there are inventory items to associate with the variant
+          // and if so, we create an association for each inventory item.
           const itemsToAssociate = inventoryVariants?.find(
             (iv) => iv.index === index
           )
@@ -65,6 +67,9 @@ export async function prepareCreateInventoryItems({
             return acc.concat(toAssociate)
           }
 
+          // Case 2.
+          // We check if the variant has inventory management enabled and if so,
+          // we pass inventory item creation input and the variant id.
           if (!variant.manage_inventory) {
             return acc
           }
