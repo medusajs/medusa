@@ -34,11 +34,11 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-utils
+        working-directory: docs-util
 
       - name: Generate Services Reference
         run: yarn generate:reference services
-        working-directory: docs-utils/packages/scripts
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -120,11 +120,11 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-utils
+        working-directory: docs-util
 
       - name: Generate Entities Reference
         run: yarn generate:references entities
-        working-directory: docs-utils/packages/scripts
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -165,11 +165,11 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-utils
+        working-directory: docs-util
 
       - name: Generate Services Reference
         run: yarn generate:references js-client
-        working-directory: docs-utils/packages/scripts
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
