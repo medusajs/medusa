@@ -105,9 +105,7 @@ async function loadModules(modulesConfig, injectedDependencies) {
 
 async function initializeLinks(linkModules, injectedDependencies) {
   try {
-    const { initialize: initializeLinks } = await import(
-      LinkModulePackage as string
-    )
+    const { initialize: initializeLinks } = await import(LinkModulePackage)
     await initializeLinks({}, linkModules, injectedDependencies)
     return new RemoteLink()
   } catch (err) {
@@ -116,15 +114,18 @@ async function initializeLinks(linkModules, injectedDependencies) {
   }
 }
 
-async function getMigrationsFromModule(
-  module: string
+async function getMigrationsFromLinkModule(
+  linkModule: string
 ): Promise<RunMigrationFn | undefined> {
   try {
-    const { runMigrations } = await import(module)
+    const { runMigrations } = await import(linkModule)
 
     return runMigrations
   } catch (err) {
-    console.warn(`Error importing runMigrations from module - ${module}`, err)
+    console.warn(
+      `Error importing runMigrations from LinkModule - ${linkModule}`,
+      err
+    )
 
     return undefined
   }
@@ -232,7 +233,9 @@ export async function MedusaApp(
     return await remoteQuery.query(query, variables)
   }
 
-  const linkModuleMigration = await getMigrationsFromModule(LinkModulePackage)
+  const linkModuleMigration = await getMigrationsFromLinkModule(
+    LinkModulePackage
+  )
   const runMigrations = async (): Promise<void> => {
     for (const moduleName of Object.keys(allModules)) {
       const loadedModule = allModules[moduleName]
