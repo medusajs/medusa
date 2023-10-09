@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -60,7 +60,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[models/order-item-change.ts:53](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order-item-change.ts#L53)
+[models/order-item-change.ts:52](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-item-change.ts#L52)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[models/order-item-change.ts:49](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order-item-change.ts#L49)
+[models/order-item-change.ts:48](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-item-change.ts#L48)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[models/order-item-change.ts:39](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order-item-change.ts#L39)
+[models/order-item-change.ts:38](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-item-change.ts#L38)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[models/order-item-change.ts:35](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order-item-change.ts#L35)
+[models/order-item-change.ts:34](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-item-change.ts#L34)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/order-item-change.ts:46](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order-item-change.ts#L46)
+[models/order-item-change.ts:45](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-item-change.ts#L45)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[models/order-item-change.ts:42](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order-item-change.ts#L42)
+[models/order-item-change.ts:41](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-item-change.ts#L41)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/order-item-change.ts:32](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order-item-change.ts#L32)
+[models/order-item-change.ts:31](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-item-change.ts#L31)
 
 ___
 
@@ -144,7 +144,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -158,4 +158,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/order-item-change.ts:55](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order-item-change.ts#L55)
+[models/order-item-change.ts:55](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-item-change.ts#L55)
