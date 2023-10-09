@@ -10,9 +10,7 @@ import { IsInt, IsOptional, IsString } from "class-validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
 import { Type } from "class-transformer"
-import { getProductPricingWithPricingModule } from "../../../../utils/get-product-pricing-with-pricing-module"
 import { validator } from "../../../../utils/validator"
 
 /**

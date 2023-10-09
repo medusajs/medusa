@@ -17,12 +17,9 @@ import {
   PricingContext,
   ProductVariantPricing,
   TaxedPricing,
+  VariantPriceSetRes,
 } from "../types/pricing"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
-import {
-  VariantsRes,
-  removeNullish,
-} from "../utils/get-product-pricing-with-pricing-module"
 
 import { EntityManager } from "typeorm"
 import { FlagRouter } from "@medusajs/utils"
@@ -33,6 +30,7 @@ import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusi
 import { TaxServiceRate } from "../types/tax-service"
 import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
+import { removeNullish } from "../utils/remove-nullish"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -209,21 +207,24 @@ class PricingService extends TransactionBaseService {
     // const query = {
     //   product_variant_price_set: {
     //     __args: variables,
-    //     ...defaultAdminProductRemoteQueryObject,
+    //     fields: ["id", "price_set_id", "variant_id"],
+    //     price_set: {
+    //       fields: ["id"],
+    //     },
     //   },
     // }
 
-    // const {
-    //   rows: products,
-    //   metadata: { count },
-    // } = await remoteQuery(query)
+    // const pcs = await this.remoteQuery(query)
 
-    const variantPriceSets: VariantsRes[] = await this.remoteQuery(
+    // console.warn(pcs)
+
+    const variantPriceSets: VariantPriceSetRes[] = await this.remoteQuery(
       priceSetQuery,
       {
         context: variables,
       }
     )
+    // console.warn(JSON.stringify(variantPriceSets, null, 2))
 
     const variantIdToPriceSetIdsMap = new Map(
       variantPriceSets.map((variantPriceSet) => {
