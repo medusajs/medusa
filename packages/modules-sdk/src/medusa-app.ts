@@ -54,6 +54,7 @@ export type SharedResources = {
 
 async function loadModules(modulesConfig, injectedDependencies) {
   const allModules = {}
+
   await Promise.all(
     Object.keys(modulesConfig).map(async (moduleName) => {
       const mod = modulesConfig[moduleName]
@@ -187,7 +188,6 @@ export async function MedusaApp(
   notFound?: Record<string, Record<string, string>>
   runMigrations: () => Promise<void>
 }> {
-  const moduleMigrationScripts: RunMigrationFn[] = []
   const modules: MedusaModuleConfig =
     modulesConfig ??
     (
@@ -221,22 +221,6 @@ export async function MedusaApp(
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
 
-  for (const module of Object.keys(modules)) {
-    const moduleMigrationScript = await getMigrationsFromModule(module)
-
-    if (moduleMigrationScript) {
-      moduleMigrationScripts.push(moduleMigrationScript)
-    }
-  }
-
-  const linkModuleMigrationScript = await getMigrationsFromModule(
-    LinkModulePackage
-  )
-
-  if (linkModuleMigrationScript) {
-    moduleMigrationScripts.push(linkModuleMigrationScript)
-  }
-
   const remoteQuery = new RemoteQuery({
     servicesConfig,
     customRemoteFetchData: remoteFetchData,
@@ -248,10 +232,19 @@ export async function MedusaApp(
     return await remoteQuery.query(query, variables)
   }
 
+  const linkModuleMigration = await getMigrationsFromModule(LinkModulePackage)
   const runMigrations = async (): Promise<void> => {
-    for (const moduleMigrationScript of moduleMigrationScripts) {
-      await moduleMigrationScript()
+    for (const moduleName of Object.keys(allModules)) {
+      const loadedModule = allModules[moduleName]
+
+      await MedusaModule.migrateUp(
+        loadedModule.definition.key,
+        loadedModule.resolutionPath,
+        loadedModule.options
+      )
     }
+
+    linkModuleMigration && (await linkModuleMigration())
   }
 
   return {
