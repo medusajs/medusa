@@ -14,14 +14,10 @@ class Currency {
   @Property({ columnType: "text" })
   name: string
 
-  // @Property({ persist: false })
-  // get includes_tax() {
-  //   // TODO: This comes from a feature flag
-  //   // Figure out how we're handling FF in modules
-  //   // For now, returning default as true
-  //   // This should also not fall on the hands of the model
-  //   return true
-  // }
+  // TODO: This is added here to make the schema compatible
+  // with the core. Remove this when core is no longer running migrations
+  @Property({ columnType: "boolean", nullable: true })
+  includes_tax?: boolean
 }
 
 export default Currency

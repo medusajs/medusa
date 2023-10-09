@@ -42,6 +42,14 @@ class MoneyAmount {
   @Property({ columnType: "numeric", nullable: true })
   max_quantity?: number | null
 
+  @Property({ columnType: "text", nullable: true })
+  price_list_id?: string
+
+  // TODO: This is added here to make the schema compatible
+  // with the core. Remove this when core is no longer running migrations
+  @Property({ columnType: "text", nullable: true })
+  region_id?: string
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ma")

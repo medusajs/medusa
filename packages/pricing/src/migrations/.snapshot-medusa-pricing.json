@@ -41,6 +41,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "includes_tax": {
+          "name": "includes_tax",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "boolean"
         }
       },
       "name": "currency",
@@ -105,6 +114,24 @@
           "primary": false,
           "nullable": true,
           "mappedType": "decimal"
+        },
+        "price_list_id": {
+          "name": "price_list_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "region_id": {
+          "name": "region_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "money_amount",
