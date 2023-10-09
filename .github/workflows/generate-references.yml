@@ -34,11 +34,11 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-utils
+        working-directory: docs-util
 
       - name: Generate Services Reference
         run: yarn generate:reference services
-        working-directory: docs-utils/packages/scripts
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -48,7 +48,7 @@ jobs:
           title: "chore(docs): Generated Services Reference (automated)"
           labels: "type: chore"
           add-paths: www/apps/docs/content/references/services/**
-          branch: "chore/generate-services"
+          branch: "docs/generate-services"
           branch-suffix: "timestamp"
   api:
     runs-on: ubuntu-latest
@@ -89,7 +89,7 @@ jobs:
           title: "chore(docs): Updated API Reference"
           labels: "type: chore"
           add-paths: www/apps/api-reference/specs
-          branch: "chore/generate-api-ref"
+          branch: "docs/generate-api-ref"
           branch-suffix: "timestamp"
   entities:
     runs-on: ubuntu-latest
@@ -120,11 +120,11 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-utils
+        working-directory: docs-util
 
       - name: Generate Entities Reference
-        run: yarn generate:references entities
-        working-directory: docs-utils/packages/scripts
+        run: yarn generate:reference entities
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -134,7 +134,7 @@ jobs:
           title: "chore(docs): Generated Entities Reference (automated)"
           labels: "type: chore"
           add-paths: www/apps/docs/content/references/entities/**
-          branch: "chore/generate-entities"
+          branch: "docs/generate-entities"
           branch-suffix: "timestamp"
   js-client:
     runs-on: ubuntu-latest
@@ -165,11 +165,11 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-utils
+        working-directory: docs-util
 
       - name: Generate Services Reference
-        run: yarn generate:references js-client
-        working-directory: docs-utils/packages/scripts
+        run: yarn generate:reference js-client
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -179,5 +179,5 @@ jobs:
           title: "chore(docs): Generated JS Client Reference"
           labels: "type: chore"
           add-paths: www/apps/docs/content/references/js-client/**
-          branch: "chore/generate-js-client"
+          branch: "docs/generate-js-client"
           branch-suffix: "timestamp"
