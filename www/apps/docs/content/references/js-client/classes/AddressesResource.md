@@ -10,7 +10,7 @@
 
 ### addAddress
 
-▸ **addAddress**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersRes`](../modules/internal.md#storecustomersres)\>
+▸ **addAddress**(`payload`, `customHeaders?`): `ResponsePromise`<`StoreCustomersRes`\>
 
 Adds an address to a customers saved addresses
 
@@ -18,22 +18,22 @@ Adds an address to a customers saved addresses
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`StorePostCustomersCustomerAddressesReq`](internal.StorePostCustomersCustomerAddressesReq.md) | contains information to create an address |
+| `payload` | `StorePostCustomersCustomerAddressesReq` | contains information to create an address |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersRes`](../modules/internal.md#storecustomersres)\>
+`ResponsePromise`<`StoreCustomersRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/addresses.ts:16](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/addresses.ts#L16)
+[addresses.ts:16](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/addresses.ts#L16)
 
 ___
 
 ### deleteAddress
 
-▸ **deleteAddress**(`address_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersRes`](../modules/internal.md#storecustomersres)\>
+▸ **deleteAddress**(`address_id`, `customHeaders?`): `ResponsePromise`<`StoreCustomersRes`\>
 
 Deletes an address of a customer
 
@@ -46,17 +46,17 @@ Deletes an address of a customer
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersRes`](../modules/internal.md#storecustomersres)\>
+`ResponsePromise`<`StoreCustomersRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/addresses.ts:30](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/addresses.ts#L30)
+[addresses.ts:30](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/addresses.ts#L30)
 
 ___
 
 ### updateAddress
 
-▸ **updateAddress**(`address_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersRes`](../modules/internal.md#storecustomersres)\>
+▸ **updateAddress**(`address_id`, `payload`, `customHeaders?`): `ResponsePromise`<`StoreCustomersRes`\>
 
 Update an address of a customer
 
@@ -65,13 +65,13 @@ Update an address of a customer
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `address_id` | `string` | id of customer |
-| `payload` | [`StorePostCustomersCustomerAddressesAddressReq`](internal.StorePostCustomersCustomerAddressesAddressReq.md) | address update |
+| `payload` | `StorePostCustomersCustomerAddressesAddressReq` | address update |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersRes`](../modules/internal.md#storecustomersres)\>
+`ResponsePromise`<`StoreCustomersRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/addresses.ts:45](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/addresses.ts#L45)
+[addresses.ts:45](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/addresses.ts#L45)

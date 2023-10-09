@@ -10,122 +10,118 @@
 
 ### addCountry
 
-▸ **addCountry**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
+▸ **addCountry**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminRegionsRes`\>
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | region id |
+| `payload` | `AdminPostRegionsRegionCountriesReq` | country data |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
+
+#### Returns
+
+`ResponsePromise`<`AdminRegionsRes`\>
+
+updated region
 
 **`Description`**
 
 adds a country to the list of countries in a region
 
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `id` | `string` | region id |
-| `payload` | [`AdminPostRegionsRegionCountriesReq`](internal-22.AdminPostRegionsRegionCountriesReq.md) | country data |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
-
-#### Returns
-
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
-
-updated region
-
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:103](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L103)
+[admin/regions.ts:103](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L103)
 
 ___
 
 ### addFulfillmentProvider
 
-▸ **addFulfillmentProvider**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
+▸ **addFulfillmentProvider**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminRegionsRes`\>
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | region id |
+| `payload` | `AdminPostRegionsRegionFulfillmentProvidersReq` | fulfillment provider data |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
+
+#### Returns
+
+`ResponsePromise`<`AdminRegionsRes`\>
+
+updated region
 
 **`Description`**
 
 adds a fulfillment provider to a region
 
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `id` | `string` | region id |
-| `payload` | [`AdminPostRegionsRegionFulfillmentProvidersReq`](internal-22.AdminPostRegionsRegionFulfillmentProvidersReq.md) | fulfillment provider data |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
-
-#### Returns
-
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
-
-updated region
-
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:135](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L135)
+[admin/regions.ts:135](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L135)
 
 ___
 
 ### addPaymentProvider
 
-▸ **addPaymentProvider**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
-
-**`Description`**
-
-adds a payment provider to a region
+▸ **addPaymentProvider**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminRegionsRes`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | region id |
-| `payload` | [`AdminPostRegionsRegionPaymentProvidersReq`](internal-22.AdminPostRegionsRegionPaymentProvidersReq.md) | payment provider data |
+| `payload` | `AdminPostRegionsRegionPaymentProvidersReq` | payment provider data |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
+`ResponsePromise`<`AdminRegionsRes`\>
 
 updated region
 
+**`Description`**
+
+adds a payment provider to a region
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:181](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L181)
+[admin/regions.ts:181](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L181)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
-
-**`Description`**
-
-creates a region.
+▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminRegionsRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostRegionsReq`](internal-22.AdminPostRegionsReq.md) |
+| `payload` | `AdminPostRegionsReq` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
+`ResponsePromise`<`AdminRegionsRes`\>
 
 created region.
 
+**`Description`**
+
+creates a region.
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:24](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L24)
+[admin/regions.ts:24](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L24)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
-
-**`Description`**
-
-deletes a region
+▸ **delete**(`id`, `customHeaders?`): `ResponsePromise`<`DeleteResponse`\>
 
 #### Parameters
 
@@ -136,23 +132,23 @@ deletes a region
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
+`ResponsePromise`<`DeleteResponse`\>
 
 Deleted response
 
+**`Description`**
+
+deletes a region
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:54](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L54)
+[admin/regions.ts:54](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L54)
 
 ___
 
 ### deleteCountry
 
-▸ **deleteCountry**(`id`, `country_code`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
-
-**`Description`**
-
-remove a country from a region's list of coutnries
+▸ **deleteCountry**(`id`, `country_code`, `customHeaders?`): `ResponsePromise`<`AdminRegionsRes`\>
 
 #### Parameters
 
@@ -164,23 +160,23 @@ remove a country from a region's list of coutnries
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
+`ResponsePromise`<`AdminRegionsRes`\>
 
 updated region
 
+**`Description`**
+
+remove a country from a region's list of coutnries
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:119](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L119)
+[admin/regions.ts:119](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L119)
 
 ___
 
 ### deleteFulfillmentProvider
 
-▸ **deleteFulfillmentProvider**(`id`, `provider_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
-
-**`Description`**
-
-remove a fulfillment provider from a region
+▸ **deleteFulfillmentProvider**(`id`, `provider_id`, `customHeaders?`): `ResponsePromise`<`AdminRegionsRes`\>
 
 #### Parameters
 
@@ -192,23 +188,23 @@ remove a fulfillment provider from a region
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
+`ResponsePromise`<`AdminRegionsRes`\>
 
 updated region
 
+**`Description`**
+
+remove a fulfillment provider from a region
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:151](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L151)
+[admin/regions.ts:151](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L151)
 
 ___
 
 ### deletePaymentProvider
 
-▸ **deletePaymentProvider**(`id`, `provider_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
-
-**`Description`**
-
-removes a payment provider from a region
+▸ **deletePaymentProvider**(`id`, `provider_id`, `customHeaders?`): `ResponsePromise`<`AdminRegionsRes`\>
 
 #### Parameters
 
@@ -220,50 +216,50 @@ removes a payment provider from a region
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
+`ResponsePromise`<`AdminRegionsRes`\>
 
 updated region
 
+**`Description`**
+
+removes a payment provider from a region
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:197](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L197)
+[admin/regions.ts:197](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L197)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsListRes`](../modules/internal-22.md#adminregionslistres)\>
-
-**`Description`**
-
-lists regions matching a query
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminRegionsListRes`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | [`AdminGetRegionsParams`](internal-22.AdminGetRegionsParams.md) | query for searching regions |
+| `query?` | `AdminGetRegionsParams` | query for searching regions |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsListRes`](../modules/internal-22.md#adminregionslistres)\>
+`ResponsePromise`<`AdminRegionsListRes`\>
 
 a list of regions matching the query.
 
+**`Description`**
+
+lists regions matching a query
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:82](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L82)
+[admin/regions.ts:82](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L82)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
-
-**`Description`**
-
-get a region
+▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`AdminRegionsRes`\>
 
 #### Parameters
 
@@ -274,23 +270,23 @@ get a region
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
+`ResponsePromise`<`AdminRegionsRes`\>
 
 the region with the given id
 
+**`Description`**
+
+get a region
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:68](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L68)
+[admin/regions.ts:68](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L68)
 
 ___
 
 ### retrieveFulfillmentOptions
 
-▸ **retrieveFulfillmentOptions**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGetRegionsRegionFulfillmentOptionsRes`](internal-22.AdminGetRegionsRegionFulfillmentOptionsRes.md)\>
-
-**`Description`**
-
-retrieves the list of fulfillment options available in a region
+▸ **retrieveFulfillmentOptions**(`id`, `customHeaders?`): `ResponsePromise`<`AdminGetRegionsRegionFulfillmentOptionsRes`\>
 
 #### Parameters
 
@@ -301,38 +297,42 @@ retrieves the list of fulfillment options available in a region
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminGetRegionsRegionFulfillmentOptionsRes`](internal-22.AdminGetRegionsRegionFulfillmentOptionsRes.md)\>
+`ResponsePromise`<`AdminGetRegionsRegionFulfillmentOptionsRes`\>
 
 list of fulfillment options
 
+**`Description`**
+
+retrieves the list of fulfillment options available in a region
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:166](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L166)
+[admin/regions.ts:166](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L166)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
-
-**`Description`**
-
-updates a region
+▸ **update**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminRegionsRes`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the region to update. |
-| `payload` | [`AdminPostRegionsRegionReq`](internal-22.AdminPostRegionsRegionReq.md) | update to apply to region. |
+| `payload` | `AdminPostRegionsRegionReq` | update to apply to region. |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRegionsRes`](internal-22.AdminRegionsRes.md)\>
+`ResponsePromise`<`AdminRegionsRes`\>
 
 the updated region.
 
+**`Description`**
+
+updates a region
+
 #### Defined in
 
-[medusa-js/src/resources/admin/regions.ts:39](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/regions.ts#L39)
+[admin/regions.ts:39](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/regions.ts#L39)

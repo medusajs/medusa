@@ -10,28 +10,28 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-29.md#adminswapslistres)\>
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminSwapsListRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetSwapsParams`](internal-29.AdminGetSwapsParams.md) |
+| `query?` | `AdminGetSwapsParams` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-29.md#adminswapslistres)\>
+`ResponsePromise`<`AdminSwapsListRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/swaps.ts#L19)
+[admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/swaps.ts#L19)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-29.md#adminswapsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`AdminSwapsRes`\>
 
 #### Parameters
 
@@ -42,8 +42,8 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-29.md#adminswapsres)\>
+`ResponsePromise`<`AdminSwapsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/swaps.ts#L11)
+[admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/swaps.ts#L11)

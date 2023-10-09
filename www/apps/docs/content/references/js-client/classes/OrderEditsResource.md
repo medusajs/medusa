@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[medusa-js/src/resources/order-edits.ts:26](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/order-edits.ts#L26)
+[order-edits.ts:26](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/order-edits.ts#L26)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`StorePostOrderEditsOrderEditDecline`](internal-40.StorePostOrderEditsOrderEditDecline.md) |
+| `payload` | `StorePostOrderEditsOrderEditDecline` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
@@ -47,13 +47,13 @@ ___
 
 #### Defined in
 
-[medusa-js/src/resources/order-edits.ts:17](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/order-edits.ts#L17)
+[order-edits.ts:17](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/order-edits.ts#L17)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrderEditsRes`](../modules/internal-40.md#storeordereditsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`StoreOrderEditsRes`\>
 
 #### Parameters
 
@@ -64,8 +64,8 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreOrderEditsRes`](../modules/internal-40.md#storeordereditsres)\>
+`ResponsePromise`<`StoreOrderEditsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/order-edits.ts:9](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/order-edits.ts#L9)
+[order-edits.ts:9](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/order-edits.ts#L9)

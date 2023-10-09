@@ -14,13 +14,13 @@
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:15](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L15)
+[carts.ts:15](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L15)
 
 ## Methods
 
 ### addShippingMethod
 
-▸ **addShippingMethod**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **addShippingMethod**(`cart_id`, `payload`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Adds a shipping method to cart
 
@@ -29,28 +29,28 @@ Adds a shipping method to cart
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cart_id` | `string` | Id of cart |
-| `payload` | [`StorePostCartsCartShippingMethodReq`](internal-35.StorePostCartsCartShippingMethodReq.md) | Containg id of shipping option and optional data |
+| `payload` | `StorePostCartsCartShippingMethodReq` | Contains id of shipping option and optional data |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:24](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L24)
+[carts.ts:24](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L24)
 
 ___
 
 ### complete
 
-▸ **complete**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCompleteCartRes`](../modules/internal-35.md#storecompletecartres)\>
+▸ **complete**(`cart_id`, `customHeaders?`): `ResponsePromise`<`StoreCompleteCartRes`\>
 
 Completes a cart.
 Payment authorization is attempted and if more work is required, we simply return the cart for further updates.
 If payment is authorized and order is not yet created, we make sure to do so.
 The completion of a cart can be performed idempotently with a provided header Idempotency-Key.
-If not provuided, we will generate one for the request.
+If not provided, we will generate one for the request.
 
 #### Parameters
 
@@ -61,17 +61,17 @@ If not provuided, we will generate one for the request.
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCompleteCartRes`](../modules/internal-35.md#storecompletecartres)\>
+`ResponsePromise`<`StoreCompleteCartRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:43](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L43)
+[carts.ts:43](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L43)
 
 ___
 
 ### create
 
-▸ **create**(`payload?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **create**(`payload?`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Creates a cart
 
@@ -79,22 +79,22 @@ Creates a cart
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload?` | [`StorePostCartReq`](internal-35.StorePostCartReq.md) | is optional and can contain a region_id and items. The cart will contain the payload, if provided. Otherwise it will be empty |
+| `payload?` | `StorePostCartReq` | is optional and can contain a region_id and items. The cart will contain the payload, if provided. Otherwise it will be empty |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:58](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L58)
+[carts.ts:58](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L58)
 
 ___
 
 ### createPaymentSessions
 
-▸ **createPaymentSessions**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **createPaymentSessions**(`cart_id`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Creates payment sessions.
 Initializes the payment sessions that can be used to pay for the items of the cart.
@@ -109,17 +109,17 @@ This is usually called when a customer proceeds to checkout.
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:74](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L74)
+[carts.ts:74](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L74)
 
 ___
 
 ### deleteDiscount
 
-▸ **deleteDiscount**(`cart_id`, `code`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **deleteDiscount**(`cart_id`, `code`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Removes a discount from cart.
 
@@ -133,17 +133,17 @@ Removes a discount from cart.
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:89](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L89)
+[carts.ts:89](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L89)
 
 ___
 
 ### deletePaymentSession
 
-▸ **deletePaymentSession**(`cart_id`, `provider_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **deletePaymentSession**(`cart_id`, `provider_id`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Removes a payment session from a cart.
 Can be useful in case a payment has failed
@@ -158,17 +158,17 @@ Can be useful in case a payment has failed
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:106](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L106)
+[carts.ts:106](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L106)
 
 ___
 
 ### refreshPaymentSession
 
-▸ **refreshPaymentSession**(`cart_id`, `provider_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **refreshPaymentSession**(`cart_id`, `provider_id`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Refreshes a payment session.
 
@@ -182,17 +182,17 @@ Refreshes a payment session.
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:122](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L122)
+[carts.ts:122](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L122)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **retrieve**(`cart_id`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Retrieves a cart
 
@@ -205,17 +205,17 @@ Retrieves a cart
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:137](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L137)
+[carts.ts:137](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L137)
 
 ___
 
 ### setPaymentSession
 
-▸ **setPaymentSession**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **setPaymentSession**(`cart_id`, `payload`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Refreshes a payment session.
 
@@ -224,22 +224,22 @@ Refreshes a payment session.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cart_id` | `string` | is required |
-| `payload` | [`StorePostCartsCartPaymentSessionReq`](internal-35.StorePostCartsCartPaymentSessionReq.md) | the provider id of the session e.g. "stripe" |
+| `payload` | `StorePostCartsCartPaymentSessionReq` | the provider id of the session e.g. "stripe" |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:152](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L152)
+[carts.ts:152](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L152)
 
 ___
 
 ### update
 
-▸ **update**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **update**(`cart_id`, `payload`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Updates a cart
 
@@ -248,22 +248,22 @@ Updates a cart
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cart_id` | `string` | is required |
-| `payload` | [`StorePostCartsCartReq`](internal-35.StorePostCartsCartReq.md) | is required and can contain region_id, email, billing and shipping address |
+| `payload` | `StorePostCartsCartReq` | is required and can contain region_id, email, billing and shipping address |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:168](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L168)
+[carts.ts:168](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L168)
 
 ___
 
 ### updatePaymentSession
 
-▸ **updatePaymentSession**(`cart_id`, `provider_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+▸ **updatePaymentSession**(`cart_id`, `provider_id`, `payload`, `customHeaders?`): `ResponsePromise`<`StoreCartsRes`\>
 
 Updates the payment method
 
@@ -273,13 +273,13 @@ Updates the payment method
 | :------ | :------ | :------ |
 | `cart_id` | `string` | is required |
 | `provider_id` | `string` | is required |
-| `payload` | [`StorePostCartsCartPaymentSessionUpdateReq`](internal-35.StorePostCartsCartPaymentSessionUpdateReq.md) | is required |
+| `payload` | `StorePostCartsCartPaymentSessionUpdateReq` | is required |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
+`ResponsePromise`<`StoreCartsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/carts.ts:185](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/carts.ts#L185)
+[carts.ts:185](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/carts.ts#L185)

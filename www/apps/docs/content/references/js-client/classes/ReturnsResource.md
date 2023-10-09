@@ -10,7 +10,7 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreReturnsRes`](../modules/internal-49.md#storereturnsres)\>
+▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`StoreReturnsRes`\>
 
 Creates a return request
 
@@ -18,13 +18,13 @@ Creates a return request
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`StorePostReturnsReq`](internal-49.StorePostReturnsReq.md) | details needed to create a return |
+| `payload` | `StorePostReturnsReq` | details needed to create a return |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreReturnsRes`](../modules/internal-49.md#storereturnsres)\>
+`ResponsePromise`<`StoreReturnsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/returns.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/returns.ts#L12)
+[returns.ts:12](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/returns.ts#L12)

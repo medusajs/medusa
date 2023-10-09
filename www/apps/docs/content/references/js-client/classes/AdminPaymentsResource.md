@@ -10,7 +10,7 @@
 
 ### capturePayment
 
-▸ **capturePayment**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentRes`](../modules/internal-16.md#adminpaymentres)\>
+▸ **capturePayment**(`id`, `customHeaders?`): `ResponsePromise`<`AdminPaymentRes`\>
 
 #### Parameters
 
@@ -21,52 +21,52 @@
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentRes`](../modules/internal-16.md#adminpaymentres)\>
+`ResponsePromise`<`AdminPaymentRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payments.ts:27](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payments.ts#L27)
+[admin/payments.ts:27](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/payments.ts#L27)
 
 ___
 
 ### refundPayment
 
-▸ **refundPayment**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRefundRes`](../modules/internal-16.md#adminrefundres)\>
+▸ **refundPayment**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminRefundRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostPaymentRefundsReq`](internal-16.AdminPostPaymentRefundsReq.md) |
+| `payload` | `AdminPostPaymentRefundsReq` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminRefundRes`](../modules/internal-16.md#adminrefundres)\>
+`ResponsePromise`<`AdminRefundRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payments.ts:35](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payments.ts#L35)
+[admin/payments.ts:35](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/payments.ts#L35)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentRes`](../modules/internal-16.md#adminpaymentres)\>
+▸ **retrieve**(`id`, `query?`, `customHeaders?`): `ResponsePromise`<`AdminPaymentRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `query?` | [`GetPaymentsParams`](internal-16.GetPaymentsParams.md) |
+| `query?` | `GetPaymentsParams` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentRes`](../modules/internal-16.md#adminpaymentres)\>
+`ResponsePromise`<`AdminPaymentRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payments.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payments.ts#L12)
+[admin/payments.ts:12](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/payments.ts#L12)

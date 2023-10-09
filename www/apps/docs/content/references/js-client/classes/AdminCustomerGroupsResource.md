@@ -10,7 +10,7 @@
 
 ### addCustomers
 
-▸ **addCustomers**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+▸ **addCustomers**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 Add multiple customers to a customer group.
 
@@ -19,22 +19,22 @@ Add multiple customers to a customer group.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | customer group id |
-| `payload` | [`AdminPostCustomerGroupsGroupCustomersBatchReq`](internal-5.AdminPostCustomerGroupsGroupCustomersBatchReq.md) | an object which contains an array of customer ids which will be added to the group |
+| `payload` | `AdminPostCustomerGroupsGroupCustomersBatchReq` | an object which contains an array of customer ids which will be added to the group |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+`ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customer-groups.ts:112](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customer-groups.ts#L112)
+[admin/customer-groups.ts:112](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/customer-groups.ts#L112)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 Create a customer group.
 
@@ -42,22 +42,22 @@ Create a customer group.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`AdminPostCustomerGroupsReq`](internal-5.AdminPostCustomerGroupsReq.md) | customer group info |
+| `payload` | `AdminPostCustomerGroupsReq` | customer group info |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+`ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customer-groups.ts:26](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customer-groups.ts#L26)
+[admin/customer-groups.ts:26](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/customer-groups.ts#L26)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
+▸ **delete**(`id`, `customHeaders?`): `ResponsePromise`<`DeleteResponse`\>
 
 Deletes a customer group.
 
@@ -70,17 +70,17 @@ Deletes a customer group.
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
+`ResponsePromise`<`DeleteResponse`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customer-groups.ts:77](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customer-groups.ts#L77)
+[admin/customer-groups.ts:77](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/customer-groups.ts#L77)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsListRes`](../modules/internal-5.md#admincustomergroupslistres)\>
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminCustomerGroupsListRes`\>
 
 Lists customer groups.
 
@@ -88,22 +88,22 @@ Lists customer groups.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | [`AdminGetCustomerGroupsParams`](internal-5.AdminGetCustomerGroupsParams.md) | optional |
+| `query?` | `AdminGetCustomerGroupsParams` | optional |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsListRes`](../modules/internal-5.md#admincustomergroupslistres)\>
+`ResponsePromise`<`AdminCustomerGroupsListRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customer-groups.ts:91](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customer-groups.ts#L91)
+[admin/customer-groups.ts:91](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/customer-groups.ts#L91)
 
 ___
 
 ### listCustomers
 
-▸ **listCustomers**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersListRes`](../modules/internal-5.md#admincustomerslistres)\>
+▸ **listCustomers**(`id`, `query?`, `customHeaders?`): `ResponsePromise`<`AdminCustomersListRes`\>
 
 List and count customers that belong to provided customer groups.
 
@@ -112,22 +112,22 @@ List and count customers that belong to provided customer groups.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | customer group id |
-| `query?` | [`AdminGetCustomersParams`](internal-5.AdminGetCustomersParams.md) | params for filtering customers |
+| `query?` | `AdminGetCustomersParams` | params for filtering customers |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersListRes`](../modules/internal-5.md#admincustomerslistres)\>
+`ResponsePromise`<`AdminCustomersListRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customer-groups.ts:144](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customer-groups.ts#L144)
+[admin/customer-groups.ts:144](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/customer-groups.ts#L144)
 
 ___
 
 ### removeCustomers
 
-▸ **removeCustomers**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+▸ **removeCustomers**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 Remove multiple customers from a customer group.
 
@@ -136,22 +136,22 @@ Remove multiple customers from a customer group.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | customer group id |
-| `payload` | [`AdminDeleteCustomerGroupsGroupCustomerBatchReq`](internal-5.AdminDeleteCustomerGroupsGroupCustomerBatchReq.md) | an object which contains an array of customers ids which will be removed from the group |
+| `payload` | `AdminDeleteCustomerGroupsGroupCustomerBatchReq` | an object which contains an array of customers ids which will be removed from the group |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+`ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customer-groups.ts:128](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customer-groups.ts#L128)
+[admin/customer-groups.ts:128](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/customer-groups.ts#L128)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+▸ **retrieve**(`id`, `query?`, `customHeaders?`): `ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 Retrieves a customer group.
 
@@ -160,22 +160,22 @@ Retrieves a customer group.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | customer group id |
-| `query?` | [`AdminGetCustomerGroupsGroupParams`](internal-5.AdminGetCustomerGroupsGroupParams.md) | pass query options such as "expand", "fields" etc. |
+| `query?` | `AdminGetCustomerGroupsGroupParams` | pass query options such as "expand", "fields" etc. |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+`ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customer-groups.ts:41](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customer-groups.ts#L41)
+[admin/customer-groups.ts:41](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/customer-groups.ts#L41)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 Updates a customer group
 
@@ -184,13 +184,13 @@ Updates a customer group
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | customer group id |
-| `payload` | [`AdminPostCustomerGroupsGroupReq`](internal-5.AdminPostCustomerGroupsGroupReq.md) | data to update customer group with |
+| `payload` | `AdminPostCustomerGroupsGroupReq` | data to update customer group with |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomerGroupsRes`](../modules/internal-5.md#admincustomergroupsres)\>
+`ResponsePromise`<`AdminCustomerGroupsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customer-groups.ts:62](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customer-groups.ts#L62)
+[admin/customer-groups.ts:62](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa-js/src/resources/admin/customer-groups.ts#L62)
