@@ -258,7 +258,6 @@ export default async ({
     }
     container.register("remoteQuery", asValue(query))
   }
-  g
 
   return { container, dbConnection, app: expressApp }
 }
