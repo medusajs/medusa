@@ -480,6 +480,10 @@
     {
       "source": "/contribution-guidelines",
       "destination": "/contribution/docs"
+    },
+    {
+      "source": "/user-guide/price-lists/import",
+      "destination": "/user-guide/price-lists"
     }
   ],
   "framework": "docusaurus-2",
