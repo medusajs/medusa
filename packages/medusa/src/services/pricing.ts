@@ -206,6 +206,17 @@ class PricingService extends TransactionBaseService {
       }
     }
    `
+    // const query = {
+    //   product_variant_price_set: {
+    //     __args: variables,
+    //     ...defaultAdminProductRemoteQueryObject,
+    //   },
+    // }
+
+    // const {
+    //   rows: products,
+    //   metadata: { count },
+    // } = await remoteQuery(query)
 
     const variantPriceSets: VariantsRes[] = await this.remoteQuery(
       priceSetQuery,
@@ -244,6 +255,8 @@ class PricingService extends TransactionBaseService {
 
     if (queryContext.currency_code) {
       queryContext.currency_code = queryContext.currency_code.toUpperCase()
+    } else {
+      return new Map()
     }
 
     const prices = (await this.pricingModuleService.calculatePrices(
