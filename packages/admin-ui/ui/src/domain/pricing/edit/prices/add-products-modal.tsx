@@ -110,6 +110,7 @@ const AddProductsModal = ({
     trigger,
     handleSubmit,
     setValue,
+    setError,
     getValues,
     reset,
     formState: { isDirty },
@@ -204,6 +205,52 @@ const AddProductsModal = ({
 
   const onSubmit = handleSubmit(async (data) => {
     const prices: PricePayload[] = []
+
+    // If their is products that don't have an amount, we need to
+    // throw an error.
+
+    console.log(data)
+
+    const productPriceKeys = Object.keys(data.prices.products)
+
+    if (!productPriceKeys.length || !data.prices.products) {
+      setError("prices.products", {
+        type: "manual",
+        message: t(
+          "price-list-add-products-modal-no-prices-error",
+          "You need to set prices for at least one product"
+        ) as string,
+      })
+
+      return
+    }
+
+    // Check if there are keys in data.products but not in productPriceKeys
+    // If there are, we need to throw an error.
+    const productIds = data.products.ids
+
+    console.log(productIds, productPriceKeys)
+
+    const missingProducts = productIds.filter(
+      (id) => !productPriceKeys.includes(id)
+    )
+
+    if (missingProducts.length > 0) {
+      const res = await prompt({
+        title: t(
+          "price-list-add-products-modal-missing-prices-title",
+          "Missing prices"
+        ),
+        description: t(
+          "price-list-add-products-modal-missing-prices-description",
+          "You have not set prices for all of your selected products. Do you want to continue?"
+        ),
+      })
+
+      if (!res) {
+        return
+      }
+    }
 
     for (const productId of Object.keys(data.prices.products)) {
       const product = data.prices.products[productId]
