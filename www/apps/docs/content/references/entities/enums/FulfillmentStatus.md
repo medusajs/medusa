@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/order.ts:64](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order.ts#L64)
+[models/order.ts:56](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order.ts#L56)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/order.ts:59](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order.ts#L59)
+[models/order.ts:51](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order.ts#L51)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[models/order.ts:57](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order.ts#L57)
+[models/order.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order.ts#L49)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/order.ts:58](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order.ts#L58)
+[models/order.ts:50](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order.ts#L50)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[models/order.ts:62](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order.ts#L62)
+[models/order.ts:54](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order.ts#L54)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[models/order.ts:60](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order.ts#L60)
+[models/order.ts:52](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order.ts#L52)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[models/order.ts:65](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order.ts#L65)
+[models/order.ts:57](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order.ts#L57)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[models/order.ts:63](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order.ts#L63)
+[models/order.ts:55](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order.ts#L55)
 
 ___
 
@@ -92,4 +92,4 @@ ___
 
 #### Defined in
 
-[models/order.ts:61](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/order.ts#L61)
+[models/order.ts:53](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order.ts#L53)

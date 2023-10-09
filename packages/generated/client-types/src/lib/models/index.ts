@@ -25,6 +25,7 @@ export type { AdminDeleteCustomerGroupsGroupCustomerBatchReq } from "./AdminDele
 export type { AdminDeleteDiscountsDiscountConditionsConditionBatchReq } from "./AdminDeleteDiscountsDiscountConditionsConditionBatchReq"
 export type { AdminDeleteDiscountsDiscountConditionsConditionParams } from "./AdminDeleteDiscountsDiscountConditionsConditionParams"
 export type { AdminDeletePriceListPricesPricesReq } from "./AdminDeletePriceListPricesPricesReq"
+export type { AdminDeletePriceListsPriceListProductsPricesBatchReq } from "./AdminDeletePriceListsPriceListProductsPricesBatchReq"
 export type { AdminDeleteProductCategoriesCategoryProductsBatchParams } from "./AdminDeleteProductCategoriesCategoryProductsBatchParams"
 export type { AdminDeleteProductCategoriesCategoryProductsBatchReq } from "./AdminDeleteProductCategoriesCategoryProductsBatchReq"
 export type { AdminDeleteProductsFromCollectionReq } from "./AdminDeleteProductsFromCollectionReq"
