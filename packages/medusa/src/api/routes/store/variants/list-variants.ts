@@ -1,4 +1,3 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -6,14 +5,15 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { Type } from "class-transformer"
+import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
 import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
+import { Type } from "class-transformer"
 import { getProductPricingWithPricingModule } from "../../../../utils/get-product-pricing-with-pricing-module"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /store/variants
@@ -175,28 +175,15 @@ export default async (req, res) => {
 
   const decoratePromises: Promise<any>[] = []
 
-  if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
-    const context = await pricingService.collectPricingContext({
+  decoratePromises.push(
+    (await pricingService.setVariantPrices(variants, {
       cart_id: validated.cart_id,
-      customer_id: customer_id,
       region_id: regionId,
       currency_code: currencyCode,
+      customer_id: customer_id,
       include_discount_prices: true,
-    })
-    decoratePromises.push(
-      getProductPricingWithPricingModule(req, variants, context.price_selection)
-    )
-  } else {
-    decoratePromises.push(
-      (await pricingService.setVariantPrices(variants, {
-        cart_id: validated.cart_id,
-        region_id: regionId,
-        currency_code: currencyCode,
-        customer_id: customer_id,
-        include_discount_prices: true,
-      })) as any
-    )
-  }
+    })) as any
+  )
 
   decoratePromises.push(
     (await productVariantInventoryService.setVariantAvailability(

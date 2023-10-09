@@ -23,6 +23,8 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
       serviceName: Modules.PRODUCT,
       primaryKey: "id",
       foreignKey: "variant_id",
+      // TODO: Remove this when product module is the default product service
+      isInternalService: true,
       alias: "variant",
       args: {
         methodSuffix: "Variants",

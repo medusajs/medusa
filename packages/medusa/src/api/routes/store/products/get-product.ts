@@ -16,8 +16,8 @@ import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pri
 import { ProductVariantPricing } from "../../../../types/pricing"
 import { cleanResponseData } from "../../../../utils"
 import { defaultStoreProductRemoteQueryObject } from "./index"
-import { isDefined } from "medusa-core-utils"
 import { getProductPricingWithPricingModule } from "../../../../utils/get-product-pricing-with-pricing-module"
+import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /store/products/{id}
@@ -140,32 +140,15 @@ export default async (req, res) => {
   const decoratePromises: Promise<any>[] = []
 
   if (shouldSetPricing) {
-    if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
-      const context = await pricingService.collectPricingContext({
+    decoratePromises.push(
+      pricingService.setProductPrices([decoratedProduct], {
         cart_id: validated.cart_id,
         customer_id: customer_id,
         region_id: regionId,
         currency_code: currencyCode,
         include_discount_prices: true,
       })
-      decoratePromises.push(
-        getProductPricingWithPricingModule(
-          req,
-          decoratedProduct.variants,
-          context.price_selection
-        )
-      )
-    } else {
-      decoratePromises.push(
-        pricingService.setProductPrices([decoratedProduct], {
-          cart_id: validated.cart_id,
-          customer_id: customer_id,
-          region_id: regionId,
-          currency_code: currencyCode,
-          include_discount_prices: true,
-        })
-      )
-    }
+    )
   }
 
   if (shouldSetAvailability) {
