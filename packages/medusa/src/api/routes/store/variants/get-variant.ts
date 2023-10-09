@@ -9,10 +9,10 @@ import { IsOptional, IsString } from "class-validator"
 
 import { FindParams } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { defaultStoreVariantRelations } from "."
-import { validator } from "../../../../utils/validator"
 import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
+import { defaultStoreVariantRelations } from "."
 import { getProductPricingWithPricingModule } from "../../../../utils/get-product-pricing-with-pricing-module"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /store/variants/{id}
@@ -109,32 +109,15 @@ export default async (req, res) => {
 
   const decoratePromises: Promise<any>[] = []
 
-  if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
-    const context = await pricingService.collectPricingContext({
+  decoratePromises.push(
+    (await pricingService.setVariantPrices([variant], {
       cart_id: validated.cart_id,
       customer_id: customer_id,
       region_id: regionId,
       currency_code: currencyCode,
       include_discount_prices: true,
-    })
-    decoratePromises.push(
-      getProductPricingWithPricingModule(
-        req,
-        [variant],
-        context.price_selection
-      )
-    )
-  } else {
-    decoratePromises.push(
-      (await pricingService.setVariantPrices([variant], {
-        cart_id: validated.cart_id,
-        customer_id: customer_id,
-        region_id: regionId,
-        currency_code: currencyCode,
-        include_discount_prices: true,
-      })) as any
-    )
-  }
+    })) as any
+  )
 
   decoratePromises.push(
     (await productVariantInventoryService.setVariantAvailability(
