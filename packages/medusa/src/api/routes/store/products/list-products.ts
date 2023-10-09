@@ -25,7 +25,6 @@ import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-cha
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { defaultStoreProductRemoteQueryObject } from "./index"
-import { getProductPricingWithPricingModule } from "../../../../utils/get-product-pricing-with-pricing-module"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**

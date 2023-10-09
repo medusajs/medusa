@@ -6,18 +6,12 @@ import {
   RegionService,
 } from "../../../../services"
 import { IsOptional, IsString } from "class-validator"
-import { MoneyAmount, Product } from "../../../../models"
 
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { MedusaError } from "@medusajs/utils"
-import { PriceSelectionContext } from "../../../../interfaces"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
-import { ProductVariantPricing } from "../../../../types/pricing"
 import { cleanResponseData } from "../../../../utils"
 import { defaultStoreProductRemoteQueryObject } from "./index"
-import { getProductPricingWithPricingModule } from "../../../../utils/get-product-pricing-with-pricing-module"
-import { isDefined } from "medusa-core-utils"
 
 /**
  * @oas [get] /store/products/{id}
