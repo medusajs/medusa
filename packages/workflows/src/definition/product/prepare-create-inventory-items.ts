@@ -28,7 +28,6 @@ export async function prepareCreateInventoryItems({
   }
   products: ProductTypes.ProductDTO[]
 }>) {
-  console.log("prepareCreateInventoryItems", data)
   const taggedVariants = data.products.reduce<InventoryItemAssociation[]>(
     (acc, product: ProductTypes.ProductDTO) => {
       const inventoryVariants =
