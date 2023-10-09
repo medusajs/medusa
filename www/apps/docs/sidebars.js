@@ -1148,11 +1148,6 @@ module.exports = {
           id: "modules/price-lists/admin/manage-price-lists",
           label: "Admin: Manage Price Lists",
         },
-        {
-          type: "doc",
-          id: "modules/price-lists/admin/import-prices",
-          label: "Admin: Import Prices",
-        },
       ],
     },
     {
