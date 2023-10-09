@@ -123,7 +123,7 @@ jobs:
         working-directory: docs-util
 
       - name: Generate Entities Reference
-        run: yarn generate:references entities
+        run: yarn generate:reference entities
         working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
@@ -168,7 +168,7 @@ jobs:
         working-directory: docs-util
 
       - name: Generate Services Reference
-        run: yarn generate:references js-client
+        run: yarn generate:reference js-client
         working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
