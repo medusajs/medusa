@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path")
-const globalTypedocOptions = require("./typedoc")
+const globalTypedocOptions = require("./base")
 
 const pathPrefix = path.join(__dirname, "..", "..")
 
