@@ -13,7 +13,7 @@ export type SharedContext = {
  * 
  * @prop transactionManager - An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
  * @prop manager - An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
- * @prop isolationLeve - A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
+ * @prop isolationLevel - A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.
  * @prop enableNestedTransactions - a boolean value indicating whether nested transactions are enabled.
  * @prop transactionId - a string indicating the ID of the current transaction.
  */

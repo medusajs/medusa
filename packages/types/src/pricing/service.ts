@@ -209,6 +209,40 @@ export interface IPricingModuleService {
    *   // do something with the price sets or return them
    * }
    * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   *   
+   * async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const priceSets = await pricingService.list(
+   *     {
+   *       $and: [
+   *         {
+   *           id: priceSetIds
+   *         },
+   *         {
+   *           money_amounts: {
+   *             id: moneyAmountIds
+   *           }
+   *         }
+   *       ]
+   *     },
+   *     {
+   *       relations: ["money_amounts"],
+   *       skip,
+   *       take
+   *     }
+   *   )
+   * 
+   *   // do something with the price sets or return them
+   * }
+   * ```
    */
   list(
     filters?: FilterablePriceSetProps,
@@ -285,6 +319,40 @@ export interface IPricingModuleService {
    *   const [priceSets, count] = await pricingService.listAndCount(
    *     {
    *       id: priceSetIds
+   *     },
+   *     {
+   *       relations: ["money_amounts"],
+   *       skip,
+   *       take
+   *     }
+   *   )
+   * 
+   *   // do something with the price sets or return them
+   * }
+   * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   *   
+   * async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const [priceSets, count] = await pricingService.listAndCount(
+   *     {
+   *       $and: [
+   *         {
+   *           id: priceSetIds
+   *         },
+   *         {
+   *           money_amounts: {
+   *             id: moneyAmountIds
+   *           }
+   *         }
+   *       ]
    *     },
    *     {
    *       relations: ["money_amounts"],
@@ -826,7 +894,7 @@ export interface IPricingModuleService {
    * An object of type {@link FindConfig} used to configure how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a money amount.
    * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, with the module.
-   * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of objects of type {@link MoneyAmountDTOs}.
+   * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of objects of type {@link MoneyAmountDTO}.
    * 
    * @example
    * 
@@ -886,6 +954,38 @@ export interface IPricingModuleService {
    *   const moneyAmounts = await pricingService.listMoneyAmounts(
    *     {
    *       id: moneyAmountIds
+   *     },
+   *     {
+   *       relations: ["currency"],
+   *       skip,
+   *       take
+   *     }
+   *   )
+   * 
+   *   // do something with the money amounts or return them
+   * }
+   * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * 
+   * async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const moneyAmounts = await pricingService.listMoneyAmounts(
+   *     {
+   *       $and: [
+   *         {
+   *           id: moneyAmountIds
+   *         },
+   *         {
+   *           currency_code: currencyCode
+   *         }
+   *       ]
    *     },
    *     {
    *       relations: ["currency"],
@@ -984,6 +1084,38 @@ export interface IPricingModuleService {
    *   // do something with the money amounts or return them
    * }
    * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * 
+   * async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const [moneyAmounts, count] = await pricingService.listAndCountMoneyAmounts(
+   *     {
+   *       $and: [
+   *         {
+   *           id: moneyAmountIds
+   *         },
+   *         {
+   *           currency_code: currencyCode
+   *         }
+   *       ]
+   *     },
+   *     {
+   *       relations: ["currency"],
+   *       skip,
+   *       take
+   *     }
+   *   )
+   * 
+   *   // do something with the money amounts or return them
+   * }
+   * ```
    */
   listAndCountMoneyAmounts(
     filters?: FilterableMoneyAmountProps,
@@ -996,7 +1128,7 @@ export interface IPricingModuleService {
    *
    * @param {CreateMoneyAmountDTO[]} data - An array of objects of type {@link CreateMoneyAmountDTO} that holds the necessary data to create the money amount.
    * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, with the module.
-   * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of objects of type {@link MoneyAmountDTOs}, each being a created money amount.
+   * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of objects of type {@link MoneyAmountDTO}, each being a created money amount.
    * 
    * @example
    * import { 
@@ -1522,6 +1654,35 @@ export interface IPricingModuleService {
    *   // do something with the rule types or return them
    * }
    * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * 
+   * async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const ruleTypes = await pricingService.listRuleTypes({
+   *     $and: [
+   *       {
+   *         id: ruleTypeId
+   *       },
+   *       {
+   *         name
+   *       }
+   *     ]
+   *   }, {
+   *     select: ["name"],
+   *     skip,
+   *     take
+   *   })
+   * 
+   *   // do something with the rule types or return them
+   * }
+   * ```
    */
   listRuleTypes(
     filters?: FilterableRuleTypeProps,
@@ -1597,6 +1758,35 @@ export interface IPricingModuleService {
    *   const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({
    *     id: [
    *       ruleTypeId
+   *     ]
+   *   }, {
+   *     select: ["name"],
+   *     skip,
+   *     take
+   *   })
+   * 
+   *   // do something with the rule types or return them
+   * }
+   * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * 
+   * async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({
+   *     $and: [
+   *       {
+   *         id: ruleTypeId
+   *       },
+   *       {
+   *         name
+   *       }
    *     ]
    *   }, {
    *     select: ["name"],
@@ -1817,6 +2007,35 @@ export interface IPricingModuleService {
    *   // do something with the price set money amount rules or return them
    * }
    * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * 
+   * async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const priceSetMoneyAmountRules = await pricingService.listPriceSetMoneyAmountRules({
+   *     $and: [
+   *       {
+   *         id: ids
+   *       },
+   *       {
+   *         rule_type_id: ruleTypeId
+   *       }
+   *     ]
+   *   }, {
+   *     relations: ["price_set_money_amount"],
+   *     skip,
+   *     take
+   *   })
+   * 
+   *   // do something with the price set money amount rules or return them
+   * }
+   * ```
    */
   listPriceSetMoneyAmountRules(
     filters?: FilterablePriceSetMoneyAmountRulesProps,
@@ -1889,6 +2108,35 @@ export interface IPricingModuleService {
    * 
    *   const [priceSetMoneyAmountRules, count] = await pricingService.listAndCountPriceSetMoneyAmountRules({
    *     id: [id]
+   *   }, {
+   *     relations: ["price_set_money_amount"],
+   *     skip,
+   *     take
+   *   })
+   * 
+   *   // do something with the price set money amount rules or return them
+   * }
+   * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * 
+   * async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const [priceSetMoneyAmountRules, count] = await pricingService.listAndCountPriceSetMoneyAmountRules({
+   *     $and: [
+   *       {
+   *         id: ids
+   *       },
+   *       {
+   *         rule_type_id: ruleTypeId
+   *       }
+   *     ]
    *   }, {
    *     relations: ["price_set_money_amount"],
    *     skip,
@@ -2117,6 +2365,35 @@ export interface IPricingModuleService {
    *   // do something with the price rules or return them
    * }
    * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * 
+   * async function retrievePriceRules (ids: string[], name: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const priceRules = await pricingService.listPriceRules({
+   *     $and: [
+   *       {
+   *         id: ids
+   *       },
+   *       {
+   *         name
+   *       }
+   *     ]
+   *   }, {
+   *     relations: ["price_set"],
+   *     skip,
+   *     take
+   *   })
+   * 
+   *   // do something with the price rules or return them
+   * }
+   * ```
    */
   listPriceRules(
     filters?: FilterablePriceRuleProps,
@@ -2187,6 +2464,35 @@ export interface IPricingModuleService {
    * 
    *   const [priceRules, count] = await pricingService.listAndCountPriceRules({
    *     id: [id],
+   *   }, {
+   *     relations: ["price_set"],
+   *     skip,
+   *     take
+   *   })
+   * 
+   *   // do something with the price rules or return them
+   * }
+   * ```
+   * 
+   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * 
+   * async function retrievePriceRules (ids: string[], name: string[], skip: number, take: number) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const [priceRules, count] = await pricingService.listAndCountPriceRules({
+   *     $and: [
+   *       {
+   *         id: ids
+   *       },
+   *       {
+   *         name
+   *       }
+   *     ]
    *   }, {
    *     relations: ["price_set"],
    *     skip,
