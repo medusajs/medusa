@@ -5,6 +5,7 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
+  LoaderOptions,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
@@ -25,7 +26,11 @@ import { cleanGraphQLSchema } from "./utils"
 
 const LinkModulePackage = "@medusajs/link-modules"
 
-export type RunMigrationFn = () => Promise<void>
+export type RunMigrationFn = (
+  options: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
+  injectedDependencies?: Record<any, any>
+) => Promise<void>
+
 export type MedusaModuleConfig = {
   [key: string | Modules]:
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
@@ -153,8 +158,6 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
   }
 }
 
-type MyAsyncFunctionType = () => Promise<void>
-
 export async function MedusaApp(
   {
     sharedResourcesConfig,
@@ -187,7 +190,7 @@ export async function MedusaApp(
   ) => Promise<any>
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
-  runMigrations: () => Promise<void>
+  runMigrations: RunMigrationFn
 }> {
   const modules: MedusaModuleConfig =
     modulesConfig ??
@@ -236,7 +239,10 @@ export async function MedusaApp(
   const linkModuleMigration = await getMigrationsFromLinkModule(
     LinkModulePackage
   )
-  const runMigrations = async (): Promise<void> => {
+  const runMigrations: RunMigrationFn = async (
+    options,
+    injectedDependencies
+  ): Promise<void> => {
     for (const moduleName of Object.keys(allModules)) {
       const loadedModule = allModules[moduleName]
 
@@ -247,7 +253,8 @@ export async function MedusaApp(
       )
     }
 
-    linkModuleMigration && (await linkModuleMigration())
+    linkModuleMigration &&
+      (await linkModuleMigration(options, injectedDependencies))
   }
 
   return {
