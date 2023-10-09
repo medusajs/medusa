@@ -16,7 +16,7 @@ Object.entries(LinkableKeys).forEach(([key, value]) => {
     valueFrom: key.split("_").pop()!,
   })
 })
-export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
+export const entityToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
 export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRICING,
@@ -25,17 +25,22 @@ export const joinerConfig: ModuleJoinerConfig = {
   alias: [
     {
       name: ["price_set", "price_sets"],
+      args: {
+        entity: "PriceSet",
+      },
     },
     {
       name: ["money_amount", "money_amounts"],
       args: {
         methodSuffix: "MoneyAmounts",
+        entity: "MoneyAmount",
       },
     },
     {
       name: ["currency", "currencies"],
       args: {
         methodSuffix: "Currencies",
+        entity: "Currency",
       },
     },
   ],
