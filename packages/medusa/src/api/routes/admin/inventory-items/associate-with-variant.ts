@@ -1,9 +1,4 @@
 import {
-  FlagRouter,
-  ManyToManyInventoryFeatureFlag,
-  MedusaError,
-} from "@medusajs/utils"
-import {
   pipe,
   Handlers,
   exportWorkflow,
@@ -17,7 +12,6 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { EntityManager } from "typeorm"
-import { ProductVariantInventoryService } from "../../../../services"
 import { IsInt, IsOptional, IsString } from "class-validator"
 
 async function prepareAttachInventoryItems({ data }: WorkflowArguments) {
@@ -132,7 +126,10 @@ export default async (req, res) => {
  *   - variant_id
  * properties:
  *   variant_id:
- *     description: The ID of the variant to create the inventory item for.
+ *     description: The ID of the variant to associate the inventory item with.
+ *     type: string
+ *   required_quantity:
+ *     description: The quantity of the inventory item required to fulfill the variant.
  *     type: string
  */
 export class AdminPostInventoryItemsItemVariantsReq {
