@@ -1,35 +1,22 @@
 const path = require("path")
 const { ProductCategory } = require("@medusajs/medusa")
-const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
-const { IdMap } = require("medusa-test-utils")
-const {
-  ProductVariant,
-  ProductOptionValue,
-  MoneyAmount,
-  DiscountConditionType,
-  DiscountConditionOperator,
-} = require("@medusajs/medusa")
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const adminSeeder = require("../../../helpers/admin-seeder")
-const productSeeder = require("../../../helpers/product-seeder")
-const priceListSeeder = require("../../../helpers/price-list-seeder")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const productSeeder = require("../../../../helpers/product-seeder")
 const {
-  simpleProductFactory,
-  simpleDiscountFactory,
   simpleProductCategoryFactory,
   simpleSalesChannelFactory,
-  simpleRegionFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 
 const testProductId = "test-product"
 const testProduct1Id = "test-product1"
 const testProductFilteringId1 = "test-product_filtering_1"
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -40,6 +27,8 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
   let categoryWithoutProduct
   let nestedCategoryWithProduct
   let nested2CategoryWithProduct
+  let categoryWithMultipleProducts
+  const categoryWithMultipleProductsId = "category-with-multiple-products-id"
   const nestedCategoryWithProductId = "nested-category-with-product-id"
   const nested2CategoryWithProductId = "nested2-category-with-product-id"
   const categoryWithProductId = "category-with-product-id"
@@ -80,6 +69,17 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
         is_active: false,
         is_internal: false,
       })
+
+      categoryWithMultipleProducts = await simpleProductCategoryFactory(
+        dbConnection,
+        {
+          id: categoryWithMultipleProductsId,
+          name: "category with multiple Products",
+          products: [{ id: testProductId }, { id: testProduct1Id }],
+          is_active: true,
+          is_internal: false,
+        }
+      )
 
       nestedCategoryWithProduct = await simpleProductCategoryFactory(
         dbConnection,
@@ -124,10 +124,7 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
     it("returns a list of products in product category without category children", async () => {
       const api = useApi()
       const params = `category_id[]=${categoryWithProductId}`
-      const response = await api.get(
-        `/admin/products?${params}`,
-        adminHeaders
-      )
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(1)
@@ -138,13 +135,37 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       ])
     })
 
+    it("should return a list of products queried by category_id and q", async () => {
+      const api = useApi()
+      const productName = "Test product1"
+      // The other product under this category is with the title "Test product"
+      // By querying for "Test product1", the "Test product" should not be shown
+      const params = `category_id[]=${categoryWithMultipleProductsId}&q=${productName}&expand=categories`
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
+
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: testProduct1Id,
+          title: productName,
+          categories: [
+            expect.objectContaining({
+              id: categoryWithMultipleProductsId,
+            }),
+            expect.objectContaining({
+              id: nestedCategoryWithProductId,
+            }),
+          ],
+        }),
+      ])
+    })
+
     it("returns a list of products in product category without category children explicitly set to false", async () => {
       const api = useApi()
       const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
-      const response = await api.get(
-        `/admin/products?${params}`,
-        adminHeaders
-      )
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(1)
@@ -159,10 +180,7 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       const api = useApi()
 
       const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
-      const response = await api.get(
-        `/admin/products?${params}`,
-        adminHeaders
-      )
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(3)
@@ -185,10 +203,7 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       const api = useApi()
 
       const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
-      const response = await api.get(
-        `/admin/products?${params}`,
-        adminHeaders
-      )
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
 
       expect(response.status).toEqual(200)
       expect(response.data.products).toHaveLength(0)
@@ -207,14 +222,14 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       })
 
       const manager = dbConnection.manager
-      categoryWithProduct = await manager.create(ProductCategory, {
+      categoryWithProduct = manager.create(ProductCategory, {
         id: categoryWithProductId,
         name: "category with Product",
         products: [{ id: testProductId }],
       })
       await manager.save(categoryWithProduct)
 
-      categoryWithoutProduct = await manager.create(ProductCategory, {
+      categoryWithoutProduct = manager.create(ProductCategory, {
         id: categoryWithoutProductId,
         name: "category without product",
       })

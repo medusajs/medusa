@@ -1,5 +1,6 @@
 import { useAdminTaxRate } from "medusa-react"
 import { useContext } from "react"
+import { useTranslation } from "react-i18next"
 import Spinner from "../../../components/atoms/spinner"
 import Modal from "../../../components/molecules/modal"
 import LayeredModal, {
@@ -8,6 +9,7 @@ import LayeredModal, {
 import EditForm, { SimpleEditForm } from "./edit-form"
 
 const EditTaxRate = ({ taxRate, taxRateId, regionId, onDismiss }) => {
+  const { t } = useTranslation()
   const { isLoading, tax_rate } = useAdminTaxRate(
     taxRateId,
     {
@@ -29,7 +31,9 @@ const EditTaxRate = ({ taxRate, taxRateId, regionId, onDismiss }) => {
       <Modal.Body>
         <Modal.Header handleClose={onDismiss}>
           <div>
-            <h1 className="inter-xlarge-semibold">Edit Tax Rate</h1>
+            <h1 className="inter-xlarge-semibold">
+              {t("taxes-edit-tax-rate", "Edit Tax Rate")}
+            </h1>
           </div>
         </Modal.Header>
         {taxRate.type === "region" ? (

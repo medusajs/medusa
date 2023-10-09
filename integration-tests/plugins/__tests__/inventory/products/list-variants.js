@@ -1,21 +1,18 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
-
 const {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} = require("@medusajs/medusa")
+  bootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const { simpleProductFactory } = require("../../../../factories")
+const { simpleSalesChannelFactory } = require("../../../../factories")
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("List Variants", () => {
   let appContainer
@@ -48,6 +45,7 @@ describe("List Variants", () => {
 
   describe("Inventory Items", () => {
     const variantId = "test-variant"
+    let invItem
 
     beforeEach(async () => {
       await adminSeeder(dbConnection)
@@ -66,7 +64,9 @@ describe("List Variants", () => {
         name: "test-location",
       })
 
-      const salesChannel = await simpleSalesChannelFactory(dbConnection, {})
+      const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        is_default: true,
+      })
 
       const product = await simpleProductFactory(dbConnection, {
         variants: [{ id: variantId }],
@@ -78,9 +78,10 @@ describe("List Variants", () => {
         location.id
       )
 
-      const invItem = await inventoryService.createInventoryItem({
+      invItem = await inventoryService.createInventoryItem({
         sku: "test-sku",
       })
+
       const invItemId = invItem.id
 
       await prodVarInventoryService.attachInventoryItem(variantId, invItem.id)
@@ -91,6 +92,7 @@ describe("List Variants", () => {
         stocked_quantity: 10,
       })
     })
+
     it("Decorates inventory quantities when listing variants", async () => {
       const api = useApi()
 
@@ -101,6 +103,44 @@ describe("List Variants", () => {
       expect(listVariantsRes.data.variants[0]).toEqual(
         expect.objectContaining({ id: variantId, inventory_quantity: 10 })
       )
+    })
+
+    it("expands inventory_items when querying with expand parameter", async () => {
+      const api = useApi()
+
+      const listVariantsRes = await api.get(
+        `/admin/variants?expand=inventory_items`,
+        adminHeaders
+      )
+
+      expect(listVariantsRes.status).toEqual(200)
+      expect(listVariantsRes.data.variants.length).toEqual(1)
+      expect(listVariantsRes.data.variants[0]).toEqual(
+        expect.objectContaining({
+          id: variantId,
+          inventory_items: [
+            expect.objectContaining({
+              inventory_item_id: invItem.id,
+              variant_id: variantId,
+            }),
+          ],
+        })
+      )
+    })
+
+    it("sets availability correctly", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/store/variants?ids=${variantId}`)
+
+      expect(response.data).toEqual({
+        variants: [
+          expect.objectContaining({
+            purchasable: true,
+            inventory_quantity: 10,
+          }),
+        ],
+      })
     })
   })
 })

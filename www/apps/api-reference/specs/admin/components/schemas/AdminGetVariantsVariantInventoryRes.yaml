@@ -1,0 +1,6 @@
+type: object
+properties:
+  variant:
+    type: object
+    description: The product variant's.
+    $ref: ./VariantInventory.yaml

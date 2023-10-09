@@ -1,5 +1,19 @@
 # Change Log
 
+## 1.2.10
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+## 1.2.9
+
+### Patch Changes
+
+- [#3991](https://github.com/medusajs/medusa/pull/3991) [`eba21d9c5`](https://github.com/medusajs/medusa/commit/eba21d9c5f5fac292013cf1c39ead1d5523414d6) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa-plugin-contentful): include sku from inventory module when syncing variants and products
+
+- [#4026](https://github.com/medusajs/medusa/pull/4026) [`a91987fab`](https://github.com/medusajs/medusa/commit/a91987fab33745f9864eab21bd1c27e8e3e24571) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Remove sqlite support
+
 ## 1.2.8
 
 ### Patch Changes

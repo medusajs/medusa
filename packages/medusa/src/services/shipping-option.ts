@@ -1,28 +1,28 @@
+import { FlagRouter } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-  Cart,
-  Order,
-  ShippingMethod,
-  ShippingOption,
-  ShippingOptionPriceType,
-  ShippingOptionRequirement,
+    Cart,
+    Order,
+    ShippingMethod,
+    ShippingOption,
+    ShippingOptionPriceType,
+    ShippingOptionRequirement,
 } from "../models"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
 import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
 import { FindConfig, Selector } from "../types/common"
 import {
-  CreateShippingMethodDto,
-  CreateShippingOptionInput,
-  ShippingMethodUpdate,
-  UpdateShippingOptionInput,
-  ValidatePriceTypeAndAmountInput,
+    CreateShippingMethodDto,
+    CreateShippingOptionInput,
+    ShippingMethodUpdate,
+    UpdateShippingOptionInput,
+    ValidatePriceTypeAndAmountInput,
 } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
 
@@ -143,7 +143,7 @@ class ShippingOptionService extends TransactionBaseService {
    * @return {Promise} the result of the find operation
    */
   async list(
-    selector: Selector<ShippingMethod>,
+    selector: Selector<ShippingOption>,
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<ShippingOption[]> {
     const optRepo = this.activeManager_.withRepository(this.optionRepository_)

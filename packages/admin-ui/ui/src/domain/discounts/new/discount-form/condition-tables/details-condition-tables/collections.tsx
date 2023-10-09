@@ -1,5 +1,6 @@
 import { useAdminCollections } from "medusa-react"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import Modal from "../../../../../../components/molecules/modal"
 import { SelectableTable } from "../../../../../../components/templates/selectable-table"
 import useQueryFilters from "../../../../../../hooks/use-query-filters"
@@ -20,6 +21,7 @@ import DetailsConditionFooter from "./details-condition-footer"
 const DetailsCollectionConditionSelector = ({
   onClose,
 }: AddConditionSelectorProps) => {
+  const { t } = useTranslation()
   const params = useQueryFilters(defaultQueryProps)
 
   const { conditions } = useConditions()
@@ -65,7 +67,10 @@ const DetailsCollectionConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: "Search by title...",
+            searchPlaceholder: t(
+              "details-condition-tables-search-by-title",
+              "Search by title..."
+            ),
           }}
           resourceName="Collections"
           totalCount={count || 0}

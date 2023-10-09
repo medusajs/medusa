@@ -194,10 +194,11 @@ async function capturePaymentIfNecessary({
 }) {
   const orderService = container.resolve("orderService")
   const order = await orderService
+    .withTransaction(transactionManager)
     .retrieveByCartId(cartId)
     .catch(() => undefined)
 
-  if (order?.payment_status !== "captured") {
+  if (order && order.payment_status !== "captured") {
     await orderService
       .withTransaction(transactionManager)
       .capturePayment(order.id)
@@ -226,10 +227,12 @@ async function completeCartIfNecessary({
 
     const idempotencyKeyServiceTx =
       idempotencyKeyService.withTransaction(transactionManager)
-    let idempotencyKey = await idempotencyKeyServiceTx.retrieve({
-      request_path: "/stripe/hooks",
-      idempotency_key: eventId,
-    })
+    let idempotencyKey = await idempotencyKeyServiceTx
+      .retrieve({
+        request_path: "/stripe/hooks",
+        idempotency_key: eventId,
+      })
+      .catch(() => undefined)
 
     if (!idempotencyKey) {
       idempotencyKey = await idempotencyKeyService

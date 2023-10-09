@@ -1,24 +1,32 @@
-import { IInventoryService } from "@medusajs/types"
-import { Type } from "class-transformer"
+import {
+  DateComparisonOperator,
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
-import {
-  extendedFindParamsMixin,
-  NumericalComparisonOperator,
-} from "../../../../types/common"
+
+import { EntityManager } from "typeorm"
+import { IInventoryService } from "@medusajs/types"
+import { IsType } from "../../../../utils/validators/is-type"
+import { LineItemService } from "../../../../services"
+import { Type } from "class-transformer"
+import { joinInventoryItems } from "./utils/join-inventory-items"
+import { joinLineItems } from "./utils/join-line-items"
 
 /**
  * @oas [get] /admin/reservations
  * operationId: "GetReservations"
  * summary: "List Reservations"
- * description: "Retrieve a list of Reservations."
+ * description: "Retrieve a list of Reservations. The reservations can be filtered by fields such as `location_id` or `quantity`. The reservations can also be paginated."
  * x-authenticated: true
  * parameters:
  *   - in: query
  *     name: location_id
  *     style: form
  *     explode: false
- *     description: Location ids to search for.
+ *     description: Filter by location ID
  *     schema:
  *       type: array
  *       items:
@@ -27,7 +35,7 @@ import {
  *     name: inventory_item_id
  *     style: form
  *     explode: false
- *     description: Inventory Item ids to search for.
+ *     description: Filter by inventory item ID.
  *     schema:
  *       type: array
  *       items:
@@ -36,7 +44,7 @@ import {
  *     name: line_item_id
  *     style: form
  *     explode: false
- *     description: Line Item ids to search for.
+ *     description: Filter by line item ID.
  *     schema:
  *       type: array
  *       items:
@@ -59,10 +67,50 @@ import {
  *         gte:
  *           type: number
  *           description: filter by reservation quantity greater than or equal to this number
- *   - (query) offset=0 {integer} How many Reservations to skip in the result.
- *   - (query) limit=20 {integer} Limit the number of Reservations returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
+ *   - in: query
+ *     name: description
+ *     description: Filter by description.
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: description value to filter by.
+ *         - type: object
+ *           properties:
+ *             contains:
+ *               type: string
+ *               description: filter by reservation description containing search string.
+ *             starts_with:
+ *               type: string
+ *               description: filter by reservation description starting with search string.
+ *             ends_with:
+ *               type: string
+ *               description: filter by reservation description ending with search string.
+ *   - in: query
+ *     name: created_at
+ *     description: Filter by a creation date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - (query) offset=0 {integer} The number of reservations to skip when retrieving the reservations.
+ *   - (query) limit=20 {integer} Limit the number of reservations returned.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned reservations.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned reservations.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetReservationsParams
@@ -80,11 +128,12 @@ import {
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-categories' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/product-categories' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Reservations
  * responses:
@@ -110,11 +159,46 @@ import {
 export default async (req: Request, res: Response) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
+  const manager: EntityManager = req.scope.resolve("manager")
+
+  const { filterableFields, listConfig } = req
+
+  const relations = new Set(listConfig.relations ?? [])
+
+  const includeItems = relations.delete("line_item")
+  const includeInventoryItems = relations.delete("inventory_item")
+
+  if (listConfig.relations?.length) {
+    listConfig.relations = [...relations]
+  }
 
   const [reservations, count] = await inventoryService.listReservationItems(
-    req.filterableFields,
-    req.listConfig
+    filterableFields,
+    listConfig,
+    {
+      transactionManager: manager,
+    }
   )
+
+  const promises: Promise<any>[] = []
+
+  if (includeInventoryItems) {
+    promises.push(
+      joinInventoryItems(reservations, {
+        inventoryService,
+        manager,
+      })
+    )
+  }
+
+  if (includeItems) {
+    const lineItemService: LineItemService =
+      req.scope.resolve("lineItemService")
+
+    promises.push(joinLineItems(reservations, lineItemService))
+  }
+
+  await Promise.all(promises)
 
   const { limit, offset } = req.validatedQuery
 
@@ -125,10 +209,9 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
-  @IsArray()
-  @IsString({ each: true })
   @IsOptional()
-  location_id?: string[]
+  @IsType([String, [String]])
+  location_id?: string | string[]
 
   @IsArray()
   @IsString({ each: true })
@@ -140,8 +223,22 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   @IsOptional()
   line_item_id?: string[]
 
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  created_by?: string[]
+
   @IsOptional()
   @ValidateNested()
   @Type(() => NumericalComparisonOperator)
   quantity?: NumericalComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @IsType([StringComparisonOperator, String])
+  description?: string | StringComparisonOperator
 }

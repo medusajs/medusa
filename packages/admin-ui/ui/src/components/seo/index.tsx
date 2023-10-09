@@ -1,4 +1,5 @@
-import { Helmet } from "react-helmet"
+import React from "react"
+import { Helmet } from "react-helmet-async"
 
 const site = {
   siteMetadata: {
@@ -11,12 +12,15 @@ const site = {
 function SEO({
   description,
   lang,
-  meta,
+  meta = [],
   title,
 }: {
   description?: string
   lang?: string
-  meta?: any[]
+  meta?: React.DetailedHTMLProps<
+    React.MetaHTMLAttributes<HTMLMetaElement>,
+    HTMLMetaElement
+  >[]
   title: string
 }) {
   const metaDescription = description || site.siteMetadata.description
@@ -61,7 +65,8 @@ function SEO({
           name: `twitter:description`,
           content: metaDescription,
         },
-      ].concat(meta)}
+        ...meta,
+      ]}
     />
   )
 }

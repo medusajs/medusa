@@ -6,5 +6,8 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ProductCollection } from "./ProductCollection"
 
 export interface StoreCollectionsRes {
+  /**
+   * Product collection details.
+   */
   collection: ProductCollection
 }

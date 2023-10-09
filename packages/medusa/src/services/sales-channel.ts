@@ -68,7 +68,7 @@ class SalesChannelService extends TransactionBaseService {
 
     if (!salesChannel) {
       const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
+        .map(([key, value]) => `${key}: ${value}`)
         .join(", ")
 
       throw new MedusaError(
@@ -300,6 +300,22 @@ class SalesChannelService extends TransactionBaseService {
     }
 
     return store.default_sales_channel
+  }
+
+  /**
+   * List all product ids that belongs to the sales channels ids
+   *
+   * @param salesChannelIds
+   */
+  async listProductIdsBySalesChannelIds(
+    salesChannelIds: string | string[]
+  ): Promise<{ [salesChannelId: string]: string[] }> {
+    const salesChannelRepo = this.activeManager_.withRepository(
+      this.salesChannelRepository_
+    )
+    return await salesChannelRepo.listProductIdsBySalesChannelIds(
+      salesChannelIds
+    )
   }
 
   /**

@@ -53,6 +53,10 @@ class ManualFulfillmentService extends FulfillmentService {
   cancelFulfillment() {
     return Promise.resolve({})
   }
+
+  retrieveDocuments() {
+    return Promise.resolve([])
+  }
 }
 
 export default ManualFulfillmentService

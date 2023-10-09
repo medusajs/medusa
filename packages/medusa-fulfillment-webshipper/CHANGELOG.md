@@ -1,5 +1,27 @@
 # Change Log
 
+## 1.4.0
+
+### Minor Changes
+
+- [#4922](https://github.com/medusajs/medusa/pull/4922) [`17d91c276`](https://github.com/medusajs/medusa/commit/17d91c276a68de4d2b360335f32fcce48a16c9ec) Thanks [@olivermrbl](https://github.com/olivermrbl)! - [wip] feat(medusa): Add AbstractFulfillmentService
+
+### Patch Changes
+
+- [#4846](https://github.com/medusajs/medusa/pull/4846) [`c7b149a7b`](https://github.com/medusajs/medusa/commit/c7b149a7bc87dc4df1c78edccb36b45f19ee8e36) Thanks [@josipmatichr](https://github.com/josipmatichr)! - feat(medusa-fulfillment-webshipper): Create webshipper return order
+
+## 1.3.10
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+## 1.3.9
+
+### Patch Changes
+
+- [#3879](https://github.com/medusajs/medusa/pull/3879) [`7e213f210`](https://github.com/medusajs/medusa/commit/7e213f2106ed76449fbdfa6eda5594b59522443a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa,medusa-fulfillment-webshipper): Add missing variant + product relation on items
+
 ## 1.3.8
 
 ### Patch Changes

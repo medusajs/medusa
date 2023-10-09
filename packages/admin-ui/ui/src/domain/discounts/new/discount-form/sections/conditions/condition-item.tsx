@@ -11,6 +11,8 @@ import {
 } from "../../../../types"
 import EditConditionsModal from "../../edit-conditions-modal"
 import { useDiscountForm } from "../../form/discount-form-context"
+import { useTranslation } from "react-i18next"
+import { TFunction } from "i18next"
 
 type ConditionItemProps<Type extends DiscountConditionType> = {
   index: number
@@ -29,6 +31,7 @@ const ConditionItem = <Type extends DiscountConditionType>({
   setCondition,
   items,
 }: ConditionItemProps<Type>) => {
+  const { t } = useTranslation()
   const queryParams = useMemo(() => {
     switch (type) {
       case DiscountConditionType.PRODUCTS:
@@ -173,7 +176,7 @@ const ConditionItem = <Type extends DiscountConditionType>({
             </Badge>
           </div>
           <div className="flex w-full flex-1 flex-col justify-center truncate">
-            <div className="inter-small-semibold">{getTitle(type)}</div>
+            <div className="inter-small-semibold">{getTitle(type, t)}</div>
             <div className="inter-small-regular gap-x-xsmall flex w-full flex-1 items-center">
               <div className="gap-x-2xsmall text-grey-50 inter-small-regular flex w-full flex-1 items-center">
                 {visibleItems.map((item, i) => {
@@ -186,7 +189,11 @@ const ConditionItem = <Type extends DiscountConditionType>({
                   )
                 })}
                 {remainder > 0 && (
-                  <span className="text-grey-40 ml-2">+{remainder} more</span>
+                  <span className="text-grey-40 ml-2">
+                    {t("condition-item-remainder-more", "+{{remainder}} more", {
+                      remainder,
+                    })}
+                  </span>
                 )}
               </div>
             </div>
@@ -197,12 +204,12 @@ const ConditionItem = <Type extends DiscountConditionType>({
             forceDropdown
             actions={[
               {
-                label: "Edit",
+                label: t("conditions-edit", "Edit"),
                 onClick: () => setShowEdit(true),
                 icon: <EditIcon size={16} />,
               },
               {
-                label: "Delete condition",
+                label: t("conditions-delete-condition", "Delete condition"),
                 onClick: () =>
                   updateCondition({
                     type,
@@ -223,18 +230,18 @@ const ConditionItem = <Type extends DiscountConditionType>({
   )
 }
 
-const getTitle = (type: DiscountConditionType) => {
+const getTitle = (type: DiscountConditionType, t: TFunction) => {
   switch (type) {
     case DiscountConditionType.PRODUCTS:
-      return "Product"
+      return t("conditions-product", "Product")
     case DiscountConditionType.PRODUCT_COLLECTIONS:
-      return "Collection"
+      return t("conditions-collection", "Collection")
     case DiscountConditionType.PRODUCT_TAGS:
-      return "Tag"
+      return t("conditions-tag", "Tag")
     case DiscountConditionType.CUSTOMER_GROUPS:
-      return "Customer group"
+      return t("conditions-customer-group", "Customer group")
     case DiscountConditionType.PRODUCT_TYPES:
-      return "Type"
+      return t("conditions-type", "Type")
   }
 }
 

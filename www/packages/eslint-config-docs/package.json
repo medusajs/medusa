@@ -1,0 +1,24 @@
+{
+  "name": "eslint-config-docs",
+  "license": "MIT",
+  "version": "0.0.0",
+  "private": true,
+  "main": "base.js",
+  "dependencies": {
+    "@babel/eslint-parser": "^7.22.15",
+    "@docusaurus/eslint-plugin": "latest",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-next": "latest",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-config-turbo": "^1.10.12",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "next": "latest"
+  },
+  "devDependencies": {
+    "eslint": "^8.36.0"
+  }
+}

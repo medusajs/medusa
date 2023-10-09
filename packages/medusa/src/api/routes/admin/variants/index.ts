@@ -1,12 +1,12 @@
-import { Router } from "express"
-
-import { ProductVariant } from "../../../../models/product-variant"
-import { PaginatedResponse } from "../../../../types/common"
-import { PricedVariant } from "../../../../types/pricing"
 import middlewares, { transformQuery } from "../../../middlewares"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+
 import { AdminGetVariantParams } from "./get-variant"
 import { AdminGetVariantsParams } from "./list-variants"
+import { PaginatedResponse } from "../../../../types/common"
+import { PricedVariant } from "../../../../types/pricing"
+import { ProductVariant } from "../../../../models/product-variant"
+import { Router } from "express"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -81,6 +81,8 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *     - options
  *     - prices
  *     - product
+ *   totals:
+ *     - purchasable
  * required:
  *   - variants
  *   - count
@@ -89,6 +91,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  * properties:
  *   variants:
  *     type: array
+ *     description: "An array of product variant details."
  *     items:
  *       $ref: "#/components/schemas/PricedVariant"
  *   count:
@@ -96,7 +99,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of product variants skipped when retrieving the product variants.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -118,6 +121,7 @@ export type AdminVariantsListRes = PaginatedResponse & {
  *   - variant
  * properties:
  *   variant:
+ *     description: "Product variant's details."
  *     $ref: "#/components/schemas/PricedVariant"
  */
 export type AdminVariantsRes = {

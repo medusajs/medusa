@@ -1,5 +1,11 @@
 import { IInventoryService } from "@medusajs/types"
-import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
+import {
+  buildRelations,
+  buildSelects,
+  FlagRouter,
+  isDefined,
+  MedusaError,
+} from "@medusajs/utils"
 import {
   EntityManager,
   FindManyOptions,
@@ -27,6 +33,7 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
+import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -54,14 +61,7 @@ import {
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import {
-  buildQuery,
-  buildRelations,
-  buildSelects,
-  isString,
-  setMetadata,
-} from "../utils"
-import { FlagRouter } from "../utils/flag-router"
+import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
@@ -342,11 +342,9 @@ class OrderService extends TransactionBaseService {
     const totalsToSelect = select.filter((v) => totalFields.includes(v))
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
-      relationSet.add("items")
       relationSet.add("items.tax_lines")
       relationSet.add("items.adjustments")
-      relationSet.add("items.variant")
-      relationSet.add("items.variant.product")
+      relationSet.add("items.variant.product.profiles")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
       relationSet.add("swaps.additional_items.tax_lines")
@@ -637,6 +635,13 @@ class OrderService extends TransactionBaseService {
         )
       }
 
+      if (!cart.customer_id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot create an order from the cart without a customer"
+        )
+      }
+
       const { payment, region, total } = cart
 
       // Would be the case if a discount code is applied that covers the item
@@ -667,7 +672,7 @@ class OrderService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       const shippingMethods = cart.shipping_methods.map((method) => {
-        (method.tax_lines as any) = undefined
+        ;(method.tax_lines as any) = undefined
         return method
       })
 
@@ -728,7 +733,13 @@ class OrderService extends TransactionBaseService {
       let giftCardableAmountBalance = giftCardableAmount
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
-      for (const giftCard of cart.gift_cards) {
+      // Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
+      const orderedGiftCards = cart.gift_cards.sort((a, b) => {
+        const aEnd = a.ends_at ?? new Date(2100, 1, 1)
+        const bEnd = b.ends_at ?? new Date(2100, 1, 1)
+        return aEnd.getTime() - bEnd.getTime() || a.balance - b.balance
+      })
+      for (const giftCard of orderedGiftCards) {
         const newGiftCardBalance = Math.max(
           0,
           giftCard.balance - giftCardableAmountBalance
@@ -750,6 +761,10 @@ class OrderService extends TransactionBaseService {
 
         giftCardableAmountBalance =
           giftCardableAmountBalance - giftCardBalanceUsed
+
+        if (giftCardableAmountBalance == 0) {
+          break
+        }
       }
 
       const shippingOptionServiceTx =
@@ -775,7 +790,7 @@ class OrderService extends TransactionBaseService {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
-            (method.tax_lines as any) = undefined
+            ;(method.tax_lines as any) = undefined
             return shippingOptionServiceTx.updateShippingMethod(method.id, {
               order_id: order.id,
             })
@@ -845,8 +860,7 @@ class OrderService extends TransactionBaseService {
    * have been created in regards to the shipment.
    * @param orderId - the id of the order that has been shipped
    * @param fulfillmentId - the fulfillment that has now been shipped
-   * @param trackingLinks - array of tracking numebers
-   *   associated with the shipment
+   * @param trackingLinks - array of tracking numbers associated with the shipment
    * @param config - the config of the order that has been shipped
    * @return the resulting order following the update.
    */
@@ -1027,9 +1041,7 @@ class OrderService extends TransactionBaseService {
         relations: [
           "shipping_methods",
           "shipping_methods.shipping_option",
-          "items",
-          "items.variant",
-          "items.variant.product",
+          "items.variant.product.profiles",
         ],
       })
       const { shipping_methods } = order
@@ -1357,9 +1369,9 @@ class OrderService extends TransactionBaseService {
    * In a situation where the order has more than one shipping method,
    * we need to partition the order items, such that they can be sent
    * to their respective fulfillment provider.
-   * @param orderId - id of order to cancel.
+   * @param orderId - id of order to fulfil.
    * @param itemsToFulfill - items to fulfil.
-   * @param config - the config to cancel.
+   * @param config - the config to fulfil.
    * @return result of the update operation.
    */
   async createFulfillment(
@@ -1396,10 +1408,8 @@ class OrderService extends TransactionBaseService {
           "billing_address",
           "shipping_methods",
           "shipping_methods.shipping_option",
-          "items",
           "items.adjustments",
-          "items.variant",
-          "items.variant.product",
+          "items.variant.product.profiles",
           "payments",
         ],
       })
@@ -1956,8 +1966,8 @@ class OrderService extends TransactionBaseService {
    * Handles receiving a return. This will create a
    * refund to the customer. If the returned items don't match the requested
    * items the return status will be updated to requires_action. This behaviour
-   * is useful in sitautions where a custom refund amount is requested, but the
-   * retuned items are not matching the requested items. Setting the
+   * is useful in situations where a custom refund amount is requested, but the
+   * returned items are not matching the requested items. Setting the
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
    * @param orderId - the order to return.

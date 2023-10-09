@@ -26,7 +26,7 @@ import {
   TaxProviderService,
   TotalsService,
 } from "./index"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { buildQuery, isString } from "../utils"
 
 import EventBusService from "./event-bus"
@@ -514,6 +514,7 @@ export default class OrderEditService extends TransactionBaseService {
         "items.variant",
         "region.tax_rates",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "shipping_methods.tax_lines",
       ],
     })
@@ -574,7 +575,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       let lineItem = await lineItemServiceTx.create(lineItemData)
       lineItem = await lineItemServiceTx.retrieve(lineItem.id, {
-        relations: ["variant", "variant.product"],
+        relations: ["variant.product.profiles"],
       })
 
       await this.refreshAdjustments(orderEditId)
@@ -767,13 +768,12 @@ export default class OrderEditService extends TransactionBaseService {
       orderEdit = await orderEditRepository.save(orderEdit)
 
       if (this.inventoryService_) {
-        await Promise.all(
-          lineItems.map(
-            async (lineItem) =>
-              await this.inventoryService_!.deleteReservationItemsByLineItem(
-                lineItem.id
-              )
-          )
+        const itemsIds = lineItems.map((i) => i.id)
+        await this.inventoryService_!.deleteReservationItemsByLineItem(
+          itemsIds,
+          {
+            transactionManager: manager,
+          }
         )
       }
 

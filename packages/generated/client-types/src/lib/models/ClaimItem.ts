@@ -10,7 +10,7 @@ import type { LineItem } from "./LineItem"
 import type { ProductVariant } from "./ProductVariant"
 
 /**
- * Represents a claimed item along with information about the reasons for the claim.
+ * A claim item is an item created as part of a claim. It references an item in the order that should be exchanged or refunded.
  */
 export interface ClaimItem {
   /**
@@ -18,7 +18,7 @@ export interface ClaimItem {
    */
   id: string
   /**
-   * Available if the relation `images` is expanded.
+   * The claim images that are attached to the claim item.
    */
   images?: Array<ClaimImage>
   /**
@@ -26,7 +26,7 @@ export interface ClaimItem {
    */
   claim_order_id: string
   /**
-   * A claim order object. Available if the relation `claim_order` is expanded.
+   * The details of the claim this item belongs to.
    */
   claim_order?: ClaimOrder | null
   /**
@@ -34,7 +34,7 @@ export interface ClaimItem {
    */
   item_id: string
   /**
-   * Available if the relation `item` is expanded.
+   * The details of the line item in the original order that this claim item refers to.
    */
   item?: LineItem | null
   /**
@@ -42,7 +42,7 @@ export interface ClaimItem {
    */
   variant_id: string
   /**
-   * A variant object. Available if the relation `variant` is expanded.
+   * The details of the product variant to potentially replace the item in the original order.
    */
   variant?: ProductVariant | null
   /**
@@ -58,7 +58,7 @@ export interface ClaimItem {
    */
   quantity: number
   /**
-   * User defined tags for easy filtering and grouping. Available if the relation 'tags' is expanded.
+   * User defined tags for easy filtering and grouping.
    */
   tags?: Array<ClaimTag>
   /**

@@ -1,5 +1,5 @@
 import { EventBusTypes, IInventoryService } from "@medusajs/types"
-import { TransactionBaseService } from "@medusajs/utils"
+import { TransactionBaseService } from "../interfaces"
 import { EntityManager } from "typeorm"
 import SalesChannelLocationService from "./sales-channel-location"
 

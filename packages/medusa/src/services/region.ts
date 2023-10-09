@@ -1,21 +1,20 @@
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
+import { Country, Currency, Region } from "../models"
+import { FindConfig, Selector } from "../types/common"
+import { CreateRegionInput, UpdateRegionInput } from "../types/region"
+import { buildQuery, setMetadata } from "../utils"
 
-import { isDefined, MedusaError } from "medusa-core-utils"
-
+import { FlagRouter } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { Country, Currency, Region } from "../models"
 import { CountryRepository } from "../repositories/country"
 import { CurrencyRepository } from "../repositories/currency"
 import { FulfillmentProviderRepository } from "../repositories/fulfillment-provider"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
 import { RegionRepository } from "../repositories/region"
 import { TaxProviderRepository } from "../repositories/tax-provider"
-import { FindConfig, Selector } from "../types/common"
-import { CreateRegionInput, UpdateRegionInput } from "../types/region"
-import { buildQuery, setMetadata } from "../utils"
 import { countries } from "../utils/countries"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 import FulfillmentProviderService from "./fulfillment-provider"
 import { PaymentProviderService } from "./index"
@@ -422,7 +421,7 @@ class RegionService extends TransactionBaseService {
       this.countryRepository_
     )
 
-    const query = buildQuery({ code }, {})
+    const query = buildQuery({ iso_2: code.toLowerCase() }, {})
     const country = await countryRepository.findOne(query)
 
     if (!country) {
@@ -511,12 +510,31 @@ class RegionService extends TransactionBaseService {
       take: 10,
     }
   ): Promise<Region[]> {
+    const [regions] = await this.listAndCount(selector, config)
+    return regions
+  }
+
+  /**
+   * Lists all regions based on a query and returns them along with count
+   *
+   * @param {object} selector - query object for find
+   * @param {object} config - configuration settings
+   * @return {Promise} result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Region> = {},
+    config: FindConfig<Region> = {
+      relations: [],
+      skip: 0,
+      take: 10,
+    }
+  ): Promise<[Region[], number]> {
     const regionRepo = this.activeManager_.withRepository(
       this.regionRepository_
     )
 
     const query = buildQuery(selector, config)
-    return regionRepo.find(query)
+    return await regionRepo.findAndCount(query)
   }
 
   /**

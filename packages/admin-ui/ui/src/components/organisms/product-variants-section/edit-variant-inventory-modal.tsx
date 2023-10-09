@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../forms/product/variant-inventory-form/edit-flow-variant-form"
@@ -14,13 +15,13 @@ import {
 import Button from "../../fundamentals/button"
 import { InventoryLevelDTO } from "@medusajs/types"
 import Modal from "../../molecules/modal"
+import { Option } from "../../../types/shared"
+import { countries } from "../../../utils/countries"
 import { queryClient } from "../../../constants/query-client"
-import { removeNullish } from "../../../utils/remove-nullish"
+import { removeFalsy, removeNullish } from "../../../utils/remove-nullish"
 import { useContext } from "react"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { useForm } from "react-hook-form"
-import { countries } from "../../../utils/countries"
-import { Option } from "../../../types/shared"
 
 type Props = {
   onClose: () => void
@@ -30,6 +31,7 @@ type Props = {
 }
 
 const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
+  const { t } = useTranslation()
   const { client } = useMedusa()
   const layeredModalContext = useContext(LayeredModalContext)
   const {
@@ -57,8 +59,9 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     delete data.ean
     delete data.barcode
     delete data.upc
+    delete data.allow_backorder
 
-    return removeNullish({
+    return removeFalsy({
       ...updateDimensions,
       ...updateCustoms,
       ...data,
@@ -78,7 +81,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
 
     let inventoryItemId: string | undefined = itemId
 
-    const { ean, barcode, upc } = data
+    const { ean, barcode, upc, allow_backorder } = data
     const upsertPayload = createUpdateInventoryItemPayload(data)
     let shouldInvalidateCache = false
 
@@ -119,6 +122,9 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
         await client.admin.inventoryItems.update(itemId!, upsertPayload)
       }
     } else if (manageInventory) {
+      await client.admin.products.updateVariant(product.id, variant.id, {
+        manage_inventory: true,
+      })
       // does not have an inventory item but wants to manage inventory
       const { inventory_item } = await client.admin.inventoryItems.create({
         variant_id: variant.id,
@@ -163,14 +169,17 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     // @ts-ignore
     onUpdateVariant(
       variant.id,
-      removeNullish({
-        ...dimensions,
-        ...customs,
-        ...stock,
-        ean,
-        barcode,
-        upc,
-      }),
+      {
+        ...removeNullish({
+          ...dimensions,
+          ...customs,
+          ...stock,
+          ean,
+          barcode,
+          upc,
+          allow_backorder,
+        }),
+      },
       () => {
         refetch()
         if (shouldInvalidateCache) {
@@ -184,7 +193,12 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   return (
     <LayeredModal context={layeredModalContext} handleClose={handleClose}>
       <Modal.Header handleClose={handleClose}>
-        <h1 className="inter-xlarge-semibold">Edit stock & inventory</h1>
+        <h1 className="inter-xlarge-semibold">
+          {t(
+            "product-variants-section-edit-stock-inventory",
+            "Edit stock & inventory"
+          )}
+        </h1>
       </Modal.Header>
       {!isLoadingInventory && (
         <StockForm
@@ -215,6 +229,7 @@ const StockForm = ({
   handleClose: () => void
   updatingVariant: boolean
 }) => {
+  const { t } = useTranslation()
   const form = useForm<EditFlowVariantFormType>({
     // @ts-ignore
     defaultValues: getEditVariantDefaultValues(variantInventory, variant),
@@ -252,7 +267,7 @@ const StockForm = ({
               handleClose()
             }}
           >
-            Cancel
+            {t("product-variants-section-cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
@@ -261,7 +276,7 @@ const StockForm = ({
             disabled={!isDirty}
             loading={updatingVariant}
           >
-            Save and close
+            {t("product-variants-section-save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>
@@ -282,7 +297,7 @@ export const getEditVariantDefaultValues = (
       upc: variant?.upc || null,
       inventory_quantity: null,
       manage_inventory: false,
-      allow_backorder: false,
+      allow_backorder: variant?.allow_backorder ?? false,
       location_levels: null,
       dimensions: {
         height: null,
@@ -320,7 +335,7 @@ export const getEditVariantDefaultValues = (
     upc: variant?.upc || null,
     inventory_quantity: inventoryItem.inventory_quantity,
     manage_inventory: !!inventoryItem,
-    allow_backorder: inventoryItem.allow_backorder,
+    allow_backorder: !!variant?.allow_backorder,
     location_levels: inventoryItem.location_levels,
     dimensions: {
       height: inventoryItem.height,

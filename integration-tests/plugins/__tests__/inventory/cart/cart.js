@@ -1,17 +1,19 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
+const {
+  bootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const cartSeeder = require("../../../helpers/cart-seeder")
-const { simpleProductFactory } = require("../../../../api/factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const cartSeeder = require("../../../../helpers/cart-seeder")
+const { simpleProductFactory } = require("../../../../factories")
+const { simpleSalesChannelFactory } = require("../../../../factories")
 
 jest.setTimeout(30000)
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("/store/carts", () => {
   let express
@@ -222,8 +224,7 @@ describe("/store/carts", () => {
       expect(getRes.response.status).toEqual(400)
       expect(getRes.response.data).toEqual({
         type: "invalid_data",
-        message:
-          "Can't insert null value in field customer_id on insert in table order",
+        message: "Cannot create an order from the cart without a customer",
       })
 
       const inventoryService = appContainer.resolve("inventoryService")
@@ -232,6 +233,7 @@ describe("/store/carts", () => {
       })
       expect(count).toEqual(0)
     })
+
     it("fails to add a item on the cart if the inventory isn't enough", async () => {
       const api = useApi()
 

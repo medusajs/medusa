@@ -34,7 +34,7 @@ type CalculateOptionPriceInput = {
 }
 
 /**
- * Helps retrive fulfillment providers
+ * Helps retrieve fulfillment providers
  */
 class FulfillmentProviderService extends TransactionBaseService {
   protected readonly container_: FulfillmentProviderContainer

@@ -6,7 +6,6 @@ import {
   SharedContext,
 } from "@medusajs/types"
 import {
-  buildQuery,
   InjectEntityManager,
   isDefined,
   MedusaContext,
@@ -14,6 +13,7 @@ import {
 } from "@medusajs/utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevel } from "../models"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -39,15 +39,15 @@ export default class InventoryLevelService {
    * Retrieves a list of inventory levels based on the provided selector and configuration.
    * @param selector - An object containing filterable properties for inventory levels.
    * @param config - An object containing configuration options for the query.
+   * @param context
    * @return Array of inventory levels.
    */
-  @InjectEntityManager()
   async list(
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<InventoryLevel[]> {
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const query = buildQuery(selector, config) as FindManyOptions
@@ -58,15 +58,15 @@ export default class InventoryLevelService {
    * Retrieves a list of inventory levels and a count based on the provided selector and configuration.
    * @param selector - An object containing filterable properties for inventory levels.
    * @param config - An object containing configuration options for the query.
+   * @param context
    * @return An array of inventory levels and a count.
    */
-  @InjectEntityManager()
   async listAndCount(
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<[InventoryLevel[], number]> {
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const query = buildQuery(selector, config) as FindManyOptions
@@ -77,14 +77,14 @@ export default class InventoryLevelService {
    * Retrieves a single inventory level by its ID.
    * @param inventoryLevelId - The ID of the inventory level to retrieve.
    * @param config - An object containing configuration options for the query.
+   * @param context
    * @return A inventory level.
    * @throws If the inventory level ID is not defined or the given ID was not found.
    */
-  @InjectEntityManager()
   async retrieve(
     inventoryLevelId: string,
     config: FindConfig<InventoryLevel> = {},
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<InventoryLevel> {
     if (!isDefined(inventoryLevelId)) {
       throw new MedusaError(
@@ -93,7 +93,7 @@ export default class InventoryLevelService {
       )
     }
 
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const query = buildQuery(
@@ -115,28 +115,33 @@ export default class InventoryLevelService {
   /**
    * Creates a new inventory level.
    * @param data - An object containing the properties for the new inventory level.
+   * @param context
    * @return The created inventory level.
    */
   @InjectEntityManager()
   async create(
-    data: CreateInventoryLevelInput,
+    data: CreateInventoryLevelInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryLevel> {
+  ): Promise<InventoryLevel[]> {
     const manager = context.transactionManager!
+
+    const toCreate = data.map((d) => {
+      return {
+        location_id: d.location_id,
+        inventory_item_id: d.inventory_item_id,
+        stocked_quantity: d.stocked_quantity,
+        reserved_quantity: d.reserved_quantity,
+        incoming_quantity: d.incoming_quantity,
+      }
+    })
 
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    const inventoryLevel = levelRepository.create({
-      location_id: data.location_id,
-      inventory_item_id: data.inventory_item_id,
-      stocked_quantity: data.stocked_quantity,
-      reserved_quantity: data.reserved_quantity,
-      incoming_quantity: data.incoming_quantity,
-    })
+    const inventoryLevels = levelRepository.create(toCreate)
 
-    const saved = await levelRepository.save(inventoryLevel)
+    const saved = await levelRepository.save(inventoryLevels)
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.CREATED, {
-      id: saved.id,
+      ids: saved.map((i) => i.id),
     })
 
     return saved
@@ -146,6 +151,7 @@ export default class InventoryLevelService {
    * Updates an existing inventory level.
    * @param inventoryLevelId - The ID of the inventory level to update.
    * @param data - An object containing the properties to update on the inventory level.
+   * @param context
    * @return The updated inventory level.
    * @throws If the inventory level ID is not defined or the given ID was not found.
    */
@@ -187,6 +193,7 @@ export default class InventoryLevelService {
    * @param inventoryItemId - The ID of the inventory item.
    * @param locationId - The ID of the location.
    * @param quantity - The quantity to adjust from the reserved quantity.
+   * @param context
    */
   @InjectEntityManager()
   async adjustReservedQuantity(
@@ -210,6 +217,7 @@ export default class InventoryLevelService {
   /**
    * Deletes inventory levels by inventory Item ID.
    * @param inventoryItemId - The ID or IDs of the inventory item to delete inventory levels for.
+   * @param context
    */
   @InjectEntityManager()
   async deleteByInventoryItemId(
@@ -233,6 +241,7 @@ export default class InventoryLevelService {
   /**
    * Deletes an inventory level by ID.
    * @param inventoryLevelId - The ID or IDs of the inventory level to delete.
+   * @param context
    */
   @InjectEntityManager()
   async delete(
@@ -249,26 +258,29 @@ export default class InventoryLevelService {
     await levelRepository.delete({ id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
-      id: inventoryLevelId,
+      ids: inventoryLevelId,
     })
   }
 
   /**
    * Deletes inventory levels by location ID.
    * @param locationId - The ID of the location to delete inventory levels for.
+   * @param context
    */
   @InjectEntityManager()
   async deleteByLocationId(
-    locationId: string,
+    locationId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    await levelRepository.delete({ location_id: locationId })
+    const ids = Array.isArray(locationId) ? locationId : [locationId]
+
+    await levelRepository.delete({ location_id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
-      location_id: locationId,
+      location_ids: ids,
     })
   }
 
@@ -276,19 +288,19 @@ export default class InventoryLevelService {
    * Gets the total stocked quantity for a specific inventory item at multiple locations.
    * @param inventoryItemId - The ID of the inventory item.
    * @param locationIds - The IDs of the locations.
+   * @param context
    * @return The total stocked quantity.
    */
-  @InjectEntityManager()
   async getStockedQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
     }
 
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const result = await levelRepository
@@ -305,19 +317,19 @@ export default class InventoryLevelService {
    * Gets the total available quantity for a specific inventory item at multiple locations.
    * @param inventoryItemId - The ID of the inventory item.
    * @param locationIds - The IDs of the locations.
+   * @param context
    * @return The total available quantity.
    */
-  @InjectEntityManager()
   async getAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
     }
 
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const result = await levelRepository
@@ -334,19 +346,19 @@ export default class InventoryLevelService {
    * Gets the total reserved quantity for a specific inventory item at multiple locations.
    * @param inventoryItemId - The ID of the inventory item.
    * @param locationIds - The IDs of the locations.
+   * @param context
    * @return The total reserved quantity.
    */
-  @InjectEntityManager()
   async getReservedQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
     }
 
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
 
     const result = await levelRepository

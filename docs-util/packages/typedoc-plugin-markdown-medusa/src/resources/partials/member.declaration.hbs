@@ -1,0 +1,87 @@
+{{{declarationTitle}}}
+
+{{> comment}}
+
+{{#if (sectionEnabled "member_declaration_typeParameters")}}
+
+{{#if typeParameters}}
+
+{{titleLevel 4}} Type parameters
+
+{{#with typeParameters}}
+
+{{{typeParameter}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if type.declaration}}
+
+{{#if (sectionEnabled "member_declaration_indexSignature")}}
+
+{{#if type.declaration.indexSignature}}
+
+{{#with type.declaration.indexSignature}}
+
+{{titleLevel 4}} Index signature
+
+{{{indexSignatureTitle}}}
+
+{{> comment}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_signatures")}}
+
+{{#if type.declaration.signatures}}
+
+{{#if type.declaration.children}}
+
+{{titleLevel 4}} Call signature
+
+{{else}}
+
+{{titleLevel 4}} Type declaration
+
+{{/if}}
+
+{{#each type.declaration.signatures}}
+
+{{> member.signature showSources=false }}
+
+{{/each}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "member_declaration_typeDeclaration")}}
+
+{{#if type.declaration.children}}
+
+{{#with type.declaration}}
+
+{{titleLevel 4}} Type declaration
+
+{{/with}}
+
+{{#with type.declaration.children}}
+
+{{{typeDeclarationMembers}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{/if}}
+
+{{> member.sources}}

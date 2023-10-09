@@ -8,6 +8,9 @@ import type { ProductOption } from "./ProductOption"
 import type { ProductVariant } from "./ProductVariant"
 
 export interface StoreProductsRes {
+  /**
+   * Product details.
+   */
   product: Merge<
     SetRelation<
       PricedProduct,
@@ -15,7 +18,9 @@ export interface StoreProductsRes {
     >,
     {
       options: Array<SetRelation<ProductOption, "values">>
-      variants: Array<SetRelation<ProductVariant, "options" | "prices">>
+      variants: Array<
+        SetRelation<ProductVariant, "options" | "prices" | "purchasable">
+      >
     }
   >
 }

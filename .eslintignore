@@ -19,6 +19,8 @@ packages/*
 !packages/stock-location
 !packages/cache-redis
 !packages/cache-inmemory
+!packages/create-medusa-app
+!packages/product
 
 
 **/models/*

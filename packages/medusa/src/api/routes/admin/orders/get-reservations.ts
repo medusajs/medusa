@@ -6,22 +6,23 @@ import { extendedFindParamsMixin } from "../../../../types/common"
 /**
  * @oas [get] /admin/orders/{id}/reservations
  * operationId: "GetOrdersOrderReservations"
- * summary: "Get reservations of an Order"
- * description: "Retrieves reservations of an Order"
+ * summary: "Get Order Reservations"
+ * description: "Retrieve the list of reservations of an Order"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) offset=0 {integer} How many reservations to skip before the results.
+ *   - (query) offset=0 {integer} The number of reservations to skip when retrieving the reservations.
  *   - (query) limit=20 {integer} Limit the number of reservations returned.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/orders/{id}/reservations' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/orders/{id}/reservations' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:

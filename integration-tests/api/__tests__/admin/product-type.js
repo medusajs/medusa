@@ -2,25 +2,25 @@ const path = require("path")
 
 const { IdMap } = require("medusa-test-utils")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const productSeeder = require("../../helpers/product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
 const {
   DiscountRuleType,
   AllocationType,
   DiscountConditionType,
   DiscountConditionOperator,
 } = require("@medusajs/medusa")
-const { simpleDiscountFactory } = require("../../factories")
+const { simpleDiscountFactory } = require("../../../factories")
 
 jest.setTimeout(50000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 

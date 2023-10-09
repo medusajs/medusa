@@ -1,5 +1,6 @@
 import { Row } from "@tanstack/react-table"
 import { Controller, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import {
   ItemsToReturnFormType,
   ReturnItemObject,
@@ -25,6 +26,7 @@ const AddReturnReason = ({ row, form, isClaim = false }: Props) => {
     formState: { errors },
   } = form
 
+  const { t } = useTranslation()
   const { pushScreen } = useAddReasonScreen()
 
   const reasonDetails = useWatch({
@@ -69,7 +71,9 @@ const AddReturnReason = ({ row, form, isClaim = false }: Props) => {
                   }
                 >
                   <span>
-                    {reasonDetails?.reason ? "Edit" : "Select"} reason
+                    {reasonDetails?.reason
+                      ? t("add-return-reason-edit-reason", "Edit reason")
+                      : t("add-return-reason-select-reason", "Select reason")}
                   </span>
                 </Button>
               )

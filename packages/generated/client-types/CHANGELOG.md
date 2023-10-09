@@ -1,5 +1,39 @@
 # @medusajs/client-types
 
+## 0.2.5
+
+### Patch Changes
+
+- [#4953](https://github.com/medusajs/medusa/pull/4953) [`9781089ca`](https://github.com/medusajs/medusa/commit/9781089ca301221011c58423add3bf81b74b068b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa): fix types for upload endpoints
+
+## 0.2.4
+
+### Patch Changes
+
+- [#4230](https://github.com/medusajs/medusa/pull/4230) [`2f283996f`](https://github.com/medusajs/medusa/commit/2f283996f80313b074b96c690bcd953c67665c1b) Thanks [@erikengervall](https://github.com/erikengervall)! - feat(medusa): Add `metadata` to `StorePostCartsCartLineItemsItemReq`
+
+## 0.2.3
+
+### Patch Changes
+
+- [#4066](https://github.com/medusajs/medusa/pull/4066) [`4fb443c0e`](https://github.com/medusajs/medusa/commit/4fb443c0ea38bde3148bce059c0ee3b91dfff3d4) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,client-types): add location_id filtering to list-location levels
+
+- [#3979](https://github.com/medusajs/medusa/pull/3979) [`3a38c84f8`](https://github.com/medusajs/medusa/commit/3a38c84f88b05f74ee0a172af3e3f78b2ec8c2d2) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(client-types, inventory, medusa, types): add additional filtering capabilities to list-reservations
+
+- [#4081](https://github.com/medusajs/medusa/pull/4081) [`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,client-types,medusa-js,admin-ui,medusa-react): add reservation table and creation
+
+## 0.2.2
+
+### Patch Changes
+
+- [#3924](https://github.com/medusajs/medusa/pull/3924) [`cfcd2d54f`](https://github.com/medusajs/medusa/commit/cfcd2d54fd281fd98de881fc6dfbcc6b1b47c855) Thanks [@pevey](https://github.com/pevey)! - Add separator after tmpdir base
+
+## 0.2.1
+
+### Patch Changes
+
+- [#3971](https://github.com/medusajs/medusa/pull/3971) [`7fd22ecb4`](https://github.com/medusajs/medusa/commit/7fd22ecb4d5190e92c6750a9fbf2d8534bb9f4ab) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(client-types, inventory, medusa, types): add `title`, `thumbnail` and `description to inventory item and `description` to reservation item.
+
 ## 0.2.0
 
 ### Minor Changes

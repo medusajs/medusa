@@ -1,11 +1,14 @@
-import clsx from "clsx"
 import React, { Children } from "react"
-import Spinner from "../../atoms/spinner"
+import clsx from "clsx"
+
+import Spinner, { SpinnerProps } from "../../atoms/spinner"
 
 export type ButtonProps = {
   variant: "primary" | "secondary" | "ghost" | "danger" | "nuclear"
   size?: "small" | "medium" | "large"
   loading?: boolean
+  spanClassName?: string
+  spinnerConfig?: SpinnerProps
 } & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -14,6 +17,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant = "primary",
       size = "large",
       loading = false,
+      spanClassName,
+      spinnerConfig,
       children,
       ...attributes
     },
@@ -53,11 +58,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         onClick={handleClick}
       >
         {loading ? (
-          <Spinner size={size} variant={"secondary"} />
+          <Spinner size={size} variant={"secondary"} {...spinnerConfig} />
         ) : (
           Children.map(children, (child, i) => {
             return (
-              <span key={i} className="mr-xsmall last:mr-0">
+              <span
+                key={i}
+                className={clsx("mr-xsmall last:mr-0", spanClassName)}
+              >
                 {child}
               </span>
             )

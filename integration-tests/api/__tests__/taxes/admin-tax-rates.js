@@ -1,17 +1,17 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 const {
   simpleProductFactory,
   simpleShippingOptionFactory,
   simpleRegionFactory,
   simpleTaxRateFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
 jest.setTimeout(30000)
 
@@ -48,7 +48,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api.get("/admin/tax-rates", {
       headers: {
-        authorization: "Bearer test_token",
+        "x-medusa-access-token": "test_token",
       },
     })
 
@@ -66,7 +66,7 @@ describe("/admin/tax-rates", () => {
       `/admin/tax-rates?fields[]=rate&fields[]=product_count&fields[]=id&expand[]=products&rate[gt]=80`,
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -85,7 +85,7 @@ describe("/admin/tax-rates", () => {
       `/admin/tax-rates?region_id[]=${regions[0].id}&region_id[]=${regions[1].id}`,
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -106,7 +106,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api.get(`/admin/tax-rates/${tax_rates[0].id}`, {
       headers: {
-        authorization: "Bearer test_token",
+        "x-medusa-access-token": "test_token",
       },
     })
 
@@ -129,7 +129,7 @@ describe("/admin/tax-rates", () => {
       `/admin/tax-rates/${tax_rates[0].id}?fields[]=id&fields[]=region_id`,
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -159,7 +159,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -191,7 +191,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -231,7 +231,7 @@ describe("/admin/tax-rates", () => {
         },
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -260,7 +260,7 @@ describe("/admin/tax-rates", () => {
         },
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -294,7 +294,7 @@ describe("/admin/tax-rates", () => {
         },
         {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -330,7 +330,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -361,7 +361,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -391,17 +391,90 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.tax_rate).toMatchSnapshot({
-      id: expect.stringMatching(/^txr_*/),
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        name: "special",
+        code: "tricks",
+        rate: null,
+      })
+    )
+  })
+
+  test("creates a tax rate with a rate", async () => {
+    await adminSeeder(dbConnection)
+
+    const api = useApi()
+    await simpleRegionFactory(dbConnection, {
+      id: "test-region",
     })
+
+    const response = await api.post(
+      `/admin/tax-rates`,
+      {
+        name: "special",
+        code: "tricks",
+        region_id: "test-region",
+        rate: 2,
+      },
+      {
+        headers: {
+          "x-medusa-access-token": "test_token",
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        name: "special",
+        code: "tricks",
+        region_id: "test-region",
+        rate: 2,
+      })
+    )
+  })
+
+  test("creates a tax rate with a null rate", async () => {
+    await adminSeeder(dbConnection)
+
+    const api = useApi()
+    await simpleRegionFactory(dbConnection, {
+      id: "test-region",
+    })
+
+    const response = await api.post(
+      `/admin/tax-rates`,
+      {
+        name: "special",
+        code: "tricks",
+        region_id: "test-region",
+        rate: null,
+      },
+      {
+        headers: {
+          "x-medusa-access-token": "test_token",
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        name: "special",
+        code: "tricks",
+        region_id: "test-region",
+        rate: null,
+      })
+    )
   })
 
   test("creates a tax rate and assigns products", async () => {
@@ -426,7 +499,7 @@ describe("/admin/tax-rates", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
@@ -453,22 +526,58 @@ describe("/admin/tax-rates", () => {
       {
         name: "special",
         code: "something new",
+        rate: 5,
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       }
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.tax_rate).toMatchSnapshot({
-      id: expect.stringMatching(/^txr_*/),
-      code: "special",
-      code: "something new",
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        name: "special",
+        code: "something new",
+        rate: 5,
+      })
+    )
+  })
+
+  test("updates a tax rate with null rate", async () => {
+    await adminSeeder(dbConnection)
+
+    await simpleRegionFactory(dbConnection, { id: "test-region" })
+
+    const rate = await simpleTaxRateFactory(dbConnection, {
+      name: "test",
+      code: "something",
+      rate: 10,
+      region_id: "test-region",
     })
+
+    const api = useApi()
+    const response = await api.post(
+      `/admin/tax-rates/${rate.id}`,
+      {
+        rate: null,
+      },
+      {
+        headers: {
+          "x-medusa-access-token": "test_token",
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        rate: null,
+      })
+    )
   })
 
   test("deletes a tax rate", async () => {
@@ -486,7 +595,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
     const response = await api.delete(`/admin/tax-rates/${rate.id}`, {
       headers: {
-        authorization: "Bearer test_token",
+        "x-medusa-access-token": "test_token",
       },
     })
 

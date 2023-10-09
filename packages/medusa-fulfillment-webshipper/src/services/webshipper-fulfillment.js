@@ -1,8 +1,8 @@
 import { humanizeAmount } from "medusa-core-utils"
-import { FulfillmentService } from "medusa-interfaces"
 import Webshipper from "../utils/webshipper"
+import { AbstractFulfillmentService } from "@medusajs/medusa"
 
-class WebshipperFulfillmentService extends FulfillmentService {
+class WebshipperFulfillmentService extends AbstractFulfillmentService {
   static identifier = "webshipper"
 
   constructor(
@@ -98,6 +98,71 @@ class WebshipperFulfillmentService extends FulfillmentService {
   }
 
   /**
+   * Creates a return order in webshipper and links it to an existing shipment.
+   */
+  async createReturnOrder(shipment, fromOrder) {
+    const fulfillmentData = fromOrder.fulfillments[0]?.data
+
+    if (!shipment?.id || !fulfillmentData?.id) {
+      return
+    }
+
+    const customsLines = shipment.attributes?.packages?.[0]?.customs_lines
+
+    if (!customsLines?.length) {
+      return
+    }
+
+    const returnOrderData = {
+      type: "returns",
+      attributes: {
+        status: "pending",
+        return_lines: customsLines.map(({ ext_ref, quantity }) => ({
+          order_line_id: fulfillmentData.attributes?.order_lines?.find(
+            (order_line) => order_line.ext_ref === ext_ref
+          )?.id,
+          cause_id: this.options_.return_portal?.cause_id || "1",
+          quantity: quantity,
+        })),
+      },
+      relationships: {
+        order: {
+          data: {
+            id: fulfillmentData.id,
+            type: "orders",
+          },
+        },
+        portal: {
+          data: {
+            id: this.options_.return_portal.id || "1",
+            type: "return_portals",
+          },
+        },
+        refund_method: {
+          data: {
+            id: this.options_.return_portal.refund_method_id || "1",
+            type: "return_refund_methods",
+          },
+        },
+        shipping_method: {
+          data: {
+            id: shipment.shipping_method?.data?.webshipper_id || "1",
+            type: "return_shipping_methods",
+          },
+        },
+        shipment: {
+          data: {
+            id: shipment.id,
+            type: "shipments",
+          },
+        },
+      },
+    }
+
+    this.client_.returns.create(returnOrderData)
+  }
+
+  /**
    * Creates a return shipment in webshipper using the given method data, and
    * return lines.
    */
@@ -113,7 +178,13 @@ class WebshipperFulfillmentService extends FulfillmentService {
 
     const fromOrder = await this.orderService_.retrieve(orderId, {
       select: ["total"],
-      relations: ["discounts", "discounts.rule", "shipping_address", "returns"],
+      relations: [
+        "discounts",
+        "discounts.rule",
+        "shipping_address",
+        "returns",
+        "fulfillments",
+      ],
     })
 
     const methodData = returnOrder.shipping_method.data
@@ -173,32 +244,14 @@ class WebshipperFulfillmentService extends FulfillmentService {
             },
             customs_lines: await Promise.all(
               returnOrder.items.map(async ({ item, quantity }) => {
-                const totals = await this.totalsService_.getLineItemTotals(
+                const customLine = await this.buildWebshipperItem(
                   item,
-                  fromOrder,
-                  {
-                    include_tax: true,
-                    use_tax_lines: true,
-                  }
+                  quantity,
+                  fromOrder
                 )
+
                 return {
-                  ext_ref: item.id,
-                  sku: item.variant.sku,
-                  description: item.title,
-                  quantity: quantity,
-                  country_of_origin:
-                    item.variant.origin_country ||
-                    item.variant.product.origin_country,
-                  tarif_number:
-                    item.variant.hs_code || item.variant.product.hs_code,
-                  unit_price: humanizeAmount(
-                    totals.unit_price,
-                    fromOrder.currency_code
-                  ),
-                  vat_percent: totals.tax_lines.reduce(
-                    (acc, next) => acc + next.rate,
-                    0
-                  ),
+                  ...customLine,
                   currency: fromOrder.currency_code.toUpperCase(),
                 }
               })
@@ -226,6 +279,10 @@ class WebshipperFulfillmentService extends FulfillmentService {
     return this.client_.shipments
       .create(returnShipment)
       .then((result) => {
+        if (this.options_.return_portal?.id) {
+          this.createReturnOrder(result.data, fromOrder)
+        }
+
         return result.data
       })
       .catch((err) => {
@@ -350,34 +407,13 @@ class WebshipperFulfillmentService extends FulfillmentService {
           visible_ref,
           order_lines: await Promise.all(
             fulfillmentItems.map(async (item) => {
-              const totals = await this.totalsService_.getLineItemTotals(
+              const orderLine = await this.buildWebshipperItem(
                 item,
-                fromOrder,
-                {
-                  include_tax: true,
-                  use_tax_lines: true,
-                }
+                item.quantity,
+                fromOrder
               )
 
-              return {
-                ext_ref: item.id,
-                sku: item.variant.sku,
-                description: item.title,
-                quantity: item.quantity,
-                country_of_origin:
-                  item.variant.origin_country ||
-                  item.variant.product.origin_country,
-                tarif_number:
-                  item.variant.hs_code || item.variant.product.hs_code,
-                unit_price: humanizeAmount(
-                  totals.unit_price,
-                  fromOrder.currency_code
-                ),
-                vat_percent: totals.tax_lines.reduce(
-                  (acc, next) => acc + next.rate,
-                  0
-                ),
-              }
+              return orderLine
             })
           ),
           delivery_address: {
@@ -516,13 +552,11 @@ class WebshipperFulfillmentService extends FulfillmentService {
     }
   }
 
-  /**
-   * This plugin doesn't support shipment documents.
-   */
   async retrieveDocuments(fulfillmentData, documentType) {
+    const labelRelation = fulfillmentData?.relationships?.labels
+    const docRelation = fulfillmentData?.relationships?.documents
     switch (documentType) {
       case "label":
-        const labelRelation = fulfillmentData?.relationships?.labels
         if (labelRelation) {
           const docs = await this.retrieveRelationship(labelRelation)
             .then(({ data }) => data)
@@ -537,7 +571,6 @@ class WebshipperFulfillmentService extends FulfillmentService {
         return []
 
       case "invoice":
-        const docRelation = fulfillmentData?.relationships?.documents
         if (docRelation) {
           const docs = await this.retrieveRelationship(docRelation)
             .then(({ data }) => data)
@@ -556,11 +589,6 @@ class WebshipperFulfillmentService extends FulfillmentService {
     }
   }
 
-  /**
-   * Retrieves the documents associated with an order.
-   * @return {Promise<Array<_>>} an array of document objects to store in the
-   *   database.
-   */
   async getFulfillmentDocuments(data) {
     const order = await this.client_.orders.retrieve(data.id)
     const docs = await this.retrieveRelationship(
@@ -636,6 +664,41 @@ class WebshipperFulfillmentService extends FulfillmentService {
         status: "cancelled",
       },
     })
+  }
+
+  async buildWebshipperItem(item, quantity, order) {
+    const totals = await this.totalsService_.getLineItemTotals(item, order, {
+      include_tax: true,
+      use_tax_lines: true,
+    })
+
+    const webShipperItem = {
+      ext_ref: item.id,
+      description: item.title,
+      quantity: quantity,
+      unit_price: humanizeAmount(totals.unit_price, order.currency_code),
+      vat_percent: totals.tax_lines.reduce((acc, next) => acc + next.rate, 0),
+    }
+
+    const coo =
+      item?.variant?.origin_country || item?.variant?.product?.origin_country
+    const sku = item?.variant?.sku
+    const tarifNumber =
+      item?.variant?.hs_code || item?.variant?.product?.hs_code
+
+    if (coo) {
+      webShipperItem.country_of_origin = coo
+    }
+
+    if (sku) {
+      webShipperItem.sku = sku
+    }
+
+    if (tarifNumber) {
+      webShipperItem.tarif_number = tarifNumber
+    }
+
+    return webShipperItem
   }
 }
 

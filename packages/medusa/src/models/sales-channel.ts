@@ -2,7 +2,7 @@ import { BeforeInsert, Column, OneToMany } from "typeorm"
 
 import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
-import { generateEntityId } from "../utils"
+import { DbAwareColumn, generateEntityId } from "../utils"
 import { SalesChannelLocation } from "./sales-channel-location"
 
 @FeatureFlagEntity("sales_channels")
@@ -15,6 +15,9 @@ export class SalesChannel extends SoftDeletableEntity {
 
   @Column({ default: false })
   is_disabled: boolean
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null
 
   @OneToMany(
     () => SalesChannelLocation,
@@ -34,7 +37,7 @@ export class SalesChannel extends SoftDeletableEntity {
 /**
  * @schema SalesChannel
  * title: "Sales Channel"
- * description: "A Sales Channel"
+ * description: "A Sales Channel is a method a business offers its products for purchase for the customers. For example, a Webshop can be a sales channel, and a mobile app can be another."
  * type: object
  * required:
  *   - created_at
@@ -63,8 +66,9 @@ export class SalesChannel extends SoftDeletableEntity {
  *    type: boolean
  *    default: false
  *  locations:
- *    description: The Stock Locations related to the sales channel. Available if the relation `locations` is expanded.
+ *    description: The details of the stock locations related to the sales channel.
  *    type: array
+ *    x-expandable: "locations"
  *    items:
  *      $ref: "#/components/schemas/SalesChannelLocation"
  *  created_at:
@@ -80,4 +84,12 @@ export class SalesChannel extends SoftDeletableEntity {
  *    nullable: true
  *    type: string
  *    format: date-time
+ *  metadata:
+ *    description: An optional key-value map with additional details
+ *    nullable: true
+ *    type: object
+ *    example: {car: "white"}
+ *    externalDocs:
+ *      description: "Learn about the metadata attribute, and how to delete and update it."
+ *      url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

@@ -3,16 +3,19 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
-import type { ReservationItemDTO } from "./ReservationItemDTO"
+import type { ExtendedReservationItem } from "./ExtendedReservationItem"
 
 export interface AdminReservationsListRes {
-  reservations: Array<ReservationItemDTO>
+  /**
+   * An array of reservations details.
+   */
+  reservations: Array<ExtendedReservationItem>
   /**
    * The total number of items available
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of reservations skipped when retrieving the reservations.
    */
   offset: number
   /**

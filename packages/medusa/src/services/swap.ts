@@ -1,9 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
-
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata, validateId } from "../utils"
-
 import {
   Cart,
   CartType,
@@ -19,10 +13,6 @@ import {
   SwapFulfillmentStatus,
   SwapPaymentStatus,
 } from "../models"
-import { SwapRepository } from "../repositories/swap"
-import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
-import { CreateShipmentConfig } from "../types/fulfillment"
-import { OrdersReturnItem } from "../types/orders"
 import {
   CartService,
   CustomShippingOptionService,
@@ -37,6 +27,15 @@ import {
   ShippingOptionService,
   TotalsService,
 } from "./index"
+import { EntityManager, In } from "typeorm"
+import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, setMetadata, validateId } from "../utils"
+
+import { CreateShipmentConfig } from "../types/fulfillment"
+import { OrdersReturnItem } from "../types/orders"
+import { SwapRepository } from "../repositories/swap"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedProps = {
   manager: EntityManager
@@ -279,11 +278,31 @@ class SwapService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Swap[]> {
+    const [swaps] = await this.listAndCount(selector, config)
+
+    return swaps
+  }
+
+  /**
+   * List swaps.
+   *
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return the result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Swap>,
+    config: FindConfig<Swap> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Swap[], number]> {
     const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
     const query = buildQuery(selector, config)
     query.relationLoadStrategy = "query"
 
-    return await swapRepo.find(query)
+    return await swapRepo.findAndCount(query)
   }
 
   /**
@@ -557,17 +576,15 @@ class SwapService extends TransactionBaseService {
    */
   async createCart(
     swapId: string,
-    customShippingOptions: { option_id: string; price: number }[] = []
+    customShippingOptions: { option_id: string; price: number }[] = [],
+    context: { sales_channel_id?: string } = {}
   ): Promise<Swap | never> {
     return await this.atomicPhase_(async (manager) => {
       const swapRepo = manager.withRepository(this.swapRepository_)
 
       const swap = await this.retrieve(swapId, {
         relations: [
-          "order",
-          "order.items",
-          "order.items.variant",
-          "order.items.variant.product",
+          "order.items.variant.product.profiles",
           "order.swaps",
           "order.swaps.additional_items",
           "order.discounts",
@@ -579,6 +596,7 @@ class SwapService extends TransactionBaseService {
           "return_order",
           "return_order.items",
           "return_order.shipping_method",
+          "return_order.shipping_method.shipping_option",
           "return_order.shipping_method.tax_lines",
         ],
       })
@@ -611,6 +629,8 @@ class SwapService extends TransactionBaseService {
         shipping_address_id: order.shipping_address_id,
         region_id: order.region_id,
         customer_id: order.customer_id,
+        sales_channel_id:
+          context.sales_channel_id ?? order.sales_channel_id ?? undefined,
         type: CartType.SWAP,
         metadata: {
           swap_id: swap.id,
@@ -792,7 +812,7 @@ class SwapService extends TransactionBaseService {
       // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
       // We normally should only pass what is needed?
       swap.shipping_methods = cart.shipping_methods.map((method) => {
-        (method.tax_lines as any) = undefined
+        ;(method.tax_lines as any) = undefined
         return method
       })
       swap.confirmed_at = new Date()
@@ -911,9 +931,10 @@ class SwapService extends TransactionBaseService {
         relations: [
           "payment",
           "shipping_address",
-          "additional_items",
           "additional_items.tax_lines",
+          "additional_items.variant.product.profiles",
           "shipping_methods",
+          "shipping_methods.shipping_option",
           "shipping_methods.tax_lines",
           "order",
           "order.region",

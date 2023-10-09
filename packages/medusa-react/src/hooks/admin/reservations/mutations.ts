@@ -10,11 +10,12 @@ import {
   useQueryClient,
 } from "@tanstack/react-query"
 
-import { Response } from "@medusajs/medusa-js/src"
-import { adminReservationsKeys } from "./queries"
-import { buildOptions } from "../../utils/buildOptions"
+import { Response } from "@medusajs/medusa-js"
 import { useMedusa } from "../../../contexts"
+import { buildOptions } from "../../utils/buildOptions"
+import { adminInventoryItemsKeys } from "../inventory-item"
 import { adminVariantKeys } from "../variants"
+import { adminReservationsKeys } from "./queries"
 
 export const useAdminCreateReservation = (
   options?: UseMutationOptions<
@@ -57,6 +58,7 @@ export const useAdminUpdateReservation = (
         adminReservationsKeys.lists(),
         adminReservationsKeys.detail(id),
         adminVariantKeys.all,
+        adminInventoryItemsKeys.details()
       ],
       options
     )

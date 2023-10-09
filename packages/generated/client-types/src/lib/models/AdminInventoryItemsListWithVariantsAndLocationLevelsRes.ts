@@ -3,23 +3,19 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
-import type { InventoryItemDTO } from "./InventoryItemDTO"
-import type { InventoryLevelDTO } from "./InventoryLevelDTO"
-import type { ProductVariant } from "./ProductVariant"
+import type { DecoratedInventoryItemDTO } from "./DecoratedInventoryItemDTO"
 
 export interface AdminInventoryItemsListWithVariantsAndLocationLevelsRes {
-  inventory_items: Array<
-    InventoryItemDTO & {
-      location_levels?: Array<InventoryLevelDTO>
-      variants?: Array<ProductVariant>
-    }
-  >
+  /**
+   * an array of Inventory Item details
+   */
+  inventory_items: Array<DecoratedInventoryItemDTO>
   /**
    * The total number of items available
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of inventory items skipped when retrieving the inventory items.
    */
   offset: number
   /**

@@ -7,7 +7,7 @@ import type { CustomerGroup } from "./CustomerGroup"
 import type { MoneyAmount } from "./MoneyAmount"
 
 /**
- * Price Lists represents a set of prices that overrides the default price for one or more product variants.
+ * A Price List represents a set of prices that override the default price for one or more product variants.
  */
 export interface PriceList {
   /**
@@ -39,15 +39,15 @@ export interface PriceList {
    */
   ends_at: string | null
   /**
-   * The Customer Groups that the Price List applies to. Available if the relation `customer_groups` is expanded.
+   * The details of the customer groups that the Price List can apply to.
    */
   customer_groups?: Array<CustomerGroup>
   /**
-   * The Money Amounts that are associated with the Price List. Available if the relation `prices` is expanded.
+   * The prices that belong to the price list, represented as a Money Amount.
    */
   prices?: Array<MoneyAmount>
   /**
-   * [EXPERIMENTAL] Does the price list prices include tax
+   * Whether the price list prices include tax
    */
   includes_tax?: boolean
   /**

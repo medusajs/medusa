@@ -13,10 +13,10 @@ import {
   useAdminUpdateVariant,
 } from "medusa-react"
 
-import { useNavigate } from "react-router-dom"
 import { getErrorMessage } from "../utils/error-messages"
-import { removeNullish } from "../utils/remove-nullish"
+import { removeFalsy } from "../utils/remove-nullish"
 import useImperativeDialog from "./use-imperative-dialog"
+import { useNavigate } from "react-router-dom"
 import useNotification from "./use-notification"
 
 const useEditProductActions = (productId: string) => {
@@ -74,8 +74,7 @@ const useEditProductActions = (productId: string) => {
     updateVariant.mutate(
       {
         variant_id: id,
-        ...removeNullish(payload),
-        manage_inventory: payload.manage_inventory,
+        ...payload,
       },
       {
         onSuccess: () => {
@@ -93,7 +92,7 @@ const useEditProductActions = (productId: string) => {
   const onDeleteVariant = (
     variantId: string,
     onSuccess?: () => void,
-    successMessage = "Variant was succesfully deleted"
+    successMessage = "Variant was successfully deleted"
   ) => {
     deleteVariant.mutate(variantId, {
       onSuccess: () => {

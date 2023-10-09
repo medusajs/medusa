@@ -1,7 +1,7 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const { bootstrapApp } = require("../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 jest.setTimeout(30000)
 

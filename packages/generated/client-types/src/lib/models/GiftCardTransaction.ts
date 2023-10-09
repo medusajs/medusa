@@ -7,7 +7,7 @@ import type { GiftCard } from "./GiftCard"
 import type { Order } from "./Order"
 
 /**
- * Gift Card Transactions are created once a Customer uses a Gift Card to pay for their Order
+ * Gift Card Transactions are created once a Customer uses a Gift Card to pay for their Order.
  */
 export interface GiftCardTransaction {
   /**
@@ -19,15 +19,15 @@ export interface GiftCardTransaction {
    */
   gift_card_id: string
   /**
-   * A gift card object. Available if the relation `gift_card` is expanded.
+   * The details of the gift card associated used in this transaction.
    */
   gift_card?: GiftCard | null
   /**
-   * The ID of the Order that the Gift Card was used to pay for.
+   * The ID of the order that the gift card was used for payment.
    */
   order_id: string
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order that the gift card was used for payment.
    */
   order?: Order | null
   /**

@@ -1,17 +1,29 @@
-import { IInventoryService } from "@medusajs/types"
+import { IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
+
 import { FindParams } from "../../../../types/common"
+import { IInventoryService } from "@medusajs/types"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /admin/inventory-items/{id}/location-levels
  * operationId: "GetInventoryItemsInventoryItemLocationLevels"
- * summary: "List Inventory Levels"
- * description: "Lists inventory levels of an inventory item."
+ * summary: "List Inventory Level"
+ * description: "Retrieve a list of inventory levels of an inventory item. The inventory levels can be filtered by fields such as `location_id`. The inventory levels can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (path) id=* {string} The ID of the Inventory Item the locations are associated with.
+ *   - in: query
+ *     name: location_id
+ *     style: form
+ *     explode: false
+ *     description: Filter by location IDs.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory levels.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory levels.
  * x-codegen:
  *   method: listLocationLevels
  *   queryParams: AdminGetInventoryItemsItemLocationLevelsParams
@@ -29,11 +41,12 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl '{backend_url}/admin/inventory-items/{id}/location-levels' \
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Inventory Items
  * responses:
@@ -65,6 +78,7 @@ export default async (req: Request, res: Response) => {
 
   const [levels] = await inventoryService.listInventoryLevels(
     {
+      ...req.filterableFields,
       inventory_item_id: id,
     },
     req.retrieveConfig
@@ -79,4 +93,8 @@ export default async (req: Request, res: Response) => {
 }
 
 // eslint-disable-next-line max-len
-export class AdminGetInventoryItemsItemLocationLevelsParams extends FindParams {}
+export class AdminGetInventoryItemsItemLocationLevelsParams extends FindParams {
+  @IsOptional()
+  @IsString({ each: true })
+  location_id?: string[]
+}

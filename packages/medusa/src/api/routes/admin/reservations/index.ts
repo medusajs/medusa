@@ -1,14 +1,16 @@
-import { ReservationItemDTO } from "@medusajs/types"
-import { Router } from "express"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { InventoryItemDTO, ReservationItemDTO } from "@medusajs/types"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
-import { AdminPostReservationsReq } from "./create-reservation"
+
 import { AdminGetReservationsParams } from "./list-reservations"
+import { AdminPostReservationsReq } from "./create-reservation"
 import { AdminPostReservationsReservationReq } from "./update-reservation"
+import { LineItem } from "../../../../models"
+import { Router } from "express"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -61,10 +63,30 @@ export default (app) => {
  *   - reservation
  * properties:
  *   reservation:
+ *     description: Reservation details.
  *     $ref: "#/components/schemas/ReservationItemDTO"
  */
 export type AdminReservationsRes = {
   reservation: ReservationItemDTO
+}
+
+/**
+ * @schema ExtendedReservationItem
+ * type: object
+ * allOf:
+ *   - $ref: "#/components/schemas/ReservationItemDTO"
+ *   - type: object
+ *     properties:
+ *       line_item:
+ *         description: The line item associated with the reservation.
+ *         $ref: "#/components/schemas/LineItem"
+ *       inventory_item:
+ *         description: The inventory item associated with the reservation.
+ *         $ref: "#/components/schemas/InventoryItemDTO"
+ */
+export type ExtendedReservationItem = ReservationItemDTO & {
+  line_item?: LineItem
+  inventory_item?: InventoryItemDTO
 }
 
 /**
@@ -78,14 +100,15 @@ export type AdminReservationsRes = {
  * properties:
  *   reservations:
  *     type: array
+ *     description: An array of reservations details.
  *     items:
- *       $ref: "#/components/schemas/ReservationItemDTO"
+ *       $ref: "#/components/schemas/ExtendedReservationItem"
  *   count:
  *     type: integer
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of reservations skipped when retrieving the reservations.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -102,6 +125,7 @@ export const defaultReservationFields = [
   "inventory_item_id",
   "quantity",
   "line_item_id",
+  "description",
   "metadata",
   "created_at",
   "updated_at",

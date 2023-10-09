@@ -1,22 +1,22 @@
 const path = require("path")
 
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simpleSalesChannelFactory,
   simpleCartFactory,
   simpleRegionFactory,
   simpleProductFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
+  require("../../../environment-helpers/start-server-with-environment").default
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -281,14 +281,16 @@ describe("sales channels", () => {
       const response = await api.get(`/store/carts/${cart.id}`, adminReqConfig)
 
       expect(response.data.cart.sales_channel).toBeTruthy()
-      expect(response.data.cart.sales_channel).toMatchSnapshot({
-        id: expect.any(String),
-        name: "test name",
-        description: "test description",
-        is_disabled: false,
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
+      expect(response.data.cart.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "test name",
+          description: "test description",
+          is_disabled: false,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        })
+      )
     })
   })
 

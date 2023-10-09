@@ -1,4 +1,4 @@
-const dbFactory = require("./helpers/use-template-db")
+const dbFactory = require("./environment-helpers/use-template-db")
 const path = require("path")
 
 module.exports = async () => {

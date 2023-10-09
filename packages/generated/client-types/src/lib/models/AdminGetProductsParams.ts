@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetProductsParams {
   /**
-   * Query used for searching product title and description, variant title and sku, and collection title.
+   * term to search products' title, description, variants' title and sku, and collections' title.
    */
   q?: string
   /**
-   * The discount condition id on which to filter the product.
+   * Filter by the ID of a discount condition. Only products that this discount condition is applied to will be retrieved.
    */
   discount_condition_id?: string
   /**
@@ -17,55 +17,55 @@ export interface AdminGetProductsParams {
    */
   id?: string | Array<string>
   /**
-   * Status to search for
+   * Filter by status.
    */
   status?: Array<"draft" | "proposed" | "published" | "rejected">
   /**
-   * Collection ids to search for.
+   * Filter by product collection IDs. Only products that are associated with the specified collections will be retrieved.
    */
   collection_id?: Array<string>
   /**
-   * Tag IDs to search for
+   * Filter by product tag IDs. Only products that are associated with the specified tags will be retrieved.
    */
   tags?: Array<string>
   /**
-   * Price List IDs to search for
+   * Filter by IDs of price lists. Only products that these price lists are applied to will be retrieved.
    */
   price_list_id?: Array<string>
   /**
-   * Sales Channel IDs to filter products by
+   * Filter by sales channel IDs. Only products that are available in the specified sales channels will be retrieved.
    */
   sales_channel_id?: Array<string>
   /**
-   * Type IDs to filter products by
+   * Filter by product type IDs. Only products that are associated with the specified types will be retrieved.
    */
   type_id?: Array<string>
   /**
-   * Category IDs to filter products by
+   * Filter by product category IDs. Only products that are associated with the specified categories will be retrieved.
    */
   category_id?: Array<string>
   /**
-   * Include category children when filtering by category_id
+   * whether to include product category children when filtering by `category_id`
    */
   include_category_children?: boolean
   /**
-   * title to search for.
+   * Filter by title.
    */
   title?: string
   /**
-   * description to search for.
+   * Filter by description.
    */
   description?: string
   /**
-   * handle to search for.
+   * Filter by handle.
    */
   handle?: string
   /**
-   * Search for giftcards using is_giftcard=true.
+   * Whether to retrieve gift cards or regular products.
    */
   is_giftcard?: boolean
   /**
-   * Date comparison for when resulting products were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -86,7 +86,7 @@ export interface AdminGetProductsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting products were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -107,7 +107,7 @@ export interface AdminGetProductsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting products were deleted.
+   * Filter by a deletion date range.
    */
   deleted_at?: {
     /**
@@ -128,7 +128,7 @@ export interface AdminGetProductsParams {
     gte?: string
   }
   /**
-   * How many products to skip in the result.
+   * The number of products to skip when retrieving the products.
    */
   offset?: number
   /**
@@ -136,15 +136,15 @@ export interface AdminGetProductsParams {
    */
   limit?: number
   /**
-   * (Comma separated) Which fields should be expanded in each product of the result.
+   * Comma-separated relations that should be expanded in the returned products.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in each product of the result.
+   * Comma-separated fields that should be included in the returned products.
    */
   fields?: string
   /**
-   * the field used to order the products.
+   * A product field to sort-order the retrieved products by.
    */
   order?: string
 }

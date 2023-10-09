@@ -3,7 +3,6 @@ import {
   useAdminCancelOrderEdit,
   useAdminConfirmOrderEdit,
   useAdminDeleteOrderEdit,
-  useAdminOrderEdit,
   useAdminUser,
 } from "medusa-react"
 import React, { useContext } from "react"
@@ -48,9 +47,9 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
   const { isModalVisible, showModal, setActiveOrderEdit } =
     useContext(OrderEditContext)
 
-  const { order_edit: orderEdit, isFetching } = useAdminOrderEdit(event.edit.id)
+  const orderEdit = event.edit
 
-  const { type, user_id } = getInfo(orderEdit || event.edit)
+  const { type, user_id } = getInfo(orderEdit)
 
   const notification = useNotification()
 
@@ -60,9 +59,9 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
 
   const forceConfirmDialog = useImperativeDialog()
 
-  const deleteOrderEdit = useAdminDeleteOrderEdit(event.edit.id)
-  const cancelOrderEdit = useAdminCancelOrderEdit(event.edit.id)
-  const confirmOrderEdit = useAdminConfirmOrderEdit(event.edit.id)
+  const deleteOrderEdit = useAdminDeleteOrderEdit(orderEdit.id)
+  const cancelOrderEdit = useAdminCancelOrderEdit(orderEdit.id)
+  const confirmOrderEdit = useAdminConfirmOrderEdit(orderEdit.id)
 
   const onDeleteOrderEditClicked = () => {
     deleteOrderEdit.mutate(undefined, {
@@ -120,7 +119,7 @@ const EditCreated: React.FC<EditCreatedProps> = ({ event }) => {
   }
 
   // hide last created edit while editing and prevent content flashing while loading
-  if ((isModalVisible && orderEdit?.status === "created") || isFetching) {
+  if (isModalVisible && orderEdit?.status === "created") {
     return null
   }
 

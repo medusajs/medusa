@@ -3,9 +3,11 @@ import {
   FilterableInventoryItemProps,
   FindConfig,
 } from "@medusajs/types"
-import { objectToStringPath, buildQuery } from "@medusajs/utils"
-import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
+import { objectToStringPath } from "@medusajs/utils"
+import { EntityManager, FindOptionsWhere, Brackets } from "typeorm"
+
 import { InventoryItem } from "../models"
+import { buildQuery } from "./build-query"
 
 export function getListQuery(
   manager: EntityManager,
@@ -28,10 +30,6 @@ export function getListQuery(
 
   const queryBuilder = inventoryItemRepository.createQueryBuilder("inv_item")
 
-  if (q) {
-    query.where.sku = ILike(`%${q}%`)
-  }
-
   if ("location_id" in query.where) {
     const locationIds = Array.isArray(selector.location_id)
       ? selector.location_id
@@ -47,16 +45,24 @@ export function getListQuery(
     delete query.where.location_id
   }
 
+  if (q) {
+    queryBuilder.where(query.where).andWhere(
+      new Brackets((qb) => {
+        qb.where("inv_item.sku ILike :q", { q: `%${q}%` })
+          .orWhere("inv_item.description ILike :q", { q: `%${q}%` })
+          .orWhere("inv_item.title ILike :q", { q: `%${q}%` })
+      })
+    )
+  } else {
+    queryBuilder.where(query.where)
+  }
+
   if (query.take) {
     queryBuilder.take(query.take)
   }
 
   if (query.skip) {
     queryBuilder.skip(query.skip)
-  }
-
-  if (query.where) {
-    queryBuilder.where(query.where)
   }
 
   if (query.select) {

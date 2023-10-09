@@ -2,6 +2,7 @@ import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
 import { IsNull, Not } from "typeorm"
+import { MedusaError } from "@medusajs/utils"
 
 class SendGridService extends NotificationService {
   static identifier = "sendgrid"
@@ -33,6 +34,7 @@ class SendGridService extends NotificationService {
       totalsService,
       productVariantService,
       giftCardService,
+      logger,
     },
     options
   ) {
@@ -52,6 +54,7 @@ class SendGridService extends NotificationService {
     this.totalsService_ = totalsService
     this.productVariantService_ = productVariantService
     this.giftCardService_ = giftCardService
+    this.logger_ = logger
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -218,22 +221,26 @@ class SendGridService extends NotificationService {
   }
 
   async sendNotification(event, eventData, attachmentGenerator) {
+    const data = await this.fetchData(event, eventData, attachmentGenerator)
+
     let templateId = this.getTemplateId(event)
 
-    if (!templateId) {
-      return false
+    if (data.locale) {
+      templateId = this.getLocalizedTemplateId(event, data.locale) || templateId
     }
 
-    const data = await this.fetchData(event, eventData, attachmentGenerator)
+    if (!templateId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No template was set for event: ${event}`
+      )
+    }
+
     const attachments = await this.fetchAttachments(
       event,
       data,
       attachmentGenerator
     )
-
-    if (data.locale) {
-      templateId = this.getLocalizedTemplateId(event, data.locale) || templateId
-    }
 
     const sendOptions = {
       template_id: templateId,
@@ -256,9 +263,16 @@ class SendGridService extends NotificationService {
       })
     }
 
-    const status = await SendGrid.send(sendOptions)
-      .then(() => "sent")
-      .catch(() => "failed")
+    let status
+
+    await SendGrid.send(sendOptions)
+      .then(() => {
+        status = "sent"
+      })
+      .catch((error) => {
+        status = "failed"
+        this.logger_.error(error)
+      })
 
     // We don't want heavy docs stored in DB
     delete sendOptions.attachments
@@ -297,18 +311,11 @@ class SendGridService extends NotificationService {
 
   /**
    * Sends an email using SendGrid.
-   * @param {string} templateId - id of template in SendGrid
-   * @param {string} from - sender of email
-   * @param {string} to - receiver of email
-   * @param {Object} data - data to send in mail (match with template)
+   * @param {Object} options - send options containing to, from, template, and more. Read more here: https://github.com/sendgrid/sendgrid-nodejs/tree/main/packages/mail
    * @return {Promise} result of the send operation
    */
   async sendEmail(options) {
-    try {
-      return SendGrid.send(options)
-    } catch (error) {
-      throw error
-    }
+    return await SendGrid.send(options)
   }
 
   async orderShipmentCreatedData({ id, fulfillment_id }, attachmentGenerator) {
@@ -607,11 +614,8 @@ class SendGridService extends NotificationService {
     // Fetch the return request
     const returnRequest = await this.returnService_.retrieve(return_id, {
       relations: [
-        "items",
-        "items.item",
         "items.item.tax_lines",
-        "items.item.variant",
-        "items.item.variant.product",
+        "items.item.variant.product.profiles",
         "shipping_method",
         "shipping_method.tax_lines",
         "shipping_method.shipping_option",
@@ -622,7 +626,9 @@ class SendGridService extends NotificationService {
       {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
-      { relations: ["tax_lines", "variant", "variant.product"] }
+      {
+        relations: ["tax_lines", "variant", "variant.product.profiles"],
+      }
     )
 
     // Fetch the order
@@ -768,7 +774,7 @@ class SendGridService extends NotificationService {
     })
 
     const cart = await this.cartService_.retrieve(swap.cart_id, {
-      relations: ["items", "items.variant", "items.variant.product"],
+      relations: ["items.variant.product.profiles"],
       select: [
         "total",
         "tax_total",
@@ -844,11 +850,12 @@ class SendGridService extends NotificationService {
   }
 
   async swapCreatedData({ id }) {
-    const store = await this.storeService_.retrieve({ where: { id: Not(IsNull()) } })
+    const store = await this.storeService_.retrieve({
+      where: { id: Not(IsNull()) },
+    })
     const swap = await this.swapService_.retrieve(id, {
       relations: [
-        "additional_items",
-        "additional_items.variant.product",
+        "additional_items.variant.product.profiles",
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
@@ -865,7 +872,7 @@ class SendGridService extends NotificationService {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
       {
-        relations: ["tax_lines", "variant", "variant.product"],
+        relations: ["tax_lines", "variant.product.profiles"],
       }
     )
 
@@ -885,9 +892,7 @@ class SendGridService extends NotificationService {
     const order = await this.orderService_.retrieve(swap.order_id, {
       select: ["total"],
       relations: [
-        "items",
-        "items.variant",
-        "items.variant.product",
+        "items.variant.product.profiles",
         "items.tax_lines",
         "discounts",
         "discounts.rule",
@@ -907,7 +912,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: ["items", "items.variant", "items.variant.product"]
+      relations: ["items.variant.product.profiles"],
     })
     const currencyCode = order.currency_code.toUpperCase()
 
@@ -987,10 +992,9 @@ class SendGridService extends NotificationService {
       relations: [
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "shipping_methods.tax_lines",
-        "additional_items",
-        "additional_items.variant",
-        "additional_items.variant.product",
+        "additional_items.variant.product.profiles",
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
@@ -1002,14 +1006,11 @@ class SendGridService extends NotificationService {
         "region",
         "items",
         "items.tax_lines",
-        "items.variant",
-        "items.variant.product",
+        "items.variant.product.profiles",
         "discounts",
         "discounts.rule",
         "swaps",
-        "swaps.additional_items",
-        "swaps.additional_items.variant",
-        "swaps.additional_items.variant.product",
+        "swaps.additional_items.variant.product.profiles",
         "swaps.additional_items.tax_lines",
       ],
     })
@@ -1022,11 +1023,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: [
-        "items",
-        "items.variant",
-        "items.variant.product",
-      ]
+      relations: ["items.variant.product.profiles"],
     })
 
     const returnRequest = swap.return_order
@@ -1035,7 +1032,7 @@ class SendGridService extends NotificationService {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
       {
-        relations: ["tax_lines", "variant", "variant.product"],
+        relations: ["tax_lines", "variant.product.profiles"],
       }
     )
 
@@ -1142,11 +1139,8 @@ class SendGridService extends NotificationService {
   async claimShipmentCreatedData({ id, fulfillment_id }) {
     const claim = await this.claimService_.retrieve(id, {
       relations: [
-        "order",
-        "order.items",
-        "order.items.variant",
-        "order.items.variant.product",
-        "order.shipping_address"
+        "order.items.variant.product.profiles",
+        "order.shipping_address",
       ],
     })
 
