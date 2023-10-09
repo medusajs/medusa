@@ -3,7 +3,7 @@ const modulesConfig = require("./modules")
 
 module.exports = modulesConfig({
   entryPointPath: "packages/types/src/pricing/service.ts",
-  outPath: "www/apps/docs/content/reference/pricing",
+  outPath: "www/apps/docs/content/references/pricing",
   moduleName: "Pricing Module Reference",
   documentsToFormat: ["IPricingModuleService"],
   additionalFormatting: {
