@@ -193,7 +193,7 @@ export default async (req, res) => {
   )
   await Promise.all(decoratePromises)
 
-  res.json({ variants: variants })
+  res.json({ variants })
 }
 
 export class StoreGetVariantsParams extends PriceSelectionParams {
