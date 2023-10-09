@@ -25,7 +25,7 @@ async function prepareAttachInventoryItems({ data }: WorkflowArguments) {
   return {
     inventoryItems: arrayOfVariantIds.map((variantId) => ({
       tag: variantId,
-      inventoryItem: { id: inventoryItemId },
+      inventoryItemId,
       requiredQuantity,
     })),
   }
