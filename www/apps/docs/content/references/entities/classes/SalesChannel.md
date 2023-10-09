@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[models/sales-channel.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/sales-channel.ts#L13)
+[models/sales-channel.ts:14](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel.ts#L14)
 
 ___
 
@@ -70,7 +70,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -80,7 +80,27 @@ ___
 
 #### Defined in
 
-[models/sales-channel.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/sales-channel.ts#L16)
+[models/sales-channel.ts:17](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel.ts#L17)
+
+___
+
+### locations
+
+• **locations**: [`SalesChannelLocation`](SalesChannelLocation.md)[]
+
+#### Defined in
+
+[models/sales-channel.ts:29](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel.ts#L29)
+
+___
+
+### metadata
+
+• **metadata**: ``null`` \| `Record`<`string`, `unknown`\>
+
+#### Defined in
+
+[models/sales-channel.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel.ts#L20)
 
 ___
 
@@ -90,7 +110,7 @@ ___
 
 #### Defined in
 
-[models/sales-channel.ts:10](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/sales-channel.ts#L10)
+[models/sales-channel.ts:11](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel.ts#L11)
 
 ___
 
@@ -104,7 +124,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -118,4 +138,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/sales-channel.ts:18](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/sales-channel.ts#L18)
+[models/sales-channel.ts:32](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel.ts#L32)

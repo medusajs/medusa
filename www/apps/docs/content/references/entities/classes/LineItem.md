@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/line-item.ts:85](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L85)
+[models/line-item.ts:87](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L87)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:127](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L127)
+[models/line-item.ts:118](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L118)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:53](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L53)
+[models/line-item.ts:53](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L53)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:49](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L49)
+[models/line-item.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L49)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:77](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L77)
+[models/line-item.ts:77](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L77)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:73](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L73)
+[models/line-item.ts:73](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L73)
 
 ___
 
@@ -92,17 +92,17 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
 ### description
 
-• **description**: `string`
+• **description**: ``null`` \| `string`
 
 #### Defined in
 
-[models/line-item.ts:112](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L112)
+[models/line-item.ts:103](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L103)
 
 ___
 
@@ -112,17 +112,17 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:167](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L167)
+[models/line-item.ts:161](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L161)
 
 ___
 
 ### fulfilled\_quantity
 
-• **fulfilled\_quantity**: `number`
+• **fulfilled\_quantity**: ``null`` \| `number`
 
 #### Defined in
 
-[models/line-item.ts:147](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L147)
+[models/line-item.ts:141](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L141)
 
 ___
 
@@ -132,17 +132,17 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:168](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L168)
+[models/line-item.ts:163](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L163)
 
 ___
 
 ### has\_shipping
 
-• **has\_shipping**: `boolean`
+• **has\_shipping**: ``null`` \| `boolean`
 
 #### Defined in
 
-[models/line-item.ts:130](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L130)
+[models/line-item.ts:121](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L121)
 
 ___
 
@@ -156,7 +156,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:159](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L159)
+[models/line-item.ts:153](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L153)
 
 ___
 
@@ -176,7 +176,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:121](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L121)
+[models/line-item.ts:112](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L112)
 
 ___
 
@@ -186,7 +186,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:118](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L118)
+[models/line-item.ts:109](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L109)
 
 ___
 
@@ -196,7 +196,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:156](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L156)
+[models/line-item.ts:150](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L150)
 
 ___
 
@@ -206,7 +206,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:61](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L61)
+[models/line-item.ts:61](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L61)
 
 ___
 
@@ -216,7 +216,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:106](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L106)
+[models/line-item.ts:97](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L97)
 
 ___
 
@@ -226,7 +226,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:97](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L97)
+[models/line-item.ts:93](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L93)
 
 ___
 
@@ -236,7 +236,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:57](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L57)
+[models/line-item.ts:57](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L57)
 
 ___
 
@@ -246,7 +246,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:91](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L91)
+[models/line-item.ts:90](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L90)
 
 ___
 
@@ -256,7 +256,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:166](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L166)
+[models/line-item.ts:160](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L160)
 
 ___
 
@@ -266,7 +266,17 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:165](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L165)
+[models/line-item.ts:159](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L159)
+
+___
+
+### product\_id
+
+• **product\_id**: ``null`` \| `string`
+
+#### Defined in
+
+[models/line-item.ts:135](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L135)
 
 ___
 
@@ -276,7 +286,17 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:144](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L144)
+[models/line-item.ts:138](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L138)
+
+___
+
+### raw\_discount\_total
+
+• `Optional` **raw\_discount\_total**: ``null`` \| `number`
+
+#### Defined in
+
+[models/line-item.ts:162](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L162)
 
 ___
 
@@ -286,27 +306,27 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:161](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L161)
+[models/line-item.ts:155](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L155)
 
 ___
 
 ### returned\_quantity
 
-• **returned\_quantity**: `number`
+• **returned\_quantity**: ``null`` \| `number`
 
 #### Defined in
 
-[models/line-item.ts:150](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L150)
+[models/line-item.ts:144](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L144)
 
 ___
 
 ### shipped\_quantity
 
-• **shipped\_quantity**: `number`
+• **shipped\_quantity**: ``null`` \| `number`
 
 #### Defined in
 
-[models/line-item.ts:153](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L153)
+[models/line-item.ts:147](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L147)
 
 ___
 
@@ -316,7 +336,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:124](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L124)
+[models/line-item.ts:115](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L115)
 
 ___
 
@@ -326,7 +346,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:162](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L162)
+[models/line-item.ts:156](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L156)
 
 ___
 
@@ -336,7 +356,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:69](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L69)
+[models/line-item.ts:69](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L69)
 
 ___
 
@@ -346,7 +366,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:65](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L65)
+[models/line-item.ts:65](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L65)
 
 ___
 
@@ -356,7 +376,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:80](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L80)
+[models/line-item.ts:82](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L82)
 
 ___
 
@@ -366,7 +386,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:163](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L163)
+[models/line-item.ts:157](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L157)
 
 ___
 
@@ -376,7 +396,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:115](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L115)
+[models/line-item.ts:106](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L106)
 
 ___
 
@@ -386,7 +406,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:109](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L109)
+[models/line-item.ts:100](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L100)
 
 ___
 
@@ -396,7 +416,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:164](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L164)
+[models/line-item.ts:158](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L158)
 
 ___
 
@@ -406,7 +426,7 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:133](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L133)
+[models/line-item.ts:124](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L124)
 
 ___
 
@@ -420,7 +440,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -430,19 +450,33 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:141](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L141)
+[models/line-item.ts:132](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L132)
 
 ___
 
 ### variant\_id
 
-• **variant\_id**: `string`
+• **variant\_id**: ``null`` \| `string`
 
 #### Defined in
 
-[models/line-item.ts:137](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L137)
+[models/line-item.ts:128](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L128)
 
 ## Methods
+
+### afterUpdateOrLoad
+
+▸ **afterUpdateOrLoad**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[models/line-item.ts:193](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L193)
+
+___
 
 ### beforeInsert
 
@@ -454,4 +488,18 @@ ___
 
 #### Defined in
 
-[models/line-item.ts:170](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/line-item.ts#L170)
+[models/line-item.ts:166](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L166)
+
+___
+
+### beforeUpdate
+
+▸ **beforeUpdate**(): `void`
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[models/line-item.ts:182](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/line-item.ts#L182)
