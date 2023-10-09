@@ -1,5 +1,11 @@
 # @medusajs/client-types
 
+## 0.2.5
+
+### Patch Changes
+
+- [#4953](https://github.com/medusajs/medusa/pull/4953) [`9781089ca`](https://github.com/medusajs/medusa/commit/9781089ca301221011c58423add3bf81b74b068b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa): fix types for upload endpoints
+
 ## 0.2.4
 
 ### Patch Changes

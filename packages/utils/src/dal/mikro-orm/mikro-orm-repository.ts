@@ -1,4 +1,10 @@
-import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
+import {
+  Context,
+  DAL,
+  FilterQuery,
+  RepositoryTransformOptions,
+} from "@medusajs/types"
+import { isString } from "../../common"
 import { MedusaContext } from "../../decorators"
 import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
@@ -68,11 +74,21 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
 
   @InjectTransactionManager()
   async softDelete(
-    ids: string[],
+    idsOrFilter: string[] | FilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
-    const entities = await this.find({ where: { id: { $in: ids } } as any })
+    const isArray = Array.isArray(idsOrFilter)
+    const filter =
+      isArray || isString(idsOrFilter)
+        ? {
+            id: {
+              $in: isArray ? idsOrFilter : [idsOrFilter],
+            },
+          }
+        : idsOrFilter
+
+    const entities = await this.find({ where: filter as any })
     const date = new Date()
 
     await mikroOrmUpdateDeletedAtRecursively(manager, entities, date)
@@ -86,22 +102,50 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
 
   @InjectTransactionManager()
   async restore(
-    ids: string[],
+    idsOrFilter: string[] | FilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
-  ): Promise<T[]> {
-    const query = buildQuery(
-      { id: { $in: ids } },
-      {
-        withDeleted: true,
-      }
-    )
+  ): Promise<[T[], Record<string, unknown[]>]> {
+    const isArray = Array.isArray(idsOrFilter)
+    const filter =
+      isArray || isString(idsOrFilter)
+        ? {
+            id: {
+              $in: isArray ? idsOrFilter : [idsOrFilter],
+            },
+          }
+        : idsOrFilter
+
+    const query = buildQuery(filter, {
+      withDeleted: true,
+    })
 
     const entities = await this.find(query)
 
     await mikroOrmUpdateDeletedAtRecursively(manager, entities, null)
 
-    return entities
+    const softDeletedEntitiesMap = getSoftDeletedCascadedEntitiesIdsMappedBy({
+      entities,
+      restored: true,
+    })
+
+    return [entities, softDeletedEntitiesMap]
+  }
+
+  applyFreeTextSearchFilters<T>(
+    findOptions: DAL.FindOptions<T & { q?: string }>,
+    retrieveConstraintsToApply: (q: string) => any[]
+  ): void {
+    if (!("q" in findOptions.where) || !findOptions.where.q) {
+      return
+    }
+
+    const q = findOptions.where.q as string
+    delete findOptions.where.q
+
+    findOptions.where = {
+      $and: [findOptions.where, { $or: retrieveConstraintsToApply(q) }],
+    } as unknown as DAL.FilterQuery<T & { q?: string }>
   }
 }
 
@@ -132,7 +176,7 @@ export abstract class MikroOrmAbstractTreeRepositoryBase<T = any>
 }
 
 /**
- * Priviliged extends of the abstract classes unless most of the methods can't be implemented
+ * Privileged extends of the abstract classes unless most of the methods can't be implemented
  * in your repository. This base repository is also used to provide a base repository
  * injection if needed to be able to use the common methods without being related to an entity.
  * In this case, none of the method will be implemented except the manager and transaction

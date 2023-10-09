@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-h1 mb-1;
+  }
+  
+  h2 {
+    @apply text-h2 mb-1;
+  }
+  
+  h3 {
+    @apply text-h3 mb-0.5;
+  }
+  
+  h4 {
+    @apply text-h4 mb-0.5;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply text-medusa-fg-base;
+  }
+  
+  hr {
+    @apply h-[1px] w-full border-0 bg-medusa-border-base my-2;
+  }
+  
+  p, ul, ol {
+    @apply mb-1.5;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply overflow-x-hidden;
+  }
+
+  *::selection {
+    @apply bg-medusa-bg-highlight;
+  }
+
+  pre *::selection {
+    @apply !bg-medusa-code-text-highlight;
+  }
+
+  body[data-modal="opened"] {
+    @apply !overflow-hidden;
+  }
+}

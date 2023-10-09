@@ -1,27 +1,28 @@
-import { FlagRouter } from "@medusajs/utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
-import { CustomerGroupService } from "."
-import { TransactionBaseService } from "../interfaces"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { PriceListRepository } from "../repositories/price-list"
-import { ProductVariantRepository } from "../repositories/product-variant"
-import { FindConfig, Selector } from "../types/common"
 import {
-    CreatePriceListInput,
-    FilterablePriceListProps,
-    PriceListPriceCreateInput,
-    PriceListPriceUpdateInput,
-    UpdatePriceListInput,
+  CreatePriceListInput,
+  FilterablePriceListProps,
+  PriceListPriceCreateInput,
+  PriceListPriceUpdateInput,
+  UpdatePriceListInput,
 } from "../types/price-list"
+import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
+import { DeepPartial, EntityManager } from "typeorm"
+import { FindConfig, Selector } from "../types/common"
+import { isDefined, MedusaError } from "medusa-core-utils"
+
+import { CustomerGroupService } from "."
 import { FilterableProductProps } from "../types/product"
 import { FilterableProductVariantProps } from "../types/product-variant"
-import { buildQuery } from "../utils"
+import { FlagRouter } from "@medusajs/utils"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { PriceListRepository } from "../repositories/price-list"
 import ProductService from "./product"
+import { ProductVariantRepository } from "../repositories/product-variant"
 import ProductVariantService from "./product-variant"
 import RegionService from "./region"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -103,6 +104,35 @@ class PriceListService extends TransactionBaseService {
     }
 
     return priceList
+  }
+
+  async listPriceListsVariantIdsMap(
+    priceListIds: string | string[]
+  ): Promise<{ [priceListId: string]: string[] }> {
+    priceListIds = Array.isArray(priceListIds) ? priceListIds : [priceListIds]
+
+    if (!priceListIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"priceListIds" must be defined`
+      )
+    }
+
+    const priceListRepo = this.activeManager_.withRepository(
+      this.priceListRepo_
+    )
+
+    const priceListsVariantIdsMap =
+      await priceListRepo.listPriceListsVariantIdsMap(priceListIds)
+
+    if (!Object.keys(priceListsVariantIdsMap)?.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `No PriceLists found with ids: ${priceListIds.join(", ")}`
+      )
+    }
+
+    return priceListsVariantIdsMap
   }
 
   /**
@@ -366,10 +396,12 @@ class PriceListService extends TransactionBaseService {
                     requiresPriceList
                   )
 
-                return productVariantRepo.create({
+                const variant = productVariantRepo.create({
                   ...v,
-                  prices,
                 })
+
+                variant.prices = prices
+                return variant
               })
             )
           }
@@ -497,13 +529,29 @@ class PriceListService extends TransactionBaseService {
     const regionServiceTx = this.regionService_.withTransaction(
       this.activeManager_
     )
+
+    const regions = await regionServiceTx.list(
+      {
+        id: [
+          ...new Set(
+            prices
+              .map((p) => p.region_id)
+              .filter((p: string | undefined): p is string => !!p)
+          ),
+        ],
+      },
+      {}
+    )
+
+    const regionsMap = new Map(regions.map((r) => [r.id, r]))
+
     for (const price of prices) {
       const p = { ...price }
 
       if (p.region_id) {
-        const region = await regionServiceTx.retrieve(p.region_id)
+        const region = regionsMap.get(p.region_id)
 
-        p.currency_code = region.currency_code
+        p.currency_code = region!.currency_code
       }
 
       prices_.push(p)

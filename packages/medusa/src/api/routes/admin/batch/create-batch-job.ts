@@ -41,7 +41,7 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl -X POST '{backend_url}/admin/batch-jobs' \
  *       -H 'Content-Type: application/json' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       --data-raw '{
  *           "type": "product-export",
  *           "context": { }
@@ -49,6 +49,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Batch Jobs
  * responses:

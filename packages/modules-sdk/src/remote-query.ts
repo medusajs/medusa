@@ -1,55 +1,60 @@
 import {
+  RemoteFetchDataCallback,
+  RemoteJoiner,
+  toRemoteJoinerQuery,
+} from "@medusajs/orchestration"
+import {
   JoinerRelationship,
   JoinerServiceConfig,
   LoadedModule,
+  ModuleJoinerConfig,
   RemoteExpandProperty,
+  RemoteJoinerQuery,
 } from "@medusajs/types"
-
+import { isString, toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "./medusa-module"
-import { RemoteJoiner } from "@medusajs/orchestration"
-import { toPascalCase } from "@medusajs/utils"
 
 export class RemoteQuery {
   private remoteJoiner: RemoteJoiner
   private modulesMap: Map<string, LoadedModule> = new Map()
+  private customRemoteFetchData?: RemoteFetchDataCallback
 
-  constructor(
-    modulesLoaded?: LoadedModule[],
-    remoteFetchData?: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: JoinerRelationship
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown[] }
-      path?: string
-    }>
-  ) {
+  constructor({
+    modulesLoaded,
+    customRemoteFetchData,
+    servicesConfig = [],
+  }: {
+    modulesLoaded?: LoadedModule[]
+    customRemoteFetchData?: RemoteFetchDataCallback
+    servicesConfig?: ModuleJoinerConfig[]
+  }) {
     if (!modulesLoaded?.length) {
       modulesLoaded = MedusaModule.getLoadedModules().map(
         (mod) => Object.values(mod)[0]
       )
     }
 
-    const servicesConfig: JoinerServiceConfig[] = []
     for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
       }
 
-      if (this.modulesMap.has(mod.__definition.key)) {
+      const serviceName = mod.__definition.key
+
+      if (this.modulesMap.has(serviceName)) {
         throw new Error(
-          `Duplicated instance of module ${mod.__definition.key} is not allowed.`
+          `Duplicated instance of module ${serviceName} is not allowed.`
         )
       }
 
-      this.modulesMap.set(mod.__definition.key, mod)
-      servicesConfig.push(mod.__joinerConfig)
+      this.modulesMap.set(serviceName, mod)
+      servicesConfig!.push(mod.__joinerConfig)
     }
 
+    this.customRemoteFetchData = customRemoteFetchData
     this.remoteJoiner = new RemoteJoiner(
-      servicesConfig,
-      remoteFetchData ?? this.remoteFetchData.bind(this)
+      servicesConfig as JoinerServiceConfig[],
+      this.remoteFetchData.bind(this)
     )
   }
 
@@ -67,16 +72,22 @@ export class RemoteQuery {
     this.remoteJoiner.setFetchDataCallback(remoteFetchData)
   }
 
-  private static getAllFieldsAndRelations(
+  public static getAllFieldsAndRelations(
     data: any,
-    prefix = ""
-  ): { select: string[]; relations: string[] } {
+    prefix = "",
+    args: Record<string, unknown[]> = {}
+  ): {
+    select: string[]
+    relations: string[]
+    args: Record<string, unknown[]>
+  } {
     let fields: Set<string> = new Set()
     let relations: string[] = []
 
     data.fields?.forEach((field: string) => {
       fields.add(prefix ? `${prefix}.${field}` : field)
     })
+    args[prefix] = data.args
 
     if (data.expands) {
       for (const property in data.expands) {
@@ -87,7 +98,8 @@ export class RemoteQuery {
 
         const result = RemoteQuery.getAllFieldsAndRelations(
           data.expands[property],
-          newPrefix
+          newPrefix,
+          args
         )
 
         result.select.forEach(fields.add, fields)
@@ -95,7 +107,7 @@ export class RemoteQuery {
       }
     }
 
-    return { select: [...fields], relations }
+    return { select: [...fields], relations, args }
   }
 
   private hasPagination(options: { [attr: string]: unknown }): boolean {
@@ -126,6 +138,13 @@ export class RemoteQuery {
     data: unknown[] | { [path: string]: unknown }
     path?: string
   }> {
+    if (this.customRemoteFetchData) {
+      const resp = await this.customRemoteFetchData(expand, keyField, ids)
+      if (resp !== undefined) {
+        return resp
+      }
+    }
+
     const serviceConfig = expand.serviceConfig
     const service = this.modulesMap.get(serviceConfig.serviceName)!
 
@@ -196,9 +215,18 @@ export class RemoteQuery {
     }
   }
 
-  public async query(query: string, variables: any = {}): Promise<any> {
-    return await this.remoteJoiner.query(
-      RemoteJoiner.parseQuery(query, variables)
-    )
+  public async query(
+    query: string | RemoteJoinerQuery | object,
+    variables?: Record<string, unknown>
+  ): Promise<any> {
+    let finalQuery: RemoteJoinerQuery = query as RemoteJoinerQuery
+
+    if (isString(query)) {
+      finalQuery = RemoteJoiner.parseQuery(query, variables)
+    } else if (!isString(finalQuery?.service) && !isString(finalQuery?.alias)) {
+      finalQuery = toRemoteJoinerQuery(query)
+    }
+
+    return await this.remoteJoiner.query(finalQuery)
   }
 }

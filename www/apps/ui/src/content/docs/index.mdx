@@ -1,0 +1,44 @@
+---
+title: "Introduction"
+description: "Primitives for building Medusa applications."
+---
+
+Welcome to Medusa UI, a React implementation of the Medusa design system.
+It is a collection of components, hooks, utility functions, icons, and [Tailwind CSS](https://tailwindcss.com/) classes that can be used to build
+a consistent user interface across the Medusa Admin and other Medusa applications.
+
+<Card
+  title="Medusa UI"
+  text="Colors, type, icons and components"
+  href="https://www.figma.com/community/file/1278648465968635936/Medusa-UI"
+  icon={
+    <FigmaIcon />
+  }
+/>
+
+## Packages
+
+---
+
+Medusa UI is split into multiple packages. Each package is published to npm
+and can be installed separately.
+
+- `@medusajs/ui` - React components, hooks, and utility functions used
+  in Medusa UI.
+- `@medusajs/ui-preset` - Tailwind CSS preset containing all the classes
+  used in Medusa UI.
+- `@medusajs/icons` - Icons used in Medusa UI.
+
+## About
+
+---
+
+At its core, Medusa UI is a styled and slightly opinionated implementation of [Radix Primitives](https://www.radix-ui.com/primitives).
+Our team have also referenced the fantastic [shadcn/ui](https://ui.shadcn.com/) for inspiration in certain implementations.
+
+Our team strongly believe in keeping the components simple and
+composable, much like Medusa's foundation. This allows you to build whatever you need. Our team have tried to avoid overloading
+the component API and, instead, leveraged the native HTML API, which gets implemented
+and respected accordingly, and passed to the underlying elements.
+
+<Feedback title={"Introduction"} />

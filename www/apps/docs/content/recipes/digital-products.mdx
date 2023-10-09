@@ -1,0 +1,2478 @@
+---
+addHowToData: true
+---
+
+import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
+import Icons from '@theme/Icon';
+
+# Digital Products
+
+This document guides you through the different documentation resources that will help you build digital products with Medusa.
+
+## Overview
+
+Digital products are stored privately using a storage service like S3 or another storage mechanism. When the customer buys this type of product, an email is sent to them where they can download the product.
+
+Medusa doesn't have a built-in concept of a digital product since our focus is standardizing features and implementations, then offering the building blocks that enable you to build your use case.
+
+You can create new entities to represent a digital product and link them to existing product-related entities.
+
+Medusa's plugins also allow you to choose the services that play a part in your digital product implementation. Whether you want to use S3, MinIO, or another service to store your digital products, you must install an existing plugin or create your own. The same applies to sending notifications, such as emails, to customers using notification services.
+
+---
+
+## Install a File Service
+
+A file service is used to handle storage functionalities in Medusa. This includes uploading, retrieving, and downloading files, among other features. For digital products, a file service is essential to implement the basic functionalities of digital products.
+
+The Medusa core defines an abstract file service extended by File Service plugins with the actual functionality. This allows you to choose the best storage method for your use case.
+
+When you install a Medusa project, the Local file service plugin is installed by default. This plugin is helpful for development, but it's not recommended for production.
+
+Medusa also provides official file service plugins that you can use in production, such as the [S3 plugin](../plugins/file-service/s3.mdx) or the [MinIO plugin](../plugins/file-service/minio.md). You can also create your own file service, or browse the [Plugins Library](https://medusajs.com/plugins/?filters=Storage&categories=Storage) for plugins created by the community.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/plugins/file-service',
+    label: 'Official File Service Plugins',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Check out available official file service plugins.',
+    }
+  },
+  {
+    type: 'link',
+    href: 'https://medusajs.com/plugins/?filters=Storage&categories=Storage',
+    label: 'Community File Service Plugins',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Check out available community file service plugins.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/file-service/create-file-service',
+    label: 'Create a File Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a custom file service.',
+    }
+  },
+]} />
+
+---
+
+## Install a Notification Service
+
+A notification service is used to handle sending notifications to users and customers. For example, when you want to send an order confirmation email or an email with reset-password instructions.
+
+For digital products, a notification service allows you to send the customer an email or another form of notification with a link to download the file they purchased.
+
+The Medusa core defines an abstract Notification service extended by Notification Service plugins with the actual functionality. This allows you to choose the best notification method for your use case.
+
+Medusa provides official notification plugins that you can use, such as the SendGrid plugin. You can also create your own notification service, or browse the [Plugins Library for plugins](https://medusajs.com/plugins/?filters=Storage&filters=Notification&categories=Storage&categories=Notification) created by the community.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/plugins/notifications',
+    label: 'Official Notification Plugins',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Check out available official notification plugins.',
+    }
+  },
+  {
+    type: 'link',
+    href: 'https://medusajs.com/plugins/?filters=Storage&filters=Notification&categories=Storage',
+    label: 'Community Notification Plugins',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Check out available community notification service plugins.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/notification/create-notification-provider',
+    label: 'Create a Notification Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a custom notification service.',
+    }
+  },
+]} />
+
+---
+
+## Create Custom Entity
+
+An entity represents a table in the database. The Medusa core defines entities necessary for the commerce features it provides. You can also extend those entities or create your own.
+
+To represent a digital product, it's recommended to create an entity that has a relation to the `ProductVariant` entity. The `ProductVariant` entity represents the saleable variant of a `Product`.
+
+For example, if you're selling the Harry Potter movies, you would have a `Product` named “Harry Potter” and, for each movie in the series, a `ProductVariant`. Each `ProductVariant` would be associated with the custom entity you create that represents the downloadable movie.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/entities/create',
+    label: 'Create an Entity',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an entity in the Medusa backend.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/entities/extend-entity',
+    label: 'Extend an entity',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to extend an entity in the Medusa backend.',
+    }
+  },
+]} />
+
+<details>
+<summary>
+Example: Create ProductMedia Entity
+</summary>
+
+In this example, you’ll create a `ProductMedia` entity that is associated with the `ProductVariant` entity in a one-to-many relation.
+
+To do that, create the file `src/models/product-media.ts` with the following content:
+
+```ts title=src/models/product-media.ts
+import { 
+  BeforeInsert, 
+  Column, 
+  Entity,
+} from "typeorm"
+import { BaseEntity, ProductVariant } from "@medusajs/medusa"
+import { generateEntityId } from "@medusajs/medusa/dist/utils"
+
+export enum MediaType {
+  MAIN = "main",
+  PREVIEW = "preview"
+}
+
+@Entity()
+export class ProductMedia extends BaseEntity {
+  @Column({ type: "varchar" })
+  name: string
+
+  @Column ({ type: "enum", enum: MediaType, default: "main" })
+  type: MediaType
+
+  @Column({ type: "varchar" })
+  file_key: string
+
+  @Column({ type: "varchar" })
+  mime_type: string
+
+  @Column({ type: "varchar" })
+  variant_id: string
+
+  variant?: ProductVariant
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "post")
+  }
+}
+```
+
+The entity has the following attributes:
+
+- `name`: a string indicating the file name or a name entered by the merchant.
+- `type`: an enum value indicating the type of file. If the file’s type is `main`, it means that this is the file that customers download when they purchase the product. If its type is `preview`, it means that the file is only used to preview the product variant to the customer.
+- `file_key`: a string that indicates the downloadable file’s key. The key is retrieved by the installed file service, which is covered in the next step, and it’s used later if you want to get a downloadable link or delete the file.
+- `variant_id`: a string indicating the ID of the product variant this file is associated with.
+- `mime_type`: a string indicating the MIME type of the product variant.
+
+Next, you need to create a migration script that reflects the changes on the database schema.
+
+To do that, run the following command to create a migration file:
+
+```bash
+npx typeorm migration:create src/migrations/ProductMediaCreate
+```
+
+This will create a file in the `src/migrations` directory. The file’s name will be of the format `<TIMESTAMP>-ProductMediaCreate.ts`, where `<TIMESTAMP>` is the time this migration was created.
+
+In the class defined in the file, change the `up` and `down` method to the following:
+
+<!-- eslint-disable max-len -->
+
+```ts
+export class ProductMediaCreate1693901604934 implements MigrationInterface {
+  public async up(queryRunner: QueryRunner): Promise<void> {
+      await queryRunner.query(`CREATE TYPE "public"."product_media_type_enum" AS ENUM('main', 'preview')`)
+      await queryRunner.query(`CREATE TABLE "product_media" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "type" "public"."product_media_type_enum" NOT NULL DEFAULT 'main', "file_key" character varying NOT NULL, "mime_type" character varying NOT NULL, "variant_id" character varying NOT NULL, CONSTRAINT "PK_09d4639de8082a32aa27f3ac9a6" PRIMARY KEY ("id"))`)
+  }
+
+  public async down(queryRunner: QueryRunner): Promise<void> {
+      await queryRunner.query(`DROP TABLE "product_media"`)
+      await queryRunner.query(`DROP TYPE "public"."product_media_type_enum"`)
+  }
+}
+```
+
+To apply the migrations on your database and create the `product_media` table, run the following commands in the root directory of your Medusa backend:
+
+```bash npm2yarn
+npm run build
+npx medusa migrations run
+```
+
+</details>
+    
+
+---
+
+## Add Custom Endpoints
+
+After creating your entity, you need to create custom admin endpoints that allow you to access and manipulate that entity. The endpoints necessary vary based on your case, but generally speaking, you'll need endpoints to perform Create, Read, Update, and Delete (CRUD) functionalities.
+
+:::tip
+
+The Medusa backend provides the necessary endpoints for the actual file upload. So, you don’t need to create endpoints for that.
+
+:::
+
+You can also create custom storefront endpoints that allow you to show information related to the downloadable digital product if this information isn't stored within the `Product` or `ProductVariant` entities.
+
+Creating an endpoint also requires creating a service, which is a class that typically holds utility methods for an entity. You can implement the CRUD functionalities as methods within the service, then access the service in an endpoint and use its methods.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/services/create-service',
+    label: 'Create a Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a service in the Medusa backend.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/endpoints/create',
+    label: 'Create an Endpoint',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an entity in the Medusa backend.',
+    }
+  },
+]} />
+
+<details>
+<summary>
+Example: List and Create Endpoints
+</summary>
+
+This example showcases how you can create the list and create endpoints for digital products. These endpoints are chosen in particular as they’re used in later parts of this recipe. You may follow the same instructions to create other necessary endpoints.
+
+Before creating the endpoints, you’ll create the `ProductMediaService`. Create the file `src/services/product-media.ts` with the following content:
+
+```ts title=src/services/product-media.ts
+import { 
+  FindConfig,
+  ProductVariantService,
+  Selector,
+  TransactionBaseService,
+  buildQuery,
+} from "@medusajs/medusa"
+import { ProductMedia } from "../models/product-media"
+import { MedusaError } from "@medusajs/utils"
+
+type InjectedDependencies = {
+  productVariantService: ProductVariantService
+}
+
+class ProductMediaService extends TransactionBaseService {
+  protected productVariantService_: ProductVariantService
+
+  constructor(container: InjectedDependencies) {
+    super(container)
+    this.productVariantService_ = 
+      container.productVariantService
+  }
+
+  private checkVariantInRelations(
+    relations: string[]
+  ): [string[], boolean] {
+    const variantsRelationIndex = relations.indexOf("variant")
+    const isVariantsEnabled = variantsRelationIndex !== -1
+    if (isVariantsEnabled) {
+      relations.splice(variantsRelationIndex, 1)
+    }
+
+    return [relations, isVariantsEnabled]
+  }
+
+  async listAndCount(
+    selector?: Selector<ProductMedia>,
+    config: FindConfig<ProductMedia> = {
+      skip: 0,
+      take: 20,
+      relations: [],
+    }
+  ): Promise<[ProductMedia[], number]> {
+    const productMediaRepo = this.activeManager_.getRepository(
+      ProductMedia
+    )
+
+    const [
+      relations,
+      isVariantsEnabled,
+    ] = this.checkVariantInRelations(
+      config.relations || []
+    )
+
+    config.relations = relations
+
+    const query = buildQuery(selector, config)
+
+    const [
+      productMedias,
+      count,
+    ] = await productMediaRepo.findAndCount(query)
+
+    if (isVariantsEnabled) {
+      // retrieve product variants
+      await Promise.all(productMedias.map(
+        async (media, index) => {
+          productMedias[index].variant = 
+            await this.retrieveVariantByMedia(media)
+        }))
+    }
+
+    return [productMedias, count]
+  }
+  
+  async list(
+    selector?: Selector<ProductMedia>,
+    config: FindConfig<ProductMedia> = {
+      skip: 0,
+      take: 20,
+      relations: [],
+    }
+  ): Promise<ProductMedia[]> {
+    const [productMedias] = await this.listAndCount(
+        selector, config
+      )
+
+    return productMedias
+  }
+
+  async retrieve(
+    id: string,
+    config?: FindConfig<ProductMedia>
+  ): Promise<ProductMedia> {
+    const productMediaRepo = this.activeManager_.getRepository(
+      ProductMedia
+    )
+
+    const query = buildQuery({
+      id,
+    }, config)
+
+    const productMedia = await productMediaRepo.findOne(query)
+
+    if (!productMedia) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "ProductMedia was not found"
+      )
+    }
+
+    if (config.relations.includes("variant")) {
+      productMedia.variant = await this.retrieveVariantByMedia(
+        productMedia
+      )
+    }
+
+    return productMedia
+  }
+
+  async retrieveVariantByMedia(productMedia: ProductMedia) {
+    return await this.productVariantService_.retrieve(
+      productMedia.variant_id,
+      {
+        relations: ["product"],
+      }
+    )
+  }
+
+  async create(
+    data: Pick<
+      ProductMedia, "name" | "file_key" | "variant_id" | "type"
+    >
+  ): Promise<ProductMedia> {
+    return this.atomicPhase_(async (manager) => {
+      const productMediaRepo = manager.getRepository(
+        ProductMedia
+      )
+      const productMedia = productMediaRepo.create(data)
+      const result = await productMediaRepo.save(productMedia)
+
+      return result
+    })
+  }
+
+  async update(
+    id: string,
+    data: Omit<Partial<ProductMedia>, "id">
+  ): Promise<ProductMedia> {
+    return await this.atomicPhase_(async (manager) => {
+      const productMediaRepo = manager.getRepository(
+        ProductMedia
+      )
+      const productMedia = await this.retrieve(id)
+
+      Object.assign(productMedia, data)
+
+      return await productMediaRepo.save(productMedia)
+    })
+  }
+
+  async delete(id: string): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productMediaRepo = manager.getRepository(
+        ProductMedia
+      )
+      const productMedia = await this.retrieve(id)
+      
+      await productMediaRepo.remove([productMedia])
+    })
+  }
+}
+
+export default ProductMediaService
+```
+
+This service implements the necessary methods to perform the basic CRUD operations. You can add any other method if necessary.
+
+You can now create the endpoints. To create the “create product media” endpoint, create the file `src/api/routes/admin/product-media/create.ts` with the following content:
+
+```ts title=src/api/routes/admin/product-media/create.ts
+import { Request, Response } from "express"
+import ProductMediaService 
+  from "../../../../services/product-media"
+
+// create a product media for a variant
+export default async (req: Request, res: Response) => {
+  // validation omitted for simplicity
+  const {
+    variant_id,
+    file_key,
+    type = "main",
+    name,
+  } = req.body
+
+  const productMediaService = req.scope.resolve<
+    ProductMediaService
+  >("productMediaService")
+  const productMedia = await productMediaService.create({
+    variant_id,
+    file_key,
+    type,
+    name,
+  })
+
+  res.json({
+    product_media: productMedia,
+  })
+}
+```
+
+This creates an endpoint the accepts the necessary data to create a product media, then returns the created product media.
+
+Next, create the “list product media” endpoint by creating the file `src/api/routes/admin/product-media/list.ts` with the following content:
+
+```ts title=src/api/routes/admin/product-media/list.ts
+import { Request, Response } from "express"
+import ProductMediaService 
+  from "../../../../services/product-media"
+import { MediaType } from "../../../../models/product-media"
+
+// retrieve a list of product medias
+export default async (req: Request, res: Response) => {
+  const productMediaService = req.scope.resolve<
+    ProductMediaService
+  >("productMediaService")
+  // omitting pagination for simplicity
+  const [productMedias, count] = await productMediaService
+    .listAndCount({
+      type: MediaType.MAIN,
+    }, {
+      relations: ["variant"],
+    }
+  )
+
+  res.json({
+    product_medias: productMedias,
+    count,
+  })
+}
+```
+
+This retrieves a list of product media records that have the type `main`. It also retrieves the relations `variant` and `variant.product` to access the product media’s variant and main product.
+
+To use these endpoints, you need to export them in a router that’s returned by `src/api/index.ts`. First, create the file `src/api/routes/admin/product-media/index.ts` that registers the product media endpoints you created:
+
+```ts title=src/api/routes/admin/product-media/index.ts
+import { wrapHandler } from "@medusajs/utils"
+import { Router } from "express"
+import create from "./create"
+import list from "./list"
+
+const router = Router()
+
+export default (adminRouter: Router) => {
+  adminRouter.use("/product-media", router)
+
+  router.get("/", wrapHandler(list))
+  router.post("/", wrapHandler(create))
+}
+```
+
+Then, create the file `src/api/routes/admin/index.ts` if it doesn’t already exist and add the following in it:
+
+```ts title=src/api/routes/admin/index.ts
+import { Router } from "express"
+import productMediaRoutes from "./product-media"
+
+// Initialize a custom router
+const router = Router()
+
+export function attachAdminRoutes(adminRouter: Router) {
+  productMediaRoutes(adminRouter)
+  
+  // ... exisiting endpoints
+}
+```
+
+In this file you import the function in `src/api/routes/admin/product-media/index.ts` that registers the necessary routes and pass it the admin router, which this file’s function accepts as a parameter.
+
+If the file `src/api/routes/admin/index.ts` wasn’t already created, make sure to import it in `src/api/index.ts` and use it to register the product media endpoints:
+
+```ts title=src/api/routes/admin/index.ts
+import { Router } from "express"
+import cors from "cors"
+import bodyParser from "body-parser"
+import { ConfigModule } from "@medusajs/medusa"
+import { getConfigFile } from "medusa-core-utils"
+import { attachStoreRoutes } from "./routes/store"
+import { attachAdminRoutes } from "./routes/admin"
+
+export default (rootDirectory: string): Router | Router[] => {
+  // Read currently-loaded medusa config
+  const { configModule } = getConfigFile<ConfigModule>(
+    rootDirectory,
+    "medusa-config"
+  )
+  const { projectConfig } = configModule
+
+  // Set up our CORS options objects, based on config
+  const storeCorsOptions = {
+    origin: projectConfig.store_cors.split(","),
+    credentials: true,
+  }
+
+  const adminCorsOptions = {
+    origin: projectConfig.admin_cors.split(","),
+    credentials: true,
+  }
+
+  // Set up express router
+  const router = Router()
+
+  // Set up root routes for store and admin endpoints, 
+  // with appropriate CORS settings
+  router.use(
+    "/store", 
+    cors(storeCorsOptions), 
+    bodyParser.json()
+  )
+  router.use(
+    "/admin", 
+    cors(adminCorsOptions), 
+    bodyParser.json()
+  )
+
+  // Set up routers for store and admin endpoints
+  const storeRouter = Router()
+  const adminRouter = Router()
+
+  // Attach these routers to the root routes
+  router.use("/store", storeRouter)
+  router.use("/admin", adminRouter)
+
+  // Attach custom routes to these routers
+  attachStoreRoutes(storeRouter)
+  attachAdminRoutes(adminRouter)
+
+  return router
+}
+```
+
+</details>
+    
+
+---
+
+## Customize Admin Dashboard
+
+The Medusa admin dashboard provides merchants with an easy-to-use interface to manage their store's data and settings. It's also extendable, so you can add widgets, pages, and setting pages relevant to your use case.
+
+To add an interface that allows the admin user to upload digital products, you can create custom widgets or pages that use the routes you created. You can use the [Protected Files Upload endpoint](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected).
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/admin/widgets',
+    label: 'Create a Widget',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a widget in the Medusa admin.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/routes',
+    label: 'Create UI Route',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a UI route in the Medusa admin.',
+    }
+  },
+  {
+    type: 'link',
+    href: 'https://docs.medusajs.com/api/admin#uploads_postuploadsprotected',
+    label: 'Protected Files Upload Endpoint',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn about the expected request body and response.',
+    }
+  },
+]} />
+
+<details>
+<summary>
+Example: Digital Products Page in Admin
+</summary>
+
+In this example, you’ll add a single page that lists the digital products and allows you to create a new one. The implementation will be minimal for the purpose of simplicity, so you can elaborate on it based on your use case.
+    
+Before starting off, make sure to install the necessary dependencies in your Medusa backend project:
+
+```bash npm2yarn
+npm install medusa-react @tanstack/react-query @medusajs/ui
+```
+
+This installs the necessary packages to use the Medusa React client and the [Medusa UI package](https://docs.medusajs.com/ui).
+
+You also need to create types for the expected requests and responses of the endpoints you created. This is helpful when using Medusa React’s custom hooks. To do that, create the file `src/types/product-media.ts` with the following content:
+
+```ts title=src/types/product-media.ts
+import { 
+  MediaType, 
+  ProductMedia, 
+} from "../models/product-media"
+
+export type ListProductMediasRequest = {
+  // no expected parameters
+};
+
+export type ListProductMediasResponse = {
+  product_medias: ProductMedia[]
+  count: number
+};
+
+export type CreateProductMediaRequest = {
+  variant_id: string
+  name: string
+  file_key: string
+  type?: MediaType
+  mime_type: string
+};
+
+export type CreateProductMediaResponse = {
+  product_media: ProductMedia
+};
+```
+
+You can now create your admin UI route. To do that, create the file `src/admin/routes/product-media/page.tsx` with the following content:
+
+```tsx title=src/admin/routes/product-media/page.tsx
+import { RouteConfig } from "@medusajs/admin"
+import { DocumentText } from "@medusajs/icons"
+import { useAdminCustomQuery } from "medusa-react"
+import { 
+  ListProductMediasRequest, 
+  ListProductMediasResponse,
+} from "../../../types/product-media"
+import { 
+  Button, 
+  Container, 
+  Drawer, 
+  Heading, 
+  Table,
+} from "@medusajs/ui"
+import { Link } from "react-router-dom"
+import { RouteProps } from "@medusajs/admin-ui"
+import ProductMediaCreateForm 
+  from "../../components/product-media/CreateForm"
+
+const ProductMediaListPage = (props: RouteProps) => {
+  const { data, isLoading } = useAdminCustomQuery<
+    ListProductMediasRequest, 
+    ListProductMediasResponse
+  >(
+    "/product-media",
+    ["product-media"]
+  )
+
+  return (
+    <Container>
+      <div className="flex justify-between mb-4">
+        <Heading level="h1">Digital Products</Heading>
+        <Drawer>
+          <Drawer.Trigger>
+            <Button>Create</Button>
+          </Drawer.Trigger>
+          <Drawer.Content>
+            <Drawer.Header>
+              <Drawer.Title>
+                Create Digital Product
+              </Drawer.Title>
+            </Drawer.Header>
+            <Drawer.Body>
+              <ProductMediaCreateForm {...props} />
+            </Drawer.Body>
+          </Drawer.Content>
+        </Drawer>
+      </div>
+      {isLoading && <div>Loading...</div>}
+      {data && !data.product_medias.length && (
+        <div>No Digital Products</div>
+      )}
+      {data && data.product_medias.length > 0 && (
+        <Table>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Product</Table.HeaderCell>
+              <Table.HeaderCell>
+                Product Variant
+              </Table.HeaderCell>
+              <Table.HeaderCell>File Key</Table.HeaderCell>
+              <Table.HeaderCell>Action</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {data.product_medias.map((product_media) => (
+              <Table.Row key={product_media.id}>
+                <Table.Cell>
+                  {product_media.variant.product.title}
+                </Table.Cell>
+                <Table.Cell>
+                  {product_media.variant.title}
+                </Table.Cell>
+                <Table.Cell>
+                  {product_media.file_key}
+                </Table.Cell>
+                <Table.Cell>
+                  <Link to={`/a/products/${
+                    product_media.variant.product_id
+                  }`}>
+                    View Product
+                  </Link>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      )}
+    </Container>
+  )
+}
+
+export const config: RouteConfig = {
+  link: {
+    label: "Digital Products",
+    icon: DocumentText,
+  },
+}
+
+export default ProductMediaListPage
+```
+
+This UI route will show under the sidebar with the label “Digital Products”. In the page, you use the `useAdminCustomQuery` hook imported from `medusa-react` to send a request to your custom “list digital products” endpoint.
+
+In the page, you’ll show the list of digital products in a table, if there are any. You’ll also show a button that opens a drawer to the side of the page.
+
+In the drawer, you show the Create Digital Product form. To create this form, create the file `src/admin/components/product-media/CreateForm/index.tsx` with the following content:
+
+```tsx title=src/admin/components/product-media/CreateForm/index.tsx
+import { useState } from "react"
+import { MediaType } from "../../../../models/product-media"
+import { 
+  useAdminCreateProduct, 
+  useAdminCustomPost, 
+  useAdminUploadProtectedFile,
+} from "medusa-react"
+import { 
+  CreateProductMediaRequest, 
+  CreateProductMediaResponse, 
+} from "../../../../types/product-media"
+import { 
+  Button, 
+  Container, 
+  Input, 
+  Label, 
+  Select,
+} from "@medusajs/ui"
+import { RouteProps } from "@medusajs/admin-ui"
+import { useNavigate } from "react-router-dom"
+
+const ProductMediaCreateForm = ({
+  notify,
+}: RouteProps) => {
+  const [productName, setProductName] = useState("")
+  const [
+    productVariantName, 
+    setProductVariantName,
+  ] = useState("")
+  const [name, setName] = useState("")
+  const [type, setType] = useState("main")
+  const [file, setFile] = useState<File>()
+
+  const createProduct = useAdminCreateProduct()
+  const uploadFile = useAdminUploadProtectedFile()
+  const { 
+    mutate: createDigitalProduct,
+    isLoading,
+  } = useAdminCustomPost<
+    CreateProductMediaRequest,
+    CreateProductMediaResponse
+  >(
+    "/product-media",
+    ["product-media"]
+  )
+
+  const navigate = useNavigate()
+
+  const handleSubmit = (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault()
+    
+    createProduct.mutate({
+      title: productName,
+      is_giftcard: false,
+      discountable: false,
+      options: [
+        {
+          title: "Digital Product",
+        },
+      ],
+      variants: [
+        {
+          title: productVariantName,
+          options: [
+            {
+              value: name, // can also be the file name
+            },
+          ],
+          // for simplicity, prices are omitted from form.
+          // Those can be edited from the product's page.
+          prices: [],
+        },
+      ],
+    }, {
+      onSuccess: ({ product }) => {
+        // upload file
+        uploadFile.mutate(file, {
+          onSuccess: ({ uploads }) => {
+            if (!("key" in uploads[0])) {
+              return
+            }
+            // create the digital product
+            createDigitalProduct({
+              variant_id: product.variants[0].id,
+              name,
+              file_key: uploads[0].key as string,
+              type: type as MediaType,
+              mime_type: file.type,
+            }, {
+              onSuccess: () => {
+                notify.success(
+                  "Success", 
+                  "Digital Product Created Successfully"
+                )
+                navigate("/a/product-media")
+              },
+            })
+          },
+        })
+      },
+    })
+  }
+
+  return (
+    <Container>
+      <form 
+        onSubmit={handleSubmit} 
+        className="flex flex-col gap-4"
+      >
+        <div className="flex gap-4 items-center">
+          <Label>Product Name</Label>
+          <Input 
+            type="text" 
+            placeholder="Product Name" 
+            value={productName} 
+            onChange={(e) => setProductName(e.target.value)}
+          />
+        </div>
+        <div className="flex gap-4 items-center">
+          <Label>Product Variant Name</Label>
+          <Input 
+            type="text" 
+            placeholder="Product Variant" 
+            value={productVariantName} 
+            onChange={(e) => 
+              setProductVariantName(e.target.value)
+            }
+          />
+        </div>
+        <div className="flex gap-4 items-center">
+          <Label>Media Name</Label>
+          <Input 
+            type="text" 
+            placeholder="Media Name" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="flex gap-4 items-center">
+          <Label>Type</Label>
+          <Select onValueChange={setType} value={type}>
+            <Select.Trigger>
+              <Select.Value placeholder="Type" />
+            </Select.Trigger>
+            <Select.Content className="z-50">
+              <Select.Item value={"main"}>
+                Main
+              </Select.Item>
+              <Select.Item value={"preview"}>
+                Preview
+              </Select.Item>
+            </Select.Content>
+          </Select>
+        </div>
+        <div className="flex gap-4 items-center">
+          <Label>File</Label>
+          <Input 
+            type="file" 
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        </div>
+        <Button 
+          variant="primary" 
+          type="submit" 
+          isLoading={
+            createProduct.isLoading || 
+            uploadFile.isLoading || 
+            isLoading
+          }>
+          Create
+        </Button>
+      </form>
+    </Container>
+  )
+}
+
+export default ProductMediaCreateForm
+```
+
+In this component, you create a form that accepts basic information needed to create the digital product. This form only accepts one file for one variant for simplicity purposes. You can expand on this based on your use case.
+
+Notice that an alternative approach would be to inject a widget to the Product Details page and allow users to upload the files from there. It depends on whether you’re only supporting Digital Products or you want the distinction between them, as done here.
+
+When the user submits the form, you first create a product with a variant. Then, you upload the file using the [Upload Protected File endpoint](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected). Finally, you create the digital product using the custom endpoint you created.
+
+The product’s details can still be edited from the same Products interface, similar to regular products. You can edit its price, add more variants, and more.
+
+To test it out, build changes and run the `develop` command:
+
+```bash npm2yarn
+npm run build
+npx medusa develop
+```
+
+If you open the admin now, you’ll find a new Digital Products item in the sidebar. You can try adding Digital Products and viewing them.
+
+</details>
+
+---
+
+## Deliver Digital Products to the Customer
+
+When a customer purchases a digital product, they should receive a link to download it.
+
+To implement that, you first need to listen to the `order.placed` event using a Subscriber. Then, in the handler method of the subscriber, you check for the digital products in the order and obtain the download URLs using the file service's `getPresignedDownloadUrl` method.
+
+:::note
+
+Following this approach assumes the file service you're using handles creating secure presigned URLs with an expiration mechanism. Alternatively, you can create a new service that handles creating and validating tokens, and an endpoint that receives that token to allow customers to download the file.
+
+:::
+
+Finally, you can send a notification, such as an email, to the customer using the Notification Service of your choice. That notification would hold the download links to the products they purchased.
+
+<DocCard item={{
+  type: 'link',
+  href: '/development/services/create-service',
+  label: 'Create a Subscriber',
+  customProps: {
+    icon: Icons['academic-cap-solid'],
+    description: 'Learn how to create a service in the Medusa backend.',
+  }
+}} />
+
+<details>
+<summary>
+Example: Using SendGrid
+</summary>
+
+:::note
+
+An alternative solution is to create a store download endpoint that allows authenticated customers to download products they've purchased, then add the link to the endpoint or a storefront page that calls the endpoint in the email. Learn how to implement the download endpoint [here](#download-product-after-purchase).
+
+:::
+
+Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the SendGrid plugin:
+    
+```ts title=src/subscribers/handle-order.ts
+import { 
+  AbstractFileService, 
+  EventBusService, 
+  OrderService,
+} from "@medusajs/medusa"
+
+type InjectedDependencies = {
+  eventBusService: EventBusService
+  orderService: OrderService
+  sendgridService: any
+  fileService: AbstractFileService
+}
+
+class HandleOrderSubscribers {
+  protected readonly orderService_: OrderService
+  protected readonly sendgridService_: any
+  protected readonly fileService_: AbstractFileService
+
+  constructor({ 
+    eventBusService, 
+    orderService, 
+    sendgridService,
+    fileService,
+  }: InjectedDependencies) {
+    this.orderService_ = orderService
+    this.sendgridService_ = sendgridService
+    this.fileService_ = fileService
+    eventBusService.subscribe(
+      "order.placed", 
+      this.handleOrderPlaced
+    )
+  }
+
+  handleOrderPlaced = async (
+    data: Record<string, any>
+  ) => {
+    const order = await this.orderService_.retrieve(data.id, {
+      relations: [
+        "items", 
+        "items.variant", 
+        "items.variant.product_medias",
+      ],
+    })
+
+    // find product medias in the order
+    const urls = []
+    for (const item of order.items) {
+      if (!item.variant.product_medias.length) {
+        return
+      }
+
+      await Promise.all([
+        item.variant.product_medias.forEach(
+          async (productMedia) => {
+          // get the download URL from the file service
+          const downloadUrl = await 
+            this.fileService_.getPresignedDownloadUrl({
+              fileKey: productMedia.file_key,
+              isPrivate: true,
+            })
+
+          urls.push(downloadUrl)
+        }),
+      ])
+    }
+    
+    if (!urls.length) {
+      return
+    }
+
+    this.sendgridService_.sendEmail({
+      templateId: "digital-download",
+      from: "hello@medusajs.com",
+      to: order.email,
+      dynamic_template_data: {
+        // any data necessary for your template...
+        digital_download_urls: urls,
+      },
+    })
+  }
+}
+
+export default HandleOrderSubscribers
+```
+
+Notice that regardless of what file service you have installed, you can access it using dependency injection under the name `fileService`.
+
+The `handleOrderPlaced` method retrieves the order, loops over its items to find digital products and retrieve their download links, then uses SendGrid to send the email, passing it the urls as a data payload. You can customize the sent data based on your SendGrid template and your use case.
+
+</details>
+
+---
+
+## Customize or Build Storefront
+
+Customers use your storefront to browse your digital products and purchase them. You can also provide other helpful features such as previewing the digital product before purchase.
+
+Medusa provides a [Next.js storefront](../starters/nextjs-medusa-starter.mdx) with standard commerce features including listing products, placing orders, and managing accounts. You can customize the storefront and cater its functionalities to support digital products.
+
+Alternatively, you can follow the [Build a Storefront roadmap](../storefront/roadmap.mdx) to build a storefront with your preferred technology stack.
+
+The rest of this section provides some guidelines into how to customize the Next.js storefront to support digital products.
+
+### Preview Digital Product
+
+In the product detail's page, you can add a button that allows customers to download a preview of the digital product.
+
+To implement this, create a storefront endpoint that allows you to fetch the digital product, then customize the Next.js storefront to show the preview button if a product is digital.
+
+<details>
+<summary>
+Example
+</summary>
+
+Before you customize the Next.js storefront, you need to add a store endpoint in your backend.
+
+Create the file `src/api/routes/store/product-media/list.ts` with the following content:
+
+```ts title=src/api/routes/store/product-media/list.ts
+import { Request, Response } from "express"
+import ProductMediaService 
+  from "../../../../services/product-media"
+import { MediaType } 
+  from "../../../../models/product-media"
+
+
+// retrieve a list of product medias
+export default async (req: Request, res: Response) => {
+  const productMediaService = req.scope.resolve<
+    ProductMediaService
+  >("productMediaService")
+  // omitting pagination for simplicity
+  const [
+    productMedias,
+    count,
+  ] = await productMediaService.listAndCount({
+    type: MediaType.PREVIEW,
+    ...(req.query),
+  }, {
+    relations: ["variant"],
+  })
+
+  res.json({
+    product_medias: productMedias,
+    count,
+  })
+}
+```
+
+This adds a store endpoint that returns a list of product medias of type `preview`. It also allows you to pass query parameters to filter the returned products medias.
+
+To use this endpoint, you need to export it in a router that’s returned by `src/api/index.ts`. First, create the file `src/api/routes/store/product-media/index.ts` that registers the product media endpoint you created:
+
+```ts title=src/api/routes/store/product-media/index.ts
+import { wrapHandler } from "@medusajs/utils"
+import { Router } from "express"
+import list from "./list"
+
+const router = Router()
+
+export default (storeRouter: Router) => {
+  storeRouter.use("/product-media", router)
+
+  router.get("/", wrapHandler(list))
+}
+```
+
+Then, create the file `src/api/routes/store/index.ts` if it doesn’t already exist and add the following in it:
+
+```ts title=src/api/routes/store/index.ts
+import { Router } from "express"
+import productMediaRoutes from "./product-media"
+
+// Initialize a custom router
+const router = Router()
+
+export function attachStoreRoutes(storeRouter: Router) {
+  productMediaRoutes(storeRouter)
+  
+  // existing endpoints...
+}
+```
+
+In this file you import the function in `src/api/routes/store/product-media/index.ts` that registers the necessary routes and pass it the store router, which this file’s function accepts as a parameter.
+
+If the file `src/api/routes/store/index.ts` wasn’t already created, make sure to import it in `src/api/index.ts` and use it to register the product media endpoints:
+
+```ts
+import { Router } from "express"
+import cors from "cors"
+import bodyParser from "body-parser"
+import { ConfigModule } from "@medusajs/medusa"
+import { getConfigFile } from "medusa-core-utils"
+import { attachStoreRoutes } from "./routes/store"
+import { attachAdminRoutes } from "./routes/admin"
+
+export default (rootDirectory: string): Router | Router[] => {
+  // Read currently-loaded medusa config
+  const { configModule } = getConfigFile<ConfigModule>(
+    rootDirectory,
+    "medusa-config"
+  )
+  const { projectConfig } = configModule
+
+  // Set up our CORS options objects, based on config
+  const storeCorsOptions = {
+    origin: projectConfig.store_cors.split(","),
+    credentials: true,
+  }
+
+  const adminCorsOptions = {
+    origin: projectConfig.admin_cors.split(","),
+    credentials: true,
+  }
+
+  // Set up express router
+  const router = Router()
+
+  // Set up root routes for store and admin endpoints, 
+  // with appropriate CORS settings
+  router.use(
+    "/store", 
+    cors(storeCorsOptions), 
+    bodyParser.json()
+  )
+  router.use(
+    "/admin", 
+    cors(adminCorsOptions), 
+    bodyParser.json()
+  )
+
+  // Set up routers for store and admin endpoints
+  const storeRouter = Router()
+  const adminRouter = Router()
+
+  // Attach these routers to the root routes
+  router.use("/store", storeRouter)
+  router.use("/admin", adminRouter)
+
+  // Attach custom routes to these routers
+  attachStoreRoutes(storeRouter)
+  attachAdminRoutes(adminRouter)
+
+  return router
+}
+```
+
+Now, you can customize the Next.js storefront to show the preview button.
+
+First, if you're using TypeScript for your development, create the file `src/types/product-media.ts` with the following content:
+
+```ts title=src/types/product-media.ts
+
+import { Product } from "@medusajs/medusa"
+import { ProductVariant } from "@medusajs/product"
+
+export enum ProductMediaVariantType {
+  PREVIEW = "preview",
+  MAIN = "main",
+}
+
+export type ProductMedia = {
+  id: string
+  variant_id: string
+  name?: string
+  file_key?: string
+  mime_type?: string
+  created_at?: Date
+  updated_at?: Date
+  type?: ProductMediaVariantType
+  variant_id?: string
+  variants?: ProductVariant[]
+  created_at: Date
+  updated_at: Date
+}
+
+export type DigitalProduct = Omit<Product, "variants"> & {
+  product_medias?: ProductMedia[]
+  variants?: DigitalProductVariant[]
+}
+
+export type DigitalProductVariant = ProductVariant & {
+  product_medias?: ProductMedia
+}
+```
+
+Then, add in `src/lib/data/index.ts` a new function that retrieves the product media of the product variant being viewed:
+
+```ts title=src/lib/data/index.ts
+import { 
+  DigitalProduct, 
+  ProductMedia,
+} from "types/product-media"
+
+// ... rest of the functions
+
+export async function getProductMediaPreviewByVariant(
+  variant: Variant
+): Promise<ProductMedia> {
+  const { 
+    product_medias,
+  } = await medusaRequest(
+    "GET", 
+    `/product-media`,
+    {
+      query: {
+        variant_ids: variant.id,
+      },
+    }
+  )
+  .then((res) => res.body)
+  .catch((err) => {
+    throw err
+  })
+
+  return product_medias[0]
+}
+```
+
+To allow customers to download the file preview without exposing its URL, create a Next.js API route in the file `src/app/api/download/preview/route.ts` with the following content:
+
+```ts title=src/app/api/download/preview/route.ts
+import { NextRequest, NextResponse } from "next/server"
+
+export async function GET(req: NextRequest) {
+  // Get the file info from the URL
+  const { 
+    file_path, 
+    file_name, 
+    mime_type,
+  } = Object.fromEntries(req.nextUrl.searchParams)
+
+  // Fetch the file
+  const response = await fetch(file_path)
+
+  // Handle the case where the file could not be fetched
+  if (!response.ok) {
+    return new NextResponse("File not found", { status: 404 })
+  }
+
+  // Get the file content as a buffer
+  const fileBuffer = await response.arrayBuffer()
+
+  // Define response headers
+  const headers = {
+    "Content-Type": mime_type,
+     // This sets the file name for the download
+    "Content-Disposition": `attachment; filename="${
+      file_name
+    }"`,
+  }
+
+  // Create a NextResponse with the file content and headers
+  const response = new NextResponse(fileBuffer, {
+    status: 200,
+    headers,
+  })
+
+  return response
+}
+```
+
+Next, create the preview button in the file `src/modules/products/components/product-media-preview/index.tsx`:
+
+```tsx title=src/modules/products/components/product-media-preview/index.tsx
+import Button from "@modules/common/components/button"
+import { ProductMedia } from "types/product-media"
+
+type Props = {
+  media: ProductMedia
+}
+
+const ProductMediaPreview: React.FC<Props> = ({ media }) => {
+  const downloadPreview = () => {
+    window.location.href = `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/api/download/preview?file_path=${
+      media.file_key
+      }&file_name=${
+        media.name
+        }&mime_type=${
+          media.mime_type
+        }`
+  }
+
+  return (
+    <div>
+      <Button variant="secondary" onClick={downloadPreview}>
+        Download free preview
+      </Button>
+    </div>
+  )
+}
+
+export default ProductMediaPreview
+```
+
+Finally, add the button as one of the product actions defined in `src/modules/products/components/product-actions/index.tsx`. These are the actions shown to the customer in the product details page:
+
+```tsx title=src/modules/products/components/product-actions/index.tsx
+// other imports...
+import ProductMediaPreview from "../product-media-preview"
+import { getProductMediaPreviewByVariant } from "@lib/data"
+import { ProductMedia } from "types/product-media"
+
+
+const ProductActions: React.FC<ProductActionsProps> = ({
+  product,
+}) => {
+	// other code...
+
+  const [productMedia, setProductMedia] = useState<
+    ProductMedia
+  >({})
+
+  useEffect(() => {
+    const getProductMedia = async () => {
+      if (!variant) {return}
+      await getProductMediaPreviewByVariant(variant)
+      .then((res) => {
+        setProductMedia(res)
+      })
+    }
+    getProductMedia()
+  }, [variant])
+
+  return (
+    <div>
+			{/* other code... */}
+
+      {productMedia && (
+        <ProductMediaPreview media={productMedia} />
+      )}
+
+      <Button onClick={addToCart}>
+        {!inStock ? "Out of stock" : "Add to cart"}
+      </Button>
+    </div>
+  )
+}
+
+export default ProductActions
+```
+
+The 
+
+</details>
+
+### Update Product Tabs
+
+In the product details page, additional information related to the product and its shipping details are shown at the bottom right side.
+
+You can change this section to show information relevant to the product. For example, how many pages are in an e-book, or how the e-book will be delivered to the customer.
+
+<details>
+<summary>
+Example
+</summary>
+
+In this example, you'll change the content of the Product Information and Shipping & Returns tabs to show information relevant to the digital product. The Product Information tab will include custom information relevant to digital products, and the Shipping & Returns tab will be changed to "E-book delivery" and will hold details about how the e-book will be delivered to the customer.
+
+One way to store custom information relevant to the digital product is using the `metadata` field. For example, to store the number of pages of an e-book, set the `metadata` field to the following:
+
+```json
+{
+  "metadata": {
+    "Pages": "420"
+  }
+}
+```
+
+Then, you can customize the product additional details section to loop through the `metadata` field's properties and show their information.
+
+Next, change the `ProductTabs`, `ProductInfoTab`, and `ShippingInfoTab` components defined in `src/modules/products/components/product-tabs/index.tsx` to the following:
+
+```tsx title=src/modules/products/components/product-tabs/index.tsx
+const ProductTabs = ({ product }: ProductTabsProps) => {
+  const tabs = useMemo(() => {
+    return [
+      {
+        label: "Product Information",
+        component: <ProductInfoTab product={product} />,
+      },
+      {
+        label: "E-book delivery",
+        component: <ShippingInfoTab />,
+      },
+    ]
+  }, [product])
+	// ... rest of code
+}
+
+const ProductInfoTab = ({ product }: ProductTabsProps) => {
+  // map the metadata object to an array 
+  const metadata = useMemo(() => {
+    if (!product.metadata) {return []}
+    return Object.keys(product.metadata).map((key) => {
+      return [key, product.metadata?.[key]]
+    })
+  }, [product])
+
+  return (
+    <Tab.Panel className="text-small-regular py-8">
+      <div className="grid grid-cols-2 gap-x-8">
+        <div className="flex flex-col gap-y-4">
+				{/* Map the metadata as product information */}
+          {metadata &&
+            metadata.slice(0, 2).map(([key, value], i) => (
+              <div key={i}>
+                <span className="font-semibold">{key}</span>
+                <p>{value}</p>
+              </div>
+            ))}
+        </div>
+        <div className="flex flex-col gap-y-4">
+          {metadata.length > 2 &&
+            metadata.slice(2, 4).map(([key, value], i) => {
+              return (
+                <div key={i}>
+                  <span className="font-semibold">{key}</span>
+                  <p>{value}</p>
+                </div>
+              )
+            })}
+        </div>
+      </div>
+      {product.tags?.length ? (
+        <div>
+          <span className="font-semibold">Tags</span>
+        </div>
+      ) : null}
+    </Tab.Panel>
+  )
+}
+
+const ShippingInfoTab = () => {
+  return (
+    <Tab.Panel className="text-small-regular py-8">
+      <div className="grid grid-cols-1 gap-y-8">
+        <div className="flex items-start gap-x-2">
+          <FastDelivery />
+          <div>
+            <span className="font-semibold">
+              Instant delivery
+            </span>
+            <p className="max-w-sm">
+              Your e-book will be delivered instantly via
+              email. You can also download it from your 
+              account anytime.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start gap-x-2">
+          <Refresh />
+          <div>
+            <span className="font-semibold">
+              Free previews
+            </span>
+            <p className="max-w-sm">
+              Get a free preview of the e-book before 
+              you buy it. Just click the
+              button above to download it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </Tab.Panel>
+  )
+}
+```
+
+This changes the titles of the tabs and their content.
+
+</details>
+
+### Change Shipping Form in Checkout
+
+When a customer purchases a digital product, the shipping form shown during checkout is not relevant. So, you can change its content to instead only ask for the customer's name and email.
+
+<details>
+<summary>
+Example
+</summary>
+
+The checkout flow is managed by a checkout context defined in `src/lib/context/checkout-context.tsx`. Change the content of the file to the following:
+
+<!-- eslint-skip -->
+
+```tsx title=src/lib/context/checkout-context.tsx
+"use client"
+
+import { medusaClient } from "@lib/config"
+import useToggleState, { 
+  StateType,
+} from "@lib/hooks/use-toggle-state"
+import { 
+  Cart,
+  Customer,
+  StorePostCartsCartReq,
+} from "@medusajs/medusa"
+import Wrapper 
+  from "@modules/checkout/components/payment-wrapper"
+import { isEqual } from "lodash"
+import {
+  formatAmount,
+  useCart,
+  useCartShippingOptions,
+  useMeCustomer,
+  useRegions,
+  useSetPaymentSession,
+  useUpdateCart,
+} from "medusa-react"
+import { useRouter } from "next/navigation"
+import React, { 
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react"
+import { 
+  FormProvider, 
+  useForm, 
+  useFormContext,
+} from "react-hook-form"
+import { useStore } from "./store-context"
+
+type AddressValues = {
+  first_name: string
+  last_name: string
+  country_code: string
+}
+
+export type CheckoutFormValues = {
+  shipping_address: AddressValues
+  billing_address?: AddressValues
+  email: string
+}
+
+interface CheckoutContext {
+  cart?: Omit<Cart, "refundable_amount" | "refunded_total">
+  shippingMethods: { 
+    label?: string;
+    value?: string;
+    price: string
+  }[]
+  isLoading: boolean
+  readyToComplete: boolean
+  sameAsBilling: StateType
+  editAddresses: StateType
+  initPayment: () => Promise<void>
+  setAddresses: (addresses: CheckoutFormValues) => void
+  setSavedAddress: (address: AddressValues) => void
+  setShippingOption: (soId: string) => void
+  setPaymentSession: (providerId: string) => void
+  onPaymentCompleted: () => void
+}
+
+const CheckoutContext = createContext<
+  CheckoutContext | null
+>(null)
+
+interface CheckoutProviderProps {
+  children?: React.ReactNode
+}
+
+const IDEMPOTENCY_KEY = "create_payment_session_key"
+
+export const CheckoutProvider = ({
+  children,
+}: CheckoutProviderProps) => {
+  const {
+    cart,
+    setCart,
+    addShippingMethod: {
+      mutate: setShippingMethod,
+      isLoading: addingShippingMethod,
+    },
+    completeCheckout: { 
+      mutate: complete, 
+      isLoading: completingCheckout,
+    },
+  } = useCart()
+
+  const { customer } = useMeCustomer()
+  const { countryCode } = useStore()
+
+  const methods = useForm<CheckoutFormValues>({
+    defaultValues: mapFormValues(customer, cart, countryCode),
+    reValidateMode: "onChange",
+  })
+
+  const {
+    mutate: setPaymentSessionMutation,
+    isLoading: settingPaymentSession,
+  } = useSetPaymentSession(cart?.id!)
+
+  const { 
+    mutate: updateCart,
+    isLoading: updatingCart,
+  } = useUpdateCart(
+    cart?.id!
+  )
+
+  const { 
+    shipping_options,
+  } = useCartShippingOptions(cart?.id!, {
+    enabled: !!cart?.id,
+  })
+
+  const { regions } = useRegions()
+
+  const { resetCart, setRegion } = useStore()
+  const { push } = useRouter()
+
+  const editAddresses = useToggleState()
+  const sameAsBilling = useToggleState(
+    cart?.billing_address && cart?.shipping_address
+      ? isEqual(cart.billing_address, cart.shipping_address)
+      : true
+  )
+
+  /**
+   * Boolean that indicates if a 
+   * part of the checkout is loading.
+   */
+  const isLoading = useMemo(() => {
+    return (
+      addingShippingMethod ||
+      settingPaymentSession ||
+      updatingCart ||
+      completingCheckout
+    )
+  }, [
+    addingShippingMethod,
+    completingCheckout,
+    settingPaymentSession,
+    updatingCart,
+  ])
+
+  /**
+   * Boolean that indicates if the checkout is ready to be
+   * completed. A checkout is ready to be completed if
+   * the user has supplied a email, shipping address, 
+   * billing address, shipping method, and a method of payment.
+   */
+  const readyToComplete = useMemo(() => {
+    return (
+      !!cart &&
+      !!cart.email &&
+      !!cart.shipping_address &&
+      !!cart.billing_address &&
+      !!cart.payment_session &&
+      cart.shipping_methods?.length > 0
+    )
+  }, [cart])
+
+  const shippingMethods = useMemo(() => {
+    if (shipping_options && cart?.region) {
+      return shipping_options?.map((option) => ({
+        value: option.id,
+        label: option.name,
+        price: formatAmount({
+          amount: option.amount || 0,
+          region: cart.region,
+        }),
+      }))
+    }
+
+    return []
+  }, [shipping_options, cart])
+
+  /**
+   * Resets the form when the cart changed.
+   */
+  useEffect(() => {
+    if (cart?.id) {
+      methods.reset(mapFormValues(customer, cart, countryCode))
+    }
+  }, [customer, cart, methods, countryCode])
+
+  useEffect(() => {
+    if (!cart) {
+      editAddresses.open()
+      return
+    }
+
+    if (cart?.shipping_address && cart?.billing_address) {
+      editAddresses.close()
+      return
+    }
+
+    editAddresses.open()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cart])
+
+  /**
+   * Method to set the selected shipping method for the cart.
+   * This is called when the user selects a shipping method,
+   * such as UPS, FedEx, etc.
+   */
+  const setShippingOption = (soId: string) => {
+    if (cart) {
+      setShippingMethod(
+        { option_id: soId },
+        {
+          onSuccess: ({ cart }) => setCart(cart),
+        }
+      )
+    }
+  }
+
+  /**
+   * Method to create the payment sessions available for the
+   * cart. Uses a idempotency key to prevent 
+   * duplicate requests.
+   */
+  const createPaymentSession = async (cartId: string) => {
+    return medusaClient.carts
+      .createPaymentSessions(cartId, {
+        "Idempotency-Key": IDEMPOTENCY_KEY,
+      })
+      .then(({ cart }) => cart)
+      .catch(() => null)
+  }
+
+  /**
+   * Method that calls the createPaymentSession method and
+   * updates the cart with the payment session.
+   */
+  const initPayment = async () => {
+    if (cart?.id && !cart.payment_sessions?.length && cart?.items?.length) {
+      const paymentSession = await createPaymentSession(cart.id)
+
+      if (!paymentSession) {
+        setTimeout(initPayment, 500)
+      } else {
+        setCart(paymentSession)
+        return
+      }
+    }
+  }
+
+  /**
+   * Method to set the selected payment session for the cart.
+   * This is called when the user selects a payment provider,
+   * such as Stripe, PayPal, etc.
+   */
+  const setPaymentSession = (providerId: string) => {
+    if (cart) {
+      setPaymentSessionMutation(
+        {
+          provider_id: providerId,
+        },
+        {
+          onSuccess: ({ cart }) => {
+            setCart(cart)
+          },
+        }
+      )
+    }
+  }
+
+  const prepareFinalSteps = () => {
+    initPayment()
+
+    if (
+      shippingMethods?.length && shippingMethods?.[0]?.value
+    ) {
+      setShippingOption(shippingMethods[0].value)
+    }
+  }
+
+  const setSavedAddress = (address: AddressValues) => {
+    const setValue = methods.setValue
+
+    setValue("shipping_address", {
+      country_code: address.country_code || "",
+      first_name: address.first_name || "",
+      last_name: address.last_name || "",
+    })
+  }
+
+  /**
+   * Method that validates if the cart's region matches the 
+   * shipping address's region. If not, it will update the
+   * cart region.
+   */
+  const validateRegion = (countryCode: string) => {
+    if (regions && cart) {
+      const region = regions.find((r) =>
+        r.countries.map((c) => c.iso_2).includes(countryCode)
+      )
+
+      if (region && region.id !== cart.region.id) {
+        setRegion(region.id, countryCode)
+      }
+    }
+  }
+
+  /**
+   * Method that sets the addresses and email on the cart.
+   */
+  const setAddresses = (data: CheckoutFormValues) => {
+    const { shipping_address, billing_address, email } = data
+
+    const payload: StorePostCartsCartReq = {
+      shipping_address,
+      email,
+    }
+
+    if (isEqual(shipping_address, billing_address)) {
+      sameAsBilling.open()
+    }
+
+    if (sameAsBilling.state) {
+      payload.billing_address = shipping_address
+    } else {
+      payload.billing_address = billing_address
+    }
+
+    updateCart(payload, {
+      onSuccess: ({ cart }) => {
+        setCart(cart)
+        prepareFinalSteps()
+      },
+    })
+  }
+
+  /**
+   * Method to complete the checkout process. This is called
+   * when the user clicks the "Complete Checkout" button.
+   */
+  const onPaymentCompleted = () => {
+    complete(undefined, {
+      onSuccess: ({ data }) => {
+        resetCart()
+        push(`/order/confirmed/${data.id}`)
+      },
+    })
+  }
+
+  return (
+    <FormProvider {...methods}>
+      <CheckoutContext.Provider
+        value={{
+          cart,
+          shippingMethods,
+          isLoading,
+          readyToComplete,
+          sameAsBilling,
+          editAddresses,
+          initPayment,
+          setAddresses,
+          setSavedAddress,
+          setShippingOption,
+          setPaymentSession,
+          onPaymentCompleted,
+        }}
+      >
+        <Wrapper
+          paymentSession={cart?.payment_session}
+        >
+          {children}
+        </Wrapper>
+      </CheckoutContext.Provider>
+    </FormProvider>
+  )
+}
+
+export const useCheckout = () => {
+  const context = useContext(CheckoutContext)
+  const form = useFormContext<CheckoutFormValues>()
+  if (context === null) {
+    throw new Error(
+      "useProductActionContext must be used within a ProductActionProvider"
+    )
+  }
+  return { ...context, ...form }
+}
+
+/**
+ * Method to map the fields of a potential customer and 
+ * the cart to the checkout form values. Information is 
+ * assigned with the following priority:
+ * 1. Cart information
+ * 2. Customer information
+ * 3. Default values - null
+ */
+const mapFormValues = (
+  customer?: Omit<Customer, "password_hash">,
+  cart?: Omit<Cart, "refundable_amount" | "refunded_total">,
+  currentCountry?: string
+): CheckoutFormValues => {
+  const customerShippingAddress = 
+    customer?.shipping_addresses?.[0]
+  const customerBillingAddress = 
+    customer?.billing_address
+
+  return {
+    shipping_address: {
+      first_name:
+        cart?.shipping_address?.first_name ||
+        customerShippingAddress?.first_name ||
+        "",
+      last_name:
+        cart?.shipping_address?.last_name ||
+        customerShippingAddress?.last_name ||
+        "",
+      country_code:
+        currentCountry ||
+        cart?.shipping_address?.country_code ||
+        customerShippingAddress?.country_code ||
+        "",
+    },
+    billing_address: {
+      first_name:
+        cart?.billing_address?.first_name ||
+        customerBillingAddress?.first_name ||
+        "",
+      last_name:
+        cart?.billing_address?.last_name ||
+        customerBillingAddress?.last_name ||
+        "",
+      country_code:
+        cart?.shipping_address?.country_code ||
+        customerBillingAddress?.country_code ||
+        "",
+    },
+    email: cart?.email || customer?.email || "",
+  }
+}
+```
+
+This removes all references to shipping fields that you don't need for digital products.
+
+Next, update the content of `src/modules/checkout/components/addresses/index.tsx` to remove the unnecessary address fields:
+
+<!-- eslint-disable max-len -->
+
+```tsx title=src/modules/checkout/components/addresses/index.tsx
+import { useCheckout } from "@lib/context/checkout-context"
+import Button from "@modules/common/components/button"
+import Spinner from "@modules/common/icons/spinner"
+import ShippingAddress from "../shipping-address"
+
+const Addresses = () => {
+  const {
+    editAddresses: { state: isEdit, toggle: setEdit },
+    setAddresses,
+    handleSubmit,
+    cart,
+  } = useCheckout()
+  return (
+    <div className="bg-white">
+      <div className={"text-xl-semi flex items-center gap-x-4 px-8 pb-6 pt-8"}>
+        <div className="bg-gray-900 w-8 h-8 rounded-full text-white flex justify-center items-center text-sm">
+          1
+        </div>
+        <h2>Shipping address</h2>
+      </div>
+      {isEdit ? (
+        <div className="px-8 pb-8">
+          <ShippingAddress />
+          <Button
+            className="max-w-[200px] mt-6"
+            onClick={handleSubmit(setAddresses)}
+          >
+            Continue to delivery
+          </Button>
+        </div>
+      ) : (
+        <div>
+          <div className="bg-gray-50 px-8 py-6 text-small-regular">
+            {cart && cart.shipping_address ? (
+              <div className="flex items-start gap-x-8">
+                <div className="bg-green-400 rounded-full min-w-[24px] h-6 flex items-center justify-center text-white text-small-regular">
+                  ✓
+                </div>
+                <div className="flex items-start justify-between w-full">
+                  <div className="flex flex-col">
+                    <span>
+                      {cart.shipping_address.first_name}{" "}
+                      {cart.shipping_address.last_name}
+                      {cart.shipping_address.country}
+                    </span>
+                    <div className="mt-4 flex flex-col">
+                      <span>{cart.email}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <button onClick={setEdit}>Edit</button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="">
+                <Spinner />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Addresses
+```
+
+Finally, change the shipping details shown in the order confirmation page by replacing the content of `src/modules/order/components/shipping-details/index.tsx` with the following:
+
+```tsx title=src/modules/order/components/shipping-details/index.tsx
+import { Address, ShippingMethod } from "@medusajs/medusa"
+
+type ShippingDetailsProps = {
+  address: Address
+  shippingMethods: ShippingMethod[]
+  email: string
+}
+
+const ShippingDetails = ({
+  address,
+  shippingMethods,
+  email,
+}: ShippingDetailsProps) => {
+  return (
+    <div className="text-base-regular">
+      <h2 className="text-base-semi">Delivery</h2>
+      <div className="my-2">
+        <h3 className="text-small-regular text-gray-700">
+          Details
+        </h3>
+        <div className="flex flex-col">
+          <span>
+            {`${address.first_name} ${address.last_name}`}
+          </span>
+          <span>{email}</span>
+        </div>
+      </div>
+      <div className="my-2">
+        <h3 className="text-small-regular text-gray-700">
+          Delivery method
+        </h3>
+        <div>
+          {shippingMethods.map((sm) => {
+            return (
+              <div key={sm.id}>
+                {sm.shipping_option.name}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default ShippingDetails
+```
+
+</details>
+
+### Download Product After Purchase
+
+After the customer purchases the digital product you can show a download button to allow them to immediately download the product.
+
+<details>
+<summary>
+Example
+</summary>
+
+Before you implement the storefront changes, you need to create a new endpoint in the backend that ensures that the currently logged-in customer has purchased the digital product and, if so, returns a presigned URL to download it.
+
+Create the file `src/api/routes/store/product-media/download.ts` with the following content:
+
+```ts title=src/api/routes/store/product-media/download.ts
+import { Request, Response } from "express"
+import ProductMediaService 
+  from "../../../../services/product-media"
+import { 
+  MediaType,
+} from "../../../../models/product-media"
+import { 
+  AbstractFileService,
+  CustomerService,
+  OrderService,
+  ProductVariant,
+} from "@medusajs/medusa"
+
+
+// download a purchased product
+export default async (req: Request, res: Response) => {
+  const variantId = req.params.variant_id
+  if (!variantId) {
+    throw new Error("Variant ID is required")
+  }
+  const ordersService = req.scope.resolve<
+    OrderService
+  >("orderService")
+  const orders = await ordersService.list({
+    customer_id: req.user.customer_id,
+  }, {
+    relations: ["items", "items.variant"],
+  })
+  
+  let variant: ProductVariant
+  orders.some((order) => (
+    order.items.some((item) => {
+      if (item.variant_id === variantId) {
+        variant = item.variant
+        return true
+      }
+
+      return false
+    })
+  ))
+
+  if (!variant) {
+    throw new Error("Customer hasn't purchased this product.")
+  }
+
+  // get the product media and the presigned URL
+  const productMediaService = req.scope.resolve<
+    ProductMediaService
+  >("productMediaService")
+  const productMedias = await productMediaService.list({
+    type: MediaType.MAIN,
+    variant_id: variant.id,
+  })
+
+  const fileService = req.scope.resolve<
+    AbstractFileService
+  >("fileService")
+
+  res.json({
+    url: await fileService.getPresignedDownloadUrl({
+      fileKey: productMedias[0].file_key,
+      isPrivate: true,
+    }),
+    name: productMedias[0].name,
+    mime_type: productMedias[0].mime_type,
+  })
+}
+```
+
+Then, register the new endpoint in `src/api/routes/store/product-media/index.ts`:
+
+```ts title=src/api/routes/store/product-media/index.ts
+import { wrapHandler } from "@medusajs/utils"
+import { 
+  requireCustomerAuthentication,
+} from "@medusajs/medusa"
+import download from "./download"
+
+// ...
+
+export default (storeRouter: Router) => {
+  // ...
+
+  router.get(
+    "/download/:variant_id",
+    requireCustomerAuthentication(),
+    wrapHandler(download)
+  )
+}
+```
+
+Note that you use the `requireCustomerAuthentication` middleware to ensure only logged-in customers can access this endpoint.
+
+You can use this endpoint in your storefront to add a button that allows downloading the purchased digital product.
+
+To mask the presigned URL, create a Next.js API route at `src/app/api/download/main/[variant_id]/route.ts` with the following content:
+
+```ts title=src/app/api/download/main/[variant_id]/route.ts
+import { NextRequest, NextResponse } from "next/server"
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Record<string, any> }
+) {
+  // Get the variant ID from the URL
+  const { variant_id } = params
+
+  // Define the API URL
+  const apiUrl = `${
+    process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+  }/store/product-media/download/${variant_id}`
+
+  // Fetch the file data
+  const { 
+    url,
+    name,
+    mime_type,
+  } = await fetch(apiUrl)
+    .then((res) => res.json())
+
+  // Handle the case where the file doesn't exist
+  // or the customer didn't purchase the product
+  if (!url) {
+    return new NextResponse(
+      "File doesn't exist", 
+      { status: 401 }
+    )
+  }
+
+  // Fetch the file
+  const response = await fetch(url)
+
+  // Handle the case where the file could not be fetched
+  if (!response.ok) {
+    return new NextResponse(
+      "File not found",
+      { status: 404 }
+    )
+  }
+
+  // Get the file content as a buffer
+  const fileBuffer = await response.arrayBuffer()
+
+  // Define response headers
+  const headers = {
+    "Content-Type": mime_type,
+     // This sets the file name for the download
+    "Content-Disposition": `attachment; filename="${name}"`,
+  }
+
+  // Create a NextResponse with the PDF content and headers
+  const response = new NextResponse(fileBuffer, {
+    status: 200,
+    headers,
+  })
+
+  return response
+}
+```
+
+Finally, add a button in the storefront that uses this route to allow customers to download the digital product after purchase.
+
+For example, you can change the `src/modules/order/components/items/index.tsx` file that shows the items to the customer in the order confirmation page to include a new download button:
+
+<!-- eslint-disable max-len -->
+
+```tsx title=src/modules/order/components/items/index.tsx
+import useEnrichedLineItems from "@lib/hooks/use-enrich-line-items"
+import { LineItem, Region } from "@medusajs/medusa"
+import LineItemOptions from "@modules/common/components/line-item-options"
+import LineItemPrice from "@modules/common/components/line-item-price"
+import Thumbnail from "@modules/products/components/thumbnail"
+import SkeletonLineItem from "@modules/skeletons/components/skeleton-line-item"
+import Link from "next/link"
+import medusaRequest from "../medusa-fetch"
+
+type ItemsProps = {
+  items: LineItem[]
+  region: Region
+  cartId: string
+}
+
+const Items = ({ items, region, cartId }: ItemsProps) => {
+  const enrichedItems = useEnrichedLineItems(items, cartId)
+
+  const handleDownload = async (variantId: string) => {
+    window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/download/main/${variant_id}`
+  }
+
+  return (
+    <div className="p-10 border-b border-gray-200 gap-y-4 flex flex-col">
+      {enrichedItems?.length
+        ? enrichedItems.map((item) => {
+            return (
+              <div className="grid grid-cols-[122px_1fr] gap-x-4" key={item.id}>
+                <div className="w-[122px]">
+                  <Thumbnail thumbnail={item.thumbnail} size="full" />
+                </div>
+                <div className="flex flex-col justify-between flex-1">
+                  <div className="flex flex-col flex-1 text-small-regular">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="text-base-regular overflow-ellipsis overflow-hidden whitespace-nowrap mr-4">
+                          <Link
+                            href={`/products/${item.variant.product.handle}`}
+                          >
+                            {item.title}
+                          </Link>
+                        </h3>
+                        <LineItemOptions variant={item.variant} />
+                        <span>Quantity: {item.quantity}</span>
+                      </div>
+                      <div className="flex justify-end">
+                        <LineItemPrice region={region} item={item} />
+                        <Button 
+                          variant="secondary" 
+                          onClick={() => handleDownload(item.variant.id)}>
+                          Download
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })
+        : Array.from(Array(items.length).keys()).map((i) => {
+            return <SkeletonLineItem key={i} />
+          })}
+    </div>
+  )
+}
+
+export default Items
+```
+
+</details>
+
+---
+
+## Additional Development
+
+You can find other resources for your dit development in the [Medusa Development section](../development/overview.mdx) of this documentation.

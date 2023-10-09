@@ -1,5 +1,17 @@
 # Change Log
 
+## 6.0.5
+
+### Patch Changes
+
+- [#5177](https://github.com/medusajs/medusa/pull/5177) [`c1b8f089e`](https://github.com/medusajs/medusa/commit/c1b8f089e3277f2aa4b7188bf914253e4ad0fe95) Thanks [@srindom](https://github.com/srindom)! - fix(medusa-payment-stripe): adds missing undefined check
+
+## 6.0.4
+
+### Patch Changes
+
+- [#4928](https://github.com/medusajs/medusa/pull/4928) [`c348263fd`](https://github.com/medusajs/medusa/commit/c348263fdba73ad0cdb8b8941d91a415d5b26a2a) Thanks [@zulianrizki](https://github.com/zulianrizki)! - fix(medusa-payment-stripe): api endpoint for getStripePayments
+
 ## 6.0.3
 
 ### Patch Changes

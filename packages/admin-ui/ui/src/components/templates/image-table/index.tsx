@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { Controller } from "react-hook-form"
 import { Column, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import { FormImage } from "../../../types/shared"
 import { NestedForm } from "../../../utils/nested-form"
 import Button from "../../fundamentals/button"
@@ -18,6 +19,7 @@ type ImageTableProps = {
 }
 
 const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
+  const { t } = useTranslation()
   const { control, register, path } = form
 
   const columns = useMemo<
@@ -46,7 +48,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
         },
       },
       {
-        Header: () => <span>File name</span>,
+        Header: () => <span>{t("image-table-file-name", "File name")}</span>,
         accessor: "nativeFile",
         Cell: ({ cell }) => {
           return (
@@ -72,8 +74,13 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
       {
         Header: () => (
           <div className="flex items-center justify-center gap-x-[6px]">
-            <span>Thumbnail</span>
-            <IconTooltip content="Select which image you want to use as the thumbnail for this product" />
+            <span>{t("image-table-thumbnail", "Thumbnail")}</span>
+            <IconTooltip
+              content={t(
+                "image-table-select-thumbnail-image-for-product",
+                "Select which image you want to use as the thumbnail for this product"
+              )}
+            />
           </div>
         ),
         id: "thumbnail",

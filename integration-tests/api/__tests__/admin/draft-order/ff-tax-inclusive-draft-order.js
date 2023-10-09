@@ -16,7 +16,7 @@ jest.setTimeout(30000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
