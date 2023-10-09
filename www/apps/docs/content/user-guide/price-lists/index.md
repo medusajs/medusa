@@ -28,4 +28,3 @@ In the list, you can see price list details such as the name, description, and s
 ## Learn More About Price Lists
 
 - [Manage a Price List](./manage.mdx)
-- [Import Prices](./import.mdx)
