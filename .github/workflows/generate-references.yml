@@ -36,6 +36,10 @@ jobs:
         run: yarn install
         working-directory: docs-util
 
+      - name: Build Workspace dependencies
+        run: yarn build
+        working-directory: docs-util
+
       - name: Generate Services Reference
         run: yarn generate:reference services
         working-directory: docs-util/packages/scripts
@@ -122,6 +126,10 @@ jobs:
         run: yarn install
         working-directory: docs-util
 
+      - name: Build Workspace dependencies
+        run: yarn build
+        working-directory: docs-util
+
       - name: Generate Entities Reference
         run: yarn generate:reference entities
         working-directory: docs-util/packages/scripts
@@ -165,6 +173,10 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
+        working-directory: docs-util
+
+      - name: Build Workspace dependencies
+        run: yarn build
         working-directory: docs-util
 
       - name: Generate Services Reference
