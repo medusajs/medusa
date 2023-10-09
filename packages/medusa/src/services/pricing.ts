@@ -1,7 +1,15 @@
+import { CalculatedPriceSetDTO, IPricingModuleService } from "@medusajs/types"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
 } from "../interfaces/price-selection-strategy"
+import {
+  MoneyAmount,
+  Product,
+  ProductVariant,
+  Region,
+  ShippingOption,
+} from "../models"
 import {
   PricedProduct,
   PricedShippingOption,
@@ -10,12 +18,17 @@ import {
   ProductVariantPricing,
   TaxedPricing,
 } from "../types/pricing"
-import { Product, ProductVariant, Region, ShippingOption } from "../models"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
+import {
+  VariantsRes,
+  removeNullish,
+} from "../utils/get-product-pricing-with-pricing-module"
 
 import { EntityManager } from "typeorm"
 import { FlagRouter } from "@medusajs/utils"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import { MedusaError } from "medusa-core-utils"
+import PricingIntegrationFeatureFlag from "../loaders/feature-flags/pricing-integration"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { TransactionBaseService } from "../interfaces"
@@ -28,6 +41,8 @@ type InjectedDependencies = {
   regionService: RegionService
   priceSelectionStrategy: IPriceSelectionStrategy
   featureFlagRouter: FlagRouter
+  remoteQuery: (...args: any[]) => Promise<any> | null
+  pricingModuleService: IPricingModuleService
 }
 
 /**
@@ -39,6 +54,8 @@ class PricingService extends TransactionBaseService {
   protected readonly priceSelectionStrategy: IPriceSelectionStrategy
   protected readonly productVariantService: ProductVariantService
   protected readonly featureFlagRouter: FlagRouter
+  protected readonly pricingModuleService: IPricingModuleService
+  protected readonly remoteQuery: (...args: any[]) => Promise<any> | null
 
   constructor({
     productVariantService,
@@ -46,6 +63,8 @@ class PricingService extends TransactionBaseService {
     regionService,
     priceSelectionStrategy,
     featureFlagRouter,
+    remoteQuery,
+    pricingModuleService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -55,6 +74,8 @@ class PricingService extends TransactionBaseService {
     this.priceSelectionStrategy = priceSelectionStrategy
     this.productVariantService = productVariantService
     this.featureFlagRouter = featureFlagRouter
+    this.pricingModuleService = pricingModuleService
+    this.remoteQuery = remoteQuery
   }
 
   /**
@@ -161,6 +182,136 @@ class PricingService extends TransactionBaseService {
     return taxedPricing
   }
 
+  private async getProductVariantPricingModulePricing_(
+    variantPriceData: {
+      variantId: string
+      quantity?: number
+    }[],
+    context: PricingContext
+  ) {
+    const variables = {
+      variant_id: variantPriceData.map((pricedata) => pricedata.variantId),
+    }
+
+    const priceSetQuery = `
+    query {
+      variants {
+        id
+        title
+        price {
+          price_set {
+            id
+          }
+        }
+      }
+    }
+   `
+    // const query = {
+    //   product_variant_price_set: {
+    //     __args: variables,
+    //     ...defaultAdminProductRemoteQueryObject,
+    //   },
+    // }
+
+    // const {
+    //   rows: products,
+    //   metadata: { count },
+    // } = await remoteQuery(query)
+
+    const variantPriceSets: VariantsRes[] = await this.remoteQuery(
+      priceSetQuery,
+      {
+        context: variables,
+      }
+    )
+
+    const variantIdToPriceSetIdsMap = new Map(
+      variantPriceSets.map((variantPriceSet) => {
+        if (!variantPriceSet.price) {
+          return [variantPriceSet.id, []]
+        }
+
+        const value = Array.isArray(variantPriceSet.price)
+          ? variantPriceSet.price.map((price) => price.price_set_id)
+          : [variantPriceSet.price.price_set_id]
+        return [variantPriceSet.id, value]
+      })
+    )
+
+    const priceSetIds = variantPriceSets
+      .map((variantPriceSet) => {
+        if (!variantPriceSet.price) {
+          return []
+        }
+        return Array.isArray(variantPriceSet.price)
+          ? variantPriceSet.price.map((price) => price.price_set_id)
+          : [variantPriceSet.price.price_set_id]
+      })
+      .flat()
+
+    const queryContext: PriceSelectionContext = removeNullish(
+      context.price_selection
+    )
+
+    if (queryContext.currency_code) {
+      queryContext.currency_code = queryContext.currency_code.toUpperCase()
+    } else {
+      return new Map()
+    }
+
+    const prices = (await this.pricingModuleService.calculatePrices(
+      { id: priceSetIds },
+      {
+        context: queryContext as any,
+      }
+    )) as unknown as CalculatedPriceSetDTO[]
+
+    const priceSetMap = new Map<string, CalculatedPriceSetDTO>(
+      prices.map((price) => [price.id, price])
+    )
+
+    const pricingResultMap = new Map()
+
+    variantPriceData.map(({ variantId }) => {
+      const priceSetIds = variantIdToPriceSetIdsMap.get(variantId)
+      const prices = priceSetIds
+        ?.map((id) => priceSetMap.get(id))
+        .filter(Boolean)
+
+      if (prices?.length) {
+        let calculatedLowestPrice: number | null = prices.reduce(
+          (price: number, comparisonPrice): number => {
+            return !comparisonPrice?.amount || price < comparisonPrice.amount
+              ? price
+              : comparisonPrice.amount
+          },
+          Infinity
+        )
+
+        calculatedLowestPrice =
+          calculatedLowestPrice === Infinity ? null : calculatedLowestPrice
+
+        const pricingResult: ProductVariantPricing = {
+          prices: prices as MoneyAmount[],
+          original_price: calculatedLowestPrice,
+          calculated_price: calculatedLowestPrice,
+          calculated_price_type: null,
+          original_price_includes_tax: null,
+          calculated_price_includes_tax: null,
+          original_price_incl_tax: null,
+          calculated_price_incl_tax: null,
+          original_tax: null,
+          calculated_tax: null,
+          tax_rates: null,
+        }
+
+        pricingResultMap.set(variantId, pricingResult)
+      }
+    })
+
+    return pricingResultMap
+  }
+
   private async getProductVariantPricing_(
     data: {
       variantId: string
@@ -168,6 +319,15 @@ class PricingService extends TransactionBaseService {
     }[],
     context: PricingContext
   ): Promise<Map<string, ProductVariantPricing>> {
+    if (
+      this.featureFlagRouter.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      ) &&
+      this.featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)
+    ) {
+      return await this.getProductVariantPricingModulePricing_(data, context)
+    }
+
     const variantsPricing = await this.priceSelectionStrategy
       .withTransaction(this.activeManager_)
       .calculateVariantPrice(data, context.price_selection)

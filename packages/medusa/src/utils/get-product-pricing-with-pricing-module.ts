@@ -1,8 +1,9 @@
-import { Request } from "express"
-import { PriceSelectionContext } from "../interfaces"
 import { MoneyAmount, ProductVariant } from "../models"
-import { isDefined } from "medusa-core-utils"
+
+import { PriceSelectionContext } from "../interfaces"
 import { ProductVariantPricing } from "../types/pricing"
+import { Request } from "express"
+import { isDefined } from "medusa-core-utils"
 
 export async function getProductPricingWithPricingModule(
   req: Request,
@@ -122,7 +123,7 @@ export const removeNullish = (
     return resultObject
   }, {})
 
-type VariantsRes = {
+export type VariantsRes = {
   id: string
   title: string
   price: VariantsPriceRes | VariantsPriceRes[]
