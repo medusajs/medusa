@@ -20,6 +20,73 @@ function makeSchemaExecutable(inputSchema: string) {
   return makeExecutableSchema({ typeDefs: cleanedSchema })
 }
 
+function retrieveLinkedEntityNameAndAliasFromLinkModule(
+  linkModuleJoinerConfig,
+  relatedModuleJoinerConfig
+) {
+  const linkRelationships = linkModuleJoinerConfig.relationships
+  const linkRelationship = linkRelationships.find((relationship) => {
+    return relatedModuleJoinerConfig.serviceName === relationship.serviceName
+  })
+
+  const foreignKey = linkRelationship.foreignKey
+
+  let alias
+  let entityName
+
+  const linkableKeys = relatedModuleJoinerConfig.linkableKeys
+  entityName = linkableKeys[foreignKey]
+
+  if (!entityName) {
+    throw new Error(
+      `CatalogModule error, unable to retrieve the entity name from the link module configuration for the linkable key ${foreignKey}.`
+    )
+  }
+
+  const moduleAliases = relatedModuleJoinerConfig.alias
+
+  if (moduleAliases) {
+    alias = retrieveAliasForEntity(
+      entityName,
+      relatedModuleJoinerConfig.serviceName,
+      relatedModuleJoinerConfig.alias
+    )
+  }
+
+  if (!alias) {
+    throw new Error(
+      `CatalogModule error, the module ${relatedModuleJoinerConfig.serviceName} has a schema but does not have any alias for the entity ${entityName}. Please add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
+    )
+  }
+
+  return { entityName, alias }
+}
+
+function retrieveAliasForEntity(entityName, serviceName, aliases) {
+  aliases = Array.isArray(aliases) ? aliases : [aliases]
+
+  aliases = aliases.filter(Boolean)
+
+  aliases = aliases
+    .filter(Boolean)
+    .map((alias) => {
+      const names = Array.isArray(alias?.name) ? alias?.name : [alias?.name]
+      return names?.map((name) => ({
+        name,
+        args: alias?.args,
+      }))
+    })
+    .flat() as JoinerServiceConfigAlias[]
+
+  let alias = aliases.find((alias) => {
+    const curEntity = alias!.args?.entity || alias?.name
+    return curEntity && curEntity.toLowerCase() === entityName.toLowerCase()
+  })
+  alias = alias?.name
+
+  return alias
+}
+
 function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
   let relatedModule
   let alias
@@ -46,27 +113,11 @@ function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
     }
 
     if (moduleAliases) {
-      let aliases = Array.isArray(moduleJoinerConfig.alias)
-        ? moduleJoinerConfig.alias
-        : [moduleJoinerConfig.alias]
-      aliases = aliases.filter(Boolean)
-
-      aliases = aliases
-        .filter(Boolean)
-        .map((alias) => {
-          const names = Array.isArray(alias?.name) ? alias?.name : [alias?.name]
-          return names?.map((name) => ({
-            name,
-            args: alias?.args,
-          }))
-        })
-        .flat() as JoinerServiceConfigAlias[]
-
-      alias = aliases.find((alias) => {
-        const curEntity = alias!.args?.entity || alias?.name
-        return curEntity && curEntity.toLowerCase() === entityName.toLowerCase()
-      })
-      alias = alias?.name
+      alias = retrieveAliasForEntity(
+        entityName,
+        moduleJoinerConfig.serviceName,
+        moduleJoinerConfig.alias
+      )
 
       if (alias) {
         relatedModule = moduleJoinerConfig
@@ -86,7 +137,7 @@ function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
 
   if (!alias) {
     throw new Error(
-      `CatalogModule error, the module ${relatedModule.serviceName} has a schema but does not have any alias for the entity ${entityName}. Please add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
+      `CatalogModule error, the module ${relatedModule?.serviceName} has a schema but does not have any alias for the entity ${entityName}. Please add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
     )
   }
 
@@ -124,6 +175,240 @@ function retrieveLinkModuleAndAlias(
   return { relatedModule, alias }
 }
 
+function getObjectConfigurationRef(entityName, { objectConfigurationRef }) {
+  return (objectConfigurationRef[entityName] ??= {
+    entity: entityName,
+    parents: [],
+    alias: "",
+    listeners: [],
+    moduleConfig: null,
+    fields: [],
+  })
+}
+
+function setListeners(currentObjectConfigurationRef, listenerDirective) {
+  if (!listenerDirective) {
+    throw new Error(
+      "CatalogModule error, a type is defined in the schema configuration but it is missing the @Listeners directive to specify which events to listen to in order to sync the data"
+    )
+  }
+
+  currentObjectConfigurationRef.listeners = (
+    (listenerDirective?.arguments?.[0].value as any)?.values ?? []
+  ).map((v) => v.value)
+}
+
+function processEntity(
+  entityName,
+  { entitiesMap, moduleJoinerConfigs, objectConfigurationRef }
+) {
+  /**
+   * Get the reference to the object configuration for the current entity.
+   */
+
+  const currentObjectConfigurationRef = getObjectConfigurationRef(entityName, {
+    objectConfigurationRef,
+  })
+
+  /**
+   * Retrieve and set the listeners for the current entity from the listeners directive.
+   */
+
+  const listenerDirective = entitiesMap[entityName].astNode?.directives?.find(
+    (directive: any) => directive.name.value === CustomDirectives.Listeners.name
+  )
+
+  setListeners(currentObjectConfigurationRef, listenerDirective)
+
+  currentObjectConfigurationRef.fields = getFieldsAndRelations(
+    entitiesMap,
+    entityName
+  )
+
+  /**
+   * Retrieve the module and alias for the current entity.
+   */
+
+  const { relatedModule: currentEntityModule, alias } = retrieveModuleAndAlias(
+    entityName,
+    moduleJoinerConfigs
+  )
+
+  currentObjectConfigurationRef.moduleConfig = currentEntityModule
+  currentObjectConfigurationRef.alias = alias
+
+  /**
+   * Retrieve the parent entities for the current entity.
+   */
+
+  const schemaParentEntity = Object.values(entitiesMap).filter((value: any) => {
+    return (
+      value.astNode &&
+      (value.astNode as ObjectTypeDefinitionNode).fields?.some((field) => {
+        return (field.type as any)?.type?.name?.value === entityName
+      })
+    )
+  })
+
+  /**
+   * If the current entity has parent entities, then we need to process them.
+   */
+
+  if (schemaParentEntity.length) {
+    const parentEntityNames = schemaParentEntity.map((parent: any) => {
+      return parent.name
+    })
+
+    for (const parent of parentEntityNames) {
+      /**
+       * Retrieve the parent entity field in the schema
+       */
+
+      const entityFieldInParent = (
+        entitiesMap[parent].astNode as any
+      )?.fields?.find((field) => {
+        return (field.type as any)?.type?.name?.value === entityName
+      })
+
+      const isEntityListInParent = entityFieldInParent.type.kind === "ListType"
+      const entityTargetPropertyNameInParent = entityFieldInParent.name.value
+
+      /**
+       * Retrieve the parent entity object configuration reference.
+       */
+
+      const parentObjectConfigurationRef = getObjectConfigurationRef(parent, {
+        objectConfigurationRef,
+      })
+      const parentModuleConfig = parentObjectConfigurationRef.moduleConfig
+
+      /**
+       * If the parent entity and the current entity are part of the same servive then configure the parent and
+       * add the parent id as a field to the current entity.
+       */
+
+      if (
+        currentObjectConfigurationRef.moduleConfig.serviceName ===
+          parentModuleConfig.serviceName ||
+        parentModuleConfig.isLink
+      ) {
+        currentObjectConfigurationRef.parents.push({
+          ref: parentObjectConfigurationRef,
+          targetProp: entityTargetPropertyNameInParent,
+          isList: isEntityListInParent,
+        })
+
+        currentObjectConfigurationRef.fields.push(
+          parentObjectConfigurationRef.alias + ".id"
+        )
+      } else {
+        /**
+         * If the parent entity and the current entity are not part of the same service then we need to
+         * find the link module that join them.
+         */
+
+        const { relatedModule: linkModule, alias: linkAlias } =
+          retrieveLinkModuleAndAlias(
+            currentObjectConfigurationRef.moduleConfig.serviceName,
+            parentModuleConfig.serviceName,
+            moduleJoinerConfigs
+          )
+
+        const linkObjectConfigurationRef = getObjectConfigurationRef(
+          linkAlias,
+          { objectConfigurationRef }
+        )
+
+        /**
+         * Add the schema parent entity as a parent to the link module and configure it.
+         */
+
+        linkObjectConfigurationRef.parents = [
+          {
+            ref: parentObjectConfigurationRef,
+          },
+        ]
+        linkObjectConfigurationRef.alias = linkAlias
+        linkObjectConfigurationRef.listeners = [
+          `${toCamelCase(linkAlias)}.attached`,
+          `${toCamelCase(linkAlias)}.detached`,
+        ]
+        linkObjectConfigurationRef.moduleConfig = linkModule
+        linkObjectConfigurationRef.fields = [
+          ...linkModule.relationships
+            .map(
+              (relationship) =>
+                [
+                  parentModuleConfig.serviceName,
+                  currentEntityModule.serviceName,
+                ].includes(relationship.serviceName) && relationship.foreignKey
+            )
+            .filter(Boolean),
+          parentObjectConfigurationRef.alias + ".id",
+        ]
+
+        /**
+         * If the current entity is not the entity that is used to join the link module and the parent entity
+         * then we need to add the new entity that join them and then add the link as its parent
+         * before setting the new entity as the true parent of the current entity.
+         */
+
+        let linkedEntityObjectConfigurationRef
+        if (currentObjectConfigurationRef.alias !== linkAlias) {
+          const linkedEntityNameAndAlias =
+            retrieveLinkedEntityNameAndAliasFromLinkModule(
+              linkModule,
+              currentEntityModule
+            )
+
+          const {
+            relatedModule: linkedEntityModule,
+            alias: linkedEntityAlias,
+          } = retrieveModuleAndAlias(
+            linkedEntityNameAndAlias.entityName,
+            moduleJoinerConfigs
+          )
+
+          linkedEntityObjectConfigurationRef = getObjectConfigurationRef(
+            linkedEntityNameAndAlias.entityName,
+            { objectConfigurationRef }
+          )
+
+          linkedEntityObjectConfigurationRef.parents.push({
+            ref: linkObjectConfigurationRef,
+            targetProp: linkedEntityNameAndAlias.alias,
+            isList: true,
+          })
+
+          linkedEntityObjectConfigurationRef.alias =
+            linkedEntityNameAndAlias.alias
+          linkedEntityObjectConfigurationRef.listeners = [
+            toCamelCase(linkedEntityAlias) + ".created",
+            toCamelCase(linkedEntityAlias) + ".updated",
+          ]
+          linkedEntityObjectConfigurationRef.moduleConfig = linkedEntityModule
+          linkedEntityObjectConfigurationRef.fields = [
+            "id",
+            linkObjectConfigurationRef.alias + ".id",
+          ]
+        }
+
+        currentObjectConfigurationRef.parents.push({
+          ref: linkedEntityObjectConfigurationRef || linkObjectConfigurationRef,
+          inConfiguration: parentObjectConfigurationRef,
+          targetProp: entityTargetPropertyNameInParent,
+          isList: isEntityListInParent,
+        })
+
+        currentObjectConfigurationRef.fields.push(
+          (linkedEntityObjectConfigurationRef || linkObjectConfigurationRef)
+            .alias + ".id"
+        )
+      }
+    }
+  }
+}
+
 /**
  * This util build an internal configuration object from the provided schema.
  * It will resolve all modules, fields, link module configuration to build
@@ -134,222 +419,21 @@ function retrieveLinkModuleAndAlias(
  *
  * @param schema
  */
-export function buildObjectConfigurationFromGraphQlSchema(schema) {
-  /**
-   * This is just to mock the modules after they have been loaded
-   * TODO: remove
-   */
-
-  /*await MedusaApp({
-    modulesConfig,
-    servicesConfig: joinerConfig,
-    injectedDependencies,
-  })*/
-
+export async function buildObjectConfigurationFromGraphQlSchema(schema) {
   const moduleJoinerConfigs = MedusaModule.getAllJoinerConfigs()
-
-  /**
-   * End of the above mock.
-   */
-
-  // Prepend the @Listeners directive to make it available for graphQL
   const augmentedSchema = CustomDirectives.Listeners.definition + schema
-
   const executableSchema = makeSchemaExecutable(augmentedSchema)
   const entitiesMap = executableSchema.getTypeMap()
 
-  /**
-   * Start building the internal object configuration from the schema and the information
-   * we have about the modules and link modules.
-   */
-
   const objectConfiguration = {}
 
-  Object.keys(entitiesMap).forEach((entityName) => {
-    if (!entitiesMap[entityName].astNode) {
-      return
-    }
-
-    const currentObjectConfigurationRef = (objectConfiguration[entityName] ??= {
-      entity: entityName,
-      parents: [],
-      alias: "",
-      listeners: [],
-      moduleConfig: null,
-      fields: [],
-    })
-
-    /**
-     * Retrieve the directive @Listeners to set it on the object configuration
-     */
-
-    const listenerDirective = entitiesMap[entityName].astNode?.directives?.find(
-      (directive: any) => {
-        return (directive.value = CustomDirectives.Listeners.name)
-      }
-    )
-
-    if (!listenerDirective) {
-      // TODO: maybe re visit that error and condition when discussion the deactivation
-      throw new Error(
-        "CatalogModule error, a type is defined in the schema configuration but it is missing the @Listeners directive to specify which events to listen to in order to sync the data"
-      )
-    }
-
-    currentObjectConfigurationRef.listeners = (
-      (listenerDirective?.arguments?.[0].value as any).values ?? []
-    ).map((v) => v.value)
-
-    /**
-     * Get all the fields from the current type without any relation fields
-     */
-
-    currentObjectConfigurationRef.fields = getFieldsAndRelations(
+  Object.keys(entitiesMap).forEach((entityName) =>
+    processEntity(entityName, {
       entitiesMap,
-      entityName
-    )
+      moduleJoinerConfigs,
+      objectConfigurationRef: objectConfiguration,
+    })
+  )
 
-    /**
-     * This step will assign the related module config to the current entity.
-     * In a later step we will be able to verify if the parent and child are part of
-     * the same module or not in order to mutate the configuration and
-     * apply the correct configuration.
-     */
-
-    const { relatedModule, alias } = retrieveModuleAndAlias(
-      entityName,
-      moduleJoinerConfigs
-    )
-    currentObjectConfigurationRef.moduleConfig = relatedModule
-    currentObjectConfigurationRef.alias = alias
-
-    /**
-     * Retrieve immediate parent in the provided schema configuration.
-     * This is different from the real parent based on the module configuration, especially
-     * if there is any link involved
-     */
-
-    const schemaParentEntityNames = Object.values(entitiesMap).filter(
-      (value) => {
-        return (
-          value.astNode &&
-          (value.astNode as ObjectTypeDefinitionNode).fields?.some((field) => {
-            return (field.type as any)?.type?.name?.value === entityName
-          })
-        )
-      }
-    )
-
-    /**
-     * If there is any parent, look for their module appartenance. If they are part of the same module
-     * Add the parent configuration to the entity configuration. Otherwise, we need to look for the link
-     * and manage to create the appropriate configuration.
-     */
-
-    if (schemaParentEntityNames.length) {
-      const parentEntityNames = schemaParentEntityNames.map((parent) => {
-        return parent.name
-      })
-
-      for (const parent of parentEntityNames) {
-        const entityFieldInParent = (
-          entitiesMap[parent].astNode as any
-        )?.fields?.find((field) => {
-          return (field.type as any)?.type?.name?.value === entityName
-        })
-
-        const isEntityListInParent =
-          entityFieldInParent.type.kind === "ListType"
-        const entityTargetPropertyNameInParent = entityFieldInParent.name.value
-
-        const parentObjectConfigurationRef = objectConfiguration[parent]
-        const parentModuleConfig = parentObjectConfigurationRef.moduleConfig
-
-        /**
-         * Parent and current entity are part of the same module, or if the parent is already a link then create the parent
-         * configuration in the entity configuration.
-         */
-
-        if (
-          currentObjectConfigurationRef.moduleConfig.serviceName ===
-            parentModuleConfig.serviceName ||
-          parentModuleConfig.isLink
-        ) {
-          currentObjectConfigurationRef.parents.push({
-            ref: parentObjectConfigurationRef,
-            targetProp: entityTargetPropertyNameInParent,
-            isList: isEntityListInParent,
-          })
-
-          currentObjectConfigurationRef.fields.push(
-            parentObjectConfigurationRef.alias + ".id"
-          )
-        } else {
-          /**
-           * Look for the link module between the parent and the current entity.
-           */
-
-          const { relatedModule: linkModule, alias: linkAlias } =
-            retrieveLinkModuleAndAlias(
-              currentObjectConfigurationRef.moduleConfig.serviceName,
-              parentModuleConfig.serviceName,
-              moduleJoinerConfigs
-            )
-
-          /**
-           * construct the link module configuration like for the entity
-           */
-
-          // TODO: validate the entity name
-          const linkEntityName = toCamelCase(linkAlias)
-          const linkObjectConfigurationRef = (objectConfiguration[
-            linkEntityName
-          ] ??= {
-            entity: linkEntityName,
-            parents: [
-              {
-                ref: parentObjectConfigurationRef,
-              },
-            ],
-            alias: linkAlias,
-            listeners: [
-              `${linkEntityName}.attached`,
-              `${linkEntityName}.detached`,
-            ],
-            moduleConfig: linkModule,
-            fields: [
-              ...linkModule.relationships
-                .map(
-                  (relationship) =>
-                    [
-                      parentModuleConfig.serviceName,
-                      relatedModule.serviceName,
-                    ].includes(relationship.serviceName) &&
-                    relationship.foreignKey
-                )
-                .filter(Boolean),
-              parentObjectConfigurationRef.alias + ".id",
-            ],
-          })
-
-          /**
-           * The link entity configuration become the parent of the current entity
-           */
-
-          currentObjectConfigurationRef.parents.push({
-            ref: linkObjectConfigurationRef,
-            inConfiguration: parentObjectConfigurationRef,
-            targetProp: entityTargetPropertyNameInParent,
-            isList: isEntityListInParent,
-          })
-
-          currentObjectConfigurationRef.fields.push(
-            linkObjectConfigurationRef.alias + ".id"
-          )
-        }
-      }
-    }
-  })
-
-  console.log(objectConfiguration)
+  return objectConfiguration
 }
