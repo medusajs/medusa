@@ -2,19 +2,19 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-# Class: Image
+# Class: SalesChannelLocation
 
 ## Hierarchy
 
 - `SoftDeletableEntity`
 
-  ↳ **`Image`**
+  ↳ **`SalesChannelLocation`**
 
 ## Constructors
 
 ### constructor
 
-• **new Image**()
+• **new SalesChannelLocation**()
 
 #### Inherited from
 
@@ -64,13 +64,33 @@ SoftDeletableEntity.id
 
 ___
 
-### metadata
+### location\_id
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **location\_id**: `string`
 
 #### Defined in
 
-[models/image.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/image.ts#L13)
+[models/sales-channel-location.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel-location.ts#L16)
+
+___
+
+### sales\_channel
+
+• **sales\_channel**: [`SalesChannel`](SalesChannel.md)
+
+#### Defined in
+
+[models/sales-channel-location.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel-location.ts#L20)
+
+___
+
+### sales\_channel\_id
+
+• **sales\_channel\_id**: `string`
+
+#### Defined in
+
+[models/sales-channel-location.ts:12](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel-location.ts#L12)
 
 ___
 
@@ -86,16 +106,6 @@ SoftDeletableEntity.updated\_at
 
 [interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
-___
-
-### url
-
-• **url**: `string`
-
-#### Defined in
-
-[models/image.ts:10](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/image.ts#L10)
-
 ## Methods
 
 ### beforeInsert
@@ -108,4 +118,4 @@ ___
 
 #### Defined in
 
-[models/image.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/image.ts#L16)
+[models/sales-channel-location.ts:23](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel-location.ts#L23)
