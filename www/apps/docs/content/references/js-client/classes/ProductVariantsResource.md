@@ -10,36 +10,32 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsListRes`](../modules/internal-45.md#storevariantslistres)\>
-
-**`Description`**
-
-Retrieves a list of of Product Variants
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`StoreVariantsListRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`StoreGetVariantsParams`](internal-45.StoreGetVariantsParams.md) |
+| `query?` | `StoreGetVariantsParams` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsListRes`](../modules/internal-45.md#storevariantslistres)\>
+`ResponsePromise`<`StoreVariantsListRes`\>
+
+**`Description`**
+
+Retrieves a list of of Product Variants
 
 #### Defined in
 
-[medusa-js/src/resources/product-variants.ts:28](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/product-variants.ts#L28)
+[product-variants.ts:28](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/product-variants.ts#L28)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsRes`](../modules/internal-45.md#storevariantsres)\>
-
-**`Description`**
-
-Retrieves a single product variant
+▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`StoreVariantsRes`\>
 
 #### Parameters
 
@@ -50,8 +46,12 @@ Retrieves a single product variant
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreVariantsRes`](../modules/internal-45.md#storevariantsres)\>
+`ResponsePromise`<`StoreVariantsRes`\>
+
+**`Description`**
+
+Retrieves a single product variant
 
 #### Defined in
 
-[medusa-js/src/resources/product-variants.ts:17](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/product-variants.ts#L17)
+[product-variants.ts:17](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/product-variants.ts#L17)

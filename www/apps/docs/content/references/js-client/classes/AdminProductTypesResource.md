@@ -10,19 +10,19 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTypesListRes`](../modules/internal-19.md#adminproducttypeslistres)\>
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminProductTypesListRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetProductTypesParams`](internal-19.AdminGetProductTypesParams.md) |
+| `query?` | `AdminGetProductTypesParams` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminProductTypesListRes`](../modules/internal-19.md#adminproducttypeslistres)\>
+`ResponsePromise`<`AdminProductTypesListRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/product-types.ts:10](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/product-types.ts#L10)
+[admin/product-types.ts:10](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/product-types.ts#L10)

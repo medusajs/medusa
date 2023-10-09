@@ -10,7 +10,7 @@
 
 ### list
 
-▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersListPaymentMethodsRes`](../modules/internal-43.md#storecustomerslistpaymentmethodsres)\>
+▸ **list**(`customHeaders?`): `ResponsePromise`<`StoreCustomersListPaymentMethodsRes`\>
 
 Lists customer payment methods
 
@@ -22,8 +22,8 @@ Lists customer payment methods
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersListPaymentMethodsRes`](../modules/internal-43.md#storecustomerslistpaymentmethodsres)\>
+`ResponsePromise`<`StoreCustomersListPaymentMethodsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/payment-methods.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/payment-methods.ts#L12)
+[payment-methods.ts:12](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/payment-methods.ts#L12)

@@ -8,21 +8,72 @@
 
 ## Methods
 
-### list
+### getInventory
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminVariantsListRes`](../modules/internal-33.md#adminvariantslistres)\>
+▸ **getInventory**(`variantId`, `customHeaders?`): `ResponsePromise`<`AdminGetVariantsVariantInventoryRes`\>
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `query?` | [`AdminGetVariantsParams`](internal-33.AdminGetVariantsParams.md) |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | id of the variant to fetch inventory for |
+| `customHeaders` | `Record`<`string`, `any`\> | custom headers |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminVariantsListRes`](../modules/internal-33.md#adminvariantslistres)\>
+`ResponsePromise`<`AdminGetVariantsVariantInventoryRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/variants.ts:7](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/variants.ts#L7)
+[admin/variants.ts:60](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/variants.ts#L60)
+
+___
+
+### list
+
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminVariantsListRes`\>
+
+List product variants
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `query?` | `AdminGetVariantsParams` | Query to filter variants by |
+| `customHeaders` | `Record`<`string`, `any`\> | custom headers |
+
+#### Returns
+
+`ResponsePromise`<`AdminVariantsListRes`\>
+
+A list of variants satisfying the criteria of the query
+
+#### Defined in
+
+[admin/variants.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/variants.ts#L19)
+
+___
+
+### retrieve
+
+▸ **retrieve**(`id`, `query?`, `customHeaders?`): `ResponsePromise`<`AdminVariantsRes`\>
+
+Get a product variant
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | Query to filter variants by |
+| `query?` | `AdminGetVariantParams` | - |
+| `customHeaders` | `Record`<`string`, `any`\> | custom headers |
+
+#### Returns
+
+`ResponsePromise`<`AdminVariantsRes`\>
+
+A list of variants satisfying the criteria of the query
+
+#### Defined in
+
+[admin/variants.ts:39](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/variants.ts#L39)

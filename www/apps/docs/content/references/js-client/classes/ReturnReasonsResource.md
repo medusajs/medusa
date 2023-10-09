@@ -10,7 +10,7 @@
 
 ### list
 
-▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreReturnReasonsListRes`](../modules/internal-48.md#storereturnreasonslistres)\>
+▸ **list**(`customHeaders?`): `ResponsePromise`<`StoreReturnReasonsListRes`\>
 
 Lists return reasons defined in Medusa Admin
 
@@ -22,21 +22,17 @@ Lists return reasons defined in Medusa Admin
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreReturnReasonsListRes`](../modules/internal-48.md#storereturnreasonslistres)\>
+`ResponsePromise`<`StoreReturnReasonsListRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/return-reasons.ts:25](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/return-reasons.ts#L25)
+[return-reasons.ts:25](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/return-reasons.ts#L25)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreReturnReasonsRes`](../modules/internal-48.md#storereturnreasonsres)\>
-
-**`Description`**
-
-Retrieves a single Return Reason
+▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`StoreReturnReasonsRes`\>
 
 #### Parameters
 
@@ -47,8 +43,12 @@ Retrieves a single Return Reason
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreReturnReasonsRes`](../modules/internal-48.md#storereturnreasonsres)\>
+`ResponsePromise`<`StoreReturnReasonsRes`\>
+
+**`Description`**
+
+Retrieves a single Return Reason
 
 #### Defined in
 
-[medusa-js/src/resources/return-reasons.ts:15](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/return-reasons.ts#L15)
+[return-reasons.ts:15](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/return-reasons.ts#L15)

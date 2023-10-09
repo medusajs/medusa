@@ -10,36 +10,32 @@
 
 ### authenticate
 
-▸ **authenticate**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreAuthRes`](../modules/internal-34.md#storeauthres)\>
-
-**`Description`**
-
-Authenticates a customer using email and password combination
+▸ **authenticate**(`payload`, `customHeaders?`): `ResponsePromise`<`StoreAuthRes`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`StorePostAuthReq`](internal-34.StorePostAuthReq.md) | authentication payload |
+| `payload` | `StorePostAuthReq` | authentication payload |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreAuthRes`](../modules/internal-34.md#storeauthres)\>
+`ResponsePromise`<`StoreAuthRes`\>
+
+**`Description`**
+
+Authenticates a customer using email and password combination
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:16](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/auth.ts#L16)
+[auth.ts:18](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/auth.ts#L18)
 
 ___
 
 ### deleteSession
 
-▸ **deleteSession**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<`void`\>
-
-**`Description`**
-
-Removes authentication session
+▸ **deleteSession**(`customHeaders?`): `ResponsePromise`<`void`\>
 
 #### Parameters
 
@@ -49,21 +45,21 @@ Removes authentication session
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<`void`\>
+`ResponsePromise`<`void`\>
+
+**`Description`**
+
+Removes authentication session
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:25](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/auth.ts#L25)
+[auth.ts:27](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/auth.ts#L27)
 
 ___
 
 ### exists
 
-▸ **exists**(`email`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreGetAuthEmailRes`](../modules/internal-34.md#storegetauthemailres)\>
-
-**`Description`**
-
-Check if email exists
+▸ **exists**(`email`, `customHeaders?`): `ResponsePromise`<`StoreGetAuthEmailRes`\>
 
 #### Parameters
 
@@ -74,22 +70,21 @@ Check if email exists
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreGetAuthEmailRes`](../modules/internal-34.md#storegetauthemailres)\>
+`ResponsePromise`<`StoreGetAuthEmailRes`\>
+
+**`Description`**
+
+Check if email exists
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:47](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/auth.ts#L47)
+[auth.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/auth.ts#L49)
 
 ___
 
 ### getSession
 
-▸ **getSession**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreAuthRes`](../modules/internal-34.md#storeauthres)\>
-
-**`Description`**
-
-Retrieves an authenticated session
-Usually used to check if authenticated session is alive.
+▸ **getSession**(`customHeaders?`): `ResponsePromise`<`StoreAuthRes`\>
 
 #### Parameters
 
@@ -99,8 +94,38 @@ Usually used to check if authenticated session is alive.
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreAuthRes`](../modules/internal-34.md#storeauthres)\>
+`ResponsePromise`<`StoreAuthRes`\>
+
+**`Description`**
+
+Retrieves an authenticated session
+Usually used to check if authenticated session is alive.
 
 #### Defined in
 
-[medusa-js/src/resources/auth.ts:36](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/auth.ts#L36)
+[auth.ts:38](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/auth.ts#L38)
+
+___
+
+### getToken
+
+▸ **getToken**(`payload`, `customHeaders?`): `ResponsePromise`<`StoreBearerAuthRes`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `payload` | `StorePostAuthReq` |
+| `customHeaders` | `Record`<`string`, `any`\> |
+
+#### Returns
+
+`ResponsePromise`<`StoreBearerAuthRes`\>
+
+**`Description`**
+
+Retrieves a new JWT access token
+
+#### Defined in
+
+[auth.ts:60](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/auth.ts#L60)

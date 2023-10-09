@@ -10,7 +10,7 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
+▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminCustomersRes`\>
 
 Creates a customer
 
@@ -18,22 +18,22 @@ Creates a customer
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`AdminPostCustomersReq`](internal-6.AdminPostCustomersReq.md) | information of customer |
+| `payload` | `AdminPostCustomersReq` | information of customer |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
+`ResponsePromise`<`AdminCustomersRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customers.ts:18](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L18)
+[admin/customers.ts:18](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/customers.ts#L18)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersListRes`](../modules/internal-5.md#admincustomerslistres)\>
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminCustomersListRes`\>
 
 Lists customers
 
@@ -41,22 +41,22 @@ Lists customers
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | [`AdminGetCustomersParams`](internal-5.AdminGetCustomersParams.md) | optional |
+| `query?` | `AdminGetCustomersParams` | optional |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersListRes`](../modules/internal-5.md#admincustomerslistres)\>
+`ResponsePromise`<`AdminCustomersListRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customers.ts:59](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L59)
+[admin/customers.ts:59](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/customers.ts#L59)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
+▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`AdminCustomersRes`\>
 
 Retrieves a customer
 
@@ -69,17 +69,17 @@ Retrieves a customer
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
+`ResponsePromise`<`AdminCustomersRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customers.ts:46](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L46)
+[admin/customers.ts:46](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/customers.ts#L46)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminCustomersRes`\>
 
 Updates a customer
 
@@ -88,13 +88,13 @@ Updates a customer
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | customer id |
-| `payload` | [`AdminPostCustomersCustomerReq`](internal-6.AdminPostCustomersCustomerReq.md) | data to update customer with |
+| `payload` | `AdminPostCustomersCustomerReq` | data to update customer with |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
+`ResponsePromise`<`AdminCustomersRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/customers.ts:32](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L32)
+[admin/customers.ts:32](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/customers.ts#L32)

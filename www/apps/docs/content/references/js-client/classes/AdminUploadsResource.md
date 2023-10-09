@@ -20,86 +20,118 @@
 
 #### Defined in
 
-[medusa-js/src/resources/admin/uploads.ts:14](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/uploads.ts#L14)
+[admin/uploads.ts:12](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/uploads.ts#L12)
 
 ## Methods
 
-### create
+### \_createPayload
 
-▸ **create**(`file`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUploadsRes`](../modules/internal-31.md#adminuploadsres)\>
+▸ `Private` **_createPayload**(`file`): `FormData`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `file` | [`IAdminPostUploadsFileReq`](internal-31.IAdminPostUploadsFileReq.md) |
+| `file` | `AdminCreateUploadPayload` |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUploadsRes`](../modules/internal-31.md#adminuploadsres)\>
+`FormData`
 
 #### Defined in
 
-[medusa-js/src/resources/admin/uploads.ts:18](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/uploads.ts#L18)
+[admin/uploads.ts:62](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/uploads.ts#L62)
+
+___
+
+### create
+
+▸ **create**(`file`): `ResponsePromise`<`AdminUploadsRes`\>
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `file` | `AdminCreateUploadPayload` | File or array of files to upload. |
+
+#### Returns
+
+`ResponsePromise`<`AdminUploadsRes`\>
+
+Uploaded file or files.
+
+**`Description`**
+
+Uploads at least one file to the specific fileservice that is installed in Medusa.
+
+#### Defined in
+
+[admin/uploads.ts:21](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/uploads.ts#L21)
 
 ___
 
 ### createProtected
 
-▸ **createProtected**(`file`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUploadsRes`](../modules/internal-31.md#adminuploadsres)\>
+▸ **createProtected**(`file`): `ResponsePromise`<`AdminUploadsRes`\>
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `file` | [`IAdminPostUploadsFileReq`](internal-31.IAdminPostUploadsFileReq.md) |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `file` | `AdminCreateUploadPayload` | File or array of files to upload. |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUploadsRes`](../modules/internal-31.md#adminuploadsres)\>
+`ResponsePromise`<`AdminUploadsRes`\>
+
+Uploaded file or files.
+
+**`Description`**
+
+Uploads at least one file with ACL or a non-public bucket to the specific fileservice that is installed in Medusa.
 
 #### Defined in
 
-[medusa-js/src/resources/admin/uploads.ts:27](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/uploads.ts#L27)
+[admin/uploads.ts:34](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/uploads.ts#L34)
 
 ___
 
 ### delete
 
-▸ **delete**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
+▸ **delete**(`payload`, `customHeaders?`): `ResponsePromise`<`DeleteResponse`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminDeleteUploadsReq`](internal-31.AdminDeleteUploadsReq.md) |
+| `payload` | `AdminDeleteUploadsReq` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
+`ResponsePromise`<`DeleteResponse`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/uploads.ts:36](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/uploads.ts#L36)
+[admin/uploads.ts:44](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/uploads.ts#L44)
 
 ___
 
 ### getPresignedDownloadUrl
 
-▸ **getPresignedDownloadUrl**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUploadsDownloadUrlRes`](../modules/internal-31.md#adminuploadsdownloadurlres)\>
+▸ **getPresignedDownloadUrl**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminUploadsDownloadUrlRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostUploadsDownloadUrlReq`](internal-31.AdminPostUploadsDownloadUrlReq.md) |
+| `payload` | `AdminPostUploadsDownloadUrlReq` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminUploadsDownloadUrlRes`](../modules/internal-31.md#adminuploadsdownloadurlres)\>
+`ResponsePromise`<`AdminUploadsDownloadUrlRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/uploads.ts:45](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/uploads.ts#L45)
+[admin/uploads.ts:53](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/uploads.ts#L53)

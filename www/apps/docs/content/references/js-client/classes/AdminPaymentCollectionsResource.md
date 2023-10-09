@@ -10,7 +10,7 @@
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionDeleteRes`](../modules/internal-15.md#adminpaymentcollectiondeleteres)\>
+▸ **delete**(`id`, `customHeaders?`): `ResponsePromise`<`AdminPaymentCollectionDeleteRes`\>
 
 #### Parameters
 
@@ -21,17 +21,17 @@
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionDeleteRes`](../modules/internal-15.md#adminpaymentcollectiondeleteres)\>
+`ResponsePromise`<`AdminPaymentCollectionDeleteRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payment-collections.ts:36](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payment-collections.ts#L36)
+[admin/payment-collections.ts:36](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/payment-collections.ts#L36)
 
 ___
 
 ### markAsAuthorized
 
-▸ **markAsAuthorized**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
+▸ **markAsAuthorized**(`id`, `customHeaders?`): `ResponsePromise`<`AdminPaymentCollectionsRes`\>
 
 #### Parameters
 
@@ -42,52 +42,52 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
+`ResponsePromise`<`AdminPaymentCollectionsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payment-collections.ts:44](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payment-collections.ts#L44)
+[admin/payment-collections.ts:44](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/payment-collections.ts#L44)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
+▸ **retrieve**(`id`, `query?`, `customHeaders?`): `ResponsePromise`<`AdminPaymentCollectionsRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `query?` | [`GetPaymentCollectionsParams`](internal-15.GetPaymentCollectionsParams.md) |
+| `query?` | `AdminGetPaymentCollectionsParams` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
+`ResponsePromise`<`AdminPaymentCollectionsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payment-collections.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payment-collections.ts#L12)
+[admin/payment-collections.ts:12](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/payment-collections.ts#L12)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminPaymentCollectionsRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminUpdatePaymentCollectionsReq`](internal-15.AdminUpdatePaymentCollectionsReq.md) |
+| `payload` | `AdminUpdatePaymentCollectionsReq` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminPaymentCollectionsRes`](../modules/internal-15.md#adminpaymentcollectionsres)\>
+`ResponsePromise`<`AdminPaymentCollectionsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/payment-collections.ts:27](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/payment-collections.ts#L27)
+[admin/payment-collections.ts:27](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/payment-collections.ts#L27)

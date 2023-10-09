@@ -10,11 +10,7 @@
 
 ### cancel
 
-▸ **cancel**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnsCancelRes`](../modules/internal-24.md#adminreturnscancelres)\>
-
-**`Description`**
-
-cancels a return
+▸ **cancel**(`id`, `customHeaders?`): `ResponsePromise`<`AdminReturnsCancelRes`\>
 
 #### Parameters
 
@@ -25,65 +21,69 @@ cancels a return
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnsCancelRes`](../modules/internal-24.md#adminreturnscancelres)\>
+`ResponsePromise`<`AdminReturnsCancelRes`\>
 
 the order for which the return was canceled
 
+**`Description`**
+
+cancels a return
+
 #### Defined in
 
-[medusa-js/src/resources/admin/returns.ts:19](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/returns.ts#L19)
+[admin/returns.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/returns.ts#L19)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnsListRes`](../modules/internal-24.md#adminreturnslistres)\>
-
-**`Description`**
-
-lists returns matching a query
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminReturnsListRes`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | [`AdminGetReturnsParams`](internal-24.AdminGetReturnsParams.md) | query for searching returns |
+| `query?` | `AdminGetReturnsParams` | query for searching returns |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnsListRes`](../modules/internal-24.md#adminreturnslistres)\>
+`ResponsePromise`<`AdminReturnsListRes`\>
 
 a list of returns matching the query
 
+**`Description`**
+
+lists returns matching a query
+
 #### Defined in
 
-[medusa-js/src/resources/admin/returns.ts:49](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/returns.ts#L49)
+[admin/returns.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/returns.ts#L49)
 
 ___
 
 ### receive
 
-▸ **receive**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnsRes`](../modules/internal-24.md#adminreturnsres)\>
-
-**`Description`**
-
-receive a return
+▸ **receive**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminReturnsRes`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the return to receive. |
-| `payload` | [`AdminPostReturnsReturnReceiveReq`](internal-24.AdminPostReturnsReturnReceiveReq.md) | items to receive and an optional refund amount |
+| `payload` | `AdminPostReturnsReturnReceiveReq` | items to receive and an optional refund amount |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminReturnsRes`](../modules/internal-24.md#adminreturnsres)\>
+`ResponsePromise`<`AdminReturnsRes`\>
 
 the return
 
+**`Description`**
+
+receive a return
+
 #### Defined in
 
-[medusa-js/src/resources/admin/returns.ts:34](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/returns.ts#L34)
+[admin/returns.ts:34](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/returns.ts#L34)

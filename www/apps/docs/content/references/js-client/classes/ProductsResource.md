@@ -14,42 +14,38 @@
 
 #### Defined in
 
-[medusa-js/src/resources/products.ts:14](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/products.ts#L14)
+[products.ts:14](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/products.ts#L14)
 
 ## Methods
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreProductsListRes`](../modules/internal-46.md#storeproductslistres)\>
-
-**`Description`**
-
-Retrieves a list of products
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`StoreProductsListRes`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | [`StoreGetProductsParams`](internal-46.StoreGetProductsParams.md) | is optional. Can contain a limit and offset for the returned list |
+| `query?` | `StoreGetProductsParams` | is optional. Can contain a limit and offset for the returned list |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreProductsListRes`](../modules/internal-46.md#storeproductslistres)\>
+`ResponsePromise`<`StoreProductsListRes`\>
+
+**`Description`**
+
+Retrieves a list of products
 
 #### Defined in
 
-[medusa-js/src/resources/products.ts:50](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/products.ts#L50)
+[products.ts:50](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/products.ts#L50)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreProductsRes`](../modules/internal-46.md#storeproductsres)\>
-
-**`Description`**
-
-Retrieves a single Product
+▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`StoreProductsRes`\>
 
 #### Parameters
 
@@ -60,33 +56,37 @@ Retrieves a single Product
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreProductsRes`](../modules/internal-46.md#storeproductsres)\>
+`ResponsePromise`<`StoreProductsRes`\>
+
+**`Description`**
+
+Retrieves a single Product
 
 #### Defined in
 
-[medusa-js/src/resources/products.ts:22](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/products.ts#L22)
+[products.ts:22](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/products.ts#L22)
 
 ___
 
 ### search
 
-▸ **search**(`searchOptions`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StorePostSearchRes`](../modules/internal-46.md#storepostsearchres)\>
-
-**`Description`**
-
-Searches for products
+▸ **search**(`searchOptions`, `customHeaders?`): `ResponsePromise`<`StorePostSearchRes`\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `searchOptions` | [`StorePostSearchReq`](internal-46.StorePostSearchReq.md) | is required |
+| `searchOptions` | `StorePostSearchReq` | is required |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StorePostSearchRes`](../modules/internal-46.md#storepostsearchres)\>
+`ResponsePromise`<`StorePostSearchRes`\>
+
+**`Description`**
+
+Searches for products
 
 #### Defined in
 
-[medusa-js/src/resources/products.ts:36](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/products.ts#L36)
+[products.ts:36](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/products.ts#L36)

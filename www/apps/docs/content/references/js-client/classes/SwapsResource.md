@@ -10,36 +10,32 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
-
-**`Description`**
-
-Creates a swap from a cart
+▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`StoreSwapsRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`StorePostSwapsReq`](internal-51.StorePostSwapsReq.md) |
+| `payload` | `StorePostSwapsReq` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
+`ResponsePromise`<`StoreSwapsRes`\>
+
+**`Description`**
+
+Creates a swap from a cart
 
 #### Defined in
 
-[medusa-js/src/resources/swaps.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/swaps.ts#L12)
+[swaps.ts:12](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/swaps.ts#L12)
 
 ___
 
 ### retrieveByCartId
 
-▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
-
-**`Description`**
-
-Retrieves a swap by cart id
+▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): `ResponsePromise`<`StoreSwapsRes`\>
 
 #### Parameters
 
@@ -50,8 +46,12 @@ Retrieves a swap by cart id
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
+`ResponsePromise`<`StoreSwapsRes`\>
+
+**`Description`**
+
+Retrieves a swap by cart id
 
 #### Defined in
 
-[medusa-js/src/resources/swaps.ts:23](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/swaps.ts#L23)
+[swaps.ts:23](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/swaps.ts#L23)

@@ -10,11 +10,7 @@
 
 ### list
 
-▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreRegionsListRes`](../modules/internal-47.md#storeregionslistres)\>
-
-**`Description`**
-
-Retrieves a list of regions
+▸ **list**(`customHeaders?`): `ResponsePromise`<`StoreRegionsListRes`\>
 
 #### Parameters
 
@@ -24,21 +20,21 @@ Retrieves a list of regions
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreRegionsListRes`](../modules/internal-47.md#storeregionslistres)\>
+`ResponsePromise`<`StoreRegionsListRes`\>
+
+**`Description`**
+
+Retrieves a list of regions
 
 #### Defined in
 
-[medusa-js/src/resources/regions.ts:11](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/regions.ts#L11)
+[regions.ts:11](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/regions.ts#L11)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreRegionsRes`](../modules/internal-47.md#storeregionsres)\>
-
-**`Description`**
-
-Retrieves a region
+▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`StoreRegionsRes`\>
 
 #### Parameters
 
@@ -49,8 +45,12 @@ Retrieves a region
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreRegionsRes`](../modules/internal-47.md#storeregionsres)\>
+`ResponsePromise`<`StoreRegionsRes`\>
+
+**`Description`**
+
+Retrieves a region
 
 #### Defined in
 
-[medusa-js/src/resources/regions.ts:22](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/regions.ts#L22)
+[regions.ts:22](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/regions.ts#L22)

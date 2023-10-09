@@ -10,28 +10,28 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotesRes`](../modules/internal-11.md#adminnotesres)\>
+▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminNotesRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostNotesReq`](internal-11.AdminPostNotesReq.md) |
+| `payload` | `AdminPostNotesReq` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotesRes`](../modules/internal-11.md#adminnotesres)\>
+`ResponsePromise`<`AdminNotesRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/notes.ts:14](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/notes.ts#L14)
+[admin/notes.ts:14](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/notes.ts#L14)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
+▸ **delete**(`id`, `customHeaders?`): `ResponsePromise`<`DeleteResponse`\>
 
 #### Parameters
 
@@ -42,38 +42,38 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
+`ResponsePromise`<`DeleteResponse`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/notes.ts:31](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/notes.ts#L31)
+[admin/notes.ts:31](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/notes.ts#L31)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotesListRes`](../modules/internal-11.md#adminnoteslistres)\>
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminNotesListRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetNotesParams`](internal-11.AdminGetNotesParams.md) |
+| `query?` | `AdminGetNotesParams` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotesListRes`](../modules/internal-11.md#adminnoteslistres)\>
+`ResponsePromise`<`AdminNotesListRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/notes.ts:47](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/notes.ts#L47)
+[admin/notes.ts:47](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/notes.ts#L47)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotesRes`](../modules/internal-11.md#adminnotesres)\>
+▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`AdminNotesRes`\>
 
 #### Parameters
 
@@ -84,30 +84,30 @@ ___
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotesRes`](../modules/internal-11.md#adminnotesres)\>
+`ResponsePromise`<`AdminNotesRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/notes.ts:39](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/notes.ts#L39)
+[admin/notes.ts:39](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/notes.ts#L39)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotesRes`](../modules/internal-11.md#adminnotesres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminNotesRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostNotesNoteReq`](internal-11.AdminPostNotesNoteReq.md) |
+| `payload` | `AdminPostNotesNoteReq` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotesRes`](../modules/internal-11.md#adminnotesres)\>
+`ResponsePromise`<`AdminNotesRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/notes.ts:22](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/notes.ts#L22)
+[admin/notes.ts:22](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/notes.ts#L22)

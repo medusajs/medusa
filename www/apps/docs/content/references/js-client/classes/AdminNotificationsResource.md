@@ -10,41 +10,41 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsListRes`](../modules/internal-12.md#adminnotificationslistres)\>
+▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminNotificationsListRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetNotificationsParams`](internal-12.AdminGetNotificationsParams.md) |
+| `query?` | `AdminGetNotificationsParams` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsListRes`](../modules/internal-12.md#adminnotificationslistres)\>
+`ResponsePromise`<`AdminNotificationsListRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/notifications.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/notifications.ts#L12)
+[admin/notifications.ts:12](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/notifications.ts#L12)
 
 ___
 
 ### resend
 
-▸ **resend**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsRes`](../modules/internal-12.md#adminnotificationsres)\>
+▸ **resend**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminNotificationsRes`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostNotificationsNotificationResendReq`](internal-12.AdminPostNotificationsNotificationResendReq.md) |
+| `payload` | `AdminPostNotificationsNotificationResendReq` |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminNotificationsRes`](../modules/internal-12.md#adminnotificationsres)\>
+`ResponsePromise`<`AdminNotificationsRes`\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/notifications.ts:26](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/notifications.ts#L26)
+[admin/notifications.ts:26](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/notifications.ts#L26)
