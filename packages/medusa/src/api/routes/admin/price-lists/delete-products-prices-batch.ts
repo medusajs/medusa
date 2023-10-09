@@ -7,13 +7,13 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /admin/price-lists/{id}/products/prices/batch
  * operationId: "DeletePriceListsPriceListProductsPricesBatch"
- * summary: "Delete several Product's Prices"
- * description: "Delete all the prices associated with the product IDs in a price list."
+ * summary: "Delete Product Prices"
+ * description: "Delete all the prices associated with multiple products in a price list."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List
  * x-codegen:
- *   method: deleteProductPrices
+ *   method: deleteProductsPrices
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -21,9 +21,10 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.deleteProductPrices(priceListId, {
+ *       medusa.admin.priceLists.deleteProductsPrices(priceListId, {
  *         product_ids: [
- *           product_id
+ *           productId1,
+ *           productId2,
  *         ]
  *       })
  *       .then(({ ids, object, deleted }) => {
@@ -33,7 +34,7 @@ import { validator } from "../../../../utils/validator"
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/price-lists/{id}/products/prices/batch' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
@@ -44,6 +45,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:
@@ -98,7 +100,7 @@ export default async (req: Request, res: Response) => {
  * type: object
  * properties:
  *   product_ids:
- *     description: The product IDs of the products to delete the associated prices.
+ *     description: The IDs of the products to delete their associated prices.
  *     type: array
  *     items:
  *       type: string
