@@ -1,5 +1,13 @@
 # @medusajs/types
 
+## 1.11.3
+
+### Patch Changes
+
+- [#5242](https://github.com/medusajs/medusa/pull/5242) [`130cbc1f4`](https://github.com/medusajs/medusa/commit/130cbc1f437af211b6d05f80128d90138abcd38d) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Modules exporting schema with entities and fields
+
+- [#5237](https://github.com/medusajs/medusa/pull/5237) [`c5703a476`](https://github.com/medusajs/medusa/commit/c5703a4765a55da697885438cf3089d923669f21) Thanks [@riqwan](https://github.com/riqwan)! - feat(pricing,types): addPrice and removePricremoveRules APIs
+
 ## 1.11.2
 
 ### Patch Changes
