@@ -2,19 +2,19 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-# Class: ProductOption
+# Class: ProductVariantMoneyAmount
 
 ## Hierarchy
 
 - `SoftDeletableEntity`
 
-  ↳ **`ProductOption`**
+  ↳ **`ProductVariantMoneyAmount`**
 
 ## Constructors
 
 ### constructor
 
-• **new ProductOption**()
+• **new ProductVariantMoneyAmount**()
 
 #### Inherited from
 
@@ -64,43 +64,13 @@ SoftDeletableEntity.id
 
 ___
 
-### metadata
+### money\_amount\_id
 
-• **metadata**: `Record`<`string`, `unknown`\>
-
-#### Defined in
-
-[models/product-option.ts:34](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L34)
-
-___
-
-### product
-
-• **product**: [`Product`](Product.md)
+• **money\_amount\_id**: `string`
 
 #### Defined in
 
-[models/product-option.ts:31](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L31)
-
-___
-
-### product\_id
-
-• **product\_id**: `string`
-
-#### Defined in
-
-[models/product-option.ts:27](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L27)
-
-___
-
-### title
-
-• **title**: `string`
-
-#### Defined in
-
-[models/product-option.ts:19](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L19)
+[models/product-variant-money-amount.ts:11](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-variant-money-amount.ts#L11)
 
 ___
 
@@ -118,13 +88,13 @@ SoftDeletableEntity.updated\_at
 
 ___
 
-### values
+### variant\_id
 
-• **values**: [`ProductOptionValue`](ProductOptionValue.md)[]
+• **variant\_id**: `string`
 
 #### Defined in
 
-[models/product-option.ts:24](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L24)
+[models/product-variant-money-amount.ts:15](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-variant-money-amount.ts#L15)
 
 ## Methods
 
@@ -138,4 +108,4 @@ ___
 
 #### Defined in
 
-[models/product-option.ts:37](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L37)
+[models/product-variant-money-amount.ts:18](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-variant-money-amount.ts#L18)

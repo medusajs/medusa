@@ -2,19 +2,19 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-# Class: ProductOption
+# Class: SalesChannelLocation
 
 ## Hierarchy
 
 - `SoftDeletableEntity`
 
-  ↳ **`ProductOption`**
+  ↳ **`SalesChannelLocation`**
 
 ## Constructors
 
 ### constructor
 
-• **new ProductOption**()
+• **new SalesChannelLocation**()
 
 #### Inherited from
 
@@ -64,43 +64,33 @@ SoftDeletableEntity.id
 
 ___
 
-### metadata
+### location\_id
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **location\_id**: `string`
 
 #### Defined in
 
-[models/product-option.ts:34](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L34)
+[models/sales-channel-location.ts:16](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/sales-channel-location.ts#L16)
 
 ___
 
-### product
+### sales\_channel
 
-• **product**: [`Product`](Product.md)
+• **sales\_channel**: [`SalesChannel`](SalesChannel.md)
 
 #### Defined in
 
-[models/product-option.ts:31](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L31)
+[models/sales-channel-location.ts:20](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/sales-channel-location.ts#L20)
 
 ___
 
-### product\_id
+### sales\_channel\_id
 
-• **product\_id**: `string`
-
-#### Defined in
-
-[models/product-option.ts:27](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L27)
-
-___
-
-### title
-
-• **title**: `string`
+• **sales\_channel\_id**: `string`
 
 #### Defined in
 
-[models/product-option.ts:19](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L19)
+[models/sales-channel-location.ts:12](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/sales-channel-location.ts#L12)
 
 ___
 
@@ -116,16 +106,6 @@ SoftDeletableEntity.updated\_at
 
 [interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
-___
-
-### values
-
-• **values**: [`ProductOptionValue`](ProductOptionValue.md)[]
-
-#### Defined in
-
-[models/product-option.ts:24](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L24)
-
 ## Methods
 
 ### beforeInsert
@@ -138,4 +118,4 @@ ___
 
 #### Defined in
 
-[models/product-option.ts:37](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-option.ts#L37)
+[models/sales-channel-location.ts:23](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/sales-channel-location.ts#L23)

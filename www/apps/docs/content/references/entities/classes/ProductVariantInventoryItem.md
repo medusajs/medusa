@@ -2,35 +2,25 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-# Class: Invite
+# Class: ProductVariantInventoryItem
 
 ## Hierarchy
 
 - `SoftDeletableEntity`
 
-  ↳ **`Invite`**
+  ↳ **`ProductVariantInventoryItem`**
 
 ## Constructors
 
 ### constructor
 
-• **new Invite**()
+• **new ProductVariantInventoryItem**()
 
 #### Inherited from
 
 SoftDeletableEntity.constructor
 
 ## Properties
-
-### accepted
-
-• **accepted**: `boolean`
-
-#### Defined in
-
-[models/invite.ts:23](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/invite.ts#L23)
-
-___
 
 ### created\_at
 
@@ -60,16 +50,6 @@ SoftDeletableEntity.deleted\_at
 
 ___
 
-### expires\_at
-
-• **expires\_at**: `Date`
-
-#### Defined in
-
-[models/invite.ts:29](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/invite.ts#L29)
-
-___
-
 ### id
 
 • **id**: `string`
@@ -84,33 +64,23 @@ SoftDeletableEntity.id
 
 ___
 
-### metadata
+### inventory\_item\_id
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **inventory\_item\_id**: `string`
 
 #### Defined in
 
-[models/invite.ts:32](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/invite.ts#L32)
+[models/product-variant-inventory-item.ts:17](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-variant-inventory-item.ts#L17)
 
 ___
 
-### role
+### required\_quantity
 
-• **role**: [`UserRoles`](../enums/UserRoles.md)
-
-#### Defined in
-
-[models/invite.ts:20](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/invite.ts#L20)
-
-___
-
-### token
-
-• **token**: `string`
+• **required\_quantity**: `number`
 
 #### Defined in
 
-[models/invite.ts:26](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/invite.ts#L26)
+[models/product-variant-inventory-item.ts:28](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-variant-inventory-item.ts#L28)
 
 ___
 
@@ -128,13 +98,23 @@ SoftDeletableEntity.updated\_at
 
 ___
 
-### user\_email
+### variant
 
-• **user\_email**: `string`
+• **variant**: [`ProductVariant`](ProductVariant.md)
 
 #### Defined in
 
-[models/invite.ts:12](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/invite.ts#L12)
+[models/product-variant-inventory-item.ts:25](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-variant-inventory-item.ts#L25)
+
+___
+
+### variant\_id
+
+• **variant\_id**: `string`
+
+#### Defined in
+
+[models/product-variant-inventory-item.ts:21](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-variant-inventory-item.ts#L21)
 
 ## Methods
 
@@ -148,4 +128,4 @@ ___
 
 #### Defined in
 
-[models/invite.ts:35](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/invite.ts#L35)
+[models/product-variant-inventory-item.ts:31](https://github.com/medusajs/medusa/blob/33df8122b/packages/medusa/src/models/product-variant-inventory-item.ts#L31)
