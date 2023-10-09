@@ -23,6 +23,9 @@ import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
 
+const LinkModulePackage = "@medusajs/link-modules"
+
+export type RunMigrationFn = () => Promise<void>
 export type MedusaModuleConfig = {
   [key: string | Modules]:
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
@@ -102,12 +105,26 @@ async function loadModules(modulesConfig, injectedDependencies) {
 async function initializeLinks(linkModules, injectedDependencies) {
   try {
     const { initialize: initializeLinks } = await import(
-      "@medusajs/link-modules" as string
+      LinkModulePackage as string
     )
     await initializeLinks({}, linkModules, injectedDependencies)
     return new RemoteLink()
   } catch (err) {
     console.warn("Error initializing link modules.", err)
+    return undefined
+  }
+}
+
+async function getMigrationsFromModule(
+  module: string
+): Promise<RunMigrationFn | undefined> {
+  try {
+    const { runMigrations } = await import(module)
+
+    return runMigrations
+  } catch (err) {
+    console.warn(`Error importing runMigrations from module - ${module}`, err)
+
     return undefined
   }
 }
@@ -133,6 +150,8 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
     MedusaModule.setJoinerConfig(config.serviceName, config)
   }
 }
+
+type MyAsyncFunctionType = () => Promise<void>
 
 export async function MedusaApp(
   {
@@ -166,7 +185,9 @@ export async function MedusaApp(
   ) => Promise<any>
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
+  runMigrations: () => Promise<void>
 }> {
+  const moduleMigrationScripts: RunMigrationFn[] = []
   const modules: MedusaModuleConfig =
     modulesConfig ??
     (
@@ -200,6 +221,22 @@ export async function MedusaApp(
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
 
+  for (const module of Object.keys(modules)) {
+    const moduleMigrationScript = await getMigrationsFromModule(module)
+
+    if (moduleMigrationScript) {
+      moduleMigrationScripts.push(moduleMigrationScript)
+    }
+  }
+
+  const linkModuleMigrationScript = await getMigrationsFromModule(
+    LinkModulePackage
+  )
+
+  if (linkModuleMigrationScript) {
+    moduleMigrationScripts.push(linkModuleMigrationScript)
+  }
+
   const remoteQuery = new RemoteQuery({
     servicesConfig,
     customRemoteFetchData: remoteFetchData,
@@ -211,11 +248,18 @@ export async function MedusaApp(
     return await remoteQuery.query(query, variables)
   }
 
+  const runMigrations = async (): Promise<void> => {
+    for (const moduleMigrationScript of moduleMigrationScripts) {
+      await moduleMigrationScript()
+    }
+  }
+
   return {
     modules: allModules,
     link,
     query,
     entitiesMap: schema.getTypeMap(),
     notFound,
+    runMigrations,
   }
 }
