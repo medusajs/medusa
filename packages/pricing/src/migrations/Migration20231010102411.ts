@@ -1,9 +1,9 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20231009090247 extends Migration {
+export class Migration20231010102411 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'alter table "currency" add column "includes_tax" boolean null;'
+      'alter table "currency" add column "includes_tax" boolean not null default false;'
     )
 
     this.addSql(

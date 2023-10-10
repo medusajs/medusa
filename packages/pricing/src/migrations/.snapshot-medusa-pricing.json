@@ -48,7 +48,8 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
+          "default": "false",
           "mappedType": "boolean"
         }
       },
