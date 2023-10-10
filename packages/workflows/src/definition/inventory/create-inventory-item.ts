@@ -15,11 +15,7 @@ export enum CreateInventoryItemActions {
 
 const workflowSteps: TransactionStepsDefinition = {
   next: {
-    action: CreateInventoryItemActions.prepare,
-    noCompensation: true,
-    next: {
-      action: CreateInventoryItemActions.createInventoryItems,
-    },
+    action: CreateInventoryItemActions.createInventoryItems,
   },
 }
 
@@ -29,6 +25,7 @@ const handlers = new Map([
     {
       invoke: pipe(
         {
+          inputAlias: CreateInventoryItemActions.prepare,
           merge: true,
           invoke: {
             from: CreateInventoryItemActions.prepare,
