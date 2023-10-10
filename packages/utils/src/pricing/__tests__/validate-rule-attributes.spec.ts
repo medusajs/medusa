@@ -22,7 +22,7 @@ describe("validateRuleAttributes", function () {
     }
 
     expect(error.message).toEqual(
-      "Can't create rule_attribute with reserved keywords - quantity, currency_code, price_list_id"
+      "Can't create rule_attribute with reserved keywords [quantity, currency_code, price_list_id] - quantity, currency_code, price_list_id"
     )
   })
 })
