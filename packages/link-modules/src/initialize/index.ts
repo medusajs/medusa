@@ -171,9 +171,7 @@ export async function runMigrations(
         )
     )
 
-    if (modulesLoadedKeys.includes(serviceKey)) {
-      continue
-    } else if (allLinks.has(serviceKey)) {
+    if (allLinks.has(serviceKey)) {
       throw new Error(`Link module ${serviceKey} already exists.`)
     }
 
