@@ -52,12 +52,6 @@
     "ts-jest": "^26.5.6",
     "ts-node": "^10.9.1",
     "turbo": "^1.6.3",
-    "typedoc": "0.23.10",
-    "typedoc-frontmatter-plugin": "link:docs-util/typedoc-plugins/typedoc-frontmatter-plugin",
-    "typedoc-monorepo-link-types": "^0.0.2",
-    "typedoc-plugin-markdown": "^3.13.4",
-    "typedoc-plugin-merge-modules": "^4.0.1",
-    "typedoc-plugin-reference-excluder": "^1.0.0",
     "typeorm": "^0.3.16"
   },
   "lint-staged": {
@@ -78,24 +72,17 @@
     "test:integration:repositories": "turbo run test:integration --no-daemon --filter=integration-tests-repositories",
     "openapi:generate": "yarn ./packages/oas/oas-github-ci run ci",
     "medusa-oas": "yarn ./packages/oas/medusa-oas-cli run medusa-oas",
-    "generate:services": "typedoc --options typedoc.services.js",
-    "generate:js-client": "typedoc --options typedoc.js-client.js",
-    "generate:entities": "typedoc --options typedoc.entities.js",
     "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
-    "generate:announcement": "node ./scripts/doc-change-release.js",
     "develop": "ts-node --transpile-only ./integration-tests/development/server.js",
     "develop:create:db": "ts-node --transpile-only ./integration-tests/development/create-database.js",
     "release:next": "changeset publish --no-git-tags --snapshot --tag next",
     "version:next": "changeset version --snapshot next",
     "release": "changeset publish",
-    "version": "changeset version && yarn install --no-immutable",
-    "check:freshness": "node ./scripts/freshness-check.js"
+    "version": "changeset version && yarn install --no-immutable"
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.0",
-    "@linear/sdk": "^1.22.0",
-    "@octokit/core": "^4.0.5",
     "global": "^4.4.0",
     "import-from": "^3.0.0"
   },
