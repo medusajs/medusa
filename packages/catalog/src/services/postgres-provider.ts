@@ -1,4 +1,8 @@
-import { CatalogModuleOptions, StorageProvider } from "../types"
+import {
+  CatalogModuleOptions,
+  SchemaObjectRepresentation,
+  StorageProvider,
+} from "../types"
 import {
   DAL,
   IEventBusModuleService,
@@ -11,7 +15,7 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   eventBusModuleService: IEventBusModuleService
   storageProviderCtr: StorageProvider
-  storageProviderOptions: any
+  storageProviderOptions: unknown
   remoteQuery: (
     query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
@@ -20,7 +24,7 @@ type InjectedDependencies = {
 
 export class PostgresProvider {
   protected container_: InjectedDependencies
-  protected readonly schemaConfigurationObject_: any
+  protected readonly schemaObjectRepresentation_: SchemaObjectRepresentation
   protected readonly moduleOptions_: CatalogModuleOptions
 
   protected get remoteQuery_(): (
@@ -32,23 +36,33 @@ export class PostgresProvider {
 
   constructor(
     container,
-    options: { schemaConfigurationObject: any },
+    options: { schemaConfigurationObject: SchemaObjectRepresentation },
     moduleOptions: CatalogModuleOptions
   ) {
     this.container_ = container
     this.moduleOptions_ = moduleOptions
-    this.schemaConfigurationObject_ = options.schemaConfigurationObject
+    this.schemaObjectRepresentation_ = options.schemaConfigurationObject
   }
 
-  consumeEvent(configurationObject: any): Subscriber {
-    return async (data: any, eventName: string) => {
+  consumeEvent(configurationObject: SchemaObjectRepresentation[0]): Subscriber {
+    return async (data: unknown, eventName: string) => {\
+
+      const data_ = data as Record<string, unknown>
+      let ids: string[] = []
+
+      if ("id" in data_) {
+        ids = [data_.id as string]
+      } else if ("ids" in data_) {
+        ids = data_.ids as string[]
+      }
+
       const { fields, alias } = configurationObject
       const entityData = await this.remoteQuery_(
         remoteQueryObjectFromString({
           entryPoint: alias,
           variables: {
             filters: {
-              id: data.id,
+              id: ids,
             },
           },
           fields,

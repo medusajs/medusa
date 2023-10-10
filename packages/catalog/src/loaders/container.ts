@@ -14,6 +14,12 @@ export default async ({
     catalogModuleService: asClass(CatalogModuleService).singleton(),
   })
 
+  if (!options?.customAdapter && !options?.defaultAdapterOptions) {
+    throw new Error(
+      "Catalog module error, either customAdapter or defaultAdapterOptions must be provided. None have been provided."
+    )
+  }
+
   if (!options?.customAdapter) {
     container.register("storageProviderCtr", asValue(PostgresProvider))
     container.register(

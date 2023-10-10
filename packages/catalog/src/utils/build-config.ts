@@ -438,7 +438,7 @@ function processEntity(
  *
  * @param schema
  */
-export function buildFullConfigurationFromSchema(schema) {
+export function buildSchemaObjectRepresentation(schema) {
   const moduleJoinerConfigs = MedusaModule.getAllJoinerConfigs()
   const augmentedSchema = CustomDirectives.Listeners.definition + schema
   const executableSchema = makeSchemaExecutable(augmentedSchema)

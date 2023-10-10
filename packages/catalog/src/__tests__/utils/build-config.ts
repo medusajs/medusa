@@ -2,7 +2,7 @@ import { joinerConfig } from "../__fixtures__/joiner-config"
 import { MedusaApp } from "@medusajs/modules-sdk"
 import modulesConfig from "../__fixtures__/modules-config"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
-import { buildFullConfigurationFromSchema } from "../../utils/build-config"
+import { buildSchemaObjectRepresentation } from "../../utils/build-config"
 
 function removePropRecursively(obj, propToRemove) {
   for (const prop in obj) {
@@ -35,7 +35,7 @@ const config = {
   `,
 }
 
-describe("buildFullConfigurationFromSchema", function () {
+describe("buildSchemaObjectRepresentation", function () {
   beforeAll(async function () {
     const pgConnection = ModulesSdkUtils.createPgConnection({
       clientUrl: "postgres://postgres:postgres@localhost:5432/medusa-catalog",
@@ -54,7 +54,7 @@ describe("buildFullConfigurationFromSchema", function () {
   })
 
   it("should build the full tree config from a graphql schema", function () {
-    const fullConfiguration = buildFullConfigurationFromSchema(config.schema)
+    const fullConfiguration = buildSchemaObjectRepresentation(config.schema)
 
     removePropRecursively(fullConfiguration, "moduleConfig")
 
