@@ -5,7 +5,6 @@ import {
   MedusaContext,
   ModulesSdkUtils,
   retrieveEntity,
-  validateRuleAttributes,
 } from "@medusajs/utils"
 import { RuleType } from "@models"
 
@@ -71,8 +70,6 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     data: PricingTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    validateRuleAttributes(data.map((d) => d.rule_attribute))
-
     return (await this.ruleTypeRepository_.create(
       data,
       sharedContext
@@ -84,8 +81,6 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     data: PricingTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    validateRuleAttributes(data.map((d) => d.rule_attribute))
-
     return (await this.ruleTypeRepository_.update(
       data,
       sharedContext
