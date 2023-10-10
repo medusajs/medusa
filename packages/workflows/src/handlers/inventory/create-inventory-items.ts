@@ -8,7 +8,6 @@ type Result = {
 
 export async function createInventoryItems({
   container,
-  context,
   data,
 }: WorkflowArguments<{
   inventoryItems: (InventoryItemDTO & { _associationTag?: string })[]

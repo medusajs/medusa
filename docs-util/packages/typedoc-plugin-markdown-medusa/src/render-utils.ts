@@ -34,6 +34,7 @@ import typeParameterListHelper from "./resources/helpers/type-parameter-list"
 import typeParameterHelper from "./resources/helpers/type-parameter"
 import parameterListHelper from "./resources/helpers/parameter-list"
 import parameterHelper from "./resources/helpers/parameter"
+import debugHelper from "./resources/helpers/debug"
 import { MarkdownTheme } from "./theme"
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
@@ -96,4 +97,5 @@ export function registerHelpers(theme: MarkdownTheme) {
   typeParameterHelper(theme)
   parameterListHelper()
   parameterHelper(theme)
+  debugHelper()
 }

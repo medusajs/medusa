@@ -28,9 +28,9 @@ export default function reflectionFomatter(
     const itemChildren: string[] = []
     comments.summary.forEach((commentSummary) => {
       if ("target" in commentSummary) {
-        const reflection = commentSummary.target as DeclarationReflection
-        if (reflection.children && level + 1 < MAX_LEVEL) {
-          reflection.children.forEach((childItem) => {
+        const targetReflection = commentSummary.target as DeclarationReflection
+        if (targetReflection.children && level + 1 <= MAX_LEVEL) {
+          targetReflection.children.forEach((childItem) => {
             itemChildren.push(reflectionFomatter(childItem, level + 1))
           })
         }
@@ -39,9 +39,11 @@ export default function reflectionFomatter(
     if (itemChildren.length) {
       // TODO maybe we should check the type of the reflection and replace
       // `properties` with the text that makes sense for the type.
-      item += ` It accepts the following properties:\n${itemChildren.join(
-        "\n"
-      )}`
+      item += ` ${
+        reflection.type?.type === "array"
+          ? "Its items accept the following properties"
+          : "It accepts the following properties"
+      }:\n${itemChildren.join("\n")}`
     }
   }
 

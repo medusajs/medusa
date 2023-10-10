@@ -4,17 +4,12 @@ import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import {
   createInventoryItems,
   CreateInventoryItemActions,
-  Handlers,
   pipe,
 } from "@medusajs/workflows"
-import {
-  IInventoryService,
-  IProductModuleService,
-  WorkflowTypes,
-} from "@medusajs/types"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-describe("CreateProduct workflow", function () {
+describe("CreateInventoryItem workflow", function () {
   let medusaProcess
   let medusaContainer
 
