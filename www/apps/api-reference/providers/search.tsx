@@ -1,6 +1,11 @@
 "use client"
 
-import { usePageLoading, SearchProvider as UiSearchProvider } from "docs-ui"
+import {
+  usePageLoading,
+  SearchProvider as UiSearchProvider,
+  AiAssistantCommandIcon,
+  AiAssistantProvider,
+} from "docs-ui"
 import getBaseUrl from "../utils/get-base-url"
 
 type SearchProviderProps = {
@@ -66,6 +71,27 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
       }}
+      commands={[
+        {
+          name: "ai-assistant",
+          icon: <AiAssistantCommandIcon />,
+          component: (
+            <AiAssistantProvider
+              apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
+              websiteId={process.env.NEXT_PUBLIC_AI_WEBSITE_ID || "temp"}
+              recaptchaSiteKey={
+                process.env.NEXT_PUBLIC_AI_API_ASSISTANT_RECAPTCHA_SITE_KEY ||
+                "temp"
+              }
+            />
+          ),
+          title: "AI Assistant",
+          badge: {
+            variant: "purple",
+            children: "Beta",
+          },
+        },
+      ]}
     >
       {children}
     </UiSearchProvider>

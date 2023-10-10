@@ -1,11 +1,14 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Collection,
   Entity,
+  ManyToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import PriceSet from "./price-set"
 
 type OptionalFields = "default_priority"
 
@@ -24,6 +27,9 @@ class RuleType {
 
   @Property({ columnType: "integer", default: 0 })
   default_priority: number
+
+  @ManyToMany(() => PriceSet, priceSet => priceSet.rule_types)
+  price_sets = new Collection<PriceSet>(this);
 
   @BeforeCreate()
   onCreate() {

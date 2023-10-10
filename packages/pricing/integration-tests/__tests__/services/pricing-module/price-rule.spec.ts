@@ -1,21 +1,21 @@
 import { CreatePriceRuleDTO, IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PriceSet } from "@models"
 
 import { PriceSetMoneyAmount, initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
-import { createPriceSets } from "../../../__fixtures__/price-set"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
-import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
+import { createPriceSets } from "../../../__fixtures__/price-set"
+import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
+import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
+import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
 describe("PricingModule Service - PriceRule", () => {
   let service: IPricingModuleService
   let testManager: SqlEntityManager
- 
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
@@ -29,9 +29,11 @@ describe("PricingModule Service - PriceRule", () => {
     })
 
     await createCurrencies(testManager)
-
-    await createRuleTypes(testManager)
+    await createMoneyAmounts(testManager)
     await createPriceSets(testManager)
+    await createRuleTypes(testManager)
+    await createPriceSetMoneyAmounts(testManager)
+    await createPriceSetMoneyAmountRules(testManager)
     await createPriceRules(testManager)
   })
 
@@ -288,11 +290,14 @@ describe("PricingModule Service - PriceRule", () => {
           },
         ])
 
-        const psma: PriceSetMoneyAmount = testManager.create(PriceSetMoneyAmount, {
-          price_set: testManager.getReference(PriceSet, "price-set-1"),
-          money_amount: ma.id,
-          title: "test",
-        })
+        const psma: PriceSetMoneyAmount = testManager.create(
+          PriceSetMoneyAmount,
+          {
+            price_set: "price-set-1",
+            money_amount: ma.id,
+            title: "test",
+          }
+        )
 
         await testManager.persist(psma).flush()
 

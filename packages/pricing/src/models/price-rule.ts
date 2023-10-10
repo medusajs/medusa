@@ -1,21 +1,16 @@
 import {
   BeforeCreate,
-  Collection,
   Entity,
-  ManyToMany,
   ManyToOne,
-  OneToMany,
-  OneToOne,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
-import MoneyAmount from "./money-amount"
+import { generateEntityId } from "@medusajs/utils"
 import PriceSet from "./price-set"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
-import { generateEntityId } from "@medusajs/utils"
 
 type OptionalFields = "id" | "is_dynamic" | "priority"
 type OptionalRelations = "price_set" | "rule_type" | "price_set_money_amount"
@@ -31,6 +26,8 @@ export default class PriceRule {
     entity: () => PriceSet,
     fieldName: "price_set_id",
     name: "price_rule_price_set_id_unique",
+    onDelete: "cascade",
+    index: "IDX_price_rule_price_set_id",
   })
   price_set: PriceSet
 
@@ -38,6 +35,7 @@ export default class PriceRule {
     entity: () => RuleType,
     fieldName: "rule_type_id",
     name: "price_rule_rule_type_id_unique",
+    index: "IDX_price_rule_rule_type_id",
   })
   rule_type: RuleType
 
@@ -51,9 +49,11 @@ export default class PriceRule {
   priority: number
 
   @ManyToOne({
+    onDelete: "cascade",
     entity: () => PriceSetMoneyAmount,
     fieldName: "price_set_money_amount_id",
     name: "price_set_money_amount_id_unique",
+    index: "IDX_price_rule_price_set_money_amount_id",
   })
   price_set_money_amount: PriceSetMoneyAmount
 
@@ -64,6 +64,6 @@ export default class PriceRule {
 
   @BeforeCreate()
   beforeCreate() {
-    this.id = generateEntityId(this.id, "pset")
+    this.id = generateEntityId(this.id, "prule")
   }
 }

@@ -44,7 +44,7 @@ import { IStockLocationService } from "@medusajs/types"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/stock-locations' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "App"
@@ -52,6 +52,7 @@ import { IStockLocationService } from "@medusajs/types"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Stock Locations
  * responses:

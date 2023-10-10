@@ -72,7 +72,7 @@ export const CodeTabs = ({
       <span
         className={clsx(
           "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border xs:bg-medusa-code-bg-base",
-          "xs:transition-all xs:duration-200 xs:ease-ease xs:top-[13px] xs:z-[1] xs:rounded-full"
+          "xs:transition-all xs:duration-200 xs:ease-ease xs:top-[13px] xs:rounded-full"
         )}
         ref={codeTabSelectorRef}
       ></span>
@@ -87,7 +87,7 @@ export const CodeTabs = ({
           <li key={index}>
             <button
               className={clsx(
-                "text-compact-small-plus xs:border-0 py-docs_0.25 px-docs_0.75 relative z-[2] rounded-full border",
+                "text-compact-small-plus xs:border-0 py-docs_0.25 px-docs_0.75 relative rounded-full border",
                 (!selectedTab || selectedTab.value !== tab.value) && [
                   "text-medusa-code-text-subtle border-transparent",
                   "hover:bg-medusa-code-bg-base",

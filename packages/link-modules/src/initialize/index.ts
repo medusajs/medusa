@@ -19,7 +19,7 @@ import {
 import * as linkDefinitions from "../definitions"
 import { getMigration } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
-import { composeLinkName } from "../utils"
+import { composeLinkName, generateGraphQLSchema } from "../utils"
 import { getLinkModuleDefinition } from "./module-definition"
 
 export const initialize = async (
@@ -97,6 +97,8 @@ export const initialize = async (
     ) {
       continue
     }
+
+    definition.schema = generateGraphQLSchema(definition, primary, foreign)
 
     const moduleDefinition = getLinkModuleDefinition(
       definition,

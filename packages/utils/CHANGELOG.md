@@ -1,5 +1,29 @@
 # @medusajs/utils
 
+## 1.10.3
+
+### Patch Changes
+
+- [#5216](https://github.com/medusajs/medusa/pull/5216) [`eeceec791`](https://github.com/medusajs/medusa/commit/eeceec791c141996cf7fd06555afb6e738b52840) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): Convert remote query object to string array of fields and relations from GQL schema
+
+- [#5242](https://github.com/medusajs/medusa/pull/5242) [`130cbc1f4`](https://github.com/medusajs/medusa/commit/130cbc1f437af211b6d05f80128d90138abcd38d) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Modules exporting schema with entities and fields
+
+- [#5213](https://github.com/medusajs/medusa/pull/5213) [`cb569c2df`](https://github.com/medusajs/medusa/commit/cb569c2dfe2d83e1ff72a49f2331450a83b73325) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): Utils to create an object select, relation from a string[]
+
+- Updated dependencies [[`130cbc1f4`](https://github.com/medusajs/medusa/commit/130cbc1f437af211b6d05f80128d90138abcd38d), [`c5703a476`](https://github.com/medusajs/medusa/commit/c5703a4765a55da697885438cf3089d923669f21)]:
+  - @medusajs/types@1.11.3
+
+## 1.10.2
+
+### Patch Changes
+
+- [#5161](https://github.com/medusajs/medusa/pull/5161) [`cc4169a94`](https://github.com/medusajs/medusa/commit/cc4169a94c7c5f5bf4d04f7b6e815b409a0a8192) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): Provide an utils that allows to convert an array of fields to a complete remote query object
+
+- [#5214](https://github.com/medusajs/medusa/pull/5214) [`1e7db5a5c`](https://github.com/medusajs/medusa/commit/1e7db5a5cb7c955e72c52e64df8a16b1607eef70) Thanks [@riqwan](https://github.com/riqwan)! - feat(types,pricing,utils): Exact match based on context + fallback on rule priority if not
+
+- Updated dependencies [[`1e7db5a5c`](https://github.com/medusajs/medusa/commit/1e7db5a5cb7c955e72c52e64df8a16b1607eef70)]:
+  - @medusajs/types@1.11.2
+
 ## 1.10.1
 
 ### Patch Changes
