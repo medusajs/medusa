@@ -30,9 +30,9 @@ export const validateRuleAttributes = (
   if (invalidRuleAttributes.length) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Can't create rule_attribute with reserved keywords - ${invalidRuleAttributes.join(
+      `Can't create rule_attribute with reserved keywords [${ReservedPricingRuleAttributes.join(
         ", "
-      )}`
+      )}] - ${invalidRuleAttributes.join(", ")}`
     )
   }
 }

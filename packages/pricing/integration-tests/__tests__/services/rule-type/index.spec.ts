@@ -267,7 +267,7 @@ describe("RuleType Service", () => {
       }
 
       expect(error.message).toEqual(
-        "Can't create rule_attribute with reserved keywords - currency_code"
+        "Can't create rule_attribute with reserved keywords [quantity, currency_code, price_list_id] - currency_code"
       )
     })
   })
