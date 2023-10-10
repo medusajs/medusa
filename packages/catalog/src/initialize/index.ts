@@ -11,8 +11,8 @@ import {
   RemoteJoinerQuery,
 } from "@medusajs/types"
 
-import { CatalogModuleOptions } from "../types"
 import { moduleDefinition } from "../module-definition"
+import { CatalogModuleOptions } from "../types"
 
 export const initialize = async (
   options:
@@ -27,13 +27,13 @@ export const initialize = async (
     ) => Promise<any>
   }
 ): Promise<IProductModuleService> => {
-  if (!injectedDependencies.eventBusModuleService) {
+  if (!injectedDependencies?.eventBusModuleService) {
     throw new Error(
       "CatalogModule is missing the eventBusModuleService dependency to work"
     )
   }
 
-  if (!injectedDependencies.remoteQuery) {
+  if (!injectedDependencies?.remoteQuery) {
     throw new Error(
       "CatalogModule is missing the remoteQuery dependency to work"
     )

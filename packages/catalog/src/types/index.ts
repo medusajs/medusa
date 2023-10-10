@@ -48,7 +48,7 @@ export type Where = {
 }
 
 export type OrderBy = {
-  [column: string]: OrderBy | "ASC" | "DESC"
+  [path: string]: OrderBy | "ASC" | "DESC" | 1 | -1 | true | false
 }
 
 export type QueryFormat = {

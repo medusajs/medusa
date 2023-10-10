@@ -1,4 +1,4 @@
-import { isObject } from "@medusajs/utils"
+import { isObject, isString } from "@medusajs/utils"
 import { Knex } from "knex"
 import { OrderBy, QueryFormat, QueryOptions } from "../types"
 
@@ -177,6 +177,13 @@ export class QueryBuilder {
 
   private transformOrderBy(arr: (object | string)[]): OrderBy {
     const result = {}
+    const map = new Map()
+    map.set(true, "ASC")
+    map.set(1, "ASC")
+    map.set("ASC", "ASC")
+    map.set(false, "DESC")
+    map.set(-1, "DESC")
+    map.set("DESC", "DESC")
 
     arr.forEach((obj) => {
       function nested(obj, prefix = "") {
@@ -185,11 +192,14 @@ export class QueryBuilder {
           throw new Error("Order by only supports one key per object.")
         }
         const key = keys[0]
-        const value = obj[key]
-        if (isObject(value === "object")) {
+        let value = obj[key]
+        if (isObject(value)) {
           nested(value, prefix + key + ".")
         } else {
-          result[prefix + key] = value === true ? "ASC" : value
+          if (isString(value)) {
+            value = value.toUpperCase()
+          }
+          result[prefix + key] = map.get(value) ?? "ASC"
         }
       }
       nested(obj)

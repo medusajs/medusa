@@ -51,9 +51,18 @@ describe("Catalog Query Builder", function () {
       } as any,
       {
         take: 10,
-        orderBy: {
-          "product.title": "ASC",
-        },
+        orderBy: [
+          {
+            "product.title": -1,
+          },
+          {
+            product: {
+              variants: {
+                sku: "ASC",
+              },
+            },
+          },
+        ],
       }
     )
 
@@ -62,12 +71,12 @@ describe("Catalog Query Builder", function () {
     expect(sql.replace(/\s/g, "")).toEqual(
       `
       select 
-      "product0"."data" as """product"",
-            product0.id AS ""product.id""", 
-      "productvariant1"."data" as """product.variants"",
-            productvariant1.id AS ""product.variants.id""", 
-      "saleschannel1"."data" as """product.sales_channels"",
-            saleschannel1.id AS ""product.sales_channels.id""" 
+        "product0"."data" as """product"",
+         product0.id AS ""product.id""", 
+        "productvariant1"."data" as """product.variants"",
+        productvariant1.id AS ""product.variants.id""", 
+        "saleschannel1"."data" as """product.sales_channels"",
+        saleschannel1.id AS ""product.sales_channels.id""" 
     from 
       "catalog" as "product0" 
       LEFT JOIN LATERAL (
@@ -108,7 +117,8 @@ describe("Catalog Query Builder", function () {
         )
       ) 
     order by 
-      product0.data ->> 'title' ASC 
+      product0.data ->> 'title' DESC,
+      productvariant1.data ->> 'sku' ASC
     limit 
       10
     `.replace(/\s/g, "")
