@@ -5,16 +5,15 @@ type AssociationTaggedVariant = ProductTypes.ProductVariantDTO & {
   _associationTag?: string
 }
 
+type ObjectWithVariant = { variants: ProductTypes.ProductVariantDTO[] }
+
 export async function prepareCreateInventoryItems({
   data,
 }: WorkflowArguments<{
-  products: ProductTypes.ProductDTO[]
+  products: ObjectWithVariant[]
 }>) {
-  const taggedVariants = data.products.reduce(
-    (
-      acc: ProductTypes.ProductVariantDTO[],
-      product: ProductTypes.ProductDTO
-    ) => {
+  const taggedVariants = data.products.reduce<AssociationTaggedVariant[]>(
+    (acc, product: ObjectWithVariant) => {
       const cleanVariants = product.variants.reduce<AssociationTaggedVariant[]>(
         (acc, variant: AssociationTaggedVariant) => {
           if (!variant.manage_inventory) {
