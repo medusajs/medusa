@@ -140,8 +140,76 @@ describe("/store/carts", () => {
       })
     )
 
-    // expect(cartAfter.payment_sessions).toEqual([])
-    // expect(cartAfter.payment_session).toEqual(null)
+    expect(errors).toEqual([
+      {
+        action: "fail_step",
+        handlerType: "invoke",
+        error: new Error(`Failed to add shipping method`),
+      },
+    ])
+
+    expect(transaction.getState()).toEqual("reverted")
+  })
+
+  it("should compensate correctly if there if add shipping method fails (existing payment sessions case)", async () => {
+    const manager = medusaContainer.resolve("manager")
+    const cartService = medusaContainer.resolve("cartService")
+
+    // the cart has 0 shipping methods and a payment session
+    const cartBefore = await cartService.retrieve("test-cart-2", {
+      relations: ["shipping_methods", "payment_sessions"],
+    })
+
+    const addShippingMethodWorkflow = addShippingMethod(medusaContainer)
+
+    addShippingMethodWorkflow.appendAction(
+      "fail_step",
+      AddShippingMethodWorkflowActions.upsertPaymentSessions,
+      {
+        invoke: pipe({}, async function failStep() {
+          throw new Error(`Failed to add shipping method`)
+        }),
+      },
+      {
+        noCompensation: true,
+      }
+    )
+
+    const input = {
+      cart_id: "test-cart-2",
+      option_id: "test-option-new",
+      data: {},
+    }
+
+    const { errors, transaction } = await addShippingMethodWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+      throwOnError: false,
+    })
+
+    const cartAfter = await cartService.retrieve("test-cart-2", {
+      relations: ["shipping_methods", "payment_sessions"],
+    })
+
+    expect(cartAfter.shipping_methods).toEqual([]) // added shipping method is reverted
+
+    expect(cartAfter.payment_sessions).toEqual([
+      expect.objectContaining({
+        id: "test-session",
+        cart_id: "test-cart-2",
+        provider_id: "test-pay",
+      }),
+    ])
+
+    expect(cartAfter.payment_session).toEqual(
+      expect.objectContaining({
+        id: "test-session",
+        cart_id: "test-cart-2",
+        provider_id: "test-pay",
+      })
+    )
 
     expect(errors).toEqual([
       {
