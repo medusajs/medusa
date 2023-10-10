@@ -215,9 +215,7 @@ class PricingService extends TransactionBaseService {
       context.price_selection
     )
 
-    if (queryContext.currency_code) {
-      queryContext.currency_code = queryContext.currency_code.toUpperCase()
-    } else {
+    if (!queryContext.currency_code) {
       return new Map()
     }
 
