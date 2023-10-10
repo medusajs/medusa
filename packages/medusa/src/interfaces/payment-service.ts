@@ -65,7 +65,7 @@ export interface PaymentService extends TransactionBaseService {
   createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>
 
   /**
-   * This will be @deprecated in the near future use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * This will be @deprecated in the near future use createPayment(context: `Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
    * @param cart
    */
   createPayment(cart: Cart): Promise<PaymentSessionData>
@@ -183,7 +183,7 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentSessionResponse>
 
   /**
-   * This will be @deprecated in the near future use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * This will be @deprecated in the near future use `createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
    * @param cart
    */
   public abstract createPayment(cart: Cart): Promise<PaymentSessionData>
@@ -205,7 +205,7 @@ export abstract class AbstractPaymentService
   ): Promise<PaymentSessionResponse | PaymentSessionResponse["session_data"]>
 
   /**
-   * This will be @deprecated in the near future use updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+   * This will be @deprecated in the near future use `updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
    * @param paymentSessionData
    * @param cart
    */

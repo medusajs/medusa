@@ -20,15 +20,16 @@ module.exports = {
     "typedoc-plugin-merge-modules",
     "typedoc-plugin-reference-excluder",
     "typedoc-plugin-frontmatter",
+    "typedoc-plugin-modules",
   ],
   exclude: [
     path.join(pathPrefix, "packages/medusa-js/src/resources/base.ts"),
-    "node_modules/**",
-    "packages/**/node_modules",
+    path.join(pathPrefix, "node_modules/**"),
+    path.join(pathPrefix, "packages/**/node_modules"),
   ],
   excludeConstructors: true,
   frontmatterData: {
     displayed_sidebar: "jsClientSidebar",
   },
-  pagesPattern: "internal\\.",
+  internalModule: "internal",
 }
