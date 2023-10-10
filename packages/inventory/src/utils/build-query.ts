@@ -41,7 +41,7 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
     where: buildWhere<TWhereKeys, TEntity>(selector),
   }
 
-  if ("deleted_at" in selector) {
+  if ("deleted_at" in selector || config.withDeleted) {
     query.withDeleted = true
   }
 
@@ -67,10 +67,6 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
 
   if (config.order) {
     query.order = buildOrder(config.order) as FindOptionsOrder<TEntity>
-  }
-
-  if (config.withDeleted) {
-    query.withDeleted = config.withDeleted
   }
 
   return query
