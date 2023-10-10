@@ -13,9 +13,10 @@ describe("Catalog Query Builder", function () {
   })
 
   it("Should generate a SQL query with multiple entities, complex WHERE clause and ORDER BY ", async function () {
-    const qb = new QueryBuilder(
+    const qb = new QueryBuilder({
+      schema: {} as any,
       knex,
-      {
+      selector: {
         select: {
           product: {
             entity: "Product",
@@ -49,7 +50,7 @@ describe("Catalog Query Builder", function () {
           ],
         },
       } as any,
-      {
+      options: {
         take: 10,
         orderBy: [
           {
@@ -63,8 +64,8 @@ describe("Catalog Query Builder", function () {
             },
           },
         ],
-      }
-    )
+      },
+    })
 
     const sql = qb.buildQuery()
 
@@ -126,9 +127,13 @@ describe("Catalog Query Builder", function () {
   })
 
   it("Should create a simple object from a resultset", async function () {
-    const qb = new QueryBuilder(knex, {
-      select: {
-        product: true,
+    const qb = new QueryBuilder({
+      schema: {} as any,
+      knex,
+      selector: {
+        select: {
+          product: true,
+        },
       },
     })
 
@@ -166,10 +171,14 @@ describe("Catalog Query Builder", function () {
   })
 
   it("Should create a nested object from a resultset", async function () {
-    const qb = new QueryBuilder(knex, {
-      select: {
-        product: {
-          variants: true,
+    const qb = new QueryBuilder({
+      schema: {} as any,
+      knex,
+      selector: {
+        select: {
+          product: {
+            variants: true,
+          },
         },
       },
     })
@@ -229,15 +238,19 @@ describe("Catalog Query Builder", function () {
   })
 
   it("Should create a complex nested object from a resultset including repeated references", async function () {
-    const qb = new QueryBuilder(knex, {
-      select: {
-        product: {
-          variants: {
-            options: {
-              value: true,
+    const qb = new QueryBuilder({
+      schema: {} as any,
+      knex,
+      selector: {
+        select: {
+          product: {
+            variants: {
+              options: {
+                value: true,
+              },
             },
+            sales_channels: true,
           },
-          sales_channels: true,
         },
       },
     })

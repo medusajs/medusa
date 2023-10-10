@@ -1,6 +1,6 @@
 import { isObject, isString } from "@medusajs/utils"
 import { Knex } from "knex"
-import { OrderBy, QueryFormat, QueryOptions } from "../types"
+import { QueryFormat, QueryOptions, SchemaObjectRepresentation } from "../types"
 
 type EntityStructure = {
   entity?: string
@@ -10,18 +10,36 @@ type EntityStructure = {
 export class QueryBuilder {
   private structure: EntityStructure
   private builder: Knex.QueryBuilder
+  private selector: QueryFormat,
+  private options?: QueryOptions
+  private schema: SchemaObjectRepresentation
 
   constructor(
-    knex: Knex,
-    private selector: QueryFormat,
-    private options?: QueryOptions
-  ) {
-    this.builder = knex.queryBuilder()
-    this.structure = selector.select as any
+    args: {
+      schema: SchemaObjectRepresentation
+      knex: Knex,
+      private selector: QueryFormat,
+      private options?: QueryOptions
+    })
+   {
+    this.schema = args.schema
+    this.selector = args.selector
+    this.options = args.options
+    this.builder = args.knex.queryBuilder()
+    
+    this.structure = this.buildSchemaWithEntities()
   }
 
   private getStructureKeys(structure) {
     return Object.keys(structure ?? {}).filter((key) => key !== "entity")
+  }
+
+  private buildSchemaWithEntities(): EntityStructure {
+    const {select} = this.selector
+    const schema = this.schema
+    
+    // TODO: infer entity from schema
+    return select as any
   }
 
   private parseWhere(

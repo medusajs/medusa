@@ -53,7 +53,12 @@ export class PostgresProvider {
     const { selection, options } = param
 
     const connection = this.container_.manager.getConnection()
-    const qb = new QueryBuilder(connection.getKnex(), selection, options)
+    const qb = new QueryBuilder({
+      schema: this.schemaObjectRepresentation_,
+      knex: connection.getKnex(),
+      selector: selection,
+      options,
+    })
 
     const sql = qb.buildQuery()
     const resultset = await connection.execute(sql)
