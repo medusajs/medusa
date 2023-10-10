@@ -35,6 +35,10 @@ describe("Inventory Items endpoints", () => {
     const { container, app, port } = await bootstrapApp({ cwd, verbose: true })
     appContainer = container
 
+    // Set feature flag
+    const flagRouter = appContainer.resolve("featureFlagRouter")
+    flagRouter.setFlag("many_to_many_inventory", true)
+
     setPort(port)
     express = app.listen(port, (err) => {
       process.send(port)
@@ -46,6 +50,9 @@ describe("Inventory Items endpoints", () => {
   })
 
   afterAll(async () => {
+    const flagRouter = appContainer.resolve("featureFlagRouter")
+    flagRouter.setFlag("many_to_many_inventory", false)
+
     const db = useDb()
     await db.shutdown()
     express.close()
@@ -59,10 +66,6 @@ describe("Inventory Items endpoints", () => {
 
   describe("Inventory Items", () => {
     it("should create inventory item without variant id", async () => {
-      // Set feature flag
-      const flagRouter = appContainer.resolve("featureFlagRouter")
-      flagRouter.setFlag("many_to_many_inventory", true)
-
       const api = useApi()
 
       await api.post(
@@ -88,8 +91,6 @@ describe("Inventory Items endpoints", () => {
         inventoryItems[0].id,
       ])
       expect(variants.length).toEqual(0)
-
-      flagRouter.setFlag("many_to_many_inventory", false)
     })
   })
 })
