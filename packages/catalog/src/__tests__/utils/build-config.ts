@@ -23,7 +23,7 @@ const config = {
       }
       
       type ProductVariant @Listeners(values: ["variants.created", "variants.updated"]) {
-        id: String
+        id: Stringw
         product_id: String
         sku: String
         money_amounts: [MoneyAmount]
