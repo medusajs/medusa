@@ -12,9 +12,9 @@ import {
 import * as React from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-
 import { useAdminCreatePriceListPrices } from "medusa-react"
 import { useTranslation } from "react-i18next"
+
 import { Form } from "../../../../components/helpers/form"
 import useNotification from "../../../../hooks/use-notification"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
@@ -139,6 +139,7 @@ const AddProductsModal = ({
   const onCloseModal = React.useCallback(() => {
     onOpenChange(false)
     setTab(Tab.PRODUCTS)
+    setSelectedIds([])
     setStatus({
       [Tab.PRODUCTS]: "not-started",
       [Tab.PRICES]: "not-started",
@@ -206,30 +207,20 @@ const AddProductsModal = ({
   const onSubmit = handleSubmit(async (data) => {
     const prices: PricePayload[] = []
 
-    // If their is products that don't have an amount, we need to
-    // throw an error.
-
-    console.log(data)
-
     const productPriceKeys = Object.keys(data.prices.products)
+    const productIds = data.products.ids
 
     if (!productPriceKeys.length || !data.prices.products) {
       setError("prices.products", {
         type: "manual",
         message: t(
           "price-list-add-products-modal-no-prices-error",
-          "You need to set prices for at least one product"
+          "Please set prices for at least one product."
         ) as string,
       })
 
       return
     }
-
-    // Check if there are keys in data.products but not in productPriceKeys
-    // If there are, we need to throw an error.
-    const productIds = data.products.ids
-
-    console.log(productIds, productPriceKeys)
 
     const missingProducts = productIds.filter(
       (id) => !productPriceKeys.includes(id)
@@ -239,11 +230,11 @@ const AddProductsModal = ({
       const res = await prompt({
         title: t(
           "price-list-add-products-modal-missing-prices-title",
-          "Missing prices"
+          "Incomplete price list"
         ),
         description: t(
           "price-list-add-products-modal-missing-prices-description",
-          "You have not set prices for all of your selected products. Do you want to continue?"
+          "Prices have not been assigned to all of your chosen products. Would you like to proceed?"
         ),
       })
 
@@ -580,6 +571,7 @@ const AddProductsModal = ({
                 </span>
               </ProgressTabs.Trigger>
               <ProgressTabs.Trigger
+                disabled={selectedIds.length === 0}
                 value={Tab.PRICES}
                 className="w-full max-w-[200px]"
                 status={status[Tab.PRICES]}
