@@ -191,7 +191,7 @@ jobs:
           title: "chore(docs): Generated JS Client Reference"
           labels: "type: chore"
           add-paths: www/apps/docs/content/references/js-client/**
-          branch: "chore/generate-js-client"
+          branch: "docs/generate-js-client"
           branch-suffix: "timestamp"
   pricing:
     runs-on: ubuntu-latest
@@ -236,5 +236,5 @@ jobs:
           title: "chore(docs): Generated Pricing Module Reference"
           labels: "type: chore"
           add-paths: www/apps/docs/content/references/pricing/**
-          branch: "chore/generate-pricing"
+          branch: "docs/generate-pricing"
           branch-suffix: "timestamp"
