@@ -3,6 +3,7 @@ import { MedusaApp } from "@medusajs/modules-sdk"
 import modulesConfig from "../__fixtures__/modules-config"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 import { buildSchemaObjectRepresentation } from "../../utils/build-config"
+import { DB_URL } from "../../../integration-tests/utils"
 
 function removePropRecursively(obj, propToRemove) {
   for (const prop in obj) {
@@ -23,7 +24,7 @@ const config = {
       }
       
       type ProductVariant @Listeners(values: ["variants.created", "variants.updated"]) {
-        id: Stringw
+        id: String
         product_id: String
         sku: String
         money_amounts: [MoneyAmount]
@@ -38,7 +39,7 @@ const config = {
 describe("buildSchemaObjectRepresentation", function () {
   beforeAll(async function () {
     const pgConnection = ModulesSdkUtils.createPgConnection({
-      clientUrl: "postgres://postgres:postgres@localhost:5432/medusa-catalog",
+      clientUrl: DB_URL,
       schema: "public",
     })
 

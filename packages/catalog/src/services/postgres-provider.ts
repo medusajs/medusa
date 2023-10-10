@@ -45,8 +45,7 @@ export class PostgresProvider {
   }
 
   consumeEvent(configurationObject: SchemaObjectRepresentation[0]): Subscriber {
-    return async (data: unknown, eventName: string) => {\
-
+    return async (data: unknown, eventName: string) => {
       const data_ = data as Record<string, unknown>
       let ids: string[] = []
 
