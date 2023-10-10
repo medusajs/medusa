@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/link-modules",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Medusa Default Link Modules Package and Definitions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,9 +36,9 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.11.0",
-    "@medusajs/types": "^1.11.1",
-    "@medusajs/utils": "^1.10.1",
+    "@medusajs/modules-sdk": "^1.12.0",
+    "@medusajs/types": "^1.11.3",
+    "@medusajs/utils": "^1.10.3",
     "@mikro-orm/core": "5.7.12",
     "@mikro-orm/postgresql": "5.7.12",
     "awilix": "^8.0.0"
