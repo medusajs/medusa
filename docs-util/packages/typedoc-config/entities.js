@@ -2,7 +2,7 @@
 const path = require("path")
 const globalTypedocOptions = require("./base")
 
-const pathPrefix = path.join(__dirname, "..", "..")
+const pathPrefix = path.join(__dirname, "..", "..", "..")
 
 module.exports = {
   ...globalTypedocOptions,
