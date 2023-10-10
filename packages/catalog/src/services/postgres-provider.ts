@@ -1,18 +1,23 @@
 import {
-  CatalogModuleOptions,
-  SchemaObjectRepresentation,
-  StorageProvider,
-} from "../types"
-import {
-  DAL,
   IEventBusModuleService,
   RemoteJoinerQuery,
   Subscriber,
 } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { EntityManager } from "@mikro-orm/postgresql"
+import { CatalogRepository } from "@repositories"
+import { QueryBuilder } from "src/utils"
+import {
+  CatalogModuleOptions,
+  QueryFormat,
+  QueryOptions,
+  SchemaObjectRepresentation,
+  StorageProvider,
+} from "../types"
 
 type InjectedDependencies = {
-  baseRepository: DAL.RepositoryService
+  catalogRepository: CatalogRepository
+  manager: EntityManager
   eventBusModuleService: IEventBusModuleService
   storageProviderCtr: StorageProvider
   storageProviderOptions: unknown
@@ -42,6 +47,17 @@ export class PostgresProvider {
     this.container_ = container
     this.moduleOptions_ = moduleOptions
     this.schemaObjectRepresentation_ = options.schemaConfigurationObject
+  }
+
+  async query(param: { selection: QueryFormat; options?: QueryOptions }) {
+    const { selection, options } = param
+
+    const connection = this.container_.manager.getConnection()
+    const qb = new QueryBuilder(connection.getKnex(), selection, options)
+
+    return qb.buildObjectFromResultset(
+      await connection.execute(qb.buildQuery())
+    )
   }
 
   consumeEvent(configurationObject: SchemaObjectRepresentation[0]): Subscriber {

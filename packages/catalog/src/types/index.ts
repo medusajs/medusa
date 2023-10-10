@@ -35,6 +35,39 @@ export interface StorageProvider {
     moduleOptions: CatalogModuleOptions
   ): StorageProvider
 
-  query(...args: any[]): unknown
+  query(...args): unknown
   consumeEvent(configurationObject: any): Subscriber
+}
+
+export type Select = {
+  [key: string]: boolean | Select | Select[]
+}
+
+export type Where = {
+  [key: string]: any
+}
+
+export type OrderBy = {
+  [column: string]: OrderBy | "ASC" | "DESC"
+}
+
+export type QueryFormat = {
+  select: Select
+  where: Where
+}
+
+export type QueryOptions = {
+  skip?: number
+  take?: number
+  orderBy?: OrderBy | OrderBy[]
+}
+
+export type Resultset<Select> = {
+  [key in keyof Select]: Select[key] extends boolean
+    ? string
+    : Select[key] extends Select[]
+    ? Resultset<Select[key][0]>[]
+    : Select[key] extends {}
+    ? Resultset<Select[key]>
+    : unknown
 }

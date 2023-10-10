@@ -1,7 +1,5 @@
 import {
-  BaseFilterable,
   DAL,
-  FilterQuery,
   IEventBusModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -12,8 +10,8 @@ import {
   SchemaObjectRepresentation,
   StorageProvider,
 } from "../types"
-import { joinerConfig } from "./../joiner-config"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
+import { joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -88,15 +86,8 @@ export default class CatalogModuleService {
     return joinerConfig
   }
 
-  async query(obj: {
-    where: FilterQuery<any> & BaseFilterable<FilterQuery<any>>
-    options?: {
-      skip?: number
-      take?: number
-      orderBy?: { [column: string]: "ASC" | "DESC" }
-    }
-  }) {
-    return await this.storageProvider_.query()
+  async query(...args) {
+    return await this.storageProvider_.query.apply(this, ...args)
   }
 
   protected registerListeners() {

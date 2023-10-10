@@ -1,6 +1,6 @@
-import { TestDatabase } from "../utils"
-import { Catalog } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { Catalog } from "@models"
+import { TestDatabase } from "../utils"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
