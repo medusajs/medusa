@@ -1,13 +1,16 @@
-import middlewares, { transformStoreQuery } from "../../../middlewares"
+import middlewares, {
+  blockOrderByPriceWithPricingModule,
+  transformStoreQuery,
+} from "../../../middlewares"
 
-import { Router } from "express"
 import { PricedVariant } from "../../../../types/pricing"
-import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
-import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
-import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
-import { withDefaultSalesChannel } from "../../../middlewares/with-default-sales-channel"
-import { StoreGetVariantsVariantParams } from "./get-variant"
+import { Router } from "express"
 import { StoreGetVariantsParams } from "./list-variants"
+import { StoreGetVariantsVariantParams } from "./get-variant"
+import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
+import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
+import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { withDefaultSalesChannel } from "../../../middlewares/with-default-sales-channel"
 
 const route = Router()
 
@@ -24,6 +27,7 @@ export default (app) => {
       allowedRelations: allowedStoreVariantRelations,
       isList: true,
     }),
+    blockOrderByPriceWithPricingModule("Variants"),
     middlewares.wrap(require("./list-variants").default)
   )
   route.get(
@@ -93,4 +97,3 @@ export type StoreVariantsListRes = {
 
 export * from "./get-variant"
 export * from "./list-variants"
-

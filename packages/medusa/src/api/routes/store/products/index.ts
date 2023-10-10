@@ -1,18 +1,21 @@
 import "reflect-metadata"
 
-import middlewares, { transformStoreQuery } from "../../../middlewares"
+import middlewares, {
+  blockOrderByPriceWithPricingModule,
+  transformStoreQuery,
+  withDefaultSalesChannel,
+} from "../../../middlewares"
 
 import { FlagRouter } from "@medusajs/utils"
-import { Router } from "express"
-import { Product } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import { PricedProduct } from "../../../../types/pricing"
+import { Product } from "../../../.."
+import { Router } from "express"
+import { StoreGetProductsParams } from "./list-products"
+import { StoreGetProductsProductParams } from "./get-product"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateProductSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-product-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
-import { withDefaultSalesChannel } from "../../../middlewares/with-default-sales-channel"
-import { StoreGetProductsProductParams } from "./get-product"
-import { StoreGetProductsParams } from "./list-products"
 
 const route = Router()
 
@@ -35,6 +38,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
       allowedRelations: allowedStoreProductsRelations,
       isList: true,
     }),
+    blockOrderByPriceWithPricingModule("Products"),
     middlewares.wrap(require("./list-products").default)
   )
 
