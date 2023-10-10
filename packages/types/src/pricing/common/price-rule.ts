@@ -75,7 +75,12 @@ export interface UpdatePriceRuleDTO {
   id: string
   price_set_id?: string
   rule_type_id?: string
-  /** @ignore */
+  /** 
+   * @ignore
+   * @privateRemark
+   * 
+   * Behavior behind this property is not implemented yet.
+   */
   is_dynamic?: boolean
   value?: string
   priority?: number
