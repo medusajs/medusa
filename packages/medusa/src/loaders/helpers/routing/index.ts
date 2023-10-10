@@ -10,6 +10,7 @@ import {
   OnRouteLoadingHook,
   RouteConfig,
   RouteDescriptor,
+  RouteVerbs,
 } from "./types"
 
 const log = ({
@@ -32,6 +33,16 @@ const pathSegmentReplacer = {
   "\\[(\\w+)?": (param?: string) => `:${param}`,
   "\\]": () => ``,
 }
+
+const HTTP_METHODS = [
+  "GET",
+  "POST",
+  "PUT",
+  "PATCH",
+  "DELETE",
+  "OPTIONS",
+  "HEAD",
+]
 
 const specialMiddlewaresDirName = "_middlewares"
 
@@ -64,7 +75,7 @@ const prioritize = (
  *
  * @return {number} An integer ranging from 0 to Infinity
  */
-function calculatePriority(url: string) {
+function calculatePriority(url: string): number {
   const depth = url.match(/\/.+?/g)?.length || 0
   const specifity = url.match(/\/:.+?/g)?.length || 0
   const catchall = (url.match(/\/\*/g)?.length || 0) > 0 ? Infinity : 0
@@ -253,6 +264,38 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     return route
   }
 
+  protected async createRouteConfig(path: string) {
+    return await import(path).then((imp) => {
+      const config: {
+        routes: RouteConfig[]
+      } = {
+        routes: [],
+      }
+
+      // Get function names from the file
+      const handlers = Object.keys(imp).filter((key) => {
+        return typeof imp[key] === "function"
+      })
+
+      // If the handler has a valid HTTP method name then add it to the config
+      for (const handler of handlers) {
+        if (HTTP_METHODS.includes(handler.toUpperCase())) {
+          // Add the handler to the config if it's a valid HTTP method, handlers should be an array of functions containing only one function
+          if (typeof imp[handler] === "function") {
+            console.log("handler", handler, "is a function")
+          }
+
+          config.routes.push({
+            method: handler.toUpperCase() as RouteVerbs,
+            handlers: [imp[handler]],
+          })
+        }
+      }
+
+      return config
+    })
+  }
+
   /**
    * Load the file content from a descriptor and retrieve the verbs and handlers
    * to be assigned to the descriptor
@@ -265,6 +308,10 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
         async (descriptor: RouteDescriptor | GlobalMiddlewareDescriptor) => {
           const absolutePath = descriptor.absolutePath
           const isGlobalMiddleware = isMiddlewaresDir(descriptor.route)
+
+          const config = await this.createRouteConfig(absolutePath)
+
+          console.log(`Created config for ${absolutePath}`, config)
 
           return await import(absolutePath).then((imp) => {
             const map = isGlobalMiddleware
@@ -284,7 +331,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
             }
 
             // Assign default verb to GET
-            imp.config ??= {}
+            imp.config ??= config
             imp.config.routes = imp.config?.routes?.map(
               (route: RouteConfig | GlobalMiddlewareRouteConfig) => {
                 route.method = route.method ?? "get"
@@ -438,15 +485,21 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
 
       const routes = descriptor.config.routes! as RouteConfig[]
 
-      console.log("Registering routes", descriptor.route, "routes", routes)
-
       for (const route of routes) {
         log({
           activityId: this.activityId,
-          message: `Registering route [${route.method?.toUpperCase()}${createSpacingSting(
-            route.method?.length
-          )}] - ${descriptor.route}`,
+          message: `Registering route [${route.method?.toUpperCase()}] - ${
+            descriptor.route
+          }`,
         })
+
+        console.log(
+          "Registering route",
+          route.method?.toUpperCase(),
+          descriptor.route,
+          "with handlers",
+          route.handlers
+        )
         ;(this.app as any)[route.method!.toLowerCase()](
           descriptor.route,
           ...route.handlers
@@ -465,8 +518,6 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     await this.walkThrough({ dirPath: this.rootDir })
     await this.retrieveFilesConfig()
     await this.registerRoutesAndMiddlewares()
-
-    console.log("routes loaded")
 
     performance.mark("file-base-routing-end" + this.rootDir)
     const timeSpent = performance
