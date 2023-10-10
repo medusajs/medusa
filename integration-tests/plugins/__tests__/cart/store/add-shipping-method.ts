@@ -71,6 +71,7 @@ describe("/store/carts", () => {
 
   it("should add a shipping method to cart", async () => {
     const manager = medusaContainer.resolve("manager")
+    const cartService = medusaContainer.resolve("cartService")
 
     const addShippingMethodWorkflow = addShippingMethod(medusaContainer)
 
@@ -89,6 +90,16 @@ describe("/store/carts", () => {
 
     expect(result).toBeDefined()
     expect(transaction.getState()).toEqual("done")
+
+    const cart = await cartService.retrieve("test-cart", {
+      relations: ["shipping_methods"],
+    })
+
+    expect(cart.shipping_methods).toEqual([
+      expect.objectContaining({
+        shipping_option_id: "test-option",
+      }),
+    ])
   })
 
   it("should compensate correctly if add shipping method fails", async () => {
