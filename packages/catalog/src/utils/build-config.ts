@@ -3,10 +3,10 @@ import {
   getFieldsAndRelations,
   MedusaModule,
 } from "@medusajs/modules-sdk"
-import { makeExecutableSchema } from "@graphql-tools/schema/typings"
 import { ObjectTypeDefinitionNode } from "graphql/index"
 import { toCamelCase } from "@medusajs/utils"
 import { JoinerServiceConfigAlias } from "@medusajs/types"
+import { makeExecutableSchema } from "@graphql-tools/schema"
 
 const CustomDirectives = {
   Listeners: {
@@ -189,7 +189,7 @@ function getObjectConfigurationRef(entityName, { objectConfigurationRef }) {
 function setListeners(currentObjectConfigurationRef, listenerDirective) {
   if (!listenerDirective) {
     throw new Error(
-      "CatalogModule error, a type is defined in the schema configuration but it is missing the @Listeners directive to specify which events to listen to in order to sync the data"
+      `CatalogModule error, the type ${currentObjectConfigurationRef.entity} defined in the schema is missing the @Listeners directive to specify which events to listen to in order to sync the data`
     )
   }
 
@@ -419,7 +419,7 @@ function processEntity(
  *
  * @param schema
  */
-export async function buildObjectConfigurationFromGraphQlSchema(schema) {
+export function buildFullConfigurationFromSchema(schema) {
   const moduleJoinerConfigs = MedusaModule.getAllJoinerConfigs()
   const augmentedSchema = CustomDirectives.Listeners.definition + schema
   const executableSchema = makeSchemaExecutable(augmentedSchema)
