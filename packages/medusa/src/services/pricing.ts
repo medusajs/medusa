@@ -191,64 +191,25 @@ class PricingService extends TransactionBaseService {
       variant_id: variantPriceData.map((pricedata) => pricedata.variantId),
     }
 
-    const priceSetQuery = `
-    query {
-      variants {
-        id
-        title
-        price {
-          price_set {
-            id
-          }
-        }
-      }
+    const query = {
+      product_variant_price_set: {
+        __args: variables,
+        fields: ["variant_id", "price_set_id"],
+      },
     }
-   `
-    // const query = {
-    //   product_variant_price_set: {
-    //     __args: variables,
-    //     fields: ["id", "price_set_id", "variant_id"],
-    //     price_set: {
-    //       fields: ["id"],
-    //     },
-    //   },
-    // }
 
-    // const pcs = await this.remoteQuery(query)
+    const variantPriceSets = await this.remoteQuery(query)
 
-    // console.warn(pcs)
-
-    const variantPriceSets: VariantPriceSetRes[] = await this.remoteQuery(
-      priceSetQuery,
-      {
-        context: variables,
-      }
-    )
-    // console.warn(JSON.stringify(variantPriceSets, null, 2))
-
-    const variantIdToPriceSetIdsMap = new Map(
-      variantPriceSets.map((variantPriceSet) => {
-        if (!variantPriceSet.price) {
-          return [variantPriceSet.id, []]
-        }
-
-        const value = Array.isArray(variantPriceSet.price)
-          ? variantPriceSet.price.map((price) => price.price_set_id)
-          : [variantPriceSet.price.price_set_id]
-        return [variantPriceSet.id, value]
-      })
+    const variantIdToPriceSetIdMap: Map<string, string> = new Map(
+      variantPriceSets.map((variantPriceSet) => [
+        variantPriceSet.variant_id,
+        variantPriceSet.price_set_id,
+      ])
     )
 
-    const priceSetIds = variantPriceSets
-      .map((variantPriceSet) => {
-        if (!variantPriceSet.price) {
-          return []
-        }
-        return Array.isArray(variantPriceSet.price)
-          ? variantPriceSet.price.map((price) => price.price_set_id)
-          : [variantPriceSet.price.price_set_id]
-      })
-      .flat()
+    const priceSetIds: string[] = variantPriceSets.map(
+      (variantPriceSet) => variantPriceSet.price_set_id
+    )
 
     const queryContext: PriceSelectionContext = removeNullish(
       context.price_selection
@@ -260,7 +221,7 @@ class PricingService extends TransactionBaseService {
       return new Map()
     }
 
-    const prices = (await this.pricingModuleService.calculatePrices(
+    const priceSets = (await this.pricingModuleService.calculatePrices(
       { id: priceSetIds },
       {
         context: queryContext as any,
@@ -268,46 +229,38 @@ class PricingService extends TransactionBaseService {
     )) as unknown as CalculatedPriceSetDTO[]
 
     const priceSetMap = new Map<string, CalculatedPriceSetDTO>(
-      prices.map((price) => [price.id, price])
+      priceSets.map((priceSet) => [priceSet.id, priceSet])
     )
 
     const pricingResultMap = new Map()
 
-    variantPriceData.map(({ variantId }) => {
-      const priceSetIds = variantIdToPriceSetIdsMap.get(variantId)
-      const prices = priceSetIds
-        ?.map((id) => priceSetMap.get(id))
-        .filter(Boolean)
+    variantPriceData.forEach(({ variantId }) => {
+      const priceSetId = variantIdToPriceSetIdMap.get(variantId)
 
-      if (prices?.length) {
-        let calculatedLowestPrice: number | null = prices.reduce(
-          (price: number, comparisonPrice): number => {
-            return !comparisonPrice?.amount || price < comparisonPrice.amount
-              ? price
-              : comparisonPrice.amount
-          },
-          Infinity
-        )
-
-        calculatedLowestPrice =
-          calculatedLowestPrice === Infinity ? null : calculatedLowestPrice
-
-        const pricingResult: ProductVariantPricing = {
-          prices: prices as MoneyAmount[],
-          original_price: calculatedLowestPrice,
-          calculated_price: calculatedLowestPrice,
-          calculated_price_type: null,
-          original_price_includes_tax: null,
-          calculated_price_includes_tax: null,
-          original_price_incl_tax: null,
-          calculated_price_incl_tax: null,
-          original_tax: null,
-          calculated_tax: null,
-          tax_rates: null,
-        }
-
-        pricingResultMap.set(variantId, pricingResult)
+      const pricingResult: ProductVariantPricing = {
+        prices: [] as MoneyAmount[],
+        original_price: null,
+        calculated_price: null,
+        calculated_price_type: null,
+        original_price_includes_tax: null,
+        calculated_price_includes_tax: null,
+        original_price_incl_tax: null,
+        calculated_price_incl_tax: null,
+        original_tax: null,
+        calculated_tax: null,
+        tax_rates: null,
       }
+
+      if (priceSetId) {
+        const prices = priceSetMap.get(priceSetId)
+
+        if (prices) {
+          pricingResult.prices = [prices] as MoneyAmount[]
+          pricingResult.original_price = prices.amount
+          pricingResult.calculated_price = prices.amount
+        }
+      }
+      pricingResultMap.set(variantId, pricingResult)
     })
 
     return pricingResultMap
