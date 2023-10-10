@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminStoresResource
 
 ## Hierarchy
@@ -10,18 +14,18 @@
 
 ### addCurrency
 
-▸ **addCurrency**(`currency_code`, `customHeaders?`): `ResponsePromise`<`AdminStoresRes`\>
+▸ **addCurrency**(`currency_code`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStoresRes`](../modules/internal-8.internal.md#adminstoresres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `currency_code` | `string` | code of the currency to add |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`AdminStoresRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStoresRes`](../modules/internal-8.internal.md#adminstoresres)\>
 
 updated store.
 
@@ -31,24 +35,24 @@ adds a currency to the store.
 
 #### Defined in
 
-[admin/store.ts:32](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/store.ts#L32)
+[packages/medusa-js/src/resources/admin/store.ts:32](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/store.ts#L32)
 
 ___
 
 ### deleteCurrency
 
-▸ **deleteCurrency**(`currency_code`, `customHeaders?`): `ResponsePromise`<`AdminStoresRes`\>
+▸ **deleteCurrency**(`currency_code`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStoresRes`](../modules/internal-8.internal.md#adminstoresres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `currency_code` | `string` | currency code of the currency to delete from the store. |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`AdminStoresRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStoresRes`](../modules/internal-8.internal.md#adminstoresres)\>
 
 updated store
 
@@ -58,23 +62,23 @@ deletes a currency from the available store currencies
 
 #### Defined in
 
-[admin/store.ts:46](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/store.ts#L46)
+[packages/medusa-js/src/resources/admin/store.ts:46](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/store.ts#L46)
 
 ___
 
 ### listPaymentProviders
 
-▸ **listPaymentProviders**(`customHeaders?`): `ResponsePromise`<`AdminPaymentProvidersList`\>
+▸ **listPaymentProviders**(`customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminPaymentProvidersList`](../modules/internal-8.internal.md#adminpaymentproviderslist)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminPaymentProvidersList`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminPaymentProvidersList`](../modules/internal-8.internal.md#adminpaymentproviderslist)\>
 
 a list of payment providers configured on the store
 
@@ -84,23 +88,23 @@ Lists the store's payment providers
 
 #### Defined in
 
-[admin/store.ts:69](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/store.ts#L69)
+[packages/medusa-js/src/resources/admin/store.ts:69](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/store.ts#L69)
 
 ___
 
 ### listTaxProviders
 
-▸ **listTaxProviders**(`customHeaders?`): `ResponsePromise`<`AdminTaxProvidersList`\>
+▸ **listTaxProviders**(`customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminTaxProvidersList`](../modules/internal-8.internal.md#admintaxproviderslist)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminTaxProvidersList`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminTaxProvidersList`](../modules/internal-8.internal.md#admintaxproviderslist)\>
 
 a list of payment providers configured on the store
 
@@ -110,23 +114,23 @@ Lists the store's payment providers
 
 #### Defined in
 
-[admin/store.ts:80](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/store.ts#L80)
+[packages/medusa-js/src/resources/admin/store.ts:80](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/store.ts#L80)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`customHeaders?`): `ResponsePromise`<`AdminExtendedStoresRes`\>
+▸ **retrieve**(`customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminExtendedStoresRes`](../modules/internal-8.internal.md#adminextendedstoresres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminExtendedStoresRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminExtendedStoresRes`](../modules/internal-8.internal.md#adminextendedstoresres)\>
 
 a medusa store
 
@@ -136,24 +140,24 @@ gets a medusa store
 
 #### Defined in
 
-[admin/store.ts:58](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/store.ts#L58)
+[packages/medusa-js/src/resources/admin/store.ts:58](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/store.ts#L58)
 
 ___
 
 ### update
 
-▸ **update**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminStoresRes`\>
+▸ **update**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStoresRes`](../modules/internal-8.internal.md#adminstoresres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | `AdminPostStoreReq` | update to apply to the store. |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `payload` | [`AdminPostStoreReq`](internal-8.internal.AdminPostStoreReq.md) | update to apply to the store. |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`AdminStoresRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStoresRes`](../modules/internal-8.internal.md#adminstoresres)\>
 
 the updated store.
 
@@ -163,4 +167,4 @@ Updates the store
 
 #### Defined in
 
-[admin/store.ts:18](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/store.ts#L18)
+[packages/medusa-js/src/resources/admin/store.ts:18](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/store.ts#L18)

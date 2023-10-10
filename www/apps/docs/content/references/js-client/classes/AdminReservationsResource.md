@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminReservationsResource
 
 ## Hierarchy
@@ -10,7 +14,7 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminReservationsRes`\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminReservationsRes`](../modules/internal-8.internal.md#adminreservationsres)\>
 
 create a reservation
 
@@ -18,12 +22,12 @@ create a reservation
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | `AdminPostReservationsReq` |
-| `customHeaders` | `Record`<`string`, `unknown`\> |
+| `payload` | [`AdminPostReservationsReq`](internal-8.internal.AdminPostReservationsReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `unknown`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminReservationsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminReservationsRes`](../modules/internal-8.internal.md#adminreservationsres)\>
 
 the created reservation
 
@@ -35,13 +39,13 @@ To use this feature please install @medusajs/inventory
 
 #### Defined in
 
-[admin/reservations.ts:57](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/reservations.ts#L57)
+[packages/medusa-js/src/resources/admin/reservations.ts:57](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L57)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): `ResponsePromise`<`DeleteResponse`\>
+▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
 
 remove a reservation
 
@@ -50,11 +54,11 @@ remove a reservation
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | `Record`<`string`, `unknown`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `unknown`\> |
 
 #### Returns
 
-`ResponsePromise`<`DeleteResponse`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
 
 reservation removal confirmation
 
@@ -66,13 +70,13 @@ To use this feature please install @medusajs/inventory
 
 #### Defined in
 
-[admin/reservations.ts:88](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/reservations.ts#L88)
+[packages/medusa-js/src/resources/admin/reservations.ts:88](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L88)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminReservationsListRes`\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminReservationsListRes`](../modules/internal-8.internal.md#adminreservationslistres)\>
 
 List reservations
  This feature is under development and may change in the future.
@@ -82,12 +86,12 @@ To use this feature please install @medusajs/inventory
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | `AdminGetReservationsParams` |
-| `customHeaders` | `Record`<`string`, `unknown`\> |
+| `query?` | [`AdminGetReservationsParams`](internal-8.internal.AdminGetReservationsParams.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `unknown`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminReservationsListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminReservationsListRes`](../modules/internal-8.internal.md#adminreservationslistres)\>
 
 A list of reservations matching the provided query
 
@@ -97,13 +101,13 @@ Lists reservations
 
 #### Defined in
 
-[admin/reservations.ts:36](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/reservations.ts#L36)
+[packages/medusa-js/src/resources/admin/reservations.ts:36](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L36)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`AdminReservationsRes`\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminReservationsRes`](../modules/internal-8.internal.md#adminreservationsres)\>
 
 Get a reservation
  This feature is under development and may change in the future.
@@ -114,11 +118,11 @@ To use this feature please install @medusajs/inventory
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | `Record`<`string`, `unknown`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `unknown`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminReservationsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminReservationsRes`](../modules/internal-8.internal.md#adminreservationsres)\>
 
 The reservation with the provided id
 
@@ -128,13 +132,13 @@ gets a reservation
 
 #### Defined in
 
-[admin/reservations.ts:21](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/reservations.ts#L21)
+[packages/medusa-js/src/resources/admin/reservations.ts:21](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L21)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminReservationsRes`\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminReservationsRes`](../modules/internal-8.internal.md#adminreservationsres)\>
 
 update a reservation
 
@@ -143,12 +147,12 @@ update a reservation
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | `AdminPostReservationsReservationReq` |
-| `customHeaders` | `Record`<`string`, `unknown`\> |
+| `payload` | [`AdminPostReservationsReservationReq`](internal-8.internal.AdminPostReservationsReservationReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `unknown`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminReservationsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminReservationsRes`](../modules/internal-8.internal.md#adminreservationsres)\>
 
 The updated reservation
 
@@ -160,4 +164,4 @@ To use this feature please install @medusajs/inventory
 
 #### Defined in
 
-[admin/reservations.ts:72](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/reservations.ts#L72)
+[packages/medusa-js/src/resources/admin/reservations.ts:72](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L72)

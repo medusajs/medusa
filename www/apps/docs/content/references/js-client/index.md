@@ -1,4 +1,24 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # JS Client Reference
+
+## Modules
+
+- [internal](modules/internal.md)
+- [internal](modules/internal-1.md)
+- [internal](modules/internal-2.md)
+- [internal](modules/internal-3.md)
+- [internal](modules/internal-4.md)
+- [internal](modules/internal-5.md)
+- [internal](modules/internal-6.md)
+- [internal](modules/internal-7.md)
+- [internal](modules/internal-8.md)
+- [internal](modules/internal-9.md)
+- [internal](modules/internal-10.md)
+- [internal](modules/internal-11.md)
+- [internal](modules/internal-12.md)
 
 ## Classes
 

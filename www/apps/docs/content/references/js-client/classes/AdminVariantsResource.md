@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminVariantsResource
 
 ## Hierarchy
@@ -10,28 +14,28 @@
 
 ### getInventory
 
-▸ **getInventory**(`variantId`, `customHeaders?`): `ResponsePromise`<`AdminGetVariantsVariantInventoryRes`\>
+▸ **getInventory**(`variantId`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminGetVariantsVariantInventoryRes`](../modules/internal-8.internal.md#admingetvariantsvariantinventoryres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `variantId` | `string` | id of the variant to fetch inventory for |
-| `customHeaders` | `Record`<`string`, `any`\> | custom headers |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> | custom headers |
 
 #### Returns
 
-`ResponsePromise`<`AdminGetVariantsVariantInventoryRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminGetVariantsVariantInventoryRes`](../modules/internal-8.internal.md#admingetvariantsvariantinventoryres)\>
 
 #### Defined in
 
-[admin/variants.ts:60](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/variants.ts#L60)
+[packages/medusa-js/src/resources/admin/variants.ts:60](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/variants.ts#L60)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminVariantsListRes`\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminVariantsListRes`](../modules/internal-8.internal.md#adminvariantslistres)\>
 
 List product variants
 
@@ -39,24 +43,24 @@ List product variants
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | `AdminGetVariantsParams` | Query to filter variants by |
-| `customHeaders` | `Record`<`string`, `any`\> | custom headers |
+| `query?` | [`AdminGetVariantsParams`](internal-8.internal.AdminGetVariantsParams.md) | Query to filter variants by |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> | custom headers |
 
 #### Returns
 
-`ResponsePromise`<`AdminVariantsListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminVariantsListRes`](../modules/internal-8.internal.md#adminvariantslistres)\>
 
 A list of variants satisfying the criteria of the query
 
 #### Defined in
 
-[admin/variants.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/variants.ts#L19)
+[packages/medusa-js/src/resources/admin/variants.ts:19](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/variants.ts#L19)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `query?`, `customHeaders?`): `ResponsePromise`<`AdminVariantsRes`\>
+▸ **retrieve**(`id`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminVariantsRes`](../modules/internal-8.internal.md#adminvariantsres)\>
 
 Get a product variant
 
@@ -65,15 +69,15 @@ Get a product variant
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | Query to filter variants by |
-| `query?` | `AdminGetVariantParams` | - |
-| `customHeaders` | `Record`<`string`, `any`\> | custom headers |
+| `query?` | [`AdminGetVariantParams`](internal-8.internal.AdminGetVariantParams.md) | - |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> | custom headers |
 
 #### Returns
 
-`ResponsePromise`<`AdminVariantsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminVariantsRes`](../modules/internal-8.internal.md#adminvariantsres)\>
 
 A list of variants satisfying the criteria of the query
 
 #### Defined in
 
-[admin/variants.ts:39](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/variants.ts#L39)
+[packages/medusa-js/src/resources/admin/variants.ts:39](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/variants.ts#L39)

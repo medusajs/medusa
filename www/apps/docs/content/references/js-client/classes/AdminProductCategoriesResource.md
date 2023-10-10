@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminProductCategoriesResource
 
 ## Hierarchy
@@ -10,7 +14,7 @@
 
 ### addProducts
 
-▸ **addProducts**(`productCategoryId`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+▸ **addProducts**(`productCategoryId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 Add products to a product category
  This feature is under development and may change in the future.
@@ -21,12 +25,12 @@ To use this feature please enable featureflag `product_categories` in your medus
 | Name | Type |
 | :------ | :------ |
 | `productCategoryId` | `string` |
-| `payload` | `AdminPostProductCategoriesCategoryProductsBatchReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostProductCategoriesCategoryProductsBatchReq`](internal-8.internal.AdminPostProductCategoriesCategoryProductsBatchReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 a medusa product category
 
@@ -36,34 +40,34 @@ Add products to a product category
 
 #### Defined in
 
-[admin/product-categories.ts:126](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/product-categories.ts#L126)
+[packages/medusa-js/src/resources/admin/product-categories.ts:126](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/product-categories.ts#L126)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | `AdminPostProductCategoriesReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostProductCategoriesReq`](internal-8.internal.AdminPostProductCategoriesReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 #### Defined in
 
-[admin/product-categories.ts:44](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/product-categories.ts#L44)
+[packages/medusa-js/src/resources/admin/product-categories.ts:44](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/product-categories.ts#L44)
 
 ___
 
 ### delete
 
-▸ **delete**(`productCategoryId`, `customHeaders?`): `ResponsePromise`<`DeleteResponse`\>
+▸ **delete**(`productCategoryId`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
 
 Delete a product category
  This feature is under development and may change in the future.
@@ -74,11 +78,11 @@ To use this feature please enable featureflag `product_categories` in your medus
 | Name | Type |
 | :------ | :------ |
 | `productCategoryId` | `string` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`DeleteResponse`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
 
 an deletion result
 
@@ -88,13 +92,13 @@ gets a product category
 
 #### Defined in
 
-[admin/product-categories.ts:95](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/product-categories.ts#L95)
+[packages/medusa-js/src/resources/admin/product-categories.ts:95](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/product-categories.ts#L95)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminProductCategoriesListRes`\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesListRes`](../modules/internal-8.internal.md#adminproductcategorieslistres)\>
 
 Retrieve a list of product categories
  This feature is under development and may change in the future.
@@ -104,12 +108,12 @@ To use this feature please enable featureflag `product_categories` in your medus
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | `AdminGetProductCategoriesParams` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `query?` | [`AdminGetProductCategoriesParams`](internal-8.internal.AdminGetProductCategoriesParams.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminProductCategoriesListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesListRes`](../modules/internal-8.internal.md#adminproductcategorieslistres)\>
 
 the list of product category as well as the pagination properties
 
@@ -119,13 +123,13 @@ Retrieve a list of product categories
 
 #### Defined in
 
-[admin/product-categories.ts:74](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/product-categories.ts#L74)
+[packages/medusa-js/src/resources/admin/product-categories.ts:74](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/product-categories.ts#L74)
 
 ___
 
 ### removeProducts
 
-▸ **removeProducts**(`productCategoryId`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+▸ **removeProducts**(`productCategoryId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 Remove products from a product category
  This feature is under development and may change in the future.
@@ -136,12 +140,12 @@ To use this feature please enable featureflag `product_categories` in your medus
 | Name | Type |
 | :------ | :------ |
 | `productCategoryId` | `string` |
-| `payload` | `AdminDeleteProductCategoriesCategoryProductsBatchReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminDeleteProductCategoriesCategoryProductsBatchReq`](internal-8.internal.AdminDeleteProductCategoriesCategoryProductsBatchReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 a medusa product category
 
@@ -151,13 +155,13 @@ Remove products from a product category
 
 #### Defined in
 
-[admin/product-categories.ts:110](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/product-categories.ts#L110)
+[packages/medusa-js/src/resources/admin/product-categories.ts:110](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/product-categories.ts#L110)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`productCategoryId`, `query?`, `customHeaders?`): `ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+▸ **retrieve**(`productCategoryId`, `query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 retrieve a product category
  This feature is under development and may change in the future.
@@ -168,12 +172,12 @@ To use this feature please enable featureflag `product_categories` in your medus
 | Name | Type |
 | :------ | :------ |
 | `productCategoryId` | `string` |
-| `query?` | `AdminGetProductCategoryParams` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `query?` | [`AdminGetProductCategoryParams`](internal-8.internal.AdminGetProductCategoryParams.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 a medusa product category
 
@@ -183,13 +187,13 @@ gets a product category
 
 #### Defined in
 
-[admin/product-categories.ts:25](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/product-categories.ts#L25)
+[packages/medusa-js/src/resources/admin/product-categories.ts:25](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/product-categories.ts#L25)
 
 ___
 
 ### update
 
-▸ **update**(`productCategoryId`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+▸ **update**(`productCategoryId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 update a product category
  This feature is under development and may change in the future.
@@ -200,12 +204,12 @@ To use this feature please enable featureflag `product_categories` in your medus
 | Name | Type |
 | :------ | :------ |
 | `productCategoryId` | `string` |
-| `payload` | `AdminPostProductCategoriesCategoryReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostProductCategoriesCategoryReq`](internal-8.internal.AdminPostProductCategoriesCategoryReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminProductCategoriesCategoryRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductCategoriesCategoryRes`](../modules/internal-8.internal.md#adminproductcategoriescategoryres)\>
 
 the updated medusa product category
 
@@ -215,4 +219,4 @@ updates a product category
 
 #### Defined in
 
-[admin/product-categories.ts:58](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/product-categories.ts#L58)
+[packages/medusa-js/src/resources/admin/product-categories.ts:58](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/product-categories.ts#L58)

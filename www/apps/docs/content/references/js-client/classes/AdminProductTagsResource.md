@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminProductTagsResource
 
 ## Hierarchy
@@ -10,18 +14,18 @@
 
 ### list
 
-▸ **list**(`query?`): `ResponsePromise`<`AdminProductTagsListRes`\>
+▸ **list**(`query?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductTagsListRes`](../modules/internal-8.internal.md#adminproducttagslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | `AdminGetProductTagsParams` |
+| `query?` | [`AdminGetProductTagsParams`](internal-8.internal.AdminGetProductTagsParams.md) |
 
 #### Returns
 
-`ResponsePromise`<`AdminProductTagsListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminProductTagsListRes`](../modules/internal-8.internal.md#adminproducttagslistres)\>
 
 #### Defined in
 
-[admin/product-tags.ts:10](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/product-tags.ts#L10)
+[packages/medusa-js/src/resources/admin/product-tags.ts:10](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/product-tags.ts#L10)

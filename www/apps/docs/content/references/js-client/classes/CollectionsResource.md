@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: CollectionsResource
 
 ## Hierarchy
@@ -10,18 +14,18 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`StoreCollectionsListRes`\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCollectionsListRes`](../modules/internal-8.internal.md#storecollectionslistres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | `StoreGetCollectionsParams` | is optional. Can contain a limit and offset for the returned list |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `query?` | [`StoreGetCollectionsParams`](internal-8.internal.StoreGetCollectionsParams.md) | is optional. Can contain a limit and offset for the returned list |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`StoreCollectionsListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCollectionsListRes`](../modules/internal-8.internal.md#storecollectionslistres)\>
 
 **`Description`**
 
@@ -29,24 +33,24 @@ Retrieves a list of collections
 
 #### Defined in
 
-[collections.ts:28](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/collections.ts#L28)
+[packages/medusa-js/src/resources/collections.ts:28](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/collections.ts#L28)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`StoreCollectionsRes`\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCollectionsRes`](../modules/internal-8.internal.md#storecollectionsres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the collection |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`StoreCollectionsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCollectionsRes`](../modules/internal-8.internal.md#storecollectionsres)\>
 
 **`Description`**
 
@@ -54,4 +58,4 @@ Retrieves a single collection
 
 #### Defined in
 
-[collections.ts:17](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/collections.ts#L17)
+[packages/medusa-js/src/resources/collections.ts:17](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/collections.ts#L17)

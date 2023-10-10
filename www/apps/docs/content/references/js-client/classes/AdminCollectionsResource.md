@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminCollectionsResource
 
 ## Hierarchy
@@ -10,19 +14,19 @@
 
 ### addProducts
 
-▸ **addProducts**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminCollectionsRes`\>
+▸ **addProducts**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | the id of the Collection |
-| `payload` | `AdminPostProductsToCollectionReq` | an object which contains an array of Product IDs to add to the Product Collection |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `payload` | [`AdminPostProductsToCollectionReq`](internal-3.AdminPostProductsToCollectionReq.md) | an object which contains an array of Product IDs to add to the Product Collection |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`AdminCollectionsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
 
 **`Description`**
 
@@ -30,24 +34,24 @@ Updates products associated with a Product Collection
 
 #### Defined in
 
-[admin/collections.ts:101](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/collections.ts#L101)
+[packages/medusa-js/src/resources/admin/collections.ts:101](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L101)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminCollectionsRes`\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | `AdminPostCollectionsReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostCollectionsReq`](internal-3.AdminPostCollectionsReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminCollectionsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
 
 Created collection.
 
@@ -57,24 +61,24 @@ Creates a collection.
 
 #### Defined in
 
-[admin/collections.ts:23](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/collections.ts#L23)
+[packages/medusa-js/src/resources/admin/collections.ts:23](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L23)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): `ResponsePromise`<`DeleteResponse`\>
+▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of collection to delete. |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`DeleteResponse`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
 
 Deleted response
 
@@ -84,24 +88,24 @@ deletes a collection
 
 #### Defined in
 
-[admin/collections.ts:53](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/collections.ts#L53)
+[packages/medusa-js/src/resources/admin/collections.ts:53](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L53)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminCollectionsListRes`\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsListRes`](../modules/internal-3.md#admincollectionslistres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | `AdminGetCollectionsParams` | Query for searching collections |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `query?` | [`AdminGetCollectionsParams`](internal-3.AdminGetCollectionsParams.md) | Query for searching collections |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`AdminCollectionsListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsListRes`](../modules/internal-3.md#admincollectionslistres)\>
 
 a list of collections matching the query.
 
@@ -111,25 +115,25 @@ Lists collections matching a query
 
 #### Defined in
 
-[admin/collections.ts:81](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/collections.ts#L81)
+[packages/medusa-js/src/resources/admin/collections.ts:81](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L81)
 
 ___
 
 ### removeProducts
 
-▸ **removeProducts**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminDeleteProductsFromCollectionRes`\>
+▸ **removeProducts**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDeleteProductsFromCollectionRes`](../modules/internal-3.md#admindeleteproductsfromcollectionres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | the id of the Collection |
-| `payload` | `AdminDeleteProductsFromCollectionReq` | an object which contains an array of Product IDs to add to the Product Collection |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `payload` | [`AdminDeleteProductsFromCollectionReq`](internal-3.AdminDeleteProductsFromCollectionReq.md) | an object which contains an array of Product IDs to add to the Product Collection |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`AdminDeleteProductsFromCollectionRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDeleteProductsFromCollectionRes`](../modules/internal-3.md#admindeleteproductsfromcollectionres)\>
 
 **`Description`**
 
@@ -137,24 +141,24 @@ Removes products associated with a Product Collection
 
 #### Defined in
 
-[admin/collections.ts:116](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/collections.ts#L116)
+[packages/medusa-js/src/resources/admin/collections.ts:116](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L116)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`AdminCollectionsRes`\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the collection to retrieve. |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`AdminCollectionsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
 
 the collection with the given id
 
@@ -164,25 +168,25 @@ get a collection
 
 #### Defined in
 
-[admin/collections.ts:67](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/collections.ts#L67)
+[packages/medusa-js/src/resources/admin/collections.ts:67](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L67)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminCollectionsRes`\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the collection to update. |
-| `payload` | `AdminPostCollectionsCollectionReq` | update to apply to collection. |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `payload` | [`AdminPostCollectionsCollectionReq`](internal-3.AdminPostCollectionsCollectionReq.md) | update to apply to collection. |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`AdminCollectionsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCollectionsRes`](../modules/internal-3.md#admincollectionsres)\>
 
 the updated collection.
 
@@ -192,4 +196,4 @@ Updates a collection
 
 #### Defined in
 
-[admin/collections.ts:38](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/collections.ts#L38)
+[packages/medusa-js/src/resources/admin/collections.ts:38](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L38)

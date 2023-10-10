@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: ProductsResource
 
 ## Hierarchy
@@ -14,24 +18,24 @@
 
 #### Defined in
 
-[products.ts:14](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/products.ts#L14)
+[packages/medusa-js/src/resources/products.ts:14](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/products.ts#L14)
 
 ## Methods
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`StoreProductsListRes`\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreProductsListRes`](../modules/internal-8.internal.md#storeproductslistres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | `StoreGetProductsParams` | is optional. Can contain a limit and offset for the returned list |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `query?` | [`StoreGetProductsParams`](internal-8.internal.StoreGetProductsParams.md) | is optional. Can contain a limit and offset for the returned list |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`StoreProductsListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreProductsListRes`](../modules/internal-8.internal.md#storeproductslistres)\>
 
 **`Description`**
 
@@ -39,24 +43,24 @@ Retrieves a list of products
 
 #### Defined in
 
-[products.ts:50](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/products.ts#L50)
+[packages/medusa-js/src/resources/products.ts:50](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/products.ts#L50)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`StoreProductsRes`\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreProductsRes`](../modules/internal-8.internal.md#storeproductsres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | is required |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`StoreProductsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreProductsRes`](../modules/internal-8.internal.md#storeproductsres)\>
 
 **`Description`**
 
@@ -64,24 +68,24 @@ Retrieves a single Product
 
 #### Defined in
 
-[products.ts:22](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/products.ts#L22)
+[packages/medusa-js/src/resources/products.ts:22](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/products.ts#L22)
 
 ___
 
 ### search
 
-▸ **search**(`searchOptions`, `customHeaders?`): `ResponsePromise`<`StorePostSearchRes`\>
+▸ **search**(`searchOptions`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StorePostSearchRes`](../modules/internal-8.internal.md#storepostsearchres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `searchOptions` | `StorePostSearchReq` | is required |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `searchOptions` | [`StorePostSearchReq`](internal-8.internal.StorePostSearchReq.md) | is required |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`StorePostSearchRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StorePostSearchRes`](../modules/internal-8.internal.md#storepostsearchres)\>
 
 **`Description`**
 
@@ -89,4 +93,4 @@ Searches for products
 
 #### Defined in
 
-[products.ts:36](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/products.ts#L36)
+[packages/medusa-js/src/resources/products.ts:36](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/products.ts#L36)

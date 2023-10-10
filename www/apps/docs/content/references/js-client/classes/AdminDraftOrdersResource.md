@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminDraftOrdersResource
 
 ## Hierarchy
@@ -10,19 +14,19 @@
 
 ### addLineItem
 
-▸ **addLineItem**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminDraftOrdersRes`\>
+▸ **addLineItem**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | `AdminPostDraftOrdersDraftOrderLineItemsReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostDraftOrdersDraftOrderLineItemsReq`](internal-8.internal.AdminPostDraftOrdersDraftOrderLineItemsReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminDraftOrdersRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 **`Description`**
 
@@ -30,24 +34,24 @@ Add line item to draft order
 
 #### Defined in
 
-[admin/draft-orders.ts:30](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/draft-orders.ts#L30)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:30](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/draft-orders.ts#L30)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminDraftOrdersRes`\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | `AdminPostDraftOrdersReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostDraftOrdersReq`](internal-8.internal.AdminPostDraftOrdersReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminDraftOrdersRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 **`Description`**
 
@@ -55,24 +59,24 @@ Creates a draft order
 
 #### Defined in
 
-[admin/draft-orders.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/draft-orders.ts#L20)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:20](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/draft-orders.ts#L20)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): `ResponsePromise`<`DeleteResponse`\>
+▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`DeleteResponse`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
 
 **`Description`**
 
@@ -80,24 +84,24 @@ Delete draft order
 
 #### Defined in
 
-[admin/draft-orders.ts:42](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/draft-orders.ts#L42)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:42](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/draft-orders.ts#L42)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminDraftOrdersListRes`\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersListRes`](../modules/internal-8.internal.md#admindraftorderslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | `AdminGetDraftOrdersParams` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `query?` | [`AdminGetDraftOrdersParams`](internal-8.internal.AdminGetDraftOrdersParams.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminDraftOrdersListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersListRes`](../modules/internal-8.internal.md#admindraftorderslistres)\>
 
 **`Description`**
 
@@ -105,24 +109,24 @@ Lists draft orders
 
 #### Defined in
 
-[admin/draft-orders.ts:76](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/draft-orders.ts#L76)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:76](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/draft-orders.ts#L76)
 
 ___
 
 ### markPaid
 
-▸ **markPaid**(`id`, `customHeaders?`): `ResponsePromise`<`AdminPostDraftOrdersDraftOrderRegisterPaymentRes`\>
+▸ **markPaid**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminPostDraftOrdersDraftOrderRegisterPaymentRes`](../modules/internal-8.internal.md#adminpostdraftordersdraftorderregisterpaymentres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminPostDraftOrdersDraftOrderRegisterPaymentRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminPostDraftOrdersDraftOrderRegisterPaymentRes`](../modules/internal-8.internal.md#adminpostdraftordersdraftorderregisterpaymentres)\>
 
 **`Description`**
 
@@ -130,13 +134,13 @@ Mark a draft order as paid
 
 #### Defined in
 
-[admin/draft-orders.ts:93](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/draft-orders.ts#L93)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:93](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/draft-orders.ts#L93)
 
 ___
 
 ### removeLineItem
 
-▸ **removeLineItem**(`id`, `itemId`, `customHeaders?`): `ResponsePromise`<`AdminDraftOrdersRes`\>
+▸ **removeLineItem**(`id`, `itemId`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 #### Parameters
 
@@ -144,11 +148,11 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `itemId` | `string` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminDraftOrdersRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 **`Description`**
 
@@ -156,24 +160,24 @@ Remove line item
 
 #### Defined in
 
-[admin/draft-orders.ts:53](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/draft-orders.ts#L53)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:53](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/draft-orders.ts#L53)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`AdminDraftOrdersRes`\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminDraftOrdersRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 **`Description`**
 
@@ -181,25 +185,25 @@ Retrieves a draft order
 
 #### Defined in
 
-[admin/draft-orders.ts:65](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/draft-orders.ts#L65)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:65](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/draft-orders.ts#L65)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminDraftOrdersRes`\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | `AdminPostDraftOrdersDraftOrderReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostDraftOrdersDraftOrderReq`](internal-8.internal.AdminPostDraftOrdersDraftOrderReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminDraftOrdersRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 **`Description`**
 
@@ -207,13 +211,13 @@ Update draft order
 
 #### Defined in
 
-[admin/draft-orders.ts:104](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/draft-orders.ts#L104)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:104](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/draft-orders.ts#L104)
 
 ___
 
 ### updateLineItem
 
-▸ **updateLineItem**(`id`, `itemId`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminDraftOrdersRes`\>
+▸ **updateLineItem**(`id`, `itemId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 #### Parameters
 
@@ -221,12 +225,12 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `itemId` | `string` |
-| `payload` | `AdminPostDraftOrdersDraftOrderLineItemsItemReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostDraftOrdersDraftOrderLineItemsItemReq`](internal-8.internal.AdminPostDraftOrdersDraftOrderLineItemsItemReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminDraftOrdersRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminDraftOrdersRes`](../modules/internal-8.internal.md#admindraftordersres)\>
 
 **`Description`**
 
@@ -234,4 +238,4 @@ Update draft order line item
 
 #### Defined in
 
-[admin/draft-orders.ts:116](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/draft-orders.ts#L116)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:116](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/draft-orders.ts#L116)

@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: ReturnReasonsResource
 
 ## Hierarchy
@@ -10,7 +14,7 @@
 
 ### list
 
-▸ **list**(`customHeaders?`): `ResponsePromise`<`StoreReturnReasonsListRes`\>
+▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreReturnReasonsListRes`](../modules/internal-8.internal.md#storereturnreasonslistres)\>
 
 Lists return reasons defined in Medusa Admin
 
@@ -18,32 +22,32 @@ Lists return reasons defined in Medusa Admin
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`StoreReturnReasonsListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreReturnReasonsListRes`](../modules/internal-8.internal.md#storereturnreasonslistres)\>
 
 #### Defined in
 
-[return-reasons.ts:25](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/return-reasons.ts#L25)
+[packages/medusa-js/src/resources/return-reasons.ts:25](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/return-reasons.ts#L25)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`StoreReturnReasonsRes`\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreReturnReasonsRes`](../modules/internal-8.internal.md#storereturnreasonsres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | is required |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`StoreReturnReasonsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreReturnReasonsRes`](../modules/internal-8.internal.md#storereturnreasonsres)\>
 
 **`Description`**
 
@@ -51,4 +55,4 @@ Retrieves a single Return Reason
 
 #### Defined in
 
-[return-reasons.ts:15](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/return-reasons.ts#L15)
+[packages/medusa-js/src/resources/return-reasons.ts:15](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/return-reasons.ts#L15)

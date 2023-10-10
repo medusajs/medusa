@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminStockLocationsResource
 
 ## Hierarchy
@@ -10,7 +14,7 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`AdminStockLocationsRes`\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStockLocationsRes`](../modules/internal-8.internal.md#adminstocklocationsres)\>
 
 Create a Stock Location
  This feature is under development and may change in the future.
@@ -20,12 +24,12 @@ To use this feature please install @medusajs/stock-location
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | `AdminPostStockLocationsReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostStockLocationsReq`](internal-8.internal.AdminPostStockLocationsReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminStockLocationsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStockLocationsRes`](../modules/internal-8.internal.md#adminstocklocationsres)\>
 
 a medusa Stock Location
 
@@ -35,13 +39,13 @@ gets a medusa Stock Location
 
 #### Defined in
 
-[admin/stock-locations.ts:21](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/stock-locations.ts#L21)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:21](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/stock-locations.ts#L21)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): `ResponsePromise`<`DeleteResponse`\>
+▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.md#deleteresponse)\>
 
 Delete a Stock Location
  This feature is under development and may change in the future.
@@ -52,11 +56,11 @@ To use this feature please install @medusajs/stock-location
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`DeleteResponse`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.md#deleteresponse)\>
 
 **`Description`**
 
@@ -64,13 +68,13 @@ deletes a Stock Location
 
 #### Defined in
 
-[admin/stock-locations.ts:66](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/stock-locations.ts#L66)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:66](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/stock-locations.ts#L66)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminStockLocationsListRes`\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStockLocationsListRes`](../modules/internal-8.internal.md#adminstocklocationslistres)\>
 
 Retrieve a list of Stock Locations
  This feature is under development and may change in the future.
@@ -80,12 +84,12 @@ To use this feature please install @medusajs/stock-location
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | `AdminGetStockLocationsParams` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `query?` | [`AdminGetStockLocationsParams`](internal-8.internal.AdminGetStockLocationsParams.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminStockLocationsListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStockLocationsListRes`](../modules/internal-8.internal.md#adminstocklocationslistres)\>
 
 the list of Stock Locations as well as the pagination properties
 
@@ -95,13 +99,13 @@ Retrieve a list of Stock Locations
 
 #### Defined in
 
-[admin/stock-locations.ts:81](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/stock-locations.ts#L81)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:81](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/stock-locations.ts#L81)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`itemId`, `customHeaders?`): `ResponsePromise`<`AdminStockLocationsRes`\>
+▸ **retrieve**(`itemId`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStockLocationsRes`](../modules/internal-8.internal.md#adminstocklocationsres)\>
 
 Retrieve a Stock Location
  This feature is under development and may change in the future.
@@ -112,11 +116,11 @@ To use this feature please install @medusajs/stock-location
 | Name | Type |
 | :------ | :------ |
 | `itemId` | `string` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminStockLocationsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStockLocationsRes`](../modules/internal-8.internal.md#adminstocklocationsres)\>
 
 a medusa Stock Location
 
@@ -126,13 +130,13 @@ gets a medusa Stock Location
 
 #### Defined in
 
-[admin/stock-locations.ts:36](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/stock-locations.ts#L36)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:36](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/stock-locations.ts#L36)
 
 ___
 
 ### update
 
-▸ **update**(`stockLocationId`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminStockLocationsRes`\>
+▸ **update**(`stockLocationId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStockLocationsRes`](../modules/internal-8.internal.md#adminstocklocationsres)\>
 
 Update a Stock Location
  This feature is under development and may change in the future.
@@ -143,12 +147,12 @@ To use this feature please install @medusajs/stock-location
 | Name | Type |
 | :------ | :------ |
 | `stockLocationId` | `string` |
-| `payload` | `AdminPostStockLocationsLocationReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`AdminPostStockLocationsLocationReq`](internal-8.internal.AdminPostStockLocationsLocationReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminStockLocationsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminStockLocationsRes`](../modules/internal-8.internal.md#adminstocklocationsres)\>
 
 the updated medusa Stock Location
 
@@ -158,4 +162,4 @@ updates a Stock Location
 
 #### Defined in
 
-[admin/stock-locations.ts:51](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/stock-locations.ts#L51)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:51](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/stock-locations.ts#L51)

@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: SwapsResource
 
 ## Hierarchy
@@ -10,18 +14,18 @@
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): `ResponsePromise`<`StoreSwapsRes`\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-8.internal.md#storeswapsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | `StorePostSwapsReq` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`StorePostSwapsReq`](internal-8.internal.StorePostSwapsReq.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`StoreSwapsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-8.internal.md#storeswapsres)\>
 
 **`Description`**
 
@@ -29,24 +33,24 @@ Creates a swap from a cart
 
 #### Defined in
 
-[swaps.ts:12](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/swaps.ts#L12)
+[packages/medusa-js/src/resources/swaps.ts:12](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/swaps.ts#L12)
 
 ___
 
 ### retrieveByCartId
 
-▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): `ResponsePromise`<`StoreSwapsRes`\>
+▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-8.internal.md#storeswapsres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cart_id` | `string` | id of cart |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`StoreSwapsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-8.internal.md#storeswapsres)\>
 
 **`Description`**
 
@@ -54,4 +58,4 @@ Retrieves a swap by cart id
 
 #### Defined in
 
-[swaps.ts:23](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/swaps.ts#L23)
+[packages/medusa-js/src/resources/swaps.ts:23](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/swaps.ts#L23)

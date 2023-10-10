@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminCustomResource
 
 ## Hierarchy
@@ -10,7 +14,7 @@
 
 ### delete
 
-▸ **delete**<`TResponse`\>(`path`, `options?`, `customHeaders?`): `ResponsePromise`<`TResponse`\>
+▸ **delete**<`TResponse`\>(`path`, `options?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<`TResponse`\>
 
 #### Type parameters
 
@@ -23,28 +27,28 @@
 | Name | Type |
 | :------ | :------ |
 | `path` | `string` |
-| `options?` | `RequestOptions` |
-| `customHeaders?` | `Record`<`string`, `any`\> |
+| `options?` | [`RequestOptions`](../interfaces/internal-5.RequestOptions.md) |
+| `customHeaders?` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`TResponse`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<`TResponse`\>
 
 #### Defined in
 
-[admin/custom.ts:47](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/custom.ts#L47)
+[packages/medusa-js/src/resources/admin/custom.ts:47](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/custom.ts#L47)
 
 ___
 
 ### get
 
-▸ **get**<`TQuery`, `TResponse`\>(`path`, `query?`, `options?`, `customHeaders?`): `ResponsePromise`<`TResponse`\>
+▸ **get**<`TQuery`, `TResponse`\>(`path`, `query?`, `options?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<`TResponse`\>
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `TQuery` | extends `Record`<`string`, `any`\> |
+| `TQuery` | extends [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 | `TResponse` | `any` |
 
 #### Parameters
@@ -53,28 +57,28 @@ ___
 | :------ | :------ |
 | `path` | `string` |
 | `query?` | `TQuery` |
-| `options?` | `RequestOptions` |
-| `customHeaders?` | `Record`<`string`, `any`\> |
+| `options?` | [`RequestOptions`](../interfaces/internal-5.RequestOptions.md) |
+| `customHeaders?` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`TResponse`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<`TResponse`\>
 
 #### Defined in
 
-[admin/custom.ts:8](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/custom.ts#L8)
+[packages/medusa-js/src/resources/admin/custom.ts:8](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/custom.ts#L8)
 
 ___
 
 ### post
 
-▸ **post**<`TPayload`, `TResponse`\>(`path`, `payload?`, `options?`, `customHeaders?`): `ResponsePromise`<`TResponse`\>
+▸ **post**<`TPayload`, `TResponse`\>(`path`, `payload?`, `options?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<`TResponse`\>
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `TPayload` | extends `Record`<`string`, `any`\> |
+| `TPayload` | extends [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 | `TResponse` | `any` |
 
 #### Parameters
@@ -83,13 +87,13 @@ ___
 | :------ | :------ |
 | `path` | `string` |
 | `payload?` | `TPayload` |
-| `options?` | `RequestOptions` |
-| `customHeaders?` | `Record`<`string`, `any`\> |
+| `options?` | [`RequestOptions`](../interfaces/internal-5.RequestOptions.md) |
+| `customHeaders?` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`TResponse`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<`TResponse`\>
 
 #### Defined in
 
-[admin/custom.ts:30](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/custom.ts#L30)
+[packages/medusa-js/src/resources/admin/custom.ts:30](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/custom.ts#L30)

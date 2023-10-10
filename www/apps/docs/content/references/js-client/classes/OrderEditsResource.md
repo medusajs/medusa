@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: OrderEditsResource
 
 ## Hierarchy
@@ -17,7 +21,7 @@
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
@@ -25,7 +29,7 @@
 
 #### Defined in
 
-[order-edits.ts:26](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/order-edits.ts#L26)
+[packages/medusa-js/src/resources/order-edits.ts:26](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/order-edits.ts#L26)
 
 ___
 
@@ -38,8 +42,8 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | `StorePostOrderEditsOrderEditDecline` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `payload` | [`StorePostOrderEditsOrderEditDecline`](internal-8.internal.StorePostOrderEditsOrderEditDecline.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
@@ -47,25 +51,25 @@ ___
 
 #### Defined in
 
-[order-edits.ts:17](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/order-edits.ts#L17)
+[packages/medusa-js/src/resources/order-edits.ts:17](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/order-edits.ts#L17)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): `ResponsePromise`<`StoreOrderEditsRes`\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreOrderEditsRes`](../modules/internal-8.internal.md#storeordereditsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`StoreOrderEditsRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreOrderEditsRes`](../modules/internal-8.internal.md#storeordereditsres)\>
 
 #### Defined in
 
-[order-edits.ts:9](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/order-edits.ts#L9)
+[packages/medusa-js/src/resources/order-edits.ts:9](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/order-edits.ts#L9)

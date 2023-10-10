@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminCurrenciesResource
 
 ## Hierarchy
@@ -10,18 +14,18 @@
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): `ResponsePromise`<`AdminCurrenciesListRes`\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCurrenciesListRes`](../modules/internal-4.md#admincurrencieslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | `AdminGetCurrenciesParams` |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `query?` | [`AdminGetCurrenciesParams`](internal-4.AdminGetCurrenciesParams.md) |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`ResponsePromise`<`AdminCurrenciesListRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCurrenciesListRes`](../modules/internal-4.md#admincurrencieslistres)\>
 
 the list of currencies as well as the pagination properties.
 
@@ -33,25 +37,25 @@ To use this feature please enable featureflag `tax_inclusive_pricing` in your me
 
 #### Defined in
 
-[admin/currencies.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/currencies.ts#L20)
+[packages/medusa-js/src/resources/admin/currencies.ts:20](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/currencies.ts#L20)
 
 ___
 
 ### update
 
-▸ **update**(`code`, `payload`, `customHeaders?`): `ResponsePromise`<`AdminCurrenciesRes`\>
+▸ **update**(`code`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCurrenciesRes`](../modules/internal-4.md#admincurrenciesres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `code` | `string` | code of the currency to update. |
-| `payload` | `AdminPostCurrenciesCurrencyReq` | update to apply to currency. |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `payload` | [`AdminPostCurrenciesCurrencyReq`](internal-4.AdminPostCurrenciesCurrencyReq.md) | update to apply to currency. |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`ResponsePromise`<`AdminCurrenciesRes`\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCurrenciesRes`](../modules/internal-4.md#admincurrenciesres)\>
 
 the updated currency.
 
@@ -63,4 +67,4 @@ To use this feature please enable featureflag `tax_inclusive_pricing` in your me
 
 #### Defined in
 
-[admin/currencies.ts:43](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa-js/src/resources/admin/currencies.ts#L43)
+[packages/medusa-js/src/resources/admin/currencies.ts:43](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/currencies.ts#L43)
