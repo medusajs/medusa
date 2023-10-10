@@ -9,7 +9,7 @@ export type SharedContext = {
  * @internal The interface tag is used to ensure that the type is documented similar to interfaces.
  * @interface
  * 
- * A shared context object that is used to share resources between modules.
+ * A shared context object that is used to share resources between the application and the module.
  * 
  * @prop transactionManager - An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.
  * @prop manager - An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.
