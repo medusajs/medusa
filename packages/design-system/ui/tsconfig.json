@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "lib": ["DOM", "ESNext", "DOM.Iterable"],
+    "jsx": "react",
+    "module": "ES2020",
+    "moduleResolution": "Node",
+    "sourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@medusajs/ui": ["./src/index.tsx"],
+      "@/components/*": ["./src/components/*"],
+      "@/providers/*": ["./src/providers/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/types": ["./src/types"]
+    }
+  },
+  "include": ["src", ".eslintrc.js"],
+  "exclude": ["storybook-static", "node_modules", "dist", "build"]
+}
