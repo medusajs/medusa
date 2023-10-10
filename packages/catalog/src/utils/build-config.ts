@@ -8,9 +8,12 @@ import { toCamelCase } from "@medusajs/utils"
 import { JoinerServiceConfigAlias } from "@medusajs/types"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 
-const CustomDirectives = {
+export const CustomDirectives = {
   Listeners: {
+    configurationPropertyName: "listeners",
+    isRequired: true,
     name: "Listeners",
+    directive: "@Listeners",
     definition: "directive @Listeners (values: [String!]) on OBJECT",
   },
 }
@@ -151,14 +154,17 @@ function retrieveLinkModuleAndAlias(
 ) {
   let relatedModule
   let alias
+  let entityName
 
   for (const moduleJoinerConfig of moduleJoinerConfigs.filter(
     (config) => config.isLink
   )) {
-    const linkRelationShip = moduleJoinerConfig.relationships
+    const linkPrimary = moduleJoinerConfig.relationships[0]
+    const linkForeign = moduleJoinerConfig.relationships[1]
+
     if (
-      linkRelationShip[0].serviceName === parentEntityServiceName &&
-      linkRelationShip[1].serviceName === entityServiceName
+      linkPrimary.serviceName === parentEntityServiceName &&
+      linkForeign.serviceName === entityServiceName
     ) {
       relatedModule = moduleJoinerConfig
       alias = moduleJoinerConfig.alias[0].name
@@ -186,16 +192,30 @@ function getObjectConfigurationRef(entityName, { objectConfigurationRef }) {
   })
 }
 
-function setListeners(currentObjectConfigurationRef, listenerDirective) {
-  if (!listenerDirective) {
-    throw new Error(
-      `CatalogModule error, the type ${currentObjectConfigurationRef.entity} defined in the schema is missing the @Listeners directive to specify which events to listen to in order to sync the data`
+function setCustomDirectives(currentObjectConfigurationRef, directives) {
+  for (const customDirectiveConfiguration of Object.values(CustomDirectives)) {
+    const directive = directives.find(
+      (typeDirective) =>
+        typeDirective.name.value === customDirectiveConfiguration.name
+    )
+
+    if (!directive) {
+      if (customDirectiveConfiguration.isRequired) {
+        throw new Error(
+          `CatalogModule error, the type ${currentObjectConfigurationRef.entity} defined in the schema is missing the ${customDirectiveConfiguration.directive} directive which is required`
+        )
+      }
+
+      return
+    }
+
+    // Only support array directive value for now
+    currentObjectConfigurationRef[
+      customDirectiveConfiguration.configurationPropertyName
+    ] = ((directive.arguments[0].value as any)?.values ?? []).map(
+      (v) => v.value
     )
   }
-
-  currentObjectConfigurationRef.listeners = (
-    (listenerDirective?.arguments?.[0].value as any)?.values ?? []
-  ).map((v) => v.value)
 }
 
 function processEntity(
@@ -211,14 +231,13 @@ function processEntity(
   })
 
   /**
-   * Retrieve and set the listeners for the current entity from the listeners directive.
+   * Retrieve and set the custom directives for the current entity.
    */
 
-  const listenerDirective = entitiesMap[entityName].astNode?.directives?.find(
-    (directive: any) => directive.name.value === CustomDirectives.Listeners.name
+  setCustomDirectives(
+    currentObjectConfigurationRef,
+    entitiesMap[entityName].astNode?.directives ?? []
   )
-
-  setListeners(currentObjectConfigurationRef, listenerDirective)
 
   currentObjectConfigurationRef.fields = getFieldsAndRelations(
     entitiesMap,
@@ -427,13 +446,17 @@ export function buildFullConfigurationFromSchema(schema) {
 
   const objectConfiguration = {}
 
-  Object.keys(entitiesMap).forEach((entityName) =>
+  Object.keys(entitiesMap).forEach((entityName) => {
+    if (!entitiesMap[entityName].astNode) {
+      return
+    }
+
     processEntity(entityName, {
       entitiesMap,
       moduleJoinerConfigs,
       objectConfigurationRef: objectConfiguration,
     })
-  )
+  })
 
   return objectConfiguration
 }
