@@ -1,0 +1,41 @@
+{{#if (sectionEnabled "members_group_categories")}}
+
+{{#if categories}}
+
+{{#each categories}}
+
+{{#unless @first}}
+___
+{{/unless}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+## {{title}} {{../title}}
+
+{{/unless}}
+
+{{#each children}}
+
+{{> member}}
+
+{{/each}}
+
+{{/each}}
+
+{{else}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+## {{title}}
+
+{{/unless}}
+
+{{#each children}}
+
+{{> member}}
+
+{{/each}}
+
+{{/if}}
+
+{{/if}}

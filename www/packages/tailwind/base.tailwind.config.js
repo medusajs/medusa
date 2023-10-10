@@ -433,7 +433,7 @@ module.exports = {
           },
         ],
       },
-      keyframes: {
+      keyframes: ({ theme }) => ({
         fadeIn: {
           from: { opacity: 0 },
           to: { opacity: 1 },
@@ -459,6 +459,63 @@ module.exports = {
             transform: "scale3d(1, 1, 1)",
           },
         },
+        fadeInDown: {
+          from: {
+            opacity: "0",
+            transform: "translate3d(0, -100%, 0)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        fadeInLeft: {
+          from: {
+            opacity: "0",
+            transform: "translate3d(-100%, 0, 0)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        fadeInRight: {
+          from: {
+            opacity: "0",
+            transform: "translate3d(100%, 0, 0)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        fadeOutUp: {
+          from: {
+            opacity: "1",
+          },
+          to: {
+            opacity: "0",
+            transform: "translate3d(0, -100%, 0)",
+          },
+        },
+        fadeOutLeft: {
+          from: {
+            opacity: "1",
+          },
+          to: {
+            opacity: "0",
+            transform: "translate3d(-100%, 0, 0)",
+          },
+        },
+        fadeOutRight: {
+          from: {
+            opacity: "1",
+          },
+          to: {
+            opacity: "0",
+            transform: "translate3d(100%, 0, 0)",
+          },
+        },
         slideInRight: {
           from: {
             transform: "translate3d(100%, 0, 0)",
@@ -477,13 +534,48 @@ module.exports = {
             transform: "translate3d(100%, 0, 0)",
           },
         },
-      },
+        slideInLeft: {
+          from: {
+            transform: "translate3d(-100%, 0, 0)",
+            visibility: "visible",
+          },
+          to: {
+            transform: "translate3d(0, 0, 0)",
+          },
+        },
+        slideOutLeft: {
+          from: {
+            transform: "translate3d(0, 0, 0)",
+          },
+          to: {
+            visibility: "hidden",
+            transform: "translate3d(-100%, 0, 0)",
+          },
+        },
+        pulsingDots: {
+          "0%": {
+            opacity: 1,
+          },
+          "100%": {
+            opacity: 0.3,
+          },
+        },
+      }),
       animation: {
         fadeIn: "fadeIn 500ms",
         fadeOut: "fadeOut 500ms",
+        fadeInDown: "fadeInDown 500ms",
+        fadeInLeft: "fadeInLeft 500ms",
+        fadeInRight: "fadeInRight 500ms",
+        fadeOutUp: "fadeOutUp 500ms",
+        fadeOutLeft: "fadeOutLeft 500ms",
+        fadeOutRight: "fadeOutRight 500ms",
         tada: "tada 1s",
         slideInRight: "slideInRight 500ms",
         slideOutRight: "slideOutRight 500ms",
+        slideInLeft: "slideInLeft 500ms",
+        slideOutLeft: "slideOutLeft 500ms",
+        pulsingDots: "pulsingDots 1s alternate infinite",
       },
     },
     fontFamily: {
@@ -559,39 +651,65 @@ module.exports = {
       "toc-dark": "url('/img/side-menu.svg')",
     },
   },
+  animationDelay: {
+    0: "0ms",
+    200: "200ms",
+    400: "400ms",
+  },
   plugins: [
-    plugin(({ addBase, addVariant, addUtilities, addComponents, theme }) => {
-      addBase(presets)
-      addVariant("search-cancel", "&::-webkit-search-cancel-button")
-      addUtilities({
-        ".animation-fill-forwards": {
-          animationFillMode: "forwards",
-        },
-        ".animate-fast": {
-          animationDuration: "300ms",
-        },
-        ".clip": {
-          clipPath: "inset(0)",
-        },
-        ".no-marker": {
-          "&::-webkit-details-marker": {
-            display: "none",
+    plugin(
+      ({
+        addBase,
+        addVariant,
+        addUtilities,
+        addComponents,
+        matchUtilities,
+        theme,
+      }) => {
+        addBase(presets)
+        addVariant("search-cancel", "&::-webkit-search-cancel-button")
+        addUtilities({
+          ".animation-fill-forwards": {
+            animationFillMode: "forwards",
           },
-        },
-      })
-      addComponents({
-        ".btn-secondary-icon": {
-          padding: "4px !important",
-        },
-        "btn-clear": {
-          backgroundColor: "transparent",
-          boxShadow: theme("shadow.none"),
-          borderWidth: 0,
-          borderColor: "transparent",
-          outlineColor: "transparent",
-          cursor: "pointer",
-        },
-      })
-    }),
+          ".animate-fast": {
+            animationDuration: "300ms",
+          },
+          ".clip": {
+            clipPath: "inset(0)",
+          },
+          ".no-marker": {
+            "&::-webkit-details-marker": {
+              display: "none",
+            },
+          },
+        })
+        addComponents({
+          ".btn-secondary-icon": {
+            padding: "4px !important",
+          },
+          "btn-clear": {
+            backgroundColor: "transparent",
+            boxShadow: theme("shadow.none"),
+            borderWidth: 0,
+            borderColor: "transparent",
+            outlineColor: "transparent",
+            cursor: "pointer",
+          },
+          ".grecaptcha-badge": {
+            visibility: "hidden",
+          },
+        })
+
+        matchUtilities(
+          {
+            "animation-delay": (value) => ({
+              animationDelay: value,
+            }),
+          },
+          { values: theme("animationDelay") }
+        )
+      }
+    ),
   ],
 }
