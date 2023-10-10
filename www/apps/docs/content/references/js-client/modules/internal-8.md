@@ -1709,7 +1709,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:81
+packages/types/dist/common/common.d.ts:97
 
 ___
 
@@ -1846,7 +1846,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:34
+packages/types/dist/common/common.d.ts:50
 
 ___
 
@@ -3943,7 +3943,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:76
+packages/types/dist/common/common.d.ts:92
 
 ___
 

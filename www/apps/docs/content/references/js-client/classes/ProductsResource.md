@@ -18,7 +18,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/products.ts:14](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/products.ts#L14)
+[packages/medusa-js/src/resources/products.ts:14](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/products.ts#L14)
 
 ## Methods
 
@@ -43,7 +43,7 @@ Retrieves a list of products
 
 #### Defined in
 
-[packages/medusa-js/src/resources/products.ts:50](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/products.ts#L50)
+[packages/medusa-js/src/resources/products.ts:50](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/products.ts#L50)
 
 ___
 
@@ -68,7 +68,7 @@ Retrieves a single Product
 
 #### Defined in
 
-[packages/medusa-js/src/resources/products.ts:22](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/products.ts#L22)
+[packages/medusa-js/src/resources/products.ts:22](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/products.ts#L22)
 
 ___
 
@@ -93,4 +93,4 @@ Searches for products
 
 #### Defined in
 
-[packages/medusa-js/src/resources/products.ts:36](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/products.ts#L36)
+[packages/medusa-js/src/resources/products.ts:36](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/products.ts#L36)

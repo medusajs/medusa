@@ -29,7 +29,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/notifications.ts:12](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/notifications.ts#L12)
+[packages/medusa-js/src/resources/admin/notifications.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/notifications.ts#L12)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/notifications.ts:26](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/notifications.ts#L26)
+[packages/medusa-js/src/resources/admin/notifications.ts:26](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/notifications.ts#L26)

@@ -270,7 +270,7 @@ This will be
 
 **`Deprecated`**
 
-in the near future use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+in the near future use createPayment(context: `Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
 
 #### Defined in
 

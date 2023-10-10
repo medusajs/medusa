@@ -33,7 +33,7 @@ Retrieves a list of product categories
 
 #### Defined in
 
-[packages/medusa-js/src/resources/product-categories.ts:40](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/product-categories.ts#L40)
+[packages/medusa-js/src/resources/product-categories.ts:40](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/product-categories.ts#L40)
 
 ___
 
@@ -59,4 +59,4 @@ Retrieves a single product category
 
 #### Defined in
 
-[packages/medusa-js/src/resources/product-categories.ts:19](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/product-categories.ts#L19)
+[packages/medusa-js/src/resources/product-categories.ts:19](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/product-categories.ts#L19)

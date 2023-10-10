@@ -35,7 +35,7 @@ Creates a return reason.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/return-reasons.ts:18](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/return-reasons.ts#L18)
+[packages/medusa-js/src/resources/admin/return-reasons.ts:18](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/return-reasons.ts#L18)
 
 ___
 
@@ -62,7 +62,7 @@ deletes a return reason
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/return-reasons.ts:48](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/return-reasons.ts#L48)
+[packages/medusa-js/src/resources/admin/return-reasons.ts:48](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/return-reasons.ts#L48)
 
 ___
 
@@ -88,7 +88,7 @@ Lists return reasons matching a query
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/return-reasons.ts:75](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/return-reasons.ts#L75)
+[packages/medusa-js/src/resources/admin/return-reasons.ts:75](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/return-reasons.ts#L75)
 
 ___
 
@@ -115,7 +115,7 @@ retrieves a return reason
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/return-reasons.ts:62](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/return-reasons.ts#L62)
+[packages/medusa-js/src/resources/admin/return-reasons.ts:62](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/return-reasons.ts#L62)
 
 ___
 
@@ -143,4 +143,4 @@ Updates a return reason
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/return-reasons.ts:33](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/return-reasons.ts#L33)
+[packages/medusa-js/src/resources/admin/return-reasons.ts:33](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/return-reasons.ts#L33)

@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:107
+packages/types/dist/common/common.d.ts:123
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:108
+packages/types/dist/common/common.d.ts:124
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:106
+packages/types/dist/common/common.d.ts:122
 
 ___
 
@@ -44,4 +44,4 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:109
+packages/types/dist/common/common.d.ts:125

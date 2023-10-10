@@ -29,7 +29,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/swaps.ts#L19)
+[packages/medusa-js/src/resources/admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/swaps.ts#L19)
 
 ___
 
@@ -50,4 +50,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/swaps.ts#L11)
+[packages/medusa-js/src/resources/admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/swaps.ts#L11)

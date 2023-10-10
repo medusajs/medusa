@@ -39,7 +39,7 @@ To use this feature please install @medusajs/inventory
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/reservations.ts:57](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L57)
+[packages/medusa-js/src/resources/admin/reservations.ts:57](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/reservations.ts#L57)
 
 ___
 
@@ -70,7 +70,7 @@ To use this feature please install @medusajs/inventory
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/reservations.ts:88](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L88)
+[packages/medusa-js/src/resources/admin/reservations.ts:88](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/reservations.ts#L88)
 
 ___
 
@@ -101,7 +101,7 @@ Lists reservations
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/reservations.ts:36](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L36)
+[packages/medusa-js/src/resources/admin/reservations.ts:36](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/reservations.ts#L36)
 
 ___
 
@@ -132,7 +132,7 @@ gets a reservation
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/reservations.ts:21](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L21)
+[packages/medusa-js/src/resources/admin/reservations.ts:21](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/reservations.ts#L21)
 
 ___
 
@@ -164,4 +164,4 @@ To use this feature please install @medusajs/inventory
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/reservations.ts:72](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/reservations.ts#L72)
+[packages/medusa-js/src/resources/admin/reservations.ts:72](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/reservations.ts#L72)

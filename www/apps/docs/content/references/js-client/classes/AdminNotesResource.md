@@ -29,7 +29,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/notes.ts:14](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/notes.ts#L14)
+[packages/medusa-js/src/resources/admin/notes.ts:14](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/notes.ts#L14)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/notes.ts:31](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/notes.ts#L31)
+[packages/medusa-js/src/resources/admin/notes.ts:31](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/notes.ts#L31)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/notes.ts:47](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/notes.ts#L47)
+[packages/medusa-js/src/resources/admin/notes.ts:47](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/notes.ts#L47)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/notes.ts:39](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/notes.ts#L39)
+[packages/medusa-js/src/resources/admin/notes.ts:39](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/notes.ts#L39)
 
 ___
 
@@ -114,4 +114,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/notes.ts:22](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/notes.ts#L22)
+[packages/medusa-js/src/resources/admin/notes.ts:22](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/notes.ts#L22)

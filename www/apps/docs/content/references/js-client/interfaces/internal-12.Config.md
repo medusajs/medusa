@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:18](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/request.ts#L18)
+[packages/medusa-js/src/request.ts:18](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L18)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:16](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/request.ts#L16)
+[packages/medusa-js/src/request.ts:16](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L16)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:20](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/request.ts#L20)
+[packages/medusa-js/src/request.ts:20](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L20)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:17](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/request.ts#L17)
+[packages/medusa-js/src/request.ts:17](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L17)
 
 ___
 
@@ -54,4 +54,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:19](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/request.ts#L19)
+[packages/medusa-js/src/request.ts:19](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L19)

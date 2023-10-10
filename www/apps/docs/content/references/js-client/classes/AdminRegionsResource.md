@@ -36,7 +36,7 @@ adds a country to the list of countries in a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:103](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L103)
+[packages/medusa-js/src/resources/admin/regions.ts:103](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L103)
 
 ___
 
@@ -64,7 +64,7 @@ adds a fulfillment provider to a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:135](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L135)
+[packages/medusa-js/src/resources/admin/regions.ts:135](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L135)
 
 ___
 
@@ -92,7 +92,7 @@ adds a payment provider to a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:181](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L181)
+[packages/medusa-js/src/resources/admin/regions.ts:181](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L181)
 
 ___
 
@@ -119,7 +119,7 @@ creates a region.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:24](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L24)
+[packages/medusa-js/src/resources/admin/regions.ts:24](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L24)
 
 ___
 
@@ -146,7 +146,7 @@ deletes a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:54](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L54)
+[packages/medusa-js/src/resources/admin/regions.ts:54](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L54)
 
 ___
 
@@ -174,7 +174,7 @@ remove a country from a region's list of coutnries
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:119](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L119)
+[packages/medusa-js/src/resources/admin/regions.ts:119](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L119)
 
 ___
 
@@ -202,7 +202,7 @@ remove a fulfillment provider from a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:151](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L151)
+[packages/medusa-js/src/resources/admin/regions.ts:151](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L151)
 
 ___
 
@@ -230,7 +230,7 @@ removes a payment provider from a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:197](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L197)
+[packages/medusa-js/src/resources/admin/regions.ts:197](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L197)
 
 ___
 
@@ -257,7 +257,7 @@ lists regions matching a query
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:82](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L82)
+[packages/medusa-js/src/resources/admin/regions.ts:82](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L82)
 
 ___
 
@@ -284,7 +284,7 @@ get a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:68](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L68)
+[packages/medusa-js/src/resources/admin/regions.ts:68](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L68)
 
 ___
 
@@ -311,7 +311,7 @@ retrieves the list of fulfillment options available in a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:166](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L166)
+[packages/medusa-js/src/resources/admin/regions.ts:166](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L166)
 
 ___
 
@@ -339,4 +339,4 @@ updates a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/regions.ts:39](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/regions.ts#L39)
+[packages/medusa-js/src/resources/admin/regions.ts:39](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/regions.ts#L39)

@@ -24,7 +24,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/uploads.ts:12](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/uploads.ts#L12)
+[packages/medusa-js/src/resources/admin/uploads.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/uploads.ts#L12)
 
 ## Methods
 
@@ -44,7 +44,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/uploads.ts:62](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/uploads.ts#L62)
+[packages/medusa-js/src/resources/admin/uploads.ts:62](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/uploads.ts#L62)
 
 ___
 
@@ -70,7 +70,7 @@ Uploads at least one file to the specific fileservice that is installed in Medus
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/uploads.ts:21](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/uploads.ts#L21)
+[packages/medusa-js/src/resources/admin/uploads.ts:21](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/uploads.ts#L21)
 
 ___
 
@@ -96,7 +96,7 @@ Uploads at least one file with ACL or a non-public bucket to the specific filese
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/uploads.ts:34](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/uploads.ts#L34)
+[packages/medusa-js/src/resources/admin/uploads.ts:34](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/uploads.ts#L34)
 
 ___
 
@@ -117,7 +117,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/uploads.ts:44](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/uploads.ts#L44)
+[packages/medusa-js/src/resources/admin/uploads.ts:44](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/uploads.ts#L44)
 
 ___
 
@@ -138,4 +138,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/uploads.ts:53](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/uploads.ts#L53)
+[packages/medusa-js/src/resources/admin/uploads.ts:53](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/uploads.ts#L53)

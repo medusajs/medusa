@@ -32,7 +32,7 @@ Add multiple customers to a customer group.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customer-groups.ts:112](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/customer-groups.ts#L112)
+[packages/medusa-js/src/resources/admin/customer-groups.ts:112](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customer-groups.ts#L112)
 
 ___
 
@@ -55,7 +55,7 @@ Create a customer group.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customer-groups.ts:26](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/customer-groups.ts#L26)
+[packages/medusa-js/src/resources/admin/customer-groups.ts:26](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customer-groups.ts#L26)
 
 ___
 
@@ -78,7 +78,7 @@ Deletes a customer group.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customer-groups.ts:77](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/customer-groups.ts#L77)
+[packages/medusa-js/src/resources/admin/customer-groups.ts:77](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customer-groups.ts#L77)
 
 ___
 
@@ -101,7 +101,7 @@ Lists customer groups.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customer-groups.ts:91](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/customer-groups.ts#L91)
+[packages/medusa-js/src/resources/admin/customer-groups.ts:91](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customer-groups.ts#L91)
 
 ___
 
@@ -125,7 +125,7 @@ List and count customers that belong to provided customer groups.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customer-groups.ts:144](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/customer-groups.ts#L144)
+[packages/medusa-js/src/resources/admin/customer-groups.ts:144](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customer-groups.ts#L144)
 
 ___
 
@@ -149,7 +149,7 @@ Remove multiple customers from a customer group.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customer-groups.ts:128](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/customer-groups.ts#L128)
+[packages/medusa-js/src/resources/admin/customer-groups.ts:128](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customer-groups.ts#L128)
 
 ___
 
@@ -173,7 +173,7 @@ Retrieves a customer group.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customer-groups.ts:41](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/customer-groups.ts#L41)
+[packages/medusa-js/src/resources/admin/customer-groups.ts:41](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customer-groups.ts#L41)
 
 ___
 
@@ -197,4 +197,4 @@ Updates a customer group
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customer-groups.ts:62](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/customer-groups.ts#L62)
+[packages/medusa-js/src/resources/admin/customer-groups.ts:62](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customer-groups.ts#L62)

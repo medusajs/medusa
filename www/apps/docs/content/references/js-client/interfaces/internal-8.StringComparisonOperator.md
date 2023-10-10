@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:101
+packages/types/dist/common/common.d.ts:117
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:103
+packages/types/dist/common/common.d.ts:119
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:98
+packages/types/dist/common/common.d.ts:114
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:99
+packages/types/dist/common/common.d.ts:115
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:97
+packages/types/dist/common/common.d.ts:113
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:100
+packages/types/dist/common/common.d.ts:116
 
 ___
 
@@ -74,4 +74,4 @@ ___
 
 #### Defined in
 
-packages/types/dist/common/common.d.ts:102
+packages/types/dist/common/common.d.ts:118

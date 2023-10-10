@@ -33,7 +33,7 @@ Retrieves a list of collections
 
 #### Defined in
 
-[packages/medusa-js/src/resources/collections.ts:28](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/collections.ts#L28)
+[packages/medusa-js/src/resources/collections.ts:28](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/collections.ts#L28)
 
 ___
 
@@ -58,4 +58,4 @@ Retrieves a single collection
 
 #### Defined in
 
-[packages/medusa-js/src/resources/collections.ts:17](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/collections.ts#L17)
+[packages/medusa-js/src/resources/collections.ts:17](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/collections.ts#L17)

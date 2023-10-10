@@ -37,7 +37,7 @@ To use this feature please enable featureflag `tax_inclusive_pricing` in your me
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/currencies.ts:20](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/currencies.ts#L20)
+[packages/medusa-js/src/resources/admin/currencies.ts:20](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/currencies.ts#L20)
 
 ___
 
@@ -67,4 +67,4 @@ To use this feature please enable featureflag `tax_inclusive_pricing` in your me
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/currencies.ts:43](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/currencies.ts#L43)
+[packages/medusa-js/src/resources/admin/currencies.ts:43](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/currencies.ts#L43)

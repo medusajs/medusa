@@ -33,7 +33,7 @@ Creates an authenticated session
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/auth.ts:38](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/auth.ts#L38)
+[packages/medusa-js/src/resources/admin/auth.ts:38](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/auth.ts#L38)
 
 ___
 
@@ -57,7 +57,7 @@ destroys an authenticated session
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/auth.ts:25](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/auth.ts#L25)
+[packages/medusa-js/src/resources/admin/auth.ts:25](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/auth.ts#L25)
 
 ___
 
@@ -82,7 +82,7 @@ Usually used to check if authenticated session is alive.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/auth.ts:13](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/auth.ts#L13)
+[packages/medusa-js/src/resources/admin/auth.ts:13](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/auth.ts#L13)
 
 ___
 
@@ -107,4 +107,4 @@ Retrieves a new JWT access token
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/auth.ts:52](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/auth.ts#L52)
+[packages/medusa-js/src/resources/admin/auth.ts:52](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/auth.ts#L52)

@@ -314,7 +314,7 @@ This will be
 
 **`Deprecated`**
 
-in the near future use createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+in the near future use `createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
 
 #### Implementation of
 
@@ -587,7 +587,7 @@ This will be
 
 **`Deprecated`**
 
-in the near future use updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse> instead
+in the near future use `updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
 
 #### Implementation of
 

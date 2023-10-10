@@ -34,7 +34,7 @@ Updates products associated with a Product Collection
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/collections.ts:101](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L101)
+[packages/medusa-js/src/resources/admin/collections.ts:101](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/collections.ts#L101)
 
 ___
 
@@ -61,7 +61,7 @@ Creates a collection.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/collections.ts:23](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L23)
+[packages/medusa-js/src/resources/admin/collections.ts:23](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/collections.ts#L23)
 
 ___
 
@@ -88,7 +88,7 @@ deletes a collection
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/collections.ts:53](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L53)
+[packages/medusa-js/src/resources/admin/collections.ts:53](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/collections.ts#L53)
 
 ___
 
@@ -115,7 +115,7 @@ Lists collections matching a query
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/collections.ts:81](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L81)
+[packages/medusa-js/src/resources/admin/collections.ts:81](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/collections.ts#L81)
 
 ___
 
@@ -141,7 +141,7 @@ Removes products associated with a Product Collection
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/collections.ts:116](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L116)
+[packages/medusa-js/src/resources/admin/collections.ts:116](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/collections.ts#L116)
 
 ___
 
@@ -168,7 +168,7 @@ get a collection
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/collections.ts:67](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L67)
+[packages/medusa-js/src/resources/admin/collections.ts:67](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/collections.ts#L67)
 
 ___
 
@@ -196,4 +196,4 @@ Updates a collection
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/collections.ts:38](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/collections.ts#L38)
+[packages/medusa-js/src/resources/admin/collections.ts:38](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/collections.ts#L38)

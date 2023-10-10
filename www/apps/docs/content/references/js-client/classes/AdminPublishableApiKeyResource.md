@@ -30,7 +30,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:82](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L82)
+[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:82](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L82)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:49](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L49)
+[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:49](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L49)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:66](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L66)
+[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:66](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L66)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:91](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L91)
+[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:91](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L91)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:35](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L35)
+[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:35](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L35)
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:100](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L100)
+[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:100](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L100)
 
 ___
 
@@ -159,7 +159,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:20](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L20)
+[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:20](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L20)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:74](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L74)
+[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:74](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L74)
 
 ___
 
@@ -202,4 +202,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:57](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L57)
+[packages/medusa-js/src/resources/admin/publishable-api-keys.ts:57](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/publishable-api-keys.ts#L57)

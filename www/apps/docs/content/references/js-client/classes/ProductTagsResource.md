@@ -33,4 +33,4 @@ Retrieves a list of product tags
 
 #### Defined in
 
-[packages/medusa-js/src/resources/product-tags.ts:16](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/product-tags.ts#L16)
+[packages/medusa-js/src/resources/product-tags.ts:16](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/product-tags.ts#L16)

@@ -29,7 +29,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/variants.ts:60](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/variants.ts#L60)
+[packages/medusa-js/src/resources/admin/variants.ts:60](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/variants.ts#L60)
 
 ___
 
@@ -54,7 +54,7 @@ A list of variants satisfying the criteria of the query
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/variants.ts:19](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/variants.ts#L19)
+[packages/medusa-js/src/resources/admin/variants.ts:19](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/variants.ts#L19)
 
 ___
 
@@ -80,4 +80,4 @@ A list of variants satisfying the criteria of the query
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/variants.ts:39](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/variants.ts#L39)
+[packages/medusa-js/src/resources/admin/variants.ts:39](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/variants.ts#L39)

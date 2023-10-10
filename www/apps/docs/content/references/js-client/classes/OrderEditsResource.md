@@ -29,7 +29,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/order-edits.ts:26](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/order-edits.ts#L26)
+[packages/medusa-js/src/resources/order-edits.ts:26](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/order-edits.ts#L26)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/order-edits.ts:17](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/order-edits.ts#L17)
+[packages/medusa-js/src/resources/order-edits.ts:17](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/order-edits.ts#L17)
 
 ___
 
@@ -72,4 +72,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/order-edits.ts:9](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/order-edits.ts#L9)
+[packages/medusa-js/src/resources/order-edits.ts:9](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/order-edits.ts#L9)

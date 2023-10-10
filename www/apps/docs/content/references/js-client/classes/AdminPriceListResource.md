@@ -30,7 +30,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:81](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L81)
+[packages/medusa-js/src/resources/admin/price-lists.ts:81](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L81)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:19](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L19)
+[packages/medusa-js/src/resources/admin/price-lists.ts:19](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L19)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:36](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L36)
+[packages/medusa-js/src/resources/admin/price-lists.ts:36](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L36)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:90](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L90)
+[packages/medusa-js/src/resources/admin/price-lists.ts:90](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L90)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:99](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L99)
+[packages/medusa-js/src/resources/admin/price-lists.ts:99](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L99)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:117](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L117)
+[packages/medusa-js/src/resources/admin/price-lists.ts:117](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L117)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:108](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L108)
+[packages/medusa-js/src/resources/admin/price-lists.ts:108](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L108)
 
 ___
 
@@ -181,7 +181,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:52](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L52)
+[packages/medusa-js/src/resources/admin/price-lists.ts:52](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L52)
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:66](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L66)
+[packages/medusa-js/src/resources/admin/price-lists.ts:66](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L66)
 
 ___
 
@@ -224,7 +224,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:44](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L44)
+[packages/medusa-js/src/resources/admin/price-lists.ts:44](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L44)
 
 ___
 
@@ -246,4 +246,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/price-lists.ts:27](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/admin/price-lists.ts#L27)
+[packages/medusa-js/src/resources/admin/price-lists.ts:27](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/price-lists.ts#L27)

@@ -32,7 +32,7 @@ Retrieves a list of regions
 
 #### Defined in
 
-[packages/medusa-js/src/resources/regions.ts:11](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/regions.ts#L11)
+[packages/medusa-js/src/resources/regions.ts:11](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/regions.ts#L11)
 
 ___
 
@@ -57,4 +57,4 @@ Retrieves a region
 
 #### Defined in
 
-[packages/medusa-js/src/resources/regions.ts:22](https://github.com/medusajs/medusa/blob/f15cd596e4/packages/medusa-js/src/resources/regions.ts#L22)
+[packages/medusa-js/src/resources/regions.ts:22](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/regions.ts#L22)
