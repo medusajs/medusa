@@ -1,14 +1,127 @@
+import { ModulesSdkUtils } from "@medusajs/utils"
+import { Knex } from "@mikro-orm/postgresql"
+import { DB_URL } from "../../../integration-tests/utils"
 import { QueryBuilder } from "../../utils/query-builder"
 
 describe("Catalog Query Builder", function () {
-  it("Should create a simple object from a resultset", async function () {
-    const qb = new QueryBuilder()
+  let knex: Knex
+  beforeAll(async function () {
+    knex = ModulesSdkUtils.createPgConnection({
+      clientUrl: DB_URL,
+      schema: "public",
+    })
+  })
 
-    const input = {
-      product: {
-        entity: "Product",
+  it("Should generate a SQL query with multiple entities, complex WHERE clause and ORDER BY ", async function () {
+    const qb = new QueryBuilder(
+      knex,
+      {
+        select: {
+          product: {
+            entity: "Product",
+            variants: {
+              entity: "ProductVariant",
+            },
+            sales_channels: {
+              entity: "SalesChannel",
+            },
+          },
+        },
+        where: {
+          $and: [
+            {
+              "product.title": ["product 1"],
+            },
+            {
+              $or: [
+                {
+                  "product.variants.sku": {
+                    $like: "123%",
+                  },
+                },
+                {
+                  "product.sales_channels.name": {
+                    $eq: "default",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      } as any,
+      {
+        take: 10,
+        orderBy: {
+          "product.title": "ASC",
+        },
+      }
+    )
+
+    const sql = qb.buildQuery()
+
+    expect(sql.replace(/\s/g, "")).toEqual(
+      `
+      select 
+      "product0"."data" as """product"",
+            product0.id AS ""product.id""", 
+      "productvariant1"."data" as """product.variants"",
+            productvariant1.id AS ""product.variants.id""", 
+      "saleschannel1"."data" as """product.sales_channels"",
+            saleschannel1.id AS ""product.sales_channels.id""" 
+    from 
+      "catalog" as "product0" 
+      LEFT JOIN LATERAL (
+        SELECT 
+          productvariant1.* 
+        FROM 
+          catalog AS productvariant1 
+          JOIN catalog_reference AS productvariant1_ref ON productvariant1.id = productvariant1_ref.child_id 
+          AND productvariant1_ref.child = 'ProductVariant' 
+          AND productvariant1_ref.parent = 'Product' 
+          AND productvariant1_ref.parent_id = product0.id
+      ) productvariant1 ON TRUE 
+      LEFT JOIN LATERAL (
+        SELECT 
+          saleschannel1.* 
+        FROM 
+          catalog AS saleschannel1 
+          JOIN catalog_reference AS saleschannel1_ref ON saleschannel1.id = saleschannel1_ref.child_id 
+          AND saleschannel1_ref.child = 'SalesChannel' 
+          AND saleschannel1_ref.parent = 'Product' 
+          AND saleschannel1_ref.parent_id = product0.id
+      ) saleschannel1 ON TRUE 
+    where 
+      "product0"."type" = 'Product' 
+      and (
+        (
+          "product0"."data->>title" in ('product 1')
+        ) 
+        and (
+          (
+            (
+              "productvariant1"."data->>sku" like '123%'
+            ) 
+            or (
+              "saleschannel1"."data->>name" = 'default'
+            )
+          )
+        )
+      ) 
+    order by 
+      product0.data ->> 'title' ASC 
+    limit 
+      10
+    `.replace(/\s/g, "")
+    )
+  })
+
+  it("Should create a simple object from a resultset", async function () {
+    const qb = new QueryBuilder(knex, {
+      select: {
+        product: true,
       },
-    }
+    })
+
     const rs = [
       {
         product: '{"title": "product 1", "handler": "product_1"}',
@@ -24,7 +137,7 @@ describe("Catalog Query Builder", function () {
       },
     ]
 
-    const obj = qb.buildObjectFromResultset(rs, input)
+    const obj = qb.buildObjectFromResultset(rs)
 
     expect(obj).toEqual([
       {
@@ -43,16 +156,14 @@ describe("Catalog Query Builder", function () {
   })
 
   it("Should create a nested object from a resultset", async function () {
-    const qb = new QueryBuilder()
-
-    const input = {
-      product: {
-        entity: "Product",
-        variants: {
-          entity: "ProductVariant",
+    const qb = new QueryBuilder(knex, {
+      select: {
+        product: {
+          variants: true,
         },
       },
-    }
+    })
+
     const rs = [
       {
         product: '{"title": "product 1", "handler": "product_1"}',
@@ -74,7 +185,7 @@ describe("Catalog Query Builder", function () {
       },
     ]
 
-    const obj = qb.buildObjectFromResultset(rs, input)
+    const obj = qb.buildObjectFromResultset(rs)
 
     expect(obj).toEqual([
       {
@@ -108,25 +219,19 @@ describe("Catalog Query Builder", function () {
   })
 
   it("Should create a complex nested object from a resultset including repeated references", async function () {
-    const qb = new QueryBuilder()
-
-    const input = {
-      product: {
-        entity: "Product",
-        variants: {
-          entity: "ProductVariant",
-          options: {
-            entity: "ProductVariantOption",
-            value: {
-              entity: "ProductOptionValue",
+    const qb = new QueryBuilder(knex, {
+      select: {
+        product: {
+          variants: {
+            options: {
+              value: true,
             },
           },
-        },
-        sales_channels: {
-          entity: "SalesChannel",
+          sales_channels: true,
         },
       },
-    }
+    })
+
     const rs = [
       {
         product: '{"title": "product 1", "handler": "product_1"}',
@@ -178,7 +283,7 @@ describe("Catalog Query Builder", function () {
       },
     ]
 
-    const obj = qb.buildObjectFromResultset(rs, input)
+    const obj = qb.buildObjectFromResultset(rs)
 
     expect(obj).toEqual([
       {

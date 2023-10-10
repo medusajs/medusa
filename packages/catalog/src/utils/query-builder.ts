@@ -10,28 +10,34 @@ type EntityStructure = {
 export class QueryBuilder {
   private structure: EntityStructure
   private builder: Knex.QueryBuilder
+
   constructor(
     knex: Knex,
     private selector: QueryFormat,
     private options?: QueryOptions
   ) {
     this.builder = knex.queryBuilder()
+    this.structure = selector.select as any
   }
 
   private getStructureKeys(structure) {
-    return Object.keys(structure).filter(
-      (key) => key !== "entity" && key !== "_filter" && key !== "_order"
-    )
+    return Object.keys(structure ?? {}).filter((key) => key !== "entity")
   }
 
-  private parseWhere(obj, builder: Knex.QueryBuilder) {
+  private parseWhere(
+    aliasMapping: { [path: string]: string },
+    obj: object,
+    builder: Knex.QueryBuilder
+  ) {
     const OPERATOR_MAP = {
       $eq: "=",
       $lt: "<",
       $gt: ">",
       $lte: "<=",
       $gte: ">=",
-      $ne: "<>",
+      $ne: "!=",
+      $like: "LIKE",
+      $ilike: "ILIKE",
     }
     const keys = Object.keys(obj)
 
@@ -44,28 +50,46 @@ export class QueryBuilder {
       if (key === "$and" && Array.isArray(value)) {
         builder.where((qb) => {
           value.forEach((cond) => {
-            qb.andWhere((subBuilder) => this.parseWhere(cond, subBuilder))
+            qb.andWhere((subBuilder) =>
+              this.parseWhere(aliasMapping, cond, subBuilder)
+            )
           })
         })
       } else if (key === "$or" && Array.isArray(value)) {
         builder.where((qb) => {
           value.forEach((cond) => {
-            qb.orWhere((subBuilder) => this.parseWhere(cond, subBuilder))
+            qb.orWhere((subBuilder) =>
+              this.parseWhere(aliasMapping, cond, subBuilder)
+            )
           })
         })
-      } else if (typeof value === "object") {
+      } else if (isObject(value) && !Array.isArray(value)) {
         const subKeys = Object.keys(value)
         subKeys.forEach((subKey) => {
           const subValue = value[subKey]
           const operator = OPERATOR_MAP[subKey]
           if (operator) {
-            builder.where(key, operator, subValue)
+            const path = key.split(".")
+            const field = path.pop()
+            const attr = path.join(".")
+            builder.where(
+              aliasMapping[attr] + `.data->>${field}`,
+              operator,
+              subValue
+            )
           } else {
             throw new Error(`Unsupported operator: ${subKey}`)
           }
         })
       } else {
-        builder.where(key, "=", value)
+        const path = key.split(".")
+        const field = path.pop()
+        const attr = path.join(".")
+        builder.where(
+          aliasMapping[attr] + `.data->>${field}`,
+          Array.isArray(value) ? "IN" : "=",
+          value
+        )
       }
     })
 
@@ -118,43 +142,6 @@ export class QueryBuilder {
     }
 
     return queryParts
-  }
-
-  private buildFilterAndOrderClauses(
-    filter: { [alias: string]: { [key: string]: string } },
-    order: OrderBy,
-    aliasMapping: { [path: string]: string }
-  ): { whereClause: string; orderClause: string } {
-    const whereConditions: string[] = []
-    const orderConditions: string[] = []
-
-    // WHERE clause
-
-    this.parseWhere(filter, this.builder)
-
-    for (const aliasPath in filter) {
-      const alias = aliasMapping[aliasPath]
-      for (const field in filter[aliasPath]) {
-        const condition = filter[aliasPath][field]
-        whereConditions.push(`(${alias}.data->>'${field}') ${condition}`)
-      }
-    }
-
-    // ORDER BY clause
-    for (const aliasPath in order) {
-      const alias = aliasMapping[aliasPath]
-      for (const field in order[aliasPath] as OrderBy) {
-        const direction = order[aliasPath][field]
-        orderConditions.push(`${alias}.data->>'${field}' ${direction}`)
-      }
-    }
-
-    return {
-      whereClause: whereConditions.length
-        ? whereConditions.join(" OR ") // TODO, use mikro-orm to build WHERE clause
-        : "",
-      orderClause: orderConditions.length ? orderConditions.join(", ") : "",
-    }
   }
 
   private buildSelectParts(
@@ -217,16 +204,18 @@ export class QueryBuilder {
     const order = this.options?.orderBy ?? {}
 
     const orderBy = this.transformOrderBy(
-      !Array.isArray(order) ? [order] : order
+      (order && !Array.isArray(order) ? [order] : order) ?? []
     )
 
     const { skip, take } = this.options ?? { skip: 0, take: 15 }
 
     const rootKey = this.getStructureKeys(structure)[0]
-
     const rootStructure = structure[rootKey] as EntityStructure
     const rootEntity = rootStructure.entity!.toLowerCase()
     const aliasMapping: { [path: string]: string } = {}
+
+    const selectParts = this.buildSelectParts(rootStructure, rootKey)
+
     const joinParts = this.buildQueryParts(
       rootStructure,
       "",
@@ -236,22 +225,41 @@ export class QueryBuilder {
       0,
       aliasMapping
     )
-    const selectParts = this.buildSelectParts(rootStructure, rootKey)
 
-    const { whereClause, orderClause } = this.buildFilterAndOrderClauses(
-      filter,
-      orderBy,
-      aliasMapping
+    this.builder.select(selectParts).from(`catalog AS ${rootEntity}0`)
+
+    joinParts.forEach((joinPart) => {
+      this.builder.joinRaw(joinPart)
+    })
+
+    this.builder.where(
+      `${aliasMapping[rootEntity]}.type`,
+      "=",
+      rootStructure.entity!
     )
 
-    return `SELECT 
-    ${selectParts.join(",\n    ")}
-FROM catalog AS ${rootEntity}0
-${joinParts.join("\n")}
-WHERE ${aliasMapping[rootEntity]}.type = '${rootStructure.entity}' ${
-      whereClause ? `AND (${whereClause})` : ""
+    // WHERE clause
+    this.parseWhere(aliasMapping, filter, this.builder)
+
+    // ORDER BY clause
+    for (const aliasPath in orderBy) {
+      const path = aliasPath.split(".")
+      const field = path.pop()
+      const attr = path.join(".")
+      const alias = aliasMapping[attr]
+      const direction = orderBy[aliasPath]
+
+      this.builder.orderByRaw(`${alias}.data->>'${field}' ${direction}`)
     }
-${orderClause ? `ORDER BY\n    ${orderClause}` : ""}`
+
+    if (typeof take === "number") {
+      this.builder.limit(take)
+    }
+    if (typeof skip === "number") {
+      this.builder.offset(skip)
+    }
+
+    return this.builder.toQuery()
   }
 
   public buildObjectFromResultset(

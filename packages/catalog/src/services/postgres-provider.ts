@@ -6,7 +6,6 @@ import {
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
 import { CatalogRepository } from "@repositories"
-import { QueryBuilder } from "src/utils"
 import {
   CatalogModuleOptions,
   QueryFormat,
@@ -14,6 +13,7 @@ import {
   SchemaObjectRepresentation,
   StorageProvider,
 } from "../types"
+import { QueryBuilder } from "../utils"
 
 type InjectedDependencies = {
   catalogRepository: CatalogRepository
@@ -55,9 +55,9 @@ export class PostgresProvider {
     const connection = this.container_.manager.getConnection()
     const qb = new QueryBuilder(connection.getKnex(), selection, options)
 
-    return qb.buildObjectFromResultset(
-      await connection.execute(qb.buildQuery())
-    )
+    const sql = qb.buildQuery()
+    const resultset = await connection.execute(sql)
+    return qb.buildObjectFromResultset(resultset)
   }
 
   consumeEvent(configurationObject: SchemaObjectRepresentation[0]): Subscriber {

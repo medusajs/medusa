@@ -53,7 +53,7 @@ export type OrderBy = {
 
 export type QueryFormat = {
   select: Select
-  where: Where
+  where?: Where
 }
 
 export type QueryOptions = {
