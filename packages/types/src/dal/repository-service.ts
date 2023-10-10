@@ -83,6 +83,13 @@ export type SoftDeleteReturn<TReturnableLinkableKeys = string> = {
   returnLinkableKeys?: TReturnableLinkableKeys[]
 }
 
+/**
+ * @interface
+ * 
+ * An object that is used to specify an entity's related entities that should be restored when the main entity is restored.
+ * 
+ * @prop returnLinkableKeys - An array of strings, each being the ID attribute names of the entity's relations
+ */
 export type RestoreReturn<TReturnableLinkableKeys = string> = {
   returnLinkableKeys?: TReturnableLinkableKeys[]
 }
