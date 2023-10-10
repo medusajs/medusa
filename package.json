@@ -8,6 +8,7 @@
       "packages/medusa-react",
       "packages/*",
       "packages/generated/*",
+      "packages/design-system/*",
       "packages/oas/*",
       "integration-tests/**/*"
     ]
