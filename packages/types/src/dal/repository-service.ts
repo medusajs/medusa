@@ -79,6 +79,13 @@ export interface TreeRepositoryService<T = any>
   delete(id: string, context?: Context): Promise<void>
 }
 
+/**
+ * @interface
+ * 
+ * An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+ * 
+ * @prop returnLinkableKeys - An array of strings, each being the ID attribute names of the entity's relations.
+ */
 export type SoftDeleteReturn<TReturnableLinkableKeys = string> = {
   returnLinkableKeys?: TReturnableLinkableKeys[]
 }
@@ -88,7 +95,7 @@ export type SoftDeleteReturn<TReturnableLinkableKeys = string> = {
  * 
  * An object that is used to specify an entity's related entities that should be restored when the main entity is restored.
  * 
- * @prop returnLinkableKeys - An array of strings, each being the ID attribute names of the entity's relations
+ * @prop returnLinkableKeys - An array of strings, each being the ID attribute names of the entity's relations.
  */
 export type RestoreReturn<TReturnableLinkableKeys = string> = {
   returnLinkableKeys?: TReturnableLinkableKeys[]

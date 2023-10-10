@@ -643,10 +643,43 @@ export interface UpdateProductOptionDTO {
   product_id?: string
 }
 
+/**
+ * @interface
+ * 
+ * An object used to specify the necessary data to create a product variant option.
+ * 
+ * @prop value - A string indicating the value of a product variant option.
+ */
 export interface CreateProductVariantOptionDTO {
   value: string
 }
 
+/**
+ * @interface
+ * 
+ * An object used to specify the necessary data to create a product variant.
+ * 
+ * @prop title - A string indicating the tile of the product variant.
+ * @prop sku - A string indicating the SKU of the product variant.
+ * @prop barcode - A string indicating the barcode of the product variant.
+ * @prop ean - A string indicating the EAN of the product variant.
+ * @prop upc - A string indicating the UPC of the product variant.
+ * @prop allow_backorder - A boolean indicating whether the product variant can be ordered when it's out of stock.
+ * @prop inventory_quantity - A number indicating the inventory quantiy of the product variant.
+ * @prop manage_inventory - A boolean indicating whether the product variant's inventory should be managed by the core system.
+ * @prop hs_code - A string indicating the HS Code of the product variant.
+ * @prop origin_country - A string indicating the origin country of the product variant.
+ * @prop mid_code - A string indicating the MID Code of the product variant.
+ * @prop material - A string indicating the material of the product variant.
+ * @prop weight - A number indicating the weight of the product variant.
+ * @prop length - A number indicating the length of the product variant.
+ * @prop height - A number indicating the height of the product variant.
+ * @prop width - A number indicating the width of the product variant.
+ * @prop options - 
+ * An array of objects of type {@link CreateProductVariantOptionDTO}, each holding the necessary data to create a 
+ * product variant option, which is then associated with the product variant.
+ * @prop metadata - An object that can be used to hold custom data in key-value pairs.
+ */
 export interface CreateProductVariantDTO {
   title: string
   sku?: string
@@ -668,6 +701,33 @@ export interface CreateProductVariantDTO {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * @interface
+ * 
+ * An object used to update data of an existing product variant. The `id` property is used to identify which product variant should be updated.
+ * 
+ * @prop id - A string indicating the ID of the product variant to update.
+ * @prop title - A string indicating the tile of the product variant.
+ * @prop sku - A string indicating the SKU of the product variant.
+ * @prop barcode - A string indicating the barcode of the product variant.
+ * @prop ean - A string indicating the EAN of the product variant.
+ * @prop upc - A string indicating the UPC of the product variant.
+ * @prop allow_backorder - A boolean indicating whether the product variant can be ordered when it's out of stock.
+ * @prop inventory_quantity - A number indicating the inventory quantiy of the product variant.
+ * @prop manage_inventory - A boolean indicating whether the product variant's inventory should be managed by the core system.
+ * @prop hs_code - A string indicating the HS Code of the product variant.
+ * @prop origin_country - A string indicating the origin country of the product variant.
+ * @prop mid_code - A string indicating the MID Code of the product variant.
+ * @prop material - A string indicating the material of the product variant.
+ * @prop weight - A number indicating the weight of the product variant.
+ * @prop length - A number indicating the length of the product variant.
+ * @prop height - A number indicating the height of the product variant.
+ * @prop width - A number indicating the width of the product variant.
+ * @prop options - 
+ * An array of objects of type {@link CreateProductVariantOptionDTO}, each holding the necessary data to create a 
+ * product variant option, which is then associated with the product variant.
+ * @prop metadata - An object that can be used to hold custom data in key-value pairs.
+ */
 export interface UpdateProductVariantDTO {
   id: string
   title?: string

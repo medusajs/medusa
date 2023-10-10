@@ -2356,8 +2356,7 @@ export interface IProductModuleService {
   ): Promise<ProductDTO[]>
 
   /**
-   * This method is used to delete products. Unlike the {@link softDelete} method, 
-   * this method will completely remove the products and they can no longer be accessed or retrieved.
+   * This method is used to delete products. Unlike the {@link softDelete} method, this method will completely remove the products and they can no longer be accessed or retrieved.
    * 
    * @param {string[]} productIds - An array of strings, each being the ID of a product to delete.
    * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
@@ -2377,17 +2376,18 @@ export interface IProductModuleService {
   delete(productIds: string[], sharedContext?: Context): Promise<void>
 
   /**
-   * This method is used to delete products. Unlike the {@link delete} method, 
-   * this method won't completely remove the product. It can still be accessed or retrieved using methods like {@link retrieve}
-   * if you pass the `withDeleted` property to the `config` object parameter.
+   * This method is used to delete products. Unlike the {@link delete} method, this method won't completely remove the product. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
    * 
    * The soft-deleted products can be restored using the {@link restore} method.
    * 
    * @param {string[]} productIds - An array of strings, each being the ID of a product to delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * An object of type {@link SoftDeleteReturn} used to specify which relations to soft delete along with the each of the products. You can pass to its `returnLinkableKeys`
+   * property any of the product's relation attribute names, such as `variant_id`.
    * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<Record<string, string[]> | void>} A promise that resolves to an object that includes the IDs of related records that were also soft deleted, 
-   * such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, 
-   * and its value is an array of strings, each being the ID of a record associated with the product through this relation, such as the IDs of associated product variants. 
+   * @returns {Promise<Record<string, string[]> | void>} 
+   * A promise that resolves to an object that includes the IDs of related records that were also soft deleted, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of a record associated with the product through this relation, such as the IDs of associated product variants.
+   * 
    * If there are no related records, the promise resolved to `void`.
    * 
    * @example
@@ -2417,9 +2417,9 @@ export interface IProductModuleService {
    * An object of type {@link RestoreReturn} used to specify which relations to restore along with the each of the products. You can pass to its `returnLinkableKeys`
    * property any of the product's relation attribute names, such as `variant_id`.
    * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<Record<string, string[]> | void>} A promise that resolves to an object that includes the IDs of related records that were restored,
-   * such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its
-   * value is an array of strings, each being the ID of the record associated with the product through this relation, such as the IDs of associated product variants.
+   * @returns {Promise<Record<string, string[]> | void>} 
+   * A promise that resolves to an object that includes the IDs of related records that were restored, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of the record associated with the product through this relation, such as the IDs of associated product variants.
+   * 
    * If there are no related records that were restored, the promise resolved to `void`.
    * 
    * @example
