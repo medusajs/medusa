@@ -10,7 +10,7 @@ export class Migration20230929122253 extends Migration {
       'create table if not exists "money_amount" ("id" text not null, "currency_code" text null, "amount" numeric null, "min_quantity" numeric null, "max_quantity" numeric null, constraint "money_amount_pkey" primary key ("id"));'
     )
     this.addSql(
-      'create index "IDX_money_amount_currency_code" on "money_amount" ("currency_code");'
+      'create index if not exists "IDX_money_amount_currency_code" on "money_amount" ("currency_code");'
     )
 
     this.addSql(

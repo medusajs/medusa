@@ -42,9 +42,6 @@ class MoneyAmount {
   @Property({ columnType: "numeric", nullable: true })
   max_quantity?: number | null
 
-  @Property({ columnType: "text", nullable: true })
-  price_list_id?: string
-
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ma")
