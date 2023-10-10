@@ -2,19 +2,19 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-# Class: Image
+# Class: ProductVariantInventoryItem
 
 ## Hierarchy
 
 - `SoftDeletableEntity`
 
-  ↳ **`Image`**
+  ↳ **`ProductVariantInventoryItem`**
 
 ## Constructors
 
 ### constructor
 
-• **new Image**()
+• **new ProductVariantInventoryItem**()
 
 #### Inherited from
 
@@ -64,13 +64,23 @@ SoftDeletableEntity.id
 
 ___
 
-### metadata
+### inventory\_item\_id
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **inventory\_item\_id**: `string`
 
 #### Defined in
 
-[models/image.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/image.ts#L13)
+[models/product-variant-inventory-item.ts:17](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-variant-inventory-item.ts#L17)
+
+___
+
+### required\_quantity
+
+• **required\_quantity**: `number`
+
+#### Defined in
+
+[models/product-variant-inventory-item.ts:28](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-variant-inventory-item.ts#L28)
 
 ___
 
@@ -88,13 +98,23 @@ SoftDeletableEntity.updated\_at
 
 ___
 
-### url
+### variant
 
-• **url**: `string`
+• **variant**: [`ProductVariant`](ProductVariant.md)
 
 #### Defined in
 
-[models/image.ts:10](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/image.ts#L10)
+[models/product-variant-inventory-item.ts:25](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-variant-inventory-item.ts#L25)
+
+___
+
+### variant\_id
+
+• **variant\_id**: `string`
+
+#### Defined in
+
+[models/product-variant-inventory-item.ts:21](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-variant-inventory-item.ts#L21)
 
 ## Methods
 
@@ -108,4 +128,4 @@ ___
 
 #### Defined in
 
-[models/image.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/image.ts#L16)
+[models/product-variant-inventory-item.ts:31](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-variant-inventory-item.ts#L31)
