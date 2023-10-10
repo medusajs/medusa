@@ -1,4 +1,8 @@
-import { ModuleJoinerConfig, ModulesSdkTypes } from "@medusajs/types"
+import {
+  ModuleJoinerConfig,
+  ModulesSdkTypes,
+  Subscriber,
+} from "@medusajs/types"
 
 export type ObjectsPartialTree = {
   [key: string]: {
@@ -17,14 +21,16 @@ export interface CatalogModuleOptions {
     options: any
   }
   defaultAdapterOptions?: ModulesSdkTypes.ModuleServiceInitializeOptions
-  objects: {
-    parents?: string[]
-    entity: string
-    fields: string[]
-    listeners: string[]
-  }[]
+  schema: string
 }
 
 export interface StorageProvider {
-  store: (objects: object) => Promise<void>
+  new (
+    container: { [key: string]: any },
+    storageProviderOptions: unknown & { schemaConfigurationObject: any },
+    moduleOptions: CatalogModuleOptions
+  ): StorageProvider
+
+  query(...args: any[]): unknown
+  consumeEvent(configurationObject: any): Subscriber
 }

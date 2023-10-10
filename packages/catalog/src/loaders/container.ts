@@ -15,15 +15,19 @@ export default async ({
   })
 
   if (!options?.customAdapter) {
-    container.register("storageProvider", asClass(PostgresProvider).singleton())
+    container.register("storageProviderCtr", asValue(PostgresProvider))
     container.register(
       "catalogRepository",
       asClass(CatalogRepository).singleton()
     )
   } else {
-    const storageAdapter = new options.customAdapter.constructor(
-      options.customAdapter.options
+    container.register(
+      "storageProviderCtr",
+      asValue(options.customAdapter.constructor)
     )
-    container.register("storageProvider", asValue(storageAdapter))
+    container.register(
+      "storageProviderCtrOptions",
+      asValue(options.customAdapter.options)
+    )
   }
 }
