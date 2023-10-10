@@ -51,6 +51,8 @@ export class PricingRepository
 
     const isContextPresent = Object.entries(context).length || !!currencyCode
 
+    // Only if the context is present do we need to query the database.
+    // We don't get anything from the db otherwise.
     if (!isContextPresent) {
       return []
     }
@@ -109,7 +111,6 @@ export class PricingRepository
       priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
     }
 
-    // Only if the context is present do we need to query the database.
     return await priceSetQueryKnex
   }
 }
