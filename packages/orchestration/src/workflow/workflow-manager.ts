@@ -76,7 +76,7 @@ export class WorkflowManager {
     optionalModules?: Set<string>
   ) {
     if (WorkflowManager.workflows.has(workflowId)) {
-      throw new Error(`Workflow with id "${workflowId}" is already defined.`)
+      return
     }
 
     const finalFlow = flow instanceof OrchestratorBuilder ? flow.build() : flow
