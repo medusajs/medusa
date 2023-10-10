@@ -343,7 +343,7 @@ describe("PricingModule Service - Calculate Price", () => {
       )
 
       expect(result).rejects.toThrow(
-        "currency_code is a required input in the pricing context"
+        "Method calculatePrices requires currency_code in the pricing context"
       )
 
       result = service.calculatePrices(
@@ -352,7 +352,7 @@ describe("PricingModule Service - Calculate Price", () => {
       )
 
       expect(result).rejects.toThrow(
-        "currency_code is a required input in the pricing context"
+        "Method calculatePrices requires currency_code in the pricing context"
       )
     })
 
