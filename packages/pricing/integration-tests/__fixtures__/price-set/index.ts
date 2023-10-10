@@ -13,27 +13,24 @@ export async function createPriceSets(
 
   for (let priceSetData of priceSetsData) {
     const priceSetDataClone = { ...priceSetData }
-    const moneyAmountsData = priceSetDataClone.money_amounts || []
-    delete priceSetDataClone.money_amounts
+    const moneyAmountsData = priceSetDataClone.prices || []
+    delete priceSetDataClone.prices
 
     let priceSet = manager.create(PriceSet, priceSetDataClone) as PriceSet
 
-    await manager.persist(priceSet).flush()
+    manager.persist(priceSet)
 
     for (let moneyAmount of moneyAmountsData) {
-      const price_set = (await manager.findOne(
-        PriceSet,
-        priceSet.id
-      )) as PriceSet
-
       const psma = manager.create(PriceSetMoneyAmount, {
-        price_set: price_set.id,
+        price_set: priceSet,
         money_amount: moneyAmount.id,
         title: "test",
       })
 
-      manager.persist(psma).flush()
+      manager.persist(psma)
     }
+
+    await manager.flush()
   }
 
   return priceSets

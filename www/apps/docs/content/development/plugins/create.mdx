@@ -6,6 +6,8 @@ addHowToData: true
 import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
 import LearningPath from '@site/src/components/LearningPath';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # How to Create a Plugin
 
@@ -521,9 +523,36 @@ npx medusa migrations run
 
 In the directory of the Medusa backend, start the backend with the `dev` command passing it the `--preserve-symlinks` option:
 
-```bash npm2yarn
-npm run dev -- -- --preserve-symlinks
-```
+<Tabs groupId="npm2yarn" isCodeTabs={true}>
+  <TabItem value="npm" label="npm" default>
+
+  ```bash
+  npm run dev -- -- --preserve-symlinks
+  ```
+
+  </TabItem>
+  <TabItem value="yarn-1" label="Yarn v1">
+
+  ```bash
+  yarn dev -- -- --preserve-symlinks
+  ```
+
+  </TabItem>
+  <TabItem value="yarn-berry" label="Yarn berry">
+
+  ```bash
+  yarn dev -- --preserve-symlinks
+  ```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+  ```bash
+  pnpm run dev -- -- --preserve-symlinks
+  ```
+
+  </TabItem>
+</Tabs>
 
 ### Making Changes to the Plugin
 

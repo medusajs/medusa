@@ -1,2 +1,2 @@
 curl '{backend_url}/admin/product-tags' \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'
