@@ -66,7 +66,6 @@ export interface CreatePriceRuleDTO {
  * @prop id - A string indicating the ID of the price rule to update.
  * @prop price_set_id - A string indicating the ID of the associated price set.
  * @prop rule_type_id - A string indicating the ID of the associated rule type.
- * @prop is_dynamic - A boolean indicating whether the price rule is dynamic.
  * @prop value - A string indicating the value of the price rule.
  * @prop priority - A number indicating the priority of the price rule in comparison to other applicable price rules.
  * @prop price_set_money_amount_id - A string indicating the ID of the associated price set money amount.
@@ -76,6 +75,7 @@ export interface UpdatePriceRuleDTO {
   id: string
   price_set_id?: string
   rule_type_id?: string
+  /** @ignore */
   is_dynamic?: boolean
   value?: string
   priority?: number
