@@ -45,8 +45,14 @@ export class PricingRepository
     if (!currencyCode) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `currency_code is a required input in the pricing context`
+        `Method calculatePrices requires currency_code in the pricing context`
       )
+    }
+
+    const isContextPresent = Object.entries(context).length || !!currencyCode
+
+    if (!isContextPresent) {
+      return []
     }
 
     // Gets all the price set money amounts where rules match for each of the contexts
@@ -103,10 +109,7 @@ export class PricingRepository
       priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
     }
 
-    const isContextPresent = Object.entries(context).length || !!currencyCode
     // Only if the context is present do we need to query the database.
-    const queryBuilderResults = isContextPresent ? await priceSetQueryKnex : []
-
-    return queryBuilderResults
+    return await priceSetQueryKnex
   }
 }
