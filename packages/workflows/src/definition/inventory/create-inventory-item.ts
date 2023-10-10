@@ -1,4 +1,4 @@
-import { InputAlias, Workflows } from "../../definitions"
+import { Workflows } from "../../definitions"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
@@ -24,21 +24,6 @@ const workflowSteps: TransactionStepsDefinition = {
 }
 
 const handlers = new Map([
-  [
-    CreateInventoryItemActions.prepare,
-    {
-      invoke: pipe(
-        {
-          merge: true,
-          inputAlias: InputAlias.InventoryItemsInputData,
-          invoke: {
-            from: InputAlias.InventoryItemsInputData,
-          },
-        },
-        InventoryHandlers.createInventoryItemsPrepareData
-      ),
-    },
-  ],
   [
     CreateInventoryItemActions.createInventoryItems,
     {
@@ -77,5 +62,6 @@ export const createInventoryItems = exportWorkflow<
   { tag: string; inventoryItem: InventoryTypes.InventoryItemDTO }[]
 >(
   Workflows.CreateInventoryItems,
-  CreateInventoryItemActions.createInventoryItems
+  CreateInventoryItemActions.createInventoryItems,
+  async (data) => data
 )
