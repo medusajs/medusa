@@ -37,6 +37,7 @@
     "experiment": "ts-node src/_experiments/experiment.ts"
   },
   "devDependencies": {
+    "@medusajs/types": "^1.11.1",
     "@mikro-orm/cli": "5.7.12",
     "cross-env": "^5.2.1",
     "faker": "^6.6.6",
@@ -53,7 +54,6 @@
     "@graphql-tools/merge": "^9.0.0",
     "@graphql-tools/schema": "^10.0.0",
     "@medusajs/modules-sdk": "^1.11.0",
-    "@medusajs/types": "^1.11.1",
     "@medusajs/utils": "^1.10.1",
     "@mikro-orm/core": "5.7.12",
     "@mikro-orm/migrations": "5.7.12",

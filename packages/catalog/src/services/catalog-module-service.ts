@@ -1,4 +1,3 @@
-import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   BaseFilterable,
   DAL,
@@ -8,56 +7,19 @@ import {
   ModuleJoinerConfig,
   RemoteJoinerQuery,
 } from "@medusajs/types"
-import { lowerCaseFirst, remoteQueryObjectFromString } from "@medusajs/utils"
 import {
   CatalogModuleOptions,
-  ObjectsPartialTree,
+  SchemaObjectRepresentation,
   StorageProvider,
 } from "../types"
 import { joinerConfig } from "./../joiner-config"
-
-const configMock: CatalogModuleOptions = {
-  objects: [
-    {
-      entity: "Product",
-      // Should contain the fields that can be returned and filtered by
-      fields: ["id", "title", "subtitle", "description"],
-      listeners: ["product.created", "product.updated"],
-    },
-    {
-      parents: ["Product"],
-      entity: "ProductVariant",
-      // Should contain the fields that can be returned and filtered by
-      fields: ["id", "product_id", "sku"],
-      listeners: ["variants.created", "variants.updated"],
-    },
-    {
-      parents: ["ProductVariant"],
-      entity: "MoneyAmount",
-      // Should contain the fields that can be returned and filtered by
-      fields: ["id", "amount"], //fields: ["id", "amount", "linkProductVariantMoney.variant_id", "car.id"],
-      listeners: ["prices.created", "prices.updated"],
-    },
-  ],
-}
-
-/*const moneyAmount = {
-  id,
-  variants: [{}],
-  car: {},
-  metadata: {},
-}
-
-storage.create({ name, id, data, parents: [{ name, id }] })
-storage.update({ name, id, data })
-storage.delete({ name, id, data })
-storage.attach
-storage.detach*/
+import { buildSchemaObjectRepresentation } from "../utils/build-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   eventBusModuleService: IEventBusModuleService
-  storageProvider: StorageProvider
+  storageProviderCtr: StorageProvider
+  storageProviderOptions: unknown
   remoteQuery: (
     query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
@@ -65,20 +27,32 @@ type InjectedDependencies = {
 }
 
 export default class CatalogModuleService {
-  private static tree_: ObjectsPartialTree = {}
-
   private readonly container_: InjectedDependencies
   private readonly moduleOptions_: CatalogModuleOptions
 
   protected readonly baseRepository_: DAL.RepositoryService
   protected readonly eventBusModuleService_: IEventBusModuleService
-  protected readonly storageProvider_: StorageProvider
 
-  protected get remoteQuery_(): (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any> {
-    return this.container_.remoteQuery
+  protected schemaObjectRepresentation_: SchemaObjectRepresentation
+
+  protected storageProviderInstance_: StorageProvider
+  protected readonly storageProviderCtr_: StorageProvider
+  protected readonly storageProviderCtrOptions_: unknown
+
+  protected get storageProvider_(): StorageProvider {
+    this.buildSchemaObjectRepresentation_()
+
+    this.storageProviderInstance_ =
+      this.storageProviderInstance_ ??
+      new this.storageProviderCtr_(
+        this.container_,
+        Object.assign(this.storageProviderCtrOptions_ ?? {}, {
+          schemaConfigurationObject: this.schemaObjectRepresentation_,
+        }),
+        this.moduleOptions_
+      )
+
+    return this.storageProviderInstance_
   }
 
   constructor(
@@ -89,20 +63,22 @@ export default class CatalogModuleService {
     this.moduleOptions_ =
       moduleDeclaration.options as unknown as CatalogModuleOptions
 
-    const { baseRepository, eventBusModuleService, storageProvider } = container
+    const {
+      baseRepository,
+      eventBusModuleService,
+      storageProviderCtr,
+      storageProviderOptions,
+    } = container
 
     this.baseRepository_ = baseRepository
     this.eventBusModuleService_ = eventBusModuleService
-    this.storageProvider_ = storageProvider
+    this.storageProviderCtr_ = storageProviderCtr
+    this.storageProviderCtrOptions_ = storageProviderOptions
 
     if (!this.eventBusModuleService_) {
       throw new Error(
         "EventBusModuleService is required for the CatalogModule to work"
       )
-    }
-
-    if (!this.remoteQuery_) {
-      throw new Error("RemoteQuery is required for the CatalogModule to work")
     }
 
     this.registerListeners()
@@ -112,7 +88,7 @@ export default class CatalogModuleService {
     return joinerConfig
   }
 
-  public query(obj: {
+  async query(obj: {
     where: FilterQuery<any> & BaseFilterable<FilterQuery<any>>
     options?: {
       skip?: number
@@ -120,131 +96,27 @@ export default class CatalogModuleService {
       orderBy?: { [column: string]: "ASC" | "DESC" }
     }
   }) {
-    CatalogModuleService.buildObjectsTree(this.moduleOptions_.objects)
-    /**
-     * The data is stored in the catalog database,
-     * they are all in the data column of type JSONB
-     * we need to translate the input query to a query that filter from the JSONB column.
-     * The end result should be the ordered list of ids that match the query for any type of objects
-     */
+    return await this.storageProvider_.query()
   }
 
   protected registerListeners() {
-    const objects = this.moduleOptions_.objects ?? []
+    const configurationObjects = this.schemaObjectRepresentation_ ?? {}
 
-    for (const { listeners } of objects) {
-      listeners.forEach((listener) => {
+    for (const configurationObject of Object.values(
+      configurationObjects
+    ) as any) {
+      configurationObject.listeners.forEach((listener) => {
         this.eventBusModuleService_.subscribe(
           listener,
-          this.storeDataOnEvent(listener)
+          this.storageProvider_.consumeEvent(configurationObject)
         )
       })
     }
   }
 
-  protected storeDataOnEvent(eventName: string) {
-    return async (data: any) => {
-      CatalogModuleService.buildObjectsTree(this.moduleOptions_.objects)
-
-      const eventRelatedEntity = Object.values(CatalogModuleService.tree_).find(
-        (object) => {
-          return object.listeners.includes(eventName)
-        }
-      )!
-
-      const ids: string[] = []
-
-      if ("id" in data) {
-        ids.push(data.id)
-      } else if ("ids" in data && data.ids.length) {
-        ids.push(...data.ids)
-      }
-
-      if (ids.length === 0) {
-        return
-      }
-
-      const entryPoint = eventRelatedEntity.alias
-      const variables = {
-        id: ids,
-      }
-      const fields = eventRelatedEntity.fields
-      const remoteQueryObject = remoteQueryObjectFromString({
-        entryPoint,
-        variables,
-        fields,
-      })
-
-      const entries = await this.remoteQuery_(remoteQueryObject)
-      // await this.storageProvider_.store([{ entityName, id, data }])
-    }
-  }
-
-  static buildObjectsTree(objects: CatalogModuleOptions["objects"]) {
-    if (Object.keys(this.tree_).length) {
-      return this.tree_
-    }
-
-    const tree: ObjectsPartialTree = {}
-
-    // initialize tree
-    for (const object of objects) {
-      tree[object.entity] ??= {
-        ...object,
-        alias: "",
-        __joinerConfig: {},
-      }
-
-      if (object.parents) {
-        tree[object.entity].parents = object.parents
-      }
-    }
-
-    const modules = MedusaModule.getLoadedModules()
-
-    const findEntityAlias = (entity: string): string | undefined => {
-      let alias
-
-      for (const moduleInstances of modules) {
-        for (const moduleInstance of Object.values(moduleInstances)) {
-          const moduleJoinerConfig = moduleInstance.__joinerConfig
-          const aliases = Array.isArray(moduleJoinerConfig.alias)
-            ? moduleJoinerConfig.alias
-            : [moduleJoinerConfig.alias]
-          const aliasObj = aliases.find(
-            (alias_) => alias_!.args?.entity === entity
-          )
-          if (aliasObj) {
-            alias = aliasObj?.name[0]
-            break
-          }
-        }
-      }
-
-      return alias
-    }
-
-    // Aggregate fields
-    for (const object of Object.values(tree)) {
-      const entityAlias =
-        findEntityAlias(object.entity) ?? lowerCaseFirst(object.entity)
-      object.alias = entityAlias as string
-
-      if (object.parents) {
-        // Instead attach the parent alias.id field to th object
-        // First look for parent module configuration and find out
-        // if there is any link relationShip if it is the case
-        // then attach the parent linkAlias.entityName_id otherwise parent module alias.id
-        /*const composedParentFields = object.fields.map(
-          (field) => `${entityAlias}.${field}`
-        )
-        object.parents.forEach((parent) => {
-          tree[parent].fields = [...object.fields, ...composedParentFields]
-        })*/
-      }
-    }
-
-    this.tree_ = tree
-    return tree
+  private buildSchemaObjectRepresentation_() {
+    this.schemaObjectRepresentation_ =
+      this.schemaObjectRepresentation_ ??
+      buildSchemaObjectRepresentation(this.moduleOptions_.schema)
   }
 }

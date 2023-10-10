@@ -14,16 +14,26 @@ export default async ({
     catalogModuleService: asClass(CatalogModuleService).singleton(),
   })
 
+  if (!options?.customAdapter && !options?.defaultAdapterOptions) {
+    throw new Error(
+      "Catalog module error, either customAdapter or defaultAdapterOptions must be provided. None have been provided."
+    )
+  }
+
   if (!options?.customAdapter) {
-    container.register("storageProvider", asClass(PostgresProvider).singleton())
+    container.register("storageProviderCtr", asValue(PostgresProvider))
     container.register(
       "catalogRepository",
       asClass(CatalogRepository).singleton()
     )
   } else {
-    const storageAdapter = new options.customAdapter.constructor(
-      options.customAdapter.options
+    container.register(
+      "storageProviderCtr",
+      asValue(options.customAdapter.constructor)
     )
-    container.register("storageProvider", asValue(storageAdapter))
+    container.register(
+      "storageProviderCtrOptions",
+      asValue(options.customAdapter.options)
+    )
   }
 }
