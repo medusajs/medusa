@@ -28,17 +28,17 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/return.ts:57](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L57)
+[models/return.ts:57](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L57)
 
 ___
 
 ### claim\_order\_id
 
-• **claim\_order\_id**: `string`
+• **claim\_order\_id**: ``null`` \| `string`
 
 #### Defined in
 
-[models/return.ts:53](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L53)
+[models/return.ts:53](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L53)
 
 ___
 
@@ -52,7 +52,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -66,17 +66,17 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
 ### idempotency\_key
 
-• **idempotency\_key**: `string`
+• **idempotency\_key**: ``null`` \| `string`
 
 #### Defined in
 
-[models/return.ts:88](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L88)
+[models/return.ts:92](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L92)
 
 ___
 
@@ -86,27 +86,37 @@ ___
 
 #### Defined in
 
-[models/return.ts:41](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L41)
+[models/return.ts:41](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L41)
+
+___
+
+### location\_id
+
+• **location\_id**: ``null`` \| `string`
+
+#### Defined in
+
+[models/return.ts:74](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L74)
 
 ___
 
 ### metadata
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **metadata**: ``null`` \| `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-[models/return.ts:85](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L85)
+[models/return.ts:89](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L89)
 
 ___
 
 ### no\_notification
 
-• **no\_notification**: `boolean`
+• **no\_notification**: ``null`` \| `boolean`
 
 #### Defined in
 
-[models/return.ts:82](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L82)
+[models/return.ts:86](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L86)
 
 ___
 
@@ -116,17 +126,17 @@ ___
 
 #### Defined in
 
-[models/return.ts:65](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L65)
+[models/return.ts:65](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L65)
 
 ___
 
 ### order\_id
 
-• **order\_id**: `string`
+• **order\_id**: ``null`` \| `string`
 
 #### Defined in
 
-[models/return.ts:61](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L61)
+[models/return.ts:61](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L61)
 
 ___
 
@@ -136,7 +146,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:79](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L79)
+[models/return.ts:83](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L83)
 
 ___
 
@@ -146,7 +156,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:76](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L76)
+[models/return.ts:80](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L80)
 
 ___
 
@@ -156,7 +166,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:73](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L73)
+[models/return.ts:77](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L77)
 
 ___
 
@@ -166,7 +176,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:70](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L70)
+[models/return.ts:70](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L70)
 
 ___
 
@@ -176,7 +186,7 @@ ___
 
 #### Defined in
 
-[models/return.ts:35](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L35)
+[models/return.ts:35](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L35)
 
 ___
 
@@ -186,17 +196,17 @@ ___
 
 #### Defined in
 
-[models/return.ts:49](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L49)
+[models/return.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L49)
 
 ___
 
 ### swap\_id
 
-• **swap\_id**: `string`
+• **swap\_id**: ``null`` \| `string`
 
 #### Defined in
 
-[models/return.ts:45](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L45)
+[models/return.ts:45](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L45)
 
 ___
 
@@ -210,7 +220,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -224,4 +234,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/return.ts:90](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/return.ts#L90)
+[models/return.ts:95](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/return.ts#L95)

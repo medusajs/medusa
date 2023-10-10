@@ -32,7 +32,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[models/store.ts:46](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L46)
+[models/store.ts:46](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L46)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[models/store.ts:32](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L32)
+[models/store.ts:32](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L32)
 
 ___
 
@@ -62,7 +62,17 @@ ___
 
 #### Defined in
 
-[models/store.ts:28](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L28)
+[models/store.ts:28](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L28)
+
+___
+
+### default\_location\_id
+
+• **default\_location\_id**: `string`
+
+#### Defined in
+
+[models/store.ts:58](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L58)
 
 ___
 
@@ -72,17 +82,17 @@ ___
 
 #### Defined in
 
-[models/store.ts:67](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L67)
+[models/store.ts:70](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L70)
 
 ___
 
 ### default\_sales\_channel\_id
 
-• **default\_sales\_channel\_id**: `string`
+• **default\_sales\_channel\_id**: ``null`` \| `string`
 
 #### Defined in
 
-[models/store.ts:61](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L61)
+[models/store.ts:64](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L64)
 
 ___
 
@@ -96,27 +106,27 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
 ### invite\_link\_template
 
-• **invite\_link\_template**: `string`
+• **invite\_link\_template**: ``null`` \| `string`
 
 #### Defined in
 
-[models/store.ts:55](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L55)
+[models/store.ts:55](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L55)
 
 ___
 
 ### metadata
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **metadata**: ``null`` \| `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-[models/store.ts:58](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L58)
+[models/store.ts:61](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L61)
 
 ___
 
@@ -126,27 +136,27 @@ ___
 
 #### Defined in
 
-[models/store.ts:25](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L25)
+[models/store.ts:25](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L25)
 
 ___
 
 ### payment\_link\_template
 
-• **payment\_link\_template**: `string`
+• **payment\_link\_template**: ``null`` \| `string`
 
 #### Defined in
 
-[models/store.ts:52](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L52)
+[models/store.ts:52](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L52)
 
 ___
 
 ### swap\_link\_template
 
-• **swap\_link\_template**: `string`
+• **swap\_link\_template**: ``null`` \| `string`
 
 #### Defined in
 
-[models/store.ts:49](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L49)
+[models/store.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L49)
 
 ___
 
@@ -160,7 +170,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -174,4 +184,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/store.ts:69](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/store.ts#L69)
+[models/store.ts:73](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/store.ts#L73)

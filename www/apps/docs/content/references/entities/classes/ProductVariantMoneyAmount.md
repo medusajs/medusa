@@ -2,19 +2,19 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-# Class: Image
+# Class: ProductVariantMoneyAmount
 
 ## Hierarchy
 
 - `SoftDeletableEntity`
 
-  ↳ **`Image`**
+  ↳ **`ProductVariantMoneyAmount`**
 
 ## Constructors
 
 ### constructor
 
-• **new Image**()
+• **new ProductVariantMoneyAmount**()
 
 #### Inherited from
 
@@ -64,13 +64,13 @@ SoftDeletableEntity.id
 
 ___
 
-### metadata
+### money\_amount\_id
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **money\_amount\_id**: `string`
 
 #### Defined in
 
-[models/image.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/image.ts#L13)
+[models/product-variant-money-amount.ts:11](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-variant-money-amount.ts#L11)
 
 ___
 
@@ -88,13 +88,13 @@ SoftDeletableEntity.updated\_at
 
 ___
 
-### url
+### variant\_id
 
-• **url**: `string`
+• **variant\_id**: `string`
 
 #### Defined in
 
-[models/image.ts:10](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/image.ts#L10)
+[models/product-variant-money-amount.ts:15](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-variant-money-amount.ts#L15)
 
 ## Methods
 
@@ -108,4 +108,4 @@ ___
 
 #### Defined in
 
-[models/image.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/image.ts#L16)
+[models/product-variant-money-amount.ts:18](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-variant-money-amount.ts#L18)
