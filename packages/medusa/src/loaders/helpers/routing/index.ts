@@ -28,12 +28,19 @@ const log = ({
   logger.info(message)
 }
 
-const pathSegmentReplacer = {
-  "\\[\\.\\.\\.\\]": () => `*`,
-  "\\[(\\w+)?": (param?: string) => `:${param}`,
-  "\\]": () => ``,
-}
+/**
+ * File name that is used to indicate that the file is a route file
+ */
+const ROUTE_NAME = "route.js"
 
+/**
+ * File name for the global middlewares file
+ */
+const MIDDLEWARES_NAME = "middlewares.js"
+
+/**
+ * List of all the supported HTTP methods
+ */
 const HTTP_METHODS = [
   "GET",
   "POST",
@@ -43,6 +50,12 @@ const HTTP_METHODS = [
   "OPTIONS",
   "HEAD",
 ]
+
+const pathSegmentReplacer = {
+  "\\[\\.\\.\\.\\]": () => `*`,
+  "\\[(\\w+)?": (param?: string) => `:${param}`,
+  "\\]": () => ``,
+}
 
 const specialMiddlewaresDirName = "_middlewares"
 
@@ -280,14 +293,14 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
       // If the handler has a valid HTTP method name then add it to the config
       for (const handler of handlers) {
         if (HTTP_METHODS.includes(handler.toUpperCase())) {
-          // Add the handler to the config if it's a valid HTTP method, handlers should be an array of functions containing only one function
-          if (typeof imp[handler] === "function") {
-            console.log("handler", handler, "is a function")
-          }
-
           config.routes.push({
             method: handler.toUpperCase() as RouteVerbs,
             handlers: [imp[handler]],
+          })
+        } else {
+          log({
+            activityId: this.activityId,
+            message: `Skipping handler ${handler} in ${path}. Invalid HTTP method name.`,
           })
         }
       }
@@ -310,8 +323,6 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
           const isGlobalMiddleware = isMiddlewaresDir(descriptor.route)
 
           const config = await this.createRouteConfig(absolutePath)
-
-          console.log(`Created config for ${absolutePath}`, config)
 
           return await import(absolutePath).then((imp) => {
             const map = isGlobalMiddleware
@@ -387,7 +398,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     const pathSegments = childPath.split("/")
     const lastSegment = pathSegments[pathSegments.length - 1]
 
-    if (lastSegment.startsWith("index")) {
+    if (lastSegment.startsWith("route")) {
       pathSegments.pop()
       routeToParse = pathSegments.join("/")
     }
@@ -409,12 +420,29 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
       await readdir(dirPath, { withFileTypes: true }).then((entries) => {
         return entries
           .filter((entry) => {
-            if (!this.excludes.length) {
-              return true
+            /**
+             * We exclude all files starting with an underscore
+             * as underscore is used to indicate that files are
+             * to be ignored.
+             */
+            if (entry.name.startsWith("_")) {
+              return false
             }
 
             const fullPath = join(dirPath, entry.name)
-            return !this.excludes.some((exclude) => exclude.test(fullPath))
+
+            if (
+              this.excludes.length &&
+              this.excludes.some((exclude) => exclude.test(fullPath))
+            ) {
+              return false
+            }
+
+            if (entry.isFile() && entry.name !== ROUTE_NAME) {
+              return false
+            }
+
+            return true
           })
           .map(async (entry) => {
             const childPath = join(dirPath, entry.name)
@@ -492,14 +520,6 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
             descriptor.route
           }`,
         })
-
-        console.log(
-          "Registering route",
-          route.method?.toUpperCase(),
-          descriptor.route,
-          "with handlers",
-          route.handlers
-        )
         ;(this.app as any)[route.method!.toLowerCase()](
           descriptor.route,
           ...route.handlers
