@@ -2831,7 +2831,6 @@ __metadata:
   resolution: "typedoc-plugin-frontmatter@workspace:packages/typedoc-plugin-frontmatter"
   dependencies:
     "@types/node": ^16.11.10
-    typedoc: ^0.25.1
     typescript: ^4.6
   peerDependencies:
     typedoc: 0.25.x
@@ -2911,7 +2910,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:0.25.1, typedoc@npm:^0.25.1":
+"typedoc@npm:0.25.1":
   version: 0.25.1
   resolution: "typedoc@npm:0.25.1"
   dependencies:
