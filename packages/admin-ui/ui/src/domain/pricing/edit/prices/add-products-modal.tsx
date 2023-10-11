@@ -215,7 +215,7 @@ const AddProductsModal = ({
         type: "manual",
         message: t(
           "price-list-add-products-modal-no-prices-error",
-          "Please set prices for at least one product."
+          "Please assign prices for at least one product."
         ) as string,
       })
 
@@ -234,7 +234,7 @@ const AddProductsModal = ({
         ),
         description: t(
           "price-list-add-products-modal-missing-prices-description",
-          "Prices have not been assigned to all of your chosen products. Would you like to proceed?"
+          "Prices have not been assigned to all of your chosen products. Would you like to continue?"
         ),
       })
 
