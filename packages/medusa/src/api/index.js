@@ -4,6 +4,7 @@ import compression from "compression"
 import admin from "./routes/admin"
 import store from "./routes/store"
 import { shouldCompressResponse, compressionOptions } from "../utils/api"
+import helmet from "helmet"
 
 // guaranteed to get dependencies
 export default (container, config) => {
@@ -22,6 +23,8 @@ export default (container, config) => {
   admin(app, container, config)
   store(app, container, config)
 
+
+  app.use(helmet())
   app.use(errorHandler())
 
   return app
