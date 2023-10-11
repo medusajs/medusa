@@ -1,6 +1,11 @@
 import { isObject, isString } from "@medusajs/utils"
 import { Knex } from "knex"
-import { QueryFormat, QueryOptions, SchemaObjectRepresentation } from "../types"
+import {
+  OrderBy,
+  QueryFormat,
+  QueryOptions,
+  SchemaObjectRepresentation,
+} from "../types"
 
 type EntityStructure = {
   entity?: string
@@ -8,25 +13,23 @@ type EntityStructure = {
 }
 
 export class QueryBuilder {
-  private structure: EntityStructure
-  private builder: Knex.QueryBuilder
-  private selector: QueryFormat,
-  private options?: QueryOptions
-  private schema: SchemaObjectRepresentation
+  private readonly structure: EntityStructure
+  private readonly builder: Knex.QueryBuilder
+  private readonly selector: QueryFormat
+  private readonly options?: QueryOptions
+  private readonly schema: SchemaObjectRepresentation
 
-  constructor(
-    args: {
-      schema: SchemaObjectRepresentation
-      knex: Knex,
-      private selector: QueryFormat,
-      private options?: QueryOptions
-    })
-   {
+  constructor(args: {
+    schema: SchemaObjectRepresentation
+    knex: Knex
+    selector: QueryFormat
+    options?: QueryOptions
+  }) {
     this.schema = args.schema
     this.selector = args.selector
     this.options = args.options
     this.builder = args.knex.queryBuilder()
-    
+
     this.structure = this.buildSchemaWithEntities()
   }
 
@@ -35,9 +38,9 @@ export class QueryBuilder {
   }
 
   private buildSchemaWithEntities(): EntityStructure {
-    const {select} = this.selector
+    const { select } = this.selector
     const schema = this.schema
-    
+
     // TODO: infer entity from schema
     return select as any
   }
@@ -203,25 +206,24 @@ export class QueryBuilder {
     map.set(-1, "DESC")
     map.set("DESC", "DESC")
 
-    arr.forEach((obj) => {
-      function nested(obj, prefix = "") {
-        const keys = Object.keys(obj)
-        if (keys.length > 1) {
-          throw new Error("Order by only supports one key per object.")
-        }
-        const key = keys[0]
-        let value = obj[key]
-        if (isObject(value)) {
-          nested(value, prefix + key + ".")
-        } else {
-          if (isString(value)) {
-            value = value.toUpperCase()
-          }
-          result[prefix + key] = map.get(value) ?? "ASC"
-        }
+    function nested(obj, prefix = "") {
+      const keys = Object.keys(obj)
+      if (keys.length > 1) {
+        throw new Error("Order by only supports one key per object.")
       }
-      nested(obj)
-    })
+      const key = keys[0]
+      let value = obj[key]
+      if (isObject(value)) {
+        nested(value, prefix + key + ".")
+      } else {
+        if (isString(value)) {
+          value = value.toUpperCase()
+        }
+        result[prefix + key] = map.get(value) ?? "ASC"
+      }
+    }
+
+    arr.forEach((obj) => nested)
 
     return result
   }
