@@ -27,6 +27,10 @@ export type CartDTO = {
   gift_card_total?: number
   gift_card_tax_total?: number
 
+  // TODO: replace with PaymentSessionDTO
+  payment_sessions: any[]
+  payment_session: any[]
+
   // TODO: Replace with CartItemDTO
   items?: any[]
   shipping_methods?: ShippingMethodDTO[]

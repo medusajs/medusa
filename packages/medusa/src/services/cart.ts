@@ -2309,7 +2309,7 @@ class CartService extends TransactionBaseService {
    * shop.
    * @param cartOrId - the id of the cart to add shipping method to
    * @param optionId - id of shipping option to add as valid method
-   * @param data - the fulmillment data for the method
+   * @param data - the fulfillment data for the method
    * @return the result of the update operation
    */
   async addShippingMethod(

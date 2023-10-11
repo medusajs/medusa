@@ -151,6 +151,9 @@ describe("/store/carts", () => {
       })
     )
 
+    expect(cartAfter.payment_sessions).toEqual([])
+    expect(cartAfter.payment_session).toEqual(undefined)
+
     expect(errors).toEqual([
       {
         action: "fail_step",
@@ -208,17 +211,19 @@ describe("/store/carts", () => {
 
     expect(cartAfter.payment_sessions).toEqual([
       expect.objectContaining({
-        id: "test-session",
-        cart_id: "test-cart-2",
-        provider_id: "test-pay",
+        id: cartBefore.payment_sessions[0].id,
+        cart_id: cartBefore.payment_sessions[0].cart_id,
+        provider_id: cartBefore.payment_sessions[0].provider_id,
+        is_initiated: cartBefore.payment_sessions[0].is_initiated,
+        is_selected: cartBefore.payment_sessions[0].is_selected,
       }),
     ])
 
     expect(cartAfter.payment_session).toEqual(
       expect.objectContaining({
-        id: "test-session",
-        cart_id: "test-cart-2",
-        provider_id: "test-pay",
+        id: cartBefore.payment_sessions[0].id,
+        cart_id: cartBefore.payment_sessions[0].cart_id,
+        provider_id: cartBefore.payment_sessions[0].provider_id,
       })
     )
 

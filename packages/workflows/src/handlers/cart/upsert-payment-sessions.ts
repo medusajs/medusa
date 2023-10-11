@@ -14,6 +14,10 @@ export async function upsertPaymentSessions({
 
   const { cart } = data
 
+  if (!cart.payment_sessions?.length) {
+    return
+  }
+
   const cartService = container.resolve("cartService").withTransaction(manager)
 
   await cartService.upsertPaymentSessions(cart)

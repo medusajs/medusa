@@ -11,21 +11,31 @@ export async function compensateUpsertPaymentSessions({
   data,
 }: WorkflowArguments<HandlerInput>): Promise<void> {
   const { manager } = context
-
-  const { cart } = data
-
   const cartService = container.resolve("cartService").withTransaction(manager)
 
-  const { payment_sessions, payment_session } = await cartService.retrieve(
-    cart.id,
-    { relations: ["payment_sessions"] }
+  const { cart: cartBefore } = data // initial cart data
+
+  const initialProviderIdsSet = new Set(
+    cartBefore.payment_sessions.map((ps) => ps.provider_id)
   )
 
-  await cartService.upsertPaymentSessions({
-    ...cart,
-    payment_sessions,
-    payment_session,
+  const cartAfter = await cartService.retrieve(cartBefore.id, {
+    relations: ["payment_sessions"],
   })
+
+  await Promise.all(
+    cartAfter.payment_sessions.map(async (session) => {
+      if (!initialProviderIdsSet.has(session.provider_id)) {
+        await cartService.deletePaymentSessionLocalAndRemote(session)
+      }
+    })
+  )
+
+  if (!cartBefore.payment_sessions?.length) {
+    return
+  }
+
+  await cartService.upsertPaymentSessions(cartBefore)
 }
 
 compensateUpsertPaymentSessions.aliases = {
