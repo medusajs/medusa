@@ -1,8 +1,4 @@
-{{#if (sectionEnabled "member_signature_title")}}
-
 {{{signatureTitle accessor}}}
-
-{{/if}}
 
 {{#if (sectionEnabled "member_signature_comment")}}
 
@@ -38,11 +34,11 @@
 
 {{#if showSources}}
 
-{{titleLevel 4}} Parameters
+{{{titleLevel 4}}} Parameters
 
 {{else}}
 
-{{titleLevel 5}} Parameters
+{{{titleLevel 5}}} Parameters
 
 {{/if}}
 
@@ -62,11 +58,11 @@
 
 {{#if showSources}}
 
-{{titleLevel 4}} Returns
+{{{titleLevel 4}}} Returns
 
 {{else}}
 
-{{titleLevel 5}} Returns
+{{{titleLevel 5}}} Returns
 
 {{/if}}
 
@@ -128,7 +124,7 @@
 
 {{#if hasVisibleComponent}}
 
-{{{comments this false true 4}}}
+{{{comments this false true 4 ..}}}
 
 {{/if}}
 
