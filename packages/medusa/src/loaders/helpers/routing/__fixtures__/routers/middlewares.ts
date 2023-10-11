@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express"
+import type { MiddlewareConfig } from "../../types"
 
 export const globalCustomersMiddlewareMock = jest.fn()
 
@@ -7,7 +8,7 @@ function middleware(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
-export const config = {
+export const config: MiddlewareConfig = {
   routes: [
     {
       path: "/customers/*",

@@ -3,14 +3,13 @@ import { readdir } from "fs/promises"
 import { extname, join } from "path"
 import logger from "../../logger"
 import {
-  Config,
-  GlobalMiddlewareConfig,
+  MiddlewareConfig,
   GlobalMiddlewareDescriptor,
-  GlobalMiddlewareRouteConfig,
+  HTTP_METHODS,
+  RouteVerb,
   OnRouteLoadingHook,
   RouteConfig,
   RouteDescriptor,
-  RouteVerbs,
 } from "./types"
 
 const log = ({
@@ -38,43 +37,19 @@ const ROUTE_NAME = "route.js"
  */
 const MIDDLEWARES_NAME = "middlewares.js"
 
-/**
- * List of all the supported HTTP methods
- */
-const HTTP_METHODS = [
-  "GET",
-  "POST",
-  "PUT",
-  "PATCH",
-  "DELETE",
-  "OPTIONS",
-  "HEAD",
-]
-
 const pathSegmentReplacer = {
   "\\[\\.\\.\\.\\]": () => `*`,
   "\\[(\\w+)?": (param?: string) => `:${param}`,
   "\\]": () => ``,
 }
 
-const specialMiddlewaresDirName = "_middlewares"
-
-const createSpacingSting = (currentSize = 0) => {
-  return new Array(4 - currentSize + 1).join(" ")
-}
-
-const isMiddlewaresDir = (path: string) =>
-  path.includes(specialMiddlewaresDirName)
-
 /**
- * @param {RouteDescriptor[] | GlobalMiddlewareDescriptor[]} routes
+ * @param routes - The routes to prioritize
  *
- * @return {RouteDescriptor[] | GlobalMiddlewareDescriptor[]} An array of sorted
+ * @return An array of sorted
  * routes based on their priority
  */
-const prioritize = (
-  routes: RouteDescriptor[] | GlobalMiddlewareDescriptor[]
-): RouteDescriptor[] | GlobalMiddlewareDescriptor[] => {
+const prioritize = (routes: RouteDescriptor[]): RouteDescriptor[] => {
   return routes.sort((a, b) => {
     return a.priority - b.priority
   })
@@ -84,28 +59,27 @@ const prioritize = (
  * The smaller the number the higher the priority with zero indicating
  * highest priority
  *
- * @param {string} url
+ * @param path - The path to calculate the priority for
  *
- * @return {number} An integer ranging from 0 to Infinity
+ * @return An integer ranging from `0` to `Infinity`
  */
-function calculatePriority(url: string): number {
-  const depth = url.match(/\/.+?/g)?.length || 0
-  const specifity = url.match(/\/:.+?/g)?.length || 0
-  const catchall = (url.match(/\/\*/g)?.length || 0) > 0 ? Infinity : 0
+function calculatePriority(path: string): number {
+  const depth = path.match(/\/.+?/g)?.length || 0
+  const specifity = path.match(/\/:.+?/g)?.length || 0
+  const catchall = (path.match(/\/\*/g)?.length || 0) > 0 ? Infinity : 0
 
   return depth + specifity + catchall
 }
 
 export class RoutesLoader<TConfig = Record<string, unknown>> {
   protected routesMap = new Map<string, RouteDescriptor>()
-  protected globalMiddlewaresDescriptor: GlobalMiddlewareDescriptor | undefined
+  private globalMiddlewaresDescriptor: GlobalMiddlewareDescriptor | undefined
 
   protected app: Express
   protected activityId?: string
   protected onRouteLoading?: OnRouteLoadingHook<TConfig>
   protected rootDir: string
   protected excludes: RegExp[] = [/\.DS_Store/, /(\.ts\.map|\.js\.map|\.d\.ts)/]
-  protected strict = false
 
   constructor({
     app,
@@ -113,67 +87,18 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     onRouteLoading,
     rootDir,
     excludes = [],
-    strict = false,
   }: {
     app: Express
     activityId?: string
     onRouteLoading?: OnRouteLoadingHook<TConfig>
     rootDir: string
     excludes?: RegExp[]
-    strict?: boolean
   }) {
     this.app = app
     this.activityId = activityId
     this.onRouteLoading = onRouteLoading
     this.rootDir = rootDir
     this.excludes.push(...(excludes ?? []))
-    this.strict = strict
-  }
-
-  /**
-   * Validate the route config and display a log info if
-   * it should be ignored or skipped.
-   *
-   * @param {RouteDescriptor} descriptor
-   * @param {Config} config
-   * config is found
-   *
-   * @return {void}
-   */
-  protected validateRouteConfig({
-    descriptor,
-    config,
-  }: {
-    descriptor: RouteDescriptor
-    config?: Config
-  }): void {
-    if (!config) {
-      if (this.strict) {
-        throw new Error(
-          `Unable to load the routes from ` +
-            `${descriptor.relativePath}. ` +
-            `No config found.`
-        )
-      } else {
-        log({
-          activityId: this.activityId,
-          message:
-            `Skip loading handlers from ` +
-            `${descriptor.relativePath}. ` +
-            `No config found.`,
-        })
-      }
-    }
-
-    if (config?.ignore) {
-      log({
-        activityId: this.activityId,
-        message:
-          `Skip loading handlers from ` +
-          `${descriptor.relativePath}. ` +
-          `Ignore flag set to true.`,
-      })
-    }
   }
 
   /**
@@ -181,14 +106,14 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
    * it should be ignored or skipped.
    *
    * @param {GlobalMiddlewareDescriptor} descriptor
-   * @param {GlobalMiddlewareConfig} config
+   * @param {MiddlewareConfig} config
    *
    * @return {void}
    */
   protected validateMiddlewaresConfig({
     config,
   }: {
-    config?: GlobalMiddlewareConfig
+    config?: MiddlewareConfig
   }): void {
     if (!config?.routes) {
       log({
@@ -202,7 +127,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     for (const route of config.routes) {
       if (!route.matcher) {
         throw new Error(
-          `A route is missing a \`matcher\`. The field is required when applying middlewares.`
+          `A route is missing a \`matcher\`. The field is required when applying middleware.`
         )
       }
     }
@@ -253,101 +178,79 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     return route
   }
 
-  protected async createRouteConfig(path: string) {
-    return await import(path).then((imp) => {
-      const config: {
-        routes: RouteConfig[]
-      } = {
-        routes: [],
-      }
-
-      // Get function names from the file
-      const handlers = Object.keys(imp).filter((key) => {
-        return typeof imp[key] === "function"
-      })
-
-      // If the handler has a valid HTTP method name then add it to the config
-      for (const handler of handlers) {
-        if (HTTP_METHODS.includes(handler.toUpperCase())) {
-          config.routes.push({
-            method: handler.toUpperCase() as RouteVerbs,
-            handler: imp[handler],
-          })
-        } else {
-          log({
-            activityId: this.activityId,
-            message: `Skipping handler ${handler} in ${path}. Invalid HTTP method name.`,
-          })
-        }
-      }
-
-      return config
-    })
-  }
-
   /**
    * Load the file content from a descriptor and retrieve the verbs and handlers
    * to be assigned to the descriptor
    *
    * @return {Promise<void>}
    */
-  protected async retrieveFilesConfig(): Promise<void> {
+  protected async createRoutesConfig(): Promise<void> {
     await Promise.all(
-      [...this.routesMap.values(), ...this.globalMiddlewaresMap.values()].map(
-        async (descriptor: RouteDescriptor | GlobalMiddlewareDescriptor) => {
-          const absolutePath = descriptor.absolutePath
-          const isGlobalMiddleware = isMiddlewaresDir(descriptor.route)
+      [...this.routesMap.values()].map(async (descriptor: RouteDescriptor) => {
+        const absolutePath = descriptor.absolutePath
 
-          const config = await this.createRouteConfig(absolutePath)
+        return await import(absolutePath).then((imp) => {
+          const map = this.routesMap
 
-          return await import(absolutePath).then((imp) => {
-            const map = isGlobalMiddleware
-              ? this.globalMiddlewaresMap
-              : this.routesMap
+          const config: {
+            routes: RouteConfig[]
+          } = {
+            routes: [],
+          }
 
-            if (isGlobalMiddleware) {
-              this.validateMiddlewareConfig({
-                descriptor: descriptor as GlobalMiddlewareDescriptor,
-                config: imp.config,
+          const handlers = Object.keys(imp).filter((key) => {
+            /**
+             * Filter out any export that is not a function
+             */
+            return typeof imp[key] === "function"
+          })
+
+          for (const handler of handlers) {
+            if (HTTP_METHODS.includes(handler as RouteVerb)) {
+              config.routes.push({
+                method: handler as RouteVerb,
+                handler: imp[handler],
               })
             } else {
-              this.validateRouteConfig({
-                descriptor,
-                config: imp.config,
+              log({
+                activityId: this.activityId,
+                message: `Skipping handler ${handler} in ${absolutePath}. Invalid HTTP method.`,
               })
             }
+          }
 
-            // Assign default verb to GET
-            imp.config ??= config
+          if (!config.routes.length) {
+            log({
+              activityId: this.activityId,
+              message: `No valid handlers found in ${absolutePath}. Skipping.`,
+            })
 
-            descriptor.config = imp.config
-            map.set(absolutePath, descriptor)
-          })
-        }
-      )
+            map.delete(absolutePath)
+            return
+          }
+
+          descriptor.config = config
+          map.set(absolutePath, descriptor)
+        })
+      })
     )
   }
 
-  protected createDescriptor({
+  protected createRoutesDescriptor({
     dirPath,
     childPath,
     parentPath,
-    isMiddleware,
   }: {
     dirPath: string
     childPath: string
     parentPath?: string
-    isMiddleware?: boolean
   }) {
-    const descriptor: RouteDescriptor | GlobalMiddlewareDescriptor = {
+    const descriptor: RouteDescriptor = {
       absolutePath: childPath,
       relativePath: "",
       route: "",
       priority: Infinity,
     }
-
-    const map = isMiddleware ? this.globalMiddlewaresMap : this.routesMap
-    map.set(childPath, descriptor)
 
     // Remove the parentPath from the childPath
     if (parentPath) {
@@ -378,18 +281,24 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
 
     descriptor.route = this.parseRoute(routeToParse)
     descriptor.priority = calculatePriority(descriptor.route)
+
+    this.routesMap.set(childPath, descriptor)
   }
 
-  protected async createMiddlewareDescriptor({ dirPath }: { dirPath: string }) {
+  protected async createMiddlewaresDescriptor({
+    dirPath,
+  }: {
+    dirPath: string
+  }) {
     const middlewaresPath = join(dirPath, MIDDLEWARES_NAME)
 
     try {
       await import(middlewaresPath).then((imp) => {
-        const middlewaresConfig = imp.config as
-          | GlobalMiddlewareConfig
-          | undefined
+        const middlewaresConfig = imp.config as MiddlewareConfig | undefined
 
         if (!middlewaresConfig) {
+          console.log("no config", imp)
+
           log({
             activityId: this.activityId,
             message: `No config found in ${middlewaresPath}.`,
@@ -397,15 +306,24 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
           return
         }
 
-        this.validateMiddlewaresConfig({
-          config: middlewaresConfig,
+        middlewaresConfig.routes = middlewaresConfig.routes?.map((route) => {
+          return {
+            ...route,
+            method: route.method ?? "USE",
+          }
         })
 
-        this.globalMiddlewaresDescriptor = {
+        const descriptor: GlobalMiddlewareDescriptor = {
           config: middlewaresConfig,
         }
+
+        this.validateMiddlewaresConfig(descriptor)
+
+        this.globalMiddlewaresDescriptor = descriptor
       })
     } catch (error) {
+      console.log("An error occured", error)
+
       log({
         activityId: this.activityId,
         message: `No middlewares detected in ${dirPath}`,
@@ -459,7 +377,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
               })
             }
 
-            return this.createDescriptor({
+            return this.createRoutesDescriptor({
               dirPath,
               childPath,
               parentPath,
@@ -495,24 +413,34 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
   }
 
   protected async registerMiddlewares(): Promise<void> {
-    const prioritizedMiddlewares = prioritize([
-      ...this.globalMiddlewaresMap.values(),
-    ])
+    const descriptor = this.globalMiddlewaresDescriptor
 
-    for (const descriptor of prioritizedMiddlewares) {
-      if (!descriptor.config?.routes?.length) {
-        continue
-      }
+    if (!descriptor) {
+      console.log("no middlewares descriptor")
+      return
+    }
 
-      const routes = descriptor.config
-        .routes! as unknown as GlobalMiddlewareRouteConfig[]
+    if (!descriptor.config?.routes?.length) {
+      console.log("no middlewares routes")
+      return
+    }
 
-      for (const route of routes) {
+    const routes = descriptor.config.routes
+
+    for (const route of routes) {
+      if (Array.isArray(route.method)) {
+        for (const method of route.method) {
+          log({
+            activityId: this.activityId,
+            message: `Registering middleware [${method}] - ${route.matcher}`,
+          })
+
+          this.app[method.toLowerCase()](route.matcher, ...route.middlewares)
+        }
+      } else {
         log({
           activityId: this.activityId,
-          message: `Registering middleware [${route.method?.toUpperCase()}${createSpacingSting(
-            route.method?.length
-          )}] - ${route.matcher}`,
+          message: `Registering middleware [${route.method}] - ${route.matcher}`,
         })
 
         this.app[route.method!.toLowerCase()](
@@ -530,13 +458,23 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
   async load<TConfig = unknown>() {
     performance.mark("file-base-routing-start" + this.rootDir)
 
-    await this.createMiddlewaresMap({ dirPath: this.rootDir })
+    let apiExists = true
 
-    await this.createRoutesMap({ dirPath: this.rootDir })
-    await this.retrieveFilesConfig()
+    try {
+      await readdir(this.rootDir)
+    } catch (_error) {
+      apiExists = false
+    }
 
-    await this.registerMiddlewares()
-    await this.registerRoutes()
+    if (apiExists) {
+      await this.createMiddlewaresDescriptor({ dirPath: this.rootDir })
+
+      await this.createRoutesMap({ dirPath: this.rootDir })
+      await this.createRoutesConfig()
+
+      await this.registerMiddlewares()
+      await this.registerRoutes()
+    }
 
     performance.mark("file-base-routing-end" + this.rootDir)
     const timeSpent = performance
@@ -553,7 +491,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     })
 
     this.routesMap.clear()
-    this.globalMiddlewaresMap.clear()
+    this.globalMiddlewaresDescriptor = undefined
   }
 }
 

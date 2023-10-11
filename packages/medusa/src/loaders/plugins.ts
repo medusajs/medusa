@@ -354,34 +354,33 @@ async function registerApi(
 
   logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
 
-  let apiFolderExists = true
   try {
+    /**
+     * Register the plugin's api routes using the file based routing.
+     */
+    await new RoutesLoader({
+      app,
+      rootDir: `${pluginDetails.resolve}/api`,
+      activityId: activityId,
+    }).load()
+
+    /**
+     * For backwards compatibility we also support loading routes from
+     * `/api/index` if the file exists.
+     */
+    let apiFolderExists = true
+
     try {
-      // TODO: This only works if the api folder has an index.js file, which should not be necessary
-      // when using the new routing mechanism
       require.resolve(`${pluginDetails.resolve}/api`)
     } catch (e) {
       apiFolderExists = false
     }
 
     if (apiFolderExists) {
-      // file base routing mechanism
-      return await new RoutesLoader({
-        app,
-        rootDir: `${pluginDetails.resolve}/api`,
-        excludes: [/api\/index/],
-        activityId: activityId,
-      })
-        .load()
-        .then(() => {
-          // below is the backwards compatible routing mechanism
-          const routes = require(`${pluginDetails.resolve}/api`).default
-          if (routes) {
-            app.use("/", routes(rootDirectory, pluginDetails.options))
-          }
-
-          return app
-        })
+      const routes = require(`${pluginDetails.resolve}/api`).default
+      if (routes) {
+        app.use("/", routes(rootDirectory, pluginDetails.options))
+      }
     }
 
     return app

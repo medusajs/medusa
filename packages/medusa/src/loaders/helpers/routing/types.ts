@@ -1,42 +1,32 @@
-export type RouteVerb = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS"
-export type MiddlewareVerb = "ALL" | RouteVerb
+/**
+ * List of all the supported HTTP methods
+ */
+export const HTTP_METHODS = [
+  "GET",
+  "POST",
+  "PUT",
+  "PATCH",
+  "DELETE",
+  "OPTIONS",
+  "HEAD",
+] as const
 
-/* eslint-disable no-unused-vars */
-export enum RouteVerbs {
-  GET = "GET",
-  POST = "POST",
-  PUT = "PUT",
-  DELETE = "DELETE",
-  PATCH = "PATCH",
-  OPTIONS = "OPTIONS",
-  HEAD = "HEAD",
-  ALL = "ALL",
-}
-/* eslint-enable no-unused-vars */
+export type RouteVerb = (typeof HTTP_METHODS)[number]
+type MiddlewareVerb = "USE" | "ALL" | RouteVerb
 
 export type RouteConfig = {
-  method?: RouteVerbs
+  method?: RouteVerb
   handler: (...args: unknown[]) => Promise<unknown>
 }
 
-export type GlobalMiddlewareRouteConfig = {
-  method?: MiddlewareVerb
+export type MiddlewareRouteConfig = {
+  method?: MiddlewareVerb | MiddlewareVerb[]
   matcher: string
   middlewares: ((...args: unknown[]) => Promise<unknown>)[]
 }
 
 export type MiddlewareConfig = {
-  method?: MiddlewareVerb
-  matcher: string
-  middlewares: ((...args: unknown[]) => Promise<unknown>)[]
-}
-
-export type Config = {
-  routes?: RouteConfig[]
-}
-
-export type GlobalMiddlewareConfig = {
-  routes?: GlobalMiddlewareRouteConfig[]
+  routes?: MiddlewareRouteConfig[]
 }
 
 export type RouteDescriptor<TConfig = Record<string, unknown>> = {
@@ -44,11 +34,13 @@ export type RouteDescriptor<TConfig = Record<string, unknown>> = {
   relativePath: string
   route: string
   priority: number
-  config?: TConfig & Config
+  config?: TConfig & {
+    routes?: RouteConfig[]
+  }
 }
 
 export type GlobalMiddlewareDescriptor<TConfig = Record<string, unknown>> = {
-  config?: TConfig & GlobalMiddlewareConfig
+  config?: TConfig & MiddlewareConfig
 }
 
 export type OnRouteLoadingHook<TConfig> = (
