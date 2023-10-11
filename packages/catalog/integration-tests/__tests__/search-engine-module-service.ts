@@ -79,13 +79,13 @@ describe("SearchEngineModuleService", function () {
   afterEach(afterEach_)
 
   it("should be able to consume created event and create the corresponding catalog entries", async () => {
+    const productId = "prod_2"
+
     remoteQueryMock.mockImplementation(() => {
       return {
         id: productId,
       }
     })
-
-    const productId = "prod_1"
 
     await eventBus.emit([
       {
@@ -154,10 +154,7 @@ describe("SearchEngineModuleService", function () {
     const result = await module.query({
       select: {
         product: {
-          entity: "Product",
-          variants: {
-            entity: "ProductVariant",
-          },
+          variant: true,
         },
       },
     })
@@ -189,7 +186,7 @@ describe("SearchEngineModuleService", function () {
     expect(result).toEqual([
       {
         id: "prod_1",
-        variants: [
+        variant: [
           {
             id: "var_1",
           },

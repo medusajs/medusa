@@ -5,15 +5,11 @@ import {
   QueryFormat,
   QueryOptions,
   SchemaObjectRepresentation,
+  Select,
 } from "../types"
 
-type EntityStructure = {
-  entity?: string
-  [key: string]: EntityStructure | string | undefined
-}
-
 export class QueryBuilder {
-  private readonly structure: EntityStructure
+  private readonly structure: Select
   private readonly builder: Knex.QueryBuilder
   private readonly selector: QueryFormat
   private readonly options?: QueryOptions
@@ -30,19 +26,15 @@ export class QueryBuilder {
     this.options = args.options
     this.builder = args.knex.queryBuilder()
 
-    this.structure = this.buildSchemaWithEntities()
+    this.structure = this.selector.select
   }
 
   private getStructureKeys(structure) {
     return Object.keys(structure ?? {}).filter((key) => key !== "entity")
   }
 
-  private buildSchemaWithEntities(): EntityStructure {
-    const { select } = this.selector
-    const schema = this.schema
-
-    // TODO: infer entity from schema
-    return select as any
+  private getEntity(path): string {
+    return this.schema._aliasMap[path]?.entity ?? ""
   }
 
   private parseWhere(
@@ -119,7 +111,7 @@ export class QueryBuilder {
   }
 
   private buildQueryParts(
-    structure: EntityStructure,
+    structure: Select,
     parentAlias: string,
     parentEntity: string,
     parentProperty: string,
@@ -127,9 +119,10 @@ export class QueryBuilder {
     level = 0,
     aliasMapping: { [path: string]: string } = {}
   ): string[] {
-    const entity = structure.entity!
-    const alias = entity.toLowerCase() + level
     const currentAliasPath = [...aliasPath, parentProperty].join(".")
+
+    const entity = this.getEntity(currentAliasPath)
+    const alias = entity.toLowerCase() + level
 
     aliasMapping[currentAliasPath] = alias
 
@@ -149,7 +142,7 @@ export class QueryBuilder {
     }
 
     for (const child of children) {
-      const childStructure = structure[child] as EntityStructure
+      const childStructure = structure[child] as Select
       queryParts = queryParts.concat(
         this.buildQueryParts(
           childStructure,
@@ -167,15 +160,15 @@ export class QueryBuilder {
   }
 
   private buildSelectParts(
-    structure: EntityStructure,
+    structure: Select,
     parentProperty: string,
     aliasPath: string[] = [],
     selectParts: object = {},
     level = 0
   ): object {
-    const entity = structure.entity!
-    const alias = entity.toLowerCase() + level
     const currentAliasPath = [...aliasPath, parentProperty].join(".")
+    const entity = this.getEntity(currentAliasPath)
+    const alias = entity.toLowerCase() + level
 
     selectParts[currentAliasPath] = `${alias}.data`
     selectParts[currentAliasPath + ".id"] = `${alias}.id`
@@ -183,7 +176,7 @@ export class QueryBuilder {
     const children = this.getStructureKeys(structure)
 
     for (const child of children) {
-      const childStructure = structure[child] as EntityStructure
+      const childStructure = structure[child] as Select
 
       this.buildSelectParts(
         childStructure,
@@ -242,8 +235,9 @@ export class QueryBuilder {
     const { skip, take } = this.options ?? { skip: 0, take: 15 }
 
     const rootKey = this.getStructureKeys(structure)[0]
-    const rootStructure = structure[rootKey] as EntityStructure
-    const rootEntity = rootStructure.entity!.toLowerCase()
+    const rootStructure = structure[rootKey] as Select
+    const entity = this.getEntity(rootKey)
+    const rootEntity = entity.toLowerCase()
     const aliasMapping: { [path: string]: string } = {}
 
     const selectParts = this.buildSelectParts(rootStructure, rootKey)
@@ -251,7 +245,7 @@ export class QueryBuilder {
     const joinParts = this.buildQueryParts(
       rootStructure,
       "",
-      rootStructure.entity!,
+      entity,
       rootKey,
       [],
       0,
@@ -264,11 +258,7 @@ export class QueryBuilder {
       this.builder.joinRaw(joinPart)
     })
 
-    this.builder.where(
-      `${aliasMapping[rootEntity]}.name`,
-      "=",
-      rootStructure.entity!
-    )
+    this.builder.where(`${aliasMapping[rootEntity]}.name`, "=", entity)
 
     // WHERE clause
     this.parseWhere(aliasMapping, filter, this.builder)
@@ -306,7 +296,7 @@ export class QueryBuilder {
       [key: string]: { property: string; parents: string[]; parentPath: string }
     } = {}
 
-    const initializeMaps = (structure: EntityStructure, path: string[]) => {
+    const initializeMaps = (structure: Select, path: string[]) => {
       const currentPath = path.join(".")
       maps[currentPath] = {}
 
@@ -319,10 +309,10 @@ export class QueryBuilder {
 
       const children = this.getStructureKeys(structure)
       for (const key of children) {
-        initializeMaps(structure[key] as EntityStructure, [...path, key])
+        initializeMaps(structure[key] as Select, [...path, key])
       }
     }
-    initializeMaps(structure[rootKey] as EntityStructure, [rootKey])
+    initializeMaps(structure[rootKey] as Select, [rootKey])
 
     function buildReferenceKey(
       path: string[],

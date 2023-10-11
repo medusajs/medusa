@@ -14,18 +14,25 @@ describe("Catalog Query Builder", function () {
 
   it("Should generate a SQL query with multiple entities, complex WHERE clause and ORDER BY ", async function () {
     const qb = new QueryBuilder({
-      schema: {} as any,
+      schema: {
+        _aliasMap: {
+          product: {
+            entity: "Product",
+          },
+          "product.variants": {
+            entity: "ProductVariant",
+          },
+          "product.sales_channels": {
+            entity: "SalesChannel",
+          },
+        },
+      } as any,
       knex,
       selector: {
         select: {
           product: {
-            entity: "Product",
-            variants: {
-              entity: "ProductVariant",
-            },
-            sales_channels: {
-              entity: "SalesChannel",
-            },
+            variants: true,
+            sales_channels: true,
           },
         },
         where: {
