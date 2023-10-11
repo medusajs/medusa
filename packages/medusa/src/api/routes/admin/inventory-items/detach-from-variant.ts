@@ -1,10 +1,4 @@
-import {
-  pipe,
-  Handlers,
-  exportWorkflow,
-  WorkflowArguments,
-  Workflows,
-} from "@medusajs/workflows"
+import { pipe, Handlers, exportWorkflow, Workflows } from "@medusajs/workflows"
 
 import {
   TransactionStepsDefinition,
@@ -12,58 +6,16 @@ import {
 } from "@medusajs/orchestration"
 import { EntityManager } from "typeorm"
 
-async function prepareDetachInventoryItems({ data }: WorkflowArguments) {
-  const { variantId, inventoryItemId } = data
-
-  let arrayOfVariantIds: string[] = variantId
-  if (!Array.isArray(variantId)) {
-    arrayOfVariantIds = [variantId]
-  }
-
-  return {
-    inventoryItems: arrayOfVariantIds.map((variantId) => ({
-      tag: variantId,
-      inventoryItem: { id: inventoryItemId },
-    })),
-  }
-}
-
 const workflowSteps: TransactionStepsDefinition = {
-  next: {
-    action: "prepare",
-    noCompensation: true,
-    next: {
-      action: "detachInventoryItemToVariants",
-    },
-  },
+  next: { action: "detachInventoryItemFromVariants" },
 }
 
 const handlers = new Map([
   [
-    "prepare",
+    "detachInventoryItemFromVariants",
     {
       invoke: pipe(
-        {
-          merge: true,
-          inputAlias: "input",
-          invoke: {
-            from: "input",
-          },
-        },
-        prepareDetachInventoryItems
-      ),
-    },
-  ],
-  [
-    "detachInventoryItemToVariants",
-    {
-      invoke: pipe(
-        {
-          merge: true,
-          invoke: {
-            from: "prepare",
-          },
-        },
+        { merge: true, inputAlias: "prepare", invoke: { from: "prepare" } },
         Handlers.InventoryHandlers.detachInventoryItems
       ),
     },
@@ -85,7 +37,19 @@ const detachInventoryItems = exportWorkflow<
   [string, string][]
 >(
   "detach-inventory-item-to-variant" as Workflows,
-  "detachInventoryItemToVariants"
+  "detachInventoryItemToVariants",
+  async (data) => {
+    const { variantId, inventoryItemId } = data
+    let arrayOfVariantIds: string[] = Array.isArray(variantId)
+      ? variantId
+      : [variantId]
+    return {
+      inventoryItems: arrayOfVariantIds.map((variantId) => ({
+        tag: variantId,
+        inventoryItem: { id: inventoryItemId },
+      })),
+    }
+  }
 )
 
 export default async (req, res) => {

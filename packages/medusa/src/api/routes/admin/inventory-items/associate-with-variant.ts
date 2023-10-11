@@ -1,10 +1,4 @@
-import {
-  pipe,
-  Handlers,
-  exportWorkflow,
-  WorkflowArguments,
-  Workflows,
-} from "@medusajs/workflows"
+import { pipe, Handlers, exportWorkflow, Workflows } from "@medusajs/workflows"
 
 import { FindParams } from "../../../../types/common"
 import {
@@ -14,59 +8,16 @@ import {
 import { EntityManager } from "typeorm"
 import { IsInt, IsOptional, IsString } from "class-validator"
 
-async function prepareAttachInventoryItems({ data }: WorkflowArguments) {
-  const { variantId, inventoryItemId, requiredQuantity } = data
-
-  let arrayOfVariantIds: string[] = variantId
-  if (!Array.isArray(variantId)) {
-    arrayOfVariantIds = [variantId]
-  }
-
-  return {
-    inventoryItems: arrayOfVariantIds.map((variantId) => ({
-      tag: variantId,
-      inventoryItem: { id: inventoryItemId },
-      requiredQuantity,
-    })),
-  }
-}
-
 const workflowSteps: TransactionStepsDefinition = {
-  next: {
-    action: "prepare",
-    noCompensation: true,
-    next: {
-      action: "attachInventoryItemToVariants",
-    },
-  },
+  next: { action: "attachInventoryItemToVariants" },
 }
 
 const handlers = new Map([
   [
-    "prepare",
-    {
-      invoke: pipe(
-        {
-          merge: true,
-          inputAlias: "input",
-          invoke: {
-            from: "input",
-          },
-        },
-        prepareAttachInventoryItems
-      ),
-    },
-  ],
-  [
     "attachInventoryItemToVariants",
     {
       invoke: pipe(
-        {
-          merge: true,
-          invoke: {
-            from: "prepare",
-          },
-        },
+        { merge: true, inputAlias: "prepare", invoke: { from: "prepare" } },
         Handlers.InventoryHandlers.attachInventoryItems
       ),
     },
@@ -89,7 +40,22 @@ const attachInventoryItems = exportWorkflow<
   [string, string][]
 >(
   "attach-inventory-item-to-variant" as Workflows,
-  "attachInventoryItemToVariants"
+  "attachInventoryItemToVariants",
+  async (data) => {
+    const { variantId, inventoryItemId, requiredQuantity } = data
+
+    const arrayOfVariantIds: string[] = Array.isArray(variantId)
+      ? variantId
+      : [variantId]
+
+    return {
+      inventoryItems: arrayOfVariantIds.map((variantId) => ({
+        tag: variantId,
+        inventoryItem: { id: inventoryItemId },
+        requiredQuantity,
+      })),
+    }
+  }
 )
 
 export default async (req, res) => {
