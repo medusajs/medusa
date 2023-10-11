@@ -16,6 +16,7 @@ get:
         $ref: ../code_samples/Shell/store_auth/get.sh
   security:
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Auth
   responses:
@@ -96,6 +97,7 @@ delete:
         $ref: ../code_samples/Shell/store_auth/delete.sh
   security:
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Auth
   responses:

@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/product.ts:28](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product.ts#L28)
+[models/product.ts:31](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product.ts#L31)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[models/product.ts:29](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product.ts#L29)
+[models/product.ts:32](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product.ts#L32)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[models/product.ts:30](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product.ts#L30)
+[models/product.ts:33](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product.ts#L33)
 
 ___
 
@@ -42,4 +42,4 @@ ___
 
 #### Defined in
 
-[models/product.ts:31](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product.ts#L31)
+[models/product.ts:34](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product.ts#L34)

@@ -29,6 +29,7 @@ import { validator } from "../../../../utils/validator"
  *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:
