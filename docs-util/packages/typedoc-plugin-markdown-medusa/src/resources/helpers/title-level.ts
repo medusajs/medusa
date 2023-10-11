@@ -9,6 +9,12 @@ export default function (theme: MarkdownTheme) {
       const { expandMembers, sections } =
         theme.getFormattingOptionsForLocation()
 
+      if (!expandMembers) {
+        return Array(originalLevel).fill("#").join("")
+      }
+
+      const { allReflectionsHaveOwnDocument } = theme
+
       let isSignatureChild = false
       if (
         sections &&
@@ -22,8 +28,15 @@ export default function (theme: MarkdownTheme) {
           (this.parent.signatures as SignatureReflection[]).length > 1
       }
 
-      const level =
-        expandMembers && !isSignatureChild ? originalLevel - 1 : originalLevel
+      const numberToSubtract = allReflectionsHaveOwnDocument
+        ? isSignatureChild
+          ? 1
+          : 2
+        : isSignatureChild
+        ? 0
+        : 1
+
+      const level = originalLevel - numberToSubtract
 
       return Array(level).fill("#").join("")
     }
