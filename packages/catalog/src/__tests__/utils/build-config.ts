@@ -55,9 +55,9 @@ describe("buildSchemaObjectRepresentation", function () {
   })
 
   it("should build the full tree config from a graphql schema", function () {
-    const fullConfiguration = buildSchemaObjectRepresentation(config.schema)
+    const fullRepresentation = buildSchemaObjectRepresentation(config.schema)
 
-    removePropRecursively(fullConfiguration, "moduleConfig")
+    removePropRecursively(fullRepresentation, "moduleConfig")
 
     const expectedProduct = {
       entity: "Product",
@@ -116,7 +116,7 @@ describe("buildSchemaObjectRepresentation", function () {
       parents: [
         {
           ref: expectedPriceSet,
-          inConfigurationRef: expectedProductVariant,
+          inSchemaRef: expectedProductVariant,
           targetProp: "money_amounts",
           isList: true,
         },
@@ -126,7 +126,7 @@ describe("buildSchemaObjectRepresentation", function () {
       fields: ["amount", "price_set.id"],
     }
 
-    expect(fullConfiguration).toEqual({
+    expect(fullRepresentation).toEqual({
       Product: expectedProduct,
       ProductVariant: expectedProductVariant,
       MoneyAmount: expectedMoneyAmount,
