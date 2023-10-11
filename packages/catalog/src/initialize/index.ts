@@ -5,14 +5,11 @@ import {
   MODULE_PACKAGE_NAMES,
   Modules,
 } from "@medusajs/modules-sdk"
-import {
-  IEventBusModuleService,
-  IProductModuleService,
-  RemoteJoinerQuery,
-} from "@medusajs/types"
+import { IEventBusModuleService, RemoteJoinerQuery } from "@medusajs/types"
 
 import { moduleDefinition } from "../module-definition"
 import { CatalogModuleOptions } from "../types"
+import { CatalogModuleService } from "@services"
 
 export const initialize = async (
   options:
@@ -26,7 +23,7 @@ export const initialize = async (
       variables?: Record<string, unknown>
     ) => Promise<any>
   }
-): Promise<IProductModuleService> => {
+): Promise<CatalogModuleService> => {
   if (!injectedDependencies?.eventBusModuleService) {
     throw new Error(
       "CatalogModule is missing the eventBusModuleService dependency to work"
@@ -39,11 +36,11 @@ export const initialize = async (
     )
   }
 
-  const serviceKey = Modules.PRODUCT
+  const serviceKey = Modules.CATALOG
 
-  const loaded = await MedusaModule.bootstrap<IProductModuleService>(
+  const loaded = await MedusaModule.bootstrap<CatalogModuleService>(
     serviceKey,
-    MODULE_PACKAGE_NAMES[Modules.PRODUCT],
+    MODULE_PACKAGE_NAMES[Modules.CATALOG],
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
     moduleDefinition,
     injectedDependencies
