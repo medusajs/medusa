@@ -211,7 +211,13 @@ export class PostgresProvider {
 
   protected async onDelete() {}
 
-  protected async onAttach() {}
+  protected async onAttach() {
+    /**
+     * Get the module config
+     * find the modules primary and foreign
+     * look at the linkable keys and grab the entity.
+     */
+  }
 
   protected async onDetach() {}
 }
