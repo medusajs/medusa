@@ -1,7 +1,8 @@
 import { PricingService, ProductService } from "../../../../services"
+
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultAdminProductRemoteQueryObject } from "./index"
 import { MedusaError } from "@medusajs/utils"
+import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
  * @oas [get] /admin/products/{id}
@@ -81,7 +82,7 @@ export default async (req, res) => {
   const product = rawProduct
 
   if (!shouldSetPricing) {
-    await pricingService.setProductPrices([product])
+    await pricingService.setAdminProductPricing([product])
   }
 
   res.json({ product })
