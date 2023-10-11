@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Application, PageEvent, ParameterType } from "typedoc"
+import { stringify } from "yaml"
 
 export function load(app: Application) {
   app.options.addDeclaration({
@@ -35,20 +36,15 @@ export function load(app: Application) {
     if (typeof frontmatterData === "string") {
       frontmatterData = JSON.parse(frontmatterData)
     }
-    const frontmatterDataEntries = Object.entries(frontmatterData)
 
-    if (!frontmatterDataEntries.length || !pattern.test(page.filename)) {
+    if (!pattern.test(page.filename) || !Object.keys(frontmatterData).length) {
       return
     }
 
-    let frontmatterStr = `---\n`
+    const frontmatterStr = stringify(frontmatterData)
 
-    for (const [key, value] of frontmatterDataEntries) {
-      frontmatterStr += `${key}: ${value}\n`
+    if (frontmatterStr.length) {
+      page.contents = `---\n` + frontmatterStr + `---\n\n` + page.contents
     }
-
-    frontmatterStr += `---\n\n`
-
-    page.contents = frontmatterStr + page.contents
   })
 }
