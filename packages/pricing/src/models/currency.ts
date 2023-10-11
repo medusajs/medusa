@@ -13,15 +13,6 @@ class Currency {
 
   @Property({ columnType: "text" })
   name: string
-
-  // @Property({ persist: false })
-  // get includes_tax() {
-  //   // TODO: This comes from a feature flag
-  //   // Figure out how we're handling FF in modules
-  //   // For now, returning default as true
-  //   // This should also not fall on the hands of the model
-  //   return true
-  // }
 }
 
 export default Currency
