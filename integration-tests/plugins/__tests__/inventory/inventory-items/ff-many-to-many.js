@@ -94,10 +94,6 @@ describe("Inventory Items endpoints", () => {
     })
 
     it("should associate inventory item with variant id", async () => {
-      // Set feature flag
-      const flagRouter = appContainer.resolve("featureFlagRouter")
-      flagRouter.setFlag("many_to_many_inventory", true)
-
       const api = useApi()
 
       const product = await simpleProductFactory(dbConnection)
@@ -135,15 +131,9 @@ describe("Inventory Items endpoints", () => {
       expect(variants.length).toEqual(1)
       expect(variants[0].variant_id).toEqual(variantId)
       expect(variants[0].required_quantity).toEqual(1)
-
-      flagRouter.setFlag("many_to_many_inventory", false)
     })
 
     it("should associate inventory item with variant id", async () => {
-      // Set feature flag
-      const flagRouter = appContainer.resolve("featureFlagRouter")
-      flagRouter.setFlag("many_to_many_inventory", true)
-
       const api = useApi()
 
       const product = await simpleProductFactory(dbConnection)
@@ -182,8 +172,6 @@ describe("Inventory Items endpoints", () => {
       expect(variants.length).toEqual(1)
       expect(variants[0].variant_id).toEqual(variantId)
       expect(variants[0].required_quantity).toEqual(3)
-
-      flagRouter.setFlag("many_to_many_inventory", false)
     })
 
     it("should associate inventory item with 2 variants and detach 1", async () => {
