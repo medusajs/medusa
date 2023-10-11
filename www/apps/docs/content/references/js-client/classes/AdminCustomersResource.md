@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: AdminCustomersResource
 
 ## Hierarchy
@@ -14,7 +10,7 @@ displayed_sidebar: jsClientSidebar
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-7.md#admincustomersres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
 
 Creates a customer
 
@@ -22,22 +18,22 @@ Creates a customer
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`AdminPostCustomersReq`](internal-7.AdminPostCustomersReq.md) | information of customer |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`AdminPostCustomersReq`](internal-6.AdminPostCustomersReq.md) | information of customer |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-7.md#admincustomersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customers.ts:18](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customers.ts#L18)
+[medusa-js/src/resources/admin/customers.ts:18](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L18)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCustomersListRes`](../modules/internal-7.md#admincustomerslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersListRes`](../modules/internal-5.md#admincustomerslistres)\>
 
 Lists customers
 
@@ -45,22 +41,22 @@ Lists customers
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `query?` | [`AdminGetCustomersParams`](internal-7.AdminGetCustomersParams.md) | optional |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `query?` | [`AdminGetCustomersParams`](internal-5.AdminGetCustomersParams.md) | optional |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCustomersListRes`](../modules/internal-7.md#admincustomerslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersListRes`](../modules/internal-5.md#admincustomerslistres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customers.ts:59](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customers.ts#L59)
+[medusa-js/src/resources/admin/customers.ts:59](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L59)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-7.md#admincustomersres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
 
 Retrieves a customer
 
@@ -69,21 +65,21 @@ Retrieves a customer
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | customer id |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-7.md#admincustomersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customers.ts:46](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customers.ts#L46)
+[medusa-js/src/resources/admin/customers.ts:46](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L46)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-7.md#admincustomersres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
 
 Updates a customer
 
@@ -92,13 +88,13 @@ Updates a customer
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | customer id |
-| `payload` | [`AdminPostCustomersCustomerReq`](internal-7.AdminPostCustomersCustomerReq.md) | data to update customer with |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`AdminPostCustomersCustomerReq`](internal-6.AdminPostCustomersCustomerReq.md) | data to update customer with |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-7.md#admincustomersres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminCustomersRes`](../modules/internal-6.md#admincustomersres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/customers.ts:32](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/customers.ts#L32)
+[medusa-js/src/resources/admin/customers.ts:32](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/customers.ts#L32)

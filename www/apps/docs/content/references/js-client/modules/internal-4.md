@@ -1,8 +1,4 @@
----
-displayed_sidebar: jsClientSidebar
----
-
-# Module: internal
+# Namespace: internal
 
 ## Classes
 
@@ -14,36 +10,11 @@ displayed_sidebar: jsClientSidebar
 
 ### AdminCurrenciesListRes
 
-Ƭ **AdminCurrenciesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `currencies`: [`Currency`](../classes/internal-3.Currency.md)[]  }
-
-**`Schema`**
-
-AdminCurrenciesListRes
-type: object
-required:
-  - currencies
-  - count
-  - offset
-  - limit
-properties:
-  currencies:
-    type: array
-    description: An array of currency details.
-    items:
-      $ref: "#/components/schemas/Currency"
-  count:
-    type: integer
-    description: The total number of items available
-  offset:
-    type: integer
-    description: The number of currencies skipped when retrieving the currencies.
-  limit:
-    type: integer
-    description: The number of items per page
+Ƭ **AdminCurrenciesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `currencies`: [`Currency`](../classes/internal.Currency.md)[]  }
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/currencies/index.d.ts:29
+medusa/dist/api/routes/admin/currencies/index.d.ts:5
 
 ___
 
@@ -51,23 +22,12 @@ ___
 
 Ƭ **AdminCurrenciesRes**: `Object`
 
-**`Schema`**
-
-AdminCurrenciesRes
-type: object
-required:
-  - currency
-properties:
-  currency:
-    description: Currency details.
-    $ref: "#/components/schemas/Currency"
-
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `currency` | [`Currency`](../classes/internal-3.Currency.md) |
+| `currency` | [`Currency`](../classes/internal.Currency.md) |
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/currencies/index.d.ts:42
+medusa/dist/api/routes/admin/currencies/index.d.ts:8

@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: AdminShippingProfilesResource
 
 ## Hierarchy
@@ -14,103 +10,103 @@ displayed_sidebar: jsClientSidebar
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-8.internal.md#adminshippingprofilesres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-27.md#adminshippingprofilesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostShippingProfilesReq`](internal-8.internal.AdminPostShippingProfilesReq.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `payload` | [`AdminPostShippingProfilesReq`](internal-27.AdminPostShippingProfilesReq.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-8.internal.md#adminshippingprofilesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-27.md#adminshippingprofilesres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L12)
+[medusa-js/src/resources/admin/shipping-profiles.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L12)
 
 ___
 
 ### delete
 
-▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
+▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`DeleteResponse`](../modules/internal-8.internal.md#deleteresponse)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`DeleteResponse`](../modules/internal-3.md#deleteresponse)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:29](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L29)
+[medusa-js/src/resources/admin/shipping-profiles.ts:29](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L29)
 
 ___
 
 ### list
 
-▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminShippingProfilesListRes`](../modules/internal-8.internal.md#adminshippingprofileslistres)\>
+▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminShippingProfilesListRes`](../modules/internal-27.md#adminshippingprofileslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminShippingProfilesListRes`](../modules/internal-8.internal.md#adminshippingprofileslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminShippingProfilesListRes`](../modules/internal-27.md#adminshippingprofileslistres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:45](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L45)
+[medusa-js/src/resources/admin/shipping-profiles.ts:45](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L45)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-8.internal.md#adminshippingprofilesres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-27.md#adminshippingprofilesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-8.internal.md#adminshippingprofilesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-27.md#adminshippingprofilesres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:37](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L37)
+[medusa-js/src/resources/admin/shipping-profiles.ts:37](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L37)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-8.internal.md#adminshippingprofilesres)\>
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-27.md#adminshippingprofilesres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `payload` | [`AdminPostShippingProfilesProfileReq`](internal-8.internal.AdminPostShippingProfilesProfileReq.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `payload` | [`AdminPostShippingProfilesProfileReq`](internal-27.AdminPostShippingProfilesProfileReq.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-8.internal.md#adminshippingprofilesres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminShippingProfilesRes`](../modules/internal-27.md#adminshippingprofilesres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:20](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L20)
+[medusa-js/src/resources/admin/shipping-profiles.ts:20](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L20)

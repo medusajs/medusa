@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: ReturnsResource
 
 ## Hierarchy
@@ -14,7 +10,7 @@ displayed_sidebar: jsClientSidebar
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreReturnsRes`](../modules/internal-8.internal.md#storereturnsres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreReturnsRes`](../modules/internal-49.md#storereturnsres)\>
 
 Creates a return request
 
@@ -22,13 +18,13 @@ Creates a return request
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | [`StorePostReturnsReq`](internal-8.internal.StorePostReturnsReq.md) | details needed to create a return |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`StorePostReturnsReq`](internal-49.StorePostReturnsReq.md) | details needed to create a return |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreReturnsRes`](../modules/internal-8.internal.md#storereturnsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreReturnsRes`](../modules/internal-49.md#storereturnsres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/returns.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/returns.ts#L12)
+[medusa-js/src/resources/returns.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/returns.ts#L12)

@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: AdminSwapsResource
 
 ## Hierarchy
@@ -14,40 +10,40 @@ displayed_sidebar: jsClientSidebar
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-8.internal.md#adminswapslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-29.md#adminswapslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetSwapsParams`](internal-8.internal.AdminGetSwapsParams.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `query?` | [`AdminGetSwapsParams`](internal-29.AdminGetSwapsParams.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-8.internal.md#adminswapslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsListRes`](../modules/internal-29.md#adminswapslistres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/swaps.ts#L19)
+[medusa-js/src/resources/admin/swaps.ts:19](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/swaps.ts#L19)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-8.internal.md#adminswapsres)\>
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-29.md#adminswapsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-8.internal.md#adminswapsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSwapsRes`](../modules/internal-29.md#adminswapsres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/swaps.ts#L11)
+[medusa-js/src/resources/admin/swaps.ts:11](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/swaps.ts#L11)

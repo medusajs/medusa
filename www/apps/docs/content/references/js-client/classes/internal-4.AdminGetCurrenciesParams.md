@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: AdminGetCurrenciesParams
 
 [internal](../modules/internal-4.md).AdminGetCurrenciesParams
@@ -20,7 +16,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:57
+medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:59
 
 ___
 
@@ -30,7 +26,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:58
+medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:60
 
 ___
 
@@ -44,7 +40,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:244
+medusa/dist/types/common.d.ts:122
 
 ___
 
@@ -58,7 +54,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:243
+medusa/dist/types/common.d.ts:121
 
 ___
 
@@ -68,4 +64,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:59
+medusa/dist/api/routes/admin/currencies/list-currencies.d.ts:61

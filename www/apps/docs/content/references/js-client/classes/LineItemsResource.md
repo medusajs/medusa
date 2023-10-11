@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: LineItemsResource
 
 ## Hierarchy
@@ -14,7 +10,7 @@ displayed_sidebar: jsClientSidebar
 
 ### create
 
-▸ **create**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCartsRes`](../modules/internal-8.internal.md#storecartsres)\>
+▸ **create**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
 
 Creates a line-item for a cart
 
@@ -23,22 +19,22 @@ Creates a line-item for a cart
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cart_id` | `string` | id of cart |
-| `payload` | [`StorePostCartsCartLineItemsReq`](internal-8.internal.StorePostCartsCartLineItemsReq.md) | details needed to create a line-item |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`StorePostCartsCartLineItemsReq`](internal-39.StorePostCartsCartLineItemsReq.md) | details needed to create a line-item |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCartsRes`](../modules/internal-8.internal.md#storecartsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/line-items.ts:17](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/line-items.ts#L17)
+[medusa-js/src/resources/line-items.ts:17](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/line-items.ts#L17)
 
 ___
 
 ### delete
 
-▸ **delete**(`cart_id`, `line_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCartsRes`](../modules/internal-8.internal.md#storecartsres)\>
+▸ **delete**(`cart_id`, `line_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
 
 Remove a line-item from a cart
 
@@ -48,21 +44,21 @@ Remove a line-item from a cart
 | :------ | :------ | :------ |
 | `cart_id` | `string` | id of cart |
 | `line_id` | `string` | id of item to remove |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCartsRes`](../modules/internal-8.internal.md#storecartsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/line-items.ts:50](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/line-items.ts#L50)
+[medusa-js/src/resources/line-items.ts:50](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/line-items.ts#L50)
 
 ___
 
 ### update
 
-▸ **update**(`cart_id`, `line_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCartsRes`](../modules/internal-8.internal.md#storecartsres)\>
+▸ **update**(`cart_id`, `line_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
 
 Updates a line-item.
 Only quantity updates are allowed
@@ -73,13 +69,13 @@ Only quantity updates are allowed
 | :------ | :------ | :------ |
 | `cart_id` | `string` | id of cart |
 | `line_id` | `string` | id of item to update |
-| `payload` | [`StorePostCartsCartLineItemsItemReq`](internal-8.internal.StorePostCartsCartLineItemsItemReq.md) | details needed to update a line-item |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `payload` | [`StorePostCartsCartLineItemsItemReq`](internal-39.StorePostCartsCartLineItemsItemReq.md) | details needed to update a line-item |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCartsRes`](../modules/internal-8.internal.md#storecartsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCartsRes`](../modules/internal-35.md#storecartsres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/line-items.ts:34](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/line-items.ts#L34)
+[medusa-js/src/resources/line-items.ts:34](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/line-items.ts#L34)

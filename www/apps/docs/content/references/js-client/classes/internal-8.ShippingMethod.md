@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: ShippingMethod
 
 [internal](../modules/internal-8.md).ShippingMethod
@@ -10,11 +6,11 @@ displayed_sidebar: jsClientSidebar
 
 ### data
 
-• `Optional` **data**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• `Optional` **data**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:198
+medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:189
 
 ___
 
@@ -24,7 +20,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:197
+medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:188
 
 ___
 
@@ -34,4 +30,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:199
+medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:190

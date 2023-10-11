@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: AdminGetCollectionsParams
 
 [internal](../modules/internal-3.md).AdminGetCollectionsParams
@@ -20,7 +16,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:136
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:146
 
 ___
 
@@ -30,7 +26,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:138
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:148
 
 ___
 
@@ -40,7 +36,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:140
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:150
 
 ___
 
@@ -50,7 +46,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:135
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:145
 
 ___
 
@@ -64,7 +60,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:130
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:140
 
 ___
 
@@ -78,7 +74,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:131
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:141
 
 ___
 
@@ -88,7 +84,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:139
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:149
 
 ___
 
@@ -98,7 +94,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:134
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:144
 
 ___
 
@@ -108,4 +104,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:137
+medusa/dist/api/routes/admin/collections/list-collections.d.ts:147

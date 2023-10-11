@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: FindPaginationParams
 
 [internal](../modules/internal-4.md).FindPaginationParams
@@ -12,11 +8,9 @@ displayed_sidebar: jsClientSidebar
 
   ↳ [`AdminGetCurrenciesParams`](internal-4.AdminGetCurrenciesParams.md)
 
-  ↳ [`AdminGetProductTypesParams`](internal-8.internal.AdminGetProductTypesParams.md)
+  ↳ [`AdminGetProductTypesParams`](internal-19.AdminGetProductTypesParams.md)
 
-  ↳ [`StoreGetProductTagsParams`](internal-8.internal.StoreGetProductTagsParams.md)
-
-  ↳ [`StoreGetProductTypesParams`](internal-8.internal.StoreGetProductTypesParams.md)
+  ↳ [`StoreGetProductTypesParams`](internal-44.StoreGetProductTypesParams.md)
 
 ## Properties
 
@@ -26,7 +20,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:244
+medusa/dist/types/common.d.ts:122
 
 ___
 
@@ -36,4 +30,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:243
+medusa/dist/types/common.d.ts:121

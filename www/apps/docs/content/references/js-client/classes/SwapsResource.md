@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: SwapsResource
 
 ## Hierarchy
@@ -14,48 +10,48 @@ displayed_sidebar: jsClientSidebar
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-8.internal.md#storeswapsres)\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `payload` | [`StorePostSwapsReq`](internal-8.internal.StorePostSwapsReq.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
-
-#### Returns
-
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-8.internal.md#storeswapsres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
 
 **`Description`**
 
 Creates a swap from a cart
 
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `payload` | [`StorePostSwapsReq`](internal-51.StorePostSwapsReq.md) |
+| `customHeaders` | `Record`<`string`, `any`\> |
+
+#### Returns
+
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
+
 #### Defined in
 
-[packages/medusa-js/src/resources/swaps.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/swaps.ts#L12)
+[medusa-js/src/resources/swaps.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/swaps.ts#L12)
 
 ___
 
 ### retrieveByCartId
 
-▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-8.internal.md#storeswapsres)\>
+▸ **retrieveByCartId**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
+
+**`Description`**
+
+Retrieves a swap by cart id
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cart_id` | `string` | id of cart |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
+| `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-8.internal.md#storeswapsres)\>
-
-**`Description`**
-
-Retrieves a swap by cart id
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreSwapsRes`](../modules/internal-51.md#storeswapsres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/swaps.ts:23](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/swaps.ts#L23)
+[medusa-js/src/resources/swaps.ts:23](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/swaps.ts#L23)

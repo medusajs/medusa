@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Enumeration: UserRoles
 
 [internal](../modules/internal-1.md).UserRoles
@@ -14,7 +10,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/models/user.d.ts:3
+medusa/dist/models/user.d.ts:3
 
 ___
 
@@ -24,7 +20,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/user.d.ts:5
+medusa/dist/models/user.d.ts:5
 
 ___
 
@@ -34,4 +30,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/user.d.ts:4
+medusa/dist/models/user.d.ts:4

@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: AdminBatchJobsResource
 
 ## Hierarchy
@@ -14,103 +10,103 @@ displayed_sidebar: jsClientSidebar
 
 ### cancel
 
-▸ **cancel**(`batchJobId`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
+▸ **cancel**(`batchJobId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `batchJobId` | `string` |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/batch-jobs.ts:35](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/batch-jobs.ts#L35)
+[medusa-js/src/resources/admin/batch-jobs.ts:35](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/batch-jobs.ts#L35)
 
 ___
 
 ### confirm
 
-▸ **confirm**(`batchJobId`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
+▸ **confirm**(`batchJobId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `batchJobId` | `string` |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/batch-jobs.ts:43](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/batch-jobs.ts#L43)
+[medusa-js/src/resources/admin/batch-jobs.ts:43](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/batch-jobs.ts#L43)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `payload` | [`AdminPostBatchesReq`](internal-2.AdminPostBatchesReq.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/batch-jobs.ts:13](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/batch-jobs.ts#L13)
+[medusa-js/src/resources/admin/batch-jobs.ts:13](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/batch-jobs.ts#L13)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobListRes`](../modules/internal-2.md#adminbatchjoblistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobListRes`](../modules/internal-2.md#adminbatchjoblistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `query?` | [`AdminGetBatchParams`](internal-2.AdminGetBatchParams.md) |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobListRes`](../modules/internal-2.md#adminbatchjoblistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobListRes`](../modules/internal-2.md#adminbatchjoblistres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/batch-jobs.ts:21](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/batch-jobs.ts#L21)
+[medusa-js/src/resources/admin/batch-jobs.ts:21](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/batch-jobs.ts#L21)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`batchJobId`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
+▸ **retrieve**(`batchJobId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `batchJobId` | `string` |
-| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
+| `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminBatchJobRes`](../modules/internal-2.md#adminbatchjobres)\>
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/batch-jobs.ts:51](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/batch-jobs.ts#L51)
+[medusa-js/src/resources/admin/batch-jobs.ts:51](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/batch-jobs.ts#L51)

@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: DateComparisonOperator
 
 [internal](../modules/internal-2.md).DateComparisonOperator
@@ -14,7 +10,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:84
+medusa/dist/types/common.d.ts:74
 
 ___
 
@@ -24,7 +20,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:85
+medusa/dist/types/common.d.ts:75
 
 ___
 
@@ -34,7 +30,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:83
+medusa/dist/types/common.d.ts:73
 
 ___
 
@@ -44,4 +40,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/types/common.d.ts:86
+medusa/dist/types/common.d.ts:76

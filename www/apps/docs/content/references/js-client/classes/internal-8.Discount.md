@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: Discount
 
 [internal](../modules/internal-8.md).Discount
@@ -14,4 +10,4 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:202
+medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:193

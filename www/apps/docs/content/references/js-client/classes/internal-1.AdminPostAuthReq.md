@@ -1,27 +1,6 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: AdminPostAuthReq
 
 [internal](../modules/internal-1.md).AdminPostAuthReq
-
-**`Schema`**
-
-AdminPostAuthReq
-type: object
-required:
-  - email
-  - password
-properties:
-  email:
-    type: string
-    description: The user's email.
-    format: email
-  password:
-    type: string
-    description: The user's password.
-    format: password
 
 ## Properties
 
@@ -31,7 +10,7 @@ properties:
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/auth/create-session.d.ts:78
+medusa/dist/api/routes/admin/auth/create-session.d.ts:76
 
 ___
 
@@ -41,4 +20,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/auth/create-session.d.ts:79
+medusa/dist/api/routes/admin/auth/create-session.d.ts:77

@@ -1,7 +1,3 @@
----
-displayed_sidebar: jsClientSidebar
----
-
 # Class: AdminGetBatchPaginationParams
 
 [internal](../modules/internal-2.md).AdminGetBatchPaginationParams
@@ -20,7 +16,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:255
+medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:265
 
 ___
 
@@ -30,7 +26,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:256
+medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:266
 
 ___
 
@@ -40,7 +36,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:253
+medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:263
 
 ___
 
@@ -50,7 +46,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:254
+medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:264
 
 ___
 
@@ -60,4 +56,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:257
+medusa/dist/api/routes/admin/batch/list-batch-jobs.d.ts:267
