@@ -24,6 +24,7 @@ import { ProductVariantService, RegionService, TaxProviderService } from "."
 import { EntityManager } from "typeorm"
 import { FlagRouter } from "@medusajs/utils"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
+import { Logger } from "../types/global"
 import { MedusaError } from "medusa-core-utils"
 import PricingIntegrationFeatureFlag from "../loaders/feature-flags/pricing-integration"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
@@ -641,7 +642,54 @@ class PricingService extends TransactionBaseService {
       return this.setProductPrices(products)
     }
 
-    const productsVariantsPricingMap = new Map()
+    const variables = {
+      variant_id: products
+        .map((product) => product.variants.map((variant) => variant.id).flat())
+        .flat(),
+    }
+
+    const query = {
+      product_variant_price_set: {
+        __args: variables,
+        fields: ["variant_id", "price_set_id"],
+      },
+    }
+
+    const variantPriceSets = await this.remoteQuery(query)
+
+    const variantIdToPriceSetIdMap: Map<string, string> = new Map(
+      variantPriceSets.map((variantPriceSet) => [
+        variantPriceSet.variant_id,
+        variantPriceSet.price_set_id,
+      ])
+    )
+
+    const priceSetIds: string[] = variantPriceSets.map(
+      (variantPriceSet) => variantPriceSet.price_set_id
+    )
+    this.logger.info(JSON.stringify(priceSetIds, null, 2))
+
+    const priceSetMoneyAmounts =
+      await this.pricingModuleService.listPriceSetMoneyAmounts(
+        {
+          price_set_id: priceSetIds,
+        },
+        {
+          relations: ["money_amount"],
+        }
+      )
+
+    const priceSetIdPriceSetMoneyAmountMap = priceSetMoneyAmounts.reduce(
+      (map, priceSetMoneyAmount) => {
+        if (map.has(priceSetMoneyAmount.price_set)) {
+          map.get(priceSetMoneyAmount.price_set).push(priceSetMoneyAmount)
+        } else {
+          map.set(priceSetMoneyAmount.price_set, [priceSetMoneyAmount])
+        }
+        return map
+      },
+      new Map()
+    )
 
     return products.map((product) => {
       if (!product?.variants?.length) {
@@ -649,8 +697,25 @@ class PricingService extends TransactionBaseService {
       }
 
       product.variants.map((productVariant): PricedVariant => {
-        const variantPricing = productsVariantsPricingMap.get(product.id)!
-        const pricing = variantPricing[productVariant.id]
+        const pricing = {
+          prices: [],
+        }
+
+        const variantPriceSetId = variantIdToPriceSetIdMap.get(
+          productVariant.id
+        )
+
+        if (variantPriceSetId) {
+          const variantPriceSetMoneyAmounts =
+            priceSetIdPriceSetMoneyAmountMap.get(variantPriceSetId)
+
+          if (variantPriceSetMoneyAmounts?.length) {
+            pricing.prices = variantPriceSetMoneyAmounts.map(
+              (psma) => psma.money_amount
+            )
+          }
+        }
+
         Object.assign(productVariant, pricing)
         return productVariant as unknown as PricedVariant
       })
