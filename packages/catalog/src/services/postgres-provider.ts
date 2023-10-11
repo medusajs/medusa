@@ -41,12 +41,12 @@ export class PostgresProvider {
 
   constructor(
     container,
-    options: { schemaConfigurationObject: SchemaObjectRepresentation },
+    options: { schemaObjectRepresentation: SchemaObjectRepresentation },
     moduleOptions: CatalogModuleOptions
   ) {
     this.container_ = container
     this.moduleOptions_ = moduleOptions
-    this.schemaObjectRepresentation_ = options.schemaConfigurationObject
+    this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
   }
 
   async query(param: { selection: QueryFormat; options?: QueryOptions }) {
@@ -66,7 +66,7 @@ export class PostgresProvider {
   }
 
   consumeEvent(
-    entitySchemaObjectRepresentation: SchemaObjectEntityRepresentation
+    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   ): Subscriber {
     return async (data: unknown, eventName: string) => {
       const data_ = data as Record<string, unknown>
@@ -78,7 +78,7 @@ export class PostgresProvider {
         ids = data_.ids as string[]
       }
 
-      const { fields, alias } = entitySchemaObjectRepresentation
+      const { fields, alias } = schemaEntityObjectRepresentation
       const entityData = await this.remoteQuery_(
         remoteQueryObjectFromString({
           entryPoint: alias,
@@ -92,9 +92,9 @@ export class PostgresProvider {
       )
 
       const argument = {
-        entity: entitySchemaObjectRepresentation.entity,
+        entity: schemaEntityObjectRepresentation.entity,
         data: entityData,
-        entitySchemaObjectRepresentation,
+        schemaEntityObjectRepresentation,
       }
 
       const action = eventName.split(".").pop()
@@ -111,11 +111,11 @@ export class PostgresProvider {
   >({
     entity,
     data,
-    entitySchemaObjectRepresentation,
+    schemaEntityObjectRepresentation,
   }: {
     entity: string
     data: TData[]
-    entitySchemaObjectRepresentation: SchemaObjectEntityRepresentation
+    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
@@ -130,7 +130,7 @@ export class PostgresProvider {
        * Split fields into entity properties and parents properties
        */
 
-      entitySchemaObjectRepresentation.fields.forEach((field) => {
+      schemaEntityObjectRepresentation.fields.forEach((field) => {
         if (field.includes(".")) {
           parentsProperties.push(field)
         } else {

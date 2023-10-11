@@ -35,12 +35,12 @@ export type SchemaObjectEntityRepresentation = {
 
     /**
      * When a link is inferred between two types/entities
-     * we are configuring the link tree and therefore we are
+     * we are configuring the link tree, and therefore we are
      * storing the reference to the parent type/entity within the
      * schema which defer from the true parent from a pure entity
      * point of view
      */
-    inConfigurationRef?: SchemaObjectEntityRepresentation
+    inSchemaRef?: SchemaObjectEntityRepresentation
 
     /**
      * The property the data should be assigned to in the parent
@@ -95,13 +95,16 @@ export interface StorageProvider {
   new (
     container: { [key: string]: any },
     storageProviderOptions: unknown & {
-      schemaConfigurationObject: SchemaObjectRepresentation
+      schemaObjectRepresentation: SchemaObjectRepresentation
     },
     moduleOptions: CatalogModuleOptions
   ): StorageProvider
 
   query(...args): unknown
-  consumeEvent(configurationObject: any): Subscriber
+
+  consumeEvent(
+    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+  ): Subscriber
 }
 
 export type Select = {

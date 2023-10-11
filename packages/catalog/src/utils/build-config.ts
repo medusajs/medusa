@@ -185,11 +185,11 @@ function retrieveLinkModuleAndAlias(
   return { relatedModule, alias }
 }
 
-function getObjectConfigurationRef(
+function getObjectRepresentationRef(
   entityName,
-  { objectConfigurationRef }
+  { objectRepresentationRef }
 ): SchemaObjectEntityRepresentation {
-  return (objectConfigurationRef[entityName] ??= {
+  return (objectRepresentationRef[entityName] ??= {
     entity: entityName,
     parents: [],
     alias: "",
@@ -199,7 +199,7 @@ function getObjectConfigurationRef(
   })
 }
 
-function setCustomDirectives(currentObjectConfigurationRef, directives) {
+function setCustomDirectives(currentObjectRepresentationRef, directives) {
   for (const customDirectiveConfiguration of Object.values(CustomDirectives)) {
     const directive = directives.find(
       (typeDirective) =>
@@ -209,7 +209,7 @@ function setCustomDirectives(currentObjectConfigurationRef, directives) {
     if (!directive) {
       if (customDirectiveConfiguration.isRequired) {
         throw new Error(
-          `CatalogModule error, the type ${currentObjectConfigurationRef.entity} defined in the schema is missing the ${customDirectiveConfiguration.directive} directive which is required`
+          `CatalogModule error, the type ${currentObjectRepresentationRef.entity} defined in the schema is missing the ${customDirectiveConfiguration.directive} directive which is required`
         )
       }
 
@@ -217,7 +217,7 @@ function setCustomDirectives(currentObjectConfigurationRef, directives) {
     }
 
     // Only support array directive value for now
-    currentObjectConfigurationRef[
+    currentObjectRepresentationRef[
       customDirectiveConfiguration.configurationPropertyName
     ] = ((directive.arguments[0].value as any)?.values ?? []).map(
       (v) => v.value
@@ -230,31 +230,34 @@ function processEntity(
   {
     entitiesMap,
     moduleJoinerConfigs,
-    objectConfigurationRef,
+    objectRepresentationRef,
   }: {
     entitiesMap: any
     moduleJoinerConfigs: ModuleJoinerConfig[]
-    objectConfigurationRef: SchemaObjectRepresentation
+    objectRepresentationRef: SchemaObjectRepresentation
   }
 ) {
   /**
-   * Get the reference to the object configuration for the current entity.
+   * Get the reference to the object representation for the current entity.
    */
 
-  const currentObjectConfigurationRef = getObjectConfigurationRef(entityName, {
-    objectConfigurationRef,
-  })
+  const currentObjectRepresentationRef = getObjectRepresentationRef(
+    entityName,
+    {
+      objectRepresentationRef,
+    }
+  )
 
   /**
    * Retrieve and set the custom directives for the current entity.
    */
 
   setCustomDirectives(
-    currentObjectConfigurationRef,
+    currentObjectRepresentationRef,
     entitiesMap[entityName].astNode?.directives ?? []
   )
 
-  currentObjectConfigurationRef.fields =
+  currentObjectRepresentationRef.fields =
     getFieldsAndRelations(entitiesMap, entityName) ?? []
 
   /**
@@ -266,8 +269,8 @@ function processEntity(
     moduleJoinerConfigs
   )
 
-  currentObjectConfigurationRef.moduleConfig = currentEntityModule
-  currentObjectConfigurationRef.alias = alias
+  currentObjectRepresentationRef.moduleConfig = currentEntityModule
+  currentObjectRepresentationRef.alias = alias
 
   /**
    * Retrieve the parent entities for the current entity.
@@ -306,13 +309,13 @@ function processEntity(
       const entityTargetPropertyNameInParent = entityFieldInParent.name.value
 
       /**
-       * Retrieve the parent entity object configuration reference.
+       * Retrieve the parent entity object representation reference.
        */
 
-      const parentObjectConfigurationRef = getObjectConfigurationRef(parent, {
-        objectConfigurationRef,
+      const parentObjectRepresentationRef = getObjectRepresentationRef(parent, {
+        objectRepresentationRef,
       })
-      const parentModuleConfig = parentObjectConfigurationRef.moduleConfig
+      const parentModuleConfig = parentObjectRepresentationRef.moduleConfig
 
       /**
        * If the parent entity and the current entity are part of the same servive then configure the parent and
@@ -320,18 +323,18 @@ function processEntity(
        */
 
       if (
-        currentObjectConfigurationRef.moduleConfig.serviceName ===
+        currentObjectRepresentationRef.moduleConfig.serviceName ===
           parentModuleConfig.serviceName ||
         parentModuleConfig.isLink
       ) {
-        currentObjectConfigurationRef.parents.push({
-          ref: parentObjectConfigurationRef,
+        currentObjectRepresentationRef.parents.push({
+          ref: parentObjectRepresentationRef,
           targetProp: entityTargetPropertyNameInParent,
           isList: isEntityListInParent,
         })
 
-        currentObjectConfigurationRef.fields.push(
-          parentObjectConfigurationRef.alias + ".id"
+        currentObjectRepresentationRef.fields.push(
+          parentObjectRepresentationRef.alias + ".id"
         )
       } else {
         /**
@@ -341,33 +344,33 @@ function processEntity(
 
         const { relatedModule: linkModule, alias: linkAlias } =
           retrieveLinkModuleAndAlias(
-            currentObjectConfigurationRef.moduleConfig.serviceName,
+            currentObjectRepresentationRef.moduleConfig.serviceName,
             parentModuleConfig.serviceName,
             moduleJoinerConfigs
           )
 
-        const linkObjectConfigurationRef = getObjectConfigurationRef(
+        const linkObjectRepresentationRef = getObjectRepresentationRef(
           linkAlias,
-          { objectConfigurationRef }
+          { objectRepresentationRef }
         )
 
         /**
          * Add the schema parent entity as a parent to the link module and configure it.
          */
 
-        linkObjectConfigurationRef.parents = [
+        linkObjectRepresentationRef.parents = [
           {
-            ref: parentObjectConfigurationRef,
+            ref: parentObjectRepresentationRef,
             targetProp: linkAlias,
           },
         ]
-        linkObjectConfigurationRef.alias = linkAlias
-        linkObjectConfigurationRef.listeners = [
+        linkObjectRepresentationRef.alias = linkAlias
+        linkObjectRepresentationRef.listeners = [
           `${toCamelCase(linkAlias)}.attached`,
           `${toCamelCase(linkAlias)}.detached`,
         ]
-        linkObjectConfigurationRef.moduleConfig = linkModule
-        linkObjectConfigurationRef.fields = [
+        linkObjectRepresentationRef.moduleConfig = linkModule
+        linkObjectRepresentationRef.fields = [
           ...linkModule.relationships
             .map(
               (relationship) =>
@@ -377,7 +380,7 @@ function processEntity(
                 ].includes(relationship.serviceName) && relationship.foreignKey
             )
             .filter(Boolean),
-          parentObjectConfigurationRef.alias + ".id",
+          parentObjectRepresentationRef.alias + ".id",
         ]
 
         /**
@@ -386,8 +389,8 @@ function processEntity(
          * before setting the new entity as the true parent of the current entity.
          */
 
-        let linkedEntityObjectConfigurationRef
-        if (currentObjectConfigurationRef.alias !== linkAlias) {
+        let linkedEntityObjectRepresentationRef
+        if (currentObjectRepresentationRef.alias !== linkAlias) {
           const linkedEntityNameAndAlias =
             retrieveLinkedEntityNameAndAliasFromLinkModule(
               linkModule,
@@ -402,39 +405,40 @@ function processEntity(
             moduleJoinerConfigs
           )
 
-          linkedEntityObjectConfigurationRef = getObjectConfigurationRef(
+          linkedEntityObjectRepresentationRef = getObjectRepresentationRef(
             linkedEntityNameAndAlias.entityName,
-            { objectConfigurationRef }
+            { objectRepresentationRef }
           )
 
-          linkedEntityObjectConfigurationRef.parents.push({
-            ref: linkObjectConfigurationRef,
+          linkedEntityObjectRepresentationRef.parents.push({
+            ref: linkObjectRepresentationRef,
             targetProp: linkedEntityNameAndAlias.alias,
             isList: true,
           })
 
-          linkedEntityObjectConfigurationRef.alias =
+          linkedEntityObjectRepresentationRef.alias =
             linkedEntityNameAndAlias.alias
-          linkedEntityObjectConfigurationRef.listeners = [
+          linkedEntityObjectRepresentationRef.listeners = [
             toCamelCase(linkedEntityAlias) + ".created",
             toCamelCase(linkedEntityAlias) + ".updated",
           ]
-          linkedEntityObjectConfigurationRef.moduleConfig = linkedEntityModule
-          linkedEntityObjectConfigurationRef.fields = [
+          linkedEntityObjectRepresentationRef.moduleConfig = linkedEntityModule
+          linkedEntityObjectRepresentationRef.fields = [
             "id",
-            linkObjectConfigurationRef.alias + ".id",
+            linkObjectRepresentationRef.alias + ".id",
           ]
         }
 
-        currentObjectConfigurationRef.parents.push({
-          ref: linkedEntityObjectConfigurationRef || linkObjectConfigurationRef,
-          inConfigurationRef: parentObjectConfigurationRef,
+        currentObjectRepresentationRef.parents.push({
+          ref:
+            linkedEntityObjectRepresentationRef || linkObjectRepresentationRef,
+          inSchemaRef: parentObjectRepresentationRef,
           targetProp: entityTargetPropertyNameInParent,
           isList: isEntityListInParent,
         })
 
-        currentObjectConfigurationRef.fields.push(
-          (linkedEntityObjectConfigurationRef || linkObjectConfigurationRef)
+        currentObjectRepresentationRef.fields.push(
+          (linkedEntityObjectRepresentationRef || linkObjectRepresentationRef)
             .alias + ".id"
         )
       }
@@ -454,7 +458,7 @@ function processEntity(
  *   }
  * }
  */
-function buildAliasMap(objectConfiguration: SchemaObjectRepresentation) {
+function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
   const aliasMap: SchemaObjectRepresentation["_aliasMap"] = {}
 
   function recursiveParentAliasMap(
@@ -475,7 +479,7 @@ function buildAliasMap(objectConfiguration: SchemaObjectRepresentation) {
     aliasMap[parentAlias] = child
   }
 
-  for (const entityRepresentation of Object.values(objectConfiguration)) {
+  for (const entityRepresentation of Object.values(objectRepresentation)) {
     recursiveParentAliasMap(
       entityRepresentation,
       entityRepresentation,
@@ -487,11 +491,11 @@ function buildAliasMap(objectConfiguration: SchemaObjectRepresentation) {
 }
 
 /**
- * This util build an internal configuration object from the provided schema.
- * It will resolve all modules, fields, link module configuration to build
- * the appropriate configuration for the catalog module.
+ * This util build an internal representation object from the provided schema.
+ * It will resolve all modules, fields, link module representation to build
+ * the appropriate representation for the catalog module.
  *
- * This configuration will be used to re construct the expected output object from a search
+ * This representation will be used to re construct the expected output object from a search
  * but can also be used for anything since the relation tree is available through ref.
  *
  * @param schema
@@ -502,7 +506,7 @@ export function buildSchemaObjectRepresentation(schema) {
   const executableSchema = makeSchemaExecutable(augmentedSchema)
   const entitiesMap = executableSchema.getTypeMap()
 
-  const objectConfiguration = {} as SchemaObjectRepresentation
+  const objectRepresentation = {} as SchemaObjectRepresentation
 
   Object.entries(entitiesMap).forEach(([entityName, entityMapValue]) => {
     if (!entityMapValue.astNode) {
@@ -512,11 +516,11 @@ export function buildSchemaObjectRepresentation(schema) {
     processEntity(entityName, {
       entitiesMap,
       moduleJoinerConfigs,
-      objectConfigurationRef: objectConfiguration,
+      objectRepresentationRef: objectRepresentation,
     })
   })
 
-  objectConfiguration._aliasMap = buildAliasMap(objectConfiguration)
+  objectRepresentation._aliasMap = buildAliasMap(objectRepresentation)
 
-  return objectConfiguration
+  return objectRepresentation
 }

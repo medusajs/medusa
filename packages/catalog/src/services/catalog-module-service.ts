@@ -40,7 +40,7 @@ export default class CatalogModuleService {
       new this.storageProviderCtr_(
         this.container_,
         Object.assign(this.storageProviderCtrOptions_ ?? {}, {
-          schemaConfigurationObject: this.schemaObjectRepresentation_,
+          schemaObjectRepresentation: this.schemaObjectRepresentation_,
         }),
         this.moduleOptions_
       )
@@ -91,19 +91,19 @@ export default class CatalogModuleService {
   }
 
   protected registerListeners() {
-    const configurationObjects = this.schemaObjectRepresentation_ ?? {}
+    const schemaObjectRepresentation = this.schemaObjectRepresentation_ ?? {}
 
-    for (const [entityName, configurationObject] of Object.entries(
-      configurationObjects
+    for (const [entityName, schemaEntityObjectRepresentation] of Object.entries(
+      schemaObjectRepresentation
     )) {
       if (entityName === "_aliasMap") {
         continue
       }
 
-      configurationObject.listeners.forEach((listener) => {
+      schemaEntityObjectRepresentation.listeners.forEach((listener) => {
         this.eventBusModuleService_.subscribe(
           listener,
-          this.storageProvider_.consumeEvent(configurationObject)
+          this.storageProvider_.consumeEvent(schemaEntityObjectRepresentation)
         )
       })
     }
