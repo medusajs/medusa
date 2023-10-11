@@ -10,40 +10,46 @@ module.exports = ({
   tsconfigPath = "",
   moduleName = "",
   documentsToFormat = [],
-  additionalFormatting = {},
   extraOptions = {},
 }) => {
   const formatting = {}
-  documentsToFormat.forEach((document) => {
-    formatting[document] = {
-      reflectionTitle: {
-        kind: false,
-        typeParameters: false,
-        suffix: "Reference",
-      },
-      expandMembers: true,
-      showCommentsAsHeader: true,
-      parameterStyle: "list",
-      useTsLinkResolution: false,
-      showReturnSignature: false,
-      sections: {
-        reflection_typeParameters: false,
-        member_declaration_typeParameters: false,
-        reflection_implements: false,
-        reflection_implementedBy: false,
-        reflection_callable: false,
-        reflection_indexable: false,
-        member_signature_typeParameters: false,
-        member_signature_sources: false,
-        member_signature_title: false,
-      },
-      reflectionGroups: {
-        Constructors: false,
-        Properties: false,
-      },
-      ...additionalFormatting,
+  documentsToFormat.forEach(
+    ({ pattern, additionalFormatting, useDefaults = false }) => {
+      formatting[pattern] = {
+        ...(!useDefaults
+          ? {
+              reflectionTitle: {
+                kind: false,
+                typeParameters: false,
+                suffix: "Reference",
+              },
+              expandMembers: true,
+              showCommentsAsHeader: true,
+              parameterStyle: "list",
+              useTsLinkResolution: false,
+              showReturnSignature: false,
+              sections: {
+                reflection_typeParameters: false,
+                member_declaration_typeParameters: false,
+                reflection_implements: false,
+                reflection_implementedBy: false,
+                reflection_callable: false,
+                reflection_indexable: false,
+                member_signature_typeParameters: false,
+                member_signature_sources: false,
+                member_signature_title: false,
+                title_reflectionPath: false,
+              },
+              reflectionGroups: {
+                Constructors: false,
+                Properties: false,
+              },
+            }
+          : {}),
+        ...additionalFormatting,
+      }
     }
-  })
+  )
   return {
     ...globalTypedocOptions,
     entryPoints: [path.join(pathPrefix, entryPointPath)],
@@ -66,6 +72,7 @@ module.exports = ({
     ],
     hideMembersSymbol: true,
     formatting,
+    allReflectionsHaveOwnDocument: true,
     ...extraOptions,
   }
 }

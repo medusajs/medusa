@@ -30,5 +30,8 @@
     "packages",
     "monorepo",
     "typedoc"
-  ]
+  ],
+  "dependencies": {
+    "yaml": "^2.3.2"
+  }
 }
