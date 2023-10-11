@@ -98,7 +98,7 @@ function calculatePriority(url: string): number {
 
 export class RoutesLoader<TConfig = Record<string, unknown>> {
   protected routesMap = new Map<string, RouteDescriptor>()
-  protected globalMiddlewaresMap = new Map<string, GlobalMiddlewareDescriptor>()
+  protected globalMiddlewaresDescriptor: GlobalMiddlewareDescriptor | undefined
 
   protected app: Express
   protected activityId?: string
@@ -185,48 +185,26 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
    *
    * @return {void}
    */
-  protected validateMiddlewareConfig({
-    descriptor,
+  protected validateMiddlewaresConfig({
     config,
   }: {
-    descriptor: GlobalMiddlewareDescriptor
     config?: GlobalMiddlewareConfig
-    strict?: boolean
   }): void {
-    if (!config) {
-      if (this.strict) {
-        throw new Error(
-          `Unable to load the middlewares from ` +
-            `${descriptor.relativePath}. ` +
-            `No config found.`
-        )
-      } else {
-        log({
-          activityId: this.activityId,
-          message:
-            `Skip loading middlewares from ` +
-            `${descriptor.relativePath}. ` +
-            `No config found.`,
-        })
-      }
-    }
-
-    if (config?.ignore) {
+    if (!config?.routes) {
       log({
         activityId: this.activityId,
-        message:
-          `Skip loading middlewares from ` +
-          `${descriptor.relativePath}. ` +
-          `Ignore flag set to true.`,
+        message: `No middlewares found. Skipping.`,
       })
+
+      return
     }
 
-    if (!config?.routes?.some((route) => route.path)) {
-      throw new Error(
-        `Unable to load the middlewares from ` +
-          `${descriptor.relativePath}. ` +
-          `Missing path config.`
-      )
+    for (const route of config.routes) {
+      if (!route.matcher) {
+        throw new Error(
+          `A route is missing a \`matcher\`. The field is required when applying middlewares.`
+        )
+      }
     }
   }
 
@@ -234,11 +212,10 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
    * Take care of replacing the special path segments
    * to an express specific path segment
    *
-   * @param {string} route
-   * @return {string}
+   * @param route - The route to parse
    *
    * @example
-   * /admin/orders/[id]/index.ts => /admin/orders/:id/index.ts
+   * "/admin/orders/[id]/index.ts" => "/admin/orders/:id/index.ts"
    */
   protected parseRoute(route: string): string {
     let route_ = route
@@ -255,7 +232,6 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
         if (match?.[1] && !Number.isInteger(match?.[1])) {
           if (parameters.has(match?.[1])) {
             throw new Error(
-              // eslint-disable-next-line max-len
               `Duplicate parameters found in route ${route} (${match?.[1]})`
             )
           }
@@ -295,7 +271,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
         if (HTTP_METHODS.includes(handler.toUpperCase())) {
           config.routes.push({
             method: handler.toUpperCase() as RouteVerbs,
-            handlers: [imp[handler]],
+            handler: imp[handler],
           })
         } else {
           log({
@@ -343,12 +319,6 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
 
             // Assign default verb to GET
             imp.config ??= config
-            imp.config.routes = imp.config?.routes?.map(
-              (route: RouteConfig | GlobalMiddlewareRouteConfig) => {
-                route.method = route.method ?? "get"
-                return route
-              }
-            )
 
             descriptor.config = imp.config
             map.set(absolutePath, descriptor)
@@ -362,7 +332,12 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     dirPath,
     childPath,
     parentPath,
-    isInMiddlewaresDirectory,
+    isMiddleware,
+  }: {
+    dirPath: string
+    childPath: string
+    parentPath?: string
+    isMiddleware?: boolean
   }) {
     const descriptor: RouteDescriptor | GlobalMiddlewareDescriptor = {
       absolutePath: childPath,
@@ -371,9 +346,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
       priority: Infinity,
     }
 
-    const map = isInMiddlewaresDirectory
-      ? this.globalMiddlewaresMap
-      : this.routesMap
+    const map = isMiddleware ? this.globalMiddlewaresMap : this.routesMap
     map.set(childPath, descriptor)
 
     // Remove the parentPath from the childPath
@@ -407,7 +380,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     descriptor.priority = calculatePriority(descriptor.route)
   }
 
-  protected async createMiddlewaresMap({ dirPath }: { dirPath: string }) {
+  protected async createMiddlewareDescriptor({ dirPath }: { dirPath: string }) {
     const middlewaresPath = join(dirPath, MIDDLEWARES_NAME)
 
     try {
@@ -417,26 +390,36 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
           | undefined
 
         if (!middlewaresConfig) {
-          console.log("No middlewares config found")
+          log({
+            activityId: this.activityId,
+            message: `No config found in ${middlewaresPath}.`,
+          })
           return
         }
 
-        console.log("Middlewares config found", middlewaresConfig)
+        this.validateMiddlewaresConfig({
+          config: middlewaresConfig,
+        })
+
+        this.globalMiddlewaresDescriptor = {
+          config: middlewaresConfig,
+        }
       })
     } catch (error) {
-      console.log("No middlewares found")
+      log({
+        activityId: this.activityId,
+        message: `No middlewares detected in ${dirPath}`,
+      })
       return
     }
   }
 
-  protected async walkThrough({
+  protected async createRoutesMap({
     dirPath,
     parentPath,
-    isInMiddlewaresDirectory,
   }: {
     dirPath: string
     parentPath?: string
-    isInMiddlewaresDirectory?: boolean
   }): Promise<void> {
     await Promise.all(
       await readdir(dirPath, { withFileTypes: true }).then((entries) => {
@@ -468,13 +451,11 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
           })
           .map(async (entry) => {
             const childPath = join(dirPath, entry.name)
-            isInMiddlewaresDirectory = isMiddlewaresDir(dirPath)
 
             if (entry.isDirectory()) {
-              return this.walkThrough({
+              return this.createRoutesMap({
                 dirPath: childPath,
                 parentPath: parentPath ?? dirPath,
-                isInMiddlewaresDirectory,
               })
             }
 
@@ -482,7 +463,6 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
               dirPath,
               childPath,
               parentPath,
-              isInMiddlewaresDirectory,
             })
           })
           .flat(Infinity)
@@ -490,44 +470,11 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     )
   }
 
-  /**
-   * Register the routes to the express app
-   */
-  protected async registerRoutesAndMiddlewares(): Promise<void> {
-    const prioritizedMiddlewares = prioritize([
-      ...this.globalMiddlewaresMap.values(),
-    ])
+  protected async registerRoutes(): Promise<void> {
     const prioritizedRoutes = prioritize([...this.routesMap.values()])
 
-    const routesAndMiddlewares = [
-      ...prioritizedMiddlewares,
-      ...prioritizedRoutes,
-    ] as RouteDescriptor[] | GlobalMiddlewareDescriptor[]
-
-    for (const descriptor of routesAndMiddlewares) {
-      if (!descriptor.config?.routes?.length || descriptor.config?.ignore) {
-        continue
-      }
-
-      if (isMiddlewaresDir(descriptor.route)) {
-        const routes = descriptor.config
-          .routes! as unknown as GlobalMiddlewareRouteConfig[]
-
-        for (const route of routes) {
-          log({
-            activityId: this.activityId,
-            message: `Registering middleware [${route.method?.toUpperCase()}${createSpacingSting(
-              route.method?.length
-            )}] - ${route.path}`,
-          })
-
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ;(this.app as any)[route.method!.toLowerCase()](
-            route.path,
-            ...route.middlewares
-          )
-        }
-
+    for (const descriptor of prioritizedRoutes) {
+      if (!descriptor.config?.routes?.length) {
         continue
       }
 
@@ -542,9 +489,35 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
             descriptor.route
           }`,
         })
-        ;(this.app as any)[route.method!.toLowerCase()](
-          descriptor.route,
-          ...route.handlers
+        this.app[route.method!.toLowerCase()](descriptor.route, route.handler)
+      }
+    }
+  }
+
+  protected async registerMiddlewares(): Promise<void> {
+    const prioritizedMiddlewares = prioritize([
+      ...this.globalMiddlewaresMap.values(),
+    ])
+
+    for (const descriptor of prioritizedMiddlewares) {
+      if (!descriptor.config?.routes?.length) {
+        continue
+      }
+
+      const routes = descriptor.config
+        .routes! as unknown as GlobalMiddlewareRouteConfig[]
+
+      for (const route of routes) {
+        log({
+          activityId: this.activityId,
+          message: `Registering middleware [${route.method?.toUpperCase()}${createSpacingSting(
+            route.method?.length
+          )}] - ${route.matcher}`,
+        })
+
+        this.app[route.method!.toLowerCase()](
+          route.matcher,
+          ...route.middlewares
         )
       }
     }
@@ -559,9 +532,11 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
 
     await this.createMiddlewaresMap({ dirPath: this.rootDir })
 
-    await this.walkThrough({ dirPath: this.rootDir })
+    await this.createRoutesMap({ dirPath: this.rootDir })
     await this.retrieveFilesConfig()
-    await this.registerRoutesAndMiddlewares()
+
+    await this.registerMiddlewares()
+    await this.registerRoutes()
 
     performance.mark("file-base-routing-end" + this.rootDir)
     const timeSpent = performance

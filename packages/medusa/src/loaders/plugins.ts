@@ -354,15 +354,17 @@ async function registerApi(
 
   logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
 
-  let isApiExisting = true
+  let apiFolderExists = true
   try {
     try {
+      // TODO: This only works if the api folder has an index.js file, which should not be necessary
+      // when using the new routing mechanism
       require.resolve(`${pluginDetails.resolve}/api`)
     } catch (e) {
-      isApiExisting = false
+      apiFolderExists = false
     }
 
-    if (isApiExisting) {
+    if (apiFolderExists) {
       // file base routing mechanism
       return await new RoutesLoader({
         app,
