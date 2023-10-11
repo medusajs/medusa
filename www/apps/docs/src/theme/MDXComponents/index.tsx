@@ -4,6 +4,7 @@ import CloudinaryImage from "@site/src/components/CloudinaryImage"
 import MDXDetails from "./Details"
 import MDXA from "./A"
 import { Kbd, DetailsSummary, InlineCode } from "docs-ui"
+import H1 from "./H1"
 
 export default {
   // Re-use the default mapping
@@ -14,4 +15,5 @@ export default {
   summary: DetailsSummary,
   a: MDXA,
   kbd: Kbd,
+  h1: H1,
 }

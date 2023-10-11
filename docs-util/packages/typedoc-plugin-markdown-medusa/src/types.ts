@@ -68,8 +68,10 @@ export type FormattingOptionType = {
   reflectionDescription?: string
   expandMembers?: boolean
   showCommentsAsHeader?: boolean
+  showCommentsAsDetails?: boolean
   parameterStyle?: ParameterStyle
   showReturnSignature?: boolean
+  frontmatterData?: Record<string, unknown>
 }
 
 export type FormattingOptionsType = {
