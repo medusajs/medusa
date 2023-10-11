@@ -8,6 +8,7 @@ import { MedusaApp, Modules } from "@medusajs/modules-sdk"
 import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
 import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { Catalog } from "@models"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -82,15 +83,25 @@ describe("SearchEngineModuleService", function () {
   afterEach(afterEach_)
 
   it("should be able to consume created event and create the catalog and catalog relation entries", async () => {
+    const productId = "prod_1"
+
     await eventBus.emit([
       {
         eventName: "product.created",
         data: {
-          id: "prod_1",
+          id: productId,
         },
       },
     ])
 
     expect(remoteQueryMock).toHaveBeenCalledTimes(1)
+
+    const catalogEntries: Catalog[] = await manager.find("Catalog", {
+      id: productId,
+      name: "Product",
+    })
+
+    expect(catalogEntries).toHaveLength(1)
+    expect(catalogEntries[0].id).toEqual(productId)
   })
 })

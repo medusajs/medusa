@@ -90,10 +90,6 @@ export class PostgresProvider {
         })
       )
 
-      // Call the appropriate method based on the event name
-      // TODO: remove this
-      console.log(JSON.stringify(entityData, null, 2))
-
       const argument = {
         entity: entitySchemaObjectRepresentation.entity,
         data: entityData,
