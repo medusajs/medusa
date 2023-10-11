@@ -18,7 +18,6 @@ module.exports = modulesConfig({
             text: "Beta",
           },
           slug: "/references/pricing",
-          // hide_table_of_contents: true,
         },
       },
     },
@@ -53,14 +52,4 @@ module.exports = modulesConfig({
       },
     },
   ],
-  extraOptions: {
-    // frontmatterData: {
-    //   displayed_sidebar: "modules",
-    //   badge: {
-    //     variant: "orange",
-    //     text: "Beta",
-    //   },
-    //   // hide_table_of_contents: true,
-    // },
-  },
 })
