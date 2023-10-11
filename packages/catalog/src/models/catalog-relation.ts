@@ -1,4 +1,4 @@
-import { BeforeCreate, Entity, PrimaryKey } from "@mikro-orm/core"
+import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
 
@@ -7,8 +7,17 @@ export class CatalogRelation {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  //@ManyToMany(() => Catalog, (catalog) => catalog.parents)
-  //catalogs: Catalog[]
+  @Property({ columnType: "text" })
+  parent_id: string
+
+  @Property({ columnType: "text" })
+  parent_name: string
+
+  @Property({ columnType: "text" })
+  child_id: string
+
+  @Property({ columnType: "text" })
+  child_name: string
 
   @BeforeCreate()
   beforeCreate() {
