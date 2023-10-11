@@ -26,7 +26,7 @@ import { cleanGraphQLSchema } from "./utils"
 const LinkModulePackage = "@medusajs/link-modules"
 
 export type RunMigrationFn = (
-  options?: ModuleServiceInitializeOptions,
+  linkModuleOptions?: ModuleServiceInitializeOptions,
   injectedDependencies?: Record<any, any>
 ) => Promise<void>
 
