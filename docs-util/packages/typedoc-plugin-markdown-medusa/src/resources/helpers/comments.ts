@@ -13,7 +13,8 @@ export default function (theme: MarkdownTheme) {
       commentLevel = 4,
       parent = null
     ) {
-      const { showCommentsAsHeader } = theme.getFormattingOptionsForLocation()
+      const { showCommentsAsHeader, showCommentsAsDetails } =
+        theme.getFormattingOptionsForLocation()
       const md: string[] = []
 
       if (showSummary && comment.summary) {
@@ -26,16 +27,19 @@ export default function (theme: MarkdownTheme) {
 
       if (showTags && comment.blockTags?.length) {
         const tags = filteredTags.map((tag) => {
-          return `${
-            showCommentsAsHeader
-              ? `${Handlebars.helpers.titleLevel.call(
-                  parent || comment,
-                  commentLevel
-                )} `
-              : "**`"
-          }${camelToTitleCase(tag.tag.substring(1))}${
-            showCommentsAsHeader ? "" : "`**"
-          }\n\n${Handlebars.helpers.comment(tag.content)}`
+          const tagTitle = camelToTitleCase(tag.tag.substring(1)),
+            tagContent = Handlebars.helpers.comment(tag.content)
+
+          if (showCommentsAsHeader) {
+            return `${Handlebars.helpers.titleLevel.call(
+              parent || comment,
+              commentLevel
+            )} ${tagTitle}\n\n${tagContent}`
+          } else if (showCommentsAsDetails) {
+            return `<details>\n<summary>\n${tagTitle}\n</summary>\n\n${tagContent}\n\n</details>`
+          } else {
+            return `**${tagTitle}**\n\n${tagContent}`
+          }
         })
         md.push(tags.join("\n\n"))
       }
