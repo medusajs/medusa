@@ -5,8 +5,9 @@ import {
 } from "@medusajs/modules-sdk"
 import { ObjectTypeDefinitionNode } from "graphql/index"
 import { toCamelCase } from "@medusajs/utils"
-import { JoinerServiceConfigAlias } from "@medusajs/types"
+import { JoinerServiceConfigAlias, ModuleJoinerConfig } from "@medusajs/types"
 import { makeExecutableSchema } from "@graphql-tools/schema"
+import { SchemaObjectRepresentation } from "../types"
 
 export const CustomDirectives = {
   Listeners: {
@@ -181,7 +182,10 @@ function retrieveLinkModuleAndAlias(
   return { relatedModule, alias }
 }
 
-function getObjectConfigurationRef(entityName, { objectConfigurationRef }) {
+function getObjectConfigurationRef(
+  entityName,
+  { objectConfigurationRef }
+): SchemaObjectRepresentation[0] {
   return (objectConfigurationRef[entityName] ??= {
     entity: entityName,
     parents: [],
@@ -219,8 +223,16 @@ function setCustomDirectives(currentObjectConfigurationRef, directives) {
 }
 
 function processEntity(
-  entityName,
-  { entitiesMap, moduleJoinerConfigs, objectConfigurationRef }
+  entityName: string,
+  {
+    entitiesMap,
+    moduleJoinerConfigs,
+    objectConfigurationRef,
+  }: {
+    entitiesMap: any
+    moduleJoinerConfigs: ModuleJoinerConfig[]
+    objectConfigurationRef: SchemaObjectRepresentation
+  }
 ) {
   /**
    * Get the reference to the object configuration for the current entity.
@@ -239,10 +251,8 @@ function processEntity(
     entitiesMap[entityName].astNode?.directives ?? []
   )
 
-  currentObjectConfigurationRef.fields = getFieldsAndRelations(
-    entitiesMap,
-    entityName
-  )
+  currentObjectConfigurationRef.fields =
+    getFieldsAndRelations(entitiesMap, entityName) ?? []
 
   /**
    * Retrieve the module and alias for the current entity.
@@ -345,6 +355,7 @@ function processEntity(
         linkObjectConfigurationRef.parents = [
           {
             ref: parentObjectConfigurationRef,
+            targetProp: linkAlias,
           },
         ]
         linkObjectConfigurationRef.alias = linkAlias
@@ -414,7 +425,7 @@ function processEntity(
 
         currentObjectConfigurationRef.parents.push({
           ref: linkedEntityObjectConfigurationRef || linkObjectConfigurationRef,
-          inConfiguration: parentObjectConfigurationRef,
+          inConfigurationRef: parentObjectConfigurationRef,
           targetProp: entityTargetPropertyNameInParent,
           isList: isEntityListInParent,
         })
@@ -444,10 +455,10 @@ export function buildSchemaObjectRepresentation(schema) {
   const executableSchema = makeSchemaExecutable(augmentedSchema)
   const entitiesMap = executableSchema.getTypeMap()
 
-  const objectConfiguration = {}
+  const objectConfiguration: SchemaObjectRepresentation = {}
 
-  Object.keys(entitiesMap).forEach((entityName) => {
-    if (!entitiesMap[entityName].astNode) {
+  Object.entries(entitiesMap).forEach(([entityName, entityMapValue]) => {
+    if (!entityMapValue.astNode) {
       return
     }
 

@@ -91,6 +91,17 @@ export class PostgresProvider {
 
       // Call the appropriate method based on the event name
       console.log(JSON.stringify(entityData, null, 2))
+
+      const argument = {
+        entityName: configurationObject.
+      }
+
+      const action = eventName.split(".").pop()
+
+      switch (action) {
+        case "created":
+          await this.onCreate()
+      }
     }
   }
 

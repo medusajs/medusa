@@ -115,7 +115,7 @@ describe("buildSchemaObjectRepresentation", function () {
       parents: [
         {
           ref: expectedPriceSet,
-          inConfiguration: expectedProductVariant,
+          inConfigurationRef: expectedProductVariant,
           targetProp: "money_amounts",
           isList: true,
         },
