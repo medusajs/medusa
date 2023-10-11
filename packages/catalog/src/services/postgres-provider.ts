@@ -5,7 +5,6 @@ import {
 } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
-import { CatalogRepository } from "@repositories"
 import {
   CatalogModuleOptions,
   QueryFormat,
@@ -14,9 +13,10 @@ import {
   StorageProvider,
 } from "../types"
 import { QueryBuilder } from "../utils"
+import { Catalog, CatalogRelation } from "@models"
+import { EntityRepository, GetRepository } from "@mikro-orm/core"
 
 type InjectedDependencies = {
-  catalogRepository: CatalogRepository
   manager: EntityManager
   eventBusModuleService: IEventBusModuleService
   storageProviderCtr: StorageProvider
@@ -31,6 +31,15 @@ export class PostgresProvider {
   protected container_: InjectedDependencies
   protected readonly schemaObjectRepresentation_: SchemaObjectRepresentation
   protected readonly moduleOptions_: CatalogModuleOptions
+
+  protected readonly catalogRepository_: GetRepository<
+    Catalog,
+    EntityRepository<Catalog>
+  >
+  protected readonly catalogRelationRepository_: GetRepository<
+    CatalogRelation,
+    EntityRepository<CatalogRelation>
+  >
 
   protected get remoteQuery_(): (
     query: string | RemoteJoinerQuery | object,
@@ -47,6 +56,9 @@ export class PostgresProvider {
     this.container_ = container
     this.moduleOptions_ = moduleOptions
     this.schemaObjectRepresentation_ = options.schemaConfigurationObject
+    this.catalogRepository_ = this.container_.manager.getRepository(Catalog)
+    this.catalogRelationRepository_ =
+      this.container_.manager.getRepository(CatalogRelation)
   }
 
   async query(param: { selection: QueryFormat; options?: QueryOptions }) {
@@ -65,7 +77,9 @@ export class PostgresProvider {
     return qb.buildObjectFromResultset(resultset)
   }
 
-  consumeEvent(configurationObject: SchemaObjectRepresentation[0]): Subscriber {
+  consumeEvent(
+    schemaObjectRepresentation: SchemaObjectRepresentation[0]
+  ): Subscriber {
     return async (data: unknown, eventName: string) => {
       const data_ = data as Record<string, unknown>
       let ids: string[] = []
@@ -76,7 +90,7 @@ export class PostgresProvider {
         ids = data_.ids as string[]
       }
 
-      const { fields, alias } = configurationObject
+      const { fields, alias } = schemaObjectRepresentation
       const entityData = await this.remoteQuery_(
         remoteQueryObjectFromString({
           entryPoint: alias,
@@ -93,19 +107,66 @@ export class PostgresProvider {
       console.log(JSON.stringify(entityData, null, 2))
 
       const argument = {
-        entityName: configurationObject.
+        entity: schemaObjectRepresentation.entity,
+        data: entityData,
+        schemaObjectRepresentation,
       }
 
       const action = eventName.split(".").pop()
 
       switch (action) {
         case "created":
-          await this.onCreate()
+          await this.onCreate(argument)
       }
     }
   }
 
-  protected async onCreate() {}
+  protected async onCreate({
+    entity,
+    data,
+    schemaObjectRepresentation,
+  }: {
+    entity: string
+    data: { id: string; [key: string]: unknown }[]
+    schemaObjectRepresentation: SchemaObjectRepresentation[0]
+  }) {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    const entityProperties: string[] = []
+    const parentsProperties: string[] = []
+
+    schemaObjectRepresentation.fields.forEach((field) => {
+      if (field.includes(".")) {
+        parentsProperties.push(field)
+      } else {
+        entityProperties.push(field)
+      }
+    })
+
+    const catalogEntries: Catalog[] = []
+    const catalogRelationEntries: CatalogRelation[] = []
+
+    data_.forEach((entityData) => {
+      const catalogEntry = this.catalogRepository_.create({
+        id: entityData.id as string,
+        name: entity,
+        data: entityData,
+      })
+
+      catalogEntries.push(catalogEntry)
+    })
+
+    /*const parentsToAttachTo = parentsProperties.map((parentProperty) => {
+      const [parent, property] = parentProperty.split(".")
+      const parentData = data_[0][parent]
+
+      return {
+        parent,
+        property,
+        parentData,
+      }
+    }*/
+  }
 
   protected async onUpdate() {}
 

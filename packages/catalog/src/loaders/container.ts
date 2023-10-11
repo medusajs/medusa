@@ -1,4 +1,3 @@
-import { CatalogRepository } from "@repositories"
 import { CatalogModuleService } from "@services"
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
@@ -22,10 +21,6 @@ export default async ({
 
   if (!options?.customAdapter) {
     container.register("storageProviderCtr", asValue(PostgresProvider))
-    container.register(
-      "catalogRepository",
-      asClass(CatalogRepository).singleton()
-    )
   } else {
     container.register(
       "storageProviderCtr",
