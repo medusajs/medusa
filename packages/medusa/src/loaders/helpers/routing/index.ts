@@ -407,6 +407,28 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     descriptor.priority = calculatePriority(descriptor.route)
   }
 
+  protected async createMiddlewaresMap({ dirPath }: { dirPath: string }) {
+    const middlewaresPath = join(dirPath, MIDDLEWARES_NAME)
+
+    try {
+      await import(middlewaresPath).then((imp) => {
+        const middlewaresConfig = imp.config as
+          | GlobalMiddlewareConfig
+          | undefined
+
+        if (!middlewaresConfig) {
+          console.log("No middlewares config found")
+          return
+        }
+
+        console.log("Middlewares config found", middlewaresConfig)
+      })
+    } catch (error) {
+      console.log("No middlewares found")
+      return
+    }
+  }
+
   protected async walkThrough({
     dirPath,
     parentPath,
@@ -534,6 +556,8 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
    */
   async load<TConfig = unknown>() {
     performance.mark("file-base-routing-start" + this.rootDir)
+
+    await this.createMiddlewaresMap({ dirPath: this.rootDir })
 
     await this.walkThrough({ dirPath: this.rootDir })
     await this.retrieveFilesConfig()

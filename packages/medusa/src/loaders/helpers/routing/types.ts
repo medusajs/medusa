@@ -7,7 +7,6 @@ export enum RouteVerbs {
   PATCH = "PATCH",
   OPTIONS = "OPTIONS",
   HEAD = "HEAD",
-  ALL = "ALL",
 }
 /* eslint-enable no-unused-vars */
 
@@ -17,7 +16,7 @@ export type RouteConfig = {
 }
 
 export type GlobalMiddlewareRouteConfig = {
-  method?: RouteVerbs | "get" | "GET" // default 'get'
+  method?: RouteVerbs
   path: string
   middlewares: ((...args: unknown[]) => Promise<unknown>)[]
 }
