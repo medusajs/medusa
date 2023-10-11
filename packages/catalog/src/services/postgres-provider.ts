@@ -9,6 +9,7 @@ import {
   CatalogModuleOptions,
   QueryFormat,
   QueryOptions,
+  SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
   StorageProvider,
 } from "../types"
@@ -65,7 +66,7 @@ export class PostgresProvider {
   }
 
   consumeEvent(
-    entitySchemaObjectRepresentation: SchemaObjectRepresentation[0]
+    entitySchemaObjectRepresentation: SchemaObjectEntityRepresentation
   ): Subscriber {
     return async (data: unknown, eventName: string) => {
       const data_ = data as Record<string, unknown>
@@ -114,7 +115,7 @@ export class PostgresProvider {
   }: {
     entity: string
     data: TData[]
-    entitySchemaObjectRepresentation: SchemaObjectRepresentation[0]
+    entitySchemaObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)

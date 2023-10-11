@@ -86,6 +86,7 @@ describe("buildSchemaObjectRepresentation", function () {
       parents: [
         {
           ref: expectedProductVariant,
+          targetProp: "product_variant_price_set",
         },
       ],
       alias: "product_variant_price_set",
@@ -131,6 +132,26 @@ describe("buildSchemaObjectRepresentation", function () {
       MoneyAmount: expectedMoneyAmount,
       product_variant_price_set: expectedProductPricingLink,
       PriceSet: expectedPriceSet,
+
+      _aliasMap: {
+        product: expectedProduct,
+        "product.variant": expectedProductVariant,
+        variant: expectedProductVariant,
+        "product.variant.product_variant_price_set.price_set.money_amount":
+          expectedMoneyAmount,
+        "variant.product_variant_price_set.price_set.money_amount":
+          expectedMoneyAmount,
+        "product_variant_price_set.price_set.money_amount": expectedMoneyAmount,
+        "price_set.money_amount": expectedMoneyAmount,
+        money_amount: expectedMoneyAmount,
+        "product.variant.product_variant_price_set": expectedProductPricingLink,
+        "variant.product_variant_price_set": expectedProductPricingLink,
+        product_variant_price_set: expectedProductPricingLink,
+        "product.variant.product_variant_price_set.price_set": expectedPriceSet,
+        "variant.product_variant_price_set.price_set": expectedPriceSet,
+        "product_variant_price_set.price_set": expectedPriceSet,
+        price_set: expectedPriceSet,
+      },
     })
   })
 })

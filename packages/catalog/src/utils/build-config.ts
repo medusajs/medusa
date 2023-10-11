@@ -7,7 +7,10 @@ import { ObjectTypeDefinitionNode } from "graphql/index"
 import { toCamelCase } from "@medusajs/utils"
 import { JoinerServiceConfigAlias, ModuleJoinerConfig } from "@medusajs/types"
 import { makeExecutableSchema } from "@graphql-tools/schema"
-import { SchemaObjectRepresentation } from "../types"
+import {
+  SchemaObjectEntityRepresentation,
+  SchemaObjectRepresentation,
+} from "../types"
 
 export const CustomDirectives = {
   Listeners: {
@@ -185,7 +188,7 @@ function retrieveLinkModuleAndAlias(
 function getObjectConfigurationRef(
   entityName,
   { objectConfigurationRef }
-): SchemaObjectRepresentation[0] {
+): SchemaObjectEntityRepresentation {
   return (objectConfigurationRef[entityName] ??= {
     entity: entityName,
     parents: [],
@@ -440,6 +443,50 @@ function processEntity(
 }
 
 /**
+ * Build a special object which will be used to retrieve the correct
+ * object representation using path tree
+ *
+ * @example
+ * {
+ *   _aliasMap: {
+ *     "product": <ProductRef>
+ *     "product.variants": <ProductVariantRef>
+ *   }
+ * }
+ */
+function buildAliasMap(objectConfiguration: SchemaObjectRepresentation) {
+  const aliasMap: SchemaObjectRepresentation["_aliasMap"] = {}
+
+  function recursiveParentAliasMap(
+    current: SchemaObjectEntityRepresentation,
+    child: SchemaObjectEntityRepresentation,
+    parentAlias: string
+  ) {
+    if (current.parents?.length) {
+      for (const parentEntity of current.parents) {
+        recursiveParentAliasMap(
+          parentEntity.ref,
+          child,
+          `${parentEntity.ref.alias}.${parentAlias}`
+        )
+      }
+    }
+
+    aliasMap[parentAlias] = child
+  }
+
+  for (const entityRepresentation of Object.values(objectConfiguration)) {
+    recursiveParentAliasMap(
+      entityRepresentation,
+      entityRepresentation,
+      entityRepresentation.alias
+    )
+  }
+
+  return aliasMap
+}
+
+/**
  * This util build an internal configuration object from the provided schema.
  * It will resolve all modules, fields, link module configuration to build
  * the appropriate configuration for the catalog module.
@@ -455,7 +502,7 @@ export function buildSchemaObjectRepresentation(schema) {
   const executableSchema = makeSchemaExecutable(augmentedSchema)
   const entitiesMap = executableSchema.getTypeMap()
 
-  const objectConfiguration: SchemaObjectRepresentation = {}
+  const objectConfiguration = {} as SchemaObjectRepresentation
 
   Object.entries(entitiesMap).forEach(([entityName, entityMapValue]) => {
     if (!entityMapValue.astNode) {
@@ -468,6 +515,8 @@ export function buildSchemaObjectRepresentation(schema) {
       objectConfigurationRef: objectConfiguration,
     })
   })
+
+  objectConfiguration._aliasMap = buildAliasMap(objectConfiguration)
 
   return objectConfiguration
 }
