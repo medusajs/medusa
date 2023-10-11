@@ -57,6 +57,7 @@ export class QueryBuilder {
       $lte: "<=",
       $gte: ">=",
       $ne: "!=",
+      $in: "IN",
       $like: "LIKE",
       $ilike: "ILIKE",
     }
@@ -88,7 +89,7 @@ export class QueryBuilder {
         const subKeys = Object.keys(value)
         subKeys.forEach((subKey) => {
           const subValue = value[subKey]
-          const operator = OPERATOR_MAP[subKey]
+          let operator = OPERATOR_MAP[subKey]
           if (operator) {
             const path = key.split(".")
             const field = path.pop()
@@ -222,8 +223,7 @@ export class QueryBuilder {
         result[prefix + key] = map.get(value) ?? "ASC"
       }
     }
-
-    arr.forEach((obj) => nested)
+    arr.forEach((obj) => nested(obj))
 
     return result
   }
@@ -272,6 +272,7 @@ export class QueryBuilder {
     this.parseWhere(aliasMapping, filter, this.builder)
 
     // ORDER BY clause
+    console.log(order)
     for (const aliasPath in orderBy) {
       const path = aliasPath.split(".")
       const field = path.pop()
