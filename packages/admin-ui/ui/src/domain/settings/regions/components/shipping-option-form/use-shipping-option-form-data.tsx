@@ -6,6 +6,8 @@ import { useMemo } from "react"
 import { ShippingOptionFormType } from "."
 import { Option } from "../../../../../types/shared"
 import fulfillmentProvidersMapper from "../../../../../utils/fulfillment-providers.mapper"
+import { AdminPostShippingOptionsReq, Region } from "@medusajs/medusa"
+import { getSubmittableMetadata } from "../../../../../components/forms/general/metadata-form"
 
 type OptionType = {
   id: string
@@ -93,10 +95,42 @@ export const useShippingOptionFormData = (
     return requirements
   }
 
+  const getShippingOptionData = (
+    data: ShippingOptionFormType,
+    region: Region,
+    isReturn = false
+  ) => {
+    const { provider_id, data: fData } = getFulfillmentData(
+      data.fulfillment_provider!.value
+    )
+
+    const payload: AdminPostShippingOptionsReq = {
+      is_return: false,
+      region_id: region.id,
+      profile_id: data.shipping_profile?.value,
+      name: data.name!,
+      data: fData,
+      price_type: data.price_type!.value,
+      provider_id,
+      admin_only: !data.store_option,
+      amount: data.amount!,
+      requirements: getRequirementsData(data),
+      metadata: getSubmittableMetadata(data.metadata),
+    }
+
+    if (isReturn) {
+      payload.is_return = true
+      payload.price_type = "flat_rate"
+    }
+
+    return { payload }
+  }
+
   return {
     shippingProfileOptions,
     fulfillmentOptions,
     getFulfillmentData,
     getRequirementsData,
+    getShippingOptionData,
   }
 }

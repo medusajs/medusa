@@ -1,8 +1,6 @@
-import { Region } from "@medusajs/medusa"
 import { useAdminCreateShippingOption } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { getSubmittableMetadata } from "../../../../../components/forms/general/metadata-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import useNotification from "../../../../../hooks/use-notification"
@@ -11,6 +9,8 @@ import ShippingOptionForm, {
   ShippingOptionFormType,
 } from "../../components/shipping-option-form"
 import { useShippingOptionFormData } from "../../components/shipping-option-form/use-shipping-option-form-data"
+import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
+import { Region } from "@medusajs/medusa"
 
 type Props = {
   open: boolean
@@ -21,15 +21,14 @@ type Props = {
 const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
   const { t } = useTranslation()
   const form = useForm<ShippingOptionFormType>()
+  const { isFeatureEnabled } = useFeatureFlag()
   const {
     formState: { isDirty },
     handleSubmit,
     reset,
   } = form
   const { mutate, isLoading } = useAdminCreateShippingOption()
-  const { getFulfillmentData, getRequirementsData } = useShippingOptionFormData(
-    region.id
-  )
+  const { getShippingOptionData } = useShippingOptionFormData(region.id)
   const notifcation = useNotification()
 
   const closeAndReset = () => {
@@ -38,45 +37,32 @@ const CreateShippingOptionModal = ({ open, onClose, region }: Props) => {
   }
 
   const onSubmit = handleSubmit((data) => {
-    const { provider_id, data: fData } = getFulfillmentData(
-      data.fulfillment_provider!.value
-    )
+    const { payload } = getShippingOptionData(data, region)
 
-    mutate(
-      {
-        is_return: false,
-        region_id: region.id,
-        profile_id: data.shipping_profile?.value,
-        name: data.name!,
-        data: fData,
-        price_type: data.price_type!.value,
-        provider_id,
-        admin_only: !data.store_option,
-        amount: data.amount!,
-        requirements: getRequirementsData(data),
-        metadata: getSubmittableMetadata(data.metadata),
+    if (isFeatureEnabled("tax_inclusive_pricing")) {
+      payload.includes_tax = region.includes_tax
+    }
+
+    mutate(payload, {
+      onSuccess: () => {
+        notifcation(
+          t("shipping-options-success", "Success"),
+          t(
+            "shipping-options-shipping-option-created",
+            "Shipping option created"
+          ),
+          "success"
+        )
+        closeAndReset()
       },
-      {
-        onSuccess: () => {
-          notifcation(
-            t("shipping-options-success", "Success"),
-            t(
-              "shipping-options-shipping-option-created",
-              "Shipping option created"
-            ),
-            "success"
-          )
-          closeAndReset()
-        },
-        onError: (error) => {
-          notifcation(
-            t("shipping-options-error", "Error"),
-            getErrorMessage(error),
-            "error"
-          )
-        },
-      }
-    )
+      onError: (error) => {
+        notifcation(
+          t("shipping-options-error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
+      },
+    })
   })
 
   return (
