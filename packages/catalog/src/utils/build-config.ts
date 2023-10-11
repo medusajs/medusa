@@ -391,6 +391,7 @@ function processEntity(
          * before setting the new entity as the true parent of the current entity.
          */
 
+        //TODO: re look at this just to be sure
         let linkedEntityObjectRepresentationRef
         if (currentObjectRepresentationRef.alias !== linkAlias) {
           const linkedEntityNameAndAlias =
