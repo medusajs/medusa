@@ -81,7 +81,7 @@ export default async (req, res) => {
 
   const product = rawProduct
 
-  if (!shouldSetPricing) {
+  if (shouldSetPricing) {
     await pricingService.setAdminProductPricing([product])
   }
 

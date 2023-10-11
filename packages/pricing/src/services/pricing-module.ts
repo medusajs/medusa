@@ -1017,6 +1017,48 @@ export default class PricingModuleService<
     ]
   }
 
+  @InjectManager("baseRepository_")
+  async listPriceSetMoneyAmounts(
+    filters: PricingTypes.FilterablePriceSetMoneyAmountProps = {},
+    config: FindConfig<PricingTypes.PriceSetMoneyAmountDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceSetMoneyAmountDTO[]> {
+    const records = await this.priceSetMoneyAmountService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return this.baseRepository_.serialize<
+      PricingTypes.PriceSetMoneyAmountRulesDTO[]
+    >(records, {
+      populate: true,
+    })
+  }
+
+  @InjectManager("baseRepository_")
+  async listAndCountPriceSetMoneyAmounts(
+    filters: PricingTypes.FilterablePriceSetMoneyAmountProps = {},
+    config: FindConfig<PricingTypes.PriceSetMoneyAmountDTO> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[PricingTypes.PriceSetMoneyAmountDTO[], number]> {
+    const [records, count] =
+      await this.priceSetMoneyAmountService_.listAndCount(
+        filters,
+        config,
+        sharedContext
+      )
+
+    return [
+      await this.baseRepository_.serialize<
+        PricingTypes.PriceSetMoneyAmountRulesDTO[]
+      >(records, {
+        populate: true,
+      }),
+      count,
+    ]
+  }
+
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async createPriceSetMoneyAmountRules(
     data: PricingTypes.CreatePriceSetMoneyAmountRulesDTO[],
