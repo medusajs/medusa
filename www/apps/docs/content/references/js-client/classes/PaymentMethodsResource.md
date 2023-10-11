@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: PaymentMethodsResource
 
 ## Hierarchy
@@ -10,7 +14,7 @@
 
 ### list
 
-▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersListPaymentMethodsRes`](../modules/internal-43.md#storecustomerslistpaymentmethodsres)\>
+▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCustomersListPaymentMethodsRes`](../modules/internal-8.internal.md#storecustomerslistpaymentmethodsres)\>
 
 Lists customer payment methods
 
@@ -18,12 +22,12 @@ Lists customer payment methods
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreCustomersListPaymentMethodsRes`](../modules/internal-43.md#storecustomerslistpaymentmethodsres)\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreCustomersListPaymentMethodsRes`](../modules/internal-8.internal.md#storecustomerslistpaymentmethodsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/payment-methods.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/payment-methods.ts#L12)
+[packages/medusa-js/src/resources/payment-methods.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/payment-methods.ts#L12)
