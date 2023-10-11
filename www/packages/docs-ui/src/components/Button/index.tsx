@@ -24,7 +24,6 @@ export const Button = ({
 }: ButtonProps) => {
   const variantClasses = {
     primary: [
-      "inline-flex flex-row justify-center items-center",
       "py-[5px] px-docs_0.75 rounded-docs_sm cursor-pointer",
       "bg-button-inverted bg-medusa-button-inverted dark:bg-button-inverted-dark",
       "hover:bg-medusa-button-inverted-hover hover:bg-no-image hover:no-underline",
@@ -42,7 +41,6 @@ export const Button = ({
       "select-none",
     ],
     secondary: [
-      "inline-flex flex-row justify-center items-center",
       "py-[5px] px-docs_0.75 rounded-docs_sm cursor-pointer",
       "bg-button-neutral bg-medusa-button-neutral dark:bg-button-neutral-dark",
       "hover:bg-medusa-button-neutral-hover hover:bg-no-image hover:no-underline",
@@ -65,6 +63,7 @@ export const Button = ({
   return (
     <button
       className={clsx(
+        "inline-flex flex-row justify-center items-center gap-[6px]",
         variant === "primary" && variantClasses.primary,
         variant === "secondary" && variantClasses.secondary,
         variant === "clear" && variantClasses.clear,

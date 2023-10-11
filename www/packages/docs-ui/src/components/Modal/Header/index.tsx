@@ -5,7 +5,7 @@ import { Button } from "@/components"
 import { XMark } from "@medusajs/icons"
 
 export type ModalHeaderProps = {
-  title?: string
+  title?: React.ReactNode
 }
 
 export const ModalHeader = ({ title }: ModalHeaderProps) => {

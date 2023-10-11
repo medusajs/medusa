@@ -36,7 +36,7 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           <div
-            className="w-full h-[calc(100%-57px)] overflow-y-scroll"
+            className="w-full h-[calc(100%-57px)] overflow-y-scroll overflow-x-hidden"
             id="main"
           >
             <div className="max-w-xxl grid w-full grid-cols-1 px-6 lg:mx-auto lg:grid-cols-[280px_1fr]">

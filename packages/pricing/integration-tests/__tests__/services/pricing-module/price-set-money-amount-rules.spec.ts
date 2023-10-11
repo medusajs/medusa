@@ -256,7 +256,7 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
 
   describe("createPriceSetMoneyAmountRules", () => {
     it("should create a priceSetMoneyAmountRules successfully", async () => {
-      const created = await service.createPriceSetMoneyAmountRules([
+      await service.createPriceSetMoneyAmountRules([
         {
           price_set_money_amount: "price-set-money-amount-EUR",
           rule_type: "rule-type-2",
@@ -264,19 +264,20 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
         },
       ])
 
-      const [priceSetMoneyAmountRules] =
+      const priceSetMoneyAmountRules =
         await service.listPriceSetMoneyAmountRules(
-          {
-            id: [created[0]?.id],
-          },
+          {},
           {
             relations: ["price_set_money_amount", "rule_type"],
           }
         )
 
-      expect(priceSetMoneyAmountRules).toEqual(
+      const created =
+        priceSetMoneyAmountRules[priceSetMoneyAmountRules.length - 1]
+
+      expect(created).toEqual(
         expect.objectContaining({
-          id: created[0]?.id,
+          id: expect.any(String),
           value: "New priceSetMoneyAmountRule",
           price_set_money_amount: expect.objectContaining({
             id: "price-set-money-amount-EUR",
