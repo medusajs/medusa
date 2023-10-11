@@ -354,6 +354,8 @@ function processEntity(
           { objectRepresentationRef }
         )
 
+        linkObjectRepresentationRef.isLink = true
+
         /**
          * Add the schema parent entity as a parent to the link module and configure it.
          */

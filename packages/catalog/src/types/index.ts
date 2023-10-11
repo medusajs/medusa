@@ -53,6 +53,8 @@ export type SchemaObjectEntityRepresentation = {
     isList?: boolean
   }[]
 
+  isLink?: boolean
+
   /**
    * The default fields to query for the type/entity
    */
