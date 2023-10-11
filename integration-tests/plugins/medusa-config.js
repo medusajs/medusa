@@ -58,5 +58,10 @@ module.exports = {
       resources: "shared",
       resolve: "@medusajs/product",
     },
+    [Modules.PRICING]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/pricing",
+    },
   },
 }

@@ -16,6 +16,7 @@ import {
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
+import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
@@ -41,6 +42,7 @@ import { validator } from "../../../../utils/validator"
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
+import PriceSetService from '../../../../../../pricing/dist/services/price-set';
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.products.updateVariant(productId, variantId, {
@@ -115,11 +117,19 @@ export default async (req, res) => {
 
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
+  const pricingModuleService: any = req.scope.resolve("pricingModuleService")
+  // const linkService: any = req.scope.resolve("linkService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const manager: EntityManager = req.scope.resolve("manager")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
 
-  const manager: EntityManager = req.scope.resolve("manager")
+  if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
+    // console.log("badoink!!! - ", linkService)
+    console.log("badoink!!!")
+  }
+
   await manager.transaction(async (transactionManager) => {
     await productVariantService
       .withTransaction(transactionManager)
