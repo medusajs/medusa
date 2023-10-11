@@ -2,14 +2,10 @@ import { Customer } from "@medusajs/medusa"
 import { useAdminUpdateCustomer } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import MetadataForm, {
-  getMetadataFormValues,
-  getSubmittableMetadata,
-  MetadataFormType,
-} from "../../../components/forms/general/metadata-form"
 import Button from "../../../components/fundamentals/button"
 import LockIcon from "../../../components/fundamentals/icons/lock-icon"
 import InputField from "../../../components/molecules/input"
+import TextArea from "../../../components/molecules/textarea"
 import Modal from "../../../components/molecules/modal"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
@@ -26,7 +22,7 @@ type EditCustomerFormType = {
   last_name: string
   email: string
   phone: string | null
-  metadata: MetadataFormType
+  metadata: any
 }
 
 const EditCustomerModal = ({
@@ -56,7 +52,7 @@ const EditCustomerModal = ({
         // @ts-ignore
         phone: data.phone,
         email: data.email,
-        metadata: getSubmittableMetadata(data.metadata),
+        metadata: data.metadata,
       },
       {
         onSuccess: () => {
@@ -122,8 +118,16 @@ const EditCustomerModal = ({
               </div>
             </div>
             <div>
-              <h2 className="inter-base-semibold mb-base">Metadata</h2>
-              <MetadataForm form={nestedForm(form, "metadata")} />
+              <h2 className="inter-base-semibold text-grey-90 mb-4">Additional</h2>
+              <div className="flex space-x-2">
+                <TextArea
+                  label="Description"
+                  {...register("metadata.description")}
+                  placeholder="Description"
+                  className="w-full"
+                  rows={4}
+                />
+              </div>
             </div>
           </div>
         </Modal.Content>
@@ -160,7 +164,7 @@ const getDefaultValues = (customer: Customer): EditCustomerFormType => {
     email: customer.email,
     last_name: customer.last_name,
     phone: customer.phone,
-    metadata: getMetadataFormValues(customer.metadata),
+    metadata: customer.metadata,
   }
 }
 
