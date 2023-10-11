@@ -8,7 +8,7 @@ import { MedusaApp, Modules } from "@medusajs/modules-sdk"
 import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
 import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { Catalog } from "@models"
+import { Catalog, CatalogRelation } from "@models"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -20,6 +20,7 @@ const sharedPgConnection = knex<any, any>({
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
+  jest.clearAllMocks()
   return await TestDatabase.forkManager()
 }
 
@@ -29,37 +30,28 @@ const afterEach_ = async () => {
 
 describe("SearchEngineModuleService", function () {
   const eventBus = new EventBusService()
-  const remoteQueryMock = jest.fn().mockImplementation((query) => {
-    if (query.product) {
-      const filters = query.product.__args?.filters ?? {}
-      filters.id ??= []
-      const productIds = Array.isArray(filters.id) ? filters.id : [filters.id]
-      return productIds.map((id) => ({ id }))
-    }
-  })
+  const remoteQueryMock = jest.fn()
 
   let manager: SqlEntityManager
   let module: CatalogModuleService
 
-  beforeEach(async () => {
-    manager = await beforeEach_()
-
-    const searchEngineModuleOptions = {
-      defaultAdapterOptions: {
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-        },
+  const searchEngineModuleOptions = {
+    defaultAdapterOptions: {
+      database: {
+        clientUrl: DB_URL,
+        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
       },
-      schema,
-    }
+    },
+    schema,
+  }
 
-    const injectedDependencies = {
-      [ContainerRegistrationKeys.PG_CONNECTION]: sharedPgConnection,
-      eventBusModuleService: eventBus,
-      remoteQuery: remoteQueryMock,
-    }
+  const injectedDependencies = {
+    [ContainerRegistrationKeys.PG_CONNECTION]: sharedPgConnection,
+    eventBusModuleService: eventBus,
+    remoteQuery: remoteQueryMock,
+  }
 
+  beforeAll(async () => {
     await MedusaApp({
       modulesConfig: {
         ...modulesConfig,
@@ -70,6 +62,10 @@ describe("SearchEngineModuleService", function () {
       servicesConfig: joinerConfig,
       injectedDependencies,
     })
+  })
+
+  beforeEach(async () => {
+    manager = await beforeEach_()
 
     module = await initialize(searchEngineModuleOptions, {
       eventBusModuleService: eventBus,
@@ -83,6 +79,12 @@ describe("SearchEngineModuleService", function () {
   afterEach(afterEach_)
 
   it("should be able to consume created event and create the corresponding catalog entries", async () => {
+    remoteQueryMock.mockImplementation(() => {
+      return {
+        id: productId,
+      }
+    })
+
     const productId = "prod_1"
 
     await eventBus.emit([
@@ -103,5 +105,74 @@ describe("SearchEngineModuleService", function () {
 
     expect(catalogEntries).toHaveLength(1)
     expect(catalogEntries[0].id).toEqual(productId)
+  })
+
+  it("should be able to consume created event of a child entity and create the corresponding catalog and catalog relation entries", async () => {
+    const productId = "prod_1"
+    const variantId = "var_1"
+
+    remoteQueryMock.mockImplementation((query) => {
+      if (query.product) {
+        return {
+          id: productId,
+        }
+      } else if (query.variant || query.variants) {
+        return {
+          id: variantId,
+          product: [
+            {
+              id: productId,
+            },
+          ],
+        }
+      }
+
+      return {}
+    })
+
+    await eventBus.emit([
+      {
+        eventName: "product.created",
+        data: {
+          id: productId,
+        },
+      },
+    ])
+
+    await eventBus.emit([
+      {
+        eventName: "variant.created",
+        data: {
+          id: variantId,
+          product: {
+            id: productId,
+          },
+        },
+      },
+    ])
+
+    expect(remoteQueryMock).toHaveBeenCalledTimes(2)
+
+    const catalogEntries: Catalog[] = await manager.find(Catalog, {
+      id: variantId,
+      name: "ProductVariant",
+    })
+
+    expect(catalogEntries).toHaveLength(1)
+    expect(catalogEntries[0].id).toEqual(variantId)
+
+    const catalogRelationEntries: CatalogRelation[] = await manager.find(
+      CatalogRelation,
+      {
+        parent_id: productId,
+        parent_name: "Product",
+        child_id: variantId,
+        child_name: "ProductVariant",
+      }
+    )
+
+    expect(catalogRelationEntries).toHaveLength(1)
+    expect(catalogRelationEntries[0].parent_id).toEqual(productId)
+    expect(catalogRelationEntries[0].child_id).toEqual(variantId)
   })
 })

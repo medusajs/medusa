@@ -5,14 +5,14 @@ export const schema = `
     variants: [ProductVariant]
   }
   
-  type ProductVariant @Listeners(values: ["variants.created", "variants.updated"]) {
+  type ProductVariant @Listeners(values: ["variant.created", "variant.updated"]) {
     id: String
     product_id: String
     sku: String
     money_amounts: [MoneyAmount]
   }
   
-  type MoneyAmount @Listeners(values: ["prices.created", "prices.updated"]) {
+  type MoneyAmount @Listeners(values: ["price.created", "price.updated"]) {
     amount: Int
   }
 `

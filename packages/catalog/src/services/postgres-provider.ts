@@ -172,29 +172,31 @@ export class PostgresProvider {
 
         parentsProperties.forEach((parentProperty) => {
           const parentAlias = parentProperty.split(".")[0]
+          const parentEntities = entityData[parentAlias] as TData[]
 
-          if (!entityData[parentProperty]) {
+          if (!parentEntities) {
             return
           }
 
-          const parentSchemaObjectRepresentation = Object.values(
-            this.schemaObjectRepresentation_
-          ).find((object) => {
-            return object.alias === parentAlias
-          })!
+          const parentSchemaObjectRepresentation =
+            entitySchemaObjectRepresentation.parents.find((object) => {
+              return object.ref.alias === parentAlias
+            })!
 
           if (!parentSchemaObjectRepresentation) {
             return
           }
 
-          catalogRelationEntries.push(
-            catalogRelationRepository.create({
-              parent_id: (entityData[parentProperty] as TData).id,
-              parent_name: parentSchemaObjectRepresentation.entity,
-              child_id: cleanedEntityData.id,
-              child_name: entity,
-            })
-          )
+          parentEntities.forEach((parentEntity) => {
+            catalogRelationEntries.push(
+              catalogRelationRepository.create({
+                parent_id: parentEntity.id,
+                parent_name: parentSchemaObjectRepresentation.ref.entity,
+                child_id: cleanedEntityData.id,
+                child_name: entity,
+              })
+            )
+          })
         })
       })
 
