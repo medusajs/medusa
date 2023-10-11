@@ -5,6 +5,7 @@ import {
 } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
+import { Catalog, CatalogRelation } from "@models"
 import {
   CatalogModuleOptions,
   QueryFormat,
@@ -14,7 +15,6 @@ import {
   StorageProvider,
 } from "../types"
 import { QueryBuilder } from "../utils"
-import { Catalog, CatalogRelation } from "@models"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -49,9 +49,7 @@ export class PostgresProvider {
     this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
   }
 
-  async query(param: { selection: QueryFormat; options?: QueryOptions }) {
-    const { selection, options } = param
-
+  async query(selection: QueryFormat, options?: QueryOptions) {
     const connection = this.container_.manager.getConnection()
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,

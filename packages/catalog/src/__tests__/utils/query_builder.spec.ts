@@ -72,12 +72,12 @@ describe("Catalog Query Builder", function () {
     expect(sql.replace(/\s/g, "")).toEqual(
       `
       select 
-        "product0"."data" as """product"",
-         product0.id AS ""product.id""", 
-        "productvariant1"."data" as """product.variants"",
-        productvariant1.id AS ""product.variants.id""", 
-        "saleschannel1"."data" as """product.sales_channels"",
-        saleschannel1.id AS ""product.sales_channels.id""" 
+        "product0"."data" as "product", 
+        "product0"."id" as "product.id", 
+        "productvariant1"."data" as "product.variants", 
+        "productvariant1"."id" as "product.variants.id", 
+        "saleschannel1"."data" as "product.sales_channels", 
+        "saleschannel1"."id" as "product.sales_channels.id" 
     from 
       "catalog" as "product0" 
       LEFT JOIN LATERAL (
@@ -85,9 +85,9 @@ describe("Catalog Query Builder", function () {
           productvariant1.* 
         FROM 
           catalog AS productvariant1 
-          JOIN catalog_reference AS productvariant1_ref ON productvariant1.id = productvariant1_ref.child_id 
-          AND productvariant1_ref.child = 'ProductVariant' 
-          AND productvariant1_ref.parent = 'Product' 
+          JOIN catalog_relation AS productvariant1_ref ON productvariant1.id = productvariant1_ref.child_id 
+          AND productvariant1_ref.child_name = 'ProductVariant' 
+          AND productvariant1_ref.parent_name = 'Product' 
           AND productvariant1_ref.parent_id = product0.id
       ) productvariant1 ON TRUE 
       LEFT JOIN LATERAL (
@@ -95,13 +95,13 @@ describe("Catalog Query Builder", function () {
           saleschannel1.* 
         FROM 
           catalog AS saleschannel1 
-          JOIN catalog_reference AS saleschannel1_ref ON saleschannel1.id = saleschannel1_ref.child_id 
-          AND saleschannel1_ref.child = 'SalesChannel' 
-          AND saleschannel1_ref.parent = 'Product' 
+          JOIN catalog_relation AS saleschannel1_ref ON saleschannel1.id = saleschannel1_ref.child_id 
+          AND saleschannel1_ref.child_name = 'SalesChannel' 
+          AND saleschannel1_ref.parent_name = 'Product' 
           AND saleschannel1_ref.parent_id = product0.id
       ) saleschannel1 ON TRUE 
     where 
-      "product0"."type" = 'Product' 
+      "product0"."name" = 'Product' 
       and (
         (
           "product0"."data->>title" in ('product 1')
@@ -139,15 +139,15 @@ describe("Catalog Query Builder", function () {
 
     const rs = [
       {
-        product: '{"title": "product 1", "handler": "product_1"}',
+        product: { title: "product 1", handler: "product_1" },
         "product.id": "prod_1",
       },
       {
-        product: '{"title": "product 2", "handler": "product_2"}',
+        product: { title: "product 2", handler: "product_2" },
         "product.id": "prod_2",
       },
       {
-        product: '{"title": "product 3", "handler": "product_3"}',
+        product: { title: "product 3", handler: "product_3" },
         "product.id": "prod_3",
       },
     ]
@@ -185,21 +185,21 @@ describe("Catalog Query Builder", function () {
 
     const rs = [
       {
-        product: '{"title": "product 1", "handler": "product_1"}',
+        product: { title: "product 1", handler: "product_1" },
         "product.id": "prod_1",
-        "product.variants": '{"sku": "varvar333"}',
+        "product.variants": { sku: "varvar333" },
         "product.variants.id": "var_3",
       },
       {
-        product: '{"title": "product 2", "handler": "product_2"}',
+        product: { title: "product 2", handler: "product_2" },
         "product.id": "prod_2",
-        "product.variants": '{"sku": "varvar222"}',
+        "product.variants": { sku: "varvar222" },
         "product.variants.id": "var_2",
       },
       {
-        product: '{"title": "product 3", "handler": "product_3"}',
+        product: { title: "product 3", handler: "product_3" },
         "product.id": "prod_3",
-        "product.variants": '{"sku": "varvar111"}',
+        "product.variants": { sku: "varvar111" },
         "product.variants.id": "var_1",
       },
     ]
@@ -257,49 +257,49 @@ describe("Catalog Query Builder", function () {
 
     const rs = [
       {
-        product: '{"title": "product 1", "handler": "product_1"}',
+        product: { title: "product 1", handler: "product_1" },
         "product.id": "prod_1",
-        "product.variants": '{"sku": "varvar333"}',
+        "product.variants": { sku: "varvar333" },
         "product.variants.id": "var_3",
-        "product.variants.options": '{"name": "Voltage"}',
+        "product.variants.options": { name: "Voltage" },
         "product.variants.options.id": "opt_3",
-        "product.variants.options.value": '"127V"',
+        "product.variants.options.value": "127V",
         "product.variants.options.value.id": "value_1",
-        "product.sales_channels": '{"name": "Default Sales Channel"}',
+        "product.sales_channels": { name: "Default Sales Channel" },
         "product.sales_channels.id": "sc_1",
       },
       {
-        product: '{"title": "product 1", "handler": "product_1"}',
+        product: { title: "product 1", handler: "product_1" },
         "product.id": "prod_1",
-        "product.variants": '{"sku": "varvar333"}',
+        "product.variants": { sku: "varvar333" },
         "product.variants.id": "var_3",
-        "product.variants.options": '{"name": "Voltage"}',
+        "product.variants.options": { name: "Voltage" },
         "product.variants.options.id": "opt_3",
-        "product.variants.options.value": '"127V"',
+        "product.variants.options.value": "127V",
         "product.variants.options.value.id": "value_1",
-        "product.sales_channels": '{"name": "Street store"}',
+        "product.sales_channels": { name: "Street store" },
         "product.sales_channels.id": "sc_2",
       },
       {
-        product: '{"title": "product 2", "handler": "product_2"}',
+        product: { title: "product 2", handler: "product_2" },
         "product.id": "prod_2",
-        "product.variants": '{"sku": "varvar222"}',
+        "product.variants": { sku: "varvar222" },
         "product.variants.id": "var_2",
         "product.variants.options": null,
         "product.variants.options.id": null,
         "product.variants.options.value": null,
         "product.variants.options.value.id": null,
-        "product.sales_channels": '{"name": "Default channel"}',
+        "product.sales_channels": { name: "Default channel" },
         "product.sales_channels.id": "sc_1",
       },
       {
-        product: '{"title": "product 3", "handler": "product_3"}',
+        product: { title: "product 3", handler: "product_3" },
         "product.id": "prod_3",
-        "product.variants": '{"sku": "varvar111"}',
+        "product.variants": { sku: "varvar111" },
         "product.variants.id": "var_1",
-        "product.variants.options": '{"name": "Voltage"}',
+        "product.variants.options": { name: "Voltage" },
         "product.variants.options.id": "opt_3",
-        "product.variants.options.value": '"127V"',
+        "product.variants.options.value": "127V",
         "product.variants.options.value.id": "value_1",
         "product.sales_channels": null,
         "product.sales_channels.id": null,

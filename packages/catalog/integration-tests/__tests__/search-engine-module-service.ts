@@ -1,14 +1,14 @@
-import { DB_URL, TestDatabase } from "../utils"
+import { MedusaApp, Modules } from "@medusajs/modules-sdk"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { knex } from "knex"
+import { Catalog, CatalogRelation } from "@models"
 import { CatalogModuleService } from "@services"
+import { knex } from "knex"
+import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
+import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
 import { initialize } from "../../src/initialize"
 import { EventBusService, schema } from "../__fixtures__"
-import { MedusaApp, Modules } from "@medusajs/modules-sdk"
-import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
-import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { Catalog, CatalogRelation } from "@models"
+import { DB_URL, TestDatabase } from "../utils"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -107,7 +107,7 @@ describe("SearchEngineModuleService", function () {
     expect(catalogEntries[0].id).toEqual(productId)
   })
 
-  it("should be able to consume created event of a child entity and create the corresponding catalog and catalog relation entries", async () => {
+  it("should be able to consume created event of a child entity and create the corresponding catalog and catalog relation entries, and query the data", async () => {
     const productId = "prod_1"
     const variantId = "var_1"
 
@@ -151,6 +151,17 @@ describe("SearchEngineModuleService", function () {
       },
     ])
 
+    const result = await module.query({
+      select: {
+        product: {
+          entity: "Product",
+          variants: {
+            entity: "ProductVariant",
+          },
+        },
+      },
+    })
+
     expect(remoteQueryMock).toHaveBeenCalledTimes(2)
 
     const catalogEntries: Catalog[] = await manager.find(Catalog, {
@@ -174,5 +185,16 @@ describe("SearchEngineModuleService", function () {
     expect(catalogRelationEntries).toHaveLength(1)
     expect(catalogRelationEntries[0].parent_id).toEqual(productId)
     expect(catalogRelationEntries[0].child_id).toEqual(variantId)
+
+    expect(result).toEqual([
+      {
+        id: "prod_1",
+        variants: [
+          {
+            id: "var_1",
+          },
+        ],
+      },
+    ])
   })
 })

@@ -140,10 +140,10 @@ export class QueryBuilder {
       queryParts.push(`LEFT JOIN LATERAL (
       SELECT ${alias}.* 
       FROM catalog AS ${alias}
-      JOIN catalog_reference AS ${alias}_ref
+      JOIN catalog_relation AS ${alias}_ref
         ON ${alias}.id = ${alias}_ref.child_id
-        AND ${alias}_ref.child = '${entity}'
-        AND ${alias}_ref.parent = '${parentEntity}'
+        AND ${alias}_ref.child_name = '${entity}'
+        AND ${alias}_ref.parent_name = '${parentEntity}'
         AND ${alias}_ref.parent_id = ${parentAlias}.id
     ) ${alias} ON TRUE`)
     }
@@ -170,27 +170,27 @@ export class QueryBuilder {
     structure: EntityStructure,
     parentProperty: string,
     aliasPath: string[] = [],
+    selectParts: object = {},
     level = 0
-  ): string[] {
+  ): object {
     const entity = structure.entity!
     const alias = entity.toLowerCase() + level
     const currentAliasPath = [...aliasPath, parentProperty].join(".")
 
-    let selectParts: string[] = [
-      `${alias}.data AS "${currentAliasPath}",
-    ${alias}.id AS "${currentAliasPath}.id"`,
-    ]
+    selectParts[currentAliasPath] = `${alias}.data`
+    selectParts[currentAliasPath + ".id"] = `${alias}.id`
+
     const children = this.getStructureKeys(structure)
 
     for (const child of children) {
       const childStructure = structure[child] as EntityStructure
-      selectParts = selectParts.concat(
-        this.buildSelectParts(
-          childStructure,
-          child,
-          aliasPath.concat(parentProperty),
-          level + 1
-        )
+
+      this.buildSelectParts(
+        childStructure,
+        child,
+        aliasPath.concat(parentProperty),
+        selectParts,
+        level + 1
       )
     }
 
@@ -209,7 +209,9 @@ export class QueryBuilder {
 
     function nested(obj, prefix = "") {
       const keys = Object.keys(obj)
-      if (keys.length > 1) {
+      if (!keys.length) {
+        return
+      } else if (keys.length > 1) {
         throw new Error("Order by only supports one key per object.")
       }
       const key = keys[0]
@@ -263,7 +265,7 @@ export class QueryBuilder {
     })
 
     this.builder.where(
-      `${aliasMapping[rootEntity]}.type`,
+      `${aliasMapping[rootEntity]}.name`,
       "=",
       rootStructure.entity!
     )
@@ -272,7 +274,6 @@ export class QueryBuilder {
     this.parseWhere(aliasMapping, filter, this.builder)
 
     // ORDER BY clause
-    console.log(order)
     for (const aliasPath in orderBy) {
       const path = aliasPath.split(".")
       const field = path.pop()
@@ -345,7 +346,7 @@ export class QueryBuilder {
         // root level
         if (!pathDetails[path]) {
           if (!maps[path][id]) {
-            maps[path][id] = row[path] ? JSON.parse(row[path]) : undefined
+            maps[path][id] = row[path] || undefined
           }
           continue
         }
@@ -357,7 +358,7 @@ export class QueryBuilder {
           continue
         }
 
-        maps[path][id] = row[path] ? JSON.parse(row[path]) : undefined
+        maps[path][id] = row[path] || undefined
 
         const parentObj = maps[parentPath][row[`${parentPath}.id`]]
 
