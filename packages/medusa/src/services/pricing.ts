@@ -630,6 +630,35 @@ class PricingService extends TransactionBaseService {
     })
   }
 
+  async setAdminProductPricing(
+    products: Product[]
+  ): Promise<(Product | PricedProduct)[]> {
+    if (
+      !this.featureFlagRouter.isFeatureEnabled(
+        PricingIntegrationFeatureFlag.key
+      )
+    ) {
+      return this.setProductPrices(products)
+    }
+
+    const productsVariantsPricingMap = new Map()
+
+    return products.map((product) => {
+      if (!product?.variants?.length) {
+        return product
+      }
+
+      product.variants.map((productVariant): PricedVariant => {
+        const variantPricing = productsVariantsPricingMap.get(product.id)!
+        const pricing = variantPricing[productVariant.id]
+        Object.assign(productVariant, pricing)
+        return productVariant as unknown as PricedVariant
+      })
+
+      return product
+    })
+  }
+
   /**
    * Gets the prices for a shipping option.
    * @param shippingOption - the shipping option to get prices for
