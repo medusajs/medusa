@@ -93,9 +93,13 @@ export default class CatalogModuleService {
   protected registerListeners() {
     const configurationObjects = this.schemaObjectRepresentation_ ?? {}
 
-    for (const configurationObject of Object.values(
+    for (const [entityName, configurationObject] of Object.entries(
       configurationObjects
-    ) as any) {
+    )) {
+      if (entityName === "_aliasMap") {
+        continue
+      }
+
       configurationObject.listeners.forEach((listener) => {
         this.eventBusModuleService_.subscribe(
           listener,

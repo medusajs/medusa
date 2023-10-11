@@ -180,9 +180,7 @@ export class PostgresProvider {
           }
 
           const parentSchemaObjectRepresentation =
-            entitySchemaObjectRepresentation.parents.find((object) => {
-              return object.ref.alias === parentAlias
-            })!
+            this.schemaObjectRepresentation_._aliasMap[parentAlias]
 
           if (!parentSchemaObjectRepresentation) {
             return
@@ -192,7 +190,7 @@ export class PostgresProvider {
             catalogRelationEntries.push(
               catalogRelationRepository.create({
                 parent_id: parentEntity.id,
-                parent_name: parentSchemaObjectRepresentation.ref.entity,
+                parent_name: parentSchemaObjectRepresentation.entity,
                 child_id: cleanedEntityData.id,
                 child_name: entity,
               })
