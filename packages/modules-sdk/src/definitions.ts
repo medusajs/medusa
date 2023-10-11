@@ -124,9 +124,9 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
     [Modules.CATALOG]: {
       key: Modules.CATALOG,
       registrationName: ModuleRegistrationName.CATALOG,
-      defaultPackage: false,
+      defaultPackage: MODULE_PACKAGE_NAMES[Modules.CATALOG],
       label: "CatalogModuleService",
-      isQueryable: true,
+      isQueryable: false,
       dependencies: ["logger", "eventBusModuleService", "remoteQuery"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,

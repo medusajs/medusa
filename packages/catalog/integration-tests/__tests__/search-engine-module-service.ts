@@ -4,6 +4,18 @@ import { knex } from "knex"
 import { CatalogModuleService } from "@services"
 import { initialize } from "../../src/initialize"
 import { EventBusService, schema } from "../__fixtures__"
+import { MedusaApp, Modules } from "@medusajs/modules-sdk"
+import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
+import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
+
+const sharedPgConnection = knex<any, any>({
+  client: "pg",
+  searchPath: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+  connection: {
+    connectionString: DB_URL,
+  },
+})
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -14,38 +26,57 @@ const afterEach_ = async () => {
   await TestDatabase.clearDatabase()
 }
 
-const sharedPgConnection = knex<any, any>({
-  client: "pg",
-  searchPath: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-  connection: {
-    connectionString: DB_URL,
-  },
-})
-
 describe("SearchEngineModuleService", function () {
   const eventBus = new EventBusService()
-  const remoteQueryMock = jest.fn()
+  const remoteQueryMock = jest.fn().mockImplementation((query) => {
+    if (query.product) {
+      const filters = query.product.__args?.filters ?? {}
+      filters.id ??= []
+      const productIds = Array.isArray(filters.id) ? filters.id : [filters.id]
+      return productIds.map((id) => ({ id }))
+    }
+  })
 
   let manager: SqlEntityManager
   let module: CatalogModuleService
 
   beforeEach(async () => {
     manager = await beforeEach_()
-    module = await initialize(
-      {
-        defaultAdapterOptions: {
-          database: {
-            clientUrl: DB_URL,
-            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-          },
+
+    const searchEngineModuleOptions = {
+      defaultAdapterOptions: {
+        database: {
+          clientUrl: DB_URL,
+          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
-        schema,
       },
-      {
-        eventBusModuleService: eventBus,
-        remoteQuery: remoteQueryMock,
-      }
-    )
+      schema,
+    }
+
+    const injectedDependencies = {
+      [ContainerRegistrationKeys.PG_CONNECTION]: sharedPgConnection,
+      eventBusModuleService: eventBus,
+      remoteQuery: remoteQueryMock,
+    }
+
+    await MedusaApp({
+      modulesConfig: {
+        ...modulesConfig,
+        [Modules.CATALOG]: {
+          options: searchEngineModuleOptions,
+        },
+      },
+      servicesConfig: joinerConfig,
+      injectedDependencies,
+    })
+
+    module = await initialize(searchEngineModuleOptions, {
+      eventBusModuleService: eventBus,
+      remoteQuery: remoteQueryMock,
+    })
+
+    // TODO
+    await module.afterModulesInit()
   })
 
   afterEach(afterEach_)

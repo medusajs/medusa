@@ -1,5 +1,4 @@
 import {
-  DAL,
   IEventBusModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -14,10 +13,9 @@ import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
-  baseRepository: DAL.RepositoryService
   eventBusModuleService: IEventBusModuleService
   storageProviderCtr: StorageProvider
-  storageProviderOptions: unknown
+  storageProviderCtrOptions: unknown
   remoteQuery: (
     query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
@@ -28,7 +26,6 @@ export default class CatalogModuleService {
   private readonly container_: InjectedDependencies
   private readonly moduleOptions_: CatalogModuleOptions
 
-  protected readonly baseRepository_: DAL.RepositoryService
   protected readonly eventBusModuleService_: IEventBusModuleService
 
   protected schemaObjectRepresentation_: SchemaObjectRepresentation
@@ -38,8 +35,6 @@ export default class CatalogModuleService {
   protected readonly storageProviderCtrOptions_: unknown
 
   protected get storageProvider_(): StorageProvider {
-    this.buildSchemaObjectRepresentation_()
-
     this.storageProviderInstance_ =
       this.storageProviderInstance_ ??
       new this.storageProviderCtr_(
@@ -58,27 +53,32 @@ export default class CatalogModuleService {
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.container_ = container
-    this.moduleOptions_ =
-      moduleDeclaration.options as unknown as CatalogModuleOptions
+    this.moduleOptions_ = (moduleDeclaration.options ??
+      moduleDeclaration) as unknown as CatalogModuleOptions
 
     const {
-      baseRepository,
       eventBusModuleService,
       storageProviderCtr,
-      storageProviderOptions,
+      storageProviderCtrOptions,
     } = container
 
-    this.baseRepository_ = baseRepository
     this.eventBusModuleService_ = eventBusModuleService
     this.storageProviderCtr_ = storageProviderCtr
-    this.storageProviderCtrOptions_ = storageProviderOptions
+    this.storageProviderCtrOptions_ = storageProviderCtrOptions
 
     if (!this.eventBusModuleService_) {
       throw new Error(
         "EventBusModuleService is required for the CatalogModule to work"
       )
     }
+  }
 
+  /**
+   * TODO: should we introduce module service hook called after all modules are initialized?
+   * here we are depending on potentially all other modules being initialized
+   */
+  async afterModulesInit() {
+    this.buildSchemaObjectRepresentation_()
     this.registerListeners()
   }
 

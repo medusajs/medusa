@@ -19,6 +19,8 @@ export default async ({
     )
   }
 
+  container.register("storageProviderCtrOptions", asValue(undefined))
+
   if (!options?.customAdapter) {
     container.register("storageProviderCtr", asValue(PostgresProvider))
   } else {

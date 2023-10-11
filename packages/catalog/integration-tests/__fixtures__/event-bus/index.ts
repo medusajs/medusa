@@ -31,7 +31,7 @@ export class EventBusService implements IEventBusModuleService {
       : eventOrData
 
     for (const event of eventData as EventBusTypes.EmitData[]) {
-      const subscribers = this.subscribers_.get(eventOrData as string)
+      const subscribers = this.subscribers_.get(event.eventName)
       for (const subscriber of subscribers ?? []) {
         await subscriber(event.data, event.eventName)
       }
