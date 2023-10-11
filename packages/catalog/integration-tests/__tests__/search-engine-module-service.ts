@@ -82,7 +82,7 @@ describe("SearchEngineModuleService", function () {
 
   afterEach(afterEach_)
 
-  it("should be able to consume created event and create the catalog and catalog relation entries", async () => {
+  it("should be able to consume created event and create the corresponding catalog entries", async () => {
     const productId = "prod_1"
 
     await eventBus.emit([

@@ -183,6 +183,10 @@ export class PostgresProvider {
             return object.alias === parentAlias
           })!
 
+          if (!parentSchemaObjectRepresentation) {
+            return
+          }
+
           catalogRelationEntries.push(
             catalogRelationRepository.create({
               parent_id: (entityData[parentProperty] as TData).id,
