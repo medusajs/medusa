@@ -4,6 +4,8 @@ export enum Workflows {
 
   // Cart workflows
   CreateCart = "create-cart",
+
+  CreateInventoryItems = "create-inventory-items",
 }
 
 export enum InputAlias {
@@ -16,4 +18,6 @@ export enum InputAlias {
 
   AttachedInventoryItems = "attachedInventoryItems",
   DetachedInventoryItems = "detachedInventoryItems",
+
+  InventoryItemsInputData = "inventoryItemsInputData",
 }
