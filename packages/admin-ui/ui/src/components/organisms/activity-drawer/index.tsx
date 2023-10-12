@@ -1,42 +1,43 @@
 import React, { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 
-import useOutsideClick from "../../../hooks/use-outside-click"
 import { usePolling } from "../../../providers/polling-provider"
 import Spinner from "../../atoms/spinner"
 import SadFaceIcon from "../../fundamentals/icons/sad-face-icon"
 import SidedMouthFaceIcon from "../../fundamentals/icons/sided-mouth-face"
 import BatchJobActivityList from "../batch-jobs-activity-list"
 
+import * as Dialog from "@radix-ui/react-dialog"
+
 const ActivityDrawer = ({ onDismiss }) => {
   const { t } = useTranslation()
-  const ref = React.useRef<HTMLDivElement>(null)
   const { batchJobs, hasPollingError, refetch } = usePolling()
-  useOutsideClick(onDismiss, ref)
 
   useEffect(() => {
     refetch()
   }, [])
 
   return (
-    <div
-      ref={ref}
-      className="bg-grey-0 shadow-dropdown rounded-rounded fixed top-[64px] bottom-2 right-3 flex w-[400px] flex-col overflow-x-hidden rounded"
-    >
-      <div className="inter-large-semibold pt-7 pl-8 pb-1">
-        {t("activity-drawer-activity", "Activity")}
-      </div>
-
-      {!hasPollingError ? (
-        batchJobs ? (
-          <BatchJobActivityList batchJobs={batchJobs} />
-        ) : (
-          <EmptyActivityDrawer />
-        )
-      ) : (
-        <ErrorActivityDrawer />
-      )}
-    </div>
+    <Dialog.Root open onOpenChange={onDismiss}>
+      <Dialog.Overlay className="fixed top-0 left-0 right-0 bottom-0 z-50 grid place-items-end">
+        <Dialog.Content className="bg-grey-0 shadow-dropdown rounded-rounded fixed top-[64px] bottom-2 right-3 flex w-[400px] flex-col justify-between overflow-y-auto p-8">
+          <div>
+            <Dialog.Title className="inter-xlarge-semibold mb-1">
+              {t("activity-drawer-activity", "Activity")}
+            </Dialog.Title>
+            {!hasPollingError ? (
+              batchJobs ? (
+                <BatchJobActivityList batchJobs={batchJobs} />
+              ) : (
+                <EmptyActivityDrawer />
+              )
+            ) : (
+              <ErrorActivityDrawer />
+            )}
+          </div>
+        </Dialog.Content>
+      </Dialog.Overlay>
+    </Dialog.Root>
   )
 }
 

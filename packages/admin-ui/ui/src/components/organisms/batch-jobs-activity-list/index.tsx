@@ -59,7 +59,7 @@ function useBatchJob(initialData: BatchJob): BatchJob {
 
 const BatchJobActivityList = ({ batchJobs }: { batchJobs?: BatchJob[] }) => {
   return (
-    <div>
+    <div className="-mx-8">
       {batchJobs?.map((batchJob) => {
         return <BatchJobActivityCard key={batchJob.id} batchJob={batchJob} />
       })}
