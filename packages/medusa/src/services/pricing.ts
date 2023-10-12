@@ -24,7 +24,6 @@ import { ProductVariantService, RegionService, TaxProviderService } from "."
 import { EntityManager } from "typeorm"
 import { FlagRouter } from "@medusajs/utils"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
-import { Logger } from "../types/global"
 import { MedusaError } from "medusa-core-utils"
 import PricingIntegrationFeatureFlag from "../loaders/feature-flags/pricing-integration"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
@@ -667,7 +666,6 @@ class PricingService extends TransactionBaseService {
     const priceSetIds: string[] = variantPriceSets.map(
       (variantPriceSet) => variantPriceSet.price_set_id
     )
-    this.logger.info(JSON.stringify(priceSetIds, null, 2))
 
     const priceSetMoneyAmounts =
       await this.pricingModuleService.listPriceSetMoneyAmounts(
