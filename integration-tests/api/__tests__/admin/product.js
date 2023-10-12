@@ -43,7 +43,6 @@ describe("/admin/products", () => {
     medusaProcess = await setupServer({
       cwd,
       env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
-      verbose: true,
     })
   })
 
