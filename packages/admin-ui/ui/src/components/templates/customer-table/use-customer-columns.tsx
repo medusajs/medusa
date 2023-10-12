@@ -31,6 +31,27 @@ export const useCustomerColumns = () => {
         accessor: "metadata.company",
       },
       {
+        Header: <div>Country</div>,
+        accessor: "billing_address",
+        Cell: ({ cell: { value } }) => (
+            <div className="flex flex-row justify-start items-center gap-2">
+              {value?.country_code ?
+                <div className="rounded-rounded flex">
+                    <ReactCountryFlag
+                      className={"rounded"}
+                      svg
+                      countryCode={value?.country_code as string}
+                    />
+                </div>
+                :
+                ""
+              }
+              {value?.province ? <div>{value.province}</div> : ""}
+              {value?.city ? <div>{value.city}</div> : ""}
+            </div>
+        ),
+      },
+      {
         accessor: "groups",
         Header: () => <div>Groups</div>,
         Cell: ({ cell: { value } }) => (
@@ -42,19 +63,6 @@ export const useCustomerColumns = () => {
         Header: () => <div className="text-right">Orders</div>,
         Cell: ({ cell: { value } }) => (
           <div className="text-right">{value?.length || 0}</div>
-        ),
-      },
-      {
-        Header: <div className="text-right">Country</div>,
-        accessor: "billing_address",
-        Cell: ({ cell: { value } }) => (
-            <div className="rounded-rounded flex w-full justify-end">
-                <ReactCountryFlag
-                  className={"rounded"}
-                  svg
-                  countryCode={value?.country_code}
-                />
-            </div>
         ),
       },
       {

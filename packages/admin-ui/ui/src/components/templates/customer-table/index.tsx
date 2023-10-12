@@ -39,7 +39,7 @@ const CustomerTable = () => {
       keepPreviousData: true,
     }
   )
-  console.log(customers)
+  
   const [query, setQuery] = useState(queryObject.query)
   const [numPages, setNumPages] = useState(0)
 

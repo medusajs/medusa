@@ -70,7 +70,7 @@ export const CUSTOMER_GROUPS_CUSTOMERS_TABLE_COLUMNS: Column<Customer>[] = [
   },
 ]
 
-export const CUSTOMER_GROUPS_CUSTOMERS_LIST_TABLE_COLUMNS: Column<Customer>[] =
+export const CUSTOMER_GROUPS_CUSTOMERS_LIST_TABLE_COLUMNS: Column<Customer|any>[] =
   [
     {
       Header: "Date added",
@@ -100,34 +100,41 @@ export const CUSTOMER_GROUPS_CUSTOMERS_LIST_TABLE_COLUMNS: Column<Customer>[] =
       accessor: "email",
     },
     {
-      accessor: "metadata",
+      accessor: "metadata.company",
       Header: "Company",
-      Cell: ({ cell: { value } }) => <>{value?.company}</>,
+      Cell: ({ cell: { value } }) => <>{value}</>,
     },
     {
-      accessor: "groups",
-      disableSortBy: true,
-      Header: "Groups",
-      Cell: ({ cell: { value } }) => <CustomersGroupsSummary groups={value} />,
+      Header: <div>Country</div>,
+      accessor: "billing_address",
+      Cell: ({ cell: { value } }) => (
+          <div className="mr-4">
+            <div className="flex flex-row justify-start items-center gap-1">
+              {value?.country_code ?
+                <ReactCountryFlag
+                  className={"rounded"}
+                  svg
+                  countryCode={value?.country_code as string}
+                />
+                :
+                ""
+              }
+              {value?.province ? <div>{value.province}</div> : ""}
+              {value?.city ? <div>{value.city}</div> : ""}
+            </div>
+          </div>
+      ),
+    },
+    {
+      accessor: "metadata.description",
+      Header: "Description",
+      Cell: ({ cell: { value } }) => <div className="max-w-[400px] truncate">{value}</div>,
     },
     {
       accessor: "orders",
       Header: () => <div className="text-right">Orders</div>,
       Cell: ({ cell: { value } }) => (
         <div className="text-right">{value?.length || 0}</div>
-      ),
-    },
-    {
-      Header: <div className="text-right">Country</div>,
-      accessor: "billing_address",
-      Cell: ({ cell: { value } }) => (
-          <div className="rounded-rounded flex w-full justify-end">
-              <ReactCountryFlag
-                className={"rounded"}
-                svg
-                countryCode={value?.country_code}
-              />
-          </div>
       ),
     },
     {
