@@ -154,7 +154,7 @@ describe("SearchEngineModuleService", function () {
     const result = await module.query({
       select: {
         product: {
-          variant: true,
+          variants: true,
         },
       },
     })
@@ -186,7 +186,7 @@ describe("SearchEngineModuleService", function () {
     expect(result).toEqual([
       {
         id: "prod_1",
-        variant: [
+        variants: [
           {
             id: "var_1",
           },
