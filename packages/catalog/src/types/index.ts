@@ -77,6 +77,13 @@ export type SchemaObjectEntityRepresentation = {
   moduleConfig: ModuleJoinerConfig
 }
 
+export type SchemaPropertiesMap = {
+  [key: string]: {
+    shortCutOf?: string
+    ref: SchemaObjectEntityRepresentation
+  }
+}
+
 /**
  * Represents the schema objects representation once the schema has been processed
  */
@@ -85,12 +92,7 @@ export type SchemaObjectRepresentation =
       [key: string]: SchemaObjectEntityRepresentation
     }
   | {
-      _schemaPropertiesMap: {
-        [key: string]: {
-          shortCutOf?: string
-          ref: SchemaObjectEntityRepresentation
-        }
-      }
+      _schemaPropertiesMap: SchemaPropertiesMap
     }
 
 /**

@@ -12,6 +12,7 @@ import {
   QueryOptions,
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
+  SchemaPropertiesMap,
   StorageProvider,
 } from "../types"
 import { QueryBuilder } from "../utils"
@@ -177,8 +178,10 @@ export class PostgresProvider {
             return
           }
 
-          const parentSchemaObjectRepresentation =
-            this.schemaObjectRepresentation_._schemaPropertiesMap[parentAlias]
+          const parentSchemaObjectRepresentation = this
+            .schemaObjectRepresentation_._schemaPropertiesMap[
+            parentAlias
+          ] as SchemaPropertiesMap[0]
 
           if (!parentSchemaObjectRepresentation) {
             return
@@ -188,7 +191,7 @@ export class PostgresProvider {
             catalogRelationEntries.push(
               catalogRelationRepository.create({
                 parent_id: parentEntity.id,
-                parent_name: parentSchemaObjectRepresentation.entity,
+                parent_name: parentSchemaObjectRepresentation.ref.entity,
                 child_id: cleanedEntityData.id,
                 child_name: entity,
               })

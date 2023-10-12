@@ -73,7 +73,7 @@ describe("SearchEngineModuleService", function () {
     })
 
     // TODO
-    await module.afterModulesInit()
+    await module.onApplicationStart?.()
   })
 
   afterEach(afterEach_)
