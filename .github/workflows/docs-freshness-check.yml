@@ -32,5 +32,10 @@ jobs:
         with:
           extension: docs-freshness-check
 
+      - name: Install Workspace dependencies
+        run: yarn install
+        working-directory: docs-util
+
       - name: Perform Freshness Check
         run: yarn check:freshness
+        working-directory: docs-util/packages/scripts

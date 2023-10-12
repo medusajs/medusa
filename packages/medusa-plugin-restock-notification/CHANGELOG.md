@@ -1,5 +1,11 @@
 # Change Log
 
+## 7.0.3
+
+### Patch Changes
+
+- [`cf1821184`](https://github.com/medusajs/medusa/commit/cf18211848d6083354fc070800d94f00130f3da2) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset
+
 ## 7.0.2
 
 ### Patch Changes

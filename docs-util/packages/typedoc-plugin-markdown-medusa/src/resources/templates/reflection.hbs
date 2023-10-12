@@ -1,0 +1,133 @@
+{{#with model}}
+
+{{{frontmatter}}}
+
+{{/with}}
+
+{{> header}}
+
+{{> title}}
+
+{{#with model}}
+
+{{#if (sectionEnabled "reflection_comment")}}
+
+{{#if hasComment}}
+
+{{> comment}}
+
+{{/if}}
+
+{{/if}}
+
+{{/with}}
+
+{{#if (sectionEnabled "reflection_typeParameters")}}
+
+{{#if model.typeParameters}}
+
+## Type parameters
+
+{{#with model.typeParameters}}
+
+{{{typeParameter}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_hierarchy")}}
+
+{{#ifShowTypeHierarchy}}
+
+## Hierarchy
+
+{{#with model.typeHierarchy}}
+
+{{{hierarchy 0}}}
+
+{{/with}}
+
+{{/ifShowTypeHierarchy}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_implements")}}
+
+{{#if model.implementedTypes}}
+
+## Implements
+
+{{#each model.implementedTypes}}
+- {{{type}}}
+{{/each}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_implementedBy")}}
+
+{{#if model.implementedBy}}
+
+## Implemented by
+
+{{#each model.implementedBy}}
+- {{{type}}}
+{{/each}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_callable")}}
+
+{{#if model.signatures}}
+
+## Callable
+
+{{#with model}}
+
+{{#each signatures}}
+
+### {{name}}
+
+{{> member.signature showSources=true }}
+
+{{/each}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_indexable")}}
+
+{{#if model.indexSignature}}
+
+## Indexable
+
+{{#with model}}
+
+{{#with indexSignature}}
+
+{{{indexSignatureTitle}}}
+
+{{> comment}}
+
+{{/with}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#with model}}
+
+{{> main}}
+
+{{/with}}
