@@ -18,7 +18,7 @@ import FileIcon from "../../fundamentals/icons/file-icon"
 import MedusaIcon from "../../fundamentals/icons/medusa-icon"
 import { ActivityCard } from "../../molecules/activity-card"
 import BatchJobFileCard from "../../molecules/batch-job-file-card"
-import { batchJobDescriptionBuilder, BatchJobOperation } from "./utils"
+import { batchJobDescriptionBuilder } from "./utils"
 import CrossIcon from "../../fundamentals/icons/cross-icon"
 
 /**
@@ -86,9 +86,8 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
     to: batchJob.created_at,
   })
 
-  const operation = batchJob.type.includes("export")
-    ? BatchJobOperation.Export
-    : BatchJobOperation.Import
+  let operation = batchJob.type.split("-")[0]
+  operation = operation.charAt(0).toUpperCase() + operation.slice(1)
 
   const batchJobActivityDescription = batchJobDescriptionBuilder(
     batchJob,
