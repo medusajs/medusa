@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { MiddlewareConfig } from "../../types"
+import { MiddlewaresConfig } from "../../types"
 import {
   customersCreateMiddlewareMock,
   customersGlobalMiddlewareMock,
@@ -29,7 +29,7 @@ const storeCors = (req: Request, res: Response, next: NextFunction) => {
   next()
 }
 
-export const config: MiddlewareConfig = {
+export const config: MiddlewaresConfig = {
   routes: [
     {
       matcher: "/customers",

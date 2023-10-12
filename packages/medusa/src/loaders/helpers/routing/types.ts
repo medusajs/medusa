@@ -29,14 +29,14 @@ type MiddlewareFunction = (
   next: NextFunction
 ) => Promise<void> | void
 
-export type MiddlewareRouteConfig = {
+export type MiddlewareRoute = {
   method?: MiddlewareVerb | MiddlewareVerb[]
   matcher: string
   middlewares: MiddlewareFunction[]
 }
 
-export type MiddlewareConfig = {
-  routes?: MiddlewareRouteConfig[]
+export type MiddlewaresConfig = {
+  routes?: MiddlewareRoute[]
 }
 
 export type RouteDescriptor<TConfig = Record<string, unknown>> = {
@@ -50,5 +50,5 @@ export type RouteDescriptor<TConfig = Record<string, unknown>> = {
 }
 
 export type GlobalMiddlewareDescriptor<TConfig = Record<string, unknown>> = {
-  config?: TConfig & MiddlewareConfig
+  config?: TConfig & MiddlewaresConfig
 }

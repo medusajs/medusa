@@ -3,7 +3,7 @@ import { readdir } from "fs/promises"
 import { extname, join } from "path"
 import logger from "../../logger"
 import {
-  MiddlewareConfig,
+  MiddlewaresConfig,
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
   RouteVerb,
@@ -101,14 +101,14 @@ export class RoutesLoader {
    * it should be ignored or skipped.
    *
    * @param {GlobalMiddlewareDescriptor} descriptor
-   * @param {MiddlewareConfig} config
+   * @param {MiddlewaresConfig} config
    *
    * @return {void}
    */
   protected validateMiddlewaresConfig({
     config,
   }: {
-    config?: MiddlewareConfig
+    config?: MiddlewaresConfig
   }): void {
     if (!config?.routes) {
       log({
@@ -319,7 +319,7 @@ export class RoutesLoader {
 
     try {
       await import(absolutePath).then((imp) => {
-        const middlewaresConfig = imp.config as MiddlewareConfig | undefined
+        const middlewaresConfig = imp.config as MiddlewaresConfig | undefined
 
         if (!middlewaresConfig) {
           log({
