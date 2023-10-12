@@ -10,13 +10,13 @@
 
 ### constructor
 
-• **new NewTotalsService**(`__namedParameters`)
+• **new NewTotalsService**(`«destructured»`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `InjectedDependencies` |
+| `«destructured»` | `InjectedDependencies` |
 
 #### Overrides
 
@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:67](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L67)
+[medusa/src/services/new-totals.ts:67](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L67)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:64](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L64)
+[medusa/src/services/new-totals.ts:64](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L64)
 
 ___
 
@@ -90,7 +90,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:65](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L65)
+[medusa/src/services/new-totals.ts:65](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L65)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:63](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L63)
+[medusa/src/services/new-totals.ts:63](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L63)
 
 ___
 
@@ -124,7 +124,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -142,7 +142,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -181,13 +181,13 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### getGiftCardTotals
 
-▸ **getGiftCardTotals**(`giftCardableAmount`, `__namedParameters`): `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
+▸ **getGiftCardTotals**(`giftCardableAmount`, `«destructured»`): `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
 
 Calculate and return the gift cards totals
 
@@ -196,10 +196,10 @@ Calculate and return the gift cards totals
 | Name | Type |
 | :------ | :------ |
 | `giftCardableAmount` | `number` |
-| `__namedParameters` | `Object` |
-| `__namedParameters.giftCardTransactions?` | `GiftCardTransaction`[] |
-| `__namedParameters.giftCards?` | `GiftCard`[] |
-| `__namedParameters.region` | `Region` |
+| `«destructured»` | `Object` |
+| › `giftCardTransactions?` | `GiftCardTransaction`[] |
+| › `giftCards?` | `GiftCard`[] |
+| › `region` | `Region` |
 
 #### Returns
 
@@ -207,13 +207,13 @@ Calculate and return the gift cards totals
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:447](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L447)
+[medusa/src/services/new-totals.ts:447](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L447)
 
 ___
 
 ### getGiftCardTransactionsTotals
 
-▸ **getGiftCardTransactionsTotals**(`__namedParameters`): `Object`
+▸ **getGiftCardTransactionsTotals**(`«destructured»`): `Object`
 
 Calculate and return the gift cards totals based on their transactions
 
@@ -221,11 +221,11 @@ Calculate and return the gift cards totals based on their transactions
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
-| `__namedParameters.giftCardTransactions` | `GiftCardTransaction`[] |
-| `__namedParameters.region` | `Object` |
-| `__namedParameters.region.gift_cards_taxable` | `boolean` |
-| `__namedParameters.region.tax_rate` | `number` |
+| `«destructured»` | `Object` |
+| › `giftCardTransactions` | `GiftCardTransaction`[] |
+| › `region` | `Object` |
+| › `region.gift_cards_taxable` | `boolean` |
+| › `region.tax_rate` | `number` |
 
 #### Returns
 
@@ -238,13 +238,13 @@ Calculate and return the gift cards totals based on their transactions
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:526](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L526)
+[medusa/src/services/new-totals.ts:526](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L526)
 
 ___
 
 ### getLineItemRefund
 
-▸ **getLineItemRefund**(`lineItem`, `__namedParameters`): `number`
+▸ **getLineItemRefund**(`lineItem`, `«destructured»`): `number`
 
 Return the amount that can be refund on a line item
 
@@ -258,9 +258,9 @@ Return the amount that can be refund on a line item
 | `lineItem.quantity` | `number` |
 | `lineItem.tax_lines` | `LineItemTaxLine`[] |
 | `lineItem.unit_price` | `number` |
-| `__namedParameters` | `Object` |
-| `__namedParameters.calculationContext` | `TaxCalculationContext` |
-| `__namedParameters.taxRate?` | ``null`` \| `number` |
+| `«destructured»` | `Object` |
+| › `calculationContext` | `TaxCalculationContext` |
+| › `taxRate?` | ``null`` \| `number` |
 
 #### Returns
 
@@ -268,13 +268,13 @@ Return the amount that can be refund on a line item
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:333](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L333)
+[medusa/src/services/new-totals.ts:333](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L333)
 
 ___
 
 ### getLineItemRefundLegacy
 
-▸ `Protected` **getLineItemRefundLegacy**(`lineItem`, `__namedParameters`): `number`
+▸ `Protected` **getLineItemRefundLegacy**(`lineItem`, `«destructured»`): `number`
 
 #### Parameters
 
@@ -285,9 +285,9 @@ ___
 | `lineItem.includes_tax` | `boolean` |
 | `lineItem.quantity` | `number` |
 | `lineItem.unit_price` | `number` |
-| `__namedParameters` | `Object` |
-| `__namedParameters.calculationContext` | `TaxCalculationContext` |
-| `__namedParameters.taxRate` | `number` |
+| `«destructured»` | `Object` |
+| › `calculationContext` | `TaxCalculationContext` |
+| › `taxRate` | `number` |
 
 #### Returns
 
@@ -295,13 +295,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:403](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L403)
+[medusa/src/services/new-totals.ts:403](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L403)
 
 ___
 
 ### getLineItemTotals
 
-▸ **getLineItemTotals**(`items`, `__namedParameters`): `Promise`<{ `[lineItemId: string]`: `LineItemTotals`;  }\>
+▸ **getLineItemTotals**(`items`, `«destructured»`): `Promise`<{ `[lineItemId: string]`: `LineItemTotals`;  }\>
 
 Calculate and return the items totals for either the legacy calculation or the new calculation
 
@@ -310,10 +310,10 @@ Calculate and return the items totals for either the legacy calculation or the n
 | Name | Type |
 | :------ | :------ |
 | `items` | `LineItem` \| `LineItem`[] |
-| `__namedParameters` | `Object` |
-| `__namedParameters.calculationContext` | `TaxCalculationContext` |
-| `__namedParameters.includeTax?` | `boolean` |
-| `__namedParameters.taxRate?` | ``null`` \| `number` |
+| `«destructured»` | `Object` |
+| › `calculationContext` | `TaxCalculationContext` |
+| › `includeTax?` | `boolean` |
+| › `taxRate?` | ``null`` \| `number` |
 
 #### Returns
 
@@ -321,13 +321,13 @@ Calculate and return the items totals for either the legacy calculation or the n
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:87](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L87)
+[medusa/src/services/new-totals.ts:87](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L87)
 
 ___
 
 ### getLineItemTotalsLegacy
 
-▸ `Protected` **getLineItemTotalsLegacy**(`item`, `__namedParameters`): `Promise`<`LineItemTotals`\>
+▸ `Protected` **getLineItemTotalsLegacy**(`item`, `«destructured»`): `Promise`<`LineItemTotals`\>
 
 Calculate and return the legacy calculated totals using the tax rate
 
@@ -336,12 +336,12 @@ Calculate and return the legacy calculated totals using the tax rate
 | Name | Type |
 | :------ | :------ |
 | `item` | `LineItem` |
-| `__namedParameters` | `Object` |
-| `__namedParameters.calculationContext` | `TaxCalculationContext` |
-| `__namedParameters.lineItemAllocation` | `Object` |
-| `__namedParameters.lineItemAllocation.discount?` | `DiscountAllocation` |
-| `__namedParameters.lineItemAllocation.gift_card?` | `GiftCardAllocation` |
-| `__namedParameters.taxRate` | `number` |
+| `«destructured»` | `Object` |
+| › `calculationContext` | `TaxCalculationContext` |
+| › `lineItemAllocation` | `Object` |
+| › `lineItemAllocation.discount?` | `DiscountAllocation` |
+| › `lineItemAllocation.gift_card?` | `GiftCardAllocation` |
+| › `taxRate` | `number` |
 
 #### Returns
 
@@ -349,13 +349,13 @@ Calculate and return the legacy calculated totals using the tax rate
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:254](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L254)
+[medusa/src/services/new-totals.ts:254](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L254)
 
 ___
 
 ### getLineItemTotals\_
 
-▸ `Protected` **getLineItemTotals_**(`item`, `__namedParameters`): `Promise`<`LineItemTotals`\>
+▸ `Protected` **getLineItemTotals_**(`item`, `«destructured»`): `Promise`<`LineItemTotals`\>
 
 Calculate and return the totals for an item
 
@@ -364,13 +364,13 @@ Calculate and return the totals for an item
 | Name | Type |
 | :------ | :------ |
 | `item` | `LineItem` |
-| `__namedParameters` | `Object` |
-| `__namedParameters.calculationContext` | `TaxCalculationContext` |
-| `__namedParameters.includeTax?` | `boolean` |
-| `__namedParameters.lineItemAllocation` | `Object` |
-| `__namedParameters.lineItemAllocation.discount?` | `DiscountAllocation` |
-| `__namedParameters.lineItemAllocation.gift_card?` | `GiftCardAllocation` |
-| `__namedParameters.taxLines?` | `LineItemTaxLine`[] |
+| `«destructured»` | `Object` |
+| › `calculationContext` | `TaxCalculationContext` |
+| › `includeTax?` | `boolean` |
+| › `lineItemAllocation` | `Object` |
+| › `lineItemAllocation.discount?` | `DiscountAllocation` |
+| › `lineItemAllocation.gift_card?` | `GiftCardAllocation` |
+| › `taxLines?` | `LineItemTaxLine`[] |
 
 #### Returns
 
@@ -378,13 +378,13 @@ Calculate and return the totals for an item
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:147](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L147)
+[medusa/src/services/new-totals.ts:147](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L147)
 
 ___
 
 ### getShippingMethodTotals
 
-▸ **getShippingMethodTotals**(`shippingMethods`, `__namedParameters`): `Promise`<{ `[shippingMethodId: string]`: `ShippingMethodTotals`;  }\>
+▸ **getShippingMethodTotals**(`shippingMethods`, `«destructured»`): `Promise`<{ `[shippingMethodId: string]`: `ShippingMethodTotals`;  }\>
 
 Calculate and return the shipping methods totals for either the legacy calculation or the new calculation
 
@@ -393,11 +393,11 @@ Calculate and return the shipping methods totals for either the legacy calculati
 | Name | Type |
 | :------ | :------ |
 | `shippingMethods` | `ShippingMethod` \| `ShippingMethod`[] |
-| `__namedParameters` | `Object` |
-| `__namedParameters.calculationContext` | `TaxCalculationContext` |
-| `__namedParameters.discounts?` | `Discount`[] |
-| `__namedParameters.includeTax?` | `boolean` |
-| `__namedParameters.taxRate?` | ``null`` \| `number` |
+| `«destructured»` | `Object` |
+| › `calculationContext` | `TaxCalculationContext` |
+| › `discounts?` | `Discount`[] |
+| › `includeTax?` | `boolean` |
+| › `taxRate?` | ``null`` \| `number` |
 
 #### Returns
 
@@ -405,25 +405,25 @@ Calculate and return the shipping methods totals for either the legacy calculati
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:572](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L572)
+[medusa/src/services/new-totals.ts:572](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L572)
 
 ___
 
 ### getShippingMethodTotalsLegacy
 
-▸ `Protected` **getShippingMethodTotalsLegacy**(`shippingMethod`, `__namedParameters`): `Promise`<`ShippingMethodTotals`\>
+▸ `Protected` **getShippingMethodTotalsLegacy**(`shippingMethod`, `«destructured»`): `Promise`<`ShippingMethodTotals`\>
 
-Calculate and return the shipping method totals legacy using teh tax rate
+Calculate and return the shipping method totals legacy using the tax rate
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `shippingMethod` | `ShippingMethod` |
-| `__namedParameters` | `Object` |
-| `__namedParameters.calculationContext` | `TaxCalculationContext` |
-| `__namedParameters.discounts?` | `Discount`[] |
-| `__namedParameters.taxRate` | `number` |
+| `«destructured»` | `Object` |
+| › `calculationContext` | `TaxCalculationContext` |
+| › `discounts?` | `Discount`[] |
+| › `taxRate` | `number` |
 
 #### Returns
 
@@ -431,13 +431,13 @@ Calculate and return the shipping method totals legacy using teh tax rate
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:729](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L729)
+[medusa/src/services/new-totals.ts:729](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L729)
 
 ___
 
 ### getShippingMethodTotals\_
 
-▸ `Protected` **getShippingMethodTotals_**(`shippingMethod`, `__namedParameters`): `Promise`<`ShippingMethodTotals`\>
+▸ `Protected` **getShippingMethodTotals_**(`shippingMethod`, `«destructured»`): `Promise`<`ShippingMethodTotals`\>
 
 Calculate and return the shipping method totals
 
@@ -446,11 +446,11 @@ Calculate and return the shipping method totals
 | Name | Type |
 | :------ | :------ |
 | `shippingMethod` | `ShippingMethod` |
-| `__namedParameters` | `Object` |
-| `__namedParameters.calculationContext` | `TaxCalculationContext` |
-| `__namedParameters.discounts?` | `Discount`[] |
-| `__namedParameters.includeTax?` | `boolean` |
-| `__namedParameters.taxLines?` | `ShippingMethodTaxLine`[] |
+| `«destructured»` | `Object` |
+| › `calculationContext` | `TaxCalculationContext` |
+| › `discounts?` | `Discount`[] |
+| › `includeTax?` | `boolean` |
+| › `taxLines?` | `ShippingMethodTaxLine`[] |
 
 #### Returns
 
@@ -458,7 +458,7 @@ Calculate and return the shipping method totals
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:646](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/new-totals.ts#L646)
+[medusa/src/services/new-totals.ts:646](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/new-totals.ts#L646)
 
 ___
 
@@ -482,7 +482,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -506,4 +506,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
