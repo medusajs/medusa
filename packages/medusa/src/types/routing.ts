@@ -11,8 +11,3 @@ export interface MedusaRequest extends Request {
 export type MedusaResponse = Response
 
 export type MedusaNextFunction = NextFunction
-
-export type {
-  MiddlewaresConfig,
-  MiddlewareRoute,
-} from "../loaders/helpers/routing/types"

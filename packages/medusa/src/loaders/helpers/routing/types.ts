@@ -1,4 +1,8 @@
-import { NextFunction, Request, Response } from "express"
+import {
+  MedusaNextFunction,
+  MedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 
 /**
  * List of all the supported HTTP methods
@@ -16,7 +20,10 @@ export const HTTP_METHODS = [
 export type RouteVerb = (typeof HTTP_METHODS)[number]
 type MiddlewareVerb = "USE" | "ALL" | RouteVerb
 
-type RouteHandler = (req: Request, res: Response) => Promise<void> | void
+type RouteHandler = (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => Promise<void> | void
 
 export type RouteConfig = {
   method?: RouteVerb
@@ -24,9 +31,9 @@ export type RouteConfig = {
 }
 
 type MiddlewareFunction = (
-  req: Request,
-  res: Response,
-  next: NextFunction
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
 ) => Promise<void> | void
 
 export type MiddlewareRoute = {
