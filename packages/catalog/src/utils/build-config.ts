@@ -27,48 +27,6 @@ function makeSchemaExecutable(inputSchema: string) {
   return makeExecutableSchema({ typeDefs: cleanedSchema })
 }
 
-function retrieveLinkedEntityNameAndAliasFromLinkModule(
-  linkModuleJoinerConfig,
-  relatedModuleJoinerConfig
-) {
-  const linkRelationships = linkModuleJoinerConfig.relationships
-  const linkRelationship = linkRelationships.find((relationship) => {
-    return relatedModuleJoinerConfig.serviceName === relationship.serviceName
-  })
-
-  const foreignKey = linkRelationship.foreignKey
-
-  let alias
-  let entityName
-
-  const linkableKeys = relatedModuleJoinerConfig.linkableKeys
-  entityName = linkableKeys[foreignKey]
-
-  if (!entityName) {
-    throw new Error(
-      `CatalogModule error, unable to retrieve the entity name from the link module configuration for the linkable key ${foreignKey}.`
-    )
-  }
-
-  const moduleAliases = relatedModuleJoinerConfig.alias
-
-  if (moduleAliases) {
-    alias = retrieveAliasForEntity(
-      entityName,
-      relatedModuleJoinerConfig.serviceName,
-      relatedModuleJoinerConfig.alias
-    )
-  }
-
-  if (!alias) {
-    throw new Error(
-      `CatalogModule error, the module ${relatedModuleJoinerConfig.serviceName} has a schema but does not have any alias for the entity ${entityName}. Please add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
-    )
-  }
-
-  return { entityName, alias }
-}
-
 function retrieveAliasForEntity(entityName, serviceName, aliases) {
   aliases = Array.isArray(aliases) ? aliases : [aliases]
 
@@ -234,7 +192,6 @@ function retrieveLinkModuleAndAlias({
           )
         }
 
-        // TODO: look if we can grab that from medusa app
         const executableSchema = makeSchemaExecutable(
           foreignModuleConfig.schema
         )
@@ -298,39 +255,6 @@ function retrieveLinkModuleAndAlias({
 
   return linkModulesMetadata
 }
-
-/*function retrieveLinkModuleAndAlias(
-  entityServiceName,
-  parentEntityServiceName,
-  moduleJoinerConfigs
-) {
-  let relatedModule
-  let alias
-
-  for (const moduleJoinerConfig of moduleJoinerConfigs.filter(
-    (config) => config.isLink
-  )) {
-    const linkPrimary = moduleJoinerConfig.relationships[0]
-    const linkForeign = moduleJoinerConfig.relationships[1]
-
-    if (
-      linkPrimary.serviceName === parentEntityServiceName &&
-      linkForeign.serviceName === entityServiceName
-    ) {
-      relatedModule = moduleJoinerConfig
-      alias = moduleJoinerConfig.alias[0].name
-      alias = Array.isArray(alias) ? alias[0] : alias
-    }
-  }
-
-  if (!relatedModule) {
-    throw new Error(
-      `CatalogModule error, unable to retrieve the link module that correspond to the services ${parentEntityServiceName} - ${entityServiceName}.`
-    )
-  }
-
-  return { relatedModule, alias }
-}*/
 
 function getObjectRepresentationRef(
   entityName,
