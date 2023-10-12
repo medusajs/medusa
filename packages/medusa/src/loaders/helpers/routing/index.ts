@@ -7,7 +7,6 @@ import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
   RouteVerb,
-  OnRouteLoadingHook,
   RouteConfig,
   RouteDescriptor,
 } from "./types"
@@ -30,12 +29,12 @@ const log = ({
 /**
  * File name that is used to indicate that the file is a route file
  */
-const ROUTE_NAME = "route.js"
+const ROUTE_NAME = "route"
 
 /**
  * File name for the global middlewares file
  */
-const MIDDLEWARES_NAME = "middlewares.js"
+const MIDDLEWARES_NAME = "middlewares"
 
 const pathSegmentReplacer = {
   "\\[\\.\\.\\.\\]": () => `*`,
@@ -71,32 +70,28 @@ function calculatePriority(path: string): number {
   return depth + specifity + catchall
 }
 
-export class RoutesLoader<TConfig = Record<string, unknown>> {
+export class RoutesLoader {
   protected routesMap = new Map<string, RouteDescriptor>()
-  private globalMiddlewaresDescriptor: GlobalMiddlewareDescriptor | undefined
+  protected globalMiddlewaresDescriptor: GlobalMiddlewareDescriptor | undefined
 
   protected app: Express
   protected activityId?: string
-  protected onRouteLoading?: OnRouteLoadingHook<TConfig>
   protected rootDir: string
   protected excludes: RegExp[] = [/\.DS_Store/, /(\.ts\.map|\.js\.map|\.d\.ts)/]
 
   constructor({
     app,
     activityId,
-    onRouteLoading,
     rootDir,
     excludes = [],
   }: {
     app: Express
     activityId?: string
-    onRouteLoading?: OnRouteLoadingHook<TConfig>
     rootDir: string
     excludes?: RegExp[]
   }) {
     this.app = app
     this.activityId = activityId
-    this.onRouteLoading = onRouteLoading
     this.rootDir = rootDir
     this.excludes.push(...(excludes ?? []))
   }
@@ -156,6 +151,11 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
       for (const match of matches) {
         if (match?.[1] && !Number.isInteger(match?.[1])) {
           if (parameters.has(match?.[1])) {
+            log({
+              activityId: this.activityId,
+              message: `Duplicate parameters found in route ${route} (${match?.[1]})`,
+            })
+
             throw new Error(
               `Duplicate parameters found in route ${route} (${match?.[1]})`
             )
@@ -290,18 +290,41 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
   }: {
     dirPath: string
   }) {
-    const middlewaresPath = join(dirPath, MIDDLEWARES_NAME)
+    const files = await readdir(dirPath)
+
+    const middlewareFilePath = files
+      .filter((path) => {
+        if (
+          this.excludes.length &&
+          this.excludes.some((exclude) => exclude.test(path))
+        ) {
+          return false
+        }
+
+        return true
+      })
+      .find((file) => {
+        return file.replace(/\.[^/.]+$/, "") === MIDDLEWARES_NAME
+      })
+
+    if (!middlewareFilePath) {
+      log({
+        activityId: this.activityId,
+        message: `No middlewares detected in ${dirPath}`,
+      })
+      return
+    }
+
+    const absolutePath = join(dirPath, middlewareFilePath)
 
     try {
-      await import(middlewaresPath).then((imp) => {
+      await import(absolutePath).then((imp) => {
         const middlewaresConfig = imp.config as MiddlewareConfig | undefined
 
         if (!middlewaresConfig) {
-          console.log("no config", imp)
-
           log({
             activityId: this.activityId,
-            message: `No config found in ${middlewaresPath}.`,
+            message: `No config found in ${absolutePath}.`,
           })
           return
         }
@@ -322,8 +345,6 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
         this.globalMiddlewaresDescriptor = descriptor
       })
     } catch (error) {
-      console.log("An error occured", error)
-
       log({
         activityId: this.activityId,
         message: `No middlewares detected in ${dirPath}`,
@@ -361,7 +382,10 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
               return false
             }
 
-            if (entry.isFile() && entry.name !== ROUTE_NAME) {
+            // Get entry name without extension
+            const name = entry.name.replace(/\.[^/.]+$/, "")
+
+            if (entry.isFile() && name !== ROUTE_NAME) {
               return false
             }
 
@@ -396,8 +420,6 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
         continue
       }
 
-      await this.onRouteLoading?.(descriptor as RouteDescriptor<TConfig>)
-
       const routes = descriptor.config.routes! as RouteConfig[]
 
       for (const route of routes) {
@@ -416,12 +438,10 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
     const descriptor = this.globalMiddlewaresDescriptor
 
     if (!descriptor) {
-      console.log("no middlewares descriptor")
       return
     }
 
     if (!descriptor.config?.routes?.length) {
-      console.log("no middlewares routes")
       return
     }
 
@@ -455,7 +475,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
    * will walk through the rootDir and load all files if they need
    * to be loaded
    */
-  async load<TConfig = unknown>() {
+  async load() {
     performance.mark("file-base-routing-start" + this.rootDir)
 
     let apiExists = true

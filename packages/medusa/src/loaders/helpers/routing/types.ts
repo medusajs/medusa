@@ -52,7 +52,3 @@ export type RouteDescriptor<TConfig = Record<string, unknown>> = {
 export type GlobalMiddlewareDescriptor<TConfig = Record<string, unknown>> = {
   config?: TConfig & MiddlewareConfig
 }
-
-export type OnRouteLoadingHook<TConfig> = (
-  descriptor: RouteDescriptor<TConfig>
-) => Promise<void>
