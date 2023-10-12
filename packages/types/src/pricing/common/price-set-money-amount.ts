@@ -16,6 +16,7 @@ export interface PriceSetMoneyAmountDTO {
   id: string
   title?: string
   price_set?: PriceSetDTO
+  price_set_id?: string
   money_amount?: MoneyAmountDTO
 }
 

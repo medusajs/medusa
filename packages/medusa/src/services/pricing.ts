@@ -648,8 +648,8 @@ class PricingService extends TransactionBaseService {
 
     const variantIdToPriceSetIdMap: Map<string, string> = new Map(
       variantPriceSets.map((variantPriceSet) => [
-        variantPriceSet.variant_id,
         variantPriceSet.price_set_id,
+        variantPriceSet.variant_id,
       ])
     )
 
@@ -663,23 +663,29 @@ class PricingService extends TransactionBaseService {
           price_set_id: priceSetIds,
         },
         {
-          relations: ["money_amount"],
+          relations: ["money_amount", "price_set"],
         }
       )
 
-    const priceSetIdPriceSetMoneyAmountMap = priceSetMoneyAmounts.reduce(
+    const variantIdMoneyAmountMap = priceSetMoneyAmounts.reduce(
       (map, priceSetMoneyAmount) => {
-        if (map.has(priceSetMoneyAmount.price_set)) {
-          map.get(priceSetMoneyAmount.price_set).push(priceSetMoneyAmount)
+        const variantId = variantIdToPriceSetIdMap.get(
+          priceSetMoneyAmount.price_set!.id
+        )
+        if (!variantId) {
+          return map
+        }
+        if (map.has(variantId)) {
+          map.get(variantId).push(priceSetMoneyAmount.money_amount)
         } else {
-          map.set(priceSetMoneyAmount.price_set, [priceSetMoneyAmount])
+          map.set(variantId, [priceSetMoneyAmount.money_amount])
         }
         return map
       },
       new Map()
     )
 
-    return { priceSetIdPriceSetMoneyAmountMap, variantIdToPriceSetIdMap }
+    return variantIdMoneyAmountMap
   }
 
   async setAdminVariantPricing(
@@ -696,7 +702,7 @@ class PricingService extends TransactionBaseService {
 
     const variantIds = variants.map((variant) => variant.id)
 
-    const { priceSetIdPriceSetMoneyAmountMap, variantIdToPriceSetIdMap } =
+    const variantIdMoneyAmountMap =
       await this.getPricingModuleVariantMoneyAmounts(variantIds)
 
     return variants.map((variant) => {
@@ -714,18 +720,9 @@ class PricingService extends TransactionBaseService {
         tax_rates: null,
       }
 
-      const variantPriceSetId = variantIdToPriceSetIdMap.get(variant.id)
+      const variantMoneyAmounts = variantIdMoneyAmountMap.get(variant.id)
 
-      if (variantPriceSetId) {
-        const variantPriceSetMoneyAmounts =
-          priceSetIdPriceSetMoneyAmountMap.get(variantPriceSetId)
-
-        if (variantPriceSetMoneyAmounts?.length) {
-          pricing.prices = variantPriceSetMoneyAmounts.map(
-            (psma) => psma.money_amount
-          )
-        }
-      }
+      pricing.prices = variantMoneyAmounts ?? []
 
       Object.assign(variant, pricing)
       return variant as unknown as PricedVariant
@@ -747,7 +744,7 @@ class PricingService extends TransactionBaseService {
       .map((product) => product.variants.map((variant) => variant.id).flat())
       .flat()
 
-    const { priceSetIdPriceSetMoneyAmountMap, variantIdToPriceSetIdMap } =
+    const variantIdMoneyAmountMap =
       await this.getPricingModuleVariantMoneyAmounts(variantIds)
 
     return products.map((product) => {
@@ -770,20 +767,11 @@ class PricingService extends TransactionBaseService {
           tax_rates: null,
         }
 
-        const variantPriceSetId = variantIdToPriceSetIdMap.get(
+        const variantMoneyAmounts = variantIdMoneyAmountMap.get(
           productVariant.id
         )
 
-        if (variantPriceSetId) {
-          const variantPriceSetMoneyAmounts =
-            priceSetIdPriceSetMoneyAmountMap.get(variantPriceSetId)
-
-          if (variantPriceSetMoneyAmounts?.length) {
-            pricing.prices = variantPriceSetMoneyAmounts.map(
-              (psma) => psma.money_amount
-            )
-          }
-        }
+        pricing.prices = variantMoneyAmounts ?? []
 
         Object.assign(productVariant, pricing)
         return productVariant as unknown as PricedVariant
