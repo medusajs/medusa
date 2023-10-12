@@ -630,21 +630,11 @@ class PricingService extends TransactionBaseService {
     })
   }
 
-  async setAdminProductPricing(
-    products: Product[]
-  ): Promise<(Product | PricedProduct)[]> {
-    if (
-      !this.featureFlagRouter.isFeatureEnabled(
-        PricingIntegrationFeatureFlag.key
-      )
-    ) {
-      return this.setProductPrices(products)
-    }
-
+  private async getPricingModuleVariantMoneyAmounts(
+    variantIds: string[]
+  ): Promise<any> {
     const variables = {
-      variant_id: products
-        .map((product) => product.variants.map((variant) => variant.id).flat())
-        .flat(),
+      variant_id: variantIds,
     }
 
     const query = {
@@ -689,14 +679,95 @@ class PricingService extends TransactionBaseService {
       new Map()
     )
 
+    return { priceSetIdPriceSetMoneyAmountMap, variantIdToPriceSetIdMap }
+  }
+
+  async setAdminVariantPricing(
+    variants: ProductVariant[],
+    context: PriceSelectionContext = {}
+  ): Promise<PricedVariant[]> {
+    if (
+      !this.featureFlagRouter.isFeatureEnabled(
+        PricingIntegrationFeatureFlag.key
+      )
+    ) {
+      return this.setVariantPrices(variants, context)
+    }
+
+    const variantIds = variants.map((variant) => variant.id)
+
+    const { priceSetIdPriceSetMoneyAmountMap, variantIdToPriceSetIdMap } =
+      await this.getPricingModuleVariantMoneyAmounts(variantIds)
+
+    return variants.map((variant) => {
+      const pricing: ProductVariantPricing = {
+        prices: [],
+        original_price: null,
+        calculated_price: null,
+        calculated_price_type: null,
+        original_price_includes_tax: null,
+        calculated_price_includes_tax: null,
+        original_price_incl_tax: null,
+        calculated_price_incl_tax: null,
+        original_tax: null,
+        calculated_tax: null,
+        tax_rates: null,
+      }
+
+      const variantPriceSetId = variantIdToPriceSetIdMap.get(variant.id)
+
+      if (variantPriceSetId) {
+        const variantPriceSetMoneyAmounts =
+          priceSetIdPriceSetMoneyAmountMap.get(variantPriceSetId)
+
+        if (variantPriceSetMoneyAmounts?.length) {
+          pricing.prices = variantPriceSetMoneyAmounts.map(
+            (psma) => psma.money_amount
+          )
+        }
+      }
+
+      Object.assign(variant, pricing)
+      return variant as unknown as PricedVariant
+    })
+  }
+
+  async setAdminProductPricing(
+    products: Product[]
+  ): Promise<(Product | PricedProduct)[]> {
+    if (
+      !this.featureFlagRouter.isFeatureEnabled(
+        PricingIntegrationFeatureFlag.key
+      )
+    ) {
+      return this.setProductPrices(products)
+    }
+
+    const variantIds = products
+      .map((product) => product.variants.map((variant) => variant.id).flat())
+      .flat()
+
+    const { priceSetIdPriceSetMoneyAmountMap, variantIdToPriceSetIdMap } =
+      await this.getPricingModuleVariantMoneyAmounts(variantIds)
+
     return products.map((product) => {
       if (!product?.variants?.length) {
         return product
       }
 
       product.variants.map((productVariant): PricedVariant => {
-        const pricing = {
+        const pricing: ProductVariantPricing = {
           prices: [],
+          original_price: null,
+          calculated_price: null,
+          calculated_price_type: null,
+          original_price_includes_tax: null,
+          calculated_price_includes_tax: null,
+          original_price_incl_tax: null,
+          calculated_price_incl_tax: null,
+          original_tax: null,
+          calculated_tax: null,
+          tax_rates: null,
         }
 
         const variantPriceSetId = variantIdToPriceSetIdMap.get(
