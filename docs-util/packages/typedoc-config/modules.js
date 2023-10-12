@@ -25,7 +25,7 @@ module.exports = ({
               },
               expandMembers: true,
               showCommentsAsHeader: true,
-              parameterStyle: "list",
+              parameterStyle: "component",
               useTsLinkResolution: false,
               showReturnSignature: false,
               sections: {
@@ -39,13 +39,22 @@ module.exports = ({
                 member_signature_sources: false,
                 member_signature_title: false,
                 title_reflectionPath: false,
+                member_sources_definedIn: false,
               },
               reflectionGroups: {
                 Constructors: false,
                 Properties: false,
               },
+              parameterComponent: "ParameterTypes",
+              mdxImports: [
+                `import ParameterTypes from "@site/src/components/ParameterTypes"`,
+              ],
             }
-          : {}),
+          : {
+              sections: {
+                member_sources_definedIn: false,
+              },
+            }),
         ...additionalFormatting,
       }
     }
@@ -73,6 +82,8 @@ module.exports = ({
     hideMembersSymbol: true,
     formatting,
     allReflectionsHaveOwnDocument: true,
+    objectLiteralTypeDeclarationStyle: "component",
+    mdxOutput: true,
     ...extraOptions,
   }
 }

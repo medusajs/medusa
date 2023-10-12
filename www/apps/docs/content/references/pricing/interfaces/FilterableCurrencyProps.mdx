@@ -1,0 +1,45 @@
+---
+displayed_sidebar: pricingReference
+---
+
+# FilterableCurrencyProps
+
+An object used to filter retrieved currencies.
+
+## Hierarchy
+
+- [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableCurrencyProps`](FilterableCurrencyProps.mdx)\>
+
+  ↳ **`FilterableCurrencyProps`**
+
+## Properties
+
+### $and
+
+ `Optional` **$and**: ([`FilterableCurrencyProps`](FilterableCurrencyProps.mdx) \| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableCurrencyProps`](FilterableCurrencyProps.mdx)\>)[]
+
+An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+
+#### Inherited from
+
+[BaseFilterable](BaseFilterable.mdx).[$and](BaseFilterable.mdx#$and)
+
+___
+
+### $or
+
+ `Optional` **$or**: ([`FilterableCurrencyProps`](FilterableCurrencyProps.mdx) \| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableCurrencyProps`](FilterableCurrencyProps.mdx)\>)[]
+
+An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+
+#### Inherited from
+
+[BaseFilterable](BaseFilterable.mdx).[$or](BaseFilterable.mdx#$or)
+
+___
+
+### code
+
+ `Optional` **code**: `string`[]
+
+an array of strings, each being a currency code to filter the currencies.

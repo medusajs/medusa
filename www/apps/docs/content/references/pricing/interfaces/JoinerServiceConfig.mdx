@@ -1,0 +1,53 @@
+---
+displayed_sidebar: pricingReference
+---
+
+# JoinerServiceConfig
+
+## Properties
+
+### alias
+
+ `Optional` **alias**: [`JoinerServiceConfigAlias`](JoinerServiceConfigAlias.mdx) \| [`JoinerServiceConfigAlias`](JoinerServiceConfigAlias.mdx)[]
+
+Property name to use as entrypoint to the service
+
+___
+
+### args
+
+ `Optional` **args**: Record<`string`, `any`\>
+
+Extra arguments to pass to the remoteFetchData callback
+
+___
+
+### extends
+
+ `Optional` **extends**: { `relationship`: [`JoinerRelationship`](../types/JoinerRelationship.mdx) ; `serviceName`: `string`  }[]
+
+___
+
+### fieldAlias
+
+ `Optional` **fieldAlias**: Record<`string`, `string` \| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\>
+
+alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
+
+___
+
+### primaryKeys
+
+ **primaryKeys**: `string`[]
+
+___
+
+### relationships
+
+ `Optional` **relationships**: [`JoinerRelationship`](../types/JoinerRelationship.mdx)[]
+
+___
+
+### serviceName
+
+ **serviceName**: `string`

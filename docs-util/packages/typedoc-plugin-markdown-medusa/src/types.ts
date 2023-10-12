@@ -8,14 +8,14 @@ import {
   TypeParameterReflection,
 } from "typedoc"
 
-export type ParameterStyle = "table" | "list"
+export type ParameterStyle = "table" | "list" | "component"
 
 export type ReflectionTitleOptions = {
   typeParameters?: boolean
   kind?: boolean
 }
 
-export type ObjectLiteralDeclarationStyle = "table" | "list"
+export type ObjectLiteralDeclarationStyle = "table" | "list" | "component"
 
 export type SectionKey =
   | "comment"
@@ -72,6 +72,8 @@ export type FormattingOptionType = {
   parameterStyle?: ParameterStyle
   showReturnSignature?: boolean
   frontmatterData?: Record<string, unknown>
+  parameterComponent?: string
+  mdxImports?: string[]
 }
 
 export type FormattingOptionsType = {
@@ -88,6 +90,15 @@ export type Mapping = {
   isLeaf: boolean
   directory: string
   template: (pageEvent: PageEvent<ContainerReflection>) => string
+}
+
+export type Parameter = {
+  name: string
+  type: string
+  optional?: boolean
+  defaultValue?: string
+  description?: string
+  children?: Parameter[]
 }
 
 export class NavigationItem {

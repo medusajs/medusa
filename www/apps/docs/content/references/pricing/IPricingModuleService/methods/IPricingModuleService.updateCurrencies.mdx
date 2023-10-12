@@ -1,0 +1,47 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/updateCurrencies
+sidebar_label: updateCurrencies
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# updateCurrencies - Pricing Module Reference
+
+This documentation provides a reference to the updateCurrencies method. This belongs to the Pricing Module.
+
+This method is used to update existing currencies with the provided data. In each currency object, the currency code must be provided to identify which currency to update.
+
+## Parameters
+
+<ParameterTypes parameters={[{"name":"data","type":"[`UpdateCurrencyDTO`](../../interfaces/UpdateCurrencyDTO.mdx)[]","description":"An array of objects of type [UpdateCurrencyDTO](../../interfaces/UpdateCurrencyDTO.mdx), each object containing data to be updated in a currency.","optional":false,"defaultValue":"","children":[{"name":"code","type":"`string`","description":"a string indicating the code of the currency to update.","optional":false,"defaultValue":"","children":[]},{"name":"name","type":"`string`","description":"a string indicating the name of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol","type":"`string`","description":"a string indicating the symbol of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol_native","type":"`string`","description":"a string indicating the symbol of the currecy in its native form. This is typically the symbol used when displaying a price.","optional":true,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"An object of type [Context](../../interfaces/Context.mdx) used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+
+## Returns
+
+A promise that resolves to an array of objects of type [CurrencyDTO](../../interfaces/CurrencyDTO.mdx), each object being an updated currency.
+
+<ParameterTypes parameters={[{"name":"code","type":"`string`","description":"a string indicating the code of the currency.","optional":false,"defaultValue":"","children":[]},{"name":"name","type":"`string`","description":"a string indicating the name of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol","type":"`string`","description":"a string indicating the symbol of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol_native","type":"`string`","description":"a string indicating the symbol of the currecy in its native form. This is typically the symbol used when displaying a price.","optional":true,"defaultValue":"","children":[]}]} title={"CurrencyDTO"} />
+
+## Example
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function updateCurrencies () {
+  const pricingService = await initializePricingModule()
+
+  const currencies = await pricingService.updateCurrencies([
+    {
+      code: "USD",
+      symbol: "$",
+    }
+  ])
+
+  // do something with the currencies or return them
+}
+```

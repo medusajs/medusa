@@ -1,10 +1,13 @@
 import * as Handlebars from "handlebars"
 import { Comment, DeclarationReflection } from "typedoc"
-import reflectionFomatter from "../../utils/reflection-formatter"
+import { MarkdownTheme } from "../../theme"
+import reflectionFormatter from "../../utils/reflection-formatter"
 
-export default function () {
+export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper("returns", function (comment: Comment) {
     const md: string[] = []
+    const { parameterStyle, parameterComponent } =
+      theme.getFormattingOptionsForLocation()
 
     if (comment.blockTags?.length) {
       const tags = comment.blockTags
@@ -17,11 +20,16 @@ export default function () {
               commentPart.target instanceof DeclarationReflection
             ) {
               const content = commentPart.target.children?.map((childItem) =>
-                reflectionFomatter(childItem)
+                reflectionFormatter(childItem, parameterStyle, 1)
               )
-              result += `\n\n<details>\n<summary>\n${
-                commentPart.target.name
-              }\n</summary>\n\n${content?.join("\n")}\n\n</details>`
+              result +=
+                parameterStyle === "component"
+                  ? `\n\n<${parameterComponent} parameters={${JSON.stringify(
+                      content
+                    )}} title={"${commentPart.target.name}"} />\n\n`
+                  : `\n\n<details>\n<summary>\n${
+                      commentPart.target.name
+                    }\n</summary>\n\n${content?.join("\n")}\n\n</details>`
             }
           })
           return result

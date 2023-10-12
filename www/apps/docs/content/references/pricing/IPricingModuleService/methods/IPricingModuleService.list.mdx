@@ -1,0 +1,130 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/list
+sidebar_label: list
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# list - Pricing Module Reference
+
+This documentation provides a reference to the list method. This belongs to the Pricing Module.
+
+This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
+
+## Parameters
+
+<ParameterTypes parameters={[{"name":"filters","type":"[`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx)","description":"An object of type [FilterablePriceSetProps](../../interfaces/FilterablePriceSetProps.mdx) that is used to filter the retrieved price lists.","optional":true,"defaultValue":"","children":[{"name":"$and","type":"([`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx)\\>)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","children":[]},{"name":"$or","type":"([`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx)\\>)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`[]","description":"An array of strings, each being an ID to filter price sets.","optional":true,"defaultValue":"","children":[]},{"name":"money_amounts","type":"[`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx)","description":"An object of type [FilterableMoneyAmountProps](../../interfaces/FilterableMoneyAmountProps.mdx) that is used to filter the price sets by their associated money amounts.","optional":true,"defaultValue":"","children":[{"name":"$and","type":"([`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx)\\>)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","children":[]},{"name":"$or","type":"([`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx)\\>)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","children":[]},{"name":"currency_code","type":"`string` \\| `string`[]","description":"A string or an array of strings, each being a currency code to filter money amounts.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`[]","description":"An array of strings, each being an ID to filter money amounts.","optional":true,"defaultValue":"","children":[]}]}]},{"name":"config","type":"[`FindConfig`](../../interfaces/FindConfig.mdx)<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)\\>","description":"An object of type [FindConfig](../../interfaces/FindConfig.mdx) used to configure how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.","optional":true,"defaultValue":"","children":[{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","children":[]},{"name":"select","type":"(`string` \\| keyof `Entity`)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","children":[]},{"name":"skip","type":"`number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","children":[]},{"name":"take","type":"`number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.","optional":true,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"An object of type [Context](../../interfaces/Context.mdx) used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+
+## Returns
+
+A promise that resolves to an array of objects of type [PriceSetDTO](../../interfaces/PriceSetDTO.mdx).
+
+<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"A string indicating the ID of the price set.","optional":false,"defaultValue":"","children":[]},{"name":"money_amounts","type":"[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]","description":"An array of objects of type [MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx), which holds the prices that belong to this price set.","optional":true,"defaultValue":"","children":[{"name":"amount","type":"`number`","description":"A number indicating the amount of this price.","optional":true,"defaultValue":"","children":[]},{"name":"currency","type":"[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)","description":"An object of type [CurrencyDTO](../../interfaces/CurrencyDTO.mdx) that holds the details of the price's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.","optional":true,"defaultValue":"","children":[{"name":"code","type":"`string`","description":"a string indicating the code of the currency.","optional":false,"defaultValue":"","children":[]},{"name":"name","type":"`string`","description":"a string indicating the name of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol","type":"`string`","description":"a string indicating the symbol of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol_native","type":"`string`","description":"a string indicating the symbol of the currecy in its native form. This is typically the symbol used when displaying a price.","optional":true,"defaultValue":"","children":[]}]},{"name":"currency_code","type":"`string`","description":"A string that indicates the currency code of this price.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"A string that indicates the ID of the money amount. A money amount represents a price.","optional":false,"defaultValue":"","children":[]},{"name":"max_quantity","type":"`number`","description":"A number that indicates the maximum quantity required to be purchased for this price to be applied.","optional":true,"defaultValue":"","children":[]},{"name":"min_quantity","type":"`number`","description":"A number that indicates the minimum quantity required to be purchased for this price to be applied.","optional":true,"defaultValue":"","children":[]}]},{"name":"rule_types","type":"[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]","description":"An array of objects of type [RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx), which holds the rule types applied on this price set.","optional":true,"defaultValue":"","children":[{"name":"default_priority","type":"`number`","description":"A number indicating the priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.","optional":false,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"A string indicating the ID of the rule type.","optional":false,"defaultValue":"","children":[]},{"name":"name","type":"`string`","description":"A string indicating the display name of the rule type.","optional":false,"defaultValue":"","children":[]},{"name":"rule_attribute","type":"`string`","description":"A string indicating a unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.","optional":false,"defaultValue":"","children":[]}]}]} title={"PriceSetDTO"} />
+
+## Example
+
+To retrieve a list of price sets using their IDs:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceSets (priceSetIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceSets = await pricingService.list(
+    {
+      id: priceSetIds
+    },
+  )
+
+  // do something with the price sets or return them
+}
+```
+
+To specify relations that should be retrieved within the price sets:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceSets (priceSetIds: string[]) {
+  const pricingService = await initializePricingModule()
+
+  const priceSets = await pricingService.list(
+    {
+      id: priceSetIds
+    },
+    {
+      relations: ["money_amounts"]
+    }
+  )
+
+  // do something with the price sets or return them
+}
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceSets (priceSetIds: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const priceSets = await pricingService.list(
+    {
+      id: priceSetIds
+    },
+    {
+      relations: ["money_amounts"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price sets or return them
+}
+```
+
+You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+  
+async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const priceSets = await pricingService.list(
+    {
+      $and: [
+        {
+          id: priceSetIds
+        },
+        {
+          money_amounts: {
+            id: moneyAmountIds
+          }
+        }
+      ]
+    },
+    {
+      relations: ["money_amounts"],
+      skip,
+      take
+    }
+  )
+
+  // do something with the price sets or return them
+}
+```

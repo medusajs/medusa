@@ -1,0 +1,55 @@
+---
+displayed_sidebar: pricingReference
+---
+
+# MoneyAmountDTO
+
+An object that holds prices, which typically belong to a price set.
+
+## Properties
+
+### amount
+
+ `Optional` **amount**: `number`
+
+A number indicating the amount of this price.
+
+___
+
+### currency
+
+ `Optional` **currency**: [`CurrencyDTO`](CurrencyDTO.mdx)
+
+An object of type [CurrencyDTO](CurrencyDTO.mdx) that holds the details of the price's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.
+
+___
+
+### currency\_code
+
+ `Optional` **currency\_code**: `string`
+
+A string that indicates the currency code of this price.
+
+___
+
+### id
+
+ **id**: `string`
+
+A string that indicates the ID of the money amount. A money amount represents a price.
+
+___
+
+### max\_quantity
+
+ `Optional` **max\_quantity**: `number`
+
+A number that indicates the maximum quantity required to be purchased for this price to be applied.
+
+___
+
+### min\_quantity
+
+ `Optional` **min\_quantity**: `number`
+
+A number that indicates the minimum quantity required to be purchased for this price to be applied.

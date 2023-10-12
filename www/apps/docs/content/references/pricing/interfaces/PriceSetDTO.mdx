@@ -1,0 +1,31 @@
+---
+displayed_sidebar: pricingReference
+---
+
+# PriceSetDTO
+
+An object that holds the details of a retrieved price set.
+
+## Properties
+
+### id
+
+ **id**: `string`
+
+A string indicating the ID of the price set.
+
+___
+
+### money\_amounts
+
+ `Optional` **money\_amounts**: [`MoneyAmountDTO`](MoneyAmountDTO.mdx)[]
+
+An array of objects of type [MoneyAmountDTO](MoneyAmountDTO.mdx), which holds the prices that belong to this price set.
+
+___
+
+### rule\_types
+
+ `Optional` **rule\_types**: [`RuleTypeDTO`](RuleTypeDTO.mdx)[]
+
+An array of objects of type [RuleTypeDTO](RuleTypeDTO.mdx), which holds the rule types applied on this price set.

@@ -1,0 +1,53 @@
+---
+displayed_sidebar: pricingReference
+---
+
+# FilterablePriceSetProps
+
+An object that can be used to specify filters on price sets.
+
+## Hierarchy
+
+- [`BaseFilterable`](BaseFilterable.mdx)<[`FilterablePriceSetProps`](FilterablePriceSetProps.mdx)\>
+
+  ↳ **`FilterablePriceSetProps`**
+
+## Properties
+
+### $and
+
+ `Optional` **$and**: ([`FilterablePriceSetProps`](FilterablePriceSetProps.mdx) \| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterablePriceSetProps`](FilterablePriceSetProps.mdx)\>)[]
+
+An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
+
+#### Inherited from
+
+[BaseFilterable](BaseFilterable.mdx).[$and](BaseFilterable.mdx#$and)
+
+___
+
+### $or
+
+ `Optional` **$or**: ([`FilterablePriceSetProps`](FilterablePriceSetProps.mdx) \| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterablePriceSetProps`](FilterablePriceSetProps.mdx)\>)[]
+
+An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
+
+#### Inherited from
+
+[BaseFilterable](BaseFilterable.mdx).[$or](BaseFilterable.mdx#$or)
+
+___
+
+### id
+
+ `Optional` **id**: `string`[]
+
+An array of strings, each being an ID to filter price sets.
+
+___
+
+### money\_amounts
+
+ `Optional` **money\_amounts**: [`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)
+
+An object of type [FilterableMoneyAmountProps](FilterableMoneyAmountProps.mdx) that is used to filter the price sets by their associated money amounts.

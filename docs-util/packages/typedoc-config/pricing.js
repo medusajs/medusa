@@ -18,7 +18,6 @@ module.exports = modulesConfig({
             text: "Beta",
           },
           slug: "/references/pricing",
-          // hide_table_of_contents: true,
         },
       },
     },

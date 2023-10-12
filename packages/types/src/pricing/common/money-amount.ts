@@ -29,7 +29,7 @@ export interface MoneyAmountDTO {
  * 
  * @prop id - A string that indicates the ID of the money amount.
  * @prop currency_code - A string that indicates the currency code of this money amount.
- * @prop currency - An object of type {@link CurrencyDTO} that holds the details of the money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.
+ * @prop currency - An object of type {@link CreateCurrencyDTO} that holds the details of the money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.
  * @prop amount - A number indicating the amount of this money amount.
  * @prop min_quantity - A number that indicates the minimum quantity required to be purchased for this money amount to be applied.
  * @prop max_quantity - A number that indicates the maximum quantity required to be purchased for this money amount to be applied.

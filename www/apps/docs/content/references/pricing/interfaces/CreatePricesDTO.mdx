@@ -1,0 +1,93 @@
+---
+displayed_sidebar: pricingReference
+---
+
+# CreatePricesDTO
+
+An object used to pass prices data when creating a price set.
+
+## Hierarchy
+
+- [`CreateMoneyAmountDTO`](CreateMoneyAmountDTO.mdx)
+
+  ↳ **`CreatePricesDTO`**
+
+## Properties
+
+### amount
+
+ `Optional` **amount**: `number`
+
+A number indicating the amount of this money amount.
+
+#### Inherited from
+
+[CreateMoneyAmountDTO](CreateMoneyAmountDTO.mdx).[amount](CreateMoneyAmountDTO.mdx#amount)
+
+___
+
+### currency
+
+ `Optional` **currency**: [`CreateCurrencyDTO`](CreateCurrencyDTO.mdx)
+
+An object of type [CreateCurrencyDTO](CreateCurrencyDTO.mdx) that holds the details of the money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.
+
+#### Inherited from
+
+[CreateMoneyAmountDTO](CreateMoneyAmountDTO.mdx).[currency](CreateMoneyAmountDTO.mdx#currency)
+
+___
+
+### currency\_code
+
+ **currency\_code**: `string`
+
+A string that indicates the currency code of this money amount.
+
+#### Inherited from
+
+[CreateMoneyAmountDTO](CreateMoneyAmountDTO.mdx).[currency_code](CreateMoneyAmountDTO.mdx#currency_code)
+
+___
+
+### id
+
+ `Optional` **id**: `string`
+
+A string that indicates the ID of the money amount.
+
+#### Inherited from
+
+[CreateMoneyAmountDTO](CreateMoneyAmountDTO.mdx).[id](CreateMoneyAmountDTO.mdx#id)
+
+___
+
+### max\_quantity
+
+ `Optional` **max\_quantity**: `number`
+
+A number that indicates the maximum quantity required to be purchased for this money amount to be applied.
+
+#### Inherited from
+
+[CreateMoneyAmountDTO](CreateMoneyAmountDTO.mdx).[max_quantity](CreateMoneyAmountDTO.mdx#max_quantity)
+
+___
+
+### min\_quantity
+
+ `Optional` **min\_quantity**: `number`
+
+A number that indicates the minimum quantity required to be purchased for this money amount to be applied.
+
+#### Inherited from
+
+[CreateMoneyAmountDTO](CreateMoneyAmountDTO.mdx).[min_quantity](CreateMoneyAmountDTO.mdx#min_quantity)
+
+___
+
+### rules
+
+ **rules**: Record<`string`, `string`\>
+
+An object whose keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.

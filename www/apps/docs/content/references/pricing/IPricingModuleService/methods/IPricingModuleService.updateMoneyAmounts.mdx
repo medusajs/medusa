@@ -1,0 +1,47 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/updateMoneyAmounts
+sidebar_label: updateMoneyAmounts
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# updateMoneyAmounts - Pricing Module Reference
+
+This documentation provides a reference to the updateMoneyAmounts method. This belongs to the Pricing Module.
+
+This method updates existing money amounts.
+
+## Parameters
+
+<ParameterTypes parameters={[{"name":"data","type":"[`UpdateMoneyAmountDTO`](../../interfaces/UpdateMoneyAmountDTO.mdx)[]","description":"An array of objects of type [UpdateMoneyAmountDTO](../../interfaces/UpdateMoneyAmountDTO.mdx), each holding data to update in a money amount.","optional":false,"defaultValue":"","children":[{"name":"amount","type":"`number`","description":"A number indicating the amount of this money amount.","optional":true,"defaultValue":"","children":[]},{"name":"currency_code","type":"`string`","description":"A string that indicates the currency code of the money amount.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"A string that indicates the ID of the money amount to update.","optional":false,"defaultValue":"","children":[]},{"name":"max_quantity","type":"`number`","description":"A number that indicates the maximum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","children":[]},{"name":"min_quantity","type":"`number`","description":"A number that indicates the minimum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"An object of type [Context](../../interfaces/Context.mdx) used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+
+## Returns
+
+A promise that resolves to an array of objects of type [MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx), each being a updated money amount.
+
+<ParameterTypes parameters={[{"name":"amount","type":"`number`","description":"A number indicating the amount of this price.","optional":true,"defaultValue":"","children":[]},{"name":"currency","type":"[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)","description":"An object of type [CurrencyDTO](../../interfaces/CurrencyDTO.mdx) that holds the details of the price's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.","optional":true,"defaultValue":"","children":[{"name":"code","type":"`string`","description":"a string indicating the code of the currency.","optional":false,"defaultValue":"","children":[]},{"name":"name","type":"`string`","description":"a string indicating the name of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol","type":"`string`","description":"a string indicating the symbol of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol_native","type":"`string`","description":"a string indicating the symbol of the currecy in its native form. This is typically the symbol used when displaying a price.","optional":true,"defaultValue":"","children":[]}]},{"name":"currency_code","type":"`string`","description":"A string that indicates the currency code of this price.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"A string that indicates the ID of the money amount. A money amount represents a price.","optional":false,"defaultValue":"","children":[]},{"name":"max_quantity","type":"`number`","description":"A number that indicates the maximum quantity required to be purchased for this price to be applied.","optional":true,"defaultValue":"","children":[]},{"name":"min_quantity","type":"`number`","description":"A number that indicates the minimum quantity required to be purchased for this price to be applied.","optional":true,"defaultValue":"","children":[]}]} title={"MoneyAmountDTO"} />
+
+## Example
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
+  const pricingService = await initializePricingModule()
+
+  const moneyAmounts = await pricingService.updateMoneyAmounts([
+    {
+      id: moneyAmountId, 
+      amount
+    }
+  ])
+
+  // do something with the money amounts or return them
+}
+```

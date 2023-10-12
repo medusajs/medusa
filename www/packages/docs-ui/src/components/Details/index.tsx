@@ -23,7 +23,16 @@ export const Details = ({
   const [showContent, setShowContent] = useState(openInitial)
   const ref = useRef<HTMLDetailsElement>(null)
 
-  const handleToggle = () => {
+  const handleToggle = (e: React.MouseEvent<HTMLElement>) => {
+    const targetElm = e.target as HTMLElement
+    if (targetElm.tagName.toLowerCase() === "a") {
+      window.location.href =
+        targetElm.getAttribute("href") || window.location.href
+      return
+    }
+    if (targetElm.tagName.toLowerCase() === "code") {
+      return
+    }
     if (open) {
       setShowContent(false)
     } else {

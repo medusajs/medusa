@@ -1,0 +1,24 @@
+---
+displayed_sidebar: pricingReference
+---
+
+# CreatePriceSetDTO
+
+An object of expected properties when creating a price set.
+
+## Properties
+
+### prices
+
+ `Optional` **prices**: [`CreatePricesDTO`](CreatePricesDTO.mdx)[]
+
+An array of objects of type [CreatePricesDTO](CreatePricesDTO.mdx), each being a price to associate with the price set.
+
+___
+
+### rules
+
+ `Optional` **rules**: { `rule_attribute`: `string`  }[]
+
+An array of objects, each object accepts a property `rule_attribute`, whose value is a string indicating the `rule_attribute` value of a rule type. 
+This property is used to specify the rule types associated with the price set.
