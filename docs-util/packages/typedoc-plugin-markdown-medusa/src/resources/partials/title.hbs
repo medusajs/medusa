@@ -4,7 +4,11 @@
 
 {{/ifShowPageTitle}}
 
-{{{getFormattingOption "reflectionDescription"}}}
+{{#with model}}
+
+{{{reflectionDescription}}}
+
+{{/with}}
 
 {{#if (sectionEnabled "title_reflectionPath")}}
 

@@ -2832,6 +2832,7 @@ __metadata:
   dependencies:
     "@types/node": ^16.11.10
     typescript: ^4.6
+    yaml: ^2.3.2
   peerDependencies:
     typedoc: 0.25.x
   languageName: unknown
@@ -2845,6 +2846,7 @@ __metadata:
     copyfiles: ^2.4.1
     handlebars: ^4.7.8
     typescript: ^4.6
+    yaml: ^2.3.2
   peerDependencies:
     typedoc: 0.25.x
   languageName: unknown
@@ -3136,6 +3138,13 @@ __metadata:
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
   checksum: 2286b5e8dbfe22204ab66e2ef5cc9bbb1e55dfc873bbe0d568aa943eb255d131890dfd5bf243637273d31119b870f49c18fcde2c6ffbb7a7a092b870dc90625a
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "yaml@npm:2.3.2"
+  checksum: c2aac464015f037911c5b819475e81e52119e5495e3d43fe7cb82b5a84d59d66a86049dc85d8e90658636c1c04dde177ae196818deaf76c1bda4d34209d5c087
   languageName: node
   linkType: hard
 
