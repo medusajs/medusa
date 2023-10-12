@@ -6,4 +6,4 @@ export * from "./sales-channels"
 export * from "./tax-inclusive-pricing"
 export * from "./utils"
 export * from "./workflows"
-
+export * from "./many-to-many-inventory"
