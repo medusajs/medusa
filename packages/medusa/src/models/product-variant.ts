@@ -46,23 +46,23 @@ export class ProductVariant extends SoftDeletableEntity {
   })
   prices: MoneyAmount[]
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
   sku: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
   barcode: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
   ean: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
   upc: string | null
 
-  @Column({ nullable: true, default: 0 })
+  @Column({ nullable: true, type: "text", default: 0 })
   variant_rank: number | null
 
   @Column({ type: "int" })
@@ -74,17 +74,17 @@ export class ProductVariant extends SoftDeletableEntity {
   @Column({ default: true })
   manage_inventory: boolean
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   hs_code: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   origin_country: string | null
 
-  @Column({ nullable: true })
-  mid_code: string
+  @Column({ nullable: true, type: "text" })
+  mid_code: string | null
 
-  @Column({ nullable: true })
-  material: string
+  @Column({ nullable: true, type: "text" })
+  material: string | null
 
   @Column({ type: "int", nullable: true })
   weight: number | null
