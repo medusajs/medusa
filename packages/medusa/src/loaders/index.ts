@@ -9,7 +9,7 @@ import {
   registerModules,
 } from "@medusajs/modules-sdk"
 import { Express, NextFunction, Request, Response } from "express"
-import { isObject, remoteQueryFetchData } from "../utils"
+import { MedusaAppHelper, isObject, remoteQueryFetchData } from "../utils"
 import databaseLoader, { dataSource } from "./database"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 
@@ -180,21 +180,18 @@ export default async ({
       ),
     }
 
-    const { query, modules, runMigrations, link } = await MedusaApp({
+    const medusaApp = await MedusaApp({
       modulesConfig,
       servicesConfig: joinerConfig,
       remoteFetchData: remoteQueryFetchData(container),
       injectedDependencies,
     })
 
-    await runMigrations(
-      {
-        database: {
-          clientUrl: configModule?.projectConfig?.database_url,
-        },
-      },
-      injectedDependencies
-    )
+    MedusaAppHelper.set(medusaApp)
+
+    const { query, modules, runMigrations } = medusaApp
+
+    await runMigrations()
 
     // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
     // We might decide to do it elsewhere but for now I think it is fine

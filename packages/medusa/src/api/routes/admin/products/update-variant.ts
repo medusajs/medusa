@@ -19,6 +19,7 @@ import { EntityManager } from "typeorm"
 import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
+import { MedusaAppHelper } from "../../../../utils"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -118,7 +119,6 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const pricingModuleService: any = req.scope.resolve("pricingModuleService")
-  // const linkService: any = req.scope.resolve("linkService")
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
   const productVariantService: ProductVariantService = req.scope.resolve(
@@ -126,8 +126,38 @@ export default async (req, res) => {
   )
 
   if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
-    // console.log("badoink!!! - ", linkService)
-    console.log("badoink!!!")
+    const prices = validated.prices
+    // delete validated.prices
+
+    console.log("prices -------- ", prices)
+    const { link } = MedusaAppHelper.getOrThrow()
+    await pricingModuleService.createRuleTypes([
+      {
+        name: "Region ID",
+        rule_attribute: "region_id",
+        default_priority: 1,
+      },
+    ])
+
+    const priceSet = await pricingModuleService.create({
+      rules: [{ rule_attribute: "region_id" }],
+      prices: [
+        {
+          amount: "500",
+          currency_code: "eur",
+          rules: {},
+        },
+      ],
+    })
+
+    const result = await link?.create({
+      productService: {
+        variant_id: variant_id,
+      },
+      pricingService: {
+        price_set_id: priceSet.id,
+      },
+    })
   }
 
   await manager.transaction(async (transactionManager) => {

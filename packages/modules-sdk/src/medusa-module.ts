@@ -378,6 +378,7 @@ export class MedusaModule {
         }
       }
 
+      MedusaModule.setModuleResolution(keyName, resolution)
       MedusaModule.registerModule(keyName, {
         key: keyName,
         hash: hashKey,
