@@ -158,7 +158,6 @@ function retrieveLinkModuleAndAlias(
 ) {
   let relatedModule
   let alias
-  let entityName
 
   for (const moduleJoinerConfig of moduleJoinerConfigs.filter(
     (config) => config.isLink
@@ -354,8 +353,6 @@ function processEntity(
           { objectRepresentationRef }
         )
 
-        linkObjectRepresentationRef.isLink = true
-
         /**
          * Add the schema parent entity as a parent to the link module and configure it.
          */
@@ -455,39 +452,42 @@ function processEntity(
  *
  * @example
  * {
- *   _aliasMap: {
+ *   _schemaPropertiesMap: {
  *     "product": <ProductRef>
  *     "product.variants": <ProductVariantRef>
  *   }
  * }
  */
 function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
-  const aliasMap: SchemaObjectRepresentation["_aliasMap"] = {}
+  const aliasMap: SchemaObjectRepresentation["_schemaPropertiesMap"] = {}
 
-  function recursiveParentAliasMap(
-    current: SchemaObjectEntityRepresentation,
-    child: SchemaObjectEntityRepresentation,
-    parentAlias: string
-  ) {
+  function recursivelyBuildAliasPath(
+    current,
+    alias = "",
+    aliases: string[] = []
+  ): string[] {
     if (current.parents?.length) {
       for (const parentEntity of current.parents) {
-        recursiveParentAliasMap(
-          parentEntity.ref,
-          child,
-          `${parentEntity.ref.alias}.${parentAlias}`
+        aliases.push(
+          ...recursivelyBuildAliasPath(
+            parentEntity.ref,
+            `${parentEntity.targetProp}${alias ? "." + alias : ""}`
+          )
         )
       }
     }
 
-    aliasMap[parentAlias] = child
+    aliases.push(current.alias + (alias ? "." + alias : ""))
+
+    return aliases
   }
 
   for (const entityRepresentation of Object.values(objectRepresentation)) {
-    recursiveParentAliasMap(
-      entityRepresentation,
-      entityRepresentation,
-      entityRepresentation.alias
-    )
+    const aliases = recursivelyBuildAliasPath(entityRepresentation)
+
+    for (const alias of aliases) {
+      aliasMap[alias] = entityRepresentation
+    }
   }
 
   return aliasMap
@@ -523,7 +523,8 @@ export function buildSchemaObjectRepresentation(schema) {
     })
   })
 
-  objectRepresentation._aliasMap = buildAliasMap(objectRepresentation)
+  objectRepresentation._schemaPropertiesMap =
+    buildAliasMap(objectRepresentation)
 
   return objectRepresentation
 }

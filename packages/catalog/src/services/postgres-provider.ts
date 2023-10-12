@@ -178,7 +178,7 @@ export class PostgresProvider {
           }
 
           const parentSchemaObjectRepresentation =
-            this.schemaObjectRepresentation_._aliasMap[parentAlias]
+            this.schemaObjectRepresentation_._schemaPropertiesMap[parentAlias]
 
           if (!parentSchemaObjectRepresentation) {
             return

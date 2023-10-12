@@ -15,7 +15,7 @@ describe("Catalog Query Builder", function () {
   it("Should generate a SQL query with multiple entities, complex WHERE clause and ORDER BY ", async function () {
     const qb = new QueryBuilder({
       schema: {
-        _aliasMap: {
+        _schemaPropertiesMap: {
           product: {
             entity: "Product",
           },

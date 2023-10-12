@@ -34,7 +34,7 @@ export class QueryBuilder {
   }
 
   private getEntity(path): string {
-    return this.schema._aliasMap[path]?.entity ?? ""
+    return this.schema._schemaPropertiesMap[path]?.entity ?? ""
   }
 
   private parseWhere(

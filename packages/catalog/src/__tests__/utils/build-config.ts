@@ -133,21 +133,24 @@ describe("buildSchemaObjectRepresentation", function () {
       product_variant_price_set: expectedProductPricingLink,
       PriceSet: expectedPriceSet,
 
-      _aliasMap: {
+      _schemaPropertiesMap: {
         product: expectedProduct,
-        "product.variant": expectedProductVariant,
+        "product.variants": expectedProductVariant,
         variant: expectedProductVariant,
-        "product.variant.product_variant_price_set.price_set.money_amount":
+        "product.variants.product_variant_price_set.price_set.money_amounts":
           expectedMoneyAmount,
-        "variant.product_variant_price_set.price_set.money_amount":
+        "variant.product_variant_price_set.price_set.money_amounts":
           expectedMoneyAmount,
-        "product_variant_price_set.price_set.money_amount": expectedMoneyAmount,
-        "price_set.money_amount": expectedMoneyAmount,
+        "product_variant_price_set.price_set.money_amounts":
+          expectedMoneyAmount,
+        "price_set.money_amounts": expectedMoneyAmount,
         money_amount: expectedMoneyAmount,
-        "product.variant.product_variant_price_set": expectedProductPricingLink,
+        "product.variants.product_variant_price_set":
+          expectedProductPricingLink,
         "variant.product_variant_price_set": expectedProductPricingLink,
         product_variant_price_set: expectedProductPricingLink,
-        "product.variant.product_variant_price_set.price_set": expectedPriceSet,
+        "product.variants.product_variant_price_set.price_set":
+          expectedPriceSet,
         "variant.product_variant_price_set.price_set": expectedPriceSet,
         "product_variant_price_set.price_set": expectedPriceSet,
         price_set: expectedPriceSet,

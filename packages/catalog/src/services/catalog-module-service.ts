@@ -96,7 +96,7 @@ export default class CatalogModuleService {
     for (const [entityName, schemaEntityObjectRepresentation] of Object.entries(
       schemaObjectRepresentation
     )) {
-      if (entityName === "_aliasMap") {
+      if (entityName === "_schemaPropertiesMap") {
         continue
       }
 

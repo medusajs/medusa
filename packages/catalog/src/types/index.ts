@@ -53,8 +53,6 @@ export type SchemaObjectEntityRepresentation = {
     isList?: boolean
   }[]
 
-  isLink?: boolean
-
   /**
    * The default fields to query for the type/entity
    */
@@ -87,7 +85,7 @@ export type SchemaObjectRepresentation =
       [key: string]: SchemaObjectEntityRepresentation
     }
   | {
-      _aliasMap: { [key: string]: SchemaObjectEntityRepresentation }
+      _schemaPropertiesMap: { [key: string]: SchemaObjectEntityRepresentation }
     }
 
 /**
