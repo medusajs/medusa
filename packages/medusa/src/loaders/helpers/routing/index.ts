@@ -113,7 +113,7 @@ export class RoutesLoader {
     if (!config?.routes) {
       log({
         activityId: this.activityId,
-        message: `No middlewares found. Skipping.`,
+        message: `No middlewares detected. Skipping.`,
       })
 
       return
@@ -151,14 +151,20 @@ export class RoutesLoader {
       for (const match of matches) {
         if (match?.[1] && !Number.isInteger(match?.[1])) {
           if (parameters.has(match?.[1])) {
-            log({
-              activityId: this.activityId,
-              message: `Duplicate parameters found in route ${route} (${match?.[1]})`,
-            })
-
-            throw new Error(
-              `Duplicate parameters found in route ${route} (${match?.[1]})`
-            )
+            /**
+             * If we are not in production we log a warning,
+             * otherwise we throw an error.
+             */
+            if (process.env.NODE_ENV !== "production") {
+              log({
+                activityId: this.activityId,
+                message: `Duplicate parameters found in route ${route} (${match?.[1]})`,
+              })
+            } else {
+              throw new Error(
+                `Duplicate parameters found in route ${route} (${match?.[1]})`
+              )
+            }
           }
 
           parameters.add(match?.[1])
@@ -252,23 +258,12 @@ export class RoutesLoader {
       priority: Infinity,
     }
 
-    // Remove the parentPath from the childPath
     if (parentPath) {
       childPath = childPath.replace(parentPath, "")
     }
 
-    log({
-      activityId: this.activityId,
-      message: `Found file ${childPath} (from ${dirPath.replace(
-        process.cwd(),
-        ""
-      )})`,
-    })
-
-    // File path without the parent path
     descriptor.relativePath = childPath
 
-    // The path on which the route will be registered on
     let routeToParse = childPath
 
     const pathSegments = childPath.split("/")
