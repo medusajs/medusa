@@ -6499,7 +6499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/inventory@workspace:packages/inventory":
+"@medusajs/inventory@workspace:^, @medusajs/inventory@workspace:packages/inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"
   dependencies:
@@ -26516,6 +26516,7 @@ __metadata:
     "@babel/node": ^7.12.10
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
+    "@medusajs/inventory": "workspace:^"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/product": "workspace:^"
     babel-preset-medusa-package: "*"
