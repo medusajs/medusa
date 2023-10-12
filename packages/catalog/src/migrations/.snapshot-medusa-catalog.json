@@ -54,6 +54,15 @@
     },
     {
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "parent_id": {
           "name": "parent_id",
           "type": "text",
@@ -97,12 +106,9 @@
         {
           "keyName": "catalog_relation_pkey",
           "columnNames": [
-            "parent_id",
-            "parent_name",
-            "child_id",
-            "child_name"
+            "id"
           ],
-          "composite": true,
+          "composite": false,
           "primary": true,
           "unique": true
         }

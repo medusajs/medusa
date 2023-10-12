@@ -138,14 +138,13 @@ export class PostgresProvider {
       })
 
       const catalogEntries: Catalog[] = []
-      const catalogRelationEntries: CatalogRelation[] = []
 
       /**
        * Loop through the data and create catalog entries for each entity as well as the
        * catalog relation entries if the entity has parents
        */
 
-      data_.forEach((entityData) => {
+      for (const entityData of data_) {
         /**
          * Clean the entity data to only keep the properties that are defined in the schema
          */
@@ -170,7 +169,7 @@ export class PostgresProvider {
          * the parent catalog entry should be present in the catalog table.
          */
 
-        parentsProperties.forEach((parentProperty) => {
+        for (const parentProperty of parentsProperties) {
           const parentAlias = parentProperty.split(".")[0]
           const parentEntities = entityData[parentAlias] as TData[]
 
@@ -187,24 +186,17 @@ export class PostgresProvider {
             return
           }
 
-          parentEntities.forEach((parentEntity) => {
-            catalogRelationEntries.push(
-              catalogRelationRepository.create({
-                parent_id: parentEntity.id,
-                parent_name: parentSchemaObjectRepresentation.ref.entity,
-                child_id: cleanedEntityData.id,
-                child_name: entity,
-              })
-            )
-          })
-        })
-      })
+          for (const parentEntity of parentEntities) {
+            const parentCatalogEntry = (await catalogRepository.findOne({
+              id: parentEntity.id,
+              name: parentSchemaObjectRepresentation.ref.entity,
+            })) as Catalog
+            catalogEntry.parents.add(parentCatalogEntry)
+          }
+        }
+      }
 
       catalogRepository.persist(catalogEntries)
-
-      if (catalogRelationEntries.length) {
-        catalogRelationRepository.persist(catalogRelationEntries)
-      }
 
       await em.flush()
     })

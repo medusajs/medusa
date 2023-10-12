@@ -1,28 +1,50 @@
-import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
+import {
+  Entity,
+  ManyToOne,
+  OptionalProps,
+  PrimaryKey,
+  Property,
+} from "@mikro-orm/core"
+import Catalog from "./catalog"
 
-import { generateEntityId } from "@medusajs/utils"
+type OptionalRelations =
+  | "parent"
+  | "child"
+  | "parent_id"
+  | "child_id"
+  | "parent_name"
+  | "child_name"
 
 @Entity({ tableName: "catalog_relation" })
 export class CatalogRelation {
-  @PrimaryKey({ columnType: "text" })
+  [OptionalProps]: OptionalRelations
+
+  @PrimaryKey({ columnType: "text", autoincrement: true })
   id!: string
 
   @Property({ columnType: "text" })
-  parent_id: string
+  parent_id?: string
 
   @Property({ columnType: "text" })
-  parent_name: string
+  parent_name?: string
 
   @Property({ columnType: "text" })
-  child_id: string
+  child_id?: string
 
   @Property({ columnType: "text" })
-  child_name: string
+  child_name?: string
 
-  @BeforeCreate()
-  beforeCreate() {
-    this.id = generateEntityId(this.id, "cr_")
-  }
+  @ManyToOne({
+    entity: () => Catalog,
+    onDelete: "cascade",
+  })
+  parent?: Catalog
+
+  @ManyToOne({
+    entity: () => Catalog,
+    onDelete: "cascade",
+  })
+  child?: Catalog
 }
 
 export default CatalogRelation

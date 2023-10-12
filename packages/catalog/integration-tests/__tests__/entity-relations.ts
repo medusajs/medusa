@@ -1,5 +1,5 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { Catalog } from "@models"
+import { Catalog, CatalogRelation } from "@models"
 import { TestDatabase } from "../utils"
 
 const beforeEach_ = async () => {
@@ -45,6 +45,7 @@ describe("Entity", function () {
       await manager.persistAndFlush([catalogEntry, catalogEntry2])
 
       catalogEntry2.parents.add(catalogEntry)
+
       await manager.persistAndFlush(catalogEntry2)
 
       const catalogEntries = await manager.find(Catalog, {}).then((res) => {
@@ -90,13 +91,13 @@ describe("Entity", function () {
 
       manager.clear()
 
-      const updateCatalogEntries = await manager
+      const updatedCatalogEntries = await manager
         .find(Catalog, {})
         .then((res) => {
           return JSON.parse(JSON.stringify(res))
         })
 
-      expect(updateCatalogEntries).toEqual([
+      expect(updatedCatalogEntries).toEqual([
         {
           data: {
             description: "description",
@@ -107,6 +108,14 @@ describe("Entity", function () {
           name: "Product",
         },
       ])
+
+      const catalogRelations = await manager
+        .find(CatalogRelation, {})
+        .then((res) => {
+          return JSON.parse(JSON.stringify(res))
+        })
+
+      expect(catalogRelations).toEqual([])
     })
 
     it("should be able to remove a tuple from the pivot table without deleting the original tuple from catalog", async () => {

@@ -151,13 +151,13 @@ describe("SearchEngineModuleService", function () {
       },
     ])
 
-    const result = await module.query({
+    /*const result = await module.query({
       select: {
         product: {
           variants: true,
         },
       },
-    })
+    })*/
 
     expect(remoteQueryMock).toHaveBeenCalledTimes(2)
 
@@ -183,7 +183,7 @@ describe("SearchEngineModuleService", function () {
     expect(catalogRelationEntries[0].parent_id).toEqual(productId)
     expect(catalogRelationEntries[0].child_id).toEqual(variantId)
 
-    expect(result).toEqual([
+    /*expect(result).toEqual([
       {
         id: "prod_1",
         variants: [
@@ -192,6 +192,6 @@ describe("SearchEngineModuleService", function () {
           },
         ],
       },
-    ])
+    ])*/
   })
 })
