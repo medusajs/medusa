@@ -116,12 +116,37 @@ describe("SearchEngineModuleService", function () {
         return {
           id: productId,
         }
-      } else if (query.variant || query.variants) {
+      } else if (query.variant) {
         return {
           id: variantId,
           product: [
             {
               id: productId,
+            },
+          ],
+        }
+      } else if (query.price_set) {
+        return {
+          id: "price_set_1",
+        }
+      } else if (query.money_amount) {
+        return {
+          id: "money_amount_1",
+          amount: 100,
+          price_set: [
+            {
+              id: "price_set_1",
+            },
+          ],
+        }
+      } else if (query.product_variant_price_set) {
+        return {
+          id: "link_id_1",
+          variant_id: variantId,
+          price_set_id: "price_set_1",
+          variant: [
+            {
+              id: variantId,
             },
           ],
         }
@@ -151,7 +176,39 @@ describe("SearchEngineModuleService", function () {
       },
     ])
 
-    /*const result = await module.query({
+    await eventBus.emit([
+      {
+        eventName: "PriceSet.created",
+        data: {
+          id: "price_set_1",
+        },
+      },
+    ])
+
+    await eventBus.emit([
+      {
+        eventName: "price.created",
+        data: {
+          id: "money_amount_1",
+          price_set: {
+            id: "price_set_1",
+          },
+        },
+      },
+    ])
+
+    await eventBus.emit([
+      {
+        eventName: "LinkProductVariantPriceSet.attached",
+        data: {
+          id: "link_id_1",
+          variant_id: variantId,
+          price_set_id: "price_set_1",
+        },
+      },
+    ])
+
+    const result = await module.query({
       select: {
         product: {
           variants: {
@@ -159,9 +216,9 @@ describe("SearchEngineModuleService", function () {
           },
         },
       },
-    })*/
+    })
 
-    expect(remoteQueryMock).toHaveBeenCalledTimes(2)
+    expect(remoteQueryMock).toHaveBeenCalledTimes(5)
 
     const catalogEntries: Catalog[] = await manager.find(Catalog, {
       id: variantId,
@@ -185,7 +242,7 @@ describe("SearchEngineModuleService", function () {
     expect(catalogRelationEntries[0].parent_id).toEqual(productId)
     expect(catalogRelationEntries[0].child_id).toEqual(variantId)
 
-    /*expect(result).toEqual([
+    expect(result).toEqual([
       {
         id: "prod_1",
         variants: [
@@ -195,6 +252,6 @@ describe("SearchEngineModuleService", function () {
           },
         ],
       },
-    ])*/
+    ])
   })
 })

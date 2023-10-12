@@ -122,7 +122,8 @@ export class PostgresProvider {
 
       const data_ = Array.isArray(data) ? data : [data]
 
-      const entityProperties: string[] = []
+      // Always keep the id in the entity properties
+      const entityProperties: string[] = ["id"]
       const parentsProperties: string[] = []
 
       /**
