@@ -126,10 +126,9 @@ export default async (req, res) => {
   )
 
   if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
-    const prices = validated.prices
-    // delete validated.prices
+    const prices = validated.prices || []
+    delete validated.prices
 
-    console.log("prices -------- ", prices)
     const { link } = MedusaAppHelper.getOrThrow()
     await pricingModuleService.createRuleTypes([
       {

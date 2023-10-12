@@ -1,8 +1,8 @@
 import { ProductTypes, SalesChannelTypes, WorkflowTypes } from "@medusajs/types"
 import {
   FeatureFlagUtils,
-  kebabCase,
   ShippingProfileUtils,
+  kebabCase,
 } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 

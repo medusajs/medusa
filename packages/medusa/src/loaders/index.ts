@@ -187,6 +187,8 @@ export default async ({
       injectedDependencies,
     })
 
+    container.register("medusaApp", asValue(medusaApp))
+
     MedusaAppHelper.set(medusaApp)
 
     const { query, modules, runMigrations } = medusaApp

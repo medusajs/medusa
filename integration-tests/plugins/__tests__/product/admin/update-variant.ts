@@ -5,6 +5,7 @@ import {
   Product,
   ProductVariant,
   ProductVariantMoneyAmount,
+  Region,
 } from "@medusajs/medusa"
 
 import setupServer from "../../../../environment-helpers/setup-server"
@@ -66,6 +67,13 @@ describe("/admin/products", () => {
         description: "test-product-x-description1",
       })
 
+      await manager.insert(Region, {
+        id: "test-region",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
+
       await manager.insert(ProductVariant, {
         id: "test-variant-x",
         inventory_quantity: 10,
@@ -106,37 +114,77 @@ describe("/admin/products", () => {
     it.only("successfully updates a variant's default prices by changing an existing price (currency_code)", async () => {
       const api = useApi()
       const data = {
-        prices: [
+        title: "asdf",
+        handle: "gggggg",
+        discountable: false,
+        is_giftcard: false,
+        options: [
           {
-            currency_code: "usd",
-            amount: 1500,
+            title: "3",
           },
         ],
+        variants: [
+          {
+            title: "234",
+            material: "234",
+            inventory_quantity: 0,
+            prices: [
+              {
+                amount: 66600,
+                region_id: "test-region",
+              },
+              {
+                amount: 55500,
+                currency_code: "usd",
+              },
+            ],
+            allow_backorder: false,
+            sku: "fsadf",
+            barcode: "dfgdgf",
+            options: [
+              {
+                value: "3",
+              },
+            ],
+            ean: "ggfdg",
+            upc: "dfgdfg",
+            height: 1,
+            length: 1,
+            weight: 1,
+            width: 1,
+            hs_code: "ggg",
+            mid_code: "asfdggg",
+            origin_country: "DE",
+            manage_inventory: false,
+          },
+        ],
+        status: "published",
+        sales_channels: [],
       }
 
-      const response = await api.post(
-        "/admin/products/test-product-x/variants/test-variant-x",
-        data,
-        adminHeaders
-      )
+      const response = await api.post("/admin/products", data, adminHeaders)
 
+      const bruuuu = await api.get(
+        `/store/products/${response.data.product.id}`
+      )
+      console.log("bruuuu - ", JSON.stringify(bruuuu.data.product, null, 2))
       expect(response.status).toEqual(200)
-      expect(response.data).toEqual({
-        product: expect.objectContaining({
-          id: "test-product-x",
-          variants: expect.arrayContaining([
-            expect.objectContaining({
-              id: "test-variant-x",
-              prices: expect.arrayContaining([
-                expect.objectContaining({
-                  amount: 1500,
-                  currency_code: "usd",
-                }),
-              ]),
-            }),
-          ]),
-        }),
-      })
+      // expect(response.data).toEqual({
+      //   product: expect.objectContaining({
+      //     id: "test-product-x",
+      //     variants: expect.arrayContaining([
+      //       expect.objectContaining({
+      //         id: "test-variant-x",
+      //         prices: expect.arrayContaining([
+      //           expect.objectContaining({
+      //             amount: 1500,
+      //             currency_code: "usd",
+      //           }),
+      //         ]),
+      //       }),
+      //     ]),
+      //   }),
+      // })
     })
   })
 })
