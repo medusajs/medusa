@@ -1,4 +1,4 @@
-import { InventoryItemDTO, ProductTypes } from "@medusajs/types"
+import { InventoryItemDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 export async function attachInventoryItems({
@@ -7,12 +7,11 @@ export async function attachInventoryItems({
   data,
 }: WorkflowArguments<{
   inventoryItems: {
-    variant: ProductTypes.ProductVariantDTO
+    tag: string
     inventoryItem: InventoryItemDTO
   }[]
 }>) {
   const { manager } = context
-
   const productVariantInventoryService = container
     .resolve("productVariantInventoryService")
     .withTransaction(manager)
@@ -21,12 +20,10 @@ export async function attachInventoryItems({
     return
   }
 
-  const inventoryData = data.inventoryItems.map(
-    ({ variant, inventoryItem }) => ({
-      variantId: variant.id,
-      inventoryItemId: inventoryItem.id,
-    })
-  )
+  const inventoryData = data.inventoryItems.map(({ tag, inventoryItem }) => ({
+    variantId: tag,
+    inventoryItemId: inventoryItem.id,
+  }))
 
   return await productVariantInventoryService.attachInventoryItem(inventoryData)
 }
