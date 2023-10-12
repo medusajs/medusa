@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from "express"
+
 /**
  * List of all the supported HTTP methods
  */
@@ -14,15 +16,23 @@ export const HTTP_METHODS = [
 export type RouteVerb = (typeof HTTP_METHODS)[number]
 type MiddlewareVerb = "USE" | "ALL" | RouteVerb
 
+type RouteHandler = (req: Request, res: Response) => Promise<void> | void
+
 export type RouteConfig = {
   method?: RouteVerb
-  handler: (...args: unknown[]) => Promise<unknown>
+  handler: RouteHandler
 }
+
+type MiddlewareFunction = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<void> | void
 
 export type MiddlewareRouteConfig = {
   method?: MiddlewareVerb | MiddlewareVerb[]
   matcher: string
-  middlewares: ((...args: unknown[]) => Promise<unknown>)[]
+  middlewares: MiddlewareFunction[]
 }
 
 export type MiddlewareConfig = {

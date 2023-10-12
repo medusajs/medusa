@@ -11,7 +11,7 @@ function middleware(req: Request, res: Response, next: NextFunction) {
 export const config: MiddlewareConfig = {
   routes: [
     {
-      path: "/customers/*",
+      matcher: "/customers/*",
       middlewares: [middleware],
     },
   ],
