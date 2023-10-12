@@ -1,4 +1,5 @@
 import {
+  CatalogTypes,
   IEventBusModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
@@ -22,7 +23,9 @@ type InjectedDependencies = {
   ) => Promise<any>
 }
 
-export default class CatalogModuleService {
+export default class CatalogModuleService
+  implements CatalogTypes.ICatalogModuleService
+{
   private readonly container_: InjectedDependencies
   private readonly moduleOptions_: CatalogModuleOptions
 
@@ -73,17 +76,19 @@ export default class CatalogModuleService {
     }
   }
 
-  /**
-   * TODO: should we introduce module service hook called after all modules are initialized?
-   * here we are depending on potentially all other modules being initialized
-   */
-  async afterModulesInit() {
-    this.buildSchemaObjectRepresentation_()
-    this.registerListeners()
+  __hooks = {
+    onApplicationStart(this: CatalogModuleService) {
+      return this.onApplicationStart()
+    },
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
+  }
+
+  async onApplicationStart() {
+    this.buildSchemaObjectRepresentation_()
+    this.registerListeners()
   }
 
   async query(...args) {

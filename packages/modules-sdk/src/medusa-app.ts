@@ -14,8 +14,8 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModulesSdkUtils,
   isObject,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
@@ -211,11 +211,15 @@ export async function MedusaApp(
     return await remoteQuery.query(query, variables)
   }
 
-  return {
-    modules: allModules,
-    link,
-    query,
-    entitiesMap: schema.getTypeMap(),
-    notFound,
+  try {
+    return {
+      modules: allModules,
+      link,
+      query,
+      entitiesMap: schema.getTypeMap(),
+      notFound,
+    }
+  } finally {
+    MedusaModule.onApplicationStart()
   }
 }

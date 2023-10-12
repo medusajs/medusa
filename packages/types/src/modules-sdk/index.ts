@@ -260,3 +260,11 @@ export type ModuleServiceInitializeCustomDataLayerOptions = {
     [key: string]: Constructor<RepositoryService>
   }
 }
+
+export interface IModuleService {
+  __joinerConfig?(): ModuleJoinerConfig
+
+  __hooks?: {
+    onApplicationStart?: () => Promise<void>
+  }
+}

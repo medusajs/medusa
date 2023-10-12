@@ -12,9 +12,15 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
   alias: [
     {
       name: "product_variant_price_set",
+      args: {
+        entity: "LinkProductVariantPriceSet",
+      },
     },
     {
       name: "product_variant_price_sets",
+      args: {
+        entity: "LinkProductVariantPriceSet",
+      },
     },
   ],
   primaryKeys: ["id", "variant_id", "price_set_id"],

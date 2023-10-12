@@ -2,9 +2,9 @@ import {
   cleanGraphQLSchema,
   getFieldsAndRelations,
   MedusaModule,
+  ModuleJoinerRelationship,
 } from "@medusajs/modules-sdk"
 import { ObjectTypeDefinitionNode } from "graphql/index"
-import { toCamelCase } from "@medusajs/utils"
 import { JoinerServiceConfigAlias, ModuleJoinerConfig } from "@medusajs/types"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import {
@@ -119,16 +119,12 @@ function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
       }
     }
 
-    if (moduleAliases) {
+    if (relatedModule && moduleAliases) {
       alias = retrieveAliasForEntity(
         entityName,
         moduleJoinerConfig.serviceName,
         moduleJoinerConfig.alias
       )
-
-      if (alias) {
-        relatedModule = moduleJoinerConfig
-      }
     }
 
     if (relatedModule) {
@@ -151,7 +147,159 @@ function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
   return { relatedModule, alias }
 }
 
-function retrieveLinkModuleAndAlias(
+// TODO: rename util
+function retrieveLinkModuleAndAlias({
+  primaryEntity,
+  primaryModuleConfig,
+  foreignEntity,
+  foreignModuleConfig,
+  moduleJoinerConfigs,
+}: {
+  primaryEntity: string
+  primaryModuleConfig: ModuleJoinerConfig
+  foreignEntity: string
+  foreignModuleConfig: ModuleJoinerConfig
+  moduleJoinerConfigs: ModuleJoinerConfig[]
+}): {
+  entityName: string
+  alias: string
+  linkModuleConfig: ModuleJoinerConfig
+  intermediateEntityNames: string[]
+}[] {
+  const linkModulesMetadata: {
+    entityName: string
+    alias: string
+    linkModuleConfig: ModuleJoinerConfig
+    intermediateEntityNames: string[]
+  }[] = []
+
+  for (const linkModuleJoinerConfig of moduleJoinerConfigs.filter(
+    (config) => config.isLink
+  )) {
+    const linkPrimary =
+      linkModuleJoinerConfig.relationships![0] as ModuleJoinerRelationship
+    const linkForeign =
+      linkModuleJoinerConfig.relationships![1] as ModuleJoinerRelationship
+
+    if (
+      linkPrimary.serviceName === primaryModuleConfig.serviceName &&
+      linkForeign.serviceName === foreignModuleConfig.serviceName
+    ) {
+      const primaryEntityLinkableKey = linkPrimary.foreignKey
+      const isTheForeignKeyEntityEqualPrimaryEntity =
+        primaryModuleConfig.linkableKeys?.[primaryEntityLinkableKey] ===
+        primaryEntity
+
+      const foreignEntityLinkableKey = linkForeign.foreignKey
+      const isTheForeignKeyEntityEqualForeignEntity =
+        foreignModuleConfig.linkableKeys?.[foreignEntityLinkableKey] ===
+        foreignEntity
+
+      const linkName = linkModuleJoinerConfig.extends?.find((extend) => {
+        return (
+          extend.serviceName === primaryModuleConfig.serviceName &&
+          extend.relationship.primaryKey === primaryEntityLinkableKey
+        )
+      })?.relationship.serviceName
+
+      if (!linkName) {
+        throw new Error(
+          `CatalogModule error, unable to retrieve the link module name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the extend relationship service name is set correctly`
+        )
+      }
+
+      if (!linkModuleJoinerConfig.alias?.[0]?.args?.entity) {
+        throw new Error(
+          `CatalogModule error, unable to retrieve the link module entity name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the link module alias has an entity property in the args.`
+        )
+      }
+
+      if (
+        isTheForeignKeyEntityEqualPrimaryEntity &&
+        isTheForeignKeyEntityEqualForeignEntity
+      ) {
+        linkModulesMetadata.push({
+          entityName: linkModuleJoinerConfig.alias[0].args.entity,
+          alias: linkModuleJoinerConfig.alias[0].name,
+          linkModuleConfig: linkModuleJoinerConfig,
+          intermediateEntityNames: [],
+        })
+      } else {
+        const intermediateEntityName =
+          foreignModuleConfig.linkableKeys![foreignEntityLinkableKey]
+
+        if (!foreignModuleConfig.schema) {
+          throw new Error(
+            `CatalogModule error, unable to retrieve the intermediate entity name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the foreign module ${foreignModuleConfig.serviceName} has a schema.`
+          )
+        }
+
+        // TODO: look if we can grab that from medusa app
+        const executableSchema = makeSchemaExecutable(
+          foreignModuleConfig.schema
+        )
+        const entitiesMap = executableSchema.getTypeMap()
+
+        let intermediateEntities: string[] = []
+        let foundCount = 0
+
+        const isForeignEntityChildOfIntermediateEntity = (
+          entityName
+        ): boolean => {
+          for (const entityType of Object.values(entitiesMap)) {
+            if (
+              entityType.astNode?.kind === "ObjectTypeDefinition" &&
+              entityType.astNode?.fields?.some((field) => {
+                return (field.type as any)?.type?.name?.value === entityName
+              })
+            ) {
+              if (entityType.name === intermediateEntityName) {
+                ++foundCount
+                return true
+              } else {
+                const test = isForeignEntityChildOfIntermediateEntity(
+                  entityType.name
+                )
+                if (test) {
+                  intermediateEntities.push(entityType.name)
+                }
+              }
+            }
+          }
+
+          return false
+        }
+
+        isForeignEntityChildOfIntermediateEntity(foreignEntity)
+
+        if (foundCount !== 1) {
+          throw new Error(
+            `CatalogModule error, unable to retrieve the intermediate entities for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName} between ${foreignEntity} and ${intermediateEntityName}. Multiple paths or no path found. Please check your schema in ${foreignModuleConfig.serviceName}`
+          )
+        }
+
+        intermediateEntities.push(intermediateEntityName!)
+
+        linkModulesMetadata.push({
+          entityName: linkModuleJoinerConfig.alias[0].args.entity,
+          alias: linkModuleJoinerConfig.alias[0].name,
+          linkModuleConfig: linkModuleJoinerConfig,
+          intermediateEntityNames: intermediateEntities,
+        })
+      }
+    }
+  }
+
+  if (!linkModulesMetadata.length) {
+    throw new Error(
+      `CatalogModule error, unable to retrieve the link module that correspond to the entities ${primaryEntity} - ${foreignEntity}.`
+    )
+  }
+
+  return linkModulesMetadata
+}
+
+/*function retrieveLinkModuleAndAlias(
   entityServiceName,
   parentEntityServiceName,
   moduleJoinerConfigs
@@ -182,7 +330,7 @@ function retrieveLinkModuleAndAlias(
   }
 
   return { relatedModule, alias }
-}
+}*/
 
 function getObjectRepresentationRef(
   entityName,
@@ -341,106 +489,124 @@ function processEntity(
          * find the link module that join them.
          */
 
-        const { relatedModule: linkModule, alias: linkAlias } =
-          retrieveLinkModuleAndAlias(
-            currentObjectRepresentationRef.moduleConfig.serviceName,
-            parentModuleConfig.serviceName,
-            moduleJoinerConfigs
-          )
+        const linkModuleMetadatas = retrieveLinkModuleAndAlias({
+          primaryEntity: parentObjectRepresentationRef.entity,
+          primaryModuleConfig: parentModuleConfig,
+          foreignEntity: currentObjectRepresentationRef.entity,
+          foreignModuleConfig: currentEntityModule,
+          moduleJoinerConfigs,
+        })
 
-        const linkObjectRepresentationRef = getObjectRepresentationRef(
-          linkAlias,
-          { objectRepresentationRef }
-        )
-
-        /**
-         * Add the schema parent entity as a parent to the link module and configure it.
-         */
-
-        linkObjectRepresentationRef.parents = [
-          {
-            ref: parentObjectRepresentationRef,
-            targetProp: linkAlias,
-          },
-        ]
-        linkObjectRepresentationRef.alias = linkAlias
-        linkObjectRepresentationRef.listeners = [
-          `${toCamelCase(linkAlias)}.attached`,
-          `${toCamelCase(linkAlias)}.detached`,
-        ]
-        linkObjectRepresentationRef.moduleConfig = linkModule
-        linkObjectRepresentationRef.fields = [
-          ...linkModule.relationships
-            .map(
-              (relationship) =>
-                [
-                  parentModuleConfig.serviceName,
-                  currentEntityModule.serviceName,
-                ].includes(relationship.serviceName) && relationship.foreignKey
-            )
-            .filter(Boolean),
-          parentObjectRepresentationRef.alias + ".id",
-        ]
-
-        /**
-         * If the current entity is not the entity that is used to join the link module and the parent entity
-         * then we need to add the new entity that join them and then add the link as its parent
-         * before setting the new entity as the true parent of the current entity.
-         */
-
-        //TODO: re look at this just to be sure
-        let linkedEntityObjectRepresentationRef
-        if (currentObjectRepresentationRef.alias !== linkAlias) {
-          const linkedEntityNameAndAlias =
-            retrieveLinkedEntityNameAndAliasFromLinkModule(
-              linkModule,
-              currentEntityModule
-            )
-
-          const {
-            relatedModule: linkedEntityModule,
-            alias: linkedEntityAlias,
-          } = retrieveModuleAndAlias(
-            linkedEntityNameAndAlias.entityName,
-            moduleJoinerConfigs
-          )
-
-          linkedEntityObjectRepresentationRef = getObjectRepresentationRef(
-            linkedEntityNameAndAlias.entityName,
+        for (const linkModuleMetadata of linkModuleMetadatas) {
+          const linkObjectRepresentationRef = getObjectRepresentationRef(
+            linkModuleMetadata.entityName,
             { objectRepresentationRef }
           )
 
-          linkedEntityObjectRepresentationRef.parents.push({
-            ref: linkObjectRepresentationRef,
-            targetProp: linkedEntityNameAndAlias.alias,
-            isList: true,
+          /**
+           * Add the schema parent entity as a parent to the link module and configure it.
+           */
+
+          linkObjectRepresentationRef.parents = [
+            {
+              ref: parentObjectRepresentationRef,
+              targetProp: linkModuleMetadata.alias,
+            },
+          ]
+          linkObjectRepresentationRef.alias = linkModuleMetadata.alias
+          linkObjectRepresentationRef.listeners = [
+            `${linkModuleMetadata.entityName}.attached`,
+            `${linkModuleMetadata.entityName}.detached`,
+          ]
+          linkObjectRepresentationRef.moduleConfig =
+            linkModuleMetadata.linkModuleConfig
+
+          linkObjectRepresentationRef.fields = [
+            ...linkModuleMetadata.linkModuleConfig
+              .relationships!.map(
+                (relationship) =>
+                  [
+                    parentModuleConfig.serviceName,
+                    currentEntityModule.serviceName,
+                  ].includes(relationship.serviceName) &&
+                  relationship.foreignKey
+              )
+              .filter((v): v is string => Boolean(v)),
+            parentObjectRepresentationRef.alias + ".id",
+          ]
+
+          /**
+           * If the current entity is not the entity that is used to join the link module and the parent entity
+           * then we need to add the new entity that join them and then add the link as its parent
+           * before setting the new entity as the true parent of the current entity.
+           */
+
+          for (
+            let i = linkModuleMetadata.intermediateEntityNames.length - 1;
+            i >= 0;
+            --i
+          ) {
+            const intermediateEntityName =
+              linkModuleMetadata.intermediateEntityNames[i]
+            const parentIntermediateEntityRef =
+              i === linkModuleMetadata.intermediateEntityNames.length - 1
+                ? linkObjectRepresentationRef
+                : objectRepresentationRef[
+                    linkModuleMetadata.intermediateEntityNames[i + 1]
+                  ]
+
+            const {
+              relatedModule: intermediateEntityModule,
+              alias: intermediateEntityAlias,
+            } = retrieveModuleAndAlias(
+              intermediateEntityName,
+              moduleJoinerConfigs
+            )
+
+            const intermediateEntityObjectRepresentationRef =
+              getObjectRepresentationRef(intermediateEntityName, {
+                objectRepresentationRef,
+              })
+
+            intermediateEntityObjectRepresentationRef.parents.push({
+              ref: parentIntermediateEntityRef,
+              targetProp: intermediateEntityAlias,
+              isList: true, // TODO: check if it is a list in retrieveLinkModuleAndAlias and return the intermediate entity names + isList for each
+            })
+
+            intermediateEntityObjectRepresentationRef.alias =
+              intermediateEntityAlias
+            intermediateEntityObjectRepresentationRef.listeners = [
+              intermediateEntityName + ".created",
+              intermediateEntityName + ".updated",
+            ]
+            intermediateEntityObjectRepresentationRef.moduleConfig =
+              intermediateEntityModule
+            intermediateEntityObjectRepresentationRef.fields = [
+              "id",
+              linkObjectRepresentationRef.alias + ".id",
+            ]
+          }
+
+          let currentParentIntermediateRef = linkObjectRepresentationRef
+          if (linkModuleMetadata.intermediateEntityNames.length) {
+            currentParentIntermediateRef =
+              objectRepresentationRef[
+                linkModuleMetadata.intermediateEntityNames[0]
+              ]
+          }
+
+          currentObjectRepresentationRef.parents.push({
+            ref: currentParentIntermediateRef,
+            inSchemaRef: parentObjectRepresentationRef,
+            targetProp: entityTargetPropertyNameInParent,
+            isList: isEntityListInParent,
           })
 
-          linkedEntityObjectRepresentationRef.alias =
-            linkedEntityNameAndAlias.alias
-          linkedEntityObjectRepresentationRef.listeners = [
-            toCamelCase(linkedEntityAlias) + ".created",
-            toCamelCase(linkedEntityAlias) + ".updated",
-          ]
-          linkedEntityObjectRepresentationRef.moduleConfig = linkedEntityModule
-          linkedEntityObjectRepresentationRef.fields = [
-            "id",
-            linkObjectRepresentationRef.alias + ".id",
-          ]
+          currentObjectRepresentationRef.fields.push(
+            currentParentIntermediateRef.alias + ".id"
+          )
         }
-
-        currentObjectRepresentationRef.parents.push({
-          ref:
-            linkedEntityObjectRepresentationRef || linkObjectRepresentationRef,
-          inSchemaRef: parentObjectRepresentationRef,
-          targetProp: entityTargetPropertyNameInParent,
-          isList: isEntityListInParent,
-        })
-
-        currentObjectRepresentationRef.fields.push(
-          (linkedEntityObjectRepresentationRef || linkObjectRepresentationRef)
-            .alias + ".id"
-        )
       }
     }
   }
@@ -464,20 +630,49 @@ function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
   function recursivelyBuildAliasPath(
     current,
     alias = "",
-    aliases: string[] = []
-  ): string[] {
+    aliases: { alias: string; shortCutOf?: string }[] = []
+  ): { alias: string; shortCutOf?: string }[] {
     if (current.parents?.length) {
       for (const parentEntity of current.parents) {
-        aliases.push(
-          ...recursivelyBuildAliasPath(
-            parentEntity.ref,
+        /**
+         * Here we build the alias from child to parent to get it as parent to child
+         */
+
+        const _aliases = recursivelyBuildAliasPath(
+          parentEntity.ref,
+          `${parentEntity.targetProp}${alias ? "." + alias : ""}`
+        ).map((alias) => ({ alias: alias.alias }))
+
+        aliases.push(..._aliases)
+
+        /**
+         * Now if there is a inSchemaRef it means that we had inferred a link module
+         * and we want to get the alias path as it would be in the schema provided
+         * and it become the short cut path of the full path above
+         */
+
+        if (parentEntity.inSchemaRef) {
+          const shortCutOf = _aliases.map((a) => a.alias)[0]
+          const _aliasesShortCut = recursivelyBuildAliasPath(
+            parentEntity.inSchemaRef,
             `${parentEntity.targetProp}${alias ? "." + alias : ""}`
-          )
-        )
+          ).map((alias_) => {
+            return {
+              alias: alias_.alias,
+              // It has to be the same entry point
+              shortCutOf:
+                shortCutOf.split(".")[0] === alias_.alias.split(".")[0]
+                  ? shortCutOf
+                  : undefined,
+            }
+          })
+
+          aliases.push(..._aliasesShortCut)
+        }
       }
     }
 
-    aliases.push(current.alias + (alias ? "." + alias : ""))
+    aliases.push({ alias: current.alias + (alias ? "." + alias : "") })
 
     return aliases
   }
@@ -486,7 +681,13 @@ function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
     const aliases = recursivelyBuildAliasPath(entityRepresentation)
 
     for (const alias of aliases) {
-      aliasMap[alias] = entityRepresentation
+      aliasMap[alias.alias] = {
+        ref: entityRepresentation,
+      }
+
+      if (alias.shortCutOf) {
+        aliasMap[alias.alias]["shortCutOf"] = alias.shortCutOf
+      }
     }
   }
 

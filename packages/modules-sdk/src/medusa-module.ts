@@ -1,5 +1,6 @@
 import {
   ExternalModuleDeclaration,
+  IModuleService,
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
@@ -49,10 +50,26 @@ type ModuleAlias = {
 }
 
 export class MedusaModule {
-  private static instances_: Map<string, any> = new Map()
+  private static instances_: Map<string, { [key: string]: IModuleService }> =
+    new Map()
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
   private static joinerConfig_: Map<string, ModuleJoinerConfig> = new Map()
+
+  public static onApplicationStart(): void {
+    for (const instances of MedusaModule.instances_.values()) {
+      for (const instance of Object.values(instances)) {
+        if (instance?.__hooks) {
+          instance.__hooks?.onApplicationStart
+            ?.bind(instance)()
+            .catch(() => {
+              // The module should handle this and log it
+              return void 0
+            })
+        }
+      }
+    }
+  }
 
   public static getLoadedModules(
     aliases?: Map<string, string>
@@ -161,7 +178,7 @@ export class MedusaModule {
     )
 
     if (MedusaModule.instances_.has(hashKey)) {
-      return MedusaModule.instances_.get(hashKey)
+      return { [moduleKey]: MedusaModule.instances_.get(hashKey) as T }
     }
 
     if (MedusaModule.loading_.has(hashKey)) {
@@ -267,7 +284,7 @@ export class MedusaModule {
     const hashKey = simpleHash(stringifyCircular({ moduleKey, declaration }))
 
     if (MedusaModule.instances_.has(hashKey)) {
-      return MedusaModule.instances_.get(hashKey)
+      return { [moduleKey]: MedusaModule.instances_.get(hashKey) }
     }
 
     if (MedusaModule.loading_.has(hashKey)) {

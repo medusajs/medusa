@@ -82,7 +82,7 @@ describe("buildSchemaObjectRepresentation", function () {
     }
 
     const expectedProductPricingLink = {
-      entity: "product_variant_price_set",
+      entity: "LinkProductVariantPriceSet",
       parents: [
         {
           ref: expectedProductVariant,
@@ -91,8 +91,8 @@ describe("buildSchemaObjectRepresentation", function () {
       ],
       alias: "product_variant_price_set",
       listeners: [
-        "productVariantPriceSet.attached",
-        "productVariantPriceSet.detached",
+        "LinkProductVariantPriceSet.attached",
+        "LinkProductVariantPriceSet.detached",
       ],
       fields: ["variant_id", "price_set_id", "variant.id"],
     }
@@ -107,7 +107,7 @@ describe("buildSchemaObjectRepresentation", function () {
         },
       ],
       alias: "price_set",
-      listeners: ["priceSet.created", "priceSet.updated"],
+      listeners: ["PriceSet.created", "PriceSet.updated"],
       fields: ["id", "product_variant_price_set.id"],
     }
 
@@ -130,30 +130,63 @@ describe("buildSchemaObjectRepresentation", function () {
       Product: expectedProduct,
       ProductVariant: expectedProductVariant,
       MoneyAmount: expectedMoneyAmount,
-      product_variant_price_set: expectedProductPricingLink,
+      LinkProductVariantPriceSet: expectedProductPricingLink,
       PriceSet: expectedPriceSet,
 
       _schemaPropertiesMap: {
-        product: expectedProduct,
-        "product.variants": expectedProductVariant,
-        variant: expectedProductVariant,
-        "product.variants.product_variant_price_set.price_set.money_amounts":
-          expectedMoneyAmount,
-        "variant.product_variant_price_set.price_set.money_amounts":
-          expectedMoneyAmount,
-        "product_variant_price_set.price_set.money_amounts":
-          expectedMoneyAmount,
-        "price_set.money_amounts": expectedMoneyAmount,
-        money_amount: expectedMoneyAmount,
-        "product.variants.product_variant_price_set":
-          expectedProductPricingLink,
-        "variant.product_variant_price_set": expectedProductPricingLink,
-        product_variant_price_set: expectedProductPricingLink,
-        "product.variants.product_variant_price_set.price_set":
-          expectedPriceSet,
-        "variant.product_variant_price_set.price_set": expectedPriceSet,
-        "product_variant_price_set.price_set": expectedPriceSet,
-        price_set: expectedPriceSet,
+        product: {
+          ref: expectedProduct,
+        },
+        "product.variants": {
+          ref: expectedProductVariant,
+        },
+        variant: {
+          ref: expectedProductVariant,
+        },
+        "product.variants.product_variant_price_set.price_set.money_amounts": {
+          ref: expectedMoneyAmount,
+        },
+        "variant.product_variant_price_set.price_set.money_amounts": {
+          ref: expectedMoneyAmount,
+        },
+        "product_variant_price_set.price_set.money_amounts": {
+          ref: expectedMoneyAmount,
+        },
+        "price_set.money_amounts": {
+          ref: expectedMoneyAmount,
+        },
+        "product.variants.money_amounts": {
+          shortCutOf:
+            "product.variants.product_variant_price_set.price_set.money_amounts",
+          ref: expectedMoneyAmount,
+        },
+        "variant.money_amounts": {
+          ref: expectedMoneyAmount,
+        },
+        money_amount: {
+          ref: expectedMoneyAmount,
+        },
+        "product.variants.product_variant_price_set": {
+          ref: expectedProductPricingLink,
+        },
+        "variant.product_variant_price_set": {
+          ref: expectedProductPricingLink,
+        },
+        product_variant_price_set: {
+          ref: expectedProductPricingLink,
+        },
+        "product.variants.product_variant_price_set.price_set": {
+          ref: expectedPriceSet,
+        },
+        "variant.product_variant_price_set.price_set": {
+          ref: expectedPriceSet,
+        },
+        "product_variant_price_set.price_set": {
+          ref: expectedPriceSet,
+        },
+        price_set: {
+          ref: expectedPriceSet,
+        },
       },
     })
   })

@@ -2,6 +2,7 @@ import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
 import { Currency, MoneyAmount, PriceSet } from "@models"
+import schema from "./schema"
 
 export const LinkableKeys = {
   money_amount_id: MoneyAmount.name,
@@ -22,6 +23,7 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRICING,
   primaryKeys: ["id", "currency_code"],
   linkableKeys: LinkableKeys,
+  schema,
   alias: [
     {
       name: ["price_set", "price_sets"],

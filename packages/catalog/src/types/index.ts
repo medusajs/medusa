@@ -85,7 +85,12 @@ export type SchemaObjectRepresentation =
       [key: string]: SchemaObjectEntityRepresentation
     }
   | {
-      _schemaPropertiesMap: { [key: string]: SchemaObjectEntityRepresentation }
+      _schemaPropertiesMap: {
+        [key: string]: {
+          shortCutOf?: string
+          ref: SchemaObjectEntityRepresentation
+        }
+      }
     }
 
 /**

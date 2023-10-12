@@ -32,12 +32,10 @@ import {
 } from "./common"
 
 import { FindConfig } from "../common"
-import { ModuleJoinerConfig } from "../modules-sdk"
+import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 
-export interface IPricingModuleService {
-  __joinerConfig(): ModuleJoinerConfig
-
+export interface IPricingModuleService extends IModuleService {
   /**
    * Calculates prices based on the provided filters and context.
    *
