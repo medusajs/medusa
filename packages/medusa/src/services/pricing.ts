@@ -707,7 +707,7 @@ class PricingService extends TransactionBaseService {
 
     return variants.map((variant) => {
       const pricing: ProductVariantPricing = {
-        prices: [],
+        prices: variantIdMoneyAmountMap.get(variant.id) ?? [],
         original_price: null,
         calculated_price: null,
         calculated_price_type: null,
@@ -719,10 +719,6 @@ class PricingService extends TransactionBaseService {
         calculated_tax: null,
         tax_rates: null,
       }
-
-      const variantMoneyAmounts = variantIdMoneyAmountMap.get(variant.id)
-
-      pricing.prices = variantMoneyAmounts ?? []
 
       Object.assign(variant, pricing)
       return variant as unknown as PricedVariant
@@ -754,7 +750,7 @@ class PricingService extends TransactionBaseService {
 
       product.variants.map((productVariant): PricedVariant => {
         const pricing: ProductVariantPricing = {
-          prices: [],
+          prices: variantIdMoneyAmountMap.get(productVariant.id) ?? [],
           original_price: null,
           calculated_price: null,
           calculated_price_type: null,
@@ -766,12 +762,6 @@ class PricingService extends TransactionBaseService {
           calculated_tax: null,
           tax_rates: null,
         }
-
-        const variantMoneyAmounts = variantIdMoneyAmountMap.get(
-          productVariant.id
-        )
-
-        pricing.prices = variantMoneyAmounts ?? []
 
         Object.assign(productVariant, pricing)
         return productVariant as unknown as PricedVariant
