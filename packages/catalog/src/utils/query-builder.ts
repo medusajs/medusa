@@ -34,7 +34,11 @@ export class QueryBuilder {
   }
 
   private getEntity(path): string {
-    return this.schema._schemaPropertiesMap[path]?.entity ?? ""
+    if (!this.schema._schemaPropertiesMap[path]?.entity) {
+      throw new Error(`Could not find entity for path: ${path}`)
+    }
+
+    return this.schema._schemaPropertiesMap[path].entity
   }
 
   private parseWhere(
