@@ -154,7 +154,9 @@ describe("SearchEngineModuleService", function () {
     const result = await module.query({
       select: {
         product: {
-          variants: true,
+          variants: {
+            money_amounts: true,
+          },
         },
       },
     })
@@ -189,6 +191,7 @@ describe("SearchEngineModuleService", function () {
         variants: [
           {
             id: "var_1",
+            money_amounts: [],
           },
         ],
       },

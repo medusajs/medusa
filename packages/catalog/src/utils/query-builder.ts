@@ -5,6 +5,7 @@ import {
   QueryFormat,
   QueryOptions,
   SchemaObjectRepresentation,
+  SchemaPropertiesMap,
   Select,
 } from "../types"
 
@@ -33,12 +34,12 @@ export class QueryBuilder {
     return Object.keys(structure ?? {}).filter((key) => key !== "entity")
   }
 
-  private getEntity(path): string {
-    if (!this.schema._schemaPropertiesMap[path]?.entity) {
+  private getEntity(path): SchemaPropertiesMap[0] {
+    if (!this.schema._schemaPropertiesMap[path]) {
       throw new Error(`Could not find entity for path: ${path}`)
     }
 
-    return this.schema._schemaPropertiesMap[path].entity
+    return this.schema._schemaPropertiesMap[path]
   }
 
   private parseWhere(
@@ -125,33 +126,85 @@ export class QueryBuilder {
   ): string[] {
     const currentAliasPath = [...aliasPath, parentProperty].join(".")
 
-    const entity = this.getEntity(currentAliasPath)
-    const alias = entity.toLowerCase() + level
+    const entities = this.getEntity(currentAliasPath)
 
-    aliasMapping[currentAliasPath] = alias
+    const mainEntity = entities.ref.entity
+    const mainAlias = mainEntity.toLowerCase() + level
 
-    let queryParts: string[] = []
-    const children = this.getStructureKeys(structure)
+    const allEntities: any[] = []
+    if (!entities.shortCutOf) {
+      allEntities.push({
+        entity: mainEntity,
+        parEntity: parentEntity,
+        parAlias: parentAlias,
+        alias: mainAlias,
+      })
+    } else {
+      const intermediateAlias = entities.shortCutOf.split(".")
 
-    if (level > 0) {
-      queryParts.push(`LEFT JOIN LATERAL (
-      SELECT ${alias}.* 
-      FROM catalog AS ${alias}
-      JOIN catalog_relation AS ${alias}_ref
-        ON ${alias}.id = ${alias}_ref.child_id
-        AND ${alias}_ref.child_name = '${entity}'
-        AND ${alias}_ref.parent_name = '${parentEntity}'
-        AND ${alias}_ref.parent_id = ${parentAlias}.id
-    ) ${alias} ON TRUE`)
+      for (let i = intermediateAlias.length - 1, x = 0; i >= 0; i--, x++) {
+        const intermediateEntity = this.getEntity(intermediateAlias.join("."))
+
+        intermediateAlias.pop()
+
+        if (intermediateEntity.ref.entity === parentEntity) {
+          break
+        }
+
+        const parentIntermediateEntity = this.getEntity(
+          intermediateAlias.join(".")
+        )
+
+        const alias =
+          intermediateEntity.ref.entity.toLowerCase() + level + "_" + x
+        const parAlias =
+          parentIntermediateEntity.ref.entity === parentEntity
+            ? parentAlias
+            : parentIntermediateEntity.ref.entity.toLowerCase() +
+              level +
+              "_" +
+              (x + 1)
+
+        if (x === 0) {
+          aliasMapping[currentAliasPath] = alias
+        }
+
+        allEntities.unshift({
+          entity: intermediateEntity.ref.entity,
+          parEntity: parentIntermediateEntity.ref.entity,
+          parAlias,
+          alias,
+        })
+      }
     }
 
+    let queryParts: string[] = []
+    for (const join of allEntities) {
+      const { alias, entity, parEntity, parAlias } = join
+
+      aliasMapping[currentAliasPath] = alias
+
+      if (level > 0) {
+        queryParts.push(`LEFT JOIN LATERAL (
+          SELECT ${alias}.* 
+          FROM catalog AS ${alias}
+          JOIN catalog_relation AS ${alias}_ref
+            ON ${alias}.id = ${alias}_ref.child_id
+            AND ${alias}_ref.child_name = '${entity}'
+            AND ${alias}_ref.parent_name = '${parEntity}'
+            AND ${alias}_ref.parent_id = ${parAlias}.id
+        ) ${alias} ON TRUE`)
+      }
+    }
+
+    const children = this.getStructureKeys(structure)
     for (const child of children) {
       const childStructure = structure[child] as Select
       queryParts = queryParts.concat(
         this.buildQueryParts(
           childStructure,
-          alias,
-          entity,
+          mainAlias,
+          mainEntity,
           child,
           aliasPath.concat(parentProperty),
           level + 1,
@@ -166,13 +219,12 @@ export class QueryBuilder {
   private buildSelectParts(
     structure: Select,
     parentProperty: string,
+    aliasMapping: { [path: string]: string },
     aliasPath: string[] = [],
-    selectParts: object = {},
-    level = 0
+    selectParts: object = {}
   ): object {
     const currentAliasPath = [...aliasPath, parentProperty].join(".")
-    const entity = this.getEntity(currentAliasPath)
-    const alias = entity.toLowerCase() + level
+    const alias = aliasMapping[currentAliasPath]
 
     selectParts[currentAliasPath] = `${alias}.data`
     selectParts[currentAliasPath + ".id"] = `${alias}.id`
@@ -185,9 +237,9 @@ export class QueryBuilder {
       this.buildSelectParts(
         childStructure,
         child,
+        aliasMapping,
         aliasPath.concat(parentProperty),
-        selectParts,
-        level + 1
+        selectParts
       )
     }
 
@@ -240,11 +292,9 @@ export class QueryBuilder {
 
     const rootKey = this.getStructureKeys(structure)[0]
     const rootStructure = structure[rootKey] as Select
-    const entity = this.getEntity(rootKey)
+    const entity = this.getEntity(rootKey).ref.entity
     const rootEntity = entity.toLowerCase()
     const aliasMapping: { [path: string]: string } = {}
-
-    const selectParts = this.buildSelectParts(rootStructure, rootKey)
 
     const joinParts = this.buildQueryParts(
       rootStructure,
@@ -253,6 +303,12 @@ export class QueryBuilder {
       rootKey,
       [],
       0,
+      aliasMapping
+    )
+
+    const selectParts = this.buildSelectParts(
+      rootStructure,
+      rootKey,
       aliasMapping
     )
 
