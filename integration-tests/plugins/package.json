@@ -11,6 +11,7 @@
   "dependencies": {
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/event-bus-local": "workspace:*",
+    "@medusajs/inventory": "workspace:^",
     "@medusajs/medusa": "workspace:*",
     "@medusajs/product": "workspace:^",
     "faker": "^5.5.3",
