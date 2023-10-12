@@ -1565,9 +1565,10 @@ const PriceListProductPricesForm = ({
                       <span>
                         {t(
                           "price-list-product-prices-form-column-regions-price-label",
-                          "Price {{name}}",
+                          "Price {{name}} ({{code}})",
                           {
                             name: region.name,
+                            code: region.currency_code.toUpperCase(),
                           }
                         )}
                       </span>
