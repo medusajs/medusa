@@ -1,35 +1,34 @@
 import {
-  ExternalModuleDeclaration,
-  InternalModuleDeclaration,
   MedusaApp,
   ModulesDefinition,
   moduleLoader,
   registerModules,
 } from "@medusajs/modules-sdk"
 import { Express, NextFunction, Request, Response } from "express"
-import { isObject, remoteQueryFetchData } from "../utils"
+
+import { remoteQueryFetchData } from "../utils"
 import databaseLoader, { dataSource } from "./database"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 
-import { ConfigModule } from "@medusajs/types"
+import { Connection } from "typeorm"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
 import requestIp from "request-ip"
-import { Connection } from "typeorm"
-import { joinerConfig } from "../joiner-config"
 import modulesConfig from "../modules-config"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
-import loadConfig from "./config"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import IsolatePricingDomainFeatureFlag from "./feature-flags/isolate-pricing-domain"
 import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
 import Logger from "./logger"
+import { joinerConfig } from "../joiner-config"
+import loadConfig from "./config"
+import { mergeModulesConfig } from "../utils/merge-modules-config"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
@@ -44,34 +43,6 @@ type Options = {
   directory: string
   expressApp: Express
   isTest: boolean
-}
-
-/**
- * Merge the modules config from the medusa-config file with the modules config from medusa package
- * @param modules
- * @param medusaInternalModulesConfig
- */
-function mergeModulesConfig(
-  modules: ConfigModule["modules"],
-  medusaInternalModulesConfig
-) {
-  for (const [moduleName, moduleConfig] of Object.entries(modules as any)) {
-    const moduleDefinition = ModulesDefinition[moduleName]
-
-    if (moduleDefinition?.isLegacy) {
-      continue
-    }
-
-    const isModuleEnabled = moduleConfig === true || isObject(moduleConfig)
-
-    if (!isModuleEnabled) {
-      delete medusaInternalModulesConfig[moduleName]
-    } else {
-      medusaInternalModulesConfig[moduleName] = moduleConfig as Partial<
-        InternalModuleDeclaration | ExternalModuleDeclaration
-      >
-    }
-  }
 }
 
 export default async ({
@@ -191,7 +162,7 @@ export default async ({
 
     const { query, modules, runMigrations } = medusaApp
 
-    await runMigrations()
+    // await runMigrations()
 
     // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
     // We might decide to do it elsewhere but for now I think it is fine

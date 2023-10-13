@@ -13,6 +13,7 @@
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/inventory": "workspace:^",
     "@medusajs/medusa": "workspace:*",
+    "@medusajs/modules-sdk": "workspace:^",
     "@medusajs/pricing": "workspace:^",
     "@medusajs/product": "workspace:^",
     "faker": "^5.5.3",

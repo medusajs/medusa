@@ -133,6 +133,7 @@ module.exports = {
     await dbDataSource.runMigrations()
 
     instance.setDb(dbDataSource)
+
     return dbDataSource
   },
   useDb: function () {
