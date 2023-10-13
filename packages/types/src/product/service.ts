@@ -41,12 +41,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a product by its ID
    * 
-   * @param {string} productId - A string indicating the ID of the product to retrieve. 
+   * @param {string} productId - The ID of the product to retrieve. 
    * @param {FindConfig<ProductDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO>} A promise that resolves to an object of type {@link ProductDTO} which is the retrieved product.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO>} The retrieved product.
    * 
    * @example
    * A simple example that retrieves a product by its ID:
@@ -95,12 +95,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
    * 
-   * @param {FilterableProductProps} filters - An object of type {@link FilterableProductProps} that is used to filter the retrieved products.
+   * @param {FilterableProductProps} filters - The filters to apply on the retrieved products.
    * @param {FindConfig<ProductDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the products are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the products are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO[]>} A promise that resolves to an array of objects of type {@link ProductDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO[]>} The list of products.
    * 
    * @example
    * To retrieve a list of products using their IDs:
@@ -201,13 +201,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of products along with the total count of available products satisfying the provided filters.
    * 
-   * @param {FilterableProductProps} filters - An object of type {@link FilterableProductProps} that is used to filter the retrieved products.
+   * @param {FilterableProductProps} filters - The filters to apply on the retrieved products.
    * @param {FindConfig<ProductDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the products are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the products are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO[]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link ProductDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO[]>} The list of products along with the total count.
    * 
    * @example
    * To retrieve a list of products using their IDs:
@@ -308,12 +307,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a tag by its ID.
    * 
-   * @param {string} tagId - A string indicating the ID of the tag to retrieve. 
+   * @param {string} tagId - The ID of the tag to retrieve. 
    * @param {FindConfig<ProductTagDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product tag is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product tag is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product tag.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTagDTO>} A promise that resolves to an object of type {@link ProductTagDTO}
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO>} The retrieved product tag.
    * 
    * @example
    * A simple example that retrieves a product tag by its ID:
@@ -359,12 +358,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of tags based on optional filters and configuration.
    * 
-   * @param {FilterableProductTagProps} filters - An object of type {@link FilterableProductTagProps} that is used to filter the retrieved product tags.
+   * @param {FilterableProductTagProps} filters - The filters applied on the retrieved product tags.
    * @param {FindConfig<ProductTagDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product tags are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product tags are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product tag.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTagDTO[]>} A promise that resolves to an array of objects of type {@link ProductTagDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO[]>} The list of product tags.
    * 
    * @example
    * To retrieve a list of product tags using their IDs:
@@ -465,13 +464,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product tags along with the total count of available product tags satisfying the provided filters.
    * 
-   * @param {FilterableProductTagProps} filters - An object of type {@link FilterableProductTagProps} that is used to filter the retrieved product tags.
+   * @param {FilterableProductTagProps} filters - The filters applied on the retrieved product tags.
    * @param {FindConfig<ProductTagDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product tags are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product tags are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product tag.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[ProductTagDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link ProductTagDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[ProductTagDTO[], number]>} The list of product tags along with the total count.
    * 
    * @example
    * To retrieve a list of product tags using their IDs:
@@ -572,9 +570,9 @@ export interface IProductModuleService {
   /**
    * This method is used to create product tags.
    * 
-   * @param {CreateProductTagDTO[]} data - An array of objects of type {@link CreateProductTagDTO}, each object holds data necessary to create a product tag.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTagDTO[]>} A promise that resolves to an array of objects of type {@link ProductTagDTO}, each being a created product tag.
+   * @param {CreateProductTagDTO[]} data - The product tags to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO[]>} The list of product tags.
    * 
    * @example
    * import { 
@@ -601,9 +599,9 @@ export interface IProductModuleService {
   /**
    * This method is used to update existing product tags.
    * 
-   * @param {UpdateProductTagDTO[]} data - An array of objects of type {@link UpdateProductTagDTO}, each object holds data to update in a product tag. 
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTagDTO[]>} A promise that resolves to an array of objects of type {@link ProductTagDTO}, each being an updated product tag.
+   * @param {UpdateProductTagDTO[]} data - The product tags to be updated, each having the attributes that should be updated in a product tag.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTagDTO[]>} The list of updated product tags.
    * 
    * @example
    * import { 
@@ -631,9 +629,9 @@ export interface IProductModuleService {
   /**
    * This method is used to delete product tags by their ID.
    * 
-   * @param {string[]} productTagIds - An array of strings, each string indicating the ID of a product tag to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves when the product tags are successfully deleted.
+   * @param {string[]} productTagIds - The IDs of the product tags to be deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the product tags are successfully deleted.
    * 
    * @example
    * import { 
@@ -652,12 +650,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a product type by its ID.
    * 
-   * @param {string} typeId - A string indicating the ID of the product type to retrieve.
+   * @param {string} typeId - The ID of the product type to retrieve.
    * @param {FindConfig<ProductTypeDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product type is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product type is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTypeDTO>} A promise that resolves to an object of type {@link ProductTypeDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTypeDTO>} The retrieved product type.
    * 
    * @example
    * A simple example that retrieves a product type by its ID:
@@ -703,12 +701,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product types based on optional filters and configuration.
    * 
-   * @param {FilterableProductTypeProps} filters - An object of type {@link FilterableProductTypeProps} that is used to filter the retrieved product types.
+   * @param {FilterableProductTypeProps} filters - The filters to apply on the retrieved product types.
    * @param {FindConfig<ProductTypeDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product types are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product types are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTypeDTO[]>} A promise that resolves to an array of objects of type {@link ProductTypeDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTypeDTO[]>} The list of product types.
    * 
    * @example
    * To retrieve a list of product types using their IDs:
@@ -809,13 +807,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product types along with the total count of available product types satisfying the provided filters.
    * 
-   * @param {FilterableProductTypeProps} filters - An object of type {@link FilterableProductTypeProps} that is used to filter the retrieved product types.
+   * @param {FilterableProductTypeProps} filters - The filters to be applied on the retrieved product type.
    * @param {FindConfig<ProductTypeDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product types are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product types are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[ProductTypeDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link ProductTypeDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[ProductTypeDTO[], number]>} The list of product types along with their total count.
    * 
    * @example
    * To retrieve a list of product types using their IDs:
@@ -916,9 +913,9 @@ export interface IProductModuleService {
   /**
    * This method is used to create a product type.
    * 
-   * @param {CreateProductTypeDTO[]} data - An array of objects of type {@link CreateProductTypeDTO}, each holding the data necessary to create a product type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @return {Promise<ProductTypeDTO[]>} A promise that resolves to an array of objects of type {@link ProductTypeDTO}, each object being a created product type.
+   * @param {CreateProductTypeDTO[]} data - The product types to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @return {Promise<ProductTypeDTO[]>} The list of created product types.
    * 
    * @example
    * import { 
@@ -945,9 +942,9 @@ export interface IProductModuleService {
   /**
    * This method is used to update a product type
    * 
-   * @param {UpdateProductTypeDTO[]} data - An array of objects of type {@link UpdateProductTypeDTO}, each being the data to update in a product type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductTypeDTO[]>} A promise that resolves to an array of objects of type {@link ProductTypeDTO}, each being the updated product type.
+   * @param {UpdateProductTypeDTO[]} data - The product types to be updated, each having the attributes that should be updated in the product type.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductTypeDTO[]>} The list of updated product types.
    * 
    * @example
    * import { 
@@ -975,9 +972,9 @@ export interface IProductModuleService {
   /**
    * This method is used to delete a product type.
    * 
-   * @param {string[]} productTypeIds - An array of strings, each being the ID of a product type to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves when the product types are successfully deleted.
+   * @param {string[]} productTypeIds - The IDs of the product types to be deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the product types are successfully deleted.
    * 
    * @example
    * import { 
@@ -995,12 +992,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a product option by its ID.
    * 
-   * @param {string} optionId - A string indicating the ID of the product option to retrieve.
+   * @param {string} optionId - The ID of the product option to retrieve.
    * @param {FindConfig<ProductOptionDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product option is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product option is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product option.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductOptionDTO>} A promise that resolves to an object of type {@link ProductOptionDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionDTO>} The retrieved product option.
    * 
    * @example
    * A simple example that retrieves a product option by its ID:
@@ -1046,12 +1043,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product options based on optional filters and configuration.
    * 
-   * @param {FilterableProductOptionProps} filters - An object of type {@link FilterableProductOptionProps} that is used to filter the retrieved product options.
+   * @param {FilterableProductOptionProps} filters - The filters applied on the retrieved product options.
    * @param {FindConfig<ProductOptionDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product options are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product options are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product option.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductOptionDTO[]>} A promise that resolves to an array of objects of type {@link ProductOptionDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionDTO[]>} The list of product options.
    * 
    * @example
    * To retrieve a list of product options using their IDs:
@@ -1152,13 +1149,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product options along with the total count of available product options satisfying the provided filters.
    * 
-   * @param {FilterableProductOptionProps} filters - An object of type {@link FilterableProductOptionProps} that is used to filter the retrieved product options.
+   * @param {FilterableProductOptionProps} filters - The filters applied on the retrieved product options.
    * @param {FindConfig<ProductOptionDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product options are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product options are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product option.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[ProductOptionDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link ProductOptionDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[ProductOptionDTO[], number]>} The list of product options along with the total count.
    * 
    * @example
    * To retrieve a list of product options using their IDs:
@@ -1259,9 +1255,9 @@ export interface IProductModuleService {
   /**
    * This method is used to create product options.
    * 
-   * @param {CreateProductOptionDTO[]} data - An array of objects of type {@link CreateProductOptionDTO}, each holding the necessary data to create a product option.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {ProductOptionDTO[]} A promise that resolves to an array of objects of type {@link ProductOptionDTO}, each being a created product option.
+   * @param {CreateProductOptionDTO[]} data - The product options to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {ProductOptionDTO[]} The list of created product options.
    * 
    * @example
    * import { 
@@ -1289,9 +1285,9 @@ export interface IProductModuleService {
   /**
    * This method is used to update existing product options.
    * 
-   * @param {UpdateProductOptionDTO[]} data - An array of objects of type {@link UpdateProductOptionDTO}, each holding the data to update in a product option.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {ProductOptionDTO[]} A promise that resolves to an array of objects of type {@link ProductOptionDTO}, each being an updated product option.
+   * @param {UpdateProductOptionDTO[]} data - The product options to be updated, each holding the attributes that should be updated in the product option.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {ProductOptionDTO[]} The list of updated product options.
    * 
    * @example
    * import { 
@@ -1319,9 +1315,9 @@ export interface IProductModuleService {
   /**
    * This method is used to delete a product option.
    * 
-   * @param {string[]} productOptionIds - An array of strings, each being an ID of a product option to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves when the product options are successfully deleted.
+   * @param {string[]} productOptionIds - The IDs of the product options to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the product options are successfully deleted.
    * 
    * @example
    * import { 
@@ -1342,12 +1338,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a product variant by its ID.
    * 
-   * @param {string} productVariantId - A string indicating the ID of the product variant to retrieve.
+   * @param {string} productVariantId - The ID of the product variant to retrieve.
    * @param {FindConfig<ProductVariantDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product variant is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product variant is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product variant.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductVariantDTO>} A promise that resolves to an object of type {@link ProductVariantDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO>} The retrieved product variant.
    * 
    * @example
    * A simple example that retrieves a product variant by its ID:
@@ -1393,12 +1389,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product variants based on optional filters and configuration.
    * 
-   * @param {FilterableProductVariantProps} filters - An object of type {@link FilterableProductVariantProps} that is used to filter the retrieved product variants.
+   * @param {FilterableProductVariantProps} filters - The filters applied on the retrieved product variants.
    * @param {FindConfig<ProductVariantDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product variant.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductVariantDTO[]>} A promise that resolves to an array of objects of type {@link ProductVariantDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductVariantDTO[]>} The list of product variants.
    * 
    * @example
    * To retrieve a list of product variants using their IDs:
@@ -1499,13 +1495,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product variants along with the total count of available product variants satisfying the provided filters.
    * 
-   * @param {FilterableProductVariantProps} filters - An object of type {@link FilterableProductVariantProps} that is used to filter the retrieved product variants.
+   * @param {FilterableProductVariantProps} filters - The filters applied on the retrieved product variants.
    * @param {FindConfig<ProductVariantDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product variant.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[ProductVariantDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link ProductVariantDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[ProductVariantDTO[], number]>} The list of product variants along with their total count.
    * 
    * @example
    * To retrieve a list of product variants using their IDs:
@@ -1606,12 +1601,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a product collection by its ID.
    * 
-   * @param {string} productCollectionId - A string indicating the ID of the product collection to retrieve.
+   * @param {string} productCollectionId - The ID of the product collection to retrieve.
    * @param {FindConfig<ProductCollectionDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product collection is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product collection is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product collection.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCollectionDTO>} A promise that resolves to an object of type {@link ProductCollectionDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCollectionDTO>} The retrieved product collection.
    * 
    * @example
    * A simple example that retrieves a product collection by its ID:
@@ -1657,12 +1652,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product collections based on optional filters and configuration.
    * 
-   * @param {FilterableProductCollectionProps} filters - An object of type {@link FilterableProductCollectionProps} that is used to filter the retrieved product collections.
+   * @param {FilterableProductCollectionProps} filters - The filters applied on the retrieved product collections.
    * @param {FindConfig<ProductCollectionDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product collections are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product collections are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product collection.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCollectionDTO[]>} A promise that resolves to an array of objects of type {@link ProductCollectionDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCollectionDTO[]>} The list of product collections.
    * 
    * @example
    * To retrieve a list of product collections using their IDs:
@@ -1763,13 +1758,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product collections along with the total count of available product collections satisfying the provided filters.
    * 
-   * @param {FilterableProductCollectionProps} filters - An object of type {@link FilterableProductCollectionProps} that is used to filter the retrieved product collections.
+   * @param {FilterableProductCollectionProps} filters - The filters applied on the retrieved product collections.
    * @param {FindConfig<ProductCollectionDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product collections are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product collections are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product collection.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[ProductCollectionDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link ProductCollectionDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[ProductCollectionDTO[], number]>} The list of product collections along with the total count.
    * 
    * @example
    * To retrieve a list of product collections using their IDs:
@@ -1870,9 +1864,9 @@ export interface IProductModuleService {
   /**
    * This method is used to create product collections.
    * 
-   * @param {CreateProductCollectionDTO[]} data - An array of objects of type {@link CreateProductCollectionDTO}, each object holding the necessary data to create a collection.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCollectionDTO[]>} A promise that resolves to an array of objects of type {@link ProductCollectionDTO}, each being a created product collection.
+   * @param {CreateProductCollectionDTO[]} data - The product collections to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCollectionDTO[]>} The list of created product collections.
    * 
    * @example
    * import { 
@@ -1900,10 +1894,9 @@ export interface IProductModuleService {
   /**
    * This method is used to update existing product collections.
    * 
-   * @param {UpdateProductCollectionDTO[]} data - 
-   * An array of objects of type {@link UpdateProductCollectionDTO}, each holding the data to update in a product collection, which is identified by the `id` attribute.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCollectionDTO[]>} A promise that resolves to an array of objects of type {@link ProductCollectionDTO}, each being an updated product collection.
+   * @param {UpdateProductCollectionDTO[]} data - The product collections to be updated, each holding the attributes that should be updated in the product collection.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCollectionDTO[]>} The list of updated product collections.
    * 
    * @example
    * import { 
@@ -1932,9 +1925,9 @@ export interface IProductModuleService {
   /**
    * This method is used to delete collections by their ID.
    * 
-   * @param {string[]} productCollectionIds - An array of strings, each being the ID of a product collection to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves when the product options are successfully deleted.
+   * @param {string[]} productCollectionIds - The IDs of the product collections to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the product options are successfully deleted.
    * 
    * @example
    * import { 
@@ -1956,12 +1949,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a product category by its ID.
    * 
-   * @param {string} productCategoryId - A string indicating the ID of the product category to retrieve.
+   * @param {string} productCategoryId - The ID of the product category to retrieve.
    * @param {FindConfig<ProductCategoryDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product category is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product category is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product category.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCategoryDTO>} A promise that resolves to an object of type {@link ProductCategoryDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO>} The retrieved product category.
    * 
    * @example
    * A simple example that retrieves a product category by its ID:
@@ -2007,12 +2000,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product categories based on optional filters and configuration.
    * 
-   * @param {FilterableProductCategoryProps} filters - An object of type {@link FilterableProductCategoryProps} that is used to filter the retrieved product categories.
+   * @param {FilterableProductCategoryProps} filters - The filters to be applied on the retrieved product categories.
    * @param {FindConfig<ProductCategoryDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product categories are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product categories are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product category.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCategoryDTO[]>} A promise that resolves to an array of objects of type {@link ProductCategoryDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO[]>} The list of product categories.
    * 
    * @example
    * To retrieve a list of product categories using their IDs:
@@ -2113,13 +2106,12 @@ export interface IProductModuleService {
   /**
    * This method is used to retrieve a paginated list of product categories along with the total count of available product categories satisfying the provided filters.
    * 
-   * @param {FilterableProductCategoryProps} filters - An object of type {@link FilterableProductCategoryProps} that is used to filter the retrieved product categories.
+   * @param {FilterableProductCategoryProps} filters - The filters to apply on the retrieved product categories.
    * @param {FindConfig<ProductCategoryDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the product categories are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the product categories are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a product category.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[ProductCategoryDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link ProductCategoryDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[ProductCategoryDTO[], number]>} The list of product categories along with their total count.
    * 
    * @example
    * To retrieve a list of product categories using their IDs:
@@ -2220,9 +2212,9 @@ export interface IProductModuleService {
   /**
    * This method is used to create a product category.
    * 
-   * @param {CreateProductCategoryDTO} data - An object of type {@link CreateProductCategoryDTO} that holds the necessary data to create a product category.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCategoryDTO>} A promise that resolves to an object of type {@link ProductCategoryDTO}, which is the created product category.
+   * @param {CreateProductCategoryDTO} data - The product category to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO>} The created product category.
    * 
    * @example
    * import { 
@@ -2249,10 +2241,10 @@ export interface IProductModuleService {
   /**
    * This method is used to update a product category by its ID.
    * 
-   * @param {string} categoryId - A string indicating the ID of the product category to update.
-   * @param {UpdateProductCategoryDTO} data - An object of type {@link UpdateProductCategoryDTO} that holds the data necessary to update the category. 
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCategoryDTO>} A promise that resolves to an object of type {@link ProductCategoryDTO}, which is the updated product category.
+   * @param {string} categoryId - The ID of the product category to update.
+   * @param {UpdateProductCategoryDTO} data - The attributes to update in th product category.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO>} The updated product category.
    * 
    * @example
    * import { 
@@ -2278,9 +2270,9 @@ export interface IProductModuleService {
   /**
    * This method is used to delete a product category by its ID.
    * 
-   * @param {string} categoryId - A string indicating the ID of the product category to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves when the product category is successfully deleted.
+   * @param {string} categoryId - The ID of the product category to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the product category is successfully deleted.
    * 
    * @example
    * import { 
@@ -2298,9 +2290,9 @@ export interface IProductModuleService {
   /**
    * This method is used to create a product.
    * 
-   * @param {CreateProductDTO[]} data - An array of objects of type {@link CreateProductDTO}, each holding the necessary data to create a product.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO[]>} A promise that resolves to an array of objects of type {@link ProductDTO}, each being a created product.
+   * @param {CreateProductDTO[]} data - The products to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO[]>} The list of created products.
    * 
    * @example
    * import { 
@@ -2327,10 +2319,9 @@ export interface IProductModuleService {
   /**
    * This method is used to update a product.
    * 
-   * @param {UpdateProductDTO[]} data - 
-   * An array of objects of type {@link UpdateProductDTO}, each holding the data to update in the product. The product to update is identified by the `id` property.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductDTO[]>} A promise that resolves to an array of objects of type {@link ProductDTO}, each being an updated product.
+   * @param {UpdateProductDTO[]} data - The products to be updated, each holding the attributes that should be updated in the product.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductDTO[]>} The list of updated products.
    * 
    * @example
    * import { 
@@ -2358,9 +2349,9 @@ export interface IProductModuleService {
   /**
    * This method is used to delete products. Unlike the {@link softDelete} method, this method will completely remove the products and they can no longer be accessed or retrieved.
    * 
-   * @param {string[]} productIds - An array of strings, each being the ID of a product to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves when the products are successfully deleted.
+   * @param {string[]} productIds - The IDs of the products to be deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the products are successfully deleted.
    * 
    * @example
    * import { 
@@ -2380,13 +2371,13 @@ export interface IProductModuleService {
    * 
    * The soft-deleted products can be restored using the {@link restore} method.
    * 
-   * @param {string[]} productIds - An array of strings, each being the ID of a product to delete.
+   * @param {string[]} productIds - The IDs of the products to soft-delete.
    * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
-   * An object of type {@link SoftDeleteReturn} used to specify which relations to soft delete along with the each of the products. You can pass to its `returnLinkableKeys`
+   * Configurations determining which relations to soft delete along with the each of the products. You can pass to its `returnLinkableKeys`
    * property any of the product's relation attribute names, such as `variant_id`.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<Record<string, string[]> | void>} 
-   * A promise that resolves to an object that includes the IDs of related records that were also soft deleted, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of a record associated with the product through this relation, such as the IDs of associated product variants.
+   * An object that includes the IDs of related records that were also soft deleted, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of a record associated with the product through this relation, such as the IDs of associated product variants.
    * 
    * If there are no related records, the promise resolved to `void`.
    * 
@@ -2412,13 +2403,13 @@ export interface IProductModuleService {
   /**
    * This method is used to restore products which were deleted using the {@link softDelete} method.
    * 
-   * @param {string[]} productIds - An array of strings, each being the ID of a product to restore.
+   * @param {string[]} productIds - The IDs of the products to restore.
    * @param {RestoreReturn<TReturnableLinkableKeys>} config -
-   * An object of type {@link RestoreReturn} used to specify which relations to restore along with the each of the products. You can pass to its `returnLinkableKeys`
+   * Configurations determining which relations to restore along with the each of the products. You can pass to its `returnLinkableKeys`
    * property any of the product's relation attribute names, such as `variant_id`.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<Record<string, string[]> | void>} 
-   * A promise that resolves to an object that includes the IDs of related records that were restored, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of the record associated with the product through this relation, such as the IDs of associated product variants.
+   * An object that includes the IDs of related records that were restored, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of the record associated with the product through this relation, such as the IDs of associated product variants.
    * 
    * If there are no related records that were restored, the promise resolved to `void`.
    * 
