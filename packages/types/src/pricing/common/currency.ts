@@ -39,7 +39,7 @@ export interface CreateCurrencyDTO {
 /**
  * @interface
  * 
- * The data to update in a currency code. The `code` is used to identify which currency to update.
+ * The data to update in a currency. The `code` is used to identify which currency to update.
  * 
  * @prop code - The code of the currency to update.
  * @prop symbol - The symbol of the currency.
