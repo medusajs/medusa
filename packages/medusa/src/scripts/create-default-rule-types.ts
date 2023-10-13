@@ -32,7 +32,13 @@ const migrate = async function ({ directory }) {
     isTest: false,
   })
 
-  await createDefaultRuleTypes(container)
+  return await createDefaultRuleTypes(container)
 }
 
 migrate({ directory: process.cwd() })
+  .then(() => {
+    console.log("Created default rule types")
+  })
+  .catch(() => {
+    console.log("Failed to create rule types")
+  })
