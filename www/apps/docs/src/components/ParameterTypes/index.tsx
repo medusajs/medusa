@@ -30,31 +30,41 @@ const ParameterTypes = ({
     return (
       <DetailsSummary
         subtitle={
-          <>
-            <MarkdownContent
-              allowedElements={["a", "strong", "code"]}
-              unwrapDisallowed={true}
-            >
-              {parameter.description}
-            </MarkdownContent>
-            {parameter.defaultValue && (
-              <p className="mt-0.5 mb-0">
-                Default: <InlineCode>{parameter.defaultValue}</InlineCode>
-              </p>
-            )}
-          </>
+          parameter.description || parameter.defaultValue ? (
+            <>
+              <MarkdownContent
+                allowedElements={["a", "strong", "code"]}
+                unwrapDisallowed={true}
+              >
+                {parameter.description}
+              </MarkdownContent>
+              {parameter.defaultValue && (
+                <p className="mt-0.5 mb-0">
+                  Default: <InlineCode>{parameter.defaultValue}</InlineCode>
+                </p>
+              )}
+            </>
+          ) : undefined
         }
         badge={
-          !parameter.optional ? (
-            <Badge variant="red">Required</Badge>
-          ) : undefined
+          <Badge variant={parameter.optional ? "neutral" : "red"}>
+            {parameter.optional ? "Optional" : "Required"}
+          </Badge>
         }
         expandable={parameter.children.length > 0}
         className={clsx(
-          "odd:[&:not(:first-child):not(:last-child)]:!border-y last:!border-t first:!border-t-0 first:!border-b last:!border-b-0 even:!border-y-0",
+          "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0",
           !nested && "cursor-default"
         )}
         style={!nested ? paddingStyling : {}}
+        onClick={(e) => {
+          const targetElm = e.target as HTMLElement
+          if (targetElm.tagName.toLowerCase() === "a") {
+            window.location.href =
+              targetElm.getAttribute("href") || window.location.href
+            return
+          }
+        }}
       >
         <InlineCode>{parameter.name}</InlineCode>
         <span className="font-monospace text-compact-x-small ml-1 text-medusa-fg-subtle">
@@ -76,7 +86,7 @@ const ParameterTypes = ({
                   summary={getSummary(parameter)}
                   key={key}
                   className={clsx(
-                    "odd:[&:not(:first-child):not(:last-child)]:!border-y last:!border-t first:!border-t-0 first:!border-b last:!border-b-0 even:!border-y-0"
+                    "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0"
                   )}
                   style={paddingStyling}
                 >

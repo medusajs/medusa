@@ -2,38 +2,12 @@
 displayed_sidebar: pricingReference
 ---
 
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
 # UpdatePriceSetMoneyAmountRulesDTO
 
-An object used to update a price set money amount rule. The price set money amount rule is identified by the provided `id`.
+The data to update in a price set money amount rule. The `id` is used to identify which money amount to update.
 
 ## Properties
 
-### id
-
- **id**: `string`
-
-A string indicating the ID of the price set money amount rule to update.
-
-___
-
-### price\_set\_money\_amount
-
- `Optional` **price\_set\_money\_amount**: `string`
-
-A string indicating the ID of a price set money amount.
-
-___
-
-### rule\_type
-
- `Optional` **rule\_type**: `string`
-
-A string indicating the ID of a rule type.
-
-___
-
-### value
-
- `Optional` **value**: `string`
-
-A string indicating the value of the price set money amount rule.
+<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"The ID of the price set money amount rule to update.","optional":false,"defaultValue":"","children":[]},{"name":"price_set_money_amount","type":"`string`","description":"The ID of a price set money amount.","optional":true,"defaultValue":"","children":[]},{"name":"rule_type","type":"`string`","description":"The ID of a rule type.","optional":true,"defaultValue":"","children":[]},{"name":"value","type":"`string`","description":"The value of the price set money amount rule.","optional":true,"defaultValue":"","children":[]}]} />

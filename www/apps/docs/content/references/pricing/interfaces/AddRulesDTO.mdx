@@ -2,22 +2,12 @@
 displayed_sidebar: pricingReference
 ---
 
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
 # AddRulesDTO
 
-An object used to specify the rules to add to a price set.
+The rules to add to a price set.
 
 ## Properties
 
-### priceSetId
-
- **priceSetId**: `string`
-
-A string indicating the ID of the price set to add the rules to.
-
-___
-
-### rules
-
- **rules**: { `attribute`: `string`  }[]
-
-An array of objects, each object holds a property `attribute`, with its value being the `rule_attribute` of the rule to add to the price set.
+<ParameterTypes parameters={[{"name":"priceSetId","type":"`string`","description":"The ID of the price set to add the rules to.","optional":false,"defaultValue":"","children":[]},{"name":"rules","type":"{ `attribute`: `string`  }[]","description":"The rules to add to a price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.","optional":false,"defaultValue":"","children":[]}]} />

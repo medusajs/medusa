@@ -2,6 +2,8 @@
 displayed_sidebar: pricingReference
 ---
 
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
 # Pricing Module Reference Reference
 
 ## Interfaces

@@ -40,6 +40,7 @@ import reflectionDescriptionHelper from "./resources/helpers/reflection-descript
 import mdxImportsHelper from "./resources/helpers/mdx-imports"
 import parameterComponentHelper from "./resources/helpers/parameter-component"
 import typeParameterComponentHelper from "./resources/helpers/type-parameter-component"
+import showPropertiesAsComponentHelper from "./resources/helpers/show-properties-as-component"
 import { MarkdownTheme } from "./theme"
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
@@ -108,4 +109,5 @@ export function registerHelpers(theme: MarkdownTheme) {
   mdxImportsHelper(theme)
   parameterComponentHelper(theme)
   typeParameterComponentHelper(theme)
+  showPropertiesAsComponentHelper(theme)
 }

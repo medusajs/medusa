@@ -2,48 +2,14 @@
 displayed_sidebar: pricingReference
 ---
 
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
 # UpdateMoneyAmountDTO
 
 * 
 
-An object that holds data to update a money amount.
+The data to update in a money amount. The `id` is used to identify which money amount to update.
 
 ## Properties
 
-### amount
-
- `Optional` **amount**: `number`
-
-A number indicating the amount of this money amount.
-
-___
-
-### currency\_code
-
- `Optional` **currency\_code**: `string`
-
-A string that indicates the currency code of the money amount.
-
-___
-
-### id
-
- **id**: `string`
-
-A string that indicates the ID of the money amount to update.
-
-___
-
-### max\_quantity
-
- `Optional` **max\_quantity**: `number`
-
-A number that indicates the maximum quantity required to be purchased for this money amount to be applied.
-
-___
-
-### min\_quantity
-
- `Optional` **min\_quantity**: `number`
-
-A number that indicates the minimum quantity required to be purchased for this money amount to be applied.
+<ParameterTypes parameters={[{"name":"amount","type":"`number`","description":"The price of this money amount.","optional":true,"defaultValue":"","children":[]},{"name":"currency_code","type":"`string`","description":"The code of the currency to associate with the money amount.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"The ID of the money amount to update.","optional":false,"defaultValue":"","children":[]},{"name":"max_quantity","type":"`number`","description":"The maximum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","children":[]},{"name":"min_quantity","type":"`number`","description":"The minimum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","children":[]}]} />

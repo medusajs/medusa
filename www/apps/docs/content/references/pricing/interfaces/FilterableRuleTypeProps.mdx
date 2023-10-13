@@ -2,60 +2,12 @@
 displayed_sidebar: pricingReference
 ---
 
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
 # FilterableRuleTypeProps
 
-An object used to filter retrieved rule types.
-
-## Hierarchy
-
-- [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableRuleTypeProps`](FilterableRuleTypeProps.mdx)\>
-
-  ↳ **`FilterableRuleTypeProps`**
+Filters to apply on rule types.
 
 ## Properties
 
-### $and
-
- `Optional` **$and**: ([`FilterableRuleTypeProps`](FilterableRuleTypeProps.mdx) \| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableRuleTypeProps`](FilterableRuleTypeProps.mdx)\>)[]
-
-An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
-
-#### Inherited from
-
-[BaseFilterable](BaseFilterable.mdx).[$and](BaseFilterable.mdx#$and)
-
-___
-
-### $or
-
- `Optional` **$or**: ([`FilterableRuleTypeProps`](FilterableRuleTypeProps.mdx) \| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableRuleTypeProps`](FilterableRuleTypeProps.mdx)\>)[]
-
-An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
-
-#### Inherited from
-
-[BaseFilterable](BaseFilterable.mdx).[$or](BaseFilterable.mdx#$or)
-
-___
-
-### id
-
- `Optional` **id**: `string`[]
-
-an array of strings, each being an ID to filter rule types.
-
-___
-
-### name
-
- `Optional` **name**: `string`[]
-
-an array of strings, each being a name to filter rule types.
-
-___
-
-### rule\_attribute
-
- `Optional` **rule\_attribute**: `string`[]
-
-an array of strings, each being a rule attribute to filter rule types.
+<ParameterTypes parameters={[{"name":"$and","type":"([`FilterableRuleTypeProps`](FilterableRuleTypeProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableRuleTypeProps`](FilterableRuleTypeProps.mdx)\\>)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","children":[]},{"name":"$or","type":"([`FilterableRuleTypeProps`](FilterableRuleTypeProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableRuleTypeProps`](FilterableRuleTypeProps.mdx)\\>)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`[]","description":"The IDs to filter rule types by.","optional":true,"defaultValue":"","children":[]},{"name":"name","type":"`string`[]","description":"The names to filter rule types by.","optional":true,"defaultValue":"","children":[]},{"name":"rule_attribute","type":"`string`[]","description":"The rule attributes to filter rule types by.","optional":true,"defaultValue":"","children":[]}]} />

@@ -2,52 +2,12 @@
 displayed_sidebar: pricingReference
 ---
 
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
 # FilterableMoneyAmountProps
 
-An object that can be used to filter money amounts.
-
-## Hierarchy
-
-- [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)\>
-
-  ↳ **`FilterableMoneyAmountProps`**
+Filters to apply on a money amount.
 
 ## Properties
 
-### $and
-
- `Optional` **$and**: ([`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx) \| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)\>)[]
-
-An array of filters to apply on the entity, where each item in the array is joined with an "and" condition.
-
-#### Inherited from
-
-[BaseFilterable](BaseFilterable.mdx).[$and](BaseFilterable.mdx#$and)
-
-___
-
-### $or
-
- `Optional` **$or**: ([`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx) \| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)\>)[]
-
-An array of filters to apply on the entity, where each item in the array is joined with an "or" condition.
-
-#### Inherited from
-
-[BaseFilterable](BaseFilterable.mdx).[$or](BaseFilterable.mdx#$or)
-
-___
-
-### currency\_code
-
- `Optional` **currency\_code**: `string` \| `string`[]
-
-A string or an array of strings, each being a currency code to filter money amounts.
-
-___
-
-### id
-
- `Optional` **id**: `string`[]
-
-An array of strings, each being an ID to filter money amounts.
+<ParameterTypes parameters={[{"name":"$and","type":"([`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)\\>)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","children":[]},{"name":"$or","type":"([`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)\\>)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","children":[]},{"name":"currency_code","type":"`string` \\| `string`[]","description":"Currency codes to filter money amounts by.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`[]","description":"IDs to filter money amounts by.","optional":true,"defaultValue":"","children":[]}]} />

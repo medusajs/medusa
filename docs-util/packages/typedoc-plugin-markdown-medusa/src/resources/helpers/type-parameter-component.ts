@@ -9,7 +9,7 @@ export default function (theme: MarkdownTheme) {
     function (this: TypeParameterReflection[]) {
       const { parameterComponent } = theme.getFormattingOptionsForLocation()
       const parameters = this.map((parameter) =>
-        reflectionComponentFormatter(parameter, 1, theme.mdxOutput)
+        reflectionComponentFormatter(parameter, 1)
       )
 
       return `<${parameterComponent} parameters={${JSON.stringify(

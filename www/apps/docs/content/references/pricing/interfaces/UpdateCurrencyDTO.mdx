@@ -2,39 +2,12 @@
 displayed_sidebar: pricingReference
 ---
 
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
 # UpdateCurrencyDTO
 
-An object that holds data to update a currency. The currency code must be provided to identify which currency to update.
+The data to update in a currency code. The `code` is used to identify which currency to update.
 
 ## Properties
 
-### code
-
- **code**: `string`
-
-a string indicating the code of the currency to update.
-
-___
-
-### name
-
- `Optional` **name**: `string`
-
-a string indicating the name of the currency.
-
-___
-
-### symbol
-
- `Optional` **symbol**: `string`
-
-a string indicating the symbol of the currency.
-
-___
-
-### symbol\_native
-
- `Optional` **symbol\_native**: `string`
-
-a string indicating the symbol of the currecy in its native form.
-This is typically the symbol used when displaying a price.
+<ParameterTypes parameters={[{"name":"code","type":"`string`","description":"The code of the currency to update.","optional":false,"defaultValue":"","children":[]},{"name":"name","type":"`string`","description":"The name of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol","type":"`string`","description":"The symbol of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol_native","type":"`string`","description":"The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.","optional":true,"defaultValue":"","children":[]}]} />

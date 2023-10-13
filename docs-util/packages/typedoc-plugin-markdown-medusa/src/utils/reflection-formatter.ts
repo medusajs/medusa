@@ -51,10 +51,14 @@ export function reflectionListFormatter(
     item += stripLineBreaks(Handlebars.helpers.comments(comments))
   }
 
-  if (reflection.type && level + 1 <= MAX_LEVEL) {
-    const children = getTypeChildren(reflection.type, reflection.project)
+  const hasChildren = "children" in reflection && reflection.children?.length
+
+  if ((reflection.type || hasChildren) && level + 1 <= MAX_LEVEL) {
+    const children = hasChildren
+      ? reflection.children
+      : getTypeChildren(reflection.type!, reflection.project)
     const itemChildren: string[] = []
-    children.forEach((childItem) => {
+    children?.forEach((childItem) => {
       itemChildren.push(reflectionListFormatter(childItem, level + 1))
     })
     if (itemChildren.length) {
@@ -91,9 +95,13 @@ export function reflectionComponentFormatter(
     children: [],
   }
 
-  if (reflection.type && level + 1 <= MAX_LEVEL) {
-    const children = getTypeChildren(reflection.type, reflection.project)
-    children.forEach((childItem) => {
+  const hasChildren = "children" in reflection && reflection.children?.length
+
+  if ((reflection.type || hasChildren) && level + 1 <= MAX_LEVEL) {
+    const children = hasChildren
+      ? reflection.children
+      : getTypeChildren(reflection.type!, reflection.project)
+    children?.forEach((childItem) => {
       componentItem.children?.push(
         reflectionComponentFormatter(childItem, level + 1)
       )

@@ -12,9 +12,7 @@ export default function (theme: MarkdownTheme) {
       const parameters = this.reduce(
         (acc: ReflectionParameterType[], current) => parseParams(current, acc),
         []
-      ).map((parameter) =>
-        reflectionComponentFormatter(parameter, 1, theme.mdxOutput)
-      )
+      ).map((parameter) => reflectionComponentFormatter(parameter, 1))
 
       return `<${parameterComponent} parameters={${JSON.stringify(
         parameters

@@ -53,7 +53,14 @@ module.exports = ({
           : {
               sections: {
                 member_sources_definedIn: false,
+                reflection_hierarchy: false,
+                // member_declaration: false,
               },
+              parameterStyle: "component",
+              parameterComponent: "ParameterTypes",
+              mdxImports: [
+                `import ParameterTypes from "@site/src/components/ParameterTypes"`,
+              ],
             }),
         ...additionalFormatting,
       }
