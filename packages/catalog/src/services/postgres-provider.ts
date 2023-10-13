@@ -5,7 +5,7 @@ import {
 } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
-import { Catalog, CatalogRelation } from "@models"
+import { Catalog } from "@models"
 import {
   CatalogModuleOptions,
   QueryFormat,
@@ -101,6 +101,9 @@ export class PostgresProvider {
       switch (action) {
         case "created":
           await this.onCreate(argument)
+          break
+        case "attached":
+          await this.onAttach(argument)
       }
     }
   }
@@ -118,7 +121,6 @@ export class PostgresProvider {
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
-      const catalogRelationRepository = em.getRepository(CatalogRelation)
 
       const data_ = Array.isArray(data) ? data : [data]
 
@@ -164,10 +166,7 @@ export class PostgresProvider {
         catalogEntries.push(catalogEntry)
 
         /**
-         * Retrieve the parents and create catalog relation entries to attach the entity to its parents.
-         * The entity can have multiple parents, but we need to ensure that we have the data of the parent
-         * we find before creating the catalog relation entry. Theoratically, at this moment
-         * the parent catalog entry should be present in the catalog table.
+         * Retrieve the parents to attach it to the catalog entry.
          */
 
         for (const parentProperty of parentsProperties) {
@@ -207,12 +206,87 @@ export class PostgresProvider {
 
   protected async onDelete() {}
 
-  protected async onAttach() {
-    /**
-     * Get the module config
-     * find the modules primary and foreign
-     * look at the linkable keys and grab the entity.
-     */
+  protected async onAttach<
+    TData extends { id: string; [key: string]: unknown }
+  >({
+    entity,
+    data,
+    schemaEntityObjectRepresentation,
+  }: {
+    entity: string
+    data: TData[]
+    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+  }) {
+    await this.container_.manager.transactional(async (em) => {
+      const catalogRepository = em.getRepository(Catalog)
+
+      const data_ = Array.isArray(data) ? data : [data]
+
+      // Always keep the id in the entity properties
+      const entityProperties: string[] = ["id"]
+
+      /**
+       * Split fields to retrieve the entity properties without its parent or child
+       */
+
+      schemaEntityObjectRepresentation.fields.forEach((field) => {
+        if (!field.includes(".")) {
+          entityProperties.push(field)
+        }
+      })
+
+      const parentPropertyId =
+        schemaEntityObjectRepresentation.moduleConfig.relationships![0]
+          .foreignKey
+      const childPropertyId =
+        schemaEntityObjectRepresentation.moduleConfig.relationships![1]
+          .foreignKey
+
+      const catalogEntries: Catalog[] = []
+
+      for (const entityData of data_) {
+        /**
+         * Clean the entity data to only keep the properties that are defined in the schema
+         */
+
+        const cleanedEntityData = entityProperties.reduce((acc, property) => {
+          acc[property] = entityData[property]
+          return acc
+        }, {}) as TData
+
+        const catalogEntry = catalogRepository.create({
+          id: cleanedEntityData.id,
+          name: entity,
+          data: cleanedEntityData,
+        })
+
+        catalogEntries.push(catalogEntry)
+
+        /**
+         * Retrieve the parent catalog entry to attach as the parent of the link catalog entry.
+         */
+
+        const parentCatalogEntry = (await catalogRepository.findOne({
+          id: entityData[parentPropertyId] as string,
+        })) as Catalog
+
+        catalogEntry.parents.add(parentCatalogEntry)
+
+        /**
+         * Retrieve the child catalog entry to attach the link catalog entry as the parent of the child.
+         */
+
+        const childCatalogEntry = (await catalogRepository.findOne({
+          id: entityData[childPropertyId] as string,
+        })) as Catalog
+
+        childCatalogEntry.parents.add(catalogEntry)
+        catalogEntries.push(childCatalogEntry)
+      }
+
+      catalogRepository.persist(catalogEntries)
+      await em.flush()
+    })
   }
 
   protected async onDetach() {}

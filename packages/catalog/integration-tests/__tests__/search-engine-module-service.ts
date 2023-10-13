@@ -9,6 +9,7 @@ import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
 import { initialize } from "../../src/initialize"
 import { EventBusService, schema } from "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
+import { EventBusTypes } from "@medusajs/types"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -78,38 +79,12 @@ describe("SearchEngineModuleService", function () {
 
   afterEach(afterEach_)
 
-  it("should be able to consume created event and create the corresponding catalog entries", async () => {
-    const productId = "prod_2"
-
-    remoteQueryMock.mockImplementation(() => {
-      return {
-        id: productId,
-      }
-    })
-
-    await eventBus.emit([
-      {
-        eventName: "product.created",
-        data: {
-          id: productId,
-        },
-      },
-    ])
-
-    expect(remoteQueryMock).toHaveBeenCalledTimes(1)
-
-    const catalogEntries: Catalog[] = await manager.find("Catalog", {
-      id: productId,
-      name: "Product",
-    })
-
-    expect(catalogEntries).toHaveLength(1)
-    expect(catalogEntries[0].id).toEqual(productId)
-  })
-
-  it("should be able to consume created event of a child entity and create the corresponding catalog and catalog relation entries, and query the data", async () => {
+  it("should consume all event create the catalog and catalog relation entries and finally query the data", async () => {
     const productId = "prod_1"
     const variantId = "var_1"
+    const priceSetId = "price_set_1"
+    const moneyAmountId = "money_amount_1"
+    const linkId = "link_id_1"
 
     remoteQueryMock.mockImplementation((query) => {
       if (query.product) {
@@ -127,23 +102,23 @@ describe("SearchEngineModuleService", function () {
         }
       } else if (query.price_set) {
         return {
-          id: "price_set_1",
+          id: priceSetId,
         }
       } else if (query.money_amount) {
         return {
-          id: "money_amount_1",
+          id: moneyAmountId,
           amount: 100,
           price_set: [
             {
-              id: "price_set_1",
+              id: priceSetId,
             },
           ],
         }
       } else if (query.product_variant_price_set) {
         return {
-          id: "link_id_1",
+          id: linkId,
           variant_id: variantId,
-          price_set_id: "price_set_1",
+          price_set_id: priceSetId,
           variant: [
             {
               id: variantId,
@@ -155,16 +130,13 @@ describe("SearchEngineModuleService", function () {
       return {}
     })
 
-    await eventBus.emit([
+    const eventDataToEmit: EventBusTypes.EmitData[] = [
       {
         eventName: "product.created",
         data: {
           id: productId,
         },
       },
-    ])
-
-    await eventBus.emit([
       {
         eventName: "variant.created",
         data: {
@@ -174,39 +146,129 @@ describe("SearchEngineModuleService", function () {
           },
         },
       },
-    ])
-
-    await eventBus.emit([
       {
         eventName: "PriceSet.created",
         data: {
-          id: "price_set_1",
+          id: priceSetId,
         },
       },
-    ])
-
-    await eventBus.emit([
       {
         eventName: "price.created",
         data: {
-          id: "money_amount_1",
+          id: moneyAmountId,
           price_set: {
-            id: "price_set_1",
+            id: priceSetId,
           },
         },
       },
-    ])
-
-    await eventBus.emit([
       {
         eventName: "LinkProductVariantPriceSet.attached",
         data: {
-          id: "link_id_1",
+          id: linkId,
           variant_id: variantId,
-          price_set_id: "price_set_1",
+          price_set_id: priceSetId,
         },
       },
-    ])
+    ]
+
+    await eventBus.emit(eventDataToEmit)
+
+    expect(remoteQueryMock).toHaveBeenCalledTimes(5)
+
+    const catalogEntries: Catalog[] = await manager.find(Catalog, {})
+
+    const productCatalogEntries = catalogEntries.filter((entry) => {
+      return entry.name === "Product"
+    })
+
+    expect(productCatalogEntries).toHaveLength(1)
+    expect(productCatalogEntries[0].id).toEqual(productId)
+
+    const variantCatalogEntries = catalogEntries.filter((entry) => {
+      return entry.name === "ProductVariant"
+    })
+
+    expect(variantCatalogEntries).toHaveLength(1)
+    expect(variantCatalogEntries[0].id).toEqual(variantId)
+
+    const priceSetCatalogEntries = catalogEntries.filter((entry) => {
+      return entry.name === "PriceSet"
+    })
+
+    expect(priceSetCatalogEntries).toHaveLength(1)
+    expect(priceSetCatalogEntries[0].id).toEqual(priceSetId)
+
+    const moneyAmountCatalogEntries = catalogEntries.filter((entry) => {
+      return entry.name === "MoneyAmount"
+    })
+
+    expect(moneyAmountCatalogEntries).toHaveLength(1)
+    expect(moneyAmountCatalogEntries[0].id).toEqual(moneyAmountId)
+
+    const linkCatalogEntries = catalogEntries.filter((entry) => {
+      return entry.name === "LinkProductVariantPriceSet"
+    })
+
+    expect(linkCatalogEntries).toHaveLength(1)
+    expect(linkCatalogEntries[0].id).toEqual(linkId)
+
+    const catalogRelationEntries: CatalogRelation[] = await manager.find(
+      CatalogRelation,
+      {}
+    )
+
+    expect(catalogRelationEntries).toHaveLength(4)
+
+    const productVariantCatalogRelationEntries = catalogRelationEntries.filter(
+      (entry) => {
+        return (
+          entry.parent_id === productId &&
+          entry.parent_name === "Product" &&
+          entry.child_id === variantId &&
+          entry.child_name === "ProductVariant"
+        )
+      }
+    )
+
+    expect(productVariantCatalogRelationEntries).toHaveLength(1)
+
+    const variantLinkCatalogRelationEntries = catalogRelationEntries.filter(
+      (entry) => {
+        return (
+          entry.parent_id === variantId &&
+          entry.parent_name === "ProductVariant" &&
+          entry.child_id === linkId &&
+          entry.child_name === "LinkProductVariantPriceSet"
+        )
+      }
+    )
+
+    expect(variantLinkCatalogRelationEntries).toHaveLength(1)
+
+    const linkPriceSetCatalogRelationEntries = catalogRelationEntries.filter(
+      (entry) => {
+        return (
+          entry.parent_id === linkId &&
+          entry.parent_name === "LinkProductVariantPriceSet" &&
+          entry.child_id === priceSetId &&
+          entry.child_name === "PriceSet"
+        )
+      }
+    )
+
+    expect(linkPriceSetCatalogRelationEntries).toHaveLength(1)
+
+    const priceSetMoneyAmountCatalogRelationEntries =
+      catalogRelationEntries.filter((entry) => {
+        return (
+          entry.parent_id === priceSetId &&
+          entry.parent_name === "PriceSet" &&
+          entry.child_id === moneyAmountId &&
+          entry.child_name === "MoneyAmount"
+        )
+      })
+
+    expect(priceSetMoneyAmountCatalogRelationEntries).toHaveLength(1)
 
     const result = await module.query({
       select: {
@@ -218,37 +280,18 @@ describe("SearchEngineModuleService", function () {
       },
     })
 
-    expect(remoteQueryMock).toHaveBeenCalledTimes(5)
-
-    const catalogEntries: Catalog[] = await manager.find(Catalog, {
-      id: variantId,
-      name: "ProductVariant",
-    })
-
-    expect(catalogEntries).toHaveLength(1)
-    expect(catalogEntries[0].id).toEqual(variantId)
-
-    const catalogRelationEntries: CatalogRelation[] = await manager.find(
-      CatalogRelation,
-      {
-        parent_id: productId,
-        parent_name: "Product",
-        child_id: variantId,
-        child_name: "ProductVariant",
-      }
-    )
-
-    expect(catalogRelationEntries).toHaveLength(1)
-    expect(catalogRelationEntries[0].parent_id).toEqual(productId)
-    expect(catalogRelationEntries[0].child_id).toEqual(variantId)
-
     expect(result).toEqual([
       {
         id: "prod_1",
         variants: [
           {
             id: "var_1",
-            money_amounts: [],
+            money_amounts: [
+              {
+                amount: 100,
+                id: "money_amount_1",
+              },
+            ],
           },
         ],
       },
