@@ -20,6 +20,7 @@ const {
   simpleDiscountFactory,
   simpleSalesChannelFactory,
   simpleRegionFactory,
+  simplePriceListFactory,
 } = require("../../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
@@ -113,6 +114,39 @@ describe("/admin/products", () => {
             id: "test-product1",
             status: "draft",
           }),
+        ])
+      )
+    })
+
+    it("should return prices not in price list for list product endpoint", async () => {
+      const api = useApi()
+
+      await simplePriceListFactory(dbConnection, {
+        prices: [
+          {
+            variant_id: "test-variant",
+            amount: 100,
+            currency_code: "usd",
+          },
+        ],
+      })
+
+      const res = await api.get("/admin/products?id=test-product", adminHeaders)
+
+      const prices = res.data.products[0].variants.map((v) => v.prices).flat()
+
+      expect(res.status).toEqual(200)
+      expect(res.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-product",
+            status: "draft",
+          }),
+        ])
+      )
+      expect(prices).toEqual(
+        expect.not.arrayContaining([
+          expect.objectContaining({ price_list_id: expect.any(String) }),
         ])
       )
     })

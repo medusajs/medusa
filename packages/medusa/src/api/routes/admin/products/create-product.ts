@@ -1,3 +1,5 @@
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+import { Workflows, createProducts } from "@medusajs/workflows"
 import {
   IsArray,
   IsBoolean,
@@ -37,9 +39,7 @@ import {
 } from "./transaction/create-product-variant"
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
-import { Workflows, createProducts } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
@@ -269,7 +269,9 @@ export default async (req, res) => {
     })
   }
 
-  const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
+  const [pricedProduct] = await pricingService.setAdminProductPricing([
+    rawProduct,
+  ])
 
   res.json({ product: pricedProduct })
 }
