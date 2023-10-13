@@ -13,16 +13,11 @@ type Parameter = {
 }
 
 type ParameterTypesProps = {
-  title?: string
   parameters: Parameter[]
   level?: number
 }
 
-const ParameterTypes = ({
-  title,
-  parameters,
-  level = 1,
-}: ParameterTypesProps) => {
+const ParameterTypes = ({ parameters, level = 1 }: ParameterTypesProps) => {
   const paddingStyling = {
     padding: `${8 * level}px`,
   }
@@ -75,36 +70,7 @@ const ParameterTypes = ({
       </DetailsSummary>
     )
   }
-  function getContent() {
-    return (
-      <>
-        {parameters.map((parameter, key) => {
-          return (
-            <>
-              {parameter.children.length > 0 && (
-                <Details
-                  summary={getSummary(parameter)}
-                  key={key}
-                  className={clsx(
-                    "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0"
-                  )}
-                  style={paddingStyling}
-                >
-                  {parameter.children && (
-                    <ParameterTypes
-                      parameters={parameter.children}
-                      level={level + 1}
-                    />
-                  )}
-                </Details>
-              )}
-              {parameter.children.length === 0 && getSummary(parameter, false)}
-            </>
-          )
-        })}
-      </>
-    )
-  }
+
   return (
     <div
       className={clsx(
@@ -112,19 +78,30 @@ const ParameterTypes = ({
         level > 1 && "bg-docs-bg-surface"
       )}
     >
-      {title && (
-        <Details
-          summary={title}
-          className={clsx(
-            "first:!border-t-0 last:!border-b-0",
-            parameters.length <= 2 && "last:!border-t-0"
-          )}
-          style={paddingStyling}
-        >
-          <ParameterTypes parameters={parameters} level={level + 1} />
-        </Details>
-      )}
-      {!title && getContent()}
+      {parameters.map((parameter, key) => {
+        return (
+          <>
+            {parameter.children.length > 0 && (
+              <Details
+                summary={getSummary(parameter)}
+                key={key}
+                className={clsx(
+                  "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0"
+                )}
+                style={paddingStyling}
+              >
+                {parameter.children && (
+                  <ParameterTypes
+                    parameters={parameter.children}
+                    level={level + 1}
+                  />
+                )}
+              </Details>
+            )}
+            {parameter.children.length === 0 && getSummary(parameter, false)}
+          </>
+        )
+      })}
     </div>
   )
 }
