@@ -1,6 +1,5 @@
 import "reflect-metadata"
 
-import { Express, NextFunction, Request, Response } from "express"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
@@ -9,38 +8,39 @@ import {
   moduleLoader,
   registerModules,
 } from "@medusajs/modules-sdk"
-import databaseLoader, { dataSource } from "./database"
+import { Express, NextFunction, Request, Response } from "express"
 import { isObject, remoteQueryFetchData } from "../utils"
+import databaseLoader, { dataSource } from "./database"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 
 import { ConfigModule } from "@medusajs/types"
-import { Connection } from "typeorm"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { EOL } from "os"
-import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
-import Logger from "./logger"
-import { MedusaContainer } from "../types/global"
-import PricingIntegrationFeatureFlag from "./feature-flags/pricing-integration"
-import apiLoader from "./api"
 import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
+import { track } from "medusa-telemetry"
+import { EOL } from "os"
+import requestIp from "request-ip"
+import { Connection } from "typeorm"
+import { joinerConfig } from "../joiner-config"
+import modulesConfig from "../modules-config"
+import { MedusaContainer } from "../types/global"
+import apiLoader from "./api"
+import loadConfig from "./config"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
-import { joinerConfig } from "../joiner-config"
-import loadConfig from "./config"
+import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
+import PricingIntegrationFeatureFlag from "./feature-flags/pricing-integration"
+import Logger from "./logger"
 import modelsLoader from "./models"
-import modulesConfig from "../modules-config"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
-import requestIp from "request-ip"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import { track } from "medusa-telemetry"
 
 type Options = {
   directory: string
@@ -174,16 +174,24 @@ export default async ({
   ) {
     mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
 
-    const { query, modules } = await MedusaApp({
+    const injectedDependencies = {
+      [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+        ContainerRegistrationKeys.PG_CONNECTION
+      ),
+    }
+
+    const medusaApp = await MedusaApp({
       modulesConfig,
       servicesConfig: joinerConfig,
       remoteFetchData: remoteQueryFetchData(container),
-      injectedDependencies: {
-        [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-          ContainerRegistrationKeys.PG_CONNECTION
-        ),
-      },
+      injectedDependencies,
     })
+
+    container.register("medusaApp", asValue(medusaApp))
+
+    const { query, modules, runMigrations } = medusaApp
+
+    await runMigrations()
 
     // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
     // We might decide to do it elsewhere but for now I think it is fine
@@ -255,38 +263,5 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-<<<<<<< HEAD
-  // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
-  if (
-    featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
-    featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)
-  ) {
-    mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
-
-    const { query, modules } = await MedusaApp({
-      modulesConfig,
-      servicesConfig: joinerConfig,
-      remoteFetchData: remoteQueryFetchData(container),
-      sharedContainer: container,
-      injectedDependencies: {
-        [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-          ContainerRegistrationKeys.PG_CONNECTION
-        ),
-      },
-    })
-
-    // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
-    // We might decide to do it elsewhere but for now I think it is fine
-    for (const [serviceKey, moduleService] of Object.entries(modules)) {
-      container.register(
-        ModulesDefinition[serviceKey].registrationName,
-        asValue(moduleService)
-      )
-    }
-    container.register("remoteQuery", asValue(query))
-  }
-
-=======
->>>>>>> 270265e49 (feat(medusa): move price module integration to pricing service (#5322))
   return { container, dbConnection, app: expressApp }
 }

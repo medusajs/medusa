@@ -7,17 +7,17 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
   ProductVariantService,
 } from "../../../../services"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
+import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
-import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -135,7 +135,7 @@ export default async (req, res) => {
     ...validatedQueryParams,
   })
 
-  const [product] = await pricingService.setAdminProductPricing([rawProduct])
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }
