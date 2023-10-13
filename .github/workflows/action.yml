@@ -88,7 +88,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -U postgres -d postgres
           --health-interval 1s
           --health-timeout 10s
           --health-retries 10
@@ -150,7 +150,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -U postgres -d postgres
           --health-interval 1s
           --health-timeout 10s
           --health-retries 10
@@ -202,7 +202,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -U postgres -d postgres
           --health-interval 1s
           --health-timeout 10s
           --health-retries 10
@@ -254,7 +254,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -U postgres -d postgres
           --health-interval 1s
           --health-timeout 10s
           --health-retries 10
