@@ -6268,8 +6268,8 @@ __metadata:
     "@hookform/error-message": ^2.0.1
     "@hookform/resolvers": ^3.3.1
     "@medusajs/icons": 1.1.0
-    "@medusajs/medusa": "*"
-    "@medusajs/types": "*"
+    "@medusajs/medusa": ^1.17.1
+    "@medusajs/types": ^1.11.3
     "@medusajs/ui": ^2.2.0
     "@medusajs/ui-preset": 1.0.2
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
@@ -6311,7 +6311,7 @@ __metadata:
     i18next-parser: ^8.0.0
     jest: 25.5.4
     md5: ^2.3.0
-    medusa-react: "*"
+    medusa-react: ^9.0.7
     mini-css-extract-plugin: ^2.7.6
     moment: ^2.29.4
     path-browserify: ^1.0.1
@@ -6499,7 +6499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/inventory@workspace:packages/inventory":
+"@medusajs/inventory@workspace:^, @medusajs/inventory@workspace:packages/inventory":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory@workspace:packages/inventory"
   dependencies:
@@ -6628,7 +6628,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.12.3, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.15.1, @medusajs/medusa@^1.17.0, @medusajs/medusa@^1.17.1, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.12.3, @medusajs/medusa@^1.15.0, @medusajs/medusa@^1.15.1, @medusajs/medusa@^1.17.0, @medusajs/medusa@^1.17.1, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6867,7 +6867,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@*, @medusajs/types@^1.10.0, @medusajs/types@^1.11.2, @medusajs/types@^1.11.3, @medusajs/types@^1.8.10, @medusajs/types@^1.8.8, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.10.0, @medusajs/types@^1.11.2, @medusajs/types@^1.11.3, @medusajs/types@^1.8.10, @medusajs/types@^1.8.8, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -26516,6 +26516,7 @@ __metadata:
     "@babel/node": ^7.12.10
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
+    "@medusajs/inventory": "workspace:^"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/product": "workspace:^"
     babel-preset-medusa-package: "*"
@@ -32498,7 +32499,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@*, medusa-react@^9.0.6, medusa-react@workspace:packages/medusa-react":
+"medusa-react@^9.0.6, medusa-react@^9.0.7, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:

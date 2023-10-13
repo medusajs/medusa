@@ -196,21 +196,27 @@ export function getReferenceType(model: ReferenceType, emphasis: boolean) {
 
     if (model.reflection?.url) {
       reflection.push(
-        `[${`\`${model.reflection.name}\``}](${Handlebars.helpers.relativeURL(
-          model.reflection.url
-        )})`
+        emphasis
+          ? `[${`\`${model.reflection.name}\``}](${Handlebars.helpers.relativeURL(
+              model.reflection.url
+            )})`
+          : model.reflection.name
       )
     } else {
       reflection.push(
-        model.externalUrl
-          ? `[${`\`${model.name}\``}]( ${model.externalUrl} )`
-          : `\`${model.name}\``
+        emphasis
+          ? model.externalUrl
+            ? `[${`\`${model.name}\``}]( ${model.externalUrl} )`
+            : `\`${model.name}\``
+          : model.name
       )
     }
     if (model.typeArguments && model.typeArguments.length > 0) {
       reflection.push(
         `<${model.typeArguments
-          .map((typeArgument) => Handlebars.helpers.type.call(typeArgument))
+          .map((typeArgument) =>
+            Handlebars.helpers.type.call(typeArgument, "none", emphasis)
+          )
           .join(", ")}\\>`
       )
     }

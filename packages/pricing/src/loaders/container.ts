@@ -26,8 +26,12 @@ export default async ({
       defaultServices.PriceSetMoneyAmountRulesService
     ).singleton(),
     priceRuleService: asClass(defaultServices.PriceRuleService).singleton(),
-    priceSetRuleTypeService: asClass(defaultServices.PriceSetRuleTypeService).singleton(),
-    priceSetMoneyAmountService : asClass(defaultServices.PriceSetMoneyAmountService).singleton(),
+    priceSetRuleTypeService: asClass(
+      defaultServices.PriceSetRuleTypeService
+    ).singleton(),
+    priceSetMoneyAmountService: asClass(
+      defaultServices.PriceSetMoneyAmountService
+    ).singleton(),
   })
 
   if (customRepositories) {
@@ -44,6 +48,9 @@ export default async ({
 function loadDefaultRepositories({ container }) {
   container.register({
     baseRepository: asClass(defaultRepositories.BaseRepository).singleton(),
+    pricingRepository: asClass(
+      defaultRepositories.PricingRepository
+    ).singleton(),
     currencyRepository: asClass(
       defaultRepositories.CurrencyRepository
     ).singleton(),

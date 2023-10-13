@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: GiftCardsResource
 
 ## Hierarchy
@@ -10,23 +14,23 @@
 
 ### retrieve
 
-▸ **retrieve**(`code`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreGiftCardsRes`](../modules/internal-38.md#storegiftcardsres)\>
-
-**`Description`**
-
-Retrieves a single GiftCard
+▸ **retrieve**(`code`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreGiftCardsRes`](../modules/internal-8.internal.md#storegiftcardsres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `code` | `string` | code of the gift card |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreGiftCardsRes`](../modules/internal-38.md#storegiftcardsres)\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreGiftCardsRes`](../modules/internal-8.internal.md#storegiftcardsres)\>
+
+**`Description`**
+
+Retrieves a single GiftCard
 
 #### Defined in
 
-[medusa-js/src/resources/gift-cards.ts:12](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/gift-cards.ts#L12)
+[packages/medusa-js/src/resources/gift-cards.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/gift-cards.ts#L12)

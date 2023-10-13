@@ -345,7 +345,7 @@ describe("Inventory Items endpoints", () => {
 
       const inventoryItemCreateRes = await api.post(
         `/admin/inventory-items`,
-        { variant_id: variantId },
+        { variant_id: variantId, sku: "attach_this_to_variant" },
         adminHeaders
       )
 

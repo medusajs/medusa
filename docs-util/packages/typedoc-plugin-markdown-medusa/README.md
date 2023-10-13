@@ -16,8 +16,11 @@ Aside from the options detailed in [typedoc-plugin-markdown](https://github.com/
   - `reflectionDescription`: (optional) a string used to add description in a documentation page after the page's title.
   - `expandMembers`: (optional) a boolean indicating whether members in a page should be expanded. When enabled, the member titles (for example, `Methods`) are removed and the heading level of nested titles whithin the member is elevated by `1`.
   - `showCommentAsHeader`: (optional) a boolean indicating whether comments, for example, a method's name, are represented as headers.
+  - `showCommentsAsDetails`: (optional) a boolean indicating whether comments, for example, a method's name, are represented as details component.
   - `parameterStyle`: (optional) a string indicating how parameters are displayed. Its value can be `table` (default) or `list`.
   - `showReturnSignature`: (optional) a boolean indicating whether to show the signature for returned values.
+  - `frontmatterData`: (optional) an object that will be injected as frontmatter to the pages matching specified pattern.
+  - 
 
 ## Build Plugin
 
