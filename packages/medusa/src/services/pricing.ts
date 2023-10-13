@@ -630,6 +630,147 @@ class PricingService extends TransactionBaseService {
     })
   }
 
+  private async getPricingModuleVariantMoneyAmounts(
+    variantIds: string[]
+  ): Promise<any> {
+    const variables = {
+      variant_id: variantIds,
+    }
+
+    const query = {
+      product_variant_price_set: {
+        __args: variables,
+        fields: ["variant_id", "price_set_id"],
+      },
+    }
+
+    const variantPriceSets = await this.remoteQuery(query)
+
+    const variantIdToPriceSetIdMap: Map<string, string> = new Map(
+      variantPriceSets.map((variantPriceSet) => [
+        variantPriceSet.price_set_id,
+        variantPriceSet.variant_id,
+      ])
+    )
+
+    const priceSetIds: string[] = variantPriceSets.map(
+      (variantPriceSet) => variantPriceSet.price_set_id
+    )
+
+    const priceSetMoneyAmounts =
+      await this.pricingModuleService.listPriceSetMoneyAmounts(
+        {
+          price_set_id: priceSetIds,
+        },
+        {
+          relations: ["money_amount", "price_set"],
+        }
+      )
+
+    const variantIdMoneyAmountMap = priceSetMoneyAmounts.reduce(
+      (map, priceSetMoneyAmount) => {
+        const variantId = variantIdToPriceSetIdMap.get(
+          priceSetMoneyAmount.price_set!.id
+        )
+        if (!variantId) {
+          return map
+        }
+        if (map.has(variantId)) {
+          map.get(variantId).push(priceSetMoneyAmount.money_amount)
+        } else {
+          map.set(variantId, [priceSetMoneyAmount.money_amount])
+        }
+        return map
+      },
+      new Map()
+    )
+
+    return variantIdMoneyAmountMap
+  }
+
+  async setAdminVariantPricing(
+    variants: ProductVariant[],
+    context: PriceSelectionContext = {}
+  ): Promise<PricedVariant[]> {
+    if (
+      !this.featureFlagRouter.isFeatureEnabled(
+        PricingIntegrationFeatureFlag.key
+      )
+    ) {
+      return this.setVariantPrices(variants, context)
+    }
+
+    const variantIds = variants.map((variant) => variant.id)
+
+    const variantIdMoneyAmountMap =
+      await this.getPricingModuleVariantMoneyAmounts(variantIds)
+
+    return variants.map((variant) => {
+      const pricing: ProductVariantPricing = {
+        prices: variantIdMoneyAmountMap.get(variant.id) ?? [],
+        original_price: null,
+        calculated_price: null,
+        calculated_price_type: null,
+        original_price_includes_tax: null,
+        calculated_price_includes_tax: null,
+        original_price_incl_tax: null,
+        calculated_price_incl_tax: null,
+        original_tax: null,
+        calculated_tax: null,
+        tax_rates: null,
+      }
+
+      Object.assign(variant, pricing)
+      return variant as unknown as PricedVariant
+    })
+  }
+
+  async setAdminProductPricing(
+    products: Product[]
+  ): Promise<(Product | PricedProduct)[]> {
+    if (
+      !this.featureFlagRouter.isFeatureEnabled(
+        PricingIntegrationFeatureFlag.key
+      )
+    ) {
+      return this.setProductPrices(products)
+    }
+
+    const variantIds = products
+      .map((product) => product.variants.map((variant) => variant.id).flat())
+      .flat()
+
+    const variantIdMoneyAmountMap =
+      await this.getPricingModuleVariantMoneyAmounts(variantIds)
+
+    return products.map((product) => {
+      if (!product?.variants?.length) {
+        return product
+      }
+
+      product.variants.map((productVariant): PricedVariant => {
+        const pricing: ProductVariantPricing = {
+          prices: variantIdMoneyAmountMap.get(productVariant.id) ?? [],
+          original_price: null,
+          calculated_price: null,
+          calculated_price_type: null,
+          original_price_includes_tax: null,
+          calculated_price_includes_tax: null,
+          original_price_incl_tax: null,
+          calculated_price_incl_tax: null,
+          original_tax: null,
+          calculated_tax: null,
+          tax_rates: null,
+        }
+
+        Object.assign(productVariant, pricing)
+        return productVariant as unknown as PricedVariant
+      })
+
+      return product
+    })
+  }
+
   /**
    * Gets the prices for a shipping option.
    * @param shippingOption - the shipping option to get prices for

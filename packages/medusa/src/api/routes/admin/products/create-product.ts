@@ -1,4 +1,9 @@
 import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -8,11 +13,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-  defaultAdminProductRemoteQueryObject,
-} from "."
 import {
   PricingService,
   ProductService,
@@ -27,27 +27,27 @@ import {
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
+import { Workflows, createProducts } from "@medusajs/workflows"
 import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
+} from "."
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
-import { createProducts, Workflows } from "@medusajs/workflows"
-import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus } from "../../../../models"
-import { Logger } from "../../../../types/global"
-import { validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FlagRouter } from "@medusajs/utils"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { Logger } from "../../../../types/global"
+import { ProductStatus } from "../../../../models"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils"
 
 /**
  * @oas [post] /admin/products
@@ -269,7 +269,9 @@ export default async (req, res) => {
     })
   }
 
-  const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
+  const [pricedProduct] = await pricingService.setAdminProductPricing([
+    rawProduct,
+  ])
 
   res.json({ product: pricedProduct })
 }
