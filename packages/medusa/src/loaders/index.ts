@@ -9,7 +9,7 @@ import {
   registerModules,
 } from "@medusajs/modules-sdk"
 import { Express, NextFunction, Request, Response } from "express"
-import { MedusaAppHelper, isObject, remoteQueryFetchData } from "../utils"
+import { isObject, remoteQueryFetchData } from "../utils"
 import databaseLoader, { dataSource } from "./database"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 
@@ -188,8 +188,6 @@ export default async ({
     })
 
     container.register("medusaApp", asValue(medusaApp))
-
-    MedusaAppHelper.set(medusaApp)
 
     const { query, modules, runMigrations } = medusaApp
 

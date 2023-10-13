@@ -1,3 +1,4 @@
+import { IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -5,10 +6,9 @@ import {
   ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
-import { IsOptional, IsString } from "class-validator"
 
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { MedusaError } from "@medusajs/utils"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils"
 import { defaultStoreProductRemoteQueryObject } from "./index"

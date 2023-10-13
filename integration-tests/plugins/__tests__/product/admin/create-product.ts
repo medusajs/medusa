@@ -1,20 +1,12 @@
 import path from "path"
 
-import {
-  MoneyAmount,
-  Product,
-  ProductVariant,
-  ProductVariantMoneyAmount,
-  Region,
-} from "@medusajs/medusa"
+import { Region } from "@medusajs/medusa"
 
-import setupServer from "../../../../environment-helpers/setup-server"
-import { useApi } from "../../../../environment-helpers/use-api"
+import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 import adminSeeder from "../../../../helpers/admin-seeder"
-
-import { simpleSalesChannelFactory } from "../../../../factories"
 
 jest.setTimeout(3000)
 
@@ -30,78 +22,37 @@ const env = {
 }
 
 describe("[Product & Pricing Module] POST /admin/products", () => {
-  let medusaProcess
+  let appContainer
+  let express
   let dbConnection
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({
-      cwd,
-      env,
-      verbose: false,
-    } as any)
+
+    const { container, app, port } = await bootstrapApp({ cwd, env })
+    appContainer = container
+
+    express = app.listen(port, () => {
+      setPort(port)
+    })
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-
-    medusaProcess.kill()
+    express.close()
   })
 
   beforeEach(async () => {
     const manager = dbConnection.manager
     await adminSeeder(dbConnection)
-    await simpleSalesChannelFactory(dbConnection, {
-      name: "Default channel",
-      id: "default-channel",
-      is_default: true,
-    })
-
-    await manager.insert(Product, {
-      id: "test-product-x",
-      handle: "test-product-x",
-      title: "Test product",
-      description: "test-product-x-description1",
-    })
 
     await manager.insert(Region, {
       id: "test-region",
       name: "Test Region",
       currency_code: "usd",
       tax_rate: 0,
-    })
-
-    await manager.insert(ProductVariant, {
-      id: "test-variant-x",
-      inventory_quantity: 10,
-      title: "Test variant",
-      variant_rank: 0,
-      sku: "test-sku",
-      ean: "test-ean",
-      upc: "test-upc",
-      barcode: "test-barcode",
-      product_id: "test-product-x",
-      options: [
-        {
-          id: "test-variant-x-option",
-          value: "Default variant",
-          option_id: "test-option",
-        },
-      ],
-    })
-
-    await await manager.insert(MoneyAmount, {
-      id: "test-price",
-      currency_code: "usd",
-      amount: 100,
-    })
-
-    await await manager.insert(ProductVariantMoneyAmount, {
-      id: "pvma0",
-      money_amount_id: "test-price",
-      variant_id: "test-variant-x",
     })
   })
 
@@ -133,7 +84,11 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
       ],
     }
 
-    const response = await api.post("/admin/products", data, adminHeaders)
+    let response = await api.post(
+      "/admin/products?relations=variants.prices",
+      data,
+      adminHeaders
+    )
 
     expect(response.status).toEqual(200)
     expect(response.data).toEqual({
@@ -158,5 +113,43 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
         ]),
       }),
     })
+
+    response = await api.get(
+      `/store/products/${response.data.product.id}?currency_code=usd&region_id=test-region`,
+      data
+    )
+
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "test variant",
+            original_price: 66600,
+            calculated_price: 66600,
+          }),
+        ]),
+      })
+    )
+
+    response = await api.get(
+      `/store/products/${response.data.product.id}?currency_code=usd`,
+      data
+    )
+
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        variants: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "test variant",
+            original_price: 55500,
+            calculated_price: 55500,
+          }),
+        ]),
+      })
+    )
   })
 })

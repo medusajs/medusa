@@ -621,6 +621,7 @@ class PricingService extends TransactionBaseService {
       product.variants.map((productVariant): PricedVariant => {
         const variantPricing = productsVariantsPricingMap.get(product.id)!
         const pricing = variantPricing[productVariant.id]
+
         Object.assign(productVariant, pricing)
         return productVariant as unknown as PricedVariant
       })
@@ -703,10 +704,7 @@ class PricingService extends TransactionBaseService {
 
     const variantIdMoneyAmountMap =
       await this.getPricingModuleVariantMoneyAmounts(variantIds)
-    console.log(
-      "setAdminVariantPricing - variantIdMoneyAmountMap --- ",
-      variantIdMoneyAmountMap
-    )
+
     return variants.map((variant) => {
       const pricing: ProductVariantPricing = {
         prices: variantIdMoneyAmountMap.get(variant.id) ?? [],
