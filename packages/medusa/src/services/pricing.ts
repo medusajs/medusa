@@ -1,5 +1,4 @@
 import { CalculatedPriceSetDTO, IPricingModuleService } from "@medusajs/types"
-import { ProductVariantService, RegionService, TaxProviderService } from "."
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -19,15 +18,16 @@ import {
   ProductVariantPricing,
   TaxedPricing,
 } from "../types/pricing"
+import { ProductVariantService, RegionService, TaxProviderService } from "."
 
-import { FlagRouter } from "@medusajs/utils"
-import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { FlagRouter } from "@medusajs/utils"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
+import { MedusaError } from "medusa-core-utils"
 import PricingIntegrationFeatureFlag from "../loaders/feature-flags/pricing-integration"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
+import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
 import { removeNullish } from "../utils/remove-nullish"
 
@@ -214,16 +214,16 @@ class PricingService extends TransactionBaseService {
       context.price_selection
     )
 
-    if (!queryContext.currency_code) {
-      return new Map()
-    }
+    let priceSets: CalculatedPriceSetDTO[] = []
 
-    const priceSets = (await this.pricingModuleService.calculatePrices(
-      { id: priceSetIds },
-      {
-        context: queryContext as any,
-      }
-    )) as unknown as CalculatedPriceSetDTO[]
+    if (queryContext.currency_code) {
+      priceSets = (await this.pricingModuleService.calculatePrices(
+        { id: priceSetIds },
+        {
+          context: queryContext as any,
+        }
+      )) as unknown as CalculatedPriceSetDTO[]
+    }
 
     const priceSetMap = new Map<string, CalculatedPriceSetDTO>(
       priceSets.map((priceSet) => [priceSet.id, priceSet])
