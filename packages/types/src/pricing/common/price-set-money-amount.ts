@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../../dal"
 import { MoneyAmountDTO } from "./money-amount"
+import { PriceRuleDTO } from "./price-rule"
 import { PriceSetDTO } from "./price-set"
 
 /**
@@ -17,6 +18,7 @@ export interface PriceSetMoneyAmountDTO {
   title?: string
   price_set?: PriceSetDTO
   price_set_id?: string
+  price_rules?: PriceRuleDTO[]
   money_amount?: MoneyAmountDTO
 }
 
