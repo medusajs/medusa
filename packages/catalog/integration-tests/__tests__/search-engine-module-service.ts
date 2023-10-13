@@ -2,14 +2,12 @@ import { MedusaApp, Modules } from "@medusajs/modules-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Catalog, CatalogRelation } from "@models"
-import { CatalogModuleService } from "@services"
 import { knex } from "knex"
 import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
 import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
-import { initialize } from "../../src/initialize"
 import { EventBusService, schema } from "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
-import { EventBusTypes } from "@medusajs/types"
+import { EventBusTypes, ICatalogModuleService } from "@medusajs/types"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -18,6 +16,25 @@ const sharedPgConnection = knex<any, any>({
     connectionString: DB_URL,
   },
 })
+
+const searchEngineModuleOptions = {
+  defaultAdapterOptions: {
+    database: {
+      clientUrl: DB_URL,
+      schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+    },
+  },
+  schema,
+}
+
+const eventBus = new EventBusService()
+const remoteQueryMock = jest.fn()
+
+const injectedDependencies = {
+  [ContainerRegistrationKeys.PG_CONNECTION]: sharedPgConnection,
+  eventBusModuleService: eventBus,
+  remoteQuery: remoteQueryMock,
+}
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -30,30 +47,61 @@ const afterEach_ = async () => {
 }
 
 describe("SearchEngineModuleService", function () {
-  const eventBus = new EventBusService()
-  const remoteQueryMock = jest.fn()
+  const productId = "prod_1"
+  const variantId = "var_1"
+  const priceSetId = "price_set_1"
+  const moneyAmountId = "money_amount_1"
+  const linkId = "link_id_1"
+
+  remoteQueryMock.mockImplementation((query) => {
+    if (query.product) {
+      return {
+        id: productId,
+      }
+    } else if (query.variant) {
+      return {
+        id: variantId,
+        product: [
+          {
+            id: productId,
+          },
+        ],
+      }
+    } else if (query.price_set) {
+      return {
+        id: priceSetId,
+      }
+    } else if (query.money_amount) {
+      return {
+        id: moneyAmountId,
+        amount: 100,
+        price_set: [
+          {
+            id: priceSetId,
+          },
+        ],
+      }
+    } else if (query.product_variant_price_set) {
+      return {
+        id: linkId,
+        variant_id: variantId,
+        price_set_id: priceSetId,
+        variant: [
+          {
+            id: variantId,
+          },
+        ],
+      }
+    }
+
+    return {}
+  })
 
   let manager: SqlEntityManager
-  let module: CatalogModuleService
-
-  const searchEngineModuleOptions = {
-    defaultAdapterOptions: {
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-      },
-    },
-    schema,
-  }
-
-  const injectedDependencies = {
-    [ContainerRegistrationKeys.PG_CONNECTION]: sharedPgConnection,
-    eventBusModuleService: eventBus,
-    remoteQuery: remoteQueryMock,
-  }
+  let module: ICatalogModuleService
 
   beforeAll(async () => {
-    await MedusaApp({
+    const { modules } = await MedusaApp({
       modulesConfig: {
         ...modulesConfig,
         [Modules.CATALOG]: {
@@ -63,73 +111,17 @@ describe("SearchEngineModuleService", function () {
       servicesConfig: joinerConfig,
       injectedDependencies,
     })
+
+    module = modules.catalogService as unknown as ICatalogModuleService
   })
 
   beforeEach(async () => {
     manager = await beforeEach_()
-
-    module = await initialize(searchEngineModuleOptions, {
-      eventBusModuleService: eventBus,
-      remoteQuery: remoteQueryMock,
-    })
-
-    // TODO
-    await module.onApplicationStart?.()
   })
 
   afterEach(afterEach_)
 
   it("should consume all event create the catalog and catalog relation entries and finally query the data", async () => {
-    const productId = "prod_1"
-    const variantId = "var_1"
-    const priceSetId = "price_set_1"
-    const moneyAmountId = "money_amount_1"
-    const linkId = "link_id_1"
-
-    remoteQueryMock.mockImplementation((query) => {
-      if (query.product) {
-        return {
-          id: productId,
-        }
-      } else if (query.variant) {
-        return {
-          id: variantId,
-          product: [
-            {
-              id: productId,
-            },
-          ],
-        }
-      } else if (query.price_set) {
-        return {
-          id: priceSetId,
-        }
-      } else if (query.money_amount) {
-        return {
-          id: moneyAmountId,
-          amount: 100,
-          price_set: [
-            {
-              id: priceSetId,
-            },
-          ],
-        }
-      } else if (query.product_variant_price_set) {
-        return {
-          id: linkId,
-          variant_id: variantId,
-          price_set_id: priceSetId,
-          variant: [
-            {
-              id: variantId,
-            },
-          ],
-        }
-      }
-
-      return {}
-    })
-
     const eventDataToEmit: EventBusTypes.EmitData[] = [
       {
         eventName: "product.created",

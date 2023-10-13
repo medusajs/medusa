@@ -78,7 +78,7 @@ export default class CatalogModuleService
 
   __hooks = {
     onApplicationStart(this: CatalogModuleService) {
-      return this.onApplicationStart()
+      return this.onApplicationStart_()
     },
   }
 
@@ -86,7 +86,7 @@ export default class CatalogModuleService
     return joinerConfig
   }
 
-  async onApplicationStart() {
+  protected async onApplicationStart_() {
     this.buildSchemaObjectRepresentation_()
     this.registerListeners()
   }

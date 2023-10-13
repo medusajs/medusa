@@ -47,11 +47,13 @@ export class PostgresProvider {
   ) {
     this.container_ = container
     this.moduleOptions_ = moduleOptions
+
     this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
   }
 
   async query(selection: QueryFormat, options?: QueryOptions) {
     const connection = this.container_.manager.getConnection()
+
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
       knex: connection.getKnex(),
