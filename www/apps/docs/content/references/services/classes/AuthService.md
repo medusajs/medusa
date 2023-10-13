@@ -12,13 +12,13 @@ Can authenticate a user based on email password combination
 
 ### constructor
 
-• **new AuthService**(`__namedParameters`)
+• **new AuthService**(`«destructured»`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `InjectedDependencies` |
+| `«destructured»` | `InjectedDependencies` |
 
 #### Overrides
 
@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/auth.ts:22](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/auth.ts#L22)
+[medusa/src/services/auth.ts:22](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/auth.ts#L22)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/auth.ts:20](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/auth.ts#L20)
+[medusa/src/services/auth.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/auth.ts#L20)
 
 ___
 
@@ -92,7 +92,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -106,7 +106,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/auth.ts:19](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/auth.ts#L19)
+[medusa/src/services/auth.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/auth.ts#L19)
 
 ## Accessors
 
@@ -134,7 +134,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -173,7 +173,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -196,12 +196,12 @@ scrypt to match password with hashed value.
 `Promise`<`AuthenticateResult`\>
 
 success: whether authentication succeeded
-   user: the user document if authentication succeded
+   user: the user document if authentication succeeded
    error: a string with the error message
 
 #### Defined in
 
-[medusa/src/services/auth.ts:95](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/auth.ts#L95)
+[medusa/src/services/auth.ts:81](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/auth.ts#L81)
 
 ___
 
@@ -222,12 +222,12 @@ Authenticates a given user with an API token
 `Promise`<`AuthenticateResult`\>
 
 success: whether authentication succeeded
-   user: the user document if authentication succeded
+   user: the user document if authentication succeeded
    error: a string with the error message
 
 #### Defined in
 
-[medusa/src/services/auth.ts:52](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/auth.ts#L52)
+[medusa/src/services/auth.ts:52](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/auth.ts#L52)
 
 ___
 
@@ -250,12 +250,12 @@ scrypt to match password with hashed value.
 `Promise`<`AuthenticateResult`\>
 
 success: whether authentication succeeded
-   user: the user document if authentication succeded
+   customer: the customer document if authentication succeded
    error: a string with the error message
 
 #### Defined in
 
-[medusa/src/services/auth.ts:144](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/auth.ts#L144)
+[medusa/src/services/auth.ts:130](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/auth.ts#L130)
 
 ___
 
@@ -280,7 +280,7 @@ the result of the comparison
 
 #### Defined in
 
-[medusa/src/services/auth.ts:36](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/auth.ts#L36)
+[medusa/src/services/auth.ts:36](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/auth.ts#L36)
 
 ___
 
@@ -304,7 +304,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -328,4 +328,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

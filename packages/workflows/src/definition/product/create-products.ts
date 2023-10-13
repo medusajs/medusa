@@ -11,6 +11,7 @@ import {
   MiddlewaresHandlers,
   ProductHandlers,
 } from "../../handlers"
+import { prepareCreateInventoryItems } from "./prepare-create-inventory-items"
 
 export enum CreateProductsActions {
   prepare = "prepare",
@@ -22,7 +23,7 @@ export enum CreateProductsActions {
   attachInventoryItems = "attachInventoryItems",
 }
 
-export const createProductsWorkflowSteps: TransactionStepsDefinition = {
+export const workflowSteps: TransactionStepsDefinition = {
   next: {
     action: CreateProductsActions.prepare,
     noCompensation: true,
@@ -175,10 +176,10 @@ const handlers = new Map([
           merge: true,
           invoke: {
             from: CreateProductsActions.createProducts,
-            alias: MiddlewaresHandlers.extractVariants.aliases.object,
+            alias: prepareCreateInventoryItems.aliases.products,
           },
         },
-        MiddlewaresHandlers.extractVariants,
+        prepareCreateInventoryItems,
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(
@@ -265,11 +266,7 @@ const handlers = new Map([
   ],
 ])
 
-WorkflowManager.register(
-  Workflows.CreateProducts,
-  createProductsWorkflowSteps,
-  handlers
-)
+WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 
 export const createProducts = exportWorkflow<
   WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO,

@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/cart.ts:226](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L226)
+[models/cart.ts:288](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L288)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:220](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L220)
+[models/cart.ts:282](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L282)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:311](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L311)
+[models/cart.ts:373](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L373)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:320](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L320)
+[models/cart.ts:382](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L382)
 
 ___
 
@@ -72,7 +72,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:285](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L285)
+[models/cart.ts:347](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L347)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:281](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L281)
+[models/cart.ts:343](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L343)
 
 ___
 
@@ -106,7 +106,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:335](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L335)
+[models/cart.ts:397](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L397)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:263](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L263)
+[models/cart.ts:325](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L325)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:216](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L216)
+[models/cart.ts:278](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L278)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:344](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L344)
+[models/cart.ts:407](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L407)
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:343](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L343)
+[models/cart.ts:406](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L406)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:277](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L277)
+[models/cart.ts:339](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L339)
 
 ___
 
@@ -180,7 +180,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:317](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L317)
+[models/cart.ts:379](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L379)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:336](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L336)
+[models/cart.ts:399](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L399)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:241](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L241)
+[models/cart.ts:303](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L303)
 
 ___
 
@@ -220,7 +220,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:323](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L323)
+[models/cart.ts:385](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L385)
 
 ___
 
@@ -230,7 +230,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:213](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L213)
+[models/cart.ts:275](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L275)
 
 ___
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:300](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L300)
+[models/cart.ts:362](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L362)
 
 ___
 
@@ -250,7 +250,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:314](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L314)
+[models/cart.ts:376](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L376)
 
 ___
 
@@ -260,7 +260,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:296](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L296)
+[models/cart.ts:358](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L358)
 
 ___
 
@@ -270,7 +270,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:287](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L287)
+[models/cart.ts:349](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L349)
 
 ___
 
@@ -280,7 +280,17 @@ ___
 
 #### Defined in
 
-[models/cart.ts:292](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L292)
+[models/cart.ts:354](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L354)
+
+___
+
+### raw\_discount\_total
+
+• `Optional` **raw\_discount\_total**: `number`
+
+#### Defined in
+
+[models/cart.ts:398](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L398)
 
 ___
 
@@ -290,7 +300,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:342](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L342)
+[models/cart.ts:405](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L405)
 
 ___
 
@@ -300,7 +310,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:339](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L339)
+[models/cart.ts:402](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L402)
 
 ___
 
@@ -310,7 +320,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:249](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L249)
+[models/cart.ts:311](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L311)
 
 ___
 
@@ -320,7 +330,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:245](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L245)
+[models/cart.ts:307](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L307)
 
 ___
 
@@ -330,7 +340,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:332](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L332)
+[models/cart.ts:394](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L394)
 
 ___
 
@@ -340,7 +350,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:326](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L326)
+[models/cart.ts:388](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L388)
 
 ___
 
@@ -350,7 +360,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:236](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L236)
+[models/cart.ts:298](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L298)
 
 ___
 
@@ -360,7 +370,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:230](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L230)
+[models/cart.ts:292](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L292)
 
 ___
 
@@ -370,7 +380,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:305](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L305)
+[models/cart.ts:367](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L367)
 
 ___
 
@@ -380,7 +390,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:337](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L337)
+[models/cart.ts:400](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L400)
 
 ___
 
@@ -390,7 +400,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:334](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L334)
+[models/cart.ts:396](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L396)
 
 ___
 
@@ -400,7 +410,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:341](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L341)
+[models/cart.ts:404](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L404)
 
 ___
 
@@ -410,7 +420,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:338](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L338)
+[models/cart.ts:401](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L401)
 
 ___
 
@@ -420,7 +430,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:340](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L340)
+[models/cart.ts:403](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L403)
 
 ___
 
@@ -430,7 +440,7 @@ ___
 
 #### Defined in
 
-[models/cart.ts:308](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L308)
+[models/cart.ts:370](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L370)
 
 ___
 
@@ -444,7 +454,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -458,7 +468,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/cart.ts:346](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L346)
+[models/cart.ts:410](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L410)
 
 ___
 
@@ -472,4 +482,4 @@ ___
 
 #### Defined in
 
-[models/cart.ts:353](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/cart.ts#L353)
+[models/cart.ts:417](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/cart.ts#L417)
