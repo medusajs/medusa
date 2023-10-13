@@ -5,10 +5,11 @@ import { Region } from "@medusajs/medusa"
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
+import { createDefaultRuleTypes } from "../../../helpers/create-default-ruletypes"
 
 import adminSeeder from "../../../../helpers/admin-seeder"
 
-jest.setTimeout(3000)
+jest.setTimeout(5000)
 
 const adminHeaders = {
   headers: {
@@ -22,9 +23,9 @@ const env = {
 }
 
 describe("[Product & Pricing Module] POST /admin/products", () => {
-  let appContainer
   let express
   let dbConnection
+  let appContainer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -32,10 +33,8 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
 
     const { container, app, port } = await bootstrapApp({ cwd, env })
     appContainer = container
-
-    express = app.listen(port, () => {
-      setPort(port)
-    })
+    setPort(port)
+    express = app.listen(port)
   })
 
   afterAll(async () => {
@@ -47,6 +46,7 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
   beforeEach(async () => {
     const manager = dbConnection.manager
     await adminSeeder(dbConnection)
+    await createDefaultRuleTypes(appContainer)
 
     await manager.insert(Region, {
       id: "test-region",

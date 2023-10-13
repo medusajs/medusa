@@ -81,16 +81,6 @@ export async function updateProductsVariantsPrices({
   if (featureFlagRouter.isFeatureEnabled("pricing_integration")) {
     const pricingModuleService = container.resolve("pricingModuleService")
 
-    // console.log("medusaApp - ", medusaApp)
-    // Create price rules if not exists
-    await pricingModuleService.createRuleTypes([
-      {
-        name: "Region ID",
-        rule_attribute: "region_id",
-        default_priority: 1,
-      },
-    ])
-
     for (let { variantId } of variantIdsPricesData) {
       const priceSet = await pricingModuleService.create({
         rules: [{ rule_attribute: "region_id" }],
