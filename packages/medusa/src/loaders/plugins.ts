@@ -89,6 +89,7 @@ export default async ({
         app,
         rootDirectory,
         container,
+        configModule,
         activityId
       )
       registerCoreRouters(pluginDetails, container)
@@ -344,6 +345,7 @@ async function registerApi(
   app: Express,
   rootDirectory = "",
   container: MedusaContainer,
+  configmodule: ConfigModule,
   activityId: string
 ): Promise<Express> {
   const logger = container.resolve<Logger>("logger")
@@ -362,6 +364,7 @@ async function registerApi(
       app,
       rootDir: `${pluginDetails.resolve}/api`,
       activityId: activityId,
+      configModule: configmodule,
     }).load()
 
     /**

@@ -9,6 +9,16 @@ import {
   storeCorsMiddlewareMock,
 } from "../__fixtures__/mocks"
 
+const mockConfigModule = {
+  projectConfig: {
+    store_cors: "http://localhost:8000",
+    admin_cors: "http://localhost:7001",
+    database_logging: false,
+  },
+  featureFlags: {},
+  plugins: [],
+}
+
 describe("RoutesLoader", function () {
   afterEach(function () {
     jest.clearAllMocks()
@@ -24,6 +34,7 @@ describe("RoutesLoader", function () {
       await new RoutesLoader({
         app,
         rootDir,
+        configModule: mockConfigModule,
       }).load()
     })
 
@@ -68,6 +79,7 @@ describe("RoutesLoader", function () {
       await new RoutesLoader({
         app,
         rootDir,
+        configModule: mockConfigModule,
       }).load()
     })
 
@@ -127,10 +139,11 @@ describe("RoutesLoader", function () {
         await new RoutesLoader({
           app,
           rootDir,
+          configModule: mockConfigModule,
         }).load()
       } catch (e: any) {
         expect(e.message).toBe(
-          "Duplicate parameters found in route /admin/customers/[id]/orders/[id] (id)"
+          "Duplicate parameters found in route /admin/customers/[id]/orders/[id] (id). Make sure that all parameters are unique."
         )
       }
     })

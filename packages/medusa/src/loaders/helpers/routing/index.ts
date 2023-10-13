@@ -1,4 +1,5 @@
-import { Express } from "express"
+import { Express, json } from "express"
+import cors from "cors"
 import { readdir } from "fs/promises"
 import { extname, join } from "path"
 import logger from "../../logger"
@@ -10,6 +11,9 @@ import {
   RouteConfig,
   RouteDescriptor,
 } from "./types"
+import { ConfigModule } from "../../../types/global"
+import { parseCorsOrigins } from "medusa-core-utils"
+import { authenticate } from "../../../api/middlewares"
 
 const log = ({
   activityId,
@@ -30,6 +34,12 @@ const log = ({
  * File name that is used to indicate that the file is a route file
  */
 const ROUTE_NAME = "route"
+
+/**
+ * Flag that developers can export from their route files to indicate
+ * whether or not the route should be authenticated or not.
+ */
+const AUTHTHENTICATE = "AUTHENTICATE"
 
 /**
  * File name for the global middlewares file
@@ -77,22 +87,26 @@ export class RoutesLoader {
   protected app: Express
   protected activityId?: string
   protected rootDir: string
+  protected configModule: ConfigModule
   protected excludes: RegExp[] = [/\.DS_Store/, /(\.ts\.map|\.js\.map|\.d\.ts)/]
 
   constructor({
     app,
     activityId,
     rootDir,
+    configModule,
     excludes = [],
   }: {
     app: Express
     activityId?: string
     rootDir: string
+    configModule: ConfigModule
     excludes?: RegExp[]
   }) {
     this.app = app
     this.activityId = activityId
     this.rootDir = rootDir
+    this.configModule = configModule
     this.excludes.push(...(excludes ?? []))
   }
 
@@ -113,7 +127,7 @@ export class RoutesLoader {
     if (!config?.routes) {
       log({
         activityId: this.activityId,
-        message: `No middlewares detected. Skipping.`,
+        message: `No middleware routes found. Skipping middleware application.`,
       })
 
       return
@@ -122,7 +136,7 @@ export class RoutesLoader {
     for (const route of config.routes) {
       if (!route.matcher) {
         throw new Error(
-          `A route is missing a \`matcher\`. The field is required when applying middleware.`
+          `Route is missing a \`matcher\` field. The 'matcher' field is required when applying middleware to this route.`
         )
       }
     }
@@ -151,20 +165,14 @@ export class RoutesLoader {
       for (const match of matches) {
         if (match?.[1] && !Number.isInteger(match?.[1])) {
           if (parameters.has(match?.[1])) {
-            /**
-             * If we are not in production we log a warning,
-             * otherwise we throw an error.
-             */
-            if (process.env.NODE_ENV !== "production") {
-              log({
-                activityId: this.activityId,
-                message: `Duplicate parameters found in route ${route} (${match?.[1]})`,
-              })
-            } else {
-              throw new Error(
-                `Duplicate parameters found in route ${route} (${match?.[1]})`
-              )
-            }
+            log({
+              activityId: this.activityId,
+              message: `Duplicate parameters found in route ${route} (${match?.[1]})`,
+            })
+
+            throw new Error(
+              `Duplicate parameters found in route ${route} (${match?.[1]}). Make sure that all parameters are unique.`
+            )
           }
 
           parameters.add(match?.[1])
@@ -200,8 +208,26 @@ export class RoutesLoader {
 
           const config: {
             routes: RouteConfig[]
+            shouldRequireAuth?: boolean
           } = {
             routes: [],
+            shouldRequireAuth: false,
+          }
+
+          /**
+           * If the developer has not exported the authenticate flag
+           * we default to true.
+           */
+          const shouldRequireAuth =
+            imp[AUTHTHENTICATE] !== undefined
+              ? (imp[AUTHTHENTICATE] as boolean)
+              : true
+
+          if (
+            shouldRequireAuth &&
+            absolutePath.includes(join("api", "admin"))
+          ) {
+            config.shouldRequireAuth = shouldRequireAuth
           }
 
           const handlers = Object.keys(imp).filter((key) => {
@@ -220,7 +246,7 @@ export class RoutesLoader {
             } else {
               log({
                 activityId: this.activityId,
-                message: `Skipping handler ${handler} in ${absolutePath}. Invalid HTTP method.`,
+                message: `Skipping handler ${handler} in ${absolutePath}. Invalid HTTP method: ${handler}.`,
               })
             }
           }
@@ -228,7 +254,7 @@ export class RoutesLoader {
           if (!config.routes.length) {
             log({
               activityId: this.activityId,
-              message: `No valid handlers found in ${absolutePath}. Skipping.`,
+              message: `No valid route handlers detected in ${absolutePath}. Skipping route configuration.`,
             })
 
             map.delete(absolutePath)
@@ -243,11 +269,9 @@ export class RoutesLoader {
   }
 
   protected createRoutesDescriptor({
-    dirPath,
     childPath,
     parentPath,
   }: {
-    dirPath: string
     childPath: string
     parentPath?: string
   }) {
@@ -305,7 +329,7 @@ export class RoutesLoader {
     if (!middlewareFilePath) {
       log({
         activityId: this.activityId,
-        message: `No middlewares detected in ${dirPath}`,
+        message: `No middleware files found in ${dirPath}. Skipping middleware configuration.`,
       })
       return
     }
@@ -319,7 +343,7 @@ export class RoutesLoader {
         if (!middlewaresConfig) {
           log({
             activityId: this.activityId,
-            message: `No config found in ${absolutePath}.`,
+            message: `No middleware configuration found in ${absolutePath}. Skipping middleware configuration.`,
           })
           return
         }
@@ -342,8 +366,9 @@ export class RoutesLoader {
     } catch (error) {
       log({
         activityId: this.activityId,
-        message: `No middlewares detected in ${dirPath}`,
+        message: `Failed to load middleware configuration in ${absolutePath}. Skipping middleware configuration.`,
       })
+
       return
     }
   }
@@ -397,7 +422,6 @@ export class RoutesLoader {
             }
 
             return this.createRoutesDescriptor({
-              dirPath,
               childPath,
               parentPath,
             })
@@ -416,6 +440,10 @@ export class RoutesLoader {
       }
 
       const routes = descriptor.config.routes! as RouteConfig[]
+
+      if (descriptor.config.shouldRequireAuth) {
+        this.app.use(descriptor.route, authenticate())
+      }
 
       for (const route of routes) {
         log({
@@ -466,15 +494,38 @@ export class RoutesLoader {
     }
   }
 
-  /**
-   * will walk through the rootDir and load all files if they need
-   * to be loaded
-   */
+  applyGlobalMiddlewares() {
+    if (this.routesMap.size > 0) {
+      this.app.use(json())
+
+      const adminCors = this.configModule.projectConfig.admin_cors || ""
+      this.app.use(
+        "/admin",
+        cors({
+          origin: parseCorsOrigins(adminCors),
+          credentials: true,
+        })
+      )
+
+      const storeCors = this.configModule.projectConfig.store_cors || ""
+      this.app.use(
+        "/store",
+        cors({ origin: parseCorsOrigins(storeCors), credentials: true })
+      )
+    }
+  }
+
   async load() {
     performance.mark("file-base-routing-start" + this.rootDir)
 
     let apiExists = true
 
+    /**
+     * Since the file based routing does not require a index file
+     * we can check if it exists using require. Instead we try
+     * to read the directory and if it fails we know that the
+     * directory does not exist.
+     */
     try {
       await readdir(this.rootDir)
     } catch (_error) {
@@ -486,6 +537,8 @@ export class RoutesLoader {
 
       await this.createRoutesMap({ dirPath: this.rootDir })
       await this.createRoutesConfig()
+
+      this.applyGlobalMiddlewares()
 
       await this.registerMiddlewares()
       await this.registerRoutes()
@@ -511,4 +564,3 @@ export class RoutesLoader {
 }
 
 export default RoutesLoader
-export * from "./types"

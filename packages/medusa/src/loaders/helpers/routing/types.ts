@@ -38,7 +38,7 @@ type MiddlewareFunction = (
 
 export type MiddlewareRoute = {
   method?: MiddlewareVerb | MiddlewareVerb[]
-  matcher: string
+  matcher: string | RegExp
   middlewares: MiddlewareFunction[]
 }
 
@@ -52,6 +52,7 @@ export type RouteDescriptor<TConfig = Record<string, unknown>> = {
   route: string
   priority: number
   config?: TConfig & {
+    shouldRequireAuth?: boolean
     routes?: RouteConfig[]
   }
 }
