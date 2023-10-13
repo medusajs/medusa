@@ -192,7 +192,7 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  let variants = await pricingService.setVariantPrices(rawVariants, {
+  let variants = await pricingService.setAdminVariantPricing(rawVariants, {
     cart_id: req.validatedQuery.cart_id,
     region_id: regionId,
     currency_code: currencyCode,
