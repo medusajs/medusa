@@ -41,7 +41,6 @@ import { validator } from "../../../../utils/validator"
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
-import PriceSetService from '../../../../../../pricing/dist/services/price-set';
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.products.updateVariant(productId, variantId, {
@@ -116,11 +115,11 @@ export default async (req, res) => {
 
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
-  const manager: EntityManager = req.scope.resolve("manager")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
 
+  const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     await productVariantService
       .withTransaction(transactionManager)
@@ -136,7 +135,7 @@ export default async (req, res) => {
     ...validatedQueryParams,
   })
 
-  const [product] = await pricingService.setAdminProductPricing([rawProduct])
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }
