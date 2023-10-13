@@ -10,6 +10,7 @@ import { CreateProductsActions } from "./create-products"
 import { InventoryHandlers, ProductHandlers } from "../../handlers"
 import * as MiddlewareHandlers from "../../handlers/middlewares"
 import { detachSalesChannelFromProducts } from "../../handlers/product"
+import { prepareCreateInventoryItems } from "./prepare-create-inventory-items"
 
 export enum UpdateProductsActions {
   prepare = "prepare",
@@ -228,6 +229,7 @@ const handlers = new Map([
           ],
         },
         MiddlewareHandlers.updateProductsExtractCreatedVariants,
+        prepareCreateInventoryItems,
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(

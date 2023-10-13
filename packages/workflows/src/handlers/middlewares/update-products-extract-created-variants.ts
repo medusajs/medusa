@@ -30,7 +30,7 @@ export async function updateProductsExtractCreatedVariants({
   return {
     alias: updateProductsExtractCreatedVariants.aliases.output,
     value: {
-      variants: createdVariants,
+      products: [createdVariants],
     },
   }
 }
