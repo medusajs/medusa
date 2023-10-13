@@ -29,9 +29,7 @@ export async function updateProductsVariantsPrices({
   const regionService = container.resolve("regionService")
   const featureFlagRouter = container.resolve("featureFlagRouter")
   const medusaApp = container.resolve("medusaApp")
-
   const productVariantServiceTx = productVariantService.withTransaction(manager)
-
   const variantIdsPricesData: any[] = []
   const variantPricesMap = new Map<string, any[]>()
 
@@ -94,8 +92,6 @@ export async function updateProductsVariantsPrices({
     ])
 
     for (let { variantId } of variantIdsPricesData) {
-      console.log("variantPricesMap.get(variantId) - ")
-
       const priceSet = await pricingModuleService.create({
         rules: [{ rule_attribute: "region_id" }],
         prices: variantPricesMap.get(variantId),

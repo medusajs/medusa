@@ -1,4 +1,5 @@
 import { CalculatedPriceSetDTO, IPricingModuleService } from "@medusajs/types"
+import { ProductVariantService, RegionService, TaxProviderService } from "."
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -17,18 +18,16 @@ import {
   PricingContext,
   ProductVariantPricing,
   TaxedPricing,
-  VariantPriceSetRes,
 } from "../types/pricing"
-import { ProductVariantService, RegionService, TaxProviderService } from "."
 
-import { EntityManager } from "typeorm"
 import { FlagRouter } from "@medusajs/utils"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import PricingIntegrationFeatureFlag from "../loaders/feature-flags/pricing-integration"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
-import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
 import { removeNullish } from "../utils/remove-nullish"
 
@@ -704,7 +703,10 @@ class PricingService extends TransactionBaseService {
 
     const variantIdMoneyAmountMap =
       await this.getPricingModuleVariantMoneyAmounts(variantIds)
-
+    console.log(
+      "setAdminVariantPricing - variantIdMoneyAmountMap --- ",
+      variantIdMoneyAmountMap
+    )
     return variants.map((variant) => {
       const pricing: ProductVariantPricing = {
         prices: variantIdMoneyAmountMap.get(variant.id) ?? [],
@@ -764,6 +766,7 @@ class PricingService extends TransactionBaseService {
         }
 
         Object.assign(productVariant, pricing)
+
         return productVariant as unknown as PricedVariant
       })
 

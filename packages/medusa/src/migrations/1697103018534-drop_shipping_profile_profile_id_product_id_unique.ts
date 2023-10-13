@@ -10,7 +10,6 @@ export class dropShippingProfileProfileIdProductIdUnique1697103018534
   name = "DropShippingProfileProfileIdProductIdUnique1697103018534"
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    console.log("running?")
     await queryRunner.query(`
       DROP INDEX IF EXISTS "idx_product_shipping_profile_profile_id_product_id_unique";
     `)
