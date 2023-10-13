@@ -14,7 +14,7 @@ export async function removeInventoryItems({
     logger.warn(
       `Inventory service not found. You should install the @medusajs/inventory package to use inventory. The 'removeInventoryItems' will be skipped.`
     )
-    return
+    return []
   }
 
   await inventoryService!.deleteInventoryItem(
