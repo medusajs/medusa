@@ -10,7 +10,7 @@ import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { EOL } from "os"
 import { ulid } from "ulid"
-import { Workflows } from "../workflows"
+import { Workflows } from "../definitions"
 
 export type FlowRunOptions<TData = unknown> = {
   input?: TData

@@ -13,7 +13,7 @@ import {
   SalesChannelHandlers,
 } from "../../../handlers"
 import { exportWorkflow, pipe } from "../../../helper"
-import { Workflows } from "../../../workflows"
+import { Workflows } from "../../../definitions"
 
 enum CreateCartActions {
   setContext = "setContext",

@@ -1,15 +1,15 @@
 import {
-    TransactionStepsDefinition,
-    WorkflowManager,
+  TransactionStepsDefinition,
+  WorkflowManager,
 } from "@medusajs/orchestration"
 import { exportWorkflow, pipe } from "../../helper"
-import { InputAlias, Workflows } from "../../workflows"
+import { InputAlias, Workflows } from "../../definitions"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import {
-    InventoryHandlers,
-    MiddlewaresHandlers,
-    ProductHandlers,
+  InventoryHandlers,
+  MiddlewaresHandlers,
+  ProductHandlers,
 } from "../../handlers"
 import { prepareCreateInventoryItems } from "./prepare-create-inventory-items"
 

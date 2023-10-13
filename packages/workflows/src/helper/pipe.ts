@@ -4,7 +4,7 @@ import {
   WorkflowStepHandler,
 } from "@medusajs/orchestration"
 import { Context, MedusaContainer, SharedContext } from "@medusajs/types"
-import { InputAlias } from "../workflows"
+import { InputAlias } from "../definitions"
 import { mergeData } from "./merge-data"
 
 export type WorkflowStepMiddlewareReturn = {
