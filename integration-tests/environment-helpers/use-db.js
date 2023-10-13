@@ -1,6 +1,7 @@
 const path = require("path")
 
 const { getConfigFile } = require("medusa-core-utils")
+const { isObject } = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
@@ -71,9 +72,13 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd, database_extra }) {
+  initDb: async function ({ cwd, database_extra, env }) {
     const { configModule } = getConfigFile(cwd, `medusa-config`)
     const { featureFlags } = configModule
+
+    if (isObject(env)) {
+      Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
+    }
 
     const featureFlagsLoader =
       require("@medusajs/medusa/dist/loaders/feature-flags").default

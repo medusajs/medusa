@@ -26,9 +26,13 @@ export async function updateProductsVariantsPrices({
     data.productsHandleVariantsIndexPricesMap
 
   const productVariantService = container.resolve("productVariantService")
+  const regionService = container.resolve("regionService")
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+  const medusaApp = container.resolve("medusaApp")
   const productVariantServiceTx = productVariantService.withTransaction(manager)
-
   const variantIdsPricesData: any[] = []
+  const variantPricesMap = new Map<string, any[]>()
+
   const productsMap = new Map<string, ProductTypes.ProductDTO>(
     products.map((p) => [p.handle!, p])
   )
@@ -50,10 +54,51 @@ export async function updateProductsVariantsPrices({
         variantId: variant.id,
         prices: item.prices,
       })
+
+      variantPricesMap.set(variant.id, [])
+
+      item.prices.forEach(async (price) => {
+        const obj = {
+          amount: price.amount,
+          currency_code: price.currency_code,
+          rules: {},
+        }
+
+        if (price.region_id) {
+          const region = await regionService.retrieve(price.region_id)
+          obj.currency_code = region.currency_code
+          obj.rules = {
+            region_id: price.region_id,
+          }
+        }
+
+        const variantPrices = variantPricesMap.get(variant.id)
+        variantPrices?.push(obj)
+      })
     })
   }
 
-  await productVariantServiceTx.updateVariantPrices(variantIdsPricesData)
+  if (featureFlagRouter.isFeatureEnabled("pricing_integration")) {
+    const pricingModuleService = container.resolve("pricingModuleService")
+
+    for (let { variantId } of variantIdsPricesData) {
+      const priceSet = await pricingModuleService.create({
+        rules: [{ rule_attribute: "region_id" }],
+        prices: variantPricesMap.get(variantId),
+      })
+
+      await medusaApp.link.create({
+        productService: {
+          variant_id: variantId,
+        },
+        pricingService: {
+          price_set_id: priceSet.id,
+        },
+      })
+    }
+  } else {
+    await productVariantServiceTx.updateVariantPrices(variantIdsPricesData)
+  }
 }
 
 updateProductsVariantsPrices.aliases = {

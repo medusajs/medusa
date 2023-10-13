@@ -17,7 +17,6 @@ import {
   PricingContext,
   ProductVariantPricing,
   TaxedPricing,
-  VariantPriceSetRes,
 } from "../types/pricing"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
 
@@ -25,6 +24,7 @@ import { EntityManager } from "typeorm"
 import { FlagRouter } from "@medusajs/utils"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import { MedusaError } from "medusa-core-utils"
+import { PriceSetMoneyAmountDTO } from "@medusajs/types"
 import PricingIntegrationFeatureFlag from "../loaders/feature-flags/pricing-integration"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
@@ -215,16 +215,16 @@ class PricingService extends TransactionBaseService {
       context.price_selection
     )
 
-    if (!queryContext.currency_code) {
-      return new Map()
-    }
+    let priceSets: CalculatedPriceSetDTO[] = []
 
-    const priceSets = (await this.pricingModuleService.calculatePrices(
-      { id: priceSetIds },
-      {
-        context: queryContext as any,
-      }
-    )) as unknown as CalculatedPriceSetDTO[]
+    if (queryContext.currency_code) {
+      priceSets = (await this.pricingModuleService.calculatePrices(
+        { id: priceSetIds },
+        {
+          context: queryContext as any,
+        }
+      )) as unknown as CalculatedPriceSetDTO[]
+    }
 
     const priceSetMap = new Map<string, CalculatedPriceSetDTO>(
       priceSets.map((priceSet) => [priceSet.id, priceSet])
@@ -622,6 +622,7 @@ class PricingService extends TransactionBaseService {
       product.variants.map((productVariant): PricedVariant => {
         const variantPricing = productsVariantsPricingMap.get(product.id)!
         const pricing = variantPricing[productVariant.id]
+
         Object.assign(productVariant, pricing)
         return productVariant as unknown as PricedVariant
       })
@@ -657,13 +658,18 @@ class PricingService extends TransactionBaseService {
       (variantPriceSet) => variantPriceSet.price_set_id
     )
 
-    const priceSetMoneyAmounts =
+    const priceSetMoneyAmounts: PriceSetMoneyAmountDTO[] =
       await this.pricingModuleService.listPriceSetMoneyAmounts(
         {
           price_set_id: priceSetIds,
         },
         {
-          relations: ["money_amount", "price_set"],
+          relations: [
+            "money_amount",
+            "price_set",
+            "price_rules",
+            "price_rules.rule_type",
+          ],
         }
       )
 
@@ -675,10 +681,24 @@ class PricingService extends TransactionBaseService {
         if (!variantId) {
           return map
         }
+
+        const regionId = priceSetMoneyAmount.price_rules!.find(
+          (pr) => pr.rule_type.rule_attribute === "region_id"
+        )?.value
+
+        const moneyAmount = {
+          ...priceSetMoneyAmount.money_amount,
+          region_id: null as null | string,
+        }
+
+        if (regionId) {
+          moneyAmount.region_id = regionId
+        }
+
         if (map.has(variantId)) {
-          map.get(variantId).push(priceSetMoneyAmount.money_amount)
+          map.get(variantId).push(moneyAmount)
         } else {
-          map.set(variantId, [priceSetMoneyAmount.money_amount])
+          map.set(variantId, [moneyAmount])
         }
         return map
       },
@@ -764,6 +784,7 @@ class PricingService extends TransactionBaseService {
         }
 
         Object.assign(productVariant, pricing)
+
         return productVariant as unknown as PricedVariant
       })
 

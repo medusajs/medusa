@@ -5,7 +5,6 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
-  LoaderOptions,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
@@ -27,7 +26,7 @@ import { cleanGraphQLSchema } from "./utils"
 const LinkModulePackage = "@medusajs/link-modules"
 
 export type RunMigrationFn = (
-  options: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
+  options?: ModuleServiceInitializeOptions,
   injectedDependencies?: Record<any, any>
 ) => Promise<void>
 
@@ -151,6 +150,18 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
   }
 }
 
+export type MedusaAppOutput = {
+  modules: Record<string, LoadedModule | LoadedModule[]>
+  link: RemoteLink | undefined
+  query: (
+    query: string | RemoteJoinerQuery | object,
+    variables?: Record<string, unknown>
+  ) => Promise<any>
+  entitiesMap?: Record<string, any>
+  notFound?: Record<string, Record<string, string>>
+  runMigrations: RunMigrationFn
+}
+
 export async function MedusaApp(
   {
     sharedResourcesConfig,
@@ -174,17 +185,7 @@ export async function MedusaApp(
   } = {
     injectedDependencies: {},
   }
-): Promise<{
-  modules: Record<string, LoadedModule | LoadedModule[]>
-  link: RemoteLink | undefined
-  query: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
-  entitiesMap?: Record<string, any>
-  notFound?: Record<string, Record<string, string>>
-  runMigrations: RunMigrationFn
-}> {
+): Promise<MedusaAppOutput> {
   const modules: MedusaModuleConfig =
     modulesConfig ??
     (
@@ -248,19 +249,24 @@ export async function MedusaApp(
     return await remoteQuery.query(query, variables)
   }
 
-  const runMigrations: RunMigrationFn = async (): Promise<void> => {
+  const runMigrations: RunMigrationFn = async (
+    linkModuleOptions
+  ): Promise<void> => {
     for (const moduleName of Object.keys(allModules)) {
-      const loadedModule = allModules[moduleName]
+      const moduleResolution = MedusaModule.getModuleResolutions(moduleName)
 
       await MedusaModule.migrateUp(
-        loadedModule.definition.key,
-        loadedModule.resolutionPath,
-        loadedModule.options
+        moduleResolution.definition.key,
+        moduleResolution.resolutionPath as string,
+        moduleResolution.options
       )
     }
 
     linkModuleMigration &&
-      (await linkModuleMigration(linkResolution.options, injectedDependencies))
+      (await linkModuleMigration({
+        options: linkModuleOptions,
+        injectedDependencies,
+      }))
   }
 
   return {
