@@ -1,63 +1,63 @@
 import { IInventoryService } from "@medusajs/types"
 import {
-    buildRelations,
-    buildSelects,
-    FlagRouter,
-    isDefined,
-    MedusaError,
+  buildRelations,
+  buildSelects,
+  FlagRouter,
+  isDefined,
+  MedusaError,
 } from "@medusajs/utils"
 import {
-    EntityManager,
-    FindManyOptions,
-    FindOptionsWhere,
-    ILike,
-    IsNull,
-    Not,
-    Raw,
+  EntityManager,
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+  IsNull,
+  Not,
+  Raw,
 } from "typeorm"
 import {
-    CartService,
-    CustomerService,
-    DiscountService,
-    DraftOrderService,
-    FulfillmentProviderService,
-    FulfillmentService,
-    GiftCardService,
-    LineItemService,
-    NewTotalsService,
-    PaymentProviderService,
-    ProductVariantInventoryService,
-    RegionService,
-    ShippingOptionService,
-    ShippingProfileService,
-    TaxProviderService,
-    TotalsService,
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  FulfillmentProviderService,
+  FulfillmentService,
+  GiftCardService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TaxProviderService,
+  TotalsService,
 } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-    Address,
-    Cart,
-    ClaimOrder,
-    Fulfillment,
-    FulfillmentItem,
-    FulfillmentStatus,
-    GiftCard,
-    LineItem,
-    Order,
-    OrderStatus,
-    Payment,
-    PaymentStatus,
-    Return,
-    Swap,
-    TrackingLink,
+  Address,
+  Cart,
+  ClaimOrder,
+  Fulfillment,
+  FulfillmentItem,
+  FulfillmentStatus,
+  GiftCard,
+  LineItem,
+  Order,
+  OrderStatus,
+  Payment,
+  PaymentStatus,
+  Return,
+  Swap,
+  TrackingLink,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
-    CreateFulfillmentOrder,
-    FulFillmentItemType,
+  CreateFulfillmentOrder,
+  FulFillmentItemType,
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
@@ -733,7 +733,13 @@ class OrderService extends TransactionBaseService {
       let giftCardableAmountBalance = giftCardableAmount
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
-      for (const giftCard of cart.gift_cards) {
+      // Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
+      const orderedGiftCards = cart.gift_cards.sort((a, b) => {
+        const aEnd = a.ends_at ?? new Date(2100, 1, 1)
+        const bEnd = b.ends_at ?? new Date(2100, 1, 1)
+        return aEnd.getTime() - bEnd.getTime() || a.balance - b.balance
+      })
+      for (const giftCard of orderedGiftCards) {
         const newGiftCardBalance = Math.max(
           0,
           giftCard.balance - giftCardableAmountBalance
@@ -755,6 +761,10 @@ class OrderService extends TransactionBaseService {
 
         giftCardableAmountBalance =
           giftCardableAmountBalance - giftCardBalanceUsed
+
+        if (giftCardableAmountBalance == 0) {
+          break
+        }
       }
 
       const shippingOptionServiceTx =

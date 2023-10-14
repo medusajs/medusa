@@ -44,6 +44,7 @@ import { validator } from "../../../../utils/validator"
  *       }'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:

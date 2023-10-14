@@ -29,6 +29,7 @@ class MockRepo {
     this.findAndCount_ = findAndCount
     this.findOneWithRelations_ = findOneWithRelations
     this.insertBulk_ = insertBulk
+    this.count_ = count
 
     this.metadata = metadata ?? {
       columns: [],
@@ -108,7 +109,7 @@ class MockRepo {
   })
   count = jest.fn().mockImplementation((...args) => {
     if (this.count_) {
-      return this.count(...args)
+      return this.count_(...args)
     }
     return {}
   })

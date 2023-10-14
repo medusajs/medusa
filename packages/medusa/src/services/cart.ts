@@ -1,29 +1,3 @@
-import { FlagRouter } from "@medusajs/utils"
-import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
-import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
-import {
-  CustomShippingOptionService,
-  CustomerService,
-  DiscountService,
-  EventBusService,
-  GiftCardService,
-  LineItemAdjustmentService,
-  LineItemService,
-  NewTotalsService,
-  PaymentProviderService,
-  ProductService,
-  ProductVariantInventoryService,
-  ProductVariantService,
-  RegionService,
-  SalesChannelService,
-  ShippingOptionService,
-  StoreService,
-  TaxProviderService,
-  TotalsService,
-} from "."
-import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
@@ -38,11 +12,12 @@ import {
   SalesChannel,
   ShippingMethod,
 } from "../models"
-import { AddressRepository } from "../repositories/address"
-import { CartRepository } from "../repositories/cart"
-import { LineItemRepository } from "../repositories/line-item"
-import { PaymentSessionRepository } from "../repositories/payment-session"
-import { ShippingMethodRepository } from "../repositories/shipping-method"
+import {
+  AddressPayload,
+  FindConfig,
+  TotalField,
+  WithRequiredProperty,
+} from "../types/common"
 import {
   CartCreateProps,
   CartUpdateProps,
@@ -52,13 +27,43 @@ import {
   isCart,
 } from "../types/cart"
 import {
-  AddressPayload,
-  FindConfig,
-  TotalField,
-  WithRequiredProperty,
-} from "../types/common"
-import { PaymentSessionInput } from "../types/payment"
+  CustomShippingOptionService,
+  CustomerService,
+  DiscountService,
+  EventBusService,
+  GiftCardService,
+  LineItemAdjustmentService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  ProductVariantService,
+  RegionService,
+  SalesChannelService,
+  ShippingOptionService,
+  ShippingProfileService,
+  StoreService,
+  TaxProviderService,
+  TotalsService,
+} from "."
+import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
+import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { buildQuery, isString, setMetadata } from "../utils"
+import { isEmpty, isEqual } from "lodash"
+
+import { AddressRepository } from "../repositories/address"
+import { CartRepository } from "../repositories/cart"
+import { FlagRouter } from "@medusajs/utils"
+import { IsNumber } from "class-validator"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
+import { LineItemRepository } from "../repositories/line-item"
+import { PaymentSessionInput } from "../types/payment"
+import { PaymentSessionRepository } from "../repositories/payment-session"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { validateEmail } from "../utils/is-email"
 
 type InjectedDependencies = {
@@ -79,6 +84,7 @@ type InjectedDependencies = {
   regionService: RegionService
   lineItemService: LineItemService
   shippingOptionService: ShippingOptionService
+  shippingProfileService: ShippingProfileService
   customerService: CustomerService
   discountService: DiscountService
   giftCardService: GiftCardService
@@ -88,6 +94,7 @@ type InjectedDependencies = {
   lineItemAdjustmentService: LineItemAdjustmentService
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
+  pricingService: PricingService
 }
 
 type TotalsConfig = {
@@ -119,6 +126,7 @@ class CartService extends TransactionBaseService {
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly customerService_: CustomerService
   protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly shippingProfileService_: ShippingProfileService
   protected readonly discountService_: DiscountService
   protected readonly giftCardService_: GiftCardService
   protected readonly taxProviderService_: TaxProviderService
@@ -130,6 +138,7 @@ class CartService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly pricingService_: PricingService
 
   constructor({
     cartRepository,
@@ -143,6 +152,7 @@ class CartService extends TransactionBaseService {
     regionService,
     lineItemService,
     shippingOptionService,
+    shippingProfileService,
     customerService,
     discountService,
     giftCardService,
@@ -157,6 +167,7 @@ class CartService extends TransactionBaseService {
     featureFlagRouter,
     storeService,
     productVariantInventoryService,
+    pricingService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -172,6 +183,7 @@ class CartService extends TransactionBaseService {
     this.paymentProviderService_ = paymentProviderService
     this.customerService_ = customerService
     this.shippingOptionService_ = shippingOptionService
+    this.shippingProfileService_ = shippingProfileService
     this.discountService_ = discountService
     this.giftCardService_ = giftCardService
     this.totalsService_ = totalsService
@@ -186,6 +198,7 @@ class CartService extends TransactionBaseService {
     this.featureFlagRouter_ = featureFlagRouter
     this.storeService_ = storeService
     this.productVariantInventoryService_ = productVariantInventoryService
+    this.pricingService_ = pricingService
   }
 
   /**
@@ -220,6 +233,21 @@ class CartService extends TransactionBaseService {
         MedusaError.Types.NOT_FOUND,
         `"cartId" must be defined`
       )
+    }
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      )
+    ) {
+      if (Array.isArray(options.relations)) {
+        for (let i = 0; i < options.relations.length; i++) {
+          if (options.relations[i].startsWith("items.variant")) {
+            options.relations[i] = "items"
+          }
+        }
+      }
+      options.relations = [...new Set(options.relations)]
     }
 
     const { totalsToSelect } = this.transformQueryForTotals_(options)
@@ -293,10 +321,25 @@ class CartService extends TransactionBaseService {
   ): Promise<WithRequiredProperty<Cart, "total">> {
     const relations = this.getTotalsRelations(options)
 
-    const cart = await this.retrieve(cartId, {
-      ...options,
-      relations,
-    })
+    const opt = { ...options, relations }
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      )
+    ) {
+      if (Array.isArray(opt.relations)) {
+        for (let i = 0; i < opt.relations.length; i++) {
+          if (opt.relations[i].startsWith("items.variant")) {
+            opt.relations[i] = "items"
+          }
+        }
+      }
+
+      opt.relations = [...new Set(opt.relations)]
+    }
+
+    const cart = await this.retrieve(cartId, opt)
 
     return await this.decorateTotals(cart, totalsConfig)
   }
@@ -547,23 +590,21 @@ class CartService extends TransactionBaseService {
    */
   protected validateLineItemShipping_(
     shippingMethods: ShippingMethod[],
-    lineItem: LineItem
+    lineItemShippingProfiledId: string
   ): boolean {
-    if (!lineItem.variant_id) {
+    if (!lineItemShippingProfiledId) {
       return true
     }
 
     if (
       shippingMethods &&
       shippingMethods.length &&
-      lineItem.variant &&
-      lineItem.variant.product
+      lineItemShippingProfiledId
     ) {
-      const productProfile = lineItem.variant.product.profile_id
       const selectedProfiles = shippingMethods.map(
         ({ shipping_option }) => shipping_option.profile_id
       )
-      return selectedProfiles.includes(productProfile)
+      return selectedProfiles.includes(lineItemShippingProfiledId)
     }
 
     return false
@@ -757,7 +798,7 @@ class CartService extends TransactionBaseService {
   ): Promise<void> {
     const items: LineItem[] = Array.isArray(lineItems) ? lineItems : [lineItems]
 
-    const select: (keyof Cart)[] = ["id"]
+    const select: (keyof Cart)[] = ["id", "customer_id", "region_id"]
 
     if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
       select.push("sales_channel_id")
@@ -860,9 +901,32 @@ class CartService extends TransactionBaseService {
           }
 
           if (currentItem) {
+            const variantsPricing = await this.pricingService_
+              .withTransaction(transactionManager)
+              .getProductVariantsPricing(
+                [
+                  {
+                    variantId: item.variant_id!,
+                    quantity: item.quantity,
+                  },
+                ],
+                {
+                  region_id: cart.region_id,
+                  customer_id: cart.customer_id,
+                  include_discount_prices: true,
+                }
+              )
+
+            const { calculated_price } =
+              variantsPricing[currentItem.variant_id!]
+
             lineItemsToUpdate[currentItem.id] = {
               quantity: item.quantity,
               has_shipping: false,
+            }
+
+            if (isDefined(calculated_price)) {
+              lineItemsToUpdate[currentItem.id].unit_price = calculated_price
             }
           } else {
             // Since the variant is eager loaded, we are removing it before the line item is being created.
@@ -937,11 +1001,12 @@ class CartService extends TransactionBaseService {
   async updateLineItem(
     cartId: string,
     lineItemId: string,
-    lineItemUpdate: LineItemUpdate
+    update: LineItemUpdate
   ): Promise<Cart> {
+    const { should_calculate_prices, ...lineItemUpdate } = update
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const select: (keyof Cart)[] = ["id"]
+        const select: (keyof Cart)[] = ["id", "region_id", "customer_id"]
         if (
           this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
@@ -977,8 +1042,30 @@ class CartService extends TransactionBaseService {
             if (!hasInventory) {
               throw new MedusaError(
                 MedusaError.Types.NOT_ALLOWED,
-                "Inventory doesn't cover the desired quantity"
+                "Inventory doesn't cover the desired quantity",
+                MedusaError.Codes.INSUFFICIENT_INVENTORY
               )
+            }
+
+            if (should_calculate_prices) {
+              const variantsPricing = await this.pricingService_
+                .withTransaction(transactionManager)
+                .getProductVariantsPricing(
+                  [
+                    {
+                      variantId: lineItem.variant_id,
+                      quantity: lineItemUpdate.quantity,
+                    },
+                  ],
+                  {
+                    region_id: cart.region_id,
+                    customer_id: cart.customer_id,
+                    include_discount_prices: true,
+                  }
+                )
+
+              const { calculated_price } = variantsPricing[lineItem.variant_id]
+              lineItemUpdate.unit_price = calculated_price ?? undefined
             }
           }
         }
@@ -1064,7 +1151,7 @@ class CartService extends TransactionBaseService {
     }
   }
 
-  async update(cartId: string, data: CartUpdateProps): Promise<Cart> {
+  async update(cartOrId: string | Cart, data: CartUpdateProps): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cartRepo = transactionManager.withRepository(this.cartRepository_)
@@ -1083,18 +1170,11 @@ class CartService extends TransactionBaseService {
           "discounts.rule",
         ]
 
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            SalesChannelFeatureFlag.key
-          ) &&
-          data.sales_channel_id
-        ) {
-          relations.push("items.variant.product.profiles")
-        }
-
-        const cart = await this.retrieve(cartId, {
-          relations,
-        })
+        const cart = !isString(cartOrId)
+          ? cartOrId
+          : await this.retrieve(cartOrId, {
+              relations,
+            })
 
         const originalCartCustomer = { ...(cart.customer ?? {}) }
         if (data.customer_id) {
@@ -2163,10 +2243,33 @@ class CartService extends TransactionBaseService {
           const lineItemServiceTx =
             this.lineItemService_.withTransaction(transactionManager)
 
+          let productShippinProfileMap = new Map<string, string>()
+
+          if (
+            this.featureFlagRouter_.isFeatureEnabled(
+              IsolateProductDomainFeatureFlag.key
+            )
+          ) {
+            productShippinProfileMap =
+              await this.shippingProfileService_.getMapProfileIdsByProductIds(
+                cart.items.map((item) => item.variant.product_id)
+              )
+          } else {
+            productShippinProfileMap = new Map<string, string>(
+              cart.items.map((item) => [
+                item.variant?.product?.id,
+                item.variant?.product?.profile_id,
+              ])
+            )
+          }
+
           await Promise.all(
             cart.items.map(async (item) => {
               return lineItemServiceTx.update(item.id, {
-                has_shipping: this.validateLineItemShipping_(methods, item),
+                has_shipping: this.validateLineItemShipping_(
+                  methods,
+                  productShippinProfileMap.get(item.variant?.product_id)!
+                ),
               })
             })
           )

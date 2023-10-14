@@ -65,7 +65,7 @@ import { PriceList } from "../../../../models"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/price-lists' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "New Price List",
@@ -82,6 +82,7 @@ import { PriceList } from "../../../../models"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:

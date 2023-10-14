@@ -1,4 +1,5 @@
 import React, { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
@@ -70,6 +71,7 @@ const FulfillmentLine = ({
   handleQuantityUpdate: (value: number, id: string) => void
   setErrors: (errors: Record<string, string>) => void
 }) => {
+  const { t } = useTranslation()
   const { isFeatureEnabled } = useFeatureFlag()
   const isLocationFulfillmentEnabled =
     isFeatureEnabled("inventoryService") &&
@@ -134,7 +136,10 @@ const FulfillmentLine = ({
         return errors
       }
 
-      errors[item.id] = "Quantity is not valid"
+      errors[item.id] = t(
+        "create-fulfillment-quantity-is-not-valid",
+        "Quantity is not valid"
+      )
       return errors
     })
   }, [validQuantity, setErrors, item.id])
@@ -219,7 +224,14 @@ const FulfillmentLine = ({
             handleQuantityUpdate(e.target.valueAsNumber, item.id)
           }
           errors={
-            validQuantity ? undefined : { quantity: "Quantity is not valid" }
+            validQuantity
+              ? undefined
+              : {
+                  quantity: t(
+                    "create-fulfillment-quantity-is-not-valid",
+                    "Quantity is not valid"
+                  ),
+                }
           }
         />
       </div>

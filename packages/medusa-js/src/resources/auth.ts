@@ -2,8 +2,10 @@ import {
   StoreGetAuthEmailRes,
   StorePostAuthReq,
   StoreAuthRes,
+  StoreBearerAuthRes,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../typings"
+import JwtTokenManager from "../jwt-token-manager"
 import BaseResource from "./base"
 
 class AuthResource extends BaseResource {
@@ -47,6 +49,25 @@ class AuthResource extends BaseResource {
   exists(email: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreGetAuthEmailRes> {
     const path = `/store/auth/${email}`
     return this.client.request("GET", path, undefined, {}, customHeaders)
+  }
+
+  /**
+   * @description Retrieves a new JWT access token
+   * @param {AdminPostAuthReq} payload
+   * @param customHeaders
+   * @return {ResponsePromise<AdminBearerAuthRes>}
+   */
+  getToken(
+    payload: StorePostAuthReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreBearerAuthRes> {
+    const path = `/store/auth/token`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+      .then((res) => {
+        JwtTokenManager.registerJwt(res.data.access_token, "store");
+        
+        return res
+      });
   }
 }
 

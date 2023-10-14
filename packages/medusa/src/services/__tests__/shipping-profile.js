@@ -1,3 +1,4 @@
+import { FlagRouter } from "@medusajs/utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ShippingProfileService from "../shipping-profile"
 
@@ -15,6 +16,7 @@ describe("ShippingProfileService", () => {
         const profileService = new ShippingProfileService({
           manager: MockManager,
           shippingProfileRepository: profRepo,
+          featureFlagRouter: new FlagRouter({}),
         })
 
         await profileService.retrieve(IdMap.getId("validId"))
@@ -53,6 +55,7 @@ describe("ShippingProfileService", () => {
       shippingProfileRepository: profRepo,
       productService,
       shippingOptionService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -106,6 +109,7 @@ describe("ShippingProfileService", () => {
     const profileService = new ShippingProfileService({
       manager: MockManager,
       shippingProfileRepository: profRepo,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -136,6 +140,7 @@ describe("ShippingProfileService", () => {
       manager: MockManager,
       shippingProfileRepository: profRepo,
       productService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -219,6 +224,7 @@ describe("ShippingProfileService", () => {
       shippingProfileRepository: profRepo,
       shippingOptionService,
       customShippingOptionService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -311,6 +317,7 @@ describe("ShippingProfileService", () => {
       manager: MockManager,
       shippingProfileRepository: profRepo,
       shippingOptionService,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     beforeEach(() => {
@@ -335,6 +342,7 @@ describe("ShippingProfileService", () => {
     const profileService = new ShippingProfileService({
       manager: MockManager,
       shippingProfileRepository: profRepo,
+      featureFlagRouter: new FlagRouter({}),
     })
 
     afterEach(() => {

@@ -16,7 +16,7 @@ const testProduct1Id = "test-product1"
 const testProductFilteringId1 = "test-product_filtering_1"
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -222,14 +222,14 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       })
 
       const manager = dbConnection.manager
-      categoryWithProduct = await manager.create(ProductCategory, {
+      categoryWithProduct = manager.create(ProductCategory, {
         id: categoryWithProductId,
         name: "category with Product",
         products: [{ id: testProductId }],
       })
       await manager.save(categoryWithProduct)
 
-      categoryWithoutProduct = await manager.create(ProductCategory, {
+      categoryWithoutProduct = manager.create(ProductCategory, {
         id: categoryWithoutProductId,
         name: "category without product",
       })

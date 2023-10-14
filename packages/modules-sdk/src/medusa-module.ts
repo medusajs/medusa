@@ -52,6 +52,7 @@ export class MedusaModule {
   private static instances_: Map<string, any> = new Map()
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
+  private static joinerConfig_: Map<string, ModuleJoinerConfig> = new Map()
 
   public static getLoadedModules(
     aliases?: Map<string, string>
@@ -68,6 +69,7 @@ export class MedusaModule {
   public static clearInstances(): void {
     MedusaModule.instances_.clear()
     MedusaModule.modules_.clear()
+    MedusaModule.joinerConfig_.clear()
   }
 
   public static isInstalled(moduleKey: string, alias?: string): boolean {
@@ -79,6 +81,22 @@ export class MedusaModule {
     }
 
     return MedusaModule.modules_.has(moduleKey)
+  }
+
+  public static getJoinerConfig(moduleKey: string): ModuleJoinerConfig {
+    return MedusaModule.joinerConfig_.get(moduleKey)!
+  }
+
+  public static getAllJoinerConfigs(): ModuleJoinerConfig[] {
+    return [...MedusaModule.joinerConfig_.values()]
+  }
+
+  public static setJoinerConfig(
+    moduleKey: string,
+    config: ModuleJoinerConfig
+  ): ModuleJoinerConfig {
+    MedusaModule.joinerConfig_.set(moduleKey, config)
+    return config
   }
 
   public static getModuleInstance(
@@ -218,6 +236,7 @@ export class MedusaModule {
         ].__joinerConfig()
 
         services[keyName].__joinerConfig = joinerConfig
+        MedusaModule.setJoinerConfig(keyName, joinerConfig)
       }
 
       MedusaModule.registerModule(keyName, {
@@ -329,6 +348,7 @@ export class MedusaModule {
         ].__joinerConfig()
 
         services[keyName].__joinerConfig = joinerConfig
+        MedusaModule.setJoinerConfig(keyName, joinerConfig)
 
         if (!joinerConfig.isLink) {
           throw new Error(

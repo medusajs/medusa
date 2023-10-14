@@ -19,7 +19,7 @@ import {
 import * as linkDefinitions from "../definitions"
 import { getMigration } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
-import { composeLinkName } from "../utils"
+import { composeLinkName, generateGraphQLSchema } from "../utils"
 import { getLinkModuleDefinition } from "./module-definition"
 
 export const initialize = async (
@@ -90,11 +90,15 @@ export const initialize = async (
         continue
       }
     } else if (
-      !modulesLoadedKeys.includes(primary.serviceName) ||
-      !modulesLoadedKeys.includes(foreign.serviceName)
+      (!primary.isInternalService &&
+        !modulesLoadedKeys.includes(primary.serviceName)) ||
+      (!foreign.isInternalService &&
+        !modulesLoadedKeys.includes(foreign.serviceName))
     ) {
       continue
     }
+
+    definition.schema = generateGraphQLSchema(definition, primary, foreign)
 
     const moduleDefinition = getLinkModuleDefinition(
       definition,
@@ -167,17 +171,17 @@ export async function runMigrations(
         )
     )
 
-    if (modulesLoadedKeys.includes(serviceKey)) {
-      continue
-    } else if (allLinks.has(serviceKey)) {
+    if (allLinks.has(serviceKey)) {
       throw new Error(`Link module ${serviceKey} already exists.`)
     }
 
     allLinks.add(serviceKey)
 
     if (
-      !modulesLoadedKeys.includes(primary.serviceName) ||
-      !modulesLoadedKeys.includes(foreign.serviceName)
+      (!primary.isInternalService &&
+        !modulesLoadedKeys.includes(primary.serviceName)) ||
+      (!foreign.isInternalService &&
+        !modulesLoadedKeys.includes(foreign.serviceName))
     ) {
       continue
     }

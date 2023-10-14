@@ -2,6 +2,7 @@ import { Discount } from "@medusajs/medusa"
 import { useAdminUpdateDiscount } from "medusa-react"
 import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import DiscountGeneralForm, {
   DiscountGeneralFormType,
 } from "../../../../components/forms/discount/discount-general-form"
@@ -32,6 +33,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
   open,
   onClose,
 }) => {
+  const { t } = useTranslation()
   const { mutate, isLoading } = useAdminUpdateDiscount(discount.id)
   const notification = useNotification()
 
@@ -56,11 +58,22 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
       },
       {
         onSuccess: () => {
-          notification("Success", "Discount updated successfully", "success")
+          notification(
+            t("general-success", "Success"),
+            t(
+              "general-discount-updated-successfully",
+              "Discount updated successfully"
+            ),
+            "success"
+          )
           onClose()
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(
+            t("general-error", "Error"),
+            getErrorMessage(error),
+            "error"
+          )
         },
       }
     )
@@ -76,13 +89,17 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
     <Modal open={open} handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">Edit general information</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("general-edit-general-information", "Edit general information")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div className="gap-y-xlarge flex flex-col">
               <div>
-                <h2 className="inter-base-semibold mb-base">Details</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("general-details", "Details")}
+                </h2>
                 <DiscountGeneralForm
                   form={nestedForm(form, "general")}
                   type={discount.rule.type}
@@ -90,7 +107,9 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
                 />
               </div>
               <div>
-                <h2 className="inter-base-semibold mb-base">Metadata</h2>
+                <h2 className="inter-base-semibold mb-base">
+                  {t("general-metadata", "Metadata")}
+                </h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
             </div>
@@ -103,7 +122,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
                 type="button"
                 onClick={onClose}
               >
-                Cancel
+                {t("general-cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -112,7 +131,7 @@ const EditGeneral: React.FC<EditGeneralProps> = ({
                 disabled={isLoading}
                 loading={isLoading}
               >
-                Save and close
+                {t("general-save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

@@ -2,6 +2,7 @@ import { Order } from "@medusajs/medusa"
 import { useAdminRegion } from "medusa-react"
 import React, { useContext, useEffect, useMemo } from "react"
 import { Controller, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import Input from "../../../../components/molecules/input"
 import Modal from "../../../../components/molecules/modal"
@@ -34,6 +35,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
   address,
   order,
 }) => {
+  const { t } = useTranslation()
   const { pop } = useContext(LayeredModalContext)
 
   const { register, handleSubmit, control, reset } =
@@ -76,71 +78,80 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
       <form onSubmit={handleSubmit(submit)}>
         <Modal.Content>
           <div className="h-full">
-            <h2 className="inter-base-semibold mb-4">Search for additional </h2>
+            <h2 className="inter-base-semibold mb-4">
+              {t(
+                "rma-sub-modals-search-for-additional",
+                "Search for additional"
+              )}{" "}
+            </h2>
           </div>
           <div>
             <div>
               <div>
-                <span className="inter-base-semibold">General</span>
+                <span className="inter-base-semibold">
+                  {t("rma-sub-modals-general", "General")}
+                </span>
 
                 <div className="gap-x-base gap-y-base grid grid-cols-2">
                   <Input
                     {...register("first_name", {
                       required: true,
                     })}
-                    placeholder="First Name"
-                    label="First Name"
+                    placeholder={t("rma-sub-modals-first-name", "First Name")}
+                    label={t("rma-sub-modals-first-name", "First Name")}
                     required
                   />
                   <Input
                     {...register("last_name", {
                       required: true,
                     })}
-                    placeholder="Last Name"
-                    label="Last Name"
+                    placeholder={t("rma-sub-modals-last-name", "Last Name")}
+                    label={t("rma-sub-modals-last-name", "Last Name")}
                     required
                   />
                   <Input
                     {...register("phone")}
-                    placeholder="Phone"
-                    label="Phone"
+                    placeholder={t("rma-sub-modals-phone", "Phone")}
+                    label={t("rma-sub-modals-phone", "Phone")}
                   />
                 </div>
               </div>
               <div className="mt-8">
-                <span className="inter-base-semibold">Shipping Address</span>
+                <span className="inter-base-semibold">
+                  {t("rma-sub-modals-shipping-address", "Shipping Address")}
+                </span>
                 <div className="gap-y-base my-4 grid">
                   <Input
                     {...register("address_1", {
                       required: true,
                     })}
-                    placeholder="Address 1"
-                    label="Address 1"
+                    placeholder={t("rma-sub-modals-address-1", "Address 1")}
+                    label={t("rma-sub-modals-address-1", "Address 1")}
                     required
                   />
                   <Input
                     {...register("address_2")}
-                    placeholder="Address 2"
-                    label="Address 2"
+                    placeholder={t("rma-sub-modals-address-2", "Address 2")}
+                    label={t("rma-sub-modals-address-2", "Address 2")}
                   />
                 </div>
                 <div className="gap-x-base gap-y-base grid grid-cols-2">
                   <Input
                     {...register("province")}
-                    placeholder="Province"
-                    label="Province"
+                    placeholder={t("rma-sub-modals-province", "Province")}
+                    label={t("rma-sub-modals-province", "Province")}
                   />
                   <Input
                     {...register("postal_code", {
                       required: true,
                     })}
-                    placeholder="Postal code"
-                    label="Postal code"
+                    placeholder={t("rma-sub-modals-postal-code", "Postal code")}
+                    label={t("rma-sub-modals-postal-code", "Postal code")}
                     required
                   />
                   <Input
-                    placeholder="City"
-                    label="City"
+                    placeholder={t("rma-sub-modals-city", "City")}
+                    label={t("rma-sub-modals-city", "City")}
                     {...register("city", {
                       required: true,
                     })}
@@ -156,7 +167,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
                       return (
                         <Select
                           {...field}
-                          label="Country"
+                          label={t("rma-sub-modals-country", "Country")}
                           options={countryOptions}
                           required
                         />
@@ -177,7 +188,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
               onClick={() => pop()}
               type="button"
             >
-              Back
+              {t("rma-sub-modals-back", "Back")}
             </Button>
             <Button
               variant="primary"
@@ -185,7 +196,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
               size="small"
               type="submit"
             >
-              Add
+              {t("rma-sub-modals-add", "Add")}
             </Button>
           </div>
         </Modal.Footer>

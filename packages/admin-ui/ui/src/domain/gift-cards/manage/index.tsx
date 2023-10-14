@@ -1,6 +1,7 @@
 import { Product } from "@medusajs/medusa"
 import { useAdminProducts } from "medusa-react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import WidgetContainer from "../../../components/extensions/widget-container"
@@ -15,6 +16,7 @@ import { getErrorStatus } from "../../../utils/get-error-status"
 
 const Manage = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const { products, error } = useAdminProducts(
     {
@@ -56,7 +58,7 @@ const Manage = () => {
     <div className="pb-5xlarge">
       <BackButton
         path="/a/gift-cards"
-        label="Back to Gift Cards"
+        label={t("manage-back-to-gift-cards", "Back to Gift Cards")}
         className="mb-xsmall"
       />
       <div className="gap-x-base grid grid-cols-12">

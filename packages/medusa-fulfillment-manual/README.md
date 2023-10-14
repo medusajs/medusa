@@ -45,4 +45,6 @@ A minimal fulfillment provider that allows merchants to handle fulfillments manu
 
 2\. Enable the fulfillment provider in the admin. You can refer to [this User Guide](https://docs.medusajs.com/user-guide/regions/providers) to learn how to do that. Alternatively, you can use the [Admin APIs](https://docs.medusajs.com/api/admin#tag/Region/operation/PostRegionsRegion).
 
+3\. Add shipping options for the fulfillment provider. You can do that using either the [Medusa Admin](../../user-guide/regions/shipping-options.mdx) or the [Admin REST APIs](../../modules/regions-and-currencies/admin/manage-regions.mdx#add-a-shipping-option-to-a-region).
+
 3\. Place an order using a storefront or the [Store APIs](https://docs.medusajs.com/api/store). You should be able to use the manual fulfillment provider during checkout.

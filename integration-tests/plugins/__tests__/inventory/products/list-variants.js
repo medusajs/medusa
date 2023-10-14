@@ -12,7 +12,7 @@ jest.setTimeout(30000)
 
 const { simpleProductFactory } = require("../../../../factories")
 const { simpleSalesChannelFactory } = require("../../../../factories")
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("List Variants", () => {
   let appContainer
@@ -64,7 +64,9 @@ describe("List Variants", () => {
         name: "test-location",
       })
 
-      const salesChannel = await simpleSalesChannelFactory(dbConnection, {})
+      const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        is_default: true,
+      })
 
       const product = await simpleProductFactory(dbConnection, {
         variants: [{ id: variantId }],
@@ -124,6 +126,21 @@ describe("List Variants", () => {
           ],
         })
       )
+    })
+
+    it("sets availability correctly", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/store/variants?ids=${variantId}`)
+
+      expect(response.data).toEqual({
+        variants: [
+          expect.objectContaining({
+            purchasable: true,
+            inventory_quantity: 10,
+          }),
+        ],
+      })
     })
   })
 })
