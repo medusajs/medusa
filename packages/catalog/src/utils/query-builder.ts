@@ -11,7 +11,7 @@ import {
 
 export class QueryBuilder {
   private readonly structure: Select
-  private readonly builder: Knex.QueryBuilder
+  private readonly knex: Knex
   private readonly selector: QueryFormat
   private readonly options?: QueryOptions
   private readonly schema: SchemaObjectRepresentation
@@ -25,8 +25,7 @@ export class QueryBuilder {
     this.schema = args.schema
     this.selector = args.selector
     this.options = args.options
-    this.builder = args.knex.queryBuilder()
-
+    this.knex = args.knex
     this.structure = this.selector.select
   }
 
@@ -91,11 +90,10 @@ export class QueryBuilder {
             const path = key.split(".")
             const field = path.pop()
             const attr = path.join(".")
-            builder.where(
-              aliasMapping[attr] + `.data->>${field}`,
-              operator,
-              subValue
-            )
+            builder.whereRaw(`${aliasMapping[attr]}.data->>? ${operator} ?`, [
+              field,
+              subValue,
+            ])
           } else {
             throw new Error(`Unsupported operator: ${subKey}`)
           }
@@ -104,11 +102,15 @@ export class QueryBuilder {
         const path = key.split(".")
         const field = path.pop()
         const attr = path.join(".")
-        builder.where(
-          aliasMapping[attr] + `.data->>${field}`,
-          Array.isArray(value) ? "IN" : "=",
-          value
-        )
+
+        if (Array.isArray(value)) {
+          builder.whereRaw(`${aliasMapping[attr]}.data->>? IN (?)`, [
+            field,
+            value,
+          ])
+        } else {
+          builder.whereRaw(`${aliasMapping[attr]}.data->>? = ?`, [field, value])
+        }
       }
     })
 
@@ -280,15 +282,32 @@ export class QueryBuilder {
   }
 
   public buildQuery(): string {
+    return this.buildQuery_()
+  }
+
+  public buildDistinctQuery(countWhenPaginating = true): string {
+    return this.buildQuery_(true, countWhenPaginating)
+  }
+
+  protected buildQuery_(
+    distinctRootOnly = false,
+    countAllResults = distinctRootOnly
+  ): string {
+    const queryBuilder = this.knex.queryBuilder()
+
     const structure = this.structure
     const filter = this.selector.where ?? {}
-    const order = this.options?.orderBy ?? {}
+
+    const {
+      orderBy: order,
+      skip,
+      take,
+      keepFilteredEntities,
+    } = this.options ?? {}
 
     const orderBy = this.transformOrderBy(
       (order && !Array.isArray(order) ? [order] : order) ?? []
     )
-
-    const { skip, take } = this.options ?? { skip: 0, take: 15 }
 
     const rootKey = this.getStructureKeys(structure)[0]
     const rootStructure = structure[rootKey] as Select
@@ -306,22 +325,47 @@ export class QueryBuilder {
       aliasMapping
     )
 
-    const selectParts = this.buildSelectParts(
-      rootStructure,
-      rootKey,
-      aliasMapping
-    )
+    if (distinctRootOnly) {
+      queryBuilder.select(`${rootEntity}0.id`)
 
-    this.builder.select(selectParts).from(`catalog AS ${rootEntity}0`)
+      if (countAllResults) {
+        queryBuilder.select(
+          this.knex.raw(`COUNT(${rootEntity}0.id) OVER() as count`)
+        )
+      }
+
+      queryBuilder.groupBy(`${rootEntity}0.id`)
+    } else {
+      const selectParts = this.buildSelectParts(
+        rootStructure,
+        rootKey,
+        aliasMapping
+      )
+      queryBuilder.select(selectParts)
+    }
+
+    queryBuilder.from(`catalog AS ${rootEntity}0`)
 
     joinParts.forEach((joinPart) => {
-      this.builder.joinRaw(joinPart)
+      queryBuilder.joinRaw(joinPart)
     })
 
-    this.builder.where(`${aliasMapping[rootEntity]}.name`, "=", entity)
+    let hasRootIds = false
+    if (filter.ids) {
+      queryBuilder
+        .where(`${aliasMapping[rootEntity]}.id`, "IN", filter.ids)
+        .andWhere(`${aliasMapping[rootEntity]}.name`, "=", entity)
+
+      hasRootIds = true
+      delete filter.ids
+    } else {
+      queryBuilder.where(`${aliasMapping[rootEntity]}.name`, "=", entity)
+    }
 
     // WHERE clause
-    this.parseWhere(aliasMapping, filter, this.builder)
+    if (!hasRootIds || (hasRootIds && !keepFilteredEntities)) {
+      this.parseWhere(aliasMapping, filter, queryBuilder)
+    }
 
     // ORDER BY clause
     for (const aliasPath in orderBy) {
@@ -331,17 +375,17 @@ export class QueryBuilder {
       const alias = aliasMapping[attr]
       const direction = orderBy[aliasPath]
 
-      this.builder.orderByRaw(`${alias}.data->>'${field}' ${direction}`)
+      queryBuilder.orderByRaw(`${alias}.data->>'${field}' ${direction}`)
     }
 
-    if (typeof take === "number") {
-      this.builder.limit(take)
+    if (typeof take === "number" && distinctRootOnly) {
+      queryBuilder.limit(take)
     }
-    if (typeof skip === "number") {
-      this.builder.offset(skip)
+    if (typeof skip === "number" && distinctRootOnly) {
+      queryBuilder.offset(skip)
     }
 
-    return this.builder.toQuery()
+    return queryBuilder.toQuery()
   }
 
   public buildObjectFromResultset(

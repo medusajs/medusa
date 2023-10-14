@@ -1,4 +1,5 @@
 import { MedusaApp, Modules } from "@medusajs/modules-sdk"
+import { EventBusTypes, ICatalogModuleService } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Catalog, CatalogRelation } from "@models"
@@ -7,7 +8,6 @@ import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
 import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
 import { EventBusService, schema } from "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
-import { EventBusTypes, ICatalogModuleService } from "@medusajs/types"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -53,14 +53,16 @@ describe("SearchEngineModuleService", function () {
   const moneyAmountId = "money_amount_1"
   const linkId = "link_id_1"
 
+  let a = 0
   remoteQueryMock.mockImplementation((query) => {
     if (query.product) {
       return {
-        id: productId,
+        id: a++ > 0 ? "aaaa" : productId,
       }
     } else if (query.variant) {
       return {
         id: variantId,
+        sku: "aaa test aaa",
         product: [
           {
             id: productId,
@@ -130,6 +132,12 @@ describe("SearchEngineModuleService", function () {
         },
       },
       {
+        eventName: "product.created",
+        data: {
+          id: "PRODUCTASDASDAS",
+        },
+      },
+      {
         eventName: "variant.created",
         data: {
           id: variantId,
@@ -165,7 +173,7 @@ describe("SearchEngineModuleService", function () {
 
     await eventBus.emit(eventDataToEmit)
 
-    expect(remoteQueryMock).toHaveBeenCalledTimes(5)
+    expect(remoteQueryMock).toHaveBeenCalledTimes(6)
 
     const catalogEntries: Catalog[] = await manager.find(Catalog, {})
 
@@ -173,7 +181,7 @@ describe("SearchEngineModuleService", function () {
       return entry.name === "Product"
     })
 
-    expect(productCatalogEntries).toHaveLength(1)
+    expect(productCatalogEntries).toHaveLength(2)
     expect(productCatalogEntries[0].id).toEqual(productId)
 
     const variantCatalogEntries = catalogEntries.filter((entry) => {
@@ -262,22 +270,33 @@ describe("SearchEngineModuleService", function () {
 
     expect(priceSetMoneyAmountCatalogRelationEntries).toHaveLength(1)
 
-    const result = await module.query({
-      select: {
-        product: {
-          variants: {
-            money_amounts: true,
+    const [result, count] = await module.queryAndCount(
+      {
+        select: {
+          product: {
+            variants: {
+              money_amounts: true,
+            },
           },
         },
+        where: {
+          //"product.variants.sku": { $like: "aaa%" },
+        },
       },
-    })
+      {
+        skip: 1,
+        //keepFilteredEntities: true,
+      }
+    )
 
+    expect(count).toEqual(2)
     expect(result).toEqual([
       {
         id: "prod_1",
         variants: [
           {
             id: "var_1",
+            sku: "aaa test aaa",
             money_amounts: [
               {
                 amount: 100,

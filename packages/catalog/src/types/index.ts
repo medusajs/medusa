@@ -109,6 +109,8 @@ export interface StorageProvider {
 
   query(...args): unknown
 
+  queryAndCount(...args): unknown
+
   consumeEvent(
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   ): Subscriber
@@ -135,6 +137,7 @@ export type QueryOptions = {
   skip?: number
   take?: number
   orderBy?: OrderBy | OrderBy[]
+  keepFilteredEntities?: boolean
 }
 
 export type Resultset<Select> = {

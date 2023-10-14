@@ -92,7 +92,14 @@ export default class CatalogModuleService
   }
 
   async query(...args) {
-    return await this.storageProvider_.query.apply(this, args)
+    return await this.storageProvider_.query.apply(this.storageProvider_, args)
+  }
+
+  async queryAndCount(...args) {
+    return await this.storageProvider_.queryAndCount.apply(
+      this.storageProvider_,
+      args
+    )
   }
 
   protected registerListeners() {

@@ -61,9 +61,64 @@ export class PostgresProvider {
       options,
     })
 
+    let hasPagination = false
+    if (
+      typeof options?.take === "number" ||
+      (typeof options?.skip === "number" && options?.skip > 0)
+    ) {
+      hasPagination = true
+    }
+
+    if (hasPagination) {
+      const [rs] = await this.queryAndCount_(selection, options, false)
+      return rs
+    }
+
     const sql = qb.buildQuery()
+
     const resultset = await connection.execute(sql)
     return qb.buildObjectFromResultset(resultset)
+  }
+
+  async queryAndCount(selection: QueryFormat, options?: QueryOptions) {
+    return this.queryAndCount_(selection, options)
+  }
+
+  private async queryAndCount_(
+    selection: QueryFormat,
+    options?: QueryOptions,
+    countWhenPaginating = true
+  ) {
+    const connection = this.container_.manager.getConnection()
+
+    const qbCount = new QueryBuilder({
+      schema: this.schemaObjectRepresentation_,
+      knex: connection.getKnex(),
+      selector: selection,
+      options,
+    })
+
+    const countSql = qbCount.buildDistinctQuery(countWhenPaginating)
+    const countRs = await connection.execute(countSql)
+
+    const ids = countRs.map((r) => r.id)
+    const totalCount = countRs[0]?.count ?? 0
+
+    selection.where = {
+      ids: ids,
+      ...(selection.where ?? {}),
+    }
+
+    const qb = new QueryBuilder({
+      schema: this.schemaObjectRepresentation_,
+      knex: connection.getKnex(),
+      selector: selection,
+      options,
+    })
+    const sql = qb.buildQuery()
+
+    const resultset = await connection.execute(sql)
+    return [qb.buildObjectFromResultset(resultset), +totalCount]
   }
 
   consumeEvent(
