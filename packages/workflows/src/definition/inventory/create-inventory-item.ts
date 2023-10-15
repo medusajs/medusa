@@ -60,5 +60,5 @@ export const createInventoryItems = exportWorkflow<
 >(
   Workflows.CreateInventoryItems,
   CreateInventoryItemActions.createInventoryItems,
-  async (data) => data
+  async ({ data }) => data
 )
