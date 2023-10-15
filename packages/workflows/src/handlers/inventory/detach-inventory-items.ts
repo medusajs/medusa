@@ -10,7 +10,7 @@ export async function detachInventoryItems({
     tag: string
     inventoryItem: InventoryItemDTO
   }[]
-}>): Promise<InventoryItemDTO[]> {
+}>) {
   const { manager } = context
 
   const productVariantInventoryService = container
@@ -30,7 +30,7 @@ export async function detachInventoryItems({
     })
   )
 
-  return data.inventoryItems.map(({ inventoryItem }) => inventoryItem)
+  return data.inventoryItems
 }
 
 detachInventoryItems.aliases = {

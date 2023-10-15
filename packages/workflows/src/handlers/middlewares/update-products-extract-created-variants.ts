@@ -29,14 +29,12 @@ export async function updateProductsExtractCreatedVariants({
 
   return {
     alias: updateProductsExtractCreatedVariants.aliases.output,
-    value: {
-      products: [createdVariants],
-    },
+    value: [{ variants: createdVariants }],
   }
 }
 
 updateProductsExtractCreatedVariants.aliases = {
   preparedData: "preparedData",
   products: "products",
-  output: "updateProductsExtractCreatedVariantsOutput",
+  output: "products",
 }

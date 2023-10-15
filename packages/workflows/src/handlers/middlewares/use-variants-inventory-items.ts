@@ -29,9 +29,9 @@ export async function useVariantsInventoryItems({
 
   const variantItems = inventoryItems.map((item) => ({
     inventoryItem: item,
-    variant: data.updateProductsExtractDeletedVariantsOutput.variants.find(
+    tag: data.updateProductsExtractDeletedVariantsOutput.variants.find(
       (variant) => variant.sku === item.sku
-    ),
+    )!.id,
   }))
 
   return {
