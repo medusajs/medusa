@@ -2026,6 +2026,99 @@ class CartService extends TransactionBaseService {
     })
   }
 
+  async restorePaymentSessions(
+    initialSessions: PaymentSession[],
+    newSessions: PaymentSession[],
+    cart: Cart
+  ) {
+    return this.atomicPhase_(async (manager) => {
+      const psRepo = manager.withRepository(this.paymentSessionRepository_)
+      const paymentProviderServiceTx =
+        this.paymentProviderService_.withTransaction(manager)
+
+      const { total, region, customer } = cart
+
+      const beforeSessionIds = new Set(initialSessions.map((s) => s.id))
+      const beforeSessionsMap = new Map(initialSessions.map((s) => [s.id, s]))
+
+      const afterSessionIds = new Set(newSessions.map((s) => s.id))
+      const afterSessionsMap = new Map(newSessions.map((s) => [s.id, s]))
+
+      // The session that exists after but not before will be deleted
+      const sessionsToDeleteIds = new Set(
+        [...afterSessionIds].filter((x) => !beforeSessionIds.has(x))
+      )
+
+      for (const toDeleteSessionId of Array.from(sessionsToDeleteIds)) {
+        afterSessionIds.delete(toDeleteSessionId) // --> we are only left with sessions to update
+
+        const session = afterSessionsMap.get(toDeleteSessionId)!
+
+        if (session.is_initiated) {
+          await this.paymentProviderService_
+            .withTransaction(manager)
+            .deleteSession(session)
+        }
+
+        await psRepo.delete({ id: session.id })
+      }
+
+      // we are only left with sessions that were updated
+      for (const afterSessionId of Array.from(afterSessionIds)) {
+        const oldSession = beforeSessionsMap.get(afterSessionId)!
+        const newSession = afterSessionsMap.get(afterSessionId)!
+
+        // sessions that were updated probably weren't initiated with the provider
+        // because in that case they would be deleted and recreated
+        if (
+          oldSession.is_selected &&
+          oldSession.is_initiated &&
+          !newSession.is_initiated
+        ) {
+          const updateData = {
+            cart,
+            customer: customer,
+            amount: total!,
+            currency_code: region.currency_code,
+            provider_id: oldSession.provider_id,
+          }
+
+          await paymentProviderServiceTx.updateSession(oldSession, updateData)
+        }
+
+        await psRepo.update(oldSession.id, {
+          is_selected: oldSession.is_selected,
+          is_initiated: oldSession.is_initiated,
+          amount: oldSession.amount,
+          cart_id: oldSession.cart_id,
+          status: oldSession.status,
+          data: oldSession.data as any,
+        })
+      }
+
+      const sessionsToCreateIds = new Set(
+        Array.from(beforeSessionIds).filter((x) => !afterSessionIds.has(x))
+      )
+
+      // We are left with sessions that were removed so need to recreate them
+      for (const toCreateSessionId of [...sessionsToCreateIds]) {
+        const session = beforeSessionsMap.get(toCreateSessionId)!
+
+        if (session.is_selected && session.is_initiated) {
+          await paymentProviderServiceTx.createSession({
+            cart,
+            customer: customer,
+            amount: total!,
+            currency_code: region.currency_code,
+            provider_id: session.provider_id,
+          })
+        }
+
+        await psRepo.save(session)
+      }
+    })
+  }
+
   /**
    * Creates, updates and sets payment sessions associated with the cart. The
    * first time the method is called payment sessions will be created for each
