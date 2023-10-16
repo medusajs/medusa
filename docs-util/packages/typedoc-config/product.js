@@ -35,6 +35,11 @@ module.exports = modulesConfig({
           slug: "/references/product/{{alias}}",
           sidebar_label: "{{alias}}",
         },
+        reflectionTitle: {
+          kind: false,
+          typeParameters: false,
+          suffix: "- Product Module Reference",
+        },
       },
     },
     {
