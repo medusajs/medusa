@@ -57,14 +57,13 @@ describe("buildSchemaObjectRepresentation", function () {
   it("should build the full tree config from a graphql schema", function () {
     const fullRepresentation = buildSchemaObjectRepresentation(config.schema)
 
-    removePropRecursively(fullRepresentation, "moduleConfig")
-
     const expectedProduct = {
       entity: "Product",
       parents: [],
       alias: "product",
       listeners: ["product.created", "product.updated"],
       fields: ["id", "title"],
+      moduleConfig: expect.any(Object),
     }
 
     const expectedProductVariant = {
@@ -79,6 +78,7 @@ describe("buildSchemaObjectRepresentation", function () {
       alias: "variant",
       listeners: ["variants.created", "variants.updated"],
       fields: ["id", "product_id", "sku", "product.id"],
+      moduleConfig: expect.any(Object),
     }
 
     const expectedProductPricingLink = {
@@ -95,6 +95,7 @@ describe("buildSchemaObjectRepresentation", function () {
         "LinkProductVariantPriceSet.detached",
       ],
       fields: ["variant_id", "price_set_id", "variant.id"],
+      moduleConfig: expect.any(Object),
     }
 
     const expectedPriceSet = {
@@ -109,6 +110,7 @@ describe("buildSchemaObjectRepresentation", function () {
       alias: "price_set",
       listeners: ["PriceSet.created", "PriceSet.updated"],
       fields: ["id", "product_variant_price_set.id"],
+      moduleConfig: expect.any(Object),
     }
 
     const expectedMoneyAmount = {
@@ -124,6 +126,7 @@ describe("buildSchemaObjectRepresentation", function () {
       alias: "money_amount",
       listeners: ["prices.created", "prices.updated"],
       fields: ["amount", "price_set.id"],
+      moduleConfig: expect.any(Object),
     }
 
     expect(fullRepresentation).toEqual({
@@ -132,6 +135,14 @@ describe("buildSchemaObjectRepresentation", function () {
       MoneyAmount: expectedMoneyAmount,
       LinkProductVariantPriceSet: expectedProductPricingLink,
       PriceSet: expectedPriceSet,
+
+      _entityModuleConfigMap: {
+        Product: expect.any(Object),
+        ProductVariant: expect.any(Object),
+        MoneyAmount: expect.any(Object),
+        LinkProductVariantPriceSet: expect.any(Object),
+        PriceSet: expect.any(Object),
+      },
 
       _schemaPropertiesMap: {
         product: {

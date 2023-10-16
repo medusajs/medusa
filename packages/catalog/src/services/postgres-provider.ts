@@ -299,6 +299,8 @@ export class PostgresProvider {
         schemaEntityObjectRepresentation.moduleConfig.relationships![1]
           .foreignKey
 
+      //TODO const parentEntityName = schemaEntityObjectRepresentation.moduleConfig
+
       const catalogEntries: Catalog[] = []
 
       for (const entityData of data_) {

@@ -340,6 +340,8 @@ function processEntity(
     moduleJoinerConfigs
   )
 
+  objectRepresentationRef._entityModuleConfigMap[entityName] =
+    currentEntityModule
   currentObjectRepresentationRef.moduleConfig = currentEntityModule
   currentObjectRepresentationRef.alias = alias
 
@@ -427,6 +429,10 @@ function processEntity(
             { objectRepresentationRef }
           )
 
+          objectRepresentationRef._entityModuleConfigMap[
+            linkModuleMetadata.entityName
+          ] = currentEntityModule
+
           /**
            * Add the schema parent entity as a parent to the link module and configure it.
            */
@@ -491,6 +497,10 @@ function processEntity(
               getObjectRepresentationRef(intermediateEntityName, {
                 objectRepresentationRef,
               })
+
+            objectRepresentationRef._entityModuleConfigMap[
+              intermediateEntityName
+            ] = intermediateEntityModule
 
             intermediateEntityObjectRepresentationRef.parents.push({
               ref: parentIntermediateEntityRef,
@@ -601,12 +611,17 @@ function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
     return aliases
   }
 
-  for (const entityRepresentation of Object.values(objectRepresentation)) {
-    const aliases = recursivelyBuildAliasPath(entityRepresentation)
+  for (const objectRepresentationKey of Object.keys(
+    objectRepresentation
+  ).filter((key) => key !== "_entityModuleConfigMap")) {
+    const entityRepresentationRef =
+      objectRepresentation[objectRepresentationKey]
+
+    const aliases = recursivelyBuildAliasPath(entityRepresentationRef)
 
     for (const alias of aliases) {
       aliasMap[alias.alias] = {
-        ref: entityRepresentation,
+        ref: entityRepresentationRef,
       }
 
       if (alias.shortCutOf) {
@@ -634,7 +649,9 @@ export function buildSchemaObjectRepresentation(schema) {
   const executableSchema = makeSchemaExecutable(augmentedSchema)
   const entitiesMap = executableSchema.getTypeMap()
 
-  const objectRepresentation = {} as SchemaObjectRepresentation
+  const objectRepresentation = {
+    _entityModuleConfigMap: {},
+  } as SchemaObjectRepresentation
 
   Object.entries(entitiesMap).forEach(([entityName, entityMapValue]) => {
     if (!entityMapValue.astNode) {
