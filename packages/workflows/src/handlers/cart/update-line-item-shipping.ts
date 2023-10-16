@@ -28,10 +28,12 @@ export async function ensureCorrectLineItemShipping({
     .resolve("lineItemService")
     .withTransaction(manager)
 
+  const cartService = container.resolve("cartService").withTransaction(manager)
+
   const items = await Promise.all(
     cart.items.map(async (item) => {
       return lineItemService.update(item.id, {
-        has_shipping: lineItemService.validateLineItemShipping_(
+        has_shipping: cartService.validateLineItemShipping_(
           cart.shipping_methods,
           item
         ),

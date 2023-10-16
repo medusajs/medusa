@@ -585,7 +585,7 @@ class CartService extends TransactionBaseService {
    * Returns true if all products in the cart can be fulfilled with the current
    * shipping methods.
    * @param shippingMethods - the set of shipping methods to check from
-   * @param lineItem - the line item
+   * @param lineItemShippingProfiledId - shipping profile id
    * @return boolean representing whether shipping method is validated
    */
   protected validateLineItemShipping_(
@@ -601,10 +601,10 @@ class CartService extends TransactionBaseService {
       shippingMethods.length &&
       lineItemShippingProfiledId
     ) {
-      const selectedProfiles = shippingMethods.map(
-        ({ shipping_option }) => shipping_option.profile_id
+      return shippingMethods.some(
+        ({ shipping_option }) =>
+          shipping_option.profile_id === lineItemShippingProfiledId
       )
-      return selectedProfiles.includes(lineItemShippingProfiledId)
     }
 
     return false
