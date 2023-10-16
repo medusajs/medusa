@@ -46,24 +46,24 @@ export class ProductVariant extends SoftDeletableEntity {
   })
   prices: MoneyAmount[]
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  sku: string
+  sku: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  barcode: string
+  barcode: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  ean: string
+  ean: string | null
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  upc: string
+  upc: string | null
 
-  @Column({ nullable: true, default: 0 })
-  variant_rank: number
+  @Column({ nullable: true, type: "text", default: 0 })
+  variant_rank: number | null
 
   @Column({ type: "int" })
   inventory_quantity: number
@@ -74,29 +74,29 @@ export class ProductVariant extends SoftDeletableEntity {
   @Column({ default: true })
   manage_inventory: boolean
 
-  @Column({ nullable: true })
-  hs_code: string
+  @Column({ nullable: true, type: "text" })
+  hs_code: string | null
 
-  @Column({ nullable: true })
-  origin_country: string
+  @Column({ nullable: true, type: "text" })
+  origin_country: string | null
 
-  @Column({ nullable: true })
-  mid_code: string
+  @Column({ nullable: true, type: "text" })
+  mid_code: string | null
 
-  @Column({ nullable: true })
-  material: string
-
-  @Column({ type: "int", nullable: true })
-  weight: number
+  @Column({ nullable: true, type: "text" })
+  material: string | null
 
   @Column({ type: "int", nullable: true })
-  length: number
+  weight: number | null
 
   @Column({ type: "int", nullable: true })
-  height: number
+  length: number | null
 
   @Column({ type: "int", nullable: true })
-  width: number
+  height: number | null
+
+  @Column({ type: "int", nullable: true })
+  width: number | null
 
   @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
     cascade: true,
@@ -113,7 +113,7 @@ export class ProductVariant extends SoftDeletableEntity {
   inventory_items: ProductVariantInventoryItem[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   purchasable?: boolean
 
@@ -176,7 +176,7 @@ export class ProductVariant extends SoftDeletableEntity {
  *     items:
  *       $ref: "#/components/schemas/MoneyAmount"
  *   sku:
- *     description: The unique stock keeping unit used to identify the Product Variant. This will usually be a unqiue identifer for the item that is to be shipped, and can be referenced across multiple systems.
+ *     description: The unique stock keeping unit used to identify the Product Variant. This will usually be a unique identifer for the item that is to be shipped, and can be referenced across multiple systems.
  *     nullable: true
  *     type: string
  *     example: shirt-123

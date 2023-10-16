@@ -87,7 +87,7 @@ export function load(app: Application) {
     type: ParameterType.String,
     defaultValue: "table",
     validate: (x) => {
-      const availableValues = ["table", "list"]
+      const availableValues = ["table", "list", "component"]
       if (!availableValues.includes(x)) {
         throw new Error(
           `Wrong value for objectLiteralTypeDeclarationStyle, the expected value is one of ${availableValues}`
@@ -101,6 +101,13 @@ export function load(app: Application) {
     name: "formatting",
     type: ParameterType.Object,
     defaultValue: {},
+  })
+
+  app.options.addDeclaration({
+    help: "[Markdown Plugin] Whether outputted files should have an mdx extension.",
+    name: "mdxOutput",
+    type: ParameterType.Boolean,
+    defaultValue: false,
   })
 }
 export { MarkdownTheme }

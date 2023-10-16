@@ -65,6 +65,12 @@ export declare module "@medusajs/medusa/dist/models/product" {
 
 Notice that you must pass the attributes you added to the entity into the `interface`. The attributes will be merged with the attributes defined in the core `Product` entity.
 
+:::note
+
+If TypeScript still doesn't pick up the custom attributes after adding `src/index.d.ts`, try moving the file to a nested directory in `src`. Please note that this only ensures TypeScript picks up the new attributes, but it doesn't actually reflect the new attributes in the database. That is handled by migrations.
+
+:::
+
 ---
 
 ## Step 4: Create Migration
