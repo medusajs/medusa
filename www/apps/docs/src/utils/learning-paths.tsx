@@ -745,7 +745,7 @@ const paths: LearningPathType[] = [
                 </Link>
               </li>
               <li>
-                <Link to="/development/notification-service/create-notification-service">
+                <Link to="/development/notification/create-notification-provider">
                   Create Notification Service
                 </Link>
               </li>
