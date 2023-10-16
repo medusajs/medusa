@@ -53,52 +53,6 @@ describe("SearchEngineModuleService", function () {
   const moneyAmountId = "money_amount_1"
   const linkId = "link_id_1"
 
-  let a = 0
-  remoteQueryMock.mockImplementation((query) => {
-    if (query.product) {
-      return {
-        id: a++ > 0 ? "aaaa" : productId,
-      }
-    } else if (query.variant) {
-      return {
-        id: variantId,
-        sku: "aaa test aaa",
-        product: [
-          {
-            id: productId,
-          },
-        ],
-      }
-    } else if (query.price_set) {
-      return {
-        id: priceSetId,
-      }
-    } else if (query.money_amount) {
-      return {
-        id: moneyAmountId,
-        amount: 100,
-        price_set: [
-          {
-            id: priceSetId,
-          },
-        ],
-      }
-    } else if (query.product_variant_price_set) {
-      return {
-        id: linkId,
-        variant_id: variantId,
-        price_set_id: priceSetId,
-        variant: [
-          {
-            id: variantId,
-          },
-        ],
-      }
-    }
-
-    return {}
-  })
-
   let manager: SqlEntityManager
   let module: ICatalogModuleService
 
@@ -123,7 +77,53 @@ describe("SearchEngineModuleService", function () {
 
   afterEach(afterEach_)
 
-  it("should consume all event create the catalog and catalog relation entries and finally query the data", async () => {
+  it("should consume all created events and create the catalog and catalog relation entries", async () => {
+    let a = 0
+    remoteQueryMock.mockImplementation((query) => {
+      if (query.product) {
+        return {
+          id: a++ > 0 ? "aaaa" : productId,
+        }
+      } else if (query.variant) {
+        return {
+          id: variantId,
+          sku: "aaa test aaa",
+          product: [
+            {
+              id: productId,
+            },
+          ],
+        }
+      } else if (query.price_set) {
+        return {
+          id: priceSetId,
+        }
+      } else if (query.money_amount) {
+        return {
+          id: moneyAmountId,
+          amount: 100,
+          price_set: [
+            {
+              id: priceSetId,
+            },
+          ],
+        }
+      } else if (query.product_variant_price_set) {
+        return {
+          id: linkId,
+          variant_id: variantId,
+          price_set_id: priceSetId,
+          variant: [
+            {
+              id: variantId,
+            },
+          ],
+        }
+      }
+
+      return {}
+    })
+
     const eventDataToEmit: EventBusTypes.EmitData[] = [
       {
         eventName: "product.created",
@@ -315,5 +315,93 @@ describe("SearchEngineModuleService", function () {
         ],
       },
     ])
+  })
+
+  it("should consume all updated events and update the catalogentries", async () => {
+    let a = 0
+    remoteQueryMock.mockImplementation((query) => {
+      if (query.product) {
+        return {
+          id: a++ > 0 ? "aaaa" : productId,
+          title: "updated Title",
+        }
+      } else if (query.variant) {
+        return {
+          id: variantId,
+          sku: "updated sku",
+          product: [
+            {
+              id: productId,
+            },
+          ],
+        }
+      }
+
+      return {}
+    })
+
+    const catalogRepository = manager.getRepository(Catalog)
+    await manager.persistAndFlush(
+      [
+        {
+          id: productId,
+          name: "Product",
+          data: {
+            id: productId,
+          },
+        },
+        {
+          id: variantId,
+          name: "ProductVariant",
+          data: {
+            id: variantId,
+            sku: "aaa test aaa",
+            product: {
+              id: productId,
+            },
+          },
+        },
+      ].map((data) => catalogRepository.create(data))
+    )
+
+    manager.clear()
+
+    const eventDataToEmit: EventBusTypes.EmitData[] = [
+      {
+        eventName: "product.updated",
+        data: {
+          id: productId,
+        },
+      },
+      {
+        eventName: "variant.updated",
+        data: {
+          id: variantId,
+          product: {
+            id: productId,
+          },
+        },
+      },
+    ]
+
+    await eventBus.emit(eventDataToEmit)
+
+    expect(remoteQueryMock).toHaveBeenCalledTimes(2)
+
+    const updatedCatalogEntries = await manager.find(Catalog, {})
+
+    expect(updatedCatalogEntries).toHaveLength(2)
+
+    const productEntry = updatedCatalogEntries.find((entry) => {
+      return entry.name === "Product" && entry.id === productId
+    })
+
+    expect(productEntry?.data?.title).toEqual("updated Title")
+
+    const variantEntry = updatedCatalogEntries.find((entry) => {
+      return entry.name === "ProductVariant" && entry.id === variantId
+    })
+
+    expect(variantEntry?.data?.sku).toEqual("updated sku")
   })
 })

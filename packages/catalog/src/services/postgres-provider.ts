@@ -162,6 +162,12 @@ export class PostgresProvider {
           break
         case "attached":
           await this.onAttach(argument)
+          break
+        case "updated":
+          await this.onUpdate(argument)
+          break
+        case "deleted":
+          await this.onDelete(argument)
       }
     }
   }
@@ -256,9 +262,87 @@ export class PostgresProvider {
     })
   }
 
-  protected async onUpdate() {}
+  protected async onUpdate<
+    TData extends { id: string; [key: string]: unknown }
+  >({
+    entity,
+    data,
+    schemaEntityObjectRepresentation,
+  }: {
+    entity: string
+    data: TData[]
+    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+  }) {
+    await this.container_.manager.transactional(async (em) => {
+      const catalogRepository = em.getRepository(Catalog)
 
-  protected async onDelete() {}
+      const data_ = Array.isArray(data) ? data : [data]
+
+      // Always keep the id in the entity properties
+      const entityProperties: string[] = ["id"]
+
+      /**
+       * Split fields to retrieve the entity properties without its parent or child
+       */
+
+      schemaEntityObjectRepresentation.fields.forEach((field) => {
+        if (!field.includes(".")) {
+          entityProperties.push(field)
+        }
+      })
+
+      await catalogRepository.upsertMany(
+        data_.map((entityData) => {
+          return {
+            id: entityData.id,
+            name: entity,
+            data: entityProperties.reduce((acc, property) => {
+              acc[property] = entityData[property]
+              return acc
+            }, {}),
+          }
+        })
+      )
+    })
+  }
+
+  protected async onDelete<
+    TData extends { id: string; [key: string]: unknown }
+  >({
+    entity,
+    data,
+    schemaEntityObjectRepresentation,
+  }: {
+    entity: string
+    data: TData[]
+    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+  }) {
+    await this.container_.manager.transactional(async (em) => {
+      const catalogRepository = em.getRepository(Catalog)
+
+      const data_ = Array.isArray(data) ? data : [data]
+
+      // Always keep the id in the entity properties
+      const entityProperties: string[] = ["id"]
+
+      /**
+       * Split fields to retrieve the entity properties without its parent or child
+       */
+
+      schemaEntityObjectRepresentation.fields.forEach((field) => {
+        if (!field.includes(".")) {
+          entityProperties.push(field)
+        }
+      })
+
+      const ids = data_.map((entityData) => entityData.id)
+
+      await catalogRepository.nativeDelete({
+        id: { $in: ids },
+        name: entity,
+      })
+    })
+  }
 
   protected async onAttach<
     TData extends { id: string; [key: string]: unknown }
