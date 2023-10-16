@@ -41,11 +41,6 @@ const ParameterTypes = ({ parameters, level = 1 }: ParameterTypesProps) => {
             </>
           ) : undefined
         }
-        badge={
-          <Badge variant={parameter.optional ? "neutral" : "red"}>
-            {parameter.optional ? "Optional" : "Required"}
-          </Badge>
-        }
         expandable={parameter.children.length > 0}
         className={clsx(
           "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0",
@@ -66,6 +61,15 @@ const ParameterTypes = ({ parameters, level = 1 }: ParameterTypesProps) => {
           <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
             {parameter.type}
           </MarkdownContent>
+        </span>
+        <span
+          className={clsx(
+            "text-compact-x-small uppercase ml-1 text-[10px]",
+            parameter.optional && "text-medusa-tag-neutral-text",
+            !parameter.optional && "text-medusa-tag-red-text"
+          )}
+        >
+          {parameter.optional ? "Optional" : "Required"}
         </span>
       </DetailsSummary>
     )
