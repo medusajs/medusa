@@ -175,6 +175,10 @@ describe("SearchEngineModuleService", function () {
 
     expect(remoteQueryMock).toHaveBeenCalledTimes(6)
 
+    /**
+     * Validate all catalog entries and catalog relation entries
+     */
+
     const catalogEntries: Catalog[] = await manager.find(Catalog, {})
 
     const productCatalogEntries = catalogEntries.filter((entry) => {
@@ -269,6 +273,10 @@ describe("SearchEngineModuleService", function () {
       })
 
     expect(priceSetMoneyAmountCatalogRelationEntries).toHaveLength(1)
+
+    /**
+     * Validate querying
+     */
 
     const [result, count] = await module.queryAndCount(
       {

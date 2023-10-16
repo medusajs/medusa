@@ -84,6 +84,10 @@ export type SchemaPropertiesMap = {
   }
 }
 
+export type EntityNameModuleConfigMap = {
+  [key: string]: ModuleJoinerConfig
+}
+
 /**
  * Represents the schema objects representation once the schema has been processed
  */
@@ -93,7 +97,7 @@ export type SchemaObjectRepresentation =
     }
   | {
       _schemaPropertiesMap: SchemaPropertiesMap
-      _entityModuleConfigMap: { [entityName: string]: ModuleJoinerConfig }
+      _entityModuleConfigMap: EntityNameModuleConfigMap
     }
 
 /**

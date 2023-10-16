@@ -5,9 +5,10 @@ import {
 } from "@medusajs/types"
 import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
-import { Catalog } from "@models"
+import { Catalog, CatalogRelation } from "@models"
 import {
   CatalogModuleOptions,
+  EntityNameModuleConfigMap,
   QueryFormat,
   QueryOptions,
   SchemaObjectEntityRepresentation,
@@ -197,8 +198,6 @@ export class PostgresProvider {
         }
       })
 
-      const catalogEntries: Catalog[] = []
-
       /**
        * Loop through the data and create catalog entries for each entity as well as the
        * catalog relation entries if the entity has parents
@@ -219,8 +218,6 @@ export class PostgresProvider {
           name: entity,
           data: cleanedEntityData,
         })
-
-        catalogEntries.push(catalogEntry)
 
         /**
          * Retrieve the parents to attach it to the catalog entry.
@@ -251,9 +248,9 @@ export class PostgresProvider {
             catalogEntry.parents.add(parentCatalogEntry)
           }
         }
-      }
 
-      catalogRepository.persist(catalogEntries)
+        catalogRepository.persist(catalogEntry)
+      }
 
       await em.flush()
     })
@@ -276,6 +273,7 @@ export class PostgresProvider {
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
+      const catalogRelationRepository = em.getRepository(CatalogRelation)
 
       const data_ = Array.isArray(data) ? data : [data]
 
@@ -292,20 +290,55 @@ export class PostgresProvider {
         }
       })
 
+      /**
+       * Retrieve the property that represent the foreign key related to the parent entity of the link entity.
+       * Then from the service name of the parent entity, retrieve the entity name using the linkable keys.
+       */
+
       const parentPropertyId =
         schemaEntityObjectRepresentation.moduleConfig.relationships![0]
           .foreignKey
+      const parentServiceName =
+        schemaEntityObjectRepresentation.moduleConfig.relationships![0]
+          .serviceName
+      const parentEntityName = (
+        this.schemaObjectRepresentation_._entityModuleConfigMap[
+          parentServiceName
+        ] as EntityNameModuleConfigMap[0]
+      ).linkableKeys?.[parentPropertyId]
+
+      if (!parentEntityName) {
+        throw new Error(
+          `CatalogModule error, unable to handle attach event for ${entity}. The parent entity name could not be found using the linkable keys from the module ${parentServiceName}.`
+        )
+      }
+
+      /**
+       * Retrieve the property that represent the foreign key related to the child entity of the link entity.
+       * Then from the service name of the child entity, retrieve the entity name using the linkable keys.
+       */
+
       const childPropertyId =
         schemaEntityObjectRepresentation.moduleConfig.relationships![1]
           .foreignKey
+      const childServiceName =
+        schemaEntityObjectRepresentation.moduleConfig.relationships![1]
+          .serviceName
+      const childEntityName = (
+        this.schemaObjectRepresentation_._entityModuleConfigMap[
+          childServiceName
+        ] as EntityNameModuleConfigMap[0]
+      ).linkableKeys?.[childPropertyId]
 
-      //TODO const parentEntityName = schemaEntityObjectRepresentation.moduleConfig
-
-      const catalogEntries: Catalog[] = []
+      if (!childEntityName) {
+        throw new Error(
+          `CatalogModule error, unable to handle attach event for ${entity}. The child entity name could not be found using the linkable keys from the module ${childServiceName}.`
+        )
+      }
 
       for (const entityData of data_) {
         /**
-         * Clean the entity data to only keep the properties that are defined in the schema
+         * Clean the link entity data to only keep the properties that are defined in the schema
          */
 
         const cleanedEntityData = entityProperties.reduce((acc, property) => {
@@ -319,31 +352,32 @@ export class PostgresProvider {
           data: cleanedEntityData,
         })
 
-        catalogEntries.push(catalogEntry)
+        catalogRepository.persist(catalogEntry)
 
         /**
-         * Retrieve the parent catalog entry to attach as the parent of the link catalog entry.
+         * Create the catalog relation entry for the parent entity and the child entity
          */
 
-        const parentCatalogEntry = (await catalogRepository.findOne({
-          id: entityData[parentPropertyId] as string,
-        })) as Catalog
+        const parentCatalogRelationEntry = catalogRelationRepository.create({
+          parent_id: entityData[parentPropertyId] as string,
+          parent_name: parentEntityName,
+          child_id: cleanedEntityData.id,
+          child_name: entity,
+        })
 
-        catalogEntry.parents.add(parentCatalogEntry)
+        const childCatalogRelationEntry = catalogRelationRepository.create({
+          parent_id: cleanedEntityData.id,
+          parent_name: entity,
+          child_id: entityData[childPropertyId] as string,
+          child_name: childServiceName,
+        })
 
-        /**
-         * Retrieve the child catalog entry to attach the link catalog entry as the parent of the child.
-         */
-
-        const childCatalogEntry = (await catalogRepository.findOne({
-          id: entityData[childPropertyId] as string,
-        })) as Catalog
-
-        childCatalogEntry.parents.add(catalogEntry)
-        catalogEntries.push(childCatalogEntry)
+        catalogRelationRepository.persist([
+          parentCatalogRelationEntry,
+          childCatalogRelationEntry,
+        ])
       }
 
-      catalogRepository.persist(catalogEntries)
       await em.flush()
     })
   }
