@@ -3,6 +3,7 @@ import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
+import { AxiosInstance } from "axios"
 import { Region } from "@medusajs/medusa"
 import path from "path"
 import adminSeeder from "../../../../helpers/admin-seeder"
@@ -58,7 +59,8 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
   })
 
   it("should create prices with region_id and currency_code context", async () => {
-    const api = useApi()
+    const api = useApi()! as AxiosInstance
+    
     const data = {
       title: "test product",
       options: [{ title: "test-option" }],
