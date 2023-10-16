@@ -17,18 +17,13 @@ export const CodeMdx = ({ className, children }: CodeMdxProps) => {
 
   const match = /language-(\w+)/.exec(className || "")
 
+  const codeContent = Array.isArray(children)
+    ? (children[0] as string)
+    : (children as string)
+
   if (match) {
-    return (
-      <CodeBlock
-        source={
-          Array.isArray(children)
-            ? (children[0] as string)
-            : (children as string)
-        }
-        lang={match[1]}
-      />
-    )
+    return <CodeBlock source={codeContent} lang={match[1]} />
   }
 
-  return <InlineCode>{children}</InlineCode>
+  return <InlineCode>{codeContent}</InlineCode>
 }

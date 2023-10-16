@@ -28,6 +28,12 @@
 
 {{/if}}
 
+{{#if (sectionEnabled "member_signature_example")}}
+
+{{{example this 4}}}
+
+{{/if}}
+
 {{#if (sectionEnabled "member_signature_parameters")}}
 
 {{#if parameters}}
@@ -66,7 +72,7 @@
 
 {{/if}}
 
-{{#if (getFormattingOption "showReturnSignature")}}
+{{#if (sectionEnabled "member_signature_returns")}}
 
 {{#with type}}
 
@@ -76,11 +82,7 @@
 
 {{/if}}
 
-{{#with comment}}
-
 {{{returns this}}}
-
-{{/with}}
 
 {{#with type}}
 
