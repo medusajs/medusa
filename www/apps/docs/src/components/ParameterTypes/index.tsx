@@ -62,15 +62,16 @@ const ParameterTypes = ({ parameters, level = 1 }: ParameterTypesProps) => {
             {parameter.type}
           </MarkdownContent>
         </span>
-        <span
-          className={clsx(
-            "text-compact-x-small uppercase ml-1 text-[10px]",
-            parameter.optional && "text-medusa-tag-neutral-text",
-            !parameter.optional && "text-medusa-tag-red-text"
-          )}
-        >
-          {parameter.optional ? "Optional" : "Required"}
-        </span>
+        {parameter.optional === false && (
+          <span
+            className={clsx(
+              "text-compact-x-small uppercase ml-1 text-[10px]",
+              "text-medusa-tag-red-text"
+            )}
+          >
+            Required
+          </span>
+        )}
       </DetailsSummary>
     )
   }
