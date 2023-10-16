@@ -83,7 +83,7 @@ export class WorkflowManager {
         JSON.stringify(WorkflowManager.workflows.get(workflowId)!.flow_)
 
       if (!areStepsEqual) {
-        throw new Error(`Workflow with id "${workflowId}" is already defined.`)
+        throw new Error(`Workflow with id "${workflowId}" and step definition already exists.`)
       }
     }
 
