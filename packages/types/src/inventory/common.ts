@@ -220,19 +220,19 @@ export type FilterableInventoryItemProps = {
 }
 
 export type CreateInventoryItemInput = {
-  sku?: string
-  origin_country?: string
-  mid_code?: string
-  material?: string
-  weight?: number
-  length?: number
-  height?: number
-  width?: number
-  title?: string
-  description?: string
-  thumbnail?: string
+  sku?: string | null
+  origin_country?: string | null
+  mid_code?: string | null
+  material?: string | null
+  weight?: number | null
+  length?: number | null
+  height?: number | null
+  width?: number | null
+  title?: string | null
+  description?: string | null
+  thumbnail?: string | null
   metadata?: Record<string, unknown> | null
-  hs_code?: string
+  hs_code?: string | null
   requires_shipping?: boolean
 }
 
@@ -242,7 +242,7 @@ export type CreateReservationItemInput = {
   location_id: string
   quantity: number
   description?: string
-  created_by?: string 
+  created_by?: string
   external_id?: string
   metadata?: Record<string, unknown> | null
 }
