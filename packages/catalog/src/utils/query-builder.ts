@@ -187,14 +187,39 @@ export class QueryBuilder {
       aliasMapping[currentAliasPath] = alias
 
       if (level > 0) {
+        const subQuery = this.knex.queryBuilder()
+        const knex = this.knex
+        subQuery
+          .select(`${alias}.*`)
+          .from("catalog AS " + alias)
+          .join(`catalog_relation AS ${alias}_ref`, function () {
+            this.on(`${alias}.id`, "=", `${alias}_ref.child_id`)
+              .andOn(`${alias}_ref.child_name`, "=", knex.raw("?", [entity]))
+              .andOn(
+                `${alias}_ref.parent_name`,
+                "=",
+                knex.raw("?", [parEntity])
+              )
+              .andOn(`${alias}_ref.parent_id`, "=", `${parAlias}.id`)
+          })
+
+        const joinWhere = this.selector.joinWhere ?? {}
+        const joinKey = Object.keys(joinWhere).find((key) => {
+          const k = key.split(".")
+          k.pop()
+          return k.join(".") === currentAliasPath
+        })
+
+        if (joinKey) {
+          this.parseWhere(
+            aliasMapping,
+            { [joinKey]: joinWhere[joinKey] },
+            subQuery
+          )
+        }
+
         queryParts.push(`LEFT JOIN LATERAL (
-          SELECT ${alias}.* 
-          FROM catalog AS ${alias}
-          JOIN catalog_relation AS ${alias}_ref
-            ON ${alias}.id = ${alias}_ref.child_id
-            AND ${alias}_ref.child_name = '${entity}'
-            AND ${alias}_ref.parent_name = '${parEntity}'
-            AND ${alias}_ref.parent_id = ${parAlias}.id
+          ${subQuery.toQuery()}
         ) ${alias} ON TRUE`)
       }
     }

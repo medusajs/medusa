@@ -141,6 +141,7 @@ export type OrderBy = {
 export type QueryFormat = {
   select: Select
   where?: Where
+  joinWhere?: Where
 }
 
 export type QueryOptions = {
