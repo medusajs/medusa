@@ -1,5 +1,49 @@
 # @medusajs/inventory
 
+## 1.11.0
+
+### Minor Changes
+
+- [#5242](https://github.com/medusajs/medusa/pull/5242) [`130cbc1f4`](https://github.com/medusajs/medusa/commit/130cbc1f437af211b6d05f80128d90138abcd38d) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Modules exporting schema with entities and fields
+
+### Patch Changes
+
+- Updated dependencies [[`eeceec791`](https://github.com/medusajs/medusa/commit/eeceec791c141996cf7fd06555afb6e738b52840), [`130cbc1f4`](https://github.com/medusajs/medusa/commit/130cbc1f437af211b6d05f80128d90138abcd38d), [`cb569c2df`](https://github.com/medusajs/medusa/commit/cb569c2dfe2d83e1ff72a49f2331450a83b73325)]:
+  - @medusajs/utils@1.10.3
+  - @medusajs/modules-sdk@1.12.0
+
+## 1.10.0
+
+### Minor Changes
+
+- [#4695](https://github.com/medusajs/medusa/pull/4695) [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - introduce @medusajs/link-modules
+
+### Patch Changes
+
+- Updated dependencies [[`c3dba0694`](https://github.com/medusajs/medusa/commit/c3dba069488952945150117a30b1306a2e0bb3ce), [`460161a69`](https://github.com/medusajs/medusa/commit/460161a69f22cf6d561952e92e7d9b56912113e6), [`fcb6b4f51`](https://github.com/medusajs/medusa/commit/fcb6b4f510dba2757570625acb5da9476b7544fd), [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef), [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef), [`87bade096`](https://github.com/medusajs/medusa/commit/87bade096e3d536f29ddc57dbc4c04e5d7a46e4b), [`4d16acf5f`](https://github.com/medusajs/medusa/commit/4d16acf5f096b5656b645f510f9c971e7c2dc9ef), [`a4906d0ac`](https://github.com/medusajs/medusa/commit/a4906d0ac0af36b1382d3befe64281b404387bd7)]:
+  - @medusajs/modules-sdk@1.10.0
+  - @medusajs/utils@1.10.0
+
+## 1.9.2
+
+### Patch Changes
+
+- [#4503](https://github.com/medusajs/medusa/pull/4503) [`d184d23c6`](https://github.com/medusajs/medusa/commit/d184d23c6384d5f8bf52827826b62c6bef37f884) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,inventory,types,brightpearl): update some inventory methods to be bulk-operation enabled
+
+## 1.9.1
+
+### Patch Changes
+
+- [#4211](https://github.com/medusajs/medusa/pull/4211) [`d76ba0cd2`](https://github.com/medusajs/medusa/commit/d76ba0cd29694c2e31f9f89992a9fbc14659c1ae) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Order edit missing transaction when consuming the inventory module
+
+- [#4232](https://github.com/medusajs/medusa/pull/4232) [`af2dc4f75`](https://github.com/medusajs/medusa/commit/af2dc4f75a2ed109495ca83b1bc6ae6941c2f716) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, inventory, stock-location): Remove unnecessary transaction usage in the modules and list products end points
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+- Updated dependencies [[`f98ba5bde`](https://github.com/medusajs/medusa/commit/f98ba5bde83ba785eead31b0c9eb9f135d664178), [`14c0f62f8`](https://github.com/medusajs/medusa/commit/14c0f62f84704a4c87beff3daaff60a52f5c88b8)]:
+  - @medusajs/utils@1.9.1
+  - @medusajs/modules-sdk@1.8.8
+
 ## 1.9.0
 
 ### Minor Changes

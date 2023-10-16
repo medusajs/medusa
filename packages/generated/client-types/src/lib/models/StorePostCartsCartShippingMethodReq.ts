@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostCartsCartShippingMethodReq {
   /**
-   * ID of the shipping option to create the method from
+   * ID of the shipping option to create the method from.
    */
   option_id: string
   /**
-   * Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send.
+   * Used to hold any data that the shipping method may need to process the fulfillment of the order. This depends on the fulfillment provider you're using.
    */
   data?: Record<string, any>
 }

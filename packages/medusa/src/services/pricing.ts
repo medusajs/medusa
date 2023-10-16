@@ -1,3 +1,4 @@
+import { FlagRouter } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
@@ -18,7 +19,6 @@ import {
 } from "../types/pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { calculatePriceTaxAmount } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 
 type InjectedDependencies = {
   manager: EntityManager

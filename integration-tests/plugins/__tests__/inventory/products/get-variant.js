@@ -1,22 +1,21 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
-
 const {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} = require("@medusajs/medusa")
+  bootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
+const {
+  simpleProductFactory,
+  simpleSalesChannelFactory,
+} = require("../../../../factories")
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("Get variant", () => {
   let appContainer
@@ -25,6 +24,10 @@ describe("Get variant", () => {
   const productId = "test-product"
   const variantId = "test-variant"
   let invItem
+  let salesChannelService
+  let salesChannelLocationService
+  let location
+  let inventoryService
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -56,8 +59,16 @@ describe("Get variant", () => {
     const productVariantInventoryService = appContainer.resolve(
       "productVariantInventoryService"
     )
-    const inventoryService = appContainer.resolve("inventoryService")
+    inventoryService = appContainer.resolve("inventoryService")
+    salesChannelService = appContainer.resolve("salesChannelService")
+    salesChannelLocationService = appContainer.resolve(
+      "salesChannelLocationService"
+    )
+    const stockLocationService = appContainer.resolve("stockLocationService")
 
+    location = await stockLocationService.create({
+      name: "test-location",
+    })
     await simpleProductFactory(
       dbConnection,
       {
@@ -71,6 +82,7 @@ describe("Get variant", () => {
     invItem = await inventoryService.createInventoryItem({
       sku: "test-sku",
     })
+
     await productVariantInventoryService.attachInventoryItem(
       variantId,
       invItem.id
@@ -97,5 +109,35 @@ describe("Get variant", () => {
         ],
       })
     )
+  })
+
+  it("sets availability correctly", async () => {
+    const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+      is_default: true,
+    })
+
+    await salesChannelService.addProducts(salesChannel.id, [productId])
+
+    await salesChannelLocationService.associateLocation(
+      salesChannel.id,
+      location.id
+    )
+
+    await inventoryService.createInventoryLevel({
+      inventory_item_id: invItem.id,
+      location_id: location.id,
+      stocked_quantity: 10,
+    })
+
+    const api = useApi()
+
+    const response = await api.get(`/store/variants/${variantId}`)
+
+    expect(response.data).toEqual({
+      variant: expect.objectContaining({
+        purchasable: true,
+        inventory_quantity: 10,
+      }),
+    })
   })
 })

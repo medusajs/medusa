@@ -1,14 +1,19 @@
+import { FlagRouter } from "@medusajs/utils"
+import { AwilixContainer } from "awilix"
 import {
   BaseFulfillmentService,
   BaseNotificationService,
   BasePaymentService,
 } from "medusa-interfaces"
-import { currencies } from "../utils/currencies"
-import { countries } from "../utils/countries"
-import { AwilixContainer } from "awilix"
-import { Logger } from "../types/global"
 import { EntityManager } from "typeorm"
+import {
+  AbstractFulfillmentService,
+  AbstractPaymentProcessor,
+  AbstractPaymentService,
+  AbstractTaxService,
+} from "../interfaces"
 import { CountryRepository } from "../repositories/country"
+import { CurrencyRepository } from "../repositories/currency"
 import {
   FulfillmentProviderService,
   NotificationService,
@@ -18,14 +23,10 @@ import {
   StoreService,
   TaxProviderService,
 } from "../services"
-import { CurrencyRepository } from "../repositories/currency"
-import { FlagRouter } from "../utils/flag-router"
+import { Logger } from "../types/global"
+import { countries } from "../utils/countries"
+import { currencies } from "../utils/currencies"
 import SalesChannelFeatureFlag from "./feature-flags/sales-channels"
-import {
-  AbstractPaymentProcessor,
-  AbstractPaymentService,
-  AbstractTaxService,
-} from "../interfaces"
 
 const silentResolution = <T>(
   container: AwilixContainer,
@@ -227,7 +228,7 @@ async function registerNotificationProvider({
   logger: Logger
 }): Promise<void> {
   const notiProviders =
-    silentResolution<typeof BaseNotificationService[]>(
+    silentResolution<(typeof BaseNotificationService)[]>(
       container,
       "notificationProviders",
       logger
@@ -252,11 +253,9 @@ async function registerFulfillmentProvider({
   logger: Logger
 }): Promise<void> {
   const fulfilProviders =
-    silentResolution<typeof BaseFulfillmentService[]>(
-      container,
-      "fulfillmentProviders",
-      logger
-    ) || []
+    silentResolution<
+      (typeof BaseFulfillmentService | AbstractFulfillmentService)[]
+    >(container, "fulfillmentProviders", logger) || []
   const fulfilIds = fulfilProviders.map((p) => p.getIdentifier())
 
   const fProviderService = container.resolve<FulfillmentProviderService>(

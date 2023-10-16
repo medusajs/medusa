@@ -12,6 +12,7 @@ import { FindParams } from "../../../../types/common"
  * summary: "Update a Product Category"
  * description: "Updates a Product Category."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product category.
@@ -40,15 +41,16 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/product-categories/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/product-categories/{id}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Skinny Jeans"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Categories
  * responses:

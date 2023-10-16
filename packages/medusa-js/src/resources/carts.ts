@@ -17,7 +17,7 @@ class CartsResource extends BaseResource {
   /**
    * Adds a shipping method to cart
    * @param {string} cart_id Id of cart
-   * @param {StorePostCartsCartShippingMethodReq} payload Containg id of shipping option and optional data
+   * @param {StorePostCartsCartShippingMethodReq} payload Contains id of shipping option and optional data
    * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */

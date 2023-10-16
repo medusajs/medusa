@@ -5,6 +5,7 @@ import {
   Modules,
 } from "@medusajs/modules-sdk"
 import { IEventBusService, IStockLocationService } from "@medusajs/types"
+import { moduleDefinition } from "../module-definition"
 import { StockLocationServiceInitializeOptions } from "../types"
 
 export const initialize = async (
@@ -14,12 +15,13 @@ export const initialize = async (
   }
 ): Promise<IStockLocationService> => {
   const serviceKey = Modules.STOCK_LOCATION
-  const loaded = await MedusaModule.bootstrap(
+  const loaded = await MedusaModule.bootstrap<IStockLocationService>(
     serviceKey,
     "@medusajs/stock-location",
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
+    moduleDefinition,
     injectedDependencies
   )
 
-  return loaded[serviceKey] as IStockLocationService
+  return loaded[serviceKey]
 }

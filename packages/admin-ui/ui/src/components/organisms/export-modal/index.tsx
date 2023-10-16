@@ -1,4 +1,5 @@
 import React from "react"
+import { useTranslation } from "react-i18next"
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
 
@@ -15,6 +16,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
   loading,
   onSubmit,
 }) => {
+  const { t } = useTranslation()
   return (
     <Modal handleClose={handleClose}>
       <Modal.Body>
@@ -30,7 +32,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
             overview.
           </div> */}
           <div className="inter-small-regular text-grey-50 mb-4 flex">
-            Initialize an export of your data
+            {t("export-modal-title", "Initialize an export of your data")}
           </div>
         </Modal.Content>
         <Modal.Footer>
@@ -41,7 +43,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
               onClick={handleClose}
               className="mr-2"
             >
-              Cancel
+              {t("export-modal-cancel", "Cancel")}
             </Button>
             <Button
               loading={loading}
@@ -50,7 +52,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
               size="small"
               onClick={onSubmit}
             >
-              Export
+              {t("export-modal-export", "Export")}
             </Button>
           </div>
         </Modal.Footer>

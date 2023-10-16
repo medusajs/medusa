@@ -1,0 +1,7 @@
+type: object
+required:
+  - refund
+properties:
+  refund:
+    description: Refund details
+    $ref: ./Refund.yaml

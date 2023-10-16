@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostInvitesInviteAcceptReq {
   /**
-   * The invite token provided by the admin.
+   * The token of the invite to accept. This is a unique token generated when the invite was created or resent.
    */
   token: string
   /**
-   * The User to create.
+   * The details of the user to create.
    */
   user: {
     /**
@@ -21,7 +21,7 @@ export interface AdminPostInvitesInviteAcceptReq {
      */
     last_name: string
     /**
-     * The desired password for the User
+     * The password for the User
      */
     password: string
   }

@@ -6,5 +6,15 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { InventoryItemDTO } from "./InventoryItemDTO"
 
 export type ResponseInventoryItem = InventoryItemDTO & {
-  available_quantity: number
+  /**
+   * The inventory's location levels.
+   */
+  location_levels?: Array<
+    InventoryItemDTO & {
+      /**
+       * The available quantity in the inventory location.
+       */
+      available_quantity: number
+    }
+  >
 }

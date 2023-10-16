@@ -1,14 +1,14 @@
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
+const setupServer = require("../../../environment-helpers/setup-server")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 

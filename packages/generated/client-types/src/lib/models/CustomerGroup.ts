@@ -7,7 +7,7 @@ import type { Customer } from "./Customer"
 import type { PriceList } from "./PriceList"
 
 /**
- * Represents a customer group
+ * A customer group that can be used to organize customers into groups of similar traits.
  */
 export interface CustomerGroup {
   /**
@@ -19,11 +19,11 @@ export interface CustomerGroup {
    */
   name: string
   /**
-   * The customers that belong to the customer group. Available if the relation `customers` is expanded.
+   * The details of the customers that belong to the customer group.
    */
   customers?: Array<Customer>
   /**
-   * The price lists that are associated with the customer group. Available if the relation `price_lists` is expanded.
+   * The price lists that are associated with the customer group.
    */
   price_lists?: Array<PriceList>
   /**

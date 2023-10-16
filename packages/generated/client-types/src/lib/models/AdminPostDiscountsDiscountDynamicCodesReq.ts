@@ -9,7 +9,7 @@ export interface AdminPostDiscountsDiscountDynamicCodesReq {
    */
   code: string
   /**
-   * Maximum times the discount can be used
+   * Maximum number of times the discount code can be used
    */
   usage_limit?: number
   /**

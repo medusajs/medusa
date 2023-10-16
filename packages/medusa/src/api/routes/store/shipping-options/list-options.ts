@@ -1,18 +1,24 @@
+import { FlagRouter } from "@medusajs/utils"
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
-import { PricingService, ProductService } from "../../../../services"
+import { defaultRelations } from "."
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import {
+  PricingService,
+  ProductService,
+  ShippingProfileService,
+} from "../../../../services"
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
-import { defaultRelations } from "."
 
 /**
  * @oas [get] /store/shipping-options
  * operationId: GetShippingOptions
  * summary: Get Shipping Options
- * description: "Retrieves a list of Shipping Options."
+ * description: "Retrieve a list of Shipping Options."
  * parameters:
- *   - (query) is_return {boolean} Whether return Shipping Options should be included. By default all Shipping Options are returned.
- *   - (query) product_ids {string} A comma separated list of Product ids to filter Shipping Options by.
- *   - (query) region_id {string} the Region to retrieve Shipping Options from.
+ *   - (query) is_return {boolean} Whether return shipping options should be included. By default, all shipping options are returned.
+ *   - (query) product_ids {string} "Comma-separated list of Product IDs to filter Shipping Options by. If provided, only shipping options that can be used with the provided products are retrieved."
+ *   - (query) region_id {string} "The ID of the region that the shipping options belong to. If not provided, all shipping options are retrieved."
  * x-codegen:
  *   method: list
  *   queryParams: StoreGetShippingOptionsParams
@@ -29,7 +35,7 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/shipping-options'
+ *       curl '{backend_url}/store/shipping-options'
  * tags:
  *   - Shipping Options
  * responses:
@@ -61,6 +67,10 @@ export default async (req, res) => {
   const shippingOptionService: ShippingOptionService = req.scope.resolve(
     "shippingOptionService"
   )
+  const shippingProfileService: ShippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  )
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   // should be selector
   const query: Record<string, unknown> = {}
@@ -76,8 +86,17 @@ export default async (req, res) => {
   query.admin_only = false
 
   if (productIds.length) {
-    const prods = await productService.list({ id: productIds })
-    query.profile_id = prods.map((p) => p.profile_id)
+    if (
+      featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
+    ) {
+      const productShippinProfileMap =
+        await shippingProfileService.getMapProfileIdsByProductIds(productIds)
+
+      query.profile_id = [...productShippinProfileMap.values()]
+    } else {
+      const prods = await productService.list({ id: productIds })
+      query.profile_id = prods.map((p) => p.profile_id)
+    }
   }
 
   const options = await shippingOptionService.list(query, {

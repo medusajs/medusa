@@ -1,7 +1,16 @@
 import boxen from "boxen"
 import chalk from "chalk"
 import { Ora } from "ora"
-import onProcessTerminated from "./on-process-terminated.js"
+import { emojify } from "node-emoji"
+import ProcessManager from "./process-manager.js"
+
+export type FactBoxOptions = {
+  interval: NodeJS.Timer | null
+  spinner: Ora
+  processManager: ProcessManager
+  message?: string
+  title?: string
+}
 
 const facts = [
   "Plugins allow you to integrate third-party services for payment, fulfillment, notifications, and more.",
@@ -31,17 +40,20 @@ export const getFact = () => {
 
 export const showFact = (spinner: Ora, title: string) => {
   const fact = getFact()
-  spinner.text = `${boxen(fact, {
+  spinner.text = `${boxen(`${emojify(":bulb:")} Medusa Tips\n\n${fact}`, {
     title: chalk.cyan(title),
     titleAlignment: "center",
     textAlignment: "center",
     padding: 1,
     margin: 1,
-    float: "center",
   })}`
 }
 
-export const createFactBox = (spinner: Ora, title: string): NodeJS.Timer => {
+export const createFactBox = (
+  spinner: Ora,
+  title: string,
+  processManager: ProcessManager
+): NodeJS.Timer => {
   spinner.spinner = {
     frames: [""],
   }
@@ -50,7 +62,7 @@ export const createFactBox = (spinner: Ora, title: string): NodeJS.Timer => {
     showFact(spinner, title)
   }, 10000)
 
-  onProcessTerminated(() => clearInterval(interval))
+  processManager.addInterval(interval)
 
   return interval
 }
@@ -59,6 +71,7 @@ export const resetFactBox = (
   interval: NodeJS.Timer | null,
   spinner: Ora,
   successMessage: string,
+  processManager: ProcessManager,
   newTitle?: string
 ): NodeJS.Timer | null => {
   if (interval) {
@@ -69,8 +82,22 @@ export const resetFactBox = (
   spinner.succeed(chalk.green(successMessage)).start()
   let newInterval = null
   if (newTitle) {
-    newInterval = createFactBox(spinner, newTitle)
+    newInterval = createFactBox(spinner, newTitle, processManager)
   }
 
   return newInterval
+}
+
+export function displayFactBox({
+  interval,
+  spinner,
+  processManager,
+  title = "",
+  message = "",
+}: FactBoxOptions): NodeJS.Timer | null {
+  if (!message) {
+    return createFactBox(spinner, title, processManager)
+  }
+
+  return resetFactBox(interval, spinner, message, processManager, title)
 }

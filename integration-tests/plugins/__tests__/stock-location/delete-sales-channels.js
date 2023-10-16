@@ -1,10 +1,10 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const { setPort, useApi } = require("../../../helpers/use-api")
+const { bootstrapApp } = require("../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
@@ -72,7 +72,7 @@ describe("Sales channels", () => {
       ).toHaveLength(2)
 
       await api.delete(`/admin/sales-channels/${sc.id}`, {
-        headers: { Authorization: "Bearer test_token" },
+        headers: { "x-medusa-access-token": "test_token" },
       })
 
       await expect(salesChannelService.retrieve(sc.id)).rejects.toThrowError()

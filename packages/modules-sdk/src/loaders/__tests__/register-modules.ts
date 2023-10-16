@@ -1,8 +1,8 @@
 import {
   InternalModuleDeclaration,
-  ModuleDefinition,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  ModuleDefinition,
 } from "@medusajs/types"
 import MODULE_DEFINITIONS from "../../definitions"
 import { registerModules } from "../register-modules"
@@ -16,6 +16,7 @@ describe("module definitions loader", () => {
     registrationName: "testService",
     defaultPackage: "@medusajs/test-service",
     label: "TestService",
+    isLegacy: true,
     isRequired: false,
     canOverride: true,
     defaultModuleDeclaration: {
@@ -77,29 +78,30 @@ describe("module definitions loader", () => {
         )
       }
     })
+  })
 
-    it("Resolves module with no resolution path when not given custom resolution path as false as default package", () => {
-      const definition = {
-        ...defaultDefinition,
-        defaultPackage: false as false,
-      }
+  it("Module with no resolution path when not given custom resolution path, false as default package and required", () => {
+    const definition = {
+      ...defaultDefinition,
+      defaultPackage: false as false,
+      isRequired: true,
+    }
 
-      MODULE_DEFINITIONS.push(definition)
+    MODULE_DEFINITIONS.push(definition)
 
-      const res = registerModules({})
+    const res = registerModules({})
 
-      expect(res[defaultDefinition.key]).toEqual(
-        expect.objectContaining({
-          resolutionPath: false,
-          definition: definition,
-          options: {},
-          moduleDeclaration: {
-            scope: "internal",
-            resources: "shared",
-          },
-        })
-      )
-    })
+    expect(res[defaultDefinition.key]).toEqual(
+      expect.objectContaining({
+        resolutionPath: false,
+        definition: definition,
+        options: {},
+        moduleDeclaration: {
+          scope: "internal",
+          resources: "shared",
+        },
+      })
+    )
   })
 
   describe("string config", () => {

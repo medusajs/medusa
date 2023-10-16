@@ -1,5 +1,23 @@
 # Change Log
 
+## 7.0.3
+
+### Patch Changes
+
+- [`cf1821184`](https://github.com/medusajs/medusa/commit/cf18211848d6083354fc070800d94f00130f3da2) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset
+
+## 7.0.2
+
+### Patch Changes
+
+- [#4718](https://github.com/medusajs/medusa/pull/4718) [`803aca068`](https://github.com/medusajs/medusa/commit/803aca0689ce6d9f0d93d883dbd3547c427ff33e) Thanks [@josipmatichr](https://github.com/josipmatichr)! - feat(medusa-plugin-restock-notifications): Multi-warehouse support
+
+## 7.0.1
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
 ## 7.0.0
 
 ### Patch Changes

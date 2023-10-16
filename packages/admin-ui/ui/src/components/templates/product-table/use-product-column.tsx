@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import { useAdminStore } from "medusa-react"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { defaultChannelsSorter } from "../../../utils/sales-channel-compare-operator"
 import DelimitedList from "../../molecules/delimited-list"
 import ListIcon from "../../fundamentals/icons/list-icon"
@@ -9,16 +10,38 @@ import ImagePlaceholder from "../../fundamentals/image-placeholder"
 import StatusIndicator from "../../fundamentals/status-indicator"
 
 const useProductTableColumn = ({ setTileView, setListView, showList }) => {
+  const { t } = useTranslation()
+
   const getProductStatus = (status) => {
     switch (status) {
       case "proposed":
-        return <StatusIndicator title={"Proposed"} variant={"warning"} />
+        return (
+          <StatusIndicator
+            title={t("product-table-proposed", "Proposed")}
+            variant={"warning"}
+          />
+        )
       case "published":
-        return <StatusIndicator title={"Published"} variant={"success"} />
+        return (
+          <StatusIndicator
+            title={t("product-table-published-title", "Published")}
+            variant={"success"}
+          />
+        )
       case "rejected":
-        return <StatusIndicator title={"Rejected"} variant={"danger"} />
+        return (
+          <StatusIndicator
+            title={t("product-table-rejected", "Rejected")}
+            variant={"danger"}
+          />
+        )
       case "draft":
-        return <StatusIndicator title={"Draft"} variant={"default"} />
+        return (
+          <StatusIndicator
+            title={t("product-table-draft-title", "Draft")}
+            variant={"default"}
+          />
+        )
       default:
         return <StatusIndicator title={status} variant={"default"} />
     }
@@ -37,7 +60,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const columns = useMemo(
     () => [
       {
-        Header: "Name",
+        Header: t("product-table-name", "Name"),
         accessor: "title",
         Cell: ({ row: { original } }) => {
           return (
@@ -58,30 +81,33 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         },
       },
       {
-        Header: "Collection",
+        Header: t("product-table-collection", "Collection"),
         accessor: "collection", // accessor is the "key" in the data
         Cell: ({ cell: { value } }) => {
           return <div>{value?.title || "-"}</div>
         },
       },
       {
-        Header: "Status",
+        Header: t("product-table-status", "Status"),
         accessor: "status",
         Cell: ({ cell: { value } }) => getProductStatus(value),
       },
       {
-        Header: "Availability",
+        Header: t("product-table-availability", "Availability"),
         accessor: "sales_channels",
         Cell: ({ cell: { value } }) => getProductSalesChannels(value),
       },
       {
-        Header: "Inventory",
+        Header: t("product-table-inventory", "Inventory"),
         accessor: "variants",
         Cell: ({ cell: { value } }) => (
           <div>
             {value.reduce((acc, next) => acc + next.inventory_quantity, 0)}
-            {" in stock for "}
-            {value.length} variant(s)
+            {t(
+              "product-table-inventory-in-stock-count",
+              " in stock for {{count}} variant(s)",
+              { count: value.length }
+            )}
           </div>
         ),
       },

@@ -7,28 +7,28 @@ import type { ResponseInventoryItem } from "./ResponseInventoryItem"
 
 export interface VariantInventory {
   /**
-   * the id of the variant
+   * the ID of the variant
    */
-  id?: string
+  id: string
   /**
-   * the stock location address ID
+   * The inventory details.
    */
-  inventory?: ResponseInventoryItem
+  inventory: ResponseInventoryItem
   /**
-   * An optional key-value map with additional details
+   * An array of details about the variant's inventory availability in sales channels.
    */
-  sales_channel_availability?: {
+  sales_channel_availability: Array<{
     /**
-     * Sales channel name
+     * Sales channel's name
      */
-    channel_name?: string
+    channel_name: string
     /**
-     * Sales channel id
+     * Sales channel's ID
      */
-    channel_id?: string
+    channel_id: string
     /**
-     * Available quantity in sales channel
+     * Available quantity in the sales channel
      */
-    available_quantity?: number
-  }
+    available_quantity: number
+  }>
 }

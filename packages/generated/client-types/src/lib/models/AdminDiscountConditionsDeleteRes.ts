@@ -7,7 +7,7 @@ import type { Discount } from "./Discount"
 
 export interface AdminDiscountConditionsDeleteRes {
   /**
-   * The ID of the deleted DiscountCondition
+   * The ID of the deleted Discount Condition
    */
   id: string
   /**
@@ -15,11 +15,11 @@ export interface AdminDiscountConditionsDeleteRes {
    */
   object: string
   /**
-   * Whether the discount condition was deleted successfully or not.
+   * Whether the discount condition was deleted successfully.
    */
   deleted: boolean
   /**
-   * The Discount to which the condition used to belong
+   * The Discount to which the condition used to belong to.
    */
   discount: Discount
 }

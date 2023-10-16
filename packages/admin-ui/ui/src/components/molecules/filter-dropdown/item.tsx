@@ -1,10 +1,12 @@
 import * as RadixCollapsible from "@radix-ui/react-collapsible"
 import * as RadixPopover from "@radix-ui/react-popover"
+
+import { useEffect, useMemo, useState } from "react"
+import { addHours, atMidnight, dateToUnixTimestamp } from "../../../utils/time"
+
 import clsx from "clsx"
 import moment from "moment"
-import { useEffect, useMemo, useState } from "react"
 import { DateFilters } from "../../../utils/filters"
-import { addHours, atMidnight, dateToUnixTimestamp } from "../../../utils/time"
 import { CalendarComponent } from "../../atoms/date-picker/date-picker"
 import Spinner from "../../atoms/spinner"
 import ArrowRightIcon from "../../fundamentals/icons/arrow-right-icon"
@@ -14,6 +16,9 @@ import InputField from "../input"
 
 const DAY_IN_SECONDS = 86400
 
+/**
+ * @deprecated Use `FilterMenu` instead
+ */
 const FilterDropdownItem = ({
   filterTitle,
   options,
@@ -84,7 +89,7 @@ const FilterDropdownItem = ({
 
   return (
     <div
-      className={clsx("w-full cursor-pointer", {
+      className={clsx("w-full cursor-pointer py-2 px-4 ", {
         "inter-small-semibold": open,
         "inter-small-regular": !open,
       })}
