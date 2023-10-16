@@ -10,6 +10,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema"
 import {
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
+  schemaObjectRepresentationPropertiesToOmit,
 } from "../types"
 
 export const CustomDirectives = {
@@ -340,8 +341,9 @@ function processEntity(
     moduleJoinerConfigs
   )
 
-  objectRepresentationRef._entityModuleConfigMap[entityName] =
-    currentEntityModule
+  objectRepresentationRef._serviceNameModuleConfigMap[
+    currentEntityModule.serviceName
+  ] = currentEntityModule
   currentObjectRepresentationRef.moduleConfig = currentEntityModule
   currentObjectRepresentationRef.alias = alias
 
@@ -429,8 +431,9 @@ function processEntity(
             { objectRepresentationRef }
           )
 
-          objectRepresentationRef._entityModuleConfigMap[
-            linkModuleMetadata.entityName
+          objectRepresentationRef._serviceNameModuleConfigMap[
+            linkModuleMetadata.linkModuleConfig.serviceName ||
+              linkModuleMetadata.entityName
           ] = currentEntityModule
 
           /**
@@ -498,8 +501,8 @@ function processEntity(
                 objectRepresentationRef,
               })
 
-            objectRepresentationRef._entityModuleConfigMap[
-              intermediateEntityName
+            objectRepresentationRef._serviceNameModuleConfigMap[
+              intermediateEntityModule.serviceName
             ] = intermediateEntityModule
 
             intermediateEntityObjectRepresentationRef.parents.push({
@@ -613,7 +616,9 @@ function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
 
   for (const objectRepresentationKey of Object.keys(
     objectRepresentation
-  ).filter((key) => key !== "_entityModuleConfigMap")) {
+  ).filter(
+    (key) => !schemaObjectRepresentationPropertiesToOmit.includes(key)
+  )) {
     const entityRepresentationRef =
       objectRepresentation[objectRepresentationKey]
 
@@ -650,7 +655,7 @@ export function buildSchemaObjectRepresentation(schema) {
   const entitiesMap = executableSchema.getTypeMap()
 
   const objectRepresentation = {
-    _entityModuleConfigMap: {},
+    _serviceNameModuleConfigMap: {},
   } as SchemaObjectRepresentation
 
   Object.entries(entitiesMap).forEach(([entityName, entityMapValue]) => {

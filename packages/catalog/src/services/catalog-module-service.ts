@@ -8,6 +8,7 @@ import {
 import {
   CatalogModuleOptions,
   SchemaObjectRepresentation,
+  schemaObjectRepresentationPropertiesToOmit,
   StorageProvider,
 } from "../types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
@@ -108,7 +109,7 @@ export default class CatalogModuleService
     for (const [entityName, schemaEntityObjectRepresentation] of Object.entries(
       schemaObjectRepresentation
     )) {
-      if (entityName === "_schemaPropertiesMap") {
+      if (schemaObjectRepresentationPropertiesToOmit.includes(entityName)) {
         continue
       }
 

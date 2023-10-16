@@ -4,6 +4,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Ref,
 } from "@mikro-orm/core"
 import Catalog from "./catalog"
 
@@ -37,14 +38,16 @@ export class CatalogRelation {
   @ManyToOne({
     entity: () => Catalog,
     onDelete: "cascade",
+    persist: false,
   })
-  parent?: Catalog
+  parent?: Ref<Catalog>
 
   @ManyToOne({
     entity: () => Catalog,
     onDelete: "cascade",
+    persist: false,
   })
-  child?: Catalog
+  child?: Ref<Catalog>
 }
 
 export default CatalogRelation

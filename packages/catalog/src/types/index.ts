@@ -97,8 +97,13 @@ export type SchemaObjectRepresentation =
     }
   | {
       _schemaPropertiesMap: SchemaPropertiesMap
-      _entityModuleConfigMap: EntityNameModuleConfigMap
+      _serviceNameModuleConfigMap: EntityNameModuleConfigMap
     }
+
+export const schemaObjectRepresentationPropertiesToOmit = [
+  "_schemaPropertiesMap",
+  "_serviceNameModuleConfigMap",
+]
 
 /**
  * Represents the storage provider interface, TODO: move this to @medusajs/types once we are settled on the interface

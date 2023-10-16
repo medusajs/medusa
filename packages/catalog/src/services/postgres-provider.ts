@@ -302,7 +302,7 @@ export class PostgresProvider {
         schemaEntityObjectRepresentation.moduleConfig.relationships![0]
           .serviceName
       const parentEntityName = (
-        this.schemaObjectRepresentation_._entityModuleConfigMap[
+        this.schemaObjectRepresentation_._serviceNameModuleConfigMap[
           parentServiceName
         ] as EntityNameModuleConfigMap[0]
       ).linkableKeys?.[parentPropertyId]
@@ -325,7 +325,7 @@ export class PostgresProvider {
         schemaEntityObjectRepresentation.moduleConfig.relationships![1]
           .serviceName
       const childEntityName = (
-        this.schemaObjectRepresentation_._entityModuleConfigMap[
+        this.schemaObjectRepresentation_._serviceNameModuleConfigMap[
           childServiceName
         ] as EntityNameModuleConfigMap[0]
       ).linkableKeys?.[childPropertyId]
@@ -355,7 +355,7 @@ export class PostgresProvider {
         catalogRepository.persist(catalogEntry)
 
         /**
-         * Create the catalog relation entry for the parent entity and the child entity
+         * Create the catalog relation entries for the parent entity and the child entity
          */
 
         const parentCatalogRelationEntry = catalogRelationRepository.create({
@@ -369,7 +369,7 @@ export class PostgresProvider {
           parent_id: cleanedEntityData.id,
           parent_name: entity,
           child_id: entityData[childPropertyId] as string,
-          child_name: childServiceName,
+          child_name: childEntityName,
         })
 
         catalogRelationRepository.persist([

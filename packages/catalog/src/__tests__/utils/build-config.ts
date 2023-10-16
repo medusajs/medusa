@@ -136,12 +136,10 @@ describe("buildSchemaObjectRepresentation", function () {
       LinkProductVariantPriceSet: expectedProductPricingLink,
       PriceSet: expectedPriceSet,
 
-      _entityModuleConfigMap: {
-        Product: expect.any(Object),
-        ProductVariant: expect.any(Object),
-        MoneyAmount: expect.any(Object),
-        LinkProductVariantPriceSet: expect.any(Object),
-        PriceSet: expect.any(Object),
+      _serviceNameModuleConfigMap: {
+        productService: expect.any(Object),
+        pricingService: expect.any(Object),
+        productVariantPricingPriceSetLink: expect.any(Object),
       },
 
       _schemaPropertiesMap: {
