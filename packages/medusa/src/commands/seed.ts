@@ -16,8 +16,8 @@ import { ConfigModule } from "../types/global"
 import { CreateProductCategoryInput } from "../types/product-category"
 import { CreateProductInput } from "../types/product"
 import { IPricingModuleService } from "@medusajs/types"
+import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
 import Logger from "../loaders/logger"
-import PricingIntegrationFeatureFlag from "../loaders/feature-flags/pricing-integration"
 import PublishableApiKeyService from "../services/publishable-api-key"
 import { SalesChannel } from "../models"
 import { sync as existsSync } from "fs-exists-cached"
@@ -134,7 +134,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       categories = [],
       shipping_options,
       users,
-      rule_types,
+      rule_types = [],
       publishable_api_keys = [],
     } = JSON.parse(fs.readFileSync(resolvedPath, `utf-8`))
 
@@ -275,7 +275,9 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       }
     }
 
-    if (featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)) {
+    if (
+      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
+    ) {
       for (const ruleType of rule_types) {
         await pricingModuleService.createRuleTypes(ruleType)
       }

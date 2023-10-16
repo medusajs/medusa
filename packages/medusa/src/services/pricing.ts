@@ -22,15 +22,15 @@ import { ProductVariantService, RegionService, TaxProviderService } from "."
 
 import { EntityManager } from "typeorm"
 import { FlagRouter } from "@medusajs/utils"
+import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import { MedusaError } from "medusa-core-utils"
 import { PriceSetMoneyAmountDTO } from "@medusajs/types"
-import PricingIntegrationFeatureFlag from "../loaders/feature-flags/pricing-integration"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
-import { removeNullish } from "../utils/remove-nullish"
+import { removeNullish } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -275,7 +275,9 @@ class PricingService extends TransactionBaseService {
       this.featureFlagRouter.isFeatureEnabled(
         IsolateProductDomainFeatureFlag.key
       ) &&
-      this.featureFlagRouter.isFeatureEnabled(PricingIntegrationFeatureFlag.key)
+      this.featureFlagRouter.isFeatureEnabled(
+        IsolatePricingDomainFeatureFlag.key
+      )
     ) {
       return await this.getProductVariantPricingModulePricing_(data, context)
     }
@@ -633,7 +635,7 @@ class PricingService extends TransactionBaseService {
 
   private async getPricingModuleVariantMoneyAmounts(
     variantIds: string[]
-  ): Promise<any> {
+  ): Promise<Map<string, MoneyAmount[]>> {
     const variables = {
       variant_id: variantIds,
     }
@@ -647,7 +649,7 @@ class PricingService extends TransactionBaseService {
 
     const variantPriceSets = await this.remoteQuery(query)
 
-    const variantIdToPriceSetIdMap: Map<string, string> = new Map(
+    const priceSetIdToVariantIdMap: Map<string, string> = new Map(
       variantPriceSets.map((variantPriceSet) => [
         variantPriceSet.price_set_id,
         variantPriceSet.variant_id,
@@ -675,7 +677,7 @@ class PricingService extends TransactionBaseService {
 
     const variantIdMoneyAmountMap = priceSetMoneyAmounts.reduce(
       (map, priceSetMoneyAmount) => {
-        const variantId = variantIdToPriceSetIdMap.get(
+        const variantId = priceSetIdToVariantIdMap.get(
           priceSetMoneyAmount.price_set!.id
         )
         if (!variantId) {
@@ -714,10 +716,10 @@ class PricingService extends TransactionBaseService {
   ): Promise<PricedVariant[]> {
     if (
       !this.featureFlagRouter.isFeatureEnabled(
-        PricingIntegrationFeatureFlag.key
+        IsolatePricingDomainFeatureFlag.key
       )
     ) {
-      return this.setVariantPrices(variants, context)
+      return await this.setVariantPrices(variants, context)
     }
 
     const variantIds = variants.map((variant) => variant.id)
@@ -750,10 +752,10 @@ class PricingService extends TransactionBaseService {
   ): Promise<(Product | PricedProduct)[]> {
     if (
       !this.featureFlagRouter.isFeatureEnabled(
-        PricingIntegrationFeatureFlag.key
+        IsolatePricingDomainFeatureFlag.key
       )
     ) {
-      return this.setProductPrices(products)
+      return await this.setProductPrices(products)
     }
 
     const variantIds = products

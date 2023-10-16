@@ -1,13 +1,11 @@
-import path from "path"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+import { setPort, useApi } from "../../../../environment-helpers/use-api"
 
 import { Region } from "@medusajs/medusa"
-
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { setPort, useApi } from "../../../../environment-helpers/use-api"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { createDefaultRuleTypes } from "../../../helpers/create-default-ruletypes"
-
 import adminSeeder from "../../../../helpers/admin-seeder"
+import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
+import path from "path"
 
 jest.setTimeout(5000)
 
