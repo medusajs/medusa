@@ -144,7 +144,7 @@ describe("Entity", function () {
       catalogEntry2.parents.add(catalogEntry)
       await manager.persistAndFlush(catalogEntry2)
 
-      const qb = manager.createQueryBuilder("catalog_re")
+      const qb = manager.createQueryBuilder("catalog_relation")
       qb.delete().where({ child_id: "prod_2", parent_id: "prod_1" })
 
       manager.clear()
