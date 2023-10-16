@@ -19,7 +19,6 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
 import { IsType } from "../../../../utils/validators/is-type"
 import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/pricing-integration"
 import PricingService from "../../../../services/pricing"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { cleanResponseData } from "../../../../utils/clean-response-data"

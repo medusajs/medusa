@@ -7,7 +7,7 @@ const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://postgres:@localhost/medusa-integration-1`
 process.env.POSTGRES_URL = DB_URL
 
-const enablePricing = process.env.MEDUSA_FF_PRICING_INTEGRATION == "true"
+const enablePricing = process.env.MEDUSA_FF_ISOLATE_PRICING_DOMAIN == "true"
 const enableProduct = process.env.MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN == "true"
 
 module.exports = {
@@ -38,7 +38,7 @@ module.exports = {
   },
   featureFlags: {
     isolate_product_domain: enableProduct,
-    pricing_integration: enablePricing,
+    isolate_pricing_domain: enablePricing,
     workflows: {
       [Workflows.CreateProducts]: true,
       [Workflows.UpdateProducts]: true,

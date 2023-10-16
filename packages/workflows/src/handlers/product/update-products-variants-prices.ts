@@ -1,4 +1,5 @@
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
+
 import { MedusaError } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 
@@ -78,7 +79,7 @@ export async function updateProductsVariantsPrices({
     })
   }
 
-  if (featureFlagRouter.isFeatureEnabled("pricing_integration")) {
+  if (featureFlagRouter.isFeatureEnabled("isolate_pricing_domain")) {
     const pricingModuleService = container.resolve("pricingModuleService")
 
     for (let { variantId } of variantIdsPricesData) {
