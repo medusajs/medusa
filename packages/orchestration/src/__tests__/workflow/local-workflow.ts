@@ -102,7 +102,7 @@ describe("WorkflowManager", () => {
 
     expect(err).toBeDefined()
     expect(err.message).toBe(
-      `Workflow with id "create-product" is already defined.`
+      `Workflow with id "create-product" and step definition already exists.`
     )
   })
 
