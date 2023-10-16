@@ -8,7 +8,6 @@ import {
   TransactionStepHandler,
   TransactionStepsDefinition,
 } from "../transaction"
-import { deepEqualObj } from "@medusajs/utils"
 
 export interface WorkflowDefinition {
   id: string
@@ -79,10 +78,9 @@ export class WorkflowManager {
     const finalFlow = flow instanceof OrchestratorBuilder ? flow.build() : flow
 
     if (WorkflowManager.workflows.has(workflowId)) {
-      const areStepsEqual = deepEqualObj(
-        finalFlow,
-        WorkflowManager.workflows.get(workflowId)!.flow_
-      )
+      const areStepsEqual =
+        JSON.stringify(finalFlow) ===
+        JSON.stringify(WorkflowManager.workflows.get(workflowId)!.flow_)
 
       if (!areStepsEqual) {
         throw new Error(`Workflow with id "${workflowId}" is already defined.`)
