@@ -1,4 +1,4 @@
-import { CartDTO } from "@medusajs/types"
+import { CartDTO, ShippingMethodDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInput = {
@@ -7,6 +7,25 @@ type HandlerInput = {
 
 type HandlerOutput = {
   lineItems: any[]
+}
+
+function validateLineItemShipping(
+  shippingMethods: ShippingMethodDTO[],
+  lineItem: any // TODO: LineItemDTO
+): boolean {
+  const lineItemShippingProfiledId = lineItem.variant.product.profile_id
+  if (!lineItemShippingProfiledId) {
+    return true
+  }
+
+  if (shippingMethods && shippingMethods.length) {
+    return shippingMethods.some(
+      ({ shipping_option }) =>
+        shipping_option.profile_id === lineItemShippingProfiledId
+    )
+  }
+
+  return false
 }
 
 export async function ensureCorrectLineItemShipping({
@@ -28,15 +47,10 @@ export async function ensureCorrectLineItemShipping({
     .resolve("lineItemService")
     .withTransaction(manager)
 
-  const cartService = container.resolve("cartService").withTransaction(manager)
-
   const items = await Promise.all(
     cart.items.map(async (item) => {
       return lineItemService.update(item.id, {
-        has_shipping: cartService.validateLineItemShipping_(
-          cart.shipping_methods,
-          item
-        ),
+        has_shipping: validateLineItemShipping(cart.shipping_methods!, item),
       })
     })
   )

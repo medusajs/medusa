@@ -596,11 +596,7 @@ class CartService extends TransactionBaseService {
       return true
     }
 
-    if (
-      shippingMethods &&
-      shippingMethods.length &&
-      lineItemShippingProfiledId
-    ) {
+    if (shippingMethods && shippingMethods.length) {
       return shippingMethods.some(
         ({ shipping_option }) =>
           shipping_option.profile_id === lineItemShippingProfiledId

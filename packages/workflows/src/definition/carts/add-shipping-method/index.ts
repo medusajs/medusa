@@ -38,14 +38,14 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
       noCompensation: true,
     },
     {
-      action: AddShippingMethodWorkflowActions.validateLineItemShipping,
+      action: AddShippingMethodWorkflowActions.getOptionPrice,
       noCompensation: true,
-      saveResponse: false,
       next: {
-        action: AddShippingMethodWorkflowActions.getOptionPrice,
-        noCompensation: true,
+        action: AddShippingMethodWorkflowActions.createShippingMethods,
         next: {
-          action: AddShippingMethodWorkflowActions.createShippingMethods,
+          action: AddShippingMethodWorkflowActions.validateLineItemShipping,
+          noCompensation: true,
+          saveResponse: false,
           next: {
             action: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
             next: {
@@ -80,20 +80,6 @@ const handlers = new Map([
           merge: true,
         },
         CartHandlers.validateShippingOptionForCart
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.validateLineItemShipping,
-    {
-      invoke: pipe(
-        {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-          },
-          merge: true,
-        },
-        CartHandlers.ensureCorrectLineItemShipping
       ),
     },
   ],
@@ -157,6 +143,31 @@ const handlers = new Map([
           }
         },
         ShippingMethodHandlers.deleteShippingMethods
+      ),
+    },
+  ],
+  [
+    AddShippingMethodWorkflowActions.validateLineItemShipping,
+    {
+      invoke: pipe(
+        {
+          invoke: {
+            from: AddShippingMethodWorkflowActions.prepare,
+            alias: "input",
+          },
+          merge: true,
+        },
+        async function ({ data }) {
+          return {
+            alias: "cart",
+            value: data.input.cart,
+          }
+        },
+        setRetrieveConfig({
+          relations: ["items", "items.variant", "items.variant.product"],
+        }),
+        CartHandlers.retrieveCart,
+        CartHandlers.ensureCorrectLineItemShipping
       ),
     },
   ],
