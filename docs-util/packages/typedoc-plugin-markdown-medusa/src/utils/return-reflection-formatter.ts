@@ -43,7 +43,7 @@ export function returnReflectionComponentFormatter(
         description: comment ? getReturnComment(comment) : "",
         children: [],
       })
-      if (!isOnlyVoid(reflectionType.typeArguments) && level <= MAX_LEVEL) {
+      if (!isOnlyVoid(reflectionType.typeArguments) && level + 1 <= MAX_LEVEL) {
         reflectionType.typeArguments.forEach((typeArg) => {
           const typeArgComponent = returnReflectionComponentFormatter(
             typeArg,
@@ -59,7 +59,8 @@ export function returnReflectionComponentFormatter(
     } else if (reflectionType.reflection) {
       componentItem.push(
         reflectionComponentFormatter(
-          reflectionType.reflection as DeclarationReflection
+          reflectionType.reflection as DeclarationReflection,
+          level
         )
       )
     } else {
@@ -67,7 +68,10 @@ export function returnReflectionComponentFormatter(
       const reflection = project.getChildByName(reflectionType.name)
       if (reflection) {
         componentItem.push(
-          reflectionComponentFormatter(reflection as DeclarationReflection)
+          reflectionComponentFormatter(
+            reflection as DeclarationReflection,
+            level
+          )
         )
       }
     }
@@ -89,7 +93,7 @@ export function returnReflectionComponentFormatter(
       description: comment ? getReturnComment(comment) : "",
       children: [],
     })
-    if (level <= MAX_LEVEL) {
+    if (level + 1 <= MAX_LEVEL) {
       const elementTypeItem = returnReflectionComponentFormatter(
         reflectionType.elementType,
         project,
@@ -124,7 +128,7 @@ export function returnReflectionComponentFormatter(
     } else {
       pushTo = componentItem
     }
-    if (level <= MAX_LEVEL) {
+    if (level + 1 <= MAX_LEVEL) {
       reflectionType.elements.forEach((element) => {
         const elementTypeItem = returnReflectionComponentFormatter(
           element,
