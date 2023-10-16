@@ -52,6 +52,9 @@ export interface IPricingModuleService {
    * @returns {Promise<CalculatedPriceSetDTO>} The calculated price matching the context and filters provided.
    * 
    * @example
+   * When you calculate prices, you must at least specify the currency code:
+   * 
+   * ```ts
    * import { 
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
@@ -69,6 +72,53 @@ export interface IPricingModuleService {
    * 
    *   // do something with the price or return it
    * }
+   * ```
+   * 
+   * To calculate prices for specific minimum and/or maximum quantity:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * async function calculatePrice (priceSetId: string, currencyCode: string) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const price = await pricingService.calculatePrices(
+   *     { id: [priceSetId] },
+   *     {
+   *       context: {
+   *         currency_code: currencyCode,
+   *         min_quantity: 4
+   *       }
+   *     }
+   *   )
+   * 
+   *   // do something with the price or return it
+   * }
+   * ```
+   * 
+   * To calculate prices for custom rule types:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * async function calculatePrice (priceSetId: string, currencyCode: string) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const price = await pricingService.calculatePrices(
+   *     { id: [priceSetId] },
+   *     {
+   *       context: {
+   *         currency_code: currencyCode,
+   *         region_id: "US"
+   *       }
+   *     }
+   *   )
+   * 
+   *   // do something with the price or return it
+   * }
+   * ```
    */
   calculatePrices(
     filters: PricingFilters,

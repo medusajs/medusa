@@ -23,6 +23,7 @@ export type SectionKey =
   | "member_declaration_indexSignature"
   | "member_declaration_signatures"
   | "member_declaration_typeDeclaration"
+  | "member_declaration_example"
   | "member_getteSetter_getSignature"
   | "member_getteSetter_setSignature"
   | "member_signatures"
@@ -33,10 +34,10 @@ export type SectionKey =
   | "member_signature_comment"
   | "member_signature_typeParameters"
   | "member_signature_parameters"
-  | "showReturnSignature"
+  | "member_signature_example"
+  | "member_signature_returns"
   | "member_signature_declarationSignatures"
   | "member_signature_declarationChildren"
-  | "member_signature_comment"
   | "member_signature_sources"
   | "member_sources_implementationOf"
   | "member_sources_inheritedFrom"
@@ -70,7 +71,6 @@ export type FormattingOptionType = {
   showCommentsAsHeader?: boolean
   showCommentsAsDetails?: boolean
   parameterStyle?: ParameterStyle
-  showReturnSignature?: boolean
   frontmatterData?: Record<string, unknown>
   parameterComponent?: string
   mdxImports?: string[]

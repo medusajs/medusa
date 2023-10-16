@@ -41,7 +41,11 @@ import mdxImportsHelper from "./resources/helpers/mdx-imports"
 import parameterComponentHelper from "./resources/helpers/parameter-component"
 import typeParameterComponentHelper from "./resources/helpers/type-parameter-component"
 import showPropertiesAsComponentHelper from "./resources/helpers/show-properties-as-component"
+import commentTagHelper from "./resources/helpers/comment-tag"
+import exampleHelper from "./resources/helpers/example"
 import { MarkdownTheme } from "./theme"
+
+// test
 
 const TEMPLATE_PATH = path.join(__dirname, "resources", "templates")
 
@@ -72,7 +76,7 @@ export function registerPartials() {
 export function registerHelpers(theme: MarkdownTheme) {
   breadcrumbsHelper(theme)
   commentHelper(theme)
-  commentsHelper(theme)
+  commentsHelper()
   declarationTitleHelper(theme)
   escapeHelper()
   hierarchyHelper()
@@ -110,4 +114,6 @@ export function registerHelpers(theme: MarkdownTheme) {
   parameterComponentHelper(theme)
   typeParameterComponentHelper(theme)
   showPropertiesAsComponentHelper(theme)
+  commentTagHelper(theme)
+  exampleHelper()
 }
