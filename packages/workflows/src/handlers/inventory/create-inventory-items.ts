@@ -1,21 +1,16 @@
-import {
-  IInventoryService,
-  InventoryItemDTO,
-  ProductTypes,
-} from "@medusajs/types"
+import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type Result = {
-  variant: ProductTypes.ProductVariantDTO
+  tag: string
   inventoryItem: InventoryItemDTO
 }[]
 
 export async function createInventoryItems({
   container,
-  context,
   data,
 }: WorkflowArguments<{
-  products: ProductTypes.ProductDTO[]
+  inventoryItems: (InventoryItemDTO & { _associationTag?: string })[]
 }>): Promise<Result | void> {
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
@@ -28,47 +23,27 @@ export async function createInventoryItems({
     return void 0
   }
 
-  const variants = data.products.reduce(
-    (
-      acc: ProductTypes.ProductVariantDTO[],
-      product: ProductTypes.ProductDTO
-    ) => {
-      return acc.concat(product.variants)
-    },
-    []
-  )
-
   const result = await Promise.all(
-    variants.map(async (variant) => {
-      if (!variant.manage_inventory) {
-        return
-      }
+    data.inventoryItems.map(async (item) => {
+      const inventoryItem = await inventoryService!.createInventoryItem({
+        sku: item.sku!,
+        origin_country: item.origin_country!,
+        hs_code: item.hs_code!,
+        mid_code: item.mid_code!,
+        material: item.material!,
+        weight: item.weight!,
+        length: item.length!,
+        height: item.height!,
+        width: item.width!,
+      })
 
-      const inventoryItem = await inventoryService!.createInventoryItem(
-        {
-          sku: variant.sku!,
-          origin_country: variant.origin_country!,
-          hs_code: variant.hs_code!,
-          mid_code: variant.mid_code!,
-          material: variant.material!,
-          weight: variant.weight!,
-          length: variant.length!,
-          height: variant.height!,
-          width: variant.width!,
-        },
-        {
-          transactionManager: (context.transactionManager ??
-            context.manager) as any,
-        }
-      )
-
-      return { variant, inventoryItem }
+      return { tag: item._associationTag ?? inventoryItem.id, inventoryItem }
     })
   )
 
-  return result.filter(Boolean) as Result
+  return result
 }
 
 createInventoryItems.aliases = {
-  products: "products",
+  payload: "payload",
 }
