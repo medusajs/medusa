@@ -44,12 +44,17 @@ export interface IPricingModuleService {
   /**
    * This method is used to calculate prices based on the provided filters and context.
    *
-   * @param {PricingContext} filters - An object of type {@link PricingFilters} used to filter the price sets.
-   * @param {PricingContext} context - An object of type {@link PricingContext} to select prices. For example, the pricing context can specify the currency code to calculate prices in.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CalculatedPriceSetDTO>} A promise that resolves to an object of type {@link CalculatedPriceSetDTO} which includes the calculated prices.
+   * @param {PricingFilters} filters - The filters to apply on prices.
+   * @param {PricingContext} context - 
+   * The context used to select the prices. For example, you can specify the region ID in this context, and only prices having the same value
+   * will be retrieved.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<CalculatedPriceSetDTO>} The calculated price matching the context and filters provided.
    * 
    * @example
+   * When you calculate prices, you must at least specify the currency code:
+   * 
+   * ```ts
    * import { 
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
@@ -67,6 +72,53 @@ export interface IPricingModuleService {
    * 
    *   // do something with the price or return it
    * }
+   * ```
+   * 
+   * To calculate prices for specific minimum and/or maximum quantity:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * async function calculatePrice (priceSetId: string, currencyCode: string) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const price = await pricingService.calculatePrices(
+   *     { id: [priceSetId] },
+   *     {
+   *       context: {
+   *         currency_code: currencyCode,
+   *         min_quantity: 4
+   *       }
+   *     }
+   *   )
+   * 
+   *   // do something with the price or return it
+   * }
+   * ```
+   * 
+   * To calculate prices for custom rule types:
+   * 
+   * ```ts
+   * import { 
+   *   initialize as initializePricingModule,
+   * } from "@medusajs/pricing"
+   * async function calculatePrice (priceSetId: string, currencyCode: string) {
+   *   const pricingService = await initializePricingModule()
+   * 
+   *   const price = await pricingService.calculatePrices(
+   *     { id: [priceSetId] },
+   *     {
+   *       context: {
+   *         currency_code: currencyCode,
+   *         region_id: "US"
+   *       }
+   *     }
+   *   )
+   * 
+   *   // do something with the price or return it
+   * }
+   * ```
    */
   calculatePrices(
     filters: PricingFilters,
@@ -77,12 +129,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieves a price set by its ID.
    *
-   * @param {string} id - A string indicating the ID of the price set to retrieve.
+   * @param {string} id - The ID of the price set to retrieve.
    * @param {FindConfig<PriceSetDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the price set is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the price set is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO>} A promise that resolves to an object of type {@link PriceSetDTO} which is the retrieved price set.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO>} The retrieved price set.
    * 
    * @example
    * A simple example that retrieves a price set by its ID:
@@ -133,12 +185,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
    *
-   * @param {FilterablePriceSetProps} filters - An object of type {@link FilterablePriceSetProps} that is used to filter the retrieved price lists.
+   * @param {FilterablePriceSetProps} filters - The filters to apply on the retrieved price lists.
    * @param {FindConfig<PriceSetDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO[]>} A promise that resolves to an array of objects of type {@link PriceSetDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO[]>} The list of price sets.
    * 
    * @example
    * 
@@ -253,13 +305,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of price sets along with the total count of available price sets satisfying the provided filters.
    * 
-   * @param {FilterablePriceSetProps} filters - An object of type {@link FilterablePriceSetProps} that is used to filter the retrieved price lists.
+   * @param {FilterablePriceSetProps} filters - The filters to apply on the retrieved price lists.
    * @param {FindConfig<PriceSetDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[PriceSetDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link PriceSetDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[PriceSetDTO[], number]>} The list of price sets along with their total count.
    * 
    * @example
    * 
@@ -374,9 +425,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to create a new price set.
    * 
-   * @param {CreatePriceSetDTO} data - An object of type {@link CreatePriceSetDTO} that holds the attribute of the price set to create.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO>} A promise that resolves to an object of type {@link PriceSetDTO}, which is the created price set.
+   * @param {CreatePriceSetDTO} data - The attributes of the price set to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO>} The created price set.
    * 
    * @example
    * To create a default price set, don't pass any rules. For example:
@@ -466,9 +517,9 @@ export interface IPricingModuleService {
    * 
    * This method is used to create multiple price sets.
    * 
-   * @param {CreatePriceSetDTO[]} data - An array of objects of type {@link CreatePriceSetDTO}, where each object holds the attribute of a price set to create.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO[]>} A promise that resolves to an array of objects of type {@link PriceSetDTO}, which are the created price sets.
+   * @param {CreatePriceSetDTO[]} data - The price sets to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO[]>} The list of created price sets.
    * 
    * @example
    * To create price sets with a default price, don't pass any rules and make sure to pass the `currency_code` of the price. For example:
@@ -556,9 +607,9 @@ export interface IPricingModuleService {
    * 
    * This method is used to update existing price sets.
    * 
-   * @param {UpdatePriceSetDTO[]} data - An array of objects of type {@link UpdatePriceSetDTO}, each holding the data of the price sets to update.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO[]>} A promise that resolves to an array of objects of type {@link PriceSetDTOs}, which are the updated price sets.
+   * @param {UpdatePriceSetDTO[]} data - The price sets to update, each having the attributes that should be updated in a price set.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO[]>} The list of updated price sets.
    */
   update(
     data: UpdatePriceSetDTO[],
@@ -568,9 +619,9 @@ export interface IPricingModuleService {
   /**
    * This method remove rules from a price set.
    * 
-   * @param {RemovePriceSetRulesDTO[]} data - An array of objects of type {@link RemovePriceSetRulesDTO}, each specfiying which rules to remove.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves when rules are successfully removed.
+   * @param {RemovePriceSetRulesDTO[]} data - The rules to remove per price set.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when rules are successfully removed.
    * 
    * @example
    * import { 
@@ -596,9 +647,9 @@ export interface IPricingModuleService {
   /**
    * This method deletes price sets by their IDs.
    *
-   * @param {string[]} ids - An array of strings, each being the ID for a price set to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves when the price sets are successfully deleted.
+   * @param {string[]} ids - The IDs of the price sets to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the price sets are successfully deleted.
    * 
    * @example
    * import { 
@@ -616,9 +667,9 @@ export interface IPricingModuleService {
   /**
    * This method adds prices to a price set.
    *
-   * @param {AddPricesDTO} data - An object of type {@link AddPricesDTO} that holds the data necessary to add the prices.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO>} A promise that resolves to an object of type {@link PriceSetDTO}, which is the price set that the prices belong to.
+   * @param {AddPricesDTO} data - The data defining the price set to add the prices to, along with the prices to add.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO>} The price set that the prices were added to.
    * 
    * @example
    * 
@@ -696,9 +747,9 @@ export interface IPricingModuleService {
   /**
    * This method adds prices to multiple price sets.
    *
-   * @param {AddPricesDTO[]} data - An array of objects of type {@link AddPricesDTO}, each holding the data necessary to add the prices to the price set.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO[]>} A promise that resolves to an array of objects of type {@link PriceSetDTO}, each being a price list that prices were added to.
+   * @param {AddPricesDTO[]} data - The data defining the prices to add per price set.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO[]>} The list of the price sets that prices were added to.
    * 
    * @example
    * 
@@ -779,9 +830,9 @@ export interface IPricingModuleService {
   /**
    * This method adds rules to a price set.
    *
-   * @param {AddRulesDTO} data - An object of type {@link AddRulesDTO} that holds the necessary data to add rules to a price set.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO>} A promise that resolves to an object of type {@link PriceSetDTO}, which is the price set that the rules belong to.
+   * @param {AddRulesDTO} data - The data defining the price set to add the rules to, along with the rules to add.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO>} The price set that the rules were added to.
    * 
    * @example
    * import { 
@@ -806,9 +857,9 @@ export interface IPricingModuleService {
   /**
    * This method adds rules to multiple price sets.
    *
-   * @param {AddRulesDTO[]} data - An array of objects of type {@link AddRulesDTO}, each holding the necessary data to add rules to a price set.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO[]>} A promise that resolves to an array of objects of type {@link PriceSetDTO}, each being the price set that rules were added to.
+   * @param {AddRulesDTO[]} data - The data defining the rules to add per price set.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetDTO[]>} The list of the price sets that the rules were added to.
    * 
    * @example
    * import { 
@@ -835,10 +886,10 @@ export interface IPricingModuleService {
    *
    * @param {string} id - The ID of the money amount to retrieve.
    * @param {FindConfig<MoneyAmountDTO>} config - 
-   * An object of type {@link MoneyAmountDTO} used to configure how a money amount is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how a money amount is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a money amount.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<MoneyAmountDTO>} A promise that resolves to an object of type {@link MoneyAmountDTO} which is the retrieved money amount.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<MoneyAmountDTO>} The retrieved money amount.
    * 
    * @example
    * To retrieve a money amount by its ID:
@@ -889,12 +940,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of money amounts based on optional filters and configuration.
    *
-   * @param {FilterableMoneyAmountProps} filters - An object of type {@link FilterableMoneyAmountProps} that is used to filter the retrieved money amounts.
+   * @param {FilterableMoneyAmountProps} filters - The filtes to apply on the retrieved money amounts.
    * @param {FindConfig<MoneyAmountDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a money amount.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of objects of type {@link MoneyAmountDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<MoneyAmountDTO[]>} The list of money amounts.
    * 
    * @example
    * 
@@ -1007,13 +1058,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of money amounts along with the total count of available money amounts satisfying the provided filters.
    *
-   * @param {FilterableMoneyAmountProps} filters - An object of type {@link FilterableMoneyAmountProps} that is used to filter the retrieved money amounts.
+   * @param {FilterableMoneyAmountProps} filters - The filters to apply on the retrieved money amounts.
    * @param {FindConfig<MoneyAmountDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a money amount.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[MoneyAmountDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link MoneyAmountDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[MoneyAmountDTO[], number]>} The list of money amounts along with their total count.
    * 
    * @example
    * 
@@ -1126,9 +1176,9 @@ export interface IPricingModuleService {
   /**
    * This method creates money amounts.
    *
-   * @param {CreateMoneyAmountDTO[]} data - An array of objects of type {@link CreateMoneyAmountDTO} that holds the necessary data to create the money amount.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of objects of type {@link MoneyAmountDTO}, each being a created money amount.
+   * @param {CreateMoneyAmountDTO[]} data - The money amounts to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<MoneyAmountDTO[]>} The list of created money amounts.
    * 
    * @example
    * import { 
@@ -1162,9 +1212,9 @@ export interface IPricingModuleService {
   /**
    * This method updates existing money amounts.
    *
-   * @param {UpdateMoneyAmountDTO[]} data - An array of objects of type {@link UpdateMoneyAmountDTO}, each holding data to update in a money amount.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<MoneyAmountDTO[]>} A promise that resolves to an array of objects of type {@link MoneyAmountDTO}, each being a updated money amount.
+   * @param {UpdateMoneyAmountDTO[]} data - The money amounts to update, each having the attributes that should be updated in a money amount.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<MoneyAmountDTO[]>} The list of updated money amounts.
    * 
    * @example
    * import { 
@@ -1192,9 +1242,9 @@ export interface IPricingModuleService {
   /**
    * This method deletes money amounts by their IDs.
    *
-   * @param {string[]} ids - An array of strings, each being the ID of a money amount to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves when the money amounts are successfully deleted.
+   * @param {string[]} ids - The IDs of the money amounts to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the money amounts are successfully deleted.
    * 
    * @example
    * import { 
@@ -1214,12 +1264,12 @@ export interface IPricingModuleService {
   /**
    * This method retrieves a currency by its code and and optionally based on the provided configurations.
    *
-   * @param {string} code - A string indicating the code of the currency to retrieve.
+   * @param {string} code - The code of the currency to retrieve.
    * @param {FindConfig<CurrencyDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the currency is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the currency is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a currency.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CurrencyDTO>} A promise that resolves to an object of type {@link CurrencyDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<CurrencyDTO>} The retrieved currency.
    * 
    * @example
    * A simple example that retrieves a currency by its code:
@@ -1270,12 +1320,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of currencies based on optional filters and configuration.
    *
-   * @param {FilterableCurrencyProps} filters - An object of type {@link FilterableCurrencyProps} that is used to filter the retrieved currencies.
+   * @param {FilterableCurrencyProps} filters - The filters to apply on the retrieved currencies.
    * @param {FindConfig<CurrencyDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a currency.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CurrencyDTO[]>} A promise that resolves to an array of objects of type {@link CurrencyDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<CurrencyDTO[]>} The list of currencies.
    * 
    * @example
    * 
@@ -1356,13 +1406,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of currencies along with the total count of available currencies satisfying the provided filters.
    *
-   * @param {FilterableCurrencyProps} filters - An object of type {@link FilterableCurrencyProps} that is used to filter the retrieved currencies.
+   * @param {FilterableCurrencyProps} filters - The filters to apply on the retrieved currencies.
    * @param {FindConfig<CurrencyDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a currency.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[CurrencyDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link CurrencyDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[CurrencyDTO[], number]>} The list of currencies along with the total count.
    * 
    * @example
    * 
@@ -1443,9 +1492,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to create new currencies.
    *
-   * @param {CreateCurrencyDTO[]} data - An array of objects of type {@link CreateCurrencyDTO}, each object holding the data of a currency to create.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CurrencyDTO[]>} A promise that resolves to an array of objects of type {@link CurrencyDTO}, each object being a created currency.
+   * @param {CreateCurrencyDTO[]} data - The currencies to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<CurrencyDTO[]>} The list of created currencies.
    * 
    * @example
    * import { 
@@ -1475,9 +1524,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to update existing currencies with the provided data. In each currency object, the currency code must be provided to identify which currency to update.
    *
-   * @param {UpdateCurrencyDTO[]} data - An array of objects of type {@link UpdateCurrencyDTO}, each object containing data to be updated in a currency.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<CurrencyDTO[]>} A promise that resolves to an array of objects of type {@link CurrencyDTO}, each object being an updated currency.
+   * @param {UpdateCurrencyDTO[]} data - The currencies to update, each having the attributes that should be updated in a currency.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<CurrencyDTO[]>} The list of updated currencies.
    * 
    * @example
    * import { 
@@ -1505,9 +1554,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to delete currencies based on their currency code.
    *
-   * @param {string[]} currencyCodes - An array of strings, each being a code of a currency to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves once the currencies are deleted.
+   * @param {string[]} currencyCodes - Currency codes of the currencies to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves once the currencies are deleted.
    * 
    * @example
    * import { 
@@ -1531,10 +1580,10 @@ export interface IPricingModuleService {
    *
    * @param {string} id - The ID of the rule type to retrieve.
    * @param {FindConfig<RuleTypeDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the rule type is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the rule type is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a rule type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO>} A promise that resolves to an object of type {@link RuleTypeDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RuleTypeDTO>} The retrieved rule type.
    * 
    * @example
    * A simple example that retrieves a rule type by its code:
@@ -1572,7 +1621,7 @@ export interface IPricingModuleService {
    * ```
    */
   retrieveRuleType(
-    code: string,
+    id: string,
     config?: FindConfig<RuleTypeDTO>,
     sharedContext?: Context
   ): Promise<RuleTypeDTO>
@@ -1580,12 +1629,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of rule types based on optional filters and configuration.
    *
-   * @param {FilterableRuleTypeProps} filters - An object of type {@link FilterableRuleTypeProps} that is used to filter the retrieved rule types.
+   * @param {FilterableRuleTypeProps} filters - The filters to apply on the retrieved rule types.
    * @param {FindConfig<RuleTypeDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a rule type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO[]>} A promise that resolves to an array of objects of type {@link RuleTypeDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RuleTypeDTO[]>} The list of rule types.
    * 
    * @example
    * 
@@ -1693,13 +1742,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of rule types along with the total count of available rule types satisfying the provided filters.
    *
-   * @param {FilterableRuleTypeProps} filters - An object of type {@link FilterableRuleTypeProps} that is used to filter the retrieved rule types.
+   * @param {FilterableRuleTypeProps} filters - The filters to apply on the retrieved rule types.
    * @param {FindConfig<RuleTypeDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a rule type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[RuleTypeDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link RuleTypeDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[RuleTypeDTO[], number]>} The list of rule types along with their total count.
    * 
    * @example
    * 
@@ -1807,9 +1855,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to create new rule types.
    *
-   * @param {CreateRuleTypeDTO[]} data - An array of objects of type {@link CreateRuleTypeDTO}, each being the data to use to create a rule type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO[]>} A promise that resolves to an array of objects of type {@link RuleTypeDTO}, each being a created rule type.
+   * @param {CreateRuleTypeDTO[]} data - The rule types to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RuleTypeDTO[]>} The list of created rule types.
    * 
    * @example
    * import { 
@@ -1837,9 +1885,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to update existing rule types with the provided data.
    *
-   * @param {UpdateRuleTypeDTO[]} data - An array of objects of type {@link UpdateRuleTypeDTO}, each object containing data to be updated in a rule type.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO[]>} A promise that resolves to an array of objects of type {@link RuleTypeDTO}, each being an updated rule type.
+   * @param {UpdateRuleTypeDTO[]} data - The rule types to update, each having the attributes that should be updated in a rule type.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<RuleTypeDTO[]>} The list of updated rule types.
    * 
    * @example
    * import { 
@@ -1867,9 +1915,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to delete rule types based on the provided IDs.
    *
-   * @param {string[]} ruleTypeIds - An array of strings, each being the ID of a rule type to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves once the rule types are deleted.
+   * @param {string[]} ruleTypeIds - The IDs of the rule types to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves once the rule types are deleted.
    * 
    * @example
    * import { 
@@ -1887,12 +1935,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to a price set money amount rule by its ID based on the provided configuration.
    *
-   * @param {string} id - A string indicating the ID of the price set money amount rule to retrieve.
+   * @param {string} id - The ID of the price set money amount rule to retrieve.
    * @param {FindConfig<PriceSetMoneyAmountRulesDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the price set money amount rule is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the price set money amount rule is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set money amount rule.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetMoneyAmountRulesDTO>} A promise that resolves to an object of type {@link PriceSetMoneyAmountRulesDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetMoneyAmountRulesDTO>} The retrieved price set money amount rule.
    * 
    * @example
    * A simple example that retrieves a price set money amount rule by its ID:
@@ -1938,13 +1986,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of price set money amount rules based on optional filters and configuration.
    *
-   * @param {FilterablePriceSetMoneyAmountRulesProps} filters - 
-   * An object of type {@link FilterablePriceSetMoneyAmountRulesProps} that is used to filter the retrieved price set money amount rules.
+   * @param {FilterablePriceSetMoneyAmountRulesProps} filters - The filters to apply on the retrieved price set money amount rules.
    * @param {FindConfig<PriceSetMoneyAmountRulesDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set money amount rule.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetMoneyAmountRulesDTO[]>} A promise that resolves to an array of objects of type {@link PriceSetMoneyAmountRulesDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetMoneyAmountRulesDTO[]>} The list of price set money amount rules.
    * 
    * @example
    * 
@@ -2047,14 +2094,12 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of price set money amount rules along with the total count of 
    * available price set money amount rules satisfying the provided filters.
    *
-   * @param {FilterablePriceSetMoneyAmountRulesProps} filters - 
-   * An object of type {@link FilterablePriceSetMoneyAmountRulesProps} that is used to filter the retrieved price set money amount rules.
+   * @param {FilterablePriceSetMoneyAmountRulesProps} filters - The filters to apply on the retrieved price set money amount rules.
    * @param {FindConfig<PriceSetMoneyAmountRulesDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set money amount rule.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[PriceSetMoneyAmountRulesDTO[], number]>} A promise that resolves to an array having two items, the first item is an array of objects of type {@link PriceSetMoneyAmountRulesDTO}, 
-   * and the second item is a number indicating the total count.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[PriceSetMoneyAmountRulesDTO[], number]>} The list of price set money amount rules and their total count.
    * 
    * @example
    * 
@@ -2157,11 +2202,9 @@ export interface IPricingModuleService {
    * This method is used to create new price set money amount rules. A price set money amount rule creates an association between a price set money amount and
    * a rule type.
    *
-   * @param {CreatePriceSetMoneyAmountRulesDTO[]} data - 
-   * An array of objects of type {@link CreatePriceSetMoneyAmountRulesDTO}, each containing the data of a price set money amount rule to create.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetMoneyAmountRulesDTO[]>} A promise that resolves to an array of objects of type {@link PriceSetMoneyAmountRulesDTO}, each being
-   * a created price set money amount rule.
+   * @param {CreatePriceSetMoneyAmountRulesDTO[]} data - The price set money amount rules to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetMoneyAmountRulesDTO[]>} The list of created price set money amount rules.
    * 
    * @example
    * import { 
@@ -2191,10 +2234,9 @@ export interface IPricingModuleService {
    * This method is used to update price set money amount rules, each with their provided data.
    *
    * @param {UpdatePriceSetMoneyAmountRulesDTO[]} data - 
-   * An array of objects of type {@link UpdatePriceSetMoneyAmountRulesDTO}, each containing the data to update in a price set money amount rule.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetMoneyAmountRulesDTO[]>} A promise that resolves to an array of objects of type {@link PriceSetMoneyAmountRulesDTO}, each being the
-   * updated price set money amount rule.
+   * The price set money amounts to update, each having the attributes to update in a price set money amount.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceSetMoneyAmountRulesDTO[]>} The list of updated price set money amount rules.
    * 
    * @example
    * import { 
@@ -2222,9 +2264,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to delete price set money amount rules based on the specified IDs.
    *
-   * @param {string[]} ids - An array of strings, each representing the ID of a price set money amount rule to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves once the price set money amount rules are deleted.
+   * @param {string[]} ids - The IDs of the price set money amount rules to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves once the price set money amount rules are deleted.
    * 
    * @example
    * import { 
@@ -2247,10 +2289,10 @@ export interface IPricingModuleService {
    *
    * @param {string} id - The ID of the price rule to retrieve.
    * @param {FindConfig<PriceRuleDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price rule.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceRuleDTO>} A promise that resolves to an object of type {@link PriceRuleDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceRuleDTO>} The retrieved price rule.
    * 
    * @example
    * A simple example that retrieves a price rule by its ID:
@@ -2296,13 +2338,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of price rules based on optional filters and configuration.
    *
-   * @param {FilterablePriceRuleProps} filters - 
-   * An object of type {@link FilterablePriceRuleProps} that is used to filter the retrieved price rules.
+   * @param {FilterablePriceRuleProps} filters - The filters to apply on the retrieved price rules.
    * @param {FindConfig<PriceRuleDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price rule.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceRuleDTO[]>} A promise that resolves to an array of objects of type {@link PriceRuleDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceRuleDTO[]>} The list of price rules.
    * 
    * @example
    * 
@@ -2404,13 +2445,12 @@ export interface IPricingModuleService {
   /**
    * This method is used to retrieve a paginated list of price rules along with the total count of available price rules satisfying the provided filters.
    *
-   * @param {FilterablePriceRuleProps} filters - 
-   * An object of type {@link FilterablePriceRuleProps} that is used to filter the retrieved price rules.
+   * @param {FilterablePriceRuleProps} filters - The filters to apply on the retrieved price rules.
    * @param {FindConfig<PriceRuleDTO>} config - 
-   * An object of type {@link FindConfig} used to configure how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the
+   * The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price rule.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceRuleDTO[]>} A promise that resolves to an array of objects of type {@link PriceRuleDTO}.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceRuleDTO[]>} The list of price rules along with their total count.
    * 
    * @example
    * 
@@ -2512,9 +2552,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to create new price rules based on the provided data.
    *
-   * @param {CreatePriceRuleDTO[]} data - An array of objects of type {@link CreatePriceRuleDTO}, each containing the data necessary to create a price rule.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceRuleDTO[]>} A promise that resolves to an array of objects of type {@link PriceRuleDTO}, each being a created price rule.
+   * @param {CreatePriceRuleDTO[]} data - The price rules to create.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceRuleDTO[]>} The list of created price rules.
    * 
    * @example
    * import { 
@@ -2553,9 +2593,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to update price rules, each with their provided data.
    *
-   * @param {UpdatePriceRuleDTO[]} data - An array of objects of type {@link UpdatePriceRuleDTO}, each containing the data to update in a price rule.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceRuleDTO[]>} A promise that resolves to an array of objects of type {@link PriceRuleDTO}, each being an updated price rule.
+   * @param {UpdatePriceRuleDTO[]} data - The price rules to update, each having attributes that should be updated in a price rule.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PriceRuleDTO[]>} The list of updated price rules.
    * 
    * @example
    * import { 
@@ -2586,9 +2626,9 @@ export interface IPricingModuleService {
   /**
    * This method is used to delete price rules based on the specified IDs.
    *
-   * @param {string[]} priceRuleIds - An array of strings, each being the ID of a price rule to delete.
-   * @param {Context} sharedContext - An object of type {@link Context} used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} A promise that resolves once the price rules are deleted.
+   * @param {string[]} priceRuleIds - The IDs of the price rules to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves once the price rules are deleted.
    * 
    * @example
    * import { 

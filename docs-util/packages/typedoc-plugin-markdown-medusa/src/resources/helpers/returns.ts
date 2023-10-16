@@ -1,34 +1,106 @@
 import * as Handlebars from "handlebars"
-import { Comment, DeclarationReflection } from "typedoc"
-import reflectionFomatter from "../../utils/reflection-formatter"
+import { Comment, DeclarationReflection, SignatureReflection } from "typedoc"
+import { MarkdownTheme } from "../../theme"
+import reflectionFormatter from "../../utils/reflection-formatter"
+import { returnReflectionComponentFormatter } from "../../utils/return-reflection-formatter"
+import { Parameter } from "../../types"
 
-export default function () {
-  Handlebars.registerHelper("returns", function (comment: Comment) {
-    const md: string[] = []
-
-    if (comment.blockTags?.length) {
-      const tags = comment.blockTags
-        .filter((tag) => tag.tag === "@returns")
-        .map((tag) => {
-          let result = Handlebars.helpers.comment(tag.content)
-          tag.content.forEach((commentPart) => {
-            if (
-              "target" in commentPart &&
-              commentPart.target instanceof DeclarationReflection
-            ) {
-              const content = commentPart.target.children?.map((childItem) =>
-                reflectionFomatter(childItem)
-              )
-              result += `\n\n<details>\n<summary>\n${
-                commentPart.target.name
-              }\n</summary>\n\n${content?.join("\n")}\n\n</details>`
-            }
-          })
-          return result
-        })
-      md.push(tags.join("\n\n"))
+export default function (theme: MarkdownTheme) {
+  Handlebars.registerHelper(
+    "returns",
+    function (reflection: SignatureReflection) {
+      if (reflection.variant === "signature" && "type" in reflection) {
+        return getReturnFromType(theme, reflection)
+      } else if (reflection.comment) {
+        return getReturnFromComment(theme, reflection.comment)
+      } else {
+        return ""
+      }
     }
+  )
+}
 
-    return md.join("")
-  })
+function getReturnFromType(
+  theme: MarkdownTheme,
+  reflection: SignatureReflection
+) {
+  const { parameterStyle, parameterComponent } =
+    theme.getFormattingOptionsForLocation()
+
+  if (!reflection.type) {
+    return ""
+  }
+
+  const componentItems = returnReflectionComponentFormatter(
+    reflection.type,
+    reflection.project || theme.project,
+    reflection.comment,
+    1
+  )
+
+  if (parameterStyle === "component") {
+    return `<${parameterComponent} parameters={${JSON.stringify(
+      componentItems
+    )}} />`
+  } else {
+    return formatReturnAsList(componentItems)
+  }
+}
+
+function formatReturnAsList(componentItems: Parameter[], level = 1): string {
+  const prefix = `${Array(level - 1)
+    .fill("\t")
+    .join("")}-`
+  return componentItems
+    .map(
+      (item) =>
+        `${prefix}\`${item.name}\`: ${
+          item.optional || item.defaultValue
+            ? `(${item.optional ? "optional" : ""}${
+                item.optional && item.defaultValue ? "," : ""
+              }${item.defaultValue ? `default: ${item.defaultValue}` : ""}) `
+            : ""
+        }${item.description}${
+          item.children?.length
+            ? `\n${formatReturnAsList(item.children, level + 1)}`
+            : ""
+        }`
+    )
+    .join("\n")
+}
+
+function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
+  const md: string[] = []
+  const { parameterStyle, parameterComponent } =
+    theme.getFormattingOptionsForLocation()
+
+  if (comment.blockTags?.length) {
+    const tags = comment.blockTags
+      .filter((tag) => tag.tag === "@returns")
+      .map((tag) => {
+        let result = Handlebars.helpers.comment(tag.content)
+        tag.content.forEach((commentPart) => {
+          if (
+            "target" in commentPart &&
+            commentPart.target instanceof DeclarationReflection
+          ) {
+            const content = commentPart.target.children?.map((childItem) =>
+              reflectionFormatter(childItem, parameterStyle, 1)
+            )
+            result +=
+              parameterStyle === "component"
+                ? `\n\n<${parameterComponent} parameters={${JSON.stringify(
+                    content
+                  )}} title={"${commentPart.target.name}"} />\n\n`
+                : `\n\n<details>\n<summary>\n${
+                    commentPart.target.name
+                  }\n</summary>\n\n${content?.join("\n")}\n\n</details>`
+          }
+        })
+        return result
+      })
+    md.push(tags.join("\n\n"))
+  }
+
+  return md.join("")
 }
