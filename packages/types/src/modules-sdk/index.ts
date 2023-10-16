@@ -1,8 +1,8 @@
-import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
+import { JoinerRelationship, JoinerServiceConfig, RemoteJoinerQuery } from "../joiner"
 
+import { Logger } from "../logger"
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
-import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
@@ -260,3 +260,8 @@ export type ModuleServiceInitializeCustomDataLayerOptions = {
     [key: string]: Constructor<RepositoryService>
   }
 }
+
+export type RemoteQueryFunction = (
+  query: string | RemoteJoinerQuery | object,
+  variables?: Record<string, unknown>
+) => Promise<any> | null

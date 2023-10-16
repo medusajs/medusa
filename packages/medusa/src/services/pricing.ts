@@ -1,4 +1,11 @@
-import { CalculatedPriceSetDTO, IPricingModuleService } from "@medusajs/types"
+import {
+  CalculatedPriceSetDTO,
+  IPricingModuleService,
+  PriceSetMoneyAmountDTO,
+  RemoteJoinerQuery,
+  RemoteQueryFunction,
+} from "@medusajs/types"
+import { FlagRouter, removeNullish } from "@medusajs/utils"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -21,16 +28,13 @@ import {
 import { ProductVariantService, RegionService, TaxProviderService } from "."
 
 import { EntityManager } from "typeorm"
-import { FlagRouter } from "@medusajs/utils"
 import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import { MedusaError } from "medusa-core-utils"
-import { PriceSetMoneyAmountDTO } from "@medusajs/types"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
-import { removeNullish } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -39,7 +43,7 @@ type InjectedDependencies = {
   regionService: RegionService
   priceSelectionStrategy: IPriceSelectionStrategy
   featureFlagRouter: FlagRouter
-  remoteQuery: (...args: any[]) => Promise<any> | null
+  remoteQuery: RemoteQueryFunction
   pricingModuleService: IPricingModuleService
 }
 
@@ -53,7 +57,7 @@ class PricingService extends TransactionBaseService {
   protected readonly productVariantService: ProductVariantService
   protected readonly featureFlagRouter: FlagRouter
   protected readonly pricingModuleService: IPricingModuleService
-  protected readonly remoteQuery: (...args: any[]) => Promise<any> | null
+  protected readonly remoteQuery: RemoteQueryFunction
 
   constructor({
     productVariantService,
