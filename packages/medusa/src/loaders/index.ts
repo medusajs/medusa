@@ -165,6 +165,8 @@ export default async ({
   })
 
   container.register("remoteQuery", asValue(null)) // ensure remoteQuery is always registered
+  container.register("medusaApp", asValue(null))
+
   // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
   if (
     featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
