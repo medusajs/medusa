@@ -129,7 +129,7 @@ const EditCustomerModal = ({
                 />
               </div>
             </div>
-            {customer.metadata.type == 'resellers' &&
+            {!!customer?.metadata?.type && customer?.metadata?.type == 'resellers' &&
             <div>
               <h2 className="inter-base-semibold text-grey-90 mb-4">Reseller</h2>
               <div className="grid grid-cols-2 gap-2">
