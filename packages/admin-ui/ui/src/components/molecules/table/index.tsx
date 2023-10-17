@@ -6,6 +6,7 @@ import SortingIcon from "../../fundamentals/icons/sorting-icon"
 import TableSearch from "./table-search"
 import clsx from "clsx"
 import { useNavigate } from "react-router-dom"
+import openUrlNewWindow from "../../../utils/open-link-new-window"
 
 type TableRowProps = React.HTMLAttributes<HTMLTableRowElement> & {
   forceDropdown?: boolean
@@ -212,6 +213,12 @@ Table.Cell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
             navigate(linkTo)
             e.stopPropagation()
           },
+          onContextMenu: (e) => {
+            e.stopPropagation()
+            e.preventDefault();
+            openUrlNewWindow(linkTo)
+            return false;
+          },
         })}
       >
         {children}
@@ -248,6 +255,12 @@ Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
         {...(linkTo && {
           onClick: () => {
             navigate(linkTo)
+          },
+          onContextMenu: (e) => {
+            e.stopPropagation()
+            e.preventDefault();
+            openUrlNewWindow(linkTo)
+            return false;
           },
         })}
       >

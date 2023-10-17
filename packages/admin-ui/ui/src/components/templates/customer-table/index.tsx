@@ -184,7 +184,7 @@ const CustomerTable = () => {
                     icon: <DetailsIcon size={20} />,
                   },
                 ]}
-                linkTo={row.original.id}
+                linkTo={`/a/customers/${row.original.id}`}
                 {...row.getRowProps()}
               >
                 {row.cells.map((cell, index) => {

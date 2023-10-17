@@ -68,7 +68,7 @@ function PriceListTableRow(props: PriceListTableRowProps) {
   return (
     <Table.Row
       color={"inherit"}
-      linkTo={row.original.id}
+      linkTo={`/a/pricing/${row.original.id}`}
       id={row.original.id}
       className="group"
       {...row.getRowProps()}
