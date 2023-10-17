@@ -256,5 +256,5 @@ export interface IProductModuleService {
     variantIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<Record<string, string[]> | void>
 }

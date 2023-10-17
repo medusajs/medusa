@@ -1153,7 +1153,7 @@ export default class ProductModuleService<
     variantIds: string[],
     { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [_, cascadedEntitiesMap] = await this.productVariantService_.restore(
       variantIds,
       sharedContext
