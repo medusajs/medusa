@@ -1,6 +1,8 @@
-import { mergeTypeDefs } from "@graphql-tools/merge"
-import { makeExecutableSchema } from "@graphql-tools/schema"
-import { RemoteFetchDataCallback } from "@medusajs/orchestration"
+import {
+  ContainerRegistrationKeys,
+  ModulesSdkUtils,
+  isObject,
+} from "@medusajs/utils"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
@@ -12,16 +14,15 @@ import {
   ModuleServiceInitializeOptions,
   RemoteJoinerQuery,
 } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  ModulesSdkUtils,
-  isObject,
-} from "@medusajs/utils"
 import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
+
 import { MedusaModule } from "./medusa-module"
+import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
+import { makeExecutableSchema } from "@graphql-tools/schema"
+import { mergeTypeDefs } from "@graphql-tools/merge"
 
 const LinkModulePackage = "@medusajs/link-modules"
 
@@ -252,14 +253,18 @@ export async function MedusaApp(
   const runMigrations: RunMigrationFn = async (
     linkModuleOptions
   ): Promise<void> => {
+    console.log("linkModuleOptions")
+    console.log(linkModuleOptions)
     for (const moduleName of Object.keys(allModules)) {
       const moduleResolution = MedusaModule.getModuleResolutions(moduleName)
 
+      console.log("Migrating module", moduleResolution.options)
       await MedusaModule.migrateUp(
         moduleResolution.definition.key,
         moduleResolution.resolutionPath as string,
         moduleResolution.options
       )
+      console.warn("test")
     }
 
     linkModuleMigration &&
