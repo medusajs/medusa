@@ -7,7 +7,6 @@ import {
   ShippingProfileType,
   Store,
 } from "@medusajs/medusa"
-import { kebabCase } from "@medusajs/utils"
 import {
   ProductVariantFactoryData,
   simpleProductVariantFactory,
