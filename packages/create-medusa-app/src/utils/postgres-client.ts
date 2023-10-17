@@ -5,6 +5,7 @@ type PostgresConnection = {
   user?: string
   password?: string
   connectionString?: string
+  database?: string
 }
 
 export default async (connect: PostgresConnection) => {

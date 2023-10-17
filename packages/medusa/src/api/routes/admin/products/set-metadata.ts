@@ -41,7 +41,7 @@ import { PricingService } from "../../../../services"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/products/{id}/metadata' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "key": "test",
@@ -50,6 +50,7 @@ import { PricingService } from "../../../../services"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:

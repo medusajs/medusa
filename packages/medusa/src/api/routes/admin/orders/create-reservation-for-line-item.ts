@@ -24,7 +24,7 @@ import {
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/orders/{id}/line-items/{line_item_id}/reserve' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "location_id": "loc_1"
@@ -32,6 +32,7 @@ import {
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:

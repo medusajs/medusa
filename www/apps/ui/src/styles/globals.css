@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  .html {
+    @apply text-medusa-fg-base;
+  }
+
+  *::selection {
+    @apply bg-medusa-bg-highlight;
+  }
+
+  pre *::selection {
+    @apply !bg-medusa-code-text-highlight;
+  }
+
+  body {
+    @apply text-ui-fg-subtle;
+  }
+
+  body[data-modal="opened"] {
+    @apply !overflow-hidden text-ui-fg-base;
+  }
+}

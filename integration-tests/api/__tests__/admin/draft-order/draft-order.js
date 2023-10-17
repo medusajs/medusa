@@ -12,7 +12,7 @@ jest.setTimeout(30000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -944,6 +944,41 @@ describe("/admin/draft-orders", () => {
 
       expect(item.title).toEqual("Update title")
       expect(item.unit_price).toEqual(1000)
+      expect(updatedDraftOrder.data.draft_order.cart.subtotal).not.toEqual(
+        undefined
+      )
+      expect(updatedDraftOrder.data.draft_order.cart.subtotal).not.toEqual(0)
+    })
+
+    it("updates a line item on the draft order with quantity", async () => {
+      const api = useApi()
+      await api.post(
+        "/admin/draft-orders/test-draft-order/line-items/test-item",
+        {
+          unit_price: 1000,
+        },
+        adminReqConfig
+      )
+
+      const response = await api.post(
+        "/admin/draft-orders/test-draft-order/line-items/test-item",
+        {
+          quantity: 2,
+        },
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+
+      const updatedDraftOrder = await api.get(
+        `/admin/draft-orders/test-draft-order`,
+        adminReqConfig
+      )
+
+      const item = updatedDraftOrder.data.draft_order.cart.items[0]
+
+      expect(item.unit_price).toEqual(1000)
+      expect(item.quantity).toEqual(2)
       expect(updatedDraftOrder.data.draft_order.cart.subtotal).not.toEqual(
         undefined
       )
