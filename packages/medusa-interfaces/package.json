@@ -31,8 +31,8 @@
     "@babel/runtime": "^7.9.6",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-core-utils": "^1.2.0",
-    "medusa-test-utils": "^1.1.40",
+    "medusa-core-utils": "workspace:^",
+    "medusa-test-utils": "workspace:^",
     "rimraf": "^5.0.1",
     "typescript": "^4.4.4"
   },

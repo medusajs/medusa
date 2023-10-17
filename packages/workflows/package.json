@@ -26,9 +26,9 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.11.3",
-    "@medusajs/orchestration": "^0.4.1",
-    "@medusajs/utils": "^1.10.2",
+    "@medusajs/modules-sdk": "workspace:^",
+    "@medusajs/orchestration": "workspace:^",
+    "@medusajs/utils": "workspace:^",
     "awilix": "^8.0.1",
     "ulid": "^2.3.0"
   },

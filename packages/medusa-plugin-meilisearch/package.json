@@ -26,7 +26,7 @@
     "meilisearch": "^0.32.3"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.12.0"
+    "@medusajs/medusa": "workspace:^"
   },
   "devDependencies": {
     "@medusajs/medusa": "workspace:^",

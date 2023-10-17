@@ -29,7 +29,7 @@
   "dependencies": {
     "@mikro-orm/migrations": "5.7.12",
     "@mikro-orm/postgresql": "5.7.12",
-    "medusa-core-utils": "^1.2.0",
+    "medusa-core-utils": "workspace:^",
     "pg-god": "^1.0.12",
     "randomatic": "^3.1.1"
   },
