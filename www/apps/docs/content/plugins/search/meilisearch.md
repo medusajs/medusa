@@ -52,7 +52,7 @@ Where `<YOUR_MEILISEARCH_HOST>` is the host of your MeiliSearch instance. By def
 
 Finally, in `medusa-config.js` add the following item into the `plugins` array:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // ...
   {
@@ -76,7 +76,7 @@ const plugins = [
 
 Under the `settings` key of the plugin's options, you can add settings specific to each index. The settings are of the following format:
 
-```js
+```js title=medusa-config.js
 const plugins = [
   // ...
   {
@@ -236,7 +236,7 @@ Then, add the necessary environment variables:
 ```bash
 NEXT_PUBLIC_SEARCH_ENDPOINT=<YOUR_MEILISEARCH_HOST>
 NEXT_PUBLIC_SEARCH_API_KEY=<YOUR_API_KEY>
-NEXT_PUBLIC_SEARCH_INDEX_NAME=products
+NEXT_PUBLIC_INDEX_NAME=products
 ```
 
 Make sure to replace `<YOUR_MEILISEARCH_HOST>` with your MeiliSearch host and `<YOUR_API_KEY>` with the API key you created as instructed in the [Storefront Prerequisites](#storefront-prerequisites) section.

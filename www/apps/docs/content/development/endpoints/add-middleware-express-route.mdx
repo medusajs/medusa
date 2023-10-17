@@ -1,5 +1,4 @@
 ---
-description: 'Learn how to add a middleware in Medusa. A middleware is a function that has access to the request and response objects and can be used to perform actions around an endpoint.'
 addHowToData: true
 ---
 
@@ -7,62 +6,93 @@ import Troubleshooting from '@site/src/components/Troubleshooting'
 import ServiceLifetimeSection from '../../troubleshooting/awilix-resolution-error/_service-lifetime.md'
 import CustomRegistrationSection from '../../troubleshooting/awilix-resolution-error/_custom-registration.md'
 
-# Middlewares
+# Middlewares - Express Router Approach
 
 In this document, you’ll learn how to add a middleware to an existing or custom route in Medusa.
 
-:::tip
+:::note
 
-v1.17.2 of `@medusajs/medusa` introduced a new approach to creating middlewares using a single `middlewares.ts` file. You can still use the [Express Router Approach](./add-middleware-express-route.mdx), however, it's highly recommended that you start using this new approach.
+Following v1.17.2 of `@medusajs/medusa`, it's highly recommended to use the [middlewares.ts file](./add-middleware.mdx) to create middlewares instead. Future versions of Medusa may drop support of this approach.
 
 :::
 
-## Basic Implementation
+## Overview
 
-As the Medusa backend is built on top of [Express](https://expressjs.com/), Express’s features can be utilized during your development with Medusa, including [middlewares](http://expressjs.com/en/guide/using-middleware.html#using-middleware).
+As the Medusa backend is built on top of [Express](https://expressjs.com/), Express’s features can be utilized during your development with Medusa.
 
-A middleware is a function that has access to the request and response objects, and is used to perform an action when an endpoint is called or modify the response, among other usages.
+One feature in particular is adding a [middleware](http://expressjs.com/en/guide/using-middleware.html#using-middleware). A middleware is a function that has access to the request and response objects.
 
-```ts title=src/api/middlewares.ts
-import type { MiddlewaresConfig } from "@medusajs/medusa"
-import type { 
-  MedusaNextFunction, 
-  MedusaRequest, 
-  MedusaResponse,
-} from "@medusajs/medusa"
+A middleware can be used to perform an action when an endpoint is called or modify the response, among other usages.
 
-const storeMiddleware = (
-  req: MedusaRequest, 
-  res: MedusaResponse, 
-  next: MedusaNextFunction
-) => {
-  // do something
-  next()
-}
-
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/store/*",
-      middlewares: [storeMiddleware],
-    },
-  ],
-}
-```
-
-### middlewares.ts File
-
-Middlewares are defined in the `src/api/middlewares.ts` file. This file must expose a config object of type `MiddlewaresConfig` exported from `@medusajs/medusa`.
-
-This object accepts a parameter `routes`, whose value is an array of objects, each holding the middlewares that should be applied to route patterns.
-
-The `matcher` property accepts a string or a regular expression that will be used to check whether the middlewares should be applied on an endpoint.
-
-The `middlewares` property is an array of middlewares that should be applied on endpoints matching the pattern specified in `matcher`.
+You can add a middleware to an existing route in the Medusa backend, a route in a plugin, or your custom routes.
 
 ---
 
-## Build Files
+## How to Add a Middleware
+
+### Step 1: Create the Middleware File
+
+You can organize your middlewares as you see fit, but it's recommended to create Middlewares in the `src/api/middlewares` directory. It's recommended to create each middleware in a different file.
+
+Each file should export a middleware function that accepts three parameters:
+
+1. The first one is an Express request object. It can be used to get details related to the request or resolve resources from the dependency container.
+2. The second one is an Express response object. It can be used to modify the response, or in some cases return a response without executing the associated endpoint.
+3. The third one is a next middleware function that ensures that other middlewares and the associated endpoint are executed.
+
+:::info
+
+You can learn more about Middlewares and their capabilities in [Express’s documentation](http://expressjs.com/en/guide/using-middleware.html#using-middleware).
+
+:::
+
+Here's an example of a middleware:
+
+```ts title=src/api/middlewares/custom-middleware.ts
+export function customMiddleware(req, res, next) {
+  // TODO perform an action
+  
+  next()
+}
+```
+
+### Step 2: Apply Middleware on an Endpoint
+
+To apply a middleware on any endpoint, you can use the same router defined in `src/api/index.ts` or any other router that is used or exported by `src/api/index.ts`. For example:
+
+:::warning
+
+The examples used here don't apply Cross-Origin Resource Origin (CORS) options for simplicity. Make sure to apply them, especially for core routes, as explained in the [Create Endpoint](./create.mdx#cors-configuration) documentation.
+
+:::
+
+```ts title=src/api/index.ts
+import { Router } from "express"
+import { 
+  customMiddleware,
+} from "./middlewares/custom-middleware"
+
+export default (rootDirectory, pluginOptions) => {
+  const router = Router()
+
+  // custom route
+  router.get("/hello", (req, res) => {
+    res.json({
+      message: "Welcome to My Store!",
+    })
+  })
+
+  // middleware for the custom route
+  router.use("/hello", customMiddleware)
+
+  // middleware for core route
+  router.use("/store/products", customMiddleware)
+
+  return router
+}
+```
+
+## Step 3: Building Files
 
 Similar to custom endpoints, you must transpile the files under `src` into the `dist` directory for the backend to load them.
 
@@ -88,18 +118,10 @@ If you want to register a logged-in user and access it in your resources, you ca
 
 To register a new resource in the dependency container, use the `req.scope.register` method:
 
-```ts title=src/api/middlewares.ts
-import type { MiddlewaresConfig } from "@medusajs/medusa"
-import type { 
-  MedusaNextFunction, 
-  MedusaRequest, 
-  MedusaResponse,
-} from "@medusajs/medusa"
-
-const customResource = (
-  req: MedusaRequest, 
-  res: MedusaResponse,
-  next: MedusaNextFunction) => {
+```ts title=src/api/middlewares/custom-middleware.ts
+export function customMiddleware(req, res, next) {
+  // TODO perform an action
+  
   req.scope.register({
     customResource: {
       resolve: () => "my custom resource",
@@ -107,15 +129,6 @@ const customResource = (
   })
 
   next()
-}
-
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/store/*",
-      middlewares: [customResource],
-    },
-  ],
 }
 ```
 

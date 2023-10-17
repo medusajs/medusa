@@ -271,53 +271,53 @@ Medusa allows you to create custom endpoints exposed as REST APIs.
 Example Implementation
 </summary>
 
-Here’s an example of an endpoint that allows you to check the customer’s group and whether it has the `is_b2b` flag enabled:
+For example, create the following endpoint that allows you to check the customer’s group and whether it has the `is_b2b` flag enabled:
     
-```ts title=src/api/index.ts
-import { CustomerService } from "@medusajs/medusa"
-import { Router } from "express"
-import { requireCustomerAuthentication } from "@medusajs/medusa"
-import cors from "cors"
-import { ConfigModule } from "@medusajs/medusa"
-import { getConfigFile } from "medusa-core-utils"
+```ts title=src/api/store/customers/is-b2b/route.ts
+import type { 
+  CustomerService, 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 
-export default (rootDirectory) => {
-  const router = Router()
-  const { configModule } = getConfigFile<ConfigModule>(
-    rootDirectory,
-    "medusa-config"
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const customerService: CustomerService = req.scope.resolve(
+    "customerService"
   )
 
-  const corsOptions = {
-    origin: configModule.projectConfig.store_cors.split(","),
-    credentials: true,
-  }
-
-  router.options("/store/customers/is-b2b", cors(corsOptions))
-  router.get(
-    "/store/customers/is-b2b",
-    cors(corsOptions),
-    requireCustomerAuthentication(),
-    async (req, res) => {
-    const customerService: CustomerService = req.scope.resolve(
-      "customerService"
-    )
-
-    const customer = await customerService
-      .retrieve(req.user.customer_id, {
-        relations: ["groups"],
-      })
-
-    const is_b2b = customer.groups.some(
-      (group) => group.metadata.is_b2b === "true"
-    )
-    
-    return res.json({
-      is_b2b,
+  const customer = await customerService
+    .retrieve(req.user.customer_id, {
+      relations: ["groups"],
     })
-  })
 
-  return router
+  const is_b2b = customer.groups.some(
+    (group) => group.metadata.is_b2b === "true"
+  )
+  
+  return res.json({
+    is_b2b,
+  })
+}
+```
+
+Then add the `requireCustomerAuthentication` middleware in `src/api/middlewares.ts` that ensures only authenticated customer can access this endpoint:
+
+```ts title=src/api/middlewares.ts
+import { 
+  requireCustomerAuthentication, 
+  type MiddlewaresConfig,
+} from "@medusajs/medusa"
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/store/customers/is-b2b",
+      middlewares: [requireCustomerAuthentication()],
+    },
+  ],
 }
 ```
 

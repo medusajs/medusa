@@ -136,7 +136,7 @@ This directory holds all Medusa admin customizations. The main subdirectories of
 
 ### api
 
-This directory holds all custom endpoints. You can create as many subdirectories and files that hold endpoint definitions, but only endpoints exported by the `index.ts` file are registered in the Medusa backend.
+This directory holds all custom endpoints, which are defined in `route.ts` or `route.js` files. These files can be created in sub-directories of the `api` directory based on the endpoint's path.
 
 **Read more:** [Endpoints](../endpoints/overview.mdx)
 

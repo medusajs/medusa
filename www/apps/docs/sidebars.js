@@ -1418,14 +1418,36 @@ module.exports = {
               },
             },
             {
-              type: "doc",
-              id: "development/endpoints/create",
+              type: "category",
               label: "Create an Endpoint",
+              link: {
+                type: "doc",
+                id: "development/endpoints/create",
+              },
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "development/endpoints/create-express-route",
+                  label: "Express-Router Approach",
+                },
+              ],
             },
             {
-              type: "doc",
-              id: "development/endpoints/add-middleware",
-              label: "Middleware",
+              type: "category",
+              label: "Create a Middleware",
+              link: {
+                type: "doc",
+                id: "development/endpoints/add-middleware",
+              },
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "development/endpoints/add-middleware-express-route",
+                  label: "Express-Router Approach",
+                },
+              ],
             },
             {
               type: "doc",

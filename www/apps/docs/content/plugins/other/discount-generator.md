@@ -65,31 +65,27 @@ The `DiscountGeneratorService` has one method `generateDiscount`. This method re
 
 Here's an example of using the service in an endpoint:
 
-```ts title=src/api/index.ts
-import { Request, Response, Router } from "express"
-import bodyParser from "body-parser"
+```ts title=src/api/store/generate-discount-code/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 
-export default (rootDirectory: string): Router | Router[] => {
-  const router = Router()
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  // skipping validation for simplicity
+  const { dynamicCode } = req.body
+  const discountGenerator = req.scope.resolve(
+    "discountGeneratorService"
+  )
+  const code = await discountGenerator.generateDiscount(
+    dynamicCode
+  )
 
-  router.use(
-    "/generate-discount-code",
-    bodyParser.json(), 
-    async (req: Request, res: Response) => {
-    // skipping validation for simplicity
-    const { dynamicCode } = req.body
-    const discountGenerator = req.scope.resolve(
-      "discountGeneratorService"
-    )
-    const code = await discountGenerator.generateDiscount(
-      dynamicCode
-    )
-
-    res.json({
-      code,
-    })
+  res.json({
+    code,
   })
-
-  return router
 }
 ```

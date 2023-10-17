@@ -188,7 +188,7 @@ To extend the user service, create the file `src/services/user.ts` with the foll
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts
+```ts title=src/services/user.ts
 import { Lifetime } from "awilix"
 import { 
   UserService as MedusaUserService,
@@ -272,7 +272,7 @@ To listen to events, you need to create Subscribers that subscribe a handler met
 
 To listen to the `order.placed` event, create the file `src/subscribers/orderNotifier.ts` with the following content:
 
-```ts
+```ts title=src/subscribers/orderNotifier.ts
 class OrderNotifierSubscriber {
   constructor({ eventBusService }) {
     eventBusService.subscribe("order.placed", this.handleOrder)

@@ -87,28 +87,31 @@ You can now use your extended repository in other resources such as services or 
 
 Here’s an example of using it in an endpoint:
 
-```ts
+```ts title=src/api/store/custom/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import ProductRepository from "./path/to/product.ts"
-import EntityManager from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
 
-export default () => {
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // ...
 
-  router.get("/custom-endpoint", (req, res) => {
-    // ...
+  const productRepository: typeof ProductRepository = 
+  req.scope.resolve(
+    "productRepository"
+  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const productRepo = manager.withRepository(
+    productRepository
+  )
+  productRepo.customFunction()
 
-    const productRepository: typeof ProductRepository = 
-      req.scope.resolve(
-        "productRepository"
-      )
-    const manager: EntityManager = req.scope.resolve("manager")
-    const productRepo = manager.withRepository(
-      productRepository
-    )
-    productRepo.customFunction()
-
-    // ...
-  })
+  // ...
 }
 ```
 

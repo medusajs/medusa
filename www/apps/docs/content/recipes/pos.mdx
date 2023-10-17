@@ -99,70 +99,41 @@ To search through product variants by their barcode, you can create a custom end
 Example: Search Products By Barcode Endpoint
 </summary>
 
-Here’s an example of creating a custom endpoint that searches product variants by a barcode:
+Here’s an example of creating a custom endpoint at `/store/pos/search-barcode` that searches product variants by a barcode:
 
-```ts title=src/api/index.ts
-import { Request, Response, Router } from "express"
-import cors from "cors"
-import { 
-  ConfigModule, 
-  errorHandler, 
-  ProductVariantService, 
-  wrapHandler,
+```ts title=src/api/store/pos/search-barcode/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse, 
+  ProductVariantService,
 } from "@medusajs/medusa"
-import { getConfigFile } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
 
-export default (rootDirectory: string): Router | Router[] => {
-  // Read currently-loaded medusa config
-  const { configModule } = getConfigFile<ConfigModule>(
-    rootDirectory,
-    "medusa-config"
-  )
-  const { projectConfig } = configModule
-
-  // Set up our CORS options objects, based on config
-  const storeCorsOptions = {
-    origin: projectConfig.store_cors.split(","),
-    credentials: true,
-  }
-
-  // Set up express router
-  const router = Router()
-  
-  router.get(
-    "/pos/search-barcode", 
-    cors(storeCorsOptions), 
-    wrapHandler(
-      async (req: Request, res: Response) => {
-        const barcode = (req.query.barcode as string) || ""
-        if (!barcode) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA, 
-            "Barcode is required"
-          )
-        }
-        // get product service
-        const productVariantService = req.scope.resolve<
-          ProductVariantService
-        >("productVariantService")
-
-        // retrieve product variants by barcode
-        const productVariants = await productVariantService
-          .list({
-            barcode,
-          })
-
-        res.json({
-          product_variants: productVariants,
-        })
-      }
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const barcode = (req.query.barcode as string) || ""
+  if (!barcode) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA, 
+      "Barcode is required"
     )
-  )
+  }
+  // get product service
+  const productVariantService = req.scope.resolve<
+    ProductVariantService
+  >("productVariantService")
 
-  router.use(errorHandler())
+  // retrieve product variants by barcode
+  const productVariants = await productVariantService
+    .list({
+      barcode,
+    })
 
-  return router
+  res.json({
+    product_variants: productVariants,
+  })
 }
 ```
 

@@ -16,7 +16,7 @@ The backend connects to a database, such as [PostgreSQL](https://www.postgresql.
 
 The retrieval, manipulation, and other utility methods related to that entity are created inside a [Service](../services/overview.mdx). Services are TypeScript or JavaScript classes that, along with other resources, can be accessed throughout the Medusa backend through [dependency injection](./dependency-injection.md).
 
-The backend does not have any tightly-coupled frontend. Instead, it exposes [Endpoints](../endpoints/overview.mdx) which are REST APIs that frontends such as an admin or a storefront can use to communicate with the backend. Endpoints are [Express routes](https://expressjs.com/en/guide/routing.html).
+The backend doesn't have any tightly-coupled frontend. Instead, it exposes [Endpoints](../endpoints/overview.mdx) which are REST APIs that frontends such as an admin or a storefront can use to communicate with the backend.
 
 Medusa also uses an [Events Architecture](../events/index.mdx) to trigger and handle events. Events are triggered when a specific action occurs, such as when an order is placed. To manage this events system, Medusa connects to a service that implements a pub/sub model, such as [Redis](https://redis.io/).
 

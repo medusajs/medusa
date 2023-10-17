@@ -256,25 +256,24 @@ Then, add the necessary environment variables:
 ```bash
 NEXT_PUBLIC_SEARCH_APP_ID=<YOUR_APP_ID>
 NEXT_PUBLIC_SEARCH_API_KEY=<YOUR_SEARCH_API_KEY>
-NEXT_PUBLIC_SEARCH_INDEX_NAME=products
+NEXT_PUBLIC_INDEX_NAME=products
 ```
 
 Where `<YOUR_APP_ID>` and `<YOUR_SEARCH_API_KEY>` are respectively the Application ID and Search-Only API Key on the [API Keys page](#retrieve-api-keys).
 
 Finally, change the code in `src/lib/search-client.ts` to the following:
 
-```jsx title=src/lib/search-client.ts
+```ts title=src/lib/search-client.ts
 import algoliasearch from "algoliasearch/lite"
 
 const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || ""
 
-const apiKey = 
-  process.env.NEXT_PUBLIC_SEARCH_API_KEY || "test_key"
+const apiKey = process.env.NEXT_PUBLIC_SEARCH_API_KEY || ""
 
 export const searchClient = algoliasearch(appId, apiKey)
 
 export const SEARCH_INDEX_NAME =
-  process.env.NEXT_PUBLIC_SEARCH_INDEX_NAME || "products"
+  process.env.NEXT_PUBLIC_INDEX_NAME || "products"
 ```
 
 If you run your Next.js Starter Template now while the Medusa backend is running, the search functionality will be available in your storefront.

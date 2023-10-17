@@ -19,16 +19,28 @@ The `IdempotencyKeyService` includes methods that can be used to create and upda
 
 You can create an idempotency key within an endpoint using the `create` method of the `IdempotencyKeyService`:
 
-```ts
-router.post("/custom-route", async (req, res) => {
+```ts title=src/api/store/custom/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import { IdempotencyKeyService } from "@medusajs/medusa"
+
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // ...
+  const idempotencyKeyService = req.scope.resolve<
+    IdempotencyKeyService
+  >("idempotencyKeyService")
   const idempotencyKey = await idempotencyKeyService.create({
     request_method: req.method,
     request_params: req.params,
     request_path: req.path,
   })
   // ...
-})
+}
 ```
 
 The method requires as a parameter an object having the following properties:
@@ -41,9 +53,23 @@ The method handles generating the idempotency key value and saving the idempoten
 
 Alternatively, you can use the `initializeRequest` method that allows you to retrieve an idempotency key based on the value passed in the `Idempotency-Key` header of the request if it exists, or create a new key otherwise. For example:
 
-```ts
-router.post("/custom-route", async (req, res) => {
+```ts title=src/api/store/custom/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import { 
+  IdempotencyKeyService,
+} from "@medusajs/medusa"
+
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // ...
+  const idempotencyKeyService = req.scope.resolve<
+    IdempotencyKeyService
+  >("idempotencyKeyService")
   const headerKey = req.get("Idempotency-Key") || ""
 
   const idempotencyKey = await idempotencyKeyService
@@ -54,7 +80,7 @@ router.post("/custom-route", async (req, res) => {
       req.path
     )
   // ...
-})
+}
 ```
 
 The method requires the following parameters:

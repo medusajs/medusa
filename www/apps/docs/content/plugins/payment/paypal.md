@@ -62,7 +62,7 @@ Notice that during development it’s highly recommended to set `PAYPAL_SANDBOX`
 
 Then, in `medusa-config.js`, add the PayPal plugin to the `plugins` array with the configurations necessary:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // other plugins...
   {

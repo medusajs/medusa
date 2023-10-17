@@ -352,16 +352,24 @@ Since the Medusa backend uses Express, you can create a middleware and attach it
 
 In this example, you’ll create a middleware that runs on all admin-authenticated routes and checks the logged-in user’s permissions before giving them access to an endpoint.
 
-Create the file `src/api/middlewares/permission.ts` with the following content:
+Create the file `src/api/middlewares.ts` with the following content:
 
-```ts title=src/api/middlewares/permission.ts
-import { UserService } from "@medusajs/medusa"
-import { NextFunction, Request, Response } from "express"
+```ts title=src/api/middlewares.ts
+import type { 
+  MiddlewaresConfig, 
+  UserService,
+} from "@medusajs/medusa"
+import express from "express"
+import type { 
+  MedusaRequest, 
+  MedusaResponse, 
+  MedusaNextFunction,
+} from "@medusajs/medusa"
 
-export default async (
-  req: Request,
-  res: Response,
-  next: NextFunction
+export const permissions = async (
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
 ) => {
   if (!req.user || !req.user.userId) {
     next()
@@ -406,6 +414,15 @@ export default async (
   // deny access
   res.sendStatus(401)
 }
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/admin/*",
+      middlewares: [permissions],
+    },
+  ],
+}
 ```
 
 In this middleware, you ensure that there is a logged-in user and the logged-in user has a role. If not, the user is admitted to access the endpoint. Here, you presume that logged-in users who don’t have a role are “super-admin” users who can access all endpoints. You may choose to implement this differently.
@@ -420,26 +437,7 @@ Notice that you use `req.path` here to get the current endpoint path. However, i
 
 :::
 
-Next, to ensure that this middleware is used, import it in `src/api/index.ts` and apply it on admin routes:
-
-```ts title=src/api/index.ts
-import permissionMiddleware from "./middlewares/permission"
-
-export default (rootDirectory: string): Router | Router[] => {
-  // ...
-  const router = Router()
-  // ...
-  
-  // use middleware on admin routes
-  router.use("/admin", permissionMiddleware)
-
-  return router
-}
-```
-
-This assumes you already have a router with all necessary CORS configurations and body parsing middlewares. If not, you can refer to the [Create Endpoint documentation](../../../development/endpoints/create.mdx) for more details.
-
-Make sure to use the permission middleware after all router configurations if you want the middleware to work on your custom admin routes.
+After defining the middleware, you apply it on all endpoints starting with `/admin/`.
 
 </details>
 
@@ -665,13 +663,19 @@ This creates the `RoleService` with three methods:
 
 Now, you can create the endpoints.
 
-Start by creating the file `src/api/routes/admin/role/create-role.ts` with the following content:
+Start by creating the file `src/api/admin/roles/route.ts` with the following content:
 
-```ts title=src/api/routes/admin/role/create-role.ts
-import { Request, Response } from "express"
+```ts title=src/api/admin/roles/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import RoleService from "../../../../services/role"
 
-export default async (req: Request, res: Response) => {
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // omitting validation for simplicity
   const {
     name,
@@ -693,15 +697,21 @@ export default async (req: Request, res: Response) => {
 }
 ```
 
-This creates the Create Role endpoint that uses the `RoleService` to create a new role. Notice that validation of received body parameters is omitted for simplicity.
+This creates the Create Role endpoint at `/admin/roles` that uses the `RoleService` to create a new role. Notice that validation of received body parameters is omitted for simplicity.
 
-Next, create the file `src/api/routes/admin/role/associate-user.ts` with the following content:
+Next, create the file `src/api/routes/admin/roles/[id]/user/[user_id]/route.ts` with the following content:
 
-```ts title=src/api/routes/admin/role/associate-user.ts
-import { Request, Response } from "express"
+```ts title=src/api/routes/admin/roles/[id]/user/[user_id]/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import RoleService from "../../../../services/role"
 
-export default async (req: Request, res: Response) => {
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // omitting validation for simplicity purposes
   const {
     id,
@@ -717,44 +727,9 @@ export default async (req: Request, res: Response) => {
 }
 ```
 
-This creates the Associate User endpoint that uses the `RoleService` to associate a role with a user.
+This creates the Associate User endpoint at `/admin/roles/[id]/user/[user_id]` that uses the `RoleService` to associate a role with a user.
 
-You now have to register and export these endpoints.
-
-To do that, create the file `src/api/routes/admin/role/index.ts` with the following content:
-
-```ts title=src/api/routes/admin/role/index.ts
-import { wrapHandler } from "@medusajs/utils"
-import { Router } from "express"
-import createRole from "./create-role"
-import associateUser from "./associate-user"
-
-const router = Router()
-
-export default (adminRouter: Router) => {
-  adminRouter.use("/roles", router)
-
-  router.post("/", wrapHandler(createRole))
-  router.post("/:id/user/:user_id", wrapHandler(associateUser))
-}
-```
-
-This adds the create role endpoint under the path `/admin/roles`, and the associate user endpoint under the path `/admin/roles/:id/user/:user_id`, where `:id` is the ID of the role and `:user_id` is the ID of the user to associate with the role.
-
-Finally, you can either export these routes in `src/api/routes/admin/index.ts` or, if the file is not available in your project, in `src/api/index.ts`:
-
-```ts title=src/api/routes/admin/index.ts
-import roleRouter from "./role"
-
-const router = Router()
-
-export function attachAdminRoutes(adminRouter: Router) {
-  roleRouter(adminRouter)
-  // ....
-}
-```
-
-To test it out, run the `build` command in the root directory of your Medusa backend project:
+To test the endpoints out, run the `build` command in the root directory of your Medusa backend project:
 
 ```bash npm2yarn
 npm run build
@@ -770,16 +745,16 @@ Try first to log in using the [Admin User Login endpoint](https://docs.medusajs.
 
 ```json
 {
-    "store_id": "store_01H8XPDY8WA1Z650MZSEY4Y0V0",
-    "name": "Product Manager",
-    "permissions": [
-        {
-            "name": "Allow Products",
-            "metadata": {
-                "/products": true
-            }
-        }
-    ]
+  "store_id": "store_01H8XPDY8WA1Z650MZSEY4Y0V0",
+  "name": "Product Manager",
+  "permissions": [
+    {
+      "name": "Allow Products",
+      "metadata": {
+          "/products": true
+      }
+    }
+  ]
 }
 ```
 

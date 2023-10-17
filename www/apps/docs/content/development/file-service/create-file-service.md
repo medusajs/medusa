@@ -452,15 +452,17 @@ Since the file is uploaded to a local directory `uploads`, you need to configure
 
 To do that, create the file `src/api/index.ts` with the following content:
 
-```ts
+```ts title=src/api/middlewares.ts
+import type { MiddlewaresConfig } from "@medusajs/medusa"
 import express from "express"
 
-export default () => {
-  const app = express.Router()
-
-  app.use(`/uploads`, express.static(uploadDir))
-
-  return app
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/uploads",
+      middlewares: [express.static(uploadDir)],
+    },
+  ],
 }
 ```
 

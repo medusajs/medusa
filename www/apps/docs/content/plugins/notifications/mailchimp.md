@@ -123,13 +123,25 @@ If you want to subscribe to users without using this endpoint or at a specific p
 
 Here’s an example of using the `mailchimpService` inside an endpoint:
 
-```jsx title=src/api/index.ts
-const mailchimpService = req.scope.resolve("mailchimpService")
+```ts title=src/api/store/subscribe/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 
-mailchimpService.subscribeNewsletter(
-  "example@gmail.com",
-  { tags: ["customer"] } // optional
-)
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const mailchimpService = req.scope.resolve(
+    "mailchimpService"
+  )
+
+  mailchimpService.subscribeNewsletter(
+    "example@gmail.com",
+    { tags: ["customer"] } // optional
+  )
+}
 ```
 
 :::tip

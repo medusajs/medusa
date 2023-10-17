@@ -18,7 +18,7 @@ To create a service, create a TypeScript or JavaScript file in `src/services` to
 
 For example, if you want to create a service `PostService`, eventually registered as `postService`, create the file `post.ts` in `src/services` with the following content:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import { TransactionBaseService } from "@medusajs/medusa"
 
 class PostService extends TransactionBaseService {
@@ -54,7 +54,7 @@ As the service extends the `TransactionBaseService` class, all resources registe
 
 So, if you want your service to use another service, add it as part of your constructor’s dependencies and set it to a field inside your service’s class:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import { ProductService } from "@medusajs/medusa"
 import { PostRepository } from "../repositories/post"
 
@@ -71,7 +71,7 @@ class PostService extends TransactionBaseService {
 
 Then, you can use that service anywhere in your custom service. For example:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 class PostService extends TransactionBaseService {
   // ...
   async getProductCount() {
@@ -92,7 +92,7 @@ However, to actually get an instance of the repository within the service's meth
 
 For example:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import { PostRepository } from "../repositories/post"
 
 class PostService extends TransactionBaseService {
@@ -132,7 +132,7 @@ The data returned by the function passed as a parameter to the `atomicPhase_` me
 
 For example, the `PostService`'s `create` method with the `atomicPhase_` method:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 class PostService extends TransactionBaseService {
   protected postRepository_: typeof PostRepository
   // ...
@@ -170,7 +170,7 @@ There are three lifetime types:
 
 You can set the lifetime of your service by setting the `LIFE_TIME` static property:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import { TransactionBaseService } from "@medusajs/medusa"
 import { Lifetime } from "awilix"
 
@@ -189,7 +189,7 @@ Within your service, you may need to access the Medusa configuration exported fr
 
 For example:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import {
   ConfigModule,
   TransactionBaseService,
