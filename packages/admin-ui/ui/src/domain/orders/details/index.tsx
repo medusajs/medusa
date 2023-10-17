@@ -68,6 +68,7 @@ import SummaryCard from "./detail-cards/summary"
 import EmailModal from "./email-modal"
 import MarkShippedModal from "./mark-shipped"
 import CreateRefundModal from "./refund"
+import { MEDUSA_BACKEND_URL_NOSLASH } from "../../../constants/medusa-backend-url"
 
 type OrderDetailFulfillment = {
   title: string
@@ -287,6 +288,11 @@ const OrderDetails = () => {
     (item: LineItem) => item.quantity > (item.fulfilled_quantity ?? 0)
   )
 
+  const invoiceUrl =
+    order?.payment_status === "captured"
+      ? `${MEDUSA_BACKEND_URL_NOSLASH}/invoice/${order?.id}`
+      : null
+
   return (
     <div>
       <OrderEditProvider orderId={id!}>
@@ -341,7 +347,7 @@ const OrderDetails = () => {
                     },
                   ]}
                 >
-                  <div className="mt-6 flex space-x-6 divide-x">
+                  <div className="mt-6 flex divide-x flex-wrap gap-4">
                     <div className="flex flex-col">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
                         Email
@@ -370,6 +376,16 @@ const OrderDetails = () => {
                           .join(", ")}
                       </div>
                     </div>
+                    {!!invoiceUrl &&
+                      <div className="flex flex-col pl-6">
+                        <div className="inter-smaller-regular text-grey-50 mb-1">
+                          Invoice
+                        </div>
+                        <div>
+                          <a href={invoiceUrl} target="_blank" rel="noopener noreferrer" className="text-blue-60" title="Invoice download">Download</a>
+                        </div>
+                      </div>
+                    }
                   </div>
                 </BodyCard>
 

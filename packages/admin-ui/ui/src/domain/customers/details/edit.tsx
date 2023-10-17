@@ -9,11 +9,11 @@ import TextArea from "../../../components/molecules/textarea"
 import Modal from "../../../components/molecules/modal"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
-import { nestedForm } from "../../../utils/nested-form"
 import { validateEmail } from "../../../utils/validate-email"
 
 type EditCustomerModalProps = {
   customer: Customer
+  refetchCustomer: () => void
   handleClose: () => void
 }
 
@@ -28,6 +28,7 @@ type EditCustomerFormType = {
 const EditCustomerModal = ({
   handleClose,
   customer,
+  refetchCustomer
 }: EditCustomerModalProps) => {
   const form = useForm<EditCustomerFormType>({
     defaultValues: getDefaultValues(customer),
@@ -57,6 +58,7 @@ const EditCustomerModal = ({
       {
         onSuccess: () => {
           handleClose()
+          refetchCustomer()
           notification("Success", "Successfully updated customer", "success")
         },
         onError: (err) => {

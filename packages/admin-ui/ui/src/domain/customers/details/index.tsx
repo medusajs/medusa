@@ -19,13 +19,14 @@ import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 import EditCustomerModal from "./edit"
 import { FormattedAddress } from "../../orders/details/templates"
-import useCustomerFull from "./getcustomer"
+import CustomersGroupsWidget from "./groups"
+import useCustomerFull from "../../../hooks/use-customers-full"
 
 const CustomerDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const {customer, isLoading, error} = useCustomerFull(id!)
+  const {customer, fetchCustomer, isLoading, error} = useCustomerFull(id!)
   
   const [showEdit, setShowEdit] = useState(false)
 
@@ -155,6 +156,9 @@ const CustomerDetail = () => {
             )}
           </div>
         </Section>
+
+        <CustomersGroupsWidget customer={customer} />
+
         <BodyCard
           title={`Orders (${customer?.orders?.length})`}
           subtitle="An overview of Customer Orders"
@@ -181,6 +185,7 @@ const CustomerDetail = () => {
       {showEdit && customer && (
         <EditCustomerModal
           customer={customer}
+          refetchCustomer={fetchCustomer}
           handleClose={() => setShowEdit(false)}
         />
       )}
