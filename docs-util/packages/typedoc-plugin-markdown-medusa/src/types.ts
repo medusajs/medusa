@@ -8,14 +8,14 @@ import {
   TypeParameterReflection,
 } from "typedoc"
 
-export type ParameterStyle = "table" | "list"
+export type ParameterStyle = "table" | "list" | "component"
 
 export type ReflectionTitleOptions = {
   typeParameters?: boolean
   kind?: boolean
 }
 
-export type ObjectLiteralDeclarationStyle = "table" | "list"
+export type ObjectLiteralDeclarationStyle = "table" | "list" | "component"
 
 export type SectionKey =
   | "comment"
@@ -23,6 +23,7 @@ export type SectionKey =
   | "member_declaration_indexSignature"
   | "member_declaration_signatures"
   | "member_declaration_typeDeclaration"
+  | "member_declaration_example"
   | "member_getteSetter_getSignature"
   | "member_getteSetter_setSignature"
   | "member_signatures"
@@ -33,10 +34,10 @@ export type SectionKey =
   | "member_signature_comment"
   | "member_signature_typeParameters"
   | "member_signature_parameters"
-  | "showReturnSignature"
+  | "member_signature_example"
+  | "member_signature_returns"
   | "member_signature_declarationSignatures"
   | "member_signature_declarationChildren"
-  | "member_signature_comment"
   | "member_signature_sources"
   | "member_sources_implementationOf"
   | "member_sources_inheritedFrom"
@@ -70,8 +71,9 @@ export type FormattingOptionType = {
   showCommentsAsHeader?: boolean
   showCommentsAsDetails?: boolean
   parameterStyle?: ParameterStyle
-  showReturnSignature?: boolean
   frontmatterData?: Record<string, unknown>
+  parameterComponent?: string
+  mdxImports?: string[]
 }
 
 export type FormattingOptionsType = {
@@ -88,6 +90,15 @@ export type Mapping = {
   isLeaf: boolean
   directory: string
   template: (pageEvent: PageEvent<ContainerReflection>) => string
+}
+
+export type Parameter = {
+  name: string
+  type: string
+  optional?: boolean
+  defaultValue?: string
+  description?: string
+  children?: Parameter[]
 }
 
 export class NavigationItem {

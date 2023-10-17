@@ -5,12 +5,12 @@ import { RuleTypeDTO } from "./rule-type"
 /**
  * @interface
  * 
- * An object representing a price set money amount rule, which holds data related to the association between a price set money amount and a rule.
+ * A price set money amount rule's data.
  * 
- * @prop id - A string indicating the ID of the price set money amount.
- * @prop price_set_money_amount - an object of type {@link PriceSetMoneyAmountDTO} holding the data of the associated price set money amount.
- * @prop rule_type - an object of type {@link RuleTypeDTO} holding the data of the associated rule type.
- * @prop value - a string indicating the value of the price set money amount rule.
+ * @prop id - The ID of the price set money amount.
+ * @prop price_set_money_amount - The associated price set money amount. It may only be available if the relation `price_set_money_amount` is expanded.
+ * @prop rule_type - The associated rule type. It may only be available if the relation `rule_type` is expanded.
+ * @prop value - The value of the price set money amount rule.
  */
 export interface PriceSetMoneyAmountRulesDTO {
   id: string
@@ -22,11 +22,11 @@ export interface PriceSetMoneyAmountRulesDTO {
 /**
  * @interface
  * 
- * An object used to create a price set money amount rule, which represents an association between a price set money amount and a rule type.
+ * The price set money amount rule to create.
  * 
- * @prop price_set_money_amount - A string indicating the ID of a price set money amount.
- * @prop rule_type - A string indicating the ID of a rule type.
- * @prop value - A string indicating the value of the price set money amount rule.
+ * @prop price_set_money_amount - The ID of a price set money amount.
+ * @prop rule_type - The ID of a rule type.
+ * @prop value - The value of the price set money amount rule.
  */
 export interface CreatePriceSetMoneyAmountRulesDTO {
   price_set_money_amount: string
@@ -37,12 +37,12 @@ export interface CreatePriceSetMoneyAmountRulesDTO {
 /**
  * @interface
  * 
- * An object used to update a price set money amount rule. The price set money amount rule is identified by the provided `id`.
+ * The data to update in a price set money amount rule. The `id` is used to identify which money amount to update.
  * 
- * @prop id - A string indicating the ID of the price set money amount rule to update.
- * @prop price_set_money_amount - A string indicating the ID of a price set money amount.
- * @prop rule_type - A string indicating the ID of a rule type.
- * @prop value - A string indicating the value of the price set money amount rule.
+ * @prop id - The ID of the price set money amount rule to update.
+ * @prop price_set_money_amount - The ID of a price set money amount.
+ * @prop rule_type - The ID of a rule type.
+ * @prop value - The value of the price set money amount rule.
  */
 export interface UpdatePriceSetMoneyAmountRulesDTO {
   id: string
@@ -54,12 +54,12 @@ export interface UpdatePriceSetMoneyAmountRulesDTO {
 /**
  * @interface
  * 
- * An object used to filter price set money amount rules when listing them.
+ * Filters to apply on price set money amount rules.
  * 
- * @prop id - An array of strings, each string indicating an ID to filter the price set money amount rules.
- * @prop rule_type_id - An array of strings, each string indicating the ID of a rule type to filter the price set money amount rules.
- * @prop price_set_money_amount_id - an array of strings, each string indicating the ID of a price set money amount to filter the price set money amount rules.
- * @prop value - an array of strings, each string indicating a value to filter the price set money amount rules.
+ * @prop id - The ID to filter price set money amount rules by.
+ * @prop rule_type_id - The IDs to filter the price set money amount rule's associated rule type.
+ * @prop price_set_money_amount_id - The IDs to filter the price set money amount rule's associated price set money amount.
+ * @prop value - The value to filter price set money amount rules by.
  */
 export interface FilterablePriceSetMoneyAmountRulesProps
   extends BaseFilterable<FilterablePriceSetMoneyAmountRulesProps> {
