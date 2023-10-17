@@ -1,19 +1,23 @@
-import { Express, json } from "express"
 import cors from "cors"
+import { Express, json, urlencoded } from "express"
 import { readdir } from "fs/promises"
+import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join } from "path"
+import {
+  authenticate,
+  authenticateCustomer,
+  requireCustomerAuthentication,
+} from "../../../api/middlewares"
+import { ConfigModule } from "../../../types/global"
 import logger from "../../logger"
 import {
-  MiddlewaresConfig,
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
-  RouteVerb,
+  MiddlewaresConfig,
   RouteConfig,
   RouteDescriptor,
+  RouteVerb,
 } from "./types"
-import { ConfigModule } from "../../../types/global"
-import { parseCorsOrigins } from "medusa-core-utils"
-import { authenticate } from "../../../api/middlewares"
 
 const log = ({
   activityId,
@@ -88,7 +92,11 @@ export class RoutesLoader {
   protected activityId?: string
   protected rootDir: string
   protected configModule: ConfigModule
-  protected excludes: RegExp[] = [/\.DS_Store/, /(\.ts\.map|\.js\.map|\.d\.ts)/]
+  protected excludes: RegExp[] = [
+    /\.DS_Store/,
+    /(\.ts\.map|\.js\.map|\.d\.ts)/,
+    /^_/,
+  ]
 
   constructor({
     app,
@@ -203,15 +211,14 @@ export class RoutesLoader {
       [...this.routesMap.values()].map(async (descriptor: RouteDescriptor) => {
         const absolutePath = descriptor.absolutePath
 
-        return await import(absolutePath).then((imp) => {
+        return await import(absolutePath).then((import_) => {
           const map = this.routesMap
 
-          const config: {
-            routes: RouteConfig[]
-            shouldRequireAuth?: boolean
-          } = {
+          const config: RouteConfig = {
             routes: [],
-            shouldRequireAuth: false,
+            shouldRequireAdminAuth: false,
+            shouldRequireCustomerAuth: false,
+            shouldAppendCustomer: false,
           }
 
           /**
@@ -219,29 +226,40 @@ export class RoutesLoader {
            * we default to true.
            */
           const shouldRequireAuth =
-            imp[AUTHTHENTICATE] !== undefined
-              ? (imp[AUTHTHENTICATE] as boolean)
+            import_[AUTHTHENTICATE] !== undefined
+              ? (import_[AUTHTHENTICATE] as boolean)
               : true
 
           if (
             shouldRequireAuth &&
             absolutePath.includes(join("api", "admin"))
           ) {
-            config.shouldRequireAuth = shouldRequireAuth
+            config.shouldRequireAdminAuth = shouldRequireAuth
           }
 
-          const handlers = Object.keys(imp).filter((key) => {
+          if (
+            shouldRequireAuth &&
+            absolutePath.includes(join("api", "store", "me"))
+          ) {
+            config.shouldRequireCustomerAuth = shouldRequireAuth
+          }
+
+          if (absolutePath.includes(join("api", "store"))) {
+            config.shouldAppendCustomer = true
+          }
+
+          const handlers = Object.keys(import_).filter((key) => {
             /**
              * Filter out any export that is not a function
              */
-            return typeof imp[key] === "function"
+            return typeof import_[key] === "function"
           })
 
           for (const handler of handlers) {
             if (HTTP_METHODS.includes(handler as RouteVerb)) {
-              config.routes.push({
+              config.routes?.push({
                 method: handler as RouteVerb,
-                handler: imp[handler],
+                handler: import_[handler],
               })
             } else {
               log({
@@ -251,7 +269,7 @@ export class RoutesLoader {
             }
           }
 
-          if (!config.routes.length) {
+          if (!config.routes?.length) {
             log({
               activityId: this.activityId,
               message: `No valid route handlers detected in ${absolutePath}. Skipping route configuration.`,
@@ -337,8 +355,10 @@ export class RoutesLoader {
     const absolutePath = join(dirPath, middlewareFilePath)
 
     try {
-      await import(absolutePath).then((imp) => {
-        const middlewaresConfig = imp.config as MiddlewaresConfig | undefined
+      await import(absolutePath).then((import_) => {
+        const middlewaresConfig = import_.config as
+          | MiddlewaresConfig
+          | undefined
 
         if (!middlewaresConfig) {
           log({
@@ -384,20 +404,11 @@ export class RoutesLoader {
       await readdir(dirPath, { withFileTypes: true }).then((entries) => {
         return entries
           .filter((entry) => {
-            /**
-             * We exclude all files starting with an underscore
-             * as underscore is used to indicate that files are
-             * to be ignored.
-             */
-            if (entry.name.startsWith("_")) {
-              return false
-            }
-
             const fullPath = join(dirPath, entry.name)
 
             if (
               this.excludes.length &&
-              this.excludes.some((exclude) => exclude.test(fullPath))
+              this.excludes.some((exclude) => exclude.test(entry.name))
             ) {
               return false
             }
@@ -439,10 +450,18 @@ export class RoutesLoader {
         continue
       }
 
-      const routes = descriptor.config.routes! as RouteConfig[]
+      const routes = descriptor.config.routes
 
-      if (descriptor.config.shouldRequireAuth) {
+      if (descriptor.config.shouldAppendCustomer) {
+        this.app.use(descriptor.route, authenticateCustomer())
+      }
+
+      if (descriptor.config.shouldRequireAdminAuth) {
         this.app.use(descriptor.route, authenticate())
+      }
+
+      if (descriptor.config.shouldRequireCustomerAuth) {
+        this.app.use(descriptor.route, requireCustomerAuthentication())
       }
 
       for (const route of routes) {
@@ -496,7 +515,7 @@ export class RoutesLoader {
 
   applyGlobalMiddlewares() {
     if (this.routesMap.size > 0) {
-      this.app.use(json())
+      this.app.use(json(), urlencoded({ extended: true }))
 
       const adminCors = this.configModule.projectConfig.admin_cors || ""
       this.app.use(

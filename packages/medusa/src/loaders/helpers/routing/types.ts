@@ -1,6 +1,6 @@
 import {
-  MedusaNextFunction,
   MedusaRequest,
+  MedusaRequestHandler,
   MedusaResponse,
 } from "../../../types/routing"
 
@@ -25,16 +25,21 @@ type RouteHandler = (
   res: MedusaResponse
 ) => Promise<void> | void
 
-export type RouteConfig = {
+export type RouteImplementation = {
   method?: RouteVerb
   handler: RouteHandler
 }
 
-type MiddlewareFunction = (
-  req: MedusaRequest,
-  res: MedusaResponse,
-  next: MedusaNextFunction
-) => Promise<void> | void
+export type RouteConfig = {
+  shouldRequireAdminAuth?: boolean
+  shouldRequireCustomerAuth?: boolean
+  shouldAppendCustomer?: boolean
+  routes?: RouteImplementation[]
+}
+
+export type MiddlewareFunction =
+  | MedusaRequestHandler
+  | ((...args: any[]) => any)
 
 export type MiddlewareRoute = {
   method?: MiddlewareVerb | MiddlewareVerb[]
@@ -46,17 +51,14 @@ export type MiddlewaresConfig = {
   routes?: MiddlewareRoute[]
 }
 
-export type RouteDescriptor<TConfig = Record<string, unknown>> = {
+export type RouteDescriptor = {
   absolutePath: string
   relativePath: string
   route: string
   priority: number
-  config?: TConfig & {
-    shouldRequireAuth?: boolean
-    routes?: RouteConfig[]
-  }
+  config?: RouteConfig
 }
 
-export type GlobalMiddlewareDescriptor<TConfig = Record<string, unknown>> = {
-  config?: TConfig & MiddlewaresConfig
+export type GlobalMiddlewareDescriptor = {
+  config?: MiddlewaresConfig
 }

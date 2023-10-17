@@ -1,4 +1,5 @@
 export type {
-  MiddlewaresConfig,
+  MiddlewareFunction,
   MiddlewareRoute,
+  MiddlewaresConfig,
 } from "../loaders/helpers/routing/types"
