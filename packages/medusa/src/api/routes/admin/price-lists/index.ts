@@ -1,27 +1,33 @@
 import "reflect-metadata"
 
-import { PriceList, Product } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares, {
-  transformBody,
-  transformQuery,
-} from "../../../middlewares"
+import { PriceList, Product } from "../../../.."
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
+import middlewares, {
+  transformBody,
+  transformQuery,
+} from "../../../middlewares"
 
+import { AdminGetPriceListPaginationParams } from "./list-price-lists"
+import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
+import { AdminPostPriceListsPriceListReq } from "./create-price-list"
 import { FlagRouter } from "@medusajs/utils"
+import PricingIntegrationFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import { Router } from "express"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import { AdminPostPriceListsPriceListReq } from "./create-price-list"
-import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
-import { AdminGetPriceListPaginationParams } from "./list-price-lists"
+import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 
 const route = Router()
 
 export default (app, featureFlagRouter: FlagRouter) => {
-  app.use("/price-lists", route)
+  app.use(
+    "/price-lists",
+    isFeatureFlagEnabled(PricingIntegrationFeatureFlag.key, true),
+    route
+  )
 
   if (featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)) {
     defaultAdminPriceListFields.push("includes_tax")
