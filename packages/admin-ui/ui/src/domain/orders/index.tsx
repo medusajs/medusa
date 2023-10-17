@@ -19,7 +19,7 @@ import { useWidgets } from "../../providers/widget-provider"
 import { getErrorMessage } from "../../utils/error-messages"
 import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
-import SalesReportModal from "./sales-report/sales-report-modal"
+import SalesReportModal from "./sales-report"
 import CashIcon from "../../components/fundamentals/icons/cash-icon"
 
 const VIEWS = ["orders", "drafts"]

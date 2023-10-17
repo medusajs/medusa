@@ -69,6 +69,8 @@ import EmailModal from "./email-modal"
 import MarkShippedModal from "./mark-shipped"
 import CreateRefundModal from "./refund"
 import { MEDUSA_BACKEND_URL_NOSLASH } from "../../../constants/medusa-backend-url"
+import DownloadIcon from "../../../components/fundamentals/icons/download-icon"
+import openUrlNewWindow from "../../../utils/open-link-new-window"
 
 type OrderDetailFulfillment = {
   title: string
@@ -296,11 +298,28 @@ const OrderDetails = () => {
   return (
     <div>
       <OrderEditProvider orderId={id!}>
-        <BackButton
-          path="/a/orders"
-          label="Back to Orders"
-          className="mb-xsmall"
-        />
+        <div className="flex flex-row justify-between items-top">
+          <div>
+            <BackButton
+              path="/a/orders"
+              label="Back to Orders"
+              className="mb-xsmall"
+            />
+          </div>
+          <div>
+            {!!invoiceUrl &&
+              <Button
+                key="export"
+                variant="secondary"
+                size="small"
+                onClick={()=>{openUrlNewWindow(invoiceUrl)}}
+              >
+                <DownloadIcon size={20} />
+                Invoice Download
+              </Button>
+            }
+          </div>
+        </div>
         {isLoading || !order ? (
           <BodyCard className="pt-2xlarge flex w-full items-center justify-center">
             <Spinner size={"large"} variant={"secondary"} />
@@ -376,16 +395,6 @@ const OrderDetails = () => {
                           .join(", ")}
                       </div>
                     </div>
-                    {!!invoiceUrl &&
-                      <div className="flex flex-col pl-6">
-                        <div className="inter-smaller-regular text-grey-50 mb-1">
-                          Invoice
-                        </div>
-                        <div>
-                          <a href={invoiceUrl} target="_blank" rel="noopener noreferrer" className="text-blue-60" title="Invoice download">Download</a>
-                        </div>
-                      </div>
-                    }
                   </div>
                 </BodyCard>
 

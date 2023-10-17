@@ -1,12 +1,25 @@
-import { Container } from "@medusajs/ui"
-import { useEffect, useState } from "react"
-import moment from "moment"
+import React, { useEffect, useState } from "react"
+import Modal from "../../../components/molecules/modal"
+import Button from "../../../components/fundamentals/button"
 import { DatePicker } from "@medusajs/ui"
 import { MEDUSA_BACKEND_URL_NOSLASH } from "../../../constants/medusa-backend-url"
+import moment from "moment"
+import openUrlNewWindow from "../../../utils/open-link-new-window"
 
-const SalesReportWidget = () => {
+type ExportModalProps = {
+  handleClose: () => void
+  onSubmit?: () => void
+  loading: boolean
+  title: string
+}
 
-  // Init dates
+const SalesReportModal: React.FC<ExportModalProps> = ({
+  handleClose,
+  title,
+  loading
+}) => {
+
+    // Init dates
 
   let now = new Date
 
@@ -16,7 +29,13 @@ const SalesReportWidget = () => {
 
   // Date select
 
-  const DateSelect = ({selectedDate, setDate, filterTitle}) => {
+    type DateSelectType = {
+        selectedDate: Date,
+        setDate: any,
+        filterTitle: string
+    }
+
+  const DateSelect = ({selectedDate, setDate, filterTitle}: DateSelectType) => {
           
       return(
           <DatePicker
@@ -41,41 +60,63 @@ const SalesReportWidget = () => {
 
   }
 
+  const getReport = () => {
+    openUrlNewWindow(url);
+  }
+
   useEffect(()=>{
     setUrl(getUrl());
   },[startDate, endDate])
 
+
   return (
-    <Container className="py-4">
-        <h3 className="inter-large-semibold mb-2">Sales report</h3>
-        <div className="flex flex-row items-center justify-start gap-4">
-            <div className="basis-2/5">
-              <DateSelect
-                  selectedDate={startDate}
-                  setDate={setStartDate}
-                  filterTitle="From date"
-              />
+    <Modal handleClose={handleClose}>
+      <Modal.Body>
+        <Modal.Header handleClose={handleClose}>
+          <span className="inter-xlarge-semibold">{title}</span>
+        </Modal.Header>
+        <Modal.Content>
+            <div className="flex flex-row items-center justify-start gap-4">
+                <div className="basis-1/2">
+                    <DateSelect
+                        selectedDate={startDate}
+                        setDate={setStartDate}
+                        filterTitle="From date"
+                    />
+                </div>
+                <div className="basis-1/2">
+                    <DateSelect
+                        selectedDate={endDate}
+                        setDate={setEndDate}
+                        filterTitle="To date"
+                    />
+                </div>
             </div>
-            <div className="basis-2/5">
-              <DateSelect
-                  selectedDate={endDate}
-                  setDate={setEndDate}
-                  filterTitle="To date"
-              />
-            </div>
-            <div className="basis-1/5">
-             <a
-                  href={url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn btn-secondary py-2"
-              >
-                  &darr; Get report
-              </a>
-            </div>
-        </div>
-    </Container>
+        </Modal.Content>
+        <Modal.Footer>
+          <div className="flex w-full justify-end">
+            <Button
+              variant="ghost"
+              size="small"
+              onClick={handleClose}
+              className="mr-2"
+            >
+              Cancel
+            </Button>
+            <Button
+              loading={loading}
+              disabled={loading}
+              variant="primary"
+              size="small"
+              onClick={getReport}
+            >
+              Get report
+            </Button>
+          </div>
+        </Modal.Footer>
+      </Modal.Body>
+    </Modal>
   )
 }
 
-export default SalesReportWidget
+export default SalesReportModal
