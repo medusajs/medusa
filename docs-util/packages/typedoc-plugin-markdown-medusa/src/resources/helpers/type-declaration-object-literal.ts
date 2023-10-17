@@ -2,14 +2,15 @@ import * as Handlebars from "handlebars"
 import { DeclarationReflection, ReflectionType } from "typedoc"
 import { MarkdownTheme } from "../../theme"
 import { escapeChars, stripLineBreaks } from "../../utils"
-import reflectionFomatter from "../../utils/reflection-formatter"
 import { parseParams } from "../../utils/params-utils"
 import { ReflectionParameterType } from "../../types"
+import reflectionFormatter from "../../utils/reflection-formatter"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "typeDeclarationMembers",
     function (this: DeclarationReflection[]) {
+      const { parameterComponent } = theme.getFormattingOptionsForLocation()
       const comments = this.map(
         (param) => !!param.comment?.hasVisibleComponent()
       )
@@ -27,6 +28,10 @@ export default function (theme: MarkdownTheme) {
           result = getListMarkdownContent(properties)
           break
         }
+        case "component": {
+          result = getComponentMarkdownContent(properties, parameterComponent)
+          break
+        }
         case "table": {
           result = getTableMarkdownContent(properties, hasComments)
           break
@@ -38,9 +43,22 @@ export default function (theme: MarkdownTheme) {
 }
 
 function getListMarkdownContent(properties: DeclarationReflection[]) {
-  const items = properties.map((property) => reflectionFomatter(property))
+  const items = properties.map((property) =>
+    reflectionFormatter(property, "list")
+  )
 
   return items.join("\n")
+}
+
+function getComponentMarkdownContent(
+  properties: DeclarationReflection[],
+  parameterComponent?: string
+) {
+  const parameters = properties.map((property) =>
+    reflectionFormatter(property, "component")
+  )
+
+  return `<${parameterComponent} parameters={${JSON.stringify(parameters)}} />`
 }
 
 function getTableMarkdownContent(

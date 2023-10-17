@@ -47,6 +47,7 @@ export class MarkdownTheme extends Theme {
   preserveAnchorCasing!: boolean
   objectLiteralTypeDeclarationStyle: ObjectLiteralDeclarationStyle
   formattingOptions: FormattingOptionsType
+  mdxOutput: boolean
 
   project?: ProjectReflection
   reflection?: DeclarationReflection
@@ -83,6 +84,7 @@ export class MarkdownTheme extends Theme {
     this.formattingOptions = this.getOption(
       "formatting"
     ) as FormattingOptionsType
+    this.mdxOutput = this.getOption("mdxOutput") as boolean
 
     this.listenTo(this.owner, {
       [RendererEvent.BEGIN]: this.onBeginRenderer,
@@ -162,7 +164,12 @@ export class MarkdownTheme extends Theme {
   }
 
   toUrl(mapping: Mapping, reflection: DeclarationReflection) {
-    return mapping.directory + "/" + this.getUrl(reflection) + ".md"
+    return (
+      mapping.directory +
+      "/" +
+      this.getUrl(reflection) +
+      (this.mdxOutput ? ".mdx" : ".md")
+    )
   }
 
   getUrl(reflection: Reflection, relative?: Reflection): string {
@@ -364,7 +371,7 @@ export class MarkdownTheme extends Theme {
   }
 
   get globalsFile() {
-    return "modules.md"
+    return `modules.${this.mdxOutput ? "mdx" : "md"}`
   }
 
   getFormattingOptionsForLocation(): FormattingOptionType {
