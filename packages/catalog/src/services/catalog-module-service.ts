@@ -8,8 +8,8 @@ import {
 import {
   CatalogModuleOptions,
   SchemaObjectRepresentation,
-  schemaObjectRepresentationPropertiesToOmit,
   StorageProvider,
+  schemaObjectRepresentationPropertiesToOmit,
 } from "../types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { joinerConfig } from "./../joiner-config"
@@ -33,6 +33,7 @@ export default class CatalogModuleService
   protected readonly eventBusModuleService_: IEventBusModuleService
 
   protected schemaObjectRepresentation_: SchemaObjectRepresentation
+  protected schemaEntitiesMap_: Record<string, any>
 
   protected storageProviderInstance_: StorageProvider
   protected readonly storageProviderCtr_: StorageProvider
@@ -45,6 +46,7 @@ export default class CatalogModuleService
         this.container_,
         Object.assign(this.storageProviderCtrOptions_ ?? {}, {
           schemaObjectRepresentation: this.schemaObjectRepresentation_,
+          entityMap: this.schemaEntitiesMap_,
         }),
         this.moduleOptions_
       )
@@ -123,8 +125,16 @@ export default class CatalogModuleService
   }
 
   private buildSchemaObjectRepresentation_() {
-    this.schemaObjectRepresentation_ =
-      this.schemaObjectRepresentation_ ??
-      buildSchemaObjectRepresentation(this.moduleOptions_.schema)
+    if (this.schemaObjectRepresentation_) {
+      return this.schemaObjectRepresentation_
+    }
+
+    const [objectRepresentation, entityMap] = buildSchemaObjectRepresentation(
+      this.moduleOptions_.schema
+    )
+    this.schemaObjectRepresentation_ = objectRepresentation
+    this.schemaEntitiesMap_ = entityMap
+
+    return this.schemaObjectRepresentation_
   }
 }

@@ -1,12 +1,12 @@
+import { makeExecutableSchema } from "@graphql-tools/schema"
 import {
   cleanGraphQLSchema,
   getFieldsAndRelations,
   MedusaModule,
   ModuleJoinerRelationship,
 } from "@medusajs/modules-sdk"
-import { ObjectTypeDefinitionNode } from "graphql/index"
 import { JoinerServiceConfigAlias, ModuleJoinerConfig } from "@medusajs/types"
-import { makeExecutableSchema } from "@graphql-tools/schema"
+import { ObjectTypeDefinitionNode } from "graphql/index"
 import {
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
@@ -648,7 +648,9 @@ function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
  *
  * @param schema
  */
-export function buildSchemaObjectRepresentation(schema) {
+export function buildSchemaObjectRepresentation(
+  schema
+): [SchemaObjectRepresentation, Record<string, any>] {
   const moduleJoinerConfigs = MedusaModule.getAllJoinerConfigs()
   const augmentedSchema = CustomDirectives.Listeners.definition + schema
   const executableSchema = makeSchemaExecutable(augmentedSchema)
@@ -673,5 +675,5 @@ export function buildSchemaObjectRepresentation(schema) {
   objectRepresentation._schemaPropertiesMap =
     buildAliasMap(objectRepresentation)
 
-  return objectRepresentation
+  return [objectRepresentation, entitiesMap]
 }

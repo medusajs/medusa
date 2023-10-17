@@ -1,9 +1,9 @@
-import { joinerConfig } from "../__fixtures__/joiner-config"
 import { MedusaApp } from "@medusajs/modules-sdk"
-import modulesConfig from "../__fixtures__/modules-config"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
-import { buildSchemaObjectRepresentation } from "../../utils/build-config"
 import { DB_URL } from "../../../integration-tests/utils"
+import { buildSchemaObjectRepresentation } from "../../utils/build-config"
+import { joinerConfig } from "../__fixtures__/joiner-config"
+import modulesConfig from "../__fixtures__/modules-config"
 
 function removePropRecursively(obj, propToRemove) {
   for (const prop in obj) {
@@ -55,7 +55,7 @@ describe("buildSchemaObjectRepresentation", function () {
   })
 
   it("should build the full tree config from a graphql schema", function () {
-    const fullRepresentation = buildSchemaObjectRepresentation(config.schema)
+    const [fullRepresentation] = buildSchemaObjectRepresentation(config.schema)
 
     const expectedProduct = {
       entity: "Product",
