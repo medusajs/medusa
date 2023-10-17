@@ -352,6 +352,7 @@ export class PostgresProvider {
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
+      const catalogRelationRepository = em.getRepository(CatalogRelation)
 
       const { data: data_ } = PostgresProvider.parseData(
         data,
@@ -363,6 +364,19 @@ export class PostgresProvider {
       await catalogRepository.nativeDelete({
         id: { $in: ids },
         name: entity,
+      })
+
+      await catalogRelationRepository.nativeDelete({
+        $or: [
+          {
+            parent_id: { $in: ids },
+            parent_name: entity,
+          },
+          {
+            child_id: { $in: ids },
+            child_name: entity,
+          },
+        ],
       })
     })
   }
@@ -506,6 +520,7 @@ export class PostgresProvider {
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
+      const catalogRelationRepository = em.getRepository(CatalogRelation)
 
       const { data: data_ } = PostgresProvider.parseData(
         data,
@@ -517,6 +532,19 @@ export class PostgresProvider {
       await catalogRepository.nativeDelete({
         id: { $in: ids },
         name: entity,
+      })
+
+      await catalogRelationRepository.nativeDelete({
+        $or: [
+          {
+            parent_id: { $in: ids },
+            parent_name: entity,
+          },
+          {
+            child_id: { $in: ids },
+            child_name: entity,
+          },
+        ],
       })
     })
   }
