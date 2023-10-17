@@ -329,7 +329,7 @@ Make sure to replace `CustomInventoryItem` with your inventory item entity.
 
 ### Implementing listReservationItems Method
 
-This method is used to retrieve a list of reservation items. It accepts the same parameters as the [[listInventoryItems method](#implementing-listinventoryitems-method)](#implementing-listinventoryitems-method), but the `selector` parameter has the following properties:
+This method is used to retrieve a list of reservation items. It accepts the same parameters as the [listInventoryItems method](#implementing-listinventoryitems-method)](#implementing-listinventoryitems-method), but the `selector` parameter has the following properties:
 
 1. `id`: an optional string or array of strings indicating the IDs of reservation items. It is used to filter the retrieved reservation items by ID.
 2. `type`: an optional string or array of strings indicating the type of reservation items. It is used to filter the retrieved reservation items by type.
