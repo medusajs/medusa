@@ -22,6 +22,7 @@ export interface ProductDTO {
   is_giftcard: boolean
   status: ProductStatus
   thumbnail?: string | null
+  width?: number | null
   weight?: number | null
   length?: number | null
   height?: number | null
@@ -41,6 +42,7 @@ export interface ProductDTO {
   created_at?: string | Date
   updated_at?: string | Date
   deleted_at?: string | Date
+  metadata?: Record<string, unknown>
 }
 
 export interface ProductVariantDTO {
@@ -193,6 +195,7 @@ export interface FilterableProductOptionProps
 export interface FilterableProductCollectionProps
   extends BaseFilterable<FilterableProductCollectionProps> {
   id?: string | string[]
+  handle?: string | string[]
   title?: string
 }
 
@@ -222,7 +225,7 @@ export interface FilterableProductCategoryProps
 export interface CreateProductCollectionDTO {
   title: string
   handle?: string
-  products?: ProductDTO[]
+  products?: string[]
   metadata?: Record<string, unknown>
 }
 
@@ -231,7 +234,7 @@ export interface UpdateProductCollectionDTO {
   value?: string
   title?: string
   handle?: string
-  products?: ProductDTO[]
+  products?: string[]
   metadata?: Record<string, unknown>
 }
 
@@ -269,7 +272,6 @@ export interface UpdateProductTagDTO {
 export interface CreateProductOptionDTO {
   title: string
   product_id?: string
-  product?: Record<any, any>
 }
 
 export interface UpdateProductOptionDTO {
