@@ -104,7 +104,8 @@ export class PostgresProvider {
     let hasPagination = false
     if (
       typeof options?.take === "number" ||
-      (typeof options?.skip === "number" && options?.skip > 0)
+      (typeof options?.skip === "number" && options?.skip > 0) ||
+      options?.keepFilteredEntities
     ) {
       hasPagination = true
     }

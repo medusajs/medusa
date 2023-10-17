@@ -61,6 +61,7 @@ export class QueryBuilder {
 
     keys.forEach((key) => {
       let value = obj[key]
+
       if ((key === "$and" || key === "$or") && !Array.isArray(value)) {
         value = [value]
       }
@@ -90,10 +91,18 @@ export class QueryBuilder {
             const path = key.split(".")
             const field = path.pop()
             const attr = path.join(".")
-            builder.whereRaw(`${aliasMapping[attr]}.data->>? ${operator} ?`, [
-              field,
-              subValue,
-            ])
+
+            if (typeof subValue === "number") {
+              builder.whereRaw(
+                `COALESCE(NULLIF(${aliasMapping[attr]}.data->>?, ''), '0')::numeric ${operator} ?`,
+                [field, subValue]
+              )
+            } else {
+              builder.whereRaw(`${aliasMapping[attr]}.data->>? ${operator} ?`, [
+                field,
+                subValue,
+              ])
+            }
           } else {
             throw new Error(`Unsupported operator: ${subKey}`)
           }
@@ -104,12 +113,29 @@ export class QueryBuilder {
         const attr = path.join(".")
 
         if (Array.isArray(value)) {
-          builder.whereRaw(`${aliasMapping[attr]}.data->>? IN (?)`, [
-            field,
-            value,
-          ])
+          if (typeof value[0] === "number") {
+            builder.whereRaw(
+              `COALESCE(NULLIF(${aliasMapping[attr]}.data->>?, ''), '0')::numeric IN (?)`,
+              [field, value]
+            )
+          } else {
+            builder.whereRaw(`${aliasMapping[attr]}.data->>? IN (?)`, [
+              field,
+              value,
+            ])
+          }
         } else {
-          builder.whereRaw(`${aliasMapping[attr]}.data->>? = ?`, [field, value])
+          if (typeof value === "number") {
+            builder.whereRaw(
+              `COALESCE(NULLIF(${aliasMapping[attr]}.data->>?, ''), '0')::numeric = ?`,
+              [field, value]
+            )
+          } else {
+            builder.whereRaw(`${aliasMapping[attr]}.data->>? = ?`, [
+              field,
+              value,
+            ])
+          }
         }
       }
     })
