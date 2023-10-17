@@ -60,6 +60,37 @@ export class PostgresProvider {
     this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
   }
 
+  protected static parseData<
+    TData extends { id: string; [key: string]: unknown }
+  >(
+    data: TData | TData[],
+    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+  ) {
+    const data_ = Array.isArray(data) ? data : [data]
+
+    // Always keep the id in the entity properties
+    const entityProperties: string[] = ["id"]
+    const parentsProperties: string[] = []
+
+    /**
+     * Split fields into entity properties and parents properties
+     */
+
+    schemaEntityObjectRepresentation.fields.forEach((field) => {
+      if (field.includes(".")) {
+        parentsProperties.push(field)
+      } else {
+        entityProperties.push(field)
+      }
+    })
+
+    return {
+      data: data_,
+      entityProperties,
+      parentsProperties,
+    }
+  }
+
   async query(selection: QueryFormat, options?: QueryOptions) {
     const connection = this.container_.manager.getConnection()
 
@@ -188,29 +219,17 @@ export class PostgresProvider {
     schemaEntityObjectRepresentation,
   }: {
     entity: string
-    data: TData[]
+    data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
 
-      const data_ = Array.isArray(data) ? data : [data]
-
-      // Always keep the id in the entity properties
-      const entityProperties: string[] = ["id"]
-      const parentsProperties: string[] = []
-
-      /**
-       * Split fields into entity properties and parents properties
-       */
-
-      schemaEntityObjectRepresentation.fields.forEach((field) => {
-        if (field.includes(".")) {
-          parentsProperties.push(field)
-        } else {
-          entityProperties.push(field)
-        }
-      })
+      const {
+        data: data_,
+        entityProperties,
+        parentsProperties,
+      } = PostgresProvider.parseData(data, schemaEntityObjectRepresentation)
 
       /**
        * Loop through the data and create catalog entries for each entity as well as the
@@ -287,26 +306,16 @@ export class PostgresProvider {
     schemaEntityObjectRepresentation,
   }: {
     entity: string
-    data: TData[]
+    data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
 
-      const data_ = Array.isArray(data) ? data : [data]
-
-      // Always keep the id in the entity properties
-      const entityProperties: string[] = ["id"]
-
-      /**
-       * Split fields to retrieve the entity properties without its parent or child
-       */
-
-      schemaEntityObjectRepresentation.fields.forEach((field) => {
-        if (!field.includes(".")) {
-          entityProperties.push(field)
-        }
-      })
+      const { data: data_, entityProperties } = PostgresProvider.parseData(
+        data,
+        schemaEntityObjectRepresentation
+      )
 
       await catalogRepository.upsertMany(
         data_.map((entityData) => {
@@ -338,26 +347,16 @@ export class PostgresProvider {
     schemaEntityObjectRepresentation,
   }: {
     entity: string
-    data: TData[]
+    data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
 
-      const data_ = Array.isArray(data) ? data : [data]
-
-      // Always keep the id in the entity properties
-      const entityProperties: string[] = ["id"]
-
-      /**
-       * Split fields to retrieve the entity properties without its parent or child
-       */
-
-      schemaEntityObjectRepresentation.fields.forEach((field) => {
-        if (!field.includes(".")) {
-          entityProperties.push(field)
-        }
-      })
+      const { data: data_ } = PostgresProvider.parseData(
+        data,
+        schemaEntityObjectRepresentation
+      )
 
       const ids = data_.map((entityData) => entityData.id)
 
@@ -383,27 +382,17 @@ export class PostgresProvider {
     schemaEntityObjectRepresentation,
   }: {
     entity: string
-    data: TData[]
+    data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
       const catalogRelationRepository = em.getRepository(CatalogRelation)
 
-      const data_ = Array.isArray(data) ? data : [data]
-
-      // Always keep the id in the entity properties
-      const entityProperties: string[] = ["id"]
-
-      /**
-       * Split fields to retrieve the entity properties without its parent or child
-       */
-
-      schemaEntityObjectRepresentation.fields.forEach((field) => {
-        if (!field.includes(".")) {
-          entityProperties.push(field)
-        }
-      })
+      const { data: data_, entityProperties } = PostgresProvider.parseData(
+        data,
+        schemaEntityObjectRepresentation
+      )
 
       /**
        * Retrieve the property that represent the foreign key related to the parent entity of the link entity.
@@ -512,26 +501,16 @@ export class PostgresProvider {
     schemaEntityObjectRepresentation,
   }: {
     entity: string
-    data: TData[]
+    data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
 
-      const data_ = Array.isArray(data) ? data : [data]
-
-      // Always keep the id in the entity properties
-      const entityProperties: string[] = ["id"]
-
-      /**
-       * Split fields to retrieve the entity properties without its parent or child
-       */
-
-      schemaEntityObjectRepresentation.fields.forEach((field) => {
-        if (!field.includes(".")) {
-          entityProperties.push(field)
-        }
-      })
+      const { data: data_ } = PostgresProvider.parseData(
+        data,
+        schemaEntityObjectRepresentation
+      )
 
       const ids = data_.map((entityData) => entityData.id)
 
