@@ -18,7 +18,6 @@ module.exports = modulesConfig({
             text: "Beta",
           },
           slug: "/references/pricing",
-          // hide_table_of_contents: true,
         },
       },
     },
@@ -26,7 +25,7 @@ module.exports = modulesConfig({
       pattern: "IPricingModuleService/methods",
       additionalFormatting: {
         reflectionDescription:
-          "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Pricing Module.",
+          "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Pricing Module.",
         frontmatterData: {
           displayed_sidebar: "pricingReference",
           badge: {
