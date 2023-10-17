@@ -1,0 +1,51 @@
+---
+"medusa-plugin-restock-notification": patch
+"medusa-plugin-discount-generator": patch
+"medusa-plugin-slack-notification": patch
+"medusa-fulfillment-webshipper": patch
+"medusa-fulfillment-manual": patch
+"medusa-plugin-brightpearl": patch
+"medusa-plugin-meilisearch": patch
+"medusa-plugin-contentful": patch
+"medusa-plugin-twilio-sms": patch
+"medusa-plugin-ip-lookup": patch
+"medusa-plugin-mailchimp": patch
+"medusa-plugin-economic": patch
+"medusa-plugin-sendgrid": patch
+"medusa-plugin-wishlist": patch
+"medusa-payment-klarna": patch
+"medusa-payment-manual": patch
+"medusa-payment-paypal": patch
+"medusa-payment-stripe": patch
+"medusa-plugin-algolia": patch
+"medusa-plugin-segment": patch
+"medusa-payment-adyen": patch
+"medusa-file-spaces": patch
+"@medusajs/medusa-oas-cli": patch
+"@medusajs/file-local": patch
+"medusa-file-minio": patch
+"medusa-interfaces": patch
+"medusa-test-utils": patch
+"@medusajs/event-bus-local": patch
+"@medusajs/event-bus-redis": patch
+"@medusajs/cache-inmemory": patch
+"medusa-file-s3": patch
+"@medusajs/stock-location": patch
+"@medusajs/orchestration": patch
+"@medusajs/link-modules": patch
+"medusa-react": patch
+"@medusajs/cache-redis": patch
+"@medusajs/modules-sdk": patch
+"@medusajs/medusa-cli": patch
+"@medusajs/inventory": patch
+"@medusajs/medusa-js": patch
+"@medusajs/workflows": patch
+"@medusajs/admin-ui": patch
+"@medusajs/pricing": patch
+"@medusajs/product": patch
+"@medusajs/medusa": patch
+"@medusajs/admin": patch
+"@medusajs/utils": patch
+---
+
+chore: Bump all packages
