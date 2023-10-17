@@ -7,6 +7,7 @@ import TableSearch from "./table-search"
 import clsx from "clsx"
 import { useNavigate } from "react-router-dom"
 import openUrlNewWindow from "../../../utils/open-link-new-window"
+import openRelativeUrlNewWindow from "../../../utils/open-relative-link-new-window"
 
 type TableRowProps = React.HTMLAttributes<HTMLTableRowElement> & {
   forceDropdown?: boolean
@@ -216,7 +217,7 @@ Table.Cell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
           onContextMenu: (e) => {
             e.stopPropagation()
             e.preventDefault();
-            openUrlNewWindow(linkTo)
+            openRelativeUrlNewWindow(linkTo)
             return false;
           },
         })}
@@ -259,7 +260,7 @@ Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
           onContextMenu: (e) => {
             e.stopPropagation()
             e.preventDefault();
-            openUrlNewWindow(linkTo)
+            openRelativeUrlNewWindow(linkTo)
             return false;
           },
         })}
