@@ -7,15 +7,15 @@ import {
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
-import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
+import { CartService } from "../../../../services"
+import { EntityManager } from "typeorm"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Type } from "class-transformer"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -144,7 +144,7 @@ async function retrieveCartWithIsolatedProductModule(req, id: string) {
       },
       fields: ["id"],
       variants: {
-        fields: ["id"],
+        fields: ["id", "product_id"],
       },
     },
   })
