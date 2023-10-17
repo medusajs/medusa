@@ -30,6 +30,14 @@ type InjectedDependencies = {
 }
 
 export class PostgresProvider {
+  protected readonly eventActionToMethodMap_ = {
+    created: "onCreate",
+    updated: "onUpdate",
+    deleted: "onDelete",
+    attached: "onAttach",
+    detached: "onDetach",
+  }
+
   protected container_: InjectedDependencies
   protected readonly schemaObjectRepresentation_: SchemaObjectRepresentation
   protected readonly moduleOptions_: CatalogModuleOptions
@@ -154,24 +162,24 @@ export class PostgresProvider {
         schemaEntityObjectRepresentation,
       }
 
-      const action = eventName.split(".").pop()
+      const action = eventName.split(".").pop() || ""
+      const targetMethod = this.eventActionToMethodMap_[action]
 
-      switch (action) {
-        case "created":
-          await this.onCreate(argument)
-          break
-        case "attached":
-          await this.onAttach(argument)
-          break
-        case "updated":
-          await this.onUpdate(argument)
-          break
-        case "deleted":
-          await this.onDelete(argument)
+      if (!targetMethod) {
+        return
       }
+
+      await this[targetMethod](argument)
     }
   }
 
+  /**
+   * Create the catalog entry and the catalog relation entry when this event is emitted.
+   * @param entity
+   * @param data
+   * @param schemaEntityObjectRepresentation
+   * @protected
+   */
   protected async onCreate<
     TData extends { id: string; [key: string]: unknown }
   >({
@@ -243,7 +251,9 @@ export class PostgresProvider {
           ] as SchemaPropertiesMap[0]
 
           if (!parentSchemaObjectRepresentation) {
-            return
+            throw new Error(
+              `CatalogModule error, unable to find the parent entity representation from the alias ${parentAlias}.`
+            )
           }
 
           for (const parentEntity of parentEntities) {
@@ -262,6 +272,13 @@ export class PostgresProvider {
     })
   }
 
+  /**
+   * Update the catalog entry when this event is emitted.
+   * @param entity
+   * @param data
+   * @param schemaEntityObjectRepresentation
+   * @protected
+   */
   protected async onUpdate<
     TData extends { id: string; [key: string]: unknown }
   >({
@@ -306,6 +323,13 @@ export class PostgresProvider {
     })
   }
 
+  /**
+   * Delete the catalog entry when this event is emitted.
+   * @param entity
+   * @param data
+   * @param schemaEntityObjectRepresentation
+   * @protected
+   */
   protected async onDelete<
     TData extends { id: string; [key: string]: unknown }
   >({
@@ -344,6 +368,13 @@ export class PostgresProvider {
     })
   }
 
+  /**
+   * event emitted from the link modules to attach a link entity to its parent and child entities from the linked modules.
+   * @param entity
+   * @param data
+   * @param schemaEntityObjectRepresentation
+   * @protected
+   */
   protected async onAttach<
     TData extends { id: string; [key: string]: unknown }
   >({
@@ -466,5 +497,48 @@ export class PostgresProvider {
     })
   }
 
-  protected async onDetach() {}
+  /**
+   * Event emitted from the link modules to detach a link entity from its parent and child entities from the linked modules.
+   * @param entity
+   * @param data
+   * @param schemaEntityObjectRepresentation
+   * @protected
+   */
+  protected async onDetach<
+    TData extends { id: string; [key: string]: unknown }
+  >({
+    entity,
+    data,
+    schemaEntityObjectRepresentation,
+  }: {
+    entity: string
+    data: TData[]
+    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+  }) {
+    await this.container_.manager.transactional(async (em) => {
+      const catalogRepository = em.getRepository(Catalog)
+
+      const data_ = Array.isArray(data) ? data : [data]
+
+      // Always keep the id in the entity properties
+      const entityProperties: string[] = ["id"]
+
+      /**
+       * Split fields to retrieve the entity properties without its parent or child
+       */
+
+      schemaEntityObjectRepresentation.fields.forEach((field) => {
+        if (!field.includes(".")) {
+          entityProperties.push(field)
+        }
+      })
+
+      const ids = data_.map((entityData) => entityData.id)
+
+      await catalogRepository.nativeDelete({
+        id: { $in: ids },
+        name: entity,
+      })
+    })
+  }
 }
