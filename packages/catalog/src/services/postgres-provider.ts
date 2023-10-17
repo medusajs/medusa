@@ -174,14 +174,8 @@ export class PostgresProvider {
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   ): Subscriber {
     return async (data: unknown, eventName: string) => {
-      const data_ = data as Record<string, unknown>
-      let ids: string[] = []
-
-      if ("id" in data_) {
-        ids = [data_.id as string]
-      } else if ("ids" in data_) {
-        ids = data_.ids as string[]
-      }
+      const data_ = Array.isArray(data) ? data : [data]
+      let ids: string[] = data_.map((d) => d.id)
 
       const { fields, alias } = schemaEntityObjectRepresentation
       const entityData = await this.remoteQuery_(
