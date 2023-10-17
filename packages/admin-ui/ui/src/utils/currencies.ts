@@ -926,7 +926,7 @@ export const currencies: CurrenciesType = {
     symbol: "DT",
     name: "Tunisian Dinar",
     symbol_native: "د.ت.‏",
-    decimal_digits: 3,
+    decimal_digits: 2,
     rounding: 0,
     code: "TND",
     name_plural: "Tunisian dinars",
