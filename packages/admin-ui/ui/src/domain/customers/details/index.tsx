@@ -18,12 +18,15 @@ import CustomerOrdersTable from "../../../components/templates/customer-orders-t
 import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 import EditCustomerModal from "./edit"
+import { FormattedAddress } from "../../orders/details/templates"
+import useCustomerFull from "./getcustomer"
 
 const CustomerDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const { customer, isLoading, error } = useAdminCustomer(id!)
+  const {customer, isLoading, error} = useCustomerFull(id!)
+  
   const [showEdit, setShowEdit] = useState(false)
 
   const customerName = () => {
@@ -126,7 +129,7 @@ const CustomerDetail = () => {
               <div className="inter-smaller-regular text-grey-50 mb-1">
                 Orders
               </div>
-              <div>{customer.orders.length}</div>
+              <div>{customer?.orders?.length}</div>
             </div>
             <div className="h-100 flex flex-col pl-6">
               <div className="inter-smaller-regular text-grey-50 mb-1">
@@ -139,10 +142,21 @@ const CustomerDetail = () => {
                 />
               </div>
             </div>
+            <FormattedAddress
+              title={"Billing"}
+              addr={customer.billing_address}
+            />
+            {customer?.shipping_addresses?.map(address=>
+              <FormattedAddress
+                key={address.id}
+                title={"Shipping"}
+                addr={address}
+              />
+            )}
           </div>
         </Section>
         <BodyCard
-          title={`Orders (${customer.orders.length})`}
+          title={`Orders (${customer?.orders?.length})`}
           subtitle="An overview of Customer Orders"
         >
           <div className="flex  grow flex-col">
