@@ -1,98 +1,162 @@
 // ESM
 import { faker } from "@faker-js/faker"
-import { Catalog, CatalogRelation } from "@models"
 
 export function createRandomEntries(): {
-  catalogEntries: Catalog[]
-  catalogRelationEntries: CatalogRelation[]
+  catalogEntries: any[]
+  catalogRelationEntries: any[]
 } {
   const productId = faker.string.uuid()
-  const variantId = faker.string.uuid()
-  const linkProductPriceSetId = faker.string.uuid()
-  const PriceSet = faker.string.uuid()
-  const MoneyAmount = faker.string.uuid()
 
-  const productEntry = new Catalog()
-  productEntry.id = productId
-  productEntry.name = "Product"
-  productEntry.data = {
+  const catalogEntries: any[] = []
+  const catalogRelationEntries: any[] = []
+
+  /**
+   * build product entry
+   */
+
+  const productEntry = {
     id: productId,
-    title: faker.commerce.productName(),
+    name: "Product",
+    data: {
+      id: productId,
+      title: faker.commerce.productName(),
+    },
   }
 
-  const variantEntry = new Catalog()
-  variantEntry.id = variantId
-  variantEntry.name = "ProductVariant"
-  variantEntry.data = {
-    id: variantId,
-    title: faker.commerce.productName(),
-    product_id: productId,
-    sku: faker.commerce.productName(),
+  catalogEntries.push(productEntry)
+
+  /**
+   * build 10 variant entries
+   */
+
+  for (let i = 0; i < 10; i++) {
+    const variantId = faker.string.uuid()
+
+    const variantEntry = {
+      id: variantId,
+      name: "ProductVariant",
+      data: {
+        id: variantId,
+        title: faker.commerce.productName(),
+        product_id: productId,
+        sku: faker.commerce.productName(),
+      },
+    }
+
+    catalogEntries.push(variantEntry)
+
+    /**
+     * build relation between product and variant
+     */
+
+    const productVariantRelationEntry = {
+      parent_id: productId,
+      parent_name: "Product",
+      child_id: variantId,
+      child_name: "ProductVariant",
+    }
+
+    catalogRelationEntries.push(productVariantRelationEntry)
+
+    const priceSetId = faker.string.uuid()
+
+    const linkProductPriceSetId = faker.string.uuid()
+
+    /**
+     * build link entry between variant and price set
+     */
+
+    const linkProductPriceSetEntry = {
+      id: linkProductPriceSetId,
+      name: "LinkProductVariantPriceSet",
+      data: {
+        id: linkProductPriceSetId,
+        variant_id: variantId,
+        price_set_id: priceSetId,
+      },
+    }
+
+    catalogEntries.push(linkProductPriceSetEntry)
+
+    /**
+     * build relation between variant and link entry
+     */
+
+    const variantLinkRelationEntry = {
+      parent_id: variantId,
+      parent_name: "ProductVariant",
+      child_id: linkProductPriceSetId,
+      child_name: "LinkProductVariantPriceSet",
+    }
+
+    catalogRelationEntries.push(variantLinkRelationEntry)
+
+    /**
+     * build price set entry
+     */
+
+    const priceSetEntry = {
+      id: priceSetId,
+      name: "PriceSet",
+      data: {
+        id: priceSetId,
+      },
+    }
+
+    catalogEntries.push(priceSetEntry)
+
+    /**
+     * build relation between link entry and price set
+     */
+
+    const linkPriceSetRelationEntry = {
+      parent_id: linkProductPriceSetId,
+      parent_name: "LinkProductVariantPriceSet",
+      child_id: priceSetId,
+      child_name: "PriceSet",
+    }
+
+    catalogRelationEntries.push(linkPriceSetRelationEntry)
+
+    /**
+     * build 3 money amount entries
+     */
+
+    for (let j = 0; j < 3; j++) {
+      const moneyAmountId = faker.string.uuid()
+
+      /**
+       * build money amount entry
+       */
+
+      const moneyAmountEntry = {
+        id: moneyAmountId,
+        name: "MoneyAmount",
+        data: {
+          id: moneyAmountId,
+          amount: faker.commerce.price({
+            dec: 0,
+          }),
+          currency_code: faker.finance.currencyCode(),
+        },
+      }
+
+      catalogEntries.push(moneyAmountEntry)
+
+      /**
+       * build relation between price set and money amount
+       */
+
+      const moneyAmountPriceSetRelationEntry = {
+        parent_id: priceSetId,
+        parent_name: "PriceSet",
+        child_id: moneyAmountId,
+        child_name: "MoneyAmount",
+      }
+
+      catalogRelationEntries.push(moneyAmountPriceSetRelationEntry)
+    }
   }
-
-  const linkProductPriceSetEntry = new Catalog()
-  linkProductPriceSetEntry.id = linkProductPriceSetId
-  linkProductPriceSetEntry.name = "LinkProductVariantPriceSet"
-  linkProductPriceSetEntry.data = {
-    id: linkProductPriceSetId,
-    variant_id: variantId,
-    price_set_id: PriceSet,
-  }
-
-  const priceSetEntry = new Catalog()
-  priceSetEntry.id = PriceSet
-  priceSetEntry.name = "PriceSet"
-  priceSetEntry.data = {
-    id: PriceSet,
-  }
-
-  const moneyAmountEntry = new Catalog()
-  moneyAmountEntry.id = MoneyAmount
-  moneyAmountEntry.name = "MoneyAmount"
-  moneyAmountEntry.data = {
-    id: MoneyAmount,
-    amount: faker.commerce.price(),
-    currency_code: faker.finance.currencyCode(),
-  }
-
-  const catalogEntries: Catalog[] = [
-    productEntry,
-    variantEntry,
-    linkProductPriceSetEntry,
-    priceSetEntry,
-    moneyAmountEntry,
-  ]
-
-  const productVariantRelationEntry = new CatalogRelation()
-  productVariantRelationEntry.parent_id = productId
-  productVariantRelationEntry.parent_name = "Product"
-  productVariantRelationEntry.child_id = variantId
-  productVariantRelationEntry.child_name = "ProductVariant"
-
-  const variantLinkRelationEntry = new CatalogRelation()
-  variantLinkRelationEntry.parent_id = variantId
-  variantLinkRelationEntry.parent_name = "ProductVariant"
-  variantLinkRelationEntry.child_id = linkProductPriceSetId
-  variantLinkRelationEntry.child_name = "LinkProductVariantPriceSet"
-
-  const linkPriceSetRelationEntry = new CatalogRelation()
-  linkPriceSetRelationEntry.parent_id = linkProductPriceSetId
-  linkPriceSetRelationEntry.parent_name = "LinkProductVariantPriceSet"
-  linkPriceSetRelationEntry.child_id = PriceSet
-  linkPriceSetRelationEntry.child_name = "PriceSet"
-
-  const priceSetMoneyAmountRelationEntry = new CatalogRelation()
-  priceSetMoneyAmountRelationEntry.parent_id = PriceSet
-  priceSetMoneyAmountRelationEntry.parent_name = "PriceSet"
-  priceSetMoneyAmountRelationEntry.child_id = MoneyAmount
-  priceSetMoneyAmountRelationEntry.child_name = "MoneyAmount"
-
-  const catalogRelationEntries: CatalogRelation[] = [
-    productVariantRelationEntry,
-    variantLinkRelationEntry,
-    linkPriceSetRelationEntry,
-    priceSetMoneyAmountRelationEntry,
-  ]
 
   return {
     catalogEntries,
@@ -100,9 +164,9 @@ export function createRandomEntries(): {
   }
 }
 
-export const catalogDataEntries: {
-  catalogEntries: Catalog[]
-  catalogRelationEntries: CatalogRelation[]
+export const searchData: {
+  catalogEntries: any[]
+  catalogRelationEntries: any[]
 }[] = faker.helpers.multiple(createRandomEntries, {
-  count: 10000,
+  count: 1000,
 })

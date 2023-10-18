@@ -1,17 +1,20 @@
 import { MedusaApp, Modules } from "@medusajs/modules-sdk"
-import { EventBusTypes } from "@medusajs/types"
+import { EventBusTypes, ISearchModuleService } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Catalog, CatalogRelation } from "@models"
 import { knex } from "knex"
 import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
 import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
 import { EventBusService, schema } from "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
+import { run } from "../../src/scripts/seed"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import * as console from "console"
+
+jest.setTimeout(300000)
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
-  searchPath: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
   connection: {
     connectionString: DB_URL,
   },
@@ -21,7 +24,6 @@ const searchEngineModuleOptions = {
   defaultAdapterOptions: {
     database: {
       clientUrl: DB_URL,
-      schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
     },
   },
   schema,
@@ -53,7 +55,6 @@ describe("SearchEngineModuleService", function () {
   const moneyAmountId = "money_amount_1"
   const linkId = "link_id_1"
 
-  let manager: SqlEntityManager
   let module: ISearchModuleService
 
   beforeAll(async () => {
@@ -71,14 +72,12 @@ describe("SearchEngineModuleService", function () {
     module = modules.searchService as unknown as ISearchModuleService
   })
 
-  beforeEach(async () => {
-    manager = await beforeEach_()
-  })
-
-  afterEach(afterEach_)
-
   describe("on created or attached events", function () {
+    let manager
+
     beforeEach(async () => {
+      manager = await beforeEach_()
+
       let a = 0
       remoteQueryMock.mockImplementation((query) => {
         if (query.product) {
@@ -321,7 +320,11 @@ describe("SearchEngineModuleService", function () {
   })
 
   describe("on updated events", function () {
+    let manager
+
     beforeEach(async () => {
+      manager = await beforeEach_()
+
       let a = 0
       remoteQueryMock.mockImplementation((query) => {
         if (query.product) {
@@ -391,6 +394,8 @@ describe("SearchEngineModuleService", function () {
       await eventBus.emit(eventDataToEmit)
     })
 
+    afterEach(afterEach_)
+
     it("should update the corresponding catalog entries", async () => {
       expect(remoteQueryMock).toHaveBeenCalledTimes(2)
 
@@ -413,7 +418,11 @@ describe("SearchEngineModuleService", function () {
   })
 
   describe("on deleted events", function () {
+    let manager
+
     beforeEach(async () => {
+      manager = await beforeEach_()
+
       let a = 0
       remoteQueryMock.mockImplementation((query) => {
         if (query.product) {
@@ -566,6 +575,8 @@ describe("SearchEngineModuleService", function () {
       await eventBus.emit(eventDataToEmit)
     })
 
+    afterEach(afterEach_)
+
     it("should consume all deleted events and delete the catalog entries", async () => {
       expect(remoteQueryMock).toHaveBeenCalledTimes(2)
 
@@ -621,6 +632,58 @@ describe("SearchEngineModuleService", function () {
       expect(priceSetMoneyAmountCatalogRelationEntry.child).toEqual(
         moneyAmountCatalogEntry
       )
+    })
+  })
+
+  describe("query", function () {
+    let manager: SqlEntityManager
+
+    beforeEach(async () => {
+      manager = await beforeEach_()
+
+      await run({
+        path: "./src/scripts/seed-data/index.ts",
+        options: searchEngineModuleOptions,
+      })
+    })
+
+    afterEach(afterEach_)
+
+    it("should query the data", async function () {
+      const catalogEntryCount = await manager.count(Catalog, {})
+      const catalogRelationEntryCount = await manager.count(CatalogRelation, {})
+
+      /*expect(catalogEntryCount).toBe(61000)
+      expect(catalogRelationEntryCount).toBe(60000)*/
+
+      const moneyAmountToSearchFor = (await manager.findOne(Catalog, {
+        name: "MoneyAmount",
+      })) as Catalog
+
+      console.time("query")
+      const [result, count] = await module.queryAndCount(
+        {
+          select: {
+            product: {
+              variants: {
+                money_amounts: true,
+              },
+            },
+          },
+          where: {
+            "product.variants.money_amounts.amount":
+              moneyAmountToSearchFor.data.amount,
+            "product.variants.money_amounts.currency_code":
+              moneyAmountToSearchFor.data.currency_code,
+          },
+        },
+        {
+          skip: 0,
+        }
+      )
+      console.timeEnd("query")
+
+      expect(count).toEqual(1)
     })
   })
 })

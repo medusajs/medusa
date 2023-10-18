@@ -57,16 +57,32 @@ export async function run({
 
 async function createSearchData(
   manager: SqlEntityManager,
-  searchData: any[]
-): Promise<SearchModels.Catalog[]> {
-  const catalog: SearchModels.Catalog[] = []
+  searchData: {
+    catalogEntries: SearchModels.Catalog[]
+    catalogRelationEntries: SearchModels.CatalogRelation[]
+  }[]
+): Promise<void> {
+  const catalogEntries: SearchModels.Catalog[] = []
+  const catalogRelationEntries: SearchModels.CatalogRelation[] = []
 
-  for (const searchItem of searchData) {
-    const searchObj = manager.create(SearchModels.Catalog, searchItem)
-    catalog.push(searchObj)
+  const catalogRepository = manager.getRepository(SearchModels.Catalog)
+  const catalogRelationRepository = manager.getRepository(
+    SearchModels.CatalogRelation
+  )
+
+  for (const searchItems of searchData) {
+    catalogEntries.push(
+      ...searchItems.catalogEntries.map((item) =>
+        catalogRepository.create(item)
+      )
+    )
+    catalogRelationEntries.push(
+      ...searchItems.catalogRelationEntries.map((item) =>
+        catalogRelationRepository.create(item)
+      )
+    )
   }
 
-  await manager.persistAndFlush(catalog)
-
-  return catalog
+  await manager.persistAndFlush(catalogEntries)
+  await manager.persistAndFlush(catalogRelationEntries)
 }
