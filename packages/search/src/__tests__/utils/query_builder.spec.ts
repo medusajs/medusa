@@ -14,6 +14,7 @@ describe("Catalog Query Builder", function () {
 
   it("Should generate a SQL query with multiple entities, complex WHERE clause and ORDER BY ", async function () {
     const qb = new QueryBuilder({
+      entityMap: {},
       schema: {
         _schemaPropertiesMap: {
           product: {
@@ -136,6 +137,7 @@ describe("Catalog Query Builder", function () {
   it("Should create a simple object from a resultset", async function () {
     const qb = new QueryBuilder({
       schema: {} as any,
+      entityMap: {},
       knex,
       selector: {
         select: {
@@ -179,6 +181,7 @@ describe("Catalog Query Builder", function () {
 
   it("Should create a nested object from a resultset", async function () {
     const qb = new QueryBuilder({
+      entityMap: {},
       schema: {} as any,
       knex,
       selector: {
@@ -246,6 +249,7 @@ describe("Catalog Query Builder", function () {
 
   it("Should create a complex nested object from a resultset including repeated references", async function () {
     const qb = new QueryBuilder({
+      entityMap: {},
       schema: {} as any,
       knex,
       selector: {

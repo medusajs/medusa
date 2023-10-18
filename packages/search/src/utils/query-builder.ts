@@ -11,6 +11,7 @@ import {
 
 export class QueryBuilder {
   private readonly structure: Select
+  private readonly entityMap: Record<string, any>
   private readonly knex: Knex
   private readonly selector: QueryFormat
   private readonly options?: QueryOptions
@@ -18,11 +19,13 @@ export class QueryBuilder {
 
   constructor(args: {
     schema: SchemaObjectRepresentation
+    entityMap: Record<string, any>
     knex: Knex
     selector: QueryFormat
     options?: QueryOptions
   }) {
     this.schema = args.schema
+    this.entityMap = args.entityMap
     this.selector = args.selector
     this.options = args.options
     this.knex = args.knex
@@ -39,6 +42,32 @@ export class QueryBuilder {
     }
 
     return this.schema._schemaPropertiesMap[path]
+  }
+
+  private getPostgresCastType(path, field) {
+    const graphqlToPostgresTypeMap = {
+      Int: "::integer",
+      Float: "::double precision",
+      String: "::text",
+      Boolean: "::boolean",
+      ID: "::text",
+      Date: "::timestamp",
+      Time: "::time",
+    }
+
+    const entity = this.getEntity(path)?.ref?.entity
+    const fieldRef = this.entityMap[entity]._fields[field]
+    if (!fieldRef) {
+      return ""
+    }
+
+    let currentType = fieldRef.type
+    while (currentType.ofType) {
+      currentType = currentType.ofType
+    }
+
+    const graphqlType = currentType.name
+    return graphqlToPostgresTypeMap[graphqlType] ?? ""
   }
 
   private parseWhere(
@@ -91,18 +120,12 @@ export class QueryBuilder {
             const path = key.split(".")
             const field = path.pop()
             const attr = path.join(".")
+            const castType = this.getPostgresCastType(attr, field)
 
-            if (typeof subValue === "number") {
-              builder.whereRaw(
-                `COALESCE(NULLIF(${aliasMapping[attr]}.data->>?, ''), '0')::numeric ${operator} ?`,
-                [field, subValue]
-              )
-            } else {
-              builder.whereRaw(`${aliasMapping[attr]}.data->>? ${operator} ?`, [
-                field,
-                subValue,
-              ])
-            }
+            builder.whereRaw(
+              `(${aliasMapping[attr]}.data->>?)${castType} ${operator} ?`,
+              [field, subValue]
+            )
           } else {
             throw new Error(`Unsupported operator: ${subKey}`)
           }
@@ -113,29 +136,17 @@ export class QueryBuilder {
         const attr = path.join(".")
 
         if (Array.isArray(value)) {
-          if (typeof value[0] === "number") {
-            builder.whereRaw(
-              `COALESCE(NULLIF(${aliasMapping[attr]}.data->>?, ''), '0')::numeric IN (?)`,
-              [field, value]
-            )
-          } else {
-            builder.whereRaw(`${aliasMapping[attr]}.data->>? IN (?)`, [
-              field,
-              value,
-            ])
-          }
+          const castType = this.getPostgresCastType(attr, field)
+          builder.whereRaw(
+            `(${aliasMapping[attr]}.data->>?)${castType} IN (?)`,
+            [field, value]
+          )
         } else {
-          if (typeof value === "number") {
-            builder.whereRaw(
-              `COALESCE(NULLIF(${aliasMapping[attr]}.data->>?, ''), '0')::numeric = ?`,
-              [field, value]
-            )
-          } else {
-            builder.whereRaw(`${aliasMapping[attr]}.data->>? = ?`, [
-              field,
-              value,
-            ])
-          }
+          const castType = this.getPostgresCastType(attr, field)
+          builder.whereRaw(`(${aliasMapping[attr]}.data->>?)${castType} = ?`, [
+            field,
+            value,
+          ])
         }
       }
     })

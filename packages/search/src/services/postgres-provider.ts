@@ -40,6 +40,7 @@ export class PostgresProvider {
 
   protected container_: InjectedDependencies
   protected readonly schemaObjectRepresentation_: SchemaObjectRepresentation
+  protected readonly schemaEntitiesMap_: Record<string, any>
   protected readonly moduleOptions_: SearchModuleOptions
 
   protected get remoteQuery_(): (
@@ -51,13 +52,17 @@ export class PostgresProvider {
 
   constructor(
     container,
-    options: { schemaObjectRepresentation: SchemaObjectRepresentation },
+    options: {
+      schemaObjectRepresentation: SchemaObjectRepresentation
+      entityMap: Record<string, any>
+    },
     moduleOptions: SearchModuleOptions
   ) {
     this.container_ = container
     this.moduleOptions_ = moduleOptions
 
     this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
+    this.schemaEntitiesMap_ = options.entityMap
   }
 
   protected static parseData<
@@ -96,6 +101,7 @@ export class PostgresProvider {
 
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
+      entityMap: this.schemaEntitiesMap_,
       knex: connection.getKnex(),
       selector: selection,
       options,
@@ -134,6 +140,7 @@ export class PostgresProvider {
 
     const qbCount = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
+      entityMap: this.schemaEntitiesMap_,
       knex: connection.getKnex(),
       selector: selection,
       options,
@@ -152,6 +159,7 @@ export class PostgresProvider {
 
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
+      entityMap: this.schemaEntitiesMap_,
       knex: connection.getKnex(),
       selector: selection,
       options,
