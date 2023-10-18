@@ -225,7 +225,7 @@ export interface FilterableProductCategoryProps
 export interface CreateProductCollectionDTO {
   title: string
   handle?: string
-  products?: string[]
+  product_ids?: string[]
   metadata?: Record<string, unknown>
 }
 
@@ -234,7 +234,7 @@ export interface UpdateProductCollectionDTO {
   value?: string
   title?: string
   handle?: string
-  products?: string[]
+  product_ids?: string[]
   metadata?: Record<string, unknown>
 }
 

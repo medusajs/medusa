@@ -330,11 +330,12 @@ describe("ProductModuleService product collections", () => {
       await service.updateCollections([
         {
           id: collectionId,
-          products: [productOne.id, productTwo.id],
+          product_ids: [productOne.id, productTwo.id],
         },
       ])
 
       const productCollection = await service.retrieveCollection(collectionId, {
+        select: ["products.id"],
         relations: ["products"],
       })
 
@@ -392,7 +393,7 @@ describe("ProductModuleService product collections", () => {
         {
           title: "New Collection with products",
           handle: "new-collection-with-products",
-          products: [productOne.id, productTwo.id],
+          product_ids: [productOne.id, productTwo.id],
         },
       ])
 
@@ -401,6 +402,7 @@ describe("ProductModuleService product collections", () => {
           handle: "new-collection-with-products",
         },
         {
+          select: ["title", "handle", "products.id"],
           relations: ["products"],
         }
       )
