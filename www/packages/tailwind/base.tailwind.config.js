@@ -675,6 +675,9 @@ module.exports = {
           ".animate-fast": {
             animationDuration: "300ms",
           },
+          ".animate-fastest": {
+            animationDuration: "150ms",
+          },
           ".clip": {
             clipPath: "inset(0)",
           },
