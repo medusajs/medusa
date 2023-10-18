@@ -27,11 +27,11 @@ post:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/admin_token/post.js
+        $ref: ../code_samples/JavaScript/admin_auth_token/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/admin_token/post.sh
+        $ref: ../code_samples/Shell/admin_auth_token/post.sh
   tags:
     - Auth
   responses:

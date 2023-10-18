@@ -606,9 +606,15 @@ medusa.products.search({
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
-fetch(`<BACKEND_URL>/store/products/search?q=Shirt`, {
+fetch(`<BACKEND_URL>/store/products/search`, {
   credentials: "include",
   method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    q: "Shirt"
+  })
 })
 .then((response) => response.json())
 .then(({ hits }) => {
@@ -620,7 +626,11 @@ fetch(`<BACKEND_URL>/store/products/search?q=Shirt`, {
 <TabItem value="curl" label="cURL">
 
 ```bash
-curl -L -X POST '<BACKEND_URL>/store/products/search?q=Shirt'
+curl -L -X POST '<BACKEND_URL>/store/products/search?q=Shirt' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "q": "Shirt"
+}'
 ```
 
 </TabItem>
