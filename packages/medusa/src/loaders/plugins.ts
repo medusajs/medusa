@@ -39,6 +39,7 @@ import { EntitySchema } from "typeorm"
 import { MiddlewareService } from "../services"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import logger from "./logger"
+import { RoutesLoader } from "./helpers/routing"
 
 type Options = {
   rootDirectory: string
@@ -83,7 +84,14 @@ export default async ({
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
       await registerMedusaApi(pluginDetails, container)
-      registerApi(pluginDetails, app, rootDirectory, container, activityId)
+      await registerApi(
+        pluginDetails,
+        app,
+        rootDirectory,
+        container,
+        configModule,
+        activityId
+      )
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
     })
@@ -332,13 +340,14 @@ function registerCoreRouters(
 /**
  * Registers the plugin's api routes.
  */
-function registerApi(
+async function registerApi(
   pluginDetails: PluginDetails,
   app: Express,
   rootDirectory = "",
   container: MedusaContainer,
+  configmodule: ConfigModule,
   activityId: string
-): Express {
+): Promise<Express> {
   const logger = container.resolve<Logger>("logger")
   const projectName =
     pluginDetails.name === MEDUSA_PROJECT_NAME
@@ -346,16 +355,42 @@ function registerApi(
       : `${pluginDetails.name}`
 
   logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
+
   try {
-    const routes = require(`${pluginDetails.resolve}/api`).default
-    if (routes) {
-      app.use("/", routes(rootDirectory, pluginDetails.options))
+    /**
+     * Register the plugin's api routes using the file based routing.
+     */
+    await new RoutesLoader({
+      app,
+      rootDir: `${pluginDetails.resolve}/api`,
+      activityId: activityId,
+      configModule: configmodule,
+    }).load()
+
+    /**
+     * For backwards compatibility we also support loading routes from
+     * `/api/index` if the file exists.
+     */
+    let apiFolderExists = true
+
+    try {
+      require.resolve(`${pluginDetails.resolve}/api`)
+    } catch (e) {
+      apiFolderExists = false
     }
+
+    if (apiFolderExists) {
+      const routes = require(`${pluginDetails.resolve}/api`).default
+      if (routes) {
+        app.use("/", routes(rootDirectory, pluginDetails.options))
+      }
+    }
+
     return app
   } catch (err) {
     if (err.code !== "MODULE_NOT_FOUND") {
       logger.warn(
-        `An error occured while registering endpoints in ${projectName}`
+        `An error occurred while registering endpoints in ${projectName}`
       )
 
       if (err.stack) {
