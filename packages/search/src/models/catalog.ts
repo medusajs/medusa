@@ -2,6 +2,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Index,
   ManyToMany,
   OptionalProps,
   PrimaryKey,
@@ -24,6 +25,7 @@ export class Catalog {
 
   [PrimaryKeyType]?: [string, string]
 
+  @Index({ name: "IDX_catalog_data_gin", type: "GIN" })
   @Property({ columnType: "jsonb", default: "{}" })
   data: Record<string, unknown>
 

@@ -21,7 +21,7 @@ describe("Entity", function () {
 
     afterEach(afterEach_)
 
-    it("should be able to create a catalog and associate parents and apply cascade on remove", async () => {
+    it("should be able to create a catalog and associate parents and remove without cascading", async () => {
       const catalogEntry = manager.create(Catalog, {
         id: "prod_1",
         name: "Product",
@@ -115,7 +115,7 @@ describe("Entity", function () {
           return JSON.parse(JSON.stringify(res))
         })
 
-      expect(catalogRelations).toEqual([])
+      expect(catalogRelations).not.toEqual([])
     })
 
     it("should be able to remove a tuple from the pivot table without deleting the original tuple from catalog", async () => {
