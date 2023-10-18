@@ -1,12 +1,15 @@
 import { MoneyAmount, PriceList, Region } from "@medusajs/medusa"
-import path from "path"
-
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import setupServer from "../../../../environment-helpers/setup-server"
-import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { simpleProductFactory } from "../../../../factories"
+import { setPort, useApi } from "../../../../environment-helpers/use-api"
+import { simpleDiscountFactory, simpleProductFactory } from "../../../../factories"
+
+import { AllocationType } from "@medusajs/medusa"
+import { AxiosInstance } from "axios"
+import { DiscountRuleType } from "@medusajs/medusa"
 import { ProductVariantMoneyAmount } from "@medusajs/medusa"
+import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import path from "path"
+import setupServer from "../../../../environment-helpers/setup-server"
 
 jest.setTimeout(30000)
 
@@ -77,7 +80,7 @@ describe("/store/carts", () => {
     })
 
     it("should create a cart", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
       const response = await api.post("/store/carts")
 
       expect(response.status).toEqual(200)
@@ -87,7 +90,7 @@ describe("/store/carts", () => {
     })
 
     it("should fail to create a cart when no region exist", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       await dbConnection.manager.query(
         `UPDATE "country"
@@ -139,7 +142,7 @@ describe("/store/carts", () => {
         money_amount_id: ma_sale_1.id,
       })
 
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const response = await api
         .post("/store/carts", {
@@ -154,7 +157,6 @@ describe("/store/carts", () => {
             },
           ],
         })
-        .catch((err) => console.log(err))
 
       response.data.cart.items.sort((a, b) => a.quantity - b.quantity)
 
@@ -178,8 +180,55 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
     })
 
+    it("should apply discount to cart", async () => {
+      const api = useApi()! as AxiosInstance
+      
+      await simpleDiscountFactory(dbConnection, {
+        code: 'test-discount',
+        regions: ['region'],
+        rule: { 
+          allocation: AllocationType.TOTAL, 
+          type: DiscountRuleType.PERCENTAGE,
+          value: 50,
+        }
+      })
+
+      const response = await api
+        .post("/store/carts", {
+          items: [
+            {
+              variant_id: prod1.variants[0].id,
+              quantity: 1,
+            },
+            {
+              variant_id: prodSale.variants[0].id,
+              quantity: 2,
+            },
+          ],
+        })
+
+      const cartId = response.data.cart.id
+
+      const cartResult = await api.post(`/store/carts/${cartId}`, { 
+        discounts: [ { code: 'test-discount' }]
+      })
+
+      expect(cartResult.data.cart.items).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+          "subtotal": 100,
+          "discount_total": 50,
+          "total": 50,
+        }), 
+        expect.objectContaining({
+          "subtotal": 2000,
+          "discount_total": 1000,
+          "total": 1000,
+        })
+      ]))
+    })
+
     it("should create a cart with country", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
       const response = await api.post("/store/carts", {
         country_code: "us",
       })
@@ -192,7 +241,7 @@ describe("/store/carts", () => {
     })
 
     it("should create a cart with context", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const response = await api.post("/store/carts", {
         context: {

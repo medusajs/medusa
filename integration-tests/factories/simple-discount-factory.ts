@@ -4,18 +4,19 @@ import {
   DiscountRule,
   DiscountRuleType,
 } from "@medusajs/medusa"
-import faker from "faker"
-import { DataSource } from "typeorm"
 import {
   DiscountConditionFactoryData,
   simpleDiscountConditionFactory,
 } from "./simple-discount-condition-factory"
 
+import { DataSource } from "typeorm"
+import faker from "faker"
+
 export type DiscountRuleFactoryData = {
   type?: DiscountRuleType
   value?: number
   allocation?: AllocationType
-  conditions: DiscountConditionFactoryData[]
+  conditions?: DiscountConditionFactoryData[]
 }
 
 export type DiscountFactoryData = {
