@@ -39,8 +39,8 @@ export interface CreateMoneyAmountDTO {
   currency_code: string
   currency?: CreateCurrencyDTO
   amount?: number
-  min_quantity?: number
-  max_quantity?: number
+  min_quantity?: number | null
+  max_quantity?: number | null
 }
 
 /**

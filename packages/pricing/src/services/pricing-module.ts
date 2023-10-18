@@ -40,6 +40,7 @@ import {
   MedusaContext,
   MedusaError,
   groupBy,
+  removeNullish,
   shouldForceTransaction,
 } from "@medusajs/utils"
 
@@ -312,7 +313,9 @@ export default class PricingModuleService<
               sharedContext
             )
 
-            const numberOfRules = ma.rules ? Object.entries(ma.rules).length : 0
+            const cleanRules = ma.rules ? removeNullish(ma.rules) : {}
+
+            const numberOfRules = Object.entries(cleanRules).length
 
             const [priceSetMoneyAmount] =
               await this.priceSetMoneyAmountService_.create(
@@ -328,7 +331,7 @@ export default class PricingModuleService<
               )
 
             if (numberOfRules) {
-              const priceSetRulesCreate = Object.entries(ma.rules).map(
+              const priceSetRulesCreate = Object.entries(cleanRules).map(
                 ([k, v]) => ({
                   price_set_money_amount: priceSetMoneyAmount,
                   rule_type: ruleTypeMap.get(k),

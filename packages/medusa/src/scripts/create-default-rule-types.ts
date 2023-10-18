@@ -6,7 +6,7 @@ import loaders from "../loaders"
 
 dotenv.config()
 
-const createDefaultRuleTypes = async (container: AwilixContainer) => {
+export const createDefaultRuleTypes = async (container: AwilixContainer) => {
   const pricingModuleService: IPricingModuleService = container.resolve(
     "pricingModuleService"
   )
