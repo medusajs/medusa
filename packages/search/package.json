@@ -1,7 +1,7 @@
 {
-  "name": "@medusajs/catalog",
+  "name": "@medusajs/search",
   "version": "0.0.1",
-  "description": "Medusa Catalog module",
+  "description": "Medusa Search module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

@@ -1,5 +1,5 @@
 import { MedusaApp, Modules } from "@medusajs/modules-sdk"
-import { EventBusTypes, ICatalogModuleService } from "@medusajs/types"
+import { EventBusTypes } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Catalog, CatalogRelation } from "@models"
@@ -54,13 +54,13 @@ describe("SearchEngineModuleService", function () {
   const linkId = "link_id_1"
 
   let manager: SqlEntityManager
-  let module: ICatalogModuleService
+  let module: ISearchModuleService
 
   beforeAll(async () => {
     const { modules } = await MedusaApp({
       modulesConfig: {
         ...modulesConfig,
-        [Modules.CATALOG]: {
+        [Modules.SEARCH]: {
           options: searchEngineModuleOptions,
         },
       },
@@ -68,7 +68,7 @@ describe("SearchEngineModuleService", function () {
       injectedDependencies,
     })
 
-    module = modules.catalogService as unknown as ICatalogModuleService
+    module = modules.searchService as unknown as ISearchModuleService
   })
 
   beforeEach(async () => {

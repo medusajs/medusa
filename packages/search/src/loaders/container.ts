@@ -1,21 +1,21 @@
-import { CatalogModuleService } from "@services"
+import { SearchModuleService } from "@services"
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import { asClass, asValue } from "awilix"
-import { CatalogModuleOptions } from "../types"
+import { SearchModuleOptions } from "../types"
 import { PostgresProvider } from "../services/postgres-provider"
 
 export default async ({
   container,
   options,
-}: LoaderOptions<CatalogModuleOptions>): Promise<void> => {
+}: LoaderOptions<SearchModuleOptions>): Promise<void> => {
   container.register({
-    catalogModuleService: asClass(CatalogModuleService).singleton(),
+    searchModuleService: asClass(SearchModuleService).singleton(),
   })
 
   if (!options?.customAdapter && !options?.defaultAdapterOptions) {
     throw new Error(
-      "Catalog module error, either customAdapter or defaultAdapterOptions must be provided. None have been provided."
+      "Search module error, either customAdapter or defaultAdapterOptions must be provided. None have been provided."
     )
   }
 

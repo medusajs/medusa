@@ -7,13 +7,13 @@ import { remoteQueryObjectFromString } from "@medusajs/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
 import { Catalog, CatalogRelation } from "@models"
 import {
-  CatalogModuleOptions,
   EntityNameModuleConfigMap,
   QueryFormat,
   QueryOptions,
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
   SchemaPropertiesMap,
+  SearchModuleOptions,
   StorageProvider,
 } from "../types"
 import { QueryBuilder } from "../utils"
@@ -40,7 +40,7 @@ export class PostgresProvider {
 
   protected container_: InjectedDependencies
   protected readonly schemaObjectRepresentation_: SchemaObjectRepresentation
-  protected readonly moduleOptions_: CatalogModuleOptions
+  protected readonly moduleOptions_: SearchModuleOptions
 
   protected get remoteQuery_(): (
     query: string | RemoteJoinerQuery | object,
@@ -52,7 +52,7 @@ export class PostgresProvider {
   constructor(
     container,
     options: { schemaObjectRepresentation: SchemaObjectRepresentation },
-    moduleOptions: CatalogModuleOptions
+    moduleOptions: SearchModuleOptions
   ) {
     this.container_ = container
     this.moduleOptions_ = moduleOptions
@@ -266,7 +266,7 @@ export class PostgresProvider {
 
           if (!parentSchemaObjectRepresentation) {
             throw new Error(
-              `CatalogModule error, unable to find the parent entity representation from the alias ${parentAlias}.`
+              `SearchModule error, unable to find the parent entity representation from the alias ${parentAlias}.`
             )
           }
 
@@ -422,7 +422,7 @@ export class PostgresProvider {
 
       if (!parentEntityName) {
         throw new Error(
-          `CatalogModule error, unable to handle attach event for ${entity}. The parent entity name could not be found using the linkable keys from the module ${parentServiceName}.`
+          `SearchModule error, unable to handle attach event for ${entity}. The parent entity name could not be found using the linkable keys from the module ${parentServiceName}.`
         )
       }
 
@@ -445,7 +445,7 @@ export class PostgresProvider {
 
       if (!childEntityName) {
         throw new Error(
-          `CatalogModule error, unable to handle attach event for ${entity}. The child entity name could not be found using the linkable keys from the module ${childServiceName}.`
+          `SearchModule error, unable to handle attach event for ${entity}. The child entity name could not be found using the linkable keys from the module ${childServiceName}.`
         )
       }
 

@@ -7,7 +7,7 @@ import {
 /**
  * Represents the module options that can be provided
  */
-export interface CatalogModuleOptions {
+export interface SearchModuleOptions {
   customAdapter?: {
     constructor: new (...args: any[]) => any
     options: any
@@ -114,7 +114,7 @@ export interface StorageProvider {
     storageProviderOptions: unknown & {
       schemaObjectRepresentation: SchemaObjectRepresentation
     },
-    moduleOptions: CatalogModuleOptions
+    moduleOptions: SearchModuleOptions
   ): StorageProvider
 
   query(...args): unknown

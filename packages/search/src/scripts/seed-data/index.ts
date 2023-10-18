@@ -98,4 +98,4 @@ const productData2 = [
   },
 ]
 
-export const catalogData: any[] = [...productData1, ...productData2]
+export const searchData: any[] = [...productData1, ...productData2]

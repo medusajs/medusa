@@ -1,14 +1,14 @@
 import {
-  CatalogTypes,
   IEventBusModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   RemoteJoinerQuery,
+  SearchModuleTypes,
 } from "@medusajs/types"
 import {
-  CatalogModuleOptions,
   SchemaObjectRepresentation,
   schemaObjectRepresentationPropertiesToOmit,
+  SearchModuleOptions,
   StorageProvider,
 } from "../types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
@@ -24,11 +24,11 @@ type InjectedDependencies = {
   ) => Promise<any>
 }
 
-export default class CatalogModuleService
-  implements CatalogTypes.ICatalogModuleService
+export default class SearchModuleService
+  implements SearchModuleTypes.ISearchModuleService
 {
   private readonly container_: InjectedDependencies
-  private readonly moduleOptions_: CatalogModuleOptions
+  private readonly moduleOptions_: SearchModuleOptions
 
   protected readonly eventBusModuleService_: IEventBusModuleService
 
@@ -58,7 +58,7 @@ export default class CatalogModuleService
   ) {
     this.container_ = container
     this.moduleOptions_ = (moduleDeclaration.options ??
-      moduleDeclaration) as unknown as CatalogModuleOptions
+      moduleDeclaration) as unknown as SearchModuleOptions
 
     const {
       eventBusModuleService,
@@ -72,13 +72,13 @@ export default class CatalogModuleService
 
     if (!this.eventBusModuleService_) {
       throw new Error(
-        "EventBusModuleService is required for the CatalogModule to work"
+        "EventBusModuleService is required for the SearchModule to work"
       )
     }
   }
 
   __hooks = {
-    onApplicationStart(this: CatalogModuleService) {
+    onApplicationStart(this: SearchModuleService) {
       return this.onApplicationStart_()
     },
   }

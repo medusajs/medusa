@@ -1,15 +1,15 @@
 import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
-import * as CatalogModels from "../models"
-import { CatalogModuleOptions } from "../types"
+import * as SearchModels from "../models"
+import { SearchModuleOptions } from "../types"
 
 export default async (
-  { options, container, logger }: LoaderOptions<CatalogModuleOptions>,
+  { options, container, logger }: LoaderOptions<SearchModuleOptions>,
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
   if (options?.defaultAdapterOptions) {
-    const entities = Object.values(CatalogModels) as unknown as EntitySchema[]
+    const entities = Object.values(SearchModels) as unknown as EntitySchema[]
     const pathToMigrations = __dirname + "/../migrations"
 
     await ModulesSdkUtils.mikroOrmConnectionLoader({

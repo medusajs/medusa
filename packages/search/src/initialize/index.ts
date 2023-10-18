@@ -8,12 +8,12 @@ import {
 import { IEventBusModuleService, RemoteJoinerQuery } from "@medusajs/types"
 
 import { moduleDefinition } from "../module-definition"
-import { CatalogModuleOptions } from "../types"
-import { CatalogModuleService } from "@services"
+import { SearchModuleOptions } from "../types"
+import { SearchModuleService } from "@services"
 
 export const initialize = async (
   options:
-    | CatalogModuleOptions
+    | SearchModuleOptions
     | ExternalModuleDeclaration
     | InternalModuleDeclaration,
   injectedDependencies: {
@@ -23,24 +23,24 @@ export const initialize = async (
       variables?: Record<string, unknown>
     ) => Promise<any>
   }
-): Promise<CatalogModuleService> => {
+): Promise<SearchModuleService> => {
   if (!injectedDependencies?.eventBusModuleService) {
     throw new Error(
-      "CatalogModule is missing the eventBusModuleService dependency to work"
+      "SearchModule is missing the eventBusModuleService dependency to work"
     )
   }
 
   if (!injectedDependencies?.remoteQuery) {
     throw new Error(
-      "CatalogModule is missing the remoteQuery dependency to work"
+      "SearchModule is missing the remoteQuery dependency to work"
     )
   }
 
-  const serviceKey = Modules.CATALOG
+  const serviceKey = Modules.SEARCH
 
-  const loaded = await MedusaModule.bootstrap<CatalogModuleService>(
+  const loaded = await MedusaModule.bootstrap<SearchModuleService>(
     serviceKey,
-    MODULE_PACKAGE_NAMES[Modules.CATALOG],
+    MODULE_PACKAGE_NAMES[Modules.SEARCH],
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
     moduleDefinition,
     injectedDependencies

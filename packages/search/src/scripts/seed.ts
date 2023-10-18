@@ -2,24 +2,23 @@ import { LoaderOptions, Logger } from "@medusajs/types"
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import * as CatalogModels from "@models"
-import { Catalog } from "@models"
+import * as SearchModels from "@models"
 import { EOL } from "os"
 import { resolve } from "path"
-import { CatalogModuleOptions } from "../types"
+import { SearchModuleOptions } from "../types"
 
 export async function run({
   options,
   logger,
   path,
-}: Partial<Pick<LoaderOptions<CatalogModuleOptions>, "options" | "logger">> & {
+}: Partial<Pick<LoaderOptions<SearchModuleOptions>, "options" | "logger">> & {
   path: string
 }) {
   logger?.info(`Loading seed data from ${path}...`)
-  const { catalogData } = await import(resolve(process.cwd(), path)).catch(
+  const { searchData } = await import(resolve(process.cwd(), path)).catch(
     (e) => {
       logger?.warn(
-        `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following catalogData.${EOL}${e}`
+        `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following searchData.${EOL}${e}`
       )
       logger?.warn(
         `Fallback to the default seed data from ${__dirname}/seed-data/index.ts`
@@ -31,10 +30,10 @@ export async function run({
   logger ??= console as unknown as Logger
 
   const dbData = ModulesSdkUtils.loadDatabaseConfig(
-    "catalog",
+    "search",
     options?.defaultAdapterOptions
   )!
-  const entities = Object.values(CatalogModels) as unknown as EntitySchema[]
+  const entities = Object.values(SearchModels) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 
   const orm = await DALUtils.mikroOrmCreateConnection(
@@ -45,8 +44,8 @@ export async function run({
   const manager = orm.em.fork()
 
   try {
-    logger?.info("Inserting catalog data...")
-    await createCatalogData(manager, catalogData)
+    logger?.info("Inserting search data...")
+    await createSearchData(manager, searchData)
   } catch (e) {
     logger?.error(
       `Failed to insert the seed data in the PostgreSQL database ${dbData.clientUrl}.${EOL}${e}`
@@ -56,15 +55,15 @@ export async function run({
   await orm.close(true)
 }
 
-async function createCatalogData(
+async function createSearchData(
   manager: SqlEntityManager,
-  catalogData: any[]
-): Promise<Catalog[]> {
-  const catalog: Catalog[] = []
+  searchData: any[]
+): Promise<SearchModels.Catalog[]> {
+  const catalog: SearchModels.Catalog[] = []
 
-  for (const catalogItem of catalogData) {
-    const catalogObj = manager.create(Catalog, catalogItem)
-    catalog.push(catalogObj)
+  for (const searchItem of searchData) {
+    const searchObj = manager.create(SearchModels.Catalog, searchItem)
+    catalog.push(searchObj)
   }
 
   await manager.persistAndFlush(catalog)

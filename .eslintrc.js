@@ -98,6 +98,7 @@ module.exports = {
           "./packages/admin-ui/tsconfig.json",
           "./packages/create-medusa-app/tsconfig.json",
           "./packages/product/tsconfig.json",
+          "./packages/search/tsconfig.json",
         ],
       },
       rules: {
