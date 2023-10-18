@@ -458,6 +458,7 @@ export class QueryBuilder {
     const rootKey = this.getStructureKeys(structure)[0]
 
     const maps: { [key: string]: { [id: string]: Record<string, any> } } = {}
+    const isListMap: { [path: string]: boolean } = {}
     const referenceMap: { [key: string]: any } = {}
     const pathDetails: {
       [key: string]: { property: string; parents: string[]; parentPath: string }
@@ -471,6 +472,11 @@ export class QueryBuilder {
         const property = path[path.length - 1]
         const parents = path.slice(0, -1)
         const parentPath = parents.join(".")
+
+        isListMap[currentPath] = !!this.getEntity(currentPath).ref.parents.find(
+          (p) => p.targetProp === property
+        )?.isList
+
         pathDetails[currentPath] = { property, parents, parentPath }
       }
 
@@ -523,11 +529,17 @@ export class QueryBuilder {
           continue
         }
 
-        // TODO: check if relation is 1-1 or 1-n to decide if it should be an array
-        parentObj[property] ??= []
+        const isList = isListMap[parentPath + "." + property]
+        if (isList) {
+          parentObj[property] ??= []
+        }
 
         if (maps[path][id] !== undefined) {
-          parentObj[property].push(maps[path][id])
+          if (isList) {
+            parentObj[property].push(maps[path][id])
+          } else {
+            parentObj[property] = maps[path][id]
+          }
         }
 
         referenceMap[referenceKey] = true
