@@ -29,7 +29,7 @@
     "watch": "tsc --watch"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.12.0"
+    "@medusajs/medusa": "workspace:^"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.400.0",

@@ -6384,7 +6384,7 @@ __metadata:
     express: 4.18.2
     fs-extra: 11.1.0
     lodash: ^4.17.21
-    medusa-core-utils: 1.2.0
+    medusa-core-utils: "workspace:^"
     rollup: 3.20.7
     rollup-plugin-esbuild: 5.0.0
     ts-dedent: ^2.2.0
@@ -6671,7 +6671,7 @@ __metadata:
     jsonwebtoken: ^9.0.0
     lodash: ^4.17.21
     medusa-core-utils: "workspace:^"
-    medusa-interfaces: ^1.3.7
+    medusa-interfaces: "workspace:^"
     medusa-telemetry: "workspace:^"
     medusa-test-utils: "workspace:^"
     morgan: ^1.9.1
@@ -6805,7 +6805,7 @@ __metadata:
     dotenv: ^16.1.4
     jest: ^29.6.3
     knex: 2.4.2
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: "workspace:^"
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
@@ -6824,7 +6824,7 @@ __metadata:
   dependencies:
     "@medusajs/modules-sdk": "workspace:^"
     "@medusajs/types": "workspace:^"
-    "@medusajs/utils": ^1.10.3
+    "@medusajs/utils": "workspace:^"
     "@mikro-orm/cli": 5.7.12
     "@mikro-orm/core": 5.7.12
     "@mikro-orm/migrations": 5.7.12
@@ -6867,7 +6867,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.11.2, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -6932,7 +6932,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/utils@^1.10.3, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -6959,7 +6959,7 @@ __metadata:
   dependencies:
     "@medusajs/modules-sdk": "workspace:^"
     "@medusajs/orchestration": "workspace:^"
-    "@medusajs/types": ^1.11.2
+    "@medusajs/types": "workspace:^"
     "@medusajs/utils": "workspace:^"
     awilix: ^8.0.1
     cross-env: ^5.2.1
@@ -17007,7 +17007,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-medusa-package@*, babel-preset-medusa-package@^1.0.0, babel-preset-medusa-package@^1.1.19, babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package":
+"babel-preset-medusa-package@*, babel-preset-medusa-package@workspace:^, babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package":
   version: 0.0.0-use.local
   resolution: "babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package"
   dependencies:
@@ -19521,7 +19521,7 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     glob: ^7.1.6
     inquirer: ^9.2.2
-    medusa-telemetry: ^0.0.17
+    medusa-telemetry: "workspace:^"
     nanoid: ^4.0.2
     node-emoji: ^2.0.2
     node-fetch: ^3.3.1
@@ -26539,7 +26539,7 @@ __metadata:
     "@babel/core": ^7.12.10
     "@babel/node": ^7.12.10
     "@medusajs/medusa": "workspace:^"
-    babel-preset-medusa-package: "*"
+    babel-preset-medusa-package: "workspace:^"
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: "workspace:^"
@@ -31817,7 +31817,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"medusa-core-utils@1.2.0, medusa-core-utils@^1.2.0, medusa-core-utils@workspace:^, medusa-core-utils@workspace:packages/medusa-core-utils":
+"medusa-core-utils@workspace:^, medusa-core-utils@workspace:packages/medusa-core-utils":
   version: 0.0.0-use.local
   resolution: "medusa-core-utils@workspace:packages/medusa-core-utils"
   dependencies:
@@ -31871,7 +31871,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
-    "@medusajs/medusa": ^1.12.0
+    "@medusajs/medusa": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -31893,7 +31893,7 @@ __metadata:
     rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
-    "@medusajs/medusa": ^1.12.0
+    "@medusajs/medusa": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -31919,8 +31919,8 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: "workspace:^"
-    medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
+    medusa-interfaces: "workspace:^"
+    medusa-test-utils: "workspace:^"
     stripe: ^8.50.0
   peerDependencies:
     "@medusajs/medusa": "workspace:^"
@@ -31947,7 +31947,7 @@ __metadata:
     medusa-core-utils: "workspace:^"
     medusa-interfaces: "workspace:^"
   peerDependencies:
-    medusa-interfaces: 1.3.7
+    medusa-interfaces: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -31971,14 +31971,14 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: "workspace:^"
-    medusa-interfaces: ^1.3.7
+    medusa-interfaces: "workspace:^"
   peerDependencies:
     "@medusajs/medusa": "workspace:^"
     medusa-interfaces: "workspace:^"
   languageName: unknown
   linkType: soft
 
-"medusa-interfaces@^1.3.7, medusa-interfaces@workspace:^, medusa-interfaces@workspace:packages/medusa-interfaces":
+"medusa-interfaces@workspace:^, medusa-interfaces@workspace:packages/medusa-interfaces":
   version: 0.0.0-use.local
   resolution: "medusa-interfaces@workspace:packages/medusa-interfaces"
   dependencies:
@@ -32172,12 +32172,12 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: "workspace:^"
-    medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
+    medusa-interfaces: "workspace:^"
+    medusa-test-utils: "workspace:^"
     randomatic: ^3.1.1
   peerDependencies:
-    "@medusajs/medusa": ^1.12.0
-    medusa-interfaces: ^1.3.7
+    "@medusajs/medusa": "workspace:^"
+    medusa-interfaces: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -32207,7 +32207,7 @@ __metadata:
     medusa-test-utils: "workspace:^"
     redis: ^3.0.2
   peerDependencies:
-    medusa-interfaces: ^1.3.7
+    medusa-interfaces: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -32339,7 +32339,7 @@ __metadata:
     "@babel/plugin-transform-typescript": ^7.13.0
     "@babel/preset-typescript": ^7.12.7
     "@medusajs/medusa": "workspace:^"
-    babel-preset-medusa-package: ^1.1.19
+    babel-preset-medusa-package: "workspace:^"
     body-parser: ^1.19.0
     cors: ^2.8.5
     cross-env: ^5.2.1
@@ -32468,7 +32468,7 @@ __metadata:
     medusa-test-utils: "workspace:^"
     twilio: ^3.49.1
   peerDependencies:
-    medusa-interfaces: ^1.3.7
+    medusa-interfaces: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -32561,15 +32561,15 @@ __metadata:
     ioredis: ^4.27.9
     jest: ^25.5.4
     lodash: ^4.17.21
-    medusa-core-utils: ^1.2.0
-    medusa-interfaces: ^1.3.7
-    medusa-test-utils: ^1.1.40
+    medusa-core-utils: "workspace:^"
+    medusa-interfaces: "workspace:^"
+    medusa-test-utils: "workspace:^"
   peerDependencies:
-    medusa-interfaces: ^1.3.7
+    medusa-interfaces: "workspace:^"
   languageName: unknown
   linkType: soft
 
-"medusa-telemetry@^0.0.17, medusa-telemetry@workspace:^, medusa-telemetry@workspace:packages/medusa-telemetry":
+"medusa-telemetry@workspace:^, medusa-telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "medusa-telemetry@workspace:packages/medusa-telemetry"
   dependencies:
@@ -32580,7 +32580,7 @@ __metadata:
     "@babel/runtime": ^7.22.10
     axios: ^0.21.4
     axios-retry: ^3.1.9
-    babel-preset-medusa-package: ^1.1.19
+    babel-preset-medusa-package: "workspace:^"
     boxen: ^5.0.1
     ci-info: ^3.2.0
     configstore: 5.0.1
@@ -32594,7 +32594,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.40, medusa-test-utils@workspace:^, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@workspace:^, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
@@ -39420,7 +39420,7 @@ __metadata:
     axios: ^0.21.4
     axios-mock-adapter: ^1.19.0
     babel-jest: ^26.6.3
-    babel-preset-medusa-package: ^1.0.0
+    babel-preset-medusa-package: "workspace:^"
     cross-env: ^7.0.3
     eslint: ^8.23.0
     eslint-config-google: ^0.14.0

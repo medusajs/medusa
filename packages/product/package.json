@@ -51,7 +51,7 @@
   "dependencies": {
     "@medusajs/modules-sdk": "workspace:^",
     "@medusajs/types": "workspace:^",
-    "@medusajs/utils": "^1.10.3",
+    "@medusajs/utils": "workspace:^",
     "@mikro-orm/core": "5.7.12",
     "@mikro-orm/migrations": "5.7.12",
     "@mikro-orm/postgresql": "5.7.12",

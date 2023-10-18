@@ -17,7 +17,7 @@
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
-    "babel-preset-medusa-package": "*",
+    "babel-preset-medusa-package": "workspace:^",
     "jest": "^26.6.3",
     "jest-environment-node": "26.6.2"
   }

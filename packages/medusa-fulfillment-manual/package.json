@@ -29,7 +29,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run build"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.3.7"
+    "medusa-interfaces": "workspace:^"
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",

@@ -29,7 +29,7 @@
     "axios": "^0.21.4",
     "axios-mock-adapter": "^1.19.0",
     "babel-jest": "^26.6.3",
-    "babel-preset-medusa-package": "^1.0.0",
+    "babel-preset-medusa-package": "workspace:^",
     "cross-env": "^7.0.3",
     "eslint": "^8.23.0",
     "eslint-config-google": "^0.14.0",

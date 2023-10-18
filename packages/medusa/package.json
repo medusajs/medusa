@@ -28,7 +28,7 @@
     "@types/papaparse": "^5.3.7",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-interfaces": "^1.3.7",
+    "medusa-interfaces": "workspace:^",
     "rimraf": "^5.0.1",
     "supertest": "^4.0.2",
     "ts-jest": "^25.5.1",
