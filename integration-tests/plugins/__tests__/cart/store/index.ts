@@ -35,7 +35,7 @@ describe("/store/carts", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({ cwd, verbose: true })
     const { app, port } = await bootstrapApp({ cwd, env: { 
-      MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true
+      // MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true
     } })
     setPort(port)
     express = app.listen(port, () => {
