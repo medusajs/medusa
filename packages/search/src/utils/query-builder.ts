@@ -44,6 +44,40 @@ export class QueryBuilder {
     return this.schema._schemaPropertiesMap[path]
   }
 
+  private getGraphQLType(path, field) {
+    const entity = this.getEntity(path)?.ref?.entity
+    const fieldRef = this.entityMap[entity]._fields[field]
+    if (!fieldRef) {
+      throw new Error(`Field ${field} not found in the entityMap.`)
+    }
+
+    let currentType = fieldRef.type
+    while (currentType.ofType) {
+      currentType = currentType.ofType
+    }
+
+    return currentType.name
+  }
+
+  private transformValueToType(path, field, value) {
+    const typeToFn = {
+      Int: (val) => parseInt(val, 10),
+      Float: (val) => parseFloat(val),
+      String: (val) => String(val),
+      Boolean: (val) => Boolean(val),
+      ID: (val) => String(val),
+      Date: (val) => new Date(val).toISOString(),
+      Time: (val) => new Date(`1970-01-01T${val}Z`).toISOString(),
+    }
+
+    const graphqlType = this.getGraphQLType(path, field)
+    const fn = typeToFn[graphqlType]
+    if (Array.isArray(value)) {
+      return value.map((v) => (!fn ? v : fn(v)))
+    }
+    return !fn ? value : fn(value)
+  }
+
   private getPostgresCastType(path, field) {
     const graphqlToPostgresTypeMap = {
       Int: "::integer",
@@ -55,18 +89,7 @@ export class QueryBuilder {
       Time: "::time",
     }
 
-    const entity = this.getEntity(path)?.ref?.entity
-    const fieldRef = this.entityMap[entity]._fields[field]
-    if (!fieldRef) {
-      return ""
-    }
-
-    let currentType = fieldRef.type
-    while (currentType.ofType) {
-      currentType = currentType.ofType
-    }
-
-    const graphqlType = currentType.name
+    const graphqlType = this.getGraphQLType(path, field)
     return graphqlToPostgresTypeMap[graphqlType] ?? ""
   }
 
@@ -114,12 +137,16 @@ export class QueryBuilder {
       } else if (isObject(value) && !Array.isArray(value)) {
         const subKeys = Object.keys(value)
         subKeys.forEach((subKey) => {
-          const subValue = value[subKey]
           let operator = OPERATOR_MAP[subKey]
           if (operator) {
             const path = key.split(".")
             const field = path.pop()
             const attr = path.join(".")
+            const subValue = this.transformValueToType(
+              attr,
+              field,
+              value[subKey]
+            )
             const castType = this.getPostgresCastType(attr, field)
 
             builder.whereRaw(
@@ -135,6 +162,7 @@ export class QueryBuilder {
         const field = path.pop()
         const attr = path.join(".")
 
+        value = this.transformValueToType(attr, field, value)
         if (Array.isArray(value)) {
           const castType = this.getPostgresCastType(attr, field)
           builder.whereRaw(

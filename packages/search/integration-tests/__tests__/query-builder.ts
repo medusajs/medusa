@@ -300,7 +300,7 @@ describe("SearchEngineModuleService", function () {
           },
         },
         where: {
-          "product.variants.money_amounts.amount": { $gt: 50 },
+          "product.variants.money_amounts.amount": { $gt: "50" },
         },
       },
       {
