@@ -222,11 +222,15 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-utils
+        working-directory: docs-util
+
+      - name: Build Workspace dependencies
+        run: yarn build
+        working-directory: docs-util
 
       - name: Generate Pricing Module Reference
-        run: yarn generate:references pricing
-        working-directory: docs-utils/packages/scripts
+        run: yarn generate:reference pricing
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -267,11 +271,15 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-utils
+        working-directory: docs-util
+
+      - name: Build Workspace dependencies
+        run: yarn build
+        working-directory: docs-util
 
       - name: Generate Product Module Reference
-        run: yarn generate:references product
-        working-directory: docs-utils/packages/scripts
+        run: yarn generate:reference product
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
