@@ -35,7 +35,7 @@ describe("/admin/products", () => {
           title: "test-variant",
           inventory_quantity: 10,
           sku: "test",
-          options: [{ value: "sm", title: "test-option" }],
+          options: [{ value: "large", title: "test-option" }],
           prices: [{ amount: "100", currency_code: "usd" }],
         },
       ],
@@ -46,10 +46,18 @@ describe("/admin/products", () => {
     const result = await productService.retrieve(id, {
       relations: ["variants", "variants.prices", "variants.options"],
     })
-    console.warn(JSON.stringify(result, null, 2))
 
-    // const prices = result.variants
-
-    // expect(prices.length).toBeTruthy()
+    expect(result).toEqual(
+      expect.objectContaining({
+        variants: [
+          expect.objectContaining({
+            options: [expect.objectContaining({ value: "large" })],
+            prices: [
+              expect.objectContaining({ amount: 100, currency_code: "usd" }),
+            ],
+          }),
+        ],
+      })
+    )
   })
 })
