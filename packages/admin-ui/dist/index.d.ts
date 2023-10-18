@@ -148,7 +148,7 @@ declare function clean({ appDir, outDir }: CleanArgs): Promise<void>;
  */
 declare function develop({ appDir, buildDir, plugins, options, }: DevelopArgs): Promise<void>;
 
-declare const ALIASED_PACKAGES: readonly ["react", "react-dom", "react-router-dom", "react-dnd", "react-dnd-html5-backend", "react-select", "react-helmet-async", "@tanstack/react-query", "@tanstack/react-table", "@emotion/react", "medusa-react"];
+declare const ALIASED_PACKAGES: readonly ["react", "react-dom", "react-router-dom", "react-dnd", "react-dnd-html5-backend", "react-select", "react-helmet-async", "@tanstack/react-query", "@tanstack/react-table", "@emotion/react", "medusa-react", "@medusajs/ui", "@medusajs/icons", "@medusajs/ui-preset"];
 
 interface LogOptions {
     clearScreen?: boolean;
