@@ -1,4 +1,4 @@
-import type { AdminOptions } from "@medusajs/admin-ui"
+import type { AdminOptions } from "uc-custon-medusajs-admin-ui"
 
 export type PluginOptions = AdminOptions & {
   /**

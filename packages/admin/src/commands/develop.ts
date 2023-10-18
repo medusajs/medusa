@@ -1,4 +1,4 @@
-import { AdminOptions, develop as adminDevelop } from "@medusajs/admin-ui"
+import { AdminOptions, develop as adminDevelop } from "uc-custon-medusajs-admin-ui"
 import { getPluginPaths, loadConfig } from "../utils"
 
 type DevelopArgs = AdminOptions & {

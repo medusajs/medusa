@@ -151,10 +151,12 @@ export const FormattedFulfillment = ({
           {!fulfillment.shipped_at
             ? t("templates-not-shipped", "Not shipped")
             : t("templates-tracking", "Tracking")}
-          {hasLinks &&
-            fulfillment.tracking_links.map((tl, j) => (
-              <TrackingLink key={j} trackingLink={tl} />
-            ))}
+          <div className="flex-column flex">
+            {hasLinks &&
+              fulfillment.tracking_links.map((tl, j) => (
+                <TrackingLink key={j} trackingLink={tl} />
+              ))}
+          </div>
         </div>
         {!fulfillment.canceled_at && fulfillment.location_id && (
           <div className="flex flex-col">

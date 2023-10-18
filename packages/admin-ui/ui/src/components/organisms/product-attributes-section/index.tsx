@@ -36,19 +36,43 @@ const ProductAttributesSection = ({ product }: Props) => {
           <div className="gap-y-xsmall flex flex-col">
             <Attribute
               attribute={t("product-attributes-section-height", "Height")}
-              value={product.height}
+              value={
+                product.height
+                  ? `${product.height}(mm)/${Number.parseFloat(
+                      `${product.height / 25.4}`
+                    ).toFixed(2)}(in)`
+                  : null
+              }
             />
             <Attribute
               attribute={t("product-attributes-section-width", "Width")}
-              value={product.width}
+              value={
+                product.width
+                  ? `${product.width}(mm)/${Number.parseFloat(
+                      `${product.width / 25.4}`
+                    ).toFixed(2)}(in)`
+                  : null
+              }
             />
             <Attribute
               attribute={t("product-attributes-section-length", "Length")}
-              value={product.length}
+              value={
+                product.length
+                  ? `${product.length}(mm)/${Number.parseFloat(
+                      `${product.length / 25.4}`
+                    ).toFixed(2)}(in)`
+                  : null
+              }
             />
             <Attribute
               attribute={t("product-attributes-section-weight", "Weight")}
-              value={product.weight}
+              value={
+                product.weight
+                  ? `${product.weight}(g)/${Number.parseFloat(
+                      `${product.weight / 453.6}`
+                    ).toFixed(2)}(lbs)`
+                  : null
+              }
             />
           </div>
         </div>

@@ -13,7 +13,7 @@ import CreateFulfillmentItemsTable, {
 import Metadata, {
   MetadataField,
 } from "../../../../components/organisms/metadata"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   useAdminCreateFulfillment,
   useAdminFulfillClaim,
@@ -93,6 +93,20 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
       value: sl.id,
       label: sl.name,
     }))
+  }, [stock_locations])
+
+  useEffect(() => {
+    const orderInitialLocation = stock_locations.find(
+      (location: any) =>
+        location.name ===
+        orderToFulfill.shipping_address.country_code.toUpperCase()
+    )
+    if (orderInitialLocation) {
+      setLocationSelectValue({
+        label: orderInitialLocation.name,
+        value: orderInitialLocation.id,
+      })
+    }
   }, [stock_locations])
 
   const items =

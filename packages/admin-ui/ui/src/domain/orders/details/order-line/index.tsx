@@ -41,6 +41,11 @@ const OrderLine = ({
               }`}
             </span>
           )}
+          {item?.metadata.Holster && (
+            <span className="inter-small-regular text-grey-50 truncate">
+              {`Holster: ${item.metadata.Holster}`}
+            </span>
+          )}
         </div>
       </div>
       <div className="flex items-center">

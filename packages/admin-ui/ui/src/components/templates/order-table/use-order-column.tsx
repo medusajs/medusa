@@ -45,6 +45,22 @@ const useOrderTableColums = () => {
     }
   }
 
+  const getSKU = (items: any = []): string[] => {
+    const sku: string[] = []
+
+    items.map((i) => {
+      if (i.variant?.sku) {
+        sku.push(i.variant?.sku)
+      } else if (i.variant?.title) {
+        sku.push(i.title + " (" + i.variant?.title + ")")
+      } else {
+        sku.push(i.title)
+      }
+    })
+
+    return sku
+  }
+
   const columns = useMemo(
     () => [
       {
@@ -93,6 +109,18 @@ const useOrderTableColums = () => {
         Header: t("order-table-payment-status", "Payment status"),
         accessor: "payment_status",
         Cell: ({ cell: { value } }) => decideStatus(value),
+      },
+      {
+        Header: "SKU",
+        accessor: "items",
+        Cell: ({ cell: { value } }) =>
+          getSKU(value).map((s, i) => {
+            return (
+              <div key={i} className="text-xs text-green-700">
+                {s}
+              </div>
+            )
+          }),
       },
       {
         Header: t("order-table-sales-channel", "Sales Channel"),

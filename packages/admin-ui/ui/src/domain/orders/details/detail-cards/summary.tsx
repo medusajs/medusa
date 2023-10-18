@@ -21,6 +21,7 @@ import { useMedusa } from "medusa-react"
 import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import useToggleState from "../../../../hooks/use-toggle-state"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
+import { taxesMap } from "../../../../constants/taxes-map"
 
 type SummaryCardProps = {
   order: Order
@@ -168,6 +169,11 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
 
   const isAllocatable = !["canceled", "archived"].includes(order.status)
 
+  const taxes =
+    order.shipping_address.province in taxesMap
+      ? taxesMap[order.shipping_address.province as keyof typeof taxesMap]
+      : []
+
   return (
     <BodyCard
       className={"h-auto min-h-0 w-full"}
@@ -250,6 +256,16 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
           totalAmount={order.shipping_total}
           totalTitle={t("detail-cards-shipping", "Shipping")}
         />
+        {taxes.map(({ taxName, value }, index) => (
+          <DisplayTotal
+            key={index}
+            currency={order.currency_code}
+            totalAmount={
+              (order.subtotal + order.shipping_total) * (value / 100)
+            }
+            totalTitle={`${taxName} (${value}%)`}
+          />
+        ))}
         <DisplayTotal
           currency={order.currency_code}
           totalAmount={order.tax_total}

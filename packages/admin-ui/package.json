@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin-ui",
-  "author": "Kasper Kristensen <kasper@medusajs.com>",
+  "author": "Stanislav Bondar <stanislav@unitedchargers.com> forked from Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
   "version": "2.1.4",
   "repository": {

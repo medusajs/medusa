@@ -54,7 +54,9 @@ const Note: React.FC<NoteProps> = ({ event }) => {
             "bg-violet-5 text-violet-90": isMe,
           })}
         >
-          {event.value}
+          {event.value.split('\n').map((v,i)=>
+            <div className="break-words" key={i}>{v ? v : <>&nbsp;</>}</div>
+          )}
         </div>
       </EventContainer>
       {showDelete && (

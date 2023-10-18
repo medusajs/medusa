@@ -14,7 +14,7 @@ const getDevServerConfig = () => {
     entry: path.resolve(__dirname, "ui", "src", "main.tsx"),
     env: "development",
     options: {
-      backend: "http://localhost:9000",
+      backend: process.env.BE_URL ?? "http://localhost:9000",
       path: "/",
     },
     template: path.resolve(__dirname, "ui", "index.html"),
@@ -35,6 +35,7 @@ const getDevServerConfig = () => {
       devServer: {
         port: 7001,
         historyApiFallback: true,
+        allowedHosts: "all",
         static: {
           directory: path.resolve(__dirname, "./ui/public"),
           publicPath: "/",
