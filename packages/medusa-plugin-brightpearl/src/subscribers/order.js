@@ -192,7 +192,7 @@ class OrderSubscriber {
   registerReturn = async (data) => {
     const { id, return_id } = data
 
-    const relations = ["discounts", "region", "swaps", "payments"]
+    const relations = ["discounts", "discounts.rule", "region", "swaps", "payments"]
     if (this.featureFlagRouter.isFeatureEnabled("sales_channels")) {
       relations.push("sales_channel")
     }
