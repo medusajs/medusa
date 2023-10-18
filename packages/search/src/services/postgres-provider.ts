@@ -97,66 +97,15 @@ export class PostgresProvider {
   }
 
   async query(selection: QueryFormat, options?: QueryOptions) {
-    const connection = this.container_.manager.getConnection()
-
-    const qb = new QueryBuilder({
-      schema: this.schemaObjectRepresentation_,
-      entityMap: this.schemaEntitiesMap_,
-      knex: connection.getKnex(),
-      selector: selection,
-      options,
-    })
-
     let hasPagination = false
     if (
       typeof options?.take === "number" ||
-      (typeof options?.skip === "number" && options?.skip > 0) ||
-      options?.keepFilteredEntities
+      typeof options?.skip === "number"
     ) {
       hasPagination = true
     }
 
-    if (hasPagination) {
-      const [rs] = await this.queryAndCount_(selection, options, false)
-      return rs
-    }
-
-    const sql = qb.buildQuery()
-
-    const resultset = await connection.execute(sql)
-    return qb.buildObjectFromResultset(resultset)
-  }
-
-  async queryAndCount(selection: QueryFormat, options?: QueryOptions) {
-    return this.queryAndCount_(selection, options)
-  }
-
-  private async queryAndCount_(
-    selection: QueryFormat,
-    options?: QueryOptions,
-    countWhenPaginating = true
-  ) {
     const connection = this.container_.manager.getConnection()
-
-    const qbCount = new QueryBuilder({
-      schema: this.schemaObjectRepresentation_,
-      entityMap: this.schemaEntitiesMap_,
-      knex: connection.getKnex(),
-      selector: selection,
-      options,
-    })
-
-    const countSql = qbCount.buildDistinctQuery(countWhenPaginating)
-    const countRs = await connection.execute(countSql)
-
-    const ids = countRs.map((r) => r.id)
-    const totalCount = countRs[0]?.count ?? 0
-
-    selection.where = {
-      ids: ids,
-      ...(selection.where ?? {}),
-    }
-
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
       entityMap: this.schemaEntitiesMap_,
@@ -164,10 +113,54 @@ export class PostgresProvider {
       selector: selection,
       options,
     })
-    const sql = qb.buildQuery()
 
-    const resultset = await connection.execute(sql)
-    return [qb.buildObjectFromResultset(resultset), +totalCount]
+    const sql = qb.buildQuery(hasPagination, !!options?.keepFilteredEntities)
+
+    let resultset = await connection.execute(sql)
+
+    if (options?.keepFilteredEntities) {
+      const mainEntity = Object.keys(selection.select)[0]
+      const selection_ = {
+        select: selection.select,
+        joinWhere: selection.joinWhere,
+        where: {
+          [`${mainEntity}.id`]: resultset.map((r) => r.id),
+        },
+      }
+      return await this.query(selection_)
+    }
+
+    return qb.buildObjectFromResultset(resultset)
+  }
+
+  async queryAndCount(selection: QueryFormat, options?: QueryOptions) {
+    const connection = this.container_.manager.getConnection()
+    const qb = new QueryBuilder({
+      schema: this.schemaObjectRepresentation_,
+      entityMap: this.schemaEntitiesMap_,
+      knex: connection.getKnex(),
+      selector: selection,
+      options,
+    })
+
+    const sql = qb.buildQuery(true, !!options?.keepFilteredEntities)
+
+    let resultset = await connection.execute(sql)
+    const count = +(resultset[0]?.count ?? 0)
+
+    if (options?.keepFilteredEntities) {
+      const mainEntity = Object.keys(selection.select)[0]
+      const selection_ = {
+        select: selection.select,
+        joinWhere: selection.joinWhere,
+        where: {
+          [`${mainEntity}.id`]: resultset.map((r) => r.id),
+        },
+      }
+      resultset = await this.query(selection_)
+    }
+
+    return [qb.buildObjectFromResultset(resultset), count]
   }
 
   consumeEvent(

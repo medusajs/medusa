@@ -82,9 +82,7 @@ export class QueryBuilder {
     const graphqlToPostgresTypeMap = {
       Int: "::integer",
       Float: "::double precision",
-      String: "::text",
       Boolean: "::boolean",
-      ID: "::text",
       Date: "::timestamp",
       Time: "::time",
     }
@@ -142,6 +140,7 @@ export class QueryBuilder {
             const path = key.split(".")
             const field = path.pop()
             const attr = path.join(".")
+
             const subValue = this.transformValueToType(
               attr,
               field,
@@ -149,9 +148,10 @@ export class QueryBuilder {
             )
             const castType = this.getPostgresCastType(attr, field)
 
+            const val = operator === "IN" ? subValue : [subValue]
             builder.whereRaw(
               `(${aliasMapping[attr]}.data->>?)${castType} ${operator} ?`,
-              [field, subValue]
+              [field, ...val]
             )
           } else {
             throw new Error(`Unsupported operator: ${subKey}`)
@@ -167,7 +167,7 @@ export class QueryBuilder {
           const castType = this.getPostgresCastType(attr, field)
           builder.whereRaw(
             `(${aliasMapping[attr]}.data->>?)${castType} IN (?)`,
-            [field, value]
+            [field, ...value]
           )
         } else {
           const castType = this.getPostgresCastType(attr, field)
@@ -371,29 +371,13 @@ export class QueryBuilder {
     return result
   }
 
-  public buildQuery(): string {
-    return this.buildQuery_()
-  }
-
-  public buildDistinctQuery(countWhenPaginating = true): string {
-    return this.buildQuery_(true, countWhenPaginating)
-  }
-
-  protected buildQuery_(
-    distinctRootOnly = false,
-    countAllResults = distinctRootOnly
-  ): string {
+  public buildQuery(countAllResults = true, returnIdOnly = false): string {
     const queryBuilder = this.knex.queryBuilder()
 
     const structure = this.structure
     const filter = this.selector.where ?? {}
 
-    const {
-      orderBy: order,
-      skip,
-      take,
-      keepFilteredEntities,
-    } = this.options ?? {}
+    const { orderBy: order, skip, take } = this.options ?? {}
 
     const orderBy = this.transformOrderBy(
       (order && !Array.isArray(order) ? [order] : order) ?? []
@@ -415,24 +399,17 @@ export class QueryBuilder {
       aliasMapping
     )
 
-    if (distinctRootOnly) {
-      queryBuilder.select(`${rootEntity}0.id`)
+    const selectParts = !returnIdOnly
+      ? this.buildSelectParts(rootStructure, rootKey, aliasMapping)
+      : `${rootEntity}0.id`
 
-      if (countAllResults) {
-        queryBuilder.select(
-          this.knex.raw(`COUNT(${rootEntity}0.id) OVER() as count`)
-        )
-      }
-
-      queryBuilder.groupBy(`${rootEntity}0.id`)
-    } else {
-      const selectParts = this.buildSelectParts(
-        rootStructure,
-        rootKey,
-        aliasMapping
+    if (countAllResults) {
+      selectParts["offset_"] = this.knex.raw(
+        `DENSE_RANK() OVER (ORDER BY ${rootEntity}0.id)`
       )
-      queryBuilder.select(selectParts)
     }
+
+    queryBuilder.select(selectParts)
 
     queryBuilder.from(`catalog AS ${rootEntity}0`)
 
@@ -440,22 +417,10 @@ export class QueryBuilder {
       queryBuilder.joinRaw(joinPart)
     })
 
-    let hasRootIds = false
-    if (filter.ids) {
-      queryBuilder
-        .where(`${aliasMapping[rootEntity]}.id`, "IN", filter.ids)
-        .andWhere(`${aliasMapping[rootEntity]}.name`, "=", entity)
-
-      hasRootIds = true
-      delete filter.ids
-    } else {
-      queryBuilder.where(`${aliasMapping[rootEntity]}.name`, "=", entity)
-    }
+    queryBuilder.where(`${aliasMapping[rootEntity]}.name`, "=", entity)
 
     // WHERE clause
-    if (!hasRootIds || (hasRootIds && !keepFilteredEntities)) {
-      this.parseWhere(aliasMapping, filter, queryBuilder)
-    }
+    this.parseWhere(aliasMapping, filter, queryBuilder)
 
     // ORDER BY clause
     for (const aliasPath in orderBy) {
@@ -468,14 +433,22 @@ export class QueryBuilder {
       queryBuilder.orderByRaw(`${alias}.data->>'${field}' ${direction}`)
     }
 
-    if (typeof take === "number" && distinctRootOnly) {
-      queryBuilder.limit(take)
+    let sql = `WITH data AS (${queryBuilder.toQuery()})
+    SELECT * ${
+      countAllResults ? ", (SELECT max(offset_) FROM data) AS count" : ""
     }
-    if (typeof skip === "number" && distinctRootOnly) {
-      queryBuilder.offset(skip)
+    FROM data`
+
+    let take_ = !isNaN(+take!) ? +take! : 15
+    let skip_ = !isNaN(+skip!) ? +skip! : 0
+    if (typeof take === "number" || typeof skip === "number") {
+      sql += `
+        WHERE offset_ > ${skip_}
+          AND offset_ <= ${skip_ + take_}
+      `
     }
 
-    return queryBuilder.toQuery()
+    return sql
   }
 
   public buildObjectFromResultset(

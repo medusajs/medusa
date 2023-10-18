@@ -211,31 +211,31 @@ describe("SearchEngineModuleService", function () {
   afterEach(afterEach_)
 
   it("should query all products", async () => {
-    const [result, count] = await module.queryAndCount({
-      select: {
-        product: {
-          variants: {
-            money_amounts: true,
+    const [result, count] = await module.queryAndCount(
+      {
+        select: {
+          product: {
+            variants: {
+              money_amounts: true,
+            },
           },
         },
       },
-    })
+      {
+        orderBy: [{ "product.variants.sku": "DESC" }],
+      }
+    )
 
     expect(count).toEqual(2)
     expect(result).toEqual([
       {
+        id: "prod_2",
+        title: "Product 2 title",
+        variants: [],
+      },
+      {
         id: "prod_1",
         variants: [
-          {
-            id: "var_1",
-            sku: "aaa test aaa",
-            money_amounts: [
-              {
-                id: "money_amount_1",
-                amount: 100,
-              },
-            ],
-          },
           {
             id: "var_2",
             sku: "sku 123",
@@ -246,12 +246,18 @@ describe("SearchEngineModuleService", function () {
               },
             ],
           },
+
+          {
+            id: "var_1",
+            sku: "aaa test aaa",
+            money_amounts: [
+              {
+                id: "money_amount_1",
+                amount: 100,
+              },
+            ],
+          },
         ],
-      },
-      {
-        id: "prod_2",
-        title: "Product 2 title",
-        variants: [],
       },
     ])
   })
@@ -307,7 +313,6 @@ describe("SearchEngineModuleService", function () {
         keepFilteredEntities: true,
       }
     )
-
     expect(result).toEqual([
       {
         id: "prod_1",
