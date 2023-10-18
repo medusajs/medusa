@@ -35,10 +35,11 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/stock-locations/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Stock Locations
  * responses:

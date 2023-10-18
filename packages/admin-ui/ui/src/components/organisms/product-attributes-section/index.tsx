@@ -1,4 +1,5 @@
 import { Product } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import useToggleState from "../../../hooks/use-toggle-state"
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import { ActionType } from "../../molecules/actionables"
@@ -10,6 +11,7 @@ type Props = {
 }
 
 const ProductAttributesSection = ({ product }: Props) => {
+  const { t } = useTranslation()
   const { state, toggle, close } = useToggleState()
 
   const actions: ActionType[] = [
@@ -22,12 +24,18 @@ const ProductAttributesSection = ({ product }: Props) => {
 
   return (
     <>
-      <Section title="Attributes" actions={actions} forceDropdown>
+      <Section
+        title={t("product-attributes-section-title", "Attributes")}
+        actions={actions}
+        forceDropdown
+      >
         <div className="gap-y-xsmall mb-large mt-base flex flex-col">
-          <h2 className="inter-base-semibold">Dimensions</h2>
+          <h2 className="inter-base-semibold">
+            {t("product-attributes-section-dimensions", "Dimensions")}
+          </h2>
           <div className="gap-y-xsmall flex flex-col">
             <Attribute
-              attribute="Height"
+              attribute={t("product-attributes-section-height", "Height")}
               value={
                 product.height
                   ? `${product.height}(mm)/${Number.parseFloat(
@@ -37,7 +45,7 @@ const ProductAttributesSection = ({ product }: Props) => {
               }
             />
             <Attribute
-              attribute="Width"
+              attribute={t("product-attributes-section-width", "Width")}
               value={
                 product.width
                   ? `${product.width}(mm)/${Number.parseFloat(
@@ -47,7 +55,7 @@ const ProductAttributesSection = ({ product }: Props) => {
               }
             />
             <Attribute
-              attribute="Length"
+              attribute={t("product-attributes-section-length", "Length")}
               value={
                 product.length
                   ? `${product.length}(mm)/${Number.parseFloat(
@@ -57,7 +65,7 @@ const ProductAttributesSection = ({ product }: Props) => {
               }
             />
             <Attribute
-              attribute="Weight"
+              attribute={t("product-attributes-section-weight", "Weight")}
               value={
                 product.weight
                   ? `${product.weight}(g)/${Number.parseFloat(
@@ -69,12 +77,23 @@ const ProductAttributesSection = ({ product }: Props) => {
           </div>
         </div>
         <div className="gap-y-xsmall flex flex-col">
-          <h2 className="inter-base-semibold">Customs</h2>
+          <h2 className="inter-base-semibold">
+            {t("product-attributes-section-customs", "Customs")}
+          </h2>
           <div className="gap-y-xsmall flex flex-col">
-            <Attribute attribute="MID Code" value={product.mid_code} />
-            <Attribute attribute="HS Code" value={product.hs_code} />
             <Attribute
-              attribute="Country of origin"
+              attribute={t("product-attributes-section-mid-code", "MID Code")}
+              value={product.mid_code}
+            />
+            <Attribute
+              attribute={t("product-attributes-section-hs-code", "HS Code")}
+              value={product.hs_code}
+            />
+            <Attribute
+              attribute={t(
+                "product-attributes-section-country-of-origin",
+                "Country of origin"
+              )}
               value={product.origin_country}
             />
           </div>

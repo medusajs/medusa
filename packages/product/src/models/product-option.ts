@@ -1,3 +1,4 @@
+import { DAL } from "@medusajs/types"
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -15,7 +16,10 @@ import {
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
 
-type OptionalRelations = "values" | "product"
+type OptionalRelations =
+  | "values"
+  | "product"
+  | DAL.SoftDeletableEntityDateColumns
 type OptionalFields = "product_id"
 
 @Entity({ tableName: "product_option" })
@@ -35,8 +39,9 @@ class ProductOption {
   @ManyToOne(() => Product, {
     index: "IDX_product_option_product_id",
     fieldName: "product_id",
+    nullable: true,
   })
-  product: Product
+  product!: Product
 
   @OneToMany(() => ProductOptionValue, (value) => value.option, {
     cascade: [Cascade.REMOVE, "soft-remove" as any],
@@ -45,6 +50,21 @@ class ProductOption {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
+
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
 
   @Index({ name: "IDX_product_option_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })

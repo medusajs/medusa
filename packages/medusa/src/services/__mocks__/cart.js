@@ -77,6 +77,7 @@ export const carts = {
         title: "merge line",
         description: "This is a new line",
         thumbnail: "test-img-yeah.com/thumb",
+        variant_id: IdMap.getId("eur-10-us-12"),
         unit_price: 10,
         variant: {
           id: IdMap.getId("eur-10-us-12"),

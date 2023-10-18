@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
@@ -7,6 +8,7 @@ export const PaymentActionables = ({
   capturePayment,
   showRefundMenu,
 }) => {
+  const { t } = useTranslation()
   const notification = useNotification()
   const isSystemPayment = order?.payments?.some(
     (p) => p.provider_id === "system"
@@ -15,12 +17,24 @@ export const PaymentActionables = ({
   const { payment_status } = order!
 
   // Default label and action
-  let label = "Capture payment"
+  let label = t("templates-capture-payment", "Capture payment")
   let action = () => {
     capturePayment.mutate(void {}, {
       onSuccess: () =>
-        notification("Success", "Successfully captured payment", "success"),
-      onError: (err) => notification("Error", getErrorMessage(err), "error"),
+        notification(
+          t("templates-success", "Success"),
+          t(
+            "templates-successfully-captured-payment",
+            "Successfully captured payment"
+          ),
+          "success"
+        ),
+      onError: (err) =>
+        notification(
+          t("templates-error", "Error"),
+          getErrorMessage(err),
+          "error"
+        ),
     })
   }
   const loading = capturePayment.isLoading
@@ -38,7 +52,7 @@ export const PaymentActionables = ({
   switch (true) {
     case payment_status === "captured" ||
       payment_status === "partially_refunded": {
-      label = "Refund"
+      label = t("templates-refund", "Refund")
       action = () => showRefundMenu()
       break
     }

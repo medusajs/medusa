@@ -1,13 +1,13 @@
 import middlewares, { transformStoreQuery } from "../../../middlewares"
 
-import { PricedVariant } from "../../../../types/pricing"
 import { Router } from "express"
-import { StoreGetVariantsParams } from "./list-variants"
-import { StoreGetVariantsVariantParams } from "./get-variant"
+import { PricedVariant } from "../../../../types/pricing"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
-import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
+import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
 import { withDefaultSalesChannel } from "../../../middlewares/with-default-sales-channel"
+import { StoreGetVariantsVariantParams } from "./get-variant"
+import { StoreGetVariantsParams } from "./list-variants"
 
 const route = Router()
 
@@ -91,5 +91,6 @@ export type StoreVariantsListRes = {
   variants: PricedVariant[]
 }
 
-export * from "./list-variants"
 export * from "./get-variant"
+export * from "./list-variants"
+

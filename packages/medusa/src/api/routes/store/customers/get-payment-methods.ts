@@ -31,6 +31,7 @@ import { PaymentProvider } from "../../../../models"
  *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:
