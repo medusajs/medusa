@@ -17,7 +17,7 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_PRICING_INTEGRATION: true,
+  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 

@@ -202,7 +202,6 @@ class PricingService extends TransactionBaseService {
     }
 
     const variantPriceSets = await this.remoteQuery(query)
-
     const variantIdToPriceSetIdMap: Map<string, string> = new Map(
       variantPriceSets.map((variantPriceSet) => [
         variantPriceSet.variant_id,
