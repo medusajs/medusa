@@ -15,10 +15,6 @@ export enum ProductStatus {
  * @interface
  * 
  * A product's data.
- * 
- * @privateRemarks
- * TODO: This DTO should represent the product, when used in config we should use Partial<ProductDTO>, it means that some props like handle should be updated to not be optional
- * 
  * @prop id - The ID of the product.
  * @prop title - The title of the product.
  * @prop handle - The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.
@@ -447,6 +443,7 @@ export interface FilterableProductVariantProps
  * @prop handle - The handles to filter product categories by.
  * @prop is_active - Filter product categories by whether they're active.
  * @prop is_internal - Filter product categories by whether they're internal.
+ * @prop include_descendants_tree - Whether to include children of retrieved product categories.
  */
 export interface FilterableProductCategoryProps
   extends BaseFilterable<FilterableProductCategoryProps> {
@@ -456,12 +453,6 @@ export interface FilterableProductCategoryProps
   handle?: string | string[]
   is_active?: boolean
   is_internal?: boolean
-  /**
-   * @ignore
-   * 
-   * @privateRemark
-   * This property seems to be misplaced, as it can't filter product categories.
-   */
   include_descendants_tree?: boolean
 }
 
@@ -491,6 +482,7 @@ export interface CreateProductCollectionDTO {
  * @prop value - The value of the product collection.
  * @prop title - The title of the product collection.
  * @prop handle - The handle of the product collection.
+ * @prop product_ids - The IDs of the products to associate with the product collection.
  * @prop metadata - Holds custom data in key-value pairs.
  */
 export interface UpdateProductCollectionDTO {
@@ -741,11 +733,6 @@ export interface CreateProductDTO {
   categories?: { id: string }[]
   options?: CreateProductOptionDTO[]
   variants?: CreateProductVariantDTO[]
-  /**
-   * @privateRemarks
-   * 
-   * This property is missing from the {@link ProductDTO} type.
-   */
   width?: number
   height?: number
   length?: number
@@ -754,11 +741,6 @@ export interface CreateProductDTO {
   hs_code?: string
   material?: string
   mid_code?: string
-  /**
-   * @privateRemarks
-   * 
-   * This property is missing from the {@link ProductDTO} type.
-   */
   metadata?: Record<string, unknown>
 }
 
