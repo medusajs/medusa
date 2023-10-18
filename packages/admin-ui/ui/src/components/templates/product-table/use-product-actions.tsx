@@ -48,10 +48,7 @@ const useProductActions = (product: Product) => {
           ? t("product-table-unpublish", "Unpublish")
           : t("product-table-publish", "Publish"),
       onClick: () => {
-        const newStatus =
-          product.status === "published"
-            ? t("product-table-draft", "draft")
-            : t("product-table-published", "published")
+        const newStatus = product.status === "published" ? "draft" : "published"
         updateProduct.mutate(
           {
             status: newStatus,

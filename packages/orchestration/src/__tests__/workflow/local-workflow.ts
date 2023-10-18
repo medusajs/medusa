@@ -80,6 +80,52 @@ describe("WorkflowManager", () => {
     expect(wf).toEqual(["create-product", "broken-delivery", "deliver-product"])
   })
 
+  it("should throw when registering a workflow with an existing id", () => {
+    let err
+    try {
+      WorkflowManager.register(
+        "create-product",
+        {
+          action: "foo",
+          next: {
+            action: "bar",
+            next: {
+              action: "xor",
+            },
+          },
+        },
+        handlers
+      )
+    } catch (e) {
+      err = e
+    }
+
+    expect(err).toBeDefined()
+    expect(err.message).toBe(
+      `Workflow with id "create-product" and step definition already exists.`
+    )
+  })
+
+  it("should not throw when registering a workflow with an existing id but identical definition", () => {
+    let err
+    try {
+      WorkflowManager.register(
+        "create-product",
+        {
+          action: "foo",
+          next: {
+            action: "bar",
+          },
+        },
+        handlers
+      )
+    } catch (e) {
+      err = e
+    }
+
+    expect(err).not.toBeDefined()
+  })
+
   it("should begin a transaction and returns its final state", async () => {
     const flow = new LocalWorkflow("create-product", container)
     const transaction = await flow.run("t-id", {
