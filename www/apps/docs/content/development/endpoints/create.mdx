@@ -195,34 +195,7 @@ Protected routes are routes that should only be accessible by logged-in customer
 
 ### Protect Store Routes
 
-There are two approaches to make a storefront route protected:
-
-- Using the `requireCustomerAuthentication` middleware, which disallows unauthenticated customers from accessing a route, and allows you to access the logged-in customer's ID.
-- Using the `authenticateCustomer` middleware, which allows both authenticated and unauthenticated customers to access your route, but allows you to access the logged-in customer's ID as well.
-
-To make a storefront route(s) protected using either middlewares, pass the middleware in the list of the route's [middlewares](./add-middleware.mdx). For example:
-
-```ts title=src/api/middlewares.ts
-import type { MiddlewaresConfig } from "@medusajs/medusa"
-import { 
-  requireCustomerAuthentication,
-} from "@medusajs/medusa"
-// import { authenticateCustomer } from "@medusajs/medusa"
-
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/store/*",
-      middlewares: [
-        requireCustomerAuthentication(),
-        // authenticateCustomer()
-      ],
-    },
-  ],
-}
-```
-
-You can then access the customer's ID using `req.user.customer_id`. Note that if you're using the `authenticateCustomer` middleware, `req.user.customer_id` may be undefined.
+By default, endpoint routes prefixed by `/store` don't require customers to be authenticated to access the endpoint. However, you can still access the logged-in customer's ID by accessing the Request object's `user.customer_id`, which will be `undefined` if the customer is not logged in.
 
 For example:
 
@@ -238,8 +211,12 @@ export const GET = async (
   res: MedusaResponse
 ) => {
   const id = req.user.customer_id
-  // if you're using authenticateCustomer middleware
-  // check if id is set first
+  
+  if (!id) {
+    // TODO handle not logged in
+    // customers based on the custom
+    // route's functionality
+  }
 
   const customerService = req.scope.resolve<CustomerService>(
     "customerService"
@@ -251,11 +228,60 @@ export const GET = async (
 }
 ```
 
+Routes prefixed by `/store/me`, on the other hand, require customers to be authenticated to access the endpoint. You can access the logged-in customer's ID by accessing the Request object's `user.customer_id`.
+
+If you want to disable authentication requirement on your custom route prefixed with `/store/me`, export an `AUTHENTICATE` variable in your route file with its value set to `false`. For example:
+
+```ts title=src/api/store/me/custom/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.json({
+    message: "Hello",
+  })
+}
+
+export const AUTHENTICATE = false
+```
+
+Note that this will disable authentication requirement on all endpoint methods defined in the same file.
+
 ### Protect Admin Routes
 
-By default, all routes prefixed by `/admin` require authentication.
+By default, all endpoint routes prefixed by `/admin` require an admin user to be authenticated to access the endpoint. You can access the logged-in user's ID in the endpoint by accessing the Request object's `user.userId`.
 
-If you want to disable authentication on an admin route, export a `AUTHENTICATE` variable in your route file with its value set to `false`.
+For example:
+
+```ts title=src/api/admin/custom/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+  UserService,
+} from "@medusajs/medusa"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const id = req.user.userId
+
+  const userService = req.scope.resolve<UserService>(
+    "userService"
+  )
+      
+  const user = await userService.retrieve(id)
+
+  // ...
+}
+```
+
+If you want to disable authentication requirement on an admin route, export an `AUTHENTICATE` variable in your route file with its value set to `false`.
 
 For example:
 
@@ -275,6 +301,39 @@ export const GET = async (
 }
 
 export const AUTHENTICATE = false
+```
+
+Note that this will disable authentication requirement on all endpoint methods defined in the same file.
+
+### Protect Custom Routes
+
+If you want to protect routes that aren't prefixed with `/store` or `/admin`, you can use one of the following middlewares defined in `@medusajs/medusa` for authenticating customers or users:
+
+- `authenticate`: this middleware ensures that only authenticated admin users can access an endpoint. You can access the user's ID in the endpoint by accessing the Request object's `user.userId`. 
+- `authenticateCustomer`: this middleware doesn't require a customer to be authenticated, but if a customer is logged in, it attaches their ID to the Request object passed to the endpoint under `user.customer_id`.
+- `requireCustomerAuthentication`: this middleware ensures that only authenticated customers can access an endpoint. You can access the customer's ID in the endpoint by accessing the Request object's `user.customer_id`.
+
+For example:
+
+```ts title=src/api/middlewares.ts
+import { 
+  authenticate, 
+  requireCustomerAuthentication, 
+  type MiddlewaresConfig,
+} from "@medusajs/medusa"
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/custom/admin*",
+      middlewares: [authenticate()],
+    },
+    {
+      matcher: "/custom/customer*",
+      middlewares: [requireCustomerAuthentication()],
+    },
+  ],
+}
 ```
 
 ---
@@ -311,6 +370,110 @@ export const GET = (
   res.json({
     message: configModule.projectConfig.custom_config,
   })
+}
+```
+
+---
+
+## Handle Errors
+
+As Medusa uses v4 of Express, you need to manually handle errors thrown asynchronously as explained in [Express's documentation](https://expressjs.com/en/guide/error-handling.html).
+
+Medusa provides an `errorHandler` middleware that you can use on your custom endpoints to that your error handling is consistent across your Medusa backend. You can also create custom [middlewares](./add-middleware-express-route.mdx) to handle errors.
+
+To handle errors using Medusa's middlewares, first, import the `errorHandler` middleware from `@medusajs/medusa` and apply it on your routes. For example:
+
+```ts title=src/api/middlewares.ts
+import { 
+  errorHandler, 
+  type MiddlewaresConfig,
+} from "@medusajs/medusa"
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/store/custom*",
+      middlewares: [errorHandler()],
+    },
+  ],
+}
+```
+
+Make sure it's applied after all other middlewares.
+
+Then, wrap the function handler of every endpoint method with the `wrapHandler` middleware imported from `@medusajs/medusa`. For example:
+
+```ts title=src/api/store/custom/route.ts
+import { 
+  MedusaRequest, 
+  MedusaResponse,
+  wrapHandler,
+} from "@medusajs/medusa"
+
+export const GET = wrapHandler(async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.json({
+    message: "[GET] Hello world!",
+  })
+})
+
+export const POST = wrapHandler(async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  res.json({
+    message: "[POST] Hello world!",
+  })
+})
+```
+
+Now all errors thrown in your custom endpoints, or in resources you use within your endpoint such as services, will be caught and returned to the user.
+
+However, if you throw errors like this:
+
+```ts
+throw new Error ("Post was not found")
+```
+
+The endpoint returns the following object error in the response:
+
+```json
+{
+  "code": "unknown_error",
+  "type": "unknown_error",
+  "message": "An unknown error occurred."
+}
+```
+
+To ensure the error message is relayed in the response, it's recommended to use `MedusaError` imported from `@medusajs/utils` as the thrown error instead.
+
+For example:
+
+```ts
+import { MedusaError } from "@medusajs/utils"
+
+// ...
+
+throw new MedusaError(
+  MedusaError.Types.NOT_FOUND,
+  "Post was not found"
+)
+```
+
+The constructor of `MedusaError` accepts the following parameters:
+
+1. The first parameter is the type of the error. You can use one of the predefined errors under `MedusaError.Types`, such as `MedusaError.Types.NOT_FOUND` which sets the response status code to `404` automatically.
+2. The second parameter is the message of the error.
+3. The third parameter is an optional code, which is a string, that can be returned in the error object.
+
+After using `MedusaError`, you'll notice that the returned error in the response provides a clearer message:
+
+```json
+{
+  "type": "not_found",
+  "message": "Post was not found"
 }
 ```
 
@@ -400,6 +563,52 @@ Any resource that's registered in the dependency container, such as strategies o
 
 ---
 
+## Ignored Files and Directories
+
+Files and directories prefixed with `_` are ignored. This can be helpful if you want to implement endpoint methods in different files, then reference them in your `route.ts` file.
+
+For example:
+
+<Tabs groupId="files" isCodeTabs={true}>
+<TabItem value="custom-route" label="src/api/custom/route.ts" default>
+
+```ts
+import getProducts from "../_methods/get-products"
+
+export const GET = getProducts
+```
+
+</TabItem>
+<TabItem value="internal-method" label="src/api/_methods/get-product.ts">
+
+```ts
+import { 
+  MedusaRequest, 
+  MedusaResponse, 
+  ProductService,
+} from "@medusajs/medusa"
+
+export default async function (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) {
+  const productService = req.scope.resolve<ProductService>(
+    "productService"
+  )
+
+  const products = await productService.list({})
+
+  res.json({
+    products,
+  })
+}
+```
+
+</TabItem>
+</Tabs>
+
+---
+
 ## Example: CRUD Endpoints
 
 This section services as an example of creating endpoints that perform Create, Read, Update, and Delete (CRUD) operations.
@@ -414,7 +623,7 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
 <TabItem value="posts-routes" label="src/api/admin/posts/route.ts" default>
 
 ```ts
-import type { 
+import type {
   MedusaRequest, 
   MedusaResponse,
 } from "@medusajs/medusa"
