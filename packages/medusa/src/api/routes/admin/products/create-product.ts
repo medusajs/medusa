@@ -125,7 +125,7 @@ export default async (req, res) => {
     "shippingProfileService"
   )
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-
+  logger.activity("BOOOOOM")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
   const inventoryService: IInventoryService | undefined =

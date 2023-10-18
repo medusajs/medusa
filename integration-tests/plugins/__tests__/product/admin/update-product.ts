@@ -2,8 +2,9 @@ import setupServer from "../../../../environment-helpers/setup-server"
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
+import { simpleProductFactory } from "../../../../factories"
 
-import { Region } from "@medusajs/medusa"
+import { MoneyAmount, Region } from "@medusajs/medusa"
 import path from "path"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
@@ -21,15 +22,17 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products", () => {
+describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () => {
   let dbConnection
   let appContainer
   let medusaProcess
+  let product
+  let variant
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env } as any)
+    medusaProcess = await setupServer({ cwd, env, verbose: true } as any)
     appContainer = getContainer()
   })
 
@@ -50,6 +53,29 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
       currency_code: "usd",
       tax_rate: 0,
     })
+
+    await manager.insert(MoneyAmount, {
+      id: "money-amount-test",
+      currency_code: "usd",
+      amount: 50000,
+    })
+
+    product = await simpleProductFactory(dbConnection, {
+      id: "test-product-with-variant",
+      variants: [
+        {
+          options: [{ option_id: "test-product-option-1", value: "test" }],
+        },
+      ],
+      options: [
+        {
+          id: "test-product-option-1",
+          title: "Test option 1",
+        },
+      ],
+    })
+
+    variant = product.variants[0]
   })
 
   afterEach(async () => {
@@ -60,41 +86,35 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
   it("should create prices with region_id and currency_code context", async () => {
     const api = useApi()
     const data = {
-      title: "test product",
-      options: [{ title: "test-option" }],
-      variants: [
+      title: "test variant update",
+      prices: [
         {
-          title: "test variant",
-          prices: [
-            {
-              amount: 66600,
-              region_id: "test-region",
-            },
-            {
-              amount: 55500,
-              currency_code: "usd",
-            },
-          ],
-          options: [{ value: "test-option" }],
+          amount: 66600,
+          region_id: "test-region",
+          id: "boooyeah",
+        },
+        {
+          amount: 55500,
+          currency_code: "usd",
+          region_id: null,
         },
       ],
     }
-
+    console.log("variant.id - ", variant.id)
     let response = await api.post(
-      "/admin/products?relations=variants.prices",
+      `/admin/products/${product.id}/variants/${variant.id}`,
       data,
       adminHeaders
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data).toEqual({
-      product: expect.objectContaining({
+    expect(response.data.product).toEqual(
+      expect.objectContaining({
         id: expect.any(String),
-        title: "test product",
         variants: expect.arrayContaining([
           expect.objectContaining({
-            id: expect.any(String),
-            title: "test variant",
+            id: variant.id,
+            title: "test variant update",
             prices: expect.arrayContaining([
               expect.objectContaining({
                 amount: 66600,
@@ -107,7 +127,7 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
             ]),
           }),
         ]),
-      }),
-    })
+      })
+    )
   })
 })

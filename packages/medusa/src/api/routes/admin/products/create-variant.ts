@@ -1,8 +1,4 @@
 import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
-import {
   IsArray,
   IsBoolean,
   IsNumber,
@@ -11,19 +7,23 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
 
-import { EntityManager } from "typeorm"
 import { IInventoryService } from "@medusajs/types"
 import { Type } from "class-transformer"
-import { createVariantsTransaction } from "./transaction/create-product-variant"
+import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { createVariantsTransaction } from "./transaction/create-product-variant"
 
 /**
  * @oas [post] /admin/products/{id}/variants

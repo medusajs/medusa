@@ -1,3 +1,4 @@
+import { MedusaError, isDefined } from "medusa-core-utils"
 import {
   Brackets,
   EntityManager,
@@ -10,6 +11,22 @@ import {
   SelectQueryBuilder,
 } from "typeorm"
 import {
+  IPriceSelectionStrategy,
+  PriceSelectionContext,
+  TransactionBaseService,
+} from "../interfaces"
+import {
+  MoneyAmount,
+  Product,
+  ProductOptionValue,
+  ProductVariant,
+} from "../models"
+import {
+  FindWithRelationsOptions,
+  ProductVariantRepository,
+} from "../repositories/product-variant"
+import { FindConfig, WithRequiredProperty } from "../types/common"
+import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
   GetRegionPriceContext,
@@ -20,23 +37,6 @@ import {
   UpdateVariantPricesData,
   UpdateVariantRegionPriceData,
 } from "../types/product-variant"
-import { FindConfig, WithRequiredProperty } from "../types/common"
-import {
-  FindWithRelationsOptions,
-  ProductVariantRepository,
-} from "../repositories/product-variant"
-import {
-  IPriceSelectionStrategy,
-  PriceSelectionContext,
-  TransactionBaseService,
-} from "../interfaces"
-import { MedusaError, isDefined } from "medusa-core-utils"
-import {
-  MoneyAmount,
-  Product,
-  ProductOptionValue,
-  ProductVariant,
-} from "../models"
 import {
   buildQuery,
   hasChanges,
@@ -45,14 +45,14 @@ import {
   setMetadata,
 } from "../utils"
 
-import { CartRepository } from "../repositories/cart"
-import EventBusService from "./event-bus"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { ProductOptionValueRepository } from "../repositories/product-option-value"
-import { ProductRepository } from "../repositories/product"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import RegionService from "./region"
 import { buildRelations } from "@medusajs/utils"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { CartRepository } from "../repositories/cart"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { ProductRepository } from "../repositories/product"
+import { ProductOptionValueRepository } from "../repositories/product-option-value"
+import EventBusService from "./event-bus"
+import RegionService from "./region"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {

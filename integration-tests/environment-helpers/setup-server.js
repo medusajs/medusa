@@ -5,6 +5,8 @@ const { setPort } = require("./use-api")
 module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
   const serverPath = path.join(__dirname, "test-server.js")
 
+  require(serverPath)
+
   // in order to prevent conflicts in redis, use a different db for each worker
   // same fix as for databases (works with up to 15)
   // redis dbs are 0-indexed and jest worker ids are indexed from 1
