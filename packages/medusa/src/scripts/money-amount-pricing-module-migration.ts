@@ -1,13 +1,5 @@
-import {
-  CreatePriceSetDTO,
-  IInventoryService,
-  IPricingModuleService,
-  IStockLocationService,
-} from "@medusajs/types"
-import {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} from "../services"
+import { IPricingModuleService } from "@medusajs/types"
+import { ProductVariantService } from "../services"
 
 import { AwilixContainer } from "awilix"
 import { EntityManager } from "typeorm"
