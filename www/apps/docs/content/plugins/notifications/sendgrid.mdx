@@ -3930,7 +3930,7 @@ Where `<ORDER_PLACED_TEMPLATE_ID` is the ID of your template for order placed em
 
 Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array of plugins:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // ...,
   {
@@ -3983,18 +3983,30 @@ You can also track analytics related to emails sent from the SendGrid dashboard.
 
 ## Dynamic usage
 
-You can resolve the SendGrid service to send emails from your custom services or other resources. For example:
+You can resolve the SendGrid service to send emails from your custom services or other resources.
 
-```ts
-const sendgridService = scope.resolve("sendgridService")
-const sendOptions =  {
-    templateId: "d-123....",
-    from: "ACME <acme@mail.com>",
-    to: "customer@mail.com",
-    dynamic_template_data: { dynamic: "data" },
-  }
+For example, in an API Route:
 
-sendgridService.sendEmail(sendOptions)
+```ts title=src/api/store/email/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const sendgridService = req.scope.resolve("sendgridService")
+  const sendOptions =  {
+      templateId: "d-123....",
+      from: "ACME <acme@mail.com>",
+      to: "customer@mail.com",
+      dynamic_template_data: { dynamic: "data" },
+    }
+
+  sendgridService.sendEmail(sendOptions)
+}
 ```
 
 ---

@@ -232,19 +232,19 @@ npx medusa migrations run
 
 ---
 
-## Add Custom Endpoints
+## Add Custom API Routes
 
-After creating your entity, you need to create custom admin endpoints that allow you to access and manipulate that entity. The endpoints necessary vary based on your case, but generally speaking, you'll need endpoints to perform Create, Read, Update, and Delete (CRUD) functionalities.
+After creating your entity, you need to create custom admin API Routes that allow you to access and manipulate that entity. The API Routes necessary vary based on your case, but generally speaking, you'll need API Routes to perform Create, Read, Update, and Delete (CRUD) functionalities.
 
 :::tip
 
-The Medusa backend provides the necessary endpoints for the actual file upload. So, you don’t need to create endpoints for that.
+The Medusa backend provides the necessary API Routes for the actual file upload. So, you don’t need to create API Routes for that.
 
 :::
 
-You can also create custom storefront endpoints that allow you to show information related to the downloadable digital product if this information isn't stored within the `Product` or `ProductVariant` entities.
+You can also create custom storefront API Routes that allow you to show information related to the downloadable digital product if this information isn't stored within the `Product` or `ProductVariant` entities.
 
-Creating an endpoint also requires creating a service, which is a class that typically holds utility methods for an entity. You can implement the CRUD functionalities as methods within the service, then access the service in an endpoint and use its methods.
+Creating an API Route also requires creating a service, which is a class that typically holds utility methods for an entity. You can implement the CRUD functionalities as methods within the service, then access the service in an API Route and use its methods.
 
 <DocCardList colSize={6} items={[
   {
@@ -258,8 +258,8 @@ Creating an endpoint also requires creating a service, which is a class that typ
   },
   {
     type: 'link',
-    href: '/development/endpoints/create',
-    label: 'Create an Endpoint',
+    href: '/development/api-routes/create',
+    label: 'Create an API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to create an entity in the Medusa backend.',
@@ -269,12 +269,12 @@ Creating an endpoint also requires creating a service, which is a class that typ
 
 <details>
 <summary>
-Example: List and Create Endpoints
+Example: List and Create API Routes
 </summary>
 
-This example showcases how you can create the list and create endpoints for digital products. These endpoints are chosen in particular as they’re used in later parts of this recipe. You may follow the same instructions to create other necessary endpoints.
+This example showcases how you can create the list and create API Routes for digital products. These API Routes are chosen in particular as they’re used in later parts of this recipe. You may follow the same instructions to create other necessary API Routes.
 
-Before creating the endpoints, you’ll create the `ProductMediaService`. Create the file `src/services/product-media.ts` with the following content:
+Before creating the API Routes, you’ll create the `ProductMediaService`. Create the file `src/services/product-media.ts` with the following content:
 
 ```ts title=src/services/product-media.ts
 import { 
@@ -455,15 +455,43 @@ export default ProductMediaService
 
 This service implements the necessary methods to perform the basic CRUD operations. You can add any other method if necessary.
 
-You can now create the endpoints. To create the “create product media” endpoint, create the file `src/api/routes/admin/product-media/create.ts` with the following content:
+You can now create the API Routes. Create the file `src/api/admin/product-media/route.ts` with the following content:
 
-```ts title=src/api/routes/admin/product-media/create.ts
-import { Request, Response } from "express"
+```ts title=src/api/admin/product-media/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import ProductMediaService 
-  from "../../../../services/product-media"
+  from "../../../services/product-media"
+import { MediaType } from "../../../models/product-media"
 
-// create a product media for a variant
-export default async (req: Request, res: Response) => {
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const productMediaService = req.scope.resolve<
+    ProductMediaService
+  >("productMediaService")
+  // omitting pagination for simplicity
+  const [productMedias, count] = await productMediaService
+    .listAndCount({
+      type: MediaType.MAIN,
+    }, {
+      relations: ["variant"],
+    }
+  )
+
+  res.json({
+    product_medias: productMedias,
+    count,
+  })
+}
+
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // validation omitted for simplicity
   const {
     variant_id,
@@ -488,136 +516,10 @@ export default async (req: Request, res: Response) => {
 }
 ```
 
-This creates an endpoint the accepts the necessary data to create a product media, then returns the created product media.
+This creates two API Routes:
 
-Next, create the “list product media” endpoint by creating the file `src/api/routes/admin/product-media/list.ts` with the following content:
-
-```ts title=src/api/routes/admin/product-media/list.ts
-import { Request, Response } from "express"
-import ProductMediaService 
-  from "../../../../services/product-media"
-import { MediaType } from "../../../../models/product-media"
-
-// retrieve a list of product medias
-export default async (req: Request, res: Response) => {
-  const productMediaService = req.scope.resolve<
-    ProductMediaService
-  >("productMediaService")
-  // omitting pagination for simplicity
-  const [productMedias, count] = await productMediaService
-    .listAndCount({
-      type: MediaType.MAIN,
-    }, {
-      relations: ["variant"],
-    }
-  )
-
-  res.json({
-    product_medias: productMedias,
-    count,
-  })
-}
-```
-
-This retrieves a list of product media records that have the type `main`. It also retrieves the relations `variant` and `variant.product` to access the product media’s variant and main product.
-
-To use these endpoints, you need to export them in a router that’s returned by `src/api/index.ts`. First, create the file `src/api/routes/admin/product-media/index.ts` that registers the product media endpoints you created:
-
-```ts title=src/api/routes/admin/product-media/index.ts
-import { wrapHandler } from "@medusajs/utils"
-import { Router } from "express"
-import create from "./create"
-import list from "./list"
-
-const router = Router()
-
-export default (adminRouter: Router) => {
-  adminRouter.use("/product-media", router)
-
-  router.get("/", wrapHandler(list))
-  router.post("/", wrapHandler(create))
-}
-```
-
-Then, create the file `src/api/routes/admin/index.ts` if it doesn’t already exist and add the following in it:
-
-```ts title=src/api/routes/admin/index.ts
-import { Router } from "express"
-import productMediaRoutes from "./product-media"
-
-// Initialize a custom router
-const router = Router()
-
-export function attachAdminRoutes(adminRouter: Router) {
-  productMediaRoutes(adminRouter)
-  
-  // ... exisiting endpoints
-}
-```
-
-In this file you import the function in `src/api/routes/admin/product-media/index.ts` that registers the necessary routes and pass it the admin router, which this file’s function accepts as a parameter.
-
-If the file `src/api/routes/admin/index.ts` wasn’t already created, make sure to import it in `src/api/index.ts` and use it to register the product media endpoints:
-
-```ts title=src/api/routes/admin/index.ts
-import { Router } from "express"
-import cors from "cors"
-import bodyParser from "body-parser"
-import { ConfigModule } from "@medusajs/medusa"
-import { getConfigFile } from "medusa-core-utils"
-import { attachStoreRoutes } from "./routes/store"
-import { attachAdminRoutes } from "./routes/admin"
-
-export default (rootDirectory: string): Router | Router[] => {
-  // Read currently-loaded medusa config
-  const { configModule } = getConfigFile<ConfigModule>(
-    rootDirectory,
-    "medusa-config"
-  )
-  const { projectConfig } = configModule
-
-  // Set up our CORS options objects, based on config
-  const storeCorsOptions = {
-    origin: projectConfig.store_cors.split(","),
-    credentials: true,
-  }
-
-  const adminCorsOptions = {
-    origin: projectConfig.admin_cors.split(","),
-    credentials: true,
-  }
-
-  // Set up express router
-  const router = Router()
-
-  // Set up root routes for store and admin endpoints, 
-  // with appropriate CORS settings
-  router.use(
-    "/store", 
-    cors(storeCorsOptions), 
-    bodyParser.json()
-  )
-  router.use(
-    "/admin", 
-    cors(adminCorsOptions), 
-    bodyParser.json()
-  )
-
-  // Set up routers for store and admin endpoints
-  const storeRouter = Router()
-  const adminRouter = Router()
-
-  // Attach these routers to the root routes
-  router.use("/store", storeRouter)
-  router.use("/admin", adminRouter)
-
-  // Attach custom routes to these routers
-  attachStoreRoutes(storeRouter)
-  attachAdminRoutes(adminRouter)
-
-  return router
-}
-```
+- a `GET` API Route at `/admin/product-media` that retrieves a list of product media records that have the type `main`. It also retrieves the relations `variant` and `variant.product` to access the product media’s variant and main product.
+- a `POST` API Route at `/admin/product-media` that accepts the necessary data to create a product media, then returns the created product media.
 
 </details>
     
@@ -628,7 +530,7 @@ export default (rootDirectory: string): Router | Router[] => {
 
 The Medusa admin dashboard provides merchants with an easy-to-use interface to manage their store's data and settings. It's also extendable, so you can add widgets, pages, and setting pages relevant to your use case.
 
-To add an interface that allows the admin user to upload digital products, you can create custom widgets or pages that use the routes you created. You can use the [Protected Files Upload endpoint](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected).
+To add an interface that allows the admin user to upload digital products, you can create custom widgets or pages that use the routes you created. You can use the [Protected Files Upload API Route](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected).
 
 <DocCardList colSize={4} items={[
   {
@@ -652,7 +554,7 @@ To add an interface that allows the admin user to upload digital products, you c
   {
     type: 'link',
     href: 'https://docs.medusajs.com/api/admin#uploads_postuploadsprotected',
-    label: 'Protected Files Upload Endpoint',
+    label: 'Protected Files Upload API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn about the expected request body and response.',
@@ -675,7 +577,7 @@ npm install medusa-react @tanstack/react-query @medusajs/ui
 
 This installs the necessary packages to use the Medusa React client and the [Medusa UI package](https://docs.medusajs.com/ui).
 
-You also need to create types for the expected requests and responses of the endpoints you created. This is helpful when using Medusa React’s custom hooks. To do that, create the file `src/types/product-media.ts` with the following content:
+You also need to create types for the expected requests and responses of the API Routes you created. This is helpful when using Medusa React’s custom hooks. To do that, create the file `src/types/product-media.ts` with the following content:
 
 ```ts title=src/types/product-media.ts
 import { 
@@ -810,7 +712,7 @@ export const config: RouteConfig = {
 export default ProductMediaListPage
 ```
 
-This UI route will show under the sidebar with the label “Digital Products”. In the page, you use the `useAdminCustomQuery` hook imported from `medusa-react` to send a request to your custom “list digital products” endpoint.
+This UI route will show under the sidebar with the label “Digital Products”. In the page, you use the `useAdminCustomQuery` hook imported from `medusa-react` to send a request to your custom “list digital products” API Route.
 
 In the page, you’ll show the list of digital products in a table, if there are any. You’ll also show a button that opens a drawer to the side of the page.
 
@@ -1002,7 +904,7 @@ In this component, you create a form that accepts basic information needed to cr
 
 Notice that an alternative approach would be to inject a widget to the Product Details page and allow users to upload the files from there. It depends on whether you’re only supporting Digital Products or you want the distinction between them, as done here.
 
-When the user submits the form, you first create a product with a variant. Then, you upload the file using the [Upload Protected File endpoint](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected). Finally, you create the digital product using the custom endpoint you created.
+When the user submits the form, you first create a product with a variant. Then, you upload the file using the [Upload Protected File API Route](https://docs.medusajs.com/api/admin#uploads_postuploadsprotected). Finally, you create the digital product using the custom API Route you created.
 
 The product’s details can still be edited from the same Products interface, similar to regular products. You can edit its price, add more variants, and more.
 
@@ -1027,7 +929,7 @@ To implement that, you first need to listen to the `order.placed` event using a 
 
 :::note
 
-Following this approach assumes the file service you're using handles creating secure presigned URLs with an expiration mechanism. Alternatively, you can create a new service that handles creating and validating tokens, and an endpoint that receives that token to allow customers to download the file.
+Following this approach assumes the file service you're using handles creating secure presigned URLs with an expiration mechanism. Alternatively, you can create a new service that handles creating and validating tokens, and an API Route that receives that token to allow customers to download the file.
 
 :::
 
@@ -1050,7 +952,7 @@ Example: Using SendGrid
 
 :::note
 
-An alternative solution is to create a store download endpoint that allows authenticated customers to download products they've purchased, then add the link to the endpoint or a storefront page that calls the endpoint in the email. Learn how to implement the download endpoint [here](#download-product-after-purchase).
+An alternative solution is to create a store download API Route that allows authenticated customers to download products they've purchased, then add the link to the API Route or a storefront page that calls the API Route in the email. Learn how to implement the download API Route [here](#download-product-after-purchase).
 
 :::
 
@@ -1164,27 +1066,30 @@ The rest of this section provides some guidelines into how to customize the Next
 
 In the product detail's page, you can add a button that allows customers to download a preview of the digital product.
 
-To implement this, create a storefront endpoint that allows you to fetch the digital product, then customize the Next.js storefront to show the preview button if a product is digital.
+To implement this, create a storefront API Route that allows you to fetch the digital product, then customize the Next.js storefront to show the preview button if a product is digital.
 
 <details>
 <summary>
 Example
 </summary>
 
-Before you customize the Next.js storefront, you need to add a store endpoint in your backend.
+Before you customize the Next.js storefront, you need to add a store API Route in your backend.
 
-Create the file `src/api/routes/store/product-media/list.ts` with the following content:
+Create the file `src/api/store/product-media/route.ts` with the following content:
 
-```ts title=src/api/routes/store/product-media/list.ts
-import { Request, Response } from "express"
+```ts title=src/api/store/product-media/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import ProductMediaService 
-  from "../../../../services/product-media"
-import { MediaType } 
-  from "../../../../models/product-media"
+  from "../../../services/product-media"
+import { MediaType } from "../../../models/product-media"
 
-
-// retrieve a list of product medias
-export default async (req: Request, res: Response) => {
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   const productMediaService = req.scope.resolve<
     ProductMediaService
   >("productMediaService")
@@ -1206,103 +1111,7 @@ export default async (req: Request, res: Response) => {
 }
 ```
 
-This adds a store endpoint that returns a list of product medias of type `preview`. It also allows you to pass query parameters to filter the returned products medias.
-
-To use this endpoint, you need to export it in a router that’s returned by `src/api/index.ts`. First, create the file `src/api/routes/store/product-media/index.ts` that registers the product media endpoint you created:
-
-```ts title=src/api/routes/store/product-media/index.ts
-import { wrapHandler } from "@medusajs/utils"
-import { Router } from "express"
-import list from "./list"
-
-const router = Router()
-
-export default (storeRouter: Router) => {
-  storeRouter.use("/product-media", router)
-
-  router.get("/", wrapHandler(list))
-}
-```
-
-Then, create the file `src/api/routes/store/index.ts` if it doesn’t already exist and add the following in it:
-
-```ts title=src/api/routes/store/index.ts
-import { Router } from "express"
-import productMediaRoutes from "./product-media"
-
-// Initialize a custom router
-const router = Router()
-
-export function attachStoreRoutes(storeRouter: Router) {
-  productMediaRoutes(storeRouter)
-  
-  // existing endpoints...
-}
-```
-
-In this file you import the function in `src/api/routes/store/product-media/index.ts` that registers the necessary routes and pass it the store router, which this file’s function accepts as a parameter.
-
-If the file `src/api/routes/store/index.ts` wasn’t already created, make sure to import it in `src/api/index.ts` and use it to register the product media endpoints:
-
-```ts
-import { Router } from "express"
-import cors from "cors"
-import bodyParser from "body-parser"
-import { ConfigModule } from "@medusajs/medusa"
-import { getConfigFile } from "medusa-core-utils"
-import { attachStoreRoutes } from "./routes/store"
-import { attachAdminRoutes } from "./routes/admin"
-
-export default (rootDirectory: string): Router | Router[] => {
-  // Read currently-loaded medusa config
-  const { configModule } = getConfigFile<ConfigModule>(
-    rootDirectory,
-    "medusa-config"
-  )
-  const { projectConfig } = configModule
-
-  // Set up our CORS options objects, based on config
-  const storeCorsOptions = {
-    origin: projectConfig.store_cors.split(","),
-    credentials: true,
-  }
-
-  const adminCorsOptions = {
-    origin: projectConfig.admin_cors.split(","),
-    credentials: true,
-  }
-
-  // Set up express router
-  const router = Router()
-
-  // Set up root routes for store and admin endpoints, 
-  // with appropriate CORS settings
-  router.use(
-    "/store", 
-    cors(storeCorsOptions), 
-    bodyParser.json()
-  )
-  router.use(
-    "/admin", 
-    cors(adminCorsOptions), 
-    bodyParser.json()
-  )
-
-  // Set up routers for store and admin endpoints
-  const storeRouter = Router()
-  const adminRouter = Router()
-
-  // Attach these routers to the root routes
-  router.use("/store", storeRouter)
-  router.use("/admin", adminRouter)
-
-  // Attach custom routes to these routers
-  attachStoreRoutes(storeRouter)
-  attachAdminRoutes(adminRouter)
-
-  return router
-}
-```
+This adds a store API Route that returns a list of product medias of type `preview`. It also allows you to pass query parameters to filter the returned products medias.
 
 Now, you can customize the Next.js storefront to show the preview button.
 
@@ -2228,27 +2037,26 @@ After the customer purchases the digital product you can show a download button 
 Example
 </summary>
 
-Before you implement the storefront changes, you need to create a new endpoint in the backend that ensures that the currently logged-in customer has purchased the digital product and, if so, returns a presigned URL to download it.
+Before you implement the storefront changes, you need to create a new API Route in the backend that ensures that the currently logged-in customer has purchased the digital product and, if so, returns a presigned URL to download it.
 
-Create the file `src/api/routes/store/product-media/download.ts` with the following content:
+Create the file `src/api/store/product-media/download/[variant_id]/route.ts` with the following content:
 
-```ts title=src/api/routes/store/product-media/download.ts
-import { Request, Response } from "express"
-import ProductMediaService 
-  from "../../../../services/product-media"
-import { 
-  MediaType,
-} from "../../../../models/product-media"
-import { 
-  AbstractFileService,
-  CustomerService,
-  OrderService,
+```ts title=src/api/store/product-media/download/route.ts
+import type { 
+  AbstractFileService, 
+  MedusaRequest, 
+  MedusaResponse, 
+  OrderService, 
   ProductVariant,
 } from "@medusajs/medusa"
+import ProductMediaService 
+  from "../../../../services/product-media"
+import { MediaType } from "../../../../models/product-media"
 
-
-// download a purchased product
-export default async (req: Request, res: Response) => {
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   const variantId = req.params.variant_id
   if (!variantId) {
     throw new Error("Variant ID is required")
@@ -2302,31 +2110,27 @@ export default async (req: Request, res: Response) => {
 }
 ```
 
-Then, register the new endpoint in `src/api/routes/store/product-media/index.ts`:
+Then, add the `requireCustomerAuthentication` middleware to this API Route in `src/api/middlewares.ts`:
 
-```ts title=src/api/routes/store/product-media/index.ts
-import { wrapHandler } from "@medusajs/utils"
+```ts title=src/api/middlewares.ts
 import { 
-  requireCustomerAuthentication,
+  requireCustomerAuthentication, 
+  type MiddlewaresConfig, 
 } from "@medusajs/medusa"
-import download from "./download"
 
-// ...
-
-export default (storeRouter: Router) => {
-  // ...
-
-  router.get(
-    "/download/:variant_id",
-    requireCustomerAuthentication(),
-    wrapHandler(download)
-  )
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/store/product-media/download/*",
+      middlewares: [requireCustomerAuthentication()],
+    },
+  ],
 }
 ```
 
-Note that you use the `requireCustomerAuthentication` middleware to ensure only logged-in customers can access this endpoint.
+This ensures that only logged-in customers can access this API Route.
 
-You can use this endpoint in your storefront to add a button that allows downloading the purchased digital product.
+You can use this API Route in your storefront to add a button that allows downloading the purchased digital product.
 
 To mask the presigned URL, create a Next.js API route at `src/app/api/download/main/[variant_id]/route.ts` with the following content:
 

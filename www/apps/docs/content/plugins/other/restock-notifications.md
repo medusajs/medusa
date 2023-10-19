@@ -16,7 +16,7 @@ This plugin doesn't actually implement the sending of the notification, only the
 
 Customers browsing your products may find something that they need, but it's unfortunately out of stock. In this scenario, you can keep them interested in your product and, subsequently, in your store by notifying them when the product is back in stock.
 
-The Restock Notifications plugin provides new endpoints that allow the customer to subscribe to restock notifications of a specific product variant. It also triggers the `restock-notification.restocked` event whenever a product variant's stock quantity is above a specified threshold. The event's payload includes the ID of the product variant and the customer emails subscribed to it. You can pair this with a subscriber that listens to that event and sends a notification to the customer using a [Notification plugin](../notifications/).
+The Restock Notifications plugin provides new API Routes that allow the customer to subscribe to restock notifications of a specific product variant. It also triggers the `restock-notification.restocked` event whenever a product variant's stock quantity is above a specified threshold. The event's payload includes the ID of the product variant and the customer emails subscribed to it. You can pair this with a subscriber that listens to that event and sends a notification to the customer using a [Notification plugin](../notifications/).
 
 ---
 
@@ -83,7 +83,7 @@ npm run start
 
 ### 2. Subscribe to Variant Restock Notifications
 
-Then, send a `POST` request to the endpoint `<BACKEND_URL>/restock-notifications/variants/<VARIANT_ID>` to subscribe to restock notifications of a product variant ID. Note that `<BACKEND_URL>` refers to the URL fo your Medusa backend, which is `http://localhost:9000` during development, and `<VARIANT_ID>` refers to the ID of the product variant you're subscribing to.
+Then, send a `POST` request to the API Route `<BACKEND_URL>/restock-notifications/variants/<VARIANT_ID>` to subscribe to restock notifications of a product variant ID. Note that `<BACKEND_URL>` refers to the URL fo your Medusa backend, which is `http://localhost:9000` during development, and `<VARIANT_ID>` refers to the ID of the product variant you're subscribing to.
 
 :::note
 
@@ -91,7 +91,7 @@ You can only subscribe to product variants that are out-of-stock. Otherwise, you
 
 :::
 
-The endpoint accepts the following request body parameters:
+The API Route accepts the following request body parameters:
 
 1. `email`: a string indicating the email that is subscribing to the product variant's restock notification.
 2. `sales_channel_id`: an optional string indicating the ID of the sales channel to check the stock quantity in when subscribing. This is useful if you're using multi-warehouse modules, as the product variant's quantity is checked correctly when checking if it's out of stock. Alternatively, you can pass the [publishable API key in the header of the request](../../development/publishable-api-keys/storefront/use-in-requests.md) and the sales channel will be derived from it.
@@ -100,7 +100,7 @@ The endpoint accepts the following request body parameters:
 
 After subscribing to the out-of-stock variant, change its stock quantity to the minimum inventory required to test out the event trigger. The new stock quantity should be any value above `0` if you didn't set the `inventory_required` option.
 
-You can use the [Medusa admin](../../user-guide/products/manage.mdx#manage-product-variants) or the [Admin REST API endpoints](https://docs.medusajs.com/api/admin#products_postproductsproductvariantsvariant) to update the quantity.
+You can use the [Medusa admin](../../user-guide/products/manage.mdx#manage-product-variants) or the [Admin REST API Routes](https://docs.medusajs.com/api/admin#products_postproductsproductvariantsvariant) to update the quantity.
 
 After you update the quantity, you can see the `restock-notification.restocked` triggered and logged in the Medusa backend logs. If you've implemented the notification sending, this is where it'll be triggered and a notification will be sent.
 

@@ -59,7 +59,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             title: "Developing with Medusa",
             items: [
               "Recipes",
-              "How to create endpoints",
+              "How to create API routes",
               "How to create an entity",
               "How to create a plugin",
               "How to create an admin widget",

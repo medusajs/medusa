@@ -198,7 +198,7 @@ The Next.js Starter Storefront by default is compatible with MeiliSearch.
 
 To enable or disable the search engine, change the value of the feature in `store.config.json`:
 
-```json
+```json title=store.config.json
 {
   "features": {
     "search": false
@@ -217,12 +217,12 @@ In your Next.js Starter Storefront, set the environment variables necessary for 
 ```json
 NEXT_PUBLIC_SEARCH_ENDPOINT=<YOUR_MEILISEARCH_URL>
 NEXT_PUBLIC_SEARCH_API_KEY=<YOUR_API_KEY>
-NEXT_PUBLIC_SEARCH_INDEX_NAME=products
+NEXT_PUBLIC_INDEX_NAME=products
 ```
 
 `<YOUR_MEILISEARCH_URL>` is the URL MeiliSearch is running on. The default is `http://127.0.0.1:7700`.
 
-`NEXT_PUBLIC_SEARCH_INDEX_NAME` is the index name of the products in MeiliSearch. By default, it’s `products`.
+`NEXT_PUBLIC_INDEX_NAME` is the index name of the products in MeiliSearch. By default, it’s `products`.
 
 `<YOUR_API_KEY>` is the API key used to search through MeiliSearch indexes. To create a new API Key, make sure that the MeiliSearch service is running and send the following request:
 
@@ -260,21 +260,21 @@ In your Next.js Starter Storefront, set the environment variables necessary for 
 ```bash
 NEXT_PUBLIC_SEARCH_APP_ID=<YOUR_APP_ID>
 NEXT_PUBLIC_SEARCH_API_KEY=<YOUR_SEARCH_API_KEY>
-NEXT_PUBLIC_SEARCH_INDEX_NAME=products
+NEXT_PUBLIC_INDEX_NAME=products
 ```
 
 Where `<YOUR_APP_ID>` and `<YOUR_SEARCH_API_KEY>` are the Algolia App ID and Algolia Search API Key respectively. You can retrieve them from Algolia by going to [API Keys](https://www.algolia.com/account/api-keys/all) in your account settings.
 
-`NEXT_PUBLIC_SEARCH_INDEX_NAME` is the index name of the products in Algolia. By default, it’s `products`.
+`NEXT_PUBLIC_INDEX_NAME` is the index name of the products in Algolia. By default, it’s `products`.
 
 Next, change the content of `src/lib/search-client.ts` to the following:
 
-```bash
+```ts title=src/lib/search-client.ts
 import algoliasearch from "algoliasearch/lite"
 
-const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || "" // You should add this to your environment variables
+const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || ""
 
-const apiKey = process.env.NEXT_PUBLIC_SEARCH_API_KEY || "test_key"
+const apiKey = process.env.NEXT_PUBLIC_SEARCH_API_KEY || ""
 
 export const searchClient = algoliasearch(appId, apiKey)
 
@@ -334,8 +334,8 @@ To change the port, change the `develop` command in `package.json` to the follow
 
 ```json
 "scripts": {
-    //other scripts
-    "dev": "next dev -p <PORT>"
+  //other scripts
+  "dev": "next dev -p <PORT>"
 }
 ```
 

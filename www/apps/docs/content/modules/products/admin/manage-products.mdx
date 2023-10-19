@@ -52,7 +52,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Products
 
-You can list products as an admin using the [List Products endpoint](https://docs.medusajs.com/api/admin#products_getproducts):
+You can list products as an admin using the [List Products API Route](https://docs.medusajs.com/api/admin#products_getproducts):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -115,7 +115,7 @@ curl -L -X GET '<BACKEND_URL>/admin/products' \
 </TabItem>
 </Tabs>
 
-This endpoint does not require any parameters. You can pass parameters to search and filter through the retrieved products. For example, you can pass the `q` parameter which searches through product titles, descriptions, and more. You can learn more about available parameters in the [API reference](https://docs.medusajs.com/api/admin#products_getproducts).
+This API Route doesn't require any parameters. You can pass parameters to search and filter through the retrieved products. For example, you can pass the `q` parameter which searches through product titles, descriptions, and more. You can learn more about available parameters in the [API reference](https://docs.medusajs.com/api/admin#products_getproducts).
 
 You can also specify which fields to returns or which relations to expand using the `fields` and `expand` query parameters. You can learn more about them in the [API reference](https://docs.medusajs.com/api/admin#expanding-fields).
 
@@ -125,7 +125,7 @@ The request returns an array of products along with [pagination parameters](http
 
 ## Create a Product
 
-You can create a product by sending a request to the [Create a Product endpoint](https://docs.medusajs.com/api/admin#products_postproducts):
+You can create a product by sending a request to the [Create a Product API Route](https://docs.medusajs.com/api/admin#products_postproducts):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -365,7 +365,7 @@ curl -L -X POST '<BACKEND_URL>/admin/products' \
 </TabItem>
 </Tabs>
 
-This endpoint only requires the `title` body parameter, which is the name of the product. Other parameters passed in the example are optional. They are:
+This API Route only requires the `title` body parameter, which is the name of the product. Other parameters passed in the example are optional. They are:
 
 - `is_giftcard`: a boolean value that determines whether a product is a gift card. By default, it’s `false`.
 - `is_discountable`: a boolean value that determines whether discounts can be applied on the product. By default, it’s `true`.
@@ -399,7 +399,7 @@ You can learn more about pricing and zero-decimal currencies [here](../products.
 
 ## Retrieve a Product
 
-You can retrieve a single product as an admin by sending a request to the [Get a Product endpoint](https://docs.medusajs.com/api/admin#products_getproductsproduct):
+You can retrieve a single product as an admin by sending a request to the [Get a Product API Route](https://docs.medusajs.com/api/admin#products_getproductsproduct):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -459,7 +459,7 @@ curl -L -X GET '<BACKEND_URL>/admin/products/<PRODUCT_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the product ID to be passed as a path parameter.
+This API Route requires the product ID to be passed as a path parameter.
 
 The request returns the product as an object.
 
@@ -467,7 +467,7 @@ The request returns the product as an object.
 
 ## Update a Product
 
-You can update a product by sending a request to the [Update Product endpoint](https://docs.medusajs.com/api/admin#products_postproductsproduct):
+You can update a product by sending a request to the [Update Product API Route](https://docs.medusajs.com/api/admin#products_postproductsproduct):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -540,7 +540,7 @@ curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the product ID as a path parameter. In the request’s body, you can pass any of the product’s fields to update. In the example above, you update the `title` of the product.
+This API Route requires the product ID as a path parameter. In the request’s body, you can pass any of the product’s fields to update. In the example above, you update the `title` of the product.
 
 You can learn about other body parameters that you can pass in the [API reference](https://docs.medusajs.com/api/admin#products_postproductsproduct).
 
@@ -550,15 +550,15 @@ The request returns the updated product as an object.
 
 ## Manage Product Options
 
-In this section, you’ll learn how to manage the options of the product. Although you can already do that through the [Create a Product](#create-a-product) and [Update a Product](#update-a-product) endpoints explained above, you can also use endpoints specific to product options.
+In this section, you’ll learn how to manage the options of the product. Although you can already do that through the [Create a Product](#create-a-product) and [Update a Product](#update-a-product) API Routes explained above, you can also use API Routes specific to product options.
 
 ### Retrieve Product Options
 
-You can retrieve a product’s options by retrieving the product either using the [List Products](#list-products) or the [Retrieve a Product](#retrieve-a-product) endpoints. The options are available under the `options` property.
+You can retrieve a product’s options by retrieving the product either using the [List Products](#list-products) or the [Retrieve a Product](#retrieve-a-product) API Routes. The options are available under the `options` property.
 
 ### Add a Product Option
 
-You can add a product option to a product by sending a request to the [Add Product Option endpoint](https://docs.medusajs.com/api/admin#products_postproductsproductoptions):
+You can add a product option to a product by sending a request to the [Add Product Option API Route](https://docs.medusajs.com/api/admin#products_postproductsproductoptions):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -631,13 +631,13 @@ curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/options' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the product’s ID as a path parameter. In the request body parameter, it requires passing the `title` of the option.
+This API Route requires the product’s ID as a path parameter. In the request body parameter, it requires passing the `title` of the option.
 
 The request returns the updated product as an option. You can view available options under the `options` property of the product.
 
 ### Update a Product Option
 
-You can update a product option by sending a request to the [Update Product Option endpoint](https://docs.medusajs.com/api/admin#products_postproductsproductoptionsoption):
+You can update a product option by sending a request to the [Update Product Option API Route](https://docs.medusajs.com/api/admin#products_postproductsproductoptionsoption):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -713,7 +713,7 @@ curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/options/<OPT_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the product’s ID and the product option’s ID to be passed as a path parameter.
+This API Route requires the product’s ID and the product option’s ID to be passed as a path parameter.
 
 In the body parameters, you can update the `title` field of the product option.
 
@@ -721,7 +721,7 @@ The request returns the updated product as an option. You can view available opt
 
 ### Delete a Product Option
 
-You can delete a product option by sending a request to the [Delete Product Option endpoint](https://docs.medusajs.com/api/admin#products_deleteproductsproductoptionsoption):
+You can delete a product option by sending a request to the [Delete Product Option API Route](https://docs.medusajs.com/api/admin#products_deleteproductsproductoptionsoption):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -782,7 +782,7 @@ curl -L -X DELETE '<BACKEND_URL>/admin/products/<PRODUCT_ID>/options/<OPT_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the product’s ID and the product option’s ID to be passed as a path parameter.
+This API Route requires the product’s ID and the product option’s ID to be passed as a path parameter.
 
 The request returns the following fields:
 
@@ -795,15 +795,15 @@ The request returns the following fields:
 
 ## Manage Product Variants
 
-In this section, you’ll learn how to manage the variants of the product. Although you can already do that through the [Create a Product](#create-a-product) and [Update a Product](#update-a-product) endpoints explained above, you can also use endpoints specific to product variants.
+In this section, you’ll learn how to manage the variants of the product. Although you can already do that through the [Create a Product](#create-a-product) and [Update a Product](#update-a-product) API Routes explained above, you can also use API Routes specific to product variants.
 
 ### Retrieve Product Variants
 
-You can retrieve a product’s variants by retrieving the product either using the [List Products](#list-products) or the [Retrieve a Product](#retrieve-a-product) endpoints. The product variants are available under the `variants` property.
+You can retrieve a product’s variants by retrieving the product either using the [List Products](#list-products) or the [Retrieve a Product](#retrieve-a-product) API Routes. The product variants are available under the `variants` property.
 
 ### Create Product Variants
 
-You can create a product variant by sending a request to the [Create Product Variant endpoint](https://docs.medusajs.com/api/admin#products_postproductsproductvariants):
+You can create a product variant by sending a request to the [Create Product Variant API Route](https://docs.medusajs.com/api/admin#products_postproductsproductvariants):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -924,7 +924,7 @@ curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/variants' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the product as a path parameter. In the request body parameters, the following parameters are required:
+This API Route requires the ID of the product as a path parameter. In the request body parameters, the following parameters are required:
 
 - `title`: A string indicating the title of the product variant.
 - `prices`: an array of objects, each object indicating the pricing of the variant in different contexts. For example, you can specify different prices for different currencies or regions. You can learn about other accepted properties within price objects in the API reference. You can also learn about formatting the `amount` property in this section.
@@ -938,7 +938,7 @@ The request returns the updated product. You can access the product’s variants
 
 ### Update a Product Variant
 
-You can update a product variant by sending a request to the [Update a Product Variant endpoint](https://docs.medusajs.com/api/admin#products_postproductsproductvariantsvariant):
+You can update a product variant by sending a request to the [Update a Product Variant API Route](https://docs.medusajs.com/api/admin#products_postproductsproductvariantsvariant):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -1014,7 +1014,7 @@ curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/variants/<VARIANT_ID>
 </TabItem>
 </Tabs>
 
-This endpoint requires the product ID and variant ID to be passed as a path parameter.
+This API Route requires the product ID and variant ID to be passed as a path parameter.
 
 In the request body parameters, you can pass any of the variant’s attributes that you want to update. In the example above, you edit the `title` of the variant. You can refer to the [API reference](https://docs.medusajs.com/api/admin#products_postproductsproductvariantsvariant) for other possible parameters.
 
@@ -1022,7 +1022,7 @@ The request returns the updated product. You can access the product’s variants
 
 ### Delete Product Variant
 
-You can delete a product variant by sending a request to the [Delete a Product Variant endpoint](https://docs.medusajs.com/api/admin#products_deleteproductsproductvariantsvariant):
+You can delete a product variant by sending a request to the [Delete a Product Variant API Route](https://docs.medusajs.com/api/admin#products_deleteproductsproductvariantsvariant):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -1083,7 +1083,7 @@ curl -L -X DELETE '<BACKEND_URL>/admin/products/<PRODUCT_ID>/variants/<VARIANT_I
 </TabItem>
 </Tabs>
 
-This endpoint requires the product ID and variant ID to be passed as a path parameter.
+This API Route requires the product ID and variant ID to be passed as a path parameter.
 
 The request returns the following fields:
 
@@ -1096,7 +1096,7 @@ The request returns the following fields:
 
 ## Delete a Product
 
-You can delete a product by sending a request to the [Delete a Product endpoint](https://docs.medusajs.com/api/admin#products_deleteproductsproduct):
+You can delete a product by sending a request to the [Delete a Product API Route](https://docs.medusajs.com/api/admin#products_deleteproductsproduct):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -1155,7 +1155,7 @@ curl -L -X DELETE '<BACKEND_URL>/admin/products/<PRODUCT_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires passing the product ID as a path parameter.
+This API Route requires passing the product ID as a path parameter.
 
 The request returns the following fields:
 

@@ -50,7 +50,7 @@ Documentation pages under the `www/apps/docs/content/references` directory are g
 The API reference's content is split into two types:
 
 1. Static content, which are the content related to getting started, expanding fields, and more. These are located in the [www/apps/api-reference/app/_mdx](https://github.com/medusajs/medusa/tree/develop/www/apps/api-reference/app/_mdx) directory. They are MDX files.
-2. OpenAPI specs that are shown to developers when checking the reference of an endpoint. These are automatically generated from comments on endpoints. So, if you find issues in them or want to make improvements, you have to find the endpoint under the [`packages/medusa/src/api`](https://github.com/medusajs/medusa/tree/develop/packages/medusa/src/api) directory and make changes to its comments.
+2. OpenAPI specs that are shown to developers when checking the reference of an API Route. These are automatically generated from comments on API Routes. So, if you find issues in them or want to make improvements, you have to find the API Routes under the [`packages/medusa/src/api`](https://github.com/medusajs/medusa/tree/develop/packages/medusa/src/api) directory and make changes to its comments.
 
 ### Medusa UI Documentation
 

@@ -74,7 +74,7 @@ You can learn more about migrations in this documentation.
 
 Disabling feature flags follows the same process as enabling the feature flags. All you have to do is change the value in the environment variables or the backend configurations to `false`.
 
-Once you disable a feature flag, all endpoints, entities, services, or other related classes and functionalities are disabled.
+Once you disable a feature flag, all API Routes, entities, services, or other related classes and functionalities are disabled.
 
 ### Revert Migrations
 

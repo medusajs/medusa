@@ -9,7 +9,7 @@ import { TokenEvents } from "../../../../types/token"
  * @oas [post] /store/orders/batch/customer/token
  * operationId: "PostOrdersCustomerOrderClaim"
  * summary: "Claim Order"
- * description: "Allow the logged-in customer to claim ownership of one or more orders. This generates a token that can be used later on to verify the claim using the endpoint Verify Order Claim.
+ * description: "Allow the logged-in customer to claim ownership of one or more orders. This generates a token that can be used later on to verify the claim using the Verify Order Claim API Route.
  *  This also emits the event `order-update-token.created`. So, if you have a notification provider installed that handles this event and sends the customer a notification, such as an email,
  *  the customer should receive instructions on how to finalize their claim ownership."
  * externalDocs:
