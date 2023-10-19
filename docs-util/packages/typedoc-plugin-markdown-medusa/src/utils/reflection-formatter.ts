@@ -1,6 +1,7 @@
 import {
   Comment,
   DeclarationReflection,
+  ReflectionKind,
   ProjectReflection,
   ReflectionType,
   SomeType,
@@ -36,16 +37,19 @@ export function reflectionListFormatter(
   const prefix = `${Array(level - 1)
     .fill("\t")
     .join("")}-`
-  let item = `${prefix} \`${reflection.name}\`: `
+  let item = `${prefix} \`${reflection.name}\``
   const defaultValue = getDefaultValue(reflection)
+  const comments = getComments(reflection)
+
+  if (defaultValue || reflection.flags.isOptional || comments) {
+    item += ": "
+  }
 
   if (defaultValue || reflection.flags.isOptional) {
     item += `(${reflection.flags.isOptional ? "optional" : ""}${
       reflection.flags.isOptional && defaultValue ? "," : ""
     }${defaultValue ? `default: ${defaultValue}` : ""}) `
   }
-
-  const comments = getComments(reflection)
 
   if (comments) {
     item += stripLineBreaks(Handlebars.helpers.comments(comments))
@@ -58,17 +62,18 @@ export function reflectionListFormatter(
       ? reflection.children
       : getTypeChildren(reflection.type!, reflection.project)
     const itemChildren: string[] = []
+    let itemChildrenKind: ReflectionKind | null = null
     children?.forEach((childItem) => {
+      if (!itemChildrenKind) {
+        itemChildrenKind = childItem.kind
+      }
       itemChildren.push(reflectionListFormatter(childItem, level + 1))
     })
     if (itemChildren.length) {
-      // TODO maybe we should check the type of the reflection and replace
-      // `properties` with the text that makes sense for the type.
-      item += ` ${
-        reflection.type?.type === "array"
-          ? "Its items accept the following properties"
-          : "It accepts the following properties"
-      }:\n${itemChildren.join("\n")}`
+      item += ` ${getItemExpandText(
+        reflection.type?.type,
+        itemChildrenKind
+      )}:\n${itemChildren.join("\n")}`
     }
   }
 
@@ -221,6 +226,24 @@ export function getComments(
     }
   }
   return parameter.comment
+}
+
+// TODO we should add check for more types as necessary
+function getItemExpandText(
+  reflectionType?: string,
+  childrenKind?: ReflectionKind | null
+): string {
+  switch (childrenKind) {
+    case ReflectionKind.EnumMember:
+      return "It can be one of the following values"
+  }
+
+  switch (reflectionType) {
+    case "array":
+      return "Its items accept the following properties"
+    default:
+      return "It accepts the following properties"
+  }
 }
 
 export function getTypeChildren(
