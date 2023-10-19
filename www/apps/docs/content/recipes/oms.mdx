@@ -33,7 +33,7 @@ Medusa's [Store REST APIs](https://docs.medusajs.com/api/store) let you integrat
 
 You can implement customizations in your backend if you accept orders through a third-party checkout system and need more flexibility over adding orders to Medusa.
 
-You can add support for importing orders into Medusa through a custom endpoint that allows batch-inserting orders. Alternatively, you can create a scheduled job that runs at a specified interval and imports orders from an external service.
+You can add support for importing orders into Medusa through a custom API Route that allows batch-inserting orders. Alternatively, you can create a scheduled job that runs at a specified interval and imports orders from an external service.
 
 <DocCardList colSize={4} items={[
   {
@@ -47,11 +47,11 @@ You can add support for importing orders into Medusa through a custom endpoint t
   },
   {
     type: 'link',
-    href: '/development/endpoints/create',
-    label: 'Create Endpoint',
+    href: '/development/api-routes/create',
+    label: 'Create API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to create a custom endpoint in the Medusa backend.',
+      description: 'Learn how to create a custom API Route in the Medusa backend.',
     }
   },
   {

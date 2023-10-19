@@ -10,7 +10,7 @@ import { MedusaError } from "medusa-core-utils"
  * @oas [post] /store/customers/password-reset
  * operationId: PostCustomersResetPassword
  * summary: Reset Password
- * description: "Reset a Customer's password using a password token created by a previous request to the Request Password Reset endpoint. If the password token expired,
+ * description: "Reset a Customer's password using a password token created by a previous request to the Request Password Reset API Route. If the password token expired,
  *  you must create a new one."
  * externalDocs:
  *   description: "How to reset password"

@@ -46,7 +46,7 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 ### Authenticated Admin User
 
-Except for the Accept Invite endpoint, you must be an authenticated admin user before following along with the steps in the tutorial.
+Except for the Accept Invite API Route, you must be an authenticated admin user before following along with the steps in the tutorial.
 
 You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin#authentication).
 
@@ -54,7 +54,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Invites
 
-You can list invites by sending a request to the [List Invite endpoint](https://docs.medusajs.com/api/admin#invites_getinvites):
+You can list invites by sending a request to the [List Invite API Route](https://docs.medusajs.com/api/admin#invites_getinvites):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -117,15 +117,15 @@ curl -L -X GET '<BACKEND_URL>/admin/invites' \
 </TabItem>
 </Tabs>
 
-This endpoint does not accept any parameters.
+This API Route doesn't accept any parameters.
 
-The request returns an array of invite endpoints.
+The request returns an array of invite objects.
 
 ---
 
 ## Create Invite
 
-You can create an invite by sending a request to the [Create Invite endpoint](https://docs.medusajs.com/api/admin#invites_postinvites):
+You can create an invite by sending a request to the [Create Invite API Route](https://docs.medusajs.com/api/admin#invites_postinvites):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -200,7 +200,7 @@ curl -L -X POST '<BACKEND_URL>/admin/invites' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the following body parameters:
+This API Route requires the following body parameters:
 
 - `user`: a string indicating the email of the user.
 - `role`: a string indicating the role of the user. Its values can be `admin`, `member`, and `developer`.
@@ -213,7 +213,7 @@ The request does not return any data. If the invite was created successfully, th
 
 A logged-out user can accept an invite, which would create a user for that user.
 
-You can accept an invite by sending a request to the [Accept Invite endpoint](https://docs.medusajs.com/api/admin#invites_postinvitesinviteaccept):
+You can accept an invite by sending a request to the [Accept Invite API Route](https://docs.medusajs.com/api/admin#invites_postinvitesinviteaccept):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -303,7 +303,7 @@ curl -L -X POST '<BACKEND_URL>/admin/invites/accept' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the following request body parameters:
+This API Route requires the following request body parameters:
 
 - `token`: a string indicating the invitation’s token.
 - `user`: an object that has the following properties:
@@ -317,7 +317,7 @@ The request does not return any data. If the invite was accepted successfully, t
 
 ## Resend an Invite
 
-You can resend an invite if it’s not accepted yet. To resend an invite, send a request to the [Resend Invite endpoint](https://docs.medusajs.com/api/admin#invites_postinvitesinviteresend):
+You can resend an invite if it’s not accepted yet. To resend an invite, send a request to the [Resend Invite API Route](https://docs.medusajs.com/api/admin#invites_postinvitesinviteresend):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -374,15 +374,15 @@ curl -L -X POST '<BACKEND_URL>/admin/invites/<INVITE_ID>/resend' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the invite ID as a path parameter.
+This API Route requires the invite ID as a path parameter.
 
-The request does not return any data. If the invite was resent successfully, the status code of the response will be `200`.
+The request doesn't return any data. If the invite was resent successfully, the status code of the response will be `200`.
 
 ---
 
 ## Delete an Invite
 
-You can delete an invite by sending a request to the [Delete Invite endpoint](https://docs.medusajs.com/api/admin#invites_deleteinvitesinvite):
+You can delete an invite by sending a request to the [Delete Invite API Route](https://docs.medusajs.com/api/admin#invites_deleteinvitesinvite):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -439,7 +439,7 @@ curl -L -X DELETE '<BACKEND_URL>/admin/invites/<INVITE_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the invite ID as a path parameter.
+This API Route requires the invite ID as a path parameter.
 
 It deletes the invite and returns the following fields:
 

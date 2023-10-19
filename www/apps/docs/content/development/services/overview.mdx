@@ -17,7 +17,7 @@ For example, you can use Medusa’s `productService` to get the list of products
 
 In the Medusa backend, custom services are TypeScript or JavaScript files located in the `src/services` directory. Each service should be a class that extends the `TransactionBaseService` class from the core Medusa package `@medusajs/medusa`. Each file you create in `src/services` should hold one service and export it.
 
-The file name is important as it determines the name of the service when you need to use it elsewhere. The name of the service will be registered in the dependency container as the camel-case version of the file name with `Service` appended to the end of the name. Other resources, such as other services or endpoints, will use that name when resolving the service from the dependency container.
+The file name is important as it determines the name of the service when you need to use it elsewhere. The name of the service will be registered in the dependency container as the camel-case version of the file name with `Service` appended to the end of the name. Other resources, such as other services or API Routes, will use that name when resolving the service from the dependency container.
 
 For example, if the file name is `hello.ts`, the service will be registered as `helloService` in the dependency container. If the file name is `hello-world.ts`, the service name will be registered as `helloWorldService`.
 

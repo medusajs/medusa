@@ -333,13 +333,13 @@ This will reflect the entity changes in your database.
 
 ## Create Guard Middleware
 
-To ensure that users who have the privilege can access an endpoint, you must create a middleware that guards admin routes. This middleware will run on all authenticated admin requests to ensure that only allowed users can access an endpoint.
+To ensure that users who have the privilege can access an API Route, you must create a middleware that guards admin routes. This middleware will run on all authenticated admin requests to ensure that only allowed users can access an API Route.
 
 Since the Medusa backend uses Express, you can create a middleware and attach it to all admin routes.
 
 <DocCard item={{
   type: 'link',
-  href: '/development/endpoints/add-middleware',
+  href: '/development/api-routes/add-middleware',
   label: 'Create a Middleware',
   customProps: {
     icon: Icons['academic-cap-solid'],
@@ -350,18 +350,26 @@ Since the Medusa backend uses Express, you can create a middleware and attach it
 <details>
 <summary>Example Implementation</summary>
 
-In this example, you’ll create a middleware that runs on all admin-authenticated routes and checks the logged-in user’s permissions before giving them access to an endpoint.
+In this example, you’ll create a middleware that runs on all admin-authenticated routes and checks the logged-in user’s permissions before giving them access to an API Route.
 
-Create the file `src/api/middlewares/permission.ts` with the following content:
+Create the file `src/api/middlewares.ts` with the following content:
 
-```ts title=src/api/middlewares/permission.ts
-import { UserService } from "@medusajs/medusa"
-import { NextFunction, Request, Response } from "express"
+```ts title=src/api/middlewares.ts
+import type { 
+  MiddlewaresConfig, 
+  UserService,
+} from "@medusajs/medusa"
+import express from "express"
+import type { 
+  MedusaRequest, 
+  MedusaResponse, 
+  MedusaNextFunction,
+} from "@medusajs/medusa"
 
-export default async (
-  req: Request,
-  res: Response,
-  next: NextFunction
+export const permissions = async (
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
 ) => {
   if (!req.user || !req.user.userId) {
     next()
@@ -406,48 +414,38 @@ export default async (
   // deny access
   res.sendStatus(401)
 }
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/admin/*",
+      middlewares: [permissions],
+    },
+  ],
+}
 ```
 
-In this middleware, you ensure that there is a logged-in user and the logged-in user has a role. If not, the user is admitted to access the endpoint. Here, you presume that logged-in users who don’t have a role are “super-admin” users who can access all endpoints. You may choose to implement this differently.
+In this middleware, you ensure that there is a logged-in user and the logged-in user has a role. If not, the user is admitted to access the API Route. Here, you presume that logged-in users who don’t have a role are “super-admin” users who can access all API Routes. You may choose to implement this differently.
 
-If there’s a logged-in user that has a role, you check that the role’s permissions give them access to the current endpoint. You do that by checking if a permission’s metadata has a key with the same request’s path. It may be better here to check for matching using regular expressions, for example, to check routes with path parameters.
+If there’s a logged-in user that has a role, you check that the role’s permissions give them access to the current API Route. You do that by checking if a permission’s metadata has a key with the same request’s path. It may be better here to check for matching using regular expressions, for example, to check routes with path parameters.
 
 Otherwise, if the user’s role doesn’t provide them with enough permissions, you return a `401` response code.
 
 :::tip
 
-Notice that you use `req.path` here to get the current endpoint path. However, in middlewares, this doesn’t include the mount point which is `/admin`. So, for example, if the endpoint path is `/admin/products`, `req.path` will be `/products`. You can alternatively use `req.originalUrl`. Learn more in [Express’s documentation](https://expressjs.com/en/api.html#req.originalUrl).
+Notice that you use `req.path` here to get the current API Route path. However, in middlewares, this doesn’t include the mount point which is `/admin`. So, for example, if the API Route path is `/admin/products`, `req.path` will be `/products`. You can alternatively use `req.originalUrl`. Learn more in [Express’s documentation](https://expressjs.com/en/api.html#req.originalUrl).
 
 :::
 
-Next, to ensure that this middleware is used, import it in `src/api/index.ts` and apply it on admin routes:
-
-```ts title=src/api/index.ts
-import permissionMiddleware from "./middlewares/permission"
-
-export default (rootDirectory: string): Router | Router[] => {
-  // ...
-  const router = Router()
-  // ...
-  
-  // use middleware on admin routes
-  router.use("/admin", permissionMiddleware)
-
-  return router
-}
-```
-
-This assumes you already have a router with all necessary CORS configurations and body parsing middlewares. If not, you can refer to the [Create Endpoint documentation](../../../development/endpoints/create.mdx) for more details.
-
-Make sure to use the permission middleware after all router configurations if you want the middleware to work on your custom admin routes.
+After defining the middleware, you apply it on all API Routes starting with `/admin/`.
 
 </details>
 
 ---
 
-## Create Endpoints and Services
+## Create API Routes and Services
 
-To manage the roles and permissions, you’ll need to create custom endpoints, typically for Create, Read, Update, and Delete (CRUD) operations.
+To manage the roles and permissions, you’ll need to create custom API Routes, typically for Create, Read, Update, and Delete (CRUD) operations.
 
 You’ll also need to create a service for each of `Role` and `Permission` entities to perform these operations on them. The entity uses the service within its code.
 
@@ -456,11 +454,11 @@ Furthermore, you may need to extend core services if you need to perform actions
 <DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: '/development/endpoints/create',
-    label: 'Create Endpoint',
+    href: '/development/api-routes/create',
+    label: 'Create API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to create an endpoint in Medusa.',
+      description: 'Learn how to create an API Route in Medusa.',
     }
   },
   {
@@ -488,9 +486,9 @@ Furthermore, you may need to extend core services if you need to perform actions
 Example Implementation
 </summary>
 
-In this example, you’ll only implement two endpoints for simplicity: create role endpoint that create a new role with permissions, and associate user endpoint that associates a user with a role.
+In this example, you’ll only implement two API Routes for simplicity: create role API Route that create a new role with permissions, and associate user API Route that associates a user with a role.
 
-You’ll also create basic services for `Role` and `Permission` to perform the functionalities of each of these endpoints and extend the core `UserService` to allow associating roles with users.
+You’ll also create basic services for `Role` and `Permission` to perform the functionalities of each of these API Routes and extend the core `UserService` to allow associating roles with users.
 
 Start by creating the file `src/services/permission.ts` with the following content:
 
@@ -663,15 +661,21 @@ This creates the `RoleService` with three methods:
 - `create`: Creates a new role and, if provided, its permissions as well.
 - `associateUser`: associates a user with a role.
 
-Now, you can create the endpoints.
+Now, you can create the API Routes.
 
-Start by creating the file `src/api/routes/admin/role/create-role.ts` with the following content:
+Start by creating the file `src/api/admin/roles/route.ts` with the following content:
 
-```ts title=src/api/routes/admin/role/create-role.ts
-import { Request, Response } from "express"
+```ts title=src/api/admin/roles/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import RoleService from "../../../../services/role"
 
-export default async (req: Request, res: Response) => {
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // omitting validation for simplicity
   const {
     name,
@@ -693,15 +697,21 @@ export default async (req: Request, res: Response) => {
 }
 ```
 
-This creates the Create Role endpoint that uses the `RoleService` to create a new role. Notice that validation of received body parameters is omitted for simplicity.
+This creates the Create Role API Route at `/admin/roles` that uses the `RoleService` to create a new role. Notice that validation of received body parameters is omitted for simplicity.
 
-Next, create the file `src/api/routes/admin/role/associate-user.ts` with the following content:
+Next, create the file `src/api/routes/admin/roles/[id]/user/[user_id]/route.ts` with the following content:
 
-```ts title=src/api/routes/admin/role/associate-user.ts
-import { Request, Response } from "express"
+```ts title=src/api/routes/admin/roles/[id]/user/[user_id]/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import RoleService from "../../../../services/role"
 
-export default async (req: Request, res: Response) => {
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // omitting validation for simplicity purposes
   const {
     id,
@@ -717,44 +727,9 @@ export default async (req: Request, res: Response) => {
 }
 ```
 
-This creates the Associate User endpoint that uses the `RoleService` to associate a role with a user.
+This creates the Associate User API Route at `/admin/roles/[id]/user/[user_id]` that uses the `RoleService` to associate a role with a user.
 
-You now have to register and export these endpoints.
-
-To do that, create the file `src/api/routes/admin/role/index.ts` with the following content:
-
-```ts title=src/api/routes/admin/role/index.ts
-import { wrapHandler } from "@medusajs/utils"
-import { Router } from "express"
-import createRole from "./create-role"
-import associateUser from "./associate-user"
-
-const router = Router()
-
-export default (adminRouter: Router) => {
-  adminRouter.use("/roles", router)
-
-  router.post("/", wrapHandler(createRole))
-  router.post("/:id/user/:user_id", wrapHandler(associateUser))
-}
-```
-
-This adds the create role endpoint under the path `/admin/roles`, and the associate user endpoint under the path `/admin/roles/:id/user/:user_id`, where `:id` is the ID of the role and `:user_id` is the ID of the user to associate with the role.
-
-Finally, you can either export these routes in `src/api/routes/admin/index.ts` or, if the file is not available in your project, in `src/api/index.ts`:
-
-```ts title=src/api/routes/admin/index.ts
-import roleRouter from "./role"
-
-const router = Router()
-
-export function attachAdminRoutes(adminRouter: Router) {
-  roleRouter(adminRouter)
-  // ....
-}
-```
-
-To test it out, run the `build` command in the root directory of your Medusa backend project:
+To test the API Routes out, run the `build` command in the root directory of your Medusa backend project:
 
 ```bash npm2yarn
 npm run build
@@ -766,30 +741,30 @@ Then, start the backend with the following command:
 npx medusa develop
 ```
 
-Try first to log in using the [Admin User Login endpoint](https://docs.medusajs.com/api/admin#auth_postauth) with an existing admin user. Then, send a `POST` request to the `localhost:9000/admin/roles` endpoint with the following request body parameters:
+Try first to log in using the [Admin User Login API Route](https://docs.medusajs.com/api/admin#auth_postauth) with an existing admin user. Then, send a `POST` request to the `localhost:9000/admin/roles` API Route with the following request body parameters:
 
 ```json
 {
-    "store_id": "store_01H8XPDY8WA1Z650MZSEY4Y0V0",
-    "name": "Product Manager",
-    "permissions": [
-        {
-            "name": "Allow Products",
-            "metadata": {
-                "/products": true
-            }
-        }
-    ]
+  "store_id": "store_01H8XPDY8WA1Z650MZSEY4Y0V0",
+  "name": "Product Manager",
+  "permissions": [
+    {
+      "name": "Allow Products",
+      "metadata": {
+          "/products": true
+      }
+    }
+  ]
 }
 ```
 
-Make sure to replace the `store_id`'s value with your store’s ID. You can retrieve the store’s ID using the [Get Store Details endpoint](https://docs.medusajs.com/api/admin#store_getstore).
+Make sure to replace the `store_id`'s value with your store’s ID. You can retrieve the store’s ID using the [Get Store Details API Route](https://docs.medusajs.com/api/admin#store_getstore).
 
-This will create a new role with a permission that allows users of this role to access the `/admin/products` endpoint. As mentioned before, because of the middleware’s implementation, you must specify the path without the `/admin` prefix. If you chose to implement this differently, such as with regular expressions, then change the permission’s metadata accordingly.
+This will create a new role with a permission that allows users of this role to access the `/admin/products` API Route. As mentioned before, because of the middleware’s implementation, you must specify the path without the `/admin` prefix. If you chose to implement this differently, such as with regular expressions, then change the permission’s metadata accordingly.
 
-Next, create a new user using the [Create User endpoint](https://docs.medusajs.com/api/admin#users_postusers). Then, send a `POST` request to `localhost:9000/admin/roles/<role_id>/user/<user_id>`, where `<role_id>` is the ID of the role you created, and `<user_id>` is the ID of the user you created. This will associate the user with the role you created.
+Next, create a new user using the [Create User API Route](https://docs.medusajs.com/api/admin#users_postusers). Then, send a `POST` request to `localhost:9000/admin/roles/<role_id>/user/<user_id>`, where `<role_id>` is the ID of the role you created, and `<user_id>` is the ID of the user you created. This will associate the user with the role you created.
 
-Finally, login with the user you created, then try to access any endpoint other than `/admin/products`. You’ll receive a `401` unauthorized response. Then, try to access the [List Products endpoint](https://docs.medusajs.com/api/admin#products_getproducts), and the user should be able to access it as expected.
+Finally, login with the user you created, then try to access any API Route other than `/admin/products`. You’ll receive a `401` unauthorized response. Then, try to access the [List Products API Route](https://docs.medusajs.com/api/admin#products_getproducts), and the user should be able to access it as expected.
 
 </details>
 

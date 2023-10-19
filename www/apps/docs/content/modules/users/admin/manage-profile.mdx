@@ -42,7 +42,7 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 ### Authenticated Admin User
 
-Aside from the User Login and Reset Password steps, other endpoints require you to be an authenticated admin user.
+Aside from the User Login and Reset Password steps, other API Routes require you to be an authenticated admin user.
 
 You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin#authentication).
 
@@ -52,7 +52,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ### User Login
 
-You can log in a user by sending a request to the [User Login endpoint](https://docs.medusajs.com/api/admin#auth_postauth):
+You can log in a user by sending a request to the [User Login API Route](https://docs.medusajs.com/api/admin#auth_postauth):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -126,7 +126,7 @@ curl -L -X POST '<BACKEND_URL>/admin/auth' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the following request body parameters:
+This API Route requires the following request body parameters:
 
 - `email`:  a string indicating the user’s email.
 - `password`: a string indicating the user’s password.
@@ -135,7 +135,7 @@ The request returns the logged-in user as an object.
 
 ### User Logout
 
-You can log out a user by sending a request to the [User Logout endpoint](https://docs.medusajs.com/api/admin#auth_deleteauth):
+You can log out a user by sending a request to the [User Logout API Route](https://docs.medusajs.com/api/admin#auth_deleteauth):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -192,15 +192,15 @@ curl -L -X DELETE '<BACKEND_URL>/admin/auth' \
 </TabItem>
 </Tabs>
 
-The endpoint does not require any path or query parameters.
+The API Route doesn't require any path or query parameters.
 
-The request does not return any data. The response code will be `200` for successful log out.
+The request doesn't return any data. The response code will be `200` for successful log out.
 
 ---
 
 ## Retrieve User Profile Details
 
-You can retrieve the current user’s details for their profile by sending a request to the [Get Current User endpoint](https://docs.medusajs.com/api/admin#auth_getauth):
+You can retrieve the current user’s details for their profile by sending a request to the [Get Current User API Route](https://docs.medusajs.com/api/admin#auth_getauth):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -256,7 +256,7 @@ curl -L -X GET '<BACKEND_URL>/admin/auth' \
 </TabItem>
 </Tabs>
 
-This endpoint does not require any parameters.
+This API Route doesn't require any parameters.
 
 The request returns the current user as an object.
 
@@ -264,7 +264,7 @@ The request returns the current user as an object.
 
 ## Update User’s Profile Details
 
-You can update a user’s details in their profile by sending a request to the [Update User endpoint](https://docs.medusajs.com/api/admin#users_postusersuser):
+You can update a user’s details in their profile by sending a request to the [Update User API Route](https://docs.medusajs.com/api/admin#users_postusersuser):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -338,7 +338,7 @@ curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the user as a path parameter.
+This API Route requires the ID of the user as a path parameter.
 
 In the request body, you can pass any of the user’s fields that you want to update as a parameter. In the example above, you pass the `first_name` parameter to update the user’s first name. You can refer to the [API reference](https://docs.medusajs.com/api/admin#users_postusersuser) to learn about other available parameters.
 
@@ -360,7 +360,7 @@ Sending the password reset email is not handled by default in the Medusa backend
 
 :::
 
-You can request a password reset by sending a request to the [Request Password Reset endpoint](https://docs.medusajs.com/api/admin#users_postusersuserpasswordtoken):
+You can request a password reset by sending a request to the [Request Password Reset API Route](https://docs.medusajs.com/api/admin#users_postusersuserpasswordtoken):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -430,7 +430,7 @@ curl -L -X POST '<BACKEND_URL>/admin/users/password-token' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the `email` parameter in the request body, which is the email of the user requesting to reset their password.
+This API Route requires the `email` parameter in the request body, which is the email of the user requesting to reset their password.
 
 The request does not return any data. The response code will be `204` if the request was processed successfully.
 
@@ -438,7 +438,7 @@ The request does not return any data. The response code will be `204` if the req
 
 After the user resets their password and, typically, receives an email with a link to reset their password, they should enter their new password. The new password, along with the token passed to this page are used to reset the password on the Medusa backend.
 
-You can reset the password by sending a request to the [Reset Password endpoint](https://docs.medusajs.com/api/admin#users_postusersuserpassword):
+You can reset the password by sending a request to the [Reset Password API Route](https://docs.medusajs.com/api/admin#users_postusersuserpassword):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -512,7 +512,7 @@ curl -L -X POST '<BACKEND_URL>/admin/users/reset-password' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the following request body parameters:
+This API Route requires the following request body parameters:
 
 - `token`: a string indicating the password reset token.
 - `password`: a string indicating the new password for the user.

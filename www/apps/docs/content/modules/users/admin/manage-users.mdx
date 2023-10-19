@@ -53,7 +53,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Users
 
-You can retrieve users in a store by sending a request to the [List Users endpoint](https://docs.medusajs.com/api/admin#users_getusers):
+You can retrieve users in a store by sending a request to the [List Users API Route](https://docs.medusajs.com/api/admin#users_getusers):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -116,7 +116,7 @@ curl -L -X GET '<BACKEND_URL>/admin/users' \
 </TabItem>
 </Tabs>
 
-This endpoint does not require any parameters.
+This API Route doesn't require any parameters.
 
 The request returns an array of user objects.
 
@@ -124,7 +124,7 @@ The request returns an array of user objects.
 
 ## Create a User
 
-You can create a user by sending a request to the [Create User endpoint](https://docs.medusajs.com/api/admin#users_postusers):
+You can create a user by sending a request to the [Create User API Route](https://docs.medusajs.com/api/admin#users_postusers):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -199,12 +199,12 @@ curl -L -X POST '<BACKEND_URL>/admin/users' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the following request body parameters:
+This API Route requires the following request body parameters:
 
 - `email`: a string indicating the email of the user.
 - `password`: a string indicating the password of the user.
 
-The endpoint accepts other optional body parameters, such as first name or last name. Check the [API reference](https://docs.medusajs.com/api/admin#users_postusers) for details on optional body parameters.
+The API Route accepts other optional body parameters, such as first name or last name. Check the [API reference](https://docs.medusajs.com/api/admin#users_postusers) for details on optional body parameters.
 
 The request returns the created user as an object.
 
@@ -212,7 +212,7 @@ The request returns the created user as an object.
 
 ## Update User
 
-You can update a user’s details by sending a request to the [Update User endpoint](https://docs.medusajs.com/api/admin#users_postusersuser):
+You can update a user’s details by sending a request to the [Update User API Route](https://docs.medusajs.com/api/admin#users_postusersuser):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -283,7 +283,7 @@ curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the user as a path parameter.
+This API Route requires the ID of the user as a path parameter.
 
 In the request body, you can pass any of the user’s fields that you want to update as parameters. In the example above, you update the user’s `first_name`. Check the [API reference](https://docs.medusajs.com/api/admin#users_postusersuser) for all the optional parameters.
 
@@ -293,7 +293,7 @@ The request returns the updated user as an object.
 
 ## Delete a User
 
-You can delete a user by sending a request to the [Delete User endpoint](https://docs.medusajs.com/api/admin#users_deleteusersuser):
+You can delete a user by sending a request to the [Delete User API Route](https://docs.medusajs.com/api/admin#users_deleteusersuser):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -350,7 +350,7 @@ curl -L -X DELETE '<BACKEND_URL>/admin/users/<USER_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the user ID as a path parameter.
+This API Route requires the user ID as a path parameter.
 
 It deletes the user and returns the following fields:
 

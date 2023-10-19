@@ -104,7 +104,7 @@ yarn test
 
 ### Run API Integration Tests
 
-API integration tests are used to test out Medusa’s core endpoints.
+API integration tests are used to test out Medusa’s core API Routes.
 
 To run the API integration tests, run the following command in the root directory of the repository:
 

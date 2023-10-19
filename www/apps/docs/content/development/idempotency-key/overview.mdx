@@ -11,7 +11,7 @@ In this document, you'll learn what an idempotency key is in Medusa.
 
 ## Overview
 
-An Idempotency Key is a unique, randomly generated key associated with an operation, such as the cart completion process. The idempotency key can be passed in the header of a request to an endpoint. This allows you to safely retry requests without accidentally performing the same operation twice.
+An Idempotency Key is a unique, randomly generated key associated with an operation, such as the cart completion process. The idempotency key can be passed in the header of a request to an API Route. This allows you to safely retry requests without accidentally performing the same operation twice.
 
 For example, if a connection error occurs while the customer is completing their cart and placing an order, you can retry from the last recovery point before the error occurred.
 

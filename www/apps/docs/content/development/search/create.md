@@ -321,11 +321,11 @@ class MySearchService extends AbstractSearchService {
 
 This method is used to search through an index by a query.
 
-In the Medusa backend, this method is used within the [Search Products endpoint](https://docs.medusajs.com/api/store#products_postproductssearch) to retrieve the search results.
+In the Medusa backend, this method is used within the [Search Products API Route](https://docs.medusajs.com/api/store#products_postproductssearch) to retrieve the search results.
 
 This method accepts the following parameters:
 
-1. `indexName`: the first parameter is a string indicating the index to search through. When using the Search Products endpoint, the index is the default index defined in the `IndexName` static property of the `ProductService`, which is `products`.
+1. `indexName`: the first parameter is a string indicating the index to search through. When using the Search Products API Route, the index is the default index defined in the `IndexName` static property of the `ProductService`, which is `products`.
 2. `query`: the second parameter is a string indicating the query to use to search through the documents.
 3. `options`: the third parameter is typically an object that can be used to pass any necessary options to the search engine.
 
@@ -406,7 +406,7 @@ Run your backend to test it out:
 npx medusa develop
 ```
 
-You can then send a request to the [Search Products endpoint](https://docs.medusajs.com/api/store#products_postproductssearch) to see if your search service returns any results.
+You can then send a request to the [Search Products API Route](https://docs.medusajs.com/api/store#products_postproductssearch) to see if your search service returns any results.
 
 ---
 
