@@ -31,7 +31,7 @@ describe("/admin/products", () => {
   })
 
 
-  it("should create variant prices correctly when propagating variants in service creation", async () => {
+  it("should create variant prices correctly in service creation", async () => {
     const payload = {
       title: "test-product",
       handle: "test-product",
@@ -67,7 +67,7 @@ describe("/admin/products", () => {
     )
   })
 
-  it("should fail to create a variant without options on a product with options", async () => {
+  it("should fail to create a variant without options on for a product with options", async () => {
     const payload = {
       title: "test-product",
       handle: "test-product",
@@ -92,6 +92,40 @@ describe("/admin/products", () => {
 
     expect(error.message).toEqual(
       "Product options length does not match variant options length. Product has 1 and variant has 0."
+    )
+  })
+
+  it("should create a product and variant without options", async () => {
+    const payload = {
+      title: "test-product",
+      handle: "test-product",
+      variants: [
+        {
+          title: "test-variant",
+          inventory_quantity: 10,
+          sku: "test",
+          prices: [{ amount: "100", currency_code: "usd" }],
+        },
+      ],
+    }
+
+    const { id } = await productService.create(payload)
+
+    const result = await productService.retrieve(id, {
+      relations: ["variants", "variants.prices", "variants.options"],
+    })
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        options: [], 
+        variants: [
+          expect.objectContaining({
+            prices: [
+              expect.objectContaining({ amount: 100, currency_code: "usd" }),
+            ],
+          }),
+        ],
+      })
     )
   })
 })
