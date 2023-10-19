@@ -129,6 +129,9 @@ export class PostgresProvider {
       })
       .flat()
 
+    partitions.push("analyse catalog")
+    partitions.push("analyse catalog_relation")
+
     return await this.container_.manager.execute(partitions.join("; "))
   }
 
