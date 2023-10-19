@@ -69,6 +69,9 @@ import SummaryCard from "./detail-cards/summary"
 import EmailModal from "./email-modal"
 import MarkShippedModal from "./mark-shipped"
 import CreateRefundModal from "./refund"
+import { MEDUSA_BACKEND_URL_NOSLASH } from "../../../constants/medusa-backend-url"
+import DownloadIcon from "../../../components/fundamentals/icons/download-icon"
+import openUrlNewWindow from "../../../utils/open-link-new-window"
 
 type OrderDetailFulfillment = {
   title: string
@@ -316,14 +319,38 @@ const OrderDetails = () => {
     (item: LineItem) => item.quantity > (item.fulfilled_quantity ?? 0)
   )
 
+  const invoiceUrl =
+    order?.payment_status === "captured"
+      ? `${MEDUSA_BACKEND_URL_NOSLASH}/invoice/${order?.id}`
+      : null
+
   return (
     <div>
       <OrderEditProvider orderId={id!}>
-        <BackButton
-          path="/a/orders"
-          label={t("details-back-to-orders", "Back to Orders")}
-          className="mb-xsmall"
-        />
+        <div className="items-top flex flex-row justify-between">
+          <div>
+            <BackButton
+              path="/a/orders"
+              label={t("details-back-to-orders", "Back to Orders")}
+              className="mb-xsmall"
+            />
+          </div>
+          <div>
+            {!!invoiceUrl && (
+              <Button
+                key="export"
+                variant="secondary"
+                size="small"
+                onClick={() => {
+                  openUrlNewWindow(invoiceUrl)
+                }}
+              >
+                <DownloadIcon size={20} />
+                Invoice Download
+              </Button>
+            )}
+          </div>
+        </div>
         {isLoading || !order ? (
           <BodyCard className="pt-2xlarge flex w-full items-center justify-center">
             <Spinner size={"large"} variant={"secondary"} />
@@ -370,7 +397,7 @@ const OrderDetails = () => {
                   //   },
                   // ]}
                 >
-                  <div className="mt-6 flex space-x-6 divide-x">
+                  <div className="mt-6 flex flex-wrap gap-4 divide-x">
                     <div className="flex flex-col">
                       <div className="inter-smaller-regular text-grey-50 mb-1">
                         {t("details-email", "Email")}

@@ -3,6 +3,7 @@ import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { getColor } from "../../../utils/color"
 import CustomerAvatarItem from "../../molecules/customer-avatar-item"
+import ReactCountryFlag from "react-country-flag"
 
 export const useCustomerColumns = () => {
   const { t } = useTranslation()
@@ -28,8 +29,36 @@ export const useCustomerColumns = () => {
         accessor: "email",
       },
       {
-        Header: "",
-        accessor: "col",
+        Header: "Company",
+        accessor: "metadata.company",
+      },
+      {
+        Header: <div>Country</div>,
+        accessor: "billing_address",
+        Cell: ({ cell: { value } }) => (
+            <div className="flex flex-row justify-start items-center gap-2">
+              {value?.country_code ?
+                <div className="rounded-rounded flex">
+                    <ReactCountryFlag
+                      className={"rounded"}
+                      svg
+                      countryCode={value?.country_code as string}
+                    />
+                </div>
+                :
+                ""
+              }
+              {value?.province ? <div>{value.province}</div> : ""}
+              {value?.city ? <div>{value.city}</div> : ""}
+            </div>
+        ),
+      },
+      {
+        accessor: "groups",
+        Header: () => <div>Groups</div>,
+        Cell: ({ cell: { value } }) => (
+          <div className="flex flex-col gap-y-2">{value?.map(v=><div>{v.name}</div>) || ''}</div>
+        ),
       },
       {
         accessor: "orders",

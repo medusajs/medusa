@@ -220,7 +220,7 @@ const PromotionRow = ({ row }) => {
   return (
     <Table.Row
       color={"inherit"}
-      linkTo={row.original.id}
+      linkTo={`/a/discounts/${row.original.id}`}
       {...row.getRowProps()}
       actions={getRowActions()}
       className="group"

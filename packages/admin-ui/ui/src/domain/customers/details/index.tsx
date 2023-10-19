@@ -1,4 +1,3 @@
-import { useAdminCustomer } from "medusa-react"
 import moment from "moment"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -19,12 +18,15 @@ import CustomerOrdersTable from "../../../components/templates/customer-orders-t
 import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 import EditCustomerModal from "./edit"
+import { FormattedAddress } from "../../orders/details/templates"
+import CustomersGroupsWidget from "./groups"
+import useCustomerFull from "../../../hooks/use-customers-full"
 
 const CustomerDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const { customer, isLoading, error } = useAdminCustomer(id!)
+  const { customer, fetchCustomer, isLoading, error } = useCustomerFull(id!)
   const { t } = useTranslation()
   const [showEdit, setShowEdit] = useState(false)
 
@@ -128,7 +130,7 @@ const CustomerDetail = () => {
               <div className="inter-smaller-regular text-grey-50 mb-1">
                 {t("details-orders", "Orders")}
               </div>
-              <div>{customer.orders.length}</div>
+              <div>{customer?.orders?.length}</div>
             </div>
             <div className="h-100 flex flex-col pl-6">
               <div className="inter-smaller-regular text-grey-50 mb-1">
@@ -141,8 +143,22 @@ const CustomerDetail = () => {
                 />
               </div>
             </div>
+            <FormattedAddress
+              title={"Billing"}
+              addr={customer.billing_address}
+            />
+            {customer?.shipping_addresses?.map((address) => (
+              <FormattedAddress
+                key={address.id}
+                title={"Shipping"}
+                addr={address}
+              />
+            ))}
           </div>
         </Section>
+
+        <CustomersGroupsWidget customer={customer} />
+
         <BodyCard
           title={t("details-orders", "Orders {{count}}", {
             count: customer.orders.length,
@@ -177,6 +193,7 @@ const CustomerDetail = () => {
       {showEdit && customer && (
         <EditCustomerModal
           customer={customer}
+          refetchCustomer={fetchCustomer}
           handleClose={() => setShowEdit(false)}
         />
       )}

@@ -32,7 +32,7 @@ import CustomerGroupModal from "./customer-group-modal"
  * Default filtering config for querying customer group customers list endpoint.
  */
 const defaultQueryProps = {
-  additionalFilters: { expand: "groups" },
+  additionalFilters: { expand: "groups,billing_address,orders" },
   limit: 15,
   offset: 0,
 }

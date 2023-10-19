@@ -20,6 +20,8 @@ import { useWidgets } from "../../providers/widget-provider"
 import { getErrorMessage } from "../../utils/error-messages"
 import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
+import SalesReportModal from "./sales-report"
+import CashIcon from "../../components/fundamentals/icons/cash-icon"
 
 const VIEWS = ["orders", "drafts"]
 
@@ -41,11 +43,27 @@ const OrderIndex = () => {
     state: exportModalOpen,
   } = useToggleState(false)
 
+  const {
+    open: openSalesReportModal,
+    close: closeSalesReportModal,
+    state: salesReportModalOpen,
+  } = useToggleState(false)
+
   const { getWidgets } = useWidgets()
 
   const actions = useMemo(() => {
     return [
-      <Button
+      <div className="flex space-x-2">
+        <Button
+          key="export"
+          variant="secondary"
+          size="small"
+          onClick={() => openSalesReportModal()}
+        >
+          <CashIcon size={20} />
+          Sales Report
+        </Button>
+        <Button
         key="export"
         variant="secondary"
         size="small"
@@ -53,7 +71,8 @@ const OrderIndex = () => {
       >
         <ExportIcon size={20} />
         Export Orders
-      </Button>,
+      </Button>
+    </div>
     ]
   }, [view])
 
@@ -99,6 +118,7 @@ const OrderIndex = () => {
             />
           )
         })}
+
         <div className="flex w-full grow flex-col">
           <BodyCard
             customHeader={
@@ -136,6 +156,13 @@ const OrderIndex = () => {
           handleClose={() => closeExportModal()}
           onSubmit={handleCreateExport}
           loading={createBatchJob.isLoading}
+        />
+      )}
+      {salesReportModalOpen && (
+        <SalesReportModal
+          title="Sales Report"
+          handleClose={() => closeSalesReportModal()}
+          loading={false}
         />
       )}
     </>

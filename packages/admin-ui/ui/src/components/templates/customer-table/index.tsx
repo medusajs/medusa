@@ -15,7 +15,7 @@ import { useCustomerFilters } from "./use-customer-filters"
 const DEFAULT_PAGE_SIZE = 15
 
 const defaultQueryProps = {
-  expand: "orders",
+  expand: "orders,groups,billing_address",
 }
 
 const CustomerTable = () => {
@@ -41,7 +41,7 @@ const CustomerTable = () => {
       keepPreviousData: true,
     }
   )
-
+  
   const [query, setQuery] = useState(queryObject.query)
   const [numPages, setNumPages] = useState(0)
 
@@ -186,7 +186,7 @@ const CustomerTable = () => {
                     icon: <DetailsIcon size={20} />,
                   },
                 ]}
-                linkTo={row.original.id}
+                linkTo={`/a/customers/${row.original.id}`}
                 {...row.getRowProps()}
               >
                 {row.cells.map((cell, index) => {

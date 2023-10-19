@@ -179,7 +179,7 @@ const GiftCardTable = () => {
               return (
                 <Table.Row
                   color={"inherit"}
-                  linkTo={row.original.id}
+                  linkTo={`/a/gift-cards/${row.original.id}`}
                   {...row.getRowProps()}
                   className="group"
                 >
