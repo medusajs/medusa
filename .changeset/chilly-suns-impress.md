@@ -1,5 +1,5 @@
 ---
-"@medusajs/medusa": minor
+"@medusajs/medusa": patch
 ---
 
 Expose item tax total and shipping tax total
