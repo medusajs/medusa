@@ -446,7 +446,11 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productOptions))
+    return await this.baseRepository_.serialize<
+      ProductTypes.ProductOptionDTO[]
+    >(productOptions, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -459,7 +463,11 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productOptions))
+    return await this.baseRepository_.serialize<
+      ProductTypes.ProductOptionDTO[]
+    >(productOptions, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")

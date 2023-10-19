@@ -1,8 +1,7 @@
-import {
-  CreateProductVariantInput,
-  ProductVariantPricesUpdateReq,
-  UpdateProductVariantInput,
-} from "../../../../types/product-variant"
+import { DistributedTransaction } from "@medusajs/orchestration"
+import { FlagRouter, MedusaError } from "@medusajs/utils"
+import { Workflows, updateProducts } from "@medusajs/workflows"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -16,12 +15,14 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import { updateProducts, Workflows } from "@medusajs/workflows"
-import { DistributedTransaction } from "@medusajs/orchestration"
-import { FlagRouter, MedusaError } from "@medusajs/utils"
-import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
+} from "."
+import { ProductStatus, ProductVariant } from "../../../../models"
 import {
   PricingService,
   ProductService,
@@ -34,24 +35,24 @@ import {
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import { ProductStatus, ProductVariant } from "../../../../models"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesUpdateReq,
+  UpdateProductVariantInput,
+} from "../../../../types/product-variant"
 import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-  defaultAdminProductRemoteQueryObject,
-} from "."
 
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { Logger } from "../../../../types/global"
-import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { validator } from "../../../../utils/validator"
+import { ProductVariantRepository } from "../../../../repositories/product-variant"
+import { Logger } from "../../../../types/global"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/products/{id}
@@ -668,7 +669,7 @@ export class AdminPostProductsProductReq {
   @IsEnum(ProductStatus)
   @NotEquals(null)
   @ValidateIf((object, value) => value !== undefined)
-  status?: ProductStatus
+  status: ProductStatus
 
   @IsOptional()
   @Type(() => ProductTypeReq)
