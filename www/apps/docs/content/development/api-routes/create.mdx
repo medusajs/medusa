@@ -1,18 +1,17 @@
 ---
-description: 'Learn how to create endpoints in Medusa. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
 addHowToData: true
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# How to Create Endpoints
+# How to Create an API Route
 
-In this document, you’ll learn how to create endpoints in Medusa.
+In this document, you’ll learn how to create API Routes in Medusa.
 
 :::tip
 
-v1.17.2 of `@medusajs/medusa` introduced a new approach to creating custom endpoints based on file-routes. You can still use the [Express Router Approach](./create-express-route.mdx), however, it's highly recommended that you start using this new approach.
+v1.17.2 of `@medusajs/medusa` introduced API Routes to replace Express endpoints. You can still use the [Express endpoints approach](./create-express-route.mdx), however, it's highly recommended that you start using API Routes.
 
 :::
 
@@ -43,29 +42,29 @@ export const POST = (
 }
 ```
 
-### Endpoint Paths
+### API Route Path
 
-Custom endpoints must be created in a file named `route.ts` or `route.js` under the `src/api` directory of your Medusa backend or plugin. The endpoint's path will be the same as the path of its corresponding `route.ts` file relative to `src/api`.
+Custom API Routes must be created in a file named `route.ts` or `route.js` under the `src/api` directory of your Medusa backend or plugin. The API Route's path will be the same as the path of its corresponding `route.ts` file relative to `src/api`.
 
-For example, if you're creating the route `store/custom`, you must create the file `src/api/store/custom/route.ts`.
+For example, if you're creating the API route `store/custom`, you must create the file `src/api/store/custom/route.ts`.
 
-### Endpoint Methods
+### API Route Method
 
-`route.ts` can export at least one of the following functions: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`, `OPTIONS`, and `HEAD`. Defining these functions adds a new endpoint for the corresponding HTTP method at the same path.
+`route.ts` can export at least one of the following method handler functions: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`, `OPTIONS`, and `HEAD`. Defining these method handlers adds a new API Route for the corresponding HTTP method at the same path.
 
-Each of these functions receives two parameters: the `MedusaRequest` which extends Express's [Request](https://expressjs.com/en/api.html#req), and the `MedusaResponse` which extends [Response](https://expressjs.com/en/api.html#res). Both are imported from `@medusajs/medusa`.
+Each of these method handler functions receives two parameters: the `MedusaRequest` which extends Express's [Request](https://expressjs.com/en/api.html#req), and the `MedusaResponse` which extends [Response](https://expressjs.com/en/api.html#res). Both are imported from `@medusajs/medusa`.
 
-In the example above, `GET` and `POST` endpoints will be added at the `store/custom` route.
+In the example above, `GET` and `POST` API Routes will be added at the `store/custom` path.
 
 ---
 
 ## Building Files
 
-Custom endpoints must be transpiled and moved to the `dist` directory before you can start consuming them. When you run your backend using either the `medusa develop` or `npx medusa develop` commands, it watches the files under `src` for any changes, then triggers the `build` command and restarts the server.
+Custom API Routes must be transpiled and moved to the `dist` directory before you can start consuming them. When you run your backend using either the `medusa develop` or `npx medusa develop` commands, it watches the files under `src` for any changes, then triggers the `build` command and restarts the server.
 
 However, the build isn't triggered when the backend first starts running, and it's never triggered when the `medusa start` or `npx medusa start` commands are used.
 
-So, make sure to run the `build` command before starting the backend and testing out your endpoint:
+So, make sure to run the `build` command before starting the backend and testing out your API Routes:
 
 ```bash npm2yarn
 npm run build
@@ -73,22 +72,24 @@ npm run build
 
 ---
 
-## Medusa Endpoint Path Convention
+## Medusa API Routes Path Convention
 
-Although your endpoint can be under any path you wish, the Medusa backend uses the following conventions:
+Although your API Route can be under any path you wish, the Medusa backend uses the following conventions:
 
-- All storefront REST APIs are prefixed by `/store`. For example, the `/store/products` endpoint lets you retrieve the products to display them on your storefront.
-- All admin REST APIs are prefixed by `/admin`. For example, the `/admin/products` endpoint lets you retrieve the products to display them on your admin.
+- All storefront REST APIs are prefixed by `/store`. For example, the `/store/products` API Route lets you retrieve the products to display them on your storefront.
+- All admin REST APIs are prefixed by `/admin`. For example, the `/admin/products` API Route lets you retrieve the products to display them on your admin.
 
 ---
 
 ## Path Parameters
 
-If your endpoint accepts a path parameter, you can place its route file inside a directory with the name `[<PARAMETER_NAME>]`, where `<PARAMETER_NAME>` is the name of your parameter.
+If your API Route accepts a path parameter, you can place its route file inside a directory with the name `[<PARAMETER_NAME>]`, where `<PARAMETER_NAME>` is the name of your parameter.
 
-For example, to add an endpoint at the path `store/custom/[id]`, create the route file at `src/api/store/custom/[id]/route.ts`.
+For example, to add an API Route at the path `store/custom/[id]`, create the route file at `src/api/store/custom/[id]/route.ts`.
 
-Path parameters are accessed using `req.params`. For example:
+You can access a path parameter's value in method handlers using the `MedusaRequest` object's `params` property, which is an object. Each of the `params` keys is a path parameter's name, and its value is the supplied value when sending the request to the API route.
+
+For example:
 
 ```ts title=src/api/store/custom/[id]/route.ts
 import type { 
@@ -106,17 +107,17 @@ export function GET(
 }
 ```
 
-An endpoint can have more than one path parameter, but each path parameter is unique. If the same path parameter is used more than once in the same route path, it results in an error and the endpoint will not be registered.
+An API Route can have more than one path parameter, but each path parameter's nam is unique. If the same path parameter name is used more than once in the same route path, it results in an error and the Medusa Backend won't register the API Route.
 
-For example, if your route accepts an author ID and a post ID, your endpoint path can be `src/api/author/[id]/posts/[post_id]/route.ts`. You can then use `req.params.id` and `req.params.post_id` to access the path parameters.
+For example, if your API route accepts an author ID and a post ID, the path to your route file can be `src/api/author/[id]/posts/[post_id]/route.ts`. You can then use the `MedusaRequest` object's `params.id` and `params.post_id` to access the values of the path parameters.
 
 ---
 
 ## CORS Configuration
 
-CORS configurations are automatically added to custom routes defined under the `/store` or `/admin` route prefixes based on the [store_cors and admin_cors configurations](../backend/configurations.md#admin_cors-and-store_cors) respectively. This section is useful if you're defining a route under a different prefix, or you want to override the defined CORS confiurations.
+CORS configurations are automatically added to custom API Routes defined under the `/store` or `/admin` path prefixes based on the [store_cors and admin_cors configurations](../backend/configurations.md#admin_cors-and-store_cors) respectively.
 
-To add or override the CORS configurations, define a [middleware](./add-middleware.mdx) on your routes and pass it the `cors` middleware. For example:
+To add CORS configurations to custom API routes under other path prefixes, or override the CORS configurations added by default, define a [middleware](./add-middleware.mdx) on your API routes and pass it the `cors` middleware. For example:
 
 ```ts title=src/api/middlewares.ts
 import type { 
@@ -143,7 +144,9 @@ export const config: MiddlewaresConfig = {
 
 ## Parse Request Body Parameters
 
-By default, all requests with the `Content-Type` header set to `application/json` are parsed using [Express's json middleware](https://expressjs.com/en/api.html#express.json). You can access the request body parameters using the `req.body` method.
+By default, the Medusa backend parses the body of all requests sent to your API Routes with the `Content-Type` header set to `application/json` to a JavaScript object. Then, the parsed data is attached to the `MedusaRequest` object's `body` property, which is an object.
+
+Each of the `body`'s keys are a name of the request body parameters, and its value is the passed value in the request body.
 
 For example:
 
@@ -163,7 +166,9 @@ export const POST = (
 }
 ```
 
-If you want to parse other content types, such as `application/x-www-form-urlencoded`, you have to pass the middleware in the list of the routes' [middlewares](./add-middleware.mdx). For example:
+If you want to parse other content types, such as `application/x-www-form-urlencoded`, you have to add a [middleware](./add-middleware.mdx) to your API routes that parses that body type.
+
+For example:
 
 ```ts title=src/api/middlewares.ts
 import type { 
@@ -185,17 +190,17 @@ export const config: MiddlewaresConfig = {
 }
 ```
 
-You can then access urlencoded payloads using `req.body` as well.
+Note that the `urlencoded` middleware imported from the [body-parser package](https://www.npmjs.com/package/body-parser) attaches the parsed data to the `MedusaRequest` object's `body` property as well.
 
 ---
 
-## Protected Routes
+## Protected API Routes
 
-Protected routes are routes that should only be accessible by logged-in customers or users.
+Protected API routes are routes that should only be accessible by logged-in customers or users.
 
-### Protect Store Routes
+### Protect Store API Routes
 
-By default, endpoint routes prefixed by `/store` don't require customers to be authenticated to access the endpoint. However, you can still access the logged-in customer's ID by accessing the Request object's `user.customer_id`, which will be `undefined` if the customer is not logged in.
+By default, API routes prefixed by `/store` don't require customer authentication to access the API route. However, you can still access the logged-in customer's ID in the API Route method handler using the `MedusaRequest` object's `user.customer_id`, which will be `undefined` if the customer isn't logged in.
 
 For example:
 
@@ -215,7 +220,7 @@ export const GET = async (
   if (!id) {
     // TODO handle not logged in
     // customers based on the custom
-    // route's functionality
+    // API route's functionality
   }
 
   const customerService = req.scope.resolve<CustomerService>(
@@ -228,9 +233,9 @@ export const GET = async (
 }
 ```
 
-Routes prefixed by `/store/me`, on the other hand, require customers to be authenticated to access the endpoint. You can access the logged-in customer's ID by accessing the Request object's `user.customer_id`.
+API Routes prefixed by `/store/me`, on the other hand, require customer authentication to access the API Route. You can access the logged-in customer's ID in the API Route method handler using the `MedusaRequest` object's `user.customer_id`.
 
-If you want to disable authentication requirement on your custom route prefixed with `/store/me`, export an `AUTHENTICATE` variable in your route file with its value set to `false`. For example:
+If you want to disable authentication requirement on your custom API Route prefixed with `/store/me`, export an `AUTHENTICATE` variable in the route file with its value set to `false`. For example:
 
 ```ts title=src/api/store/me/custom/route.ts
 import type { 
@@ -250,11 +255,15 @@ export const GET = async (
 export const AUTHENTICATE = false
 ```
 
-Note that this will disable authentication requirement on all endpoint methods defined in the same file.
+:::note
 
-### Protect Admin Routes
+This disables authentication requirement on all API Route methods defined in the same file.
 
-By default, all endpoint routes prefixed by `/admin` require an admin user to be authenticated to access the endpoint. You can access the logged-in user's ID in the endpoint by accessing the Request object's `user.userId`.
+:::
+
+### Protect Admin API Routes
+
+By default, all API Routes prefixed by `/admin` require admin user authentication to access the API Route. You can access the logged-in user's ID in the API Route method handler using the `MedusaRequest` object's `user.userId`.
 
 For example:
 
@@ -281,7 +290,7 @@ export const GET = async (
 }
 ```
 
-If you want to disable authentication requirement on an admin route, export an `AUTHENTICATE` variable in your route file with its value set to `false`.
+To disable authentication requirement on an admin API Route, export an `AUTHENTICATE` variable in your route file with its value set to `false`.
 
 For example:
 
@@ -303,15 +312,19 @@ export const GET = async (
 export const AUTHENTICATE = false
 ```
 
-Note that this will disable authentication requirement on all endpoint methods defined in the same file.
+:::note
 
-### Protect Custom Routes
+This disables authentication requirement on all API Route methods defined in the same file.
 
-If you want to protect routes that aren't prefixed with `/store` or `/admin`, you can use one of the following middlewares defined in `@medusajs/medusa` for authenticating customers or users:
+:::
 
-- `authenticate`: this middleware ensures that only authenticated admin users can access an endpoint. You can access the user's ID in the endpoint by accessing the Request object's `user.userId`. 
-- `authenticateCustomer`: this middleware doesn't require a customer to be authenticated, but if a customer is logged in, it attaches their ID to the Request object passed to the endpoint under `user.customer_id`.
-- `requireCustomerAuthentication`: this middleware ensures that only authenticated customers can access an endpoint. You can access the customer's ID in the endpoint by accessing the Request object's `user.customer_id`.
+### Protect Other API Routes
+
+To protect API routes that aren't prefixed with `/store` or `/admin`, you can use one of the following middlewares exported by `@medusajs/medusa` for authenticating customers or users:
+
+- `authenticate`: this middleware ensures that only authenticated admin users can access an API Route. You can access the user's ID in the API Route method handler using the `MedusaRequest` object's `user.userId`. 
+- `authenticateCustomer`: this middleware doesn't require a customer to be authenticated, but if a customer is logged in, it attaches their ID to the `MedusaRequest` object's `user.customer_id`.
+- `requireCustomerAuthentication`: this middleware ensures that only authenticated customers can access an API Route. You can access the customer's ID in the API Route method handler using the `MedusaRequest` object's `user.customer_id`.
 
 For example:
 
@@ -377,11 +390,11 @@ export const GET = (
 
 ## Handle Errors
 
-As Medusa uses v4 of Express, you need to manually handle errors thrown asynchronously as explained in [Express's documentation](https://expressjs.com/en/guide/error-handling.html).
+Medusa provides an `errorHandler` middleware that you can use on your custom API Routes so that your error handling is consistent with the Medusa backend. You can also create custom [middlewares](./add-middleware.mdx) to handle errors.
 
-Medusa provides an `errorHandler` middleware that you can use on your custom endpoints to that your error handling is consistent across your Medusa backend. You can also create custom [middlewares](./add-middleware-express-route.mdx) to handle errors.
+To handle errors using Medusa's middlewares, first, import the `errorHandler` middleware from `@medusajs/medusa` and apply it on your routes.
 
-To handle errors using Medusa's middlewares, first, import the `errorHandler` middleware from `@medusajs/medusa` and apply it on your routes. For example:
+For example:
 
 ```ts title=src/api/middlewares.ts
 import { 
@@ -401,7 +414,7 @@ export const config: MiddlewaresConfig = {
 
 Make sure it's applied after all other middlewares.
 
-Then, wrap the function handler of every endpoint method with the `wrapHandler` middleware imported from `@medusajs/medusa`. For example:
+Then, wrap the method handler function of every API route method with the `wrapHandler` function imported from `@medusajs/medusa`. For example:
 
 ```ts title=src/api/store/custom/route.ts
 import { 
@@ -429,15 +442,17 @@ export const POST = wrapHandler(async (
 })
 ```
 
-Now all errors thrown in your custom endpoints, or in resources you use within your endpoint such as services, will be caught and returned to the user.
+Now all errors thrown in your custom API Routes, or in resources you use within your API Route such as services, are caught and returned to the user.
 
-However, if you throw errors like this:
+### Using MedusaError
+
+If you throw errors like this:
 
 ```ts
 throw new Error ("Post was not found")
 ```
 
-The endpoint returns the following object error in the response:
+The API Route returns the following object error in the response:
 
 ```json
 {
@@ -447,7 +462,7 @@ The endpoint returns the following object error in the response:
 }
 ```
 
-To ensure the error message is relayed in the response, it's recommended to use `MedusaError` imported from `@medusajs/utils` as the thrown error instead.
+To ensure your error message is relayed in the response, it's recommended to use `MedusaError` imported from `@medusajs/utils` as the thrown error instead.
 
 For example:
 
@@ -464,11 +479,11 @@ throw new MedusaError(
 
 The constructor of `MedusaError` accepts the following parameters:
 
-1. The first parameter is the type of the error. You can use one of the predefined errors under `MedusaError.Types`, such as `MedusaError.Types.NOT_FOUND` which sets the response status code to `404` automatically.
+1. The first parameter is the error's type. You can use one of the predefined errors under `MedusaError.Types`, such as `MedusaError.Types.NOT_FOUND` which sets the response status code to `404` automatically.
 2. The second parameter is the message of the error.
-3. The third parameter is an optional code, which is a string, that can be returned in the error object.
+3. The third parameter is an optional code, which is a string, that's returned in the error object.
 
-After using `MedusaError`, you'll notice that the returned error in the response provides a clearer message:
+After using `MedusaError`, the returned error in the response provides a clearer message:
 
 ```json
 {
@@ -481,17 +496,13 @@ After using `MedusaError`, you'll notice that the returned error in the response
 
 ## Use Other Resources
 
-### Entities and Repositories
+Resources, such as services, that are registered in the [dependency container](../fundamentals/dependency-injection.md) can be retrieved in an API Route's handler method using the `MedusaRequest` object's `scope.resolve` method.
 
-Your endpoints likely perform an action on an entity. For example, you may create an endpoint to retrieve a list of posts.
+The `scope` method accepts as a parameter the resource's registration name in the [dependency container](../fundamentals/dependency-injection.md).
 
-You can perform actions on an entity either through its [Repository](../entities/overview.mdx#what-are-repositories) or through a [service](#services). This section covers how to retrieve a repository in an endpoint, but it's recommended to use services instead.
+### Example: Retrieve Repository
 
-You can retrieve any registered resource, including repositories, in your endpoint using `req.scope.resolve` passing it the resource's registration name in the [dependency container](../fundamentals/dependency-injection.md). Repositories are registered as their camel-case name. So, for example, if you have a `PostRepository`, it's registered as `postRepository`.
-
-Here’s an example of an endpoint that retrieves the list of posts in a store:
-
-:::note
+:::tip
 
 Posts are represented by a custom entity not covered in this guide. You can refer to the [entities](../entities/create.mdx#adding-relations) for more details on how to create a custom entity.
 
@@ -522,13 +533,9 @@ export const GET = async (
 }
 ```
 
-Notice that to retrieve an instance of the repository, you need to retrieve first Typeorm's Entity manager and use its `withRepository` method.
+Notice that to retrieve an instance of the repository, you need to retrieve first Typeorm's Entity Manager from the dependency container, then use its `withRepository` method.
 
-### Services
-
-You can retrieve [services](../services/create-service.mdx) in your endpoint using `req.scope.resolve` passing it the service’s registration name in the [dependency container](../fundamentals/dependency-injection.md). Services are registered as their camel-case name. So, for example, if you have a `PostService`, it's registered as `postService`.
-
-Here’s an example of an endpoint that retrieves the list of posts in a store:
+### Example: Retrieve Service
 
 :::note
 
@@ -557,15 +564,11 @@ export const GET = async (
 }
 ```
 
-### Other Resources
-
-Any resource that's registered in the dependency container, such as strategies or file services, can be accessed through `req.scope.resolve`. Refer to the [dependency injection](../fundamentals/dependency-injection.md) documentation for details on registered resources.
-
 ---
 
 ## Ignored Files and Directories
 
-Files and directories prefixed with `_` are ignored. This can be helpful if you want to implement endpoint methods in different files, then reference them in your `route.ts` file.
+Files and directories prefixed with `_` are ignored. This can be helpful if you want to implement API Route method handlers in different files, then reference them in your `route.ts` file.
 
 For example:
 
@@ -609,9 +612,9 @@ export default async function (
 
 ---
 
-## Example: CRUD Endpoints
+## Example: CRUD API Routes
 
-This section services as an example of creating endpoints that perform Create, Read, Update, and Delete (CRUD) operations.
+This section provides an example of creating API Routes that perform Create, Read, Update, and Delete (CRUD) operations.
 
 :::note
 

@@ -438,7 +438,7 @@ Run your backend to test it out:
 npx medusa develop
 ```
 
-Then, try uploading a file, for example, using the [Upload File endpoint](https://docs.medusajs.com/api/admin#uploads_postuploads). The file should be uploaded based on the logic you’ve implemented.
+Then, try uploading a file, for example, using the [Upload File API Route](https://docs.medusajs.com/api/admin#uploads_postuploads). The file should be uploaded based on the logic you’ve implemented.
 
 ### (Optional) Accessing the File
 

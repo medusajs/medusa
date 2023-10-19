@@ -197,9 +197,9 @@ Run your Medusa backend with the following command:
 npx medusa develop
 ```
 
-The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This endpoint accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
+The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This API Route accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
 
-![Postman request send to the search endpoint that retrieves products using Algolia](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000054/Medusa%20Docs/Algolia/IHeTsi7_ymhb2p.png)
+![Postman request send to the search API Route that retrieves products using Algolia](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000054/Medusa%20Docs/Algolia/IHeTsi7_ymhb2p.png)
 
 You can also check that the products are properly indexed by opening your Algolia dashboard and choosing Search from the left sidebar. You’ll find your products that are on your Medusa backend added there.
 

@@ -100,7 +100,7 @@ Once the build process is complete, a new deployment with the infrastructure res
 
 ## Test the Backend
 
-After the deployment is finished, navigate to Resources → [AppName] (Medusa in this example) → Overview. Then, under the Resource Outputs section you should see the "AccessUrl". This is the backend's URL that you can use to access API endpoints and test them. You can try getting the list of products using the endpoint `<AccessUrl>/store/products`.
+After the deployment is finished, navigate to Resources → [AppName] (Medusa in this example) → Overview. Then, under the Resource Outputs section you should see the "AccessUrl". This is the backend's URL that you can use to access API Routes and test them. You can try getting the list of products using the API Route `<AccessUrl>/store/products`.
 
 ### Health Route
 

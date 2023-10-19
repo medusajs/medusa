@@ -1,5 +1,4 @@
 ---
-description: 'Learn how to create a service in Medusa. This guide also includes how to use services in other services, subscribers, and endpoints.'
 addHowToData: true
 ---
 
@@ -218,7 +217,7 @@ export default PostService
 
 ## Pagination, Filtering, and Relations
 
-Often, your service will provide methods that retrieve a list of items, which can be used by endpoints. In these methods, it can be helpful to provide filtering and pagination utilities that can be used by endpoints or any other resources utilizing this service.
+Often, your service will provide methods that retrieve a list of items, which can be used by API Routes. In these methods, it can be helpful to provide filtering and pagination utilities that can be used by API Routes or any other resources utilizing this service.
 
 The `@medusajs/medusa` package provides the following generic types that you can use to create the signature of your method that accepts filtering and pagination parameters:
 
@@ -298,7 +297,7 @@ class PostService extends TransactionBaseService {
 }
 ```
 
-Then, any other resources such as endpoints or services that use this method can pass what relations to expand in the next parameter:
+Then, any other resources such as API Route or services that use this method can pass what relations to expand in the next parameter:
 
 ```ts
 await postService.retrieve(id, {
@@ -314,7 +313,7 @@ When you need to throw errors in your service methods, it's recommended to use `
 
 :::note
 
-This assumes you're handling errors in your custom endpoints as explained [here](../endpoints/create.mdx#handle-errors).
+This assumes you're handling errors in your custom API Route as explained [here](../api-routes/create.mdx#handle-errors).
 
 :::
 
@@ -378,9 +377,9 @@ class MyService extends TransactionBaseService {
 }
 ```
 
-### In an Endpoint
+### In an API Route
 
-To use your custom service in an endpoint, you can use `req.scope.resolve` passing it the service’s registration name:
+To use your custom service in an API Route, you can use `MedusaRequest` object's `scope.resolve` method passing it the service’s registration name:
 
 ```ts
 const postService = req.scope.resolve("postService")

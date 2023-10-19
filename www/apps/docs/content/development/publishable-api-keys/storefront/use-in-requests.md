@@ -12,9 +12,9 @@ In this document, you'll learn how to use Publishable API Keys in client request
 
 :::
 
-## Default Behaviour In Product Store Endpoints
+## Default Behaviour In Product Store API Routes
 
-If you don't pass a publishable API Key for the store endpoints `/store/products` and `/store/products/{product_id}`, the default sales channel of the store is assigned to the request.
+If you don't pass a publishable API Key for the store API Routes `/store/products` and `/store/products/{product_id}`, the default sales channel of the store is assigned to the request.
 
 ---
 

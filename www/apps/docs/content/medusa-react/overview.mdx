@@ -142,7 +142,7 @@ export default Products
 
 In the example above, you import the `useProducts` hook from `medusa-react`. This hook, and every other query hook exposed by `medusa-react`, returns everything that `useQuery` [returns in Tanstack Query](https://tanstack.com/query/v4/docs/react/reference/useQuery), except for the `data` field.
 
-Instead of the `data` field, the response data is flattened and is part of the hooks’ returned fields. In the example above, the List Products endpoint returns a `products` array. So, `useProducts` returns a `products` array along with other fields returned by `useQuery`.
+Instead of the `data` field, the response data is flattened and is part of the hooks’ returned fields. In the example above, the List Products API Route returns a `products` array. So, `useProducts` returns a `products` array along with other fields returned by `useQuery`.
 
 If the request accepts any parameters, they can be passed as parameters to the `mutate` request. For example:
 
@@ -213,11 +213,11 @@ Learn more about how you can use mutations in [Tanstack Query’s documentation]
 
 ### Custom Hooks
 
-Medusa React provides three utility hooks that allows developers to consume their admin custom endpoints using the same Medusa React methods and conventions.
+Medusa React provides three utility hooks that allows developers to consume their admin custom API Routes using the same Medusa React methods and conventions.
 
 #### useAdminCustomQuery
 
-The `useAdminCustomQuery` utility hook can be used to send a `GET` request to a custom endpoint in your Medusa backend and retrieve data. It's a generic function, so you can pass a type for the request and the response if you're using TypeScript in your development. The first type parameter is the type of the request body, and the second type parameter is the type of the expected response body:
+The `useAdminCustomQuery` utility hook can be used to send a `GET` request to a custom API Route in your Medusa backend and retrieve data. It's a generic function, so you can pass a type for the request and the response if you're using TypeScript in your development. The first type parameter is the type of the request body, and the second type parameter is the type of the expected response body:
 
 ```ts
 useAdminCustomQuery<RequestType, ResponseType>
@@ -225,9 +225,9 @@ useAdminCustomQuery<RequestType, ResponseType>
 
 The hook accepts the following parameters:
 
-1. `path`: (required) the first parameter is a string indicating the path of your endpoint. For example, if you have custom endpoints that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
+1. `path`: (required) the first parameter is a string indicating the path of your API Route. For example, if you have custom API Routes that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
 2. `queryKey`: (required) the second parameter is a string used to generate query keys, which are used by Tanstack Query for caching. When a mutation related to this same key succeeds, the key will be automatically invalidated.
-3. `query`: (optional) the third parameter is an object that can be used to pass query parameters to the endpoint. For example, if you want to pass an `expand` query parameter you can pass it within this object. Each query parameter's name is a key in the object. There are no limitations on what the type of the value can be, so you can pass an array or simply a string as a value.
+3. `query`: (optional) the third parameter is an object that can be used to pass query parameters to the API Route. For example, if you want to pass an `expand` query parameter you can pass it within this object. Each query parameter's name is a key in the object. There are no limitations on what the type of the value can be, so you can pass an array or simply a string as a value.
 4. `options`: (optional) the fourth parameter is an object of [TanStack Query options](https://tanstack.com/query/v4/docs/react/reference/useQuery).
 
 The request returns an object containing keys like `data` which is an object that includes the data returned in the response, and `isLoading` which is a boolean value indicating whether the request is still in progress. You can learn more about the returned object's properties in [TanStack Query's documentation](https://tanstack.com/query/v4/docs/react/reference/useQuery).
@@ -343,7 +343,7 @@ export default AuthorsBlogPosts
 
 #### useAdminCustomPost
 
-The `useAdminCustomPost` utility hook can be used to send a `POST` request to a custom endpoint in your Medusa backend. It's a generic function, so you can pass a type for the request and the response if you're using TypeScript in your development. The first type parameter is the type of the request body, and the second type parameter is the type of the expected response body:
+The `useAdminCustomPost` utility hook can be used to send a `POST` request to a custom API Route in your Medusa backend. It's a generic function, so you can pass a type for the request and the response if you're using TypeScript in your development. The first type parameter is the type of the request body, and the second type parameter is the type of the expected response body:
 
 ```ts
 useAdminCustomPost<RequestType, ResponseType>
@@ -351,9 +351,9 @@ useAdminCustomPost<RequestType, ResponseType>
 
 The hook accepts the following parameters:
 
-1. `path`: (required) the first parameter is a string indicating the path of your endpoint. For example, if you have custom endpoints that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
+1. `path`: (required) the first parameter is a string indicating the path of your API Route. For example, if you have custom API Routes that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
 2. `queryKey`: (required) the second parameter is a string used to generate query keys, which are used by Tanstack Query for caching. When the mutation succeeds, the key will be automatically invalidated.
-3. `relatedDomains`: (optional) the third parameter is an object that can be used to specify domains related to this custom hook. This will ensure that Tanstack Query invalides the keys for those domains when your custom mutations succeed. For example, if your custom endpoint is related to products, you can pass `["products"]` as the value of this parameter. Then, when you use your custom mutation and it succeeds, the product's key `adminProductKeys.all` will be invalidated automatically, and all products will be re-fetched.
+3. `relatedDomains`: (optional) the third parameter is an object that can be used to specify domains related to this custom hook. This will ensure that Tanstack Query invalides the keys for those domains when your custom mutations succeed. For example, if your custom API Route is related to products, you can pass `["products"]` as the value of this parameter. Then, when you use your custom mutation and it succeeds, the product's key `adminProductKeys.all` will be invalidated automatically, and all products will be re-fetched.
 4. `options`: (optional) the fourth parameter is an object of [Mutation options](https://tanstack.com/query/v4/docs/react/reference/useMutation).
 
 The request returns an object containing keys like `mutation` which is a function that can be used to send the `POST` request at a later point. You can learn more about the returned object's properties in [TanStack Query's documentation](https://tanstack.com/query/v4/docs/react/reference/useMutation).
@@ -421,7 +421,7 @@ export default CreateBlogPost
 
 #### useAdminCustomDelete
 
-The `useAdminCustomDelete` utility hook can be used to send a `DELETE` request to a custom endpoint in your Medusa backend. It's a generic function, so you can pass a type for the expected response if you're using TypeScript in your development:
+The `useAdminCustomDelete` utility hook can be used to send a `DELETE` request to a custom API Route in your Medusa backend. It's a generic function, so you can pass a type for the expected response if you're using TypeScript in your development:
 
 ```ts
 useAdminCustomDelete<ResponseType>
@@ -429,9 +429,9 @@ useAdminCustomDelete<ResponseType>
 
 The hook accepts the following parameters:
 
-1. `path`: (required) the first parameter is a string indicating the path of your endpoint. For example, if you have custom endpoints that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
+1. `path`: (required) the first parameter is a string indicating the path of your API Route. For example, if you have custom API Routes that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
 2. `queryKey`: (required) the second parameter is a string used to generate query keys, which are used by Tanstack Query for caching. When the mutation succeeds, the key will be automatically invalidated.
-3. `relatedDomains`: (optional) the third parameter is an object that can be used to specify domains related to this custom hook. This will ensure that Tanstack Query invalides the keys for those domains when your custom mutations succeed. For example, if your custom endpoint is related to products, you can pass `["products"]` as the value of this parameter. Then, when you use your custom mutation and it succeeds, the product's key `adminProductKeys.all` will be invalidated automatically, and all products will be re-fetched.
+3. `relatedDomains`: (optional) the third parameter is an object that can be used to specify domains related to this custom hook. This will ensure that Tanstack Query invalides the keys for those domains when your custom mutations succeed. For example, if your custom API Route is related to products, you can pass `["products"]` as the value of this parameter. Then, when you use your custom mutation and it succeeds, the product's key `adminProductKeys.all` will be invalidated automatically, and all products will be re-fetched.
 4. `options`: (optional) the fourth parameter is an object of [Mutation options](https://tanstack.com/query/v4/docs/react/reference/useMutation).
 
 The request returns an object containing keys like `mutation` which is a function that can be used to send the `DELETE` request at a later point. You can learn more about the returned object's properties in [TanStack Query's documentation](https://tanstack.com/query/v4/docs/react/reference/useMutation).

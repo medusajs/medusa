@@ -1,5 +1,4 @@
 ---
-description: 'In this document, you’ll see an example of how you can use middlewares and endpoints to register the logged-in user in the dependency container of your commerce application.'
 addHowToData: true
 ---
 
@@ -9,11 +8,15 @@ import CustomRegistrationSection from '../../troubleshooting/awilix-resolution-e
 
 # Example: Access Logged-In User
 
-In this document, you’ll see an example of how you can use middlewares and endpoints to register the logged-in user in the dependency container of your commerce application. You can then access the logged-in user in other resources, such as services.
+This document gives an example of how you can use middlewares to register the logged-in user in the dependency container of your commerce application. You can then access the logged-in user in other resources, such as services.
 
-This guide showcases how to register the logged-in admin user, but you can apply the same steps if you want to register the current customer.
+:::tip
 
-This documentation does not explain the basics of [middlewares](./add-middleware.mdx) and [endpoints](./create.mdx). You can refer to their respective guides for more details about each.
+You can apply the same steps if you want to register the current customer.
+
+:::
+
+Learn more about [middlewares in its guide](./add-middleware.mdx).
 
 ## Step 1: Create the Middleware
 
@@ -63,15 +66,15 @@ export const config: MiddlewaresConfig = {
 }
 ```
 
-This creates a `registerLoggedInUser` middleware that handles registering the currently logged-in user in the dependency container.
+This creates a `registerLoggedInUser` middleware that handles registering the logged-in user in the dependency container.
 
-It then applies this middleware on the `/admin/products` endpoint. You can change that to be the route of any other endpoint or a pattern that matches multiple routes.
+It then applies this middleware on the `/admin/products` API Route. You can change that to be the route of any other API Route or a pattern that matches multiple routes.
 
 ---
 
 ## Step 2: Use in a Service
 
-You can now access the logged-in user in a service. For example, to access it in a custom service:
+Access the logged-in user resource in the constructor of a service:
 
 <!-- eslint-disable prefer-rest-params -->
 
@@ -148,7 +151,7 @@ Then, run your backend with the following command:
 npx medusa develop
 ```
 
-If you try accessing the endpoints you added the middleware to, you should see your implementation working as expected.
+If you try accessing the API Routes you added the middleware to, you should see your implementation working as expected.
 
 ---
 

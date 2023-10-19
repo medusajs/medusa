@@ -39,7 +39,7 @@ class PostService extends TransactionBaseService {
 }
 ```
 
-Another example is retrieving the default repository of an entity in an endpoint:
+Another example is retrieving the default repository of an entity in an API Route:
 
 ```ts title=src/api/store/custom/route.ts
 import type { 
@@ -104,9 +104,11 @@ A data source is Typeorm’s connection settings that allows you to connect to y
 
 ## Using Custom Repositories in Other Resources
 
-### Endpoints
+### API Routes
 
-To access a custom repository within an endpoint, use the `req.scope.resolve` method. For example:
+To access a custom repository within an API Route, use the `MedusaRequest` object's `scope.resolve` method.
+
+For example:
 
 ```ts title=src/store/custom/route.ts
 import type { 
@@ -131,7 +133,7 @@ export const GET = async (
 }
 ```
 
-You can learn more about endpoints [here](../endpoints/overview.mdx).
+You can learn more about API Route [here](../api-routes/overview.mdx).
 
 ### Services and Subscribers
 

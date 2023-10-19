@@ -89,7 +89,7 @@ You can follow [this guide](https://docs.medusajs.com/api/admin#authentication) 
 
 ### Using cookies
 
-Authentication using cookies is done automatically by Axios, which is used within the Medusa JS Client, when authenticating using the [auth](/references/js-client/classes/AuthResource) endpoints. After authentication, all subsequent calls will be authenticated.
+Authentication using cookies is done automatically by Axios, which is used within the Medusa JS Client, when authenticating using the [auth](/references/js-client/classes/AuthResource) API Routes. After authentication, all subsequent calls will be authenticated.
 
 ---
 

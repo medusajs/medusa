@@ -248,21 +248,21 @@ Each of the entities you create can be controlled using custom logic.
 
 ---
 
-## Create an Endpoint to Check Customers
+## Create an API Route to Check Customers
 
 On the frontend clients communicating with your store, such as the storefront, you’ll need to check whether the currently logged-in customer is a B2B customer.
 
-The endpoint’s logic differs based on how you’ve implemented the B2B logic. For example, if you’ve used the `is_b2b` flag in the customer group, your endpoint can check whether that flag is enabled for the logged-in customer.
+The API Route's logic differs based on how you’ve implemented the B2B logic. For example, if you’ve used the `is_b2b` flag in the customer group, your API Route can check whether that flag is enabled for the logged-in customer.
 
-Medusa allows you to create custom endpoints exposed as REST APIs.
+Medusa allows you to create custom API Routes exposed as REST APIs.
 
 <DocCard item={{
   type: 'link',
-  href: '/development/endpoints/create',
-  label: 'Create an Endpoint',
+  href: '/development/api-routes/create',
+  label: 'Create an API Route',
   customProps: {
     icon: Icons['academic-cap-solid'],
-    description: 'Learn how to create an endpoint in Medusa.',
+    description: 'Learn how to create an API Route in Medusa.',
   }
 }} />
 
@@ -271,7 +271,7 @@ Medusa allows you to create custom endpoints exposed as REST APIs.
 Example Implementation
 </summary>
 
-For example, create the following endpoint that allows you to check the customer’s group and whether it has the `is_b2b` flag enabled:
+For example, create the following API Route that allows you to check the customer’s group and whether it has the `is_b2b` flag enabled:
     
 ```ts title=src/api/store/customers/is-b2b/route.ts
 import type { 
@@ -303,7 +303,7 @@ export const GET = async (
 }
 ```
 
-Then add the `requireCustomerAuthentication` middleware in `src/api/middlewares.ts` that ensures only authenticated customer can access this endpoint:
+Then add the `requireCustomerAuthentication` middleware in `src/api/middlewares.ts` that ensures only authenticated customer can access this API Route:
 
 ```ts title=src/api/middlewares.ts
 import { 

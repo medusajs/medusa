@@ -2218,7 +2218,7 @@ Triggered when a product and data associated with it (options, variant orders, e
 
 The entire product passed as an object. You can refer to the [Product entity](../../references/entities/classes/Product.md) for an idea of what fields to expect.
 
-In one case, when the `/admin/products/{id}` endpoint is used to update the product, the payload is an object of the following format:
+In one case, when the `/admin/products/{id}` API Route is used to update the product, the payload is an object of the following format:
 
 ```js noReport noCopy
 {

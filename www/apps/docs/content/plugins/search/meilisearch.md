@@ -164,9 +164,9 @@ Then, run the Medusa backend:
 npx medusa develop
 ```
 
-The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This endpoint accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
+The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This API Route accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
 
-![Postman request to search endpoint that shows results returned from the search engine](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000265/Medusa%20Docs/MeiliSearch/RCGquxU_um3dvn.png)
+![Postman request to search API Route that shows results returned from the search engine](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000265/Medusa%20Docs/MeiliSearch/RCGquxU_um3dvn.png)
 
 You can also check that the products are properly indexed by opening the MeiliSearch host URL in your browser, which is `http://127.0.0.1:7700/` by default. You’ll find your products that are on your Medusa backend added there.
 

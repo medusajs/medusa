@@ -57,7 +57,7 @@ When a customer wants to create a return, they must choose the items they want t
 
 ### Showing Return Shipping Options
 
-You can optionally allow customers to choose a return shipping option that they’ll use to return the items. To show the customers the available return shipping options, send a request to the Get [Shipping Options endpoint](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions):
+You can optionally allow customers to choose a return shipping option that they’ll use to return the items. To show the customers the available return shipping options, send a request to the Get [Shipping Options API Route](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -121,7 +121,7 @@ fetch(`<BACKEND_URL>/store/shipping-options?is_return=true`, {
 </TabItem>
 </Tabs>
 
-This endpoint allows you to pass the `is_return` query parameter to indicate whether the shipping options should be return shipping options. You can learn about other available filters in the [API reference](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions).
+This API Route allows you to pass the `is_return` query parameter to indicate whether the shipping options should be return shipping options. You can learn about other available filters in the [API reference](https://docs.medusajs.com/api/store#shipping-options_getshippingoptions).
 
 The request returns an array of shipping option objects.
 
@@ -129,7 +129,7 @@ The request returns an array of shipping option objects.
 
 ## Step 2: Create Return
 
-You can create the return by sending a request to the [Create Return endpoint](https://docs.medusajs.com/api/store#returns_postreturns):
+You can create the return by sending a request to the [Create Return API Route](https://docs.medusajs.com/api/store#returns_postreturns):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -215,7 +215,7 @@ fetch(`<BACKEND_URL>/store/returns`, {
 </TabItem>
 </Tabs>
 
-This endpoint requires the following request body parameters:
+This API Route requires the following request body parameters:
 
 - `order_id`: a string indicating the ID of the order to create the return for.
 - `items`: an array of objects, each object being an item from the order to return. Each object must have the following properties:

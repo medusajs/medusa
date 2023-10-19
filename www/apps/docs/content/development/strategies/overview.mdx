@@ -15,9 +15,9 @@ A strategy is an isolated piece of business logic that can be overridden and cus
 
 For example, in the core `@medusajs/medusa` package, strategies are used to implement functionalities like cart completion and product import.
 
-These strategy classes are then resolved in endpoints, services, or wherever needed using dependency injection and used to perform their designated functionality.
+These strategy classes are then resolved in API Routes, services, or wherever needed using dependency injection and used to perform their designated functionality.
 
-For example, the `CartCompletionStrategy` is resolved in the Complete Cart endpoint that is defined in the core `@medusajs/medusa` package. It’s then used to complete the cart and place the order:
+For example, the `CartCompletionStrategy` is resolved in the Complete Cart API Route that is defined in the core `@medusajs/medusa` package. It’s then used to complete the cart and place the order:
 
 ```ts
 export default async (req, res) => {

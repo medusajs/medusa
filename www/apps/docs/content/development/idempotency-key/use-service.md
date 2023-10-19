@@ -9,7 +9,7 @@ In this document, you'll learn how to use the `IdempotencyKeyService`.
 
 ## Overview
 
-You can use the `IdempotencyKeyService` within your custom development to ensure that your custom endpoints and operations can be safely retried or continued if an error occurs. This guide is also useful if you're overriding an existing feature in Medusa that uses the `IdempotencyKeyService` and you want to maintain its usage, such as if you're overriding the cart completion strategy.
+You can use the `IdempotencyKeyService` within your custom development to ensure that your custom API Routes and operations can be safely retried or continued if an error occurs. This guide is also useful if you're overriding an existing feature in Medusa that uses the `IdempotencyKeyService` and you want to maintain its usage, such as if you're overriding the cart completion strategy.
 
 The `IdempotencyKeyService` includes methods that can be used to create and update idempotency keys, among other functionalities.
 
@@ -17,7 +17,7 @@ The `IdempotencyKeyService` includes methods that can be used to create and upda
 
 ## Create Idempotency Key
 
-You can create an idempotency key within an endpoint using the `create` method of the `IdempotencyKeyService`:
+You can create an idempotency key within an API Route using the `create` method of the `IdempotencyKeyService`:
 
 ```ts title=src/api/store/custom/route.ts
 import type { 

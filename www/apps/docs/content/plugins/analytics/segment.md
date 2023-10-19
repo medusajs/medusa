@@ -185,7 +185,7 @@ You resolve the `SegmentService` using dependency injection. Then, when the `cus
 
 :::info
 
-Services can be resolved and used in Subscribers, endpoints, and other Services. Learn [how to resolve services in the Services documentation](../../development/services/create-service.mdx#using-your-custom-service).
+Services can be resolved and used in Subscribers, API Routes, and other Services. Learn [how to resolve services in the Services documentation](../../development/services/create-service.mdx#using-your-custom-service).
 
 :::
 

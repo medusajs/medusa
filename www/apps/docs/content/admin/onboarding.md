@@ -17,7 +17,7 @@ The onboarding widget is already implemented within the codebase of your Medusa 
 By following this tutorial, you’ll:
 
 - Build an onboarding flow in the admin that takes the user through creating a sample product and order. This flow has four steps and navigates the user between four pages in the admin before completing the guide. This will be implemented using [Admin Widgets](./widgets.md).
-- Keep track of the current step the user has reached by creating a table in the database and an API endpoint that the admin widget uses to retrieve and update the current step. These customizations will be applied to the backend.
+- Keep track of the current step the user has reached by creating a table in the database and an API Route that the admin widget uses to retrieve and update the current step. These customizations will be applied to the backend.
 
 ![Onboarding Widget Demo](https://res.cloudinary.com/dza7lstvk/image/upload/v1686839259/Medusa%20Docs/Screenshots/onboarding-gif_nalqps.gif)
 
@@ -45,7 +45,7 @@ If you're using TypeScript in your project, it's highly recommended to setup you
 
 ### Install Medusa React
 
-[Medusa React](../medusa-react/overview) is a React library that facilitates using Medusa’s endpoints within your React application. It also provides the utility to register and use custom endpoints.
+[Medusa React](../medusa-react/overview) is a React library that facilitates using Medusa’s API Routes within your React application. It also provides the utility to register and use custom API Routes.
 
 To install Medusa React and its required dependencies, run the following command in the root directory of the Medusa backend:
 
@@ -350,7 +350,7 @@ If you’re not interested in learning about backend customizations, you can ski
 In this step, you’ll customize the Medusa backend to:
 
 1. Add a new table in the database that stores the current onboarding step. This requires creating a new entity, repository, and migration.
-2. Add a new endpoint that allows to retrieve and update the current onboarding step. This requires creating a new service and endpoint.
+2. Add new API Routes that allow retrieving and updating the current onboarding step. This also requires creating a new service.
 
 ### Create Entity
 
@@ -452,9 +452,9 @@ You can learn more about migrations in [this guide](../development/entities/migr
 
 ### Create Service
 
-A [service](../development/services/overview.mdx) is a class that holds helper methods related to an entity. For example, methods to create or retrieve a record of that entity. Services are used by other resources, such as endpoints, to perform functionalities related to an entity.
+A [service](../development/services/overview.mdx) is a class that holds helper methods related to an entity. For example, methods to create or retrieve a record of that entity. Services are used by other resources, such as API Routes, to perform functionalities related to an entity.
 
-So, before you add the endpoints that allow retrieving and updating the onboarding state, you need to add the service that implements these helper functionalities.
+So, before you add the API Routes that allow retrieving and updating the onboarding state, you need to add the service that implements these helper functionalities.
 
 Start by creating the file `src/types/onboarding.ts` with the following content:
 
@@ -544,11 +544,11 @@ This service class implements two methods `retrieve` to retrieve the current onb
 
 You can learn more about services in [this documentation](../development/services/overview.mdx).
 
-### Create Endpoint
+### Create API Routes
 
-The last part of this step is to create the [endpoints](../development/endpoints/overview) that you’ll consume in the admin widget. There will be two endpoints: Get Onboarding State and Update Onboarding State.
+The last part of this step is to create the [API Routes](../development/api-routes/overview) that you’ll consume in the admin widget. There will be two API Routes: Get Onboarding State and Update Onboarding State.
 
-To add these endpoints, create the file `src/api/admin/onboarding/route.ts` with the following content:
+To add these API Routes, create the file `src/api/admin/onboarding/route.ts` with the following content:
 
 ```ts title=src/api/admin/onboarding/route.ts
 import type { 
@@ -591,9 +591,9 @@ export async function POST(
 }
 ```
 
-Notice how these endpoints use the `OnboardingService`'s `retrieve` and `update` methods to retrieve and update the current onboarding state. They resolve the `OnboardingService` using the [Dependency Container](../development/fundamentals/dependency-injection.md).
+Notice how these API Routes use the `OnboardingService`'s `retrieve` and `update` methods to retrieve and update the current onboarding state. They resolve the `OnboardingService` using the [Dependency Container](../development/fundamentals/dependency-injection.md).
 
-You can learn more about endpoints in [this documentation](../development/endpoints/overview.mdx).
+You can learn more about API Routes in [this documentation](../development/api-routes/overview.mdx).
 
 ---
 
@@ -658,7 +658,7 @@ type Step = {
 const QUERY_KEY = ["onboarding_state"]
 
 const OnboardingFlow = (props: OnboardingWidgetProps) => {
-  // create custom hooks for custom endpoints
+  // create custom hooks for custom API Routes
   const { data, isLoading } = useAdminCustomQuery<
     undefined,
     OnboardingStateRes
@@ -674,7 +674,7 @@ const OnboardingFlow = (props: OnboardingWidgetProps) => {
   // is passed as a path parameter
   const { client } = useMedusa()
 
-  // get current step from custom endpoint
+  // get current step from custom API Route
   const currentStep: STEP_ID | undefined = useMemo(() => {
     return data?.status
     ?.current_step as STEP_ID
@@ -869,7 +869,7 @@ const OnboardingFlow = (props: OnboardingWidgetProps) => {
   }, [currentStep])
 
   // used to change the open step when the current
-  // step is retrieved from custom endpoints
+  // step is retrieved from custom API Routes
   useEffect(() => {
     setOpenStep(currentStep)
     
@@ -1123,7 +1123,7 @@ The extension uses `react-router-dom`, which is available as a dependency of the
 
 The `OnboardingFlow` widget also implements functionalities related to handling the steps of the onboarding flow, including navigating between them and updating the current step in the backend.
 
-To use the custom endpoints created in a previous step, you use the `useAdminCustomQuery` and `useAdminCustomPost` hooks from the `medusa-react` package. You can learn more about these hooks in the [Medusa React](../medusa-react/overview.mdx#custom-hooks) documentation.
+To use the custom API Routes created in a previous step, you use the `useAdminCustomQuery` and `useAdminCustomPost` hooks from the `medusa-react` package. You can learn more about these hooks in the [Medusa React](../medusa-react/overview.mdx#custom-hooks) documentation.
 
 You can learn more about Admin Widgets in [this documentation](./widgets.md).
 

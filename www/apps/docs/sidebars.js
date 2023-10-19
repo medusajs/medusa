@@ -1403,11 +1403,11 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Endpoint",
+          label: "API Routes",
           items: [
             {
               type: "doc",
-              id: "development/endpoints/overview",
+              id: "development/api-routes/overview",
               label: "Overview",
             },
             {
@@ -1419,16 +1419,16 @@ module.exports = {
             },
             {
               type: "category",
-              label: "Create an Endpoint",
+              label: "Create an API Route",
               link: {
                 type: "doc",
-                id: "development/endpoints/create",
+                id: "development/api-routes/create",
               },
               collapsed: true,
               items: [
                 {
                   type: "doc",
-                  id: "development/endpoints/create-express-route",
+                  id: "development/api-routes/create-express-route",
                   label: "Express-Router Approach",
                 },
               ],
@@ -1438,25 +1438,25 @@ module.exports = {
               label: "Create a Middleware",
               link: {
                 type: "doc",
-                id: "development/endpoints/add-middleware",
+                id: "development/api-routes/add-middleware",
               },
               collapsed: true,
               items: [
                 {
                   type: "doc",
-                  id: "development/endpoints/add-middleware-express-route",
+                  id: "development/api-routes/add-middleware-express-route",
                   label: "Express-Router Approach",
                 },
               ],
             },
             {
               type: "doc",
-              id: "development/endpoints/extend-validator",
+              id: "development/api-routes/extend-validator",
               label: "Extend Validator",
             },
             {
               type: "doc",
-              id: "development/endpoints/example-logged-in-user",
+              id: "development/api-routes/example-logged-in-user",
               label: "Example: Logged-In User",
             },
           ],
