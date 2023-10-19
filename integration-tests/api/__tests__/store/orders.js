@@ -215,7 +215,7 @@ describe("/store/carts", () => {
         "/store/orders?display_id=111&email=test@email.com&fields=status,email"
       )
 
-      expect(Object.keys(response.data.order)).toHaveLength(20)
+      expect(Object.keys(response.data.order)).toHaveLength(22)
       expect(Object.keys(response.data.order)).toEqual(
         expect.arrayContaining([
           // fields
@@ -252,7 +252,7 @@ describe("/store/carts", () => {
 
       const response = await api.get("/store/orders/order_test?fields=status")
 
-      expect(Object.keys(response.data.order)).toHaveLength(19)
+      expect(Object.keys(response.data.order)).toHaveLength(21)
       expect(Object.keys(response.data.order)).toEqual(
         expect.arrayContaining([
           // fields
@@ -308,6 +308,8 @@ describe("/store/carts", () => {
         "refundable_amount",
         "gift_card_total",
         "gift_card_tax_total",
+        "item_tax_total",
+        "shipping_tax_total",
       ])
     })
 

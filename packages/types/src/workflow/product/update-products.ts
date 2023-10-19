@@ -1,28 +1,24 @@
 import { ProductStatus } from "../../product"
 
-export interface CreateProductTypeInputDTO {
+export interface UpdateProductTypeInputDTO {
   id?: string
   value: string
 }
 
-export interface CreateProductTagInputDTO {
+export interface UpdateProductTagInputDTO {
   id?: string
   value: string
 }
 
-export interface CreateProductSalesChannelInputDTO {
+export interface UpdateProductSalesChannelInputDTO {
   id: string
 }
 
-export interface CreateProductProductCategoryInputDTO {
+export interface UpdateProductProductCategoryInputDTO {
   id: string
 }
 
-export interface CreateProductOptionInputDTO {
-  title: string
-}
-
-export interface CreateProductVariantPricesInputDTO {
+export interface UpdateProductVariantPricesInputDTO {
   id?: string
   region_id?: string
   currency_code?: string
@@ -31,12 +27,12 @@ export interface CreateProductVariantPricesInputDTO {
   max_quantity?: number
 }
 
-export interface CreteProductVariantOptionInputDTO {
+export interface UpdateProductVariantOptionInputDTO {
   value: string
   option_id: string
 }
 
-export interface CreateProductVariantInputDTO {
+export interface UpdateProductVariantInputDTO {
   id?: string
   title?: string
   sku?: string
@@ -56,39 +52,37 @@ export interface CreateProductVariantInputDTO {
   material?: string
   metadata?: Record<string, unknown>
 
-  prices?: CreateProductVariantPricesInputDTO[]
-  options?: CreteProductVariantOptionInputDTO[]
+  prices?: UpdateProductVariantPricesInputDTO[]
+  options?: UpdateProductVariantOptionInputDTO[]
 }
 
-export interface CreateProductInputDTO {
-  title: string
+export interface UpdateProductInputDTO {
+  id: string
+  title?: string
   subtitle?: string
   description?: string
-  is_giftcard?: boolean
   discountable?: boolean
   images?: string[]
   thumbnail?: string
   handle?: string
   status?: ProductStatus
-  type?: CreateProductTypeInputDTO
+  type?: UpdateProductTypeInputDTO
   collection_id?: string
-  tags?: CreateProductTagInputDTO[]
-  categories?: CreateProductProductCategoryInputDTO[]
-  options?: CreateProductOptionInputDTO[]
-  variants?: CreateProductVariantInputDTO[]
+  tags?: UpdateProductTagInputDTO[]
+  sales_channels?: UpdateProductSalesChannelInputDTO[]
+  categories?: UpdateProductProductCategoryInputDTO[]
+  variants?: UpdateProductVariantInputDTO[]
   weight?: number
   length?: number
-  height?: number
   width?: number
+  height?: number
   hs_code?: string
   origin_country?: string
   mid_code?: string
   material?: string
   metadata?: Record<string, unknown>
-
-  sales_channels?: CreateProductSalesChannelInputDTO[]
 }
 
-export interface CreateProductsWorkflowInputDTO {
-  products: CreateProductInputDTO[]
+export interface UpdateProductsWorkflowInputDTO {
+  products: UpdateProductInputDTO[]
 }

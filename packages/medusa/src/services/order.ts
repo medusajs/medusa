@@ -1909,8 +1909,12 @@ class OrderService extends TransactionBaseService {
     order.gift_card_total = giftCardTotal.total || 0
     order.gift_card_tax_total = giftCardTotal.tax_total || 0
 
+    order.item_tax_total = item_tax_total
+    order.shipping_tax_total = shipping_tax_total
     order.tax_total =
-      item_tax_total + shipping_tax_total - order.gift_card_tax_total
+      order.item_tax_total +
+      order.shipping_tax_total -
+      order.gift_card_tax_total
 
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {

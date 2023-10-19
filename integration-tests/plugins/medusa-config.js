@@ -41,6 +41,7 @@ module.exports = {
     isolate_pricing_domain: enablePricing,
     workflows: {
       [Workflows.CreateProducts]: true,
+      [Workflows.UpdateProducts]: true,
       [Workflows.CreateCart]: true,
     },
   },
