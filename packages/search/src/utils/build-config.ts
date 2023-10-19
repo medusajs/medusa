@@ -6,7 +6,7 @@ import {
   ModuleJoinerRelationship,
 } from "@medusajs/modules-sdk"
 import { JoinerServiceConfigAlias, ModuleJoinerConfig } from "@medusajs/types"
-import { ObjectTypeDefinitionNode } from "graphql/index"
+import { Kind, ObjectTypeDefinitionNode } from "graphql/index"
 import {
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
@@ -354,8 +354,13 @@ function processEntity(
   const schemaParentEntity = Object.values(entitiesMap).filter((value: any) => {
     return (
       value.astNode &&
-      (value.astNode as ObjectTypeDefinitionNode).fields?.some((field) => {
-        return (field.type as any)?.type?.name?.value === entityName
+      (value.astNode as ObjectTypeDefinitionNode).fields?.some((field: any) => {
+        let currentType = field.type
+        while (currentType.type) {
+          currentType = currentType.type
+        }
+
+        return currentType.name?.value === entityName
       })
     )
   })
@@ -377,10 +382,15 @@ function processEntity(
       const entityFieldInParent = (
         entitiesMap[parent].astNode as any
       )?.fields?.find((field) => {
-        return (field.type as any)?.type?.name?.value === entityName
+        let currentType = field.type
+        while (currentType.type) {
+          currentType = currentType.type
+        }
+        return currentType.name?.value === entityName
       })
 
-      const isEntityListInParent = entityFieldInParent.type.kind === "ListType"
+      const isEntityListInParent =
+        entityFieldInParent.type.kind === Kind.LIST_TYPE
       const entityTargetPropertyNameInParent = entityFieldInParent.name.value
 
       /**
