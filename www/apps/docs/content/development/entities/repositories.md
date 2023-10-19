@@ -39,27 +39,26 @@ class PostService extends TransactionBaseService {
 }
 ```
 
-Another example is retrieving the default repository of an entity in an endpoint:
+Another example is retrieving the default repository of an entity in an API Route:
 
-```ts title=src/api/index.ts
+```ts title=src/api/store/custom/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { Post } from "../models/post"
 import { EntityManager } from "typeorm"
 
-// ...
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const manager: EntityManager = req.scope.resolve("manager")
+  const postRepo = manager.getRepository(Post)
 
-export default () => {
-  // ...
-
-  storeRouter.get("/posts", async (req, res) => {
-    const manager: EntityManager = req.scope.resolve("manager")
-    const postRepo = manager.getRepository(Post)
-
-    return res.json({
-      posts: await postRepo.find(),
-    })
+  return res.json({
+    posts: await postRepo.find(),
   })
-
-  // ...
 }
 ```
 
@@ -105,35 +104,36 @@ A data source is Typeorm’s connection settings that allows you to connect to y
 
 ## Using Custom Repositories in Other Resources
 
-### Endpoints
+### API Routes
 
-To access a custom repository within an endpoint, use the `req.scope.resolve` method. For example:
+To access a custom repository within an API Route, use the `MedusaRequest` object's `scope.resolve` method.
 
-```ts title=src/api/index.ts
+For example:
+
+```ts title=src/store/custom/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { PostRepository } from "../repositories/post"
 import { EntityManager } from "typeorm"
 
-// ...
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const postRepository: typeof PostRepository = 
+    req.scope.resolve("postRepository")
+  const manager: EntityManager = req.scope.resolve("manager")
+  const postRepo = manager.withRepository(postRepository)
 
-export default () => {
-  // ...
-
-  storeRouter.get("/posts", async (req, res) => {
-    const postRepository: typeof PostRepository = 
-      req.scope.resolve("postRepository")
-    const manager: EntityManager = req.scope.resolve("manager")
-    const postRepo = manager.withRepository(postRepository)
-
-    return res.json({
-      posts: await postRepo.find(),
-    })
+  return res.json({
+    posts: await postRepo.find(),
   })
-
-  // ...
 }
 ```
 
-You can learn more about endpoints [here](../endpoints/overview.mdx).
+You can learn more about API Route [here](../api-routes/overview.mdx).
 
 ### Services and Subscribers
 

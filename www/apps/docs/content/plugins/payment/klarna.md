@@ -64,7 +64,7 @@ Where:
 
 Finally, in `medusa-config.js`, add the Klarna plugin to the `plugins` array with the necessary configurations:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // other plugins...
   {

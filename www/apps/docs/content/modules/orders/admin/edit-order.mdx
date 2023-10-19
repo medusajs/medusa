@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # How to Edit an Order
 
-In this document, you’ll learn how to create an order edit using the Admin API endpoints.
+In this document, you’ll learn how to create an order edit using the Admin API Routes.
 
 ## Overview
 
@@ -80,7 +80,7 @@ You must have an existing order that you want to edit.
 
 Before you can start making changes to an order, you have to create a new order edit.
 
-To do that, send a request to the [Create an OrderEdit](https://docs.medusajs.com/api/admin#order-edits_postorderedits) endpoint:
+To do that, send a request to the [Create an OrderEdit API Route](https://docs.medusajs.com/api/admin#order-edits_postorderedits):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -150,7 +150,7 @@ curl -L -X POST '<BACKEND_URL>/admin/order-edits' \
 </TabItem>
 </Tabs>
 
-This endpoint has one required request body parameter `order_id` which is the ID of the order this edit is being created for.
+This API Route has one required request body parameter `order_id` which is the ID of the order this edit is being created for.
 
 This request returns the Order Edit under the `order_edit` property.
 
@@ -174,7 +174,7 @@ You can only make changes to items that have not been fulfilled yet in the order
 
 ### Add an Item
 
-To add a new item to the original order, send a request to the [Add Line Item](https://docs.medusajs.com/api/admin#order-edits_postordereditseditlineitems) endpoint:
+To add a new item to the original order, send a request to the [Add Line Item API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditseditlineitems):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -259,7 +259,7 @@ This request returns the Order Edit object. You can access returned item changes
 
 You can edit an item’s quantity in the original order.
 
-To update an item, send a request to the [Update Line Item](https://docs.medusajs.com/api/admin#order-edits_postordereditseditlineitemslineitem) endpoint:
+To update an item, send a request to the [Update Line Item API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditseditlineitemslineitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -342,7 +342,7 @@ This request returns the Order Edit object. You can access returned item changes
 
 ### Remove an Item
 
-You can remove an item from the original order by sending a request to the [Remove Line Item](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsordereditlineitemslineitem) endpoint:
+You can remove an item from the original order by sending a request to the [Remove Line Item API Route](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsordereditlineitemslineitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -413,7 +413,7 @@ This request returns the Order Edit object. You can access returned item changes
 
 A merchant might make a mistake while making a change to the original order’s items. Using the Admin API, you can revert item changes previously created.
 
-To revert an item change, send a request to the [Delete Item Change](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsorderedititemchange) endpoint:
+To revert an item change, send a request to the [Delete Item Change API Route](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsorderedititemchange):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -491,7 +491,7 @@ This request returns an object with the following properties:
 
 After an Order Edit is created and all the item changes are added, it must be moved into the request state.
 
-To move an Order Edit into the request state, send a request to the [Request Confirmation](https://docs.medusajs.com/api/admin#order-edits_postordereditsordereditrequest) endpoint:
+To move an Order Edit into the request state, send a request to the [Request Confirmation API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsordereditrequest):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -587,7 +587,7 @@ When the merchant force-confirms the order edit, however, it bypasses the paymen
 
 This section covers how the Admin API can be used to force-confirm the Order Edit. You can refer to [this documentation to learn how to implement Order Edit confirmation on the storefront](../storefront/handle-order-edits.mdx).
 
-To confirm an Order Edit, send a request to the [Confirm Order Edit](https://docs.medusajs.com/api/admin#order-edits_postordereditsordereditconfirm) endpoint:
+To confirm an Order Edit, send a request to the [Confirm Order Edit API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsordereditconfirm):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -670,7 +670,7 @@ You can learn how to allow customers to authorize payment on the storefront in [
 
 ### Capture Payment
 
-If the payment is authorized by the customer, it can be captured by sending a request to the [Capture Payment](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture) endpoint:
+If the payment is authorized by the customer, it can be captured by sending a request to the [Capture Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -736,7 +736,7 @@ It returns in the response the full Payment object.
 
 When the total after the order edit is less than the original order total, the merchant can refund the difference to the customer.
 
-To refund the difference to the customer, send a request to the [Refund Payment](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds) endpoint:
+To refund the difference to the customer, send a request to the [Refund Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>

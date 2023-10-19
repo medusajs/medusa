@@ -70,7 +70,7 @@ You must have an existing order edit in the “request” state.
 
 ## Retrieve an Order Edit
 
-You can retrieve a single order edit by its ID by sending a request to the [Get Order Edit](https://docs.medusajs.com/api/store#order-edits_getordereditsorderedit) endpoint:
+You can retrieve a single order edit by its ID by sending a request to the [Get Order Edit API Route](https://docs.medusajs.com/api/store#order-edits_getordereditsorderedit):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -191,14 +191,14 @@ If `difference_due` is less than 0, then the amount will be refunded to the cust
 
 :::note
 
-This section explains how to authorize the payment using one payment processor and payment session. However, payment collections allow customers to pay in installments or with more than one provider. You can learn more about how to do that using the [batch endpoints of the Payment APIs](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionssessionsbatchauthorize)
+This section explains how to authorize the payment using one payment processor and payment session. However, payment collections allow customers to pay in installments or with more than one provider. You can learn more about how to do that using the [batch routes of the Payment APIs](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionssessionsbatchauthorize)
 
 :::
 
 If `difference_due` is greater than 0, then additional payment from the customer is required. In this case, you must implement these steps to allow the customer to authorize the payment:
 
 1. Show the customer the available payment processors. These can be retrieved from the details of [the region of the order](https://docs.medusajs.com/api/store#regions_getregions).
-2. When the customer selects the payment processor, initialize the payment session of that provider in the payment collection. You can do that by sending a request to the [Manage Payment Sessions](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionspaymentcollectionsessionsbatch) endpoint, passing it the payment collection’s ID as a path parameter, and the payment processor's ID as a request body parameter:
+2. When the customer selects the payment processor, initialize the payment session of that provider in the payment collection. You can do that by sending a request to the [Manage Payment Sessions API Route](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionspaymentcollectionsessionsbatch), passing it the payment collection’s ID as a path parameter, and the payment processor's ID as a request body parameter:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -267,7 +267,7 @@ fetch(
 </Tabs>
 
 1. Show the customer the payment details form based on the payment session’s provider. For example, if the provider ID of a payment session is `stripe`, you must show Stripe’s card component to enter the customer’s card details.
-2. Authorize the payment using the payment processor. The [Authorize Payment Session](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionssessionssessionauthorize) endpoint accepts the payment collection’s ID and the ID of the payment session as path parameters:
+2. Authorize the payment using the payment processor. The [Authorize Payment Session API Route](https://docs.medusajs.com/api/store#payment-collections_postpaymentcollectionssessionssessionauthorize) accepts the payment collection’s ID and the ID of the payment session as path parameters:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -335,7 +335,7 @@ After performing the above steps, you can [complete the Order Edit](#complete-th
 
 ## Complete the Order Edit
 
-To confirm and complete the order edit, send a request to the [Complete Order Edit](https://docs.medusajs.com/api/store#order-edits_postordereditsordereditcomplete) endpoint:
+To confirm and complete the order edit, send a request to the [Complete Order Edit API Route](https://docs.medusajs.com/api/store#order-edits_postordereditsordereditcomplete):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -402,7 +402,7 @@ If the payment isn’t authorized first, the order edit completion will fail.
 
 ## Decline an Order Edit
 
-If the customer wants to decline the Order Edit, you can do that by sending a request to the Decline Order Edit endpoint:
+If the customer wants to decline the Order Edit, you can do that by sending a request to the Decline Order Edit API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>

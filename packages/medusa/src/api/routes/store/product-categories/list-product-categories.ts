@@ -12,7 +12,7 @@ import { defaultStoreCategoryScope } from "."
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
  * description: "Retrieve a list of product categories. The product categories can be filtered by fields such as `handle` or `q`. The product categories can also be paginated.
- *  This endpoint can also be used to retrieve a product category by its handle."
+ *  This API Route can also be used to retrieve a product category by its handle."
  * x-featureFlag: "product_categories"
  * externalDocs:
  *   description: "How to retrieve a product category by its handle"

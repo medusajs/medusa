@@ -36,7 +36,7 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 Retrieving an order by its ID is useful for different scenarios, such as using an order details page. You can use this method for both logged in and guest customers.
 
-You can retrieve an order by its ID using the [Get Order endpoint](https://docs.medusajs.com/api/store#orders_getordersorder):
+You can retrieve an order by its ID using the [Get Order API Route](https://docs.medusajs.com/api/store#orders_getordersorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -88,7 +88,7 @@ fetch(`<BACKEND_URL>/store/orders/${orderId}`, {
 </TabItem>
 </Tabs>
 
-This endpoint requires the order’s ID to be passed as a path parameter. You can utilize the [expand](https://docs.medusajs.com/api/store#expanding-fields) and [fields](https://docs.medusajs.com/api/store#selecting-fields) query parameters to select parameters and relations to return.
+This API Route requires the order’s ID to be passed as a path parameter. You can utilize the [expand](https://docs.medusajs.com/api/store#expanding-fields) and [fields](https://docs.medusajs.com/api/store#selecting-fields) query parameters to select parameters and relations to return.
 
 The request returns the order as an object.
 
@@ -98,7 +98,7 @@ The request returns the order as an object.
 
 Display IDs allow you to show human-readable IDs to your customers. Retrieving an order by its display ID is useful in many situations, such as allowing customers to look up their orders with a search field. This method of retrieving an order can be used for both logged-in customers and guest customers.
 
-You can retrieve an order by its display ID using the [Look Up Order endpoint](https://docs.medusajs.com/api/store#orders_getorders):
+You can retrieve an order by its display ID using the [Look Up Order API Route](https://docs.medusajs.com/api/store#orders_getorders):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -158,12 +158,12 @@ fetch(`<BACKEND_URL>/store/orders?display_id=1&email=user@example.com`, {
 </TabItem>
 </Tabs>
 
-This endpoint requires two query parameters:
+This API Route requires two query parameters:
 
 - `display_id`: a string indicating display ID of the order. If you already have an order object, you can retrieve the display ID using `order.display_id`.
 - `email`: a string indicating the email associated with the order.
 
-You can pass other query parameters to filter the orders even further, and the endpoint will return the first order that matches the filters. Learn more about available query parameters in the [API reference](https://docs.medusajs.com/api/store#orders_getorders).
+You can pass other query parameters to filter the orders even further, and the API Route will return the first order that matches the filters. Learn more about available query parameters in the [API reference](https://docs.medusajs.com/api/store#orders_getorders).
 
 The request returns the order as an object.
 
@@ -173,7 +173,7 @@ The request returns the order as an object.
 
 In certain scenarios, you may need to retrieve an order’s details using the ID of the cart associated with the order. This can be useful when showing a success page after a cart is completed and an order is placed.
 
-You can retrieve an order by the cart ID using the [Get by Cart ID endpoint](https://docs.medusajs.com/api/store#orders_getordersordercartid):
+You can retrieve an order by the cart ID using the [Get by Cart ID API Route](https://docs.medusajs.com/api/store#orders_getordersordercartid):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -225,7 +225,7 @@ fetch(`<BACKEND_URL>/store/orders/cart/${cartId}`, {
 </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the cart as a path parameter.
+This API Route requires the ID of the cart as a path parameter.
 
 The request returns the order as an object.
 

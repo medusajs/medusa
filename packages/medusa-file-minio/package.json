@@ -14,7 +14,7 @@
   "author": "Edin Skeja",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "^1.17.1",
+    "@medusajs/medusa": "^1.17.2",
     "@medusajs/types": "workspace:^",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",

@@ -124,21 +124,21 @@ You can now use your extended entity throughout your commerce application.
 
 ---
 
-## Access Custom Attributes and Relations in Core Endpoints
+## Access Custom Attributes and Relations in Core API Routes
 
 ### Request Parameters
 
-In most cases, after you extend an entity to add new attributes, you'll likely need to pass these attributes to endpoints defined in the core. By default, this causes an error, as request parameters are validated to ensure only those that are defined are passed to the endpoint.
+In most cases, after you extend an entity to add new attributes, you'll likely need to pass these attributes to API Routes defined in the core. By default, this causes an error, as request parameters are validated to ensure only those that are defined are passed to the API Route.
 
-To allow passing your custom attribute, you'll need to [extend the validator](../endpoints/extend-validator.md) of the endpoint.
+To allow passing your custom attribute, you'll need to [extend the validator](../api-routes/extend-validator.md) of the API Route.
 
 ### Response Fields
 
-After you add custom attributes, you'll notice that these attributes aren't returned as part of the response fields of core endpoints. Core endpoints have a defined set of fields and relations that can be returned by default in requests.
+After you add custom attributes, you'll notice that these attributes aren't returned as part of the response fields of core API Routes. Core API Routes have a defined set of fields and relations that can be returned by default in requests.
 
-To change that and ensure your custom attribute is returned in your request, you can extend the allowed fields of a set of endpoints in a loader file and add your attribute into them.
+To change that and ensure your custom attribute is returned in your request, you can extend the allowed fields of a set of API Routes in a loader file and add your attribute into them.
 
-For example, if you added a custom attribute in the `Product` entity and you want to ensure it's returned in all the product's store endpoints (endpoints under the prefix `/store/products`), you can create a file under the `src/loaders` directory in your Medusa backend with the following content:
+For example, if you added a custom attribute in the `Product` entity and you want to ensure it's returned in all the product's store API Routes (API Routes under the prefix `/store/products`), you can create a file under the `src/loaders` directory in your Medusa backend with the following content:
 
 ```ts title=src/loaders/extend-product-fields.ts
 export default async function () {
@@ -156,10 +156,10 @@ export default async function () {
 }
 ```
 
-In the code snippet above, you import `@medusajs/medusa/dist/api/routes/store/products/index`, which is where all the product's store endpoints are exported. In that file, there are the following defined variables:
+In the code snippet above, you import `@medusajs/medusa/dist/api/routes/store/products/index`, which is where all the product's store API Routes are exported. In that file, there are the following defined variables:
 
-- `allowedStoreProductsFields`: The fields or attributes of a product that are allowed to be retrieved and returned in the product's store endpoints. This would allow you to pass your custom attribute in the `fields` request parameter of the product's store endpoints.
-- `defaultStoreProductsFields`: The fields or attributes of a product that are retrieved and returned by default in the product's store endpoints.
+- `allowedStoreProductsFields`: The fields or attributes of a product that are allowed to be retrieved and returned in the product's store API Routes. This would allow you to pass your custom attribute in the `fields` request parameter of the product's store API Routes.
+- `defaultStoreProductsFields`: The fields or attributes of a product that are retrieved and returned by default in the product's store API Routes.
 
 You change the values of these variables and pass the name of your custom attribute. Make sure to change `customAttribute` to the name of your custom attribute.
 
@@ -171,10 +171,10 @@ Before you test out the above change, make sure to build your changes before you
 
 You can also add custom relations by changing the following defined variables:
 
-- `allowedStoreProductsRelations`: The relations of a product that are allowed to be retrieved and returned in the product's store endpoints. This would allow you to pass your custom relation in the `expand` request parameter of the product's store endpoints.
-- `defaultStoreProductsRelations`: The relations of a product that are retrieved and returned by default in the product's store endpoints.
+- `allowedStoreProductsRelations`: The relations of a product that are allowed to be retrieved and returned in the product's store API Routes. This would allow you to pass your custom relation in the `expand` request parameter of the product's store API Routes.
+- `defaultStoreProductsRelations`: The relations of a product that are retrieved and returned by default in the product's store API Routes.
 
-If you want to apply this example for a different entity or set of endpoints, you would need to change the import path `@medusajs/medusa/dist/api/routes/store/products/index` to the path of the endpoints you're targeting. You also need to change `allowedStoreProductsFields` and `defaultStoreProductsFields` to the names of the variables in that file, and the same goes for relations. Typically, these names would be of the format `(allowed|default)(Store|Admin)(Entity)(Fields|Relation)`.
+If you want to apply this example for a different entity or set of API Routes, you would need to change the import path `@medusajs/medusa/dist/api/routes/store/products/index` to the path of the API Routes you're targeting. You also need to change `allowedStoreProductsFields` and `defaultStoreProductsFields` to the names of the variables in that file, and the same goes for relations. Typically, these names would be of the format `(allowed|default)(Store|Admin)(Entity)(Fields|Relation)`.
 
 ---
 

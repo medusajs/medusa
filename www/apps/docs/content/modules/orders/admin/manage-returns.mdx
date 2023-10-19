@@ -57,7 +57,7 @@ Return reasons allow you to specify why an item is returned. They are especially
 
 ### List Return Reasons
 
-You can list available return reasons using the [List Return Reasons endpoint](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasons):
+You can list available return reasons using the [List Return Reasons API Route](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasons):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -124,13 +124,13 @@ curl -L -X GET '<BACKEND_URL>/admin/return-reasons' \
 </TabItem>
 </Tabs>
 
-This endpoint does not require or accept any path or query parameters.
+This API Route doesn't require or accept any path or query parameters.
 
 The request returns an array of return reason objects.
 
 ### Create a Return Reason
 
-You can create a return reason using the [Create Return Reason endpoint](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasons):
+You can create a return reason using the [Create Return Reason API Route](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasons):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -205,7 +205,7 @@ curl -L -X POST '<BACKEND_URL>/admin/return-reasons' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the following request body parameters:
+This API Route requires the following request body parameters:
 
 - `label`: a string that will be used as the label of the return reason. This is typically the label shown to the customer or the merchant.
 - `value`: a string that is unique among return reasons. It is typically used internally for identification
@@ -216,7 +216,7 @@ This request returns the created return reason as an object.
 
 ### Update a Return Reason
 
-You can update a return reason by sending a request to the [Update Return Reason endpoint](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasonsreason):
+You can update a return reason by sending a request to the [Update Return Reason API Route](https://docs.medusajs.com/api/admin#return-reasons_postreturnreasonsreason):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -289,7 +289,7 @@ curl -L -X POST '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the return reason ID to be passed as a path parameter.
+This API Route requires the return reason ID to be passed as a path parameter.
 
 In the request body, you can pass any of the return reason’s fields that you want to update as parameters. In the example above, the label is passed in the request body to be updated.
 
@@ -297,7 +297,7 @@ The request returns the updated return reason as an object.
 
 ### Delete a Return Reason
 
-You can delete a return reason by sending a request to the [Delete Return Reason endpoint](https://docs.medusajs.com/api/admin#return-reasons_deletereturnreason):
+You can delete a return reason by sending a request to the [Delete Return Reason API Route](https://docs.medusajs.com/api/admin#return-reasons_deletereturnreason):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -356,7 +356,7 @@ curl -L -X DELETE '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the return reason ID as a path parameter.
+This API Route requires the return reason ID as a path parameter.
 
 The request returns the following fields:
 
@@ -370,11 +370,11 @@ The request returns the following fields:
 
 :::note
 
-You can view all returns in your commerce system, regardless of which order they belong to, using the [List Returns endpoint](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasons).
+You can view all returns in your commerce system, regardless of which order they belong to, using the [List Returns API Route](https://docs.medusajs.com/api/admin#return-reasons_getreturnreasons).
 
 :::
 
-When you retrieve an order using the [Get Order endpoint](https://docs.medusajs.com/api/admin#orders_getordersorder), you can access the returns within the order object:
+When you retrieve an order using the [Get Order API Route](https://docs.medusajs.com/api/admin#orders_getordersorder), you can access the returns within the order object:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -445,7 +445,7 @@ curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the order ID as a path parameter.
+This API Route requires the order ID as a path parameter.
 
 The request returns the order as an object. In that object, you can access an array of return objects using the property `returns` of the order object.
 
@@ -453,7 +453,7 @@ The request returns the order as an object. In that object, you can access an ar
 
 ## View a Swap’s Return
 
-You can retrieve a swap either using the Get Order endpoint as explained [here](./manage-swaps.mdx#view-orders-swaps), or using the [List Swaps](https://docs.medusajs.com/api/admin#swaps_getswaps) or [Get Swap endpoint](https://docs.medusajs.com/api/admin#swaps_getswapsswap).
+You can retrieve a swap either using the Get Order API Route as explained [here](./manage-swaps.mdx#view-orders-swaps), or using the [List Swaps](https://docs.medusajs.com/api/admin#swaps_getswaps) or [Get Swap](https://docs.medusajs.com/api/admin#swaps_getswapsswap) API Routes.
 
 In a swap object, the swap’s return is available under the `return_order` property.
 
@@ -461,13 +461,13 @@ In a swap object, the swap’s return is available under the `return_order` prop
 
 ## View a Claim’s Return
 
-You can retrieve a claim using the Get Order endpoint as explained [here](./manage-claims#view-orders-claims). In a claim object, the claim’s return is available under the `return_order` property.
+You can retrieve a claim using the Get Order API Route as explained [here](./manage-claims#view-orders-claims). In a claim object, the claim’s return is available under the `return_order` property.
 
 ---
 
 ## Mark a Return as Received
 
-You can mark a return as received by sending a request to the [Receive a Return endpoint](https://docs.medusajs.com/api/admin#returns_postreturnsreturnreceive):
+You can mark a return as received by sending a request to the [Receive a Return API Route](https://docs.medusajs.com/api/admin#returns_postreturnsreturnreceive):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -555,7 +555,7 @@ curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/receive' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the return as a path parameter.
+This API Route requires the ID of the return as a path parameter.
 
 In the request body, the `items` parameter is required. It’s an array of objects having the following properties:
 
@@ -576,7 +576,7 @@ A received return can’t be canceled.
 
 :::
 
-You can cancel a return by sending a request to the [Cancel Return endpoint](https://docs.medusajs.com/api/admin#returns_postreturnsreturncancel):
+You can cancel a return by sending a request to the [Cancel Return API Route](https://docs.medusajs.com/api/admin#returns_postreturnsreturncancel):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -635,7 +635,7 @@ curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/cancel' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the return ID to be passed as a path parameter.
+This API Route requires the return ID to be passed as a path parameter.
 
 The request returns one of the following object types:
 

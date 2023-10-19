@@ -52,9 +52,9 @@ This section includes all configurations that belong to the `projectConfig` prop
 
 ### admin_cors and store_cors
 
-The Medusa backend’s endpoints are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s endpoints.
+The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
 
-`admin_cors` is used to specify the accepted URLs or patterns for admin endpoints, and `store_cors` is used to specify the accepted URLs or patterns for store endpoints.
+`admin_cors` is used to specify the accepted URLs or patterns for admin API Routes, and `store_cors` is used to specify the accepted URLs or patterns for store API Routes.
 
 For both the `admin_cors` and `store_cors`, the value is expected to be a string. This string can be a comma-separated list of accepted origins. Every origin in that list can be of the following types:
 
@@ -129,7 +129,7 @@ Its value is an object that has the following properties:
 - `memLevel`: A `number` value that specifies how much memory should be allocated to the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level). The default value is `8`.
 - `threshold`: A `number` or a `string` value in bytes that specifies the minimum response body size that compression is applied on. This is the number of bytes or any string accepted by the bytes module. The default value is `1024`.
 
-If you enable HTTP compression and you want to disable it for specific endpoints, you can pass in the request header `"x-no-compression": true`.
+If you enable HTTP compression and you want to disable it for specific API Routes, you can pass in the request header `"x-no-compression": true`.
 
 ```js title=medusa-config.js
 module.exports = {

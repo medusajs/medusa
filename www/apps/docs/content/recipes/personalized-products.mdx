@@ -96,15 +96,15 @@ Medusa provides a Next.js storefront starter with basic ecommerce functionalitie
 
 ## Pass Personalized Data to the Order
 
-If you followed the basic approach of using the `metadata` attribute to store the personalized data, you can pass the personalization data when you add an item to the cart in the storefront using the [Add a Line Item](https://docs.medusajs.com/api/store#carts_postcartscartlineitems) endpoint. This endpoint accepts a `metadata` request body parameter that will be stored in the created Line Item’s `metadata` attribute.
+If you followed the basic approach of using the `metadata` attribute to store the personalized data, you can pass the personalization data when you add an item to the cart in the storefront using the [Add a Line Item](https://docs.medusajs.com/api/store#carts_postcartscartlineitems) API Route. This API Route accepts a `metadata` request body parameter that will be stored in the created Line Item’s `metadata` attribute.
 
-In the case that you’ve created a custom entity or extended a core entity, you can create a custom endpoint that handles saving the personalization data. You can then call that endpoint from the storefront before or after adding the item to the cart.
+In the case that you’ve created a custom entity or extended a core entity, you can create a custom API Route that handles saving the personalization data. You can then call that API Route from the storefront before or after adding the item to the cart.
 
 <DocCardList colSize={6} items={[
   {
     type: 'link',
     href: 'https://docs.medusajs.com/api/store#carts_postcartscartlineitems',
-    label: 'Add a Line Item Endpoint',
+    label: 'Add a Line Item API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn about the expected request parameters and response.',
@@ -112,11 +112,11 @@ In the case that you’ve created a custom entity or extended a core entity, you
   },
   {
     type: 'link',
-    href: '/development/endpoints/create',
-    label: 'Create Endpoint',
+    href: '/development/api-routes/create',
+    label: 'Create API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to create an endpoint in the Medusa backend.',
+      description: 'Learn how to create an API Route in the Medusa backend.',
     }
   },
 ]} />
@@ -127,7 +127,7 @@ In the case that you’ve created a custom entity or extended a core entity, you
 
 If you stored the personalized data in the `metadata` of the Line Items, those same Line Items are associated with the placed order. So, by expanding the `items` relation on the `Order` entity, you can retrieve the `metadata` attribute of the Line Items.
 
-In the case that you’ve created a custom entity or extended a core entity, you can create a custom endpoint that handles retrieving the personalization data. If the entity you’ve created or customized is associated with the Order entity, you can alternatively expand it similarly to the `items` relation.
+In the case that you’ve created a custom entity or extended a core entity, you can create a custom API Route that handles retrieving the personalization data. If the entity you’ve created or customized is associated with the Order entity, you can alternatively expand it similarly to the `items` relation.
 
 If you want to show the personalized data in the Medusa admin, you can extend the Medusa admin to add a widget, a UI route, or a setting page and show the personalized data.
 
@@ -172,9 +172,6 @@ For example, if the customer personalizes a shirt to include an image or message
 You can also listen to other [Order-related events](../development/events/events-list.md#order-events) to perform this action at a different point if necessary, such as when the `order.fulfillment_created` is triggered.
 
 Alternatively, you can create a fulfillment service that integrates a third-party service or mechanism to fulfill the personalized product. This is useful if you want the fulfillment of personalized products to be embedded into Medusa’s existing order fulfillment.
-
-- Create a Subscriber
-- Create a Fulfillment Service
 
 <DocCardList colSize={6} items={[
   {

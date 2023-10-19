@@ -16,7 +16,7 @@ Generally, all resources are registered in a container. Then, whenever a class d
 
 ### Medusa’s Dependency Container
 
-Medusa uses a dependency container to register essential resources of the backend. You can then access these resources in classes and endpoints using the dependency container.
+Medusa uses a dependency container to register essential resources of the backend. You can then access these resources in classes and API Routes using the dependency container.
 
 For example, if you create a custom service, you can access any other service registered in Medusa in your service’s constructor. That includes Medusa’s core services, services defined in plugins, or other services that you create on your backend.
 
@@ -28,7 +28,7 @@ To manage dependency injections, Medusa uses [Awilix](https://github.com/jeffijo
 
 When you run the Medusa backend, a container of the type `MedusaContainer` is created. This type extends the [AwilixContainer](https://github.com/jeffijoe/awilix#the-awilixcontainer-object) object.
 
-The backend then registers all important resources in the container, which makes them accessible in classes and endpoints.
+The backend then registers all important resources in the container, which makes them accessible in classes and API Routes.
 
 ---
 
@@ -695,11 +695,11 @@ Its camel-case name.
 
 ## Resolve Resources
 
-This section covers how to resolve resources from the dependency container to use them in endpoints and classes in general.
+This section covers how to resolve resources from the dependency container to use them in API Routes and classes in general.
 
-### In Endpoints
+### In API Routes
 
-To resolve resources, such as services, in endpoints, use the `req.scope.resolve` method. The method receives the registration name of the resource as a parameter.
+To resolve resources, such as services, in API Routes, use the `MedusaRequest` object's `scope.resolve` method. The method receives the registration name of the resource as a parameter.
 
 For example:
 
@@ -707,7 +707,7 @@ For example:
 const logger = req.scope.resolve("logger")
 ```
 
-Please note that in endpoints some resources, such as repositories, are not available. Refer to the [repositories](../entities/repositories.md) documentation to learn how you can load them.
+Please note that in API Routes some resources, such as repositories, aren't available. Refer to the [repositories](../entities/repositories.md#api-routes) documentation to learn how you can load them.
 
 ### In Classes
 

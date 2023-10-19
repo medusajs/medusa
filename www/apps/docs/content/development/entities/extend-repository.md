@@ -83,32 +83,35 @@ After that, you can add your custom methods to the repository. In the example ab
 
 ## Step 3: Use Your Extended Repository
 
-You can now use your extended repository in other resources such as services or endpoints.
+You can now use your extended repository in other resources such as services or API Routes.
 
-Here’s an example of using it in an endpoint:
+Here’s an example of using it in an API Route:
 
-```ts
+```ts title=src/api/store/custom/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 import ProductRepository from "./path/to/product.ts"
-import EntityManager from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
 
-export default () => {
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
   // ...
 
-  router.get("/custom-endpoint", (req, res) => {
-    // ...
+  const productRepository: typeof ProductRepository = 
+  req.scope.resolve(
+    "productRepository"
+  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const productRepo = manager.withRepository(
+    productRepository
+  )
+  productRepo.customFunction()
 
-    const productRepository: typeof ProductRepository = 
-      req.scope.resolve(
-        "productRepository"
-      )
-    const manager: EntityManager = req.scope.resolve("manager")
-    const productRepo = manager.withRepository(
-      productRepository
-    )
-    productRepo.customFunction()
-
-    // ...
-  })
+  // ...
 }
 ```
 

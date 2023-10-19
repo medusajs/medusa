@@ -17,7 +17,7 @@ The onboarding widget is already implemented within the codebase of your Medusa 
 By following this tutorial, you’ll:
 
 - Build an onboarding flow in the admin that takes the user through creating a sample product and order. This flow has four steps and navigates the user between four pages in the admin before completing the guide. This will be implemented using [Admin Widgets](./widgets.md).
-- Keep track of the current step the user has reached by creating a table in the database and an API endpoint that the admin widget uses to retrieve and update the current step. These customizations will be applied to the backend.
+- Keep track of the current step the user has reached by creating a table in the database and an API Route that the admin widget uses to retrieve and update the current step. These customizations will be applied to the backend.
 
 ![Onboarding Widget Demo](https://res.cloudinary.com/dza7lstvk/image/upload/v1686839259/Medusa%20Docs/Screenshots/onboarding-gif_nalqps.gif)
 
@@ -45,7 +45,7 @@ If you're using TypeScript in your project, it's highly recommended to setup you
 
 ### Install Medusa React
 
-[Medusa React](../medusa-react/overview) is a React library that facilitates using Medusa’s endpoints within your React application. It also provides the utility to register and use custom endpoints.
+[Medusa React](../medusa-react/overview) is a React library that facilitates using Medusa’s API Routes within your React application. It also provides the utility to register and use custom API Routes.
 
 To install Medusa React and its required dependencies, run the following command in the root directory of the Medusa backend:
 
@@ -78,479 +78,45 @@ export default IconProps
 </details>
 
 <details>
-<summary>
-src/admin/components/shared/icons/check-circle-fill-icon.tsx
+<summary>  
+src/admin/components/shared/icons/get-started.tsx
 </summary>
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/components/shared/icons/check-circle-fill-icon.tsx
+```tsx title=src/admin/components/shared/icons/get-started.tsx
 import React from "react"
 import IconProps from "../../../types/icon-type"
 
-const CheckCircleFillIcon: React.FC<IconProps> = ({
-  size = "24",
+const GetStarted: React.FC<IconProps> = ({
+  size = "40",
   color = "currentColor",
   ...attributes
 }) => {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...attributes}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M18 10C18 14.4184 14.4184 18 10 18C5.5816 18 2 14.4184 2 10C2 5.5816 5.5816 2 10 2C14.4184 2 18 5.5816 18 10ZM13.9053 8.28033C14.1982 7.98744 14.1982 7.51256 13.9053 7.21967C13.6124 6.92678 13.1376 6.92678 12.8447 7.21967L8.875 11.1893L7.15533 9.46967C6.86244 9.17678 6.38756 9.17678 6.09467 9.46967C5.80178 9.76256 5.80178 10.2374 6.09467 10.5303L8.34467 12.7803C8.63756 13.0732 9.11244 13.0732 9.40533 12.7803L13.9053 8.28033Z"
-        fill={color}
-      />
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" {...attributes}>
+      <rect width={size} height={size} fill="url(#pattern0)"/>
+      <defs>
+      <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlinkHref="#image0_9408_244" transform="scale(0.00625)"/>
+      </pattern>
+      <image id="image0_9408_244" width="160" height="160" xlinkHref="data:image/png;base64,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"/>
+      </defs>
     </svg>
+
+
   )
 }
 
-export default CheckCircleFillIcon
+export default GetStarted
+
 ```
 
 </details>
 
 <details>
 <summary>  
-src/admin/components/shared/icons/cross-icon.tsx
-</summary>
-
-```tsx title=src/admin/components/shared/icons/cross-icon.tsx
-import React from "react"
-import IconProps from "../../../types/icon-type"
-
-const CrossIcon: React.FC<IconProps> = ({
-  size = "20",
-  color = "currentColor",
-  ...attributes
-}) => {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...attributes}
-    >
-      <path
-        d="M15 5L5 15"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M5 5L15 15"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-export default CrossIcon
-```
-
-</details>
-
-<details>
-<summary>  
-src/admin/components/shared/icons/get-started-icon.tsx
-</summary>
-
-<!-- eslint-disable max-len -->
-
-```tsx title=src/admin/components/shared/icons/get-started-icon.tsx
-import React from "react"
-import IconProps from "../../../types/icon-type"
-
-const GetStartedIcon: React.FC<IconProps> = () => (
-  <svg
-    width="48"
-    height="48"
-    viewBox="0 0 48 48"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <g filter="url(#filter0_ddd_8923_1881)">
-      <rect 
-        x="4" 
-        y="2" 
-        width="40" 
-        height="40" 
-        rx="20" 
-        fill="#F1F3F5"
-      />
-      <rect
-        x="7.5"
-        y="15.5"
-        width="33"
-        height="13"
-        rx="2.5"
-        fill="white"
-      />
-      <rect
-        x="10"
-        y="20.5"
-        width="14"
-        height="3"
-        rx="1.5"
-        fill="url(#paint0_linear_8923_1881)"
-      />
-      <rect
-        x="7.5"
-        y="15.5"
-        width="33"
-        height="13"
-        rx="2.5"
-        stroke="url(#paint1_linear_8923_1881)"
-      />
-      <rect
-        x="9.5"
-        y="2.5"
-        width="29"
-        height="10"
-        rx="2.5"
-        fill="url(#paint2_linear_8923_1881)"
-      />
-      <rect
-        x="9.5"
-        y="2.5"
-        width="29"
-        height="10"
-        rx="2.5"
-        stroke="url(#paint3_linear_8923_1881)"
-      />
-      <rect
-        x="9.5"
-        y="31.5"
-        width="29"
-        height="10"
-        rx="2.5"
-        fill="url(#paint4_linear_8923_1881)"
-      />
-      <rect
-        x="9.5"
-        y="31.5"
-        width="29"
-        height="10"
-        rx="2.5"
-        stroke="url(#paint5_linear_8923_1881)"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M30.3251 22.9287C30.4646 22.9286 30.6 22.9752 30.7099 23.0609C30.8199 23.1467 30.898 23.2668 30.9318 23.402L31.1468 24.2654C31.3435 25.0487 31.9551 25.6604 32.7385 25.857L33.6018 26.072C33.7373 26.1056 33.8577 26.1836 33.9437 26.2935C34.0298 26.4035 34.0765 26.5391 34.0765 26.6787C34.0765 26.8183 34.0298 26.9539 33.9437 27.0639C33.8577 27.1738 33.7373 27.2518 33.6018 27.2854L32.7385 27.5004C31.9551 27.697 31.3435 28.3087 31.1468 29.092L30.9318 29.9554C30.8982 30.0909 30.8203 30.2113 30.7103 30.2973C30.6003 30.3834 30.4647 30.4301 30.3251 30.4301C30.1855 30.4301 30.0499 30.3834 29.94 30.2973C29.83 30.2113 29.752 30.0909 29.7185 29.9554L29.5035 29.092C29.4073 28.7074 29.2084 28.3561 28.9281 28.0758C28.6477 27.7954 28.2964 27.5965 27.9118 27.5004L27.0485 27.2854C26.9129 27.2518 26.7926 27.1738 26.7065 27.0639C26.6205 26.9539 26.5737 26.8183 26.5737 26.6787C26.5737 26.5391 26.6205 26.4035 26.7065 26.2935C26.7926 26.1836 26.9129 26.1056 27.0485 26.072L27.9118 25.857C28.2964 25.7609 28.6477 25.562 28.9281 25.2816C29.2084 25.0013 29.4073 24.65 29.5035 24.2654L29.7185 23.402C29.7523 23.2668 29.8304 23.1467 29.9403 23.0609C30.0502 22.9752 30.1857 22.9286 30.3251 22.9287Z"
-        fill="url(#paint6_linear_8923_1881)"
-      />
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M36.7493 13.7515C36.858 13.7515 36.9637 13.7869 37.0504 13.8523C37.1371 13.9178 37.2002 14.0097 37.23 14.1141L37.772 16.0115C37.8887 16.4202 38.1077 16.7923 38.4082 17.0928C38.7087 17.3933 39.0808 17.6122 39.4894 17.7289L41.3868 18.271C41.4912 18.3009 41.5831 18.364 41.6484 18.4507C41.7138 18.5374 41.7492 18.643 41.7492 18.7516C41.7492 18.8602 41.7138 18.9659 41.6484 19.0526C41.5831 19.1393 41.4912 19.2024 41.3868 19.2323L39.4894 19.7743C39.0808 19.8911 38.7087 20.11 38.4082 20.4105C38.1077 20.711 37.8887 21.0831 37.772 21.4917L37.23 23.3891C37.2001 23.4935 37.137 23.5854 37.0503 23.6507C36.9636 23.7161 36.8579 23.7515 36.7493 23.7515C36.6407 23.7515 36.5351 23.7161 36.4484 23.6507C36.3616 23.5854 36.2986 23.4935 36.2686 23.3891L35.7266 21.4917C35.6099 21.0831 35.391 20.711 35.0905 20.4105C34.79 20.11 34.4179 19.8911 34.0092 19.7743L32.1118 19.2323C32.0074 19.2024 31.9156 19.1393 31.8502 19.0526C31.7849 18.9659 31.7495 18.8602 31.7495 18.7516C31.7495 18.643 31.7849 18.5374 31.8502 18.4507C31.9156 18.364 32.0074 18.3009 32.1118 18.271L34.0092 17.7289C34.4179 17.6122 34.79 17.3933 35.0905 17.0928C35.391 16.7923 35.6099 16.4202 35.7266 16.0115L36.2686 14.1141C36.2985 14.0097 36.3615 13.9178 36.4483 13.8523C36.535 13.7869 36.6407 13.7515 36.7493 13.7515Z"
-        fill="url(#paint7_linear_8923_1881)"
-      />
-    </g>
-    <defs>
-      <filter
-        id="filter0_ddd_8923_1881"
-        x="0"
-        y="0"
-        width="48"
-        height="48"
-        filterUnits="userSpaceOnUse"
-        colorInterpolationFilters="sRGB"
-      >
-        <feFlood floodOpacity="0" result="BackgroundImageFix" />
-        <feColorMatrix
-          in="SourceAlpha"
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"
-        />
-        <feOffset dy="2" />
-        <feGaussianBlur stdDeviation="2" />
-        <feComposite in2="hardAlpha" operator="out" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0.0666667 0 0 0 0 0.0941176 0 0 0 0 0.109804 0 0 0 0.04 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow_8923_1881"
-        />
-        <feColorMatrix
-          in="SourceAlpha"
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"
-        />
-        <feMorphology
-          radius="1"
-          operator="erode"
-          in="SourceAlpha"
-          result="effect2_dropShadow_8923_1881"
-        />
-        <feOffset dy="1" />
-        <feGaussianBlur stdDeviation="1" />
-        <feComposite in2="hardAlpha" operator="out" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0.0666667 0 0 0 0 0.0941176 0 0 0 0 0.109804 0 0 0 0.08 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="effect1_dropShadow_8923_1881"
-          result="effect2_dropShadow_8923_1881"
-        />
-        <feColorMatrix
-          in="SourceAlpha"
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"
-        />
-        <feMorphology
-          radius="1"
-          operator="dilate"
-          in="SourceAlpha"
-          result="effect3_dropShadow_8923_1881"
-        />
-        <feOffset />
-        <feComposite in2="hardAlpha" operator="out" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0.0666667 0 0 0 0 0.0941176 0 0 0 0 0.109804 0 0 0 0.08 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="effect2_dropShadow_8923_1881"
-          result="effect3_dropShadow_8923_1881"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect3_dropShadow_8923_1881"
-          result="shape"
-        />
-      </filter>
-      <linearGradient
-        id="paint0_linear_8923_1881"
-        x1="24"
-        y1="20.5"
-        x2="10"
-        y2="23.5"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop stopColor="#5EB0EF" />
-        <stop offset="0.331911" stopColor="#0081F1" />
-        <stop offset="0.664618" stopColor="#0081F1" />
-        <stop offset="1" stopColor="#5EB0EF" />
-      </linearGradient>
-      <linearGradient
-        id="paint1_linear_8923_1881"
-        x1="24"
-        y1="15"
-        x2="24"
-        y2="29"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop offset="0.700898" stopColor="#11181C" stopOpacity="0.1" />
-        <stop offset="1" stopColor="#11181C" stopOpacity="0.16" />
-      </linearGradient>
-      <linearGradient
-        id="paint2_linear_8923_1881"
-        x1="24"
-        y1="2"
-        x2="24"
-        y2="13"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop stopColor="#F1F3F5" />
-        <stop offset="1" stopColor="white" />
-      </linearGradient>
-      <linearGradient
-        id="paint3_linear_8923_1881"
-        x1="24"
-        y1="9.89185"
-        x2="24"
-        y2="13"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop stopColor="#F1F3F5" />
-        <stop offset="1" stopColor="#DFE3E6" />
-      </linearGradient>
-      <linearGradient
-        id="paint4_linear_8923_1881"
-        x1="24"
-        y1="31"
-        x2="24"
-        y2="42"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop stopColor="white" />
-        <stop offset="1" stopColor="#F1F3F5" />
-      </linearGradient>
-      <linearGradient
-        id="paint5_linear_8923_1881"
-        x1="24"
-        y1="31"
-        x2="24"
-        y2="33.7617"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop stopColor="#DFE3E6" />
-        <stop offset="1" stopColor="#F1F3F5" />
-      </linearGradient>
-      <linearGradient
-        id="paint6_linear_8923_1881"
-        x1="34.0765"
-        y1="22.9287"
-        x2="26.2457"
-        y2="23.2884"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop stopColor="#5EB0EF" />
-        <stop offset="0.331911" stopColor="#0081F1" />
-        <stop offset="0.664618" stopColor="#0081F1" />
-        <stop offset="1" stopColor="#5EB0EF" />
-      </linearGradient>
-      <linearGradient
-        id="paint7_linear_8923_1881"
-        x1="41.7492"
-        y1="13.7515"
-        x2="31.3123"
-        y2="14.2307"
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop stopColor="#5EB0EF" />
-        <stop offset="0.331911" stopColor="#0081F1" />
-        <stop offset="0.664618" stopColor="#0081F1" />
-        <stop offset="1" stopColor="#5EB0EF" />
-      </linearGradient>
-    </defs>
-  </svg>
-)
-
-export default GetStartedIcon
-```
-
-</details>
-
-<details>
-<summary>  
-src/admin/components/shared/icons/clipboard-copy-icon.tsx
-</summary>
-
-<!-- eslint-disable max-len -->
-
-```tsx title=src/admin/components/shared/icons/clipboard-copy-icon.tsx
-import React from "react"
-import IconProps from "../../../types/icon-type"
-
-const ClipboardCopyIcon: React.FC<IconProps> = ({
-  size = "20",
-  color = "currentColor",
-  ...attributes
-}) => {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...attributes}
-    >
-      <path
-        d="M12.917 4.16669H14.3753C14.7621 4.16669 15.133 4.32277 15.4065 4.6006C15.68 4.87843 15.8337 5.25526 15.8337 5.64817V8.33335M7.08366 4.16669H5.62533C5.23855 4.16669 4.86762 4.32277 4.59413 4.6006C4.32064 4.87843 4.16699 5.25526 4.16699 5.64817V16.0185C4.16699 16.4115 4.32064 16.7883 4.59413 17.0661C4.86762 17.3439 5.23855 17.5 5.62533 17.5H14.3753C14.7621 17.5 15.133 17.3439 15.4065 17.0661C15.68 16.7883 15.8337 16.4115 15.8337 16.0185V15"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M11.875 2.5H8.125C7.77982 2.5 7.5 2.8731 7.5 3.33333V5C7.5 5.46024 7.77982 5.83333 8.125 5.83333H11.875C12.2202 5.83333 12.5 5.46024 12.5 5V3.33333C12.5 2.8731 12.2202 2.5 11.875 2.5Z"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17.5 11.6667H10"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M12.5 9.16669L10 11.6667L12.5 14.1667"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-export default ClipboardCopyIcon
-```
-
-</details>
-
-<details>
-<summary>  
-src/admin/components/shared/icons/computer-desktop-icon.tsx
-</summary>
-
-<!-- eslint-disable max-len -->
-
-```tsx title=src/admin/components/shared/icons/computer-desktop-icon.tsx
-import React from "react"
-import IconProps from "../../../types/icon-type"
-
-const ComputerDesktopIcon: React.FC<IconProps> = ({
-  size = "24",
-  color = "currentColor",
-  ...attributes
-}) => {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 17 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...attributes}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M0.5 2.25C0.5 1.65326 0.737053 1.08097 1.15901 0.65901C1.58097 0.237053 2.15326 0 2.75 0H14.25C14.8467 0 15.419 0.237053 15.841 0.65901C16.2629 1.08097 16.5 1.65326 16.5 2.25V10.75C16.5 11.3467 16.2629 11.919 15.841 12.341C15.419 12.7629 14.8467 13 14.25 13H11.145C11.3403 13.6543 11.7226 14.2372 12.245 14.677C12.3625 14.7762 12.4467 14.9092 12.4861 15.0579C12.5255 15.2065 12.5182 15.3637 12.4653 15.5081C12.4123 15.6526 12.3163 15.7772 12.1901 15.8652C12.064 15.9532 11.9138 16.0002 11.76 16H5.24C5.08628 16 4.93627 15.9528 4.81027 15.8647C4.68427 15.7767 4.58838 15.652 4.53557 15.5077C4.48275 15.3633 4.47557 15.2062 4.515 15.0576C4.55443 14.9091 4.63856 14.7762 4.756 14.677C5.27799 14.2371 5.65999 13.6542 5.855 13H2.75C2.15326 13 1.58097 12.7629 1.15901 12.341C0.737053 11.919 0.5 11.3467 0.5 10.75V2.25ZM2 2.25C2 2.05109 2.07902 1.86032 2.21967 1.71967C2.36032 1.57902 2.55109 1.5 2.75 1.5H14.25C14.4489 1.5 14.6397 1.57902 14.7803 1.71967C14.921 1.86032 15 2.05109 15 2.25V9.75C15 9.94891 14.921 10.1397 14.7803 10.2803C14.6397 10.421 14.4489 10.5 14.25 10.5H2.75C2.55109 10.5 2.36032 10.421 2.21967 10.2803C2.07902 10.1397 2 9.94891 2 9.75V2.25Z"
-        fill={color}
-      />
-    </svg>
-  )
-}
-
-export default ComputerDesktopIcon
-```
-
-</details>
-
-<details>
-<summary>  
-src/admin/components/shared/icons/dollar-sign-icon.tsx
+src/admin/components/shared/icons/active-circle-dotted-line.tsx
 </summary>
 
 <!-- eslint-disable max-len -->
@@ -559,39 +125,40 @@ src/admin/components/shared/icons/dollar-sign-icon.tsx
 import React from "react"
 import IconProps from "../../../types/icon-type"
 
-const DollarSignIcon: React.FC<IconProps> = ({
+const ActiveCircleDottedLine: React.FC<IconProps> = ({
   size = "24",
   color = "currentColor",
   ...attributes
 }) => {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...attributes}
-    >
-      <path
-        d="M12 3V21"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17 6H9.5C8.57174 6 7.6815 6.31607 7.02513 6.87868C6.36875 7.44129 6 8.20435 6 9C6 9.79565 6.36875 10.5587 7.02513 11.1213C7.6815 11.6839 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3161 16.9749 12.8787C17.6313 13.4413 18 14.2044 18 15C18 15.7956 17.6313 16.5587 16.9749 17.1213C16.3185 17.6839 15.4283 18 14.5 18H6"
-        stroke={color}
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width={size} height={size} viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" {...attributes}>
+      <g filter="url(#filter0_d_8860_2802)">
+        <rect x="3" y="3" width="20" height="20" rx="10" fill="white"/>
+        <path d="M15.5 5.93589C13.884 5.3547 12.116 5.3547 10.5 5.93589" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M5.63037 11.632C5.94283 9.94471 6.82561 8.41606 8.13082 7.30209" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M8.13082 18.6979C6.82563 17.5839 5.94286 16.0552 5.63037 14.368" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M10.5 20.0641C12.116 20.6453 13.884 20.6453 15.5 20.0641" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M20.3696 11.632C20.0571 9.94471 19.1744 8.41606 17.8691 7.30209" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M17.8691 18.6979C19.1743 17.5839 20.0571 16.0552 20.3696 14.368" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </g>
+      <defs>
+        <filter id="filter0_d_8860_2802" x="0" y="0" width="26" height="26" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+          <feMorphology radius="3" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_8860_2802"/>
+          <feOffset/>
+          <feComposite in2="hardAlpha" operator="out"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 0.231373 0 0 0 0 0.509804 0 0 0 0 0.964706 0 0 0 0.2 0"/>
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_8860_2802"/>
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_8860_2802" result="shape"/>
+        </filter>
+      </defs>
     </svg>
+
   )
 }
 
-export default DollarSignIcon
+export default ActiveCircleDottedLine
 ```
 
 </details>
@@ -605,9 +172,10 @@ src/admin/components/shared/accordion.tsx
 
 ```tsx title=src/admin/components/shared/accordion.tsx
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import clsx from "clsx"
 import React from "react"
-import CheckCircleFillIcon from "./icons/check-circle-fill-icon"
+import { CheckCircleSolid, CircleMiniSolid } from "@medusajs/icons"
+import { Heading, Text, clx } from "@medusajs/ui"
+import ActiveCircleDottedLine from "./icons/active-circle-dotted-line"
 
 type AccordionItemProps = AccordionPrimitive.AccordionItemProps & {
   title: string;
@@ -632,9 +200,7 @@ const Accordion: React.FC<
   Item: React.FC<AccordionItemProps>;
 } = ({ children, ...props }) => {
   return (
-    <AccordionPrimitive.Root {...props}>
-      {children}
-    </AccordionPrimitive.Root>
+    <AccordionPrimitive.Root {...props}>{children}</AccordionPrimitive.Root>
   )
 }
 
@@ -654,71 +220,59 @@ const Item: React.FC<AccordionItemProps> = ({
   triggerable,
   ...props
 }) => {
-  const headerClass = clsx({
-    "inter-small-semibold": headingSize === "small",
-    "inter-base-medium": headingSize === "medium",
-    "inter-large-semibold": headingSize === "large",
-  })
-
-  const paddingClasses = clsx({
-    "pb-0 mb-3 pt-3 ": headingSize === "medium",
-    "pb-5 radix-state-open:pb-5xlarge mb-5 ": 
-      headingSize === "large",
-  })
-
   return (
     <AccordionPrimitive.Item
       {...props}
-      className={clsx(
+      className={clx(
         "border-grey-20 group border-t last:mb-0",
-        { "opacity-30": props.disabled },
-        paddingClasses,
+        "py-1 px-8",
         className
       )}
     >
       <AccordionPrimitive.Header className="px-1">
         <div className="flex flex-col">
           <div className="flex w-full items-center justify-between">
-            <div className="gap-x-2xsmall flex items-center">
-              <div className="w-[25px] h-[25px] mr-4 flex items-center justify-center">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center p-[10px]">
                 {complete ? (
-                  <CheckCircleFillIcon color={"rgb(37, 99, 235)"} size="25px" />
+                  <CheckCircleSolid className="text-ui-fg-interactive" />
                 ) : (
-                  <span
-                    className={clsx(
-                      "rounded-full block border-gray-500 w-[20px] h-[20px] ml-0.125 border-2 transition-all",
-                      {
-                        "border-dashed border-blue-500 outline-4 outline-blue-200 outline outline-offset-2":
-                          active,
-                      }
+                  <>
+                    {active && (
+                      <ActiveCircleDottedLine
+                        size={20}
+                        className="text-ui-fg-interactive rounded-full"
+                      />
                     )}
-                  />
+                    {!active && (
+                      <CircleMiniSolid className="text-ui-fg-muted" />
+                    )}
+                  </>
                 )}
               </div>
-              <span className={headerClass}>
+              <Heading level="h3" className={clx("text-ui-fg-base")}>
                 {title}
-                {required && <span className="text-rose-50">*</span>}
-              </span>
+              </Heading>
             </div>
             <AccordionPrimitive.Trigger>
               {customTrigger || <MorphingTrigger />}
             </AccordionPrimitive.Trigger>
           </div>
           {subtitle && (
-            <span className="inter-small-regular text-grey-50 mt-1">
+            <Text as="span" size="small" className="mt-1">
               {subtitle}
-            </span>
+            </Text>
           )}
         </div>
       </AccordionPrimitive.Header>
       <AccordionPrimitive.Content
         forceMount={forceMountContent}
-        className={clsx(
+        className={clx(
           "radix-state-closed:animate-accordion-close radix-state-open:animate-accordion-open radix-state-closed:pointer-events-none px-1"
         )}
       >
         <div className="inter-base-regular group-radix-state-closed:animate-accordion-close">
-          {description && <p className="text-grey-50 ">{description}</p>}
+          {description && <Text>{description}</Text>}
           <div className="w-full">{children}</div>
         </div>
       </AccordionPrimitive.Content>
@@ -746,376 +300,39 @@ export default Accordion
 
 <details>
 <summary>  
-src/admin/components/shared/spinner.tsx
+src/admin/components/shared/card.tsx
 </summary>
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/components/shared/spinner.tsx
-import clsx from "clsx"
-import React from "react"
+```tsx title=src/admin/components/shared/card.tsx
+import { Text, clx } from "@medusajs/ui"
 
-type SpinnerProps = {
-  size?: "large" | "medium" | "small";
-  variant?: "primary" | "secondary";
-};
-
-const Spinner: React.FC<SpinnerProps> = ({
-  size = "large",
-  variant = "primary",
-}) => {
-  return (
-    <div
-      className={clsx(
-        "flex items-center justify-center",
-        { "h-[24px] w-[24px]": size === "large" },
-        { "h-[20px] w-[20px]": size === "medium" },
-        { "h-[16px] w-[16px]": size === "small" }
-      )}
-    >
-      <div className="relative flex h-full w-full items-center justify-center">
-        <div
-          className={clsx(
-            "animate-ring rounded-circle h-4/5 w-4/5 border-2 border-transparent",
-            { "border-t-grey-0": variant === "primary" },
-            { "border-t-violet-60": variant === "secondary" }
-          )}
-        />
-      </div>
-    </div>
-  )
+type CardProps = {
+  icon?: React.ReactNode
+  children?: React.ReactNode
+  className?: string
 }
 
-export default Spinner
-```
-
-</details>
-
-<details>
-<summary>  
-src/admin/components/shared/button.tsx
-</summary>
-
-<!-- eslint-disable max-len -->
-<!-- eslint-disable react/display-name -->
-
-```tsx title=src/admin/components/shared/button.tsx
-import clsx from "clsx"
-import React, { Children } from "react"
-import Spinner from "./spinner"
-
-export type ButtonProps = {
-  variant: "primary" | "secondary" | "ghost" | "danger" | "nuclear";
-  size?: "small" | "medium" | "large";
-  loading?: boolean;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      variant = "primary",
-      size = "large",
-      loading = false,
-      children,
-      ...attributes
-    },
-    ref
-  ) => {
-    const handleClick = (e) => {
-      if (!loading && attributes.onClick) {
-        attributes.onClick(e)
-      }
-    }
-
-    const variantClassname = clsx({
-      ["btn-primary"]: variant === "primary",
-      ["btn-secondary"]: variant === "secondary",
-      ["btn-ghost"]: variant === "ghost",
-      ["btn-danger"]: variant === "danger",
-      ["btn-nuclear"]: variant === "nuclear",
-    })
-
-    const sizeClassname = clsx({
-      ["btn-large"]: size === "large",
-      ["btn-medium"]: size === "medium",
-      ["btn-small"]: size === "small",
-    })
-
-    return (
-      <button
-        {...attributes}
-        className={clsx(
-          "btn",
-          variantClassname,
-          sizeClassname,
-          attributes.className
-        )}
-        disabled={attributes.disabled || loading}
-        ref={ref}
-        onClick={handleClick}
-      >
-        {loading ? (
-          <Spinner size={size} variant={"secondary"} />
-        ) : (
-          Children.map(children, (child, i) => {
-            return (
-              <span key={i} className="mr-xsmall last:mr-0">
-                {child}
-              </span>
-            )
-          })
-        )}
-      </button>
-    )
-  }
-)
-
-export default Button
-```
-
-</details>
-
-<details>
-<summary>  
-src/admin/components/shared/code-snippets.tsx
-</summary>
-
-<!-- eslint-disable max-len -->
-
-```tsx title=src/admin/components/shared/code-snippets.tsx
-import React, { useState } from "react"
-import clsx from "clsx"
-import copy from "copy-to-clipboard"
-import { Highlight, themes } from "prism-react-renderer"
-import ClipboardCopyIcon from "./icons/clipboard-copy-icon"
-import CheckCircleFillIcon from "./icons/check-circle-fill-icon"
-
-const CodeSnippets = ({
-  snippets,
-}: {
-  snippets: {
-    label: string;
-    language: string;
-    code: string;
-  }[];
-}) => {
-  const [active, setActive] = useState(snippets[0])
-  const [copied, setCopied] = useState(false)
-
-  const copyToClipboard = () => {
-    setCopied(true)
-    copy(active.code)
-    setTimeout(() => {
-      setCopied(false)
-    }, 3000)
-  }
-
-  return (
-    <div className="rounded-lg bg-stone-900">
-      <div className="flex gap-2 rounded-t-lg border-b border-b-stone-600 bg-stone-800 px-6 py-4">
-        {snippets.map((snippet) => (
-          <div
-            className={clsx(
-              "text-small rounded-xl border border-transparent px-4 py-2 font-semibold",
-              {
-                "border-stone-600 bg-stone-900 text-white":
-                  active.label === snippet.label,
-              },
-              {
-                "cursor-pointer text-gray-400": active.label !== snippet.label,
-              }
-            )}
-            key={snippet.label}
-            onClick={() => setActive(snippet)}
-          >
-            {snippet.label}
-          </div>
-        ))}
-      </div>
-      <div className="p-6 relative">
-        <div
-          className="absolute right-4 top-4 text-gray-600 hover:text-gray-400 cursor-pointer"
-          onClick={copyToClipboard}
-        >
-          {copied ? (
-            <CheckCircleFillIcon size="24px" />
-          ) : (
-            <ClipboardCopyIcon size="24px" />
-          )}
-        </div>
-        <Highlight
-          theme={{
-            ...themes.palenight,
-            plain: {
-              color: "#7E7D86",
-              backgroundColor: "#1C1C1F",
-            },
-          }}
-          code={active.code}
-          language={active.language}
-        >
-          {({ style, tokens, getLineProps, getTokenProps }) => (
-            <pre
-              style={{ ...style, background: "transparent", fontSize: "12px" }}
-            >
-              {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line })}>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token })} />
-                  ))}
-                </div>
-              ))}
-            </pre>
-          )}
-        </Highlight>
-      </div>
-    </div>
-  )
-}
-
-export default CodeSnippets
-```
-
-</details>
-
-<details>
-<summary>  
-src/admin/components/shared/container.tsx
-</summary>
-
-<!-- eslint-disable max-len -->
-
-```tsx title=src/admin/components/shared/container.tsx
-import React, { PropsWithChildren } from "react"
-
-type Props = PropsWithChildren<{
-  title?: string;
-  description?: string;
-}>;
-
-export const Container = ({ title, description, children }: Props) => {
-  return (
-    <div className="border border-grey-20 rounded-rounded bg-white py-6 px-8 flex flex-col mb-base relative">
-      <div>
-        <div className="flex items-center justify-between">
-          {title && (
-            <h2 className="text-[24px] leading-9 font-semibold">{title}</h2>
-          )}
-        </div>
-        {description && (
-          <p className="text-sm text-gray-500 mt-2">{description}</p>
-        )}
-      </div>
-      <div>{children}</div>
-    </div>
-  )
-}
-```
-
-</details>
-
-<details>
-<summary>  
-src/admin/components/shared/badge.tsx
-</summary>
-
-<!-- eslint-disable max-len -->
-
-```tsx title=src/admin/components/shared/badge.tsx
-import clsx from "clsx"
-import React from "react"
-
-type BadgeProps = {
-  variant:
-    | "primary"
-    | "danger"
-    | "success"
-    | "warning"
-    | "ghost"
-    | "default"
-    | "disabled"
-    | "new-feature"
-} & React.HTMLAttributes<HTMLDivElement>
-
-const Badge: React.FC<BadgeProps> = ({
+const Card = ({
+  icon,
   children,
-  variant,
-  onClick,
   className,
-  ...props
-}) => {
-  const variantClassname = clsx({
-    ["badge-primary"]: variant === "primary",
-    ["badge-danger"]: variant === "danger",
-    ["badge-success"]: variant === "success",
-    ["badge-warning"]: variant === "warning",
-    ["badge-ghost"]: variant === "ghost",
-    ["badge-default"]: variant === "default",
-    ["badge-disabled"]: variant === "disabled",
-    ["bg-blue-10 border-blue-30 border font-normal text-blue-50"]:
-      variant === "new-feature",
-  })
-
+}: CardProps) => {
   return (
-    <div
-      className={clsx("badge", variantClassname, className)}
-      onClick={onClick}
-      {...props}
-    >
-      {children}
+    <div className={clx(
+      "p-4 rounded-lg gap-3",
+      "flex items-start shadow-elevation-card-rest",
+      "bg-ui-bg-subtle",
+      className
+    )}>
+      {icon}
+      <Text size="base" className="text-ui-fg-subtle">{children}</Text>
     </div>
   )
 }
 
-export default Badge
-```
-
-</details>
-
-<details>
-<summary>  
-src/admin/components/shared/icon-badge.tsx
-</summary>
-
-<!-- eslint-disable max-len -->
-
-```tsx title=src/admin/components/shared/icon-badge.tsx
-import clsx from "clsx"
-import React from "react"
-import Badge from "./badge"
-
-type IconBadgeProps = {
-  variant?:
-    | "primary"
-    | "danger"
-    | "success"
-    | "warning"
-    | "ghost"
-    | "default"
-    | "disabled";
-} & React.HTMLAttributes<HTMLDivElement>;
-
-const IconBadge: React.FC<IconBadgeProps> = ({
-  children,
-  variant,
-  className,
-  ...rest
-}) => {
-  return (
-    <Badge
-      variant={variant ?? "default"}
-      className={clsx(
-        "outline-grey-20 flex aspect-square h-[40px] w-[40px] items-center justify-center border-2 border-white outline outline-1",
-        className
-      )}
-      {...rest}
-    >
-      {children}
-    </Badge>
-  )
-}
-
-export default IconBadge
+export default Card
 ```
 
 </details>
@@ -1133,7 +350,7 @@ If you’re not interested in learning about backend customizations, you can ski
 In this step, you’ll customize the Medusa backend to:
 
 1. Add a new table in the database that stores the current onboarding step. This requires creating a new entity, repository, and migration.
-2. Add a new endpoint that allows to retrieve and update the current onboarding step. This requires creating a new service and endpoint.
+2. Add new API Routes that allow retrieving and updating the current onboarding step. This also requires creating a new service.
 
 ### Create Entity
 
@@ -1235,9 +452,9 @@ You can learn more about migrations in [this guide](../development/entities/migr
 
 ### Create Service
 
-A [service](../development/services/overview.mdx) is a class that holds helper methods related to an entity. For example, methods to create or retrieve a record of that entity. Services are used by other resources, such as endpoints, to perform functionalities related to an entity.
+A [service](../development/services/overview.mdx) is a class that holds helper methods related to an entity. For example, methods to create or retrieve a record of that entity. Services are used by other resources, such as API Routes, to perform functionalities related to an entity.
 
-So, before you add the endpoints that allow retrieving and updating the onboarding state, you need to add the service that implements these helper functionalities.
+So, before you add the API Routes that allow retrieving and updating the onboarding state, you need to add the service that implements these helper functionalities.
 
 Start by creating the file `src/types/onboarding.ts` with the following content:
 
@@ -1327,19 +544,24 @@ This service class implements two methods `retrieve` to retrieve the current onb
 
 You can learn more about services in [this documentation](../development/services/overview.mdx).
 
-### Create Endpoint
+### Create API Routes
 
-The last part of this step is to create the [endpoints](../development/endpoints/overview) that you’ll consume in the admin widget. There will be two endpoints: Get Onboarding State and Update Onboarding State.
+The last part of this step is to create the [API Routes](../development/api-routes/overview) that you’ll consume in the admin widget. There will be two API Routes: Get Onboarding State and Update Onboarding State.
 
-To add the Get Onboarding State endpoint, create the file `src/api/routes/admin/onboarding/get-status.ts` with the following content:
+To add these API Routes, create the file `src/api/admin/onboarding/route.ts` with the following content:
 
-```ts title=src/api/routes/admin/onboarding/get-status.ts
-import { Request, Response } from "express"
-import OnboardingService from "../../../../services/onboarding"
+```ts title=src/api/admin/onboarding/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
 
-export default async function getOnboardingStatus(
-  req: Request, 
-  res: Response
+import OnboardingService from "../../../services/onboarding"
+
+export async function GET(
+  req: MedusaRequest, 
+  res: MedusaResponse
 ) {
   const onboardingService: OnboardingService =
     req.scope.resolve("onboardingService")
@@ -1348,20 +570,10 @@ export default async function getOnboardingStatus(
 
   res.status(200).json({ status })
 }
-```
 
-Notice how this endpoint uses the `OnboardingService`'s `retrieve` method to retrieve the current onboarding state. It resolves the `OnboardingService` using the [Dependency Container.](../development/fundamentals/dependency-injection.md)
-
-To add the Update Onboarding State, create the file `src/api/routes/admin/onboarding/update-status.ts` with the following content:
-
-```ts title=src/api/routes/admin/onboarding/update-status.ts
-import { Request, Response } from "express"
-import { EntityManager } from "typeorm"
-import OnboardingService from "../../../../services/onboarding"
-
-export default async function updateOnboardingStatus(
-  req: Request,
-  res: Response
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
 ) {
   const onboardingService: OnboardingService =
     req.scope.resolve("onboardingService")
@@ -1372,133 +584,16 @@ export default async function updateOnboardingStatus(
       return await onboardingService
         .withTransaction(transactionManager)
         .update(req.body)
-    })
+    }
+  )
 
   res.status(200).json({ status })
 }
 ```
 
-Notice how this endpoint uses the `OnboardingService`'s `update` method to update the current onboarding state.
+Notice how these API Routes use the `OnboardingService`'s `retrieve` and `update` methods to retrieve and update the current onboarding state. They resolve the `OnboardingService` using the [Dependency Container](../development/fundamentals/dependency-injection.md).
 
-After creating the endpoints, you need to register them in a router and export the router for the Medusa core to load.
-
-To do that, start by creating the file `src/api/routes/admin/onboarding/index.ts` with the following content:
-
-```ts title=src/api/routes/admin/onboarding/index.ts
-import { wrapHandler } from "@medusajs/utils"
-import { Router } from "express"
-import getOnboardingStatus from "./get-status"
-import updateOnboardingStatus from "./update-status"
-
-const router = Router()
-
-export default (adminRouter: Router) => {
-  adminRouter.use("/onboarding", router)
-
-  router.get("/", wrapHandler(getOnboardingStatus))
-  router.post("/", wrapHandler(updateOnboardingStatus))
-}
-```
-
-This file creates a router that registers the Get Onboarding State and Update Onboarding State endpoints.
-
-Next, create or change the content of the file `src/api/routes/admin/index.ts` to the following:
-
-```ts title=src/api/routes/admin/index.ts
-import { Router } from "express"
-import { wrapHandler } from "@medusajs/medusa"
-import onboardingRoutes from "./onboarding"
-import customRouteHandler from "./custom-route-handler"
-
-// Initialize a custom router
-const router = Router()
-
-export function attachAdminRoutes(adminRouter: Router) {
-  // Attach our router to a custom path on the admin router
-  adminRouter.use("/custom", router)
-
-  // Define a GET endpoint on the root route of our custom path
-  router.get("/", wrapHandler(customRouteHandler))
-
-  // Attach routes for onboarding experience, defined separately
-  onboardingRoutes(adminRouter)
-}
-```
-
-This file exports the router created in `src/api/routes/admin/onboarding/index.ts`.
-
-Finally, create or change the content of the file `src/api/index.ts` to the following content:
-
-```ts title=src/api/index.ts
-import { Router } from "express"
-import cors from "cors"
-import bodyParser from "body-parser"
-import { authenticate, ConfigModule } from "@medusajs/medusa"
-import { getConfigFile } from "medusa-core-utils"
-import { attachStoreRoutes } from "./routes/store"
-import { attachAdminRoutes } from "./routes/admin"
-
-export default (rootDirectory: string): Router | Router[] => {
-  // Read currently-loaded medusa config
-  const { configModule } = getConfigFile<ConfigModule>(
-    rootDirectory,
-    "medusa-config"
-  )
-  const { projectConfig } = configModule
-
-  // Set up our CORS options objects, based on config
-  const storeCorsOptions = {
-    origin: projectConfig.store_cors.split(","),
-    credentials: true,
-  }
-
-  const adminCorsOptions = {
-    origin: projectConfig.admin_cors.split(","),
-    credentials: true,
-  }
-
-  // Set up express router
-  const router = Router()
-
-  // Set up root routes for store and admin endpoints, 
-  // with appropriate CORS settings
-  router.use(
-    "/store",
-    cors(storeCorsOptions),
-    bodyParser.json()
-  )
-  router.use(
-    "/admin",
-    cors(adminCorsOptions),
-    bodyParser.json()
-  )
-
-  // Add authentication to all admin routes *except*
-  // auth and account invite ones
-  router.use(
-    /\/admin\/((?!auth)(?!invites).*)/,
-    authenticate()
-  )
-
-  // Set up routers for store and admin endpoints
-  const storeRouter = Router()
-  const adminRouter = Router()
-
-  // Attach these routers to the root routes
-  router.use("/store", storeRouter)
-  router.use("/admin", adminRouter)
-
-  // Attach custom routes to these routers
-  attachStoreRoutes(storeRouter)
-  attachAdminRoutes(adminRouter)
-
-  return router
-}
-```
-
-This is the file that the Medusa core loads the endpoints from. In this file, you export a router that registers store and admin endpoints, including the `onboarding` endpoints you just added.
-
-You can learn more about endpoints in [this documentation](../development/endpoints/overview.mdx).
+You can learn more about API Routes in [this documentation](../development/api-routes/overview.mdx).
 
 ---
 
@@ -1512,42 +607,46 @@ Create the file `src/admin/widgets/onboarding-flow/onboarding-flow.tsx` with the
 <!-- eslint-disable @typescript-eslint/ban-types -->
 
 ```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
-import React, {
-  useState,
-  useEffect,
-} from "react"
-import { 
-  Container,
-} from "../../components/shared/container"
-import Button from "../../components/shared/button"
-import {
-  WidgetConfig,
-} from "@medusajs/admin"
-import Accordion from "../../components/shared/accordion"
-import GetStartedIcon from "../../components/shared/icons/get-started-icon"
-import { 
-  OnboardingState,
-} from "../../../models/onboarding"
-import { 
-  useNavigate,
-} from "react-router-dom"
+import { OrderDetailsWidgetProps, ProductDetailsWidgetProps, WidgetConfig, WidgetProps } from "@medusajs/admin"
+import { useAdminCustomPost, useAdminCustomQuery, useMedusa } from "medusa-react"
+import React, { useEffect, useState, useMemo, useCallback } from "react"
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom"
+import { OnboardingState } from "../../../models/onboarding"
 import {
   AdminOnboardingUpdateStateReq,
   OnboardingStateRes,
   UpdateOnboardingStateInput,
 } from "../../../types/onboarding"
+import OrderDetailDefault from "../../components/onboarding-flow/default/orders/order-detail"
+import OrdersListDefault from "../../components/onboarding-flow/default/orders/orders-list"
+import ProductDetailDefault from "../../components/onboarding-flow/default/products/product-detail"
+import ProductsListDefault from "../../components/onboarding-flow/default/products/products-list"
+import { Button, Container, Heading, Text, clx } from "@medusajs/ui"
+import Accordion from "../../components/shared/accordion"
+import GetStarted from "../../components/shared/icons/get-started"
+import { Order, Product } from "@medusajs/medusa"
+import ProductsListNextjs from "../../components/onboarding-flow/nextjs/products/products-list"
+import ProductDetailNextjs from "../../components/onboarding-flow/nextjs/products/product-detail"
+import OrdersListNextjs from "../../components/onboarding-flow/nextjs/orders/orders-list"
+import OrderDetailNextjs from "../../components/onboarding-flow/nextjs/orders/order-detail"
 
 type STEP_ID =
   | "create_product"
   | "preview_product"
   | "create_order"
-  | "setup_finished";
+  | "setup_finished"
+  | "create_product_nextjs"
+  | "preview_product_nextjs"
+  | "create_order_nextjs"
+  | "setup_finished_nextjs"
 
-export type StepContentProps = any & {
+type OnboardingWidgetProps = WidgetProps | ProductDetailsWidgetProps | OrderDetailsWidgetProps
+
+export type StepContentProps = OnboardingWidgetProps & {
   onNext?: Function;
   isComplete?: boolean;
   data?: OnboardingState;
-} & any;
+};
 
 type Step = {
   id: STEP_ID;
@@ -1556,36 +655,36 @@ type Step = {
   onNext?: Function;
 };
 
-const STEP_FLOW: STEP_ID[] = [
-  "create_product",
-  "preview_product",
-  "create_order",
-  "setup_finished",
-]
+const QUERY_KEY = ["onboarding_state"]
 
-const OnboardingFlow = (props: any) => {
+const OnboardingFlow = (props: OnboardingWidgetProps) => {
+  // create custom hooks for custom API Routes
+  const { data, isLoading } = useAdminCustomQuery<
+    undefined,
+    OnboardingStateRes
+  >("/onboarding", QUERY_KEY)
+  const { mutate } = useAdminCustomPost<
+    AdminOnboardingUpdateStateReq,
+    OnboardingStateRes
+  >("/onboarding", QUERY_KEY)
+
   const navigate = useNavigate()
+  const location = useLocation()
+  // will be used if onboarding step
+  // is passed as a path parameter
+  const { client } = useMedusa()
 
-  // TODO change based on state in backend
-  const currentStep: STEP_ID | undefined = "create_product" as STEP_ID
+  // get current step from custom API Route
+  const currentStep: STEP_ID | undefined = useMemo(() => {
+    return data?.status
+    ?.current_step as STEP_ID
+  }, [data])
 
+  // initialize some state
   const [openStep, setOpenStep] = useState(currentStep)
   const [completed, setCompleted] = useState(false)
 
-  useEffect(() => {
-    setOpenStep(currentStep)
-    if (currentStep === STEP_FLOW[STEP_FLOW.length - 1]) {setCompleted(true)}
-  }, [currentStep])
-
-  const updateServerState = (payload: any) => {
-    // TODO update state in the backend
-  }
-
-  const onStart = () => {
-    // TODO update state in the backend
-    navigate(`/a/products`)
-  }
-
+  // this method is used to move from one step to the next
   const setStepComplete = ({
     step_id,
     extraData,
@@ -1595,176 +694,409 @@ const OnboardingFlow = (props: any) => {
     extraData?: UpdateOnboardingStateInput;
     onComplete?: () => void;
   }) => {
-    // TODO update state in the backend
-  }
-
-  const goToProductView = (product: any) => {
-    setStepComplete({
-      step_id: "create_product",
-      extraData: { product_id: product.id },
-      onComplete: () => navigate(`/a/products/${product.id}`),
+    const next = steps[findStepIndex(step_id) + 1]
+    mutate({ current_step: next.id, ...extraData }, {
+      onSuccess: onComplete,
     })
   }
 
-  const goToOrders = () => {
-    setStepComplete({
-      step_id: "preview_product",
-      onComplete: () => navigate(`/a/orders`),
-    })
+  // this is useful if you want to change the current step
+  // using a path parameter. It can only be changed if the passed
+  // step in the path parameter is the next step.
+  const [ searchParams ] = useSearchParams()
+
+  // the steps are set based on the 
+  // onboarding type
+  const steps: Step[] = useMemo(() => {
+    {
+      switch(process.env.MEDUSA_ADMIN_ONBOARDING_TYPE) {
+        case "nextjs":
+          return [
+            {
+              id: "create_product_nextjs",
+              title: "Create Products",
+              component: ProductsListNextjs,
+              onNext: (product: Product) => {
+                setStepComplete({
+                  step_id: "create_product_nextjs",
+                  extraData: { product_id: product.id },
+                  onComplete: () => {
+                    if (!location.pathname.startsWith(`/a/products/${product.id}`)) {
+                      navigate(`/a/products/${product.id}`)
+                    }
+                  },
+                })
+              },
+            },
+            {
+              id: "preview_product_nextjs",
+              title: "Preview Product in your Next.js Storefront",
+              component: ProductDetailNextjs,
+              onNext: () => {
+                setStepComplete({
+                  step_id: "preview_product_nextjs",
+                  onComplete: () => navigate(`/a/orders`),
+                })
+              },
+            },
+            {
+              id: "create_order_nextjs",
+              title: "Create an Order using your Next.js Storefront",
+              component: OrdersListNextjs,
+              onNext: (order: Order) => {
+                setStepComplete({
+                  step_id: "create_order_nextjs",
+                  onComplete: () => {
+                    if (!location.pathname.startsWith(`/a/orders/${order.id}`)) {
+                      navigate(`/a/orders/${order.id}`)
+                    }
+                  },
+                })
+              },
+            },
+            {
+              id: "setup_finished_nextjs",
+              title: "Setup Finished: Continue Building your Ecommerce Store",
+              component: OrderDetailNextjs,
+            },
+          ]
+        default:
+          return [
+            {
+              id: "create_product",
+              title: "Create Product",
+              component: ProductsListDefault,
+              onNext: (product: Product) => {
+                setStepComplete({
+                  step_id: "create_product",
+                  extraData: { product_id: product.id },
+                  onComplete: () => {
+                    if (!location.pathname.startsWith(`/a/products/${product.id}`)) {
+                      navigate(`/a/products/${product.id}`)
+                    }
+                  },
+                })
+              },
+            },
+            {
+              id: "preview_product",
+              title: "Preview Product",
+              component: ProductDetailDefault,
+              onNext: () => {
+                setStepComplete({
+                  step_id: "preview_product",
+                  onComplete: () => navigate(`/a/orders`),
+                })
+              },
+            },
+            {
+              id: "create_order",
+              title: "Create an Order",
+              component: OrdersListDefault,
+              onNext: (order: Order) => {
+                setStepComplete({
+                  step_id: "create_order",
+                  onComplete: () => {
+                    if (!location.pathname.startsWith(`/a/orders/${order.id}`)) {
+                      navigate(`/a/orders/${order.id}`)
+                    }
+                  },
+                })
+              },
+            },
+            {
+              id: "setup_finished",
+              title: "Setup Finished: Start developing with Medusa",
+              component: OrderDetailDefault,
+            },
+          ]
+      }
+    }
+  }, [location.pathname])
+
+  // used to retrieve the index of a step by its ID
+  const findStepIndex = useCallback((step_id: STEP_ID) => {
+    return steps.findIndex((step) => step.id === step_id)
+  }, [steps])
+
+  // used to check if a step is completed
+  const isStepComplete = useCallback((step_id: STEP_ID) => {
+    return findStepIndex(currentStep) > findStepIndex(step_id)
+  }, [findStepIndex, currentStep])
+  
+  // this is used to retrieve the data necessary
+  // to move to the next onboarding step
+  const getOnboardingParamStepData = useCallback(async (onboardingStep: string, data?: {
+    orderId?: string,
+    productId?: string,
+  }) => {
+    switch (onboardingStep) {
+      case "setup_finished_nextjs":
+      case "setup_finished":
+        if (!data?.orderId && "order" in props) {
+          return props.order
+        }
+        const orderId = data?.orderId || searchParams.get("order_id")
+        if (orderId) {
+          return (await client.admin.orders.retrieve(orderId)).order
+        }
+
+        throw new Error ("Required `order_id` parameter was not passed as a parameter")
+      case "preview_product_nextjs":
+      case "preview_product":
+        if (!data?.productId && "product" in props) {
+          return props.product
+        }
+        const productId = data?.productId || searchParams.get("product_id")
+        if (productId) {
+          return (await client.admin.products.retrieve(productId)).product
+        }
+
+        throw new Error ("Required `product_id` parameter was not passed as a parameter")
+      default:
+        return undefined
+    }
+  }, [searchParams, props])
+
+  const isProductCreateStep = useMemo(() => {
+    return currentStep === "create_product" || 
+      currentStep === "create_product_nextjs"
+  }, [currentStep])
+
+  const isOrderCreateStep = useMemo(() => {
+    return currentStep === "create_order" || 
+      currentStep === "create_order_nextjs"
+  }, [currentStep])
+
+  // used to change the open step when the current
+  // step is retrieved from custom API Routes
+  useEffect(() => {
+    setOpenStep(currentStep)
+    
+    if (findStepIndex(currentStep) === steps.length - 1) {setCompleted(true)}
+  }, [currentStep, findStepIndex])
+
+  // used to check if the user created a product and has entered its details page
+  // the step is changed to the next one
+  useEffect(() => {
+    if (location.pathname.startsWith("/a/products/prod_") && isProductCreateStep && "product" in props) {
+      // change to the preview product step
+      const currentStepIndex = findStepIndex(currentStep)
+      steps[currentStepIndex].onNext?.(props.product)
+    }
+  }, [location.pathname, isProductCreateStep])
+
+  // used to check if the user created an order and has entered its details page
+  // the step is changed to the next one.
+  useEffect(() => {
+    if (location.pathname.startsWith("/a/orders/order_") && isOrderCreateStep && "order" in props) {
+      // change to the preview product step
+      const currentStepIndex = findStepIndex(currentStep)
+      steps[currentStepIndex].onNext?.(props.order)
+    }
+  }, [location.pathname, isOrderCreateStep])
+
+  // used to check if the `onboarding_step` path
+  // parameter is passed and, if so, moves to that step
+  // only if it's the next step and its necessary data is passed
+  useEffect(() => {
+    const onboardingStep = searchParams.get("onboarding_step") as STEP_ID
+    const onboardingStepIndex = findStepIndex(onboardingStep)
+    if (onboardingStep && onboardingStepIndex !== -1 && onboardingStep !== openStep) {
+      // change current step to the onboarding step
+      const openStepIndex = findStepIndex(openStep)
+
+      if (onboardingStepIndex !== openStepIndex + 1) {
+        // can only go forward one step
+        return
+      }
+
+      // retrieve necessary data and trigger the next function
+      getOnboardingParamStepData(onboardingStep)
+      .then((data) => {
+        steps[openStepIndex].onNext?.(data)
+      })
+      .catch((e) => console.error(e))
+    }
+  }, [searchParams, openStep, getOnboardingParamStepData])
+
+  if (
+    !isLoading &&
+    data?.status?.is_complete &&
+    !localStorage.getItem("override_onboarding_finish")
+  )
+    {return null}
+
+  // a method that will be triggered when
+  // the setup is started
+  const onStart = () => {
+    mutate({ current_step: steps[0].id })
+    navigate(`/a/products`)
   }
 
-  const goToOrderView = (order: any) => {
-    setStepComplete({
-      step_id: "create_order",
-      onComplete: () => navigate(`/a/orders/${order.id}`),
-    })
-  }
-
+  // a method that will be triggered when
+  // the setup is completed
   const onComplete = () => {
     setCompleted(true)
   }
 
+  // a method that will be triggered when
+  // the setup is closed
   const onHide = () => {
-    updateServerState({ is_complete: true })
+    mutate({ is_complete: true })
   }
 
-  // TODO add steps
-  const Steps: Step[] = []
+  // used to get text for get started header
+  const getStartedText = () => {
+    switch(process.env.MEDUSA_ADMIN_ONBOARDING_TYPE) {
+      case "nextjs":
+        return "Learn the basics of Medusa by creating your first order using the Next.js storefront."
+      default:
+        return "Learn the basics of Medusa by creating your first order."
+    }
+  }
 
-  const isStepComplete = (step_id: STEP_ID) =>
-    STEP_FLOW.indexOf(currentStep) > STEP_FLOW.indexOf(step_id)
-
-    return (
-      <>
-        <Container>
-          <Accordion
-            type="single"
-            className="my-3"
-            value={openStep}
-            onValueChange={(value) => setOpenStep(value as STEP_ID)}
-          >
-            <div className="flex items-center">
-              <div className="mr-5">
-                <GetStartedIcon />
-              </div>
-              {!completed ? (
-                <>
-                  <div>
-                    <h1 className="font-semibold text-lg">Get started</h1>
-                    <p>
-                      Learn the basics of Medusa by creating your first order.
-                    </p>
-                  </div>
-                  <div className="ml-auto flex items-start gap-2">
-                    {currentStep ? (
-                      <>
-                        {currentStep === STEP_FLOW[STEP_FLOW.length - 1] ? (
-                          <Button
-                            variant="primary"
-                            size="small"
-                            onClick={() => onComplete()}
-                          >
-                            Complete Setup
-                          </Button>
-                        ) : (
-                          <Button
-                            variant="secondary"
-                            size="small"
-                            onClick={() => onHide()}
-                          >
-                            Cancel Setup
-                          </Button>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <Button
-                          variant="secondary"
-                          size="small"
-                          onClick={() => onHide()}
-                        >
-                          Close
-                        </Button>
+  return (
+    <>
+      <Container className={clx(
+        "text-ui-fg-subtle px-0 pt-0 pb-4",
+        {
+          "mb-4": completed,
+        }
+      )}>
+        <Accordion
+          type="single"
+          value={openStep}
+          onValueChange={(value) => setOpenStep(value as STEP_ID)}
+        >
+          <div className={clx(
+            "flex py-6 px-8",
+            {
+              "items-start": completed,
+              "items-center": !completed,
+            }
+          )}>
+            <div className="w-12 h-12 p-1 flex justify-center items-center rounded-full bg-ui-bg-base shadow-elevation-card-rest mr-4">
+              <GetStarted />
+            </div>
+            {!completed ? (
+              <>
+                <div>
+                  <Heading level="h1" className="text-ui-fg-base">Get started</Heading>
+                  <Text>
+                    {getStartedText()}
+                  </Text>
+                </div>
+                <div className="ml-auto flex items-start gap-2">
+                  {!!currentStep ? (
+                    <>
+                      {currentStep === steps[steps.length - 1].id ? (
                         <Button
                           variant="primary"
-                          size="small"
-                          onClick={() => onStart()}
+                          size="base"
+                          onClick={() => onComplete()}
                         >
-                          Begin setup
+                          Complete Setup
                         </Button>
-                      </>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div>
-                    <h1 className="font-semibold text-lg">
-                      Thank you for completing the setup guide!
-                    </h1>
-                    <p>
-                      This whole experience was built using our new{" "}
-                      <strong>widgets</strong> feature.
-                      <br /> You can find out more details and build your own by
-                      following{" "}
-                      <a
-                        href="https://docs.medusajs.com/"
-                        target="_blank"
-                        className="text-blue-500 font-semibold" rel="noreferrer"
+                      ) : (
+                        <Button
+                          variant="secondary"
+                          size="base"
+                          onClick={() => onHide()}
+                        >
+                          Cancel Setup
+                        </Button>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        variant="secondary"
+                        size="base"
+                        onClick={() => onHide()}
                       >
-                        our guide
-                      </a>
-                      .
-                    </p>
-                  </div>
-                  <div className="ml-auto flex items-start gap-2">
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      onClick={() => onHide()}
+                        Close
+                      </Button>
+                      <Button
+                        variant="primary"
+                        size="base"
+                        onClick={() => onStart()}
+                      >
+                        Begin setup
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <Heading level="h1" className="text-ui-fg-base">
+                    Thank you for completing the setup guide!
+                  </Heading>
+                  <Text>
+                    This whole experience was built using our new{" "}
+                    <strong>widgets</strong> feature.
+                    <br /> You can find out more details and build your own by
+                    following{" "}
+                    <a
+                      href="https://docs.medusajs.com/admin/onboarding?ref=onboarding"
+                      target="_blank"
+                      className="text-blue-500 font-semibold"
                     >
-                      Close
-                    </Button>
-                  </div>
-                </>
-              )}
+                      our guide
+                    </a>
+                    .
+                  </Text>
+                </div>
+                <div className="ml-auto flex items-start gap-2">
+                  <Button
+                    variant="secondary"
+                    size="base"
+                    onClick={() => onHide()}
+                  >
+                    Close
+                  </Button>
+                </div>
+              </>
+            )}
+          </div>
+          {
+            <div>
+              {(!completed ? steps : steps.slice(-1)).map((step) => {
+                const isComplete = isStepComplete(step.id)
+                const isCurrent = currentStep === step.id
+                return (
+                  <Accordion.Item
+                    title={step.title}
+                    value={step.id}
+                    headingSize="medium"
+                    active={isCurrent}
+                    complete={isComplete}
+                    disabled={!isComplete && !isCurrent}
+                    key={step.id}
+                    {...(!isComplete &&
+                      !isCurrent && {
+                        customTrigger: <></>,
+                      })}
+                  >
+                    <div className="pl-14 pb-6 pr-7">
+                      <step.component
+                        onNext={step.onNext}
+                        isComplete={isComplete}
+                        data={data?.status}
+                        {...props}
+                      />
+                    </div>
+                  </Accordion.Item>
+                )
+              })}
             </div>
-            {
-              <div className="mt-5">
-                {(!completed ? Steps : Steps.slice(-1)).map((step, index) => {
-                  const isComplete = isStepComplete(step.id)
-                  const isCurrent = currentStep === step.id
-                  return (
-                    <Accordion.Item
-                      title={step.title}
-                      value={step.id}
-                      headingSize="medium"
-                      active={isCurrent}
-                      complete={isComplete}
-                      disabled={!isComplete && !isCurrent}
-                      key={index}
-                      {...(!isComplete &&
-                        !isCurrent && {
-                          customTrigger: <></>,
-                        })}
-                    >
-                      <div className="py-3 px-11 text-gray-500">
-                        <step.component
-                          onNext={step.onNext}
-                          isComplete={isComplete}
-                          // TODO pass data
-                          {...props}
-                        />
-                      </div>
-                    </Accordion.Item>
-                  )
-                })}
-              </div>
-            }
-          </Accordion>
-        </Container>
-      </>
-    )
+          }
+        </Accordion>
+      </Container>
+    </>
+  )
 }
 
 export const config: WidgetConfig = {
@@ -1779,6 +1111,8 @@ export const config: WidgetConfig = {
 export default OnboardingFlow
 ```
 
+Notice that you'll see errors related to components not being defined. You'll create these components in upcoming sections.
+
 There are three important details to ensure that Medusa reads this file as a widget:
 
 1. The file is placed under the `src/admin/widget` directory.
@@ -1787,7 +1121,9 @@ There are three important details to ensure that Medusa reads this file as a wid
 
 The extension uses `react-router-dom`, which is available as a dependency of the `@medusajs/admin` package, to navigate to other pages in the dashboard.
 
-The `OnboardingFlow` widget also implements functionalities related to handling the steps of the onboarding flow, including navigating between them and updating the current step in the backend. Some parts are left as `TODO` until you add the components for each step, and you implement customizations in the backend.
+The `OnboardingFlow` widget also implements functionalities related to handling the steps of the onboarding flow, including navigating between them and updating the current step in the backend.
+
+To use the custom API Routes created in a previous step, you use the `useAdminCustomQuery` and `useAdminCustomPost` hooks from the `medusa-react` package. You can learn more about these hooks in the [Medusa React](../medusa-react/overview.mdx#custom-hooks) documentation.
 
 You can learn more about Admin Widgets in [this documentation](./widgets.md).
 
@@ -1797,44 +1133,43 @@ You can learn more about Admin Widgets in [this documentation](./widgets.md).
 
 In this section, you’ll create the components for each step in the onboarding flow. You’ll then update the `OnboardingFlow` widget to use these components.
 
+Notice that as there are two types of flows, you'll be creating the components for the default flow and for the Next.js flow.
+
 <details>
 <summary>  
-ProductsList component
+ProductsListDefault component
 
 </summary>
 
-The `ProductsList` component is used in the first step of the onboarding widget. It allows the user to either open the Create Product modal or create a sample product.
+The `ProductsListDefault` component is used in the first step of the onboarding widget's default flow. It allows the user to create a sample product.
 
-Create the file `src/admin/components/onboarding-flow/products/products-list.tsx` with the following content:
+Create the file `src/admin/components/onboarding-flow/default/products/products-list.tsx` with the following content:
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/components/onboarding-flow/products/products-list.tsx
-import React from "react"
-import Button from "../../shared/button"
+```tsx title=src/admin/components/onboarding-flow/default/products/products-list.tsx
+import React, { useMemo } from "react"
 import { 
   useAdminCreateProduct,
   useAdminCreateCollection,
+  useMedusa,
 } from "medusa-react"
-import { 
-  useAdminRegions,
-} from "medusa-react"
-import { 
-  StepContentProps,
-} from "../../../widgets/onboarding-flow/onboarding-flow"
+import { StepContentProps } from "../../../../widgets/onboarding-flow/onboarding-flow"
+import { Button, Text } from "@medusajs/ui"
+import getSampleProducts from "../../../../utils/sample-products"
+import prepareRegions from "../../../../utils/prepare-region"
 
-enum ProductStatus {
-  PUBLISHED = "published",
-}
-
-const ProductsList = ({ onNext, isComplete }: StepContentProps) => {
+const ProductsListDefault = ({ onNext, isComplete }: StepContentProps) => {
   const { mutateAsync: createCollection, isLoading: collectionLoading } =
     useAdminCreateCollection()
   const { mutateAsync: createProduct, isLoading: productLoading } =
     useAdminCreateProduct()
-  const { regions } = useAdminRegions()
+  const { client } = useMedusa()
 
-  const isLoading = collectionLoading || productLoading
+  const isLoading = useMemo(() => 
+    collectionLoading || productLoading,
+    [collectionLoading, productLoading]
+  )
 
   const createSample = async () => {
     try {
@@ -1842,62 +1177,14 @@ const ProductsList = ({ onNext, isComplete }: StepContentProps) => {
         title: "Merch",
         handle: "merch",
       })
-      const { product } = await createProduct({
-        title: "Medusa T-Shirt",
-        description: "Comfy t-shirt with Medusa logo",
-        subtitle: "Black",
-        is_giftcard: false,
-        discountable: false,
-        options: [{ title: "Size" }],
-        images: [
-          "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-front.png",
-          "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-back.png",
-        ],
+
+      const regions = await prepareRegions(client)
+
+      const sampleProducts = getSampleProducts({
+        regions,
         collection_id: collection.id,
-        variants: [
-          {
-            title: "Small",
-            inventory_quantity: 25,
-            manage_inventory: true,
-            prices: regions.map((region) => ({
-              amount: 5000,
-              currency_code: region.currency_code,
-            })),
-            options: [{ value: "S" }],
-          },
-          {
-            title: "Medium",
-            inventory_quantity: 10,
-            manage_inventory: true,
-            prices: regions.map((region) => ({
-              amount: 5000,
-              currency_code: region.currency_code,
-            })),
-            options: [{ value: "M" }],
-          },
-          {
-            title: "Large",
-            inventory_quantity: 17,
-            manage_inventory: true,
-            prices: regions.map((region) => ({
-              amount: 5000,
-              currency_code: region.currency_code,
-            })),
-            options: [{ value: "L" }],
-          },
-          {
-            title: "Extra Large",
-            inventory_quantity: 22,
-            manage_inventory: true,
-            prices: regions.map((region) => ({
-              amount: 5000,
-              currency_code: region.currency_code,
-            })),
-            options: [{ value: "XL" }],
-          },
-        ],
-        status: ProductStatus.PUBLISHED,
       })
+      const { product } = await createProduct(sampleProducts[0])
       onNext(product)
     } catch (e) {
       console.error(e)
@@ -1906,22 +1193,23 @@ const ProductsList = ({ onNext, isComplete }: StepContentProps) => {
 
   return (
     <div>
-      <p>
+      <Text className="mb-2">
         Create a product and set its general details such as title and
-        description, its price, options, variants, images, and more. You&apos;ll then
+        description, its price, options, variants, images, and more. You'll then
         use the product to create a sample order.
-      </p>
-      <p>
-        If you&apos;re not ready to create a product, we can create a sample product
-        for you.
-      </p>
+      </Text>
+      <Text>
+        You can create a product by clicking the "New Product" button below.
+        Alternatively, if you're not ready to create your own product, we can
+        create a sample one for you.
+      </Text>
       {!isComplete && (
-        <div className="flex gap-2 mt-4">
+        <div className="flex gap-2 mt-6">
           <Button
-            variant="secondary"
-            size="small"
+            variant="primary"
+            size="base"
             onClick={() => createSample()}
-            loading={isLoading}
+            isLoading={isLoading}
           >
             Create sample product
           </Button>
@@ -1931,84 +1219,105 @@ const ProductsList = ({ onNext, isComplete }: StepContentProps) => {
   )
 }
 
-export default ProductsList
+export default ProductsListDefault
 ```
 
 </details>
 
 <details>
 <summary>  
-ProductDetail component
+ProductDetailDefault component
 
 </summary>
 
-The `ProductDetail` component is used in the second step of the onboarding. It shows the user a code snippet to preview the product they created in the first step.
+The `ProductDetailDefault` component is used in the second step of the onboarding's default flow. It shows the user a code snippet to preview the product created in the first step.
 
-Create the file `src/admin/components/onboarding-flow/products/product-detail.tsx` with the following content:
+Create the file `src/admin/components/onboarding-flow/default/products/product-detail.tsx` with the following content:
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/components/onboarding-flow/products/product-detail.tsx
-import React from "react"
+```tsx title=src/admin/components/onboarding-flow/default/products/product-detail.tsx
+import React, { useEffect, useMemo } from "react"
 import { 
   useAdminPublishableApiKeys,
+  useAdminCreatePublishableApiKey,
 } from "medusa-react"
-import Button from "../../shared/button"
-import CodeSnippets from "../../shared/code-snippets"
-import { 
-  StepContentProps,
-} from "../../../widgets/onboarding-flow/onboarding-flow"
+import { StepContentProps } from "../../../../widgets/onboarding-flow/onboarding-flow"
+import { Button, CodeBlock, Text } from "@medusajs/ui"
 
-const ProductDetail = ({ onNext, isComplete, data }: StepContentProps) => {
-  const { 
-    publishable_api_keys: keys, 
-    isLoading, 
-  } = useAdminPublishableApiKeys({
+const ProductDetailDefault = ({ onNext, isComplete, data }: StepContentProps) => {
+  const { publishable_api_keys: keys, isLoading, refetch } = useAdminPublishableApiKeys({
     offset: 0,
     limit: 1,
   })
-  const api_key = keys?.[0]?.id || "pk_01H0PY648BTMEJR34ZDATXZTD9"
+  const createPublishableApiKey = useAdminCreatePublishableApiKey()
+  
+  const api_key = useMemo(() => keys?.[0]?.id || "", [keys])
+  const backendUrl = process.env.MEDUSA_BACKEND_URL === "/" || process.env.MEDUSA_ADMIN_BACKEND_URL === "/" ? 
+    location.origin :
+    process.env.MEDUSA_BACKEND_URL || process.env.MEDUSA_ADMIN_BACKEND_URL || "http://location:9000"
+
+  useEffect(() => {
+    if (!isLoading && !keys?.length) {
+      createPublishableApiKey.mutate({
+        "title": "Development",
+      }, {
+        onSuccess: () => {
+          refetch()
+        },
+      })
+    }
+  }, [isLoading, keys])
+  
   return (
     <div>
-      <p>On this page, you can view your product&apos;s details and edit them.</p>
-      <p>
-        You can preview your product using Medusa&apos;s Store APIs. You can copy any
-        of the following code snippets to try it out.
-      </p>
-      <div className="pt-4">
+      <div className="flex flex-col gap-2">
+        <Text>On this page, you can view your product's details and edit them.</Text>
+        <Text>
+          You can preview your product using Medusa's Store APIs. You can copy any
+          of the following code snippets to try it out.
+        </Text>
+      </div>
+      <div>
         {!isLoading && (
-          <CodeSnippets
-            snippets={[
-              {
-                label: "cURL",
-                language: "markdown",
-                code: `curl -H 'x-publishable-key: ${api_key}' 'http://localhost:9000/store/products/${data?.product_id}'`,
-              },
-              {
-                label: "Medusa JS Client",
-                language: "jsx",
-                code: `// Install the JS Client in your storefront project: @medusajs/medusa-js\n\nimport Medusa from "@medusajs/medusa-js"\n\nconst medusa = new Medusa({ publishableApiKey: "${api_key}"})\nconst product = await medusa.products.retrieve("${data?.product_id}")\nconsole.log(product.id)`,
-              },
-              {
-                label: "Medusa React",
-                language: "tsx",
-                code: `// Install the React SDK and required dependencies in your storefront project:\n// medusa-react @tanstack/react-query @medusajs/medusa\n\nimport { useProduct } from "medusa-react"\n\nconst { product } = useProduct("${data?.product_id}")\nconsole.log(product.id)`,
-              },
-            ]}
-          />
+          <CodeBlock snippets={[
+            {
+              label: "cURL",
+              language: "bash",
+              code: `curl "${backendUrl}/store/products/${data?.product_id}"${api_key ? ` -H "x-publishable-key: ${api_key}"` : ``}`,
+            },
+            {
+              label: "Medusa JS Client",
+              language: "js",
+              code: `// Install the JS Client in your storefront project: @medusajs/medusa-js\n\nimport Medusa from "@medusajs/medusa-js"\n\nconst medusa = new Medusa(${api_key ? `{ publishableApiKey: "${api_key}"}` : ``})\nconst product = await medusa.products.retrieve("${data?.product_id}")\nconsole.log(product.id)`,
+            },
+            {
+              label: "Medusa React",
+              language: "tsx",
+              code: `// Install the React SDK and required dependencies in your storefront project:\n// medusa-react @tanstack/react-query @medusajs/medusa\n\nimport { useProduct } from "medusa-react"\n\nconst { product } = useProduct("${data?.product_id}")\nconsole.log(product.id)`,
+            },
+            {
+              label: "@medusajs/product",
+              language: "tsx",
+              code: `// Install the Product module in a serverless project, such as a Next.js storefront: @medusajs/product\n\nimport {\ninitialize as initializeProductModule,\n} from "@medusajs/product"\n\n// in an async function, or you can use promises\nasync () => {\n  // ...\n  const productService = await initializeProductModule()\n  const products = await productService.list({\n    id: "${data?.product_id}",\n  })\n\n  console.log(products[0])\n}`,
+            },
+          ]} className="my-6">
+            <CodeBlock.Header />
+            <CodeBlock.Body />
+          </CodeBlock>
         )}
       </div>
-      <div className="flex mt-base gap-2">
+      <div className="flex gap-2">
         <a
-          href={`http://localhost:9000/store/products/${data?.product_id}`}
-          target="_blank" rel="noreferrer"
+          href={`${backendUrl}/store/products/${data?.product_id}`}
+          target="_blank"
         >
-          <Button variant="secondary" size="small">
+          <Button variant="secondary" size="base">
             Open preview in browser
           </Button>
         </a>
         {!isComplete && (
-          <Button variant="primary" size="small" onClick={() => onNext()}>
+          <Button variant="primary" size="base" onClick={() => onNext()}>
             Next step
           </Button>
         )}
@@ -2017,64 +1326,56 @@ const ProductDetail = ({ onNext, isComplete, data }: StepContentProps) => {
   )
 }
 
-export default ProductDetail
+export default ProductDetailDefault
 ```
 
 </details>
 
 <details>
 <summary>  
-OrdersList component
+OrdersListDefault component
 
 </summary>
 
-The `OrdersList` component is used in the third step of the onboarding. It allows the user to create a sample order.
+The `OrdersListDefault` component is used in the third step of the onboarding's default flow. It allows the user to create a sample order.
 
-Create the file `src/admin/components/onboarding-flow/orders/orders-list.tsx` with the following content:
+Create the file `src/admin/components/onboarding-flow/default/orders/orders-list.tsx` with the following content:
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/components/onboarding-flow/orders/orders-list.tsx
+```tsx title=src/admin/components/onboarding-flow/default/orders/orders-list.tsx
 import React from "react"
-import Button from "../../shared/button"
 import { 
   useAdminProduct,
-} from "medusa-react"
-import { 
   useAdminCreateDraftOrder,
-} from "medusa-react"
-import { 
-  useAdminShippingOptions,
-} from "medusa-react"
-import { 
-  useAdminRegions,
-} from "medusa-react"
-import { 
   useMedusa,
 } from "medusa-react"
-import { 
-  StepContentProps,
-} from "../../../widgets/onboarding-flow/onboarding-flow"
+import { StepContentProps } from "../../../../widgets/onboarding-flow/onboarding-flow"
+import { Button, Text } from "@medusajs/ui"
+import prepareRegions from "../../../../utils/prepare-region"
+import prepareShippingOptions from "../../../../utils/prepare-shipping-options"
 
-const OrdersList = ({ onNext, isComplete, data }: StepContentProps) => {
+const OrdersListDefault = ({ onNext, isComplete, data }: StepContentProps) => {
   const { product } = useAdminProduct(data.product_id)
   const { mutateAsync: createDraftOrder, isLoading } =
     useAdminCreateDraftOrder()
   const { client } = useMedusa()
 
-  const { regions } = useAdminRegions()
-  const { shipping_options } = useAdminShippingOptions()
-
   const createOrder = async () => {
     const variant = product.variants[0] ?? null
     try {
+      // check if there is a shipping option and a region
+      // and if not, create demo ones
+      const regions = await prepareRegions(client)
+      const shipping_options = await prepareShippingOptions(client, regions[0])
+
       const { draft_order } = await createDraftOrder({
         email: "customer@medusajs.com",
         items: [
           variant
             ? {
                 quantity: 1,
-                variant_id: variant.id,
+                variant_id: variant?.id,
               }
             : {
                 quantity: 1,
@@ -2099,19 +1400,21 @@ const OrdersList = ({ onNext, isComplete, data }: StepContentProps) => {
   }
   return (
     <>
-      <div className="py-4">
-        <p>
-          With a Product created, we can now place an Order. Click the button
-          below to create a sample order.
-        </p>
+      <div className="mb-6">
+        <Text className="mb-2">
+          The last step is to create a sample order using the product you just created. You can then view your order’s details, process its payment, fulfillment, inventory, and more.
+        </Text>
+        <Text>
+          By clicking the “Create a Sample Order” button, we’ll generate an order using the product you created and default configurations.
+        </Text>
       </div>
       <div className="flex gap-2">
         {!isComplete && (
           <Button
             variant="primary"
-            size="small"
+            size="base"
             onClick={() => createOrder()}
-            loading={isLoading}
+            isLoading={isLoading}
           >
             Create a sample order
           </Button>
@@ -2121,96 +1424,132 @@ const OrdersList = ({ onNext, isComplete, data }: StepContentProps) => {
   )
 }
 
-export default OrdersList
+export default OrdersListDefault
 ```
 
 </details>
 
 <details>
 <summary>  
-OrderDetail component
+OrderDetailDefault component
 
 </summary>
 
-The `OrderDetail` component is used in the fourth and final step of the onboarding. It educates the user on the next steps when developing with Medusa.
+The `OrderDetailDefault` component is used in the fourth and final step of the onboarding's default flow. It educates the user on the next steps when developing with Medusa.
 
-Create the file `src/admin/components/onboarding-flow/orders/order-detail.tsx` with the following content:
+Create the file `src/admin/components/onboarding-flow/default/orders/order-detail.tsx` with the following content:
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/components/onboarding-flow/orders/order-detail.tsx
+```tsx title=src/admin/components/onboarding-flow/default/orders/order-detail.tsx
 import React from "react"
-import IconBadge from "../../shared/icon-badge"
-import ComputerDesktopIcon from "../../shared/icons/computer-desktop-icon"
-import DollarSignIcon from "../../shared/icons/dollar-sign-icon"
+import {
+  ComputerDesktopSolid,
+  CurrencyDollarSolid,
+  ToolsSolid,
+} from "@medusajs/icons"
+import { IconBadge, Heading, Text } from "@medusajs/ui"
 
-const OrderDetail = () => {
+const OrderDetailDefault = () => {
   return (
     <>
-      <p className="text-sm">
+      <Text size="small" className="mb-6">
         You finished the setup guide 🎉 You now have your first order. Feel free
         to play around with the order management functionalities, such as
         capturing payment, creating fulfillments, and more.
-      </p>
-      <h2 className="text-base mt-5 pt-5 pb-5 font-semibold text-black border-t border-gray-300 border-solid">
+      </Text>
+      <Heading
+        level="h2"
+        className="text-ui-fg-base pt-6 border-t border-ui-border-base border-solid mb-2"
+      >
         Start developing with Medusa
-      </h2>
-      <p className="text-sm">
-        Medusa is a completely customizable commerce solution. We&apos;ve curated
+      </Heading>
+      <Text size="small">
+        Medusa is a completely customizable commerce solution. We've curated
         some essential guides to kickstart your development with Medusa.
-      </p>
-      <div className="grid grid-cols-2 gap-4 mt-5 pb-5 mb-5 border-b border-gray-300 border-solid">
+      </Text>
+      <div className="grid grid-cols-3 gap-4 mt-6 pb-6 mb-6 border-b border-ui-border-base border-solid auto-rows-fr">
         <a
-          href="https://medusa-docs-git-docs-onboarding-material-medusajs.vercel.app/starters/nextjs-medusa-starter?path=simple-quickstart"
-          target="_blank" rel="noreferrer"
+          href="https://docs.medusajs.com/starters/nextjs-medusa-starter?path=simple-quickstart"
+          target="_blank"
+          className="flex"
         >
-          <div
-            className="p-4 rounded-rounded flex items-center bg-slate-50"
-            style={{
-              boxShadow:
-                "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 1px 2px -1px rgba(17, 24, 28, 0.08), 0px 2px 4px rgba(17, 24, 28, 0.04)",
-            }}
-          >
-            <div className="mr-base">
-              <IconBadge>
-                <DollarSignIcon />
-              </IconBadge>
+          <div className="p-3 rounded-rounded flex items-start bg-ui-bg-subtle shadow-elevation-card-rest hover:shadow-elevation-card-hover">
+            <div className="mr-4">
+              <div className="bg-ui-bg-base rounded-lg border border-ui-border-strong p-1 flex justify-center items-center">
+                <IconBadge>
+                  <CurrencyDollarSolid />
+                </IconBadge>
+              </div>
             </div>
             <div>
-              <p className="font-semibold text-gray-700">
+              <Text
+                size="xsmall"
+                weight="plus"
+                className="mb-1 text-ui-fg-base"
+              >
                 Start Selling in 3 Steps
-              </p>
-              <p className="text-xs">
-                Go live with a backend, an admin,
-                <br /> and a storefront in three steps.
-              </p>
+              </Text>
+              <Text size="small">
+                Go live with a backend, an admin, and a storefront by following
+                these three steps.
+              </Text>
             </div>
           </div>
         </a>
         <a
-          href="https://medusa-docs-git-docs-onboarding-material-medusajs.vercel.app/recipes"
-          target="_blank" rel="noreferrer"
+          href="https://docs.medusajs.com/recipes/?ref=onboarding"
+          target="_blank"
+          className="flex"
         >
-          <div
-            className="p-4 rounded-rounded items-center flex bg-slate-50"
-            style={{
-              boxShadow:
-                "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 1px 2px -1px rgba(17, 24, 28, 0.08), 0px 2px 4px rgba(17, 24, 28, 0.04)",
-            }}
-          >
-            <div className="mr-base">
-              <IconBadge>
-                <ComputerDesktopIcon />
-              </IconBadge>
+          <div className="p-3 rounded-rounded items-start flex bg-ui-bg-subtle shadow-elevation-card-rest hover:shadow-elevation-card-hover">
+            <div className="mr-4">
+              <div className="bg-ui-bg-base rounded-lg border border-ui-border-strong p-1 flex justify-center items-center">
+                <IconBadge>
+                  <ComputerDesktopSolid />
+                </IconBadge>
+              </div>
             </div>
             <div>
-              <p className="font-semibold text-gray-700">
-                Build a Custom Commerce Application
-              </p>
-              <p className="text-xs">
-                Learn how to build a marketplace, subscription-based
-                <br /> purchases, or your custom use-case.
-              </p>
+              <Text
+                size="xsmall"
+                weight="plus"
+                className="mb-1 text-ui-fg-base"
+              >
+                Build Custom Use Cases
+              </Text>
+              <Text size="small">
+                Learn how to build a marketplace, subscription-based purchases,
+                or your custom use-case.
+              </Text>
+            </div>
+          </div>
+        </a>
+        <a
+          href="https://docs.medusajs.com/beta/?ref=onboarding"
+          target="_blank"
+          className="flex"
+        >
+          <div className="p-3 rounded-rounded items-start flex bg-ui-bg-subtle shadow-elevation-card-rest hover:shadow-elevation-card-hover">
+            <div className="mr-4">
+              <div className="bg-ui-bg-base rounded-lg border border-ui-border-strong p-1 flex justify-center items-center">
+                <IconBadge>
+                  <ToolsSolid />
+                </IconBadge>
+              </div>
+            </div>
+            <div>
+              <Text
+                size="xsmall"
+                weight="plus"
+                className="mb-1 text-ui-fg-base"
+              >
+                Check out beta features
+              </Text>
+              <Text size="small">
+                Learn about hidden beta features and how to enable them in your
+                store.
+              </Text>
             </div>
           </div>
         </a>
@@ -2218,11 +1557,19 @@ const OrderDetail = () => {
       <div>
         You can find more useful guides in{" "}
         <a
-          href="https://docs.medusajs.com/"
+          href="https://docs.medusajs.com/?ref=onboarding"
           target="_blank"
-          className="text-blue-500 font-semibold" rel="noreferrer"
+          className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
         >
           our documentation
+        </a>
+        . If you like Medusa, please{" "}
+        <a
+          href="https://github.com/medusajs/medusa"
+          target="_blank"
+          className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+        >
+          star us on GitHub
         </a>
         .
       </div>
@@ -2230,158 +1577,423 @@ const OrderDetail = () => {
   )
 }
 
-export default OrderDetail
+export default OrderDetailDefault
+
 ```
 </details>
 
-After creating the above components, import them at the top of `src/admin/widgets/onboarding-flow/onboarding-flow.tsx`:
+<details>
+<summary>  
+ProductsListNextjs component
+
+</summary>
+
+The `ProductsListNextjs` component is used in the first step of the onboarding widget's Next.js flow. It allows the user to create sample products.
+
+Create the file `src/admin/components/onboarding-flow/nextjs/products/products-list.tsx` with the following content:
 
 <!-- eslint-disable max-len -->
 
-```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
-import ProductsList from "../../components/onboarding-flow/products/products-list"
-import ProductDetail from "../../components/onboarding-flow/products/product-detail"
-import OrdersList from "../../components/onboarding-flow/orders/orders-list"
-import OrderDetail from "../../components/onboarding-flow/orders/order-detail"
-```
-
-Then, replace the initialization of the `Steps` variable within the `OnboardingFlow` widget with the following:
-
-```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
-// TODO add steps
-const Steps: Step[] = [
-  {
-    id: "create_product",
-    title: "Create Product",
-    component: ProductsList,
-    onNext: goToProductView,
-  },
-  {
-    id: "preview_product",
-    title: "Preview Product",
-    component: ProductDetail,
-    onNext: goToOrders,
-  },
-  {
-    id: "create_order",
-    title: "Create an Order",
-    component: OrdersList,
-    onNext: goToOrderView,
-  },
-  {
-    id: "setup_finished",
-    title: "Setup Finished: Start developing with Medusa",
-    component: OrderDetail,
-  },
-]
-```
-
-The next step is to retrieve the current step of the onboarding flow from the Medusa backend.
-
----
-
-## Step 4: Use Endpoints From Widget
-
-In this section, you’ll implement the `TODO`s in the `OnboardingFlow` that require communicating with the backend.
-
-There are different ways you can consume custom backend endpoints. The Medusa React library provides utility methods that allow you to create hooks similar to those available by default in the library. You can then utilize these hooks to send requests to custom backend endpoints.
-
-Add the following imports at the top of `src/admin/widgets/onboarding-flow/onboarding-flow.tsx`:
-
-```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
-import {
-  useAdminCustomPost,
-  useAdminCustomQuery,
+```tsx title=src/admin/components/onboarding-flow/nextjs/products/products-list.tsx
+import React from "react"
+import { 
+  useAdminCreateProduct,
+  useAdminCreateCollection,
+  useMedusa,
 } from "medusa-react"
-```
+import { StepContentProps } from "../../../../widgets/onboarding-flow/onboarding-flow"
+import { Button, Text } from "@medusajs/ui"
+import { AdminPostProductsReq, Product } from "@medusajs/medusa"
+import getSampleProducts from "../../../../utils/sample-products"
+import prepareRegions from "../../../../utils/prepare-region"
 
-Next, add the following at the top of the `OnboardingFlow` component:
+const ProductsListNextjs = ({ onNext, isComplete }: StepContentProps) => {
+  const { mutateAsync: createCollection, isLoading: collectionLoading } =
+    useAdminCreateCollection()
+  const { mutateAsync: createProduct, isLoading: productLoading } =
+    useAdminCreateProduct()
+  const { client } = useMedusa()
 
-```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
-const OnboardingFlow = (props: any) => {
-  const QUERY_KEY = ["onboarding_state"]
-  const { data, isLoading } = useAdminCustomQuery<
-    undefined,
-    OnboardingStateRes
-  >("/onboarding", QUERY_KEY)
-  const { mutate } = useAdminCustomPost<
-    AdminOnboardingUpdateStateReq,
-    OnboardingStateRes
-  >("/onboarding", QUERY_KEY)
+  const isLoading = collectionLoading || productLoading
 
-  // ...
-}
-```
+  const createSample = async () => {
+    try {
+      const { collection } = await createCollection({
+        title: "Merch",
+        handle: "merch",
+      })
 
-Learn more about the available custom hooks such as `useAdminCustomPost` and `useAdminCustomQuery` in the [Medusa React documentation](../medusa-react/overview.mdx#custom-hooks).
+      const regions = await prepareRegions(client)
 
-`data` now holds the current onboarding state from the backend, and `mutate` can be used to update the onboarding state in the backend.
+      const tryCreateProduct = async (sampleProduct: AdminPostProductsReq): Promise<Product | null> => {
+        try {
+          return (await createProduct(sampleProduct)).product
+        } catch {
+          // ignore if product already exists
+          return null
+        }
+      }
 
-After that, replace the declarations within `OnboardingFlow` that had a `TODO` comment with the following:
+      let product: Product
+      const sampleProducts = getSampleProducts({
+        regions,
+        collection_id: collection.id,
+      })
+      await Promise.all(
+        sampleProducts.map(async (sampleProduct, index) => {
+          const createdProduct = await tryCreateProduct(sampleProduct)
+          if (index === 0 && createProduct) {
+            product = createdProduct
+          }
+        })
+      )
+      onNext(product)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
-```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
-const OnboardingFlow = (props: ExtensionProps) => {
-  // ...
-  const currentStep: STEP_ID | undefined = data?.status
-    ?.current_step as STEP_ID
-
-  if (
-    !isLoading &&
-    data?.status?.is_complete &&
-    !localStorage.getItem("override_onboarding_finish")
+  return (
+    <div>
+      <Text className="mb-2">
+        Products is Medusa represent the products you sell. You can set their general details including a
+        title and description. Each product has options and variants, and you can set a price for each variant.
+      </Text>
+      <Text>
+        Click the button below to create sample products.
+      </Text>
+      {!isComplete && (
+        <div className="flex gap-2 mt-6">
+          <Button
+            variant="primary"
+            size="base"
+            onClick={() => createSample()}
+            isLoading={isLoading}
+          >
+            Create sample products
+          </Button>
+        </div>
+      )}
+    </div>
   )
-    {return null}
-
-  const updateServerState = (
-    payload: UpdateOnboardingStateInput,
-    onSuccess: () => void = () => {}
-  ) => {
-    mutate(payload, { onSuccess })
-  }
-
-  const onStart = () => {
-    updateServerState({ current_step: STEP_FLOW[0] })
-    navigate(`/a/products`)
-  }
-
-  const setStepComplete = ({
-    step_id,
-    extraData,
-    onComplete,
-  }: {
-    step_id: STEP_ID;
-    extraData?: UpdateOnboardingStateInput;
-    onComplete?: () => void;
-  }) => {
-    const next = STEP_FLOW[
-      STEP_FLOW.findIndex((step) => step === step_id) + 1
-    ]
-    updateServerState({ 
-      current_step: next, 
-      ...extraData,
-    }, onComplete)
-  }
-
-  // ...
 }
+
+export default ProductsListNextjs
 ```
 
-`currentStep` now holds the current step retrieve from the backend; `updateServerState` updates the current step in the backend; `onStart` updates the current step in the backend to the first step; and `setStepComplete` completes the current step by updating the current step in the backend to the following step.
+</details>
 
-Finally, in the returned JSX, update the `TODO` in the `<step.component>` component to pass the component the necessary `data`:
+<details>
+<summary>  
+ProductDetailNextjs component
 
-```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
-<step.component
-  onNext={step.onNext}
-  isComplete={isComplete}
-  data={data?.status}
-  {...props}
-/>
+</summary>
+
+The `ProductDetailNextjs` component is used in the second step of the onboarding's Next.js flow. It shows the user a button to preview the product created in the first step using the Next.js starter.
+
+Create the file `src/admin/components/onboarding-flow/nextjs/products/product-detail.tsx` with the following content:
+
+<!-- eslint-disable max-len -->
+
+```tsx title=src/admin/components/onboarding-flow/nextjs/products/product-detail.tsx
+import { useAdminProduct } from "medusa-react"
+import { StepContentProps } from "../../../../widgets/onboarding-flow/onboarding-flow"
+import { Button, Text } from "@medusajs/ui"
+
+const ProductDetailNextjs = ({ onNext, isComplete, data }: StepContentProps) => {
+  const { product, isLoading: productIsLoading } = useAdminProduct(data?.product_id)
+  return (
+    <div>
+      <div className="flex flex-col gap-2">
+        <Text>
+          We have now created a few sample products in your Medusa store. You can scroll down to see what the Product Detail view looks like in the Admin dashboard.
+          This is also the view you use to edit existing products.
+        </Text>
+        <Text>
+          To view the products in your store, you can visit the Next.js Storefront that was installed with <code>create-medusa-app</code>. 
+        </Text>
+        <Text>
+          The Next.js Storefront Starter is a template that helps you start building an ecommerce store with Medusa. 
+          You control the code for the storefront and you can customize it further to fit your specific needs.
+        </Text>
+        <Text>
+          Click the button below to view the products in your Next.js Storefront.
+        </Text>
+        <Text>
+          Having trouble? Click{" "}
+          <a 
+            href="https://docs.medusajs.com/starters/nextjs-medusa-starter#troubleshooting-nextjs-storefront-not-working"
+            target="_blank"
+            className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+          >
+            here
+          </a>.
+        </Text>
+      </div>
+      <div className="flex gap-2 mt-6">
+        <a
+          href={`http://localhost:8000/products/${product?.handle}?onboarding=true`}
+          target="_blank"
+        >
+          <Button variant="primary" size="base" isLoading={productIsLoading}>
+            Open Next.js Storefront
+          </Button>
+        </a>
+        {!isComplete && (
+          <Button variant="secondary" size="base" onClick={() => onNext()}>
+            Next step
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default ProductDetailNextjs
 ```
+
+</details>
+
+<details>
+<summary>  
+OrdersListNextjs component
+
+</summary>
+
+The `OrdersListNextjs` component is used in the third step of the onboarding's Next.js flow. It links the user to the checkout flow in the Next.js storefront so that they can create an order.
+
+Create the file `src/admin/components/onboarding-flow/nextjs/orders/orders-list.tsx` with the following content:
+
+<!-- eslint-disable max-len -->
+
+```tsx title=src/admin/components/onboarding-flow/nextjs/orders/orders-list.tsx
+import React from "react"
+import { 
+  useAdminProduct,
+  useCreateCart,
+  useMedusa,
+} from "medusa-react"
+import { StepContentProps } from "../../../../widgets/onboarding-flow/onboarding-flow"
+import { Button, Text } from "@medusajs/ui"
+import prepareRegions from "../../../../utils/prepare-region"
+import prepareShippingOptions from "../../../../utils/prepare-shipping-options"
+
+const OrdersListNextjs = ({ isComplete, data }: StepContentProps) => {
+  const { product } = useAdminProduct(data.product_id)
+  const { mutateAsync: createCart, isLoading: cartIsLoading } = useCreateCart()
+  const { client } = useMedusa()
+
+  const prepareNextjsCheckout = async () => {
+    const variant = product.variants[0] ?? null
+    try {
+      const regions = await prepareRegions(client)
+      await prepareShippingOptions(client, regions[0])
+      const { cart } = await createCart({
+        region_id: regions[0]?.id,
+        items: [
+          {
+            variant_id: variant?.id,
+            quantity: 1,
+          },
+        ],
+      })
+
+      window.open(`http://localhost:8000/checkout?cart_id=${cart?.id}&onboarding=true`, "_blank")
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  return (
+    <>
+      <div className="mb-6 flex flex-col gap-2">
+        <Text>
+          The last step is to create a sample order using one of your products. You can then view your order’s details, process its payment, fulfillment, inventory, and more.
+        </Text>
+        <Text>
+          You can use the button below to experience hand-first the checkout flow in the Next.js storefront. After placing the order in the storefront, you’ll be directed back here to view the order’s details.
+        </Text>
+      </div>
+      <div className="flex gap-2">
+        {!isComplete && (
+          <>
+            <Button
+              variant="primary"
+              size="base"
+              onClick={() => prepareNextjsCheckout()}
+              isLoading={cartIsLoading}
+            >
+              Place an order in your storefront
+            </Button>
+          </>
+        )}
+      </div>
+    </>
+  )
+}
+
+export default OrdersListNextjs
+```
+
+</details>
+
+<details>
+<summary>  
+OrderDetailNextjs component
+
+</summary>
+
+The `OrderDetailNextjs` component is used in the fourth and final step of the onboarding's default flow. It educates the user on the next steps when developing with Medusa.
+
+Create the file `src/admin/components/onboarding-flow/nextjs/orders/order-detail.tsx` with the following content:
+
+<!-- eslint-disable max-len -->
+
+```tsx title=src/admin/components/onboarding-flow/nextjs/orders/order-detail.tsx
+import React from "react"
+import { CurrencyDollarSolid, NextJs, SquaresPlusSolid } from "@medusajs/icons"
+import { IconBadge, Heading, Text } from "@medusajs/ui"
+
+const OrderDetailNextjs = () => {
+  const queryParams = `?ref=onboarding&type=${
+    process.env.MEDUSA_ADMIN_ONBOARDING_TYPE || "nextjs"
+  }`
+  return (
+    <>
+      <Text size="small" className="mb-6">
+        You finished the setup guide 🎉. You have now a complete ecommerce store
+        with a backend, admin, and a Next.js storefront. Feel free to play
+        around with each of these components to experience all commerce features
+        that Medusa provides.
+      </Text>
+      <Heading
+        level="h2"
+        className="text-ui-fg-base pt-6 border-t border-ui-border-base border-solid mb-2"
+      >
+        Continue Building your Ecommerce Store
+      </Heading>
+      <Text size="small">
+        Your ecommerce store provides all basic ecommerce features you need to
+        start selling. You can add more functionalities, add plugins for
+        third-party integrations, and customize the storefront’s look and feel
+        to support your use case.
+      </Text>
+      <div className="grid grid-cols-3 gap-4 mt-6 pb-6 mb-6 border-b border-ui-border-base border-solid auto-rows-fr">
+        <a
+          href={`https://docs.medusajs.com/plugins/overview${queryParams}`}
+          target="_blank"
+          className="flex"
+        >
+          <div className="p-3 rounded-rounded flex items-start bg-ui-bg-subtle shadow-elevation-card-rest hover:shadow-elevation-card-hover">
+            <div className="mr-4">
+              <div className="bg-ui-bg-base rounded-lg border border-ui-border-strong p-1 flex justify-center items-center">
+                <IconBadge>
+                  <SquaresPlusSolid />
+                </IconBadge>
+              </div>
+            </div>
+            <div>
+              <Text
+                size="xsmall"
+                weight="plus"
+                className="mb-1 text-ui-fg-base"
+              >
+                Install Plugins
+              </Text>
+              <Text size="small">
+                Install plugins for payment, fulfillment, search, and more, and
+                integrate them in your storefront.
+              </Text>
+            </div>
+          </div>
+        </a>
+        <a
+          href={`https://docs.medusajs.com/modules/overview${queryParams}`}
+          target="_blank"
+          className="flex"
+        >
+          <div className="p-3 rounded-rounded items-start flex bg-ui-bg-subtle shadow-elevation-card-rest hover:shadow-elevation-card-hover">
+            <div className="mr-4">
+              <div className="bg-ui-bg-base rounded-lg border border-ui-border-strong p-1 flex justify-center items-center">
+                <IconBadge>
+                  <CurrencyDollarSolid />
+                </IconBadge>
+              </div>
+            </div>
+            <div>
+              <Text
+                size="xsmall"
+                weight="plus"
+                className="mb-1 text-ui-fg-base"
+              >
+                Add Commerce Features
+              </Text>
+              <Text size="small">
+                Learn about all available commerce features in Medusa and how to
+                add them in your storefront
+              </Text>
+            </div>
+          </div>
+        </a>
+        <a
+          href={`https://docs.medusajs.com/starters/nextjs-medusa-starter${queryParams}`}
+          target="_blank"
+          className="flex"
+        >
+          <div className="p-3 rounded-rounded items-start flex bg-ui-bg-subtle shadow-elevation-card-rest hover:shadow-elevation-card-hover">
+            <div className="mr-4">
+              <div className="bg-ui-bg-base rounded-lg border border-ui-border-strong p-1 flex justify-center items-center">
+                <IconBadge>
+                  <NextJs />
+                </IconBadge>
+              </div>
+            </div>
+            <div>
+              <Text
+                size="xsmall"
+                weight="plus"
+                className="mb-1 text-ui-fg-base"
+              >
+                Build with the Next.js Storefront
+              </Text>
+              <Text size="small">
+                Learn about the Next.js starter storefront’s features and how to
+                customize it.
+              </Text>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div>
+        You can find more useful guides in{" "}
+        <a
+          href="https://docs.medusajs.com/?ref=onboarding"
+          target="_blank"
+          className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+        >
+          our documentation
+        </a>
+        . If you like Medusa, please{" "}
+        <a
+          href="https://github.com/medusajs/medusa"
+          target="_blank"
+          className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover"
+        >
+          star us on GitHub
+        </a>
+        .
+      </div>
+    </>
+  )
+}
+
+export default OrderDetailNextjs
+```
+</details>
 
 ---
 
-## Step 5: Test it Out
+## Step 4: Test it Out
 
 You’ve now implemented everything necessary for the onboarding flow! You can test it out by building the changes and running the `develop` command:
 
