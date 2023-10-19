@@ -43,8 +43,10 @@ export default class PriceSetService<TEntity extends PriceSet = PriceSet> {
     config: FindConfig<PricingTypes.PriceSetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<PriceSet>(filters, config)
+
     return (await this.priceSetRepository_.find(
-      this.buildQueryForList(filters, config),
+      queryOptions,
       sharedContext
     )) as TEntity[]
   }
@@ -55,28 +57,17 @@ export default class PriceSetService<TEntity extends PriceSet = PriceSet> {
     config: FindConfig<PricingTypes.PriceSetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<PriceSet>(filters, config)
+
     return (await this.priceSetRepository_.findAndCount(
-      this.buildQueryForList(filters, config),
+      queryOptions,
       sharedContext
     )) as [TEntity[], number]
   }
 
-  private buildQueryForList(
-    filters: PricingTypes.FilterablePriceSetProps = {},
-    config: FindConfig<PricingTypes.PriceSetDTO> = {}
-  ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<PriceSet>(filters, config)
-
-    if (filters.id) {
-      queryOptions.where.id = { $in: filters.id }
-    }
-
-    return queryOptions
-  }
-
   @InjectTransactionManager(shouldForceTransaction, "priceSetRepository_")
   async create(
-    data: PricingTypes.CreatePriceSetDTO[],
+    data: Omit<PricingTypes.CreatePriceSetDTO, "rules">[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.priceSetRepository_ as PriceSetRepository).create(
@@ -87,7 +78,7 @@ export default class PriceSetService<TEntity extends PriceSet = PriceSet> {
 
   @InjectTransactionManager(shouldForceTransaction, "priceSetRepository_")
   async update(
-    data: PricingTypes.UpdatePriceSetDTO[],
+    data: Omit<PricingTypes.UpdatePriceSetDTO, "rules">[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.priceSetRepository_ as PriceSetRepository).update(

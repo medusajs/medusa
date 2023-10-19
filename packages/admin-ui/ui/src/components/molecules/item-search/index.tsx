@@ -12,7 +12,7 @@ import { useDebounce } from "../../../hooks/use-debounce"
 import { useState } from "react"
 
 type Props = {
-  onItemSelect: (item: itemType) => void
+  onItemSelect: (item: DecoratedInventoryItemDTO) => void
   clearOnSelect?: boolean
   filters?: AdminGetInventoryItemsParams
 }

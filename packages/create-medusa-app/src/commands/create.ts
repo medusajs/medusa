@@ -55,13 +55,7 @@ export default async ({
   directoryPath,
   withNextjsStarter = false,
 }: CreateOptions) => {
-  track("CREATE_CLI")
-  if (repoUrl) {
-    track("STARTER_SELECTED", { starter: repoUrl })
-  }
-  if (seed) {
-    track("SEED_SELECTED", { seed })
-  }
+  track("CREATE_CLI_CMA")
 
   const spinner: Ora = ora()
   const processManager = new ProcessManager()
@@ -103,13 +97,23 @@ export default async ({
     !skipDb && migrations ? await askForAdminEmail(seed, boilerplate) : ""
   const installNextjs = withNextjsStarter || (await askForNextjsStarter())
 
-  const { client, dbConnectionString } = !skipDb
+  let { client, dbConnectionString } = !skipDb
     ? await getDbClientAndCredentials({
         dbName,
         dbUrl,
       })
     : { client: null, dbConnectionString: "" }
   isDbInitialized = true
+
+  track("CMA_OPTIONS", {
+    repoUrl,
+    seed,
+    boilerplate,
+    skipDb,
+    browser,
+    migrations,
+    installNextjs,
+  })
 
   logMessage({
     message: `${emojify(
@@ -153,7 +157,7 @@ export default async ({
       ...factBoxOptions,
       title: "Creating database...",
     })
-    await runCreateDb({ client, dbName, spinner })
+    client = await runCreateDb({ client, dbName, spinner })
 
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
@@ -179,6 +183,7 @@ export default async ({
       migrations,
       onboardingType: installNextjs ? "nextjs" : "default",
       nextjsDirectory,
+      client,
     })
   } catch (e: any) {
     if (isAbortError(e)) {

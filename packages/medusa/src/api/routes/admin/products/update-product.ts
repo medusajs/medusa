@@ -1,9 +1,4 @@
 import {
-  CreateProductVariantInput,
-  ProductVariantPricesUpdateReq,
-  UpdateProductVariantInput,
-} from "../../../../types/product-variant"
-import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -16,6 +11,8 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { ProductStatus, ProductVariant } from "../../../../models"
 import {
   PricingService,
   ProductService,
@@ -28,22 +25,25 @@ import {
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import { ProductStatus, ProductVariant } from "../../../../models"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesUpdateReq,
+  UpdateProductVariantInput,
+} from "../../../../types/product-variant"
 import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IInventoryService } from "@medusajs/types"
-import { Logger } from "../../../../types/global"
 import { MedusaError } from "@medusajs/utils"
-import { ProductVariantRepository } from "../../../../repositories/product-variant"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { ProductVariantRepository } from "../../../../repositories/product-variant"
+import { Logger } from "../../../../types/global"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -78,7 +78,7 @@ import { validator } from "../../../../utils/validator"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/products/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Size"
@@ -86,6 +86,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -602,7 +603,7 @@ export class AdminPostProductsProductReq {
   @IsEnum(ProductStatus)
   @NotEquals(null)
   @ValidateIf((object, value) => value !== undefined)
-  status?: ProductStatus
+  status: ProductStatus
 
   @IsOptional()
   @Type(() => ProductTypeReq)

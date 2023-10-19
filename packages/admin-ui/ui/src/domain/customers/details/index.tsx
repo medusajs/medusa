@@ -1,7 +1,7 @@
-import { useAdminCustomer } from "medusa-react"
 import moment from "moment"
 import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Avatar from "../../../components/atoms/avatar"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
@@ -26,8 +26,8 @@ const CustomerDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const {customer, fetchCustomer, isLoading, error} = useCustomerFull(id!)
-  
+  const { customer, fetchCustomer, isLoading, error } = useCustomerFull(id!)
+  const { t } = useTranslation()
   const [showEdit, setShowEdit] = useState(false)
 
   const customerName = () => {
@@ -40,7 +40,7 @@ const CustomerDetail = () => {
 
   const actions: ActionType[] = [
     {
-      label: "Edit",
+      label: t("details-edit", "Edit"),
       onClick: () => setShowEdit(true),
       icon: <EditIcon size={20} />,
     },
@@ -74,7 +74,7 @@ const CustomerDetail = () => {
   return (
     <div>
       <BackButton
-        label="Back to Customers"
+        label={t("details-back-to-customers", "Back to Customers")}
         path="/a/customers"
         className="mb-xsmall"
       />
@@ -114,13 +114,13 @@ const CustomerDetail = () => {
           <div className="mt-6 flex space-x-6 divide-x">
             <div className="flex flex-col">
               <div className="inter-smaller-regular text-grey-50 mb-1">
-                First seen
+                {t("details-first-seen", "First seen")}
               </div>
               <div>{moment(customer.created_at).format("DD MMM YYYY")}</div>
             </div>
             <div className="flex flex-col pl-6">
               <div className="inter-smaller-regular text-grey-50 mb-1">
-                Phone
+                {t("details-phone", "Phone")}
               </div>
               <div className="max-w-[200px] truncate">
                 {customer.phone || "N/A"}
@@ -128,13 +128,13 @@ const CustomerDetail = () => {
             </div>
             <div className="flex flex-col pl-6">
               <div className="inter-smaller-regular text-grey-50 mb-1">
-                Orders
+                {t("details-orders", "Orders")}
               </div>
               <div>{customer?.orders?.length}</div>
             </div>
             <div className="h-100 flex flex-col pl-6">
               <div className="inter-smaller-regular text-grey-50 mb-1">
-                User
+                {t("details-user", "User")}
               </div>
               <div className="h-50 flex items-center justify-center">
                 <StatusDot
@@ -147,21 +147,26 @@ const CustomerDetail = () => {
               title={"Billing"}
               addr={customer.billing_address}
             />
-            {customer?.shipping_addresses?.map(address=>
+            {customer?.shipping_addresses?.map((address) => (
               <FormattedAddress
                 key={address.id}
                 title={"Shipping"}
                 addr={address}
               />
-            )}
+            ))}
           </div>
         </Section>
 
         <CustomersGroupsWidget customer={customer} />
 
         <BodyCard
-          title={`Orders (${customer?.orders?.length})`}
-          subtitle="An overview of Customer Orders"
+          title={t("details-orders", "Orders {{count}}", {
+            count: customer.orders.length,
+          })}
+          subtitle={t(
+            "details-an-overview-of-customer-orders",
+            "An overview of Customer Orders"
+          )}
         >
           <div className="flex  grow flex-col">
             <CustomerOrdersTable id={customer.id} />
@@ -179,7 +184,10 @@ const CustomerDetail = () => {
           )
         })}
 
-        <RawJSON data={customer} title="Raw customer" />
+        <RawJSON
+          data={customer}
+          title={t("details-raw-customer", "Raw customer")}
+        />
       </div>
 
       {showEdit && customer && (

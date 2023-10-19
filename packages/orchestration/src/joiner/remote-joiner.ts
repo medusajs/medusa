@@ -128,15 +128,18 @@ export class RemoteJoiner {
   }
 
   private buildReferences(serviceConfigs: ModuleJoinerConfig[]) {
-    const expandedRelationships: Map<string, JoinerRelationship[]> = new Map()
+    const expandedRelationships: Map<
+      string,
+      { fieldAlias; relationships: JoinerRelationship[] }
+    > = new Map()
     for (const service of serviceConfigs) {
       if (this.serviceConfigCache.has(service.serviceName!)) {
         throw new Error(`Service "${service.serviceName}" is already defined.`)
       }
 
-      if (!service.relationships) {
-        service.relationships = []
-      }
+      service.fieldAlias ??= {}
+      service.relationships ??= []
+      service.extends ??= []
 
       // add aliases
       const isReadOnlyDefinition =
@@ -175,26 +178,57 @@ export class RemoteJoiner {
         this.cacheServiceConfig(serviceConfigs, service.serviceName)
       }
 
-      if (!service.extends) {
-        continue
-      }
-
       for (const extend of service.extends) {
         if (!expandedRelationships.has(extend.serviceName)) {
-          expandedRelationships.set(extend.serviceName, [])
+          expandedRelationships.set(extend.serviceName, {
+            fieldAlias: {},
+            relationships: [],
+          })
         }
 
-        expandedRelationships.get(extend.serviceName)!.push(extend.relationship)
+        const service_ = expandedRelationships.get(extend.serviceName)!
+        service_.relationships.push(extend.relationship)
+        Object.assign(service_.fieldAlias ?? {}, extend.fieldAlias)
       }
     }
 
-    for (const [serviceName, relationships] of expandedRelationships) {
+    for (const [
+      serviceName,
+      { fieldAlias, relationships },
+    ] of expandedRelationships) {
       if (!this.serviceConfigCache.has(serviceName)) {
+        // If true, the relationship is an internal service from the medusa core
+        // If modules are being used ouside of the core, we should not be throwing
+        // errors when the core services are not found in cache.
+        // TODO: Remove when there are no more "internal" services
+        const isInternalServicePresent = relationships.some(
+          (rel) => rel.isInternalService === true
+        )
+
+        if (isInternalServicePresent) continue
+
         throw new Error(`Service "${serviceName}" was not found`)
       }
 
-      const service = this.serviceConfigCache.get(serviceName)
-      service!.relationships?.push(...relationships)
+      const service_ = this.serviceConfigCache.get(serviceName)!
+      service_.relationships?.push(...relationships)
+      Object.assign(service_.fieldAlias!, fieldAlias ?? {})
+
+      if (Object.keys(service_.fieldAlias!).length) {
+        const conflictAliases = service_.relationships!.filter(
+          (relationship) => {
+            return fieldAlias[relationship.alias]
+          }
+        )
+
+        if (conflictAliases.length) {
+          throw new Error(
+            `Conflict configuration for service "${serviceName}". The following aliases are already defined as relationships: ${conflictAliases
+              .map((relationship) => relationship.alias)
+              .join(", ")}`
+          )
+        }
+      }
     }
 
     return serviceConfigs
@@ -549,7 +583,7 @@ export class RemoteJoiner {
           const alias = fieldAlias[prop] as any
 
           const path = isString(alias) ? alias : alias.path
-          const fullPath = currentPath.concat(path.split("."))
+          const fullPath = [...new Set(currentPath.concat(path.split(".")))]
 
           forwardArgumentsOnPath = forwardArgumentsOnPath.concat(
             (alias?.forwardArgumentsOnPath || []).map(

@@ -2,6 +2,8 @@ import { Customer } from "@medusajs/medusa"
 import { useAdminUpdateCustomer } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+
 import Button from "../../../components/fundamentals/button"
 import LockIcon from "../../../components/fundamentals/icons/lock-icon"
 import InputField from "../../../components/molecules/input"
@@ -28,8 +30,10 @@ type EditCustomerFormType = {
 const EditCustomerModal = ({
   handleClose,
   customer,
-  refetchCustomer
+  refetchCustomer,
 }: EditCustomerModalProps) => {
+  const { t } = useTranslation()
+
   const form = useForm<EditCustomerFormType>({
     defaultValues: getDefaultValues(customer),
   })
@@ -59,11 +63,22 @@ const EditCustomerModal = ({
         onSuccess: () => {
           handleClose()
           refetchCustomer()
-          notification("Success", "Successfully updated customer", "success")
+          notification(
+            t("details-success", "Success"),
+            t(
+              "details-successfully-updated-customer",
+              "Successfully updated customer"
+            ),
+            "success"
+          )
         },
         onError: (err) => {
           handleClose()
-          notification("Error", getErrorMessage(err), "error")
+          notification(
+            t("details-error", "Error"),
+            getErrorMessage(err),
+            "error"
+          )
         },
       }
     )
@@ -77,22 +92,26 @@ const EditCustomerModal = ({
     <Modal handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <span className="inter-xlarge-semibold">Customer Details</span>
+          <span className="inter-xlarge-semibold">
+            {t("details-customer-details", "Customer Details")}
+          </span>
         </Modal.Header>
         <Modal.Content>
           <div className="gap-y-xlarge flex flex-col">
             <div>
-              <h2 className="inter-base-semibold text-grey-90 mb-4">General</h2>
+              <h2 className="inter-base-semibold text-grey-90 mb-4">
+                {t("details-general", "General")}
+              </h2>
               <div className="flex w-full space-x-2">
                 <InputField
-                  label="First Name"
+                  label={t("details-first-name", "First Name")}
                   {...register("first_name")}
-                  placeholder="Lebron"
+                  placeholder={t("details-lebron", "Lebron")}
                 />
                 <InputField
-                  label="Last Name"
+                  label={t("details-last-name", "Last Name")}
                   {...register("last_name")}
-                  placeholder="James"
+                  placeholder={t("details-james", "James")}
                 />
               </div>
             </div>
@@ -100,7 +119,7 @@ const EditCustomerModal = ({
               <h2 className="inter-base-semibold text-grey-90 mb-4">Contact</h2>
               <div className="flex space-x-2">
                 <InputField
-                  label="Email"
+                  label={t("details-email", "Email")}
                   {...register("email", {
                     validate: (value) => !!validateEmail(value),
                     disabled: customer.has_account,
@@ -113,14 +132,16 @@ const EditCustomerModal = ({
                   disabled={customer.has_account}
                 />
                 <InputField
-                  label="Phone number"
+                  label={t("details-phone-number", "Phone number")}
                   {...register("phone")}
                   placeholder="+45 42 42 42 42"
                 />
               </div>
             </div>
             <div>
-              <h2 className="inter-base-semibold text-grey-90 mb-4">Additional</h2>
+              <h2 className="inter-base-semibold text-grey-90 mb-4">
+                Additional
+              </h2>
               <div className="flex space-x-2">
                 <TextArea
                   label="Description"
@@ -131,28 +152,31 @@ const EditCustomerModal = ({
                 />
               </div>
             </div>
-            {!!customer?.metadata?.type && customer?.metadata?.type == 'resellers' &&
-            <div>
-              <h2 className="inter-base-semibold text-grey-90 mb-4">Reseller</h2>
-              <div className="grid grid-cols-2 gap-2">
-                <InputField
-                  label="Company"
-                  {...register("metadata.company")}
-                  placeholder=""
-                />
-                <InputField
-                  label="Website"
-                  {...register("metadata.website")}
-                  placeholder=""
-                />
-                <InputField
-                  label="Tax exempt number"
-                  {...register("metadata.exempt_number")}
-                  placeholder=""
-                />
-              </div>
-            </div>
-            }
+            {!!customer?.metadata?.type &&
+              customer?.metadata?.type == "resellers" && (
+                <div>
+                  <h2 className="inter-base-semibold text-grey-90 mb-4">
+                    Reseller
+                  </h2>
+                  <div className="grid grid-cols-2 gap-2">
+                    <InputField
+                      label="Company"
+                      {...register("metadata.company")}
+                      placeholder=""
+                    />
+                    <InputField
+                      label="Website"
+                      {...register("metadata.website")}
+                      placeholder=""
+                    />
+                    <InputField
+                      label="Tax exempt number"
+                      {...register("metadata.exempt_number")}
+                      placeholder=""
+                    />
+                  </div>
+                </div>
+              )}
           </div>
         </Modal.Content>
         <Modal.Footer>
@@ -164,7 +188,7 @@ const EditCustomerModal = ({
               className="mr-2"
               type="button"
             >
-              Cancel
+              {t("details-cancel", "Cancel")}
             </Button>
             <Button
               loading={updateCustomer.isLoading}
@@ -173,7 +197,7 @@ const EditCustomerModal = ({
               size="small"
               onClick={onSubmit}
             >
-              Save and close
+              {t("details-save-and-close", "Save and close")}
             </Button>
           </div>
         </Modal.Footer>

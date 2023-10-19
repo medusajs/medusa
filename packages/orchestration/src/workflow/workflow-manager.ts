@@ -75,11 +75,17 @@ export class WorkflowManager {
     requiredModules?: Set<string>,
     optionalModules?: Set<string>
   ) {
-    if (WorkflowManager.workflows.has(workflowId)) {
-      throw new Error(`Workflow with id "${workflowId}" is already defined.`)
-    }
-
     const finalFlow = flow instanceof OrchestratorBuilder ? flow.build() : flow
+
+    if (WorkflowManager.workflows.has(workflowId)) {
+      const areStepsEqual =
+        JSON.stringify(finalFlow) ===
+        JSON.stringify(WorkflowManager.workflows.get(workflowId)!.flow_)
+
+      if (!areStepsEqual) {
+        throw new Error(`Workflow with id "${workflowId}" and step definition already exists.`)
+      }
+    }
 
     WorkflowManager.workflows.set(workflowId, {
       id: workflowId,

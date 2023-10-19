@@ -10,6 +10,7 @@ import ChannelsIcon from "../../../components/fundamentals/icons/channels-icon"
 import SalesChannelsDisplay from "../../../components/molecules/sales-channels-display"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { NestedForm } from "../../../utils/nested-form"
+import { useTranslation } from "react-i18next"
 
 export type AddSalesChannelsFormType = {
   channels: SalesChannel[]
@@ -29,6 +30,7 @@ const AddSalesChannelsForm = ({ form }: Props) => {
     name: path("channels"),
     keyName: "fieldId",
   })
+  const { t } = useTranslation()
 
   const { state: isEnabled, toggle: toggleEnabled } = useToggleState()
   const {
@@ -77,12 +79,16 @@ const AddSalesChannelsForm = ({ form }: Props) => {
       <div>
         <div>
           <div className="flex items-center justify-between">
-            <h2 className="inter-base-semibold">Sales channels</h2>
+            <h2 className="inter-base-semibold">
+              {t("new-sales-channels", "Sales channels")}
+            </h2>
             <Switch checked={isEnabled} onCheckedChange={toggleEnabled} />
           </div>
           <p className="inter-base-regular text-grey-50 mt-2xsmall">
-            This product will only be available in the default sales channel if
-            left untouched.
+            {t(
+              "new-this-product-will-only-be-available-in-the-default-sales-channel-if-left-untouched",
+              "This product will only be available in the default sales channel if left untouched."
+            )}
           </p>
         </div>
         <div
@@ -100,7 +106,7 @@ const AddSalesChannelsForm = ({ form }: Props) => {
             onClick={toggleModal}
           >
             <ChannelsIcon size={20} />
-            <span>Change availablity</span>
+            <span>{t("new-change-availablity", "Change availablity")}</span>
           </Button>
         </div>
       </div>

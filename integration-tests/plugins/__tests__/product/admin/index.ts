@@ -15,7 +15,7 @@ jest.setTimeout(5000000)
 
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -367,6 +367,63 @@ describe("/admin/products", () => {
         expect.objectContaining({
           title: "Test Giftcard",
           discountable: false,
+        })
+      )
+    })
+
+    it("should create variants with inventory items", async () => {
+      const api = useApi()! as AxiosInstance
+
+      const response = await api.post(
+        `/admin/products`,
+        {
+          title: "Test product - 1",
+          description: "test-product-description 1",
+          type: { value: "test-type 1" },
+          images: ["test-image.png", "test-image-2.png"],
+          collection_id: "test-collection",
+          tags: [{ value: "123" }, { value: "456" }],
+          options: [{ title: "size" }, { title: "color" }],
+          variants: [
+            {
+              title: "Test variant 1",
+              inventory_quantity: 10,
+              prices: [{ currency_code: "usd", amount: 100 }],
+              options: [{ value: "large" }, { value: "green" }],
+            },
+            {
+              title: "Test variant 2",
+              inventory_quantity: 10,
+              prices: [{ currency_code: "usd", amount: 100 }],
+              options: [{ value: "large" }, { value: "green" }],
+            },
+          ],
+        },
+        { headers: { "x-medusa-access-token": "test_token" } }
+      )
+
+      expect(response.status).toEqual(200)
+
+      const variantIds = response.data.product.variants.map(
+        (v: { id: string }) => v.id
+      )
+
+      const variantInventoryService = medusaContainer.resolve(
+        "productVariantInventoryService"
+      )
+      const inventory = await variantInventoryService.listByVariant(variantIds)
+
+      expect(inventory).toHaveLength(2)
+      expect(inventory).toContainEqual(
+        expect.objectContaining({
+          variant_id: variantIds[0],
+          required_quantity: 1,
+        })
+      )
+      expect(inventory).toContainEqual(
+        expect.objectContaining({
+          variant_id: variantIds[1],
+          required_quantity: 1,
         })
       )
     })

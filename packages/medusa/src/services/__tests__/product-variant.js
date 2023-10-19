@@ -670,6 +670,16 @@ describe("ProductVariantService", () => {
       insertBulk: (data) => data,
     })
 
+    const productVariantRepository = MockRepository({
+      find: (query) => {
+        return Promise.resolve([
+          {
+            id: IdMap.getId("ironman"),
+          },
+        ])
+      },
+    })
+
     const oldPrices = [
       {
         currency_code: "dkk",
@@ -686,6 +696,20 @@ describe("ProductVariantService", () => {
     moneyAmountRepository.upsertVariantCurrencyPrice = jest
       .fn()
       .mockImplementation(() => Promise.resolve())
+    moneyAmountRepository.findCurrencyMoneyAmounts = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: IdMap.getId("dkk"),
+            variant_id: IdMap.getId("ironman"),
+            currency_code: "dkk",
+          },
+        ])
+      )
+    moneyAmountRepository.findRegionMoneyAmounts = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve([]))
 
     const priceSelectionStrategy = {
       withTransaction: function () {
@@ -723,6 +747,7 @@ describe("ProductVariantService", () => {
       regionService,
       priceSelectionStrategy,
       moneyAmountRepository,
+      productVariantRepository,
     })
 
     beforeEach(async () => {
@@ -730,7 +755,7 @@ describe("ProductVariantService", () => {
     })
 
     it("successfully removes obsolete prices and create new prices", async () => {
-      await productVariantService.updateVariantPrices("ironman", [
+      await productVariantService.updateVariantPrices(IdMap.getId("ironman"), [
         {
           currency_code: "usd",
           amount: 4000,
@@ -744,7 +769,7 @@ describe("ProductVariantService", () => {
       expect(moneyAmountRepository.insertBulk).toHaveBeenCalledTimes(1)
       expect(moneyAmountRepository.insertBulk).toHaveBeenCalledWith([
         {
-          variant_id: "ironman",
+          variant: { id: IdMap.getId("ironman") },
           currency_code: "usd",
           amount: 4000,
         },
@@ -761,7 +786,7 @@ describe("ProductVariantService", () => {
 
       expect(moneyAmountRepository.create).toHaveBeenCalledTimes(1)
       expect(moneyAmountRepository.create).toHaveBeenCalledWith({
-        variant_id: IdMap.getId("ironman"),
+        variant: { id: IdMap.getId("ironman") },
         region_id: IdMap.getId("cali"),
         currency_code: "usd",
         amount: 100,

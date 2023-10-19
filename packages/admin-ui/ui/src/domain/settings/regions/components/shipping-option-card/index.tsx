@@ -1,6 +1,7 @@
 import { ShippingOption } from "@medusajs/medusa"
 import clsx from "clsx"
 import { useAdminDeleteShippingOption } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import EditIcon from "../../../../../components/fundamentals/icons/edit-icon"
 import FastDeliveryIcon from "../../../../../components/fundamentals/icons/fast-delivery-icon"
 import TrashIcon from "../../../../../components/fundamentals/icons/trash-icon"
@@ -21,6 +22,7 @@ enum ShippingOptionPriceType {
 }
 
 const ShippingOptionCard = ({ option }: Props) => {
+  const { t } = useTranslation()
   const { state, toggle, close } = useToggleState()
   const { mutate } = useAdminDeleteShippingOption(option.id)
 
@@ -29,10 +31,21 @@ const ShippingOptionCard = ({ option }: Props) => {
   const handleDeleteOption = () => {
     mutate(undefined, {
       onSuccess: () => {
-        notification("Success", "Shipping option has been deleted", "success")
+        notification(
+          t("shipping-option-card-success", "Success"),
+          t(
+            "shipping-option-card-shipping-option-has-been-deleted",
+            "Shipping option has been deleted"
+          ),
+          "success"
+        )
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(
+          t("shipping-option-card-error", "Error"),
+          getErrorMessage(error),
+          "error"
+        )
       },
     })
   }
@@ -49,21 +62,21 @@ const ShippingOptionCard = ({ option }: Props) => {
             <div>
               <p className="inter-small-regular text-grey-50">
                 {option.price_type === ShippingOptionPriceType.FLAT_RATE
-                  ? "Flat Rate"
-                  : "Calcualted"}
+                  ? t("shipping-option-card-flat-rate", "Flat Rate")
+                  : t("shipping-option-card-calcualted", "Calcualted")}
                 :{" "}
                 {stringDisplayPrice({
                   amount: option.amount,
                   currencyCode: option.region.currency_code,
                 })}{" "}
-                - Min. subtotal:{" "}
+                - {t("shipping-option-card-min-subtotal", "Min. subtotal:")}{" "}
                 {stringDisplayPrice({
                   amount: option.requirements?.find(
                     (r) => r.type === "min_subtotal"
                   )?.amount,
                   currencyCode: option.region.currency_code,
                 })}{" "}
-                - Max. subtotal:{" "}
+                - {t("shipping-option-card-max-subtotal", "Max. subtotal:")}{" "}
                 {stringDisplayPrice({
                   amount: option.requirements?.find(
                     (r) => r.type === "max_subtotal"
@@ -82,19 +95,21 @@ const ShippingOptionCard = ({ option }: Props) => {
             })}
           >
             <span className="inter-small-semibold">
-              {option.admin_only ? "Admin" : "Store"}
+              {option.admin_only
+                ? t("shipping-option-card-admin", "Admin")
+                : t("shipping-option-card-store", "Store")}
             </span>
           </div>
           <div>
             <Actionables
               actions={[
                 {
-                  label: "Edit",
+                  label: t("shipping-option-card-edit", "Edit"),
                   onClick: toggle,
                   icon: <EditIcon size={20} />,
                 },
                 {
-                  label: "Delete",
+                  label: t("shipping-option-card-delete", "Delete"),
                   onClick: handleDeleteOption,
                   icon: <TrashIcon size={20} />,
                   variant: "danger",

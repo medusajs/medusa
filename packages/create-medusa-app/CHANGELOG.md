@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.2.2
+
+### Patch Changes
+
+- [#5189](https://github.com/medusajs/medusa/pull/5189) [`18a05dee8`](https://github.com/medusajs/medusa/commit/18a05dee86f55366c92a2669eacbccf526373ff5) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix inconsistency in checking errors in migrations
+
+## 1.2.1
+
+### Patch Changes
+
+- [#5061](https://github.com/medusajs/medusa/pull/5061) [`5b09f816c`](https://github.com/medusajs/medusa/commit/5b09f816cbb44d457c8cbdee803d9f84bd3fed0d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix command for windows OS
+
 ## 1.2.0
 
 ### Minor Changes

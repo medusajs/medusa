@@ -33,6 +33,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       curl -X POST '{backend_url}/store/payment-collections/{id}/sessions/batch/authorize'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:

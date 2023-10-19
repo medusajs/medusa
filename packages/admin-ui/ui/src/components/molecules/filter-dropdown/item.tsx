@@ -1,21 +1,24 @@
 import * as RadixCollapsible from "@radix-ui/react-collapsible"
 import * as RadixPopover from "@radix-ui/react-popover"
 
-import { addHours, atMidnight, dateToUnixTimestamp } from "../../../utils/time"
 import { useEffect, useMemo, useState } from "react"
+import { addHours, atMidnight, dateToUnixTimestamp } from "../../../utils/time"
 
-import ArrowRightIcon from "../../fundamentals/icons/arrow-right-icon"
-import { CalendarComponent } from "../../atoms/date-picker/date-picker"
-import CheckIcon from "../../fundamentals/icons/check-icon"
-import ChevronUpIcon from "../../fundamentals/icons/chevron-up"
-import { DateFilters } from "../../../utils/filters"
-import InputField from "../input"
-import Spinner from "../../atoms/spinner"
 import clsx from "clsx"
 import moment from "moment"
+import { DateFilters } from "../../../utils/filters"
+import { CalendarComponent } from "../../atoms/date-picker/date-picker"
+import Spinner from "../../atoms/spinner"
+import ArrowRightIcon from "../../fundamentals/icons/arrow-right-icon"
+import CheckIcon from "../../fundamentals/icons/check-icon"
+import ChevronUpIcon from "../../fundamentals/icons/chevron-up"
+import InputField from "../input"
 
 const DAY_IN_SECONDS = 86400
 
+/**
+ * @deprecated Use `FilterMenu` instead
+ */
 const FilterDropdownItem = ({
   filterTitle,
   options,
