@@ -18,6 +18,10 @@ export const supportedLanguages = [
     name: "Français",
   },
   {
+    locale: "hr",
+    name: "Hrvatski",
+  },
+  {
     locale: "it",
     name: "Italiano",
   },
@@ -37,6 +41,10 @@ export const supportedLanguages = [
     locale: "es",
     name: "Español",
   },
+  {
+    locale: "bs",
+    name: "Bosanski",
+  }
 ]
 
 const adminPath = getFullAdminPath()
