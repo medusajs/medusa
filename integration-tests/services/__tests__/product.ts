@@ -1,6 +1,6 @@
 import path from "path"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { initDb, useDb } from "../../environment-helpers/use-db"
+import { bootstrapApp } from "../../environment-helpers/bootstrap-app"
 
 jest.setTimeout(30000)
 
@@ -11,7 +11,7 @@ describe("/admin/products", () => {
   let productService
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
+    const cwd = path.resolve(path.join(__dirname, ".."))
     dbConnection = await initDb({ cwd } as any)
     const { container } = await bootstrapApp({ cwd })
     medusaContainer = container
@@ -112,7 +112,7 @@ describe("/admin/products", () => {
     const { id } = await productService.create(payload)
 
     const result = await productService.retrieve(id, {
-      relations: ["variants", "variants.prices", "variants.options"],
+      relations: ["options", "variants", "variants.prices", "variants.options"],
     })
 
     expect(result).toEqual(
