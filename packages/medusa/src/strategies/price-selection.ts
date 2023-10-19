@@ -96,7 +96,9 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     await Promise.all(
       [...results].map(async ([variantId, prices]) => {
         variantPricesMap.set(variantId, prices)
-        await this.cacheService_.set(cacheKeysMap.get(variantId)!, prices)
+        if (!context.ignore_cache) {
+          await this.cacheService_.set(cacheKeysMap.get(variantId)!, prices)
+        }
       })
     )
 
