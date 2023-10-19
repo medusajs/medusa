@@ -88,7 +88,7 @@ The request returns an object in the response having the property `share_token`,
 
 The `GET` API Route at `/wishlists/<TOKEN>` allows anyone to access the wishlist using its token, where `<TOKEN>` is the token retrieved from the [Generate Share Token API Route](#generate-share-token-api-token).
 
-The endpoint doesn't accept any request body parameters.
+The API Route doesn't accept any request body parameters.
 
 The request returns an object in the response having the following properties:
 
