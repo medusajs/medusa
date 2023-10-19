@@ -59,7 +59,7 @@ const paths: LearningPathType[] = [
         title: "Access logged-in user",
         description:
           "Create a middleware that registers the logged-in user in the dependency container.",
-        path: "/development/endpoints/example-logged-in-user",
+        path: "/development/api-routes/example-logged-in-user",
       },
       {
         title: "Extend services",
@@ -114,7 +114,7 @@ const paths: LearningPathType[] = [
         title: "Implement Role-Based Access Control",
         path: "/modules/users/backend/rbac",
         description:
-          "In your marketplace, you may need to implement role-based access control (RBAC) within stores. This will restrict some users' permissions to specified functionalities or endpoints.",
+          "In your marketplace, you may need to implement role-based access control (RBAC) within stores. This will restrict some users' permissions to specified functionalities or API Routes.",
       },
       {
         title: "Create a storefront",
@@ -370,7 +370,7 @@ const paths: LearningPathType[] = [
             Your use case may be more elaborate than what is shown in this
             recipe.
             <br />
-            Medusa can be customized to add custom entities, endpoints,
+            Medusa can be customized to add custom entities, API Routes,
             services, and more.
             <br />
             You can find additional development resources in the{" "}
@@ -379,7 +379,7 @@ const paths: LearningPathType[] = [
         ),
       },
       {
-        title: "Create an Endpoint to Check Customers",
+        title: "Create an API Route to Check Customers",
         path: "/development/entities/create",
         descriptionJSX: (
           <>
@@ -387,7 +387,7 @@ const paths: LearningPathType[] = [
             storefront, you’ll need to check if the currently logged-in customer
             is a normal customer or a B2B customer.
             <br />
-            To do that, you need to create a custom endpoint that handles the
+            To do that, you need to create a custom API Route that handles the
             checking based on the custom logic you&apos;ve chosen to indicate a
             customer is a B2B customer.
           </>
@@ -476,9 +476,9 @@ const paths: LearningPathType[] = [
       },
       {
         title: "Create Guard Middleware",
-        path: "/development/endpoints/add-middleware",
+        path: "/development/api-routes/add-middleware",
         description:
-          "To ensure that users who have the privilege can access an endpoint, you must create a middleware that guards admin routes. This middleware will run on all authenticated admin requests to ensure that only allowed users can access an endpoint.",
+          "To ensure that users who have the privilege can access an API Route, you must create a middleware that guards admin routes. This middleware will run on all authenticated admin requests to ensure that only allowed users can access an API Route.",
       },
       {
         title: "Create Services",
@@ -501,15 +501,15 @@ const paths: LearningPathType[] = [
         ),
       },
       {
-        title: "Create Endpoints",
-        path: "/development/endpoints/create",
+        title: "Create API Routes",
+        path: "/development/api-routes/create",
         descriptionJSX: (
           <>
             To manage the roles and permissions, you’ll need to create custom
-            endpoints, typically for Create, Read, Update, and Delete (CRUD)
+            API Routes, typically for Create, Read, Update, and Delete (CRUD)
             operations.
             <br />
-            After creating the endpoints, you may test adding roles and
+            After creating the API Routes, you may test adding roles and
             permissions, and how they provide different access for different
             roles and users.
           </>
@@ -527,9 +527,9 @@ const paths: LearningPathType[] = [
   },
   {
     name: "entity-and-api",
-    label: "Create Entity and Expose it with Endpoints",
+    label: "Create Entity and Expose it with API Routes",
     description:
-      "Learn how to create a new table in your database, then create endpoints to expose and manipulate its data.",
+      "Learn how to create a new table in your database, then create API Routes to expose and manipulate its data.",
     steps: [
       {
         title: "Create entity",
@@ -540,17 +540,17 @@ const paths: LearningPathType[] = [
         title: "Create service",
         path: "/development/services/create-service",
         description:
-          "A service is a class that defines helper methods for your entity. The service will be used by the endpoints to access or modify the entity's data.",
+          "A service is a class that defines helper methods for your entity. The service will be used by the API Routes to access or modify the entity's data.",
       },
       {
-        title: "Create endpoints",
-        path: "/development/endpoints/create",
+        title: "Create API Routes",
+        path: "/development/api-routes/create",
       },
     ],
     finish: {
       type: "rating",
       step: {
-        title: "Congratulations on creating your entity and endpoints!",
+        title: "Congratulations on creating your entity and API Routes!",
         description: "Please rate your experience using this recipe.",
         eventName: "rating_path_entity-and-api",
       },
@@ -585,8 +585,8 @@ const paths: LearningPathType[] = [
                 <Link to={`https://docs.medusajs.com/api/store`}>
                   Store REST APIs
                 </Link>
-                : You can send requests directly to the API endpoints without
-                using Medusa&apos;s clients.
+                : You can send requests directly to the API Routes without using
+                Medusa&apos;s clients.
               </li>
             </ul>
           </>
@@ -619,7 +619,7 @@ const paths: LearningPathType[] = [
         title: "Use Publishable API Key",
         path: "/development/publishable-api-keys/storefront/use-in-requests",
         description:
-          "After creating the publishable API key and associating it with sales channels, you can pass it in the header of your requests to Store API endpoints.",
+          "After creating the publishable API key and associating it with sales channels, you can pass it in the header of your requests to Store API Routes.",
       },
       {
         title: "Add Region Selection",
@@ -714,8 +714,8 @@ const paths: LearningPathType[] = [
                 </Link>
               </li>
               <li>
-                <Link to="/development/endpoints/create">
-                  Create an Endpoint
+                <Link to="/development/api-routes/create">
+                  Create an API Route
                 </Link>
               </li>
               <li>
