@@ -139,7 +139,7 @@ describe("ProductService", () => {
       jest.clearAllMocks()
     })
 
-    it.only("should successfully create a product", async () => {
+    it("should successfully create a product", async () => {
       await productService.create({
         title: "Suit",
         options: [],
