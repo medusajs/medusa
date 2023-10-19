@@ -10,15 +10,15 @@ export async function detachInventoryItems({
     tag: string
     inventoryItem: InventoryItemDTO
   }[]
-}>): Promise<void> {
+}>) {
   const { manager } = context
 
   const productVariantInventoryService = container
     .resolve("productVariantInventoryService")
     .withTransaction(manager)
 
-  if (!data?.inventoryItems.length) {
-    return
+  if (!data?.inventoryItems?.length) {
+    return []
   }
 
   await Promise.all(
@@ -29,6 +29,8 @@ export async function detachInventoryItems({
       )
     })
   )
+
+  return data.inventoryItems
 }
 
 detachInventoryItems.aliases = {
