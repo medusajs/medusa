@@ -32,7 +32,7 @@ import { defaultStoreProductRemoteQueryObject } from "./index"
  * summary: List Products
  * description: |
  *   Retrieves a list of products. The products can be filtered by fields such as `id` or `q`. The products can also be sorted or paginated.
- *   This endpoint can also be used to retrieve a product by its handle.
+ *   This API Route can also be used to retrieve a product by its handle.
  *
  *   For accurate and correct pricing of the products based on the customer's context, it's highly recommended to pass fields such as
  *   `region_id`, `currency_code`, and `cart_id` when available.
