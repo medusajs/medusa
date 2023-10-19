@@ -255,18 +255,18 @@ export class QueryBuilder {
         const subQuery = this.knex.queryBuilder()
         const knex = this.knex
         subQuery
-          .select(`${alias}.*`)
+          .select(`${alias}.id`, `${alias}.data`)
           .from("catalog AS " + alias)
           .join(`catalog_relation AS ${alias}_ref`, function () {
-            this.on(`${alias}.id`, "=", `${alias}_ref.child_id`)
-              .andOn(`${alias}_ref.child_name`, "=", knex.raw("?", [entity]))
-              .andOn(
-                `${alias}_ref.parent_name`,
-                "=",
-                knex.raw("?", [parEntity])
-              )
+            this.on(
+              `${alias}_ref.pivot`,
+              "=",
+              knex.raw("?", [`${parEntity}-${entity}`])
+            )
               .andOn(`${alias}_ref.parent_id`, "=", `${parAlias}.id`)
+              .andOn(`${alias}.id`, "=", `${alias}_ref.child_id`)
           })
+          .where(`${alias}.name`, "=", knex.raw("?", [entity]))
 
         const joinWhere = this.selector.joinWhere ?? {}
         const joinKey = Object.keys(joinWhere).find((key) => {
@@ -399,9 +399,10 @@ export class QueryBuilder {
       aliasMapping
     )
 
+    const rootAlias = aliasMapping[rootKey]
     const selectParts = !returnIdOnly
       ? this.buildSelectParts(rootStructure, rootKey, aliasMapping)
-      : `${rootEntity}0.id`
+      : { [rootKey + ".id"]: `${rootAlias}.id` }
 
     if (countAllResults) {
       selectParts["offset_"] = this.knex.raw(

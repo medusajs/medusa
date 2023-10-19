@@ -128,6 +128,7 @@ const beforeEach_ = async () => {
   )
 
   const catalogRelationRepository = manager.getRepository(CatalogRelation)
+
   await manager.persistAndFlush(
     [
       {
@@ -135,48 +136,56 @@ const beforeEach_ = async () => {
         parent_name: "Product",
         child_id: "var_1",
         child_name: "ProductVariant",
+        pivot: "Product-ProductVariant",
       },
       {
         parent_id: "prod_1",
         parent_name: "Product",
         child_id: "var_2",
         child_name: "ProductVariant",
+        pivot: "Product-ProductVariant",
       },
       {
         parent_id: "var_1",
         parent_name: "ProductVariant",
         child_id: "link_id_1",
         child_name: "LinkProductVariantPriceSet",
+        pivot: "ProductVariant-LinkProductVariantPriceSet",
       },
       {
         parent_id: "var_2",
         parent_name: "ProductVariant",
         child_id: "link_id_2",
         child_name: "LinkProductVariantPriceSet",
+        pivot: "ProductVariant-LinkProductVariantPriceSet",
       },
       {
         parent_id: "link_id_1",
         parent_name: "LinkProductVariantPriceSet",
         child_id: "price_set_1",
         child_name: "PriceSet",
+        pivot: "LinkProductVariantPriceSet-PriceSet",
       },
       {
         parent_id: "link_id_2",
         parent_name: "LinkProductVariantPriceSet",
         child_id: "price_set_2",
         child_name: "PriceSet",
+        pivot: "LinkProductVariantPriceSet-PriceSet",
       },
       {
         parent_id: "price_set_1",
         parent_name: "PriceSet",
         child_id: "money_amount_1",
         child_name: "MoneyAmount",
+        pivot: "PriceSet-MoneyAmount",
       },
       {
         parent_id: "price_set_2",
         parent_name: "PriceSet",
         child_id: "money_amount_2",
         child_name: "MoneyAmount",
+        pivot: "PriceSet-MoneyAmount",
       },
     ].map((data) => catalogRelationRepository.create(data))
   )
@@ -296,7 +305,7 @@ describe("SearchEngineModuleService", function () {
   })
 
   it("should query products filtering by money amount and returning the complete entity", async () => {
-    const result = await module.query(
+    const [result] = await module.queryAndCount(
       {
         select: {
           product: {

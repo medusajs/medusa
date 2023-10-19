@@ -42,6 +42,7 @@ export class PostgresProvider {
   protected readonly schemaObjectRepresentation_: SchemaObjectRepresentation
   protected readonly schemaEntitiesMap_: Record<string, any>
   protected readonly moduleOptions_: SearchModuleOptions
+  protected readonly isReady_: Promise<boolean>
 
   protected get remoteQuery_(): (
     query: string | RemoteJoinerQuery | object,
@@ -63,6 +64,14 @@ export class PostgresProvider {
 
     this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
     this.schemaEntitiesMap_ = options.entityMap
+
+    let initalizedOk: (value: any) => void = () => {}
+    let initalizedNok: (value: any) => void = () => {}
+    this.isReady_ = new Promise((resolve, reject) => {
+      initalizedOk = resolve
+      initalizedNok = reject
+    })
+    this.createPartitions().then(initalizedOk).catch(initalizedNok)
 
     // Add a new column for each key that can be found in the jsonb data column to perform indexes and query on it.
     // So far, the execution time is about the same
@@ -94,6 +103,33 @@ export class PostgresProvider {
       )
       await this.container_.manager.execute(query.join(";"))
     })()*/
+  }
+
+  private async createPartitions() {
+    const partitions = Object.keys(this.schemaObjectRepresentation_)
+      .filter(
+        (key) =>
+          !["_serviceNameModuleConfigMap", "_schemaPropertiesMap"].includes(key)
+      )
+      .map((key) => {
+        const cName = key.toLowerCase()
+        const part: string[] = []
+        part.push(
+          `CREATE TABLE IF NOT EXISTS cat_${cName} PARTITION OF catalog FOR VALUES IN ('${key}')`
+        )
+
+        for (const parent of this.schemaObjectRepresentation_[key].parents) {
+          const pKey = `${parent.ref.entity}-${key}`
+          const pName = `${parent.ref.entity}${key}`.toLowerCase()
+          part.push(
+            `CREATE TABLE IF NOT EXISTS cat_pivot_${pName} PARTITION OF catalog_relation FOR VALUES IN ('${pKey}')`
+          )
+        }
+        return part
+      })
+      .flat()
+
+    return await this.container_.manager.execute(partitions.join("; "))
   }
 
   protected static parseData<
@@ -128,6 +164,8 @@ export class PostgresProvider {
   }
 
   async query(selection: QueryFormat, options?: QueryOptions) {
+    await this.isReady_
+
     let hasPagination = false
     if (
       typeof options?.take === "number" ||
@@ -151,20 +189,26 @@ export class PostgresProvider {
 
     if (options?.keepFilteredEntities) {
       const mainEntity = Object.keys(selection.select)[0]
-      const selection_ = {
-        select: selection.select,
-        joinWhere: selection.joinWhere,
-        where: {
-          [`${mainEntity}.id`]: resultset.map((r) => r.id),
-        },
+
+      const ids = resultset.map((r) => r[`${mainEntity}.id`])
+      if (ids.length) {
+        const selection_ = {
+          select: selection.select,
+          joinWhere: selection.joinWhere,
+          where: {
+            [`${mainEntity}.id`]: ids,
+          },
+        }
+        return await this.query(selection_)
       }
-      return await this.query(selection_)
     }
 
     return qb.buildObjectFromResultset(resultset)
   }
 
   async queryAndCount(selection: QueryFormat, options?: QueryOptions) {
+    await this.isReady_
+
     const connection = this.container_.manager.getConnection()
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
@@ -175,22 +219,24 @@ export class PostgresProvider {
     })
 
     const sql = qb.buildQuery(true, !!options?.keepFilteredEntities)
-
-    console.time("queryAndCount")
     let resultset = await connection.execute(sql)
-    console.timeEnd("queryAndCount")
+
     const count = +(resultset[0]?.count ?? 0)
 
     if (options?.keepFilteredEntities) {
       const mainEntity = Object.keys(selection.select)[0]
-      const selection_ = {
-        select: selection.select,
-        joinWhere: selection.joinWhere,
-        where: {
-          [`${mainEntity}.id`]: resultset.map((r) => r.id),
-        },
+
+      const ids = resultset.map((r) => r[`${mainEntity}.id`])
+      if (ids.length) {
+        const selection_ = {
+          select: selection.select,
+          joinWhere: selection.joinWhere,
+          where: {
+            [`${mainEntity}.id`]: ids,
+          },
+        }
+        return [await this.query(selection_), count]
       }
-      resultset = await this.query(selection_)
     }
 
     return [qb.buildObjectFromResultset(resultset), count]
@@ -200,6 +246,8 @@ export class PostgresProvider {
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   ): Subscriber {
     return async (data: unknown, eventName: string) => {
+      await this.isReady_
+
       const data_ = Array.isArray(data) ? data : [data]
       let ids: string[] = data_.map((d) => d.id)
 
@@ -510,6 +558,7 @@ export class PostgresProvider {
           parent_name: parentEntityName,
           child_id: cleanedEntityData.id,
           child_name: entity,
+          pivot: `${parentEntityName}-${entity}`,
         })
 
         const childCatalogRelationEntry = catalogRelationRepository.create({
@@ -517,6 +566,7 @@ export class PostgresProvider {
           parent_name: entity,
           child_id: entityData[childPropertyId] as string,
           child_name: childEntityName,
+          pivot: `${entity}-${childEntityName}`,
         })
 
         catalogRelationRepository.persist([

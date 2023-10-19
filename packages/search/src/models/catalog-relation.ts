@@ -1,4 +1,5 @@
 import {
+  BeforeCreate,
   Entity,
   Index,
   ManyToOne,
@@ -19,18 +20,18 @@ type OptionalRelations =
 
 @Entity({ tableName: "catalog_relation" })
 @Index({
-  name: "IDX_catalog_relation_parent_name_child_name",
-  properties: ["parent_name", "child_name"],
-})
-@Index({
-  name: "IDX_catalog_relation_parent_id_child_id",
-  properties: ["parent_id", "child_id"],
+  name: "IDX_catalog_relation_child_id",
+  properties: ["child_id"],
 })
 export class CatalogRelation {
   [OptionalProps]: OptionalRelations
 
-  @PrimaryKey({ columnType: "text", autoincrement: true })
+  @PrimaryKey({ columnType: "integer", autoincrement: true })
   id!: string
+
+  // if added as PK, BeforeCreate value isn't set
+  @Property({ columnType: "text" })
+  pivot: string
 
   @Property({ columnType: "text" })
   parent_id?: string
@@ -57,6 +58,11 @@ export class CatalogRelation {
     persist: false,
   })
   child?: Ref<Catalog>
+
+  @BeforeCreate()
+  onCreate() {
+    this.pivot = `${this.parent_name}-${this.child_name}`
+  }
 }
 
 export default CatalogRelation
