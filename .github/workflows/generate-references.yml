@@ -222,11 +222,15 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-utils
+        working-directory: docs-util
+
+      - name: Build Workspace dependencies
+        run: yarn build
+        working-directory: docs-util
 
       - name: Generate Pricing Module Reference
-        run: yarn generate:references pricing
-        working-directory: docs-utils/packages/scripts
+        run: yarn generate:reference pricing
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -237,4 +241,53 @@ jobs:
           labels: "type: chore"
           add-paths: www/apps/docs/content/references/pricing/**
           branch: "docs/generate-pricing"
+          branch-suffix: "timestamp"
+  product:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.20.2"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Install Workspace dependencies
+        run: yarn install
+        working-directory: docs-util
+
+      - name: Build Workspace dependencies
+        run: yarn build
+        working-directory: docs-util
+
+      - name: Generate Product Module Reference
+        run: yarn generate:reference product
+        working-directory: docs-util/packages/scripts
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "chore(docs): Generated Product Module Reference (automated)"
+          base: "develop"
+          title: "chore(docs): Generated Product Module Reference"
+          labels: "type: chore"
+          add-paths: www/apps/docs/content/references/product/**
+          branch: "docs/generate-product"
           branch-suffix: "timestamp"
