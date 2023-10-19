@@ -70,74 +70,72 @@ Due to how Express resolves the current IP when accessing your website from `loc
 
 ### IpLookupService
 
-The `IpLookupService` can be used in other services, endpoints, or resources to get the user’s location by their IP address. It has only one method `lookupIp` that accepts the IP address as a parameter, sends a request to ipstack’s API, and returns the retrieved result.
+The `IpLookupService` can be used in other services, API Routes, or resources to get the user’s location by their IP address. It has only one method `lookupIp` that accepts the IP address as a parameter, sends a request to ipstack’s API, and returns the retrieved result.
 
-For example, you can use the `IpLookupService` in a custom endpoint and return the user’s region:
+For example, you can use the `IpLookupService` in a custom API Route and return the user’s region:
 
 :::tip
 
-You can learn more about creating an endpoint [here](../../development/endpoints/create.mdx).
+You can learn more about creating an API Route [here](../../development/api-routes/create.mdx).
 
 :::
 
-```ts title=src/api/index.ts
-import { Request, Response, Router } from "express"
+```ts title=src/api/store/customer-region/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse, 
+  RegionService,
+} from "@medusajs/medusa"
 
-export default (rootDirectory: string): Router | Router[] => {
-  const router = Router()
-  // ...
-  router.get(
-    "/store/customer-region", 
-    async (req: Request, res: Response) => {
-      const ipLookupService = req.scope.resolve(
-        "ipLookupService"
-      )
-      const regionService = req.scope.resolve<RegionService>(
-        "regionService"
-      )
-      
-      const ip = req.headers["x-forwarded-for"] || 
-        req.socket.remoteAddress
-
-      const { data } = await ipLookupService.lookupIp(ip)
-
-      if (!data.country_code) {
-        throw new Error ("Couldn't detect country code.")
-      }
-
-      const region = await regionService
-      .retrieveByCountryCode(data.country_code)
-
-      res.json({
-        region,
-      })
-    }
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const ipLookupService = req.scope.resolve(
+    "ipLookupService"
   )
+  const regionService = req.scope.resolve<RegionService>(
+    "regionService"
+  )
+  
+  const ip = req.headers["x-forwarded-for"] || 
+    req.socket.remoteAddress
+
+  const { data } = await ipLookupService.lookupIp(ip)
+
+  if (!data.country_code) {
+    throw new Error ("Couldn't detect country code.")
+  }
+
+  const region = await regionService
+  .retrieveByCountryCode(data.country_code)
+
+  res.json({
+    region,
+  })
 }
 ```
 
 ### preCartCreation
 
-The `preCartCreation` middleware can be added as a middleware to any route to attach the region ID to that route based on the user’s location. For example, you can use it on the Create Cart endpoint to ensure that the user’s correct region is attached to the cart.
+The `preCartCreation` middleware can be added as a middleware to any route to attach the region ID to that route based on the user’s location. For example, you can use it on the Create Cart API Route to ensure that the user’s correct region is attached to the cart.
 
 For example, you can attach it to all `/store` routes to ensure the customer’s region is always detected:
 
 <!-- eslint-disable @typescript-eslint/no-var-requires -->
 
-```ts title=src/api/index.ts
-import { Router } from "express"
-
+```ts title=src/api/middlewares.ts
+import type { MiddlewaresConfig } from "@medusajs/medusa"
 const { preCartCreation } = require(
   "medusa-plugin-ip-lookup/api/medusa-middleware"
 ).default
 
-export default (
-  rootDirectory: string
-): Router | Router[] => {
-  const router = Router()
-  // ...
-  router.use("/store", preCartCreation)
-
-  return router
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/store/*",
+      middlewares: [preCartCreation],
+    },
+  ],
 }
 ```

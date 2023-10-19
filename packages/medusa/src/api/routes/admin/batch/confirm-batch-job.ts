@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/batch-jobs/{id}/confirm
  * operationId: "PostBatchJobsBatchJobConfirmProcessing"
  * summary: "Confirm a Batch Job"
- * description: "When a batch job is created, it is not executed automatically if `dry_run` is set to `true`. This endpoint confirms that the batch job should be executed."
+ * description: "When a batch job is created, it is not executed automatically if `dry_run` is set to `true`. This API Route confirms that the batch job should be executed."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the batch job.
