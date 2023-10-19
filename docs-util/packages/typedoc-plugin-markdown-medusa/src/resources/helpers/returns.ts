@@ -40,7 +40,9 @@ function getReturnFromType(
 
   if (parameterStyle === "component") {
     return `<${parameterComponent} parameters={${JSON.stringify(
-      componentItems
+      componentItems,
+      null,
+      2
     )}} />`
   } else {
     return formatReturnAsList(componentItems)
@@ -90,7 +92,9 @@ function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
             result +=
               parameterStyle === "component"
                 ? `\n\n<${parameterComponent} parameters={${JSON.stringify(
-                    content
+                    content,
+                    null,
+                    2
                   )}} title={"${commentPart.target.name}"} />\n\n`
                 : `\n\n<details>\n<summary>\n${
                     commentPart.target.name
