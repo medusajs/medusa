@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4.0
+
+### Minor Changes
+
+- [#5291](https://github.com/medusajs/medusa/pull/5291) [`bbd9dd408`](https://github.com/medusajs/medusa/commit/bbd9dd408f04dc95eb7d2d57984fb61e5c015bbc) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - Added config to set S3 prefix
+
 ## 1.3.1
 
 ### Patch Changes
