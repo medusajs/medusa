@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -60,7 +60,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[models/sales-channel-location.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel-location.ts#L16)
+[models/sales-channel-location.ts:16](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/sales-channel-location.ts#L16)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[models/sales-channel-location.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel-location.ts#L20)
+[models/sales-channel-location.ts:20](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/sales-channel-location.ts#L20)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[models/sales-channel-location.ts:12](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel-location.ts#L12)
+[models/sales-channel-location.ts:12](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/sales-channel-location.ts#L12)
 
 ___
 
@@ -104,7 +104,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -118,4 +118,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/sales-channel-location.ts:23](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/sales-channel-location.ts#L23)
+[models/sales-channel-location.ts:23](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/sales-channel-location.ts#L23)

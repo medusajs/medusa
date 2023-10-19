@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/draft-order.ts:53](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L53)
+[models/draft-order.ts:53](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L53)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:42](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L42)
+[models/draft-order.ts:42](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L42)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:38](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L38)
+[models/draft-order.ts:38](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L38)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:56](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L56)
+[models/draft-order.ts:56](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L56)
 
 ___
 
@@ -72,7 +72,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:34](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L34)
+[models/draft-order.ts:34](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L34)
 
 ___
 
@@ -96,7 +96,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:65](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L65)
+[models/draft-order.ts:65](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L65)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:62](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L62)
+[models/draft-order.ts:62](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L62)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:59](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L59)
+[models/draft-order.ts:59](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L59)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:50](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L50)
+[models/draft-order.ts:50](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L50)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:46](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L46)
+[models/draft-order.ts:46](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L46)
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:29](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L29)
+[models/draft-order.ts:29](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L29)
 
 ___
 
@@ -170,7 +170,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -184,4 +184,4 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/draft-order.ts:68](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L68)
+[models/draft-order.ts:68](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L68)
