@@ -1,5 +1,22 @@
 # @medusajs/admin-ui
 
+## 2.1.5
+
+### Patch Changes
+
+- [#5339](https://github.com/medusajs/medusa/pull/5339) [`e04927a3c`](https://github.com/medusajs/medusa/commit/e04927a3cb0b8159b1f10a377beee705da6eef31) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): minor bugs throughout Price List domain plus improved form validation
+
+- [#5377](https://github.com/medusajs/medusa/pull/5377) [`d30f4477d`](https://github.com/medusajs/medusa/commit/d30f4477d908e2665ab951d93d559e5db8c4211e) Thanks [@anamarijapapic](https://github.com/anamarijapapic)! - feat(admin-ui): Add Croatian translation
+
+- [#5358](https://github.com/medusajs/medusa/pull/5358) [`3376f4ccc`](https://github.com/medusajs/medusa/commit/3376f4ccc1acb0a8896c7f10c45a980aec8188b1) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Alias design system packages
+
+- [#5395](https://github.com/medusajs/medusa/pull/5395) [`3aba6269e`](https://github.com/medusajs/medusa/commit/3aba6269ed5efb6353d193e71d241ae55a40e721) Thanks [@samiralibabic](https://github.com/samiralibabic)! - feat(admin-ui): add Bosnian translation
+
+- [#5394](https://github.com/medusajs/medusa/pull/5394) [`a0963f0ed`](https://github.com/medusajs/medusa/commit/a0963f0edf909f6cfea17bd7a0c7899707808057) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Remove t() on product.status update
+
+- Updated dependencies [[`5a5c96e21`](https://github.com/medusajs/medusa/commit/5a5c96e2118e50a558d9d6dc340e505454d4c593)]:
+  - medusa-react@9.0.8
+
 ## 2.1.4
 
 ### Patch Changes
