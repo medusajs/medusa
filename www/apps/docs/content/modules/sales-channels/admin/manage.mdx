@@ -52,7 +52,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## Create Sales Channels
 
-You can create a sales channel by sending a request to the Create a Sales Channel endpoint:
+You can create a sales channel by sending a request to the Create a Sales Channel API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -135,7 +135,7 @@ It returns the created sales channel.
 
 ## List Sales Channels
 
-You can list all sales channels by sending a request to the List Sales Channels endpoint:
+You can list all sales channels by sending a request to the List Sales Channels API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -207,7 +207,7 @@ This request returns an array of all sales channels in your store. You can also 
 
 ## Retrieve a Sales Channel
 
-You can retrieve a sales channel’s details by its ID using the Get Sales Channel endpoint:
+You can retrieve a sales channel’s details by its ID using the Get Sales Channel API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -272,7 +272,7 @@ This request returns the sales channel with the specified ID.
 
 ## Update a Sales Channel
 
-You can update a Sales Channel’s details and attributes by sending a request to the Update Sales Channel endpoint:
+You can update a Sales Channel’s details and attributes by sending a request to the Update Sales Channel API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -355,7 +355,7 @@ You can check out [the API Reference for a full list of body parameters](https:/
 
 ## Delete a Sales Channel
 
-You can delete a sales channel by sending a request to the Delete Sales Channel endpoint with the ID of the sales channel to delete:
+You can delete a sales channel by sending a request to the Delete Sales Channel API Route with the ID of the sales channel to delete:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -422,7 +422,7 @@ The ID of the deleted sales channel is returned in the response.
 
 ### Add Product to a Sales Channel
 
-To add a product to a sales channel, send a request to the Sales Channel’s Add Products endpoint:
+To add a product to a sales channel, send a request to the Sales Channel’s Add Products API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -522,7 +522,7 @@ This request returns the sales channel.
 
 ### List Products Available in a Sales Channel
 
-You can list the products available in a sales channel by sending a request to the List Products endpoint and passing the `sales_channel_id` query parameter to filter by a specific sales channel:
+You can list the products available in a sales channel by sending a request to the List Products API Route and passing the `sales_channel_id` query parameter to filter by a specific sales channel:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -614,7 +614,7 @@ Deleting a product from a sales channel doesn't delete it completely. It only ma
 
 :::
 
-You can delete a product from a sales channel by sending a request to the Sales Channel’s Delete Products endpoint:
+You can delete a product from a sales channel by sending a request to the Sales Channel’s Delete Products API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -720,7 +720,7 @@ This request returns the sales channel.
 
 ## List Orders by Sales Channels
 
-You can filter orders by a specific sales channel by sending a request to the List Orders endpoint and passing the `sales_channel_id` query parameter to filter by a specific sales channel:
+You can filter orders by a specific sales channel by sending a request to the List Orders API Route and passing the `sales_channel_id` query parameter to filter by a specific sales channel:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
