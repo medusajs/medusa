@@ -1,5 +1,30 @@
 # Change Log
 
+## 1.17.2
+
+### Patch Changes
+
+- [#5408](https://github.com/medusajs/medusa/pull/5408) [`c1cabac72`](https://github.com/medusajs/medusa/commit/c1cabac721d80f631875e00b26247b32e3f6e4da) Thanks [@FlorentQuienne42](https://github.com/FlorentQuienne42)! - Dont 'set' in cache if ignore_cache option is true
+
+- [#5281](https://github.com/medusajs/medusa/pull/5281) [`69cf7215f`](https://github.com/medusajs/medusa/commit/69cf7215f1f730ffb332129e65211470be1f88f1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, types): Mark properties as nullable to reflect their correct types
+
+- [#5385](https://github.com/medusajs/medusa/pull/5385) [`0d7c5543d`](https://github.com/medusajs/medusa/commit/0d7c5543dd200a3545fac6b8601c0542ddd20c82) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - Expose item tax total and shipping tax total
+
+- [#5247](https://github.com/medusajs/medusa/pull/5247) [`ec27d02d9`](https://github.com/medusajs/medusa/commit/ec27d02d9951558f024fc154a03e9d4db56f0354) Thanks [@DidierGuyon](https://github.com/DidierGuyon)! - Fixed filter statement in partitionItems\_ method of Fulfillment Service
+
+- [#5365](https://github.com/medusajs/medusa/pull/5365) [`ddff91965`](https://github.com/medusajs/medusa/commit/ddff9196557c662cbdfb463dc5c76bf7bee6c087) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(medusa): Introduces a new file based routing system as an alternative to the current approach. File based routing is optional, and the previous approach can still be used. The two approaches can also be used together allowing for incremental adoption.
+
+- [#5301](https://github.com/medusajs/medusa/pull/5301) [`66413d094`](https://github.com/medusajs/medusa/commit/66413d094e916debbdb74b68800c96ca2c9302c9) Thanks [@srindom](https://github.com/srindom)! - fix: move create inventory workflow to @medusajs/workflows
+
+- [#5394](https://github.com/medusajs/medusa/pull/5394) [`a0963f0ed`](https://github.com/medusajs/medusa/commit/a0963f0edf909f6cfea17bd7a0c7899707808057) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Remove t() on product.status update
+
+- Updated dependencies [[`378ca1b36`](https://github.com/medusajs/medusa/commit/378ca1b36e909a67e39c69ea5ca94ec58a345878), [`b62af612c`](https://github.com/medusajs/medusa/commit/b62af612c7baa244075e546c949b89c4589bd2cf), [`e47461d95`](https://github.com/medusajs/medusa/commit/e47461d95caecf3a447ee9fa0b0950340b93f282), [`66413d094`](https://github.com/medusajs/medusa/commit/66413d094e916debbdb74b68800c96ca2c9302c9)]:
+  - @medusajs/utils@1.10.4
+  - @medusajs/link-modules@0.2.1
+  - @medusajs/modules-sdk@1.12.1
+  - @medusajs/orchestration@0.4.2
+  - @medusajs/workflows@0.2.4
+
 ## 1.17.1
 
 ### Patch Changes
