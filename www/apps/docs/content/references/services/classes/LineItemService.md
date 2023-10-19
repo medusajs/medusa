@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:57](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L57)
+[medusa/src/services/line-item.ts:57](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L57)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:48](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L48)
+[medusa/src/services/line-item.ts:48](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L48)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:53](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L53)
+[medusa/src/services/line-item.ts:53](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L53)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:47](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L47)
+[medusa/src/services/line-item.ts:47](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L47)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:54](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L54)
+[medusa/src/services/line-item.ts:54](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L54)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:46](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L46)
+[medusa/src/services/line-item.ts:46](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L46)
 
 ___
 
@@ -130,7 +130,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:51](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L51)
+[medusa/src/services/line-item.ts:51](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L51)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:50](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L50)
+[medusa/src/services/line-item.ts:50](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L50)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L49)
+[medusa/src/services/line-item.ts:49](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L49)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:52](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L52)
+[medusa/src/services/line-item.ts:52](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L52)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:55](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L55)
+[medusa/src/services/line-item.ts:55](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L55)
 
 ___
 
@@ -194,7 +194,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -212,7 +212,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -251,7 +251,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -274,7 +274,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:541](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L541)
+[medusa/src/services/line-item.ts:541](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L541)
 
 ___
 
@@ -305,7 +305,7 @@ the created line item
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:421](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L421)
+[medusa/src/services/line-item.ts:421](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L421)
 
 ___
 
@@ -331,7 +331,7 @@ the created line items
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:131](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L131)
+[medusa/src/services/line-item.ts:131](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L131)
 
 ___
 
@@ -355,7 +355,7 @@ a new line item tax line
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:533](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L533)
+[medusa/src/services/line-item.ts:533](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L533)
 
 ___
 
@@ -379,7 +379,7 @@ the result of the delete operation
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:494](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L494)
+[medusa/src/services/line-item.ts:494](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L494)
 
 ___
 
@@ -406,7 +406,7 @@ Deletes a line item with the tax lines.
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:516](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L516)
+[medusa/src/services/line-item.ts:516](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L516)
 
 ___
 
@@ -438,7 +438,7 @@ Generate a single or multiple line item without persisting the data into the db
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:192](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L192)
+[medusa/src/services/line-item.ts:192](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L192)
 
 ___
 
@@ -468,7 +468,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:337](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L337)
+[medusa/src/services/line-item.ts:337](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L337)
 
 ___
 
@@ -489,7 +489,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:84](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L84)
+[medusa/src/services/line-item.ts:84](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L84)
 
 ___
 
@@ -514,7 +514,7 @@ the line item
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:105](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L105)
+[medusa/src/services/line-item.ts:105](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L105)
 
 ___
 
@@ -538,7 +538,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -563,7 +563,7 @@ the updated line item(s)
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:451](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L451)
+[medusa/src/services/line-item.ts:451](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L451)
 
 ___
 
@@ -592,7 +592,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item.ts:612](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/line-item.ts#L612)
+[medusa/src/services/line-item.ts:612](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/line-item.ts#L612)
 
 ___
 
@@ -616,4 +616,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
