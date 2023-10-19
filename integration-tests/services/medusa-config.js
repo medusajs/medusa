@@ -15,6 +15,7 @@ module.exports = {
     database_type: "postgres",
     jwt_secret: "test",
     cookie_secret: "test",
+    database_extra: { idle_in_transaction_session_timeout: 0 },
     http_compression: {
       enabled: enableResponseCompression,
     },
