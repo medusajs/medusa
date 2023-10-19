@@ -9,10 +9,10 @@ tags:
   - name: Apps Oauth
     description: |
       Some plugins may require to authenticate with third-party services and store authentication details, such as the authentication token. To do that, they can create an Oauth provider within the plugin that handles the authentication.
-      The Apps Oauth endpoints allows admins to manage and generate token for an app using its oauth provider.
+      The Apps Oauth API Routes allows admins to manage and generate token for an app using its oauth provider.
   - name: Auth
     description: |
-      Authentication endpoints allow admin users to manage their session, such as login or log out.
+      Authentication API Routes allow admin users to manage their session, such as login or log out.
       When an admin user is logged in, the cookie header is set indicating the admin's login session.
     externalDocs:
       description: How to implement user profiles
@@ -20,14 +20,14 @@ tags:
   - name: Batch Jobs
     description: |
       A batch job is a task that is performed by the Medusa backend asynchronusly. For example, the Import Product feature is implemented using batch jobs.
-      Batch Job endpoints allows admins to manage the batch jobs and their state.
+      Batch Job API Routes allows admins to manage the batch jobs and their state.
     externalDocs:
       description: How to import products
       url: https://docs.medusajs.com/modules/products/admin/import-products
   - name: Currencies
     description: |
       A store can use unlimited currencies, and each region must be associated with at least one currency.
-      Currencies are defined within the Medusa backend. Currency endpoints allow admins to list and update currencies.
+      Currencies are defined within the Medusa backend. Currency API Routes allow admins to list and update currencies.
     externalDocs:
       description: How to manage currencies
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
@@ -47,7 +47,7 @@ tags:
   - name: Discounts
     description: |
       Admins can create discounts with conditions and rules, providing them with advanced settings for variety of cases.
-      The Discount endpoints can be used to manage discounts, their conditions, resources, and more.
+      The Discount API Routes can be used to manage discounts, their conditions, resources, and more.
     externalDocs:
       description: How to manage discounts
       url: https://docs.medusajs.com/modules/discounts/admin/manage-discounts
@@ -60,7 +60,7 @@ tags:
   - name: Gift Cards
     description: |
       Admins can create gift cards and send them directly to customers, specifying options like their balance, region, and more.
-      These gift cards are different than the saleable gift cards in a store, which are created and managed through Product endpoints.
+      These gift cards are different than the saleable gift cards in a store, which are created and managed through Product API Routes.
     externalDocs:
       description: How to manage gift cards
       url: https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-custom-gift-cards
@@ -134,14 +134,14 @@ tags:
   - name: Product Variants
     description: |
       Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
-      Product variants can be managed through the Products endpoints.
+      Product variants can be managed through the Products API Routes.
     externalDocs:
       description: How to manage product variants
       url: https://docs.medusajs.com/modules/products/admin/manage-products#manage-product-variants
   - name: Publishable API Keys
     description: |
       Publishable API Keys can be used to scope Store API calls with an API key, determining what resources are retrieved when querying the API.
-      For example, a publishable API key can be associated with one or more sales channels. When it is passed in the header of a request to the List Product store endpoint,
+      For example, a publishable API key can be associated with one or more sales channels. When it is passed in the header of a request to the List Product store API Route,
       the sales channels are inferred from the key and only products associated with those sales channels are retrieved.
       Admins can manage publishable API keys and their associated resources. Currently, only Sales Channels are supported as a resource.
     externalDocs:
@@ -222,7 +222,7 @@ tags:
       url: https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates
   - name: Uploads
     description: |
-      The upload endpoints are used to upload any type of resources. For example, they can be used to upload CSV files that are used to import products into the store.
+      The upload API Routes are used to upload any type of resources. For example, they can be used to upload CSV files that are used to import products into the store.
     externalDocs:
       description: How to upload CSV file when importing a product.
       url: https://docs.medusajs.com/modules/products/admin/import-products#1-upload-csv-file
