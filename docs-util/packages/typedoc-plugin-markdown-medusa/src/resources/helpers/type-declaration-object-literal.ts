@@ -58,7 +58,11 @@ function getComponentMarkdownContent(
     reflectionFormatter(property, "component")
   )
 
-  return `<${parameterComponent} parameters={${JSON.stringify(parameters)}} />`
+  return `<${parameterComponent} parameters={${JSON.stringify(
+    parameters,
+    null,
+    2
+  )}} />`
 }
 
 function getTableMarkdownContent(

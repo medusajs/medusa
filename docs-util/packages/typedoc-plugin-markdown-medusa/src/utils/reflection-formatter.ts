@@ -85,7 +85,8 @@ export function reflectionComponentFormatter(
   level = 1
 ): Parameter {
   const defaultValue = getDefaultValue(reflection) || ""
-  const optional = reflection.flags.isOptional
+  const optional =
+    reflection.flags.isOptional || reflection.kind === ReflectionKind.EnumMember
   const comments = getComments(reflection)
   const componentItem: Parameter = {
     name: reflection.name,

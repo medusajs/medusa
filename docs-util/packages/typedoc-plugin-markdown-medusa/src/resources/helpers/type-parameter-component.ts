@@ -13,7 +13,9 @@ export default function (theme: MarkdownTheme) {
       )
 
       return `<${parameterComponent} parameters={${JSON.stringify(
-        parameters
+        parameters,
+        null,
+        2
       )}} />`
     }
   )
