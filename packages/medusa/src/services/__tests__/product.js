@@ -195,10 +195,12 @@ describe("ProductService", () => {
         variants: [
           {
             id: "test1",
+            options: [],
             title: "green",
           },
           {
             id: "test2",
+            options: [],
             title: "blue",
           },
         ],
