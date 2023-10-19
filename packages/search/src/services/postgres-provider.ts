@@ -124,7 +124,12 @@ export class PostgresProvider {
     const sql = qb.buildQuery()
 
     const resultset = await connection.execute(sql)
-    return qb.buildObjectFromResultset(resultset)
+
+    console.time("buildObjectFromResultset")
+    const result = qb.buildObjectFromResultset(resultset)
+    console.timeEnd("buildObjectFromResultset")
+
+    return result
   }
 
   async queryAndCount(selection: QueryFormat, options?: QueryOptions) {

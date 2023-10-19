@@ -39,6 +39,24 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "keyName": "IDX_catalog_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "keyName": "IDX_catalog_name",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "IDX_catalog_data_gin",
           "columnNames": [
             "data"
@@ -113,6 +131,16 @@
       "name": "catalog_relation",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_catalog_relation_parent_name_child_name",
+          "columnNames": [
+            "parent_name",
+            "child_name"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "catalog_relation_pkey",
           "columnNames": [

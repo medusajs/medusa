@@ -18,9 +18,11 @@ export class Catalog {
   [OptionalProps]: OptionalRelations
 
   @PrimaryKey({ columnType: "text" })
+  @Index({ name: "IDX_catalog_id" })
   id!: string
 
   @PrimaryKey({ columnType: "text" })
+  @Index({ name: "IDX_catalog_name" })
   name: string;
 
   [PrimaryKeyType]?: [string, string]

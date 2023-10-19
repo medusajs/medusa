@@ -673,8 +673,8 @@ describe("SearchEngineModuleService", function () {
           where: {
             "product.variants.money_amounts.amount":
               moneyAmountToSearchFor.data.amount,
-            "product.variants.money_amounts.currency_code":
-              moneyAmountToSearchFor.data.currency_code,
+            /*"product.variants.money_amounts.currency_code":
+              moneyAmountToSearchFor.data.currency_code,*/
           },
         },
         {

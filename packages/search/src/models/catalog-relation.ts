@@ -1,5 +1,6 @@
 import {
   Entity,
+  Index,
   ManyToOne,
   OptionalProps,
   PrimaryKey,
@@ -17,6 +18,10 @@ type OptionalRelations =
   | "child_name"
 
 @Entity({ tableName: "catalog_relation" })
+@Index({
+  name: "IDX_catalog_relation_parent_name_child_name",
+  properties: ["parent_name", "child_name"],
+})
 export class CatalogRelation {
   [OptionalProps]: OptionalRelations
 

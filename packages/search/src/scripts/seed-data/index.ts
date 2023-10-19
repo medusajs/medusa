@@ -137,7 +137,7 @@ export function createRandomEntries(): {
           amount: faker.commerce.price({
             dec: 0,
           }),
-          currency_code: faker.finance.currencyCode(),
+          //currency_code: faker.finance.currencyCode(),
         },
       }
 
@@ -168,5 +168,5 @@ export const searchData: {
   catalogEntries: any[]
   catalogRelationEntries: any[]
 }[] = faker.helpers.multiple(createRandomEntries, {
-  count: 1000,
+  count: 5000,
 })

@@ -1,7 +1,8 @@
-import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+import { LoaderOptions, Logger } from "@medusajs/types"
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
 import * as SearchModels from "@models"
+import { SearchModuleOptions } from "../types"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager
@@ -13,13 +14,13 @@ import * as SearchModels from "@models"
 export async function runMigrations({
   options,
   logger,
-}: Pick<
-  LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
-  "options" | "logger"
-> = {}) {
+}: Pick<LoaderOptions<SearchModuleOptions>, "options" | "logger"> = {}) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("search", options)!
+  const dbData = ModulesSdkUtils.loadDatabaseConfig(
+    "search",
+    options?.defaultAdapterOptions
+  )!
   const entities = Object.values(SearchModels) as unknown as EntitySchema[]
   const pathToMigrations = __dirname + "/../migrations"
 
