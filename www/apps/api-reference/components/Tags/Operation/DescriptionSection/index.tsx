@@ -72,7 +72,7 @@ const TagsOperationDescriptionSection = ({
         reportLink={formatReportLink(area, operation.summary)}
         className="!my-2"
         vertical={true}
-        question="Did this endpoint run successfully?"
+        question="Did this API Route run successfully?"
       />
       {operation.externalDocs && (
         <>
