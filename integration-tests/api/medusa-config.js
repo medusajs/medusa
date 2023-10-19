@@ -11,7 +11,7 @@ const enableResponseCompression =
 module.exports = {
   plugins: [],
   projectConfig: {
-    // redis_url: redisUrl,
+    redis_url: redisUrl,
     database_url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
     database_type: "postgres",
     jwt_secret: "test",
