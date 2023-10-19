@@ -25,6 +25,12 @@ describe("/admin/products", () => {
     medusaProcess.kill()
   })
 
+  afterEach(async () => {
+    const db = useDb()
+    await db.teardown()
+  })
+
+
   it("should create variant prices correctly when propagating variants in service creation", async () => {
     const payload = {
       title: "test-product",
@@ -58,6 +64,34 @@ describe("/admin/products", () => {
           }),
         ],
       })
+    )
+  })
+
+  it("should fail to create a variant without options on a product with options", async () => {
+    const payload = {
+      title: "test-product",
+      handle: "test-product",
+      options: [{ title: "test-option" }],
+      variants: [
+        {
+          title: "test-variant",
+          inventory_quantity: 10,
+          sku: "test",
+          prices: [{ amount: "100", currency_code: "usd" }],
+        },
+      ],
+    }
+
+    let error
+
+    try { 
+      await productService.create(payload)
+    } catch(err) { 
+      error = err
+    }
+
+    expect(error.message).toEqual(
+      "Product options length does not match variant options length. Product has 1 and variant has 0."
     )
   })
 })

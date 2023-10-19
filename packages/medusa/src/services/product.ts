@@ -509,12 +509,13 @@ class ProductService extends TransactionBaseService {
         const toCreate = variants.map((variant) => {
           return {
             ...variant,
-            options: variant.options?.map((option, index) => {
-              return {
-                option_id: product.options[index].id,
-                ...option,
-              }
-            }),
+            options:
+              variant.options?.map((option, index) => {
+                return {
+                  option_id: product.options[index].id,
+                  ...option,
+                }
+              }) ?? [],
           }
         })
         product.variants = await this.productVariantService_
