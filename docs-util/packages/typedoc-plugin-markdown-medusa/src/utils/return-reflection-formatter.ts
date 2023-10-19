@@ -56,23 +56,27 @@ export function returnReflectionComponentFormatter(
           }
         })
       }
-    } else if (reflectionType.reflection) {
-      componentItem.push(
-        reflectionComponentFormatter(
-          reflectionType.reflection as DeclarationReflection,
-          level
-        )
-      )
     } else {
-      // try to retrieve reflection by its name
-      const reflection = project.getChildByName(reflectionType.name)
+      const reflection = (reflectionType.reflection ||
+        project.getChildByName(reflectionType.name)) as DeclarationReflection
       if (reflection) {
-        componentItem.push(
-          reflectionComponentFormatter(
-            reflection as DeclarationReflection,
-            level
+        if (reflection.children?.length) {
+          reflection.children.forEach((childItem) => {
+            componentItem.push(
+              reflectionComponentFormatter(
+                childItem as DeclarationReflection,
+                level
+              )
+            )
+          })
+        } else {
+          componentItem.push(
+            reflectionComponentFormatter(
+              reflection as DeclarationReflection,
+              level
+            )
           )
-        )
+        }
       }
     }
   } else if (reflectionType.type === "array") {
