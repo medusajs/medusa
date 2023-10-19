@@ -353,6 +353,8 @@ paths:
     $ref: paths/admin_apps_authorizations.yaml
   /admin/auth:
     $ref: paths/admin_auth.yaml
+  /admin/auth/token:
+    $ref: paths/admin_auth_token.yaml
   /admin/batch-jobs:
     $ref: paths/admin_batch-jobs.yaml
   /admin/batch-jobs/{id}:
@@ -647,8 +649,6 @@ paths:
     $ref: paths/admin_tax-rates_{id}_products_batch.yaml
   /admin/tax-rates/{id}/shipping-options/batch:
     $ref: paths/admin_tax-rates_{id}_shipping-options_batch.yaml
-  /admin/token:
-    $ref: paths/admin_token.yaml
   /admin/uploads:
     $ref: paths/admin_uploads.yaml
   /admin/uploads/download-url:
