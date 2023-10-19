@@ -28,7 +28,7 @@ ___
 
 ### barcode
 
-• **barcode**: `string`
+• **barcode**: ``null`` \| `string`
 
 #### Defined in
 
@@ -76,7 +76,7 @@ ___
 
 ### ean
 
-• **ean**: `string`
+• **ean**: ``null`` \| `string`
 
 #### Defined in
 
@@ -86,7 +86,7 @@ ___
 
 ### height
 
-• **height**: `number`
+• **height**: ``null`` \| `number`
 
 #### Defined in
 
@@ -96,7 +96,7 @@ ___
 
 ### hs\_code
 
-• **hs\_code**: `string`
+• **hs\_code**: ``null`` \| `string`
 
 #### Defined in
 
@@ -140,7 +140,7 @@ ___
 
 ### length
 
-• **length**: `number`
+• **length**: ``null`` \| `number`
 
 #### Defined in
 
@@ -160,7 +160,7 @@ ___
 
 ### material
 
-• **material**: `string`
+• **material**: ``null`` \| `string`
 
 #### Defined in
 
@@ -170,7 +170,7 @@ ___
 
 ### metadata
 
-• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+• **metadata**: ``null`` \| [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
 
 #### Defined in
 
@@ -180,7 +180,7 @@ ___
 
 ### mid\_code
 
-• **mid\_code**: `string`
+• **mid\_code**: ``null`` \| `string`
 
 #### Defined in
 
@@ -200,7 +200,7 @@ ___
 
 ### origin\_country
 
-• **origin\_country**: `string`
+• **origin\_country**: ``null`` \| `string`
 
 #### Defined in
 
@@ -250,7 +250,7 @@ ___
 
 ### sku
 
-• **sku**: `string`
+• **sku**: ``null`` \| `string`
 
 #### Defined in
 
@@ -270,7 +270,7 @@ ___
 
 ### upc
 
-• **upc**: `string`
+• **upc**: ``null`` \| `string`
 
 #### Defined in
 
@@ -294,7 +294,7 @@ ___
 
 ### variant\_rank
 
-• **variant\_rank**: `number`
+• **variant\_rank**: ``null`` \| `number`
 
 #### Defined in
 
@@ -304,7 +304,7 @@ ___
 
 ### weight
 
-• **weight**: `number`
+• **weight**: ``null`` \| `number`
 
 #### Defined in
 
@@ -314,7 +314,7 @@ ___
 
 ### width
 
-• **width**: `number`
+• **width**: ``null`` \| `number`
 
 #### Defined in
 

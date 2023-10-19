@@ -35,7 +35,7 @@ adds a currency to the store.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/store.ts:32](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/store.ts#L32)
+[packages/medusa-js/src/resources/admin/store.ts:32](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/store.ts#L32)
 
 ___
 
@@ -62,7 +62,7 @@ deletes a currency from the available store currencies
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/store.ts:46](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/store.ts#L46)
+[packages/medusa-js/src/resources/admin/store.ts:46](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/store.ts#L46)
 
 ___
 
@@ -88,7 +88,7 @@ Lists the store's payment providers
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/store.ts:69](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/store.ts#L69)
+[packages/medusa-js/src/resources/admin/store.ts:69](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/store.ts#L69)
 
 ___
 
@@ -114,7 +114,7 @@ Lists the store's payment providers
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/store.ts:80](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/store.ts#L80)
+[packages/medusa-js/src/resources/admin/store.ts:80](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/store.ts#L80)
 
 ___
 
@@ -140,7 +140,7 @@ gets a medusa store
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/store.ts:58](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/store.ts#L58)
+[packages/medusa-js/src/resources/admin/store.ts:58](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/store.ts#L58)
 
 ___
 
@@ -167,4 +167,4 @@ Updates the store
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/store.ts:18](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/store.ts#L18)
+[packages/medusa-js/src/resources/admin/store.ts:18](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/store.ts#L18)

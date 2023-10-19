@@ -342,6 +342,7 @@ displayed_sidebar: jsClientSidebar
 - [IPriceSelectionStrategy](../interfaces/internal-8.internal.IPriceSelectionStrategy.md)
 - [ITaxCalculationStrategy](../interfaces/internal-8.internal.ITaxCalculationStrategy.md)
 - [ITaxService](../interfaces/internal-8.internal.ITaxService.md)
+- [MedusaRequest](../interfaces/internal-8.internal.MedusaRequest.md)
 - [PaymentProcessor](../interfaces/internal-8.internal.PaymentProcessor.md)
 - [PaymentProcessorError](../interfaces/internal-8.internal.PaymentProcessorError.md)
 - [PaymentService](../interfaces/internal-8.internal.PaymentService.md)
@@ -5312,6 +5313,96 @@ ___
 #### Defined in
 
 packages/medusa/dist/types/global.d.ts:31
+
+___
+
+### MedusaNextFunction
+
+Ƭ **MedusaNextFunction**: `NextFunction`
+
+#### Defined in
+
+packages/medusa/dist/types/routing.d.ts:12
+
+___
+
+### MedusaRequestHandler
+
+Ƭ **MedusaRequestHandler**: (`req`: [`MedusaRequest`](../interfaces/internal-8.internal.MedusaRequest.md), `res`: [`MedusaResponse`](internal-8.internal.md#medusaresponse), `next`: [`MedusaNextFunction`](internal-8.internal.md#medusanextfunction)) => `Promise`<`void`\> \| `void`
+
+#### Type declaration
+
+▸ (`req`, `res`, `next`): `Promise`<`void`\> \| `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `req` | [`MedusaRequest`](../interfaces/internal-8.internal.MedusaRequest.md) |
+| `res` | [`MedusaResponse`](internal-8.internal.md#medusaresponse) |
+| `next` | [`MedusaNextFunction`](internal-8.internal.md#medusanextfunction) |
+
+##### Returns
+
+`Promise`<`void`\> \| `void`
+
+#### Defined in
+
+packages/medusa/dist/types/routing.d.ts:13
+
+___
+
+### MedusaResponse
+
+Ƭ **MedusaResponse**: `Response`
+
+#### Defined in
+
+packages/medusa/dist/types/routing.d.ts:11
+
+___
+
+### MiddlewareFunction
+
+Ƭ **MiddlewareFunction**: [`MedusaRequestHandler`](internal-8.internal.md#medusarequesthandler) \| (...`args`: `any`[]) => `any`
+
+#### Defined in
+
+packages/medusa/dist/loaders/helpers/routing/types.d.ts:19
+
+___
+
+### MiddlewareRoute
+
+Ƭ **MiddlewareRoute**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `matcher` | `string` \| `RegExp` |
+| `method?` | [`MiddlewareVerb`](internal-8.md#middlewareverb) \| [`MiddlewareVerb`](internal-8.md#middlewareverb)[] |
+| `middlewares` | [`MiddlewareFunction`](internal-8.internal.md#middlewarefunction)[] |
+
+#### Defined in
+
+packages/medusa/dist/loaders/helpers/routing/types.d.ts:20
+
+___
+
+### MiddlewaresConfig
+
+Ƭ **MiddlewaresConfig**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `routes?` | [`MiddlewareRoute`](internal-8.internal.md#middlewareroute)[] |
+
+#### Defined in
+
+packages/medusa/dist/loaders/helpers/routing/types.d.ts:25
 
 ___
 

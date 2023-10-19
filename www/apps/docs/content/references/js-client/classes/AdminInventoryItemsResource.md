@@ -40,7 +40,7 @@ creates an Inventory Item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/inventory-item.ts:88](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/inventory-item.ts#L88)
+[packages/medusa-js/src/resources/admin/inventory-item.ts:88](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/inventory-item.ts#L88)
 
 ___
 
@@ -73,7 +73,7 @@ creates stock levle for an Inventory Item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/inventory-item.ts:155](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/inventory-item.ts#L155)
+[packages/medusa-js/src/resources/admin/inventory-item.ts:155](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/inventory-item.ts#L155)
 
 ___
 
@@ -104,7 +104,7 @@ deletes an Inventory Item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/inventory-item.ts:73](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/inventory-item.ts#L73)
+[packages/medusa-js/src/resources/admin/inventory-item.ts:73](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/inventory-item.ts#L73)
 
 ___
 
@@ -137,7 +137,7 @@ deletes a location level of an Inventory Item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/inventory-item.ts:178](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/inventory-item.ts#L178)
+[packages/medusa-js/src/resources/admin/inventory-item.ts:178](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/inventory-item.ts#L178)
 
 ___
 
@@ -168,7 +168,7 @@ Retrieve a list of Inventory Items
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/inventory-item.ts:110](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/inventory-item.ts#L110)
+[packages/medusa-js/src/resources/admin/inventory-item.ts:110](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/inventory-item.ts#L110)
 
 ___
 
@@ -200,7 +200,7 @@ Retrieve a list of location levels related to an Inventory Item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/inventory-item.ts:201](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/inventory-item.ts#L201)
+[packages/medusa-js/src/resources/admin/inventory-item.ts:201](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/inventory-item.ts#L201)
 
 ___
 
@@ -232,7 +232,7 @@ gets an Inventory Item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/inventory-item.ts:28](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/inventory-item.ts#L28)
+[packages/medusa-js/src/resources/admin/inventory-item.ts:28](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/inventory-item.ts#L28)
 
 ___
 
@@ -265,7 +265,7 @@ updates an Inventory Item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/inventory-item.ts:50](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/inventory-item.ts#L50)
+[packages/medusa-js/src/resources/admin/inventory-item.ts:50](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/inventory-item.ts#L50)
 
 ___
 
@@ -299,4 +299,4 @@ updates an Inventory Item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/inventory-item.ts:131](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/inventory-item.ts#L131)
+[packages/medusa-js/src/resources/admin/inventory-item.ts:131](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/inventory-item.ts#L131)

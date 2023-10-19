@@ -39,7 +39,7 @@ gets a medusa Stock Location
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/stock-locations.ts:21](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/stock-locations.ts#L21)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:21](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/stock-locations.ts#L21)
 
 ___
 
@@ -68,7 +68,7 @@ deletes a Stock Location
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/stock-locations.ts:66](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/stock-locations.ts#L66)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:66](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/stock-locations.ts#L66)
 
 ___
 
@@ -99,7 +99,7 @@ Retrieve a list of Stock Locations
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/stock-locations.ts:81](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/stock-locations.ts#L81)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:81](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/stock-locations.ts#L81)
 
 ___
 
@@ -130,7 +130,7 @@ gets a medusa Stock Location
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/stock-locations.ts:36](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/stock-locations.ts#L36)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:36](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/stock-locations.ts#L36)
 
 ___
 
@@ -162,4 +162,4 @@ updates a Stock Location
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/stock-locations.ts:51](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/stock-locations.ts#L51)
+[packages/medusa-js/src/resources/admin/stock-locations.ts:51](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/stock-locations.ts#L51)

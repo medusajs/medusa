@@ -33,4 +33,4 @@ Retrieves a list of product types
 
 #### Defined in
 
-[packages/medusa-js/src/resources/product-types.ts:16](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/product-types.ts#L16)
+[packages/medusa-js/src/resources/product-types.ts:16](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/product-types.ts#L16)

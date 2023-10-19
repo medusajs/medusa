@@ -28,4 +28,4 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/product-tags.ts:10](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/product-tags.ts#L10)
+[packages/medusa-js/src/resources/admin/product-tags.ts:10](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/product-tags.ts#L10)

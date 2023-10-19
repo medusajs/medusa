@@ -371,7 +371,7 @@ ___
 
 ### status
 
-• `Optional` **status**: [`ProductStatus`](../enums/internal-3.ProductStatus.md)
+• **status**: [`ProductStatus`](../enums/internal-3.ProductStatus.md)
 
 #### Defined in
 

@@ -36,7 +36,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/custom.ts:47](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/custom.ts#L47)
+[packages/medusa-js/src/resources/admin/custom.ts:47](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/custom.ts#L47)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/custom.ts:8](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/custom.ts#L8)
+[packages/medusa-js/src/resources/admin/custom.ts:8](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/custom.ts#L8)
 
 ___
 
@@ -96,4 +96,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/custom.ts:30](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/custom.ts#L30)
+[packages/medusa-js/src/resources/admin/custom.ts:30](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/custom.ts#L30)

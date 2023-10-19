@@ -30,7 +30,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:124](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L124)
+[packages/medusa-js/src/resources/admin/products.ts:124](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L124)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:23](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L23)
+[packages/medusa-js/src/resources/admin/products.ts:23](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L23)
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:96](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L96)
+[packages/medusa-js/src/resources/admin/products.ts:96](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L96)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:48](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L48)
+[packages/medusa-js/src/resources/admin/products.ts:48](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L48)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:143](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L143)
+[packages/medusa-js/src/resources/admin/products.ts:143](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L143)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:115](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L115)
+[packages/medusa-js/src/resources/admin/products.ts:115](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L115)
 
 ___
 
@@ -159,7 +159,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:56](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L56)
+[packages/medusa-js/src/resources/admin/products.ts:56](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L56)
 
 ___
 
@@ -179,7 +179,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:80](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L80)
+[packages/medusa-js/src/resources/admin/products.ts:80](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L80)
 
 ___
 
@@ -203,7 +203,7 @@ Use [AdminProductTypesResource.list](AdminProductTypesResource.md#list) instead.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:73](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L73)
+[packages/medusa-js/src/resources/admin/products.ts:73](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L73)
 
 ___
 
@@ -224,7 +224,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:31](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L31)
+[packages/medusa-js/src/resources/admin/products.ts:31](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L31)
 
 ___
 
@@ -246,7 +246,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:87](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L87)
+[packages/medusa-js/src/resources/admin/products.ts:87](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L87)
 
 ___
 
@@ -268,7 +268,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:39](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L39)
+[packages/medusa-js/src/resources/admin/products.ts:39](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L39)
 
 ___
 
@@ -291,7 +291,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:133](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L133)
+[packages/medusa-js/src/resources/admin/products.ts:133](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L133)
 
 ___
 
@@ -314,4 +314,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/products.ts:105](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/products.ts#L105)
+[packages/medusa-js/src/resources/admin/products.ts:105](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/products.ts#L105)

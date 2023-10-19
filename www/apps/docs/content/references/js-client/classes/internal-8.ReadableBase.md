@@ -239,7 +239,7 @@ ___
 
 ### captureRejectionSymbol
 
-▪ `Static` `Readonly` **captureRejectionSymbol**: typeof [`captureRejectionSymbol`](internal-8.PassThrough.md#capturerejectionsymbol)
+▪ `Static` `Readonly` **captureRejectionSymbol**: typeof [`captureRejectionSymbol`](internal-8.Socket.md#capturerejectionsymbol)
 
 Value: `Symbol.for('nodejs.rejection')`
 
@@ -335,7 +335,7 @@ ___
 
 ### errorMonitor
 
-▪ `Static` `Readonly` **errorMonitor**: typeof [`errorMonitor`](internal-8.PassThrough.md#errormonitor)
+▪ `Static` `Readonly` **errorMonitor**: typeof [`errorMonitor`](internal-8.Socket.md#errormonitor)
 
 This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called.
 
@@ -2284,7 +2284,7 @@ a call to `readable.read(size)`, regardless of the value of the`size` argument.
 If the `readable.read()` method returns a chunk of data, a `'data'` event will
 also be emitted.
 
-Calling [read](internal-8.PassThrough.md#read) after the `'end'` event has
+Calling [read](../interfaces/internal-8.internal.MedusaRequest.md#read) after the `'end'` event has
 been emitted will return `null`. No runtime error will be raised.
 
 #### Parameters
@@ -2770,7 +2770,7 @@ ___
 ▸ **unpipe**(`destination?`): [`ReadableBase`](internal-8.ReadableBase.md)
 
 The `readable.unpipe()` method detaches a `Writable` stream previously attached
-using the [pipe](internal-8.PassThrough.md#pipe) method.
+using the [pipe](../interfaces/internal-8.internal.MedusaRequest.md#pipe) method.
 
 If the `destination` is not specified, then _all_ pipes are detached.
 
@@ -2872,11 +2872,11 @@ function parseHeader(stream, callback) {
 }
 ```
 
-Unlike [push](internal-8.PassThrough.md#push), `stream.unshift(chunk)` will not
+Unlike [push](../interfaces/internal-8.internal.MedusaRequest.md#push), `stream.unshift(chunk)` will not
 end the reading process by resetting the internal reading state of the stream.
 This can cause unexpected results if `readable.unshift()` is called during a
-read (i.e. from within a [_read](internal-8.PassThrough.md#_read) implementation on a
-custom stream). Following the call to `readable.unshift()` with an immediate [push](internal-8.PassThrough.md#push) will reset the reading state appropriately,
+read (i.e. from within a [_read](../interfaces/internal-8.internal.MedusaRequest.md#_read) implementation on a
+custom stream). Following the call to `readable.unshift()` with an immediate [push](../interfaces/internal-8.internal.MedusaRequest.md#push) will reset the reading state appropriately,
 however it is best to simply avoid calling `readable.unshift()` while in the
 process of performing a read.
 
@@ -2912,7 +2912,7 @@ ___
 Prior to Node.js 0.10, streams did not implement the entire `node:stream`module API as it is currently defined. (See `Compatibility` for more
 information.)
 
-When using an older Node.js library that emits `'data'` events and has a [pause](internal-8.PassThrough.md#pause) method that is advisory only, the`readable.wrap()` method can be used to create a `Readable`
+When using an older Node.js library that emits `'data'` events and has a [pause](../interfaces/internal-8.internal.MedusaRequest.md#pause) method that is advisory only, the`readable.wrap()` method can be used to create a `Readable`
 stream that uses
 the old stream as its data source.
 

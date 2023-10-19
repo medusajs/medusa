@@ -31,7 +31,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:100](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L100)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:100](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L100)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:84](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L84)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:84](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L84)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:116](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L116)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:116](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L116)
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:53](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L53)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:53](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L53)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:180](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L180)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:180](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L180)
 
 ___
 
@@ -141,7 +141,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:39](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L39)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:39](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L39)
 
 ___
 
@@ -164,7 +164,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:148](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L148)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:148](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L148)
 
 ___
 
@@ -187,7 +187,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:132](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L132)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:132](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L132)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:164](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L164)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:164](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L164)
 
 ___
 
@@ -232,7 +232,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:24](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L24)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:24](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L24)
 
 ___
 
@@ -255,4 +255,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/tax-rates.ts:68](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/tax-rates.ts#L68)
+[packages/medusa-js/src/resources/admin/tax-rates.ts:68](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/tax-rates.ts#L68)

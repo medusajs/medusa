@@ -12,7 +12,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/typings.ts:31](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L31)
+[packages/medusa-js/src/typings.ts:31](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/typings.ts#L31)
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/typings.ts:41](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L41)
+[packages/medusa-js/src/typings.ts:41](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/typings.ts#L41)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/typings.ts:28](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L28)
+[packages/medusa-js/src/typings.ts:28](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/typings.ts#L28)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/typings.ts:25](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L25)
+[packages/medusa-js/src/typings.ts:25](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/typings.ts#L25)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/typings.ts:23](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L23)
+[packages/medusa-js/src/typings.ts:23](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/typings.ts#L23)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/typings.ts:39](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L39)
+[packages/medusa-js/src/typings.ts:39](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/typings.ts#L39)
 
 ___
 
@@ -78,4 +78,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/typings.ts:37](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L37)
+[packages/medusa-js/src/typings.ts:37](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/typings.ts#L37)

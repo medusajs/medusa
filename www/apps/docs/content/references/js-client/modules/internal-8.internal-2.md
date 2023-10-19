@@ -517,7 +517,7 @@ Returns whether the stream has encountered an error.
 
 | Name | Type |
 | :------ | :------ |
-| `stream` | [`ReadableStream`](../interfaces/internal-8.ReadableStream.md) \| [`WritableStream`](../interfaces/internal-8.WritableStream.md) \| [`Readable`](../classes/internal-8.Readable.md) \| [`Writable`](../classes/internal-8.internal-2.Writable.md) |
+| `stream` | [`ReadableStream`](../interfaces/internal-8.ReadableStream.md) \| [`Readable`](../classes/internal-8.Readable.md) \| [`WritableStream`](../interfaces/internal-8.WritableStream.md) \| [`Writable`](../classes/internal-8.internal-2.Writable.md) |
 
 #### Returns
 

@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/products/list-variants.d.ts:53
+packages/medusa/dist/api/routes/admin/products/list-variants.d.ts:56
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/products/list-variants.d.ts:52
+packages/medusa/dist/api/routes/admin/products/list-variants.d.ts:55
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/products/list-variants.d.ts:55
+packages/medusa/dist/api/routes/admin/products/list-variants.d.ts:58
 
 ___
 
@@ -44,4 +44,4 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/api/routes/admin/products/list-variants.d.ts:54
+packages/medusa/dist/api/routes/admin/products/list-variants.d.ts:57

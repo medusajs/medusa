@@ -22,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:101
+packages/medusa/dist/models/order.d.ts:103
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:90
+packages/medusa/dist/models/order.d.ts:91
 
 ___
 
@@ -246,7 +246,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:99
+packages/medusa/dist/models/order.d.ts:101
 
 ___
 
@@ -256,7 +256,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:98
+packages/medusa/dist/models/order.d.ts:100
 
 ___
 
@@ -301,6 +301,16 @@ ___
 #### Defined in
 
 packages/medusa/dist/models/order.d.ts:85
+
+___
+
+### item\_tax\_total
+
+• **item\_tax\_total**: ``null`` \| `number`
+
+#### Defined in
+
+packages/medusa/dist/models/order.d.ts:93
 
 ___
 
@@ -350,7 +360,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:96
+packages/medusa/dist/models/order.d.ts:98
 
 ___
 
@@ -380,7 +390,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:91
+packages/medusa/dist/models/order.d.ts:92
 
 ___
 
@@ -390,7 +400,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:97
+packages/medusa/dist/models/order.d.ts:99
 
 ___
 
@@ -400,7 +410,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:93
+packages/medusa/dist/models/order.d.ts:95
 
 ___
 
@@ -440,7 +450,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:100
+packages/medusa/dist/models/order.d.ts:102
 
 ___
 
@@ -504,6 +514,16 @@ packages/medusa/dist/models/order.d.ts:70
 
 ___
 
+### shipping\_tax\_total
+
+• **shipping\_tax\_total**: ``null`` \| `number`
+
+#### Defined in
+
+packages/medusa/dist/models/order.d.ts:90
+
+___
+
 ### shipping\_total
 
 • **shipping\_total**: `number`
@@ -530,7 +550,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:95
+packages/medusa/dist/models/order.d.ts:97
 
 ___
 
@@ -560,7 +580,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:92
+packages/medusa/dist/models/order.d.ts:94
 
 ___
 
@@ -570,7 +590,7 @@ ___
 
 #### Defined in
 
-packages/medusa/dist/models/order.d.ts:94
+packages/medusa/dist/models/order.d.ts:96
 
 ___
 

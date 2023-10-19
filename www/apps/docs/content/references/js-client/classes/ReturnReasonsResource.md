@@ -30,7 +30,7 @@ Lists return reasons defined in Medusa Admin
 
 #### Defined in
 
-[packages/medusa-js/src/resources/return-reasons.ts:25](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/return-reasons.ts#L25)
+[packages/medusa-js/src/resources/return-reasons.ts:25](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/return-reasons.ts#L25)
 
 ___
 
@@ -55,4 +55,4 @@ Retrieves a single Return Reason
 
 #### Defined in
 
-[packages/medusa-js/src/resources/return-reasons.ts:15](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/return-reasons.ts#L15)
+[packages/medusa-js/src/resources/return-reasons.ts:15](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/return-reasons.ts#L15)

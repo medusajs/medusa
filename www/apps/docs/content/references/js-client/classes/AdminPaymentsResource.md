@@ -29,7 +29,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/payments.ts:27](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/payments.ts#L27)
+[packages/medusa-js/src/resources/admin/payments.ts:27](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/payments.ts#L27)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/payments.ts:35](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/payments.ts#L35)
+[packages/medusa-js/src/resources/admin/payments.ts:35](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/payments.ts#L35)
 
 ___
 
@@ -73,4 +73,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/payments.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/payments.ts#L12)
+[packages/medusa-js/src/resources/admin/payments.ts:12](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/payments.ts#L12)

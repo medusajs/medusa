@@ -113,6 +113,7 @@ displayed_sidebar: jsClientSidebar
 - [ShippingMethod](../classes/internal-8.ShippingMethod-1.md)
 - [ShippingMethod](../classes/internal-8.ShippingMethod-2.md)
 - [ShippingMethod](../classes/internal-8.ShippingMethod-3.md)
+- [Socket](../classes/internal-8.Socket.md)
 - [StockLocationAddress](../classes/internal-8.StockLocationAddress.md)
 - [StockLocationAddress](../classes/internal-8.StockLocationAddress-1.md)
 - [Stream](../classes/internal-8.Stream.md)
@@ -123,6 +124,7 @@ displayed_sidebar: jsClientSidebar
 
 ## Interfaces
 
+- [AddressInfo](../interfaces/internal-8.AddressInfo.md)
 - [ArrayBufferView](../interfaces/internal-8.ArrayBufferView.md)
 - [ArrayLike](../interfaces/internal-8.ArrayLike.md)
 - [AsyncGenerator](../interfaces/internal-8.AsyncGenerator.md)
@@ -134,8 +136,10 @@ displayed_sidebar: jsClientSidebar
 - [Buffer](../interfaces/internal-8.Buffer.md)
 - [BufferConstructor](../interfaces/internal-8.BufferConstructor.md)
 - [CallSite](../interfaces/internal-8.CallSite.md)
+- [ConnectOpts](../interfaces/internal-8.ConnectOpts.md)
 - [CreateNoteInput](../interfaces/internal-8.CreateNoteInput.md)
 - [CreateUserInput](../interfaces/internal-8.CreateUserInput.md)
+- [Dict](../interfaces/internal-8.Dict.md)
 - [DuplexOptions](../interfaces/internal-8.DuplexOptions.md)
 - [ErrnoException](../interfaces/internal-8.ErrnoException.md)
 - [Error](../interfaces/internal-8.Error.md)
@@ -150,6 +154,8 @@ displayed_sidebar: jsClientSidebar
 - [ISearchService](../interfaces/internal-8.ISearchService.md)
 - [IStockLocationService](../interfaces/internal-8.IStockLocationService.md)
 - [ITransactionBaseService](../interfaces/internal-8.ITransactionBaseService.md)
+- [IncomingHttpHeaders](../interfaces/internal-8.IncomingHttpHeaders.md)
+- [IpcSocketConnectOpts](../interfaces/internal-8.IpcSocketConnectOpts.md)
 - [Iterable](../interfaces/internal-8.Iterable.md)
 - [IterableIterator](../interfaces/internal-8.IterableIterator.md)
 - [Iterator](../interfaces/internal-8.Iterator.md)
@@ -158,8 +164,11 @@ displayed_sidebar: jsClientSidebar
 - [JoinerServiceConfig](../interfaces/internal-8.JoinerServiceConfig.md)
 - [JoinerServiceConfigAlias](../interfaces/internal-8.JoinerServiceConfigAlias.md)
 - [Logger](../interfaces/internal-8.Logger.md)
+- [LookupOneOptions](../interfaces/internal-8.LookupOneOptions.md)
+- [LookupOptions](../interfaces/internal-8.LookupOptions.md)
 - [NumericalComparisonOperator](../interfaces/internal-8.NumericalComparisonOperator.md)
 - [Object](../interfaces/internal-8.Object.md)
+- [OnReadOpts](../interfaces/internal-8.OnReadOpts.md)
 - [PromiseLike](../interfaces/internal-8.PromiseLike.md)
 - [QueuingStrategy](../interfaces/internal-8.QueuingStrategy.md)
 - [QueuingStrategySize](../interfaces/internal-8.QueuingStrategySize.md)
@@ -177,9 +186,11 @@ displayed_sidebar: jsClientSidebar
 - [ReadableWritablePair](../interfaces/internal-8.ReadableWritablePair.md)
 - [SharedArrayBuffer](../interfaces/internal-8.SharedArrayBuffer.md)
 - [SharedArrayBufferConstructor](../interfaces/internal-8.SharedArrayBufferConstructor.md)
+- [SocketConstructorOpts](../interfaces/internal-8.SocketConstructorOpts.md)
 - [StaticEventEmitterOptions](../interfaces/internal-8.StaticEventEmitterOptions.md)
 - [StreamPipeOptions](../interfaces/internal-8.StreamPipeOptions.md)
 - [StringComparisonOperator](../interfaces/internal-8.StringComparisonOperator.md)
+- [TcpSocketConnectOpts](../interfaces/internal-8.TcpSocketConnectOpts.md)
 - [TransformOptions](../interfaces/internal-8.TransformOptions.md)
 - [UnderlyingByteSource](../interfaces/internal-8.UnderlyingByteSource.md)
 - [UnderlyingSink](../interfaces/internal-8.UnderlyingSink.md)
@@ -973,20 +984,20 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `description?` | `string` |
-| `height?` | `number` |
-| `hs_code?` | `string` |
-| `length?` | `number` |
-| `material?` | `string` |
+| `description?` | `string` \| ``null`` |
+| `height?` | `number` \| ``null`` |
+| `hs_code?` | `string` \| ``null`` |
+| `length?` | `number` \| ``null`` |
+| `material?` | `string` \| ``null`` |
 | `metadata?` | [`Record`](internal.md#record)<`string`, `unknown`\> \| ``null`` |
-| `mid_code?` | `string` |
-| `origin_country?` | `string` |
+| `mid_code?` | `string` \| ``null`` |
+| `origin_country?` | `string` \| ``null`` |
 | `requires_shipping?` | `boolean` |
-| `sku?` | `string` |
-| `thumbnail?` | `string` |
-| `title?` | `string` |
-| `weight?` | `number` |
-| `width?` | `number` |
+| `sku?` | `string` \| ``null`` |
+| `thumbnail?` | `string` \| ``null`` |
+| `title?` | `string` \| ``null`` |
+| `weight?` | `number` \| ``null`` |
+| `width?` | `number` \| ``null`` |
 
 #### Defined in
 
@@ -3808,6 +3819,32 @@ packages/medusa/dist/services/product-collection.d.ts:15
 
 ___
 
+### LookupFunction
+
+Ƭ **LookupFunction**: (`hostname`: `string`, `options`: [`LookupOneOptions`](../interfaces/internal-8.LookupOneOptions.md), `callback`: (`err`: [`ErrnoException`](../interfaces/internal-8.ErrnoException.md) \| ``null``, `address`: `string`, `family`: `number`) => `void`) => `void`
+
+#### Type declaration
+
+▸ (`hostname`, `options`, `callback`): `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `hostname` | `string` |
+| `options` | [`LookupOneOptions`](../interfaces/internal-8.LookupOneOptions.md) |
+| `callback` | (`err`: [`ErrnoException`](../interfaces/internal-8.ErrnoException.md) \| ``null``, `address`: `string`, `family`: `number`) => `void` |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+packages/medusa-js/node_modules/@types/node/net.d.ts:19
+
+___
+
 ### MedusaContainer
 
 Ƭ **MedusaContainer**: `AwilixContainer` & { `createScope`: () => [`MedusaContainer`](internal-8.md#medusacontainer) ; `registerAdd`: <T\>(`name`: `string`, `registration`: `T`) => [`MedusaContainer`](internal-8.md#medusacontainer)  }
@@ -3825,6 +3862,16 @@ ___
 #### Defined in
 
 packages/medusa-core-utils/dist/medusa-container.d.ts:2
+
+___
+
+### MiddlewareVerb
+
+Ƭ **MiddlewareVerb**: ``"USE"`` \| ``"ALL"`` \| [`RouteVerb`](internal-8.md#routeverb)
+
+#### Defined in
+
+packages/medusa/dist/loaders/helpers/routing/types.d.ts:7
 
 ___
 
@@ -4636,6 +4683,16 @@ packages/medusa/dist/interfaces/notification-service.d.ts:2
 
 ___
 
+### RouteVerb
+
+Ƭ **RouteVerb**: typeof [`HTTP_METHODS`](internal-8.md#http_methods)[`number`]
+
+#### Defined in
+
+packages/medusa/dist/loaders/helpers/routing/types.d.ts:6
+
+___
+
 ### SessionOptions
 
 Ƭ **SessionOptions**: `Object`
@@ -4792,6 +4849,26 @@ ___
 #### Defined in
 
 packages/medusa/dist/types/pricing.d.ts:24
+
+___
+
+### SocketConnectOpts
+
+Ƭ **SocketConnectOpts**: [`TcpSocketConnectOpts`](../interfaces/internal-8.TcpSocketConnectOpts.md) \| [`IpcSocketConnectOpts`](../interfaces/internal-8.IpcSocketConnectOpts.md)
+
+#### Defined in
+
+packages/medusa-js/node_modules/@types/node/net.d.ts:72
+
+___
+
+### SocketReadyState
+
+Ƭ **SocketReadyState**: ``"opening"`` \| ``"open"`` \| ``"readOnly"`` \| ``"writeOnly"`` \| ``"closed"``
+
+#### Defined in
+
+packages/medusa-js/node_modules/@types/node/net.d.ts:73
 
 ___
 
@@ -6405,6 +6482,18 @@ ___
 #### Defined in
 
 packages/medusa/dist/repositories/gift-card-transaction.d.ts:2
+
+___
+
+### HTTP\_METHODS
+
+• `Const` **HTTP\_METHODS**: readonly [``"GET"``, ``"POST"``, ``"PUT"``, ``"PATCH"``, ``"DELETE"``, ``"OPTIONS"``, ``"HEAD"``]
+
+List of all the supported HTTP methods
+
+#### Defined in
+
+packages/medusa/dist/loaders/helpers/routing/types.d.ts:5
 
 ___
 

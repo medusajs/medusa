@@ -453,7 +453,7 @@ ___
 
 ### captureRejectionSymbol
 
-▪ `Static` `Readonly` **captureRejectionSymbol**: typeof [`captureRejectionSymbol`](internal-8.PassThrough.md#capturerejectionsymbol)
+▪ `Static` `Readonly` **captureRejectionSymbol**: typeof [`captureRejectionSymbol`](internal-8.Socket.md#capturerejectionsymbol)
 
 Value: `Symbol.for('nodejs.rejection')`
 
@@ -549,7 +549,7 @@ ___
 
 ### errorMonitor
 
-▪ `Static` `Readonly` **errorMonitor**: typeof [`errorMonitor`](internal-8.PassThrough.md#errormonitor)
+▪ `Static` `Readonly` **errorMonitor**: typeof [`errorMonitor`](internal-8.Socket.md#errormonitor)
 
 This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called.
 
@@ -1061,7 +1061,7 @@ ___
 ▸ **cork**(): `void`
 
 The `writable.cork()` method forces all written data to be buffered in memory.
-The buffered data will be flushed when either the [uncork](internal-8.internal-2.Writable.md#uncork) or [end](internal-8.internal-2.Writable.md#end) methods are called.
+The buffered data will be flushed when either the [uncork](internal-8.WritableBase.md#uncork) or [end](internal-8.WritableBase.md#end) methods are called.
 
 The primary intent of `writable.cork()` is to accommodate a situation in which
 several small chunks are written to the stream in rapid succession. Instead of
@@ -1426,7 +1426,7 @@ to the `Writable`. The optional `chunk` and `encoding` arguments allow one
 final additional chunk of data to be written immediately before closing the
 stream.
 
-Calling the [write](internal-8.internal-2.Writable.md#write) method after calling [end](internal-8.internal-2.Writable.md#end) will raise an error.
+Calling the [write](internal-8.WritableBase.md#write) method after calling [end](internal-8.WritableBase.md#end) will raise an error.
 
 ```js
 // Write 'hello, ' and then end with 'world!'.
@@ -3050,7 +3050,7 @@ a call to `readable.read(size)`, regardless of the value of the`size` argument.
 If the `readable.read()` method returns a chunk of data, a `'data'` event will
 also be emitted.
 
-Calling [read](internal-8.PassThrough.md#read) after the `'end'` event has
+Calling [read](../interfaces/internal-8.internal.MedusaRequest.md#read) after the `'end'` event has
 been emitted will return `null`. No runtime error will be raised.
 
 #### Parameters
@@ -3609,7 +3609,7 @@ ___
 
 ▸ **uncork**(): `void`
 
-The `writable.uncork()` method flushes all data buffered since [cork](internal-8.internal-2.Writable.md#cork) was called.
+The `writable.uncork()` method flushes all data buffered since [cork](internal-8.WritableBase.md#cork) was called.
 
 When using `writable.cork()` and `writable.uncork()` to manage the buffering
 of writes to a stream, defer calls to `writable.uncork()` using`process.nextTick()`. Doing so allows batching of all`writable.write()` calls that occur within a given Node.js event
@@ -3663,7 +3663,7 @@ ___
 ▸ **unpipe**(`destination?`): [`PassThrough`](internal-8.PassThrough.md)
 
 The `readable.unpipe()` method detaches a `Writable` stream previously attached
-using the [pipe](internal-8.PassThrough.md#pipe) method.
+using the [pipe](../interfaces/internal-8.internal.MedusaRequest.md#pipe) method.
 
 If the `destination` is not specified, then _all_ pipes are detached.
 
@@ -3765,11 +3765,11 @@ function parseHeader(stream, callback) {
 }
 ```
 
-Unlike [push](internal-8.PassThrough.md#push), `stream.unshift(chunk)` will not
+Unlike [push](../interfaces/internal-8.internal.MedusaRequest.md#push), `stream.unshift(chunk)` will not
 end the reading process by resetting the internal reading state of the stream.
 This can cause unexpected results if `readable.unshift()` is called during a
-read (i.e. from within a [_read](internal-8.PassThrough.md#_read) implementation on a
-custom stream). Following the call to `readable.unshift()` with an immediate [push](internal-8.PassThrough.md#push) will reset the reading state appropriately,
+read (i.e. from within a [_read](../interfaces/internal-8.internal.MedusaRequest.md#_read) implementation on a
+custom stream). Following the call to `readable.unshift()` with an immediate [push](../interfaces/internal-8.internal.MedusaRequest.md#push) will reset the reading state appropriately,
 however it is best to simply avoid calling `readable.unshift()` while in the
 process of performing a read.
 
@@ -3805,7 +3805,7 @@ ___
 Prior to Node.js 0.10, streams did not implement the entire `node:stream`module API as it is currently defined. (See `Compatibility` for more
 information.)
 
-When using an older Node.js library that emits `'data'` events and has a [pause](internal-8.PassThrough.md#pause) method that is advisory only, the`readable.wrap()` method can be used to create a `Readable`
+When using an older Node.js library that emits `'data'` events and has a [pause](../interfaces/internal-8.internal.MedusaRequest.md#pause) method that is advisory only, the`readable.wrap()` method can be used to create a `Readable`
 stream that uses
 the old stream as its data source.
 
@@ -3881,7 +3881,7 @@ by default until they are piped or a `'data'` or `'readable'` event handler
 is added.
 
 If the data to be written can be generated or fetched on demand, it is
-recommended to encapsulate the logic into a `Readable` and use [pipe](internal-8.PassThrough.md#pipe). However, if calling `write()` is preferred, it is
+recommended to encapsulate the logic into a `Readable` and use [pipe](../interfaces/internal-8.internal.MedusaRequest.md#pipe). However, if calling `write()` is preferred, it is
 possible to respect backpressure and avoid memory issues using the `'drain'` event:
 
 ```js
@@ -3976,7 +3976,7 @@ A utility method for creating duplex streams.
 
 | Name | Type |
 | :------ | :------ |
-| `src` | `string` \| [`Object`](../modules/internal-8.md#object) \| `Promise`<`any`\> \| `ArrayBuffer` \| [`Stream`](internal-8.Stream.md) \| [`Blob`](internal-8.Blob.md) \| [`Iterable`](../interfaces/internal-8.Iterable.md)<`any`\> \| [`AsyncIterable`](../interfaces/internal-8.AsyncIterable.md)<`any`\> \| [`AsyncGeneratorFunction`](../interfaces/internal-8.AsyncGeneratorFunction.md) |
+| `src` | `string` \| [`Object`](../modules/internal-8.md#object) \| `Promise`<`any`\> \| [`Stream`](internal-8.Stream.md) \| `ArrayBuffer` \| [`Blob`](internal-8.Blob.md) \| [`Iterable`](../interfaces/internal-8.Iterable.md)<`any`\> \| [`AsyncIterable`](../interfaces/internal-8.AsyncIterable.md)<`any`\> \| [`AsyncGeneratorFunction`](../interfaces/internal-8.AsyncGeneratorFunction.md) |
 
 #### Returns
 

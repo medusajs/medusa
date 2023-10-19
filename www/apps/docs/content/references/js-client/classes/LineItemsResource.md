@@ -32,7 +32,7 @@ Creates a line-item for a cart
 
 #### Defined in
 
-[packages/medusa-js/src/resources/line-items.ts:17](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/line-items.ts#L17)
+[packages/medusa-js/src/resources/line-items.ts:17](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/line-items.ts#L17)
 
 ___
 
@@ -56,7 +56,7 @@ Remove a line-item from a cart
 
 #### Defined in
 
-[packages/medusa-js/src/resources/line-items.ts:50](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/line-items.ts#L50)
+[packages/medusa-js/src/resources/line-items.ts:50](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/line-items.ts#L50)
 
 ___
 
@@ -82,4 +82,4 @@ Only quantity updates are allowed
 
 #### Defined in
 
-[packages/medusa-js/src/resources/line-items.ts:34](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/line-items.ts#L34)
+[packages/medusa-js/src/resources/line-items.ts:34](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/line-items.ts#L34)

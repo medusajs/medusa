@@ -46,7 +46,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/typings.ts:51](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L51)
+[packages/medusa-js/src/typings.ts:51](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/typings.ts#L51)
 
 ___
 

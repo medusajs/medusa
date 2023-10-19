@@ -40,7 +40,7 @@ Add products to a product category
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/product-categories.ts:126](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/product-categories.ts#L126)
+[packages/medusa-js/src/resources/admin/product-categories.ts:126](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/product-categories.ts#L126)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/product-categories.ts:44](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/product-categories.ts#L44)
+[packages/medusa-js/src/resources/admin/product-categories.ts:44](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/product-categories.ts#L44)
 
 ___
 
@@ -92,7 +92,7 @@ gets a product category
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/product-categories.ts:95](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/product-categories.ts#L95)
+[packages/medusa-js/src/resources/admin/product-categories.ts:95](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/product-categories.ts#L95)
 
 ___
 
@@ -123,7 +123,7 @@ Retrieve a list of product categories
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/product-categories.ts:74](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/product-categories.ts#L74)
+[packages/medusa-js/src/resources/admin/product-categories.ts:74](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/product-categories.ts#L74)
 
 ___
 
@@ -155,7 +155,7 @@ Remove products from a product category
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/product-categories.ts:110](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/product-categories.ts#L110)
+[packages/medusa-js/src/resources/admin/product-categories.ts:110](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/product-categories.ts#L110)
 
 ___
 
@@ -187,7 +187,7 @@ gets a product category
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/product-categories.ts:25](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/product-categories.ts#L25)
+[packages/medusa-js/src/resources/admin/product-categories.ts:25](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/product-categories.ts#L25)
 
 ___
 
@@ -219,4 +219,4 @@ updates a product category
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/product-categories.ts:58](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/product-categories.ts#L58)
+[packages/medusa-js/src/resources/admin/product-categories.ts:58](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/product-categories.ts#L58)

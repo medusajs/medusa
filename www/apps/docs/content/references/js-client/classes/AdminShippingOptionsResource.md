@@ -35,7 +35,7 @@ creates a shipping option.
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-options.ts:20](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-options.ts#L20)
+[packages/medusa-js/src/resources/admin/shipping-options.ts:20](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-options.ts#L20)
 
 ___
 
@@ -62,7 +62,7 @@ deletes a shipping option
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-options.ts:50](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-options.ts#L50)
+[packages/medusa-js/src/resources/admin/shipping-options.ts:50](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-options.ts#L50)
 
 ___
 
@@ -89,7 +89,7 @@ lists shipping options matching a query
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-options.ts:78](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-options.ts#L78)
+[packages/medusa-js/src/resources/admin/shipping-options.ts:78](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-options.ts#L78)
 
 ___
 
@@ -116,7 +116,7 @@ get a shipping option
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-options.ts:64](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-options.ts#L64)
+[packages/medusa-js/src/resources/admin/shipping-options.ts:64](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-options.ts#L64)
 
 ___
 
@@ -144,4 +144,4 @@ updates a shipping option
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-options.ts:35](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-options.ts#L35)
+[packages/medusa-js/src/resources/admin/shipping-options.ts:35](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-options.ts#L35)

@@ -33,4 +33,4 @@ Retrieves a single GiftCard
 
 #### Defined in
 
-[packages/medusa-js/src/resources/gift-cards.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/gift-cards.ts#L12)
+[packages/medusa-js/src/resources/gift-cards.ts:12](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/gift-cards.ts#L12)

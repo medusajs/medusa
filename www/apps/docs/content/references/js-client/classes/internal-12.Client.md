@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:36](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L36)
+[packages/medusa-js/src/request.ts:36](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/request.ts#L36)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:37](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L37)
+[packages/medusa-js/src/request.ts:37](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/request.ts#L37)
 
 ## Methods
 
@@ -48,7 +48,7 @@ and the exponential backoff approach.
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:169](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L169)
+[packages/medusa-js/src/request.ts:169](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/request.ts#L169)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:90](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L90)
+[packages/medusa-js/src/request.ts:90](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/request.ts#L90)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:78](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L78)
+[packages/medusa-js/src/request.ts:78](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/request.ts#L78)
 
 ___
 
@@ -114,7 +114,7 @@ Axios request
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:206](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L206)
+[packages/medusa-js/src/request.ts:206](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/request.ts#L206)
 
 ___
 
@@ -135,7 +135,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:99](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L99)
+[packages/medusa-js/src/request.ts:99](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/request.ts#L99)
 
 ___
 
@@ -161,7 +161,7 @@ We add the idempotency key, if the request is configured to retry.
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:115](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L115)
+[packages/medusa-js/src/request.ts:115](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/request.ts#L115)
 
 ___
 
@@ -183,4 +183,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/request.ts:47](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/request.ts#L47)
+[packages/medusa-js/src/request.ts:47](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/request.ts#L47)

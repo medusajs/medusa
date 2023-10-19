@@ -34,7 +34,7 @@ Add line item to draft order
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/draft-orders.ts:30](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/draft-orders.ts#L30)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:30](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/draft-orders.ts#L30)
 
 ___
 
@@ -59,7 +59,7 @@ Creates a draft order
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/draft-orders.ts:20](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/draft-orders.ts#L20)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:20](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/draft-orders.ts#L20)
 
 ___
 
@@ -84,7 +84,7 @@ Delete draft order
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/draft-orders.ts:42](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/draft-orders.ts#L42)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:42](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/draft-orders.ts#L42)
 
 ___
 
@@ -109,7 +109,7 @@ Lists draft orders
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/draft-orders.ts:76](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/draft-orders.ts#L76)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:76](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/draft-orders.ts#L76)
 
 ___
 
@@ -134,7 +134,7 @@ Mark a draft order as paid
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/draft-orders.ts:93](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/draft-orders.ts#L93)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:93](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/draft-orders.ts#L93)
 
 ___
 
@@ -160,7 +160,7 @@ Remove line item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/draft-orders.ts:53](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/draft-orders.ts#L53)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:53](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/draft-orders.ts#L53)
 
 ___
 
@@ -185,7 +185,7 @@ Retrieves a draft order
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/draft-orders.ts:65](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/draft-orders.ts#L65)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:65](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/draft-orders.ts#L65)
 
 ___
 
@@ -211,7 +211,7 @@ Update draft order
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/draft-orders.ts:104](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/draft-orders.ts#L104)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:104](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/draft-orders.ts#L104)
 
 ___
 
@@ -238,4 +238,4 @@ Update draft order line item
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/draft-orders.ts:116](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/draft-orders.ts#L116)
+[packages/medusa-js/src/resources/admin/draft-orders.ts:116](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/draft-orders.ts#L116)

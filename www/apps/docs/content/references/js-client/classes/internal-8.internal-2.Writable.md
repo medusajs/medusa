@@ -245,7 +245,7 @@ ___
 
 ### captureRejectionSymbol
 
-▪ `Static` `Readonly` **captureRejectionSymbol**: typeof [`captureRejectionSymbol`](internal-8.PassThrough.md#capturerejectionsymbol)
+▪ `Static` `Readonly` **captureRejectionSymbol**: typeof [`captureRejectionSymbol`](internal-8.Socket.md#capturerejectionsymbol)
 
 Value: `Symbol.for('nodejs.rejection')`
 
@@ -341,7 +341,7 @@ ___
 
 ### errorMonitor
 
-▪ `Static` `Readonly` **errorMonitor**: typeof [`errorMonitor`](internal-8.PassThrough.md#errormonitor)
+▪ `Static` `Readonly` **errorMonitor**: typeof [`errorMonitor`](internal-8.Socket.md#errormonitor)
 
 This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called.
 
@@ -651,7 +651,7 @@ ___
 ▸ **cork**(): `void`
 
 The `writable.cork()` method forces all written data to be buffered in memory.
-The buffered data will be flushed when either the [uncork](internal-8.internal-2.Writable.md#uncork) or [end](internal-8.internal-2.Writable.md#end) methods are called.
+The buffered data will be flushed when either the [uncork](internal-8.WritableBase.md#uncork) or [end](internal-8.WritableBase.md#end) methods are called.
 
 The primary intent of `writable.cork()` is to accommodate a situation in which
 several small chunks are written to the stream in rapid succession. Instead of
@@ -920,7 +920,7 @@ to the `Writable`. The optional `chunk` and `encoding` arguments allow one
 final additional chunk of data to be written immediately before closing the
 stream.
 
-Calling the [write](internal-8.internal-2.Writable.md#write) method after calling [end](internal-8.internal-2.Writable.md#end) will raise an error.
+Calling the [write](internal-8.WritableBase.md#write) method after calling [end](internal-8.WritableBase.md#end) will raise an error.
 
 ```js
 // Write 'hello, ' and then end with 'world!'.
@@ -2288,7 +2288,7 @@ ___
 
 ▸ **uncork**(): `void`
 
-The `writable.uncork()` method flushes all data buffered since [cork](internal-8.internal-2.Writable.md#cork) was called.
+The `writable.uncork()` method flushes all data buffered since [cork](internal-8.WritableBase.md#cork) was called.
 
 When using `writable.cork()` and `writable.uncork()` to manage the buffering
 of writes to a stream, defer calls to `writable.uncork()` using`process.nextTick()`. Doing so allows batching of all`writable.write()` calls that occur within a given Node.js event
@@ -2370,7 +2370,7 @@ by default until they are piped or a `'data'` or `'readable'` event handler
 is added.
 
 If the data to be written can be generated or fetched on demand, it is
-recommended to encapsulate the logic into a `Readable` and use [pipe](internal-8.PassThrough.md#pipe). However, if calling `write()` is preferred, it is
+recommended to encapsulate the logic into a `Readable` and use [pipe](../interfaces/internal-8.internal.MedusaRequest.md#pipe). However, if calling `write()` is preferred, it is
 possible to respect backpressure and avoid memory issues using the `'drain'` event:
 
 ```js

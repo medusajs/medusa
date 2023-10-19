@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/inventory/service.d.ts:32
+packages/types/dist/inventory/service.d.ts:33
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/inventory/service.d.ts:33
+packages/types/dist/inventory/service.d.ts:34
 
 ___
 
@@ -232,7 +232,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/inventory/service.d.ts:29
+packages/types/dist/inventory/service.d.ts:30
 
 ___
 
@@ -254,7 +254,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/inventory/service.d.ts:31
+packages/types/dist/inventory/service.d.ts:32
 
 ___
 
@@ -296,7 +296,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/inventory/service.d.ts:30
+packages/types/dist/inventory/service.d.ts:31
 
 ___
 
@@ -387,6 +387,27 @@ packages/types/dist/inventory/service.d.ts:8
 
 ___
 
+### restoreInventoryItem
+
+▸ **restoreInventoryItem**(`inventoryItemId`, `context?`): `Promise`<`void`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `inventoryItemId` | `string` \| `string`[] |
+| `context?` | [`SharedContext`](../modules/internal-8.md#sharedcontext) |
+
+#### Returns
+
+`Promise`<`void`\>
+
+#### Defined in
+
+packages/types/dist/inventory/service.d.ts:29
+
+___
+
 ### retrieveAvailableQuantity
 
 ▸ **retrieveAvailableQuantity**(`inventoryItemId`, `locationIds`, `context?`): `Promise`<`number`\>
@@ -405,7 +426,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/inventory/service.d.ts:34
+packages/types/dist/inventory/service.d.ts:35
 
 ___
 
@@ -492,7 +513,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/inventory/service.d.ts:36
+packages/types/dist/inventory/service.d.ts:37
 
 ___
 
@@ -514,7 +535,7 @@ ___
 
 #### Defined in
 
-packages/types/dist/inventory/service.d.ts:35
+packages/types/dist/inventory/service.d.ts:36
 
 ___
 

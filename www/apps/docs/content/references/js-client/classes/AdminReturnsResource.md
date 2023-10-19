@@ -35,7 +35,7 @@ cancels a return
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/returns.ts:19](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/returns.ts#L19)
+[packages/medusa-js/src/resources/admin/returns.ts:19](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/returns.ts#L19)
 
 ___
 
@@ -62,7 +62,7 @@ lists returns matching a query
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/returns.ts:49](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/returns.ts#L49)
+[packages/medusa-js/src/resources/admin/returns.ts:49](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/returns.ts#L49)
 
 ___
 
@@ -90,4 +90,4 @@ receive a return
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/returns.ts:34](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/returns.ts#L34)
+[packages/medusa-js/src/resources/admin/returns.ts:34](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/returns.ts#L34)

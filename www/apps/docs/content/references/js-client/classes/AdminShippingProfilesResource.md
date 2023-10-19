@@ -29,7 +29,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L12)
+[packages/medusa-js/src/resources/admin/shipping-profiles.ts:12](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L12)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:29](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L29)
+[packages/medusa-js/src/resources/admin/shipping-profiles.ts:29](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L29)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:45](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L45)
+[packages/medusa-js/src/resources/admin/shipping-profiles.ts:45](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L45)
 
 ___
 
@@ -91,7 +91,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:37](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L37)
+[packages/medusa-js/src/resources/admin/shipping-profiles.ts:37](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L37)
 
 ___
 
@@ -113,4 +113,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/shipping-profiles.ts:20](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L20)
+[packages/medusa-js/src/resources/admin/shipping-profiles.ts:20](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/shipping-profiles.ts#L20)

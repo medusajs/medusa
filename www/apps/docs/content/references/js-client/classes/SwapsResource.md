@@ -33,7 +33,7 @@ Creates a swap from a cart
 
 #### Defined in
 
-[packages/medusa-js/src/resources/swaps.ts:12](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/swaps.ts#L12)
+[packages/medusa-js/src/resources/swaps.ts:12](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/swaps.ts#L12)
 
 ___
 
@@ -58,4 +58,4 @@ Retrieves a swap by cart id
 
 #### Defined in
 
-[packages/medusa-js/src/resources/swaps.ts:23](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/swaps.ts#L23)
+[packages/medusa-js/src/resources/swaps.ts:23](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/swaps.ts#L23)

@@ -30,7 +30,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-[packages/medusa-js/src/resources/payment-collections.ts:29](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/payment-collections.ts#L29)
+[packages/medusa-js/src/resources/payment-collections.ts:29](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/payment-collections.ts#L29)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/payment-collections.ts:38](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/payment-collections.ts#L38)
+[packages/medusa-js/src/resources/payment-collections.ts:38](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/payment-collections.ts#L38)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/payment-collections.ts:56](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/payment-collections.ts#L56)
+[packages/medusa-js/src/resources/payment-collections.ts:56](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/payment-collections.ts#L56)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/payment-collections.ts:47](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/payment-collections.ts#L47)
+[packages/medusa-js/src/resources/payment-collections.ts:47](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/payment-collections.ts#L47)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/payment-collections.ts:65](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/payment-collections.ts#L65)
+[packages/medusa-js/src/resources/payment-collections.ts:65](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/payment-collections.ts#L65)
 
 ___
 
@@ -140,4 +140,4 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/payment-collections.ts:14](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/payment-collections.ts#L14)
+[packages/medusa-js/src/resources/payment-collections.ts:14](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/payment-collections.ts#L14)

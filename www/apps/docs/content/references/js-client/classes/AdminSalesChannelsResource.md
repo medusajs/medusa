@@ -40,7 +40,7 @@ Add a stock location to a SalesChannel
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/sales-channels.ts:134](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/sales-channels.ts#L134)
+[packages/medusa-js/src/resources/admin/sales-channels.ts:134](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/sales-channels.ts#L134)
 
 ___
 
@@ -72,7 +72,7 @@ Add products to a sales channel
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/sales-channels.ts:118](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/sales-channels.ts#L118)
+[packages/medusa-js/src/resources/admin/sales-channels.ts:118](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/sales-channels.ts#L118)
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/sales-channels.ts:36](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/sales-channels.ts#L36)
+[packages/medusa-js/src/resources/admin/sales-channels.ts:36](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/sales-channels.ts#L36)
 
 ___
 
@@ -124,7 +124,7 @@ gets a sales channel
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/sales-channels.ts:87](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/sales-channels.ts#L87)
+[packages/medusa-js/src/resources/admin/sales-channels.ts:87](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/sales-channels.ts#L87)
 
 ___
 
@@ -155,7 +155,7 @@ Retrieve a list of sales channels
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/sales-channels.ts:66](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/sales-channels.ts#L66)
+[packages/medusa-js/src/resources/admin/sales-channels.ts:66](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/sales-channels.ts#L66)
 
 ___
 
@@ -187,7 +187,7 @@ Remove a stock location from a SalesChannel
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/sales-channels.ts:150](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/sales-channels.ts#L150)
+[packages/medusa-js/src/resources/admin/sales-channels.ts:150](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/sales-channels.ts#L150)
 
 ___
 
@@ -219,7 +219,7 @@ Remove products from a sales channel
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/sales-channels.ts:102](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/sales-channels.ts#L102)
+[packages/medusa-js/src/resources/admin/sales-channels.ts:102](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/sales-channels.ts#L102)
 
 ___
 
@@ -250,7 +250,7 @@ gets a sales channel
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/sales-channels.ts:24](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/sales-channels.ts#L24)
+[packages/medusa-js/src/resources/admin/sales-channels.ts:24](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/sales-channels.ts#L24)
 
 ___
 
@@ -282,4 +282,4 @@ updates a sales channel
 
 #### Defined in
 
-[packages/medusa-js/src/resources/admin/sales-channels.ts:50](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/admin/sales-channels.ts#L50)
+[packages/medusa-js/src/resources/admin/sales-channels.ts:50](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa-js/src/resources/admin/sales-channels.ts#L50)
