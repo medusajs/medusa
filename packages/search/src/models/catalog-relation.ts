@@ -22,6 +22,10 @@ type OptionalRelations =
   name: "IDX_catalog_relation_parent_name_child_name",
   properties: ["parent_name", "child_name"],
 })
+@Index({
+  name: "IDX_catalog_relation_parent_id_child_id",
+  properties: ["parent_id", "child_id"],
+})
 export class CatalogRelation {
   [OptionalProps]: OptionalRelations
 
