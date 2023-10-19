@@ -331,7 +331,7 @@ jobs:
         with:
           extension: pipeline
 
-      - name: Run repository integration tests
+      - name: Run service integration tests
         run: yarn test:integration:services
         env:
           DB_PASSWORD: postgres
