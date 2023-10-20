@@ -192,7 +192,7 @@ function Paypal() {
       const response = await client
         .carts
         .setPaymentSession(cart.id, {
-          "processor_id": "paypal",
+          "provider_id": "paypal",
         })
 
       if (!response.cart) {
