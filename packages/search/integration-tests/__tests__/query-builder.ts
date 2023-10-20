@@ -8,6 +8,9 @@ import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
 import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
 import { EventBusService, schema } from "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
+import console from "console"
+
+jest.setTimeout(300000)
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -213,6 +216,9 @@ describe("SearchEngineModuleService", function () {
     })
 
     module = modules.searchService as unknown as ISearchModuleService
+
+    console.log("waiting 90s for all indexes and partition to be done.")
+    await new Promise((resolve) => setTimeout(resolve, 90000))
   })
 
   beforeEach(beforeEach_)
