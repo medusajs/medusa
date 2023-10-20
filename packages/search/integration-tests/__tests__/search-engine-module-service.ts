@@ -671,7 +671,14 @@ describe("SearchEngineModuleService", function () {
         modulesConfig: {
           ...modulesConfig,
           [Modules.SEARCH]: {
-            options: searchEngineModuleOptions,
+            options: {
+              defaultAdapterOptions: {
+                database: {
+                  connection: manager.getConnection().getKnex(),
+                },
+              },
+              schema,
+            },
           },
         },
         servicesConfig: joinerConfig,
@@ -699,33 +706,10 @@ describe("SearchEngineModuleService", function () {
         name: "MoneyAmount",
       })) as Catalog
 
-      await new Promise((resolve) => setTimeout(resolve, 10000))
+      await new Promise((resolve) => setTimeout(resolve, 100000))
 
       console.time("query")
       const [result, count] = await module.queryAndCount(
-        {
-          select: {
-            product: {
-              variants: {
-                money_amounts: true,
-              },
-            },
-          },
-          where: {
-            "product.variants.money_amounts.amount":
-              moneyAmountToSearchFor.data.amount,
-            /*"product.variants.money_amounts.currency_code":
-              moneyAmountToSearchFor.data.currency_code,*/
-          },
-        },
-        {
-          skip: 0,
-        }
-      )
-      console.timeEnd("query2")
-
-      console.time("query")
-      const [result2, count2] = await module.queryAndCount(
         {
           select: {
             product: {

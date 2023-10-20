@@ -1,4 +1,7 @@
-import { SchemaObjectRepresentation } from "../types"
+import {
+  SchemaObjectRepresentation,
+  schemaObjectRepresentationPropertiesToOmit,
+} from "../types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export async function createPartitions(
@@ -6,10 +9,7 @@ export async function createPartitions(
   manager: SqlEntityManager
 ): Promise<void> {
   const partitions = Object.keys(schemaObjectRepresentation)
-    .filter(
-      (key) =>
-        !["_serviceNameModuleConfigMap", "_schemaPropertiesMap"].includes(key)
-    )
+    .filter((key) => !schemaObjectRepresentationPropertiesToOmit.includes(key))
     .map((key) => {
       const cName = key.toLowerCase()
       const part: string[] = []
