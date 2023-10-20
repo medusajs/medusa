@@ -197,9 +197,9 @@ Run your Medusa backend with the following command:
 npx medusa develop
 ```
 
-The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This endpoint accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
+The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This API Route accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
 
-![Postman request send to the search endpoint that retrieves products using Algolia](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000054/Medusa%20Docs/Algolia/IHeTsi7_ymhb2p.png)
+![Postman request send to the search API Route that retrieves products using Algolia](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000054/Medusa%20Docs/Algolia/IHeTsi7_ymhb2p.png)
 
 You can also check that the products are properly indexed by opening your Algolia dashboard and choosing Search from the left sidebar. You’ll find your products that are on your Medusa backend added there.
 
@@ -256,25 +256,24 @@ Then, add the necessary environment variables:
 ```bash
 NEXT_PUBLIC_SEARCH_APP_ID=<YOUR_APP_ID>
 NEXT_PUBLIC_SEARCH_API_KEY=<YOUR_SEARCH_API_KEY>
-NEXT_PUBLIC_SEARCH_INDEX_NAME=products
+NEXT_PUBLIC_INDEX_NAME=products
 ```
 
 Where `<YOUR_APP_ID>` and `<YOUR_SEARCH_API_KEY>` are respectively the Application ID and Search-Only API Key on the [API Keys page](#retrieve-api-keys).
 
 Finally, change the code in `src/lib/search-client.ts` to the following:
 
-```jsx title=src/lib/search-client.ts
+```ts title=src/lib/search-client.ts
 import algoliasearch from "algoliasearch/lite"
 
 const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || ""
 
-const apiKey = 
-  process.env.NEXT_PUBLIC_SEARCH_API_KEY || "test_key"
+const apiKey = process.env.NEXT_PUBLIC_SEARCH_API_KEY || ""
 
 export const searchClient = algoliasearch(appId, apiKey)
 
 export const SEARCH_INDEX_NAME =
-  process.env.NEXT_PUBLIC_SEARCH_INDEX_NAME || "products"
+  process.env.NEXT_PUBLIC_INDEX_NAME || "products"
 ```
 
 If you run your Next.js Starter Template now while the Medusa backend is running, the search functionality will be available in your storefront.

@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/product-category.ts:56](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L56)
+[models/product-category.ts:56](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L56)
 
 ___
 
@@ -42,7 +42,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:29](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L29)
+[models/product-category.ts:29](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L29)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:33](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L33)
+[models/product-category.ts:33](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L33)
 
 ___
 
@@ -76,7 +76,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:36](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L36)
+[models/product-category.ts:36](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L36)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:39](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L39)
+[models/product-category.ts:39](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L39)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:26](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L26)
+[models/product-category.ts:26](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L26)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L49)
+[models/product-category.ts:49](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L49)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:53](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L53)
+[models/product-category.ts:53](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L53)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:73](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L73)
+[models/product-category.ts:73](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L73)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:59](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L59)
+[models/product-category.ts:59](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L59)
 
 ___
 
@@ -160,7 +160,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:22](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L22)
+[models/product-category.ts:22](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L22)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:23](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L23)
+[models/product-category.ts:23](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L23)
 
 ## Methods
 
@@ -194,4 +194,4 @@ ___
 
 #### Defined in
 
-[models/product-category.ts:76](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/product-category.ts#L76)
+[models/product-category.ts:76](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-category.ts#L76)

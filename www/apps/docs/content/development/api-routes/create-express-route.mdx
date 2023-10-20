@@ -1,22 +1,19 @@
 ---
-description: 'Learn how to create endpoints in Medusa. This guide also includes how to add CORS configurations, creating multiple endpoints, adding protected routes, and more.'
 addHowToData: true
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# How to Create Endpoints
+# Create Express Endpoint
 
-In this document, you’ll learn how to create endpoints in Medusa.
+In this document, you’ll learn how to create express endpoints in Medusa.
 
-## Overview
+:::note
 
-Custom endpoints are created under the `src/api` directory in your Medusa Backend. They're defined in a TypeScript or JavaScript file named `index` (for example, `index.ts`). This file should export a function that returns an Express router or an array of routes and middlewares.
+Following v1.17.2 of `@medusajs/medusa`, it's highly recommended to use the [API Routes](./create.mdx) instead. Future versions of Medusa may drop support of Express Endpoints.
 
-To consume the custom endpoints in your Medusa backend, you must transpile them with the `build` command before starting your backend.
-
----
+:::
 
 ## Basic Implementation
 
@@ -61,7 +58,7 @@ npm run build
 
 ## Defining Multiple Routes or Middlewares
 
-Instead of returning an Express router in the function, you can return an array of routes and [middlewares](./add-middleware.mdx).
+Instead of returning an Express router in the function, you can return an array of routes and [middlewares](./add-middleware-express-route.mdx).
 
 For example:
 
@@ -419,7 +416,7 @@ export default (rootDirectory) => {
 
 As Medusa uses v4 of Express, you need to manually handle errors thrown asynchronously as explained in [Express's documentation](https://expressjs.com/en/guide/error-handling.html).
 
-You can use [middlewares](./add-middleware.mdx) to handle errors. You can also use middlewares defined by Medusa, which ensure that your error handling is consistent across your Medusa backend.
+You can use [middlewares](./add-middleware-express-route.mdx) to handle errors. You can also use middlewares defined by Medusa, which ensure that your error handling is consistent across your Medusa backend.
 
 :::note
 

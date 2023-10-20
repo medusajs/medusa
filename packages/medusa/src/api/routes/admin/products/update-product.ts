@@ -434,12 +434,12 @@ class ProductVariantReq {
  *     description: A flag to indicate if discounts can be applied to the Line Items generated from this Product
  *     type: boolean
  *   images:
- *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload endpoints to upload the image and obtain a URL.
+ *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload API Routes to upload the image and obtain a URL.
  *     type: array
  *     items:
  *       type: string
  *   thumbnail:
- *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload endpoints to upload the thumbnail and obtain a URL.
+ *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload API Routes to upload the thumbnail and obtain a URL.
  *     type: string
  *   handle:
  *     description: A unique handle to identify the Product by. If not provided, the kebab-case version of the product title will be used. This can be used as a slug in URLs.
