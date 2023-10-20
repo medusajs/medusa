@@ -101,3 +101,5 @@ export abstract class AbstractEventBusModuleService
     return this
   }
 }
+
+export * from "./build-messages"
