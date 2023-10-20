@@ -6,7 +6,7 @@ on:
 
 jobs:
   docs-test:
-    if: ${{ startsWith(github.ref, 'docs/') }}
+    if: ${{ startsWith(github.ref, 'refs/docs/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -42,7 +42,7 @@ jobs:
         run: yarn build:docs
         
   vale-docs:
-    if: ${{ startsWith(github.ref, 'docs/') }}
+    if: ${{ startsWith(github.ref, 'refs/docs/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -73,7 +73,7 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
         
   vale-ui:
-    if: ${{ startsWith(github.ref, 'docs/') }}
+    if: ${{ startsWith(github.ref, 'refs/docs/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -104,7 +104,7 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
         
   vale-api:
-    if: ${{ startsWith(github.ref, 'docs/') }}
+    if: ${{ startsWith(github.ref, 'refs/docs/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -135,7 +135,7 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
         
   content-eslint:
-    if: ${{ startsWith(github.ref, 'docs/') }}
+    if: ${{ startsWith(github.ref, 'refs/docs/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -157,7 +157,7 @@ jobs:
         run: yarn lint:content
   
   code-docs-eslint:
-    if: ${{ startsWith(github.ref, 'docs/') }}
+    if: ${{ startsWith(github.ref, 'refs/docs/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
