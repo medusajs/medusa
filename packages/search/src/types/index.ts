@@ -153,12 +153,17 @@ export type QueryOptions = {
   keepFilteredEntities?: boolean
 }
 
-export type Resultset<Select> = {
-  [key in keyof Select]: Select[key] extends boolean
-    ? string
-    : Select[key] extends Select[]
-    ? Resultset<Select[key][0]>[]
-    : Select[key] extends {}
-    ? Resultset<Select[key]>
-    : unknown
-}
+// Preventing infinite depth
+type ResultSetLimit = [never | 0 | 1 | 2]
+
+export type Resultset<Select, Prev extends number = 3> = Prev extends never
+  ? never
+  : {
+      [key in keyof Select]: Select[key] extends boolean
+        ? string
+        : Select[key] extends Select[]
+        ? Resultset<Select[key][0], ResultSetLimit[Prev]>[]
+        : Select[key] extends {}
+        ? Resultset<Select[key], ResultSetLimit[Prev]>
+        : unknown
+    }
