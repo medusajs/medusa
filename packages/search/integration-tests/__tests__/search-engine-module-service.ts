@@ -24,6 +24,7 @@ const searchEngineModuleOptions = {
   defaultAdapterOptions: {
     database: {
       clientUrl: DB_URL,
+      schema: process.env.MEDUSA_SEARCH_DB_SCHEMA,
     },
   },
   schema,

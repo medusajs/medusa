@@ -14,7 +14,7 @@ jest.setTimeout(300000)
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
-  searchPath: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+  searchPath: process.env.MEDUSA_SEARCH_DB_SCHEMA,
   connection: {
     connectionString: DB_URL,
   },
@@ -24,7 +24,7 @@ const searchEngineModuleOptions = {
   defaultAdapterOptions: {
     database: {
       clientUrl: DB_URL,
-      schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      schema: process.env.MEDUSA_SEARCH_DB_SCHEMA,
     },
   },
   schema,

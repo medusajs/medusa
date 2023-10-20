@@ -3,4 +3,4 @@ if (typeof process.env.DB_TEMP_NAME === "undefined") {
   process.env.DB_TEMP_NAME = `medusa-integration-${tempName}`
 }
 
-process.env.MEDUSA_CATALOG_DB_SCHEMA = "medusa-catalog"
+process.env.MEDUSA_SEARCH_DB_SCHEMA = "medusa-catalog"
