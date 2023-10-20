@@ -1,0 +1,1009 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# BufferConstructor
+
+Raw data is stored in instances of the Buffer class.
+A Buffer is similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap.  A Buffer cannot be resized.
+Valid string encodings: 'ascii'|'utf8'|'utf16le'|'ucs2'(alias of 'utf16le')|'base64'|'base64url'|'binary'(deprecated)|'hex'
+
+## Methods
+
+- [alloc](../BufferConstructor/methods/BufferConstructor.alloc.mdx)
+- [allocUnsafe](../BufferConstructor/methods/BufferConstructor.allocUnsafe.mdx)
+- [allocUnsafeSlow](../BufferConstructor/methods/BufferConstructor.allocUnsafeSlow.mdx)
+- [byteLength](../BufferConstructor/methods/BufferConstructor.byteLength.mdx)
+- [compare](../BufferConstructor/methods/BufferConstructor.compare.mdx)
+- [concat](../BufferConstructor/methods/BufferConstructor.concat.mdx)
+- [from](../BufferConstructor/methods/BufferConstructor.from.mdx)
+- [isBuffer](../BufferConstructor/methods/BufferConstructor.isBuffer.mdx)
+- [isEncoding](../BufferConstructor/methods/BufferConstructor.isEncoding.mdx)
+- [of](../BufferConstructor/methods/BufferConstructor.of.mdx)
+
+## Constructors
+
+### constructor
+
+**new BufferConstructor**(`str`, `encoding?`)
+
+Allocates a new buffer containing the given {str}.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "str",
+    "type": "`string`",
+    "description": "String to store in buffer.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "description": "encoding to use, optional. Default is 'utf8'",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+since v10.0.0 - Use `Buffer.from(string[, encoding])` instead.
+
+**new BufferConstructor**(`size`)
+
+Allocates a new buffer of {size} octets.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "size",
+    "type": "`number`",
+    "description": "count of octets to allocate.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+since v10.0.0 - Use `Buffer.alloc()` instead (also see `Buffer.allocUnsafe()`).
+
+**new BufferConstructor**(`array`)
+
+Allocates a new buffer containing the given {array} of octets.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "array",
+    "type": "`Uint8Array`",
+    "description": "The octets to store.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+since v10.0.0 - Use `Buffer.from(array)` instead.
+
+**new BufferConstructor**(`arrayBuffer`)
+
+Produces a Buffer backed by the same allocated memory as
+the given {ArrayBuffer}/{SharedArrayBuffer}.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "arrayBuffer",
+    "type": "`ArrayBuffer` \\| [`SharedArrayBuffer`](../variables/SharedArrayBuffer-1.mdx)",
+    "description": "The ArrayBuffer with which to share memory.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+since v10.0.0 - Use `Buffer.from(arrayBuffer[, byteOffset[, length]])` instead.
+
+**new BufferConstructor**(`array`)
+
+Allocates a new buffer containing the given {array} of octets.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "array",
+    "type": "readonly `any`[]",
+    "description": "The octets to store.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+since v10.0.0 - Use `Buffer.from(array)` instead.
+
+**new BufferConstructor**(`buffer`)
+
+Copies the passed {buffer} data onto a new {Buffer} instance.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "buffer",
+    "type": "[`Buffer`](../variables/Buffer-1.mdx)",
+    "description": "The buffer to copy.",
+    "optional": false,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "BYTES_PER_ELEMENT",
+        "type": "`number`",
+        "description": "The size in bytes of each element in the array.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "[toStringTag]",
+        "type": "``\"Uint8Array\"``",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "buffer",
+        "type": "[`ArrayBufferLike`](../types/ArrayBufferLike.mdx)",
+        "description": "The ArrayBuffer instance referenced by the array.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "byteLength",
+        "type": "`number`",
+        "description": "The length in bytes of the array.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "byteOffset",
+        "type": "`number`",
+        "description": "The offset in bytes of the array.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "length",
+        "type": "`number`",
+        "description": "The length of the array.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "[iterator]",
+        "type": "() => [`IterableIterator`](IterableIterator.mdx)<`number`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "at",
+        "type": "(`index`: `number`) => `undefined` \\| `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "compare",
+        "type": "(`target`: `Uint8Array`, `targetStart?`: `number`, `targetEnd?`: `number`, `sourceStart?`: `number`, `sourceEnd?`: `number`) => ``0`` \\| ``1`` \\| ``-1``",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "copy",
+        "type": "(`target`: `Uint8Array`, `targetStart?`: `number`, `sourceStart?`: `number`, `sourceEnd?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "copyWithin",
+        "type": "(`target`: `number`, `start`: `number`, `end?`: `number`) => [`Buffer`](../variables/Buffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "entries",
+        "type": "() => [`IterableIterator`](IterableIterator.mdx)<[`number`, `number`]\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "equals",
+        "type": "(`otherBuffer`: `Uint8Array`) => `boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "every",
+        "type": "(`predicate`: (`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`, `thisArg?`: `any`) => `boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "fill",
+        "type": "(`value`: `string` \\| `number` \\| `Uint8Array`, `offset?`: `number`, `end?`: `number`, `encoding?`: [`BufferEncoding`](../types/BufferEncoding.mdx)) => [`Buffer`](../variables/Buffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "filter",
+        "type": "(`predicate`: (`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `any`, `thisArg?`: `any`) => `Uint8Array`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "find",
+        "type": "(`predicate`: (`value`: `number`, `index`: `number`, `obj`: `Uint8Array`) => `boolean`, `thisArg?`: `any`) => `undefined` \\| `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "findIndex",
+        "type": "(`predicate`: (`value`: `number`, `index`: `number`, `obj`: `Uint8Array`) => `boolean`, `thisArg?`: `any`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "forEach",
+        "type": "(`callbackfn`: (`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `void`, `thisArg?`: `any`) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "includes",
+        "type": "(`value`: `string` \\| `number` \\| [`Buffer`](../variables/Buffer-1.mdx), `byteOffset?`: `number`, `encoding?`: [`BufferEncoding`](../types/BufferEncoding.mdx)) => `boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "indexOf",
+        "type": "(`value`: `string` \\| `number` \\| `Uint8Array`, `byteOffset?`: `number`, `encoding?`: [`BufferEncoding`](../types/BufferEncoding.mdx)) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "join",
+        "type": "(`separator?`: `string`) => `string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "keys",
+        "type": "() => [`IterableIterator`](IterableIterator.mdx)<`number`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "lastIndexOf",
+        "type": "(`value`: `string` \\| `number` \\| `Uint8Array`, `byteOffset?`: `number`, `encoding?`: [`BufferEncoding`](../types/BufferEncoding.mdx)) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "map",
+        "type": "(`callbackfn`: (`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `number`, `thisArg?`: `any`) => `Uint8Array`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readBigInt64BE",
+        "type": "(`offset?`: `number`) => `bigint`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readBigInt64LE",
+        "type": "(`offset?`: `number`) => `bigint`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readBigUInt64BE",
+        "type": "(`offset?`: `number`) => `bigint`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readBigUInt64LE",
+        "type": "(`offset?`: `number`) => `bigint`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readBigUint64BE",
+        "type": "(`offset?`: `number`) => `bigint`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readBigUint64LE",
+        "type": "(`offset?`: `number`) => `bigint`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readDoubleBE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readDoubleLE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readFloatBE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readFloatLE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readInt16BE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readInt16LE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readInt32BE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readInt32LE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readInt8",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readIntBE",
+        "type": "(`offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readIntLE",
+        "type": "(`offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUInt16BE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUInt16LE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUInt32BE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUInt32LE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUInt8",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUIntBE",
+        "type": "(`offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUIntLE",
+        "type": "(`offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUint16BE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUint16LE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUint32BE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUint32LE",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUint8",
+        "type": "(`offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUintBE",
+        "type": "(`offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "readUintLE",
+        "type": "(`offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "reduce",
+        "type": "(`callbackfn`: (`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`) => `number`(`callbackfn`: (`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`, `initialValue`: `number`) => `number`<U\\>(`callbackfn`: (`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `U`, `initialValue`: `U`) => `U`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "reduceRight",
+        "type": "(`callbackfn`: (`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`) => `number`(`callbackfn`: (`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`, `initialValue`: `number`) => `number`<U\\>(`callbackfn`: (`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `U`, `initialValue`: `U`) => `U`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "reverse",
+        "type": "() => [`Buffer`](../variables/Buffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "set",
+        "type": "(`array`: [`ArrayLike`](ArrayLike.mdx)<`number`\\>, `offset?`: `number`) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "slice",
+        "type": "(`start?`: `number`, `end?`: `number`) => [`Buffer`](../variables/Buffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "some",
+        "type": "(`predicate`: (`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`, `thisArg?`: `any`) => `boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "sort",
+        "type": "(`compareFn?`: (`a`: `number`, `b`: `number`) => `number`) => [`Buffer`](../variables/Buffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "subarray",
+        "type": "(`start?`: `number`, `end?`: `number`) => [`Buffer`](../variables/Buffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "swap16",
+        "type": "() => [`Buffer`](../variables/Buffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "swap32",
+        "type": "() => [`Buffer`](../variables/Buffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "swap64",
+        "type": "() => [`Buffer`](../variables/Buffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "toJSON",
+        "type": "() => { `data`: `number`[] ; `type`: ``\"Buffer\"``  }",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "toLocaleString",
+        "type": "() => `string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "toString",
+        "type": "(`encoding?`: [`BufferEncoding`](../types/BufferEncoding.mdx), `start?`: `number`, `end?`: `number`) => `string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "valueOf",
+        "type": "() => `Uint8Array`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "values",
+        "type": "() => [`IterableIterator`](IterableIterator.mdx)<`number`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "write",
+        "type": "(`string`: `string`, `encoding?`: [`BufferEncoding`](../types/BufferEncoding.mdx)) => `number`(`string`: `string`, `offset`: `number`, `encoding?`: [`BufferEncoding`](../types/BufferEncoding.mdx)) => `number`(`string`: `string`, `offset`: `number`, `length`: `number`, `encoding?`: [`BufferEncoding`](../types/BufferEncoding.mdx)) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeBigInt64BE",
+        "type": "(`value`: `bigint`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeBigInt64LE",
+        "type": "(`value`: `bigint`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeBigUInt64BE",
+        "type": "(`value`: `bigint`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeBigUInt64LE",
+        "type": "(`value`: `bigint`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeBigUint64BE",
+        "type": "(`value`: `bigint`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeBigUint64LE",
+        "type": "(`value`: `bigint`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeDoubleBE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeDoubleLE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeFloatBE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeFloatLE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeInt16BE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeInt16LE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeInt32BE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeInt32LE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeInt8",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeIntBE",
+        "type": "(`value`: `number`, `offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeIntLE",
+        "type": "(`value`: `number`, `offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUInt16BE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUInt16LE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUInt32BE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUInt32LE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUInt8",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUIntBE",
+        "type": "(`value`: `number`, `offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUIntLE",
+        "type": "(`value`: `number`, `offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUint16BE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUint16LE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUint32BE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUint32LE",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUint8",
+        "type": "(`value`: `number`, `offset?`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUintBE",
+        "type": "(`value`: `number`, `offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "writeUintLE",
+        "type": "(`value`: `number`, `offset`: `number`, `byteLength`: `number`) => `number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Deprecated
+
+since v10.0.0 - Use `Buffer.from(buffer)` instead.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "poolSize",
+    "type": "`number`",
+    "description": "This is the size (in bytes) of pre-allocated internal `Buffer` instances used for pooling. This value may be modified. #### Since v0.11.3",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
