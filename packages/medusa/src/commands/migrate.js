@@ -65,7 +65,7 @@ const main = async function ({ directory }) {
   if (args[0] === "run") {
     await dataSource.runMigrations()
     await dataSource.destroy()
-    // await runIsolatedModulesMigration(configModule)
+    await runIsolatedModulesMigration(configModule)
     Logger.info("Migrations completed.")
   } else if (args[0] === "revert") {
     await dataSource.undoLastMigration({ transaction: "all" })
