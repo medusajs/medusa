@@ -83,7 +83,7 @@ Provides layer to manipulate store settings.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -108,7 +108,7 @@ TransactionBaseService.activeManager\_
 
 ### addCurrency
 
-▸ **addCurrency**(`code`): `Promise`<[`Store`](admin_discounts.internal.internal.Store.mdx)\>
+**addCurrency**(`code`): `Promise`<[`Store`](admin_discounts.internal.internal.Store.mdx)\>
 
 Add a currency to the store
 
@@ -153,7 +153,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -230,7 +230,7 @@ ___
 
 ### create
 
-▸ **create**(): `Promise`<[`Store`](admin_discounts.internal.internal.Store.mdx)\>
+**create**(): `Promise`<[`Store`](admin_discounts.internal.internal.Store.mdx)\>
 
 Creates a store if it doesn't already exist.
 
@@ -262,7 +262,7 @@ ___
 
 ### getDefaultCurrency\_
 
-▸ `Protected` **getDefaultCurrency_**(`code`): [`Partial`](../../admin_discounts/modules/admin_discounts.internal.mdx#partial)<[`Currency`](admin_collections.internal.Currency.mdx)\>
+`Protected` **getDefaultCurrency_**(`code`): [`Partial`](../../admin_discounts/modules/admin_discounts.internal.mdx#partial)<[`Currency`](admin_collections.internal.Currency.mdx)\>
 
 #### Parameters
 
@@ -305,7 +305,7 @@ ___
 
 ### removeCurrency
 
-▸ **removeCurrency**(`code`): `Promise`<`any`\>
+**removeCurrency**(`code`): `Promise`<`any`\>
 
 Removes a currency from the store
 
@@ -350,7 +350,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`config?`): `Promise`<[`Store`](admin_discounts.internal.internal.Store.mdx)\>
+**retrieve**(`config?`): `Promise`<[`Store`](admin_discounts.internal.internal.Store.mdx)\>
 
 Retrieve the store settings. There is always a maximum of one store.
 
@@ -395,7 +395,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -433,7 +433,7 @@ ___
 
 ### update
 
-▸ **update**(`data`): `Promise`<[`Store`](admin_discounts.internal.internal.Store.mdx)\>
+**update**(`data`): `Promise`<[`Store`](admin_discounts.internal.internal.Store.mdx)\>
 
 Updates a store
 
@@ -478,7 +478,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`StoreService`](admin_discounts.internal.internal.StoreService.mdx)
+**withTransaction**(`transactionManager?`): [`StoreService`](admin_discounts.internal.internal.StoreService.mdx)
 
 #### Parameters
 

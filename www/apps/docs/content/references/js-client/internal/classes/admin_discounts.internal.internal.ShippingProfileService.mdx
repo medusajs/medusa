@@ -109,7 +109,7 @@ Provides layer to manipulate profiles.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -134,7 +134,7 @@ TransactionBaseService.activeManager\_
 
 ### addProduct
 
-▸ **addProduct**(`profileId`, `productId`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**addProduct**(`profileId`, `productId`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 #### Parameters
 
@@ -189,7 +189,7 @@ ___
 
 ### addProducts
 
-▸ **addProducts**(`profileId`, `productId`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**addProducts**(`profileId`, `productId`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 Adds a product or an array of products to the profile.
 
@@ -242,7 +242,7 @@ ___
 
 ### addShippingOption
 
-▸ **addShippingOption**(`profileId`, `optionId`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**addShippingOption**(`profileId`, `optionId`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 Adds a shipping option to the profile. The shipping option can be used to
 fulfill the products in the products field.
@@ -296,7 +296,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -373,7 +373,7 @@ ___
 
 ### create
 
-▸ **create**(`profile`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**create**(`profile`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 Creates a new shipping profile.
 
@@ -418,7 +418,7 @@ ___
 
 ### createDefault
 
-▸ **createDefault**(): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**createDefault**(): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 Creates a default shipping profile, if this does not already exist.
 
@@ -450,7 +450,7 @@ ___
 
 ### createGiftCardDefault
 
-▸ **createGiftCardDefault**(): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**createGiftCardDefault**(): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 Creates a default shipping profile, for gift cards if unless it already
 exists.
@@ -483,7 +483,7 @@ ___
 
 ### delete
 
-▸ **delete**(`profileId`): `Promise`<`void`\>
+**delete**(`profileId`): `Promise`<`void`\>
 
 Deletes a profile with a given profile id.
 
@@ -519,7 +519,7 @@ ___
 
 ### fetchCartOptions
 
-▸ **fetchCartOptions**(`cart`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)[]\>
+**fetchCartOptions**(`cart`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)[]\>
 
 Finds all the shipping profiles that cover the products in a cart, and
 validates all options that are available for the cart.
@@ -574,7 +574,7 @@ ___
 
 ### getMapProfileIdsByProductIds
 
-▸ **getMapProfileIdsByProductIds**(`productIds`): `Promise`<`Map`<`string`, `string`\>\>
+**getMapProfileIdsByProductIds**(`productIds`): `Promise`<`Map`<`string`, `string`\>\>
 
 #### Parameters
 
@@ -634,7 +634,7 @@ ___
 
 ### getProfilesInCart
 
-▸ `Protected` **getProfilesInCart**(`cart`): `Promise`<`string`[]\>
+`Protected` **getProfilesInCart**(`cart`): `Promise`<`string`[]\>
 
 Returns a list of all the productIds in the cart.
 
@@ -688,7 +688,7 @@ ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)[]\>
+**list**(`selector?`, `config?`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)[]\>
 
 #### Parameters
 
@@ -748,7 +748,7 @@ ___
 
 ### removeProducts
 
-▸ **removeProducts**(`profileId`, `productId`): `Promise`<`void` \| [`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**removeProducts**(`profileId`, `productId`): `Promise`<`void` \| [`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 Removes a product or an array of products from the profile.
 
@@ -801,7 +801,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`profileId`, `options?`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**retrieve**(`profileId`, `options?`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 Gets a profile by id.
 Throws in case of DB Error and if profile was not found.
@@ -855,7 +855,7 @@ ___
 
 ### retrieveDefault
 
-▸ **retrieveDefault**(): `Promise`<``null`` \| [`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**retrieveDefault**(): `Promise`<``null`` \| [`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 #### Returns
 
@@ -885,7 +885,7 @@ ___
 
 ### retrieveForProducts
 
-▸ **retrieveForProducts**(`productIds`): `Promise`<{ `[product_id: string]`: [`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)[];  }\>
+**retrieveForProducts**(`productIds`): `Promise`<{ `[product_id: string]`: [`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)[];  }\>
 
 #### Parameters
 
@@ -928,7 +928,7 @@ ___
 
 ### retrieveGiftCardDefault
 
-▸ **retrieveGiftCardDefault**(): `Promise`<``null`` \| [`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**retrieveGiftCardDefault**(): `Promise`<``null`` \| [`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 Retrieves the default gift card profile
 
@@ -960,7 +960,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -998,7 +998,7 @@ ___
 
 ### update
 
-▸ **update**(`profileId`, `update`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
+**update**(`profileId`, `update`): `Promise`<[`ShippingProfile`](admin_collections.internal.ShippingProfile.mdx)\>
 
 Updates a profile. Metadata updates and product updates should use
 dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
@@ -1053,7 +1053,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ShippingProfileService`](admin_discounts.internal.internal.ShippingProfileService.mdx)
+**withTransaction**(`transactionManager?`): [`ShippingProfileService`](admin_discounts.internal.internal.ShippingProfileService.mdx)
 
 #### Parameters
 

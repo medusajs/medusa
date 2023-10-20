@@ -123,7 +123,7 @@ Provides layer to manipulate customers.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -148,7 +148,7 @@ TransactionBaseService.activeManager\_
 
 ### addAddress
 
-▸ **addAddress**(`customerId`, `address`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx) \| [`Address`](admin_collections.internal.Address.mdx)\>
+**addAddress**(`customerId`, `address`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx) \| [`Address`](admin_collections.internal.Address.mdx)\>
 
 #### Parameters
 
@@ -199,7 +199,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -276,7 +276,7 @@ ___
 
 ### count
 
-▸ **count**(): `Promise`<`number`\>
+**count**(): `Promise`<`number`\>
 
 Return the total number of documents in database
 
@@ -308,7 +308,7 @@ ___
 
 ### create
 
-▸ **create**(`customer`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
+**create**(`customer`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
 
 Creates a customer from an email - customers can have accounts associated,
 e.g. to login and view order history, etc. If a password is provided the
@@ -356,7 +356,7 @@ ___
 
 ### delete
 
-▸ **delete**(`customerId`): `Promise`<`void` \| [`Customer`](admin_collections.internal.Customer.mdx)\>
+**delete**(`customerId`): `Promise`<`void` \| [`Customer`](admin_collections.internal.Customer.mdx)\>
 
 Deletes a customer from a given customer id.
 
@@ -401,7 +401,7 @@ ___
 
 ### generateResetPasswordToken
 
-▸ **generateResetPasswordToken**(`customerId`): `Promise`<`string`\>
+**generateResetPasswordToken**(`customerId`): `Promise`<`string`\>
 
 Generate a JSON Web token, that will be sent to a customer, that wishes to
 reset password.
@@ -450,7 +450,7 @@ ___
 
 ### hashPassword\_
 
-▸ **hashPassword_**(`password`): `Promise`<`string`\>
+**hashPassword_**(`password`): `Promise`<`string`\>
 
 Hashes a password
 
@@ -495,7 +495,7 @@ ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)[]\>
+**list**(`selector?`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)[]\>
 
 #### Parameters
 
@@ -555,7 +555,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`Customer`](admin_collections.internal.Customer.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`Customer`](admin_collections.internal.Customer.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -614,7 +614,7 @@ ___
 
 ### listByEmail
 
-▸ **listByEmail**(`email`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)[]\>
+**listByEmail**(`email`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)[]\>
 
 #### Parameters
 
@@ -674,7 +674,7 @@ ___
 
 ### removeAddress
 
-▸ **removeAddress**(`customerId`, `addressId`): `Promise`<`void`\>
+**removeAddress**(`customerId`, `addressId`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -716,7 +716,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`customerId`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
+**retrieve**(`customerId`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
 
 Gets a customer by id.
 
@@ -769,7 +769,7 @@ ___
 
 ### retrieveByEmail
 
-▸ **retrieveByEmail**(`email`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
+**retrieveByEmail**(`email`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
 
 Gets a registered customer by email.
 
@@ -824,7 +824,7 @@ ___
 
 ### retrieveByPhone
 
-▸ **retrieveByPhone**(`phone`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
+**retrieveByPhone**(`phone`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
 
 Gets a customer by phone.
 
@@ -877,7 +877,7 @@ ___
 
 ### retrieveRegisteredByEmail
 
-▸ **retrieveRegisteredByEmail**(`email`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
+**retrieveRegisteredByEmail**(`email`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
 
 #### Parameters
 
@@ -928,7 +928,7 @@ ___
 
 ### retrieveUnregisteredByEmail
 
-▸ **retrieveUnregisteredByEmail**(`email`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
+**retrieveUnregisteredByEmail**(`email`, `config?`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
 
 #### Parameters
 
@@ -979,7 +979,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -1017,7 +1017,7 @@ ___
 
 ### update
 
-▸ **update**(`customerId`, `update`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
+**update**(`customerId`, `update`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
 
 Updates a customer.
 
@@ -1070,7 +1070,7 @@ ___
 
 ### updateAddress
 
-▸ **updateAddress**(`customerId`, `addressId`, `address`): `Promise`<[`Address`](admin_collections.internal.Address.mdx)\>
+**updateAddress**(`customerId`, `addressId`, `address`): `Promise`<[`Address`](admin_collections.internal.Address.mdx)\>
 
 #### Parameters
 
@@ -1129,7 +1129,7 @@ ___
 
 ### updateBillingAddress\_
 
-▸ **updateBillingAddress_**(`customer`, `addressOrId`): `Promise`<`void`\>
+**updateBillingAddress_**(`customer`, `addressOrId`): `Promise`<`void`\>
 
 Updates the customers' billing address.
 
@@ -1173,7 +1173,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`CustomerService`](admin_discounts.internal.internal.CustomerService.mdx)
+**withTransaction**(`transactionManager?`): [`CustomerService`](admin_discounts.internal.internal.CustomerService.mdx)
 
 #### Parameters
 

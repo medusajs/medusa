@@ -19,7 +19,7 @@ Fullfillment provider plugin services should extend the AbstractFulfillmentServi
 
 ### calculatePrice
 
-▸ **calculatePrice**(`optionData`, `data`, `cart`): `Promise`<`number`\>
+**calculatePrice**(`optionData`, `data`, `cart`): `Promise`<`number`\>
 
 Used to calculate a price for a given shipping option.
 
@@ -80,7 +80,7 @@ ___
 
 ### canCalculate
 
-▸ **canCalculate**(`data`): `Promise`<`boolean`\>
+**canCalculate**(`data`): `Promise`<`boolean`\>
 
 Used to determine if a shipping option can have a calculated price
 
@@ -125,7 +125,7 @@ ___
 
 ### cancelFulfillment
 
-▸ **cancelFulfillment**(`fulfillmentData`): `Promise`<`any`\>
+**cancelFulfillment**(`fulfillmentData`): `Promise`<`any`\>
 
 Cancel a fulfillment using data from the fulfillment
 
@@ -170,7 +170,7 @@ ___
 
 ### createFulfillment
 
-▸ **createFulfillment**(`data`, `items`, `order`, `fulfillment`): `Promise`<[`FulfillmentProviderData`](../../admin_discounts/modules/admin_discounts.internal.mdx#fulfillmentproviderdata)\>
+**createFulfillment**(`data`, `items`, `order`, `fulfillment`): `Promise`<[`FulfillmentProviderData`](../../admin_discounts/modules/admin_discounts.internal.mdx#fulfillmentproviderdata)\>
 
 Create a fulfillment using data from shipping method, line items, and fulfillment. All from the order.
 The returned value of this method will populate the `fulfillment.data` field.
@@ -240,7 +240,7 @@ ___
 
 ### createReturn
 
-▸ **createReturn**(`returnOrder`): `Promise`<Record<`string`, `unknown`\>\>
+**createReturn**(`returnOrder`): `Promise`<Record<`string`, `unknown`\>\>
 
 Used to create a return order. Should return the data necessary for future
 operations on the return; in particular the data may be used to receive
@@ -304,7 +304,7 @@ ___
 
 ### getFulfillmentDocuments
 
-▸ **getFulfillmentDocuments**(`data`): `Promise`<`any`\>
+**getFulfillmentDocuments**(`data`): `Promise`<`any`\>
 
 Used to retrieve documents associated with a fulfillment.
 
@@ -349,7 +349,7 @@ ___
 
 ### getFulfillmentOptions
 
-▸ **getFulfillmentOptions**(): `Promise`<`any`[]\>
+**getFulfillmentOptions**(): `Promise`<`any`[]\>
 
 Called before a shipping option is created in Admin. The method should
 return all of the options that the fulfillment provider can be used with,
@@ -395,7 +395,7 @@ ___
 
 ### getIdentifier
 
-▸ **getIdentifier**(): `string`
+**getIdentifier**(): `string`
 
 Return a unique identifier to retrieve the fulfillment plugin provider
 
@@ -418,7 +418,7 @@ ___
 
 ### getReturnDocuments
 
-▸ **getReturnDocuments**(`data`): `Promise`<`any`\>
+**getReturnDocuments**(`data`): `Promise`<`any`\>
 
 Used to retrieve documents related to a return order.
 
@@ -463,7 +463,7 @@ ___
 
 ### getShipmentDocuments
 
-▸ **getShipmentDocuments**(`data`): `Promise`<`any`\>
+**getShipmentDocuments**(`data`): `Promise`<`any`\>
 
 Used to retrieve documents related to a shipment.
 
@@ -508,7 +508,7 @@ ___
 
 ### retrieveDocuments
 
-▸ **retrieveDocuments**(`fulfillmentData`, `documentType`): `Promise`<`any`\>
+**retrieveDocuments**(`fulfillmentData`, `documentType`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -559,7 +559,7 @@ ___
 
 ### validateFulfillmentData
 
-▸ **validateFulfillmentData**(`optionData`, `data`, `cart`): `Promise`<Record<`string`, `unknown`\>\>
+**validateFulfillmentData**(`optionData`, `data`, `cart`): `Promise`<Record<`string`, `unknown`\>\>
 
 Called before a shipping method is set on a cart to ensure that the data
 sent with the shipping method is valid. The data object may contain extra
@@ -641,7 +641,7 @@ ___
 
 ### validateOption
 
-▸ **validateOption**(`data`): `Promise`<`boolean`\>
+**validateOption**(`data`): `Promise`<`boolean`\>
 
 Called before a shipping option is created in Admin. Use this to ensure
 that a fulfillment option does in fact exist.

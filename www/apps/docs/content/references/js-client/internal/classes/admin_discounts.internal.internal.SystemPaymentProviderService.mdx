@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -90,7 +90,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -167,7 +167,7 @@ ___
 
 ### authorizePayment
 
-▸ **authorizePayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
+**authorizePayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -227,7 +227,7 @@ ___
 
 ### cancelPayment
 
-▸ **cancelPayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
+**cancelPayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -287,7 +287,7 @@ ___
 
 ### capturePayment
 
-▸ **capturePayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
+**capturePayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -347,7 +347,7 @@ ___
 
 ### createPayment
 
-▸ **createPayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
+**createPayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -407,7 +407,7 @@ ___
 
 ### deletePayment
 
-▸ **deletePayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
+**deletePayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -467,7 +467,7 @@ ___
 
 ### getPaymentData
 
-▸ **getPaymentData**(`_`): `Promise`<Record<`string`, `unknown`\>\>
+**getPaymentData**(`_`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -527,7 +527,7 @@ ___
 
 ### getStatus
 
-▸ **getStatus**(`_`): `Promise`<`string`\>
+**getStatus**(`_`): `Promise`<`string`\>
 
 #### Parameters
 
@@ -570,7 +570,7 @@ ___
 
 ### refundPayment
 
-▸ **refundPayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
+**refundPayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -630,7 +630,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -668,7 +668,7 @@ ___
 
 ### updatePayment
 
-▸ **updatePayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
+**updatePayment**(`_`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -728,7 +728,7 @@ ___
 
 ### updatePaymentData
 
-▸ **updatePaymentData**(`_`): `Promise`<Record<`string`, `unknown`\>\>
+**updatePaymentData**(`_`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -788,7 +788,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`SystemPaymentProviderService`](admin_discounts.internal.internal.SystemPaymentProviderService.mdx)
+**withTransaction**(`transactionManager?`): [`SystemPaymentProviderService`](admin_discounts.internal.internal.SystemPaymentProviderService.mdx)
 
 #### Parameters
 

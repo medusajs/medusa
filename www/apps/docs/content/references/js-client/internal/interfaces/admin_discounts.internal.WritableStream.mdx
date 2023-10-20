@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### addListener
 
-▸ **addListener**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**addListener**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 Alias for `emitter.on(eventName, listener)`.
 
@@ -81,7 +81,7 @@ ___
 
 ### emit
 
-▸ **emit**(`eventName`, `...args`): `boolean`
+**emit**(`eventName`, `...args`): `boolean`
 
 Synchronously calls each of the listeners registered for the event named`eventName`, in the order they were registered, passing the supplied arguments
 to each.
@@ -169,7 +169,7 @@ ___
 
 ### end
 
-▸ **end**(`cb?`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**end**(`cb?`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 #### Parameters
 
@@ -199,7 +199,7 @@ ___
   }
 ]} />
 
-▸ **end**(`data`, `cb?`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**end**(`data`, `cb?`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 #### Parameters
 
@@ -237,7 +237,7 @@ ___
   }
 ]} />
 
-▸ **end**(`str`, `encoding?`, `cb?`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**end**(`str`, `encoding?`, `cb?`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 #### Parameters
 
@@ -287,7 +287,7 @@ ___
 
 ### eventNames
 
-▸ **eventNames**(): (`string` \| `symbol`)[]
+**eventNames**(): (`string` \| `symbol`)[]
 
 Returns an array listing the events for which the emitter has registered
 listeners. The values in the array are strings or `Symbol`s.
@@ -342,7 +342,7 @@ ___
 
 ### getMaxListeners
 
-▸ **getMaxListeners**(): `number`
+**getMaxListeners**(): `number`
 
 Returns the current max listener value for the `EventEmitter` which is either
 set by `emitter.setMaxListeners(n)` or defaults to defaultMaxListeners.
@@ -374,7 +374,7 @@ ___
 
 ### listenerCount
 
-▸ **listenerCount**(`eventName`, `listener?`): `number`
+**listenerCount**(`eventName`, `listener?`): `number`
 
 Returns the number of listeners listening for the event named `eventName`.
 If `listener` is provided, it will return how many times the listener is found
@@ -428,7 +428,7 @@ ___
 
 ### listeners
 
-▸ **listeners**(`eventName`): `Function`[]
+**listeners**(`eventName`): `Function`[]
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -480,7 +480,7 @@ ___
 
 ### off
 
-▸ **off**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**off**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 Alias for `emitter.removeListener()`.
 
@@ -532,7 +532,7 @@ ___
 
 ### on
 
-▸ **on**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**on**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 Adds the `listener` function to the end of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -609,7 +609,7 @@ ___
 
 ### once
 
-▸ **once**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**once**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 Adds a **one-time**`listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -684,7 +684,7 @@ ___
 
 ### prependListener
 
-▸ **prependListener**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**prependListener**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 Adds the `listener` function to the _beginning_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -747,7 +747,7 @@ ___
 
 ### prependOnceListener
 
-▸ **prependOnceListener**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**prependOnceListener**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
@@ -808,7 +808,7 @@ ___
 
 ### rawListeners
 
-▸ **rawListeners**(`eventName`): `Function`[]
+**rawListeners**(`eventName`): `Function`[]
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -878,7 +878,7 @@ ___
 
 ### removeAllListeners
 
-▸ **removeAllListeners**(`event?`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**removeAllListeners**(`event?`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 Removes all listeners, or those of the specified `eventName`.
 
@@ -928,7 +928,7 @@ ___
 
 ### removeListener
 
-▸ **removeListener**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**removeListener**(`eventName`, `listener`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 Removes the specified `listener` from the listener array for the event named`eventName`.
 
@@ -1058,7 +1058,7 @@ ___
 
 ### setMaxListeners
 
-▸ **setMaxListeners**(`n`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
+**setMaxListeners**(`n`): [`WritableStream`](admin_discounts.internal.WritableStream.mdx)
 
 By default `EventEmitter`s will print a warning if more than `10` listeners are
 added for a particular event. This is a useful default that helps finding
@@ -1107,7 +1107,7 @@ ___
 
 ### write
 
-▸ **write**(`buffer`, `cb?`): `boolean`
+**write**(`buffer`, `cb?`): `boolean`
 
 #### Parameters
 
@@ -1145,7 +1145,7 @@ ___
   }
 ]} />
 
-▸ **write**(`str`, `encoding?`, `cb?`): `boolean`
+**write**(`str`, `encoding?`, `cb?`): `boolean`
 
 #### Parameters
 

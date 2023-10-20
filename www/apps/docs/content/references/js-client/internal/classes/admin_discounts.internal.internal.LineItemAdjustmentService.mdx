@@ -75,7 +75,7 @@ Provides layer to manipulate line item adjustments.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -100,7 +100,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -177,7 +177,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)\>
+**create**(`data`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)\>
 
 Creates a line item adjustment
 
@@ -222,7 +222,7 @@ ___
 
 ### createAdjustmentForLineItem
 
-▸ **createAdjustmentForLineItem**(`cart`, `lineItem`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)[]\>
+**createAdjustmentForLineItem**(`cart`, `lineItem`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)[]\>
 
 Creates adjustment for a line item
 
@@ -284,7 +284,7 @@ ___
 
 ### createAdjustments
 
-▸ **createAdjustments**(`cart`, `lineItem?`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)[] \| [`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)[][]\>
+**createAdjustments**(`cart`, `lineItem?`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)[] \| [`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)[][]\>
 
 Creates adjustment for a line item
 
@@ -337,7 +337,7 @@ ___
 
 ### delete
 
-▸ **delete**(`selectorOrIds`): `Promise`<`void`\>
+**delete**(`selectorOrIds`): `Promise`<`void`\>
 
 Deletes line item adjustments matching a selector
 
@@ -373,7 +373,7 @@ ___
 
 ### generateAdjustments
 
-▸ **generateAdjustments**(`calculationContextData`, `generatedLineItem`, `context`): `Promise`<[`GeneratedAdjustment`](../../admin_discounts/modules/admin_discounts.internal.mdx#generatedadjustment)[]\>
+**generateAdjustments**(`calculationContextData`, `generatedLineItem`, `context`): `Promise`<[`GeneratedAdjustment`](../../admin_discounts/modules/admin_discounts.internal.mdx#generatedadjustment)[]\>
 
 Creates adjustment for a line item
 
@@ -443,7 +443,7 @@ ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)[]\>
+**list**(`selector?`, `config?`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)[]\>
 
 Lists line item adjustments
 
@@ -505,7 +505,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`lineItemAdjustmentId`, `config?`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)\>
+**retrieve**(`lineItemAdjustmentId`, `config?`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)\>
 
 Retrieves a line item adjustment by id.
 
@@ -558,7 +558,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -596,7 +596,7 @@ ___
 
 ### update
 
-▸ **update**(`id`, `data`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)\>
+**update**(`id`, `data`): `Promise`<[`LineItemAdjustment`](admin_collections.internal.LineItemAdjustment.mdx)\>
 
 Creates a line item adjustment
 
@@ -649,7 +649,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`LineItemAdjustmentService`](admin_discounts.internal.internal.LineItemAdjustmentService.mdx)
+**withTransaction**(`transactionManager?`): [`LineItemAdjustmentService`](admin_discounts.internal.internal.LineItemAdjustmentService.mdx)
 
 #### Parameters
 

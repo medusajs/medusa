@@ -81,7 +81,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -106,7 +106,7 @@ TransactionBaseService.activeManager\_
 
 ### addCustomers
 
-▸ **addCustomers**(`id`, `customerIds`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
+**addCustomers**(`id`, `customerIds`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
 
 Add a batch of customers to a customer group at once
 
@@ -159,7 +159,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -236,7 +236,7 @@ ___
 
 ### create
 
-▸ **create**(`group`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
+**create**(`group`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
 
 Creates a customer group with the provided data.
 
@@ -281,7 +281,7 @@ ___
 
 ### delete
 
-▸ **delete**(`groupId`): `Promise`<`void`\>
+**delete**(`groupId`): `Promise`<`void`\>
 
 Remove customer group
 
@@ -317,7 +317,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)[]\>
+**list**(`selector`, `config`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)[]\>
 
 List customer groups.
 
@@ -379,7 +379,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config`): `Promise`<[[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config`): `Promise`<[[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)[], `number`]\>
 
 Retrieve a list of customer groups and total count of records that match the query.
 
@@ -440,7 +440,7 @@ ___
 
 ### removeCustomer
 
-▸ **removeCustomer**(`id`, `customerIds`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
+**removeCustomer**(`id`, `customerIds`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
 
 Remove list of customers from a customergroup
 
@@ -493,7 +493,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`customerGroupId`, `config?`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
+**retrieve**(`customerGroupId`, `config?`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
 
 #### Parameters
 
@@ -544,7 +544,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -582,7 +582,7 @@ ___
 
 ### update
 
-▸ **update**(`customerGroupId`, `update`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
+**update**(`customerGroupId`, `update`): `Promise`<[`CustomerGroup`](admin_collections.internal.CustomerGroup.mdx)\>
 
 Update a customer group.
 
@@ -635,7 +635,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`CustomerGroupService`](admin_discounts.internal.internal.CustomerGroupService.mdx)
+**withTransaction**(`transactionManager?`): [`CustomerGroupService`](admin_discounts.internal.internal.CustomerGroupService.mdx)
 
 #### Parameters
 

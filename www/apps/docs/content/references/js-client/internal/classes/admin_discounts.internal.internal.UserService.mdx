@@ -131,7 +131,7 @@ Provides layer to manipulate users.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -156,7 +156,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -233,7 +233,7 @@ ___
 
 ### create
 
-▸ **create**(`user`, `password`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
+**create**(`user`, `password`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
 
 Creates a user with username being validated.
 Fails if email is not a valid format.
@@ -287,7 +287,7 @@ ___
 
 ### delete
 
-▸ **delete**(`userId`): `Promise`<`void`\>
+**delete**(`userId`): `Promise`<`void`\>
 
 Deletes a user from a given user id.
 
@@ -323,7 +323,7 @@ ___
 
 ### generateResetPasswordToken
 
-▸ **generateResetPasswordToken**(`userId`): `Promise`<`string`\>
+**generateResetPasswordToken**(`userId`): `Promise`<`string`\>
 
 Generate a JSON Web token, that will be sent to a user, that wishes to
 reset password.
@@ -372,7 +372,7 @@ ___
 
 ### hashPassword\_
 
-▸ **hashPassword_**(`password`): `Promise`<`string`\>
+**hashPassword_**(`password`): `Promise`<`string`\>
 
 Hashes a password
 
@@ -417,7 +417,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`User`](admin_auth.internal.User.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`User`](admin_auth.internal.User.mdx)[]\>
 
 #### Parameters
 
@@ -477,7 +477,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`userId`, `config?`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
+**retrieve**(`userId`, `config?`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
 
 Gets a user by id.
 Throws in case of DB Error and if user was not found.
@@ -531,7 +531,7 @@ ___
 
 ### retrieveByApiToken
 
-▸ **retrieveByApiToken**(`apiToken`, `relations?`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
+**retrieveByApiToken**(`apiToken`, `relations?`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
 
 Gets a user by api token.
 Throws in case of DB Error and if user was not found.
@@ -585,7 +585,7 @@ ___
 
 ### retrieveByEmail
 
-▸ **retrieveByEmail**(`email`, `config?`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
+**retrieveByEmail**(`email`, `config?`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
 
 Gets a user by email.
 Throws in case of DB Error and if user was not found.
@@ -639,7 +639,7 @@ ___
 
 ### setPassword\_
 
-▸ **setPassword_**(`userId`, `password`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
+**setPassword_**(`userId`, `password`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
 
 Sets a password for a user
 Fails if no user exists with userId and if the hashing of the new
@@ -694,7 +694,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -732,7 +732,7 @@ ___
 
 ### update
 
-▸ **update**(`userId`, `update`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
+**update**(`userId`, `update`): `Promise`<[`User`](admin_auth.internal.User.mdx)\>
 
 Updates a user.
 
@@ -785,7 +785,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`UserService`](admin_discounts.internal.internal.UserService.mdx)
+**withTransaction**(`transactionManager?`): [`UserService`](admin_discounts.internal.internal.UserService.mdx)
 
 #### Parameters
 

@@ -157,7 +157,7 @@ Handles draft orders
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -182,7 +182,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -259,7 +259,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
+**create**(`data`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
 
 Creates a draft order.
 
@@ -304,7 +304,7 @@ ___
 
 ### delete
 
-▸ **delete**(`draftOrderId`): `Promise`<`undefined` \| [`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
+**delete**(`draftOrderId`): `Promise`<`undefined` \| [`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
 
 Deletes draft order idempotently.
 
@@ -349,7 +349,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)[]\>
 
 Lists draft orders
 
@@ -411,7 +411,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)[], `number`]\>
 
 Lists draft orders alongside the count
 
@@ -472,7 +472,7 @@ ___
 
 ### registerCartCompletion
 
-▸ **registerCartCompletion**(`draftOrderId`, `orderId`): `Promise`<`UpdateResult`\>
+**registerCartCompletion**(`draftOrderId`, `orderId`): `Promise`<`UpdateResult`\>
 
 Registers a draft order as completed, when an order has been completed.
 
@@ -525,7 +525,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`draftOrderId`, `config?`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
+**retrieve**(`draftOrderId`, `config?`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
 
 Retrieves a draft order with the given id.
 
@@ -578,7 +578,7 @@ ___
 
 ### retrieveByCartId
 
-▸ **retrieveByCartId**(`cartId`, `config?`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
+**retrieveByCartId**(`cartId`, `config?`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
 
 Retrieves a draft order based on its associated cart id
 
@@ -631,7 +631,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -669,7 +669,7 @@ ___
 
 ### update
 
-▸ **update**(`id`, `data`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
+**update**(`id`, `data`): `Promise`<[`DraftOrder`](admin_collections.internal.DraftOrder.mdx)\>
 
 Updates a draft order with the given data
 
@@ -730,7 +730,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`DraftOrderService`](admin_discounts.internal.internal.DraftOrderService.mdx)
+**withTransaction**(`transactionManager?`): [`DraftOrderService`](admin_discounts.internal.internal.DraftOrderService.mdx)
 
 #### Parameters
 

@@ -83,7 +83,7 @@ Service for managing the stock locations of sales channels
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -108,7 +108,7 @@ TransactionBaseService.activeManager\_
 
 ### associateLocation
 
-▸ **associateLocation**(`salesChannelId`, `locationId`): `Promise`<`void`\>
+**associateLocation**(`salesChannelId`, `locationId`): `Promise`<`void`\>
 
 Associates a sales channel with a stock location.
 
@@ -152,7 +152,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -229,7 +229,7 @@ ___
 
 ### listLocationIds
 
-▸ **listLocationIds**(`salesChannelId`): `Promise`<`string`[]\>
+**listLocationIds**(`salesChannelId`): `Promise`<`string`[]\>
 
 Lists the stock locations associated with a sales channel.
 
@@ -283,7 +283,7 @@ ___
 
 ### listSalesChannelIds
 
-▸ **listSalesChannelIds**(`locationId`): `Promise`<`string`[]\>
+**listSalesChannelIds**(`locationId`): `Promise`<`string`[]\>
 
 Lists the sales channels associated with a stock location.
 
@@ -337,7 +337,7 @@ ___
 
 ### removeLocation
 
-▸ **removeLocation**(`locationId`, `salesChannelId?`): `Promise`<`void`\>
+**removeLocation**(`locationId`, `salesChannelId?`): `Promise`<`void`\>
 
 Removes an association between a sales channel and a stock location.
 
@@ -381,7 +381,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -419,7 +419,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`SalesChannelLocationService`](admin_discounts.internal.internal.SalesChannelLocationService.mdx)
+**withTransaction**(`transactionManager?`): [`SalesChannelLocationService`](admin_discounts.internal.internal.SalesChannelLocationService.mdx)
 
 #### Parameters
 

@@ -107,7 +107,7 @@ Provides layer to manipulate gift cards.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -132,7 +132,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -209,7 +209,7 @@ ___
 
 ### create
 
-▸ **create**(`giftCard`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
+**create**(`giftCard`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
 
 Creates a gift card with provided data given that the data is validated.
 
@@ -254,7 +254,7 @@ ___
 
 ### createTransaction
 
-▸ **createTransaction**(`data`): `Promise`<`string`\>
+**createTransaction**(`data`): `Promise`<`string`\>
 
 #### Parameters
 
@@ -297,7 +297,7 @@ ___
 
 ### delete
 
-▸ **delete**(`giftCardId`): `Promise`<`void` \| [`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
+**delete**(`giftCardId`): `Promise`<`void` \| [`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
 
 Deletes a gift card idempotently
 
@@ -342,7 +342,7 @@ ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)[]\>
+**list**(`selector?`, `config?`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)[]\>
 
 #### Parameters
 
@@ -402,7 +402,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector?`, `config?`): `Promise`<[[`GiftCard`](admin_collections.internal.GiftCard.mdx)[], `number`]\>
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`GiftCard`](admin_collections.internal.GiftCard.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -461,7 +461,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`giftCardId`, `config?`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
+**retrieve**(`giftCardId`, `config?`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
 
 Gets a gift card by id.
 
@@ -514,7 +514,7 @@ ___
 
 ### retrieveByCode
 
-▸ **retrieveByCode**(`code`, `config?`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
+**retrieveByCode**(`code`, `config?`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
 
 #### Parameters
 
@@ -565,7 +565,7 @@ ___
 
 ### retrieve\_
 
-▸ `Protected` **retrieve_**(`selector`, `config?`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
+`Protected` **retrieve_**(`selector`, `config?`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
 
 #### Parameters
 
@@ -616,7 +616,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -654,7 +654,7 @@ ___
 
 ### update
 
-▸ **update**(`giftCardId`, `update`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
+**update**(`giftCardId`, `update`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>
 
 Updates a giftCard.
 
@@ -707,7 +707,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`GiftCardService`](admin_discounts.internal.internal.GiftCardService.mdx)
+**withTransaction**(`transactionManager?`): [`GiftCardService`](admin_discounts.internal.internal.GiftCardService.mdx)
 
 #### Parameters
 
@@ -745,7 +745,7 @@ ___
 
 ### generateCode
 
-▸ `Static` **generateCode**(): `string`
+`Static` **generateCode**(): `string`
 
 Generates a 16 character gift card code
 
@@ -768,7 +768,7 @@ ___
 
 ### resolveTaxRate
 
-▸ `Static` `Protected` **resolveTaxRate**(`giftCardTaxRate`, `region`): ``null`` \| `number`
+`Static` `Protected` **resolveTaxRate**(`giftCardTaxRate`, `region`): ``null`` \| `number`
 
 The tax_rate of the giftcard can depend on whether regions tax gift cards, an input
 provided by the user or the tax rate. Based on these conditions, tax_rate changes.

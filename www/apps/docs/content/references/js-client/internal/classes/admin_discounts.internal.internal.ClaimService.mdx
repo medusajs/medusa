@@ -241,7 +241,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -266,7 +266,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -343,7 +343,7 @@ ___
 
 ### cancel
 
-▸ **cancel**(`id`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
+**cancel**(`id`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
 
 #### Parameters
 
@@ -386,7 +386,7 @@ ___
 
 ### cancelFulfillment
 
-▸ **cancelFulfillment**(`fulfillmentId`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
+**cancelFulfillment**(`fulfillmentId`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
 
 #### Parameters
 
@@ -429,7 +429,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
+**create**(`data`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
 
 Creates a Claim on an Order. Claims consists of items that are claimed and
 optionally items to be sent as replacement for the claimed items. The
@@ -476,7 +476,7 @@ ___
 
 ### createFulfillment
 
-▸ **createFulfillment**(`id`, `config?`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
+**createFulfillment**(`id`, `config?`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
 
 #### Parameters
 
@@ -551,7 +551,7 @@ ___
 
 ### createShipment
 
-▸ **createShipment**(`id`, `fulfillmentId`, `trackingLinks?`, `config?`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
+**createShipment**(`id`, `fulfillmentId`, `trackingLinks?`, `config?`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
 
 #### Parameters
 
@@ -634,7 +634,7 @@ ___
 
 ### getRefundTotalForClaimLinesOnOrder
 
-▸ `Protected` **getRefundTotalForClaimLinesOnOrder**(`order`, `claimItems`): `Promise`<`number`\>
+`Protected` **getRefundTotalForClaimLinesOnOrder**(`order`, `claimItems`): `Promise`<`number`\>
 
 Finds claim line items on an order and calculates the refund amount.
 There are three places too look:
@@ -692,7 +692,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)[]\>
 
 #### Parameters
 
@@ -752,7 +752,7 @@ ___
 
 ### processRefund
 
-▸ **processRefund**(`id`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
+**processRefund**(`id`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
 
 #### Parameters
 
@@ -795,7 +795,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`claimId`, `config?`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
+**retrieve**(`claimId`, `config?`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
 
 Gets an order by id.
 
@@ -848,7 +848,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -886,7 +886,7 @@ ___
 
 ### update
 
-▸ **update**(`id`, `data`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
+**update**(`id`, `data`): `Promise`<[`ClaimOrder`](admin_collections.internal.ClaimOrder.mdx)\>
 
 #### Parameters
 
@@ -937,7 +937,7 @@ ___
 
 ### validateCreateClaimInput
 
-▸ `Protected` **validateCreateClaimInput**(`data`): `Promise`<`void`\>
+`Protected` **validateCreateClaimInput**(`data`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -971,7 +971,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ClaimService`](admin_discounts.internal.internal.ClaimService.mdx)
+**withTransaction**(`transactionManager?`): [`ClaimService`](admin_discounts.internal.internal.ClaimService.mdx)
 
 #### Parameters
 

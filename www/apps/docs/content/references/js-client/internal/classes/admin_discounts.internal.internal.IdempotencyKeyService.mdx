@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -90,7 +90,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -167,7 +167,7 @@ ___
 
 ### create
 
-▸ **create**(`payload`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
+**create**(`payload`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
 
 Creates an idempotency key for a request.
 If no idempotency key is provided in request, we will create a unique
@@ -214,7 +214,7 @@ ___
 
 ### initializeRequest
 
-▸ **initializeRequest**(`headerKey`, `reqMethod`, `reqParams`, `reqPath`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
+**initializeRequest**(`headerKey`, `reqMethod`, `reqParams`, `reqPath`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
 
 Execute the initial steps in a idempotent request.
 
@@ -283,7 +283,7 @@ ___
 
 ### lock
 
-▸ **lock**(`idempotencyKey`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
+**lock**(`idempotencyKey`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
 
 Locks an idempotency.
 
@@ -328,7 +328,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`idempotencyKeyOrSelector`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
+**retrieve**(`idempotencyKeyOrSelector`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
 
 Retrieves an idempotency key
 
@@ -373,7 +373,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -411,7 +411,7 @@ ___
 
 ### update
 
-▸ **update**(`idempotencyKey`, `update`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
+**update**(`idempotencyKey`, `update`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
 
 Locks an idempotency.
 
@@ -464,7 +464,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`IdempotencyKeyService`](admin_discounts.internal.internal.IdempotencyKeyService.mdx)
+**withTransaction**(`transactionManager?`): [`IdempotencyKeyService`](admin_discounts.internal.internal.IdempotencyKeyService.mdx)
 
 #### Parameters
 
@@ -502,7 +502,7 @@ ___
 
 ### workStage
 
-▸ **workStage**(`idempotencyKey`, `callback`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
+**workStage**(`idempotencyKey`, `callback`): `Promise`<[`IdempotencyKey`](admin_discounts.internal.internal.IdempotencyKey.mdx)\>
 
 Performs an atomic work stage.
 An atomic work stage contains some related functionality, that needs to be

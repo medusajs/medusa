@@ -75,7 +75,7 @@ Can authenticate a user based on email password combination
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -100,7 +100,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -177,7 +177,7 @@ ___
 
 ### authenticate
 
-▸ **authenticate**(`email`, `password`): `Promise`<[`AuthenticateResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#authenticateresult)\>
+**authenticate**(`email`, `password`): `Promise`<[`AuthenticateResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#authenticateresult)\>
 
 Authenticates a given user based on an email, password combination. Uses
 scrypt to match password with hashed value.
@@ -231,7 +231,7 @@ ___
 
 ### authenticateAPIToken
 
-▸ **authenticateAPIToken**(`token`): `Promise`<[`AuthenticateResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#authenticateresult)\>
+**authenticateAPIToken**(`token`): `Promise`<[`AuthenticateResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#authenticateresult)\>
 
 Authenticates a given user with an API token
 
@@ -276,7 +276,7 @@ ___
 
 ### authenticateCustomer
 
-▸ **authenticateCustomer**(`email`, `password`): `Promise`<[`AuthenticateResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#authenticateresult)\>
+**authenticateCustomer**(`email`, `password`): `Promise`<[`AuthenticateResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#authenticateresult)\>
 
 Authenticates a customer based on an email, password combination. Uses
 scrypt to match password with hashed value.
@@ -330,7 +330,7 @@ ___
 
 ### comparePassword\_
 
-▸ `Protected` **comparePassword_**(`password`, `hash`): `Promise`<`boolean`\>
+`Protected` **comparePassword_**(`password`, `hash`): `Promise`<`boolean`\>
 
 Verifies if a password is valid given the provided password hash
 
@@ -383,7 +383,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -421,7 +421,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`AuthService`](admin_discounts.internal.internal.AuthService.mdx)
+**withTransaction**(`transactionManager?`): [`AuthService`](admin_discounts.internal.internal.AuthService.mdx)
 
 #### Parameters
 

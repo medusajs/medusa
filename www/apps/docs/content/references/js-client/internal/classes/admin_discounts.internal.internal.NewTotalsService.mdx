@@ -81,7 +81,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -106,7 +106,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -183,7 +183,7 @@ ___
 
 ### getGiftCardTotals
 
-▸ **getGiftCardTotals**(`giftCardableAmount`, `«destructured»`): `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
+**getGiftCardTotals**(`giftCardableAmount`, `«destructured»`): `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
 
 Calculate and return the gift cards totals
 
@@ -260,7 +260,7 @@ ___
 
 ### getGiftCardTransactionsTotals
 
-▸ **getGiftCardTransactionsTotals**(`«destructured»`): { `tax_total`: `number` ; `total`: `number`  }
+**getGiftCardTransactionsTotals**(`«destructured»`): { `tax_total`: `number` ; `total`: `number`  }
 
 Calculate and return the gift cards totals based on their transactions
 
@@ -347,7 +347,7 @@ ___
 
 ### getLineItemRefund
 
-▸ **getLineItemRefund**(`lineItem`, `«destructured»`): `number`
+**getLineItemRefund**(`lineItem`, `«destructured»`): `number`
 
 Return the amount that can be refund on a line item
 
@@ -447,7 +447,7 @@ ___
 
 ### getLineItemRefundLegacy
 
-▸ `Protected` **getLineItemRefundLegacy**(`lineItem`, `«destructured»`): `number`
+`Protected` **getLineItemRefundLegacy**(`lineItem`, `«destructured»`): `number`
 
 #### Parameters
 
@@ -537,7 +537,7 @@ ___
 
 ### getLineItemTotals
 
-▸ **getLineItemTotals**(`items`, `«destructured»`): `Promise`<{ `[lineItemId: string]`: [`LineItemTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineitemtotals);  }\>
+**getLineItemTotals**(`items`, `«destructured»`): `Promise`<{ `[lineItemId: string]`: [`LineItemTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineitemtotals);  }\>
 
 Calculate and return the items totals for either the legacy calculation or the new calculation
 
@@ -614,7 +614,7 @@ ___
 
 ### getLineItemTotalsLegacy
 
-▸ `Protected` **getLineItemTotalsLegacy**(`item`, `«destructured»`): `Promise`<[`LineItemTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineitemtotals)\>
+`Protected` **getLineItemTotalsLegacy**(`item`, `«destructured»`): `Promise`<[`LineItemTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineitemtotals)\>
 
 Calculate and return the legacy calculated totals using the tax rate
 
@@ -707,7 +707,7 @@ ___
 
 ### getLineItemTotals\_
 
-▸ `Protected` **getLineItemTotals_**(`item`, `«destructured»`): `Promise`<[`LineItemTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineitemtotals)\>
+`Protected` **getLineItemTotals_**(`item`, `«destructured»`): `Promise`<[`LineItemTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineitemtotals)\>
 
 Calculate and return the totals for an item
 
@@ -808,7 +808,7 @@ ___
 
 ### getShippingMethodTotals
 
-▸ **getShippingMethodTotals**(`shippingMethods`, `«destructured»`): `Promise`<{ `[shippingMethodId: string]`: [`ShippingMethodTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingmethodtotals);  }\>
+**getShippingMethodTotals**(`shippingMethods`, `«destructured»`): `Promise`<{ `[shippingMethodId: string]`: [`ShippingMethodTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingmethodtotals);  }\>
 
 Calculate and return the shipping methods totals for either the legacy calculation or the new calculation
 
@@ -893,7 +893,7 @@ ___
 
 ### getShippingMethodTotalsLegacy
 
-▸ `Protected` **getShippingMethodTotalsLegacy**(`shippingMethod`, `«destructured»`): `Promise`<[`ShippingMethodTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingmethodtotals)\>
+`Protected` **getShippingMethodTotalsLegacy**(`shippingMethod`, `«destructured»`): `Promise`<[`ShippingMethodTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingmethodtotals)\>
 
 Calculate and return the shipping method totals legacy using the tax rate
 
@@ -970,7 +970,7 @@ ___
 
 ### getShippingMethodTotals\_
 
-▸ `Protected` **getShippingMethodTotals_**(`shippingMethod`, `«destructured»`): `Promise`<[`ShippingMethodTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingmethodtotals)\>
+`Protected` **getShippingMethodTotals_**(`shippingMethod`, `«destructured»`): `Promise`<[`ShippingMethodTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingmethodtotals)\>
 
 Calculate and return the shipping method totals
 
@@ -1055,7 +1055,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -1093,7 +1093,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`NewTotalsService`](admin_discounts.internal.internal.NewTotalsService.mdx)
+**withTransaction**(`transactionManager?`): [`NewTotalsService`](admin_discounts.internal.internal.NewTotalsService.mdx)
 
 #### Parameters
 
