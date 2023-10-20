@@ -8,6 +8,9 @@ import dotenv from "dotenv"
 import express from "express"
 import loaders from "../loaders"
 import { createDefaultRuleTypes } from "./create-default-rule-types"
+import { FlagRouter, MedusaError } from "@medusajs/utils"
+import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
+import { Modules } from "@medusajs/modules-sdk"
 
 dotenv.config()
 
@@ -76,6 +79,16 @@ const migrate = async function ({ directory }) {
   const variantService: ProductVariantService = await container.resolve(
     "productVariantService"
   )
+  const featureFlagRouter: FlagRouter = await container.resolve(
+    "featureFlagRouter"
+  )
+
+  if (
+    !featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key) &&
+    !featureFlagRouter.isFeatureEnabled(Modules.PRICING)
+  ) {
+    throw new MedusaError(MedusaError.Types.NOT_ALLOWED, "Pricing module not enabled")
+  }
 
   await createDefaultRuleTypes(container)
 
@@ -87,7 +100,9 @@ const migrate = async function ({ directory }) {
   await processBatch(variants, container)
 
   let processedCount = variants.length
+
   console.log(`Processed ${processedCount} of ${totalCount}`)
+
   while (processedCount < totalCount) {
     const nextBatch = await variantService.list(
       {},
