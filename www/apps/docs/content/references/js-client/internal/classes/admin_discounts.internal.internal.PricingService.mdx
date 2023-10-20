@@ -651,7 +651,7 @@ Gets the prices for a shipping option.
       {
         "name": "PricedShippingOption",
         "type": "[`Partial`](../../admin_discounts/modules/admin_discounts.internal.mdx#partial)<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\\> & [`ShippingOptionPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingoptionpricing)",
-        "description": "",
+        "description": "#### Schema PricedShippingOption title: \"Priced Shipping Option\" type: object allOf: - $ref: \"#/components/schemas/ShippingOption\" - type: object properties: price_incl_tax: type: number description: Price including taxes tax_rates: type: array description: An array of applied tax rates items: type: object properties: rate: type: number description: The tax rate value name: type: string description: The name of the tax rate code: type: string description: The code of the tax rate tax_amount: type: number description: The taxes applied.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -773,7 +773,7 @@ Set additional prices on a list of shipping options.
           {
             "name": "PricedShippingOption",
             "type": "[`Partial`](../../admin_discounts/modules/admin_discounts.internal.mdx#partial)<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\\> & [`ShippingOptionPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingoptionpricing)",
-            "description": "",
+            "description": "#### Schema PricedShippingOption title: \"Priced Shipping Option\" type: object allOf: - $ref: \"#/components/schemas/ShippingOption\" - type: object properties: price_incl_tax: type: number description: Price including taxes tax_rates: type: array description: An array of applied tax rates items: type: object properties: rate: type: number description: The tax rate value name: type: string description: The name of the tax rate code: type: string description: The code of the tax rate tax_amount: type: number description: The taxes applied.",
             "optional": false,
             "defaultValue": "",
             "children": []
@@ -835,7 +835,7 @@ Set additional prices on a list of product variants.
           {
             "name": "PricedVariant",
             "type": "[`Partial`](../../admin_discounts/modules/admin_discounts.internal.mdx#partial)<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\\> & [`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)",
-            "description": "",
+            "description": "#### Schema PricedVariant title: \"Priced Product Variant\" type: object allOf: - $ref: \"#/components/schemas/ProductVariant\" - type: object properties: original_price: type: number description: The original price of the variant without any discounted prices applied. calculated_price: type: number description: The calculated price of the variant. Can be a discounted price. original_price_incl_tax: type: number description: The original price of the variant including taxes. calculated_price_incl_tax: type: number description: The calculated price of the variant including taxes. original_tax: type: number description: The taxes applied on the original price. calculated_tax: type: number description: The taxes applied on the calculated price. tax_rates: type: array description: An array of applied tax rates items: type: object properties: rate: type: number description: The tax rate value name: type: string description: The name of the tax rate code: type: string description: The code of the tax rate",
             "optional": false,
             "defaultValue": "",
             "children": []

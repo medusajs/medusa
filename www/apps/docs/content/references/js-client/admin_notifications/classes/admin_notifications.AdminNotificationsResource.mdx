@@ -50,7 +50,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
       {
         "name": "AdminNotificationsListRes",
         "type": "[`PaginatedResponse`](../../admin_discounts/modules/admin_discounts.internal.mdx#paginatedresponse) & { `notifications`: [`Notification`](../../internal/classes/admin_discounts.internal.internal.Notification.mdx)[]  }",
-        "description": "",
+        "description": "#### Schema AdminNotificationsListRes type: object x-expanded-relations: field: notifications relations: - resends required: - notifications properties: notifications: type: array description: an array of notifications items: $ref: \"#/components/schemas/Notification\" count: type: integer description: The total number of notifications offset: type: integer description: The number of notifications skipped when retrieving the notifications. limit: type: integer description: The number of notifications per page",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -109,7 +109,7 @@ ___
       {
         "name": "AdminNotificationsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminNotificationsRes type: object x-expanded-relations: field: notification relations: - resends required: - notification properties: notification: description: Notification details $ref: \"#/components/schemas/Notification\"",
         "optional": false,
         "defaultValue": "",
         "children": []

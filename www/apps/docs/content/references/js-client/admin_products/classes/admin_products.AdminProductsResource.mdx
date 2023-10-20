@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
       {
         "name": "AdminProductsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - product properties: product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -109,7 +109,7 @@ ___
       {
         "name": "AdminProductsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - product properties: product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -168,7 +168,7 @@ ___
       {
         "name": "AdminProductsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - product properties: product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -219,7 +219,7 @@ ___
       {
         "name": "AdminProductsDeleteRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsDeleteRes type: object required: - id - object - deleted properties: id: type: string description: The ID of the deleted Product. object: type: string description: The type of the object that was deleted. default: product deleted: type: boolean description: Whether or not the items were deleted. default: true",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -278,7 +278,7 @@ ___
       {
         "name": "AdminProductsDeleteOptionRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsDeleteOptionRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - option_id - object - deleted - product properties: option_id: type: string description: The ID of the deleted Product Option object: type: string description: The type of the object that was deleted. default: option deleted: type: boolean description: Whether or not the items were deleted. default: true product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -337,7 +337,7 @@ ___
       {
         "name": "AdminProductsDeleteVariantRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsDeleteVariantRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - variant_id - object - deleted - product properties: variant_id: type: string description: The ID of the deleted Product Variant. object: type: string description: The type of the object that was deleted. default: product-variant deleted: type: boolean description: Whether or not the items were deleted. default: true product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -388,7 +388,7 @@ ___
       {
         "name": "AdminProductsListRes",
         "type": "[`PaginatedResponse`](../../admin_batch_jobs/modules/admin_batch_jobs.internal.mdx#paginatedresponse) & { `products`: ([`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct) \\| [`Product`](../../internal/classes/admin_collections.internal.Product.mdx))[]  }",
-        "description": "",
+        "description": "#### Schema AdminProductsListRes type: object x-expanded-relations: field: products relations: - collection - images - options - tags - type - variants - variants.options - variants.prices totals: - variants.purchasable required: - products - count - offset - limit properties: products: type: array description: An array of products details. items: $ref: \"#/components/schemas/PricedProduct\" count: type: integer description: The total number of items available offset: type: integer description: The number of products skipped when retrieving the products. limit: type: integer description: The number of items per page",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -431,7 +431,7 @@ ___
       {
         "name": "AdminProductsListTagsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsListTagsRes type: object required: - tags properties: tags: description: An array of product tags details. type: array items: type: object required: - id - usage_count - value properties: id: description: The ID of the tag. type: string usage_count: description: The number of products that use this tag. type: string value: description: The value of the tag. type: string",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -474,7 +474,7 @@ ___
       {
         "name": "AdminProductsListTypesRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsListTypesRes type: object required: - types properties: types: type: array description: An array of product types details. items: $ref: \"#/components/schemas/ProductType\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -529,7 +529,7 @@ ___
       {
         "name": "AdminProductsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - product properties: product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -588,7 +588,7 @@ ___
       {
         "name": "AdminProductsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - product properties: product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -647,7 +647,7 @@ ___
       {
         "name": "AdminProductsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - product properties: product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -714,7 +714,7 @@ ___
       {
         "name": "AdminProductsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - product properties: product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -781,7 +781,7 @@ ___
       {
         "name": "AdminProductsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminProductsRes type: object x-expanded-relations: field: product relations: - collection - images - options - tags - type - variants - variants.options - variants.prices required: - product properties: product: description: Product details. $ref: \"#/components/schemas/PricedProduct\"",
         "optional": false,
         "defaultValue": "",
         "children": []

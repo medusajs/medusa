@@ -18,7 +18,7 @@ v0.9.4
   {
     "name": "closed",
     "type": "`boolean`",
-    "description": "Is `true` after `'close'` has been emitted.",
+    "description": "Is `true` after `'close'` has been emitted. #### Since v18.0.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -26,7 +26,7 @@ v0.9.4
   {
     "name": "destroyed",
     "type": "`boolean`",
-    "description": "Is `true` after `readable.destroy()` has been called.",
+    "description": "Is `true` after `readable.destroy()` has been called. #### Since v8.0.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -34,7 +34,7 @@ v0.9.4
   {
     "name": "errored",
     "type": "``null`` \\| [`Error`](../../admin_discounts/modules/admin_discounts.internal.mdx#error)",
-    "description": "Returns error if the stream has been destroyed with an error.",
+    "description": "Returns error if the stream has been destroyed with an error. #### Since v18.0.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -42,7 +42,7 @@ v0.9.4
   {
     "name": "readable",
     "type": "`boolean`",
-    "description": "Is `true` if it is safe to call `readable.read()`, which means the stream has not been destroyed or emitted `'error'` or `'end'`.",
+    "description": "Is `true` if it is safe to call `readable.read()`, which means the stream has not been destroyed or emitted `'error'` or `'end'`. #### Since v11.4.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -50,7 +50,7 @@ v0.9.4
   {
     "name": "readableAborted",
     "type": "`boolean`",
-    "description": "Returns whether the stream was destroyed or errored before emitting `'end'`.",
+    "description": "Returns whether the stream was destroyed or errored before emitting `'end'`. #### Since v16.8.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -58,7 +58,7 @@ v0.9.4
   {
     "name": "readableDidRead",
     "type": "`boolean`",
-    "description": "Returns whether `'data'` has been emitted.",
+    "description": "Returns whether `'data'` has been emitted. #### Since v16.7.0, v14.18.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -66,7 +66,7 @@ v0.9.4
   {
     "name": "readableEncoding",
     "type": "``null`` \\| [`BufferEncoding`](../../admin_discounts/modules/admin_discounts.internal.mdx#bufferencoding)",
-    "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
+    "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method. #### Since v12.7.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -74,7 +74,7 @@ v0.9.4
   {
     "name": "readableEnded",
     "type": "`boolean`",
-    "description": "Becomes `true` when `'end'` event is emitted.",
+    "description": "Becomes `true` when `'end'` event is emitted. #### Since v12.9.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -82,7 +82,7 @@ v0.9.4
   {
     "name": "readableFlowing",
     "type": "``null`` \\| `boolean`",
-    "description": "This property reflects the current state of a `Readable` stream as described in the `Three states` section.",
+    "description": "This property reflects the current state of a `Readable` stream as described in the `Three states` section. #### Since v9.4.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -90,7 +90,7 @@ v0.9.4
   {
     "name": "readableHighWaterMark",
     "type": "`number`",
-    "description": "Returns the value of `highWaterMark` passed when creating this `Readable`.",
+    "description": "Returns the value of `highWaterMark` passed when creating this `Readable`. #### Since v9.3.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -98,7 +98,7 @@ v0.9.4
   {
     "name": "readableLength",
     "type": "`number`",
-    "description": "This property contains the number of bytes (or objects) in the queue ready to be read. The value provides introspection data regarding the status of the `highWaterMark`.",
+    "description": "This property contains the number of bytes (or objects) in the queue ready to be read. The value provides introspection data regarding the status of the `highWaterMark`. #### Since v9.4.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -106,15 +106,15 @@ v0.9.4
   {
     "name": "readableObjectMode",
     "type": "`boolean`",
-    "description": "Getter for the property `objectMode` of a given `Readable` stream.",
+    "description": "Getter for the property `objectMode` of a given `Readable` stream. #### Since v12.3.0",
     "optional": false,
     "defaultValue": "",
     "children": []
   },
   {
     "name": "captureRejectionSymbol",
-    "type": "typeof [`captureRejectionSymbol`](admin_discounts.internal.PassThrough.mdx#capturerejectionsymbol)",
-    "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
+    "type": "typeof [`captureRejectionSymbol`](admin_discounts.internal.Socket.mdx#capturerejectionsymbol)",
+    "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`. #### Since v13.4.0, v12.16.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -122,7 +122,7 @@ v0.9.4
   {
     "name": "captureRejections",
     "type": "`boolean`",
-    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects. #### Since v13.4.0, v12.16.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -130,15 +130,15 @@ v0.9.4
   {
     "name": "defaultMaxListeners",
     "type": "`number`",
-    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`. #### Since v0.11.2",
     "optional": false,
     "defaultValue": "",
     "children": []
   },
   {
     "name": "errorMonitor",
-    "type": "typeof [`errorMonitor`](admin_discounts.internal.PassThrough.mdx#errormonitor)",
-    "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
+    "type": "typeof [`errorMonitor`](admin_discounts.internal.Socket.mdx#errormonitor)",
+    "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed. #### Since v13.6.0, v12.17.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -3079,7 +3079,7 @@ a call to `readable.read(size)`, regardless of the value of the`size` argument.
 If the `readable.read()` method returns a chunk of data, a `'data'` event will
 also be emitted.
 
-Calling [read](admin_discounts.internal.PassThrough.mdx#read) after the `'end'` event has
+Calling [read](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx#read) after the `'end'` event has
 been emitted will return `null`. No runtime error will be raised.
 
 #### Parameters
@@ -3756,7 +3756,7 @@ ___
 ▸ **unpipe**(`destination?`): [`Readable`](admin_discounts.internal.Readable.mdx)
 
 The `readable.unpipe()` method detaches a `Writable` stream previously attached
-using the [pipe](admin_discounts.internal.PassThrough.mdx#pipe) method.
+using the [pipe](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx#pipe) method.
 
 If the `destination` is not specified, then _all_ pipes are detached.
 
@@ -3872,11 +3872,11 @@ function parseHeader(stream, callback) {
 }
 ```
 
-Unlike [push](admin_discounts.internal.PassThrough.mdx#push), `stream.unshift(chunk)` will not
+Unlike [push](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx#push), `stream.unshift(chunk)` will not
 end the reading process by resetting the internal reading state of the stream.
 This can cause unexpected results if `readable.unshift()` is called during a
-read (i.e. from within a [_read](admin_discounts.internal.PassThrough.mdx#_read) implementation on a
-custom stream). Following the call to `readable.unshift()` with an immediate [push](admin_discounts.internal.PassThrough.mdx#push) will reset the reading state appropriately,
+read (i.e. from within a [_read](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx#_read) implementation on a
+custom stream). Following the call to `readable.unshift()` with an immediate [push](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx#push) will reset the reading state appropriately,
 however it is best to simply avoid calling `readable.unshift()` while in the
 process of performing a read.
 
@@ -3933,7 +3933,7 @@ ___
 Prior to Node.js 0.10, streams did not implement the entire `node:stream`module API as it is currently defined. (See `Compatibility` for more
 information.)
 
-When using an older Node.js library that emits `'data'` events and has a [pause](admin_discounts.internal.PassThrough.mdx#pause) method that is advisory only, the`readable.wrap()` method can be used to create a `Readable`
+When using an older Node.js library that emits `'data'` events and has a [pause](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx#pause) method that is advisory only, the`readable.wrap()` method can be used to create a `Readable`
 stream that uses
 the old stream as its data source.
 
