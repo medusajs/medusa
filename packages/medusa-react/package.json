@@ -26,7 +26,7 @@
     "test": "echo \"Tests disabled temporarily\""
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.12.0",
+    "@medusajs/medusa": "^1.17.2",
     "@tanstack/react-query": "^4.22.0",
     "react": "^16.8 || ^17.0 || ^18.0",
     "react-dom": "^16.8 || ^17.0 || ^18.0"
