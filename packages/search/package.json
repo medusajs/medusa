@@ -8,14 +8,14 @@
     "dist"
   ],
   "bin": {
-    "medusa-catalog-migrations-down": "dist/scripts/bin/run-migration-down.js",
-    "medusa-catalog-migrations-up": "dist/scripts/bin/run-migration-up.js",
-    "medusa-catalog-seed": "dist/scripts/bin/run-seed.js"
+    "medusa-search-migrations-down": "dist/scripts/bin/run-migration-down.js",
+    "medusa-search-migrations-up": "dist/scripts/bin/run-migration-up.js",
+    "medusa-search-seed": "dist/scripts/bin/run-seed.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
-    "directory": "packages/catalog"
+    "directory": "packages/search"
   },
   "publishConfig": {
     "access": "public"
