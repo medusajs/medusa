@@ -438,7 +438,7 @@ Run your backend to test it out:
 npx medusa develop
 ```
 
-Then, try uploading a file, for example, using the [Upload File endpoint](https://docs.medusajs.com/api/admin#uploads_postuploads). The file should be uploaded based on the logic you’ve implemented.
+Then, try uploading a file, for example, using the [Upload File API Route](https://docs.medusajs.com/api/admin#uploads_postuploads). The file should be uploaded based on the logic you’ve implemented.
 
 ### (Optional) Accessing the File
 
@@ -452,15 +452,17 @@ Since the file is uploaded to a local directory `uploads`, you need to configure
 
 To do that, create the file `src/api/index.ts` with the following content:
 
-```ts
+```ts title=src/api/middlewares.ts
+import type { MiddlewaresConfig } from "@medusajs/medusa"
 import express from "express"
 
-export default () => {
-  const app = express.Router()
-
-  app.use(`/uploads`, express.static(uploadDir))
-
-  return app
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/uploads",
+      middlewares: [express.static(uploadDir)],
+    },
+  ],
 }
 ```
 

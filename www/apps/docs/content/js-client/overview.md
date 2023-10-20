@@ -54,7 +54,7 @@ Make sure to set `moduleResolution` in your `tsconfig.json` to `nodenext` or `no
 
 You'll find in the sidebar of this reference names of different resources. These resources are properties in the Medusa instance you initialize and you can access them directly using the instance. Then, you'll be able to access the methods or nested resources within those resources.
 
-For example, to create a new customer you can access the [create](/references/js-client/classes/CustomerResource#create) method under the [customers](/references/js-client/classes/CustomerResource) property of your client:
+For example, to create a new customer you can access the [create](../references/js-client/customers/classes/customers.CustomerResource.mdx#create) method under the [customers](../references/js-client/customers/classes/customers.CustomerResource.mdx) property of your client:
 
 ```ts
 import Medusa from "@medusajs/medusa-js"
@@ -89,7 +89,7 @@ You can follow [this guide](https://docs.medusajs.com/api/admin#authentication) 
 
 ### Using cookies
 
-Authentication using cookies is done automatically by Axios, which is used within the Medusa JS Client, when authenticating using the [auth](/references/js-client/classes/AuthResource) endpoints. After authentication, all subsequent calls will be authenticated.
+Authentication using cookies is done automatically by Axios, which is used within the Medusa JS Client, when authenticating using the [auth](../references/js-client/auth/classes/auth.AuthResource.mdx) API Routes. After authentication, all subsequent calls will be authenticated.
 
 ---
 

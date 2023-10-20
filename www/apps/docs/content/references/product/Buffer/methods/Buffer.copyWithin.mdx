@@ -1,0 +1,62 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# copyWithin
+
+[Buffer](../../interfaces/Buffer.mdx).copyWithin
+
+**copyWithin**(`target`, `start`, `end?`): [`Buffer`](../../variables/Buffer-1.mdx)
+
+Returns the this object after copying a section of the array identified by start and end
+to the same array starting at position target
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "target",
+    "type": "`number`",
+    "description": "If target is negative, it is treated as length+target where length is the length of the array.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "start",
+    "type": "`number`",
+    "description": "If start is negative, it is treated as length+start. If end is negative, it is treated as length+end.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "end",
+    "type": "`number`",
+    "description": "If not specified, length of the this object is used as its default value.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Inherited from
+
+Uint8Array.copyWithin

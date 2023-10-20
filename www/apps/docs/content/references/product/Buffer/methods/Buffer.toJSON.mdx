@@ -1,0 +1,74 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# toJSON
+
+[Buffer](../../interfaces/Buffer.mdx).toJSON
+
+**toJSON**(): { `data`: `number`[] ; `type`: ``"Buffer"``  }
+
+Returns a JSON representation of `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) implicitly calls
+this function when stringifying a `Buffer` instance.
+
+`Buffer.from()` accepts objects in the format returned from this method.
+In particular, `Buffer.from(buf.toJSON())` works like `Buffer.from(buf)`.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5]);
+const json = JSON.stringify(buf);
+
+console.log(json);
+// Prints: {"type":"Buffer","data":[1,2,3,4,5]}
+
+const copy = JSON.parse(json, (key, value) => {
+  return value &#x26;&#x26; value.type === 'Buffer' ?
+    Buffer.from(value) :
+    value;
+});
+
+console.log(copy);
+// Prints: <Buffer 01 02 03 04 05>
+```
+
+#### Returns
+
+`object`
+
+<ParameterTypes parameters={[
+  {
+    "name": "`object`",
+    "type": "`object`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`number`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "``\"Buffer\"``",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.9.2

@@ -162,13 +162,13 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 ### getFulfillmentOptions
 
-This method is used when retrieving the list of fulfillment options available in a region, particularly by the [List Fulfillment Options endpoint](https://docs.medusajs.com/api/admin#regions_getregionsregionfulfillmentoptions).
+This method is used when retrieving the list of fulfillment options available in a region, particularly by the [List Fulfillment Options API Route](https://docs.medusajs.com/api/admin#regions_getregionsregionfulfillmentoptions).
 
 For example, if you’re integrating UPS as a fulfillment provider, you might support two fulfillment options: UPS Express Shipping and UPS Access Point. Each of these options can have different data associated with them.
 
 This method is expected to return an array of options. These options don't have any required format.
 
-Later on, these options can be used when creating a shipping option, such as when using the [Create Shipping Option endpoint](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptions). The chosen fulfillment option, which is one of the items in the array returned by this method, will be set in the `data` object of the shipping option.
+Later on, these options can be used when creating a shipping option, such as when using the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptions). The chosen fulfillment option, which is one of the items in the array returned by this method, will be set in the `data` object of the shipping option.
 
 For example:
 
@@ -190,7 +190,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
 
 ### validateOption
 
-Once the admin creates the shipping option, the data of the shipping option will be validated first using this method. This method is called when the [Create Shipping Option endpoint](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptions) is used.
+Once the admin creates the shipping option, the data of the shipping option will be validated first using this method. This method is called when the [Create Shipping Option API Route](https://docs.medusajs.com/api/admin#shipping-options_postshippingoptions) is used.
 
 This method accepts the `data` object that is sent in the body of the request, basically, the `data` object of the shipping option. You can use this data to validate the shipping option before it is saved.
 
@@ -223,7 +223,7 @@ This method accepts three parameters:
 
 You can use these parameters to validate the chosen shipping option. For example, you can check if the `data` object passed as a second parameter includes all data needed to fulfill the shipment later on.
 
-If any of the data is invalid, you can throw an error. This error will stop Medusa from creating a shipping method and the error message will be returned as a result to the endpoint.
+If any of the data is invalid, you can throw an error. This error will stop Medusa from creating a shipping method and the error message will be returned as a result of the API Route.
 
 If everything is valid, this method must return an object that will be stored in the `data` property of the shipping method to be created. So, make sure the value you return contains everything you need to fulfill the shipment later on.
 

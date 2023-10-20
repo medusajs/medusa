@@ -1,0 +1,22 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Query
+
+ **Query**<`T`\>: `T` extends `object` ? `T` extends [`Scalar`](Scalar.mdx) ? `never` : [`FilterQuery`](FilterQuery.mdx)<`T`\> : [`FilterValue`](FilterValue.mdx)<`T`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />

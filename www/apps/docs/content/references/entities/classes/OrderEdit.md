@@ -28,7 +28,7 @@ BaseEntity.constructor
 
 #### Defined in
 
-[models/order-edit.ts:73](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L73)
+[models/order-edit.ts:73](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L73)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:70](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L70)
+[models/order-edit.ts:70](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L70)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:40](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L40)
+[models/order-edit.ts:40](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L40)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:58](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L58)
+[models/order-edit.ts:58](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L58)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:55](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L55)
+[models/order-edit.ts:55](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L55)
 
 ___
 
@@ -82,7 +82,7 @@ BaseEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:46](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L46)
+[models/order-edit.ts:46](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L46)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:67](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L67)
+[models/order-edit.ts:67](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L67)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:61](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L61)
+[models/order-edit.ts:61](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L61)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:64](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L64)
+[models/order-edit.ts:64](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L64)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:95](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L95)
+[models/order-edit.ts:95](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L95)
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:88](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L88)
+[models/order-edit.ts:88](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L88)
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:93](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L93)
+[models/order-edit.ts:93](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L93)
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:92](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L92)
+[models/order-edit.ts:92](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L92)
 
 ___
 
@@ -176,7 +176,7 @@ BaseEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -186,7 +186,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:43](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L43)
+[models/order-edit.ts:43](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L43)
 
 ___
 
@@ -196,7 +196,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:76](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L76)
+[models/order-edit.ts:76](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L76)
 
 ___
 
@@ -206,7 +206,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:35](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L35)
+[models/order-edit.ts:35](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L35)
 
 ___
 
@@ -216,7 +216,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:31](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L31)
+[models/order-edit.ts:31](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L31)
 
 ___
 
@@ -226,7 +226,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:84](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L84)
+[models/order-edit.ts:84](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L84)
 
 ___
 
@@ -236,7 +236,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:80](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L80)
+[models/order-edit.ts:80](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L80)
 
 ___
 
@@ -246,7 +246,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:52](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L52)
+[models/order-edit.ts:52](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L52)
 
 ___
 
@@ -256,7 +256,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L49)
+[models/order-edit.ts:49](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L49)
 
 ___
 
@@ -266,7 +266,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:87](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L87)
+[models/order-edit.ts:87](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L87)
 
 ___
 
@@ -276,7 +276,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:97](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L97)
+[models/order-edit.ts:97](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L97)
 
 ___
 
@@ -286,7 +286,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:91](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L91)
+[models/order-edit.ts:91](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L91)
 
 ___
 
@@ -296,7 +296,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:89](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L89)
+[models/order-edit.ts:89](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L89)
 
 ___
 
@@ -306,7 +306,7 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:90](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L90)
+[models/order-edit.ts:90](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L90)
 
 ___
 
@@ -320,7 +320,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -334,7 +334,7 @@ BaseEntity.updated\_at
 
 #### Defined in
 
-[models/order-edit.ts:100](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L100)
+[models/order-edit.ts:100](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L100)
 
 ___
 
@@ -348,4 +348,4 @@ ___
 
 #### Defined in
 
-[models/order-edit.ts:105](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/order-edit.ts#L105)
+[models/order-edit.ts:105](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/order-edit.ts#L105)

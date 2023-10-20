@@ -25,7 +25,7 @@ properties:
         reason_id:
           description: >-
             The ID of the reason of this return. Return reasons can be retrieved
-            from the List Return Reasons endpoint.
+            from the List Return Reasons API Route.
           type: string
         note:
           description: The note to add to the item being swapped.
