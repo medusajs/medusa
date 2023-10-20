@@ -283,6 +283,9 @@ jobs:
         with:
           extension: pipeline
 
+      - name: Build Packages
+        run: yarn build
+  
       - name: Run repository integration tests
         run: yarn test:integration:repositories
         env:
