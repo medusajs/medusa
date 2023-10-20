@@ -1,0 +1,544 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminDraftOrdersResource
+
+[admin/draft-orders](../../modules/admin_draft_orders.mdx).AdminDraftOrdersResource
+
+## Methods
+
+### addLineItem
+
+▸ **addLineItem**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostDraftOrdersDraftOrderLineItemsReq`](../../internal/classes/admin_discounts.internal.internal.AdminPostDraftOrdersDraftOrderLineItemsReq.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Add line item to draft order
+
+___
+
+### create
+
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`AdminPostDraftOrdersReq`](../../internal/classes/admin_discounts.internal.internal.AdminPostDraftOrdersReq.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Creates a draft order
+
+___
+
+### delete
+
+▸ **delete**(`id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`DeleteResponse`](../../internal/modules/admin_discounts.internal.internal.mdx#deleteresponse)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`DeleteResponse`](../../internal/modules/admin_discounts.internal.internal.mdx#deleteresponse)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`DeleteResponse`](../../internal/modules/admin_discounts.internal.internal.mdx#deleteresponse)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "DeleteResponse",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Delete draft order
+
+___
+
+### list
+
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersListRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftorderslistres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "query",
+    "type": "[`AdminGetDraftOrdersParams`](../../internal/classes/admin_discounts.internal.internal.AdminGetDraftOrdersParams.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersListRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftorderslistres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersListRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftorderslistres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "AdminDraftOrdersListRes",
+        "type": "[`PaginatedResponse`](../../admin_batch_jobs/modules/admin_batch_jobs.internal.mdx#paginatedresponse) & { `draft_orders`: [`DraftOrder`](../../internal/classes/admin_collections.internal.DraftOrder.mdx)[]  }",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Lists draft orders
+
+___
+
+### markPaid
+
+▸ **markPaid**(`id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminPostDraftOrdersDraftOrderRegisterPaymentRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminpostdraftordersdraftorderregisterpaymentres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminPostDraftOrdersDraftOrderRegisterPaymentRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminpostdraftordersdraftorderregisterpaymentres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminPostDraftOrdersDraftOrderRegisterPaymentRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminpostdraftordersdraftorderregisterpaymentres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "AdminPostDraftOrdersDraftOrderRegisterPaymentRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Mark a draft order as paid
+
+___
+
+### removeLineItem
+
+▸ **removeLineItem**(`id`, `itemId`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "itemId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Remove line item
+
+___
+
+### retrieve
+
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Retrieves a draft order
+
+___
+
+### update
+
+▸ **update**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostDraftOrdersDraftOrderReq`](../../internal/classes/admin_discounts.internal.internal.AdminPostDraftOrdersDraftOrderReq.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Update draft order
+
+___
+
+### updateLineItem
+
+▸ **updateLineItem**(`id`, `itemId`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "itemId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostDraftOrdersDraftOrderLineItemsItemReq`](../../internal/classes/admin_discounts.internal.internal.AdminPostDraftOrdersDraftOrderLineItemsItemReq.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminDraftOrdersRes`](../../internal/modules/admin_discounts.internal.internal.mdx#admindraftordersres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Update draft order line item

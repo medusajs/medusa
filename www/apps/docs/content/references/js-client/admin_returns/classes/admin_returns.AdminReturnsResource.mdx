@@ -1,0 +1,182 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminReturnsResource
+
+[admin/returns](../../modules/admin_returns.mdx).AdminReturnsResource
+
+## Methods
+
+### cancel
+
+▸ **cancel**(`id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminReturnsCancelRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminreturnscancelres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "id of return to cancel",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminReturnsCancelRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminreturnscancelres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminReturnsCancelRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminreturnscancelres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the order for which the return was canceled",
+    "children": [
+      {
+        "name": "AdminReturnsCancelRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+cancels a return
+
+___
+
+### list
+
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminReturnsListRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminreturnslistres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "query",
+    "type": "[`AdminGetReturnsParams`](../../internal/classes/admin_discounts.internal.internal.AdminGetReturnsParams.mdx)",
+    "description": "query for searching returns",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminReturnsListRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminreturnslistres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminReturnsListRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminreturnslistres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a list of returns matching the query",
+    "children": [
+      {
+        "name": "AdminReturnsListRes",
+        "type": "[`PaginatedResponse`](../../admin_batch_jobs/modules/admin_batch_jobs.internal.mdx#paginatedresponse) & { `returns`: [`Return`](../../internal/classes/admin_collections.internal.Return.mdx)[]  }",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+lists returns matching a query
+
+___
+
+### receive
+
+▸ **receive**(`id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminReturnsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminreturnsres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "id of the return to receive.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostReturnsReturnReceiveReq`](../../internal/classes/admin_discounts.internal.internal.AdminPostReturnsReturnReceiveReq.mdx)",
+    "description": "items to receive and an optional refund amount",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminReturnsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminreturnsres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminReturnsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminreturnsres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the return",
+    "children": [
+      {
+        "name": "AdminReturnsRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+receive a return

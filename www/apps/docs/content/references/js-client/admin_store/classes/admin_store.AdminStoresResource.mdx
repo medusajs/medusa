@@ -1,0 +1,315 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminStoresResource
+
+[admin/store](../../modules/admin_store.mdx).AdminStoresResource
+
+## Methods
+
+### addCurrency
+
+▸ **addCurrency**(`currency_code`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminstoresres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "currency_code",
+    "type": "`string`",
+    "description": "code of the currency to add",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminstoresres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminstoresres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated store.",
+    "children": [
+      {
+        "name": "AdminStoresRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+adds a currency to the store.
+
+___
+
+### deleteCurrency
+
+▸ **deleteCurrency**(`currency_code`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminstoresres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "currency_code",
+    "type": "`string`",
+    "description": "currency code of the currency to delete from the store.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminstoresres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminstoresres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated store",
+    "children": [
+      {
+        "name": "AdminStoresRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+deletes a currency from the available store currencies
+
+___
+
+### listPaymentProviders
+
+▸ **listPaymentProviders**(`customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminPaymentProvidersList`](../../internal/modules/admin_discounts.internal.internal.mdx#adminpaymentproviderslist)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminPaymentProvidersList`](../../internal/modules/admin_discounts.internal.internal.mdx#adminpaymentproviderslist)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminPaymentProvidersList`](../../internal/modules/admin_discounts.internal.internal.mdx#adminpaymentproviderslist)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a list of payment providers configured on the store",
+    "children": [
+      {
+        "name": "AdminPaymentProvidersList",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Lists the store's payment providers
+
+___
+
+### listTaxProviders
+
+▸ **listTaxProviders**(`customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminTaxProvidersList`](../../internal/modules/admin_discounts.internal.internal.mdx#admintaxproviderslist)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminTaxProvidersList`](../../internal/modules/admin_discounts.internal.internal.mdx#admintaxproviderslist)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminTaxProvidersList`](../../internal/modules/admin_discounts.internal.internal.mdx#admintaxproviderslist)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a list of payment providers configured on the store",
+    "children": [
+      {
+        "name": "AdminTaxProvidersList",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Lists the store's payment providers
+
+___
+
+### retrieve
+
+▸ **retrieve**(`customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminExtendedStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminextendedstoresres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminExtendedStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminextendedstoresres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminExtendedStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminextendedstoresres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a medusa store",
+    "children": [
+      {
+        "name": "AdminExtendedStoresRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+gets a medusa store
+
+___
+
+### update
+
+▸ **update**(`payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminstoresres)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`AdminPostStoreReq`](../../internal/classes/admin_discounts.internal.internal.AdminPostStoreReq.mdx)",
+    "description": "update to apply to the store.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "`{}`",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminstoresres)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`AdminStoresRes`](../../internal/modules/admin_discounts.internal.internal.mdx#adminstoresres)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated store.",
+    "children": [
+      {
+        "name": "AdminStoresRes",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Description
+
+Updates the store

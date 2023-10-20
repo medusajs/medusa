@@ -2846,7 +2846,6 @@ __metadata:
     copyfiles: ^2.4.1
     handlebars: ^4.7.8
     typescript: ^4.6
-    yaml: ^2.3.2
   peerDependencies:
     typedoc: 0.25.x
   languageName: unknown
