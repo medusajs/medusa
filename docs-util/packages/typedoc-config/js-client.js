@@ -16,10 +16,10 @@ module.exports = {
   hideInPageTOC: true,
   hideBreadcrumbs: true,
   plugin: [
-    ...globalTypedocOptions.plugin,
-    "typedoc-plugin-merge-modules",
+    "typedoc-plugin-markdown-medusa",
     "typedoc-plugin-reference-excluder",
     "typedoc-plugin-frontmatter",
+    "typedoc-plugin-rename-defaults",
     "typedoc-plugin-modules",
   ],
   exclude: [
@@ -32,4 +32,20 @@ module.exports = {
     displayed_sidebar: "jsClientSidebar",
   },
   internalModule: "internal",
+  formatting: {
+    "*": {
+      showCommentsAsHeader: true,
+      sections: {
+        member_sources_definedIn: false,
+        reflection_hierarchy: false,
+      },
+      parameterStyle: "component",
+      parameterComponent: "ParameterTypes",
+      mdxImports: [
+        `import ParameterTypes from "@site/src/components/ParameterTypes"`,
+      ],
+    },
+  },
+  objectLiteralTypeDeclarationStyle: "component",
+  mdxOutput: true,
 }
