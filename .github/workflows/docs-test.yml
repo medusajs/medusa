@@ -73,7 +73,7 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
         
   vale-ui:
-    if: ${{ startsWith(github.ref, 'docs/') }}
+    if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
