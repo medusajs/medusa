@@ -77,7 +77,7 @@ In addition, it is assumed you already have a logged-in customer before performi
 
 When the customer wants to claim an order, they must supply its ID.
 
-To allow the customer to claim an order, send a request to the Claim an Order endpoint:
+To allow the customer to claim an order, send a request to the Claim an Order API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -135,7 +135,7 @@ The customer at this point will receive an email with a link to verify their cla
 
 The link in the email that the customer receives should be a page in your storefront that accepts a `token` query parameter.
 
-Then, you send a request to the Verify Claim Order endpoint:
+Then, you send a request to the Verify Claim Order API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>

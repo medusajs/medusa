@@ -1,5 +1,4 @@
 ---
-description: 'Learn how to create a service in Medusa. This guide also includes how to use services in other services, subscribers, and endpoints.'
 addHowToData: true
 ---
 
@@ -18,7 +17,7 @@ To create a service, create a TypeScript or JavaScript file in `src/services` to
 
 For example, if you want to create a service `PostService`, eventually registered as `postService`, create the file `post.ts` in `src/services` with the following content:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import { TransactionBaseService } from "@medusajs/medusa"
 
 class PostService extends TransactionBaseService {
@@ -54,7 +53,7 @@ As the service extends the `TransactionBaseService` class, all resources registe
 
 So, if you want your service to use another service, add it as part of your constructor’s dependencies and set it to a field inside your service’s class:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import { ProductService } from "@medusajs/medusa"
 import { PostRepository } from "../repositories/post"
 
@@ -71,7 +70,7 @@ class PostService extends TransactionBaseService {
 
 Then, you can use that service anywhere in your custom service. For example:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 class PostService extends TransactionBaseService {
   // ...
   async getProductCount() {
@@ -92,7 +91,7 @@ However, to actually get an instance of the repository within the service's meth
 
 For example:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import { PostRepository } from "../repositories/post"
 
 class PostService extends TransactionBaseService {
@@ -132,7 +131,7 @@ The data returned by the function passed as a parameter to the `atomicPhase_` me
 
 For example, the `PostService`'s `create` method with the `atomicPhase_` method:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 class PostService extends TransactionBaseService {
   protected postRepository_: typeof PostRepository
   // ...
@@ -170,7 +169,7 @@ There are three lifetime types:
 
 You can set the lifetime of your service by setting the `LIFE_TIME` static property:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import { TransactionBaseService } from "@medusajs/medusa"
 import { Lifetime } from "awilix"
 
@@ -189,7 +188,7 @@ Within your service, you may need to access the Medusa configuration exported fr
 
 For example:
 
-```ts title=/src/services/post.ts
+```ts title=src/services/post.ts
 import {
   ConfigModule,
   TransactionBaseService,
@@ -218,7 +217,7 @@ export default PostService
 
 ## Pagination, Filtering, and Relations
 
-Often, your service will provide methods that retrieve a list of items, which can be used by endpoints. In these methods, it can be helpful to provide filtering and pagination utilities that can be used by endpoints or any other resources utilizing this service.
+Often, your service will provide methods that retrieve a list of items, which can be used by API Routes. In these methods, it can be helpful to provide filtering and pagination utilities that can be used by API Routes or any other resources utilizing this service.
 
 The `@medusajs/medusa` package provides the following generic types that you can use to create the signature of your method that accepts filtering and pagination parameters:
 
@@ -298,7 +297,7 @@ class PostService extends TransactionBaseService {
 }
 ```
 
-Then, any other resources such as endpoints or services that use this method can pass what relations to expand in the next parameter:
+Then, any other resources such as API Route or services that use this method can pass what relations to expand in the next parameter:
 
 ```ts
 await postService.retrieve(id, {
@@ -314,7 +313,7 @@ When you need to throw errors in your service methods, it's recommended to use `
 
 :::note
 
-This assumes you're handling errors in your custom endpoints as explained [here](../endpoints/create.mdx#handle-errors).
+This assumes you're handling errors in your custom API Route as explained [here](../api-routes/create.mdx#handle-errors).
 
 :::
 
@@ -378,9 +377,9 @@ class MyService extends TransactionBaseService {
 }
 ```
 
-### In an Endpoint
+### In an API Route
 
-To use your custom service in an endpoint, you can use `req.scope.resolve` passing it the service’s registration name:
+To use your custom service in an API Route, you can use `MedusaRequest` object's `scope.resolve` method passing it the service’s registration name:
 
 ```ts
 const postService = req.scope.resolve("postService")

@@ -1,21 +1,20 @@
 ---
-description: 'Learn how to extend a validator. This is useful when you want to pass additional data to endpoints in the Medusa core.'
 addHowToData: true
 ---
 
-# How to Extend an Endpoint Validator
+# How to Extend an API Route Validator
 
-In this guide, you'll learn how to extend an endpoint validator from the Medusa core.
+In this guide, you'll learn how to extend an API Route validator from the Medusa core.
 
 ## Overview
 
-Request fields passed to endpoints that are defined in the Medusa core are validated to ensure that only expected fields are passed, and the passed fields are of correct types.
+Request fields passed to API Routes defined in the Medusa core are validated to ensure that only expected fields are passed, and the passed fields are of correct types.
 
-In some scenarios, you may need to allow passing custom fields into an existing endpoint. If a custom field is passed to an endpoint in the core, the endpoint returns an error in the response.
+In some scenarios, you may need to allow passing custom fields into an existing API Route. If a custom field is passed to an API Route in the core, the API Route returns an error in the response.
 
-To allow passing custom fields into core endpoints, you must extend Validators. Validators are classes that are used by the core to validate the request parameters to an endpoint.
+To allow passing custom fields into core API Routes, you must extend Validators. Validators are classes that are used by the core to validate the request parameters to an API Route.
 
-This guide explains how to extend a validator to allow passing custom fields to an endpoint. You'll be extending the validator of the admin API Create Product endpoint as an example.
+This guide explains how to extend a validator to allow passing custom fields to an API Route. You'll be extending the validator of the admin API Create Product route as an example.
 
 ---
 
@@ -59,13 +58,13 @@ registerOverriddenValidators(AdminPostProductsReq)
 In this code snippet you:
 
 1. Import the `registerOverriddenValidators` function from the `@medusajs/medusa` package. This utility function allows you to extend validators in the core.
-2. Import the `AdminPostProductsReq` class from `@medusajs/medusa` as `MedusaAdminPostProductsReq` since this guide extends the Create Product endpoint validator. If you're extending a different validator, make sure to import it instead.
+2. Import the `AdminPostProductsReq` class from `@medusajs/medusa` as `MedusaAdminPostProductsReq` since this guide extends the Create Product API Route validator. If you're extending a different validator, make sure to import it instead.
 3. Create a class `AdminPostProductsReq` that extends `MedusaAdminPostProductsReq` and adds a new field `custom_field`. Notice that the name of the class must be the same name of the validator defined in the core. `custom_field` has the type `string`. You can change the type or name of the field, or add more fields.
 4. Call `registerOverriddenValidators` passing it the `AdminPostProductsReq` class you created. This will override the validator defined in the core to include the new field `custom_field` among the existing fields defined in the core.
 
 :::tip
 
-Validators are defined in the same file as the endpoint. To find the validator you need to override, find the endpoint file under `@medusajs/medusa/dist/api/routes` and import the validator in that file.
+Validators are defined in the same file as the API Route. To find the validator you need to override, find the API Route file under `@medusajs/medusa/dist/api/routes` and import the validator in that file.
 
 :::
 
@@ -80,4 +79,4 @@ npm run build
 npx medusa develop
 ```
 
-Then, send a request to the endpoint you extended passing it your custom fields. To test out the example in this guide, send an [authenticated request](https://docs.medusajs.com/api/admin#authentication) to the [Create Product endpoint](https://docs.medusajs.com/api/admin#products_postproducts) and pass it the `custom_field` body parameter. The request should execute with no errors.
+Then, send a request to the API Route you extended passing it your custom fields. To test out the example in this guide, send an [authenticated request](https://docs.medusajs.com/api/admin#authentication) to the [Create Product API Route](https://docs.medusajs.com/api/admin#products_postproducts) and pass it the `custom_field` body parameter. The request should execute with no errors.
