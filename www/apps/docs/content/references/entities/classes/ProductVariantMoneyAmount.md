@@ -32,7 +32,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/9dcd62c73/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/9dcd62c73/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -60,7 +60,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/9dcd62c73/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[models/product-variant-money-amount.ts:11](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant-money-amount.ts#L11)
+[models/product-variant-money-amount.ts:11](https://github.com/medusajs/medusa/blob/9dcd62c73/packages/medusa/src/models/product-variant-money-amount.ts#L11)
 
 ___
 
@@ -84,7 +84,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/9dcd62c73/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[models/product-variant-money-amount.ts:15](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant-money-amount.ts#L15)
+[models/product-variant-money-amount.ts:15](https://github.com/medusajs/medusa/blob/9dcd62c73/packages/medusa/src/models/product-variant-money-amount.ts#L15)
 
 ## Methods
 
@@ -108,4 +108,4 @@ ___
 
 #### Defined in
 
-[models/product-variant-money-amount.ts:18](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant-money-amount.ts#L18)
+[models/product-variant-money-amount.ts:18](https://github.com/medusajs/medusa/blob/9dcd62c73/packages/medusa/src/models/product-variant-money-amount.ts#L18)
