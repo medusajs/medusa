@@ -58,8 +58,239 @@ async function retrievePriceSet (priceSetId: string) {
 
 ## Parameters
 
-<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"The ID of the price set to retrieve.","optional":false,"defaultValue":"","children":[]},{"name":"config","type":"[`FindConfig`](../../interfaces/FindConfig.mdx)<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)\\>","description":"The configurations determining how the price set is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.","optional":true,"defaultValue":"","children":[{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","children":[]},{"name":"select","type":"(`string` \\| keyof `Entity`)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","children":[]},{"name":"skip","type":"`number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","children":[]},{"name":"take","type":"`number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.","optional":true,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the price set to retrieve.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)\\>",
+    "description": "The configurations determining how the price set is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "order",
+        "type": "`object`",
+        "description": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "relations",
+        "type": "`string`[]",
+        "description": "An array of strings, each being relation names of the entity to retrieve in the result.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "select",
+        "type": "(`string` \\| keyof `Entity`)[]",
+        "description": "An array of strings, each being attribute names of the entity to retrieve in the result.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "skip",
+        "type": "`number`",
+        "description": "A number indicating the number of records to skip before retrieving the results.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "take",
+        "type": "`number`",
+        "description": "A number indicating the number of records to return in the result.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "withDeleted",
+        "type": "`boolean`",
+        "description": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "a string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
 
 ## Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"`Promise`<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)\\>","optional":false,"defaultValue":"","description":"The retrieved price set.","children":[{"name":"PriceSetDTO","type":"`object`","description":"A price set's data.","optional":false,"defaultValue":"","children":[{"name":"id","type":"`string`","description":"The ID of the price set.","optional":false,"defaultValue":"","children":[]},{"name":"money_amounts","type":"[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]","description":"The prices that belong to this price set.","optional":true,"defaultValue":"","children":[]},{"name":"rule_types","type":"[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]","description":"The rule types applied on this price set.","optional":true,"defaultValue":"","children":[]}]}]}]} />
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The retrieved price set.",
+    "children": [
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the price set.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "money_amounts",
+        "type": "[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]",
+        "description": "The prices that belong to this price set.",
+        "optional": true,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "amount",
+            "type": "`number`",
+            "description": "The price of this money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "currency",
+            "type": "[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)",
+            "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "currency_code",
+            "type": "`string`",
+            "description": "The currency code of this money amount.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the money amount.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "max_quantity",
+            "type": "`number`",
+            "description": "The maximum quantity required to be purchased for this price to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "min_quantity",
+            "type": "`number`",
+            "description": "The minimum quantity required to be purchased for this price to be applied.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "rule_types",
+        "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]",
+        "description": "The rule types applied on this price set.",
+        "optional": true,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "default_priority",
+            "type": "`number`",
+            "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The display name of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "rule_attribute",
+            "type": "`string`",
+            "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
