@@ -370,38 +370,27 @@ const handlers = new Map<string, any>([
             {
               from: UpdateProductsActions.prepare,
             },
-            // {
-            //   from: UpdateProductVariantsActions.updateProductVariants,
-            //   alias:
-            //     ProductHandlers.upsertVariantPrices.aliases
-            //       .productVariants,
-            // },
           ],
         },
         ProductHandlers.upsertVariantPrices
       ),
-      // compensate: pipe(
-      //   {
-      //     merge: true,
-      //     invoke: [
-      //       {
-      //         from: UpdateProductVariantsActions.prepare,
-      //         alias:
-      //           MiddlewaresHandlers
-      //             .createProductsPrepareCreatePricesCompensation.aliases
-      //             .preparedData,
-      //       },
-      //       {
-      //         from: UpdateProductVariantsActions.updateProductVariants,
-      //         alias:
-      //           ProductHandlers.upsertVariantPrices.aliases
-      //             .productVariants,
-      //       },
-      //     ],
-      //   },
-      //   MiddlewaresHandlers.createProductsPrepareCreatePricesCompensation,
-      //   ProductHandlers.upsertVariantPrices
-      // ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductVariantsActions.prepare,
+            },
+            {
+              from: UpdateProductVariantsActions.upsertPrices,
+              alias:
+                ProductHandlers.upsertVariantPrices.aliases
+                  .productVariantsPrices,
+            },
+          ],
+        },
+        ProductHandlers.revertVariantPrices
+      ),
     },
   ],
 ])

@@ -49,6 +49,7 @@ export async function upsertVariantPrices({
   )
 
   const moneyAmountsToUpdate: PricingTypes.UpdateMoneyAmountDTO[] = []
+  const createdPriceSets: PricingTypes.PriceSetDTO[] = []
   const ruleSetPricesToAdd: PricingTypes.CreatePricesDTO[] = []
   const priceSetsToCreate: PricingTypes.CreatePriceSetDTO[] = []
   const linksToCreate: any[] = []
@@ -105,11 +106,12 @@ export async function upsertVariantPrices({
         prices: ruleSetPricesToAdd,
       })
     } else {
-      priceSetId = (await pricingModuleService.create(priceSetToCreate)).id
-    }
+      const createdPriceSet = await pricingModuleService.create(
+        priceSetToCreate
+      )
+      priceSetId = createdPriceSet?.id
 
-    if (moneyAmountsToUpdate.length) {
-      await pricingModuleService.updateMoneyAmounts(moneyAmountsToUpdate)
+      createdPriceSets.push(createdPriceSet)
     }
 
     linksToCreate.push({
@@ -122,9 +124,28 @@ export async function upsertVariantPrices({
     })
   }
 
-  await medusaApp.link.create(linksToCreate)
+  const createdLinks = await medusaApp.link.create(linksToCreate)
+
+  let originalMoneyAmounts = await pricingModuleService.listMoneyAmounts(
+    {
+      id: moneyAmountsToUpdate.map((matu) => matu.id),
+    },
+    {
+      select: ["id", "currency_code", "amount", "min_quantity", "max_quantity"],
+    }
+  )
+
+  if (moneyAmountsToUpdate.length) {
+    await pricingModuleService.updateMoneyAmounts(moneyAmountsToUpdate)
+  }
+
+  return {
+    createdLinks,
+    originalMoneyAmounts,
+    createdPriceSets,
+  }
 }
 
 upsertVariantPrices.aliases = {
-  products: "products",
+  productVariantsPrices: "productVariantsPrices",
 }

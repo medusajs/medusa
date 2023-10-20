@@ -61,17 +61,6 @@ const handlers = new Map([
         },
         ProductHandlers.updateProductVariants
       ),
-      // compensate: pipe(
-      //   {
-      //     merge: true,
-      //     invoke: {
-      //       from: UpdateProductVariantsActions.revertProductVariantsUpdate,
-      //       alias:
-      //         ProductHandlers.revertProductVariants.aliases.productVariants,
-      //     },
-      //   },
-      //   ProductHandlers.revertProductVariantsUpdate
-      // ),
     },
   ],
   [
@@ -82,40 +71,29 @@ const handlers = new Map([
           merge: true,
           invoke: [
             {
-              from: InputAlias.ProductVariantsUpdateInputData,
+              from: UpdateProductVariantsActions.prepare,
             },
-            // {
-            //   from: UpdateProductVariantsActions.updateProductVariants,
-            //   alias:
-            //     ProductHandlers.upsertVariantPrices.aliases
-            //       .productVariants,
-            // },
           ],
         },
         ProductHandlers.upsertVariantPrices
       ),
-      // compensate: pipe(
-      //   {
-      //     merge: true,
-      //     invoke: [
-      //       {
-      //         from: UpdateProductVariantsActions.prepare,
-      //         alias:
-      //           MiddlewaresHandlers
-      //             .createProductsPrepareCreatePricesCompensation.aliases
-      //             .preparedData,
-      //       },
-      //       {
-      //         from: UpdateProductVariantsActions.updateProductVariants,
-      //         alias:
-      //           ProductHandlers.upsertVariantPrices.aliases
-      //             .productVariants,
-      //       },
-      //     ],
-      //   },
-      //   MiddlewaresHandlers.createProductsPrepareCreatePricesCompensation,
-      //   ProductHandlers.upsertVariantPrices
-      // ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductVariantsActions.prepare,
+            },
+            {
+              from: UpdateProductVariantsActions.upsertPrices,
+              alias:
+                ProductHandlers.upsertVariantPrices.aliases
+                  .productVariantsPrices,
+            },
+          ],
+        },
+        ProductHandlers.revertVariantPrices
+      ),
     },
   ],
 ])
