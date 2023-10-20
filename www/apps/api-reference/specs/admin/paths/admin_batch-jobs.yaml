@@ -270,7 +270,7 @@ post:
   description: >-
     Create a Batch Job to be executed asynchronously in the Medusa backend. If
     `dry_run` is set to `true`, the batch job will not be executed until the it
-    is confirmed, which can be done using the Confirm Batch Job endpoint.
+    is confirmed, which can be done using the Confirm Batch Job API Route.
   externalDocs:
     description: How to create a batch job
     url: https://docs.medusajs.com/development/batch-jobs/create#create-batch-job
