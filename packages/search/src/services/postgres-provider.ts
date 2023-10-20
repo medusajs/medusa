@@ -16,7 +16,7 @@ import {
   SearchModuleOptions,
   StorageProvider,
 } from "../types"
-import { QueryBuilder } from "../utils"
+import { createPartitions, QueryBuilder } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -30,6 +30,8 @@ type InjectedDependencies = {
 }
 
 export class PostgresProvider {
+  #isReady_: Promise<boolean>
+
   protected readonly eventActionToMethodMap_ = {
     created: "onCreate",
     updated: "onUpdate",
@@ -42,7 +44,6 @@ export class PostgresProvider {
   protected readonly schemaObjectRepresentation_: SchemaObjectRepresentation
   protected readonly schemaEntitiesMap_: Record<string, any>
   protected readonly moduleOptions_: SearchModuleOptions
-  protected readonly isReady_: Promise<boolean>
 
   protected get remoteQuery_(): (
     query: string | RemoteJoinerQuery | object,
@@ -64,14 +65,6 @@ export class PostgresProvider {
 
     this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
     this.schemaEntitiesMap_ = options.entityMap
-
-    let initalizedOk: (value: any) => void = () => {}
-    let initalizedNok: (value: any) => void = () => {}
-    this.isReady_ = new Promise((resolve, reject) => {
-      initalizedOk = resolve
-      initalizedNok = reject
-    })
-    this.createPartitions().then(initalizedOk).catch(initalizedNok)
 
     // Add a new column for each key that can be found in the jsonb data column to perform indexes and query on it.
     // So far, the execution time is about the same
@@ -105,34 +98,20 @@ export class PostgresProvider {
     })()*/
   }
 
-  private async createPartitions() {
-    const partitions = Object.keys(this.schemaObjectRepresentation_)
-      .filter(
-        (key) =>
-          !["_serviceNameModuleConfigMap", "_schemaPropertiesMap"].includes(key)
-      )
-      .map((key) => {
-        const cName = key.toLowerCase()
-        const part: string[] = []
-        part.push(
-          `CREATE TABLE IF NOT EXISTS cat_${cName} PARTITION OF catalog FOR VALUES IN ('${key}')`
-        )
+  async onApplicationStart() {
+    let initalizedOk: (value: any) => void = () => {}
+    let initalizedNok: (value: any) => void = () => {}
+    this.#isReady_ = new Promise((resolve, reject) => {
+      initalizedOk = resolve
+      initalizedNok = reject
+    })
 
-        for (const parent of this.schemaObjectRepresentation_[key].parents) {
-          const pKey = `${parent.ref.entity}-${key}`
-          const pName = `${parent.ref.entity}${key}`.toLowerCase()
-          part.push(
-            `CREATE TABLE IF NOT EXISTS cat_pivot_${pName} PARTITION OF catalog_relation FOR VALUES IN ('${pKey}')`
-          )
-        }
-        return part
-      })
-      .flat()
-
-    partitions.push("analyse catalog")
-    partitions.push("analyse catalog_relation")
-
-    return await this.container_.manager.execute(partitions.join("; "))
+    await createPartitions(
+      this.schemaObjectRepresentation_,
+      this.container_.manager
+    )
+      .then(initalizedOk)
+      .catch(initalizedNok)
   }
 
   protected static parseData<
@@ -167,7 +146,7 @@ export class PostgresProvider {
   }
 
   async query(selection: QueryFormat, options?: QueryOptions) {
-    await this.isReady_
+    await this.#isReady_
 
     let hasPagination = false
     if (
@@ -210,7 +189,7 @@ export class PostgresProvider {
   }
 
   async queryAndCount(selection: QueryFormat, options?: QueryOptions) {
-    await this.isReady_
+    await this.#isReady_
 
     const connection = this.container_.manager.getConnection()
     const qb = new QueryBuilder({
@@ -249,7 +228,7 @@ export class PostgresProvider {
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   ): Subscriber {
     return async (data: unknown, eventName: string) => {
-      await this.isReady_
+      await this.#isReady_
 
       const data_ = Array.isArray(data) ? data : [data]
       let ids: string[] = data_.map((d) => d.id)

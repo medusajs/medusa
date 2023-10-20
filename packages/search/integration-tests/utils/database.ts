@@ -18,9 +18,8 @@ const ORMConfig: Options = {
   schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
   debug: false,
   migrations: {
-    path: "../../src/migrations",
-    pathTs: "../../src/migrations",
-    glob: "!(*.d).{js,ts}",
+    tableName: "mikro_orm_migrations",
+    path: "./dist/migrations",
     silent: true,
     dropTables: true,
     transactional: true,
@@ -79,7 +78,15 @@ export const TestDatabase: TestDatabase = {
 
     this.manager = await this.orm.em
 
-    await this.orm.schema.refreshDatabase() // ensure db exists and is fresh
+    const pendingMigrations = await this.orm
+      .getMigrator()
+      .getPendingMigrations()
+
+    if (pendingMigrations && pendingMigrations.length > 0) {
+      await this.orm
+        .getMigrator()
+        .up({ migrations: pendingMigrations.map((m) => m.name!) })
+    }
   },
 
   async clearDatabase() {

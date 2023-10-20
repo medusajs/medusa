@@ -117,6 +117,8 @@ export interface StorageProvider {
     moduleOptions: SearchModuleOptions
   ): StorageProvider
 
+  onApplicationStart?(): Promise<void>
+
   query(...args): unknown
 
   queryAndCount(...args): unknown

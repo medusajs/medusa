@@ -18,7 +18,9 @@ type OptionalRelations =
   | "parent_name"
   | "child_name"
 
-@Entity({ tableName: "catalog_relation" })
+@Entity({
+  tableName: "catalog_relation",
+})
 @Index({
   name: "IDX_catalog_relation_child_id",
   properties: ["child_id"],

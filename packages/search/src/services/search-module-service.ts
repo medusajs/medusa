@@ -39,20 +39,7 @@ export default class SearchModuleService
   protected readonly storageProviderCtr_: StorageProvider
   protected readonly storageProviderCtrOptions_: unknown
 
-  protected get storageProvider_(): StorageProvider {
-    this.storageProviderInstance_ =
-      this.storageProviderInstance_ ??
-      new this.storageProviderCtr_(
-        this.container_,
-        Object.assign(this.storageProviderCtrOptions_ ?? {}, {
-          schemaObjectRepresentation: this.schemaObjectRepresentation_,
-          entityMap: this.schemaEntitiesMap_,
-        }),
-        this.moduleOptions_
-      )
-
-    return this.storageProviderInstance_
-  }
+  protected storageProvider_: StorageProvider
 
   constructor(
     container: InjectedDependencies,
@@ -91,6 +78,20 @@ export default class SearchModuleService
 
   protected async onApplicationStart_() {
     this.buildSchemaObjectRepresentation_()
+
+    this.storageProvider_ = new this.storageProviderCtr_(
+      this.container_,
+      Object.assign(this.storageProviderCtrOptions_ ?? {}, {
+        schemaObjectRepresentation: this.schemaObjectRepresentation_,
+        entityMap: this.schemaEntitiesMap_,
+      }),
+      this.moduleOptions_
+    )
+
+    if (this.storageProvider_.onApplicationStart) {
+      await this.storageProvider_.onApplicationStart()
+    }
+
     this.registerListeners()
   }
 

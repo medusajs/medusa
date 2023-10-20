@@ -13,7 +13,9 @@ import CatalogRelation from "./catalog-relation"
 
 type OptionalRelations = "parents"
 
-@Entity({ tableName: "catalog" })
+@Entity({
+  tableName: "catalog",
+})
 export class Catalog {
   [OptionalProps]: OptionalRelations
 

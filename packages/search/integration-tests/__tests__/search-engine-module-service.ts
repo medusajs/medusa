@@ -55,28 +55,25 @@ describe("SearchEngineModuleService", function () {
   const moneyAmountId = "money_amount_1"
   const linkId = "link_id_1"
 
-  let module: ISearchModuleService
-
-  beforeAll(async () => {
-    const { modules } = await MedusaApp({
-      modulesConfig: {
-        ...modulesConfig,
-        [Modules.SEARCH]: {
-          options: searchEngineModuleOptions,
-        },
-      },
-      servicesConfig: joinerConfig,
-      injectedDependencies,
-    })
-
-    module = modules.searchService as unknown as ISearchModuleService
-  })
-
   describe("on created or attached events", function () {
+    let module: ISearchModuleService
     let manager
 
     beforeEach(async () => {
       manager = await beforeEach_()
+
+      const { modules } = await MedusaApp({
+        modulesConfig: {
+          ...modulesConfig,
+          [Modules.SEARCH]: {
+            options: searchEngineModuleOptions,
+          },
+        },
+        servicesConfig: joinerConfig,
+        injectedDependencies,
+      })
+
+      module = modules.searchService as unknown as ISearchModuleService
 
       let a = 0
       remoteQueryMock.mockImplementation((query) => {
@@ -320,10 +317,24 @@ describe("SearchEngineModuleService", function () {
   })
 
   describe("on updated events", function () {
+    let module: ISearchModuleService
     let manager
 
     beforeEach(async () => {
       manager = await beforeEach_()
+
+      const { modules } = await MedusaApp({
+        modulesConfig: {
+          ...modulesConfig,
+          [Modules.SEARCH]: {
+            options: searchEngineModuleOptions,
+          },
+        },
+        servicesConfig: joinerConfig,
+        injectedDependencies,
+      })
+
+      module = modules.searchService as unknown as ISearchModuleService
 
       let a = 0
       remoteQueryMock.mockImplementation((query) => {
@@ -418,10 +429,24 @@ describe("SearchEngineModuleService", function () {
   })
 
   describe("on deleted events", function () {
+    let module: ISearchModuleService
     let manager
 
     beforeEach(async () => {
       manager = await beforeEach_()
+
+      const { modules } = await MedusaApp({
+        modulesConfig: {
+          ...modulesConfig,
+          [Modules.SEARCH]: {
+            options: searchEngineModuleOptions,
+          },
+        },
+        servicesConfig: joinerConfig,
+        injectedDependencies,
+      })
+
+      module = modules.searchService as unknown as ISearchModuleService
 
       let a = 0
       remoteQueryMock.mockImplementation((query) => {
@@ -636,10 +661,24 @@ describe("SearchEngineModuleService", function () {
   })
 
   describe("query", function () {
+    let module: ISearchModuleService
     let manager: SqlEntityManager
 
     beforeEach(async () => {
       manager = await beforeEach_()
+
+      const { modules } = await MedusaApp({
+        modulesConfig: {
+          ...modulesConfig,
+          [Modules.SEARCH]: {
+            options: searchEngineModuleOptions,
+          },
+        },
+        servicesConfig: joinerConfig,
+        injectedDependencies,
+      })
+
+      module = modules.searchService as unknown as ISearchModuleService
 
       await run({
         path: "./src/scripts/seed-data/index.ts",
@@ -659,6 +698,8 @@ describe("SearchEngineModuleService", function () {
       const moneyAmountToSearchFor = (await manager.findOne(Catalog, {
         name: "MoneyAmount",
       })) as Catalog
+
+      await new Promise((resolve) => setTimeout(resolve, 10000))
 
       console.time("query")
       const [result, count] = await module.queryAndCount(
@@ -681,7 +722,30 @@ describe("SearchEngineModuleService", function () {
           skip: 0,
         }
       )
-      console.timeEnd("query")
+      console.timeEnd("query2")
+
+      console.time("query")
+      const [result2, count2] = await module.queryAndCount(
+        {
+          select: {
+            product: {
+              variants: {
+                money_amounts: true,
+              },
+            },
+          },
+          where: {
+            "product.variants.money_amounts.amount":
+              moneyAmountToSearchFor.data.amount,
+            /*"product.variants.money_amounts.currency_code":
+              moneyAmountToSearchFor.data.currency_code,*/
+          },
+        },
+        {
+          skip: 0,
+        }
+      )
+      console.timeEnd("query2")
 
       expect(count).toEqual(1)
     })

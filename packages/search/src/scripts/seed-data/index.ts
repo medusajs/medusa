@@ -54,6 +54,7 @@ export function createRandomEntries(): {
       parent_name: "Product",
       child_id: variantId,
       child_name: "ProductVariant",
+      pivot: "Product-ProductVariant",
     }
 
     catalogRelationEntries.push(productVariantRelationEntry)
@@ -87,6 +88,7 @@ export function createRandomEntries(): {
       parent_name: "ProductVariant",
       child_id: linkProductPriceSetId,
       child_name: "LinkProductVariantPriceSet",
+      pivot: "ProductVariant-LinkProductVariantPriceSet",
     }
 
     catalogRelationEntries.push(variantLinkRelationEntry)
@@ -114,6 +116,7 @@ export function createRandomEntries(): {
       parent_name: "LinkProductVariantPriceSet",
       child_id: priceSetId,
       child_name: "PriceSet",
+      pivot: "LinkProductVariantPriceSet-PriceSet",
     }
 
     catalogRelationEntries.push(linkPriceSetRelationEntry)
@@ -152,6 +155,7 @@ export function createRandomEntries(): {
         parent_name: "PriceSet",
         child_id: moneyAmountId,
         child_name: "MoneyAmount",
+        pivot: "PriceSet-MoneyAmount",
       }
 
       catalogRelationEntries.push(moneyAmountPriceSetRelationEntry)
@@ -168,5 +172,5 @@ export const searchData: {
   catalogEntries: any[]
   catalogRelationEntries: any[]
 }[] = faker.helpers.multiple(createRandomEntries, {
-  count: 10000,
+  count: 1000,
 })
