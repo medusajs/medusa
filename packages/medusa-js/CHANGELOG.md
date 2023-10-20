@@ -1,5 +1,11 @@
 # Change Log
 
+## 6.1.3
+
+### Patch Changes
+
+- [`045d1b6a0`](https://github.com/medusajs/medusa/commit/045d1b6a0c2b0d03e5fa1db886d1f81c843059ce) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump @medusajs/medusa dep
+
 ## 6.1.2
 
 ### Patch Changes
