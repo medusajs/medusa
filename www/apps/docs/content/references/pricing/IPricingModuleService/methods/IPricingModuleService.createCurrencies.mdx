@@ -40,8 +40,150 @@ async function createCurrencies () {
 
 ## Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"[`CreateCurrencyDTO`](../../interfaces/CreateCurrencyDTO.mdx)[]","description":"The currencies to create.","optional":false,"defaultValue":"","children":[{"name":"code","type":"`string`","description":"The code of the currency.","optional":false,"defaultValue":"","children":[]},{"name":"name","type":"`string`","description":"The name of the currency.","optional":false,"defaultValue":"","children":[]},{"name":"symbol","type":"`string`","description":"The symbol of the currency.","optional":false,"defaultValue":"","children":[]},{"name":"symbol_native","type":"`string`","description":"The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.","optional":false,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`CreateCurrencyDTO`](../../interfaces/CreateCurrencyDTO.mdx)[]",
+    "description": "The currencies to create.",
+    "optional": false,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "code",
+        "type": "`string`",
+        "description": "The code of the currency.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name of the currency.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "symbol",
+        "type": "`string`",
+        "description": "The symbol of the currency.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "symbol_native",
+        "type": "`string`",
+        "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "a string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
 
 ## Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"`Promise`<[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]\\>","optional":false,"defaultValue":"","description":"The list of created currencies.","children":[{"name":"CurrencyDTO[]","type":"[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]","optional":false,"defaultValue":"","description":"","children":[{"name":"CurrencyDTO","type":"`object`","description":"A currency's data.","optional":false,"defaultValue":"","children":[]}]}]}]} />
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The list of created currencies.",
+    "children": [
+      {
+        "name": "CurrencyDTO[]",
+        "type": "[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The code of the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The name of the currency.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "symbol",
+            "type": "`string`",
+            "description": "The symbol of the currency.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "symbol_native",
+            "type": "`string`",
+            "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />

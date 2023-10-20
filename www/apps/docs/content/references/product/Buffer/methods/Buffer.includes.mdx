@@ -1,0 +1,86 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# includes
+
+[Buffer](../../interfaces/Buffer.mdx).includes
+
+**includes**(`value`, `byteOffset?`, `encoding?`): `boolean`
+
+Equivalent to `buf.indexOf() !== -1`.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from('this is a buffer');
+
+console.log(buf.includes('this'));
+// Prints: true
+console.log(buf.includes('is'));
+// Prints: true
+console.log(buf.includes(Buffer.from('a buffer')));
+// Prints: true
+console.log(buf.includes(97));
+// Prints: true (97 is the decimal ASCII value for 'a')
+console.log(buf.includes(Buffer.from('a buffer example')));
+// Prints: false
+console.log(buf.includes(Buffer.from('a buffer example').slice(0, 8)));
+// Prints: true
+console.log(buf.includes('this', 4));
+// Prints: false
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`string` \\| `number` \\| [`Buffer`](../../variables/Buffer-1.mdx)",
+    "description": "What to search for.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "byteOffset",
+    "type": "`number`",
+    "description": "Where to begin searching in `buf`. If negative, then offset is calculated from the end of `buf`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "description": "If `value` is a string, this is its encoding.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "`true` if `value` was found in `buf`, `false` otherwise.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v5.3.0
+
+#### Overrides
+
+Uint8Array.includes

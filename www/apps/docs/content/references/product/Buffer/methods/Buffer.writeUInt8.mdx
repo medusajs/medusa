@@ -1,0 +1,71 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# writeUInt8
+
+[Buffer](../../interfaces/Buffer.mdx).writeUInt8
+
+**writeUInt8**(`value`, `offset?`): `number`
+
+Writes `value` to `buf` at the specified `offset`. `value` must be a
+valid unsigned 8-bit integer. Behavior is undefined when `value` is anything
+other than an unsigned 8-bit integer.
+
+This function is also available under the `writeUint8` alias.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.allocUnsafe(4);
+
+buf.writeUInt8(0x3, 0);
+buf.writeUInt8(0x4, 1);
+buf.writeUInt8(0x23, 2);
+buf.writeUInt8(0x42, 3);
+
+console.log(buf);
+// Prints: <Buffer 03 04 23 42>
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`number`",
+    "description": "Number to be written to `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to write. Must satisfy `0 <= offset <= buf.length - 1`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "`offset` plus the number of bytes written.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.5.0

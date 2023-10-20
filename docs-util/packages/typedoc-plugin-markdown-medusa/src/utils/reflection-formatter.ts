@@ -256,7 +256,7 @@ export function getTypeChildren(
   switch (reflectionType.type) {
     case "reference":
       // eslint-disable-next-line no-case-declarations
-      const referencedReflection = project.getChildByName(reflectionType.name)
+      const referencedReflection = project?.getChildByName(reflectionType.name)
 
       if (
         referencedReflection instanceof DeclarationReflection &&

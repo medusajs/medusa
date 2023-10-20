@@ -1,0 +1,63 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# readIntLE
+
+[Buffer](../../interfaces/Buffer.mdx).readIntLE
+
+**readIntLE**(`offset`, `byteLength`): `number`
+
+Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as a little-endian, two's complement signed value
+supporting up to 48 bits of accuracy.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
+
+console.log(buf.readIntLE(0, 6).toString(16));
+// Prints: -546f87a9cbee
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to read. Must satisfy `0 <= offset <= buf.length - byteLength`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "byteLength",
+    "type": "`number`",
+    "description": "Number of bytes to read. Must satisfy `0 < byteLength <= 6`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.11.15
