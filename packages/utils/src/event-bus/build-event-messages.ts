@@ -24,7 +24,7 @@ type MessageData<T> = {
  * Build messages from message data to be consumed by the event bus and emitted to the consumer
  * @param messageData
  */
-export function buildMessages<T>(
+export function buildEventMessages<T>(
   messageData: MessageData<T> | MessageData<T>[]
 ): Message<T>[] {
   const messageData_ = Array.isArray(messageData) ? messageData : [messageData]
