@@ -60,7 +60,7 @@ Add multiple customers to a customer group.
       {
         "name": "AdminCustomerGroupsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminCustomerGroupsRes type: object required: - customer_group properties: customer_group: description: Customer group details. $ref: \"#/components/schemas/CustomerGroup\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -113,7 +113,7 @@ Create a customer group.
       {
         "name": "AdminCustomerGroupsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminCustomerGroupsRes type: object required: - customer_group properties: customer_group: description: Customer group details. $ref: \"#/components/schemas/CustomerGroup\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -219,7 +219,7 @@ Lists customer groups.
       {
         "name": "AdminCustomerGroupsListRes",
         "type": "[`PaginatedResponse`](../../admin_batch_jobs/modules/admin_batch_jobs.internal.mdx#paginatedresponse) & { `customer_groups`: [`CustomerGroup`](../../internal/classes/admin_collections.internal.CustomerGroup.mdx)[]  }",
-        "description": "",
+        "description": "#### Schema AdminCustomerGroupsListRes type: object required: - customer_groups - count - offset - limit properties: customer_groups: type: array description: An array of customer group details. items: $ref: \"#/components/schemas/CustomerGroup\" count: type: integer description: The total number of items available offset: type: integer description: The number of customer groups skipped when retrieving the customer groups. limit: type: integer description: The number of items per page",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -280,7 +280,7 @@ List and count customers that belong to provided customer groups.
       {
         "name": "AdminCustomersListRes",
         "type": "[`PaginatedResponse`](../../admin_batch_jobs/modules/admin_batch_jobs.internal.mdx#paginatedresponse) & { `customers`: [`Customer`](../../internal/classes/admin_collections.internal.Customer.mdx)[]  }",
-        "description": "",
+        "description": "#### Schema An array of customer details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -341,7 +341,7 @@ Remove multiple customers from a customer group.
       {
         "name": "AdminCustomerGroupsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminCustomerGroupsRes type: object required: - customer_group properties: customer_group: description: Customer group details. $ref: \"#/components/schemas/CustomerGroup\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -402,7 +402,7 @@ Retrieves a customer group.
       {
         "name": "AdminCustomerGroupsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminCustomerGroupsRes type: object required: - customer_group properties: customer_group: description: Customer group details. $ref: \"#/components/schemas/CustomerGroup\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -463,7 +463,7 @@ Updates a customer group
       {
         "name": "AdminCustomerGroupsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminCustomerGroupsRes type: object required: - customer_group properties: customer_group: description: Customer group details. $ref: \"#/components/schemas/CustomerGroup\"",
         "optional": false,
         "defaultValue": "",
         "children": []

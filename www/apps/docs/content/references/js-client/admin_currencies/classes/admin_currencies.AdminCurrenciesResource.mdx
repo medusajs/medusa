@@ -50,7 +50,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
       {
         "name": "AdminCurrenciesListRes",
         "type": "[`PaginatedResponse`](../../admin_batch_jobs/modules/admin_batch_jobs.internal.mdx#paginatedresponse) & { `currencies`: [`Currency`](../../internal/classes/admin_collections.internal.Currency.mdx)[]  }",
-        "description": "",
+        "description": "#### Schema AdminCurrenciesListRes type: object required: - currencies - count - offset - limit properties: currencies: type: array description: An array of currency details. items: $ref: \"#/components/schemas/Currency\" count: type: integer description: The total number of items available offset: type: integer description: The number of currencies skipped when retrieving the currencies. limit: type: integer description: The number of items per page",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -115,7 +115,7 @@ ___
       {
         "name": "AdminCurrenciesRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema AdminCurrenciesRes type: object required: - currency properties: currency: description: Currency details. $ref: \"#/components/schemas/Currency\"",
         "optional": false,
         "defaultValue": "",
         "children": []

@@ -73,7 +73,7 @@ Adds a shipping method to cart
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -130,7 +130,7 @@ If not provided, we will generate one for the request.
       {
         "name": "StoreCompleteCartRes",
         "type": "{ `data`: [`Cart`](../../internal/classes/admin_collections.internal.Cart.mdx) ; `type`: ``\"cart\"``  } \\| { `data`: [`Order`](../../internal/classes/admin_collections.internal.Order.mdx) ; `type`: ``\"order\"``  } \\| { `data`: [`Swap`](../../internal/classes/admin_collections.internal.Swap.mdx) ; `type`: ``\"swap\"``  }",
-        "description": "",
+        "description": "#### Schema StoreCompleteCartRes type: object required: - type - data properties: type: type: string description: \"The type of the data property. If the cart completion fails, type will be `cart` and the data object will be the cart's details. If the cart completion is successful and the cart is used for checkout, type will be `order` and the data object will be the order's details. If the cart completion is successful and the cart is used for swap creation, type will be `swap` and the data object will be the swap's details.\" enum: [order, cart, swap] data: type: object description: The data of the result object. Its type depends on the type field. oneOf: - type: object allOf: - description: Cart was successfully authorized and order was placed successfully. - $ref: \"#/components/schemas/Order\" - type: object allOf: - description: Cart was successfully authorized but requires further actions. - $ref: \"#/components/schemas/Cart\" - type: object allOf: - description: Cart was used for a swap and it has been completed successfully. - $ref: \"#/components/schemas/Swap\"",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -183,7 +183,7 @@ Creates a cart
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -238,7 +238,7 @@ This is usually called when a customer proceeds to checkout.
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -299,7 +299,7 @@ Removes a discount from cart.
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -361,7 +361,7 @@ Can be useful in case a payment has failed
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -422,7 +422,7 @@ Refreshes a payment session.
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -475,7 +475,7 @@ Retrieves a cart
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -536,7 +536,7 @@ Refreshes a payment session.
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -597,7 +597,7 @@ Updates a cart
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []
@@ -666,7 +666,7 @@ Updates the payment method
       {
         "name": "StoreCartsRes",
         "type": "`object`",
-        "description": "",
+        "description": "#### Schema Cart details.",
         "optional": false,
         "defaultValue": "",
         "children": []

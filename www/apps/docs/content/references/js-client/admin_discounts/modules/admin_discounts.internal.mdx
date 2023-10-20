@@ -115,6 +115,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [ShippingMethod](../../internal/classes/admin_discounts.internal.ShippingMethod-1.mdx)
 - [ShippingMethod](../../internal/classes/admin_discounts.internal.ShippingMethod-2.mdx)
 - [ShippingMethod](../../internal/classes/admin_discounts.internal.ShippingMethod-3.mdx)
+- [Socket](../../internal/classes/admin_discounts.internal.Socket.mdx)
 - [StockLocationAddress](../../internal/classes/admin_discounts.internal.StockLocationAddress.mdx)
 - [StockLocationAddress](../../internal/classes/admin_discounts.internal.StockLocationAddress-1.mdx)
 - [Stream](../../internal/classes/admin_discounts.internal.Stream.mdx)
@@ -125,6 +126,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Interfaces
 
+- [AddressInfo](../../internal/interfaces/admin_discounts.internal.AddressInfo.mdx)
 - [ArrayBufferView](../../internal/interfaces/admin_discounts.internal.ArrayBufferView.mdx)
 - [ArrayLike](../../internal/interfaces/admin_discounts.internal.ArrayLike.mdx)
 - [AsyncGenerator](../../internal/interfaces/admin_discounts.internal.AsyncGenerator.mdx)
@@ -136,8 +138,10 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [Buffer](../../internal/interfaces/admin_discounts.internal.Buffer.mdx)
 - [BufferConstructor](../../internal/interfaces/admin_discounts.internal.BufferConstructor.mdx)
 - [CallSite](../../internal/interfaces/admin_discounts.internal.CallSite.mdx)
+- [ConnectOpts](../../internal/interfaces/admin_discounts.internal.ConnectOpts.mdx)
 - [CreateNoteInput](../../internal/interfaces/admin_discounts.internal.CreateNoteInput.mdx)
 - [CreateUserInput](../../internal/interfaces/admin_discounts.internal.CreateUserInput.mdx)
+- [Dict](../../internal/interfaces/admin_discounts.internal.Dict.mdx)
 - [DuplexOptions](../../internal/interfaces/admin_discounts.internal.DuplexOptions.mdx)
 - [ErrnoException](../../internal/interfaces/admin_discounts.internal.ErrnoException.mdx)
 - [Error](../../internal/interfaces/admin_discounts.internal.Error.mdx)
@@ -152,6 +156,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [ISearchService](../../internal/interfaces/admin_discounts.internal.ISearchService.mdx)
 - [IStockLocationService](../../internal/interfaces/admin_discounts.internal.IStockLocationService.mdx)
 - [ITransactionBaseService](../../internal/interfaces/admin_discounts.internal.ITransactionBaseService.mdx)
+- [IncomingHttpHeaders](../../internal/interfaces/admin_discounts.internal.IncomingHttpHeaders.mdx)
+- [IpcSocketConnectOpts](../../internal/interfaces/admin_discounts.internal.IpcSocketConnectOpts.mdx)
 - [Iterable](../../internal/interfaces/admin_discounts.internal.Iterable.mdx)
 - [IterableIterator](../../internal/interfaces/admin_discounts.internal.IterableIterator.mdx)
 - [Iterator](../../internal/interfaces/admin_discounts.internal.Iterator.mdx)
@@ -160,8 +166,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [JoinerServiceConfig](../../internal/interfaces/admin_discounts.internal.JoinerServiceConfig.mdx)
 - [JoinerServiceConfigAlias](../../internal/interfaces/admin_discounts.internal.JoinerServiceConfigAlias.mdx)
 - [Logger](../../internal/interfaces/admin_discounts.internal.Logger.mdx)
+- [LookupOneOptions](../../internal/interfaces/admin_discounts.internal.LookupOneOptions.mdx)
+- [LookupOptions](../../internal/interfaces/admin_discounts.internal.LookupOptions.mdx)
 - [NumericalComparisonOperator](../../internal/interfaces/admin_discounts.internal.NumericalComparisonOperator.mdx)
 - [Object](../../internal/interfaces/admin_discounts.internal.Object.mdx)
+- [OnReadOpts](../../internal/interfaces/admin_discounts.internal.OnReadOpts.mdx)
 - [PromiseLike](../../internal/interfaces/admin_discounts.internal.PromiseLike.mdx)
 - [QueuingStrategy](../../internal/interfaces/admin_discounts.internal.QueuingStrategy.mdx)
 - [QueuingStrategySize](../../internal/interfaces/admin_discounts.internal.QueuingStrategySize.mdx)
@@ -179,9 +188,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [ReadableWritablePair](../../internal/interfaces/admin_discounts.internal.ReadableWritablePair.mdx)
 - [SharedArrayBuffer](../../internal/interfaces/admin_discounts.internal.SharedArrayBuffer.mdx)
 - [SharedArrayBufferConstructor](../../internal/interfaces/admin_discounts.internal.SharedArrayBufferConstructor.mdx)
+- [SocketConstructorOpts](../../internal/interfaces/admin_discounts.internal.SocketConstructorOpts.mdx)
 - [StaticEventEmitterOptions](../../internal/interfaces/admin_discounts.internal.StaticEventEmitterOptions.mdx)
 - [StreamPipeOptions](../../internal/interfaces/admin_discounts.internal.StreamPipeOptions.mdx)
 - [StringComparisonOperator](../../internal/interfaces/admin_discounts.internal.StringComparisonOperator.mdx)
+- [TcpSocketConnectOpts](../../internal/interfaces/admin_discounts.internal.TcpSocketConnectOpts.mdx)
 - [TransformOptions](../../internal/interfaces/admin_discounts.internal.TransformOptions.mdx)
 - [UnderlyingByteSource](../../internal/interfaces/admin_discounts.internal.UnderlyingByteSource.mdx)
 - [UnderlyingSink](../../internal/interfaces/admin_discounts.internal.UnderlyingSink.mdx)
@@ -8783,6 +8794,60 @@ ___
 
 ___
 
+### LookupFunction
+
+Ƭ **LookupFunction**: (`hostname`: `string`, `options`: [`LookupOneOptions`](../../internal/interfaces/admin_discounts.internal.LookupOneOptions.mdx), `callback`: (`err`: [`ErrnoException`](../../internal/interfaces/admin_discounts.internal.ErrnoException.mdx) \| ``null``, `address`: `string`, `family`: `number`) => `void`) => `void`
+
+#### Type declaration
+
+▸ (`hostname`, `options`, `callback`): `void`
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "hostname",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`LookupOneOptions`](../../internal/interfaces/admin_discounts.internal.LookupOneOptions.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "(`err`: [`ErrnoException`](../../internal/interfaces/admin_discounts.internal.ErrnoException.mdx) \\| ``null``, `address`: `string`, `family`: `number`) => `void`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+##### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+___
+
 ### MedusaContainer
 
 Ƭ **MedusaContainer**: `AwilixContainer` & { `createScope`: () => [`MedusaContainer`](admin_discounts.internal.mdx#medusacontainer) ; `registerAdd`: <T\>(`name`: `string`, `registration`: `T`) => [`MedusaContainer`](admin_discounts.internal.mdx#medusacontainer)  }
@@ -8792,6 +8857,12 @@ ___
 ### MedusaContainer
 
 Ƭ **MedusaContainer**: `AwilixContainer` & { `createScope`: () => [`MedusaContainer`](admin_discounts.internal.mdx#medusacontainer-1) ; `registerAdd`: <T\>(`name`: `string`, `registration`: `T`) => [`MedusaContainer`](admin_discounts.internal.mdx#medusacontainer-1)  }
+
+___
+
+### MiddlewareVerb
+
+Ƭ **MiddlewareVerb**: ``"USE"`` \| ``"ALL"`` \| [`RouteVerb`](admin_discounts.internal.mdx#routeverb)
 
 ___
 
@@ -8805,7 +8876,7 @@ ___
   {
     "name": "canOverride",
     "type": "`boolean`",
-    "description": "",
+    "description": "#### Deprecated property will be removed in future versions",
     "optional": true,
     "defaultValue": "",
     "children": []
@@ -8853,7 +8924,7 @@ ___
   {
     "name": "isRequired",
     "type": "`boolean`",
-    "description": "",
+    "description": "#### Deprecated property will be removed in future versions",
     "optional": true,
     "defaultValue": "",
     "children": []
@@ -10255,6 +10326,12 @@ ___
 
 ___
 
+### RouteVerb
+
+Ƭ **RouteVerb**: typeof [`HTTP_METHODS`](admin_discounts.internal.mdx#http_methods)[`number`]
+
+___
+
 ### SessionOptions
 
 Ƭ **SessionOptions**: `Object`
@@ -10613,6 +10690,18 @@ ___
     "children": []
   }
 ]} />
+
+___
+
+### SocketConnectOpts
+
+Ƭ **SocketConnectOpts**: [`TcpSocketConnectOpts`](../../internal/interfaces/admin_discounts.internal.TcpSocketConnectOpts.mdx) \| [`IpcSocketConnectOpts`](../../internal/interfaces/admin_discounts.internal.IpcSocketConnectOpts.mdx)
+
+___
+
+### SocketReadyState
+
+Ƭ **SocketReadyState**: ``"opening"`` \| ``"open"`` \| ``"readOnly"`` \| ``"writeOnly"`` \| ``"closed"``
 
 ___
 
@@ -13574,6 +13663,14 @@ ___
 ### GiftCardTransactionRepository
 
 • `Const` **GiftCardTransactionRepository**: `Repository`
+
+___
+
+### HTTP\_METHODS
+
+• `Const` **HTTP\_METHODS**: readonly [``"GET"``, ``"POST"``, ``"PUT"``, ``"PATCH"``, ``"DELETE"``, ``"OPTIONS"``, ``"HEAD"``]
+
+List of all the supported HTTP methods
 
 ___
 
