@@ -1,5 +1,4 @@
 ---
-description: 'Learn how to add a middleware in Medusa. A middleware is a function that has access to the request and response objects and can be used to perform actions around an endpoint.'
 addHowToData: true
 ---
 
@@ -7,9 +6,15 @@ import Troubleshooting from '@site/src/components/Troubleshooting'
 import ServiceLifetimeSection from '../../troubleshooting/awilix-resolution-error/_service-lifetime.md'
 import CustomRegistrationSection from '../../troubleshooting/awilix-resolution-error/_custom-registration.md'
 
-# Middlewares
+# Middlewares - Express Endpoints Approach
 
 In this document, you’ll learn how to add a middleware to an existing or custom route in Medusa.
+
+:::note
+
+Following v1.17.2 of `@medusajs/medusa`, it's highly recommended to use the [middlewares.ts file](./add-middleware.mdx) to create middlewares instead. Future versions of Medusa may drop support of this approach.
+
+:::
 
 ## Overview
 

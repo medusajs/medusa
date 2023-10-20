@@ -15,7 +15,9 @@ export default function (theme: MarkdownTheme) {
       ).map((parameter) => reflectionComponentFormatter(parameter, 1))
 
       return `<${parameterComponent} parameters={${JSON.stringify(
-        parameters
+        parameters,
+        null,
+        2
       )}} />`
     }
   )

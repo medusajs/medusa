@@ -510,7 +510,7 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.
 
-This method is also used for capturing payments of a swap of an order, or when the [Capture Payment](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture) endpoint is called.
+This method is also used for capturing payments of a swap of an order, or when a request is sent to the [Capture Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture).
 
 You can utilize this method to interact with the third-party provider and perform any actions necessary to capture the payment.
 
@@ -538,7 +538,7 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 This method is used to refund an order’s payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total order amount or part of it.
 
-This method is also used for refunding payments of a swap or a claim of an order, or when the [Refund Payment](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds) endpoint is called.
+This method is also used for refunding payments of a swap or a claim of an order, or when a request is sent to the [Refund Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds).
 
 You can utilize this method to interact with the third-party provider and perform any actions necessary to refund the payment.
 

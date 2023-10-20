@@ -12,7 +12,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/draft-order.ts:23](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L23)
+[models/draft-order.ts:23](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L23)
 
 ___
 
@@ -22,4 +22,4 @@ ___
 
 #### Defined in
 
-[models/draft-order.ts:22](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/draft-order.ts#L22)
+[models/draft-order.ts:22](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/draft-order.ts#L22)

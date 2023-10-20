@@ -225,7 +225,7 @@ module.exports = nextConfig
 
 ### Step 5: Create API Route
 
-The product module is ready for use now! You can now use it to create API endpoints within your Next.js application.
+The product module is ready for use now! You can now use it to create API routes within your Next.js application.
 
 :::note
 
@@ -251,11 +251,11 @@ export async function GET(request: Request) {
 }
 ```
 
-This creates a `GET` endpoint at the route `/api/products`. You import the `initialize` function, aliased as `initializeProductModule`, from `@medusajs/product`. Then, in the endpoint, you invoke the `initializeProductModule` function, which returns an instance of the `ProductModuleService`. Using the product module service’s `list` method, you retrieve all available products and return them in the response of the endpoint.
+This creates a `GET` API route at the path `/api/products`. You import the `initialize` function, aliased as `initializeProductModule`, from `@medusajs/product`. Then, in the API route, you invoke the `initializeProductModule` function, which returns an instance of the `ProductModuleService`. Using the product module service’s `list` method, you retrieve all available products and return them in the response.
 
 ### Step 6: Test Next.js Application
 
-To test the endpoint you added, start your Next.js application with the following command:
+To test the API route you added, start your Next.js application with the following command:
 
 ```bash npm2yarn
 npm run dev
@@ -267,7 +267,7 @@ Then, open in your browser the URL `http://localhost:3000/api/products`. If you 
 
 ## Example Usages
 
-This section includes some examples of the different functionalities or ways you can use the product module. The code snippets are shown in the context of endpoints.
+This section includes some examples of the different functionalities or ways you can use the product module. The code snippets are shown in the context of API routes.
 
 ### List Products
 

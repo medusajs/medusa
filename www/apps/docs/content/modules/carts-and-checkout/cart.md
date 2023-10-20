@@ -63,7 +63,7 @@ The cart’s totals are retrieved by default in all the [cart’s store APIs](ht
 
 The cart completion functionality is implemented inside the strategy `cartCompletionStrategy`. This allows you to customize how the process is implemented in your store.
 
-You can initiate the cart completion process by sending a request to the [Complete Cart endpoint](https://docs.medusajs.com/api/store#carts_postcartscartcomplete).
+You can initiate the cart completion process by sending a request to the [Complete Cart API Route](https://docs.medusajs.com/api/store#carts_postcartscartcomplete).
 
 ### Idempotency Key
 
