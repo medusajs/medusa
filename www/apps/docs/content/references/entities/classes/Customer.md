@@ -28,7 +28,7 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/customer.ts:40](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L40)
+[models/customer.ts:40](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L40)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:36](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L36)
+[models/customer.ts:36](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L36)
 
 ___
 
@@ -52,7 +52,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -66,7 +66,7 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:26](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L26)
+[models/customer.ts:26](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L26)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:29](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L29)
+[models/customer.ts:29](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L29)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:71](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L71)
+[models/customer.ts:71](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L71)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:52](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L52)
+[models/customer.ts:52](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L52)
 
 ___
 
@@ -120,7 +120,7 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:32](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L32)
+[models/customer.ts:32](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L32)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:74](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L74)
+[models/customer.ts:74](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L74)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:55](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L55)
+[models/customer.ts:55](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L55)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:46](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L46)
+[models/customer.ts:46](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L46)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:49](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L49)
+[models/customer.ts:49](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L49)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[models/customer.ts:43](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L43)
+[models/customer.ts:43](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L43)
 
 ___
 
@@ -194,7 +194,7 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -208,4 +208,4 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[models/customer.ts:77](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/models/customer.ts#L77)
+[models/customer.ts:77](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/customer.ts#L77)

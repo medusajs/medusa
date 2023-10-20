@@ -52,14 +52,4 @@ module.exports = modulesConfig({
       },
     },
   ],
-  extraOptions: {
-    // frontmatterData: {
-    //   displayed_sidebar: "modules",
-    //   badge: {
-    //     variant: "orange",
-    //     text: "Beta",
-    //   },
-    //   // hide_table_of_contents: true,
-    // },
-  },
 })

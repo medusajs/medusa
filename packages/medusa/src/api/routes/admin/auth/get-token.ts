@@ -6,7 +6,7 @@ import { validator } from "../../../../utils/validator"
 import { AdminPostAuthReq } from "./create-session"
 
 /**
- * @oas [post] /admin/token
+ * @oas [post] /admin/auth/token
  * operationId: "PostToken"
  * summary: "User Login (JWT)"
  * x-authenticated: false
