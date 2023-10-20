@@ -23,7 +23,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () => {
+describe("[Product & Pricing Module] POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
   let medusaProcess
@@ -33,7 +33,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env } as any)
+    medusaProcess = await setupServer({ cwd, env, verbose: true } as any)
     appContainer = getContainer()
   })
 
@@ -78,27 +78,38 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
     await db.teardown()
   })
 
-  it("should create product variant price sets and prices", async () => {
+  it("should update product variant price sets and prices", async () => {
     const api = useApi()
     const data = {
-      title: "test variant update",
-      prices: [
+      title: "test product update",
+      variants: [
         {
-          amount: 66600,
-          region_id: "test-region",
-        },
-        {
-          amount: 55500,
-          currency_code: "usd",
-          region_id: null,
+          id: variant.id,
+          title: "test variant update",
+          prices: [
+            {
+              amount: 66600,
+              region_id: "test-region",
+            },
+            {
+              amount: 55500,
+              currency_code: "usd",
+              region_id: null,
+            },
+          ],
         },
       ],
     }
 
     let response = await api.post(
-      `/admin/products/${product.id}/variants/${variant.id}`,
+      `/admin/products/${product.id}`,
       data,
       adminHeaders
+    )
+
+    console.log(
+      "response.data.product - ",
+      JSON.stringify(response.data.product, null, 2)
     )
 
     response = await api.get(`/admin/products/${product.id}`, adminHeaders)
@@ -145,23 +156,29 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
 
     const api = useApi()
     const data = {
-      title: "test variant update",
-      prices: [
+      title: "test product update",
+      variants: [
         {
-          amount: 66600,
-          region_id: "test-region",
-        },
-        {
-          id: moneyAmountToUpdate?.id,
-          amount: 2222,
-          currency_code: "usd",
-          region_id: null,
+          id: variant.id,
+          title: "test variant update",
+          prices: [
+            {
+              amount: 66600,
+              region_id: "test-region",
+            },
+            {
+              id: moneyAmountToUpdate?.id,
+              amount: 2222,
+              currency_code: "usd",
+              region_id: null,
+            },
+          ],
         },
       ],
     }
 
     let response = await api.post(
-      `/admin/products/${product.id}/variants/${variant.id}`,
+      `/admin/products/${product.id}`,
       data,
       adminHeaders
     )
@@ -213,23 +230,30 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
     })
 
     const api = useApi()
+
     const data = {
-      title: "test variant update",
-      prices: [
+      title: "test product update",
+      variants: [
         {
-          amount: 123,
-          region_id: "test-region",
-        },
-        {
-          amount: 456,
-          currency_code: "usd",
-          region_id: null,
+          id: variant.id,
+          title: "test variant update",
+          prices: [
+            {
+              amount: 123,
+              region_id: "test-region",
+            },
+            {
+              amount: 456,
+              currency_code: "usd",
+              region_id: null,
+            },
+          ],
         },
       ],
     }
 
     let response = await api.post(
-      `/admin/products/${product.id}/variants/${variant.id}`,
+      `/admin/products/${product.id}`,
       data,
       adminHeaders
     )

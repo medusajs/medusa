@@ -1,4 +1,4 @@
-import { PricingTypes, ProductTypes } from "@medusajs/types"
+import { PricingTypes } from "@medusajs/types"
 
 import { WorkflowArguments } from "../../helper"
 
@@ -14,7 +14,6 @@ type VariantPrice = {
 
 type HandlerInput = {
   variantPricesMap: Map<string, VariantPrice[]>
-  products: ProductTypes.ProductDTO[]
 }
 
 export async function upsertVariantPrices({
@@ -23,6 +22,7 @@ export async function upsertVariantPrices({
   data,
 }: WorkflowArguments<HandlerInput>) {
   const { variantPricesMap } = data
+
   const pricingModuleService = container.resolve("pricingModuleService")
   const regionService = container.resolve("regionService")
   const medusaApp = container.resolve("medusaApp")

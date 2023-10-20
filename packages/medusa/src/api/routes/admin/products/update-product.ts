@@ -211,6 +211,7 @@ export default async (req, res) => {
             prices: variant.prices || [],
           })
           variantsToCreate.push(variant)
+
           continue
         }
 

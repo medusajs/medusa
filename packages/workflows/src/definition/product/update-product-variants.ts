@@ -82,7 +82,7 @@ const handlers = new Map([
           merge: true,
           invoke: [
             {
-              from: UpdateProductVariantsActions.prepare,
+              from: InputAlias.ProductVariantsUpdateInputData,
             },
             // {
             //   from: UpdateProductVariantsActions.updateProductVariants,
