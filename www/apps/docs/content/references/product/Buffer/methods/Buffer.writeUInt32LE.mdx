@@ -1,0 +1,67 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# writeUInt32LE
+
+[Buffer](../../interfaces/Buffer.mdx).writeUInt32LE
+
+**writeUInt32LE**(`value`, `offset?`): `number`
+
+Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid unsigned 32-bit integer. Behavior is undefined when `value` is
+anything other than an unsigned 32-bit integer.
+
+This function is also available under the `writeUint32LE` alias.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.allocUnsafe(4);
+
+buf.writeUInt32LE(0xfeedface, 0);
+
+console.log(buf);
+// Prints: <Buffer ce fa ed fe>
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`number`",
+    "description": "Number to be written to `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to write. Must satisfy `0 <= offset <= buf.length - 4`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "`offset` plus the number of bytes written.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.5.5
