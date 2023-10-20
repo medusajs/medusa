@@ -37,7 +37,7 @@ v0.1.26
   {
     "name": "closed",
     "type": "`boolean`",
-    "description": "Is `true` after `'close'` has been emitted.",
+    "description": "Is `true` after `'close'` has been emitted. #### Since v18.0.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -45,7 +45,7 @@ v0.1.26
   {
     "name": "destroyed",
     "type": "`boolean`",
-    "description": "Is `true` after `writable.destroy()` has been called.",
+    "description": "Is `true` after `writable.destroy()` has been called. #### Since v8.0.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -53,7 +53,7 @@ v0.1.26
   {
     "name": "errored",
     "type": "``null`` \\| [`Error`](../../admin_discounts/modules/admin_discounts.internal.mdx#error)",
-    "description": "Returns error if the stream has been destroyed with an error.",
+    "description": "Returns error if the stream has been destroyed with an error. #### Since v18.0.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -61,7 +61,7 @@ v0.1.26
   {
     "name": "writable",
     "type": "`boolean`",
-    "description": "Is `true` if it is safe to call `writable.write()`, which means the stream has not been destroyed, errored, or ended.",
+    "description": "Is `true` if it is safe to call `writable.write()`, which means the stream has not been destroyed, errored, or ended. #### Since v11.4.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -69,7 +69,7 @@ v0.1.26
   {
     "name": "writableCorked",
     "type": "`number`",
-    "description": "Number of times `writable.uncork()` needs to be called in order to fully uncork the stream.",
+    "description": "Number of times `writable.uncork()` needs to be called in order to fully uncork the stream. #### Since v13.2.0, v12.16.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -77,7 +77,7 @@ v0.1.26
   {
     "name": "writableEnded",
     "type": "`boolean`",
-    "description": "Is `true` after `writable.end()` has been called. This property does not indicate whether the data has been flushed, for this use `writable.writableFinished` instead.",
+    "description": "Is `true` after `writable.end()` has been called. This property does not indicate whether the data has been flushed, for this use `writable.writableFinished` instead. #### Since v12.9.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -85,7 +85,7 @@ v0.1.26
   {
     "name": "writableFinished",
     "type": "`boolean`",
-    "description": "Is set to `true` immediately before the `'finish'` event is emitted.",
+    "description": "Is set to `true` immediately before the `'finish'` event is emitted. #### Since v12.6.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -93,7 +93,7 @@ v0.1.26
   {
     "name": "writableHighWaterMark",
     "type": "`number`",
-    "description": "Return the value of `highWaterMark` passed when creating this `Writable`.",
+    "description": "Return the value of `highWaterMark` passed when creating this `Writable`. #### Since v9.3.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -101,7 +101,7 @@ v0.1.26
   {
     "name": "writableLength",
     "type": "`number`",
-    "description": "This property contains the number of bytes (or objects) in the queue ready to be written. The value provides introspection data regarding the status of the `highWaterMark`.",
+    "description": "This property contains the number of bytes (or objects) in the queue ready to be written. The value provides introspection data regarding the status of the `highWaterMark`. #### Since v9.4.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -109,7 +109,7 @@ v0.1.26
   {
     "name": "writableNeedDrain",
     "type": "`boolean`",
-    "description": "Is `true` if the stream's buffer has been full and stream will emit `'drain'`.",
+    "description": "Is `true` if the stream's buffer has been full and stream will emit `'drain'`. #### Since v15.2.0, v14.17.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -117,15 +117,15 @@ v0.1.26
   {
     "name": "writableObjectMode",
     "type": "`boolean`",
-    "description": "Getter for the property `objectMode` of a given `Writable` stream.",
+    "description": "Getter for the property `objectMode` of a given `Writable` stream. #### Since v12.3.0",
     "optional": false,
     "defaultValue": "",
     "children": []
   },
   {
     "name": "captureRejectionSymbol",
-    "type": "typeof [`captureRejectionSymbol`](admin_discounts.internal.PassThrough.mdx#capturerejectionsymbol)",
-    "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
+    "type": "typeof [`captureRejectionSymbol`](admin_discounts.internal.Socket.mdx#capturerejectionsymbol)",
+    "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`. #### Since v13.4.0, v12.16.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -133,7 +133,7 @@ v0.1.26
   {
     "name": "captureRejections",
     "type": "`boolean`",
-    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects. #### Since v13.4.0, v12.16.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -141,15 +141,15 @@ v0.1.26
   {
     "name": "defaultMaxListeners",
     "type": "`number`",
-    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`. #### Since v0.11.2",
     "optional": false,
     "defaultValue": "",
     "children": []
   },
   {
     "name": "errorMonitor",
-    "type": "typeof [`errorMonitor`](admin_discounts.internal.PassThrough.mdx#errormonitor)",
-    "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
+    "type": "typeof [`errorMonitor`](admin_discounts.internal.Socket.mdx#errormonitor)",
+    "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed. #### Since v13.6.0, v12.17.0",
     "optional": false,
     "defaultValue": "",
     "children": []
@@ -700,7 +700,7 @@ ___
 ▸ **cork**(): `void`
 
 The `writable.cork()` method forces all written data to be buffered in memory.
-The buffered data will be flushed when either the [uncork](../../internal-2/classes/admin_discounts.internal.internal-2.Writable.mdx#uncork) or [end](../../internal-2/classes/admin_discounts.internal.internal-2.Writable.mdx#end) methods are called.
+The buffered data will be flushed when either the [uncork](admin_discounts.internal.WritableBase.mdx#uncork) or [end](admin_discounts.internal.WritableBase.mdx#end) methods are called.
 
 The primary intent of `writable.cork()` is to accommodate a situation in which
 several small chunks are written to the stream in rapid succession. Instead of
@@ -1136,7 +1136,7 @@ to the `Writable`. The optional `chunk` and `encoding` arguments allow one
 final additional chunk of data to be written immediately before closing the
 stream.
 
-Calling the [write](../../internal-2/classes/admin_discounts.internal.internal-2.Writable.mdx#write) method after calling [end](../../internal-2/classes/admin_discounts.internal.internal-2.Writable.mdx#end) will raise an error.
+Calling the [write](admin_discounts.internal.WritableBase.mdx#write) method after calling [end](admin_discounts.internal.WritableBase.mdx#end) will raise an error.
 
 ```js
 // Write 'hello, ' and then end with 'world!'.
@@ -3629,7 +3629,7 @@ ___
 
 ▸ **uncork**(): `void`
 
-The `writable.uncork()` method flushes all data buffered since [cork](../../internal-2/classes/admin_discounts.internal.internal-2.Writable.mdx#cork) was called.
+The `writable.uncork()` method flushes all data buffered since [cork](admin_discounts.internal.WritableBase.mdx#cork) was called.
 
 When using `writable.cork()` and `writable.uncork()` to manage the buffering
 of writes to a stream, defer calls to `writable.uncork()` using`process.nextTick()`. Doing so allows batching of all`writable.write()` calls that occur within a given Node.js event
@@ -3714,7 +3714,7 @@ by default until they are piped or a `'data'` or `'readable'` event handler
 is added.
 
 If the data to be written can be generated or fetched on demand, it is
-recommended to encapsulate the logic into a `Readable` and use [pipe](admin_discounts.internal.PassThrough.mdx#pipe). However, if calling `write()` is preferred, it is
+recommended to encapsulate the logic into a `Readable` and use [pipe](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx#pipe). However, if calling `write()` is preferred, it is
 possible to respect backpressure and avoid memory issues using the `'drain'` event:
 
 ```js

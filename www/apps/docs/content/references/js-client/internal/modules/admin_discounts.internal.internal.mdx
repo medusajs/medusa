@@ -344,6 +344,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [IPriceSelectionStrategy](../interfaces/admin_discounts.internal.internal.IPriceSelectionStrategy.mdx)
 - [ITaxCalculationStrategy](../interfaces/admin_discounts.internal.internal.ITaxCalculationStrategy.mdx)
 - [ITaxService](../interfaces/admin_discounts.internal.internal.ITaxService.mdx)
+- [MedusaRequest](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx)
 - [PaymentProcessor](../interfaces/admin_discounts.internal.internal.PaymentProcessor.mdx)
 - [PaymentProcessorError](../interfaces/admin_discounts.internal.internal.PaymentProcessorError.mdx)
 - [PaymentService](../interfaces/admin_discounts.internal.internal.PaymentService.mdx)
@@ -4768,6 +4769,132 @@ ___
 ### MedusaContainer
 
 Ƭ **MedusaContainer**: [`MedusaContainer`](../../admin_discounts/modules/admin_discounts.internal.mdx#medusacontainer-1)
+
+___
+
+### MedusaNextFunction
+
+Ƭ **MedusaNextFunction**: `NextFunction`
+
+___
+
+### MedusaRequestHandler
+
+Ƭ **MedusaRequestHandler**: (`req`: [`MedusaRequest`](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx), `res`: [`MedusaResponse`](admin_discounts.internal.internal.mdx#medusaresponse), `next`: [`MedusaNextFunction`](admin_discounts.internal.internal.mdx#medusanextfunction)) => `Promise`<`void`\> \| `void`
+
+#### Type declaration
+
+▸ (`req`, `res`, `next`): `Promise`<`void`\> \| `void`
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "req",
+    "type": "[`MedusaRequest`](../interfaces/admin_discounts.internal.internal.MedusaRequest.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "res",
+    "type": "[`MedusaResponse`](admin_discounts.internal.internal.mdx#medusaresponse)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "next",
+    "type": "[`MedusaNextFunction`](admin_discounts.internal.internal.mdx#medusanextfunction)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+##### Returns
+
+`Promise`<`void`\> \| `void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise<void\\> \\| void",
+    "type": "`Promise`<`void`\\> \\| `void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+___
+
+### MedusaResponse
+
+Ƭ **MedusaResponse**: `Response`
+
+___
+
+### MiddlewareFunction
+
+Ƭ **MiddlewareFunction**: [`MedusaRequestHandler`](admin_discounts.internal.internal.mdx#medusarequesthandler) \| (...`args`: `any`[]) => `any`
+
+___
+
+### MiddlewareRoute
+
+Ƭ **MiddlewareRoute**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "matcher",
+    "type": "`string` \\| `RegExp`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "method",
+    "type": "[`MiddlewareVerb`](../../admin_discounts/modules/admin_discounts.internal.mdx#middlewareverb) \\| [`MiddlewareVerb`](../../admin_discounts/modules/admin_discounts.internal.mdx#middlewareverb)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "middlewares",
+    "type": "[`MiddlewareFunction`](admin_discounts.internal.internal.mdx#middlewarefunction)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
+### MiddlewaresConfig
+
+Ƭ **MiddlewaresConfig**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "routes",
+    "type": "[`MiddlewareRoute`](admin_discounts.internal.internal.mdx#middlewareroute)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
 
 ___
 
