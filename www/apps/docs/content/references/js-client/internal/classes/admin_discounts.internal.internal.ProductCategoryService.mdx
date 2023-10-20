@@ -107,7 +107,7 @@ Provides layer to manipulate product categories.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -132,7 +132,7 @@ TransactionBaseService.activeManager\_
 
 ### addProducts
 
-▸ **addProducts**(`productCategoryId`, `productIds`): `Promise`<`void`\>
+**addProducts**(`productCategoryId`, `productIds`): `Promise`<`void`\>
 
 Add a batch of product to a product category
 
@@ -176,7 +176,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -253,7 +253,7 @@ ___
 
 ### create
 
-▸ **create**(`productCategoryInput`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
+**create**(`productCategoryInput`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
 
 Creates a product category
 
@@ -298,7 +298,7 @@ ___
 
 ### delete
 
-▸ **delete**(`productCategoryId`): `Promise`<`void`\>
+**delete**(`productCategoryId`): `Promise`<`void`\>
 
 Deletes a product category
 
@@ -334,7 +334,7 @@ ___
 
 ### fetchReorderConditions
 
-▸ `Protected` **fetchReorderConditions**(`productCategory`, `input`, `shouldDeleteElement?`): [`ReorderConditions`](../../admin_discounts/modules/admin_discounts.internal.mdx#reorderconditions)
+`Protected` **fetchReorderConditions**(`productCategory`, `input`, `shouldDeleteElement?`): [`ReorderConditions`](../../admin_discounts/modules/admin_discounts.internal.mdx#reorderconditions)
 
 #### Parameters
 
@@ -384,7 +384,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`, `treeSelector?`): `Promise`<[[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`, `treeSelector?`): `Promise`<[[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)[], `number`]\>
 
 Lists product category based on the provided parameters and includes the count of
 product category that match the query.
@@ -454,7 +454,7 @@ ___
 
 ### performReordering
 
-▸ `Protected` **performReordering**(`repository`, `conditions`): `Promise`<`void`\>
+`Protected` **performReordering**(`repository`, `conditions`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -496,7 +496,7 @@ ___
 
 ### removeProducts
 
-▸ **removeProducts**(`productCategoryId`, `productIds`): `Promise`<`void`\>
+**removeProducts**(`productCategoryId`, `productIds`): `Promise`<`void`\>
 
 Remove a batch of product from a product category
 
@@ -540,7 +540,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`productCategoryId`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
+**retrieve**(`productCategoryId`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
 
 Retrieves a product category by id.
 
@@ -609,7 +609,7 @@ ___
 
 ### retrieveByHandle
 
-▸ **retrieveByHandle**(`handle`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
+**retrieveByHandle**(`handle`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
 
 Retrieves a product category by handle.
 
@@ -678,7 +678,7 @@ ___
 
 ### retrieve\_
 
-▸ `Protected` **retrieve_**(`config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
+`Protected` **retrieve_**(`config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
 
 A generic retrieve for fining product categories by different attributes.
 
@@ -739,7 +739,7 @@ ___
 
 ### shiftSiblings
 
-▸ `Protected` **shiftSiblings**(`repository`, `conditions`): `Promise`<`void`\>
+`Protected` **shiftSiblings**(`repository`, `conditions`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -781,7 +781,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -819,7 +819,7 @@ ___
 
 ### transformParentIdToEntity
 
-▸ `Protected` **transformParentIdToEntity**(`productCategoryInput`): `Promise`<[`CreateProductCategoryInput`](../../admin_discounts/modules/admin_discounts.internal.mdx#createproductcategoryinput) \| [`UpdateProductCategoryInput`](../../admin_discounts/modules/admin_discounts.internal.mdx#updateproductcategoryinput)\>
+`Protected` **transformParentIdToEntity**(`productCategoryInput`): `Promise`<[`CreateProductCategoryInput`](../../admin_discounts/modules/admin_discounts.internal.mdx#createproductcategoryinput) \| [`UpdateProductCategoryInput`](../../admin_discounts/modules/admin_discounts.internal.mdx#updateproductcategoryinput)\>
 
 Accepts an input object and transforms product_category_id
 into product_category entity.
@@ -865,7 +865,7 @@ ___
 
 ### update
 
-▸ **update**(`productCategoryId`, `productCategoryInput`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
+**update**(`productCategoryId`, `productCategoryInput`): `Promise`<[`ProductCategory`](admin_collections.internal.ProductCategory.mdx)\>
 
 Updates a product category
 
@@ -918,7 +918,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ProductCategoryService`](admin_discounts.internal.internal.ProductCategoryService.mdx)
+**withTransaction**(`transactionManager?`): [`ProductCategoryService`](admin_discounts.internal.internal.ProductCategoryService.mdx)
 
 #### Parameters
 

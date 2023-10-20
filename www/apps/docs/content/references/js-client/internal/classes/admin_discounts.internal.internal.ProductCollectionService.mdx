@@ -131,7 +131,7 @@ Provides layer to manipulate product collections.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -156,7 +156,7 @@ TransactionBaseService.activeManager\_
 
 ### addProducts
 
-▸ **addProducts**(`collectionId`, `productIds`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
+**addProducts**(`collectionId`, `productIds`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
 
 #### Parameters
 
@@ -207,7 +207,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -284,7 +284,7 @@ ___
 
 ### create
 
-▸ **create**(`collection`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
+**create**(`collection`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
 
 Creates a product collection
 
@@ -329,7 +329,7 @@ ___
 
 ### delete
 
-▸ **delete**(`collectionId`): `Promise`<`void`\>
+**delete**(`collectionId`): `Promise`<`void`\>
 
 Deletes a product collection idempotently
 
@@ -365,7 +365,7 @@ ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)[]\>
+**list**(`selector?`, `config?`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)[]\>
 
 Lists product collections
 
@@ -443,7 +443,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector?`, `config?`): `Promise`<[[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)[], `number`]\>
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)[], `number`]\>
 
 Lists product collections and add count.
 
@@ -504,7 +504,7 @@ ___
 
 ### removeProducts
 
-▸ **removeProducts**(`collectionId`, `productIds`): `Promise`<`void`\>
+**removeProducts**(`collectionId`, `productIds`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -546,7 +546,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`collectionId`, `config?`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
+**retrieve**(`collectionId`, `config?`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
 
 Retrieves a product collection by id.
 
@@ -599,7 +599,7 @@ ___
 
 ### retrieveByHandle
 
-▸ **retrieveByHandle**(`collectionHandle`, `config?`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
+**retrieveByHandle**(`collectionHandle`, `config?`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
 
 Retrieves a product collection by id.
 
@@ -652,7 +652,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -690,7 +690,7 @@ ___
 
 ### update
 
-▸ **update**(`collectionId`, `update`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
+**update**(`collectionId`, `update`): `Promise`<[`ProductCollection`](admin_collections.internal.ProductCollection.mdx)\>
 
 Updates a product collection
 
@@ -743,7 +743,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ProductCollectionService`](admin_discounts.internal.internal.ProductCollectionService.mdx)
+**withTransaction**(`transactionManager?`): [`ProductCollectionService`](admin_discounts.internal.internal.ProductCollectionService.mdx)
 
 #### Parameters
 

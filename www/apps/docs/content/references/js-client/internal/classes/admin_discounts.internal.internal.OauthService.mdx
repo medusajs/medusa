@@ -105,7 +105,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -130,7 +130,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -207,7 +207,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
+**create**(`data`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
 
 #### Parameters
 
@@ -250,7 +250,7 @@ ___
 
 ### generateToken
 
-▸ **generateToken**(`appName`, `code`, `state`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
+**generateToken**(`appName`, `code`, `state`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
 
 #### Parameters
 
@@ -309,7 +309,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)[]\>
+**list**(`selector`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)[]\>
 
 #### Parameters
 
@@ -361,7 +361,7 @@ ___
 
 ### refreshToken
 
-▸ **refreshToken**(`appName`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
+**refreshToken**(`appName`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
 
 #### Parameters
 
@@ -404,7 +404,7 @@ ___
 
 ### registerOauthApp
 
-▸ **registerOauthApp**(`appDetails`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
+**registerOauthApp**(`appDetails`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
 
 #### Parameters
 
@@ -447,7 +447,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`oauthId`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
+**retrieve**(`oauthId`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
 
 #### Parameters
 
@@ -490,7 +490,7 @@ ___
 
 ### retrieveByName
 
-▸ **retrieveByName**(`appName`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
+**retrieveByName**(`appName`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
 
 #### Parameters
 
@@ -533,7 +533,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -571,7 +571,7 @@ ___
 
 ### update
 
-▸ **update**(`id`, `update`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
+**update**(`id`, `update`): `Promise`<[`Oauth`](admin_discounts.internal.internal.Oauth.mdx)\>
 
 #### Parameters
 
@@ -622,7 +622,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`OauthService`](admin_discounts.internal.internal.OauthService.mdx)
+**withTransaction**(`transactionManager?`): [`OauthService`](admin_discounts.internal.internal.OauthService.mdx)
 
 #### Parameters
 

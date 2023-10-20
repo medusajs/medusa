@@ -89,7 +89,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -114,7 +114,7 @@ TransactionBaseService.activeManager\_
 
 ### addToProduct
 
-▸ **addToProduct**(`id`, `productIds`, `replace?`): `Promise`<[`ProductTaxRate`](admin_discounts.internal.internal.ProductTaxRate.mdx) \| [`ProductTaxRate`](admin_discounts.internal.internal.ProductTaxRate.mdx)[]\>
+**addToProduct**(`id`, `productIds`, `replace?`): `Promise`<[`ProductTaxRate`](admin_discounts.internal.internal.ProductTaxRate.mdx) \| [`ProductTaxRate`](admin_discounts.internal.internal.ProductTaxRate.mdx)[]\>
 
 #### Parameters
 
@@ -173,7 +173,7 @@ ___
 
 ### addToProductType
 
-▸ **addToProductType**(`id`, `productTypeIds`, `replace?`): `Promise`<[`ProductTypeTaxRate`](admin_discounts.internal.internal.ProductTypeTaxRate.mdx)[]\>
+**addToProductType**(`id`, `productTypeIds`, `replace?`): `Promise`<[`ProductTypeTaxRate`](admin_discounts.internal.internal.ProductTypeTaxRate.mdx)[]\>
 
 #### Parameters
 
@@ -241,7 +241,7 @@ ___
 
 ### addToShippingOption
 
-▸ **addToShippingOption**(`id`, `optionIds`, `replace?`): `Promise`<[`ShippingTaxRate`](admin_discounts.internal.internal.ShippingTaxRate.mdx)[]\>
+**addToShippingOption**(`id`, `optionIds`, `replace?`): `Promise`<[`ShippingTaxRate`](admin_discounts.internal.internal.ShippingTaxRate.mdx)[]\>
 
 #### Parameters
 
@@ -309,7 +309,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -386,7 +386,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)\>
+**create**(`data`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)\>
 
 #### Parameters
 
@@ -429,7 +429,7 @@ ___
 
 ### delete
 
-▸ **delete**(`id`): `Promise`<`void`\>
+**delete**(`id`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -463,7 +463,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)[]\>
 
 #### Parameters
 
@@ -523,7 +523,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`TaxRate`](admin_collections.internal.TaxRate.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`TaxRate`](admin_collections.internal.TaxRate.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -582,7 +582,7 @@ ___
 
 ### listByProduct
 
-▸ **listByProduct**(`productId`, `config`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)[]\>
+**listByProduct**(`productId`, `config`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)[]\>
 
 #### Parameters
 
@@ -642,7 +642,7 @@ ___
 
 ### listByShippingOption
 
-▸ **listByShippingOption**(`shippingOptionId`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)[]\>
+**listByShippingOption**(`shippingOptionId`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)[]\>
 
 #### Parameters
 
@@ -694,7 +694,7 @@ ___
 
 ### removeFromProduct
 
-▸ **removeFromProduct**(`id`, `productIds`): `Promise`<`void`\>
+**removeFromProduct**(`id`, `productIds`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -736,7 +736,7 @@ ___
 
 ### removeFromProductType
 
-▸ **removeFromProductType**(`id`, `typeIds`): `Promise`<`void`\>
+**removeFromProductType**(`id`, `typeIds`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -778,7 +778,7 @@ ___
 
 ### removeFromShippingOption
 
-▸ **removeFromShippingOption**(`id`, `optionIds`): `Promise`<`void`\>
+**removeFromShippingOption**(`id`, `optionIds`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -820,7 +820,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`taxRateId`, `config?`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)\>
+**retrieve**(`taxRateId`, `config?`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)\>
 
 #### Parameters
 
@@ -871,7 +871,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -909,7 +909,7 @@ ___
 
 ### update
 
-▸ **update**(`id`, `data`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)\>
+**update**(`id`, `data`): `Promise`<[`TaxRate`](admin_collections.internal.TaxRate.mdx)\>
 
 #### Parameters
 
@@ -960,7 +960,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`TaxRateService`](admin_discounts.internal.internal.TaxRateService.mdx)
+**withTransaction**(`transactionManager?`): [`TaxRateService`](admin_discounts.internal.internal.TaxRateService.mdx)
 
 #### Parameters
 

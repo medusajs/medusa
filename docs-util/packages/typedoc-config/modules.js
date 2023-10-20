@@ -86,7 +86,6 @@ module.exports = ({
       "typedoc-plugin-rename-defaults",
       "typedoc-plugin-frontmatter",
     ],
-    hideMembersSymbol: true,
     formatting,
     allReflectionsHaveOwnDocument: true,
     objectLiteralTypeDeclarationStyle: "component",

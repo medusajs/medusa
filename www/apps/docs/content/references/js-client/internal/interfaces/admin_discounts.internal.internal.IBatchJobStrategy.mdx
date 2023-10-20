@@ -61,7 +61,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -86,7 +86,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -163,7 +163,7 @@ ___
 
 ### buildTemplate
 
-▸ **buildTemplate**(): `Promise`<`string`\>
+**buildTemplate**(): `Promise`<`string`\>
 
 Builds and returns a template file that can be downloaded and filled in
 
@@ -195,7 +195,7 @@ ___
 
 ### preProcessBatchJob
 
-▸ **preProcessBatchJob**(`batchJobId`): `Promise`<`void`\>
+**preProcessBatchJob**(`batchJobId`): `Promise`<`void`\>
 
 Method for pre-processing a batch job
 
@@ -231,7 +231,7 @@ ___
 
 ### prepareBatchJobForProcessing
 
-▸ **prepareBatchJobForProcessing**(`batchJobEntity`, `req`): `Promise`<[`CreateBatchJobInput`](../modules/admin_discounts.internal.internal.mdx#createbatchjobinput)\>
+**prepareBatchJobForProcessing**(`batchJobEntity`, `req`): `Promise`<[`CreateBatchJobInput`](../modules/admin_discounts.internal.internal.mdx#createbatchjobinput)\>
 
 Method for preparing a batch job for processing
 
@@ -284,7 +284,7 @@ ___
 
 ### processJob
 
-▸ **processJob**(`batchJobId`): `Promise`<`void`\>
+**processJob**(`batchJobId`): `Promise`<`void`\>
 
 Method does the actual processing of the job. Should report back on the progress of the operation.
 
@@ -320,7 +320,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -358,7 +358,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`IBatchJobStrategy`](admin_discounts.internal.internal.IBatchJobStrategy.mdx)
+**withTransaction**(`transactionManager?`): [`IBatchJobStrategy`](admin_discounts.internal.internal.IBatchJobStrategy.mdx)
 
 #### Parameters
 

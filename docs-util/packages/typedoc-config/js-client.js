@@ -12,7 +12,7 @@ module.exports = {
   tsconfig: path.join(pathPrefix, "packages/medusa-js/tsconfig.json"),
   name: "JS Client Reference",
   indexTitle: "JS Client Reference",
-  entryDocument: "index.md",
+  entryDocument: "_index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
   plugin: [

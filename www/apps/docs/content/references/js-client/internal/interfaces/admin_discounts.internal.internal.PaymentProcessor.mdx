@@ -19,7 +19,7 @@ This work is still experimental and can be changed until it becomes stable
 
 ### authorizePayment
 
-▸ **authorizePayment**(`paymentSessionData`, `context`): `Promise`<[`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx) \| { `data`: Record<`string`, `unknown`\> ; `status`: [`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)  }\>
+**authorizePayment**(`paymentSessionData`, `context`): `Promise`<[`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx) \| { `data`: Record<`string`, `unknown`\> ; `status`: [`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)  }\>
 
 Authorize an existing session if it is not already authorized
 
@@ -72,7 +72,7 @@ ___
 
 ### cancelPayment
 
-▸ **cancelPayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
+**cancelPayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
 
 Cancel an existing session
 
@@ -117,7 +117,7 @@ ___
 
 ### capturePayment
 
-▸ **capturePayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
+**capturePayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
 
 Capture an existing session
 
@@ -162,7 +162,7 @@ ___
 
 ### deletePayment
 
-▸ **deletePayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
+**deletePayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
 
 Delete an existing session
 
@@ -207,7 +207,7 @@ ___
 
 ### getIdentifier
 
-▸ **getIdentifier**(): `string`
+**getIdentifier**(): `string`
 
 Return a unique identifier to retrieve the payment plugin provider
 
@@ -230,7 +230,7 @@ ___
 
 ### getPaymentStatus
 
-▸ **getPaymentStatus**(`paymentSessionData`): `Promise`<[`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)\>
+**getPaymentStatus**(`paymentSessionData`): `Promise`<[`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)\>
 
 Return the status of the session
 
@@ -307,7 +307,7 @@ ___
 
 ### initiatePayment
 
-▸ **initiatePayment**(`context`): `Promise`<[`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx) \| [`PaymentProcessorSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentprocessorsessionresponse)\>
+**initiatePayment**(`context`): `Promise`<[`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx) \| [`PaymentProcessorSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentprocessorsessionresponse)\>
 
 Initiate a payment session with the external provider
 
@@ -352,7 +352,7 @@ ___
 
 ### refundPayment
 
-▸ **refundPayment**(`paymentSessionData`, `refundAmount`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
+**refundPayment**(`paymentSessionData`, `refundAmount`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
 
 Refund an existing session
 
@@ -405,7 +405,7 @@ ___
 
 ### retrievePayment
 
-▸ **retrievePayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
+**retrievePayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
 
 Retrieve an existing session
 
@@ -450,7 +450,7 @@ ___
 
 ### updatePayment
 
-▸ **updatePayment**(`context`): `Promise`<`void` \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx) \| [`PaymentProcessorSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentprocessorsessionresponse)\>
+**updatePayment**(`context`): `Promise`<`void` \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx) \| [`PaymentProcessorSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentprocessorsessionresponse)\>
 
 Update an existing payment session
 
@@ -495,7 +495,7 @@ ___
 
 ### updatePaymentData
 
-▸ **updatePaymentData**(`sessionId`, `data`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
+**updatePaymentData**(`sessionId`, `data`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](admin_discounts.internal.internal.PaymentProcessorError.mdx)\>
 
 Update the session data for a payment session
 

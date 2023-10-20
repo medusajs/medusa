@@ -8,7 +8,7 @@ In this document, you’ll learn what a price selection strategy is.
 
 :::note
 
-If you’re interested to learn how to override the price selection strategy, check out [this documentation](./backend/override-price-selection-strategy.md) instead.
+If you’re interested to learn how to override the price selection strategy, check out [this documentation](./backend/override-price-selection-strategy.mdx) instead.
 
 :::
 
@@ -69,4 +69,4 @@ The context that is passed to the `calculateVariantPrice` method is an object th
 
 ## See Also
 
-- [Override the Price Selection Strategy](./backend/override-price-selection-strategy.md)
+- [Override the Price Selection Strategy](./backend/override-price-selection-strategy.mdx)

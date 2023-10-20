@@ -138,7 +138,7 @@ class MyPaymentProcessor extends AbstractPaymentProcessor {
     Record<string, unknown> | 
     PaymentProcessorError
   > {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not implemented.")
   }
 }
 
@@ -440,7 +440,7 @@ An example of a minimal implementation of `updatePaymentData` that returns the `
 
 ```ts
 import { 
-  PaymentProcessorError
+  PaymentProcessorError,
 } from "@medusajs/medusa"
 // ...
 

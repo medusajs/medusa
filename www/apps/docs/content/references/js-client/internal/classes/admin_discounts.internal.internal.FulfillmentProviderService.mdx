@@ -75,7 +75,7 @@ Helps retrieve fulfillment providers
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -100,7 +100,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -177,7 +177,7 @@ ___
 
 ### calculatePrice
 
-▸ **calculatePrice**(`option`, `data`, `cart?`): `Promise`<`number`\>
+**calculatePrice**(`option`, `data`, `cart?`): `Promise`<`number`\>
 
 #### Parameters
 
@@ -236,7 +236,7 @@ ___
 
 ### canCalculate
 
-▸ **canCalculate**(`option`): `Promise`<`boolean`\>
+**canCalculate**(`option`): `Promise`<`boolean`\>
 
 #### Parameters
 
@@ -279,7 +279,7 @@ ___
 
 ### cancelFulfillment
 
-▸ **cancelFulfillment**(`fulfillment`): `Promise`<[`Fulfillment`](admin_collections.internal.Fulfillment.mdx)\>
+**cancelFulfillment**(`fulfillment`): `Promise`<[`Fulfillment`](admin_collections.internal.Fulfillment.mdx)\>
 
 #### Parameters
 
@@ -322,7 +322,7 @@ ___
 
 ### createFulfillment
 
-▸ **createFulfillment**(`method`, `items`, `order`, `fulfillment`): `Promise`<Record<`string`, `unknown`\>\>
+**createFulfillment**(`method`, `items`, `order`, `fulfillment`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -406,7 +406,7 @@ ___
 
 ### createReturn
 
-▸ **createReturn**(`returnOrder`): `Promise`<Record<`string`, `unknown`\>\>
+**createReturn**(`returnOrder`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -466,7 +466,7 @@ ___
 
 ### list
 
-▸ **list**(): `Promise`<[`FulfillmentProvider`](admin_collections.internal.FulfillmentProvider.mdx)[]\>
+**list**(): `Promise`<[`FulfillmentProvider`](admin_collections.internal.FulfillmentProvider.mdx)[]\>
 
 #### Returns
 
@@ -505,7 +505,7 @@ ___
 
 ### listFulfillmentOptions
 
-▸ **listFulfillmentOptions**(`providerIds`): `Promise`<[`FulfillmentOptions`](../../admin_discounts/modules/admin_discounts.internal.mdx#fulfillmentoptions)[]\>
+**listFulfillmentOptions**(`providerIds`): `Promise`<[`FulfillmentOptions`](../../admin_discounts/modules/admin_discounts.internal.mdx#fulfillmentoptions)[]\>
 
 #### Parameters
 
@@ -557,7 +557,7 @@ ___
 
 ### registerInstalledProviders
 
-▸ **registerInstalledProviders**(`providers`): `Promise`<`void`\>
+**registerInstalledProviders**(`providers`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -591,7 +591,7 @@ ___
 
 ### retrieveDocuments
 
-▸ **retrieveDocuments**(`providerId`, `fulfillmentData`, `documentType`): `Promise`<`any`\>
+**retrieveDocuments**(`providerId`, `fulfillmentData`, `documentType`): `Promise`<`any`\>
 
 Fetches documents from the fulfillment provider
 
@@ -652,7 +652,7 @@ ___
 
 ### retrieveProvider
 
-▸ **retrieveProvider**(`providerId`): `any`
+**retrieveProvider**(`providerId`): `any`
 
 #### Parameters
 
@@ -686,7 +686,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -724,7 +724,7 @@ ___
 
 ### validateFulfillmentData
 
-▸ **validateFulfillmentData**(`option`, `data`, `cart`): `Promise`<Record<`string`, `unknown`\>\>
+**validateFulfillmentData**(`option`, `data`, `cart`): `Promise`<Record<`string`, `unknown`\>\>
 
 #### Parameters
 
@@ -800,7 +800,7 @@ ___
 
 ### validateOption
 
-▸ **validateOption**(`option`): `Promise`<`boolean`\>
+**validateOption**(`option`): `Promise`<`boolean`\>
 
 #### Parameters
 
@@ -843,7 +843,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`FulfillmentProviderService`](admin_discounts.internal.internal.FulfillmentProviderService.mdx)
+**withTransaction**(`transactionManager?`): [`FulfillmentProviderService`](admin_discounts.internal.internal.FulfillmentProviderService.mdx)
 
 #### Parameters
 

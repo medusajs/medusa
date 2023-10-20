@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -90,7 +90,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -167,7 +167,7 @@ ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<[`ProductType`](admin_collections.internal.ProductType.mdx)[]\>
+**list**(`selector?`, `config?`): `Promise`<[`ProductType`](admin_collections.internal.ProductType.mdx)[]\>
 
 Lists product types
 
@@ -229,7 +229,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector?`, `config?`): `Promise`<[[`ProductType`](admin_collections.internal.ProductType.mdx)[], `number`]\>
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`ProductType`](admin_collections.internal.ProductType.mdx)[], `number`]\>
 
 Lists product types and adds count.
 
@@ -290,7 +290,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<[`ProductType`](admin_collections.internal.ProductType.mdx)\>
+**retrieve**(`id`, `config?`): `Promise`<[`ProductType`](admin_collections.internal.ProductType.mdx)\>
 
 Gets a product type by id.
 Throws in case of DB Error and if product was not found.
@@ -344,7 +344,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -382,7 +382,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ProductTypeService`](admin_discounts.internal.internal.ProductTypeService.mdx)
+**withTransaction**(`transactionManager?`): [`ProductTypeService`](admin_discounts.internal.internal.ProductTypeService.mdx)
 
 #### Parameters
 

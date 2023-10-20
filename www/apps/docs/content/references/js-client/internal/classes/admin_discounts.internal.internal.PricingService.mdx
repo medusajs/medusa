@@ -115,7 +115,7 @@ Allows retrieval of prices.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -140,7 +140,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -217,7 +217,7 @@ ___
 
 ### calculateTaxes
 
-▸ **calculateTaxes**(`variantPricing`, `productRates`): [`TaxedPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#taxedpricing)
+**calculateTaxes**(`variantPricing`, `productRates`): [`TaxedPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#taxedpricing)
 
 Gets the prices for a product variant
 
@@ -261,7 +261,7 @@ ___
 
 ### collectPricingContext
 
-▸ **collectPricingContext**(`context`): `Promise`<[`PricingContext`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricingcontext)\>
+**collectPricingContext**(`context`): `Promise`<[`PricingContext`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricingcontext)\>
 
 Collects additional information necessary for completing the price
 selection.
@@ -307,7 +307,7 @@ ___
 
 ### getProductPricing
 
-▸ **getProductPricing**(`product`, `context`): `Promise`<Record<`string`, [`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)\>\>
+**getProductPricing**(`product`, `context`): `Promise`<Record<`string`, [`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)\>\>
 
 Gets all the variant prices for a product. All the product's variants will
 be fetched.
@@ -378,7 +378,7 @@ ___
 
 ### getProductPricingById
 
-▸ **getProductPricingById**(`productId`, `context`): `Promise`<Record<`string`, [`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)\>\>
+**getProductPricingById**(`productId`, `context`): `Promise`<Record<`string`, [`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)\>\>
 
 Gets all the variant prices for a product by the product id
 
@@ -448,7 +448,7 @@ ___
 
 ### getProductVariantPricing
 
-▸ **getProductVariantPricing**(`variant`, `context`): `Promise`<[`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)\>
+**getProductVariantPricing**(`variant`, `context`): `Promise`<[`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)\>
 
 Gets the prices for a product variant.
 
@@ -501,7 +501,7 @@ ___
 
 ### getProductVariantPricingById
 
-▸ **getProductVariantPricingById**(`variantId`, `context`): `Promise`<[`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)\>
+**getProductVariantPricingById**(`variantId`, `context`): `Promise`<[`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)\>
 
 Gets the prices for a product variant by a variant id.
 
@@ -558,7 +558,7 @@ ___
 
 ### getProductVariantsPricing
 
-▸ **getProductVariantsPricing**(`data`, `context`): `Promise`<{ `[variant_id: string]`: [`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing);  }\>
+**getProductVariantsPricing**(`data`, `context`): `Promise`<{ `[variant_id: string]`: [`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing);  }\>
 
 Gets the prices for a collection of variants.
 
@@ -611,7 +611,7 @@ ___
 
 ### getShippingOptionPricing
 
-▸ **getShippingOptionPricing**(`shippingOption`, `context`): `Promise`<[`PricedShippingOption`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedshippingoption)\>
+**getShippingOptionPricing**(`shippingOption`, `context`): `Promise`<[`PricedShippingOption`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedshippingoption)\>
 
 Gets the prices for a shipping option.
 
@@ -664,7 +664,7 @@ ___
 
 ### setProductPrices
 
-▸ **setProductPrices**(`products`, `context?`): `Promise`<([`Product`](admin_collections.internal.Product.mdx) \| [`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct))[]\>
+**setProductPrices**(`products`, `context?`): `Promise`<([`Product`](admin_collections.internal.Product.mdx) \| [`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct))[]\>
 
 Set additional prices on a list of products.
 
@@ -726,7 +726,7 @@ ___
 
 ### setShippingOptionPrices
 
-▸ **setShippingOptionPrices**(`shippingOptions`, `context?`): `Promise`<[`PricedShippingOption`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedshippingoption)[]\>
+**setShippingOptionPrices**(`shippingOptions`, `context?`): `Promise`<[`PricedShippingOption`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedshippingoption)[]\>
 
 Set additional prices on a list of shipping options.
 
@@ -788,7 +788,7 @@ ___
 
 ### setVariantPrices
 
-▸ **setVariantPrices**(`variants`, `context?`): `Promise`<[`PricedVariant`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedvariant)[]\>
+**setVariantPrices**(`variants`, `context?`): `Promise`<[`PricedVariant`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedvariant)[]\>
 
 Set additional prices on a list of product variants.
 
@@ -850,7 +850,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -888,7 +888,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`PricingService`](admin_discounts.internal.internal.PricingService.mdx)
+**withTransaction**(`transactionManager?`): [`PricingService`](admin_discounts.internal.internal.PricingService.mdx)
 
 #### Parameters
 

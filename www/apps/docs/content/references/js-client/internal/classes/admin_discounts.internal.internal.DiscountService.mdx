@@ -157,7 +157,7 @@ Provides layer to manipulate discounts.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -182,7 +182,7 @@ TransactionBaseService.activeManager\_
 
 ### addRegion
 
-▸ **addRegion**(`discountId`, `regionId`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
+**addRegion**(`discountId`, `regionId`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
 
 Adds a region to the discount regions array.
 
@@ -235,7 +235,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -312,7 +312,7 @@ ___
 
 ### calculateDiscountForLineItem
 
-▸ **calculateDiscountForLineItem**(`discountId`, `lineItem`, `calculationContextData`): `Promise`<`number`\>
+**calculateDiscountForLineItem**(`discountId`, `lineItem`, `calculationContextData`): `Promise`<`number`\>
 
 #### Parameters
 
@@ -371,7 +371,7 @@ ___
 
 ### canApplyForCustomer
 
-▸ **canApplyForCustomer**(`discountRuleId`, `customerId`): `Promise`<`boolean`\>
+**canApplyForCustomer**(`discountRuleId`, `customerId`): `Promise`<`boolean`\>
 
 #### Parameters
 
@@ -422,7 +422,7 @@ ___
 
 ### create
 
-▸ **create**(`discount`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
+**create**(`discount`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
 
 Creates a discount with provided data given that the data is validated.
 Normalizes discount code to uppercase.
@@ -468,7 +468,7 @@ ___
 
 ### createDynamicCode
 
-▸ **createDynamicCode**(`discountId`, `data`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
+**createDynamicCode**(`discountId`, `data`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
 
 Creates a dynamic code for a discount id.
 
@@ -521,7 +521,7 @@ ___
 
 ### delete
 
-▸ **delete**(`discountId`): `Promise`<`void`\>
+**delete**(`discountId`): `Promise`<`void`\>
 
 Deletes a discount idempotently
 
@@ -557,7 +557,7 @@ ___
 
 ### deleteDynamicCode
 
-▸ **deleteDynamicCode**(`discountId`, `code`): `Promise`<`void`\>
+**deleteDynamicCode**(`discountId`, `code`): `Promise`<`void`\>
 
 Deletes a dynamic code for a discount id.
 
@@ -601,7 +601,7 @@ ___
 
 ### hasCustomersGroupCondition
 
-▸ **hasCustomersGroupCondition**(`discount`): `boolean`
+**hasCustomersGroupCondition**(`discount`): `boolean`
 
 #### Parameters
 
@@ -635,7 +635,7 @@ ___
 
 ### hasExpired
 
-▸ **hasExpired**(`discount`): `boolean`
+**hasExpired**(`discount`): `boolean`
 
 #### Parameters
 
@@ -669,7 +669,7 @@ ___
 
 ### hasNotStarted
 
-▸ **hasNotStarted**(`discount`): `boolean`
+**hasNotStarted**(`discount`): `boolean`
 
 #### Parameters
 
@@ -703,7 +703,7 @@ ___
 
 ### hasReachedLimit
 
-▸ **hasReachedLimit**(`discount`): `boolean`
+**hasReachedLimit**(`discount`): `boolean`
 
 #### Parameters
 
@@ -737,7 +737,7 @@ ___
 
 ### isDisabled
 
-▸ **isDisabled**(`discount`): `boolean`
+**isDisabled**(`discount`): `boolean`
 
 #### Parameters
 
@@ -771,7 +771,7 @@ ___
 
 ### isValidForRegion
 
-▸ **isValidForRegion**(`discount`, `region_id`): `Promise`<`boolean`\>
+**isValidForRegion**(`discount`, `region_id`): `Promise`<`boolean`\>
 
 #### Parameters
 
@@ -822,7 +822,7 @@ ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)[]\>
+**list**(`selector?`, `config?`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)[]\>
 
 #### Parameters
 
@@ -882,7 +882,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector?`, `config?`): `Promise`<[[`Discount`](admin_collections.internal.Discount.mdx)[], `number`]\>
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`Discount`](admin_collections.internal.Discount.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -941,7 +941,7 @@ ___
 
 ### listByCodes
 
-▸ **listByCodes**(`discountCodes`, `config?`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)[]\>
+**listByCodes**(`discountCodes`, `config?`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)[]\>
 
 List all the discounts corresponding to the given codes
 
@@ -1003,7 +1003,7 @@ ___
 
 ### removeRegion
 
-▸ **removeRegion**(`discountId`, `regionId`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
+**removeRegion**(`discountId`, `regionId`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
 
 Removes a region from the discount regions array.
 
@@ -1056,7 +1056,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`discountId`, `config?`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
+**retrieve**(`discountId`, `config?`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
 
 Gets a discount by id.
 
@@ -1109,7 +1109,7 @@ ___
 
 ### retrieveByCode
 
-▸ **retrieveByCode**(`discountCode`, `config?`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
+**retrieveByCode**(`discountCode`, `config?`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
 
 Gets the discount by discount code.
 
@@ -1162,7 +1162,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -1200,7 +1200,7 @@ ___
 
 ### update
 
-▸ **update**(`discountId`, `update`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
+**update**(`discountId`, `update`): `Promise`<[`Discount`](admin_collections.internal.Discount.mdx)\>
 
 Updates a discount.
 
@@ -1253,7 +1253,7 @@ ___
 
 ### validateDiscountForCartOrThrow
 
-▸ **validateDiscountForCartOrThrow**(`cart`, `discount`): `Promise`<`void`\>
+**validateDiscountForCartOrThrow**(`cart`, `discount`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -1295,7 +1295,7 @@ ___
 
 ### validateDiscountForProduct
 
-▸ **validateDiscountForProduct**(`discountRuleId`, `productId?`): `Promise`<`boolean`\>
+**validateDiscountForProduct**(`discountRuleId`, `productId?`): `Promise`<`boolean`\>
 
 #### Parameters
 
@@ -1346,7 +1346,7 @@ ___
 
 ### validateDiscountRule\_
 
-▸ **validateDiscountRule_**<`T`\>(`discountRule`): `T`
+**validateDiscountRule_**<`T`\>(`discountRule`): `T`
 
 Creates a discount rule with provided data given that the data is validated.
 
@@ -1384,7 +1384,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`DiscountService`](admin_discounts.internal.internal.DiscountService.mdx)
+**withTransaction**(`transactionManager?`): [`DiscountService`](admin_discounts.internal.internal.DiscountService.mdx)
 
 #### Parameters
 

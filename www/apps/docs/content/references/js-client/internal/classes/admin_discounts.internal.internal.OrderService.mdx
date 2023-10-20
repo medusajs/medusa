@@ -369,7 +369,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -394,7 +394,7 @@ TransactionBaseService.activeManager\_
 
 ### addShippingMethod
 
-▸ **addShippingMethod**(`orderId`, `optionId`, `data?`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**addShippingMethod**(`orderId`, `optionId`, `data?`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 #### Parameters
 
@@ -461,7 +461,7 @@ ___
 
 ### archive
 
-▸ **archive**(`orderId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**archive**(`orderId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Archives an order. It only alloved, if the order has been fulfilled
 and payment has been captured.
@@ -507,7 +507,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -584,7 +584,7 @@ ___
 
 ### cancel
 
-▸ **cancel**(`orderId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**cancel**(`orderId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Cancels an order.
 Throws if fulfillment process has been initiated.
@@ -631,7 +631,7 @@ ___
 
 ### cancelFulfillment
 
-▸ **cancelFulfillment**(`fulfillmentId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**cancelFulfillment**(`fulfillmentId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Cancels a fulfillment (if related to an order)
 
@@ -676,7 +676,7 @@ ___
 
 ### capturePayment
 
-▸ **capturePayment**(`orderId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**capturePayment**(`orderId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Captures payment for an order.
 
@@ -721,7 +721,7 @@ ___
 
 ### completeOrder
 
-▸ **completeOrder**(`orderId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**completeOrder**(`orderId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 #### Parameters
 
@@ -764,7 +764,7 @@ ___
 
 ### createFromCart
 
-▸ **createFromCart**(`cartOrId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**createFromCart**(`cartOrId`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Creates an order from a cart
 
@@ -809,7 +809,7 @@ ___
 
 ### createFulfillment
 
-▸ **createFulfillment**(`orderId`, `itemsToFulfill`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**createFulfillment**(`orderId`, `itemsToFulfill`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Creates fulfillments for an order.
 In a situation where the order has more than one shipping method,
@@ -897,7 +897,7 @@ ___
 
 ### createGiftCardsFromLineItem\_
 
-▸ `Protected` **createGiftCardsFromLineItem_**(`order`, `lineItem`, `manager`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>[]
+`Protected` **createGiftCardsFromLineItem_**(`order`, `lineItem`, `manager`): `Promise`<[`GiftCard`](admin_collections.internal.GiftCard.mdx)\>[]
 
 #### Parameters
 
@@ -965,7 +965,7 @@ ___
 
 ### createRefund
 
-▸ **createRefund**(`orderId`, `refundAmount`, `reason`, `note?`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**createRefund**(`orderId`, `refundAmount`, `reason`, `note?`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Refunds a given amount back to the customer.
 
@@ -1050,7 +1050,7 @@ ___
 
 ### createShipment
 
-▸ **createShipment**(`orderId`, `fulfillmentId`, `trackingLinks?`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**createShipment**(`orderId`, `fulfillmentId`, `trackingLinks?`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Adds a shipment to the order to indicate that an order has left the
 warehouse. Will ask the fulfillment provider for any documents that may
@@ -1137,7 +1137,7 @@ ___
 
 ### decorateTotals
 
-▸ **decorateTotals**(`order`, `totalsFields?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**decorateTotals**(`order`, `totalsFields?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 #### Parameters
 
@@ -1184,7 +1184,7 @@ ___
   }
 ]} />
 
-▸ **decorateTotals**(`order`, `context?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**decorateTotals**(`order`, `context?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 #### Parameters
 
@@ -1235,7 +1235,7 @@ ___
 
 ### decorateTotalsLegacy
 
-▸ `Protected` **decorateTotalsLegacy**(`order`, `totalsFields?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+`Protected` **decorateTotalsLegacy**(`order`, `totalsFields?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 #### Parameters
 
@@ -1286,7 +1286,7 @@ ___
 
 ### getFulfillmentItems
 
-▸ `Protected` **getFulfillmentItems**(`order`, `items`, `transformer`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
+`Protected` **getFulfillmentItems**(`order`, `items`, `transformer`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
 
 Retrieves the order line items, given an array of items.
 
@@ -1356,7 +1356,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)[]\>
 
 #### Parameters
 
@@ -1416,7 +1416,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`Order`](admin_collections.internal.Order.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`Order`](admin_collections.internal.Order.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -1475,7 +1475,7 @@ ___
 
 ### registerReturnReceived
 
-▸ **registerReturnReceived**(`orderId`, `receivedReturn`, `customRefundAmount?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**registerReturnReceived**(`orderId`, `receivedReturn`, `customRefundAmount?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Handles receiving a return. This will create a
 refund to the customer. If the returned items don't match the requested
@@ -1542,7 +1542,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`orderId`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**retrieve**(`orderId`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Gets an order by id.
 
@@ -1595,7 +1595,7 @@ ___
 
 ### retrieveByCartId
 
-▸ **retrieveByCartId**(`cartId`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**retrieveByCartId**(`cartId`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Gets an order by cart id.
 
@@ -1648,7 +1648,7 @@ ___
 
 ### retrieveByCartIdWithTotals
 
-▸ **retrieveByCartIdWithTotals**(`cartId`, `options?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**retrieveByCartIdWithTotals**(`cartId`, `options?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 #### Parameters
 
@@ -1699,7 +1699,7 @@ ___
 
 ### retrieveByExternalId
 
-▸ **retrieveByExternalId**(`externalId`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**retrieveByExternalId**(`externalId`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Gets an order by id.
 
@@ -1752,7 +1752,7 @@ ___
 
 ### retrieveLegacy
 
-▸ `Protected` **retrieveLegacy**(`orderIdOrSelector`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+`Protected` **retrieveLegacy**(`orderIdOrSelector`, `config?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 #### Parameters
 
@@ -1803,7 +1803,7 @@ ___
 
 ### retrieveWithTotals
 
-▸ **retrieveWithTotals**(`orderId`, `options?`, `context?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**retrieveWithTotals**(`orderId`, `options?`, `context?`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 #### Parameters
 
@@ -1862,7 +1862,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -1900,7 +1900,7 @@ ___
 
 ### transformQueryForTotals
 
-▸ `Protected` **transformQueryForTotals**(`config`): { `relations`: `undefined` \| `string`[] ; `select`: `undefined` \| keyof [`Order`](admin_collections.internal.Order.mdx)[] ; `totalsToSelect`: `undefined` \| keyof [`Order`](admin_collections.internal.Order.mdx)[]  }
+`Protected` **transformQueryForTotals**(`config`): { `relations`: `undefined` \| `string`[] ; `select`: `undefined` \| keyof [`Order`](admin_collections.internal.Order.mdx)[] ; `totalsToSelect`: `undefined` \| keyof [`Order`](admin_collections.internal.Order.mdx)[]  }
 
 #### Parameters
 
@@ -1961,7 +1961,7 @@ ___
 
 ### update
 
-▸ **update**(`orderId`, `update`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
+**update**(`orderId`, `update`): `Promise`<[`Order`](admin_collections.internal.Order.mdx)\>
 
 Updates an order. Metadata updates should
 use dedicated method, e.g. `setMetadata` etc. The function
@@ -2016,7 +2016,7 @@ ___
 
 ### updateBillingAddress
 
-▸ `Protected` **updateBillingAddress**(`order`, `address`): `Promise`<`void`\>
+`Protected` **updateBillingAddress**(`order`, `address`): `Promise`<`void`\>
 
 Updates the order's billing address.
 
@@ -2060,7 +2060,7 @@ ___
 
 ### updateShippingAddress
 
-▸ `Protected` **updateShippingAddress**(`order`, `address`): `Promise`<`void`\>
+`Protected` **updateShippingAddress**(`order`, `address`): `Promise`<`void`\>
 
 Updates the order's shipping address.
 
@@ -2104,7 +2104,7 @@ ___
 
 ### validateFulfillmentLineItem
 
-▸ `Protected` **validateFulfillmentLineItem**(`item`, `quantity`): ``null`` \| [`LineItem`](admin_collections.internal.LineItem.mdx)
+`Protected` **validateFulfillmentLineItem**(`item`, `quantity`): ``null`` \| [`LineItem`](admin_collections.internal.LineItem.mdx)
 
 Checks that a given quantity of a line item can be fulfilled. Fails if the
 fulfillable quantity is lower than the requested fulfillment quantity.
@@ -2151,7 +2151,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`OrderService`](admin_discounts.internal.internal.OrderService.mdx)
+**withTransaction**(`transactionManager?`): [`OrderService`](admin_discounts.internal.internal.OrderService.mdx)
 
 #### Parameters
 
