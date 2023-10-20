@@ -33,8 +33,75 @@ async function deletePriceRules (
 
 ## Parameters
 
-<ParameterTypes parameters={[{"name":"priceRuleIds","type":"`string`[]","description":"The IDs of the price rules to delete.","optional":false,"defaultValue":"","children":[]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+<ParameterTypes parameters={[
+  {
+    "name": "priceRuleIds",
+    "type": "`string`[]",
+    "description": "The IDs of the price rules to delete.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "a string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
 
 ## Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"`Promise`<`void`\\>","optional":false,"defaultValue":"","description":"Resolves once the price rules are deleted.","children":[]}]} />
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves once the price rules are deleted.",
+    "children": []
+  }
+]} />
