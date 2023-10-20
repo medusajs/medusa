@@ -331,6 +331,9 @@ jobs:
         with:
           extension: pipeline
 
+      - name: Build Packages
+        run: yarn build
+
       - name: Run service integration tests
         run: yarn test:integration:services
         env:
