@@ -172,5 +172,5 @@ export const searchData: {
   catalogEntries: any[]
   catalogRelationEntries: any[]
 }[] = faker.helpers.multiple(createRandomEntries, {
-  count: 1000,
+  count: 10000,
 })
