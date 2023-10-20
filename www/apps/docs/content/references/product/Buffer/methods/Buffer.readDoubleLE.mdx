@@ -1,0 +1,56 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# readDoubleLE
+
+[Buffer](../../interfaces/Buffer.mdx).readDoubleLE
+
+**readDoubleLE**(`offset?`): `number`
+
+Reads a 64-bit, little-endian double from `buf` at the specified `offset`.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8]);
+
+console.log(buf.readDoubleLE(0));
+// Prints: 5.447603722011605e-270
+console.log(buf.readDoubleLE(1));
+// Throws ERR_OUT_OF_RANGE.
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to read. Must satisfy `0 <= offset <= buf.length - 8`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.11.15

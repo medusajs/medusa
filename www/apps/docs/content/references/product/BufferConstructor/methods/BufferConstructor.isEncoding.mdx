@@ -1,0 +1,62 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# isEncoding
+
+[BufferConstructor](../../interfaces/BufferConstructor.mdx).isEncoding
+
+**isEncoding**(`encoding`): encoding is BufferEncoding
+
+Returns `true` if `encoding` is the name of a supported character encoding,
+or `false` otherwise.
+
+```js
+import { Buffer } from 'buffer';
+
+console.log(Buffer.isEncoding('utf8'));
+// Prints: true
+
+console.log(Buffer.isEncoding('hex'));
+// Prints: true
+
+console.log(Buffer.isEncoding('utf/8'));
+// Prints: false
+
+console.log(Buffer.isEncoding(''));
+// Prints: false
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "encoding",
+    "type": "`string`",
+    "description": "A character encoding name to check.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+encoding is BufferEncoding
+
+<ParameterTypes parameters={[
+  {
+    "name": "encoding",
+    "type": "encoding is BufferEncoding",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.9.1

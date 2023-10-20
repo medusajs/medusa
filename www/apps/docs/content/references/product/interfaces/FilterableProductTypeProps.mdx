@@ -1,0 +1,46 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FilterableProductTypeProps
+
+The filters to apply on retrieved product types.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "$and",
+    "type": "([`FilterableProductTypeProps`](FilterableProductTypeProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableProductTypeProps`](FilterableProductTypeProps.mdx)\\>)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$or",
+    "type": "([`FilterableProductTypeProps`](FilterableProductTypeProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableProductTypeProps`](FilterableProductTypeProps.mdx)\\>)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string` \\| `string`[]",
+    "description": "The IDs to filter product types by.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "value",
+    "type": "`string`",
+    "description": "The value to filter product types by.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
