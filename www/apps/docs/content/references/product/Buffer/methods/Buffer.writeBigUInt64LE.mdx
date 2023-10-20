@@ -1,0 +1,66 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# writeBigUInt64LE
+
+[Buffer](../../interfaces/Buffer.mdx).writeBigUInt64LE
+
+**writeBigUInt64LE**(`value`, `offset?`): `number`
+
+Writes `value` to `buf` at the specified `offset` as little-endian
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.allocUnsafe(8);
+
+buf.writeBigUInt64LE(0xdecafafecacefaden, 0);
+
+console.log(buf);
+// Prints: <Buffer de fa ce ca fe fa ca de>
+```
+
+This function is also available under the `writeBigUint64LE` alias.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`bigint`",
+    "description": "Number to be written to `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to write. Must satisfy: `0 <= offset <= buf.length - 8`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "`offset` plus the number of bytes written.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v12.0.0, v10.20.0

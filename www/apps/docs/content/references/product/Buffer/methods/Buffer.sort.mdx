@@ -1,0 +1,45 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# sort
+
+[Buffer](../../interfaces/Buffer.mdx).sort
+
+**sort**(`compareFn?`): [`Buffer`](../../variables/Buffer-1.mdx)
+
+Sorts an array.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "compareFn",
+    "type": "(`a`: `number`, `b`: `number`) => `number`",
+    "description": "Function used to determine the order of the elements. It is expected to return a negative value if first argument is less than second argument, zero if they're equal and a positive value otherwise. If omitted, the elements are sorted in ascending order. ```ts [11,2,22,1].sort((a, b) => a - b) ```",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Inherited from
+
+Uint8Array.sort
