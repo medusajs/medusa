@@ -1,33 +1,25 @@
-# Namespace: internal
+---
+displayed_sidebar: jsClientSidebar
+---
 
-## Classes
-
-- [AdminGetGiftCardsParams](../classes/internal-9.AdminGetGiftCardsParams.md)
-- [AdminPostGiftCardsGiftCardReq](../classes/internal-9.AdminPostGiftCardsGiftCardReq.md)
-- [AdminPostGiftCardsReq](../classes/internal-9.AdminPostGiftCardsReq.md)
+# Module: internal
 
 ## Type Aliases
 
-### AdminGiftCardsListRes
+### AdminPostInvitesPayload
 
-Ƭ **AdminGiftCardsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `gift_cards`: [`GiftCard`](../classes/internal.GiftCard.md)[]  }
+Ƭ **AdminPostInvitesPayload**: [`Omit`](internal-1.md#omit)<[`AdminPostInvitesReq`](../classes/internal-8.internal.AdminPostInvitesReq.md), ``"role"``\> & { `role`: [`InviteUserRolesEnum`](internal-9.md#inviteuserrolesenum)  }
 
 #### Defined in
 
-medusa/dist/api/routes/admin/gift-cards/index.d.ts:14
+[packages/medusa-js/src/typings.ts:47](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L47)
 
 ___
 
-### AdminGiftCardsRes
+### InviteUserRolesEnum
 
-Ƭ **AdminGiftCardsRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `gift_card` | [`GiftCard`](../classes/internal.GiftCard.md) |
+Ƭ **InviteUserRolesEnum**: \`${AdminPostInvitesReq["role"]}\`
 
 #### Defined in
 
-medusa/dist/api/routes/admin/gift-cards/index.d.ts:10
+[packages/medusa-js/src/typings.ts:45](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/typings.ts#L45)

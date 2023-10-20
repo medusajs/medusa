@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: BatchJob
 
 [internal](../modules/internal-2.md).BatchJob
@@ -6,7 +10,7 @@ Base abstract entity for all entities
 
 ## Hierarchy
 
-- [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
+- [`SoftDeletableEntity`](internal-1.SoftDeletableEntity.md)
 
   ↳ **`BatchJob`**
 
@@ -18,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:27
+packages/medusa/dist/models/batch-job.d.ts:27
 
 ___
 
@@ -28,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:23
+packages/medusa/dist/models/batch-job.d.ts:23
 
 ___
 
@@ -38,7 +42,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:22
+packages/medusa/dist/models/batch-job.d.ts:22
 
 ___
 
@@ -48,17 +52,17 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:21
+packages/medusa/dist/models/batch-job.d.ts:21
 
 ___
 
 ### context
 
-• **context**: `Record`<`string`, `unknown`\>
+• **context**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:8
+packages/medusa/dist/models/batch-job.d.ts:8
 
 ___
 
@@ -68,11 +72,11 @@ ___
 
 #### Inherited from
 
-[SoftDeletableEntity](internal.SoftDeletableEntity.md).[created_at](internal.SoftDeletableEntity.md#created_at)
+[SoftDeletableEntity](internal-1.SoftDeletableEntity.md).[created_at](internal-1.SoftDeletableEntity.md#created_at)
 
 #### Defined in
 
-medusa/dist/interfaces/models/base-entity.d.ts:6
+packages/medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
@@ -82,7 +86,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:6
+packages/medusa/dist/models/batch-job.d.ts:6
 
 ___
 
@@ -92,7 +96,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:7
+packages/medusa/dist/models/batch-job.d.ts:7
 
 ___
 
@@ -102,11 +106,11 @@ ___
 
 #### Inherited from
 
-[SoftDeletableEntity](internal.SoftDeletableEntity.md).[deleted_at](internal.SoftDeletableEntity.md#deleted_at)
+[SoftDeletableEntity](internal-1.SoftDeletableEntity.md).[deleted_at](internal-1.SoftDeletableEntity.md#deleted_at)
 
 #### Defined in
 
-medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
 
 ___
 
@@ -116,7 +120,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:18
+packages/medusa/dist/models/batch-job.d.ts:18
 
 ___
 
@@ -126,7 +130,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:24
+packages/medusa/dist/models/batch-job.d.ts:24
 
 ___
 
@@ -136,11 +140,11 @@ ___
 
 #### Inherited from
 
-[SoftDeletableEntity](internal.SoftDeletableEntity.md).[id](internal.SoftDeletableEntity.md#id)
+[SoftDeletableEntity](internal-1.SoftDeletableEntity.md).[id](internal-1.SoftDeletableEntity.md#id)
 
 #### Defined in
 
-medusa/dist/interfaces/models/base-entity.d.ts:5
+packages/medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -150,7 +154,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:19
+packages/medusa/dist/models/batch-job.d.ts:19
 
 ___
 
@@ -160,17 +164,17 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:20
+packages/medusa/dist/models/batch-job.d.ts:20
 
 ___
 
 ### result
 
-• **result**: { `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: [`BatchJobResultError`](../modules/internal-2.md#batchjobresulterror)[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../modules/internal-2.md#batchjobresultstatdescriptor)[]  } & `Record`<`string`, `unknown`\>
+• **result**: { `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \| [`BatchJobResultError`](../modules/internal-2.md#batchjobresulterror))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../modules/internal-2.md#batchjobresultstatdescriptor)[]  } & [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:9
+packages/medusa/dist/models/batch-job.d.ts:9
 
 ___
 
@@ -180,7 +184,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:25
+packages/medusa/dist/models/batch-job.d.ts:25
 
 ___
 
@@ -190,7 +194,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:5
+packages/medusa/dist/models/batch-job.d.ts:5
 
 ___
 
@@ -200,11 +204,11 @@ ___
 
 #### Inherited from
 
-[SoftDeletableEntity](internal.SoftDeletableEntity.md).[updated_at](internal.SoftDeletableEntity.md#updated_at)
+[SoftDeletableEntity](internal-1.SoftDeletableEntity.md).[updated_at](internal-1.SoftDeletableEntity.md#updated_at)
 
 #### Defined in
 
-medusa/dist/interfaces/models/base-entity.d.ts:7
+packages/medusa/dist/interfaces/models/base-entity.d.ts:7
 
 ## Methods
 
@@ -218,7 +222,7 @@ medusa/dist/interfaces/models/base-entity.d.ts:7
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:26
+packages/medusa/dist/models/batch-job.d.ts:26
 
 ___
 
@@ -232,4 +236,4 @@ ___
 
 #### Defined in
 
-medusa/dist/models/batch-job.d.ts:28
+packages/medusa/dist/models/batch-job.d.ts:28

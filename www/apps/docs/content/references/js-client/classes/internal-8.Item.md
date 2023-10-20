@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: Item
 
 [internal](../modules/internal-8.md).Item
@@ -6,11 +10,11 @@
 
 ### metadata
 
-• `Optional` **metadata**: `Record`<`string`, `unknown`\>
+• `Optional` **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:200
+packages/medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:209
 
 ___
 
@@ -20,7 +24,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:199
+packages/medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:208
 
 ___
 
@@ -30,7 +34,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:196
+packages/medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:205
 
 ___
 
@@ -40,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:197
+packages/medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:206
 
 ___
 
@@ -50,4 +54,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:198
+packages/medusa/dist/api/routes/admin/draft-orders/create-draft-order.d.ts:207

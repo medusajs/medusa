@@ -6,6 +6,17 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).StorePostCustomersCustomerAddressesReq
 
+**`Schema`**
+
+StorePostCustomersCustomerAddressesReq
+type: object
+required:
+  - address
+properties:
+  address:
+    description: "The Address to add to the Customer's saved addresses."
+    $ref: "#/components/schemas/AddressCreatePayload"
+
 ## Properties
 
 ### address
@@ -14,4 +25,4 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-medusa/dist/api/routes/store/customers/create-address.d.ts:99
+packages/medusa/dist/api/routes/store/customers/create-address.d.ts:92

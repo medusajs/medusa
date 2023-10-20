@@ -12,7 +12,7 @@ In this document, you’ll learn how to manage tax settings using admin APIs.
 
 ## Overview
 
-Tax settings are defined per region. You can change the tax settings of a region using the [Update Region endpoint](https://docs.medusajs.com/api/admin#regions_postregionsregion).
+Tax settings are defined per region. You can change the tax settings of a region using the [Update Region API Route](https://docs.medusajs.com/api/admin#regions_postregionsregion).
 
 ### Scenario
 
@@ -52,7 +52,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Tax Providers
 
-You can list all tax providers of a store using the [List Tax Providers endpoint](https://docs.medusajs.com/api/admin#store_getstoretaxproviders):
+You can list all tax providers of a store using the [List Tax Providers API Route](https://docs.medusajs.com/api/admin#store_getstoretaxproviders):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -120,7 +120,7 @@ curl -L -X GET '<BACKEND_URL>/admin/store/tax-providers' \
 </TabItem>
 </Tabs>
 
-This endpoint does not accept any parameters.
+This API Route doesn't accept any parameters.
 
 The request returns an array of tax provider objects.
 
@@ -128,7 +128,7 @@ The request returns an array of tax provider objects.
 
 ## Change Tax Provider of a Region
 
-You can change the tax provider of a region using the [Update Region endpoint](https://docs.medusajs.com/api/admin#regions_postregionsregion):
+You can change the tax provider of a region using the [Update Region API Route](https://docs.medusajs.com/api/admin#regions_postregionsregion):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -199,7 +199,7 @@ curl -L -X POST '<BACKEND_URL>/admin/regions/<REGION_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the region to be passed as a path parameter.
+This API Route requires the ID of the region to be passed as a path parameter.
 
 In the body of the request, you can pass any of the region’s attributes to update. To update the tax provider of a region, you can pass the `tax_provider_id` request body parameter.
 
@@ -209,7 +209,7 @@ The request returns the updated region as an object.
 
 ## Change Tax Settings of a Region
 
-In addition to changing the tax provider, you can use the same [Update Region endpoint](https://docs.medusajs.com/api/admin#regions_postregionsregion) to update the region’s other tax settings:
+In addition to changing the tax provider, you can use the same [Update Region API Route](https://docs.medusajs.com/api/admin#regions_postregionsregion) to update the region’s other tax settings:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>

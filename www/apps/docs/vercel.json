@@ -480,6 +480,14 @@
     {
       "source": "/contribution-guidelines",
       "destination": "/contribution/docs"
+    },
+    {
+      "source": "/user-guide/price-lists/import",
+      "destination": "/user-guide/price-lists"
+    },
+    {
+      "source": "/development/endpoints/:path",
+      "destination": "/development/api-routes/:path"
     }
   ],
   "framework": "docusaurus-2",

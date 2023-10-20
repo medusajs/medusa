@@ -1,78 +1,80 @@
-# Namespace: internal
+---
+displayed_sidebar: jsClientSidebar
+---
 
-## Namespaces
-
-- [&quot;/home/runner/work/medusa/medusa/packages/medusa/dist/types/global&quot;](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md)
+# Module: internal
 
 ## Classes
 
-- [AdminCreateCondition](../classes/internal-7.AdminCreateCondition.md)
-- [AdminDeleteDiscountsDiscountConditionsConditionBatchReq](../classes/internal-7.AdminDeleteDiscountsDiscountConditionsConditionBatchReq.md)
-- [AdminGetDiscountsDiscountConditionsConditionParams](../classes/internal-7.AdminGetDiscountsDiscountConditionsConditionParams.md)
-- [AdminGetDiscountsDiscountRuleParams](../classes/internal-7.AdminGetDiscountsDiscountRuleParams.md)
-- [AdminGetDiscountsParams](../classes/internal-7.AdminGetDiscountsParams.md)
-- [AdminPostDiscountsDiscountConditions](../classes/internal-7.AdminPostDiscountsDiscountConditions.md)
-- [AdminPostDiscountsDiscountConditionsCondition](../classes/internal-7.AdminPostDiscountsDiscountConditionsCondition.md)
-- [AdminPostDiscountsDiscountConditionsConditionBatchParams](../classes/internal-7.AdminPostDiscountsDiscountConditionsConditionBatchParams.md)
-- [AdminPostDiscountsDiscountConditionsConditionBatchReq](../classes/internal-7.AdminPostDiscountsDiscountConditionsConditionBatchReq.md)
-- [AdminPostDiscountsDiscountConditionsConditionParams](../classes/internal-7.AdminPostDiscountsDiscountConditionsConditionParams.md)
-- [AdminPostDiscountsDiscountConditionsParams](../classes/internal-7.AdminPostDiscountsDiscountConditionsParams.md)
-- [AdminPostDiscountsDiscountDynamicCodesReq](../classes/internal-7.AdminPostDiscountsDiscountDynamicCodesReq.md)
-- [AdminPostDiscountsDiscountReq](../classes/internal-7.AdminPostDiscountsDiscountReq.md)
-- [AdminPostDiscountsDiscountRule](../classes/internal-7.AdminPostDiscountsDiscountRule.md)
-- [AdminPostDiscountsReq](../classes/internal-7.AdminPostDiscountsReq.md)
-- [AdminUpdateDiscountRule](../classes/internal-7.AdminUpdateDiscountRule.md)
-- [AdminUpsertCondition](../classes/internal-7.AdminUpsertCondition.md)
-- [AdminUpsertConditionsReq](../classes/internal-7.AdminUpsertConditionsReq.md)
+- [AdminGetCustomersParams](../classes/internal-7.AdminGetCustomersParams.md)
+- [AdminListCustomerSelector](../classes/internal-7.AdminListCustomerSelector.md)
+- [AdminPostCustomersCustomerReq](../classes/internal-7.AdminPostCustomersCustomerReq.md)
+- [AdminPostCustomersReq](../classes/internal-7.AdminPostCustomersReq.md)
+- [Group](../classes/internal-7.Group.md)
 
 ## Type Aliases
 
-### AdminDiscountConditionsRes
+### AdminCustomersListRes
 
-Ƭ **AdminDiscountConditionsRes**: `Object`
+Ƭ **AdminCustomersListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `customers`: [`Customer`](../classes/internal-3.Customer.md)[]  }
+
+**`Schema`**
+
+AdminCustomersListRes
+type: object
+required:
+  - customers
+  - count
+  - offset
+  - limit
+properties:
+  customers:
+    type: array
+    description: "An array of customer details."
+    items:
+      $ref: "#/components/schemas/Customer"
+  count:
+    type: integer
+    description: The total number of items available
+  offset:
+    type: integer
+    description: The number of customers skipped when retrieving the customers.
+  limit:
+    type: integer
+    description: The number of items per page
+
+#### Defined in
+
+packages/medusa/dist/api/routes/admin/customers/index.d.ts:47
+
+___
+
+### AdminCustomersRes
+
+Ƭ **AdminCustomersRes**: `Object`
+
+**`Schema`**
+
+AdminCustomersRes
+type: object
+x-expanded-relations:
+  field: customer
+  relations:
+    - orders
+    - shipping_addresses
+required:
+  - customer
+properties:
+  customer:
+    description: "Customer details."
+    $ref: "#/components/schemas/Customer"
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `discount_condition` | [`DiscountCondition`](../classes/internal.DiscountCondition.md) |
+| `customer` | [`Customer`](../classes/internal-3.Customer.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/discounts/index.d.ts:14
-
-___
-
-### AdminDiscountsListRes
-
-Ƭ **AdminDiscountsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `discounts`: [`Discount`](../classes/internal.Discount.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/discounts/index.d.ts:18
-
-___
-
-### AdminDiscountsRes
-
-Ƭ **AdminDiscountsRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `discount` | [`Discount`](../classes/internal.Discount.md) |
-
-#### Defined in
-
-medusa/dist/api/routes/admin/discounts/index.d.ts:11
-
-## Variables
-
-### AdminGetDiscountsParams\_base
-
-• `Const` **AdminGetDiscountsParams\_base**: [`"/home/runner/work/medusa/medusa/packages/medusa/dist/types/global"`](internal-7.__home_runner_work_medusa_medusa_packages_medusa_dist_types_global_.md)
-
-#### Defined in
-
-medusa/dist/api/routes/admin/discounts/list-discounts.d.ts:87
+packages/medusa/dist/api/routes/admin/customers/index.d.ts:20

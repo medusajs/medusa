@@ -35,6 +35,7 @@
   "devDependencies": {
     "@types/react": "^17.0.1",
     "@types/react-dom": "^17.0.1",
+    "@types/react-google-recaptcha": "^2.1.6",
     "clsx": "^2.0.0",
     "cpy-cli": "^5.0.0",
     "eslint-config-docs": "*",
@@ -59,10 +60,13 @@
     "@medusajs/icons": "latest",
     "@medusajs/ui": "latest",
     "@octokit/request": "^8.1.1",
+    "@react-hook/resize-observer": "^1.2.6",
     "@segment/analytics-next": "^1.55.0",
     "algoliasearch": "^4.20.0",
     "prism-react-renderer": "^2.0.6",
+    "react-google-recaptcha": "^3.1.0",
     "react-instantsearch": "^7.0.3",
+    "react-markdown": "^8.0.7",
     "react-tooltip": "^5.21.3",
     "react-transition-group": "^4.4.5",
     "react-uuid": "^2.0.0"

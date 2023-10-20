@@ -1,0 +1,195 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/create
+sidebar_label: create
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# create - Pricing Module Reference
+
+This documentation provides a reference to the `create` method. This belongs to the Pricing Module.
+
+## create(data, sharedContext?): Promise<PriceSetDTO\>
+
+This method is used to create a new price set.
+
+### Example
+
+To create a default price set, don't pass any rules. For example:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function createPriceSet () {
+  const pricingService = await initializePricingModule()
+
+  const priceSet = await pricingService.create(
+    {
+      rules: [],
+      prices: [
+        {
+          amount: 500,
+          currency_code: "USD",
+          min_quantity: 0,
+          max_quantity: 4,
+          rules: {},
+        },
+        {
+          amount: 400,
+          currency_code: "USD",
+          min_quantity: 5,
+          max_quantity: 10,
+          rules: {},
+        },
+      ],
+    },
+  )
+
+  // do something with the price set or return it
+}
+```
+
+To create a price set and associate it with rule types:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function createPriceSet () {
+  const pricingService = await initializePricingModule()
+
+  const priceSet = await pricingService.create(
+    {
+      rules: [{ rule_attribute: "region_id" }, { rule_attribute: "city" }],
+      prices: [
+        {
+          amount: 300,
+          currency_code: "EUR",
+          rules: {
+            region_id: "PL",
+            city: "krakow"
+          },
+        },
+        {
+          amount: 400,
+          currency_code: "EUR",
+          rules: {
+            region_id: "PL"
+          },
+        },
+        {
+          amount: 450,
+          currency_code: "EUR",
+          rules: {
+            city: "krakow"
+          },
+        }
+      ],
+    },
+  )
+
+  // do something with the price set or return it
+}
+```
+
+### Parameters
+
+<ParameterTypes parameters={[{"name":"data","type":"[`CreatePriceSetDTO`](../../interfaces/CreatePriceSetDTO.mdx)","description":"The attributes of the price set to create.","optional":false,"defaultValue":"","children":[{"name":"prices","type":"[`CreatePricesDTO`](../../interfaces/CreatePricesDTO.mdx)[]","description":"The prices to create and add to this price set.","optional":true,"defaultValue":"","children":[{"name":"amount","type":"`number`","description":"The amount of this money amount.","optional":true,"defaultValue":"","children":[]},{"name":"currency","type":"[`CreateCurrencyDTO`](../../interfaces/CreateCurrencyDTO.mdx)","description":"The currency of this money amount.","optional":true,"defaultValue":"","children":[]},{"name":"currency_code","type":"`string`","description":"The currency code of this money amount.","optional":false,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"The ID of the money amount.","optional":true,"defaultValue":"","children":[]},{"name":"max_quantity","type":"`number`","description":"The maximum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","children":[]},{"name":"min_quantity","type":"`number`","description":"The minimum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","children":[]},{"name":"rules","type":"Record<`string`, `string`\\>","description":"The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.","optional":false,"defaultValue":"","children":[]}]},{"name":"rules","type":"{ `rule_attribute`: `string`  }[]","description":"The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.","optional":true,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+
+### Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"`Promise`<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)\\>","optional":false,"defaultValue":"","description":"The created price set.","children":[{"name":"PriceSetDTO","type":"`object`","description":"A price set's data.","optional":false,"defaultValue":"","children":[{"name":"id","type":"`string`","description":"The ID of the price set.","optional":false,"defaultValue":"","children":[]},{"name":"money_amounts","type":"[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]","description":"The prices that belong to this price set.","optional":true,"defaultValue":"","children":[]},{"name":"rule_types","type":"[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]","description":"The rule types applied on this price set.","optional":true,"defaultValue":"","children":[]}]}]}]} />
+
+## create(data, sharedContext?): Promise<PriceSetDTO[]\>
+
+This method is used to create multiple price sets.
+
+### Example
+
+To create price sets with a default price, don't pass any rules and make sure to pass the `currency_code` of the price. For example:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function createPriceSets () {
+  const pricingService = await initializePricingModule()
+
+  const priceSets = await pricingService.create([
+    {
+      rules: [],
+      prices: [
+        {
+          amount: 500,
+          currency_code: "USD",
+          rules: {},
+        },
+      ],
+    },
+  ])
+
+  // do something with the price sets or return them
+}
+```
+
+To create price sets and associate them with rule types:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function createPriceSets () {
+  const pricingService = await initializePricingModule()
+
+  const priceSets = await pricingService.create([
+    {
+      rules: [{ rule_attribute: "region_id" }, { rule_attribute: "city" }],
+      prices: [
+        {
+          amount: 300,
+          currency_code: "EUR",
+          rules: {
+            region_id: "PL",
+            city: "krakow"
+          },
+        },
+        {
+          amount: 400,
+          currency_code: "EUR",
+          min_quantity: 0,
+          max_quantity: 4,
+          rules: {
+            region_id: "PL"
+          },
+        },
+        {
+          amount: 450,
+          currency_code: "EUR",
+          rules: {
+            city: "krakow"
+          },
+        }
+      ],
+    },
+  ])
+
+  // do something with the price sets or return them
+}
+```
+
+### Parameters
+
+<ParameterTypes parameters={[{"name":"data","type":"[`CreatePriceSetDTO`](../../interfaces/CreatePriceSetDTO.mdx)[]","description":"The price sets to create.","optional":false,"defaultValue":"","children":[{"name":"prices","type":"[`CreatePricesDTO`](../../interfaces/CreatePricesDTO.mdx)[]","description":"The prices to create and add to this price set.","optional":true,"defaultValue":"","children":[{"name":"amount","type":"`number`","description":"The amount of this money amount.","optional":true,"defaultValue":"","children":[]},{"name":"currency","type":"[`CreateCurrencyDTO`](../../interfaces/CreateCurrencyDTO.mdx)","description":"The currency of this money amount.","optional":true,"defaultValue":"","children":[]},{"name":"currency_code","type":"`string`","description":"The currency code of this money amount.","optional":false,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"The ID of the money amount.","optional":true,"defaultValue":"","children":[]},{"name":"max_quantity","type":"`number`","description":"The maximum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","children":[]},{"name":"min_quantity","type":"`number`","description":"The minimum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","children":[]},{"name":"rules","type":"Record<`string`, `string`\\>","description":"The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.","optional":false,"defaultValue":"","children":[]}]},{"name":"rules","type":"{ `rule_attribute`: `string`  }[]","description":"The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.","optional":true,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+
+### Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"`Promise`<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)[]\\>","optional":false,"defaultValue":"","description":"The list of created price sets.","children":[{"name":"PriceSetDTO[]","type":"[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)[]","optional":false,"defaultValue":"","description":"","children":[{"name":"PriceSetDTO","type":"`object`","description":"A price set's data.","optional":false,"defaultValue":"","children":[]}]}]}]} />

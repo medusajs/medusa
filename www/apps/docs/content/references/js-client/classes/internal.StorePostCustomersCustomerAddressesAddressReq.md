@@ -6,6 +6,12 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).StorePostCustomersCustomerAddressesAddressReq
 
+**`Schema`**
+
+StorePostCustomersCustomerAddressesAddressReq
+anyOf:
+  - $ref: "#/components/schemas/AddressPayload"
+
 ## Hierarchy
 
 - [`AddressPayload`](internal.AddressPayload.md)
@@ -24,7 +30,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:96
+packages/medusa/dist/types/common.d.ts:160
 
 ___
 
@@ -38,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:97
+packages/medusa/dist/types/common.d.ts:161
 
 ___
 
@@ -52,7 +58,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:98
+packages/medusa/dist/types/common.d.ts:162
 
 ___
 
@@ -66,7 +72,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:95
+packages/medusa/dist/types/common.d.ts:159
 
 ___
 
@@ -80,7 +86,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:99
+packages/medusa/dist/types/common.d.ts:163
 
 ___
 
@@ -94,7 +100,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:91
+packages/medusa/dist/types/common.d.ts:155
 
 ___
 
@@ -108,13 +114,13 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:92
+packages/medusa/dist/types/common.d.ts:156
 
 ___
 
 ### metadata
 
-• `Optional` **metadata**: `Record`<`string`, `unknown`\>
+• `Optional` **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
 
 #### Inherited from
 
@@ -122,7 +128,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:94
+packages/medusa/dist/types/common.d.ts:158
 
 ___
 
@@ -136,7 +142,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:93
+packages/medusa/dist/types/common.d.ts:157
 
 ___
 
@@ -150,7 +156,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:101
+packages/medusa/dist/types/common.d.ts:165
 
 ___
 
@@ -164,4 +170,4 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:100
+packages/medusa/dist/types/common.d.ts:164

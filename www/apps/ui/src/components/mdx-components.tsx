@@ -97,12 +97,12 @@ const components = {
     ...props
   }: React.HTMLAttributes<HTMLOListElement>) => {
     return (
-      <ul
+      <ol
         {...props}
         className={clsx("list-decimal px-docs_1 mb-docs_1.5", className)}
       >
         {children}
-      </ul>
+      </ol>
     )
   },
   li: ({

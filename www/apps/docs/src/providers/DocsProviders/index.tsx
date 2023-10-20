@@ -1,4 +1,9 @@
-import { AnalyticsProvider, ModalProvider, NotificationProvider } from "docs-ui"
+import {
+  AnalyticsProvider,
+  ColorModeProvider,
+  ModalProvider,
+  NotificationProvider,
+} from "docs-ui"
 import React from "react"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import { ThemeConfig } from "@medusajs/docs"
@@ -16,13 +21,15 @@ const DocsProviders = ({ children }: DocsProvidersProps) => {
 
   return (
     <AnalyticsProvider writeKey={apiKey}>
-      <ModalProvider>
-        <SearchProvider>
-          <LearningPathProvider>
-            <NotificationProvider>{children}</NotificationProvider>
-          </LearningPathProvider>
-        </SearchProvider>
-      </ModalProvider>
+      <ColorModeProvider>
+        <ModalProvider>
+          <SearchProvider>
+            <LearningPathProvider>
+              <NotificationProvider>{children}</NotificationProvider>
+            </LearningPathProvider>
+          </SearchProvider>
+        </ModalProvider>
+      </ColorModeProvider>
     </AnalyticsProvider>
   )
 }

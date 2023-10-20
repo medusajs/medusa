@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: RegionsResource
 
 ## Hierarchy
@@ -10,47 +14,47 @@
 
 ### list
 
-▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreRegionsListRes`](../modules/internal-47.md#storeregionslistres)\>
-
-**`Description`**
-
-Retrieves a list of regions
+▸ **list**(`customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreRegionsListRes`](../modules/internal-8.internal.md#storeregionslistres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `customHeaders` | `Record`<`string`, `any`\> |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreRegionsListRes`](../modules/internal-47.md#storeregionslistres)\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreRegionsListRes`](../modules/internal-8.internal.md#storeregionslistres)\>
+
+**`Description`**
+
+Retrieves a list of regions
 
 #### Defined in
 
-[medusa-js/src/resources/regions.ts:11](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/regions.ts#L11)
+[packages/medusa-js/src/resources/regions.ts:11](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/regions.ts#L11)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreRegionsRes`](../modules/internal-47.md#storeregionsres)\>
-
-**`Description`**
-
-Retrieves a region
+▸ **retrieve**(`id`, `customHeaders?`): [`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreRegionsRes`](../modules/internal-8.internal.md#storeregionsres)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | is required |
-| `customHeaders` | `Record`<`string`, `any`\> |  |
+| `customHeaders` | [`Record`](../modules/internal.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`StoreRegionsRes`](../modules/internal-47.md#storeregionsres)\>
+[`ResponsePromise`](../modules/internal-12.md#responsepromise)<[`StoreRegionsRes`](../modules/internal-8.internal.md#storeregionsres)\>
+
+**`Description`**
+
+Retrieves a region
 
 #### Defined in
 
-[medusa-js/src/resources/regions.ts:22](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/regions.ts#L22)
+[packages/medusa-js/src/resources/regions.ts:22](https://github.com/medusajs/medusa/blob/c4ac5e6959/packages/medusa-js/src/resources/regions.ts#L22)

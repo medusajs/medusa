@@ -1,9 +1,11 @@
 "use client"
 
 import React from "react"
-import clsx from "clsx"
 import { useInstantSearch } from "react-instantsearch"
 import { SearchHitGroupName } from "../Hits/GroupName"
+import { useSearch } from "@/providers"
+import { SearchSuggestionItem } from "./Item"
+import { Badge } from "@/components"
 
 export type SearchSuggestionType = {
   title: string
@@ -16,35 +18,44 @@ export type SearchSuggestionsProps = {
 
 export const SearchSuggestions = ({ suggestions }: SearchSuggestionsProps) => {
   const { setIndexUiState } = useInstantSearch()
+  const { commands, setCommand } = useSearch()
+
   return (
     <div className="h-full overflow-auto">
+      {commands.length > 0 && (
+        <>
+          <SearchHitGroupName name={"Commands"} />
+          {commands.map((command, index) => (
+            <SearchSuggestionItem
+              onClick={() => setCommand(command)}
+              key={index}
+              tabIndex={index}
+              className="gap-docs_0.75"
+            >
+              <>
+                {command.icon}
+                <span>{command.title}</span>
+                {command.badge && <Badge {...command.badge} />}
+              </>
+            </SearchSuggestionItem>
+          ))}
+        </>
+      )}
       {suggestions.map((suggestion, index) => (
         <React.Fragment key={index}>
           <SearchHitGroupName name={suggestion.title} />
           {suggestion.items.map((item, itemIndex) => (
-            <div
-              className={clsx(
-                "flex items-center justify-between",
-                "cursor-pointer rounded-docs_sm p-docs_0.5",
-                "hover:bg-medusa-bg-base-hover",
-                "focus:bg-medusa-bg-base-hover",
-                "focus:outline-none last:mb-docs_1"
-              )}
+            <SearchSuggestionItem
               onClick={() =>
                 setIndexUiState({
                   query: item,
                 })
               }
               key={itemIndex}
-              tabIndex={itemIndex}
-              data-hit
+              tabIndex={commands.length + itemIndex}
             >
-              <span
-                className={clsx("text-medusa-fg-base", "text-compact-small")}
-              >
-                {item}
-              </span>
-            </div>
+              {item}
+            </SearchSuggestionItem>
           ))}
         </React.Fragment>
       ))}

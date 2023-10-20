@@ -4,6 +4,7 @@ import clsx from "clsx"
 export type InputTextProps = {
   className?: string
   addGroupStyling?: boolean
+  passedRef?: React.Ref<HTMLInputElement>
 } & React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
@@ -12,6 +13,7 @@ export type InputTextProps = {
 export const InputText = ({
   addGroupStyling = false,
   className,
+  passedRef,
   ...props
 }: InputTextProps) => {
   return (
@@ -32,6 +34,7 @@ export const InputText = ({
         "text-compact-medium font-base",
         className
       )}
+      ref={passedRef}
     />
   )
 }

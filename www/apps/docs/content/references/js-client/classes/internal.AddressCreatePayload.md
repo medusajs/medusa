@@ -6,6 +6,65 @@ displayed_sidebar: jsClientSidebar
 
 [internal](../modules/internal.md).AddressCreatePayload
 
+**`Schema`**
+
+AddressCreatePayload
+type: object
+description: "Address fields used when creating an address."
+required:
+  - first_name
+  - last_name
+  - address_1
+  - city
+  - country_code
+  - postal_code
+properties:
+  first_name:
+    description: First name
+    type: string
+    example: Arno
+  last_name:
+    description: Last name
+    type: string
+    example: Willms
+  phone:
+    type: string
+    description: Phone Number
+    example: 16128234334802
+  company:
+    type: string
+  address_1:
+    description: Address line 1
+    type: string
+    example: 14433 Kemmer Court
+  address_2:
+    description: Address line 2
+    type: string
+    example: Suite 369
+  city:
+    description: City
+    type: string
+    example: South Geoffreyview
+  country_code:
+    description: The 2 character ISO code of the country in lower case
+    type: string
+    externalDocs:
+      url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+      description: See a list of codes.
+    example: st
+  province:
+    description: Province
+    type: string
+    example: Kentucky
+  postal_code:
+    description: Postal Code
+    type: string
+    example: 72093
+  metadata:
+    type: object
+    example: {car: "white"}
+    description: An optional key-value map with additional details
+
 ## Properties
 
 ### address\_1
@@ -14,7 +73,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:109
+packages/medusa/dist/types/common.d.ts:231
 
 ___
 
@@ -24,7 +83,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:110
+packages/medusa/dist/types/common.d.ts:232
 
 ___
 
@@ -34,7 +93,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:111
+packages/medusa/dist/types/common.d.ts:233
 
 ___
 
@@ -44,7 +103,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:108
+packages/medusa/dist/types/common.d.ts:230
 
 ___
 
@@ -54,7 +113,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:112
+packages/medusa/dist/types/common.d.ts:234
 
 ___
 
@@ -64,7 +123,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:104
+packages/medusa/dist/types/common.d.ts:226
 
 ___
 
@@ -74,7 +133,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:105
+packages/medusa/dist/types/common.d.ts:227
 
 ___
 
@@ -84,7 +143,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:107
+packages/medusa/dist/types/common.d.ts:229
 
 ___
 
@@ -94,7 +153,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:106
+packages/medusa/dist/types/common.d.ts:228
 
 ___
 
@@ -104,7 +163,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:114
+packages/medusa/dist/types/common.d.ts:236
 
 ___
 
@@ -114,4 +173,4 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:113
+packages/medusa/dist/types/common.d.ts:235

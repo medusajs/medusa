@@ -43,7 +43,7 @@ const ProductAttributesSection = ({ product }: Props) => {
               value={product.width}
             />
             <Attribute
-              attribute={t("product-attributes-section-height", "Length")}
+              attribute={t("product-attributes-section-length", "Length")}
               value={product.length}
             />
             <Attribute

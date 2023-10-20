@@ -1,0 +1,80 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/addRules
+sidebar_label: addRules
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# addRules - Pricing Module Reference
+
+This documentation provides a reference to the `addRules` method. This belongs to the Pricing Module.
+
+## addRules(data, sharedContext?): Promise<PriceSetDTO\>
+
+This method adds rules to a price set.
+
+### Example
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function addRulesToPriceSet (priceSetId: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceSet = await pricingService.addRules({
+    priceSetId,
+    rules: [{
+      attribute: "region_id"
+    }]
+  })
+
+  // do something with the price set or return it
+}
+```
+
+### Parameters
+
+<ParameterTypes parameters={[{"name":"data","type":"[`AddRulesDTO`](../../interfaces/AddRulesDTO.mdx)","description":"The data defining the price set to add the rules to, along with the rules to add.","optional":false,"defaultValue":"","children":[{"name":"priceSetId","type":"`string`","description":"The ID of the price set to add the rules to.","optional":false,"defaultValue":"","children":[]},{"name":"rules","type":"{ `attribute`: `string`  }[]","description":"The rules to add to a price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.","optional":false,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+
+### Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"`Promise`<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)\\>","optional":false,"defaultValue":"","description":"The price set that the rules were added to.","children":[{"name":"PriceSetDTO","type":"`object`","description":"A price set's data.","optional":false,"defaultValue":"","children":[{"name":"id","type":"`string`","description":"The ID of the price set.","optional":false,"defaultValue":"","children":[]},{"name":"money_amounts","type":"[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]","description":"The prices that belong to this price set.","optional":true,"defaultValue":"","children":[]},{"name":"rule_types","type":"[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]","description":"The rule types applied on this price set.","optional":true,"defaultValue":"","children":[]}]}]}]} />
+
+## addRules(data, sharedContext?): Promise<PriceSetDTO[]\>
+
+This method adds rules to multiple price sets.
+
+### Example
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function addRulesToPriceSet (priceSetId: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceSets = await pricingService.addRules([{
+    priceSetId,
+    rules: [{
+      attribute: "region_id"
+    }]
+  }])
+
+  // do something with the price sets or return them
+}
+```
+
+### Parameters
+
+<ParameterTypes parameters={[{"name":"data","type":"[`AddRulesDTO`](../../interfaces/AddRulesDTO.mdx)[]","description":"The data defining the rules to add per price set.","optional":false,"defaultValue":"","children":[{"name":"priceSetId","type":"`string`","description":"The ID of the price set to add the rules to.","optional":false,"defaultValue":"","children":[]},{"name":"rules","type":"{ `attribute`: `string`  }[]","description":"The rules to add to a price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.","optional":false,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+
+### Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"`Promise`<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)[]\\>","optional":false,"defaultValue":"","description":"The list of the price sets that the rules were added to.","children":[{"name":"PriceSetDTO[]","type":"[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)[]","optional":false,"defaultValue":"","description":"","children":[{"name":"PriceSetDTO","type":"`object`","description":"A price set's data.","optional":false,"defaultValue":"","children":[]}]}]}]} />

@@ -1,4 +1,8 @@
-# Namespace: internal
+---
+displayed_sidebar: jsClientSidebar
+---
+
+# Module: internal
 
 ## Enumerations
 
@@ -18,15 +22,51 @@
 
 Ƭ **AdminBatchJobListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `batch_jobs`: [`BatchJob`](../classes/internal-2.BatchJob.md)[]  }
 
+**`Schema`**
+
+AdminBatchJobListRes
+type: object
+required:
+  - batch_jobs
+  - count
+  - offset
+  - limit
+properties:
+  batch_jobs:
+     type: array
+     description: An array of batch job details.
+     items:
+       $ref: "#/components/schemas/BatchJob"
+  count:
+     type: integer
+     description: The total number of items available
+  offset:
+     type: integer
+     description: The number of batch jobs skipped when retrieving the batch jobs.
+  limit:
+     type: integer
+     description: The number of items per page
+
 #### Defined in
 
-medusa/dist/api/routes/admin/batch/index.d.ts:9
+packages/medusa/dist/api/routes/admin/batch/index.d.ts:42
 
 ___
 
 ### AdminBatchJobRes
 
 Ƭ **AdminBatchJobRes**: `Object`
+
+**`Schema`**
+
+AdminBatchJobRes
+type: object
+required:
+  - batch_job
+properties:
+  batch_job:
+    description: Batch job details.
+    $ref: "#/components/schemas/BatchJob"
 
 #### Type declaration
 
@@ -36,7 +76,7 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/batch/index.d.ts:5
+packages/medusa/dist/api/routes/admin/batch/index.d.ts:15
 
 ___
 
@@ -57,7 +97,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/batch-job.d.ts:18
+packages/medusa/dist/types/batch-job.d.ts:18
 
 ___
 
@@ -75,7 +115,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/batch-job.d.ts:23
+packages/medusa/dist/types/batch-job.d.ts:23
 
 ___
 
@@ -93,4 +133,4 @@ ___
 
 #### Defined in
 
-medusa/dist/types/common.d.ts:60
+packages/medusa/dist/types/common.d.ts:70

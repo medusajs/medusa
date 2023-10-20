@@ -251,5 +251,24 @@ describe("RuleType Service", () => {
         })
       )
     })
+
+    it("should throw an error when using one of the reserved keywords", async () => {
+      let error
+
+      try {
+        await service.create([
+          {
+            name: "Test Rule",
+            rule_attribute: "currency_code",
+          },
+        ])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual(
+        "Can't create rule_attribute with reserved keywords [quantity, currency_code, price_list_id] - currency_code"
+      )
+    })
   })
 })

@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  AiAssistantProvider,
   AnalyticsProvider,
   ColorModeProvider,
   MobileProvider,

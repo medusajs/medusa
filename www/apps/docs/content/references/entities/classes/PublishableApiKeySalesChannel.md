@@ -18,7 +18,7 @@ displayed_sidebar: entitiesSidebar
 
 #### Defined in
 
-[models/publishable-api-key-sales-channel.ts:12](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/publishable-api-key-sales-channel.ts#L12)
+[models/publishable-api-key-sales-channel.ts:9](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/publishable-api-key-sales-channel.ts#L9)
 
 ___
 
@@ -28,4 +28,4 @@ ___
 
 #### Defined in
 
-[models/publishable-api-key-sales-channel.ts:9](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/publishable-api-key-sales-channel.ts#L9)
+[models/publishable-api-key-sales-channel.ts:6](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/publishable-api-key-sales-channel.ts#L6)

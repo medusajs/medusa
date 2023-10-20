@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: User
 
 [internal](../modules/internal-1.md).User
@@ -6,7 +10,7 @@ Base abstract entity for all entities
 
 ## Hierarchy
 
-- [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
+- [`SoftDeletableEntity`](internal-1.SoftDeletableEntity.md)
 
   ↳ **`User`**
 
@@ -18,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-medusa/dist/models/user.d.ts:13
+packages/medusa/dist/models/user.d.ts:13
 
 ___
 
@@ -28,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/user.d.ts:15
+packages/medusa/dist/models/user.d.ts:15
 
 ___
 
@@ -38,11 +42,11 @@ ___
 
 #### Inherited from
 
-[SoftDeletableEntity](internal.SoftDeletableEntity.md).[created_at](internal.SoftDeletableEntity.md#created_at)
+[SoftDeletableEntity](internal-1.SoftDeletableEntity.md).[created_at](internal-1.SoftDeletableEntity.md#created_at)
 
 #### Defined in
 
-medusa/dist/interfaces/models/base-entity.d.ts:6
+packages/medusa/dist/interfaces/models/base-entity.d.ts:6
 
 ___
 
@@ -52,11 +56,11 @@ ___
 
 #### Inherited from
 
-[SoftDeletableEntity](internal.SoftDeletableEntity.md).[deleted_at](internal.SoftDeletableEntity.md#deleted_at)
+[SoftDeletableEntity](internal-1.SoftDeletableEntity.md).[deleted_at](internal-1.SoftDeletableEntity.md#deleted_at)
 
 #### Defined in
 
-medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
 
 ___
 
@@ -66,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/user.d.ts:9
+packages/medusa/dist/models/user.d.ts:9
 
 ___
 
@@ -76,7 +80,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/user.d.ts:10
+packages/medusa/dist/models/user.d.ts:10
 
 ___
 
@@ -86,11 +90,11 @@ ___
 
 #### Inherited from
 
-[SoftDeletableEntity](internal.SoftDeletableEntity.md).[id](internal.SoftDeletableEntity.md#id)
+[SoftDeletableEntity](internal-1.SoftDeletableEntity.md).[id](internal-1.SoftDeletableEntity.md#id)
 
 #### Defined in
 
-medusa/dist/interfaces/models/base-entity.d.ts:5
+packages/medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
@@ -100,17 +104,17 @@ ___
 
 #### Defined in
 
-medusa/dist/models/user.d.ts:11
+packages/medusa/dist/models/user.d.ts:11
 
 ___
 
 ### metadata
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
 
 #### Defined in
 
-medusa/dist/models/user.d.ts:14
+packages/medusa/dist/models/user.d.ts:14
 
 ___
 
@@ -120,7 +124,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/user.d.ts:12
+packages/medusa/dist/models/user.d.ts:12
 
 ___
 
@@ -130,7 +134,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/user.d.ts:8
+packages/medusa/dist/models/user.d.ts:8
 
 ___
 
@@ -140,8 +144,8 @@ ___
 
 #### Inherited from
 
-[SoftDeletableEntity](internal.SoftDeletableEntity.md).[updated_at](internal.SoftDeletableEntity.md#updated_at)
+[SoftDeletableEntity](internal-1.SoftDeletableEntity.md).[updated_at](internal-1.SoftDeletableEntity.md#updated_at)
 
 #### Defined in
 
-medusa/dist/interfaces/models/base-entity.d.ts:7
+packages/medusa/dist/interfaces/models/base-entity.d.ts:7

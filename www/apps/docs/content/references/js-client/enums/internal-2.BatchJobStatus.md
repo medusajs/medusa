@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Enumeration: BatchJobStatus
 
 [internal](../modules/internal-2.md).BatchJobStatus
@@ -10,7 +14,7 @@
 
 #### Defined in
 
-medusa/dist/types/batch-job.d.ts:9
+packages/medusa/dist/types/batch-job.d.ts:9
 
 ___
 
@@ -20,7 +24,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/batch-job.d.ts:8
+packages/medusa/dist/types/batch-job.d.ts:8
 
 ___
 
@@ -30,7 +34,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/batch-job.d.ts:6
+packages/medusa/dist/types/batch-job.d.ts:6
 
 ___
 
@@ -40,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/batch-job.d.ts:4
+packages/medusa/dist/types/batch-job.d.ts:4
 
 ___
 
@@ -50,7 +54,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/batch-job.d.ts:10
+packages/medusa/dist/types/batch-job.d.ts:10
 
 ___
 
@@ -60,7 +64,7 @@ ___
 
 #### Defined in
 
-medusa/dist/types/batch-job.d.ts:5
+packages/medusa/dist/types/batch-job.d.ts:5
 
 ___
 
@@ -70,4 +74,4 @@ ___
 
 #### Defined in
 
-medusa/dist/types/batch-job.d.ts:7
+packages/medusa/dist/types/batch-job.d.ts:7

@@ -28,17 +28,17 @@ SoftDeletableEntity.constructor
 
 #### Defined in
 
-[models/product-variant.ts:60](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L60)
+[models/product-variant.ts:72](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L72)
 
 ___
 
 ### barcode
 
-• **barcode**: `string`
+• **barcode**: ``null`` \| `string`
 
 #### Defined in
 
-[models/product-variant.ts:43](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L43)
+[models/product-variant.ts:55](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L55)
 
 ___
 
@@ -52,7 +52,7 @@ SoftDeletableEntity.created\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -66,37 +66,37 @@ SoftDeletableEntity.deleted\_at
 
 #### Defined in
 
-[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
 ### ean
 
-• **ean**: `string`
+• **ean**: ``null`` \| `string`
 
 #### Defined in
 
-[models/product-variant.ts:47](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L47)
+[models/product-variant.ts:59](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L59)
 
 ___
 
 ### height
 
-• **height**: `number`
+• **height**: ``null`` \| `number`
 
 #### Defined in
 
-[models/product-variant.ts:84](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L84)
+[models/product-variant.ts:96](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L96)
 
 ___
 
 ### hs\_code
 
-• **hs\_code**: `string`
+• **hs\_code**: ``null`` \| `string`
 
 #### Defined in
 
-[models/product-variant.ts:66](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L66)
+[models/product-variant.ts:78](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L78)
 
 ___
 
@@ -110,7 +110,17 @@ SoftDeletableEntity.id
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+
+___
+
+### inventory\_items
+
+• **inventory\_items**: [`ProductVariantInventoryItem`](ProductVariantInventoryItem.md)[]
+
+#### Defined in
+
+[models/product-variant.ts:113](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L113)
 
 ___
 
@@ -120,17 +130,17 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:57](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L57)
+[models/product-variant.ts:69](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L69)
 
 ___
 
 ### length
 
-• **length**: `number`
+• **length**: ``null`` \| `number`
 
 #### Defined in
 
-[models/product-variant.ts:81](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L81)
+[models/product-variant.ts:93](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L93)
 
 ___
 
@@ -140,37 +150,37 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:63](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L63)
+[models/product-variant.ts:75](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L75)
 
 ___
 
 ### material
 
-• **material**: `string`
+• **material**: ``null`` \| `string`
 
 #### Defined in
 
-[models/product-variant.ts:75](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L75)
+[models/product-variant.ts:87](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L87)
 
 ___
 
 ### metadata
 
-• **metadata**: `Record`<`string`, `unknown`\>
+• **metadata**: ``null`` \| `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-[models/product-variant.ts:95](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L95)
+[models/product-variant.ts:116](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L116)
 
 ___
 
 ### mid\_code
 
-• **mid\_code**: `string`
+• **mid\_code**: ``null`` \| `string`
 
 #### Defined in
 
-[models/product-variant.ts:72](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L72)
+[models/product-variant.ts:84](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L84)
 
 ___
 
@@ -180,17 +190,17 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:92](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L92)
+[models/product-variant.ts:104](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L104)
 
 ___
 
 ### origin\_country
 
-• **origin\_country**: `string`
+• **origin\_country**: ``null`` \| `string`
 
 #### Defined in
 
-[models/product-variant.ts:69](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L69)
+[models/product-variant.ts:81](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L81)
 
 ___
 
@@ -200,7 +210,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:35](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L35)
+[models/product-variant.ts:47](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L47)
 
 ___
 
@@ -210,7 +220,7 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:29](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L29)
+[models/product-variant.ts:31](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L31)
 
 ___
 
@@ -220,17 +230,27 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:25](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L25)
+[models/product-variant.ts:27](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L27)
+
+___
+
+### purchasable
+
+• `Optional` **purchasable**: `boolean`
+
+#### Defined in
+
+[models/product-variant.ts:118](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L118)
 
 ___
 
 ### sku
 
-• **sku**: `string`
+• **sku**: ``null`` \| `string`
 
 #### Defined in
 
-[models/product-variant.ts:39](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L39)
+[models/product-variant.ts:51](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L51)
 
 ___
 
@@ -240,17 +260,17 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:21](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L21)
+[models/product-variant.ts:23](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L23)
 
 ___
 
 ### upc
 
-• **upc**: `string`
+• **upc**: ``null`` \| `string`
 
 #### Defined in
 
-[models/product-variant.ts:51](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L51)
+[models/product-variant.ts:63](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L63)
 
 ___
 
@@ -264,37 +284,37 @@ SoftDeletableEntity.updated\_at
 
 #### Defined in
 
-[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
 ### variant\_rank
 
-• **variant\_rank**: `number`
+• **variant\_rank**: ``null`` \| `number`
 
 #### Defined in
 
-[models/product-variant.ts:54](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L54)
+[models/product-variant.ts:66](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L66)
 
 ___
 
 ### weight
 
-• **weight**: `number`
+• **weight**: ``null`` \| `number`
 
 #### Defined in
 
-[models/product-variant.ts:78](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L78)
+[models/product-variant.ts:90](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L90)
 
 ___
 
 ### width
 
-• **width**: `number`
+• **width**: ``null`` \| `number`
 
 #### Defined in
 
-[models/product-variant.ts:87](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L87)
+[models/product-variant.ts:99](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L99)
 
 ## Methods
 
@@ -308,4 +328,4 @@ ___
 
 #### Defined in
 
-[models/product-variant.ts:97](https://github.com/medusajs/medusa/blob/da7ea8c5d/packages/medusa/src/models/product-variant.ts#L97)
+[models/product-variant.ts:121](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/models/product-variant.ts#L121)

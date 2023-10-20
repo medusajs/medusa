@@ -149,7 +149,7 @@ Throughout your development, you'll likely need access to the logged-in user. Fo
 
 <DocCard item={{
   type: 'link',
-  href: '/development/endpoints/example-logged-in-user',
+  href: '/development/api-routes/example-logged-in-user',
   label: 'Access Logged-in User',
   customProps: {
     icon: Icons['academic-cap-solid'],
@@ -188,7 +188,7 @@ To extend the user service, create the file `src/services/user.ts` with the foll
 
 <!-- eslint-disable prefer-rest-params -->
 
-```ts
+```ts title=src/services/user.ts
 import { Lifetime } from "awilix"
 import { 
   UserService as MedusaUserService,
@@ -272,7 +272,7 @@ To listen to events, you need to create Subscribers that subscribe a handler met
 
 To listen to the `order.placed` event, create the file `src/subscribers/orderNotifier.ts` with the following content:
 
-```ts
+```ts title=src/subscribers/orderNotifier.ts
 class OrderNotifierSubscriber {
   constructor({ eventBusService }) {
     eventBusService.subscribe("order.placed", this.handleOrder)
@@ -396,7 +396,7 @@ Medusa's [admin plugin](../admin/quickstart.mdx) can be extended to add widgets 
 
 ## Implement Role-Based Access Control
 
-In your marketplace, you may need to implement role-based access control (RBAC) within stores. This will restrict some users' permissions to specified functionalities or endpoints.
+In your marketplace, you may need to implement role-based access control (RBAC) within stores. This will restrict some users' permissions to specified functionalities or API Routes.
 
 If you want to implement this functionality, you can follow the RBAC recipe.
 

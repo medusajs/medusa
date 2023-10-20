@@ -1,0 +1,13 @@
+---
+displayed_sidebar: pricingReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# MoneyAmountDTO
+
+A money amount's data. A money amount represents a price.
+
+## Properties
+
+<ParameterTypes parameters={[{"name":"amount","type":"`number`","description":"The price of this money amount.","optional":true,"defaultValue":"","children":[]},{"name":"currency","type":"[`CurrencyDTO`](CurrencyDTO.mdx)","description":"The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.","optional":true,"defaultValue":"","children":[{"name":"code","type":"`string`","description":"The code of the currency.","optional":false,"defaultValue":"","children":[]},{"name":"name","type":"`string`","description":"The name of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol","type":"`string`","description":"The symbol of the currency.","optional":true,"defaultValue":"","children":[]},{"name":"symbol_native","type":"`string`","description":"The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.","optional":true,"defaultValue":"","children":[]}]},{"name":"currency_code","type":"`string`","description":"The currency code of this money amount.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"The ID of the money amount.","optional":false,"defaultValue":"","children":[]},{"name":"max_quantity","type":"`number`","description":"The maximum quantity required to be purchased for this price to be applied.","optional":true,"defaultValue":"","children":[]},{"name":"min_quantity","type":"`number`","description":"The minimum quantity required to be purchased for this price to be applied.","optional":true,"defaultValue":"","children":[]}]} />

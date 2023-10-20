@@ -30,11 +30,13 @@ jobs:
         with:
           extension: docs-release
 
-      - name: Build Packages
-        run: yarn build
+      - name: Install Workspace dependencies
+        run: yarn install
+        working-directory: docs-util
 
       - name: Generate Announcement Bar
         run: yarn generate:announcement
+        working-directory: docs-util/packages/scripts
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
@@ -44,5 +46,5 @@ jobs:
           title: "chore(docs): Generated Docs Announcement Bar (automated)"
           labels: "type: chore"
           add-paths: www/apps/docs/**
-          branch: "chore/generate-announcement"
+          branch: "docs/generate-announcement"
           branch-suffix: "timestamp"

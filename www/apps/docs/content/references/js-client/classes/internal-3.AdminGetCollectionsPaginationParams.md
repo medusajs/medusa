@@ -1,3 +1,7 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
 # Class: AdminGetCollectionsPaginationParams
 
 [internal](../modules/internal-3.md).AdminGetCollectionsPaginationParams
@@ -16,7 +20,7 @@
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:140
+packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:130
 
 ___
 
@@ -26,4 +30,4 @@ ___
 
 #### Defined in
 
-medusa/dist/api/routes/admin/collections/list-collections.d.ts:141
+packages/medusa/dist/api/routes/admin/collections/list-collections.d.ts:131

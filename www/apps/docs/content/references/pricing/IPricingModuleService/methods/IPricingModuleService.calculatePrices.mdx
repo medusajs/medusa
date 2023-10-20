@@ -1,0 +1,94 @@
+---
+displayed_sidebar: pricingReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/pricing/calculatePrices
+sidebar_label: calculatePrices
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# calculatePrices - Pricing Module Reference
+
+This documentation provides a reference to the `calculatePrices` method. This belongs to the Pricing Module.
+
+This method is used to calculate prices based on the provided filters and context.
+
+## Example
+
+When you calculate prices, you must at least specify the currency code:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+async function calculatePrice (priceSetId: string, currencyCode: string) {
+  const pricingService = await initializePricingModule()
+
+  const price = await pricingService.calculatePrices(
+    { id: [priceSetId] },
+    {
+      context: {
+        currency_code: currencyCode
+      }
+    }
+  )
+
+  // do something with the price or return it
+}
+```
+
+To calculate prices for specific minimum and/or maximum quantity:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+async function calculatePrice (priceSetId: string, currencyCode: string) {
+  const pricingService = await initializePricingModule()
+
+  const price = await pricingService.calculatePrices(
+    { id: [priceSetId] },
+    {
+      context: {
+        currency_code: currencyCode,
+        min_quantity: 4
+      }
+    }
+  )
+
+  // do something with the price or return it
+}
+```
+
+To calculate prices for custom rule types:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+async function calculatePrice (priceSetId: string, currencyCode: string) {
+  const pricingService = await initializePricingModule()
+
+  const price = await pricingService.calculatePrices(
+    { id: [priceSetId] },
+    {
+      context: {
+        currency_code: currencyCode,
+        region_id: "US"
+      }
+    }
+  )
+
+  // do something with the price or return it
+}
+```
+
+## Parameters
+
+<ParameterTypes parameters={[{"name":"filters","type":"[`PricingFilters`](../../interfaces/PricingFilters.mdx)","description":"The filters to apply on prices.","optional":false,"defaultValue":"","children":[{"name":"id","type":"`string`[]","description":"IDs to filter prices.","optional":false,"defaultValue":"","children":[]}]},{"name":"context","type":"[`PricingContext`](../../interfaces/PricingContext.mdx)","description":"The context used to select the prices. For example, you can specify the region ID in this context, and only prices having the same value will be retrieved.","optional":true,"defaultValue":"","children":[{"name":"context","type":"Record<`string`, `string` \\| `number`\\>","description":"an object whose keys are the name of the context attribute. Its value can be a string or a number. For example, you can pass the `currency_code` property with its value being the currency code to calculate the price in. Another example is passing the `quantity` property to calculate the price for that specified quantity, which finds a price set whose `min_quantity` and `max_quantity` conditions match the specified quantity.","optional":true,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+
+## Returns
+
+<ParameterTypes parameters={[{"name":"Promise","type":"`Promise`<[`CalculatedPriceSetDTO`](../../interfaces/CalculatedPriceSetDTO.mdx)\\>","optional":false,"defaultValue":"","description":"The calculated price matching the context and filters provided.","children":[{"name":"CalculatedPriceSetDTO","type":"`object`","description":"A calculated price set's data.","optional":false,"defaultValue":"","children":[{"name":"amount","type":"``null`` \\| `number`","description":"The calculated amount. It can possibly be `null` if there's no price set up for the provided context.","optional":false,"defaultValue":"","children":[]},{"name":"currency_code","type":"``null`` \\| `string`","description":"The currency code of the calculated price. It can possibly be `null`.","optional":false,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"The ID of the price set.","optional":false,"defaultValue":"","children":[]},{"name":"max_quantity","type":"``null`` \\| `number`","description":"The maximum quantity required to be purchased for this price to apply. It's set if the `quantity` property is provided in the context. Otherwise, its value will be `null`.","optional":false,"defaultValue":"","children":[]},{"name":"min_quantity","type":"``null`` \\| `number`","description":"The minimum quantity required to be purchased for this price to apply. It's set if the `quantity` property is provided in the context. Otherwise, its value will be `null`.","optional":false,"defaultValue":"","children":[]}]}]}]} />
