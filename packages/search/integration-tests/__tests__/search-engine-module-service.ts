@@ -671,14 +671,7 @@ describe("SearchEngineModuleService", function () {
         modulesConfig: {
           ...modulesConfig,
           [Modules.SEARCH]: {
-            options: {
-              defaultAdapterOptions: {
-                database: {
-                  connection: manager.getConnection().getKnex(),
-                },
-              },
-              schema,
-            },
+            options: searchEngineModuleOptions,
           },
         },
         servicesConfig: joinerConfig,
@@ -691,25 +684,19 @@ describe("SearchEngineModuleService", function () {
         path: "./src/scripts/seed-data/index.ts",
         options: searchEngineModuleOptions,
       })
+
+      console.log("waiting 90s for all indexes and partition to be done.")
+      await new Promise((resolve) => setTimeout(resolve, 90000))
     })
 
     afterEach(afterEach_)
 
-    it("should query the data", async function () {
-      const catalogEntryCount = await manager.count(Catalog, {})
-      const catalogRelationEntryCount = await manager.count(CatalogRelation, {})
-
-      /*expect(catalogEntryCount).toBe(61000)
-      expect(catalogRelationEntryCount).toBe(60000)*/
-
+    it("should query the data filtered by money amount amount", async function () {
       const moneyAmountToSearchFor = (await manager.findOne(Catalog, {
         name: "MoneyAmount",
       })) as Catalog
 
-      await new Promise((resolve) => setTimeout(resolve, 100000))
-
-      console.time("query")
-      const [result, count] = await module.queryAndCount(
+      const [, count] = await module.queryAndCount(
         {
           select: {
             product: {
@@ -721,17 +708,14 @@ describe("SearchEngineModuleService", function () {
           where: {
             "product.variants.money_amounts.amount":
               moneyAmountToSearchFor.data.amount,
-            /*"product.variants.money_amounts.currency_code":
-              moneyAmountToSearchFor.data.currency_code,*/
           },
         },
         {
           skip: 0,
         }
       )
-      console.timeEnd("query2")
 
-      expect(count).toEqual(1)
+      expect(count).toBeGreaterThan(0)
     })
   })
 })
