@@ -253,18 +253,14 @@ export async function MedusaApp(
   const runMigrations: RunMigrationFn = async (
     linkModuleOptions
   ): Promise<void> => {
-    console.log("linkModuleOptions")
-    console.log(linkModuleOptions)
     for (const moduleName of Object.keys(allModules)) {
       const moduleResolution = MedusaModule.getModuleResolutions(moduleName)
 
-      console.log("Migrating module", moduleResolution.options)
       await MedusaModule.migrateUp(
         moduleResolution.definition.key,
         moduleResolution.resolutionPath as string,
         moduleResolution.options
       )
-      console.warn("test")
     }
 
     linkModuleMigration &&

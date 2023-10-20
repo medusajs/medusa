@@ -33,7 +33,6 @@ export class RemoteQuery {
         (mod) => Object.values(mod)[0]
       )
     }
-
     for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
@@ -48,10 +47,17 @@ export class RemoteQuery {
       }
 
       this.modulesMap.set(serviceName, mod)
-      servicesConfig!.push(mod.__joinerConfig)
+      const serviceIndex = servicesConfig!.findIndex(sc => sc.serviceName === mod.__joinerConfig.serviceName)
+
+      if(serviceIndex > -1) {
+        servicesConfig![serviceIndex] = mod.__joinerConfig
+      } else {
+        servicesConfig!.push(mod.__joinerConfig) 
+      }
     }
 
     this.customRemoteFetchData = customRemoteFetchData
+
     this.remoteJoiner = new RemoteJoiner(
       servicesConfig as JoinerServiceConfig[],
       this.remoteFetchData.bind(this)

@@ -73,15 +73,18 @@ const instance = DbTestUtil
 
 module.exports = {
   initDb: async function ({ cwd, database_extra, env }) {
-    const { configModule } = getConfigFile(cwd, `medusa-config`)
-    const { featureFlags } = configModule
-
     if (isObject(env)) {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
     }
 
+    const { configModule } = getConfigFile(cwd, `medusa-config`)
+    const { featureFlags } = configModule
+
     const featureFlagsLoader =
       require("@medusajs/medusa/dist/loaders/feature-flags").default
+
+    const medusaAppLoader =
+      require("@medusajs/medusa/dist/loaders/medusa-app").default
 
     const featureFlagsRouter = featureFlagsLoader({ featureFlags })
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
@@ -133,6 +136,18 @@ module.exports = {
     await dbDataSource.runMigrations()
 
     instance.setDb(dbDataSource)
+
+    const { runMigrations } = await medusaAppLoader(
+      { configModule },
+      { register: false }
+    )
+
+    const options = {
+      database: {
+        clientUrl: DB_URL,
+      },
+    }
+    await runMigrations(options)
 
     return dbDataSource
   },

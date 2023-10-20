@@ -115,6 +115,7 @@ export class MedusaModule {
     config: ModuleJoinerConfig
   ): ModuleJoinerConfig {
     MedusaModule.joinerConfig_.set(moduleKey, config)
+
     return config
   }
 
@@ -407,17 +408,9 @@ export class MedusaModule {
       options,
     })
 
-    console.log(JSON.stringify(moduleResolutions, null, 2))
-    console.log(options)
-
     for (const mod in moduleResolutions) {
-      console.log(moduleResolutions[mod].moduleDeclaration?.options)
-
       const [migrateUp] = await loadModuleMigrations(moduleResolutions[mod])
 
-      console.log(mod)
-      console.log(mod)
-      console.log(migrateUp)
       if (typeof migrateUp === "function") {
         await migrateUp({
           options,

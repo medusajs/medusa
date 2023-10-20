@@ -27,12 +27,10 @@ import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-dom
 import Logger from "./logger"
 import { joinerConfig } from "../joiner-config"
 import loadConfig from "./config"
-import { mergeModulesConfig } from "../utils/merge-modules-config"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
 import redisLoader from "./redis"
-import { remoteQueryFetchData } from "../utils"
 import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
@@ -143,6 +141,7 @@ export default async ({
     featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
     featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
   ) {
+<<<<<<< HEAD
     mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
 
     const injectedDependencies = {
@@ -174,6 +173,9 @@ export default async ({
     }
 
     container.register("remoteQuery", asValue(query))
+=======
+    await loadMedusaApp({ configModule, container })
+>>>>>>> c52a0a066 (update integration tests and remote-query loader)
   }
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)

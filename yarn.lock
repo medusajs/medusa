@@ -6706,7 +6706,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.0, @medusajs/modules-sdk@^1.12.1, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@^1.12.0, @medusajs/modules-sdk@^1.12.1, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:

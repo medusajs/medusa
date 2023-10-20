@@ -42,8 +42,6 @@ export const loadMedusaApp = async (
 
   const { query, modules } = medusaApp
 
-  // await runMigrations()
-
   // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
   // We might decide to do it elsewhere but for now I think it is fine
   for (const [serviceKey, moduleService] of Object.entries(modules)) {
@@ -56,3 +54,5 @@ export const loadMedusaApp = async (
 
   return medusaApp
 }
+
+export default loadMedusaApp
