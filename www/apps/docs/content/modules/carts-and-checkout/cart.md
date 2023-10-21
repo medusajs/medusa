@@ -26,7 +26,7 @@ A cart is represented by the `Cart` entity. Some of the `Cart` entity’s attrib
 - `completed_at`: the date the cart was completed. A completed cart means that it has been used for its main purpose. For example, if the cart is used to place an order, then a completed cart means that the order was placed.
 - `payment_authorized_at`: the date a payment was authorized.
 
-There are other important attributes discussed in later sections. Check out the [full Cart entity in the entities reference](../../references/entities/classes/Cart.md).
+There are other important attributes discussed in later sections. Check out the [full Cart entity in the entities reference](../../references/entities/classes/Cart.mdx).
 
 ---
 
@@ -63,7 +63,7 @@ The cart’s totals are retrieved by default in all the [cart’s store APIs](ht
 
 The cart completion functionality is implemented inside the strategy `cartCompletionStrategy`. This allows you to customize how the process is implemented in your store.
 
-You can initiate the cart completion process by sending a request to the [Complete Cart endpoint](https://docs.medusajs.com/api/store#carts_postcartscartcomplete).
+You can initiate the cart completion process by sending a request to the [Complete Cart API Route](https://docs.medusajs.com/api/store#carts_postcartscartcomplete).
 
 ### Idempotency Key
 

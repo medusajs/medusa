@@ -6,7 +6,10 @@ import clsx from "clsx"
 
 export type MarkdownContentProps = ReactMarkdownOptions
 
-export const MarkdownContent = ({ children }: MarkdownContentProps) => {
+export const MarkdownContent = ({
+  children,
+  ...props
+}: MarkdownContentProps) => {
   return (
     <ReactMarkdown
       components={{
@@ -79,6 +82,7 @@ export const MarkdownContent = ({ children }: MarkdownContentProps) => {
           )
         },
       }}
+      {...props}
     >
       {children}
     </ReactMarkdown>

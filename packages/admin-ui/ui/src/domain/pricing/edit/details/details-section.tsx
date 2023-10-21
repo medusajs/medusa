@@ -69,6 +69,7 @@ const PriceListDetailsSection = ({
           name,
         }
       ),
+      verificationText: name,
       confirmText,
       cancelText,
     })

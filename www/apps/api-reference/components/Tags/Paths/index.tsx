@@ -33,7 +33,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
   const { loading } = useLoading()
   // if paths are already loaded since through
   // the expanded field, they're loaded directly
-  // otherwise, they're loaded using the API endpoint
+  // otherwise, they're loaded using the API route
   let paths: PathsObject =
     baseSpecs?.expandedTags &&
     Object.hasOwn(baseSpecs.expandedTags, tagSlugName)

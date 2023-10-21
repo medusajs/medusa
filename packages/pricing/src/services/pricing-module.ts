@@ -34,8 +34,6 @@ import {
   RuleTypeService,
 } from "@services"
 
-import { EntityManager } from "@mikro-orm/postgresql"
-
 import {
   InjectManager,
   InjectTransactionManager,
@@ -47,9 +45,11 @@ import {
 
 import { AddPricesDTO } from "@medusajs/types"
 import { joinerConfig } from "../joiner-config"
+import { PricingRepositoryService } from "../types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
+  pricingRepository: PricingRepositoryService
   currencyService: CurrencyService<any>
   moneyAmountService: MoneyAmountService<any>
   priceSetService: PriceSetService<any>
@@ -72,6 +72,7 @@ export default class PricingModuleService<
 > implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
+  protected readonly pricingRepository_: PricingRepositoryService
   protected readonly currencyService_: CurrencyService<TCurrency>
   protected readonly moneyAmountService_: MoneyAmountService<TMoneyAmount>
   protected readonly ruleTypeService_: RuleTypeService<TRuleType>
@@ -84,6 +85,7 @@ export default class PricingModuleService<
   constructor(
     {
       baseRepository,
+      pricingRepository,
       moneyAmountService,
       currencyService,
       ruleTypeService,
@@ -96,6 +98,7 @@ export default class PricingModuleService<
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
+    this.pricingRepository_ = pricingRepository
     this.currencyService_ = currencyService
     this.moneyAmountService_ = moneyAmountService
     this.ruleTypeService_ = ruleTypeService
@@ -117,89 +120,12 @@ export default class PricingModuleService<
     pricingContext: PricingContext = { context: {} },
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.CalculatedPriceSetDTO> {
-    const manager = sharedContext.manager as EntityManager
-    const knex = manager.getKnex()
-
-    // Keeping this whole logic raw in here for now as they will undergo
-    // some changes, will abstract them out once we have a final version
-    const context = pricingContext.context || {}
-
-    // Quantity is used to scope money amounts based on min_quantity and max_quantity.
-    // We should potentially think of reserved words in pricingContext that can't be used in rules
-    // or have a separate pricing options that accept things like quantity, price_list_id and other
-    // pricing module features
-    const quantity = context.quantity
-    delete context.quantity
-
-    // Currency code here is a required param.
-    const currencyCode = context.currency_code
-    delete context.currency_code
-
-    if (!currencyCode) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `currency_code is a required input in the pricing context`
-      )
-    }
-
-    // Gets all the price set money amounts where rules match for each of the contexts
-    // that the price set is configured for
-    const psmaSubQueryKnex = knex({
-      psma: "price_set_money_amount",
-    })
-      .select({
-        id: "psma.id",
-        price_set_id: "psma.price_set_id",
-        money_amount_id: "psma.money_amount_id",
-        number_rules: "psma.number_rules",
-      })
-      .leftJoin("price_set_money_amount as psma1", "psma1.id", "psma.id")
-      .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
-      .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
-      .orderBy("number_rules", "desc")
-      .orWhere("psma1.number_rules", "=", 0)
-      .groupBy("psma.id")
-      .having(knex.raw("count(DISTINCT rt.rule_attribute) = psma.number_rules"))
-
-    for (const [key, value] of Object.entries(context)) {
-      psmaSubQueryKnex.orWhere({
-        "rt.rule_attribute": key,
-        "pr.value": value,
-      })
-    }
-
-    const priceSetQueryKnex = knex({
-      ps: "price_set",
-    })
-      .select({
-        id: "ps.id",
-        amount: "ma.amount",
-        min_quantity: "ma.min_quantity",
-        max_quantity: "ma.max_quantity",
-        currency_code: "ma.currency_code",
-        default_priority: "rt.default_priority",
-        number_rules: "psma.number_rules",
-      })
-      .join(psmaSubQueryKnex.as("psma"), "psma.price_set_id", "ps.id")
-      .join("money_amount as ma", "ma.id", "psma.money_amount_id")
-      .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma.id")
-      .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
-      .whereIn("ps.id", pricingFilters.id)
-      .andWhere("ma.currency_code", "=", currencyCode)
-      .orderBy([
-        { column: "number_rules", order: "desc" },
-        { column: "default_priority", order: "desc" },
-      ])
-
-    if (quantity) {
-      priceSetQueryKnex.where("ma.min_quantity", "<=", quantity)
-      priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
-    }
-
-    const isContextPresent = Object.entries(context).length || !!currencyCode
-    // Only if the context is present do we need to query the database.
-    const queryBuilderResults = isContextPresent ? await priceSetQueryKnex : []
-    const pricesSetPricesMap = groupBy(queryBuilderResults, "id")
+    const results = await this.pricingRepository_.calculatePrices(
+      pricingFilters,
+      pricingContext,
+      sharedContext
+    )
+    const pricesSetPricesMap = groupBy(results, "id")
 
     const calculatedPrices = pricingFilters.id.map(
       (priceSetId: string): PricingTypes.CalculatedPriceSetDTO => {

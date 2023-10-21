@@ -118,8 +118,10 @@ const plugins = [
         access_key_id: process.env.S3_ACCESS_KEY_ID,
         secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
         cache_control: process.env.S3_CACHE_CONTROL,
+        // optional
         download_file_duration:
           process.env.S3_DOWNLOAD_FILE_DURATION,
+        prefix: process.env.S3_PREFIX,
     },
   },
 ]
@@ -127,13 +129,14 @@ const plugins = [
 
 Where:
 
-1. `s3_url` (required) is the URL to your bucket. It’s in the form `https://<BUCKET_NAME>.s3.<REGION>.amazonaws.com`, where `<BUCKET_NAME>` is the name of the bucket and the `<REGION>` is the region the bucket is created in. If you’re not sure which region, on your bucket’s page on S3 click on Properties. You can then find the region under AWS Region. Make sure to only copy the code (for example, `us-east-1`).
-2. `bucket` (required) is the name of the bucket you created.
-3. `region` (required) is the region code of your bucket. For example, `us-east-1`.
-4. `access_key_id` (required) is the Access Key ID that you created for your user.
-5. `secret_access_key` (required) is the Secret Access Key that you created for your user.
-6. `cache_control` (default: `max-age=31536000`) is the value for caching the objects in a web browser or CDN network. For example: cache object for 10 hours, `max-age=36000`
-7. `download_file_duration` (optional) is the expiry duration for a download URL. For example, you can set the value to ``3600`` if you want the download URL to expire in 1 hour.
+1. `s3_url` (required) is a string indicating the URL to your bucket. It’s in the form `https://<BUCKET_NAME>.s3.<REGION>.amazonaws.com`, where `<BUCKET_NAME>` is the name of the bucket and the `<REGION>` is the region the bucket is created in. If you’re not sure which region, on your bucket’s page on S3 click on Properties. You can then find the region under AWS Region. Make sure to only copy the code (for example, `us-east-1`).
+2. `bucket` (required) is a string indicating the name of the bucket you created.
+3. `region` (required) is a string indicating the region code of your bucket. For example, `us-east-1`.
+4. `access_key_id` (required) is a string indicating the Access Key ID that you created for your user.
+5. `secret_access_key` (required) is a string indicating the Secret Access Key that you created for your user.
+6. `cache_control` (default: `max-age=31536000`) is a string indicating the value for caching the objects in a web browser or CDN network. For example: cache object for 10 hours, `max-age=36000`
+7. `download_file_duration` (optional) is a string indicating the expiry duration for a download URL. For example, you can set the value to ``3600`` if you want the download URL to expire in 1 hour.
+8. `prefix` (optional) is a string indicating a prefix to apply on stored file names.
 
 Make sure to also set these values in your environment variables as well:
 
@@ -145,6 +148,7 @@ S3_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
 S3_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
 S3_CACHE_CONTROL=<YOUR_CACHE_CONTROL>
 S3_DOWNLOAD_FILE_DURATION=<YOUR_DOWNLOAD_FILE_DURATION_AMOUNT>
+S3_PREFIX=<YOUR_BUCKET_PREFIX>
 ```
 
 

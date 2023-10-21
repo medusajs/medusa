@@ -376,7 +376,10 @@ const PriceListDates = ({ form, layout }: PriceListDetailsFormProps) => {
                   return (
                     <Form.Item>
                       <Form.Label>
-                        {t("price-list-details-form-ends-at-label", "End date")}
+                        {t(
+                          "price-list-details-form-ends-at-label",
+                          "Expiry date"
+                        )}
                       </Form.Label>
                       <Form.Control>
                         <DatePicker

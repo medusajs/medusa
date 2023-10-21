@@ -132,7 +132,6 @@ const useEditProductActions = (productId: string) => {
     const newStatus = currentStatus === "published" ? "draft" : "published"
     updateProduct.mutate(
       {
-        // @ts-ignore TODO fix update type in API
         status: newStatus,
       },
       {

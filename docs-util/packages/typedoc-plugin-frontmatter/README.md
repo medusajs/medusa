@@ -2,6 +2,8 @@
 
 A Typedoc plugin that allows inserting frontmatter key-value pairs at the top of the exported Markdown files.
 
+> For more flexibility in what pages to apply the frontmatter data to, for example, to specify different frontmatter for different pages, ues the [`typedoc-plugin-markdown-medusa` plugin's `frontmatterData` option](../typedoc-plugin-markdown-medusa/README.md#configurations)
+
 ## Configurations
 
 The following options are optional and can be used to customize the configurations of the plugin.

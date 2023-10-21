@@ -5,6 +5,7 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
+  LoaderOptions,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
@@ -22,6 +23,13 @@ import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
+
+const LinkModulePackage = "@medusajs/link-modules"
+
+export type RunMigrationFn = (
+  options: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
+  injectedDependencies?: Record<any, any>
+) => Promise<void>
 
 export type MedusaModuleConfig = {
   [key: string | Modules]:
@@ -51,6 +59,7 @@ export type SharedResources = {
 
 async function loadModules(modulesConfig, injectedDependencies) {
   const allModules = {}
+
   await Promise.all(
     Object.keys(modulesConfig).map(async (moduleName) => {
       const mod = modulesConfig[moduleName]
@@ -99,16 +108,24 @@ async function loadModules(modulesConfig, injectedDependencies) {
   return allModules
 }
 
-async function initializeLinks(linkModules, injectedDependencies) {
+async function initializeLinks(config, linkModules, injectedDependencies) {
   try {
-    const { initialize: initializeLinks } = await import(
-      "@medusajs/link-modules" as string
+    const { initialize, runMigrations } = await import(LinkModulePackage)
+    const linkResolution = await initialize(
+      config,
+      linkModules,
+      injectedDependencies
     )
-    await initializeLinks({}, linkModules, injectedDependencies)
-    return new RemoteLink()
+
+    return { remoteLink: new RemoteLink(), linkResolution, runMigrations }
   } catch (err) {
     console.warn("Error initializing link modules.", err)
-    return undefined
+
+    return {
+      remoteLink: undefined,
+      linkResolution: undefined,
+      runMigrations: undefined,
+    }
   }
 }
 
@@ -166,6 +183,7 @@ export async function MedusaApp(
   ) => Promise<any>
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
+  runMigrations: RunMigrationFn
 }> {
   const modules: MedusaModuleConfig =
     modulesConfig ??
@@ -175,6 +193,7 @@ export async function MedusaApp(
           process.cwd() + (modulesConfigFileName ?? "/modules-config")
       )
     ).default
+
   const dbData = ModulesSdkUtils.loadDatabaseConfig(
     "medusa",
     sharedResourcesConfig as ModuleServiceInitializeOptions,
@@ -194,8 +213,25 @@ export async function MedusaApp(
       })
   }
 
+  // remove the link module from the modules
+  const linkModule = modules[LinkModulePackage]
+  delete modules[LinkModulePackage]
+  let linkModuleOptions = {}
+
+  if (isObject(linkModule)) {
+    linkModuleOptions = linkModule
+  }
+
   const allModules = await loadModules(modules, injectedDependencies)
-  const link = await initializeLinks(linkModules, injectedDependencies)
+  const {
+    remoteLink,
+    linkResolution,
+    runMigrations: linkModuleMigration,
+  } = await initializeLinks(
+    linkModuleOptions,
+    linkModules,
+    injectedDependencies
+  )
 
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
@@ -204,6 +240,7 @@ export async function MedusaApp(
     servicesConfig,
     customRemoteFetchData: remoteFetchData,
   })
+
   const query = async (
     query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
@@ -211,11 +248,27 @@ export async function MedusaApp(
     return await remoteQuery.query(query, variables)
   }
 
+  const runMigrations: RunMigrationFn = async (): Promise<void> => {
+    for (const moduleName of Object.keys(allModules)) {
+      const loadedModule = allModules[moduleName]
+
+      await MedusaModule.migrateUp(
+        loadedModule.definition.key,
+        loadedModule.resolutionPath,
+        loadedModule.options
+      )
+    }
+
+    linkModuleMigration &&
+      (await linkModuleMigration(linkResolution.options, injectedDependencies))
+  }
+
   return {
     modules: allModules,
-    link,
+    link: remoteLink,
     query,
     entitiesMap: schema.getTypeMap(),
     notFound,
+    runMigrations,
   }
 }

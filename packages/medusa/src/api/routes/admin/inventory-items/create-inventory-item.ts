@@ -1,15 +1,14 @@
+import { FlagRouter, ManyToManyInventoryFeatureFlag } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} from "../../../../services"
+  createInventoryItems,
+  CreateInventoryItemActions,
+  pipe,
+} from "@medusajs/workflows"
+import { ProductVariantInventoryService } from "../../../../services"
 
-import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
-import { IInventoryService } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
-import { createInventoryItemTransaction } from "./transaction/create-inventory-item"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/inventory-items
@@ -78,54 +77,106 @@ import { validator } from "../../../../utils/validator"
  */
 
 export default async (req, res) => {
-  const validated = await validator(AdminPostInventoryItemsReq, req.body)
-  const { variant_id, ...input } = validated
+  const { variant_id, ...inventoryItemInput } = req.validatedBody
 
-  const inventoryService: IInventoryService =
-    req.scope.resolve("inventoryService")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
-  const productVariantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
-  )
 
-  let inventoryItems = await productVariantInventoryService.listByVariant(
-    variant_id
-  )
+  const createInventoryItemWorkflow = createInventoryItems(req.scope)
 
-  // TODO: this is a temporary fix to prevent duplicate inventory items since we don't support this functionality yet
-  if (inventoryItems.length) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_ALLOWED,
-      "Inventory Item already exists for this variant"
+  if (!featureFlagRouter.isFeatureEnabled(ManyToManyInventoryFeatureFlag.key)) {
+    if (!variant_id) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "variant_id is required"
+      )
+    }
+
+    createInventoryItemWorkflow.appendAction(
+      "attachInventoryItems",
+      CreateInventoryItemActions.createInventoryItems,
+      {
+        invoke: pipe(
+          {
+            invoke: {
+              from: CreateInventoryItemActions.createInventoryItems,
+              alias: "createdItems",
+            },
+          },
+          generateAttachInventoryToVariantHandler(
+            variant_id,
+            productVariantInventoryService
+          )
+        ),
+        compensate: pipe(
+          {
+            invoke: {
+              from: "attachInventoryItems",
+              alias: "attachedItems",
+            },
+          },
+          generateDetachInventoryItemFromVariantHandler(
+            productVariantInventoryService
+          )
+        ),
+      }
     )
   }
 
-  const manager: EntityManager = req.scope.resolve("manager")
-
-  await manager.transaction(async (transactionManager) => {
-    await createInventoryItemTransaction(
-      {
-        manager: transactionManager,
-        inventoryService,
-        productVariantInventoryService,
-        productVariantService,
-      },
-      variant_id,
-      input
-    )
+  const { result } = await createInventoryItemWorkflow.run({
+    input: {
+      inventoryItems: [inventoryItemInput],
+    },
   })
 
-  inventoryItems = await productVariantInventoryService.listByVariant(
-    variant_id
-  )
+  res.status(200).json({ inventory_item: result[0].inventoryItem })
+}
 
-  const inventoryItem = await inventoryService.retrieveInventoryItem(
-    inventoryItems[0].inventory_item_id,
-    req.retrieveConfig
-  )
+function generateDetachInventoryItemFromVariantHandler(
+  productVariantInventoryService: ProductVariantInventoryService
+) {
+  return async ({ data }) => {
+    if (!data.attachedItems || !data.attachedItems.length) {
+      return
+    }
 
-  res.status(200).json({ inventory_item: inventoryItem })
+    const [variantId, inventoryItemId] = data.attachedItems
+    if (!variantId || !inventoryItemId) {
+      return
+    }
+
+    return await productVariantInventoryService.detachInventoryItem(
+      inventoryItemId,
+      variantId
+    )
+  }
+}
+
+function generateAttachInventoryToVariantHandler(
+  variantId: string,
+  productVariantInventoryService: ProductVariantInventoryService
+) {
+  return async ({ data }) => {
+    let inventoryItems = await productVariantInventoryService.listByVariant(
+      variantId
+    )
+
+    // TODO: this is a temporary fix to prevent duplicate inventory
+    // items since we don't support this functionality yet
+    if (inventoryItems.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Inventory Item already exists for this variant"
+      )
+    }
+    const inventoryItemId = data.createdItems[0].inventoryItem.id
+    await productVariantInventoryService.attachInventoryItem(
+      variantId,
+      inventoryItemId
+    )
+    return [variantId, inventoryItemId]
+  }
 }
 
 /**
@@ -192,6 +243,7 @@ export default async (req, res) => {
  *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostInventoryItemsReq {
+  @IsOptional()
   @IsString()
   variant_id: string
 

@@ -132,6 +132,7 @@ const PriceListNew = () => {
     reset,
     getValues,
     setValue,
+    setError,
     handleSubmit,
     formState: { isDirty },
   } = form
@@ -163,6 +164,7 @@ const PriceListNew = () => {
   const onCloseModal = React.useCallback(() => {
     setOpen(false)
     setTab(Tab.DETAILS)
+    setSelectedIds([])
     setStatus({
       [Tab.DETAILS]: "not-started",
       [Tab.PRODUCTS]: "not-started",
@@ -227,6 +229,42 @@ const PriceListNew = () => {
     async (status: PriceListStatus) => {
       await handleSubmit(async (data) => {
         const prices: PricePayload[] = []
+
+        const productPriceKeys = Object.keys(data.prices.products)
+        const productIds = data.products.ids
+
+        if (!productPriceKeys.length || !data.prices.products) {
+          setError("prices.products", {
+            type: "manual",
+            message: t(
+              "price-list-new-form-no-prices-error",
+              "Please set prices for at least one product."
+            ) as string,
+          })
+
+          return
+        }
+
+        const missingProducts = productIds.filter(
+          (id) => !productPriceKeys.includes(id)
+        )
+
+        if (missingProducts.length > 0) {
+          const res = await prompt({
+            title: t(
+              "price-list-new-form-missing-prices-title",
+              "Incomplete price list"
+            ),
+            description: t(
+              "price-list-new-products-modal-missing-prices-description",
+              "Prices have not been assigned to all of your chosen products. Would you like to proceed?"
+            ),
+          })
+
+          if (!res) {
+            return
+          }
+        }
 
         /**
          * Loop through all the products and variants
@@ -348,6 +386,8 @@ const PriceListNew = () => {
       mutateAsync,
       notification,
       onCloseModal,
+      setError,
+      prompt,
       t,
       isTaxInclPricesEnabled,
       regions,

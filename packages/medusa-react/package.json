@@ -1,5 +1,5 @@
 {
-  "version": "9.0.7",
+  "version": "9.0.9",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -7,7 +7,8 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     },
     "./package.json": "./package.json"
   },
@@ -25,7 +26,7 @@
     "test": "echo \"Tests disabled temporarily\""
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.12.0",
+    "@medusajs/medusa": "^1.17.2",
     "@tanstack/react-query": "^4.22.0",
     "react": "^16.8 || ^17.0 || ^18.0",
     "react-dom": "^16.8 || ^17.0 || ^18.0"
@@ -34,7 +35,7 @@
   "author": "Zakaria S. El Asri",
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@medusajs/medusa": "^1.17.1",
+    "@medusajs/medusa": "^1.17.2",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
     "@storybook/addons": "^6.3.12",
