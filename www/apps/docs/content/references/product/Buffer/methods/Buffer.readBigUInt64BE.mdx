@@ -1,0 +1,56 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# readBigUInt64BE
+
+[Buffer](../../interfaces/Buffer.mdx).readBigUInt64BE
+
+**readBigUInt64BE**(`offset?`): `bigint`
+
+Reads an unsigned, big-endian 64-bit integer from `buf` at the specified`offset`.
+
+This function is also available under the `readBigUint64BE` alias.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from([0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]);
+
+console.log(buf.readBigUInt64BE(0));
+// Prints: 4294967295n
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to read. Must satisfy: `0 <= offset <= buf.length - 8`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`bigint`
+
+<ParameterTypes parameters={[
+  {
+    "name": "bigint",
+    "type": "`bigint`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v12.0.0, v10.20.0

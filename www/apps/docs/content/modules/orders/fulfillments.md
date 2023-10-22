@@ -27,7 +27,7 @@ Some of the `Fulfillment` entity’s attributes include:
 - `shipped_at`: a date indicating when the fulfillment was shipped.
 - `canceled_at`: a date indicating when the fulfillment was canceled.
 
-There are other important attributes discussed in later sections. Check out the [full Fulfillment entity in the entities reference](../../references/entities/classes/Fulfillment.md).
+There are other important attributes discussed in later sections. Check out the [full Fulfillment entity in the entities reference](../../references/entities/classes/Fulfillment.mdx).
 
 ---
 

@@ -640,6 +640,18 @@ module.exports = {
         },
         {
           type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/product/interfaces/IProductModuleService",
+          label: "Product Module Interface Reference",
+        },
+        {
+          type: "html",
           value: "How-to",
           customProps: {
             sidebar_is_group_divider: true,
@@ -1141,7 +1153,7 @@ module.exports = {
         {
           type: "ref",
           id: "references/pricing/interfaces/IPricingModuleService",
-          label: "Pricing Module Service Reference",
+          label: "Pricing Module Interface Reference",
         },
         {
           type: "html",
@@ -1403,11 +1415,11 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Endpoint",
+          label: "API Routes",
           items: [
             {
               type: "doc",
-              id: "development/endpoints/overview",
+              id: "development/api-routes/overview",
               label: "Overview",
             },
             {
@@ -1418,23 +1430,45 @@ module.exports = {
               },
             },
             {
-              type: "doc",
-              id: "development/endpoints/create",
-              label: "Create an Endpoint",
+              type: "category",
+              label: "Create an API Route",
+              link: {
+                type: "doc",
+                id: "development/api-routes/create",
+              },
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "development/api-routes/create-express-route",
+                  label: "Express-Router Approach",
+                },
+              ],
+            },
+            {
+              type: "category",
+              label: "Create a Middleware",
+              link: {
+                type: "doc",
+                id: "development/api-routes/add-middleware",
+              },
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "development/api-routes/add-middleware-express-route",
+                  label: "Express-Router Approach",
+                },
+              ],
             },
             {
               type: "doc",
-              id: "development/endpoints/add-middleware",
-              label: "Middleware",
-            },
-            {
-              type: "doc",
-              id: "development/endpoints/extend-validator",
+              id: "development/api-routes/extend-validator",
               label: "Extend Validator",
             },
             {
               type: "doc",
-              id: "development/endpoints/example-logged-in-user",
+              id: "development/api-routes/example-logged-in-user",
               label: "Example: Logged-In User",
             },
           ],
@@ -2608,164 +2642,204 @@ module.exports = {
           collapsed: true,
           link: {
             type: "doc",
-            id: "references/js-client/classes/Admin",
+            id: "references/js-client/admin/classes/admin.Admin",
           },
           items: [
             {
               type: "doc",
-              id: "references/js-client/classes/AdminAuthResource",
+              id: "references/js-client/admin_auth/classes/admin_auth.AdminAuthResource",
               label: "auth",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminBatchJobsResource",
+              id: "references/js-client/admin_batch_jobs/classes/admin_batch_jobs.AdminBatchJobsResource",
               label: "batchJobs",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminCollectionsResource",
+              id: "references/js-client/admin_collections/classes/admin_collections.AdminCollectionsResource",
               label: "collections",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminCurrenciesResource",
+              id: "references/js-client/admin_currencies/classes/admin_currencies.AdminCurrenciesResource",
               label: "currencies",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminCustomerGroupsResource",
+              id: "references/js-client/admin_custom/classes/admin_custom.AdminCustomResource",
+              label: "custom",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/admin_customer_groups/classes/admin_customer_groups.AdminCustomerGroupsResource",
               label: "customerGroups",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminCustomersResource",
+              id: "references/js-client/admin_customers/classes/admin_customers.AdminCustomersResource",
               label: "customers",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminDiscountsResource",
+              id: "references/js-client/admin_discounts/classes/admin_discounts.AdminDiscountsResource",
               label: "discounts",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminDraftOrdersResource",
+              id: "references/js-client/admin_draft_orders/classes/admin_draft_orders.AdminDraftOrdersResource",
               label: "draftOrders",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminGiftCardsResource",
+              id: "references/js-client/admin_gift_cards/classes/admin_gift_cards.AdminGiftCardsResource",
               label: "giftCards",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminInvitesResource",
+              id: "references/js-client/admin_inventory_item/classes/admin_inventory_item.AdminInventoryItemsResource",
+              label: "inventoryItems",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/admin_invites/classes/admin_invites.AdminInvitesResource",
               label: "invites",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminNotesResource",
+              id: "references/js-client/admin_notes/classes/admin_notes.AdminNotesResource",
               label: "notes",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminNotificationsResource",
+              id: "references/js-client/admin_notifications/classes/admin_notifications.AdminNotificationsResource",
               label: "notifications",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminOrdersResource",
-              label: "orders",
-            },
-            {
-              type: "doc",
-              id: "references/js-client/classes/AdminOrderEditsResource",
+              id: "references/js-client/admin_order_edits/classes/admin_order_edits.AdminOrderEditsResource",
               label: "orderEdits",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminPriceListResource",
+              id: "references/js-client/admin_orders/classes/admin_orders.AdminOrdersResource",
+              label: "orders",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/admin_payment_collections/classes/admin_payment_collections.AdminPaymentCollectionsResource",
+              label: "paymentCollections",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/admin_payments/classes/admin_payments.AdminPaymentsResource",
+              label: "payments",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/admin_price_lists/classes/admin_price_lists.AdminPriceListResource",
               label: "priceLists",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminProductsResource",
-              label: "products",
+              id: "references/js-client/admin_product_categories/classes/admin_product_categories.AdminProductCategoriesResource",
+              label: "productCategories",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminProductTagsResource",
+              id: "references/js-client/admin_product_tags/classes/admin_product_tags.AdminProductTagsResource",
               label: "productTags",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminProductTypesResource",
+              id: "references/js-client/admin_product_types/classes/admin_product_types.AdminProductTypesResource",
               label: "productTypes",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminRegionsResource",
+              id: "references/js-client/admin_products/classes/admin_products.AdminProductsResource",
+              label: "products",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/admin_publishable_api_keys/classes/admin_publishable_api_keys.AdminPublishableApiKeyResource",
+              label: "publishableApiKeys",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/admin_regions/classes/admin_regions.AdminRegionsResource",
               label: "regions",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminReturnReasonsResource",
+              id: "references/js-client/admin_reservations/classes/admin_reservations.AdminReservationsResource",
+              label: "reservations",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/admin_return_reasons/classes/admin_return_reasons.AdminReturnReasonsResource",
               label: "returnReasons",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminReturnsResource",
+              id: "references/js-client/admin_returns/classes/admin_returns.AdminReturnsResource",
               label: "returns",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminSalesChannelsResource",
+              id: "references/js-client/admin_sales_channels/classes/admin_sales_channels.AdminSalesChannelsResource",
               label: "salesChannels",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminShippingOptionsResource",
+              id: "references/js-client/admin_shipping_options/classes/admin_shipping_options.AdminShippingOptionsResource",
               label: "shippingOptions",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminShippingProfilesResource",
+              id: "references/js-client/admin_shipping_profiles/classes/admin_shipping_profiles.AdminShippingProfilesResource",
               label: "shippingProfiles",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminStoresResource",
+              id: "references/js-client/admin_stock_locations/classes/admin_stock_locations.AdminStockLocationsResource",
+              label: "stockLocations",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/admin_store/classes/admin_store.AdminStoresResource",
               label: "store",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminSwapsResource",
+              id: "references/js-client/admin_swaps/classes/admin_swaps.AdminSwapsResource",
               label: "swaps",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminTaxRatesResource",
+              id: "references/js-client/admin_tax_rates/classes/admin_tax_rates.AdminTaxRatesResource",
               label: "taxRates",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminUploadsResource",
+              id: "references/js-client/admin_uploads/classes/admin_uploads.AdminUploadsResource",
               label: "uploads",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminUsersResource",
+              id: "references/js-client/admin_users/classes/admin_users.AdminUsersResource",
               label: "users",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminVariantsResource",
+              id: "references/js-client/admin_variants/classes/admin_variants.AdminVariantsResource",
               label: "variants",
             },
           ],
         },
         {
           type: "doc",
-          id: "references/js-client/classes/AuthResource",
+          id: "references/js-client/auth/classes/auth.AuthResource",
           label: "auth",
         },
         {
@@ -2773,20 +2847,20 @@ module.exports = {
           label: "carts",
           link: {
             type: "doc",
-            id: "references/js-client/classes/CartsResource",
+            id: "references/js-client/carts/classes/carts.CartsResource",
           },
           collapsed: true,
           items: [
             {
               type: "doc",
-              id: "references/js-client/classes/LineItemsResource",
+              id: "references/js-client/line_items/classes/line_items.LineItemsResource",
               label: "lineItems",
             },
           ],
         },
         {
           type: "doc",
-          id: "references/js-client/classes/CollectionsResource",
+          id: "references/js-client/collections/classes/collections.CollectionsResource",
           label: "collections",
         },
         {
@@ -2795,80 +2869,105 @@ module.exports = {
           collapsed: true,
           link: {
             type: "doc",
-            id: "references/js-client/classes/CustomerResource",
+            id: "references/js-client/customers/classes/customers.CustomerResource",
           },
           items: [
             {
               type: "doc",
-              id: "references/js-client/classes/AddressesResource",
+              id: "references/js-client/addresses/classes/addresses.AddressesResource",
               label: "addresses",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/PaymentMethodsResource",
+              id: "references/js-client/payment_methods/classes/payment_methods.PaymentMethodsResource",
               label: "paymentMethods",
             },
           ],
         },
         {
           type: "doc",
-          id: "references/js-client/classes/GiftCardsResource",
+          id: "references/js-client/gift_cards/classes/gift_cards.GiftCardsResource",
           label: "giftCards",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/OrdersResource",
-          label: "orders",
-        },
-        {
-          type: "doc",
-          id: "references/js-client/classes/OrderEditsResource",
+          id: "references/js-client/order_edits/classes/order_edits.OrderEditsResource",
           label: "orderEdits",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/PaymentMethodsResource",
+          id: "references/js-client/orders/classes/orders.OrdersResource",
+          label: "orders",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/payment_collections/classes/payment_collections.PaymentCollectionsResource",
+          label: "paymentCollections",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/payment_methods/classes/payment_methods.PaymentMethodsResource",
           label: "paymentMethods",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/product_categories/classes/product_categories.ProductCategoriesResource",
+          label: "productCategories",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/product_tags/classes/product_tags.ProductTagsResource",
+          label: "productTags",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/product_types/classes/product_types.ProductTypesResource",
+          label: "productTypes",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/product_types/classes/product_types.ProductTypesResource",
+          label: "productTypes",
         },
         {
           type: "category",
           label: "products",
           link: {
             type: "doc",
-            id: "references/js-client/classes/ProductsResource",
+            id: "references/js-client/products/classes/products.ProductsResource",
           },
           collapsed: true,
           items: [
             {
               type: "doc",
-              id: "references/js-client/classes/ProductVariantsResource",
+              id: "references/js-client/product_variants/classes/product_variants.ProductVariantsResource",
               label: "variants",
             },
           ],
         },
         {
           type: "doc",
-          id: "references/js-client/classes/RegionsResource",
+          id: "references/js-client/regions/classes/regions.RegionsResource",
           label: "regions",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ReturnReasonsResource",
+          id: "references/js-client/return_reasons/classes/return_reasons.ReturnReasonsResource",
           label: "returnReasons",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ReturnsResource",
+          id: "references/js-client/returns/classes/returns.ReturnsResource",
           label: "returns",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/ShippingOptionsResource",
+          id: "references/js-client/shipping_options/classes/shipping_options.ShippingOptionsResource",
           label: "shippingOptions",
         },
         {
           type: "doc",
-          id: "references/js-client/classes/SwapsResource",
+          id: "references/js-client/swaps/classes/swaps.SwapsResource",
           label: "swaps",
         },
       ],
@@ -2910,7 +3009,7 @@ module.exports = {
     {
       type: "doc",
       id: "references/pricing/interfaces/IPricingModuleService",
-      label: "Pricing Module Service Reference",
+      label: "Pricing Module Interface Reference",
       customProps: {
         sidebar_is_title: true,
         sidebar_icon: "folder-open",
@@ -2927,6 +3026,40 @@ module.exports = {
         {
           type: "autogenerated",
           dirName: "references/pricing/IPricingModuleService/methods",
+        },
+      ],
+    },
+  ],
+  productReference: [
+    {
+      type: "ref",
+      id: "modules/overview",
+      label: "Back to Commerce Modules",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/product/interfaces/IProductModuleService",
+      label: "Product Module Interface Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Methods",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/product/IProductModuleService/methods",
         },
       ],
     },

@@ -1,0 +1,58 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# readUInt16BE
+
+[Buffer](../../interfaces/Buffer.mdx).readUInt16BE
+
+**readUInt16BE**(`offset?`): `number`
+
+Reads an unsigned, big-endian 16-bit integer from `buf` at the specified`offset`.
+
+This function is also available under the `readUint16BE` alias.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from([0x12, 0x34, 0x56]);
+
+console.log(buf.readUInt16BE(0).toString(16));
+// Prints: 1234
+console.log(buf.readUInt16BE(1).toString(16));
+// Prints: 3456
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to read. Must satisfy `0 <= offset <= buf.length - 2`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.5.5

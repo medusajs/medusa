@@ -60,7 +60,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Orders
 
-You can list orders by sending a request to the [List Orders endpoint](https://docs.medusajs.com/api/admin#orders_getorders):
+You can list orders by sending a request to the [List Orders API Route](https://docs.medusajs.com/api/admin#orders_getorders):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -123,13 +123,13 @@ curl -L -X GET '<BACKEND_URL>/admin/orders' \
 </TabItem>
 </Tabs>
 
-This endpoint does not require any path parameters. You can pass it query parameters to filter the orders received.
+This API Route doesn't require any path parameters. You can pass it query parameters to filter the orders received.
 
 The request returns an array of orders along with [pagination fields](https://docs.medusajs.com/api/admin#pagination).
 
 ### Filter Orders
 
-This endpoint accepts a variety of query parameters that allow you to filter orders. You can check available query parameters in the [API reference](https://docs.medusajs.com/api/admin#orders_getorders).
+This API Route accepts a variety of query parameters that allow you to filter orders. You can check available query parameters in the [API reference](https://docs.medusajs.com/api/admin#orders_getorders).
 
 For example, you can filter the orders by one or more status:
 
@@ -208,7 +208,7 @@ curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed' \
 
 :::note
 
-You can check available order statuses [here](../../../references/entities/enums/OrderStatus).
+You can check available order statuses [here](../../../references/entities/enums/OrderStatus.mdx).
 
 :::
 
@@ -380,7 +380,7 @@ curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]
 
 ## Retrieve an Order
 
-You can retrieve an order by sending a request to the [Get an Order endpoint](https://docs.medusajs.com/api/admin#orders_getordersorder):
+You can retrieve an order by sending a request to the [Get an Order API Route](https://docs.medusajs.com/api/admin#orders_getordersorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -440,7 +440,7 @@ curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the order ID to be passed as a path parameter.
+This API Route requires the order ID to be passed as a path parameter.
 
 The request returns the full order as an object.
 
@@ -461,7 +461,7 @@ Updating an order’s details can include updating its:
 - Shipping Method
 - `no_notification` property
 
-You can update any of the above details of an order by sending a request to the [Update an Order endpoint](https://docs.medusajs.com/api/admin#orders_postordersorder):
+You can update any of the above details of an order by sending a request to the [Update an Order API Route](https://docs.medusajs.com/api/admin#orders_postordersorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -534,7 +534,7 @@ curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the order’s ID to be passed as a path parameter.
+This API Route requires the order’s ID to be passed as a path parameter.
 
 In the request body parameters, you can pass any of the order’s fields mentioned earlier that you want to update. In the example above, you edit the email associated with the order. You can learn about other available request body parameters in the [API reference](https://docs.medusajs.com/api/admin#orders_postordersorder).
 
@@ -546,7 +546,7 @@ The request returns the updated order as an object.
 
 ### Capture an Order’s Payment
 
-You can capture an order’s payment by sending a request to the [Capture Order’s Payment endpoint](https://docs.medusajs.com/api/admin#orders_postordersordercapture):
+You can capture an order’s payment by sending a request to the [Capture Order’s Payment API Route](https://docs.medusajs.com/api/admin#orders_postordersordercapture):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -606,7 +606,7 @@ curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/capture' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the Order ID as a path parameter.
+This API Route requires the Order ID as a path parameter.
 
 The request returns the updated order as an object.
 
@@ -614,7 +614,7 @@ The request returns the updated order as an object.
 
 You can refund an amount that is less than `order.refundable_amount`.
 
-To refund payment, send a request to the [Refund Payment endpoint](https://docs.medusajs.com/api/admin#orders_postordersorderrefunds):
+To refund payment, send a request to the [Refund Payment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderrefunds):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -691,7 +691,7 @@ curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/refund' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the order’s ID to be passed as a path parameter.
+This API Route requires the order’s ID to be passed as a path parameter.
 
 The following parameters are required in the request body parameters:
 
@@ -708,7 +708,7 @@ The request returns the updated order as an object.
 
 ### Create a Fulfillment
 
-You can create a fulfillment by sending a request to the [Create a Fulfillment endpoint](https://docs.medusajs.com/api/admin#orders_postordersorderfulfillments):
+You can create a fulfillment by sending a request to the [Create a Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderfulfillments):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -801,7 +801,7 @@ curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillment' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the order’s ID to be passed as a path parameter.
+This API Route requires the order’s ID to be passed as a path parameter.
 
 In the request body, the `items` parameter is required. It’s an array of objects that are the items to fulfill. You can fulfill all items in the order or some items.
 
@@ -816,7 +816,7 @@ The request returns the updated order as an object.
 
 ### Create Shipment
 
-You can create a shipment for a fulfillment by sending a request to the [Create Shipment endpoint](https://docs.medusajs.com/api/admin#orders_postordersordershipment):
+You can create a shipment for a fulfillment by sending a request to the [Create Shipment API Route](https://docs.medusajs.com/api/admin#orders_postordersordershipment):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -889,7 +889,7 @@ curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/shipment' \
 </TabItem>
 </Tabs>
 
-This endpoint requires passing the order’s ID as a path parameter.
+This API Route requires passing the order’s ID as a path parameter.
 
 In the request body, the `fulfillment_id` parameter is required. Its value is the ID of the fulfillment to create the shipment for. You can also pass other optional body parameters as explained in the [API reference](https://docs.medusajs.com/api/admin#orders_postordersordershipment).
 
@@ -897,7 +897,7 @@ The request returns the updated order as an object.
 
 ### Cancel Fulfillment
 
-You can cancel a fulfillment by sending a request to the [Cancel Fulfillment endpoint](https://docs.medusajs.com/api/admin#orders_postordersorderfulfillmentscancel):
+You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderfulfillmentscancel):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -958,7 +958,7 @@ curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillments/<FUL_ID>/can
 </TabItem>
 </Tabs>
 
-This endpoint requires passing the order’s ID and fulfillment ID as path parameters.
+This API Route requires passing the order’s ID and fulfillment ID as path parameters.
 
 The request returns the updated order as an object.
 
@@ -966,7 +966,7 @@ The request returns the updated order as an object.
 
 ## Completing an Order
 
-You can mark an order completed, changing its status, by sending a request to the [Complete an Order endpoint](https://docs.medusajs.com/api/admin#orders_postordersordercomplete):
+You can mark an order completed, changing its status, by sending a request to the [Complete an Order API Route](https://docs.medusajs.com/api/admin#orders_postordersordercomplete):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -1025,7 +1025,7 @@ curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/complete' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the order ID to be passed as a path parameter.
+This API Route requires the order ID to be passed as a path parameter.
 
 The request returns the updated order as an object.
 
@@ -1033,7 +1033,7 @@ The request returns the updated order as an object.
 
 ## Cancel an Order
 
-You can cancel an order by sending a request to the [Cancel Order endpoint](https://docs.medusajs.com/api/admin#orders_postordersordercancel):
+You can cancel an order by sending a request to the [Cancel Order API Route](https://docs.medusajs.com/api/admin#orders_postordersordercancel):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -1092,7 +1092,7 @@ curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/cancel' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the order ID to be passed as a path parameter.
+This API Route requires the order ID to be passed as a path parameter.
 
 The request returns the updated order as an object.
 
@@ -1100,7 +1100,7 @@ The request returns the updated order as an object.
 
 ## Archive Order
 
-You can archive an order by sending a request to the [Archive Order endpoint](https://docs.medusajs.com/api/admin#orders_postordersorderarchive):
+You can archive an order by sending a request to the [Archive Order API Route](https://docs.medusajs.com/api/admin#orders_postordersorderarchive):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -1159,7 +1159,7 @@ curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/archive' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the order ID to be passed as a path parameter.
+This API Route requires the order ID to be passed as a path parameter.
 
 The request returns the updated order as an object.
 
