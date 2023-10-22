@@ -1,31 +1,6 @@
-import {
-  Address,
-  Cart,
-  CustomShippingOption,
-  Customer,
-  Discount,
-  DiscountRule,
-  DiscountRuleType,
-  LineItem,
-  PaymentSession,
-  PaymentSessionStatus,
-  SalesChannel,
-  ShippingMethod,
-} from "../models"
-import {
-  AddressPayload,
-  FindConfig,
-  TotalField,
-  WithRequiredProperty,
-} from "../types/common"
-import {
-  CartCreateProps,
-  CartUpdateProps,
-  FilterableCartProps,
-  LineItemUpdate,
-  LineItemValidateData,
-  isCart,
-} from "../types/cart"
+import { isEmpty, isEqual } from "lodash"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
   CustomShippingOptionService,
   CustomerService,
@@ -48,22 +23,46 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
-import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import {
+  Address,
+  Cart,
+  CustomShippingOption,
+  Customer,
+  Discount,
+  DiscountRule,
+  DiscountRuleType,
+  LineItem,
+  PaymentSession,
+  PaymentSessionStatus,
+  SalesChannel,
+  ShippingMethod,
+} from "../models"
+import {
+  CartCreateProps,
+  CartUpdateProps,
+  FilterableCartProps,
+  LineItemUpdate,
+  LineItemValidateData,
+  isCart,
+} from "../types/cart"
+import {
+  AddressPayload,
+  FindConfig,
+  TotalField,
+  WithRequiredProperty,
+} from "../types/common"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { isEmpty, isEqual } from "lodash"
 
+import { FlagRouter } from "@medusajs/utils"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
-import { FlagRouter } from "@medusajs/utils"
-import { IsNumber } from "class-validator"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import { LineItemRepository } from "../repositories/line-item"
-import { PaymentSessionInput } from "../types/payment"
 import { PaymentSessionRepository } from "../repositories/payment-session"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
+import { PaymentSessionInput } from "../types/payment"
 import { validateEmail } from "../utils/is-email"
 
 type InjectedDependencies = {
@@ -2029,19 +2028,30 @@ class CartService extends TransactionBaseService {
         if (region.payment_providers.length === 1 && !cart.payment_session) {
           const paymentProvider = region.payment_providers[0]
 
-          const paymentSessionInput = {
-            ...partialSessionInput,
-            provider_id: paymentProvider.id,
+          // if the provider already exists, we don't attempt to create a new session for it.
+          const update: { is_selected: boolean; is_initiated?: boolean } = {
+            is_selected: true,
           }
 
-          const paymentSession = await this.paymentProviderService_
-            .withTransaction(transactionManager)
-            .createSession(paymentSessionInput)
+          let paymentSession
+          if (alreadyConsumedProviderIds.has(paymentProvider.id)) {
+            paymentSession = cart.payment_sessions.find(
+              (ps) => ps.provider_id === paymentProvider.id
+            )
+          } else {
+            const paymentSessionInput = {
+              ...partialSessionInput,
+              provider_id: paymentProvider.id,
+            }
 
-          await psRepo.update(paymentSession.id, {
-            is_selected: true,
-            is_initiated: true,
-          })
+            paymentSession = await this.paymentProviderService_
+              .withTransaction(transactionManager)
+              .createSession(paymentSessionInput)
+
+            update.is_initiated = true
+          }
+
+          await psRepo.update(paymentSession.id, update)
           return
         }
 
