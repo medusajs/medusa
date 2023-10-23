@@ -78,7 +78,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       }
 
       const transaction = await originalRun(
-        context?.transactionId ?? ulid(),
+        context?.eventGroupId ?? ulid(),
         input,
         context
       )
