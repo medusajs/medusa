@@ -396,7 +396,9 @@ export class RemoteJoiner {
             locationItem[alias.property] = currentItems
           }
         } else {
-          locationItem[alias.property] = currentItems
+          locationItem[alias.property] = alias.isList
+            ? [currentItems]
+            : currentItems
         }
 
         if (parentRemoveItems !== null) {
@@ -598,7 +600,7 @@ export class RemoteJoiner {
             property: prop,
             path: fullPath,
             isList: serviceConfig.relationships?.find(
-              (relationship) => relationship.alias === prop
+              (relationship) => relationship.alias === fullPath[0]
             )?.isList,
           })
 
