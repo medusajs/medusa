@@ -7,7 +7,7 @@ const DownloadFull = () => {
   const { area } = useArea()
 
   return (
-    <NextLink href={`/api/download/${area}`} download>
+    <NextLink href={`/api/download/${area}`} download prefetch={false}>
       Download openapi.yaml
     </NextLink>
   )
