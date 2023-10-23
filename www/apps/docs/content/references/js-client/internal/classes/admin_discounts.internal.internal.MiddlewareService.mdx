@@ -51,7 +51,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 ### addPostAuthentication
 
-▸ **addPostAuthentication**(`middleware`, `options`): `void`
+**addPostAuthentication**(`middleware`, `options`): `void`
 
 Adds a middleware function to be called after authentication is completed.
 
@@ -95,7 +95,7 @@ ___
 
 ### addPreAuthentication
 
-▸ **addPreAuthentication**(`middleware`, `options`): `void`
+**addPreAuthentication**(`middleware`, `options`): `void`
 
 Adds a middleware function to be called before authentication is completed.
 
@@ -139,7 +139,7 @@ ___
 
 ### addPreCartCreation
 
-▸ **addPreCartCreation**(`middleware`): `void`
+**addPreCartCreation**(`middleware`): `void`
 
 Adds a middleware function to be called before cart creation
 
@@ -175,7 +175,7 @@ ___
 
 ### addRouter
 
-▸ **addRouter**(`path`, `router`): `void`
+**addRouter**(`path`, `router`): `void`
 
 #### Parameters
 
@@ -217,7 +217,7 @@ ___
 
 ### getRouters
 
-▸ **getRouters**(`path`): `Router`[]
+**getRouters**(`path`): `Router`[]
 
 #### Parameters
 
@@ -260,7 +260,7 @@ ___
 
 ### usePostAuthentication
 
-▸ **usePostAuthentication**(`app`): `void`
+**usePostAuthentication**(`app`): `void`
 
 Adds post authentication middleware to an express app.
 
@@ -296,7 +296,7 @@ ___
 
 ### usePreAuthentication
 
-▸ **usePreAuthentication**(`app`): `void`
+**usePreAuthentication**(`app`): `void`
 
 Adds pre authentication middleware to an express app.
 
@@ -332,7 +332,7 @@ ___
 
 ### usePreCartCreation
 
-▸ **usePreCartCreation**(): `RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\>\>[]
+**usePreCartCreation**(): `RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\>\>[]
 
 #### Returns
 
@@ -387,7 +387,7 @@ ___
 
 ### validateMiddleware\_
 
-▸ **validateMiddleware_**(`fn`): `void`
+**validateMiddleware_**(`fn`): `void`
 
 Validates a middleware function, throws if fn is not of type function.
 

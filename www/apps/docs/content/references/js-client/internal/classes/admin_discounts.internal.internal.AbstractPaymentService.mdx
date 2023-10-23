@@ -75,7 +75,7 @@ in the near future use the AbstractPaymentProcessor instead
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -104,7 +104,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -185,7 +185,7 @@ ___
 
 ### authorizePayment
 
-▸ `Abstract` **authorizePayment**(`paymentSession`, `context`): `Promise`<{ `data`: [`Data`](../modules/admin_discounts.internal.internal.mdx#data) ; `status`: [`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)  }\>
+`Abstract` **authorizePayment**(`paymentSession`, `context`): `Promise`<{ `data`: [`Data`](../modules/admin_discounts.internal.internal.mdx#data) ; `status`: [`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)  }\>
 
 #### Parameters
 
@@ -242,7 +242,7 @@ ___
 
 ### cancelPayment
 
-▸ `Abstract` **cancelPayment**(`payment`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+`Abstract` **cancelPayment**(`payment`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -295,7 +295,7 @@ ___
 
 ### capturePayment
 
-▸ `Abstract` **capturePayment**(`payment`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+`Abstract` **capturePayment**(`payment`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -348,7 +348,7 @@ ___
 
 ### createPayment
 
-▸ `Abstract` **createPayment**(`context`): `Promise`<[`PaymentSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentsessionresponse)\>
+`Abstract` **createPayment**(`context`): `Promise`<[`PaymentSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentsessionresponse)\>
 
 #### Parameters
 
@@ -391,7 +391,7 @@ ___
 
 [PaymentService](../interfaces/admin_discounts.internal.internal.PaymentService.mdx).[createPayment](../interfaces/admin_discounts.internal.internal.PaymentService.mdx#createpayment)
 
-▸ `Abstract` **createPayment**(`cart`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+`Abstract` **createPayment**(`cart`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -444,7 +444,7 @@ ___
 
 ### deletePayment
 
-▸ `Abstract` **deletePayment**(`paymentSession`): `Promise`<`void`\>
+`Abstract` **deletePayment**(`paymentSession`): `Promise`<`void`\>
 
 This will be
 
@@ -488,7 +488,7 @@ ___
 
 ### getIdentifier
 
-▸ **getIdentifier**(): `string`
+**getIdentifier**(): `string`
 
 #### Returns
 
@@ -513,7 +513,7 @@ ___
 
 ### getPaymentData
 
-▸ `Abstract` **getPaymentData**(`paymentSession`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+`Abstract` **getPaymentData**(`paymentSession`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 #### Parameters
 
@@ -562,7 +562,7 @@ ___
 
 ### getStatus
 
-▸ `Abstract` **getStatus**(`data`): `Promise`<[`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)\>
+`Abstract` **getStatus**(`data`): `Promise`<[`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)\>
 
 This will be
 
@@ -647,7 +647,7 @@ ___
 
 ### refundPayment
 
-▸ `Abstract` **refundPayment**(`payment`, `refundAmount`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+`Abstract` **refundPayment**(`payment`, `refundAmount`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -708,7 +708,7 @@ ___
 
 ### retrievePayment
 
-▸ `Abstract` **retrievePayment**(`paymentData`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+`Abstract` **retrievePayment**(`paymentData`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 #### Parameters
 
@@ -757,7 +757,7 @@ ___
 
 ### retrieveSavedMethods
 
-▸ **retrieveSavedMethods**(`customer`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)[]\>
+**retrieveSavedMethods**(`customer`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)[]\>
 
 This will be
 
@@ -819,7 +819,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -861,7 +861,7 @@ ___
 
 ### updatePayment
 
-▸ `Abstract` **updatePayment**(`paymentSessionData`, `context`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentsessionresponse)\>
+`Abstract` **updatePayment**(`paymentSessionData`, `context`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentsessionresponse)\>
 
 #### Parameters
 
@@ -912,7 +912,7 @@ ___
 
 [PaymentService](../interfaces/admin_discounts.internal.internal.PaymentService.mdx).[updatePayment](../interfaces/admin_discounts.internal.internal.PaymentService.mdx#updatepayment)
 
-▸ `Abstract` **updatePayment**(`paymentSessionData`, `cart`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+`Abstract` **updatePayment**(`paymentSessionData`, `cart`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -973,7 +973,7 @@ ___
 
 ### updatePaymentData
 
-▸ `Abstract` **updatePaymentData**(`paymentSessionData`, `data`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+`Abstract` **updatePaymentData**(`paymentSessionData`, `data`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 #### Parameters
 
@@ -1030,7 +1030,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`AbstractPaymentService`](admin_discounts.internal.internal.AbstractPaymentService.mdx)
+**withTransaction**(`transactionManager?`): [`AbstractPaymentService`](admin_discounts.internal.internal.AbstractPaymentService.mdx)
 
 #### Parameters
 

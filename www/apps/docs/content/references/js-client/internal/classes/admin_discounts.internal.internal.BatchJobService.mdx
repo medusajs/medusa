@@ -161,7 +161,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -186,7 +186,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -263,7 +263,7 @@ ___
 
 ### cancel
 
-▸ **cancel**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+**cancel**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -306,7 +306,7 @@ ___
 
 ### complete
 
-▸ **complete**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+**complete**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -349,7 +349,7 @@ ___
 
 ### confirm
 
-▸ **confirm**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+**confirm**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -392,7 +392,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+**create**(`data`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -435,7 +435,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector?`, `config?`): `Promise`<[[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)[], `number`]\>
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -494,7 +494,7 @@ ___
 
 ### prepareBatchJobForProcessing
 
-▸ **prepareBatchJobForProcessing**(`data`, `req`): `Promise`<[`CreateBatchJobInput`](../modules/admin_discounts.internal.internal.mdx#createbatchjobinput)\>
+**prepareBatchJobForProcessing**(`data`, `req`): `Promise`<[`CreateBatchJobInput`](../modules/admin_discounts.internal.internal.mdx#createbatchjobinput)\>
 
 #### Parameters
 
@@ -545,7 +545,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`batchJobId`, `config?`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+**retrieve**(`batchJobId`, `config?`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -596,7 +596,7 @@ ___
 
 ### setFailed
 
-▸ **setFailed**(`batchJobOrId`, `error?`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+**setFailed**(`batchJobOrId`, `error?`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -647,7 +647,7 @@ ___
 
 ### setPreProcessingDone
 
-▸ **setPreProcessingDone**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+**setPreProcessingDone**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -690,7 +690,7 @@ ___
 
 ### setProcessing
 
-▸ **setProcessing**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+**setProcessing**(`batchJobOrId`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -733,7 +733,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -771,7 +771,7 @@ ___
 
 ### update
 
-▸ **update**(`batchJobOrId`, `data`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+**update**(`batchJobOrId`, `data`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -822,7 +822,7 @@ ___
 
 ### updateStatus
 
-▸ `Protected` **updateStatus**(`batchJobOrId`, `status`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
+`Protected` **updateStatus**(`batchJobOrId`, `status`): `Promise`<[`BatchJob`](admin_batch_jobs.internal.BatchJob.mdx)\>
 
 #### Parameters
 
@@ -873,7 +873,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`BatchJobService`](admin_discounts.internal.internal.BatchJobService.mdx)
+**withTransaction**(`transactionManager?`): [`BatchJobService`](admin_discounts.internal.internal.BatchJobService.mdx)
 
 #### Parameters
 

@@ -26,7 +26,7 @@ Some of the `DraftOrder`'s attributes include:
 - `completed_at`: a date indicating when the draft order was completed.
 - `no_notification_order`: a boolean indicating whether the customer should receive notifications when the order is updated.
 
-There are other important attributes discussed in later sections. Check out the [full DraftOrder entity in the entities reference](../../references/entities/classes/DraftOrder.md).
+There are other important attributes discussed in later sections. Check out the [full DraftOrder entity in the entities reference](../../references/entities/classes/DraftOrder.mdx).
 
 ---
 

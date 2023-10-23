@@ -61,7 +61,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -86,7 +86,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -163,7 +163,7 @@ ___
 
 ### delete
 
-▸ **delete**(`fileData`): `Promise`<`void`\>
+**delete**(`fileData`): `Promise`<`void`\>
 
 remove file from fileservice
 
@@ -199,7 +199,7 @@ ___
 
 ### getDownloadStream
 
-▸ **getDownloadStream**(`fileData`): `Promise`<[`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)\>
+**getDownloadStream**(`fileData`): `Promise`<[`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)\>
 
 download file from fileservice as stream
 
@@ -244,7 +244,7 @@ ___
 
 ### getPresignedDownloadUrl
 
-▸ **getPresignedDownloadUrl**(`fileData`): `Promise`<`string`\>
+**getPresignedDownloadUrl**(`fileData`): `Promise`<`string`\>
 
 Generate a presigned download url to obtain a file
 
@@ -289,7 +289,7 @@ ___
 
 ### getUploadStreamDescriptor
 
-▸ **getUploadStreamDescriptor**(`fileData`): `Promise`<[`FileServiceGetUploadStreamResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#fileservicegetuploadstreamresult)\>
+**getUploadStreamDescriptor**(`fileData`): `Promise`<[`FileServiceGetUploadStreamResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#fileservicegetuploadstreamresult)\>
 
 upload file to fileservice from stream
 
@@ -334,7 +334,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -372,7 +372,7 @@ ___
 
 ### upload
 
-▸ **upload**(`file`): `Promise`<[`FileServiceUploadResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#fileserviceuploadresult)\>
+**upload**(`file`): `Promise`<[`FileServiceUploadResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#fileserviceuploadresult)\>
 
 upload file to fileservice
 
@@ -417,7 +417,7 @@ ___
 
 ### uploadProtected
 
-▸ **uploadProtected**(`file`): `Promise`<[`FileServiceUploadResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#fileserviceuploadresult)\>
+**uploadProtected**(`file`): `Promise`<[`FileServiceUploadResult`](../../admin_discounts/modules/admin_discounts.internal.mdx#fileserviceuploadresult)\>
 
 upload private file to fileservice
 
@@ -462,7 +462,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`IFileService`](admin_discounts.internal.internal.IFileService.mdx)
+**withTransaction**(`transactionManager?`): [`IFileService`](admin_discounts.internal.internal.IFileService.mdx)
 
 #### Parameters
 

@@ -137,7 +137,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -162,7 +162,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -239,7 +239,7 @@ ___
 
 ### authorizePaymentSessions
 
-▸ **authorizePaymentSessions**(`paymentCollectionId`, `sessionIds`, `context?`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
+**authorizePaymentSessions**(`paymentCollectionId`, `sessionIds`, `context?`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
 
 Authorizes the payment sessions of a payment collection.
 
@@ -300,7 +300,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
+**create**(`data`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
 
 Creates a new payment collection.
 
@@ -345,7 +345,7 @@ ___
 
 ### delete
 
-▸ **delete**(`paymentCollectionId`): `Promise`<`undefined` \| [`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
+**delete**(`paymentCollectionId`): `Promise`<`undefined` \| [`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
 
 Deletes a payment collection.
 
@@ -390,7 +390,7 @@ ___
 
 ### markAsAuthorized
 
-▸ **markAsAuthorized**(`paymentCollectionId`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
+**markAsAuthorized**(`paymentCollectionId`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
 
 Marks a payment collection as authorized bypassing the payment flow.
 
@@ -435,7 +435,7 @@ ___
 
 ### refreshPaymentSession
 
-▸ **refreshPaymentSession**(`paymentCollectionId`, `sessionId`, `customerId`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+**refreshPaymentSession**(`paymentCollectionId`, `sessionId`, `customerId`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 Removes and recreate a payment session of a payment collection.
 
@@ -496,7 +496,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`paymentCollectionId`, `config?`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
+**retrieve**(`paymentCollectionId`, `config?`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
 
 Retrieves a payment collection by id.
 
@@ -549,7 +549,7 @@ ___
 
 ### setPaymentSession
 
-▸ **setPaymentSession**(`paymentCollectionId`, `sessionInput`, `customerId`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
+**setPaymentSession**(`paymentCollectionId`, `sessionInput`, `customerId`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
 
 Manages a single payment sessions of a payment collection.
 
@@ -610,7 +610,7 @@ ___
 
 ### setPaymentSessionsBatch
 
-▸ **setPaymentSessionsBatch**(`paymentCollectionOrId`, `sessionsInput`, `customerId`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
+**setPaymentSessionsBatch**(`paymentCollectionOrId`, `sessionsInput`, `customerId`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
 
 Manages multiple payment sessions of a payment collection.
 
@@ -671,7 +671,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -709,7 +709,7 @@ ___
 
 ### update
 
-▸ **update**(`paymentCollectionId`, `data`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
+**update**(`paymentCollectionId`, `data`): `Promise`<[`PaymentCollection`](admin_collections.internal.PaymentCollection.mdx)\>
 
 Updates a payment collection.
 
@@ -762,7 +762,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`PaymentCollectionService`](admin_discounts.internal.internal.PaymentCollectionService.mdx)
+**withTransaction**(`transactionManager?`): [`PaymentCollectionService`](admin_discounts.internal.internal.PaymentCollectionService.mdx)
 
 #### Parameters
 

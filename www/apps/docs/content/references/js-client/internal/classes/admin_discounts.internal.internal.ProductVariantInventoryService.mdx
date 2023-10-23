@@ -121,7 +121,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -146,7 +146,7 @@ TransactionBaseService.activeManager\_
 
 ### adjustInventory
 
-▸ **adjustInventory**(`variantId`, `locationId`, `quantity`): `Promise`<`void`\>
+**adjustInventory**(`variantId`, `locationId`, `quantity`): `Promise`<`void`\>
 
 Adjusts inventory of a variant on a location
 
@@ -198,7 +198,7 @@ ___
 
 ### adjustReservationsQuantityByLineItem
 
-▸ **adjustReservationsQuantityByLineItem**(`lineItemId`, `variantId`, `locationId`, `quantity`): `Promise`<`void`\>
+**adjustReservationsQuantityByLineItem**(`lineItemId`, `variantId`, `locationId`, `quantity`): `Promise`<`void`\>
 
 Adjusts the quantity of reservations for a line item by a given amount.
 
@@ -258,7 +258,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -335,7 +335,7 @@ ___
 
 ### attachInventoryItem
 
-▸ **attachInventoryItem**(`attachments`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)[]\>
+**attachInventoryItem**(`attachments`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)[]\>
 
 Attach a variant to an inventory item
 
@@ -385,7 +385,7 @@ Attach a variant to an inventory item
   }
 ]} />
 
-▸ **attachInventoryItem**(`variantId`, `inventoryItemId`, `requiredQuantity?`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)[]\>
+**attachInventoryItem**(`variantId`, `inventoryItemId`, `requiredQuantity?`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)[]\>
 
 #### Parameters
 
@@ -453,7 +453,7 @@ ___
 
 ### confirmInventory
 
-▸ **confirmInventory**(`variantId`, `quantity`, `context?`): `Promise`<[`Boolean`](../../admin_collections/modules/admin_collections.internal.mdx#boolean)\>
+**confirmInventory**(`variantId`, `quantity`, `context?`): `Promise`<[`Boolean`](../../admin_collections/modules/admin_collections.internal.mdx#boolean)\>
 
 confirms if requested inventory is available
 
@@ -522,7 +522,7 @@ ___
 
 ### deleteReservationsByLineItem
 
-▸ **deleteReservationsByLineItem**(`lineItemId`, `variantId`, `quantity`): `Promise`<`void`\>
+**deleteReservationsByLineItem**(`lineItemId`, `variantId`, `quantity`): `Promise`<`void`\>
 
 delete a reservation of variant quantity
 
@@ -574,7 +574,7 @@ ___
 
 ### detachInventoryItem
 
-▸ **detachInventoryItem**(`inventoryItemId`, `variantId?`): `Promise`<`void`\>
+**detachInventoryItem**(`inventoryItemId`, `variantId?`): `Promise`<`void`\>
 
 Remove a variant from an inventory item
 
@@ -618,7 +618,7 @@ ___
 
 ### getVariantQuantityFromVariantInventoryItems
 
-▸ **getVariantQuantityFromVariantInventoryItems**(`variantInventoryItems`, `channelId`): `Promise`<`number`\>
+**getVariantQuantityFromVariantInventoryItems**(`variantInventoryItems`, `channelId`): `Promise`<`number`\>
 
 Get the quantity of a variant from a list of variantInventoryItems
 The inventory quantity of the variant should be equal to the inventory
@@ -674,7 +674,7 @@ ___
 
 ### listByItem
 
-▸ **listByItem**(`itemIds`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)[]\>
+**listByItem**(`itemIds`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)[]\>
 
 list registered inventory items
 
@@ -728,7 +728,7 @@ ___
 
 ### listByVariant
 
-▸ **listByVariant**(`variantId`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)[]\>
+**listByVariant**(`variantId`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)[]\>
 
 List inventory items for a specific variant
 
@@ -782,7 +782,7 @@ ___
 
 ### listInventoryItemsByVariant
 
-▸ **listInventoryItemsByVariant**(`variantId`): `Promise`<[`InventoryItemDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#inventoryitemdto)[]\>
+**listInventoryItemsByVariant**(`variantId`): `Promise`<[`InventoryItemDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#inventoryitemdto)[]\>
 
 lists inventory items for a given variant
 
@@ -836,7 +836,7 @@ ___
 
 ### listVariantsByItem
 
-▸ **listVariantsByItem**(`itemId`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[]\>
+**listVariantsByItem**(`itemId`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[]\>
 
 lists variant by inventory item id
 
@@ -890,7 +890,7 @@ ___
 
 ### reserveQuantity
 
-▸ **reserveQuantity**(`variantId`, `quantity`, `context?`): `Promise`<`void` \| [`ReservationItemDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#reservationitemdto)[]\>
+**reserveQuantity**(`variantId`, `quantity`, `context?`): `Promise`<`void` \| [`ReservationItemDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#reservationitemdto)[]\>
 
 Reserves a quantity of a variant
 
@@ -951,7 +951,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`inventoryItemId`, `variantId`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)\>
+**retrieve**(`inventoryItemId`, `variantId`): `Promise`<[`ProductVariantInventoryItem`](admin_collections.internal.ProductVariantInventoryItem.mdx)\>
 
 Retrieves a product variant inventory item by its inventory item ID and variant ID.
 
@@ -1004,7 +1004,7 @@ ___
 
 ### setProductAvailability
 
-▸ **setProductAvailability**(`products`, `salesChannelId`): `Promise`<([`Product`](admin_collections.internal.Product.mdx) \| [`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct))[]\>
+**setProductAvailability**(`products`, `salesChannelId`): `Promise`<([`Product`](admin_collections.internal.Product.mdx) \| [`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct))[]\>
 
 #### Parameters
 
@@ -1064,7 +1064,7 @@ ___
 
 ### setVariantAvailability
 
-▸ **setVariantAvailability**(`variants`, `salesChannelId`, `availabilityContext?`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[] \| [`PricedVariant`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedvariant)[]\>
+**setVariantAvailability**(`variants`, `salesChannelId`, `availabilityContext?`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[] \| [`PricedVariant`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedvariant)[]\>
 
 #### Parameters
 
@@ -1123,7 +1123,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -1161,7 +1161,7 @@ ___
 
 ### validateInventoryAtLocation
 
-▸ **validateInventoryAtLocation**(`items`, `locationId`): `Promise`<`void`\>
+**validateInventoryAtLocation**(`items`, `locationId`): `Promise`<`void`\>
 
 Validate stock at a location for fulfillment items
 
@@ -1205,7 +1205,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ProductVariantInventoryService`](admin_discounts.internal.internal.ProductVariantInventoryService.mdx)
+**withTransaction**(`transactionManager?`): [`ProductVariantInventoryService`](admin_discounts.internal.internal.ProductVariantInventoryService.mdx)
 
 #### Parameters
 

@@ -131,7 +131,7 @@ Helps retrieve payment providers
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -156,7 +156,7 @@ ___
 
 ### paymentService\_
 
-• `Protected` `get` **paymentService_**(): [`PaymentService`](admin_discounts.internal.PaymentService.mdx)
+`Protected` `get` **paymentService_**(): [`PaymentService`](admin_discounts.internal.PaymentService.mdx)
 
 #### Returns
 
@@ -177,7 +177,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -254,7 +254,7 @@ ___
 
 ### authorizePayment
 
-▸ **authorizePayment**(`paymentSession`, `context`): `Promise`<`undefined` \| [`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+**authorizePayment**(`paymentSession`, `context`): `Promise`<`undefined` \| [`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 #### Parameters
 
@@ -305,7 +305,7 @@ ___
 
 ### buildPaymentProcessorContext
 
-▸ `Protected` **buildPaymentProcessorContext**(`cartOrData`): [`Cart`](admin_collections.internal.Cart.mdx) & [`PaymentContext`](../modules/admin_discounts.internal.internal.mdx#paymentcontext)
+`Protected` **buildPaymentProcessorContext**(`cartOrData`): [`Cart`](admin_collections.internal.Cart.mdx) & [`PaymentContext`](../modules/admin_discounts.internal.internal.mdx#paymentcontext)
 
 Build the create session context for both legacy and new API
 
@@ -341,7 +341,7 @@ ___
 
 ### cancelPayment
 
-▸ **cancelPayment**(`paymentObj`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
+**cancelPayment**(`paymentObj`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
 
 #### Parameters
 
@@ -384,7 +384,7 @@ ___
 
 ### capturePayment
 
-▸ **capturePayment**(`paymentObj`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
+**capturePayment**(`paymentObj`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
 
 #### Parameters
 
@@ -427,7 +427,7 @@ ___
 
 ### createPayment
 
-▸ **createPayment**(`data`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
+**createPayment**(`data`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
 
 #### Parameters
 
@@ -470,7 +470,7 @@ ___
 
 ### createSession
 
-▸ **createSession**(`providerId`, `cart`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+**createSession**(`providerId`, `cart`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 #### Parameters
 
@@ -519,7 +519,7 @@ ___
 
 #### Deprecated
 
-▸ **createSession**(`sessionInput`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+**createSession**(`sessionInput`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 Creates a payment session with the given provider.
 
@@ -564,7 +564,7 @@ ___
 
 ### deleteSession
 
-▸ **deleteSession**(`paymentSession`): `Promise`<`undefined` \| [`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+**deleteSession**(`paymentSession`): `Promise`<`undefined` \| [`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 #### Parameters
 
@@ -607,7 +607,7 @@ ___
 
 ### getStatus
 
-▸ **getStatus**(`payment`): `Promise`<[`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)\>
+**getStatus**(`payment`): `Promise`<[`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)\>
 
 #### Parameters
 
@@ -682,7 +682,7 @@ ___
 
 ### list
 
-▸ **list**(): `Promise`<[`PaymentProvider`](admin_collections.internal.PaymentProvider.mdx)[]\>
+**list**(): `Promise`<[`PaymentProvider`](admin_collections.internal.PaymentProvider.mdx)[]\>
 
 #### Returns
 
@@ -721,7 +721,7 @@ ___
 
 ### listPayments
 
-▸ **listPayments**(`selector`, `config?`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)[]\>
+**listPayments**(`selector`, `config?`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)[]\>
 
 List all the payments according to the given selector and config.
 
@@ -783,7 +783,7 @@ ___
 
 ### processUpdateRequestsData
 
-▸ `Protected` **processUpdateRequestsData**(`data`, `paymentResponse`): `Promise`<`void`\>
+`Protected` **processUpdateRequestsData**(`data`, `paymentResponse`): `Promise`<`void`\>
 
 Process the collected data. Can be used every time we need to process some collected data returned by the provider
 
@@ -827,7 +827,7 @@ ___
 
 ### refreshSession
 
-▸ **refreshSession**(`paymentSession`, `sessionInput`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+**refreshSession**(`paymentSession`, `sessionInput`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 Refreshes a payment session with the given provider.
 This means, that we delete the current one and create a new.
@@ -905,7 +905,7 @@ ___
 
 ### refundFromPayment
 
-▸ **refundFromPayment**(`payment`, `amount`, `reason`, `note?`): `Promise`<[`Refund`](admin_collections.internal.Refund.mdx)\>
+**refundFromPayment**(`payment`, `amount`, `reason`, `note?`): `Promise`<[`Refund`](admin_collections.internal.Refund.mdx)\>
 
 #### Parameters
 
@@ -972,7 +972,7 @@ ___
 
 ### refundPayment
 
-▸ **refundPayment**(`payObjs`, `amount`, `reason`, `note?`): `Promise`<[`Refund`](admin_collections.internal.Refund.mdx)\>
+**refundPayment**(`payObjs`, `amount`, `reason`, `note?`): `Promise`<[`Refund`](admin_collections.internal.Refund.mdx)\>
 
 #### Parameters
 
@@ -1039,7 +1039,7 @@ ___
 
 ### registerInstalledProviders
 
-▸ **registerInstalledProviders**(`providerIds`): `Promise`<`void`\>
+**registerInstalledProviders**(`providerIds`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -1073,7 +1073,7 @@ ___
 
 ### retrievePayment
 
-▸ **retrievePayment**(`paymentId`, `relations?`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
+**retrievePayment**(`paymentId`, `relations?`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
 
 Retrieve a payment entity with the given id.
 
@@ -1126,7 +1126,7 @@ ___
 
 ### retrieveProvider
 
-▸ **retrieveProvider**<`TProvider`\>(`providerId`): `TProvider` extends [`AbstractPaymentService`](admin_discounts.internal.internal.AbstractPaymentService.mdx) ? [`AbstractPaymentService`](admin_discounts.internal.internal.AbstractPaymentService.mdx) : `TProvider` extends [`AbstractPaymentProcessor`](admin_discounts.internal.internal.AbstractPaymentProcessor.mdx) ? [`AbstractPaymentProcessor`](admin_discounts.internal.internal.AbstractPaymentProcessor.mdx) : `any`
+**retrieveProvider**<`TProvider`\>(`providerId`): `TProvider` extends [`AbstractPaymentService`](admin_discounts.internal.internal.AbstractPaymentService.mdx) ? [`AbstractPaymentService`](admin_discounts.internal.internal.AbstractPaymentService.mdx) : `TProvider` extends [`AbstractPaymentProcessor`](admin_discounts.internal.internal.AbstractPaymentProcessor.mdx) ? [`AbstractPaymentProcessor`](admin_discounts.internal.internal.AbstractPaymentProcessor.mdx) : `any`
 
 Finds a provider given an id
 
@@ -1173,7 +1173,7 @@ ___
 
 ### retrieveRefund
 
-▸ **retrieveRefund**(`id`, `config?`): `Promise`<[`Refund`](admin_collections.internal.Refund.mdx)\>
+**retrieveRefund**(`id`, `config?`): `Promise`<[`Refund`](admin_collections.internal.Refund.mdx)\>
 
 #### Parameters
 
@@ -1224,7 +1224,7 @@ ___
 
 ### retrieveSession
 
-▸ **retrieveSession**(`paymentSessionId`, `relations?`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+**retrieveSession**(`paymentSessionId`, `relations?`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 Return the payment session for the given id.
 
@@ -1277,7 +1277,7 @@ ___
 
 ### saveSession
 
-▸ `Protected` **saveSession**(`providerId`, `data`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+`Protected` **saveSession**(`providerId`, `data`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 Create or update a Payment session data.
 
@@ -1386,7 +1386,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -1424,7 +1424,7 @@ ___
 
 ### updatePayment
 
-▸ **updatePayment**(`paymentId`, `data`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
+**updatePayment**(`paymentId`, `data`): `Promise`<[`Payment`](admin_collections.internal.Payment.mdx)\>
 
 #### Parameters
 
@@ -1491,7 +1491,7 @@ ___
 
 ### updateSession
 
-▸ **updateSession**(`paymentSession`, `sessionInput`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+**updateSession**(`paymentSession`, `sessionInput`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 Update a payment session with the given provider.
 
@@ -1568,7 +1568,7 @@ ___
 
 ### updateSessionData
 
-▸ **updateSessionData**(`paymentSession`, `data`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
+**updateSessionData**(`paymentSession`, `data`): `Promise`<[`PaymentSession`](admin_collections.internal.PaymentSession.mdx)\>
 
 #### Parameters
 
@@ -1619,7 +1619,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`PaymentProviderService`](admin_discounts.internal.internal.PaymentProviderService.mdx)
+**withTransaction**(`transactionManager?`): [`PaymentProviderService`](admin_discounts.internal.internal.PaymentProviderService.mdx)
 
 #### Parameters
 

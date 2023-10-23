@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### [iterator]
 
-▸ **[iterator]**(): [`IterableIterator`](admin_discounts.internal.IterableIterator.mdx)<`number`\>
+**[iterator]**(): [`IterableIterator`](admin_discounts.internal.IterableIterator.mdx)<`number`\>
 
 #### Returns
 
@@ -99,7 +99,7 @@ ___
 
 ### at
 
-▸ **at**(`index`): `undefined` \| `number`
+**at**(`index`): `undefined` \| `number`
 
 Takes an integer value and returns the item at that index,
 allowing for positive and negative integers.
@@ -141,7 +141,7 @@ ___
 
 ### compare
 
-▸ **compare**(`target`, `targetStart?`, `targetEnd?`, `sourceStart?`, `sourceEnd?`): ``0`` \| ``1`` \| ``-1``
+**compare**(`target`, `targetStart?`, `targetEnd?`, `sourceStart?`, `sourceEnd?`): ``0`` \| ``1`` \| ``-1``
 
 Compares `buf` with `target` and returns a number indicating whether `buf`comes before, after, or is the same as `target` in sort order.
 Comparison is based on the actual sequence of bytes in each `Buffer`.
@@ -258,7 +258,7 @@ ___
 
 ### copy
 
-▸ **copy**(`target`, `targetStart?`, `sourceStart?`, `sourceEnd?`): `number`
+**copy**(`target`, `targetStart?`, `sourceStart?`, `sourceEnd?`): `number`
 
 Copies data from a region of `buf` to a region in `target`, even if the `target`memory region overlaps with `buf`.
 
@@ -366,7 +366,7 @@ ___
 
 ### copyWithin
 
-▸ **copyWithin**(`target`, `start`, `end?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**copyWithin**(`target`, `start`, `end?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 Returns the this object after copying a section of the array identified by start and end
 to the same array starting at position target
@@ -423,7 +423,7 @@ ___
 
 ### entries
 
-▸ **entries**(): [`IterableIterator`](admin_discounts.internal.IterableIterator.mdx)<[`number`, `number`]\>
+**entries**(): [`IterableIterator`](admin_discounts.internal.IterableIterator.mdx)<[`number`, `number`]\>
 
 Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of `[index, byte]` pairs from the contents
 of `buf`.
@@ -491,7 +491,7 @@ ___
 
 ### equals
 
-▸ **equals**(`otherBuffer`): `boolean`
+**equals**(`otherBuffer`): `boolean`
 
 Returns `true` if both `buf` and `otherBuffer` have exactly the same bytes,`false` otherwise. Equivalent to `buf.compare(otherBuffer) === 0`.
 
@@ -544,7 +544,7 @@ ___
 
 ### every
 
-▸ **every**(`predicate`, `thisArg?`): `boolean`
+**every**(`predicate`, `thisArg?`): `boolean`
 
 Determines whether all the members of an array satisfy the specified test.
 
@@ -592,7 +592,7 @@ ___
 
 ### fill
 
-▸ **fill**(`value`, `offset?`, `end?`, `encoding?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**fill**(`value`, `offset?`, `end?`, `encoding?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 Fills `buf` with the specified `value`. If the `offset` and `end` are not given,
 the entire `buf` will be filled:
@@ -710,7 +710,7 @@ ___
 
 ### filter
 
-▸ **filter**(`predicate`, `thisArg?`): `Uint8Array`
+**filter**(`predicate`, `thisArg?`): `Uint8Array`
 
 Returns the elements of an array that meet the condition specified in a callback function.
 
@@ -758,7 +758,7 @@ ___
 
 ### find
 
-▸ **find**(`predicate`, `thisArg?`): `undefined` \| `number`
+**find**(`predicate`, `thisArg?`): `undefined` \| `number`
 
 Returns the value of the first element in the array where predicate is true, and undefined
 otherwise.
@@ -807,7 +807,7 @@ ___
 
 ### findIndex
 
-▸ **findIndex**(`predicate`, `thisArg?`): `number`
+**findIndex**(`predicate`, `thisArg?`): `number`
 
 Returns the index of the first element in the array where predicate is true, and -1
 otherwise.
@@ -856,7 +856,7 @@ ___
 
 ### forEach
 
-▸ **forEach**(`callbackfn`, `thisArg?`): `void`
+**forEach**(`callbackfn`, `thisArg?`): `void`
 
 Performs the specified action for each element in an array.
 
@@ -904,7 +904,7 @@ ___
 
 ### includes
 
-▸ **includes**(`value`, `byteOffset?`, `encoding?`): `boolean`
+**includes**(`value`, `byteOffset?`, `encoding?`): `boolean`
 
 Equivalent to `buf.indexOf() !== -1`.
 
@@ -985,7 +985,7 @@ ___
 
 ### indexOf
 
-▸ **indexOf**(`value`, `byteOffset?`, `encoding?`): `number`
+**indexOf**(`value`, `byteOffset?`, `encoding?`): `number`
 
 If `value` is:
 
@@ -1105,7 +1105,7 @@ ___
 
 ### join
 
-▸ **join**(`separator?`): `string`
+**join**(`separator?`): `string`
 
 Adds all the elements of an array separated by the specified separator string.
 
@@ -1145,7 +1145,7 @@ ___
 
 ### keys
 
-▸ **keys**(): [`IterableIterator`](admin_discounts.internal.IterableIterator.mdx)<`number`\>
+**keys**(): [`IterableIterator`](admin_discounts.internal.IterableIterator.mdx)<`number`\>
 
 Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of `buf` keys (indices).
 
@@ -1202,7 +1202,7 @@ ___
 
 ### lastIndexOf
 
-▸ **lastIndexOf**(`value`, `byteOffset?`, `encoding?`): `number`
+**lastIndexOf**(`value`, `byteOffset?`, `encoding?`): `number`
 
 Identical to `buf.indexOf()`, except the last occurrence of `value` is found
 rather than the first occurrence.
@@ -1321,7 +1321,7 @@ ___
 
 ### map
 
-▸ **map**(`callbackfn`, `thisArg?`): `Uint8Array`
+**map**(`callbackfn`, `thisArg?`): `Uint8Array`
 
 Calls a defined callback function on each element of an array, and returns an array that
 contains the results.
@@ -1370,7 +1370,7 @@ ___
 
 ### readBigInt64BE
 
-▸ **readBigInt64BE**(`offset?`): `bigint`
+**readBigInt64BE**(`offset?`): `bigint`
 
 Reads a signed, big-endian 64-bit integer from `buf` at the specified `offset`.
 
@@ -1413,7 +1413,7 @@ ___
 
 ### readBigInt64LE
 
-▸ **readBigInt64LE**(`offset?`): `bigint`
+**readBigInt64LE**(`offset?`): `bigint`
 
 Reads a signed, little-endian 64-bit integer from `buf` at the specified`offset`.
 
@@ -1456,7 +1456,7 @@ ___
 
 ### readBigUInt64BE
 
-▸ **readBigUInt64BE**(`offset?`): `bigint`
+**readBigUInt64BE**(`offset?`): `bigint`
 
 Reads an unsigned, big-endian 64-bit integer from `buf` at the specified`offset`.
 
@@ -1507,7 +1507,7 @@ ___
 
 ### readBigUInt64LE
 
-▸ **readBigUInt64LE**(`offset?`): `bigint`
+**readBigUInt64LE**(`offset?`): `bigint`
 
 Reads an unsigned, little-endian 64-bit integer from `buf` at the specified`offset`.
 
@@ -1558,7 +1558,7 @@ ___
 
 ### readBigUint64BE
 
-▸ **readBigUint64BE**(`offset?`): `bigint`
+**readBigUint64BE**(`offset?`): `bigint`
 
 #### Parameters
 
@@ -1600,7 +1600,7 @@ ___
 
 ### readBigUint64LE
 
-▸ **readBigUint64LE**(`offset?`): `bigint`
+**readBigUint64LE**(`offset?`): `bigint`
 
 #### Parameters
 
@@ -1642,7 +1642,7 @@ ___
 
 ### readDoubleBE
 
-▸ **readDoubleBE**(`offset?`): `number`
+**readDoubleBE**(`offset?`): `number`
 
 Reads a 64-bit, big-endian double from `buf` at the specified `offset`.
 
@@ -1691,7 +1691,7 @@ ___
 
 ### readDoubleLE
 
-▸ **readDoubleLE**(`offset?`): `number`
+**readDoubleLE**(`offset?`): `number`
 
 Reads a 64-bit, little-endian double from `buf` at the specified `offset`.
 
@@ -1742,7 +1742,7 @@ ___
 
 ### readFloatBE
 
-▸ **readFloatBE**(`offset?`): `number`
+**readFloatBE**(`offset?`): `number`
 
 Reads a 32-bit, big-endian float from `buf` at the specified `offset`.
 
@@ -1791,7 +1791,7 @@ ___
 
 ### readFloatLE
 
-▸ **readFloatLE**(`offset?`): `number`
+**readFloatLE**(`offset?`): `number`
 
 Reads a 32-bit, little-endian float from `buf` at the specified `offset`.
 
@@ -1842,7 +1842,7 @@ ___
 
 ### readInt16BE
 
-▸ **readInt16BE**(`offset?`): `number`
+**readInt16BE**(`offset?`): `number`
 
 Reads a signed, big-endian 16-bit integer from `buf` at the specified `offset`.
 
@@ -1893,7 +1893,7 @@ ___
 
 ### readInt16LE
 
-▸ **readInt16LE**(`offset?`): `number`
+**readInt16LE**(`offset?`): `number`
 
 Reads a signed, little-endian 16-bit integer from `buf` at the specified`offset`.
 
@@ -1946,7 +1946,7 @@ ___
 
 ### readInt32BE
 
-▸ **readInt32BE**(`offset?`): `number`
+**readInt32BE**(`offset?`): `number`
 
 Reads a signed, big-endian 32-bit integer from `buf` at the specified `offset`.
 
@@ -1997,7 +1997,7 @@ ___
 
 ### readInt32LE
 
-▸ **readInt32LE**(`offset?`): `number`
+**readInt32LE**(`offset?`): `number`
 
 Reads a signed, little-endian 32-bit integer from `buf` at the specified`offset`.
 
@@ -2050,7 +2050,7 @@ ___
 
 ### readInt8
 
-▸ **readInt8**(`offset?`): `number`
+**readInt8**(`offset?`): `number`
 
 Reads a signed 8-bit integer from `buf` at the specified `offset`.
 
@@ -2105,7 +2105,7 @@ ___
 
 ### readIntBE
 
-▸ **readIntBE**(`offset`, `byteLength`): `number`
+**readIntBE**(`offset`, `byteLength`): `number`
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as a big-endian, two's complement signed value
 supporting up to 48 bits of accuracy.
@@ -2167,7 +2167,7 @@ ___
 
 ### readIntLE
 
-▸ **readIntLE**(`offset`, `byteLength`): `number`
+**readIntLE**(`offset`, `byteLength`): `number`
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as a little-endian, two's complement signed value
 supporting up to 48 bits of accuracy.
@@ -2225,7 +2225,7 @@ ___
 
 ### readUInt16BE
 
-▸ **readUInt16BE**(`offset?`): `number`
+**readUInt16BE**(`offset?`): `number`
 
 Reads an unsigned, big-endian 16-bit integer from `buf` at the specified`offset`.
 
@@ -2278,7 +2278,7 @@ ___
 
 ### readUInt16LE
 
-▸ **readUInt16LE**(`offset?`): `number`
+**readUInt16LE**(`offset?`): `number`
 
 Reads an unsigned, little-endian 16-bit integer from `buf` at the specified`offset`.
 
@@ -2333,7 +2333,7 @@ ___
 
 ### readUInt32BE
 
-▸ **readUInt32BE**(`offset?`): `number`
+**readUInt32BE**(`offset?`): `number`
 
 Reads an unsigned, big-endian 32-bit integer from `buf` at the specified`offset`.
 
@@ -2384,7 +2384,7 @@ ___
 
 ### readUInt32LE
 
-▸ **readUInt32LE**(`offset?`): `number`
+**readUInt32LE**(`offset?`): `number`
 
 Reads an unsigned, little-endian 32-bit integer from `buf` at the specified`offset`.
 
@@ -2437,7 +2437,7 @@ ___
 
 ### readUInt8
 
-▸ **readUInt8**(`offset?`): `number`
+**readUInt8**(`offset?`): `number`
 
 Reads an unsigned 8-bit integer from `buf` at the specified `offset`.
 
@@ -2492,7 +2492,7 @@ ___
 
 ### readUIntBE
 
-▸ **readUIntBE**(`offset`, `byteLength`): `number`
+**readUIntBE**(`offset`, `byteLength`): `number`
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as an unsigned big-endian integer supporting
 up to 48 bits of accuracy.
@@ -2554,7 +2554,7 @@ ___
 
 ### readUIntLE
 
-▸ **readUIntLE**(`offset`, `byteLength`): `number`
+**readUIntLE**(`offset`, `byteLength`): `number`
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as an unsigned, little-endian integer supporting
 up to 48 bits of accuracy.
@@ -2614,7 +2614,7 @@ ___
 
 ### readUint16BE
 
-▸ **readUint16BE**(`offset?`): `number`
+**readUint16BE**(`offset?`): `number`
 
 #### Parameters
 
@@ -2656,7 +2656,7 @@ ___
 
 ### readUint16LE
 
-▸ **readUint16LE**(`offset?`): `number`
+**readUint16LE**(`offset?`): `number`
 
 #### Parameters
 
@@ -2698,7 +2698,7 @@ ___
 
 ### readUint32BE
 
-▸ **readUint32BE**(`offset?`): `number`
+**readUint32BE**(`offset?`): `number`
 
 #### Parameters
 
@@ -2740,7 +2740,7 @@ ___
 
 ### readUint32LE
 
-▸ **readUint32LE**(`offset?`): `number`
+**readUint32LE**(`offset?`): `number`
 
 #### Parameters
 
@@ -2782,7 +2782,7 @@ ___
 
 ### readUint8
 
-▸ **readUint8**(`offset?`): `number`
+**readUint8**(`offset?`): `number`
 
 #### Parameters
 
@@ -2824,7 +2824,7 @@ ___
 
 ### readUintBE
 
-▸ **readUintBE**(`offset`, `byteLength`): `number`
+**readUintBE**(`offset`, `byteLength`): `number`
 
 #### Parameters
 
@@ -2874,7 +2874,7 @@ ___
 
 ### readUintLE
 
-▸ **readUintLE**(`offset`, `byteLength`): `number`
+**readUintLE**(`offset`, `byteLength`): `number`
 
 #### Parameters
 
@@ -2924,7 +2924,7 @@ ___
 
 ### reduce
 
-▸ **reduce**(`callbackfn`): `number`
+**reduce**(`callbackfn`): `number`
 
 Calls the specified callback function for all the elements in an array. The return value of
 the callback function is the accumulated result, and is provided as an argument in the next
@@ -2962,7 +2962,7 @@ call to the callback function.
 
 Uint8Array.reduce
 
-▸ **reduce**(`callbackfn`, `initialValue`): `number`
+**reduce**(`callbackfn`, `initialValue`): `number`
 
 #### Parameters
 
@@ -3004,7 +3004,7 @@ Uint8Array.reduce
 
 Uint8Array.reduce
 
-▸ **reduce**<`U`\>(`callbackfn`, `initialValue`): `U`
+**reduce**<`U`\>(`callbackfn`, `initialValue`): `U`
 
 Calls the specified callback function for all the elements in an array. The return value of
 the callback function is the accumulated result, and is provided as an argument in the next
@@ -3056,7 +3056,7 @@ ___
 
 ### reduceRight
 
-▸ **reduceRight**(`callbackfn`): `number`
+**reduceRight**(`callbackfn`): `number`
 
 Calls the specified callback function for all the elements in an array, in descending order.
 The return value of the callback function is the accumulated result, and is provided as an
@@ -3094,7 +3094,7 @@ argument in the next call to the callback function.
 
 Uint8Array.reduceRight
 
-▸ **reduceRight**(`callbackfn`, `initialValue`): `number`
+**reduceRight**(`callbackfn`, `initialValue`): `number`
 
 #### Parameters
 
@@ -3136,7 +3136,7 @@ Uint8Array.reduceRight
 
 Uint8Array.reduceRight
 
-▸ **reduceRight**<`U`\>(`callbackfn`, `initialValue`): `U`
+**reduceRight**<`U`\>(`callbackfn`, `initialValue`): `U`
 
 Calls the specified callback function for all the elements in an array, in descending order.
 The return value of the callback function is the accumulated result, and is provided as an
@@ -3188,7 +3188,7 @@ ___
 
 ### reverse
 
-▸ **reverse**(): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**reverse**(): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 #### Returns
 
@@ -3213,7 +3213,7 @@ ___
 
 ### set
 
-▸ **set**(`array`, `offset?`): `void`
+**set**(`array`, `offset?`): `void`
 
 Sets a value or an array of values.
 
@@ -3261,7 +3261,7 @@ ___
 
 ### slice
 
-▸ **slice**(`start?`, `end?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**slice**(`start?`, `end?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 Returns a new `Buffer` that references the same memory as the original, but
 offset and cropped by the `start` and `end` indices.
@@ -3343,7 +3343,7 @@ ___
 
 ### some
 
-▸ **some**(`predicate`, `thisArg?`): `boolean`
+**some**(`predicate`, `thisArg?`): `boolean`
 
 Determines whether the specified callback function returns true for any element of an array.
 
@@ -3391,7 +3391,7 @@ ___
 
 ### sort
 
-▸ **sort**(`compareFn?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**sort**(`compareFn?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 Sorts an array.
 
@@ -3431,7 +3431,7 @@ ___
 
 ### subarray
 
-▸ **subarray**(`start?`, `end?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**subarray**(`start?`, `end?`): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 Returns a new `Buffer` that references the same memory as the original, but
 offset and cropped by the `start` and `end` indices.
@@ -3536,7 +3536,7 @@ ___
 
 ### swap16
 
-▸ **swap16**(): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**swap16**(): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 Interprets `buf` as an array of unsigned 16-bit integers and swaps the
 byte order _in-place_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 2.
@@ -3593,7 +3593,7 @@ ___
 
 ### swap32
 
-▸ **swap32**(): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**swap32**(): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 Interprets `buf` as an array of unsigned 32-bit integers and swaps the
 byte order _in-place_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 4.
@@ -3640,7 +3640,7 @@ ___
 
 ### swap64
 
-▸ **swap64**(): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**swap64**(): [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 Interprets `buf` as an array of 64-bit numbers and swaps byte order _in-place_.
 Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 8.
@@ -3687,7 +3687,7 @@ ___
 
 ### toJSON
 
-▸ **toJSON**(): { `data`: `number`[] ; `type`: ``"Buffer"``  }
+**toJSON**(): { `data`: `number`[] ; `type`: ``"Buffer"``  }
 
 Returns a JSON representation of `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) implicitly calls
 this function when stringifying a `Buffer` instance.
@@ -3756,7 +3756,7 @@ ___
 
 ### toLocaleString
 
-▸ **toLocaleString**(): `string`
+**toLocaleString**(): `string`
 
 Converts a number to a string by using the current locale.
 
@@ -3783,7 +3783,7 @@ ___
 
 ### toString
 
-▸ **toString**(`encoding?`, `start?`, `end?`): `string`
+**toString**(`encoding?`, `start?`, `end?`): `string`
 
 Decodes `buf` to a string according to the specified character encoding in`encoding`. `start` and `end` may be passed to decode only a subset of `buf`.
 
@@ -3874,7 +3874,7 @@ ___
 
 ### valueOf
 
-▸ **valueOf**(): `Uint8Array`
+**valueOf**(): `Uint8Array`
 
 Returns the primitive value of the specified object.
 
@@ -3901,7 +3901,7 @@ ___
 
 ### values
 
-▸ **values**(): [`IterableIterator`](admin_discounts.internal.IterableIterator.mdx)<`number`\>
+**values**(): [`IterableIterator`](admin_discounts.internal.IterableIterator.mdx)<`number`\>
 
 Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) for `buf` values (bytes). This function is
 called automatically when a `Buffer` is used in a `for..of` statement.
@@ -3970,7 +3970,7 @@ ___
 
 ### write
 
-▸ **write**(`string`, `encoding?`): `number`
+**write**(`string`, `encoding?`): `number`
 
 Writes `string` to `buf` at `offset` according to the character encoding in`encoding`. The `length` parameter is the number of bytes to write. If `buf` did
 not contain enough space to fit the entire string, only part of `string` will be
@@ -4034,7 +4034,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
 
 v0.1.90
 
-▸ **write**(`string`, `offset`, `encoding?`): `number`
+**write**(`string`, `offset`, `encoding?`): `number`
 
 #### Parameters
 
@@ -4080,7 +4080,7 @@ v0.1.90
   }
 ]} />
 
-▸ **write**(`string`, `offset`, `length`, `encoding?`): `number`
+**write**(`string`, `offset`, `length`, `encoding?`): `number`
 
 #### Parameters
 
@@ -4138,7 +4138,7 @@ ___
 
 ### writeBigInt64BE
 
-▸ **writeBigInt64BE**(`value`, `offset?`): `number`
+**writeBigInt64BE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian.
 
@@ -4199,7 +4199,7 @@ ___
 
 ### writeBigInt64LE
 
-▸ **writeBigInt64LE**(`value`, `offset?`): `number`
+**writeBigInt64LE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian.
 
@@ -4260,7 +4260,7 @@ ___
 
 ### writeBigUInt64BE
 
-▸ **writeBigUInt64BE**(`value`, `offset?`): `number`
+**writeBigUInt64BE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian.
 
@@ -4321,7 +4321,7 @@ ___
 
 ### writeBigUInt64LE
 
-▸ **writeBigUInt64LE**(`value`, `offset?`): `number`
+**writeBigUInt64LE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian
 
@@ -4382,7 +4382,7 @@ ___
 
 ### writeBigUint64BE
 
-▸ **writeBigUint64BE**(`value`, `offset?`): `number`
+**writeBigUint64BE**(`value`, `offset?`): `number`
 
 #### Parameters
 
@@ -4432,7 +4432,7 @@ ___
 
 ### writeBigUint64LE
 
-▸ **writeBigUint64LE**(`value`, `offset?`): `number`
+**writeBigUint64LE**(`value`, `offset?`): `number`
 
 #### Parameters
 
@@ -4482,7 +4482,7 @@ ___
 
 ### writeDoubleBE
 
-▸ **writeDoubleBE**(`value`, `offset?`): `number`
+**writeDoubleBE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a JavaScript number. Behavior is undefined when `value` is anything
 other than a JavaScript number.
@@ -4542,7 +4542,7 @@ ___
 
 ### writeDoubleLE
 
-▸ **writeDoubleLE**(`value`, `offset?`): `number`
+**writeDoubleLE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a JavaScript number. Behavior is undefined when `value` is anything
 other than a JavaScript number.
@@ -4602,7 +4602,7 @@ ___
 
 ### writeFloatBE
 
-▸ **writeFloatBE**(`value`, `offset?`): `number`
+**writeFloatBE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. Behavior is
 undefined when `value` is anything other than a JavaScript number.
@@ -4662,7 +4662,7 @@ ___
 
 ### writeFloatLE
 
-▸ **writeFloatLE**(`value`, `offset?`): `number`
+**writeFloatLE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. Behavior is
 undefined when `value` is anything other than a JavaScript number.
@@ -4722,7 +4722,7 @@ ___
 
 ### writeInt16BE
 
-▸ **writeInt16BE**(`value`, `offset?`): `number`
+**writeInt16BE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian.  The `value`must be a valid signed 16-bit integer. Behavior is undefined when `value` is
 anything other than a signed 16-bit integer.
@@ -4784,7 +4784,7 @@ ___
 
 ### writeInt16LE
 
-▸ **writeInt16LE**(`value`, `offset?`): `number`
+**writeInt16LE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian.  The `value`must be a valid signed 16-bit integer. Behavior is undefined when `value` is
 anything other than a signed 16-bit integer.
@@ -4846,7 +4846,7 @@ ___
 
 ### writeInt32BE
 
-▸ **writeInt32BE**(`value`, `offset?`): `number`
+**writeInt32BE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a valid signed 32-bit integer. Behavior is undefined when `value` is
 anything other than a signed 32-bit integer.
@@ -4908,7 +4908,7 @@ ___
 
 ### writeInt32LE
 
-▸ **writeInt32LE**(`value`, `offset?`): `number`
+**writeInt32LE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid signed 32-bit integer. Behavior is undefined when `value` is
 anything other than a signed 32-bit integer.
@@ -4970,7 +4970,7 @@ ___
 
 ### writeInt8
 
-▸ **writeInt8**(`value`, `offset?`): `number`
+**writeInt8**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset`. `value` must be a valid
 signed 8-bit integer. Behavior is undefined when `value` is anything other than
@@ -5034,7 +5034,7 @@ ___
 
 ### writeIntBE
 
-▸ **writeIntBE**(`value`, `offset`, `byteLength`): `number`
+**writeIntBE**(`value`, `offset`, `byteLength`): `number`
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as big-endian. Supports up to 48 bits of accuracy. Behavior is undefined when`value` is anything other than a
 signed integer.
@@ -5102,7 +5102,7 @@ ___
 
 ### writeIntLE
 
-▸ **writeIntLE**(`value`, `offset`, `byteLength`): `number`
+**writeIntLE**(`value`, `offset`, `byteLength`): `number`
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as little-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than a signed integer.
@@ -5170,7 +5170,7 @@ ___
 
 ### writeUInt16BE
 
-▸ **writeUInt16BE**(`value`, `offset?`): `number`
+**writeUInt16BE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a valid unsigned 16-bit integer. Behavior is undefined when `value`is anything other than an
 unsigned 16-bit integer.
@@ -5233,7 +5233,7 @@ ___
 
 ### writeUInt16LE
 
-▸ **writeUInt16LE**(`value`, `offset?`): `number`
+**writeUInt16LE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid unsigned 16-bit integer. Behavior is undefined when `value` is
 anything other than an unsigned 16-bit integer.
@@ -5296,7 +5296,7 @@ ___
 
 ### writeUInt32BE
 
-▸ **writeUInt32BE**(`value`, `offset?`): `number`
+**writeUInt32BE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a valid unsigned 32-bit integer. Behavior is undefined when `value`is anything other than an
 unsigned 32-bit integer.
@@ -5358,7 +5358,7 @@ ___
 
 ### writeUInt32LE
 
-▸ **writeUInt32LE**(`value`, `offset?`): `number`
+**writeUInt32LE**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid unsigned 32-bit integer. Behavior is undefined when `value` is
 anything other than an unsigned 32-bit integer.
@@ -5420,7 +5420,7 @@ ___
 
 ### writeUInt8
 
-▸ **writeUInt8**(`value`, `offset?`): `number`
+**writeUInt8**(`value`, `offset?`): `number`
 
 Writes `value` to `buf` at the specified `offset`. `value` must be a
 valid unsigned 8-bit integer. Behavior is undefined when `value` is anything
@@ -5486,7 +5486,7 @@ ___
 
 ### writeUIntBE
 
-▸ **writeUIntBE**(`value`, `offset`, `byteLength`): `number`
+**writeUIntBE**(`value`, `offset`, `byteLength`): `number`
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as big-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than an unsigned integer.
@@ -5556,7 +5556,7 @@ ___
 
 ### writeUIntLE
 
-▸ **writeUIntLE**(`value`, `offset`, `byteLength`): `number`
+**writeUIntLE**(`value`, `offset`, `byteLength`): `number`
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as little-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than an unsigned integer.
@@ -5626,7 +5626,7 @@ ___
 
 ### writeUint16BE
 
-▸ **writeUint16BE**(`value`, `offset?`): `number`
+**writeUint16BE**(`value`, `offset?`): `number`
 
 #### Parameters
 
@@ -5676,7 +5676,7 @@ ___
 
 ### writeUint16LE
 
-▸ **writeUint16LE**(`value`, `offset?`): `number`
+**writeUint16LE**(`value`, `offset?`): `number`
 
 #### Parameters
 
@@ -5726,7 +5726,7 @@ ___
 
 ### writeUint32BE
 
-▸ **writeUint32BE**(`value`, `offset?`): `number`
+**writeUint32BE**(`value`, `offset?`): `number`
 
 #### Parameters
 
@@ -5776,7 +5776,7 @@ ___
 
 ### writeUint32LE
 
-▸ **writeUint32LE**(`value`, `offset?`): `number`
+**writeUint32LE**(`value`, `offset?`): `number`
 
 #### Parameters
 
@@ -5826,7 +5826,7 @@ ___
 
 ### writeUint8
 
-▸ **writeUint8**(`value`, `offset?`): `number`
+**writeUint8**(`value`, `offset?`): `number`
 
 #### Parameters
 
@@ -5876,7 +5876,7 @@ ___
 
 ### writeUintBE
 
-▸ **writeUintBE**(`value`, `offset`, `byteLength`): `number`
+**writeUintBE**(`value`, `offset`, `byteLength`): `number`
 
 #### Parameters
 
@@ -5934,7 +5934,7 @@ ___
 
 ### writeUintLE
 
-▸ **writeUintLE**(`value`, `offset`, `byteLength`): `number`
+**writeUintLE**(`value`, `offset`, `byteLength`): `number`
 
 #### Parameters
 

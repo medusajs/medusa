@@ -113,7 +113,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -138,7 +138,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -215,7 +215,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`OrderItemChange`](admin_collections.internal.OrderItemChange.mdx)\>
+**create**(`data`): `Promise`<[`OrderItemChange`](admin_collections.internal.OrderItemChange.mdx)\>
 
 #### Parameters
 
@@ -258,7 +258,7 @@ ___
 
 ### delete
 
-▸ **delete**(`itemChangeIds`): `Promise`<`void`\>
+**delete**(`itemChangeIds`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -292,7 +292,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`OrderItemChange`](admin_collections.internal.OrderItemChange.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`OrderItemChange`](admin_collections.internal.OrderItemChange.mdx)[]\>
 
 #### Parameters
 
@@ -352,7 +352,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<[`OrderItemChange`](admin_collections.internal.OrderItemChange.mdx)\>
+**retrieve**(`id`, `config?`): `Promise`<[`OrderItemChange`](admin_collections.internal.OrderItemChange.mdx)\>
 
 #### Parameters
 
@@ -403,7 +403,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -441,7 +441,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`OrderEditItemChangeService`](admin_discounts.internal.internal.OrderEditItemChangeService.mdx)
+**withTransaction**(`transactionManager?`): [`OrderEditItemChangeService`](admin_discounts.internal.internal.OrderEditItemChangeService.mdx)
 
 #### Parameters
 

@@ -153,7 +153,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -178,7 +178,7 @@ TransactionBaseService.activeManager\_
 
 ### addOptionValue
 
-▸ **addOptionValue**(`variantId`, `optionId`, `optionValue`): `Promise`<[`ProductOptionValue`](admin_collections.internal.ProductOptionValue.mdx)\>
+**addOptionValue**(`variantId`, `optionId`, `optionValue`): `Promise`<[`ProductOptionValue`](admin_collections.internal.ProductOptionValue.mdx)\>
 
 Adds option value to a variant.
 Fails when product with variant does not exist or
@@ -243,7 +243,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -320,7 +320,7 @@ ___
 
 ### create
 
-▸ **create**<`TVariants`, `TOutput`\>(`productOrProductId`, `variants`): `Promise`<`TOutput`\>
+**create**<`TVariants`, `TOutput`\>(`productOrProductId`, `variants`): `Promise`<`TOutput`\>
 
 Creates an unpublished product variant. Will validate against parent product
 to ensure that the variant can in fact be created.
@@ -384,7 +384,7 @@ ___
 
 ### delete
 
-▸ **delete**(`variantIds`): `Promise`<`void`\>
+**delete**(`variantIds`): `Promise`<`void`\>
 
 Deletes variant or variants.
 Will never fail due to delete being idempotent.
@@ -421,7 +421,7 @@ ___
 
 ### deleteOptionValue
 
-▸ **deleteOptionValue**(`variantId`, `optionId`): `Promise`<`void`\>
+**deleteOptionValue**(`variantId`, `optionId`): `Promise`<`void`\>
 
 Deletes option value from given variant.
 Will never fail due to delete being idempotent.
@@ -466,7 +466,7 @@ ___
 
 ### getFreeTextQueryBuilder\_
 
-▸ **getFreeTextQueryBuilder_**(`variantRepo`, `query`, `q?`): `SelectQueryBuilder`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
+**getFreeTextQueryBuilder_**(`variantRepo`, `query`, `q?`): `SelectQueryBuilder`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
 
 Lists variants based on the provided parameters and includes the count of
 variants that match the query.
@@ -528,7 +528,7 @@ ___
 
 ### getRegionPrice
 
-▸ **getRegionPrice**(`variantId`, `context`): `Promise`<``null`` \| `number`\>
+**getRegionPrice**(`variantId`, `context`): `Promise`<``null`` \| `number`\>
 
 Gets the price specific to a region. If no region specific money amount
 exists the function will try to use a currency price. If no default
@@ -583,7 +583,7 @@ ___
 
 ### isVariantInSalesChannels
 
-▸ **isVariantInSalesChannels**(`id`, `salesChannelIds`): `Promise`<`boolean`\>
+**isVariantInSalesChannels**(`id`, `salesChannelIds`): `Promise`<`boolean`\>
 
 Check if the variant is assigned to at least one of the provided sales channels.
 
@@ -636,7 +636,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[]\>
 
 #### Parameters
 
@@ -696,7 +696,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -755,7 +755,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`variantId`, `config?`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
+**retrieve**(`variantId`, `config?`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
 
 Gets a product variant by id.
 
@@ -808,7 +808,7 @@ ___
 
 ### retrieveBySKU
 
-▸ **retrieveBySKU**(`sku`, `config?`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
+**retrieveBySKU**(`sku`, `config?`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
 
 Gets a product variant by id.
 
@@ -861,7 +861,7 @@ ___
 
 ### setCurrencyPrice
 
-▸ **setCurrencyPrice**(`variantId`, `price`): `Promise`<[`MoneyAmount`](admin_collections.internal.MoneyAmount.mdx)\>
+**setCurrencyPrice**(`variantId`, `price`): `Promise`<[`MoneyAmount`](admin_collections.internal.MoneyAmount.mdx)\>
 
 #### Parameters
 
@@ -917,7 +917,7 @@ ___
 
 ### setRegionPrice
 
-▸ **setRegionPrice**(`variantId`, `price`): `Promise`<[`MoneyAmount`](admin_collections.internal.MoneyAmount.mdx)\>
+**setRegionPrice**(`variantId`, `price`): `Promise`<[`MoneyAmount`](admin_collections.internal.MoneyAmount.mdx)\>
 
 #### Parameters
 
@@ -973,7 +973,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -1011,7 +1011,7 @@ ___
 
 ### update
 
-▸ **update**(`variantData`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[]\>
+**update**(`variantData`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[]\>
 
 Updates a collection of variant.
 
@@ -1061,7 +1061,7 @@ Updates a collection of variant.
   }
 ]} />
 
-▸ **update**(`variantOrVariantId`, `update`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
+**update**(`variantOrVariantId`, `update`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
 
 Updates a variant.
 Price updates should use dedicated methods.
@@ -1112,7 +1112,7 @@ The function will throw, if price updates are attempted.
   }
 ]} />
 
-▸ **update**(`variantOrVariantId`, `update`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
+**update**(`variantOrVariantId`, `update`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\>
 
 #### Parameters
 
@@ -1163,7 +1163,7 @@ ___
 
 ### updateBatch
 
-▸ `Protected` **updateBatch**(`variantData`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[]\>
+`Protected` **updateBatch**(`variantData`): `Promise`<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[]\>
 
 #### Parameters
 
@@ -1215,7 +1215,7 @@ ___
 
 ### updateOptionValue
 
-▸ **updateOptionValue**(`variantId`, `optionId`, `optionValue`): `Promise`<[`ProductOptionValue`](admin_collections.internal.ProductOptionValue.mdx)\>
+**updateOptionValue**(`variantId`, `optionId`, `optionValue`): `Promise`<[`ProductOptionValue`](admin_collections.internal.ProductOptionValue.mdx)\>
 
 Updates variant's option value.
 Option value must be of type string or number.
@@ -1277,7 +1277,7 @@ ___
 
 ### updateVariantPrices
 
-▸ **updateVariantPrices**(`data`): `Promise`<`void`\>
+**updateVariantPrices**(`data`): `Promise`<`void`\>
 
 Updates variant/prices collection.
 Deletes any prices that are not in the update object, and is not associated with a price list.
@@ -1310,7 +1310,7 @@ Deletes any prices that are not in the update object, and is not associated with
   }
 ]} />
 
-▸ **updateVariantPrices**(`variantId`, `prices`): `Promise`<`void`\>
+**updateVariantPrices**(`variantId`, `prices`): `Promise`<`void`\>
 
 Updates a variant's prices.
 Deletes any prices that are not in the update object, and is not associated with a price list.
@@ -1355,7 +1355,7 @@ ___
 
 ### updateVariantPricesBatch
 
-▸ `Protected` **updateVariantPricesBatch**(`data`): `Promise`<`void`\>
+`Protected` **updateVariantPricesBatch**(`data`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -1389,7 +1389,7 @@ ___
 
 ### upsertCurrencyPrices
 
-▸ **upsertCurrencyPrices**(`data`): `Promise`<`void`\>
+**upsertCurrencyPrices**(`data`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -1423,7 +1423,7 @@ ___
 
 ### upsertRegionPrices
 
-▸ **upsertRegionPrices**(`data`): `Promise`<`void`\>
+**upsertRegionPrices**(`data`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -1457,7 +1457,7 @@ ___
 
 ### validateVariantsToCreate\_
 
-▸ `Protected` **validateVariantsToCreate_**(`product`, `variants`): `void`
+`Protected` **validateVariantsToCreate_**(`product`, `variants`): `void`
 
 #### Parameters
 
@@ -1499,7 +1499,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ProductVariantService`](admin_discounts.internal.internal.ProductVariantService.mdx)
+**withTransaction**(`transactionManager?`): [`ProductVariantService`](admin_discounts.internal.internal.ProductVariantService.mdx)
 
 #### Parameters
 

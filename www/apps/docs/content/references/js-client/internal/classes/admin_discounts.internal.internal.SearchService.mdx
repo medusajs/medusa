@@ -41,7 +41,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### options
 
-• `get` **options**(): Record<`string`, `unknown`\>
+`get` **options**(): Record<`string`, `unknown`\>
 
 #### Returns
 
@@ -83,7 +83,7 @@ AbstractSearchService.options
 
 ### addDocuments
 
-▸ **addDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
+**addDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
 
 Used to index documents by the search engine provider
 
@@ -139,7 +139,7 @@ ___
 
 ### createIndex
 
-▸ **createIndex**(`indexName`, `options`): `Promise`<`void`\>
+**createIndex**(`indexName`, `options`): `Promise`<`void`\>
 
 Used to create an index
 
@@ -187,7 +187,7 @@ ___
 
 ### deleteAllDocuments
 
-▸ **deleteAllDocuments**(`indexName`): `Promise`<`void`\>
+**deleteAllDocuments**(`indexName`): `Promise`<`void`\>
 
 Used to delete all documents
 
@@ -227,7 +227,7 @@ ___
 
 ### deleteDocument
 
-▸ **deleteDocument**(`indexName`, `document_id`): `Promise`<`void`\>
+**deleteDocument**(`indexName`, `document_id`): `Promise`<`void`\>
 
 Used to delete document
 
@@ -275,7 +275,7 @@ ___
 
 ### getIndex
 
-▸ **getIndex**(`indexName`): `Promise`<`void`\>
+**getIndex**(`indexName`): `Promise`<`void`\>
 
 Used to get an index
 
@@ -315,7 +315,7 @@ ___
 
 ### replaceDocuments
 
-▸ **replaceDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
+**replaceDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
 
 Used to replace documents
 
@@ -371,7 +371,7 @@ ___
 
 ### search
 
-▸ **search**(`indexName`, `query`, `options`): `Promise`<{ `hits`: `unknown`[]  }\>
+**search**(`indexName`, `query`, `options`): `Promise`<{ `hits`: `unknown`[]  }\>
 
 Used to search for a document in an index
 
@@ -436,7 +436,7 @@ ___
 
 ### updateSettings
 
-▸ **updateSettings**(`indexName`, `settings`): `Promise`<`void`\>
+**updateSettings**(`indexName`, `settings`): `Promise`<`void`\>
 
 Used to update the settings of an index
 

@@ -115,7 +115,7 @@ Provides layer to manipulate profiles.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -140,7 +140,7 @@ TransactionBaseService.activeManager\_
 
 ### addRequirement
 
-▸ **addRequirement**(`optionId`, `requirement`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
+**addRequirement**(`optionId`, `requirement`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
 
 Adds a requirement to a shipping option. Only 1 requirement of each type
 is allowed.
@@ -194,7 +194,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -271,7 +271,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
+**create**(`data`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
 
 Creates a new shipping option. Used both for outbound and inbound shipping
 options. The difference is registered by the `is_return` field which
@@ -318,7 +318,7 @@ ___
 
 ### createShippingMethod
 
-▸ **createShippingMethod**(`optionId`, `data`, `config`): `Promise`<[`ShippingMethod`](admin_collections.internal.ShippingMethod.mdx)\>
+**createShippingMethod**(`optionId`, `data`, `config`): `Promise`<[`ShippingMethod`](admin_collections.internal.ShippingMethod.mdx)\>
 
 Creates a shipping method for a given cart.
 
@@ -379,7 +379,7 @@ ___
 
 ### delete
 
-▸ **delete**(`optionId`): `Promise`<`void` \| [`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
+**delete**(`optionId`): `Promise`<`void` \| [`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
 
 Deletes a profile with a given profile id.
 
@@ -424,7 +424,7 @@ ___
 
 ### deleteShippingMethods
 
-▸ **deleteShippingMethods**(`shippingMethods`): `Promise`<[`ShippingMethod`](admin_collections.internal.ShippingMethod.mdx)[]\>
+**deleteShippingMethods**(`shippingMethods`): `Promise`<[`ShippingMethod`](admin_collections.internal.ShippingMethod.mdx)[]\>
 
 Removes a given shipping method
 
@@ -478,7 +478,7 @@ ___
 
 ### getPrice\_
 
-▸ **getPrice_**(`option`, `data`, `cart`): `Promise`<`number`\>
+**getPrice_**(`option`, `data`, `cart`): `Promise`<`number`\>
 
 Returns the amount to be paid for a shipping method. Will ask the
 fulfillment provider to calculate the price if the shipping option has the
@@ -541,7 +541,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)[]\>
 
 #### Parameters
 
@@ -601,7 +601,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -660,7 +660,7 @@ ___
 
 ### removeRequirement
 
-▸ **removeRequirement**(`requirementId`): `Promise`<`void` \| [`ShippingOptionRequirement`](admin_collections.internal.ShippingOptionRequirement.mdx)\>
+**removeRequirement**(`requirementId`): `Promise`<`void` \| [`ShippingOptionRequirement`](admin_collections.internal.ShippingOptionRequirement.mdx)\>
 
 Removes a requirement from a shipping option
 
@@ -705,7 +705,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`optionId`, `options?`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
+**retrieve**(`optionId`, `options?`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
 
 Gets a profile by id.
 Throws in case of DB Error and if profile was not found.
@@ -759,7 +759,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -797,7 +797,7 @@ ___
 
 ### update
 
-▸ **update**(`optionId`, `update`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
+**update**(`optionId`, `update`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
 
 Updates a profile. Metadata updates and product updates should use
 dedicated methods, e.g. `setMetadata`, etc. The function
@@ -852,7 +852,7 @@ ___
 
 ### updateShippingMethod
 
-▸ **updateShippingMethod**(`id`, `update`): `Promise`<`undefined` \| [`ShippingMethod`](admin_collections.internal.ShippingMethod.mdx)\>
+**updateShippingMethod**(`id`, `update`): `Promise`<`undefined` \| [`ShippingMethod`](admin_collections.internal.ShippingMethod.mdx)\>
 
 Updates a shipping method's associations. Useful when a cart is completed
 and its methods should be copied to an order/swap entity.
@@ -906,7 +906,7 @@ ___
 
 ### updateShippingProfile
 
-▸ **updateShippingProfile**(`optionIds`, `profileId`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)[]\>
+**updateShippingProfile**(`optionIds`, `profileId`): `Promise`<[`ShippingOption`](admin_collections.internal.ShippingOption.mdx)[]\>
 
 #### Parameters
 
@@ -966,7 +966,7 @@ ___
 
 ### validateCartOption
 
-▸ **validateCartOption**(`option`, `cart`): `Promise`<``null`` \| [`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
+**validateCartOption**(`option`, `cart`): `Promise`<``null`` \| [`ShippingOption`](admin_collections.internal.ShippingOption.mdx)\>
 
 Checks if a given option id is a valid option for a cart. If it is the
 option is returned with the correct price. Throws when region_ids do not
@@ -1021,7 +1021,7 @@ ___
 
 ### validatePriceType\_
 
-▸ **validatePriceType_**(`priceType`, `option`): `Promise`<[`ShippingOptionPriceType`](../enums/admin_collections.internal.ShippingOptionPriceType.mdx)\>
+**validatePriceType_**(`priceType`, `option`): `Promise`<[`ShippingOptionPriceType`](../enums/admin_collections.internal.ShippingOptionPriceType.mdx)\>
 
 Validates a shipping option price
 
@@ -1082,7 +1082,7 @@ ___
 
 ### validateRequirement\_
 
-▸ **validateRequirement_**(`requirement`, `optionId?`): `Promise`<[`ShippingOptionRequirement`](admin_collections.internal.ShippingOptionRequirement.mdx)\>
+**validateRequirement_**(`requirement`, `optionId?`): `Promise`<[`ShippingOptionRequirement`](admin_collections.internal.ShippingOptionRequirement.mdx)\>
 
 Validates a requirement
 
@@ -1135,7 +1135,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ShippingOptionService`](admin_discounts.internal.internal.ShippingOptionService.mdx)
+**withTransaction**(`transactionManager?`): [`ShippingOptionService`](admin_discounts.internal.internal.ShippingOptionService.mdx)
 
 #### Parameters
 

@@ -28,7 +28,7 @@ Some of the `Return` entity’s attributes include:
 - `no_notification`: a boolean value indicating whether the customer should receive notification updates when there are any changes in the return.
 - `shipping_data`: this is a JSONB object that can hold any data related to the fulfillment associated with the return.
 
-There are other important attributes discussed in later sections. Check out the [full Return entity in the entities reference](../../references/entities/classes/Return.md).
+There are other important attributes discussed in later sections. Check out the [full Return entity in the entities reference](../../references/entities/classes/Return.mdx).
 
 ---
 

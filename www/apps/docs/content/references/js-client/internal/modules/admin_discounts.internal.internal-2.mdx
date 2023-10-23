@@ -78,7 +78,7 @@ Re-exports [TransformOptions](../interfaces/admin_discounts.internal.TransformOp
 
 ### PipelineCallback
 
-Ƭ **PipelineCallback**<`S`\>: `S` extends [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-2.mdx#pipelinedestinationpromisefunction)<`any`, infer P\> ? (`err`: [`ErrnoException`](../interfaces/admin_discounts.internal.ErrnoException.mdx) \| ``null``, `value`: `P`) => `void` : (`err`: [`ErrnoException`](../interfaces/admin_discounts.internal.ErrnoException.mdx) \| ``null``) => `void`
+ **PipelineCallback**<`S`\>: `S` extends [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-2.mdx#pipelinedestinationpromisefunction)<`any`, infer P\> ? (`err`: [`ErrnoException`](../interfaces/admin_discounts.internal.ErrnoException.mdx) \| ``null``, `value`: `P`) => `void` : (`err`: [`ErrnoException`](../interfaces/admin_discounts.internal.ErrnoException.mdx) \| ``null``) => `void`
 
 #### Type parameters
 
@@ -97,7 +97,7 @@ ___
 
 ### PipelineDestination
 
-Ƭ **PipelineDestination**<`S`, `P`\>: `S` extends [`PipelineTransformSource`](admin_discounts.internal.internal-2.mdx#pipelinetransformsource)<infer ST\> ? [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-2.mdx#pipelinedestinationiterablefunction)<`ST`\> \| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-2.mdx#pipelinedestinationpromisefunction)<`ST`, `P`\> : `never`
+ **PipelineDestination**<`S`, `P`\>: `S` extends [`PipelineTransformSource`](admin_discounts.internal.internal-2.mdx#pipelinetransformsource)<infer ST\> ? [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-2.mdx#pipelinedestinationiterablefunction)<`ST`\> \| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-2.mdx#pipelinedestinationpromisefunction)<`ST`, `P`\> : `never`
 
 #### Type parameters
 
@@ -124,7 +124,7 @@ ___
 
 ### PipelineDestinationIterableFunction
 
-Ƭ **PipelineDestinationIterableFunction**<`T`\>: (`source`: [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\>) => [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`any`\>
+ **PipelineDestinationIterableFunction**<`T`\>: (`source`: [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\>) => [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`any`\>
 
 #### Type parameters
 
@@ -141,7 +141,7 @@ ___
 
 #### Type declaration
 
-▸ (`source`): [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`any`\>
+(`source`): [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`any`\>
 
 ##### Parameters
 
@@ -184,7 +184,7 @@ ___
 
 ### PipelineDestinationPromiseFunction
 
-Ƭ **PipelineDestinationPromiseFunction**<`T`, `P`\>: (`source`: [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\>) => `Promise`<`P`\>
+ **PipelineDestinationPromiseFunction**<`T`, `P`\>: (`source`: [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\>) => `Promise`<`P`\>
 
 #### Type parameters
 
@@ -209,7 +209,7 @@ ___
 
 #### Type declaration
 
-▸ (`source`): `Promise`<`P`\>
+(`source`): `Promise`<`P`\>
 
 ##### Parameters
 
@@ -243,7 +243,7 @@ ___
 
 ### PipelinePromise
 
-Ƭ **PipelinePromise**<`S`\>: `S` extends [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-2.mdx#pipelinedestinationpromisefunction)<`any`, infer P\> ? `Promise`<`P`\> : `Promise`<`void`\>
+ **PipelinePromise**<`S`\>: `S` extends [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-2.mdx#pipelinedestinationpromisefunction)<`any`, infer P\> ? `Promise`<`P`\> : `Promise`<`void`\>
 
 #### Type parameters
 
@@ -262,7 +262,7 @@ ___
 
 ### PipelineSource
 
-Ƭ **PipelineSource**<`T`\>: [`Iterable`](../interfaces/admin_discounts.internal.Iterable.mdx)<`T`\> \| [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\> \| [`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx) \| [`PipelineSourceFunction`](admin_discounts.internal.internal-2.mdx#pipelinesourcefunction)<`T`\>
+ **PipelineSource**<`T`\>: [`Iterable`](../interfaces/admin_discounts.internal.Iterable.mdx)<`T`\> \| [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\> \| [`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx) \| [`PipelineSourceFunction`](admin_discounts.internal.internal-2.mdx#pipelinesourcefunction)<`T`\>
 
 #### Type parameters
 
@@ -281,7 +281,7 @@ ___
 
 ### PipelineSourceFunction
 
-Ƭ **PipelineSourceFunction**<`T`\>: () => [`Iterable`](../interfaces/admin_discounts.internal.Iterable.mdx)<`T`\> \| [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\>
+ **PipelineSourceFunction**<`T`\>: () => [`Iterable`](../interfaces/admin_discounts.internal.Iterable.mdx)<`T`\> \| [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\>
 
 #### Type parameters
 
@@ -298,7 +298,7 @@ ___
 
 #### Type declaration
 
-▸ (): [`Iterable`](../interfaces/admin_discounts.internal.Iterable.mdx)<`T`\> \| [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\>
+(): [`Iterable`](../interfaces/admin_discounts.internal.Iterable.mdx)<`T`\> \| [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`T`\>
 
 ##### Returns
 
@@ -319,7 +319,7 @@ ___
 
 ### PipelineTransform
 
-Ƭ **PipelineTransform**<`S`, `U`\>: [`ReadWriteStream`](../interfaces/admin_discounts.internal.ReadWriteStream.mdx) \| (`source`: `S` extends (...`args`: `any`[]) => [`Iterable`](../interfaces/admin_discounts.internal.Iterable.mdx)<infer ST\> \| [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<infer ST\> ? [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`ST`\> : `S`) => [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`U`\>
+ **PipelineTransform**<`S`, `U`\>: [`ReadWriteStream`](../interfaces/admin_discounts.internal.ReadWriteStream.mdx) \| (`source`: `S` extends (...`args`: `any`[]) => [`Iterable`](../interfaces/admin_discounts.internal.Iterable.mdx)<infer ST\> \| [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<infer ST\> ? [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`ST`\> : `S`) => [`AsyncIterable`](../interfaces/admin_discounts.internal.AsyncIterable.mdx)<`U`\>
 
 #### Type parameters
 
@@ -346,7 +346,7 @@ ___
 
 ### PipelineTransformSource
 
-Ƭ **PipelineTransformSource**<`T`\>: [`PipelineSource`](admin_discounts.internal.internal-2.mdx#pipelinesource)<`T`\> \| [`PipelineTransform`](admin_discounts.internal.internal-2.mdx#pipelinetransform)<`any`, `T`\>
+ **PipelineTransformSource**<`T`\>: [`PipelineSource`](admin_discounts.internal.internal-2.mdx#pipelinesource)<`T`\> \| [`PipelineTransform`](admin_discounts.internal.internal-2.mdx#pipelinetransform)<`any`, `T`\>
 
 #### Type parameters
 
@@ -365,19 +365,19 @@ ___
 
 ### consumers
 
-• `Const` **consumers**: typeof [`internal`](admin_discounts.internal.internal-4.mdx)
+ `Const` **consumers**: typeof [`internal`](admin_discounts.internal.internal-4.mdx)
 
 ___
 
 ### promises
 
-• `Const` **promises**: typeof [`internal`](admin_discounts.internal.internal-3.mdx)
+ `Const` **promises**: typeof [`internal`](admin_discounts.internal.internal-3.mdx)
 
 ## Functions
 
 ### addAbortSignal
 
-▸ **addAbortSignal**<`T`\>(`signal`, `stream`): `T`
+**addAbortSignal**<`T`\>(`signal`, `stream`): `T`
 
 A stream to attach a signal to.
 
@@ -500,7 +500,7 @@ ___
 
 ### finished
 
-▸ **finished**(`stream`, `options`, `callback`): () => `void`
+**finished**(`stream`, `options`, `callback`): () => `void`
 
 A readable and/or writable stream/webstream.
 
@@ -586,7 +586,7 @@ const cleanup = finished(rs, (err) => {
   }
 ]} />
 
-▸ (): `void`
+(): `void`
 
 ##### Returns
 
@@ -607,7 +607,7 @@ const cleanup = finished(rs, (err) => {
 
 v10.0.0
 
-▸ **finished**(`stream`, `callback`): () => `void`
+**finished**(`stream`, `callback`): () => `void`
 
 #### Parameters
 
@@ -645,7 +645,7 @@ v10.0.0
   }
 ]} />
 
-▸ (): `void`
+(): `void`
 
 ##### Returns
 
@@ -666,7 +666,7 @@ ___
 
 ### getDefaultHighWaterMark
 
-▸ **getDefaultHighWaterMark**(`objectMode`): `number`
+**getDefaultHighWaterMark**(`objectMode`): `number`
 
 Returns the default highWaterMark used by streams.
 Defaults to `16384` (16 KiB), or `16` for `objectMode`.
@@ -707,7 +707,7 @@ ___
 
 ### isErrored
 
-▸ **isErrored**(`stream`): `boolean`
+**isErrored**(`stream`): `boolean`
 
 Returns whether the stream has encountered an error.
 
@@ -747,7 +747,7 @@ ___
 
 ### isReadable
 
-▸ **isReadable**(`stream`): `boolean`
+**isReadable**(`stream`): `boolean`
 
 Returns whether the stream is readable.
 
@@ -787,7 +787,7 @@ ___
 
 ### pipeline
 
-▸ **pipeline**<`A`, `B`\>(`source`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
+**pipeline**<`A`, `B`\>(`source`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
 
 A module method to pipe between streams and generators forwarding errors and
 properly cleaning up and provide a callback when the pipeline is complete.
@@ -918,7 +918,7 @@ const server = http.createServer((req, res) => {
 
 v10.0.0
 
-▸ **pipeline**<`A`, `T1`, `B`\>(`source`, `transform1`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
+**pipeline**<`A`, `T1`, `B`\>(`source`, `transform1`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
 
 <ParameterTypes parameters={[
   {
@@ -999,7 +999,7 @@ v10.0.0
   }
 ]} />
 
-▸ **pipeline**<`A`, `T1`, `T2`, `B`\>(`source`, `transform1`, `transform2`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
+**pipeline**<`A`, `T1`, `T2`, `B`\>(`source`, `transform1`, `transform2`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
 
 <ParameterTypes parameters={[
   {
@@ -1096,7 +1096,7 @@ v10.0.0
   }
 ]} />
 
-▸ **pipeline**<`A`, `T1`, `T2`, `T3`, `B`\>(`source`, `transform1`, `transform2`, `transform3`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
+**pipeline**<`A`, `T1`, `T2`, `T3`, `B`\>(`source`, `transform1`, `transform2`, `transform3`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
 
 <ParameterTypes parameters={[
   {
@@ -1209,7 +1209,7 @@ v10.0.0
   }
 ]} />
 
-▸ **pipeline**<`A`, `T1`, `T2`, `T3`, `T4`, `B`\>(`source`, `transform1`, `transform2`, `transform3`, `transform4`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
+**pipeline**<`A`, `T1`, `T2`, `T3`, `T4`, `B`\>(`source`, `transform1`, `transform2`, `transform3`, `transform4`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
 
 <ParameterTypes parameters={[
   {
@@ -1338,7 +1338,7 @@ v10.0.0
   }
 ]} />
 
-▸ **pipeline**(`streams`, `callback?`): [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
+**pipeline**(`streams`, `callback?`): [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
 
 #### Parameters
 
@@ -1512,7 +1512,7 @@ v10.0.0
   }
 ]} />
 
-▸ **pipeline**(`stream1`, `stream2`, `...streams`): [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
+**pipeline**(`stream1`, `stream2`, `...streams`): [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx)
 
 #### Parameters
 
@@ -1698,7 +1698,7 @@ ___
 
 ### setDefaultHighWaterMark
 
-▸ **setDefaultHighWaterMark**(`objectMode`, `value`): `void`
+**setDefaultHighWaterMark**(`objectMode`, `value`): `void`
 
 Sets the default highWaterMark used by streams.
 

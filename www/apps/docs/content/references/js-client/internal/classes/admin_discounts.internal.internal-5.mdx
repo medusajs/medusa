@@ -64,7 +64,7 @@ v0.1.26
 
 ### addListener
 
-▸ **addListener**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
+**addListener**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
 
 Alias for `emitter.on(eventName, listener)`.
 
@@ -116,7 +116,7 @@ ___
 
 ### emit
 
-▸ **emit**(`eventName`, `...args`): `boolean`
+**emit**(`eventName`, `...args`): `boolean`
 
 Synchronously calls each of the listeners registered for the event named`eventName`, in the order they were registered, passing the supplied arguments
 to each.
@@ -204,7 +204,7 @@ ___
 
 ### eventNames
 
-▸ **eventNames**(): (`string` \| `symbol`)[]
+**eventNames**(): (`string` \| `symbol`)[]
 
 Returns an array listing the events for which the emitter has registered
 listeners. The values in the array are strings or `Symbol`s.
@@ -259,7 +259,7 @@ ___
 
 ### getMaxListeners
 
-▸ **getMaxListeners**(): `number`
+**getMaxListeners**(): `number`
 
 Returns the current max listener value for the `EventEmitter` which is either
 set by `emitter.setMaxListeners(n)` or defaults to [defaultMaxListeners](admin_discounts.internal.internal-5.mdx#defaultmaxlisteners).
@@ -291,7 +291,7 @@ ___
 
 ### listenerCount
 
-▸ **listenerCount**(`eventName`, `listener?`): `number`
+**listenerCount**(`eventName`, `listener?`): `number`
 
 Returns the number of listeners listening for the event named `eventName`.
 If `listener` is provided, it will return how many times the listener is found
@@ -345,7 +345,7 @@ ___
 
 ### listeners
 
-▸ **listeners**(`eventName`): `Function`[]
+**listeners**(`eventName`): `Function`[]
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -397,7 +397,7 @@ ___
 
 ### off
 
-▸ **off**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
+**off**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
 
 Alias for `emitter.removeListener()`.
 
@@ -449,7 +449,7 @@ ___
 
 ### on
 
-▸ **on**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
+**on**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
 
 Adds the `listener` function to the end of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -526,7 +526,7 @@ ___
 
 ### once
 
-▸ **once**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
+**once**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
 
 Adds a **one-time**`listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -601,7 +601,7 @@ ___
 
 ### pipe
 
-▸ **pipe**<`T`\>(`destination`, `options?`): `T`
+**pipe**<`T`\>(`destination`, `options?`): `T`
 
 <ParameterTypes parameters={[
   {
@@ -653,7 +653,7 @@ ___
 
 ### prependListener
 
-▸ **prependListener**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
+**prependListener**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
 
 Adds the `listener` function to the _beginning_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -716,7 +716,7 @@ ___
 
 ### prependOnceListener
 
-▸ **prependOnceListener**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
+**prependOnceListener**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
 
 Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
@@ -777,7 +777,7 @@ ___
 
 ### rawListeners
 
-▸ **rawListeners**(`eventName`): `Function`[]
+**rawListeners**(`eventName`): `Function`[]
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -847,7 +847,7 @@ ___
 
 ### removeAllListeners
 
-▸ **removeAllListeners**(`event?`): [`internal`](admin_discounts.internal.internal-5.mdx)
+**removeAllListeners**(`event?`): [`internal`](admin_discounts.internal.internal-5.mdx)
 
 Removes all listeners, or those of the specified `eventName`.
 
@@ -897,7 +897,7 @@ ___
 
 ### removeListener
 
-▸ **removeListener**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
+**removeListener**(`eventName`, `listener`): [`internal`](admin_discounts.internal.internal-5.mdx)
 
 Removes the specified `listener` from the listener array for the event named`eventName`.
 
@@ -1027,7 +1027,7 @@ ___
 
 ### setMaxListeners
 
-▸ **setMaxListeners**(`n`): [`internal`](admin_discounts.internal.internal-5.mdx)
+**setMaxListeners**(`n`): [`internal`](admin_discounts.internal.internal-5.mdx)
 
 By default `EventEmitter`s will print a warning if more than `10` listeners are
 added for a particular event. This is a useful default that helps finding
@@ -1076,7 +1076,7 @@ ___
 
 ### getEventListeners
 
-▸ `Static` **getEventListeners**(`emitter`, `name`): `Function`[]
+`Static` **getEventListeners**(`emitter`, `name`): `Function`[]
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -1151,7 +1151,7 @@ ___
 
 ### listenerCount
 
-▸ `Static` **listenerCount**(`emitter`, `eventName`): `number`
+`Static` **listenerCount**(`emitter`, `eventName`): `number`
 
 A class method that returns the number of listeners for the given `eventName`registered on the given `emitter`.
 
@@ -1217,7 +1217,7 @@ ___
 
 ### on
 
-▸ `Static` **on**(`emitter`, `eventName`, `options?`): [`AsyncIterableIterator`](../interfaces/admin_discounts.internal.AsyncIterableIterator.mdx)<`any`\>
+`Static` **on**(`emitter`, `eventName`, `options?`): [`AsyncIterableIterator`](../interfaces/admin_discounts.internal.AsyncIterableIterator.mdx)<`any`\>
 
 ```js
 import { on, EventEmitter } from 'node:events';
@@ -1339,7 +1339,7 @@ ___
 
 ### once
 
-▸ `Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
+`Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -1488,7 +1488,7 @@ v11.13.0, v10.16.0
 
 [EventEmitter](admin_discounts.internal.EventEmitter-1.mdx).[once](admin_discounts.internal.EventEmitter-1.mdx#once-1)
 
-▸ `Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
+`Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
 
 #### Parameters
 
@@ -1560,7 +1560,7 @@ ___
 
 ### setMaxListeners
 
-▸ `Static` **setMaxListeners**(`n?`, `...eventTargets`): `void`
+`Static` **setMaxListeners**(`n?`, `...eventTargets`): `void`
 
 ```js
 import { setMaxListeners, EventEmitter } from 'node:events';

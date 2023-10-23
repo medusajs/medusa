@@ -19,12 +19,12 @@ The Medusa core provides the necessary implementation and functionalities that a
 A claim is represented by the `ClaimOrder` entity. Some of its attributes include:
 
 - `type`: a string indicating the type of the claim. Its value can be either `refund` or `replace`.
-- `payment_status`: a string indicating the status of the claim’s payment. Its possible values are indicated by the [ClaimPaymentStatus enum](../../references/entities/enums/ClaimPaymentStatus.md). This attribute is useful to check the status of the payment if the claim’s type is `refund`.
-- `fulfillment_status`: a string indicating the status of the claim’s fulfillment. Its possible values are indicated by the [ClaimFulfillmentStatus enum](../../references/entities/enums/ClaimFulfillmentStatus.md). This attribute is useful to check the status of the fulfillment if the claim’s type is `replace`.
+- `payment_status`: a string indicating the status of the claim’s payment. Its possible values are indicated by the [ClaimPaymentStatus enum](../../references/entities/enums/ClaimPaymentStatus.mdx). This attribute is useful to check the status of the payment if the claim’s type is `refund`.
+- `fulfillment_status`: a string indicating the status of the claim’s fulfillment. Its possible values are indicated by the [ClaimFulfillmentStatus enum](../../references/entities/enums/ClaimFulfillmentStatus.mdx). This attribute is useful to check the status of the fulfillment if the claim’s type is `replace`.
 - `refund_amount`: an integer used to indicate the amount that should be refunded to the customer. This is only useful if the claim’s type is `refund`.
 - `canceled_at`: a date indicating when the claim was canceled.
 
-There are other important attributes discussed in later sections. Check out the [full ClaimOrder entity in the entities reference](../../references/entities/classes/ClaimOrder.md).
+There are other important attributes discussed in later sections. Check out the [full ClaimOrder entity in the entities reference](../../references/entities/classes/ClaimOrder.mdx).
 
 ---
 
