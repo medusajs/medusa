@@ -37,7 +37,7 @@ describe("SalesChannelService", () => {
         return Promise.resolve()
       }),
     }),
-    getFreeTextSearchResultsAndCount: jest.fn().mockImplementation(() =>
+    getFreeTextSearchResults: jest.fn().mockImplementation(() =>
       Promise.resolve([
         {
           id: IdMap.getId("sales_channel_1"),
@@ -139,11 +139,9 @@ describe("SalesChannelService", () => {
         ...salesChannelData,
       })
 
-      expect(
-        salesChannelRepositoryMock.findOne
-      ).toHaveBeenLastCalledWith({
+      expect(salesChannelRepositoryMock.findOne).toHaveBeenLastCalledWith({
         where: { id: IdMap.getId("sales_channel_1") },
-        relationLoadStrategy: "query"
+        relationLoadStrategy: "query",
       })
     })
   })
@@ -212,14 +210,15 @@ describe("SalesChannelService", () => {
 
       expect(salesChannelRepositoryMock.findAndCount).toHaveBeenCalledTimes(0)
       expect(
-        salesChannelRepositoryMock.getFreeTextSearchResultsAndCount
+        salesChannelRepositoryMock.getFreeTextSearchResults
       ).toHaveBeenCalledTimes(1)
       expect(
-        salesChannelRepositoryMock.getFreeTextSearchResultsAndCount
+        salesChannelRepositoryMock.getFreeTextSearchResults
       ).toHaveBeenLastCalledWith(q, {
         skip: 0,
         take: 20,
         where: {},
+        withCount: true,
       })
     })
 
@@ -239,7 +238,7 @@ describe("SalesChannelService", () => {
       )
 
       expect(
-        salesChannelRepositoryMock.getFreeTextSearchResultsAndCount
+        salesChannelRepositoryMock.getFreeTextSearchResults
       ).toHaveBeenCalledTimes(0)
       expect(salesChannelRepositoryMock.findAndCount).toHaveBeenCalledTimes(1)
       expect(salesChannelRepositoryMock.findAndCount).toHaveBeenLastCalledWith({

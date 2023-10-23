@@ -125,8 +125,9 @@ class SalesChannelService extends TransactionBaseService {
   }
 
   /**
-   * Lists sales channels based on the provided parameters and includes the count of
+   * Lists sales channels based on the provided parameters and include the count of
    * sales channels that match the query.
+   *
    * @return an array containing the sales channels as
    *   the first element and the total count of sales channels that matches the query
    *   as the second element.
@@ -152,18 +153,19 @@ class SalesChannelService extends TransactionBaseService {
     const query = buildQuery(selector_, config)
 
     if (q) {
-      return await salesChannelRepo.getFreeTextSearchResultsAndCount(q, query)
+      return (await salesChannelRepo.getFreeTextSearchResults(q, {
+        ...query,
+        withCount: true,
+      })) as [SalesChannel[], number]
     }
 
     return await salesChannelRepo.findAndCount(query)
   }
 
   /**
-   * Lists sales channels based on the provided parameters and includes the count of
-   * sales channels that match the query.
-   * @return an array containing the sales channels as
-   *   the first element and the total count of sales channels that matches the query
-   *   as the second element.
+   * Lists sales channels based on the provided parameters.
+   *
+   * @return an array containing the sales channels
    */
   async list(
     selector: QuerySelector<SalesChannel>,
@@ -172,8 +174,27 @@ class SalesChannelService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<SalesChannel[]> {
-    const [salesChannels] = await this.listAndCount(selector, config)
-    return salesChannels
+    const salesChannelRepo = this.activeManager_.withRepository(
+      this.salesChannelRepository_
+    )
+
+    const selector_ = { ...selector }
+    let q: string | undefined
+    if ("q" in selector_) {
+      q = selector_.q
+      delete selector_.q
+    }
+
+    const query = buildQuery(selector_, config)
+
+    if (q) {
+      return (await salesChannelRepo.getFreeTextSearchResults(
+        q,
+        query
+      )) as SalesChannel[]
+    }
+
+    return await salesChannelRepo.find(query)
   }
 
   /**

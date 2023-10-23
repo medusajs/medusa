@@ -8,12 +8,12 @@ const productSalesChannelTable = "product_sales_channel"
 export const SalesChannelRepository = dataSource
   .getRepository(SalesChannel)
   .extend({
-    async getFreeTextSearchResultsAndCount(
+    async getFreeTextSearchResults(
       q: string,
-      options: ExtendedFindConfig<SalesChannel> = {
+      options: ExtendedFindConfig<SalesChannel> & { withCount?: boolean } = {
         where: {},
       }
-    ): Promise<[SalesChannel[], number]> {
+    ): Promise<SalesChannel[] | [SalesChannel[], number]> {
       const options_ = { ...options }
 
       options_.where = options_.where as FindOptionsWhere<SalesChannel>
@@ -41,7 +41,7 @@ export const SalesChannelRepository = dataSource
         qb = qb.withDeleted()
       }
 
-      return await qb.getManyAndCount()
+      return await (options_.withCount ? qb.getManyAndCount() : qb.getMany())
     },
 
     async removeProducts(
