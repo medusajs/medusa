@@ -146,6 +146,31 @@ export class PostgresProvider {
     }
   }
 
+  protected static parseMessageData<T>(message?: Message<T>) {
+    const isMessageShape = isDefined((message as Message<unknown>)?.body)
+
+    if (!isMessageShape) {
+      return
+    }
+
+    const result: {
+      action: string
+      data: { id: string }[]
+      ids: string[]
+    } = {
+      action: "",
+      data: [],
+      ids: [],
+    }
+
+    result.action = (message as Message<unknown>).body.metadata.action
+    result.data = (message as Message<unknown>).body.data as { id: string }[]
+    result.data = Array.isArray(result.data) ? result.data : [result.data]
+    result.ids = result.data.map((d) => d.id)
+
+    return result
+  }
+
   async query(selection: QueryFormat, options?: QueryOptions) {
     await this.#isReady_
 
@@ -231,17 +256,17 @@ export class PostgresProvider {
     return async (data: Message<unknown> | unknown, eventName: string) => {
       await this.#isReady_
 
-      const isMessageShape = isDefined((data as Message<unknown>).body)
-
       let action = eventName.split(".").pop() || ""
       let data_: { id: string }[] = Array.isArray(data) ? data : [data]
       let ids: string[] = data_.map((d) => d.id)
 
-      if (isMessageShape) {
-        action = (data as Message<unknown>).body.metadata.action
-        data_ = (data as Message<unknown>).body.data as { id: string }[]
-        data_ = Array.isArray(data_) ? data_ : [data_]
-        ids = data_.map((d) => d.id)
+      const parsedMessage = PostgresProvider.parseMessageData(
+        data as Message<unknown>
+      )
+      if (parsedMessage) {
+        action = parsedMessage.action
+        data_ = parsedMessage.data
+        ids = parsedMessage.ids
       }
 
       const { fields, alias } = schemaEntityObjectRepresentation
