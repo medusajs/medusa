@@ -154,6 +154,8 @@ servers:
 paths:
   /store/auth:
     $ref: paths/store_auth.yaml
+  /store/auth/token:
+    $ref: paths/store_auth_token.yaml
   /store/auth/{email}:
     $ref: paths/store_auth_{email}.yaml
   /store/carts:
@@ -262,8 +264,6 @@ paths:
     $ref: paths/store_swaps.yaml
   /store/swaps/{cart_id}:
     $ref: paths/store_swaps_{cart_id}.yaml
-  /store/token:
-    $ref: paths/store_token.yaml
   /store/variants:
     $ref: paths/store_variants.yaml
   /store/variants/{id}:
