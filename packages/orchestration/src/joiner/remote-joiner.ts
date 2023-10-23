@@ -599,7 +599,7 @@ export class RemoteJoiner {
             location: currentPath,
             property: prop,
             path: fullPath,
-            isList: serviceConfig.relationships?.find(
+            isList: !!serviceConfig.relationships?.find(
               (relationship) => relationship.alias === fullPath[0]
             )?.isList,
           })
