@@ -159,6 +159,24 @@ class SalesChannelService extends TransactionBaseService {
   }
 
   /**
+   * Lists sales channels based on the provided parameters and includes the count of
+   * sales channels that match the query.
+   * @return an array containing the sales channels as
+   *   the first element and the total count of sales channels that matches the query
+   *   as the second element.
+   */
+  async list(
+    selector: QuerySelector<SalesChannel>,
+    config: FindConfig<SalesChannel> = {
+      skip: 0,
+      take: 20,
+    }
+  ): Promise<SalesChannel[]> {
+    const [salesChannels] = await this.listAndCount(selector, config)
+    return salesChannels
+  }
+
+  /**
    * Creates a SalesChannel
    *
    * @experimental This feature is under development and may change in the future.
