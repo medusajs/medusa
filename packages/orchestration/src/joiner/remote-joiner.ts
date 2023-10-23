@@ -30,6 +30,7 @@ export class RemoteJoiner {
     location: string[]
     property: string
     path: string[]
+    isList?: boolean
   }[] = []
 
   private static filterFields(
@@ -389,7 +390,7 @@ export class RemoteJoiner {
         }
 
         if (Array.isArray(currentItems)) {
-          if (currentItems.length < 2) {
+          if (currentItems.length < 2 && !alias.isList) {
             locationItem[alias.property] = currentItems.shift()
           } else {
             locationItem[alias.property] = currentItems
@@ -596,6 +597,9 @@ export class RemoteJoiner {
             location: currentPath,
             property: prop,
             path: fullPath,
+            isList: serviceConfig.relationships?.find(
+              (relationship) => relationship.alias === prop
+            )?.isList,
           })
 
           const extMapping = expands as unknown[]
