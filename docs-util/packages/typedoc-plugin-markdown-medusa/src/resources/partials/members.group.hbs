@@ -14,11 +14,23 @@ ___
 
 {{/unless}}
 
+{{#if (showPropertiesAsComponent title)}}
+
+{{#with children}}
+
+{{{parameterComponent}}}
+
+{{/with}}
+
+{{else}}
+
 {{#each children}}
 
 {{> member}}
 
 {{/each}}
+
+{{/if}}
 
 {{/each}}
 
@@ -30,11 +42,23 @@ ___
 
 {{/unless}}
 
+{{#if (showPropertiesAsComponent title)}}
+
+{{#with children}}
+
+{{{parameterComponent}}}
+
+{{/with}}
+
+{{else}}
+
 {{#each children}}
 
 {{> member}}
 
 {{/each}}
+
+{{/if}}
 
 {{/if}}
 

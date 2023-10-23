@@ -18,7 +18,7 @@ export const Badge = ({ className, variant, children }: BadgeProps) => {
   return (
     <span
       className={clsx(
-        "text-compact-x-small-plus px-docs_0.4 rounded-docs_sm border border-solid py-px text-center",
+        "text-compact-x-small-plus px-docs_0.25 py-0 rounded-docs_sm border border-solid text-center",
         variant === "purple" &&
           "bg-medusa-tag-purple-bg text-medusa-tag-purple-text border-medusa-tag-purple-border",
         variant === "orange" &&

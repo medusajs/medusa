@@ -13,7 +13,6 @@ import {
   Theme,
   UrlMapping,
 } from "typedoc"
-import { getKindPlural } from "./groups"
 import {
   indexTemplate,
   reflectionMemberTemplate,
@@ -26,7 +25,6 @@ import {
   FormattingOptionType,
   FormattingOptionsType,
   Mapping,
-  NavigationItem,
   ObjectLiteralDeclarationStyle,
 } from "./types"
 
@@ -49,6 +47,7 @@ export class MarkdownTheme extends Theme {
   preserveAnchorCasing!: boolean
   objectLiteralTypeDeclarationStyle: ObjectLiteralDeclarationStyle
   formattingOptions: FormattingOptionsType
+  mdxOutput: boolean
 
   project?: ProjectReflection
   reflection?: DeclarationReflection
@@ -85,6 +84,7 @@ export class MarkdownTheme extends Theme {
     this.formattingOptions = this.getOption(
       "formatting"
     ) as FormattingOptionsType
+    this.mdxOutput = this.getOption("mdxOutput") as boolean
 
     this.listenTo(this.owner, {
       [RendererEvent.BEGIN]: this.onBeginRenderer,
@@ -139,9 +139,9 @@ export class MarkdownTheme extends Theme {
     reflection: DeclarationReflection,
     urls: UrlMapping[]
   ): UrlMapping[] {
-    const mapping = this.mappings.find((mapping) =>
-      reflection.kindOf(mapping.kind)
-    )
+    const mapping = this.getMappings(
+      reflection.parent?.isProject() ? "" : reflection.parent?.getAlias()
+    ).find((mapping) => reflection.kindOf(mapping.kind))
     if (mapping) {
       if (!reflection.url || !MarkdownTheme.URL_PREFIX.test(reflection.url)) {
         const url = this.toUrl(mapping, reflection)
@@ -164,7 +164,12 @@ export class MarkdownTheme extends Theme {
   }
 
   toUrl(mapping: Mapping, reflection: DeclarationReflection) {
-    return mapping.directory + "/" + this.getUrl(reflection) + ".md"
+    return (
+      mapping.directory +
+      "/" +
+      this.getUrl(reflection) +
+      (this.mdxOutput ? ".mdx" : ".md")
+    )
   }
 
   getUrl(reflection: Reflection, relative?: Reflection): string {
@@ -266,103 +271,36 @@ export class MarkdownTheme extends Theme {
     }
   }
 
-  getNavigation(project: ProjectReflection) {
-    const urls = this.getUrls(project)
-
-    const getUrlMapping = (name: string) => {
-      if (!name) {
-        return ""
-      }
-      return urls.find((url) => url.model.name === name)
-    }
-
-    const createNavigationItem = (
-      title: string,
-      url: string | undefined,
-      isLabel: boolean,
-      children: NavigationItem[] = []
-    ) => {
-      const navigationItem = new NavigationItem(title, url)
-      navigationItem.isLabel = isLabel
-      navigationItem.children = children
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { reflection, parent, ...filteredNavigationItem } = navigationItem
-      return filteredNavigationItem as NavigationItem
-    }
-    const navigation = createNavigationItem(project.name, undefined, false)
-    const hasReadme = !this.readme.endsWith("none")
-    if (hasReadme) {
-      navigation.children?.push(
-        createNavigationItem("Readme", this.entryDocument, false)
-      )
-    }
-    if (this.entryPoints.length === 1) {
-      navigation.children?.push(
-        createNavigationItem(
-          "Exports",
-          hasReadme ? this.globalsFile : this.entryDocument,
-          false
-        )
-      )
-    }
-    this.mappings.forEach((mapping) => {
-      const kind = mapping.kind[0]
-      const items = project.getReflectionsByKind(kind)
-      if (items.length > 0) {
-        const children = items
-          .map((item) => {
-            const urlMapping = getUrlMapping(item.name) || ""
-            return createNavigationItem(
-              item.getFullName(),
-              typeof urlMapping === "string" ? urlMapping : urlMapping.url,
-              true
-            )
-          })
-          .sort((a, b) => {
-            return a.title > b.title ? 1 : -1
-          })
-        const group = createNavigationItem(
-          getKindPlural(kind),
-          undefined,
-          true,
-          children
-        )
-        navigation.children?.push(group)
-      }
-    })
-    return navigation
-  }
-
-  get mappings(): Mapping[] {
+  getMappings(directoryPrefix?: string): Mapping[] {
     return [
       {
         kind: [ReflectionKind.Module],
         isLeaf: false,
-        directory: "modules",
+        directory: path.join(directoryPrefix || "", "modules"),
         template: this.getReflectionTemplate(),
       },
       {
         kind: [ReflectionKind.Namespace],
         isLeaf: false,
-        directory: "modules",
+        directory: path.join(directoryPrefix || "", "modules"),
         template: this.getReflectionTemplate(),
       },
       {
         kind: [ReflectionKind.Enum],
         isLeaf: false,
-        directory: "enums",
+        directory: path.join(directoryPrefix || "", "enums"),
         template: this.getReflectionTemplate(),
       },
       {
         kind: [ReflectionKind.Class],
         isLeaf: false,
-        directory: "classes",
+        directory: path.join(directoryPrefix || "", "classes"),
         template: this.getReflectionTemplate(),
       },
       {
         kind: [ReflectionKind.Interface],
         isLeaf: false,
-        directory: "interfaces",
+        directory: path.join(directoryPrefix || "", "interfaces"),
         template: this.getReflectionTemplate(),
       },
       ...(this.allReflectionsHaveOwnDocument
@@ -370,19 +308,25 @@ export class MarkdownTheme extends Theme {
             {
               kind: [ReflectionKind.TypeAlias],
               isLeaf: true,
-              directory: "types",
+              directory: path.join(directoryPrefix || "", "types"),
               template: this.getReflectionMemberTemplate(),
             },
             {
               kind: [ReflectionKind.Variable],
               isLeaf: true,
-              directory: "variables",
+              directory: path.join(directoryPrefix || "", "variables"),
               template: this.getReflectionMemberTemplate(),
             },
             {
               kind: [ReflectionKind.Function],
               isLeaf: true,
-              directory: "functions",
+              directory: path.join(directoryPrefix || "", "functions"),
+              template: this.getReflectionMemberTemplate(),
+            },
+            {
+              kind: [ReflectionKind.Method],
+              isLeaf: true,
+              directory: path.join(directoryPrefix || "", "methods"),
               template: this.getReflectionMemberTemplate(),
             },
           ]
@@ -427,7 +371,7 @@ export class MarkdownTheme extends Theme {
   }
 
   get globalsFile() {
-    return "modules.md"
+    return `modules.${this.mdxOutput ? "mdx" : "md"}`
   }
 
   getFormattingOptionsForLocation(): FormattingOptionType {

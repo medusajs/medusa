@@ -1,14 +1,15 @@
 import {
+  AdminDeletePriceListPricesPricesReq,
+  AdminDeletePriceListsPriceListProductsPricesBatchReq,
+  AdminGetPriceListPaginationParams,
+  AdminGetPriceListsPriceListProductsParams,
   AdminPostPriceListPricesPricesReq,
   AdminPostPriceListsPriceListPriceListReq,
   AdminPostPriceListsPriceListReq,
+  AdminPriceListDeleteBatchRes,
   AdminPriceListDeleteRes,
   AdminPriceListRes,
-  AdminGetPriceListPaginationParams,
   AdminPriceListsListRes,
-  AdminDeletePriceListPricesPricesReq,
-  AdminPriceListDeleteBatchRes,
-  AdminGetPriceListsPriceListProductsParams,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -111,6 +112,15 @@ class AdminPriceListResource extends BaseResource {
   ): ResponsePromise<AdminPriceListDeleteBatchRes> {
     const path = `/admin/price-lists/${priceListId}/variants/${variantId}/prices`
     return this.client.request("DELETE", path, undefined, {}, customHeaders)
+  }
+
+  deleteProductsPrices(
+    priceListId: string,
+    payload: AdminDeletePriceListsPriceListProductsPricesBatchReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminPriceListDeleteBatchRes> {
+    const path = `/admin/price-lists/${priceListId}/products/prices/batch`
+    return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 }
 

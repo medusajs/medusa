@@ -18,6 +18,7 @@ import AnalyticsConfigForm, {
   AnalyticsConfigFormType,
 } from "../components/organisms/analytics-config-form"
 import { nestedForm } from "../utils/nested-form"
+import { useFeatureFlag } from "../providers/feature-flag-provider"
 
 type FormValues = {
   password: string
@@ -69,6 +70,8 @@ const InvitePage = () => {
     setError,
   } = form
 
+  const { isFeatureEnabled } = useFeatureFlag()
+
   const { mutateAsync: acceptInvite, isLoading: acceptInviteIsLoading } =
     useAdminAcceptInvite()
   const {
@@ -116,7 +119,9 @@ const InvitePage = () => {
         !data.analytics.opt_out &&
         token?.user_email
 
-      await createAnalyticsConfig(data.analytics)
+      if (isFeatureEnabled("analytics")) {
+        await createAnalyticsConfig(data.analytics)
+      }
 
       if (shouldTrackEmail) {
         trackUserEmail({
