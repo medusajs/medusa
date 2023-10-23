@@ -58,7 +58,7 @@ It’s important to enable a payment processor in a region, or else the payment 
 
 ### PaymentProvider Entity Overview
 
-The [`PaymentProvider`](../../references/entities/classes/PaymentProvider.md) entity only has 2 attributes: `is_installed` which is a boolean value indicating whether the Payment Processor is installed; and `id` which is the unique identifier that you define in the Payment Processor service.
+The [`PaymentProvider`](../../references/entities/classes/PaymentProvider.mdx) entity only has 2 attributes: `is_installed` which is a boolean value indicating whether the Payment Processor is installed; and `id` which is the unique identifier that you define in the Payment Processor service.
 
 ---
 
@@ -82,7 +82,7 @@ Among the Payment Sessions available only one will be selected based on the cust
 
 ### PaymentSession Entity Overview
 
-The [`PaymentSession`](../../references/entities/classes/PaymentSession.md) entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
+The [`PaymentSession`](../../references/entities/classes/PaymentSession.mdx) entity belongs to a `Cart`. This is the customer‘s cart that was used for checkout which lead to the creation of the Payment Session.
 
 The `PaymentSession` instance also belongs to a `PaymentProvider` instance. This is the Payment Processor that was used to create the Payment Session and that controls it for further actions like authorizing the payment.
 
@@ -116,7 +116,7 @@ When the store operator then chooses to capture the order from the Medusa Admin,
 
 ### Payment Entity Overview
 
-The [`Payment`](../../references/entities/classes/Payment.md) entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment processor that the customer chose on checkout.
+The [`Payment`](../../references/entities/classes/Payment.mdx) entity belongs to the `Cart` that it was originally created from when the customer’s payment was authorized. It also belongs to an `Order` once it’s placed. Additionally, it belongs to a `PaymentProvider` which is the payment processor that the customer chose on checkout.
 
 In case a `Swap` is created for an order, `Payment` will be associated with that swap to handle payment operations related to it.
 

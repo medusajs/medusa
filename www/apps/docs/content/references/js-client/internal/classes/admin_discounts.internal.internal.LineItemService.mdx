@@ -137,7 +137,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -162,7 +162,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -239,7 +239,7 @@ ___
 
 ### cloneTo
 
-▸ **cloneTo**(`ids`, `data?`, `options?`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
+**cloneTo**(`ids`, `data?`, `options?`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
 
 #### Parameters
 
@@ -315,7 +315,7 @@ ___
 
 ### create
 
-▸ **create**<`T`, `TResult`\>(`data`): `Promise`<`TResult`\>
+**create**<`T`, `TResult`\>(`data`): `Promise`<`TResult`\>
 
 Create a line item
 
@@ -370,7 +370,7 @@ ___
 
 ### createReturnLines
 
-▸ **createReturnLines**(`returnId`, `cartId`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
+**createReturnLines**(`returnId`, `cartId`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
 
 Creates return line items for a given cart based on the return items in a
 return.
@@ -433,7 +433,7 @@ ___
 
 ### createTaxLine
 
-▸ **createTaxLine**(`args`): [`LineItemTaxLine`](admin_collections.internal.LineItemTaxLine.mdx)
+**createTaxLine**(`args`): [`LineItemTaxLine`](admin_collections.internal.LineItemTaxLine.mdx)
 
 Create a line item tax line.
 
@@ -469,7 +469,7 @@ ___
 
 ### delete
 
-▸ **delete**(`id`): `Promise`<`undefined` \| ``null`` \| [`LineItem`](admin_collections.internal.LineItem.mdx)\>
+**delete**(`id`): `Promise`<`undefined` \| ``null`` \| [`LineItem`](admin_collections.internal.LineItem.mdx)\>
 
 Deletes a line item.
 
@@ -514,7 +514,7 @@ ___
 
 ### deleteWithTaxLines
 
-▸ **deleteWithTaxLines**(`id`): `Promise`<`undefined` \| ``null`` \| [`LineItem`](admin_collections.internal.LineItem.mdx)\>
+**deleteWithTaxLines**(`id`): `Promise`<`undefined` \| ``null`` \| [`LineItem`](admin_collections.internal.LineItem.mdx)\>
 
 #### Parameters
 
@@ -562,7 +562,7 @@ ___
 
 ### generate
 
-▸ **generate**<`T`, `TResult`\>(`variantIdOrData`, `regionIdOrContext`, `quantity?`, `context?`): `Promise`<`TResult`\>
+**generate**<`T`, `TResult`\>(`variantIdOrData`, `regionIdOrContext`, `quantity?`, `context?`): `Promise`<`TResult`\>
 
 Generate a single or multiple line item without persisting the data into the db
 
@@ -641,7 +641,7 @@ ___
 
 ### generateLineItem
 
-▸ `Protected` **generateLineItem**(`variant`, `quantity`, `context`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)\>
+`Protected` **generateLineItem**(`variant`, `quantity`, `context`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)\>
 
 #### Parameters
 
@@ -764,7 +764,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
 
 #### Parameters
 
@@ -824,7 +824,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)\>
+**retrieve**(`id`, `config?`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)\>
 
 Retrieves a line item by its id.
 
@@ -877,7 +877,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -915,7 +915,7 @@ ___
 
 ### update
 
-▸ **update**(`idOrSelector`, `data`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
+**update**(`idOrSelector`, `data`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx)[]\>
 
 Updates a line item
 
@@ -977,7 +977,7 @@ ___
 
 ### validateGenerateArguments
 
-▸ `Protected` **validateGenerateArguments**<`T`, `TResult`\>(`variantIdOrData`, `regionIdOrContext`, `quantity?`): `void`
+`Protected` **validateGenerateArguments**<`T`, `TResult`\>(`variantIdOrData`, `regionIdOrContext`, `quantity?`): `void`
 
 <ParameterTypes parameters={[
   {
@@ -1046,7 +1046,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`LineItemService`](admin_discounts.internal.internal.LineItemService.mdx)
+**withTransaction**(`transactionManager?`): [`LineItemService`](admin_discounts.internal.internal.LineItemService.mdx)
 
 #### Parameters
 

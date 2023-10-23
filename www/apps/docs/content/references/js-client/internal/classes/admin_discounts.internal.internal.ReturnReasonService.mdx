@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -90,7 +90,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -167,7 +167,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`ReturnReason`](admin_collections.internal.ReturnReason.mdx)\>
+**create**(`data`): `Promise`<[`ReturnReason`](admin_collections.internal.ReturnReason.mdx)\>
 
 #### Parameters
 
@@ -210,7 +210,7 @@ ___
 
 ### delete
 
-▸ **delete**(`returnReasonId`): `Promise`<`void`\>
+**delete**(`returnReasonId`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -244,7 +244,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`ReturnReason`](admin_collections.internal.ReturnReason.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`ReturnReason`](admin_collections.internal.ReturnReason.mdx)[]\>
 
 #### Parameters
 
@@ -304,7 +304,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`returnReasonId`, `config?`): `Promise`<[`ReturnReason`](admin_collections.internal.ReturnReason.mdx)\>
+**retrieve**(`returnReasonId`, `config?`): `Promise`<[`ReturnReason`](admin_collections.internal.ReturnReason.mdx)\>
 
 Gets an order by id.
 
@@ -357,7 +357,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -395,7 +395,7 @@ ___
 
 ### update
 
-▸ **update**(`id`, `data`): `Promise`<[`ReturnReason`](admin_collections.internal.ReturnReason.mdx)\>
+**update**(`id`, `data`): `Promise`<[`ReturnReason`](admin_collections.internal.ReturnReason.mdx)\>
 
 #### Parameters
 
@@ -446,7 +446,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ReturnReasonService`](admin_discounts.internal.internal.ReturnReasonService.mdx)
+**withTransaction**(`transactionManager?`): [`ReturnReasonService`](admin_discounts.internal.internal.ReturnReasonService.mdx)
 
 #### Parameters
 

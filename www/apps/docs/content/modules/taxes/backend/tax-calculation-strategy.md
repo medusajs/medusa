@@ -89,8 +89,8 @@ If automatic tax calculation is disabled, then the tax calculation strategy will
 
 The `calculate` method expects three parameters:
 
-- `items`: the first parameter is an array of [line item](../../../references/entities/classes/LineItem.md) objects.
-- `taxLines`: the second parameter is an array of either [shipping method tax line](../../../references/entities/classes/ShippingMethodTaxLine.md) or [line item tax line](../../../references/entities/classes/LineItemTaxLine.md) objects.
+- `items`: the first parameter is an array of [line item](../../../references/entities/classes/LineItem.mdx) objects.
+- `taxLines`: the second parameter is an array of either [shipping method tax line](../../../references/entities/classes/ShippingMethodTaxLine.mdx) or [line item tax line](../../../references/entities/classes/LineItemTaxLine.mdx) objects.
 - `calculationContext`: an object holding the context of the tax calculation. The object has the following properties:
   - `shipping_address`: an optional address object used for shipping.
   - `customer`: an optional customer object.

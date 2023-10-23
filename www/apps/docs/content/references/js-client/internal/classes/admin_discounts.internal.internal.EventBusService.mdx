@@ -112,7 +112,7 @@ subscribers when events happen. Events will run asynchronously.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -137,7 +137,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -214,7 +214,7 @@ ___
 
 ### emit
 
-▸ **emit**<`T`\>(`data`): `Promise`<`void` \| [`StagedJob`](admin_discounts.internal.internal.StagedJob.mdx)[]\>
+**emit**<`T`\>(`data`): `Promise`<`void` \| [`StagedJob`](admin_discounts.internal.internal.StagedJob.mdx)[]\>
 
 Calls all subscribers when an event occurs.
 
@@ -270,7 +270,7 @@ Calls all subscribers when an event occurs.
 
 [IEventBusService](../interfaces/admin_discounts.internal.IEventBusService.mdx).[emit](../interfaces/admin_discounts.internal.IEventBusService.mdx#emit)
 
-▸ **emit**<`T`\>(`eventName`, `data`, `options?`): `Promise`<`void` \| [`StagedJob`](admin_discounts.internal.internal.StagedJob.mdx)\>
+**emit**<`T`\>(`eventName`, `data`, `options?`): `Promise`<`void` \| [`StagedJob`](admin_discounts.internal.internal.StagedJob.mdx)\>
 
 Calls all subscribers when an event occurs.
 
@@ -346,7 +346,7 @@ ___
 
 ### enqueuer\_
 
-▸ **enqueuer_**(): `Promise`<`void`\>
+**enqueuer_**(): `Promise`<`void`\>
 
 #### Returns
 
@@ -367,7 +367,7 @@ ___
 
 ### listJobs
 
-▸ `Protected` **listJobs**(`listConfig`): `Promise`<`never`[] \| [`StagedJob`](admin_discounts.internal.internal.StagedJob.mdx)[]\>
+`Protected` **listJobs**(`listConfig`): `Promise`<`never`[] \| [`StagedJob`](admin_discounts.internal.internal.StagedJob.mdx)[]\>
 
 #### Parameters
 
@@ -410,7 +410,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -448,7 +448,7 @@ ___
 
 ### startEnqueuer
 
-▸ **startEnqueuer**(): `void`
+**startEnqueuer**(): `void`
 
 #### Returns
 
@@ -469,7 +469,7 @@ ___
 
 ### stopEnqueuer
 
-▸ **stopEnqueuer**(): `Promise`<`void`\>
+**stopEnqueuer**(): `Promise`<`void`\>
 
 #### Returns
 
@@ -490,7 +490,7 @@ ___
 
 ### subscribe
 
-▸ **subscribe**(`event`, `subscriber`, `context?`): [`EventBusService`](admin_discounts.internal.internal.EventBusService.mdx)
+**subscribe**(`event`, `subscriber`, `context?`): [`EventBusService`](admin_discounts.internal.internal.EventBusService.mdx)
 
 Adds a function to a list of event subscribers.
 
@@ -546,7 +546,7 @@ ___
 
 ### unsubscribe
 
-▸ **unsubscribe**(`event`, `subscriber`, `context`): [`EventBusService`](admin_discounts.internal.internal.EventBusService.mdx)
+**unsubscribe**(`event`, `subscriber`, `context`): [`EventBusService`](admin_discounts.internal.internal.EventBusService.mdx)
 
 Removes function from the list of event subscribers.
 
@@ -602,7 +602,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`EventBusService`](admin_discounts.internal.internal.EventBusService.mdx)
+**withTransaction**(`transactionManager?`): [`EventBusService`](admin_discounts.internal.internal.EventBusService.mdx)
 
 #### Parameters
 

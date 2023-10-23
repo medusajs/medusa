@@ -33,7 +33,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### createClient
 
-▸ **createClient**(`config`): [`AxiosInstance`](../interfaces/swaps.internal.AxiosInstance.mdx)
+**createClient**(`config`): [`AxiosInstance`](../interfaces/swaps.internal.AxiosInstance.mdx)
 
 Creates the axios client used for requests
 As part of the creation, we configure the retry conditions
@@ -71,7 +71,7 @@ ___
 
 ### normalizeHeader
 
-▸ **normalizeHeader**(`header`): `string`
+**normalizeHeader**(`header`): `string`
 
 #### Parameters
 
@@ -105,7 +105,7 @@ ___
 
 ### normalizeHeaders
 
-▸ **normalizeHeaders**(`obj`): Record<`string`, `any`\>
+**normalizeHeaders**(`obj`): Record<`string`, `any`\>
 
 #### Parameters
 
@@ -156,7 +156,7 @@ ___
 
 ### request
 
-▸ **request**(`method`, `path`, `payload?`, `options?`, `customHeaders?`): `Promise`<`any`\>
+**request**(`method`, `path`, `payload?`, `options?`, `customHeaders?`): `Promise`<`any`\>
 
 Axios request
 
@@ -233,7 +233,7 @@ ___
 
 ### requiresAuthentication
 
-▸ **requiresAuthentication**(`path`, `method`): `boolean`
+**requiresAuthentication**(`path`, `method`): `boolean`
 
 #### Parameters
 
@@ -275,7 +275,7 @@ ___
 
 ### setHeaders
 
-▸ **setHeaders**(`userHeaders`, `method`, `path`, `customHeaders?`): [`AxiosRequestHeaders`](../../swaps/modules/swaps.internal.mdx#axiosrequestheaders)
+**setHeaders**(`userHeaders`, `method`, `path`, `customHeaders?`): [`AxiosRequestHeaders`](../../swaps/modules/swaps.internal.mdx#axiosrequestheaders)
 
 Creates all the initial headers.
 We add the idempotency key, if the request is configured to retry.
@@ -336,7 +336,7 @@ ___
 
 ### shouldRetryCondition
 
-▸ **shouldRetryCondition**(`err`, `numRetries`, `maxRetries`): `boolean`
+**shouldRetryCondition**(`err`, `numRetries`, `maxRetries`): `boolean`
 
 #### Parameters
 

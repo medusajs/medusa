@@ -123,7 +123,7 @@ Finds tax providers and assists in tax related operations.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -148,7 +148,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -225,7 +225,7 @@ ___
 
 ### clearLineItemsTaxLines
 
-▸ **clearLineItemsTaxLines**(`itemIds`): `Promise`<`void`\>
+**clearLineItemsTaxLines**(`itemIds`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -259,7 +259,7 @@ ___
 
 ### clearTaxLines
 
-▸ **clearTaxLines**(`cartId`): `Promise`<`void`\>
+**clearTaxLines**(`cartId`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -293,7 +293,7 @@ ___
 
 ### createShippingTaxLines
 
-▸ **createShippingTaxLines**(`shippingMethod`, `calculationContext`): `Promise`<([`ShippingMethodTaxLine`](admin_collections.internal.ShippingMethodTaxLine.mdx) \| [`LineItemTaxLine`](admin_collections.internal.LineItemTaxLine.mdx))[]\>
+**createShippingTaxLines**(`shippingMethod`, `calculationContext`): `Promise`<([`ShippingMethodTaxLine`](admin_collections.internal.ShippingMethodTaxLine.mdx) \| [`LineItemTaxLine`](admin_collections.internal.LineItemTaxLine.mdx))[]\>
 
 Persists the tax lines relevant for a shipping method to the database. Used
 for return shipping methods.
@@ -356,7 +356,7 @@ ___
 
 ### createTaxLines
 
-▸ **createTaxLines**(`cartOrLineItems`, `calculationContext`): `Promise`<([`ShippingMethodTaxLine`](admin_collections.internal.ShippingMethodTaxLine.mdx) \| [`LineItemTaxLine`](admin_collections.internal.LineItemTaxLine.mdx))[]\>
+**createTaxLines**(`cartOrLineItems`, `calculationContext`): `Promise`<([`ShippingMethodTaxLine`](admin_collections.internal.ShippingMethodTaxLine.mdx) \| [`LineItemTaxLine`](admin_collections.internal.LineItemTaxLine.mdx))[]\>
 
 Persists the tax lines relevant for an order to the database.
 
@@ -418,7 +418,7 @@ ___
 
 ### getRegionRatesForProduct
 
-▸ **getRegionRatesForProduct**(`productIds`, `region`): `Promise`<`Map`<`string`, [`TaxServiceRate`](../../admin_discounts/modules/admin_discounts.internal.mdx#taxservicerate)[]\>\>
+**getRegionRatesForProduct**(`productIds`, `region`): `Promise`<`Map`<`string`, [`TaxServiceRate`](../../admin_discounts/modules/admin_discounts.internal.mdx#taxservicerate)[]\>\>
 
 Gets the tax rates configured for a product. The rates are cached between
 calls.
@@ -489,7 +489,7 @@ ___
 
 ### getRegionRatesForShipping
 
-▸ **getRegionRatesForShipping**(`optionId`, `regionDetails`): `Promise`<[`TaxServiceRate`](../../admin_discounts/modules/admin_discounts.internal.mdx#taxservicerate)[]\>
+**getRegionRatesForShipping**(`optionId`, `regionDetails`): `Promise`<[`TaxServiceRate`](../../admin_discounts/modules/admin_discounts.internal.mdx#taxservicerate)[]\>
 
 Gets the tax rates configured for a shipping option. The rates are cached
 between calls.
@@ -552,7 +552,7 @@ ___
 
 ### getShippingTaxLines
 
-▸ **getShippingTaxLines**(`shippingMethod`, `calculationContext`): `Promise`<[`ShippingMethodTaxLine`](admin_collections.internal.ShippingMethodTaxLine.mdx)[]\>
+**getShippingTaxLines**(`shippingMethod`, `calculationContext`): `Promise`<[`ShippingMethodTaxLine`](admin_collections.internal.ShippingMethodTaxLine.mdx)[]\>
 
 Gets the relevant tax lines for a shipping method. Note: this method
 doesn't persist the tax lines. Use createShippingTaxLines if you wish to
@@ -616,7 +616,7 @@ ___
 
 ### getTaxLines
 
-▸ **getTaxLines**(`lineItems`, `calculationContext`): `Promise`<([`ShippingMethodTaxLine`](admin_collections.internal.ShippingMethodTaxLine.mdx) \| [`LineItemTaxLine`](admin_collections.internal.LineItemTaxLine.mdx))[]\>
+**getTaxLines**(`lineItems`, `calculationContext`): `Promise`<([`ShippingMethodTaxLine`](admin_collections.internal.ShippingMethodTaxLine.mdx) \| [`LineItemTaxLine`](admin_collections.internal.LineItemTaxLine.mdx))[]\>
 
 Gets the relevant tax lines for an order or cart. If an order is provided
 the order's tax lines will be returned. If a cart is provided the tax lines
@@ -682,7 +682,7 @@ ___
 
 ### getTaxLinesMap
 
-▸ `Protected` **getTaxLinesMap**(`items`, `calculationContext`): `Promise`<[`TaxLinesMaps`](../../admin_discounts/modules/admin_discounts.internal.mdx#taxlinesmaps)\>
+`Protected` **getTaxLinesMap**(`items`, `calculationContext`): `Promise`<[`TaxLinesMaps`](../../admin_discounts/modules/admin_discounts.internal.mdx#taxlinesmaps)\>
 
 Return a map of tax lines for line items and shipping methods
 
@@ -735,7 +735,7 @@ ___
 
 ### list
 
-▸ **list**(): `Promise`<[`TaxProvider`](admin_collections.internal.TaxProvider.mdx)[]\>
+**list**(): `Promise`<[`TaxProvider`](admin_collections.internal.TaxProvider.mdx)[]\>
 
 #### Returns
 
@@ -774,7 +774,7 @@ ___
 
 ### registerInstalledProviders
 
-▸ **registerInstalledProviders**(`providers`): `Promise`<`void`\>
+**registerInstalledProviders**(`providers`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -808,7 +808,7 @@ ___
 
 ### retrieveProvider
 
-▸ **retrieveProvider**(`region`): [`ITaxService`](../interfaces/admin_discounts.internal.internal.ITaxService.mdx)
+**retrieveProvider**(`region`): [`ITaxService`](../interfaces/admin_discounts.internal.internal.ITaxService.mdx)
 
 Retrieves the relevant tax provider for the given region.
 
@@ -844,7 +844,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -882,7 +882,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`TaxProviderService`](admin_discounts.internal.internal.TaxProviderService.mdx)
+**withTransaction**(`transactionManager?`): [`TaxProviderService`](admin_discounts.internal.internal.TaxProviderService.mdx)
 
 #### Parameters
 

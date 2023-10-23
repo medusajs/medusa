@@ -61,7 +61,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -86,7 +86,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -163,7 +163,7 @@ ___
 
 ### calculateVariantPrice
 
-▸ `Abstract` **calculateVariantPrice**(`data`, `context`): `Promise`<`Map`<`string`, [`PriceSelectionResult`](../modules/admin_discounts.internal.internal.mdx#priceselectionresult)\>\>
+`Abstract` **calculateVariantPrice**(`data`, `context`): `Promise`<`Map`<`string`, [`PriceSelectionResult`](../modules/admin_discounts.internal.internal.mdx#priceselectionresult)\>\>
 
 Calculate the original and discount price for a given variant in a set of
 circumstances described in the context.
@@ -238,7 +238,7 @@ ___
 
 ### onVariantsPricesUpdate
 
-▸ **onVariantsPricesUpdate**(`variantIds`): `Promise`<`void`\>
+**onVariantsPricesUpdate**(`variantIds`): `Promise`<`void`\>
 
 Notify price selection strategy that variants prices have been updated.
 
@@ -278,7 +278,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -316,7 +316,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`AbstractPriceSelectionStrategy`](admin_discounts.internal.internal.AbstractPriceSelectionStrategy.mdx)
+**withTransaction**(`transactionManager?`): [`AbstractPriceSelectionStrategy`](admin_discounts.internal.internal.AbstractPriceSelectionStrategy.mdx)
 
 #### Parameters
 

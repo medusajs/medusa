@@ -179,7 +179,7 @@ Provides layer to manipulate regions.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -204,7 +204,7 @@ TransactionBaseService.activeManager\_
 
 ### addCountry
 
-▸ **addCountry**(`regionId`, `code`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**addCountry**(`regionId`, `code`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Adds a country to the region.
 
@@ -257,7 +257,7 @@ ___
 
 ### addFulfillmentProvider
 
-▸ **addFulfillmentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**addFulfillmentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Adds a fulfillment provider that is available in the region. Fails if the
 provider doesn't exist.
@@ -311,7 +311,7 @@ ___
 
 ### addPaymentProvider
 
-▸ **addPaymentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**addPaymentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Adds a payment provider that is available in the region. Fails if the
 provider doesn't exist.
@@ -365,7 +365,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -442,7 +442,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**create**(`data`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Creates a region.
 
@@ -487,7 +487,7 @@ ___
 
 ### delete
 
-▸ **delete**(`regionId`): `Promise`<`void`\>
+**delete**(`regionId`): `Promise`<`void`\>
 
 Deletes a region.
 
@@ -523,7 +523,7 @@ ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)[]\>
+**list**(`selector?`, `config?`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)[]\>
 
 Lists all regions based on a query
 
@@ -585,7 +585,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector?`, `config?`): `Promise`<[[`Region`](admin_collections.internal.Region.mdx)[], `number`]\>
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`Region`](admin_collections.internal.Region.mdx)[], `number`]\>
 
 Lists all regions based on a query and returns them along with count
 
@@ -646,7 +646,7 @@ ___
 
 ### removeCountry
 
-▸ **removeCountry**(`regionId`, `code`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**removeCountry**(`regionId`, `code`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Removes a country from a Region.
 
@@ -699,7 +699,7 @@ ___
 
 ### removeFulfillmentProvider
 
-▸ **removeFulfillmentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**removeFulfillmentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Removes a fulfillment provider from a region. Is idempotent.
 
@@ -752,7 +752,7 @@ ___
 
 ### removePaymentProvider
 
-▸ **removePaymentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**removePaymentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Removes a payment provider from a region. Is idempotent.
 
@@ -805,7 +805,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`regionId`, `config?`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**retrieve**(`regionId`, `config?`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Retrieves a region by its id.
 
@@ -858,7 +858,7 @@ ___
 
 ### retrieveByCountryCode
 
-▸ **retrieveByCountryCode**(`code`, `config?`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**retrieveByCountryCode**(`code`, `config?`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Retrieve a region by country code.
 
@@ -911,7 +911,7 @@ ___
 
 ### retrieveByName
 
-▸ **retrieveByName**(`name`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**retrieveByName**(`name`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Retrieves a region by name.
 
@@ -956,7 +956,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -994,7 +994,7 @@ ___
 
 ### update
 
-▸ **update**(`regionId`, `update`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
+**update**(`regionId`, `update`): `Promise`<[`Region`](admin_collections.internal.Region.mdx)\>
 
 Updates a region
 
@@ -1047,7 +1047,7 @@ ___
 
 ### validateCountry
 
-▸ `Protected` **validateCountry**(`code`, `regionId`): `Promise`<[`Country`](admin_collections.internal.Country.mdx)\>
+`Protected` **validateCountry**(`code`, `regionId`): `Promise`<[`Country`](admin_collections.internal.Country.mdx)\>
 
 Validates a country code. Will normalize the code before checking for
 existence.
@@ -1101,7 +1101,7 @@ ___
 
 ### validateCurrency
 
-▸ `Protected` **validateCurrency**(`currencyCode`): `Promise`<`void`\>
+`Protected` **validateCurrency**(`currencyCode`): `Promise`<`void`\>
 
 Validates a currency code. Will throw if the currency code doesn't exist.
 
@@ -1141,7 +1141,7 @@ ___
 
 ### validateFields
 
-▸ `Protected` **validateFields**<`T`\>(`regionData`, `id?`): `Promise`<`DeepPartial`<[`Region`](admin_collections.internal.Region.mdx)\>\>
+`Protected` **validateFields**<`T`\>(`regionData`, `id?`): `Promise`<`DeepPartial`<[`Region`](admin_collections.internal.Region.mdx)\>\>
 
 Validates fields for creation and updates. If the region already exists
 the id can be passed to check that country updates are allowed.
@@ -1215,7 +1215,7 @@ ___
 
 ### validateTaxRate
 
-▸ `Protected` **validateTaxRate**(`taxRate`): `void`
+`Protected` **validateTaxRate**(`taxRate`): `void`
 
 Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
 
@@ -1255,7 +1255,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`RegionService`](admin_discounts.internal.internal.RegionService.mdx)
+**withTransaction**(`transactionManager?`): [`RegionService`](admin_discounts.internal.internal.RegionService.mdx)
 
 #### Parameters
 

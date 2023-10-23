@@ -145,7 +145,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -170,7 +170,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -247,7 +247,7 @@ ___
 
 ### cancel
 
-▸ **cancel**(`returnId`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
+**cancel**(`returnId`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
 
 Cancels a return if possible. Returns can be canceled if it has not been received.
 
@@ -292,7 +292,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
+**create**(`data`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
 
 Creates a return request for an order, with given items, and a shipping
 method. If no refund amount is provided the refund amount is calculated from
@@ -339,7 +339,7 @@ ___
 
 ### fulfill
 
-▸ **fulfill**(`returnId`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
+**fulfill**(`returnId`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
 
 #### Parameters
 
@@ -382,7 +382,7 @@ ___
 
 ### getFulfillmentItems
 
-▸ `Protected` **getFulfillmentItems**(`order`, `items`, `transformer`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx) & { `note?`: `string` ; `reason_id?`: `string`  }[]\>
+`Protected` **getFulfillmentItems**(`order`, `items`, `transformer`): `Promise`<[`LineItem`](admin_collections.internal.LineItem.mdx) & { `note?`: `string` ; `reason_id?`: `string`  }[]\>
 
 Retrieves the order line items, given an array of items
 
@@ -452,7 +452,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)[]\>
 
 #### Parameters
 
@@ -512,7 +512,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`Return`](admin_collections.internal.Return.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`Return`](admin_collections.internal.Return.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -571,7 +571,7 @@ ___
 
 ### receive
 
-▸ **receive**(`returnId`, `receivedItems`, `refundAmount?`, `allowMismatch?`, `context?`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
+**receive**(`returnId`, `receivedItems`, `refundAmount?`, `allowMismatch?`, `context?`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
 
 Registers a previously requested return as received. This will create a
 refund to the customer. If the returned items don't match the requested
@@ -662,7 +662,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`returnId`, `config?`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
+**retrieve**(`returnId`, `config?`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
 
 Retrieves a return by its id.
 
@@ -715,7 +715,7 @@ ___
 
 ### retrieveBySwap
 
-▸ **retrieveBySwap**(`swapId`, `relations?`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
+**retrieveBySwap**(`swapId`, `relations?`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
 
 #### Parameters
 
@@ -766,7 +766,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -804,7 +804,7 @@ ___
 
 ### update
 
-▸ **update**(`returnId`, `update`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
+**update**(`returnId`, `update`): `Promise`<[`Return`](admin_collections.internal.Return.mdx)\>
 
 #### Parameters
 
@@ -855,7 +855,7 @@ ___
 
 ### validateReturnLineItem
 
-▸ `Protected` **validateReturnLineItem**(`item?`, `quantity?`, `additional?`): `DeepPartial`<[`LineItem`](admin_collections.internal.LineItem.mdx)\>
+`Protected` **validateReturnLineItem**(`item?`, `quantity?`, `additional?`): `DeepPartial`<[`LineItem`](admin_collections.internal.LineItem.mdx)\>
 
 Checks that a given quantity of a line item can be returned. Fails if the
 item is undefined or if the returnable quantity of the item is lower, than
@@ -934,7 +934,7 @@ ___
 
 ### validateReturnStatuses
 
-▸ `Protected` **validateReturnStatuses**(`order`): `void`
+`Protected` **validateReturnStatuses**(`order`): `void`
 
 Checks that an order has the statuses necessary to complete a return.
 fulfillment_status cannot be not_fulfilled or returned.
@@ -976,7 +976,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`ReturnService`](admin_discounts.internal.internal.ReturnService.mdx)
+**withTransaction**(`transactionManager?`): [`ReturnService`](admin_discounts.internal.internal.ReturnService.mdx)
 
 #### Parameters
 

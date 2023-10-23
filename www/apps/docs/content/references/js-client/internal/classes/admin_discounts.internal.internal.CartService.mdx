@@ -313,7 +313,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -338,7 +338,7 @@ TransactionBaseService.activeManager\_
 
 ### addLineItem
 
-▸ **addLineItem**(`cartId`, `lineItem`, `config?`): `Promise`<`void`\>
+**addLineItem**(`cartId`, `lineItem`, `config?`): `Promise`<`void`\>
 
 Adds a line item to the cart.
 
@@ -402,7 +402,7 @@ ___
 
 ### addOrUpdateLineItems
 
-▸ **addOrUpdateLineItems**(`cartId`, `lineItems`, `config?`): `Promise`<`void`\>
+**addOrUpdateLineItems**(`cartId`, `lineItems`, `config?`): `Promise`<`void`\>
 
 Adds or update one or multiple line items to the cart. It also update all existing items in the cart
 to have has_shipping to false. Finally, the adjustments will be updated.
@@ -463,7 +463,7 @@ ___
 
 ### addShippingMethod
 
-▸ **addShippingMethod**(`cartOrId`, `optionId`, `data?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**addShippingMethod**(`cartOrId`, `optionId`, `data?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Adds the shipping method to the list of shipping methods associated with
 the cart. Shipping Methods are the ways that an order is shipped, whereas a
@@ -528,7 +528,7 @@ ___
 
 ### adjustFreeShipping\_
 
-▸ `Protected` **adjustFreeShipping_**(`cart`, `shouldAdd`): `Promise`<`void`\>
+`Protected` **adjustFreeShipping_**(`cart`, `shouldAdd`): `Promise`<`void`\>
 
 Ensures shipping total on cart is correct in regards to a potential free
 shipping discount
@@ -575,7 +575,7 @@ ___
 
 ### applyDiscount
 
-▸ **applyDiscount**(`cart`, `discountCode`): `Promise`<`void`\>
+**applyDiscount**(`cart`, `discountCode`): `Promise`<`void`\>
 
 Updates the cart's discounts.
 If discount besides free shipping is already applied, this
@@ -622,7 +622,7 @@ ___
 
 ### applyDiscounts
 
-▸ **applyDiscounts**(`cart`, `discountCodes`): `Promise`<`void`\>
+**applyDiscounts**(`cart`, `discountCodes`): `Promise`<`void`\>
 
 Updates the cart's discounts.
 If discount besides free shipping is already applied, this
@@ -669,7 +669,7 @@ ___
 
 ### applyGiftCard\_
 
-▸ `Protected` **applyGiftCard_**(`cart`, `code`): `Promise`<`void`\>
+`Protected` **applyGiftCard_**(`cart`, `code`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -711,7 +711,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -788,7 +788,7 @@ ___
 
 ### authorizePayment
 
-▸ **authorizePayment**(`cartId`, `context?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**authorizePayment**(`cartId`, `context?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Authorizes a payment for a cart.
 Will authorize with chosen payment provider. This will return
@@ -845,7 +845,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**create**(`data`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Creates a cart.
 
@@ -890,7 +890,7 @@ ___
 
 ### createOrFetchGuestCustomerFromEmail\_
 
-▸ `Protected` **createOrFetchGuestCustomerFromEmail_**(`email`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
+`Protected` **createOrFetchGuestCustomerFromEmail_**(`email`): `Promise`<[`Customer`](admin_collections.internal.Customer.mdx)\>
 
 Creates or fetches a user based on an email.
 
@@ -935,7 +935,7 @@ ___
 
 ### createTaxLines
 
-▸ **createTaxLines**(`cartOrId`): `Promise`<`void`\>
+**createTaxLines**(`cartOrId`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -969,7 +969,7 @@ ___
 
 ### decorateTotals
 
-▸ **decorateTotals**(`cart`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../modules/admin_discounts.internal.internal.mdx#withrequiredproperty)<[`Cart`](admin_collections.internal.Cart.mdx), ``"total"``\>\>
+**decorateTotals**(`cart`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../modules/admin_discounts.internal.internal.mdx#withrequiredproperty)<[`Cart`](admin_collections.internal.Cart.mdx), ``"total"``\>\>
 
 #### Parameters
 
@@ -1037,7 +1037,7 @@ ___
 
 ### decorateTotals\_
 
-▸ `Protected` **decorateTotals_**(`cart`, `totalsToSelect`, `options?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+`Protected` **decorateTotals_**(`cart`, `totalsToSelect`, `options?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 #### Parameters
 
@@ -1100,7 +1100,7 @@ ___
 
 ### delete
 
-▸ **delete**(`cartId`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**delete**(`cartId`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Deletes a cart from the database. Completed carts cannot be deleted.
 
@@ -1145,7 +1145,7 @@ ___
 
 ### deletePaymentSession
 
-▸ **deletePaymentSession**(`cartId`, `providerId`): `Promise`<`void`\>
+**deletePaymentSession**(`cartId`, `providerId`): `Promise`<`void`\>
 
 Removes a payment session from the cart.
 
@@ -1189,7 +1189,7 @@ ___
 
 ### deleteTaxLines
 
-▸ **deleteTaxLines**(`id`): `Promise`<`void`\>
+**deleteTaxLines**(`id`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -1223,7 +1223,7 @@ ___
 
 ### findCustomShippingOption
 
-▸ **findCustomShippingOption**(`cartCustomShippingOptions`, `optionId`): `undefined` \| [`CustomShippingOption`](admin_discounts.internal.internal.CustomShippingOption.mdx)
+**findCustomShippingOption**(`cartCustomShippingOptions`, `optionId`): `undefined` \| [`CustomShippingOption`](admin_discounts.internal.internal.CustomShippingOption.mdx)
 
 Finds the cart's custom shipping options based on the passed option id.
 throws if custom options is not empty and no shipping option corresponds to optionId
@@ -1268,7 +1268,7 @@ ___
 
 ### getValidatedSalesChannel
 
-▸ `Protected` **getValidatedSalesChannel**(`salesChannelId?`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
+`Protected` **getValidatedSalesChannel**(`salesChannelId?`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
 
 #### Parameters
 
@@ -1311,7 +1311,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)[]\>
 
 #### Parameters
 
@@ -1371,7 +1371,7 @@ ___
 
 ### onSalesChannelChange
 
-▸ `Protected` **onSalesChannelChange**(`cart`, `newSalesChannelId`): `Promise`<`void`\>
+`Protected` **onSalesChannelChange**(`cart`, `newSalesChannelId`): `Promise`<`void`\>
 
 Remove the cart line item that does not belongs to the newly assigned sales channel
 
@@ -1415,7 +1415,7 @@ ___
 
 ### refreshAdjustments\_
 
-▸ `Protected` **refreshAdjustments_**(`cart`): `Promise`<`void`\>
+`Protected` **refreshAdjustments_**(`cart`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -1449,7 +1449,7 @@ ___
 
 ### refreshPaymentSession
 
-▸ **refreshPaymentSession**(`cartId`, `providerId`): `Promise`<`void`\>
+**refreshPaymentSession**(`cartId`, `providerId`): `Promise`<`void`\>
 
 Refreshes a payment session on a cart
 
@@ -1493,7 +1493,7 @@ ___
 
 ### removeDiscount
 
-▸ **removeDiscount**(`cartId`, `discountCode`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**removeDiscount**(`cartId`, `discountCode`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Removes a discount based on a discount code.
 
@@ -1546,7 +1546,7 @@ ___
 
 ### removeLineItem
 
-▸ **removeLineItem**(`cartId`, `lineItemId`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**removeLineItem**(`cartId`, `lineItemId`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Removes a line item from the cart.
 
@@ -1599,7 +1599,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**retrieve**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Gets a cart by id.
 
@@ -1660,7 +1660,7 @@ ___
 
 ### retrieveLegacy
 
-▸ `Protected` **retrieveLegacy**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+`Protected` **retrieveLegacy**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 #### Parameters
 
@@ -1721,7 +1721,7 @@ ___
 
 ### retrieveWithTotals
 
-▸ **retrieveWithTotals**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../modules/admin_discounts.internal.internal.mdx#withrequiredproperty)<[`Cart`](admin_collections.internal.Cart.mdx), ``"total"``\>\>
+**retrieveWithTotals**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../modules/admin_discounts.internal.internal.mdx#withrequiredproperty)<[`Cart`](admin_collections.internal.Cart.mdx), ``"total"``\>\>
 
 #### Parameters
 
@@ -1797,7 +1797,7 @@ ___
 
 ### setMetadata
 
-▸ **setMetadata**(`cartId`, `key`, `value`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**setMetadata**(`cartId`, `key`, `value`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Dedicated method to set metadata for a cart.
 To ensure that plugins does not overwrite each
@@ -1860,7 +1860,7 @@ ___
 
 ### setPaymentSession
 
-▸ **setPaymentSession**(`cartId`, `providerId`): `Promise`<`void`\>
+**setPaymentSession**(`cartId`, `providerId`): `Promise`<`void`\>
 
 Selects a payment session for a cart and creates a payment object in the external provider system
 
@@ -1904,7 +1904,7 @@ ___
 
 ### setPaymentSessions
 
-▸ **setPaymentSessions**(`cartOrCartId`): `Promise`<`void`\>
+**setPaymentSessions**(`cartOrCartId`): `Promise`<`void`\>
 
 Creates, updates and sets payment sessions associated with the cart. The
 first time the method is called payment sessions will be created for each
@@ -1944,7 +1944,7 @@ ___
 
 ### setRegion\_
 
-▸ `Protected` **setRegion_**(`cart`, `regionId`, `countryCode`): `Promise`<`void`\>
+`Protected` **setRegion_**(`cart`, `regionId`, `countryCode`): `Promise`<`void`\>
 
 Set's the region of a cart.
 
@@ -1996,7 +1996,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -2034,7 +2034,7 @@ ___
 
 ### transformQueryForTotals\_
 
-▸ `Protected` **transformQueryForTotals_**(`config`): [`FindConfig`](../interfaces/admin_discounts.internal.internal.FindConfig.mdx)<[`Cart`](admin_collections.internal.Cart.mdx)\> & { `totalsToSelect`: [`TotalField`](../modules/admin_discounts.internal.internal.mdx#totalfield)[]  }
+`Protected` **transformQueryForTotals_**(`config`): [`FindConfig`](../interfaces/admin_discounts.internal.internal.FindConfig.mdx)<[`Cart`](admin_collections.internal.Cart.mdx)\> & { `totalsToSelect`: [`TotalField`](../modules/admin_discounts.internal.internal.mdx#totalfield)[]  }
 
 #### Parameters
 
@@ -2068,7 +2068,7 @@ ___
 
 ### update
 
-▸ **update**(`cartOrId`, `data`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**update**(`cartOrId`, `data`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 #### Parameters
 
@@ -2119,7 +2119,7 @@ ___
 
 ### updateBillingAddress\_
 
-▸ `Protected` **updateBillingAddress_**(`cart`, `addressOrId`, `addrRepo`): `Promise`<`void`\>
+`Protected` **updateBillingAddress_**(`cart`, `addressOrId`, `addrRepo`): `Promise`<`void`\>
 
 Updates the cart's billing address.
 
@@ -2171,7 +2171,7 @@ ___
 
 ### updateCustomerId\_
 
-▸ `Protected` **updateCustomerId_**(`cart`, `customerId`): `Promise`<`void`\>
+`Protected` **updateCustomerId_**(`cart`, `customerId`): `Promise`<`void`\>
 
 Sets the customer id of a cart
 
@@ -2215,7 +2215,7 @@ ___
 
 ### updateLineItem
 
-▸ **updateLineItem**(`cartId`, `lineItemId`, `update`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**updateLineItem**(`cartId`, `lineItemId`, `update`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Updates a cart's existing line item.
 
@@ -2276,7 +2276,7 @@ ___
 
 ### updatePaymentSession
 
-▸ **updatePaymentSession**(`cartId`, `update`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
+**updatePaymentSession**(`cartId`, `update`): `Promise`<[`Cart`](admin_collections.internal.Cart.mdx)\>
 
 Updates the currently selected payment session.
 
@@ -2329,7 +2329,7 @@ ___
 
 ### updateShippingAddress\_
 
-▸ `Protected` **updateShippingAddress_**(`cart`, `addressOrId`, `addrRepo`): `Promise`<`void`\>
+`Protected` **updateShippingAddress_**(`cart`, `addressOrId`, `addrRepo`): `Promise`<`void`\>
 
 Updates the cart's shipping address.
 
@@ -2381,7 +2381,7 @@ ___
 
 ### updateUnitPrices\_
 
-▸ `Protected` **updateUnitPrices_**(`cart`, `regionId?`, `customer_id?`): `Promise`<`void`\>
+`Protected` **updateUnitPrices_**(`cart`, `regionId?`, `customer_id?`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -2431,7 +2431,7 @@ ___
 
 ### validateLineItem
 
-▸ `Protected` **validateLineItem**(`sales_channel_id`, `lineItem`): `Promise`<`boolean`\>
+`Protected` **validateLineItem**(`sales_channel_id`, `lineItem`): `Promise`<`boolean`\>
 
 Check if line item's variant belongs to the cart's sales channel.
 
@@ -2492,7 +2492,7 @@ ___
 
 ### validateLineItemShipping\_
 
-▸ `Protected` **validateLineItemShipping_**(`shippingMethods`, `lineItemShippingProfiledId`): `boolean`
+`Protected` **validateLineItemShipping_**(`shippingMethods`, `lineItemShippingProfiledId`): `boolean`
 
 Checks if a given line item has a shipping method that can fulfill it.
 Returns true if all products in the cart can be fulfilled with the current
@@ -2538,7 +2538,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`CartService`](admin_discounts.internal.internal.CartService.mdx)
+**withTransaction**(`transactionManager?`): [`CartService`](admin_discounts.internal.internal.CartService.mdx)
 
 #### Parameters
 

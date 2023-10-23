@@ -123,7 +123,7 @@ Provides layer to manipulate product tags.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -148,7 +148,7 @@ TransactionBaseService.activeManager\_
 
 ### addCurrencyFromRegion
 
-▸ `Protected` **addCurrencyFromRegion**<`T`\>(`prices`): `Promise`<`T`[]\>
+`Protected` **addCurrencyFromRegion**<`T`\>(`prices`): `Promise`<`T`[]\>
 
 Add `currency_code` to an MA record if `region_id`is passed.
 
@@ -204,7 +204,7 @@ ___
 
 ### addPrices
 
-▸ **addPrices**(`id`, `prices`, `replace?`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)\>
+**addPrices**(`id`, `prices`, `replace?`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)\>
 
 Adds prices to a price list in bulk, optionally replacing all existing prices
 
@@ -265,7 +265,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -342,7 +342,7 @@ ___
 
 ### clearPrices
 
-▸ **clearPrices**(`id`): `Promise`<`void`\>
+**clearPrices**(`id`): `Promise`<`void`\>
 
 Removes all prices from a price list and deletes the removed prices in bulk
 
@@ -378,7 +378,7 @@ ___
 
 ### create
 
-▸ **create**(`priceListObject`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)\>
+**create**(`priceListObject`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)\>
 
 Creates a Price List
 
@@ -423,7 +423,7 @@ ___
 
 ### delete
 
-▸ **delete**(`id`): `Promise`<`void`\>
+**delete**(`id`): `Promise`<`void`\>
 
 Deletes a Price List
 Will never fail due to delete being idempotent.
@@ -460,7 +460,7 @@ ___
 
 ### deletePrices
 
-▸ **deletePrices**(`id`, `priceIds`): `Promise`<`void`\>
+**deletePrices**(`id`, `priceIds`): `Promise`<`void`\>
 
 Removes prices from a price list and deletes the removed prices in bulk
 
@@ -504,7 +504,7 @@ ___
 
 ### deleteProductPrices
 
-▸ **deleteProductPrices**(`priceListId`, `productIds`): `Promise`<[`string`[], `number`]\>
+**deleteProductPrices**(`priceListId`, `productIds`): `Promise`<[`string`[], `number`]\>
 
 #### Parameters
 
@@ -563,7 +563,7 @@ ___
 
 ### deleteVariantPrices
 
-▸ **deleteVariantPrices**(`priceListId`, `variantIds`): `Promise`<[`string`[], `number`]\>
+**deleteVariantPrices**(`priceListId`, `variantIds`): `Promise`<[`string`[], `number`]\>
 
 #### Parameters
 
@@ -622,7 +622,7 @@ ___
 
 ### list
 
-▸ **list**(`selector?`, `config?`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)[]\>
+**list**(`selector?`, `config?`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)[]\>
 
 Lists Price Lists
 
@@ -684,7 +684,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector?`, `config?`): `Promise`<[[`PriceList`](admin_collections.internal.PriceList.mdx)[], `number`]\>
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`PriceList`](admin_collections.internal.PriceList.mdx)[], `number`]\>
 
 Lists Price Lists and adds count
 
@@ -745,7 +745,7 @@ ___
 
 ### listPriceListsVariantIdsMap
 
-▸ **listPriceListsVariantIdsMap**(`priceListIds`): `Promise`<{ `[priceListId: string]`: `string`[];  }\>
+**listPriceListsVariantIdsMap**(`priceListIds`): `Promise`<{ `[priceListId: string]`: `string`[];  }\>
 
 #### Parameters
 
@@ -788,7 +788,7 @@ ___
 
 ### listProducts
 
-▸ **listProducts**(`priceListId`, `selector?`, `config?`, `requiresPriceList?`): `Promise`<[[`Product`](admin_collections.internal.Product.mdx)[], `number`]\>
+**listProducts**(`priceListId`, `selector?`, `config?`, `requiresPriceList?`): `Promise`<[[`Product`](admin_collections.internal.Product.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -863,7 +863,7 @@ ___
 
 ### listVariants
 
-▸ **listVariants**(`priceListId`, `selector?`, `config?`, `requiresPriceList?`): `Promise`<[[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[], `number`]\>
+**listVariants**(`priceListId`, `selector?`, `config?`, `requiresPriceList?`): `Promise`<[[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[], `number`]\>
 
 #### Parameters
 
@@ -938,7 +938,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`priceListId`, `config?`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)\>
+**retrieve**(`priceListId`, `config?`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)\>
 
 Retrieves a product tag by id.
 
@@ -991,7 +991,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -1029,7 +1029,7 @@ ___
 
 ### update
 
-▸ **update**(`id`, `update`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)\>
+**update**(`id`, `update`): `Promise`<[`PriceList`](admin_collections.internal.PriceList.mdx)\>
 
 Updates a Price List
 
@@ -1082,7 +1082,7 @@ ___
 
 ### upsertCustomerGroups\_
 
-▸ `Protected` **upsertCustomerGroups_**(`priceListId`, `customerGroups`): `Promise`<`void`\>
+`Protected` **upsertCustomerGroups_**(`priceListId`, `customerGroups`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -1124,7 +1124,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`PriceListService`](admin_discounts.internal.internal.PriceListService.mdx)
+**withTransaction**(`transactionManager?`): [`PriceListService`](admin_discounts.internal.internal.PriceListService.mdx)
 
 #### Parameters
 

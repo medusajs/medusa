@@ -47,7 +47,7 @@ const ParameterTypesItems = ({
             </>
           ) : undefined
         }
-        expandable={parameter.children.length > 0}
+        expandable={parameter.children?.length > 0}
         className={clsx(
           getItemClassNames(false),
           level < 3 && "!p-1",
@@ -100,7 +100,7 @@ const ParameterTypesItems = ({
       {parameters.map((parameter, key) => {
         return (
           <>
-            {parameter.children.length > 0 && (
+            {parameter.children?.length > 0 && (
               <Details
                 summary={getSummary(parameter, key)}
                 key={key}
@@ -115,7 +115,7 @@ const ParameterTypesItems = ({
                 )}
               </Details>
             )}
-            {parameter.children.length === 0 &&
+            {(parameter.children?.length || 0) === 0 &&
               getSummary(parameter, key, false)}
           </>
         )
