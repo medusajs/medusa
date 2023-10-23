@@ -2,9 +2,10 @@ import {
   CartService,
   ProductVariantInventoryService,
 } from "../../../../services"
+
 import { EntityManager } from "typeorm"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [get] /store/carts/{id}
@@ -91,7 +92,7 @@ export default async (req, res) => {
 
   const data = await cartService.retrieveWithTotals(id, req.retrieveConfig)
 
-  if (shouldSetAvailability && salesChannelsEnabled) {
+  if (shouldSetAvailability) {
     await productVariantInventoryService.setVariantAvailability(
       data.items.map((i) => i.variant),
       data.sales_channel_id!
