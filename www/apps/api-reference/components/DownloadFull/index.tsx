@@ -1,15 +1,18 @@
 "use client"
 
-import { NextLink } from "docs-ui"
+import { Button } from "docs-ui"
 import { useArea } from "../../providers/area"
+import Link from "next/link"
 
 const DownloadFull = () => {
   const { area } = useArea()
 
   return (
-    <NextLink href={`/api/download/${area}`} download target="_blank">
-      Download openapi.yaml
-    </NextLink>
+    <Button variant="secondary">
+      <Link href={`/api/download/${area}`} download target="_blank">
+        Download openapi.yaml
+      </Link>
+    </Button>
   )
 }
 
