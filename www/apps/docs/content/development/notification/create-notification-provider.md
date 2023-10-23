@@ -200,12 +200,12 @@ The `to` and `data` properties are used in the `NotificationService` in Medusa�
 
 ### resendNotification
 
-Using the [Resend Notification endpoint](https://docs.medusajs.com/api/admin#notifications_postnotificationsnotificationresend), an admin user can resend a Notification to the customer. The [`NotificationService`](../../references/services/classes/NotificationService.md) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
+Using the [Resend Notification API Route](https://docs.medusajs.com/api/admin#notifications_postnotificationsnotificationresend), an admin user can resend a Notification to the customer. The [`NotificationService`](../../references/services/classes/NotificationService.md) in Medusa’s core then executes the `resendNotification` method in your Notification Provider.
 
 This method receives three parameters:
 
 1. `notification`: This is the original Notification record that was created after you sent the notification with `sendNotification`. You can get an overview of the entity and its attributes in the [architecture overview](./overview.mdx#notification-entity-overview), but most notably it includes the `to` and `data` attributes which are populated originally using the `to` and `data` properties of the object you return in `sendNotification`.
-2. `config`: In the Resend Notification endpoint you may specify an alternative receiver of the notification using the `to` request body parameter. For example, you may want to resend the order confirmation email to a different email. If that’s the case, you have access to it in the `config` parameter object. Otherwise, `config` will be an empty object.
+2. `config`: In the Resend Notification API Route you may specify an alternative receiver of the notification using the `to` request body parameter. For example, you may want to resend the order confirmation email to a different email. If that’s the case, you have access to it in the `config` parameter object. Otherwise, `config` will be an empty object.
 3. `attachmentGenerator`: If you’ve previously attached a generator to the Notification Service using the [`registerAttachmentGenerator`](../../references/services/classes/NotificationService.md#registerattachmentgenerator) method, you have access to it here. You can use the `attachmentGenerator` to generate on-demand invoices or other documents. The default value of this parameter is null.
 
 Similarly to the `sendNotification` method, this method must return an object containing two properties:
@@ -323,21 +323,21 @@ After placing an order, you can see in your console the message “Notification 
 
 ## Test Resending Notifications with your Notification Provider
 
-To test resending a notification, first, retrieve the ID of the notification you just sent using the [List Notifications admin endpoint](https://docs.medusajs.com/api/admin#notifications_getnotifications). You can pass as a body parameter the `to` or `event_name` parameters to filter out the notification you just sent.
+To test resending a notification, first, retrieve the ID of the notification you just sent using the [List Notifications API Route](https://docs.medusajs.com/api/admin#notifications_getnotifications). You can pass as a body parameter the `to` or `event_name` parameters to filter out the notification you just sent.
 
 :::tip
 
-You must be authenticated as an admin user before sending this request. You can use the [Authenticate a User](https://docs.medusajs.com/api/admin#auth_postauth) endpoint to get authenticated.
+You must be authenticated as an admin user before sending this request. You can use the [Authenticate a User API Route](https://docs.medusajs.com/api/admin#auth_postauth) to get authenticated.
 
 :::
 
 ![List Notifications Request](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001650/Medusa%20Docs/Screenshots/iF1rZX1_msps2t.png)
 
-Then, send a request to the [Resend Notification](https://docs.medusajs.com/api/admin#notifications_postnotificationsnotificationresend) endpoint using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. You should see the message “Notification Resent” in your console and if you implemented your own logic for resending the notification it will be resent.
+Then, send a request to the [Resend Notification API Route](https://docs.medusajs.com/api/admin#notifications_postnotificationsnotificationresend) using the ID retrieved from the previous request. You can pass the `to` parameter in the body to change the receiver of the notification. You should see the message “Notification Resent” in your console and if you implemented your own logic for resending the notification it will be resent.
 
 ![Resend Notifications Request](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001659/Medusa%20Docs/Screenshots/0zFfPed_og7one.png)
 
-This request returns the same notification object as the List Notifications endpoint, but it now has a new object in the `resends` array. This is the resent notification. If you supplied a `to` parameter in the request body, you should see its value in the `to` property of the resent notification object.
+This request returns the same notification object as the List Notifications API Route, but it now has a new object in the `resends` array. This is the resent notification. If you supplied a `to` parameter in the request body, you should see its value in the `to` property of the resent notification object.
 
 ---
 

@@ -1,0 +1,52 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# swap64
+
+[Buffer](../../interfaces/Buffer.mdx).swap64
+
+**swap64**(): [`Buffer`](../../variables/Buffer-1.mdx)
+
+Interprets `buf` as an array of 64-bit numbers and swaps byte order _in-place_.
+Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 8.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf1 = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8]);
+
+console.log(buf1);
+// Prints: <Buffer 01 02 03 04 05 06 07 08>
+
+buf1.swap64();
+
+console.log(buf1);
+// Prints: <Buffer 08 07 06 05 04 03 02 01>
+
+const buf2 = Buffer.from([0x1, 0x2, 0x3]);
+
+buf2.swap64();
+// Throws ERR_INVALID_BUFFER_SIZE.
+```
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A reference to `buf`.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v6.3.0

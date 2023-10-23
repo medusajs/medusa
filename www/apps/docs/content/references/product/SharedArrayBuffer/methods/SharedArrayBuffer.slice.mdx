@@ -1,0 +1,99 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# slice
+
+[SharedArrayBuffer](../../interfaces/SharedArrayBuffer.mdx).slice
+
+**slice**(`begin`, `end?`): [`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)
+
+Returns a section of an SharedArrayBuffer.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "begin",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "end",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "SharedArrayBuffer",
+    "type": "[`SharedArrayBufferConstructor`](../../interfaces/SharedArrayBufferConstructor.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "constructor",
+        "type": "(`byteLength`: `number`) => [`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "prototype",
+        "type": "[`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "[species]",
+            "type": "[`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "[toStringTag]",
+            "type": "``\"SharedArrayBuffer\"``",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "byteLength",
+            "type": "`number`",
+            "description": "Read-only. The length of the ArrayBuffer (in bytes).",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "slice",
+            "type": "(`begin`: `number`, `end?`: `number`) => [`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />

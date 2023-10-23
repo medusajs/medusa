@@ -67,9 +67,9 @@ Medusa's modular architecture removes any restrictions you may have while making
 
 POS systems make the checkout process smoother by integrating a barcode scanner. Merchants can scan a product by its barcode to check its details or add it to the customer's purchase.
 
-Medusa’s [Product Variant entity](../references/entities/classes/ProductVariant.md) includes the necessary attributes to implement this integration, mainly the `barcode` attribute. Other notable attributes include `ean`, `upc`, and `hs_code`, among others.
+Medusa’s [Product Variant entity](../references/entities/classes/ProductVariant.mdx) includes the necessary attributes to implement this integration, mainly the `barcode` attribute. Other notable attributes include `ean`, `upc`, and `hs_code`, among others.
 
-To search through product variants by their barcode, you can create a custom endpoint and call it within your POS.
+To search through product variants by their barcode, you can create a custom API Route and call it within your POS.
 
 ![Example flow of integrating a barcode scanner](https://res.cloudinary.com/dza7lstvk/image/upload/v1695115066/Medusa%20Docs/Diagrams/pos-scan-barcode_xaa61c.jpg)
 
@@ -85,84 +85,55 @@ To search through product variants by their barcode, you can create a custom end
   },
   {
     type: 'link',
-    href: '/development/endpoints/create',
-    label: 'Create Endpoint',
+    href: '/development/api-routes/create',
+    label: 'Create API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to create an endpoint in the Medusa backend.',
+      description: 'Learn how to create an API Route in the Medusa backend.',
     }
   },
 ]} />
 
 <details>
 <summary>
-Example: Search Products By Barcode Endpoint
+Example: Search Products By Barcode API Route
 </summary>
 
-Here’s an example of creating a custom endpoint that searches product variants by a barcode:
+Here’s an example of creating a custom API Route at `/store/pos/search-barcode` that searches product variants by a barcode:
 
-```ts title=src/api/index.ts
-import { Request, Response, Router } from "express"
-import cors from "cors"
-import { 
-  ConfigModule, 
-  errorHandler, 
-  ProductVariantService, 
-  wrapHandler,
+```ts title=src/api/store/pos/search-barcode/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse, 
+  ProductVariantService,
 } from "@medusajs/medusa"
-import { getConfigFile } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
 
-export default (rootDirectory: string): Router | Router[] => {
-  // Read currently-loaded medusa config
-  const { configModule } = getConfigFile<ConfigModule>(
-    rootDirectory,
-    "medusa-config"
-  )
-  const { projectConfig } = configModule
-
-  // Set up our CORS options objects, based on config
-  const storeCorsOptions = {
-    origin: projectConfig.store_cors.split(","),
-    credentials: true,
-  }
-
-  // Set up express router
-  const router = Router()
-  
-  router.get(
-    "/pos/search-barcode", 
-    cors(storeCorsOptions), 
-    wrapHandler(
-      async (req: Request, res: Response) => {
-        const barcode = (req.query.barcode as string) || ""
-        if (!barcode) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA, 
-            "Barcode is required"
-          )
-        }
-        // get product service
-        const productVariantService = req.scope.resolve<
-          ProductVariantService
-        >("productVariantService")
-
-        // retrieve product variants by barcode
-        const productVariants = await productVariantService
-          .list({
-            barcode,
-          })
-
-        res.json({
-          product_variants: productVariants,
-        })
-      }
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const barcode = (req.query.barcode as string) || ""
+  if (!barcode) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA, 
+      "Barcode is required"
     )
-  )
+  }
+  // get product service
+  const productVariantService = req.scope.resolve<
+    ProductVariantService
+  >("productVariantService")
 
-  router.use(errorHandler())
+  // retrieve product variants by barcode
+  const productVariants = await productVariantService
+    .list({
+      barcode,
+    })
 
-  return router
+  res.json({
+    product_variants: productVariants,
+  })
 }
 ```
 

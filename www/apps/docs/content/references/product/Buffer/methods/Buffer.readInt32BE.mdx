@@ -1,0 +1,56 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# readInt32BE
+
+[Buffer](../../interfaces/Buffer.mdx).readInt32BE
+
+**readInt32BE**(`offset?`): `number`
+
+Reads a signed, big-endian 32-bit integer from `buf` at the specified `offset`.
+
+Integers read from a `Buffer` are interpreted as two's complement signed values.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from([0, 0, 0, 5]);
+
+console.log(buf.readInt32BE(0));
+// Prints: 5
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to read. Must satisfy `0 <= offset <= buf.length - 4`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.5.5

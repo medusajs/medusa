@@ -7,9 +7,9 @@ import formatReportLink from "@/utils/format-report-link"
 
 This API reference includes Medusa's Store APIs, which are REST APIs exposed by the Medusa backend. They are typically used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
 
-All endpoints are prefixed with `/store`. So, during development, the endpoints will be available under the path `http://localhost:9000/store`. For production, replace `http://localhost:9000` with your Medusa backend URL.
+All API Routes are prefixed with `/store`. So, during development, the API Routes will be available under the path `http://localhost:9000/store`. For production, replace `http://localhost:9000` with your Medusa backend URL.
 
-There are different ways you can send requests to these endpoints, including:
+There are different ways you can send requests to these API Routes, including:
 
 - Using Medusa's [JavaScript Client](https://docs.medusajs.com/js-client/overview)
 - Using the [Medusa React](https://docs.medusajs.com/medusa-react/overview) library
@@ -41,7 +41,7 @@ Use a JWT token to send authenticated requests. Authentication state is managed 
 
 #### How to Obtain the JWT Token
 
-JWT tokens are obtained by sending a request to the [Customer Login (JWT) endpoint](#auth_authtoken) passing it the customer's email and password in the request body. For example:
+JWT tokens are obtained by sending a request to the [Customer Login (JWT) API Route](#auth_authtoken) passing it the customer's email and password in the request body. For example:
 
 ```bash
 curl -X POST 'https://medusa-url.com/store/auth/token' \
@@ -297,8 +297,8 @@ const App = () => {
 ## Expanding Fields
 
 
-In many endpoints you'll find an `expand` query parameter that can be passed
-to the endpoint. You can use the `expand` query parameter to unpack an
+In many API Routes you'll find an `expand` query parameter that can be passed
+to the API Route. You can use the `expand` query parameter to unpack an
 entity's relations and return them in the response.
 
 
@@ -501,8 +501,8 @@ relations like `collection`.
 ## Selecting Fields
 
 
-In many endpoints you'll find a `fields` query parameter that can be passed
-to the endpoint. You can use the `fields` query parameter to specify which
+In many API Routes you'll find a `fields` query parameter that can be passed
+to the API Route. You can use the `fields` query parameter to specify which
 fields in the entity should be returned in the response.
 
 
@@ -823,7 +823,7 @@ export default Products`,
 
 
 This section covers how to pass some common data types as query parameters.
-This is useful if you're sending requests to the API endpoints and not using
+This is useful if you're sending requests to the API Routes and not using
 our JS Client. For example, when using cURL or Postman.
 
 
@@ -966,7 +966,7 @@ curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_
 ### Query Parameters
 
 
-In listing endpoints, such as list customers or list products, you can
+In listing API Routes, such as list customers or list products, you can
 control the pagination using the query parameters `limit` and `offset`.
 
 
@@ -981,7 +981,7 @@ offset should be `50`, and so on.
 
 
 For example, to limit the number of products returned in the List Products
-endpoint:
+API Route:
 
 <CodeTabs 
   tabs={[
@@ -1037,7 +1037,7 @@ export default Products`,
 ### Response Fields
 
 
-In the response of listing endpoints, aside from the entities retrieved,
+In the response of listing API Routes, aside from the entities retrieved,
 there are three pagination-related fields returned: `count`, `limit`, and
 `offset`.
 
@@ -1058,7 +1058,7 @@ For example, if the `count` is 100 and the `limit` is 50, you can divide the
 ### Sort Order
 
 
-The `order` field available on endpoints supporting pagination allows you to
+The `order` field available on API Routes supporting pagination allows you to
 sort the retrieved items by an attribute of that item. For example, you can
 sort products by their `created_at` attribute by setting `order` to
 `created_at`:

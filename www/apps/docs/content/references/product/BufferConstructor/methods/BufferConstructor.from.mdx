@@ -1,0 +1,178 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# from
+
+[BufferConstructor](../../interfaces/BufferConstructor.mdx).from
+
+**from**(`arrayBuffer`, `byteOffset?`, `length?`): [`Buffer`](../../variables/Buffer-1.mdx)
+
+Allocates a new `Buffer` using an `array` of bytes in the range `0` – `255`.
+Array entries outside that range will be truncated to fit into it.
+
+```js
+import { Buffer } from 'buffer';
+
+// Creates a new Buffer containing the UTF-8 bytes of the string 'buffer'.
+const buf = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
+```
+
+A `TypeError` will be thrown if `array` is not an `Array` or another type
+appropriate for `Buffer.from()` variants.
+
+`Buffer.from(array)` and `Buffer.from(string)` may also use the internal`Buffer` pool like `Buffer.allocUnsafe()` does.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "arrayBuffer",
+    "type": "[`WithImplicitCoercion`](../../types/WithImplicitCoercion.mdx)<`ArrayBuffer` \\| [`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "byteOffset",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "length",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v5.10.0
+
+**from**(`data`): [`Buffer`](../../variables/Buffer-1.mdx)
+
+Creates a new Buffer using the passed {data}
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`Uint8Array` \\| readonly `number`[]",
+    "description": "data to create a new Buffer",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+**from**(`data`): [`Buffer`](../../variables/Buffer-1.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`WithImplicitCoercion`](../../types/WithImplicitCoercion.mdx)<`string` \\| `Uint8Array` \\| readonly `number`[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+**from**(`str`, `encoding?`): [`Buffer`](../../variables/Buffer-1.mdx)
+
+Creates a new Buffer containing the given JavaScript string {str}.
+If provided, the {encoding} parameter identifies the character encoding.
+If not provided, {encoding} defaults to 'utf8'.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "str",
+    "type": "[`WithImplicitCoercion`](../../types/WithImplicitCoercion.mdx)<`string`\\> \\| { `[toPrimitive]`: Method [toPrimitive]  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />

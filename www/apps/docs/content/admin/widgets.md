@@ -1270,9 +1270,9 @@ export const config: WidgetConfig = {
 export default ProductWidget
 ```
 
-### Custom Endpoints
+### Custom API Routes
 
-You can also use `medusa-react` to interact with custom endpoints using the [createCustomAdminHooks utility function](../medusa-react/overview.mdx#custom-hooks).
+You can also use `medusa-react` to interact with custom API Routes using the [createCustomAdminHooks utility function](../medusa-react/overview.mdx#custom-hooks).
 
 ---
 

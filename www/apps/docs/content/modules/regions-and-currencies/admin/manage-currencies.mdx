@@ -60,7 +60,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Currencies
 
-You can list all available currencies in your system by sending a request to the [List Currencies endpoint](https://docs.medusajs.com/api/admin#currencies_getcurrencies):
+You can list all available currencies in your system by sending a request to the [List Currencies API Route](https://docs.medusajs.com/api/admin#currencies_getcurrencies):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -126,7 +126,7 @@ curl -L -X GET '<BACKEND_URL>/admin/currencies' \
 </TabItem>
 </Tabs>
 
-This endpoint accepts optional filter and search query parameters. For example, you can pass the `code` query parameter to search the list of currencies by a code. You can learn about available query parameters in the [API reference](https://docs.medusajs.com/api/admin#currencies_getcurrencies).
+This API Route accepts optional filter and search query parameters. For example, you can pass the `code` query parameter to search the list of currencies by a code. You can learn about available query parameters in the [API reference](https://docs.medusajs.com/api/admin#currencies_getcurrencies).
 
 This request returns an array of currencies along with pagination parameters.
 
@@ -134,7 +134,7 @@ This request returns an array of currencies along with pagination parameters.
 
 ## Update Currencies
 
-You can update a currency by sending a request to the [Update Currency endpoint](https://docs.medusajs.com/api/admin#currencies_postcurrenciescurrency):
+You can update a currency by sending a request to the [Update Currency API Route](https://docs.medusajs.com/api/admin#currencies_postcurrenciescurrency):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -205,7 +205,7 @@ curl -L -X GET '<BACKEND_URL>/admin/currencies/<CODE>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the currency code as a path parameter.
+This API Route requires the currency code as a path parameter.
 
 In the request body parameter, it accepts the field `includes_tax` which is a boolean value that indicates whether tax inclusion is enabled for the currency. This is only available if you’ve enabled the Tax Inclusive feature.
 
@@ -225,7 +225,7 @@ This section explains how you can manage the currencies of a store.
 
 ### List Currencies in a Store
 
-You can list currencies in a store by sending a request to the [Get Store Details endpoint](https://docs.medusajs.com/api/admin#store_getstore):
+You can list currencies in a store by sending a request to the [Get Store Details API Route](https://docs.medusajs.com/api/admin#store_getstore):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -303,7 +303,7 @@ This request returns the store as an object. In that object, there are two prope
 
 ### Add Currency to the Store
 
-You can add a currency to a store using the [Add a Currency Code endpoint](https://docs.medusajs.com/api/admin#store_poststorecurrenciescode):
+You can add a currency to a store using the [Add a Currency Code API Route](https://docs.medusajs.com/api/admin#store_poststorecurrenciescode):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -360,13 +360,13 @@ curl -L -X POST '<BACKEND_URL>/admin/store/currencies/<CODE>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the currency code to be passed as a path parameter.
+This API Route requires the currency code to be passed as a path parameter.
 
 The request returns the updated store as an object. You can access the new list of currencies under the `store.currencies` property.
 
 ### Delete a Currency from the Store
 
-You can remove a currency from a store by sending a request to the [Delete Currency Code endpoint](https://docs.medusajs.com/api/admin#store_deletestorecurrenciescode):
+You can remove a currency from a store by sending a request to the [Delete Currency Code API Route](https://docs.medusajs.com/api/admin#store_deletestorecurrenciescode):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -423,7 +423,7 @@ curl -L -X DELETE '<BACKEND_URL>/admin/store/currencies/<CODE>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the currency code to be passed as a path parameter.
+This API Route requires the currency code to be passed as a path parameter.
 
 The request returns the updated store as an object. You can access the new list of currencies under the `store.currencies` property.
 

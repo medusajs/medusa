@@ -7,7 +7,7 @@ import { PaymentProvider } from "../../../../models"
  * @oas [get] /store/customers/me/payment-methods
  * operationId: GetCustomersCustomerPaymentMethods
  * summary: Get Saved Payment Methods
- * description: "Retrieve the logged-in customer's saved payment methods. This endpoint only works with payment providers created with the deprecated Payment Service interface.
+ * description: "Retrieve the logged-in customer's saved payment methods. This API Route only works with payment providers created with the deprecated Payment Service interface.
  *  The payment methods are saved using the Payment Service's third-party service, and not on the Medusa backend. So, they're retrieved from the third-party service."
  * x-authenticated: true
  * deprecated: true
@@ -28,7 +28,7 @@ import { PaymentProvider } from "../../../../models"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/customers/me/payment-methods' \
- *       -H 'Cookie: connect.sid={sid}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

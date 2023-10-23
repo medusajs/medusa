@@ -1895,6 +1895,8 @@ class OrderService extends TransactionBaseService {
       }
     )
 
+    order.item_tax_total = item_tax_total
+    order.shipping_tax_total = shipping_tax_total
     order.tax_total = item_tax_total + shipping_tax_total
 
     const giftCardableAmount = this.newTotalsService_.getGiftCardableAmount({

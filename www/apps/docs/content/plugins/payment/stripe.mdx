@@ -54,7 +54,7 @@ Next, you need to add configurations for your stripe plugin.
 
 In `medusa-config.js` add the following at the end of the `plugins` array:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // ...
   {
@@ -284,7 +284,7 @@ client.carts.createPaymentSessions(cart.id)
     // check if stripe is selected
     const isStripeAvailable = cart.payment_sessions?.some(
       (session) => (
-        session.processor_id === "stripe"
+        session.provider_id === "stripe"
       )
     )
     if (!isStripeAvailable) {
@@ -293,7 +293,7 @@ client.carts.createPaymentSessions(cart.id)
 
     // select stripe payment session
     client.carts.setPaymentSession(cart.id, {
-      processor_id: "stripe",
+      provider_id: "stripe",
     }).then(({ cart }) => {
       setClientSecret(cart.payment_session.data.client_secret)
     })

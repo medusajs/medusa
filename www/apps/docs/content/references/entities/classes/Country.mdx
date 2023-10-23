@@ -1,0 +1,442 @@
+---
+displayed_sidebar: entitiesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Country
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "display_name",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "iso_2",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "iso_3",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "num_code",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "region",
+    "type": "[`Region`](Region.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [`Region`](Region.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "automatic_taxes",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "countries",
+        "type": "[`Country`](Country.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`Country`](Country.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "display_name",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "iso_2",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "iso_3",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "num_code",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "region",
+            "type": "[`Region`](Region.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "region_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "currency",
+        "type": "[`Currency`](Currency.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`Currency`](Currency.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "includes_tax",
+            "type": "`boolean`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "symbol",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "symbol_native",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "``null`` \\| `Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "fulfillment_providers",
+        "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`FulfillmentProvider`](FulfillmentProvider.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_installed",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "gift_cards_taxable",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "includes_tax",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "payment_providers",
+        "type": "[`PaymentProvider`](PaymentProvider.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`PaymentProvider`](PaymentProvider.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_installed",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "tax_code",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "tax_provider",
+        "type": "[`TaxProvider`](TaxProvider.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`TaxProvider`](TaxProvider.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_installed",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "tax_provider_id",
+        "type": "``null`` \\| `string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "tax_rate",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "tax_rates",
+        "type": "``null`` \\| [`TaxRate`](TaxRate.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "region_id",
+    "type": "``null`` \\| `string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
