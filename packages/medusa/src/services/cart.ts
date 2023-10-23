@@ -2018,43 +2018,6 @@ class CartService extends TransactionBaseService {
           })
         )
 
-        /**
-         * From now on, the sessions have been cleanup. We can now
-         * - Set the provider session as selected if it is the only one existing and there is no payment session on the cart
-         * - Create a session per provider locally if it does not already exists on the cart as per the previous step
-         */
-
-        // If only one provider exists and there is no session on the cart, create the session and select it.
-        if (region.payment_providers.length === 1 && !cart.payment_session) {
-          const paymentProvider = region.payment_providers[0]
-
-          // if the provider already exists, we don't attempt to create a new session for it.
-          const update: { is_selected: boolean; is_initiated?: boolean } = {
-            is_selected: true,
-          }
-
-          let paymentSession
-          if (alreadyConsumedProviderIds.has(paymentProvider.id)) {
-            paymentSession = cart.payment_sessions.find(
-              (ps) => ps.provider_id === paymentProvider.id
-            )
-          } else {
-            const paymentSessionInput = {
-              ...partialSessionInput,
-              provider_id: paymentProvider.id,
-            }
-
-            paymentSession = await this.paymentProviderService_
-              .withTransaction(transactionManager)
-              .createSession(paymentSessionInput)
-
-            update.is_initiated = true
-          }
-
-          await psRepo.update(paymentSession.id, update)
-          return
-        }
-
         await Promise.all(
           region.payment_providers.map(async (paymentProvider) => {
             if (alreadyConsumedProviderIds.has(paymentProvider.id)) {
