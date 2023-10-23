@@ -24,7 +24,6 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "product_id",
       alias: "product",
-      // isList: true,
     },
     {
       serviceName: "salesChannelService",
@@ -32,7 +31,6 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",
-      // isList: true,
     },
   ],
   extends: [

@@ -8,7 +8,7 @@ const productSalesChannelTable = "product_sales_channel"
 export const SalesChannelRepository = dataSource
   .getRepository(SalesChannel)
   .extend({
-    async getFreeTextSearchResults(
+    async getFreeTextSearchResults_(
       q: string,
       options: ExtendedFindConfig<SalesChannel> & { withCount?: boolean } = {
         where: {},
@@ -42,6 +42,30 @@ export const SalesChannelRepository = dataSource
       }
 
       return await (options_.withCount ? qb.getManyAndCount() : qb.getMany())
+    },
+
+    async getFreeTextSearchResultsAndCount(
+      q: string,
+      options: ExtendedFindConfig<SalesChannel> = {
+        where: {},
+      }
+    ): Promise<[SalesChannel[], number]> {
+      return (await this.getFreeTextSearchResults_(q, {
+        ...options,
+        withCount: true,
+      })) as [SalesChannel[], number]
+    },
+
+    async getFreeTextSearchResults(
+      q: string,
+      options: ExtendedFindConfig<SalesChannel> = {
+        where: {},
+      }
+    ): Promise<SalesChannel[]> {
+      return (await this.getFreeTextSearchResults_(
+        q,
+        options
+      )) as SalesChannel[]
     },
 
     async removeProducts(

@@ -153,10 +153,7 @@ class SalesChannelService extends TransactionBaseService {
     const query = buildQuery(selector_, config)
 
     if (q) {
-      return (await salesChannelRepo.getFreeTextSearchResults(q, {
-        ...query,
-        withCount: true,
-      })) as [SalesChannel[], number]
+      return await salesChannelRepo.getFreeTextSearchResultsAndCount(q, query)
     }
 
     return await salesChannelRepo.findAndCount(query)
@@ -188,10 +185,7 @@ class SalesChannelService extends TransactionBaseService {
     const query = buildQuery(selector_, config)
 
     if (q) {
-      return (await salesChannelRepo.getFreeTextSearchResults(
-        q,
-        query
-      )) as SalesChannel[]
+      return await salesChannelRepo.getFreeTextSearchResults(q, query)
     }
 
     return await salesChannelRepo.find(query)
