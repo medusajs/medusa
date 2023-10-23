@@ -1,9 +1,10 @@
 import {
   IEventBusModuleService,
+  Message,
   RemoteJoinerQuery,
   Subscriber,
 } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { isDefined, remoteQueryObjectFromString } from "@medusajs/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
 import { Catalog, CatalogRelation } from "@models"
 import {
@@ -227,11 +228,21 @@ export class PostgresProvider {
   consumeEvent(
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   ): Subscriber {
-    return async (data: unknown, eventName: string) => {
+    return async (data: Message<unknown> | unknown, eventName: string) => {
       await this.#isReady_
 
-      const data_ = Array.isArray(data) ? data : [data]
+      const isMessageShape = isDefined((data as Message<unknown>).body)
+
+      let action = eventName.split(".").pop() || ""
+      let data_: { id: string }[] = Array.isArray(data) ? data : [data]
       let ids: string[] = data_.map((d) => d.id)
+
+      if (isMessageShape) {
+        action = (data as Message<unknown>).body.metadata.action
+        data_ = (data as Message<unknown>).body.data as { id: string }[]
+        data_ = Array.isArray(data_) ? data_ : [data_]
+        ids = data_.map((d) => d.id)
+      }
 
       const { fields, alias } = schemaEntityObjectRepresentation
       const entityData = await this.remoteQuery_(
@@ -252,7 +263,6 @@ export class PostgresProvider {
         schemaEntityObjectRepresentation,
       }
 
-      const action = eventName.split(".").pop() || ""
       const targetMethod = this.eventActionToMethodMap_[action]
 
       if (!targetMethod) {
