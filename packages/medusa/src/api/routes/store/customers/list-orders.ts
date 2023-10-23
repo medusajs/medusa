@@ -158,7 +158,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/customers/me/orders' \
- *       -H 'Cookie: connect.sid={sid}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []
