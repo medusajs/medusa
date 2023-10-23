@@ -104,3 +104,4 @@ export abstract class AbstractEventBusModuleService
 }
 
 export * from "./build-event-messages"
+export * from "./event-aggregator"
