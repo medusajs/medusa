@@ -6713,7 +6713,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.0, @medusajs/modules-sdk@^1.12.1, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@^1.11.0, @medusajs/modules-sdk@^1.12.0, @medusajs/modules-sdk@^1.12.1, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
@@ -6886,9 +6886,9 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   bin:
-    medusa-catalog-migrations-down: dist/scripts/bin/run-migration-down.js
-    medusa-catalog-migrations-up: dist/scripts/bin/run-migration-up.js
-    medusa-catalog-seed: dist/scripts/bin/run-seed.js
+    medusa-search-migrations-down: dist/scripts/bin/run-migration-down.js
+    medusa-search-migrations-up: dist/scripts/bin/run-migration-up.js
+    medusa-search-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -6909,7 +6909,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.10.0, @medusajs/types@^1.11.3, @medusajs/types@^1.11.4, @medusajs/types@^1.8.10, @medusajs/types@^1.8.8, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.10.0, @medusajs/types@^1.11.1, @medusajs/types@^1.11.3, @medusajs/types@^1.11.4, @medusajs/types@^1.8.10, @medusajs/types@^1.8.8, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -6974,7 +6974,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/utils@^1.10.0, @medusajs/utils@^1.10.3, @medusajs/utils@^1.10.4, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.10.0, @medusajs/utils@^1.10.1, @medusajs/utils@^1.10.3, @medusajs/utils@^1.10.4, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
