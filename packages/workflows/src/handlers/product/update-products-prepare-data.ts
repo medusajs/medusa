@@ -76,8 +76,9 @@ export async function updateProductsPrepareData({
     }
 
     for (const variantInput of productInput.variants || []) {
-      variantInput.id &&
+      if (variantInput.id) {
         variantPricesMap.set(variantInput.id, variantInput.prices || [])
+      }
     }
 
     productHandleAddedChannelsMap.set(currentProduct.handle!, addedChannels)

@@ -114,6 +114,9 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
   const validated = await validator(
     AdminPostProductsProductVariantsVariantReq,
     req.body
@@ -141,30 +144,16 @@ export default async (req, res) => {
         manager,
       },
     })
-
-    const rawProduct = await productService.retrieve(id, {
-      select: defaultAdminProductFields,
-      relations: defaultAdminProductRelations,
-      ...validatedQueryParams,
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      await productVariantService
+        .withTransaction(transactionManager)
+        .update(variant_id, {
+          product_id: id,
+          ...validated,
+        })
     })
-
-    const [product] = await pricingService.setProductPrices([rawProduct])
-
-    return res.json({ product })
   }
-
-  const productVariantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
-  )
-
-  await manager.transaction(async (transactionManager) => {
-    await productVariantService
-      .withTransaction(transactionManager)
-      .update(variant_id, {
-        product_id: id,
-        ...validated,
-      })
-  })
 
   const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,

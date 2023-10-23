@@ -12,9 +12,12 @@ type VariantPrice = {
 }
 
 export type UpdateProductVariantsPreparedData = {
-  productVariants: ProductTypes.UpdateProductVariantDTO[]
+  productVariants: ProductWorkflow.UpdateProductVariantsInputDTO[]
   variantPricesMap: Map<string, VariantPrice[]>
-  productVariantsMap: Map<string, ProductTypes.UpdateProductVariantDTO[]>
+  productVariantsMap: Map<
+    string,
+    ProductWorkflow.UpdateProductVariantsInputDTO[]
+  >
 }
 
 export async function updateProductVariantsPrepareData({
@@ -25,10 +28,20 @@ export async function updateProductVariantsPrepareData({
   let productVariants: ProductWorkflow.UpdateProductVariantsInputDTO[] =
     data.productVariants || []
 
+  const variantsDataMap = new Map<
+    string,
+    ProductWorkflow.UpdateProductVariantsInputDTO
+  >(
+    productVariants.map((productVariantData) => [
+      productVariantData.id,
+      productVariantData,
+    ])
+  )
+
   const variantIds = productVariants.map((pv) => pv.id) as string[]
   const productVariantsMap = new Map<
     string,
-    ProductTypes.UpdateProductVariantDTO[]
+    ProductWorkflow.UpdateProductVariantsInputDTO[]
   >()
   const variantPricesMap = new Map<string, VariantPrice[]>()
 
@@ -44,19 +57,25 @@ export async function updateProductVariantsPrepareData({
     }
   )
 
-  variantsWithProductIds.forEach((v) => {
-    const variantData = productVariants.find((pv) => pv.id === v.id)
+  for (const variantWithProductID of variantsWithProductIds) {
+    const variantData = variantsDataMap.get(variantWithProductID.id)
 
-    variantPricesMap.set(v.id, variantData?.prices || [])
-    delete variantData?.prices
+    if (!variantData) {
+      continue
+    }
 
-    const variantsData: ProductTypes.UpdateProductVariantDTO[] =
-      productVariantsMap.get(v.product_id) || []
+    variantPricesMap.set(variantWithProductID.id, variantData.prices || [])
+    delete variantData.prices
 
-    if (variantData) variantsData.push(variantData as any)
+    const variantsData: ProductWorkflow.UpdateProductVariantsInputDTO[] =
+      productVariantsMap.get(variantWithProductID.product_id) || []
 
-    productVariantsMap.set(v.product_id, variantsData)
-  })
+    if (variantData) {
+      variantsData.push(variantData)
+    }
+
+    productVariantsMap.set(variantWithProductID.product_id, variantsData)
+  }
 
   return {
     productVariants,

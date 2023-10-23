@@ -25,8 +25,6 @@ export const workflowSteps: TransactionStepsDefinition = {
       next: [
         {
           action: UpdateProductVariantsActions.upsertPrices,
-          noCompensation: true,
-          saveResponse: false,
         },
       ],
     },
@@ -86,9 +84,6 @@ const handlers = new Map([
             },
             {
               from: UpdateProductVariantsActions.upsertPrices,
-              alias:
-                ProductHandlers.upsertVariantPrices.aliases
-                  .productVariantsPrices,
             },
           ],
         },

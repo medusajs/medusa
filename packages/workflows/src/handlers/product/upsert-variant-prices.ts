@@ -12,6 +12,11 @@ type VariantPrice = {
   rules: Record<string, string>
 }
 
+type RegionDTO = {
+  id: string
+  currency_code: string
+}
+
 type HandlerInput = {
   variantPricesMap: Map<string, VariantPrice[]>
 }
@@ -51,7 +56,6 @@ export async function upsertVariantPrices({
   const moneyAmountsToUpdate: PricingTypes.UpdateMoneyAmountDTO[] = []
   const createdPriceSets: PricingTypes.PriceSetDTO[] = []
   const ruleSetPricesToAdd: PricingTypes.CreatePricesDTO[] = []
-  const priceSetsToCreate: PricingTypes.CreatePriceSetDTO[] = []
   const linksToCreate: any[] = []
 
   for (const [variantId, prices = []] of variantPricesMap) {
@@ -59,6 +63,11 @@ export async function upsertVariantPrices({
       rules: [{ rule_attribute: "region_id" }],
       prices: [],
     }
+    const regionIds = prices.map((price) => price.region_id)
+    const regions = await regionService.list({ id: regionIds })
+    const regionsMap: Map<string, RegionDTO> = new Map(
+      regions.map((region: RegionDTO) => [region.id, region])
+    )
 
     for (const price of prices) {
       if (price.id) {
@@ -70,6 +79,7 @@ export async function upsertVariantPrices({
           currency_code: price.currency_code,
         })
       } else {
+        const region = price.region_id && regionsMap.get(price.region_id)
         const variantPrice: PricingTypes.CreatePricesDTO = {
           min_quantity: price.min_quantity,
           max_quantity: price.max_quantity,
@@ -78,9 +88,7 @@ export async function upsertVariantPrices({
           rules: {},
         }
 
-        if (price.region_id) {
-          const region = await regionService.retrieve(price.region_id)
-
+        if (region) {
           variantPrice.currency_code = region.currency_code
           variantPrice.rules = {
             region_id: region.id,
@@ -97,7 +105,6 @@ export async function upsertVariantPrices({
       }
     }
 
-    priceSetsToCreate.push(priceSetToCreate)
     let priceSetId = variantIdToPriceSetIdMap.get(variantId)
 
     if (priceSetId) {

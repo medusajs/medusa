@@ -2,9 +2,11 @@ import setupServer from "../../../../environment-helpers/setup-server"
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { simpleProductFactory } from "../../../../factories"
+import {
+  simpleProductFactory,
+  simpleRegionFactory,
+} from "../../../../factories"
 
-import { Region } from "@medusajs/medusa"
 import path from "path"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
@@ -23,7 +25,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products/:id", () => {
+describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () => {
   let dbConnection
   let appContainer
   let medusaProcess
@@ -44,11 +46,10 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
   })
 
   beforeEach(async () => {
-    const manager = dbConnection.manager
     await adminSeeder(dbConnection)
     await createDefaultRuleTypes(appContainer)
 
-    await manager.insert(Region, {
+    await simpleRegionFactory(dbConnection, {
       id: "test-region",
       name: "Test Region",
       currency_code: "usd",
@@ -78,38 +79,27 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
     await db.teardown()
   })
 
-  it("should update product variant price sets and prices", async () => {
+  it("should create product variant price sets and prices", async () => {
     const api = useApi()
     const data = {
-      title: "test product update",
-      variants: [
+      title: "test variant update",
+      prices: [
         {
-          id: variant.id,
-          title: "test variant update",
-          prices: [
-            {
-              amount: 66600,
-              region_id: "test-region",
-            },
-            {
-              amount: 55500,
-              currency_code: "usd",
-              region_id: null,
-            },
-          ],
+          amount: 66600,
+          region_id: "test-region",
+        },
+        {
+          amount: 55500,
+          currency_code: "usd",
+          region_id: null,
         },
       ],
     }
 
     let response = await api.post(
-      `/admin/products/${product.id}`,
+      `/admin/products/${product.id}/variants/${variant.id}`,
       data,
       adminHeaders
-    )
-
-    console.log(
-      "response.data.product - ",
-      JSON.stringify(response.data.product, null, 2)
     )
 
     response = await api.get(`/admin/products/${product.id}`, adminHeaders)
@@ -156,29 +146,23 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
 
     const api = useApi()
     const data = {
-      title: "test product update",
-      variants: [
+      title: "test variant update",
+      prices: [
         {
-          id: variant.id,
-          title: "test variant update",
-          prices: [
-            {
-              amount: 66600,
-              region_id: "test-region",
-            },
-            {
-              id: moneyAmountToUpdate?.id,
-              amount: 2222,
-              currency_code: "usd",
-              region_id: null,
-            },
-          ],
+          amount: 66600,
+          region_id: "test-region",
+        },
+        {
+          id: moneyAmountToUpdate?.id,
+          amount: 2222,
+          currency_code: "usd",
+          region_id: null,
         },
       ],
     }
 
     let response = await api.post(
-      `/admin/products/${product.id}`,
+      `/admin/products/${product.id}/variants/${variant.id}`,
       data,
       adminHeaders
     )
@@ -212,48 +196,30 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
   })
 
   it("should add prices if price set is already present", async () => {
-    const medusaApp = appContainer.resolve("medusaApp")
-    const pricingModuleService = appContainer.resolve("pricingModuleService")
-
-    const priceSet = await pricingModuleService.create({
-      rules: [{ rule_attribute: "region_id" }],
+    await createVariantPriceSet({
+      container: appContainer,
+      variantId: variant.id,
       prices: [],
     })
 
-    await medusaApp.link.create({
-      productService: {
-        variant_id: variant.id,
-      },
-      pricingService: {
-        price_set_id: priceSet.id,
-      },
-    })
-
     const api = useApi()
-
     const data = {
-      title: "test product update",
-      variants: [
+      title: "test variant update",
+      prices: [
         {
-          id: variant.id,
-          title: "test variant update",
-          prices: [
-            {
-              amount: 123,
-              region_id: "test-region",
-            },
-            {
-              amount: 456,
-              currency_code: "usd",
-              region_id: null,
-            },
-          ],
+          amount: 123,
+          region_id: "test-region",
+        },
+        {
+          amount: 456,
+          currency_code: "usd",
+          region_id: null,
         },
       ],
     }
 
     let response = await api.post(
-      `/admin/products/${product.id}`,
+      `/admin/products/${product.id}/variants/${variant.id}`,
       data,
       adminHeaders
     )
