@@ -28,6 +28,7 @@ export type MessageBody<T> = {
     service: string
     action: string
     object: string
+    eventGroupId?: string
   }
   data: T
 }
@@ -38,12 +39,13 @@ export type Message<T> = {
   options?: Record<string, unknown>
 }
 
-export type MessageData<T> = {
+export type MessageFormat<T> = {
   eventName: string
   metadata: {
     service: string
     action: string
     object: string
+    eventGroupId?: string
   }
   data: T | T[]
 }

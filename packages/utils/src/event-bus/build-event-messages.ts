@@ -2,11 +2,13 @@ import { EventBusTypes } from "@medusajs/types"
 
 /**
  * Build messages from message data to be consumed by the event bus and emitted to the consumer
- * @param messageData
+ * @param MessageFormat
  * @param options
  */
 export function buildEventMessages<T>(
-  messageData: EventBusTypes.MessageData<T> | EventBusTypes.MessageData<T>[],
+  messageData:
+    | EventBusTypes.MessageFormat<T>
+    | EventBusTypes.MessageFormat<T>[],
   options?: Record<string, unknown>
 ): EventBusTypes.Message<T>[] {
   const messageData_ = Array.isArray(messageData) ? messageData : [messageData]
