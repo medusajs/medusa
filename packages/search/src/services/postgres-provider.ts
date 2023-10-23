@@ -146,7 +146,11 @@ export class PostgresProvider {
     }
   }
 
-  protected static parseMessageData<T>(message?: Message<T>) {
+  protected static parseMessageData<T>(message?: Message<T>): {
+    action: string
+    data: { id: string }[]
+    ids: string[]
+  } | void {
     const isMessageShape = isDefined((message as Message<unknown>)?.body)
 
     if (!isMessageShape) {
@@ -256,16 +260,15 @@ export class PostgresProvider {
     return async (data: Message<unknown> | unknown, eventName: string) => {
       await this.#isReady_
 
-      let action = eventName.split(".").pop() || ""
-      let data_: { id: string }[] = Array.isArray(data) ? data : [data]
+      const data_: { id: string }[] = Array.isArray(data) ? data : [data]
       let ids: string[] = data_.map((d) => d.id)
+      let action = eventName.split(".").pop() || ""
 
       const parsedMessage = PostgresProvider.parseMessageData(
         data as Message<unknown>
       )
       if (parsedMessage) {
         action = parsedMessage.action
-        data_ = parsedMessage.data
         ids = parsedMessage.ids
       }
 
