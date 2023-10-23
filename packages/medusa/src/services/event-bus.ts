@@ -147,6 +147,9 @@ export default class EventBusService
   ): Promise<TResult | void> {
     const manager = this.activeManager_
     const isBulkEmit = !isString(eventNameOrData)
+    const dataBody = isString(eventNameOrData)
+      ? (data as EmitData).data ?? (data as Message<T>).body
+      : undefined
     const events: EventBusTypes.EmitData[] = isBulkEmit
       ? eventNameOrData.map((event) => ({
           eventName: event.eventName,
@@ -156,7 +159,7 @@ export default class EventBusService
       : [
           {
             eventName: eventNameOrData,
-            data: data,
+            data: dataBody,
             options: options,
           },
         ]

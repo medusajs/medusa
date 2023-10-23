@@ -69,7 +69,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         continue
       }
 
-      const data = (event as EmitData).data ?? (event as Message<T>).body.data
+      const data = (event as EmitData).data ?? (event as Message<T>).body
       this.eventEmitter_.emit(event.eventName, data)
     }
   }
