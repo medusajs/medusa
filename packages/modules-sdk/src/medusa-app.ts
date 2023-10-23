@@ -15,8 +15,8 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  isObject,
   ModulesSdkUtils,
+  isObject,
 } from "@medusajs/utils"
 import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
@@ -223,6 +223,9 @@ export async function MedusaApp(
   }
 
   const allModules = await loadModules(modules, injectedDependencies)
+
+  // Share Event bus with link modules
+  injectedDependencies[Modules.EVENT_BUS] = allModules[Modules.EVENT_BUS]
   const {
     remoteLink,
     linkResolution,

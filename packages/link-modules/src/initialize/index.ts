@@ -15,11 +15,16 @@ import {
   ContainerRegistrationKeys,
   lowerCaseFirst,
   simpleHash,
+  toPascalCase,
 } from "@medusajs/utils"
 import * as linkDefinitions from "../definitions"
 import { getMigration } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
-import { composeLinkName, generateGraphQLSchema } from "../utils"
+import {
+  composeLinkName,
+  composeTableName,
+  generateGraphQLSchema,
+} from "../utils"
 import { getLinkModuleDefinition } from "./module-definition"
 
 export const initialize = async (
@@ -99,6 +104,22 @@ export const initialize = async (
     }
 
     definition.schema = generateGraphQLSchema(definition, primary, foreign)
+
+    definition.alias ??= []
+    for (const alias of definition.alias) {
+      alias.args ??= {}
+
+      alias.args.entity = toPascalCase(
+        "Link_" +
+          (definition.databaseConfig?.tableName ??
+            composeTableName(
+              primary.serviceName,
+              primary.foreignKey,
+              foreign.serviceName,
+              foreign.foreignKey
+            ))
+      )
+    }
 
     const moduleDefinition = getLinkModuleDefinition(
       definition,
