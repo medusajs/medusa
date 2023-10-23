@@ -2,6 +2,7 @@ import { ModulesSdkUtils } from "@medusajs/utils"
 import { Knex } from "@mikro-orm/postgresql"
 import { DB_URL } from "../../../integration-tests/utils"
 import { QueryBuilder } from "../../utils/query-builder"
+import { schemaObjectRepresentation } from "../__fixtures__/schema-representation"
 
 describe("Catalog Query Builder", function () {
   let knex: Knex
@@ -14,7 +15,7 @@ describe("Catalog Query Builder", function () {
 
   it("Should create a simple object from a resultset", async function () {
     const qb = new QueryBuilder({
-      schema: {} as any,
+      schema: schemaObjectRepresentation,
       entityMap: {},
       knex,
       selector: {
@@ -60,7 +61,7 @@ describe("Catalog Query Builder", function () {
   it("Should create a nested object from a resultset", async function () {
     const qb = new QueryBuilder({
       entityMap: {},
-      schema: {} as any,
+      schema: schemaObjectRepresentation,
       knex,
       selector: {
         select: {
@@ -128,7 +129,7 @@ describe("Catalog Query Builder", function () {
   it("Should create a complex nested object from a resultset including repeated references", async function () {
     const qb = new QueryBuilder({
       entityMap: {},
-      schema: {} as any,
+      schema: schemaObjectRepresentation,
       knex,
       selector: {
         select: {
