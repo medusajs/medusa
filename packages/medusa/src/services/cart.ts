@@ -2756,13 +2756,13 @@ class CartService extends TransactionBaseService {
     cart.raw_discount_total = cart.discount_total
     cart.discount_total = Math.round(cart.discount_total)
 
-    const giftCardableAmount =
-      (cart.region?.gift_cards_taxable
-        ? cart.subtotal + cart.shipping_total - cart.discount_total
-        : cart.subtotal +
-          cart.shipping_total +
-          cart.tax_total -
-          cart.discount_total) || 0
+    const giftCardableAmount = this.newTotalsService_.getGiftCardableAmount({
+      gift_cards_taxable: cart.region?.gift_cards_taxable,
+      subtotal: cart.subtotal,
+      discount_total: cart.discount_total,
+      shipping_total: cart.shipping_total,
+      tax_total: cart.tax_total,
+    })
 
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
       giftCardableAmount,

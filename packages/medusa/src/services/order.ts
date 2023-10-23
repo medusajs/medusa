@@ -1897,13 +1897,13 @@ class OrderService extends TransactionBaseService {
 
     order.tax_total = item_tax_total + shipping_tax_total
 
-    const giftCardableAmount =
-      (order.region?.gift_cards_taxable
-        ? order.subtotal + order.shipping_total - order.discount_total
-        : order.subtotal +
-          order.shipping_total +
-          order.tax_total -
-          order.discount_total) || 0
+    const giftCardableAmount = this.newTotalsService_.getGiftCardableAmount({
+      gift_cards_taxable: order.region?.gift_cards_taxable,
+      subtotal: order.subtotal,
+      discount_total: order.discount_total,
+      shipping_total: order.shipping_total,
+      tax_total: order.tax_total,
+    })
 
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
       giftCardableAmount,
