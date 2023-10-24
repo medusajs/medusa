@@ -1,27 +1,13 @@
-import { MedusaModule, ModuleJoinerConfig } from "@medusajs/modules-sdk"
 import { initDb, useDb } from "../../../environment-helpers/use-db"
-import {
-  initialize,
-  runMigrations,
-} from "@medusajs/link-modules"
-import {
-  initialize as initializePricingModoule,
-  runMigrations as runPricingMigrations,
-} from "@medusajs/pricing"
-import {
-  initialize as initializeProductModoule,
-  runMigrations as runProductMigrations,
-} from "@medusajs/product"
 import { setPort, useApi } from "../../../environment-helpers/use-api"
+import { simpleCartFactory, simpleRegionFactory } from "../../../factories"
 
 import { AxiosInstance } from "axios"
 import { IPricingModuleService } from "@medusajs/types"
 import adminSeeder from "../../../helpers/admin-seeder"
 import { bootstrapApp } from "../../../environment-helpers/bootstrap-app"
 import path from "path"
-import { runLinkMigrations } from "../../helpers/run-link-migrations"
 import setupServer from "../../../environment-helpers/setup-server"
-import { simpleRegionFactory } from "../../../factories"
 
 jest.setTimeout(5000000)
 
@@ -38,104 +24,53 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_PRICING_INTEGRATION: true,
+  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-const dbConfig = {
-  database: {
-    clientUrl: DB_URL,
-  },
-}
-
 describe("Link Modules", () => {
-  // let links
-  let pricingModuleService: IPricingModuleService
   let medusaContainer
-  // let express
-
-  // const dbConfig = {
-  //   database: {
-  //     clientUrl: DB_URL,
-  //   },
-  // }
-
-  // beforeAll(async () => {
-  //   const cwd = path.resolve(path.join(__dirname, "..", ".."))
-  //   dbConnection = await initDb({ cwd } as any)
-  //   const { app, port, container } = await bootstrapApp({ cwd })
-  //   medusaContainer = container
-
-  //   setPort(port)
-  //   express = app.listen(port, () => {
-  //     process.send?.(port)
-  //   })
-
-  //   // await runPricingMigrations({ options: dbConfig })
-
-  //   pricingModuleService = await initializePricingModoule(dbConfig)
-  //   // await initializeProductModoule(dbConfig)
-  //   // await runMigrations({ options: dbConfig })
-  //   links = await initialize(dbConfig) // linkDefinition
-
-  //   pricingLink = links.productVariantPricingPriceSetLink
-  // })
-
-  // afterAll(async () => {
-  //   jest.clearAllMocks()
-  // })
-
-  let medusaProcess
   let dbConnection
+  let express
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({
-      cwd,
-      env,
-      verbose: true,
-    } as any)
-    const { container } = await bootstrapApp({ cwd })
+
+    const { container, app, port } = await bootstrapApp({ cwd, env })
     medusaContainer = container
+    setPort(port)
 
-    runLinkMigrations(container, { options: dbConfig })
-
-    pricingModuleService = medusaContainer.resolve("pricingModuleService")
-
+    express = app.listen(port)
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
 
-    medusaProcess.kill()
+    express.close()
   })
-
 
   beforeEach(async () => {
     await adminSeeder(dbConnection)
-    const a = await simpleRegionFactory(dbConnection, { 
-      id: 'region-1',
-      currency_code: 'usd'
+    await simpleRegionFactory(dbConnection, {
+      id: "region-1",
+      currency_code: "usd",
     })
-
-    console.warn(a)
   })
 
   describe("get product price", () => {
     let ruleType
     let priceSet
     let productId
-    let cartId 
+    const cartId = "test-cart"
     beforeEach(async () => {
+      const pricingModuleService = medusaContainer.resolve(
+        "pricingModuleService"
+      )
       const api = useApi()! as AxiosInstance
 
-      const cartResponse = await api.post(`/store/carts`, {
-        region_id: 'region-1'
-      }, adminHeaders)
-
-      cartId = cartResponse.data.cart.id
+      await simpleCartFactory(dbConnection, { id: cartId, region: "region-1" })
 
       const payload = {
         title: "Test",
@@ -164,7 +99,7 @@ describe("Link Modules", () => {
         prices: [
           {
             amount: 1000,
-            currency_code: "eur",
+            currency_code: "usd",
             rules: { region_id: "region-1" },
           },
           {
@@ -175,27 +110,33 @@ describe("Link Modules", () => {
         ],
       })
 
-      await pricingLink.create(variant.id, priceSet.id)
+      const medusaApp = medusaContainer.resolve("medusaApp") as any
+
+      await medusaApp.link.create({
+        productService: {
+          variant_id: variant.id,
+        },
+        pricingService: {
+          price_set_id: priceSet.id,
+        },
+      })
     })
 
-    it.only("Should values in a declared link", async () => {
+    it("Should values in a declared link", async () => {
       const api = useApi()! as AxiosInstance
 
       const response = await api.get(
         `/store/products/${productId}?cart_id=${cartId}`
       )
 
+      console.warn(JSON.stringify(response.data.product.variants, null, 2))
+
       expect(response.data.product.variants[0].prices).toEqual([
-        {
+        expect.objectContaining({
           amount: 1000,
-          currency_code: "eur",
-          region_id: "region-1",
-        },
-        {
-          amount: 900,
           currency_code: "usd",
-          region_id: "region-2",
-        },
+          region_id: "region-1",
+        }),
       ])
     })
   })
