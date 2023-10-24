@@ -3,7 +3,8 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react"
 
 type AccessContextType = {
     access: any
-    checkAccess: (path: string) => boolean
+    checkAccess: (path: string) => boolean,
+    startPage: string
   }
   
 
@@ -18,6 +19,8 @@ export const AccessProvider = ({
     const [access, setAccess] = useState();
 
     const { client: medusaClient } = useMedusa()
+
+    const [startPage, setStartPage] = useState('');
     
     const getAccess = async () => {
         let res = await medusaClient.admin.custom.get('admin/access');
@@ -29,6 +32,39 @@ export const AccessProvider = ({
             setAccess(a);
         })
     },[])
+
+    useEffect(()=>{
+      
+      if(access) {
+
+        // Init start pages
+
+        let starts = [
+          '/orders',
+          '/products'
+        ];
+        
+        // Check default start pages
+        
+        for(let s of starts) {
+          if(checkAccess(s)) {
+            setStartPage('/a'+s);
+            break;
+          }
+        }
+
+      }
+    },[access])
+
+    const checkAccessArray = (path: string): boolean => {
+
+        if(access.length)
+            if(access.find(a=>String(path).startsWith(a.path) && a.access===true))
+              return true;
+        
+        return false;
+
+    }
 
     const checkAccess = (path: string) => {
         
@@ -45,9 +81,8 @@ export const AccessProvider = ({
 
             // Check access
 
-            if(access.length)
-                if(access.find(a=>String(path).startsWith(a.path) && a.access===true))
-                    return true;
+            if(checkAccessArray(path))
+                return true;
 
         }
         
@@ -60,6 +95,7 @@ export const AccessProvider = ({
         () => ({
           access,
           checkAccess,
+          startPage
         }),
         [access, checkAccess]
       )

@@ -7,6 +7,8 @@ import InputError from "../../atoms/input-error"
 import WidgetContainer from "../../extensions/widget-container"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
+import { useAccess } from "../../../providers/access-provider"
+import { useEffect, useState } from "react"
 
 type FormValues = {
   email: string
@@ -29,11 +31,21 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
   const { t } = useTranslation()
 
   const { getWidgets } = useWidgets()
+  const { startPage } = useAccess();
+
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(()=>{
+    if(redirect && startPage) {
+      setRedirect(false);
+      navigate(startPage);
+    }
+  },[redirect, startPage])
 
   const onSubmit = (values: FormValues) => {
     mutate(values, {
       onSuccess: () => {
-        navigate("/a/orders")
+        setRedirect(true);
       },
       onError: () => {
         setError(
