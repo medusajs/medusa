@@ -1,16 +1,17 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
+  composeMessage,
   retrieveEntity,
 } from "@medusajs/utils"
-
-import { shouldForceTransaction } from "../utils"
-import { ProductCollectionRepository } from "../repositories"
-
 import { ProductCollection } from "@models"
+import { ProductCollectionRepository } from "../repositories"
+import { InternalContext, ProductCollectionEvents } from "../types"
+import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -91,11 +92,24 @@ export default class ProductCollectionService<
   )
   async create(
     data: ProductTypes.CreateProductCollectionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<TEntity[]> {
-    return (await (
+    const collections = await (
       this.productCollectionRepository_ as ProductCollectionRepository
-    ).create(data, sharedContext)) as TEntity[]
+    ).create(data, sharedContext)
+
+    sharedContext.messageAggregator?.save(
+      collections.map(({ id }) => {
+        return composeMessage(ProductCollectionEvents.COLLECTION_CREATED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: ProductCollection.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return collections as TEntity[]
   }
 
   @InjectTransactionManager(
@@ -104,11 +118,24 @@ export default class ProductCollectionService<
   )
   async update(
     data: ProductTypes.UpdateProductCollectionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<TEntity[]> {
-    return (await (
+    const collections = await (
       this.productCollectionRepository_ as ProductCollectionRepository
-    ).update(data, sharedContext)) as TEntity[]
+    ).update(data, sharedContext)
+
+    sharedContext.messageAggregator?.save(
+      collections.map(({ id }) => {
+        return composeMessage(ProductCollectionEvents.COLLECTION_UPDATED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: ProductCollection.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return collections as TEntity[]
   }
 
   @InjectTransactionManager(
@@ -117,8 +144,19 @@ export default class ProductCollectionService<
   )
   async delete(
     ids: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
     await this.productCollectionRepository_.delete(ids, sharedContext)
+
+    sharedContext.messageAggregator?.save(
+      ids.map((id) => {
+        return composeMessage(ProductCollectionEvents.COLLECTION_DELETED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: ProductCollection.name,
+          context: sharedContext,
+        })
+      })
+    )
   }
 }

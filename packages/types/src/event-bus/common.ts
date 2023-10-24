@@ -23,7 +23,7 @@ export type EmitData<T = unknown> = {
   options?: Record<string, unknown>
 }
 
-export type MessageBody<T> = {
+export type MessageBody<T = unknown> = {
   metadata: {
     service: string
     action: string
@@ -33,13 +33,13 @@ export type MessageBody<T> = {
   data: T
 }
 
-export type Message<T> = {
+export type Message<T = unknown> = {
   eventName: string
   body: MessageBody<T>
   options?: Record<string, unknown>
 }
 
-export type MessageFormat<T> = {
+export type MessageFormat<T = unknown> = {
   eventName: string
   metadata: {
     service: string

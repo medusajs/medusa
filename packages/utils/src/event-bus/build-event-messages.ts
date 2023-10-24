@@ -1,4 +1,5 @@
-import { EventBusTypes } from "@medusajs/types"
+import { Context, EventBusTypes } from "@medusajs/types"
+import { CommonEvents } from "./common-events"
 
 /**
  * Build messages from message data to be consumed by the event bus and emitted to the consumer
@@ -30,4 +31,55 @@ export function buildEventMessages<T>(
   })
 
   return messages
+}
+
+/**
+ * Helper function to compose and normalize a Message to be emitted by EventBus Module
+ * @param eventName  Name of the event to be emitted
+ * @param data The content of the message
+ * @param metadata Metadata of the message
+ * @param context Context from the caller service
+ * @param options Options to be passed to the event bus
+ */
+export function composeMessage(
+  eventName: string,
+  {
+    data,
+    service,
+    entity,
+    action,
+    context = {},
+    options,
+  }: {
+    data: unknown
+    service: string
+    entity: string
+    action?: string
+    context?: Context
+    options?: Record<string, unknown>
+  }
+): EventBusTypes.Message {
+  const act = action || eventName.split(".").pop()
+  if (!action && !Object.values(CommonEvents).includes(act as CommonEvents)) {
+    throw new Error("Action is required if eventName is not a CommonEvent")
+  }
+
+  const metadata: EventBusTypes.MessageBody["metadata"] = {
+    service,
+    object: entity,
+    action: act!,
+  }
+
+  if (context.eventGroupId) {
+    metadata.eventGroupId = context.eventGroupId
+  }
+
+  return {
+    eventName,
+    body: {
+      metadata,
+      data,
+    },
+    options,
+  }
 }

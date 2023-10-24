@@ -1,12 +1,12 @@
+import { Context, DAL } from "@medusajs/types"
+import { DALUtils } from "@medusajs/utils"
 import {
+  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  LoadStrategy,
 } from "@mikro-orm/core"
-import { Context, DAL } from "@medusajs/types"
-import { Image, Product } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils } from "@medusajs/utils"
+import { Image, Product } from "@models"
 
 // eslint-disable-next-line max-len
 export class ProductImageRepository extends DALUtils.MikroOrmAbstractBaseRepository<Image> {
@@ -59,7 +59,10 @@ export class ProductImageRepository extends DALUtils.MikroOrmAbstractBaseReposit
     )
   }
 
-  async upsert(urls: string[], context: Context = {}): Promise<Image[]> {
+  async upsert(
+    urls: string[],
+    context: Context = {}
+  ): Promise<[Image[], Image[], Image[]]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const existingImages = await this.find(
@@ -95,7 +98,7 @@ export class ProductImageRepository extends DALUtils.MikroOrmAbstractBaseReposit
       upsertedImgs.push(...imageToCreate)
     }
 
-    return upsertedImgs
+    return [upsertedImgs, existingImages, imageToCreate]
   }
 
   async delete(ids: string[], context: Context = {}): Promise<void> {

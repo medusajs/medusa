@@ -10,6 +10,7 @@ import {
   RestoreReturn,
   SoftDeleteReturn,
 } from "@medusajs/types"
+import { InjectIntoContext } from "@medusajs/utils"
 import {
   Image,
   Product,
@@ -29,28 +30,15 @@ import {
   ProductTypeService,
   ProductVariantService,
 } from "@services"
-
 import ProductImageService from "./product-image"
 
 import {
   CreateProductCategoryDTO,
-  ProductCategoryEventData,
-  ProductCategoryEvents,
   UpdateProductCategoryDTO,
 } from "../types/services/product-category"
 
+import { UpdateProductDTO } from "../types/services/product"
 import { UpdateProductVariantDTO } from "../types/services/product-variant"
-
-import {
-  ProductCollectionEventData,
-  ProductCollectionEvents,
-} from "../types/services/product-collection"
-
-import {
-  ProductEventData,
-  ProductEvents,
-  UpdateProductDTO,
-} from "../types/services/product"
 
 import {
   InjectManager,
@@ -61,8 +49,10 @@ import {
   mapObjectTo,
   MedusaContext,
   MedusaError,
+  MessageAggregator,
 } from "@medusajs/utils"
 
+import { InternalContext } from "../types"
 import { shouldForceTransaction } from "../utils"
 import {
   entityNameToLinkableKeysMap,
@@ -278,37 +268,52 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async createTags(
     data: ProductTypes.CreateProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productTags = await this.productTagService_.create(
       data,
       sharedContext
     )
 
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+
     return JSON.parse(JSON.stringify(productTags))
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async updateTags(
     data: ProductTypes.UpdateProductTagDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productTags = await this.productTagService_.update(
       data,
       sharedContext
     )
 
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+
     return JSON.parse(JSON.stringify(productTags))
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async deleteTags(
     productTagIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
     await this.productTagService_.delete(productTagIds, sharedContext)
+
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
   }
 
   @InjectManager("baseRepository_")
@@ -357,37 +362,52 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async createTypes(
     data: ProductTypes.CreateProductTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productTypes = await this.productTypeService_.create(
       data,
       sharedContext
     )
 
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+
     return JSON.parse(JSON.stringify(productTypes))
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async updateTypes(
     data: ProductTypes.UpdateProductTypeDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productTypes = await this.productTypeService_.update(
       data,
       sharedContext
     )
 
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+
     return JSON.parse(JSON.stringify(productTypes))
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async deleteTypes(
     productTypeIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
     await this.productTypeService_.delete(productTypeIds, sharedContext)
+
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
   }
 
   @InjectManager("baseRepository_")
@@ -437,15 +457,20 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async createOptions(
     data: ProductTypes.CreateProductOptionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productOptions = await this.productOptionService_.create(
       data,
       sharedContext
     )
 
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+
     return await this.baseRepository_.serialize<
       ProductTypes.ProductOptionDTO[]
     >(productOptions, {
@@ -454,15 +479,20 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async updateOptions(
     data: ProductTypes.UpdateProductOptionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productOptions = await this.productOptionService_.update(
       data,
       sharedContext
     )
 
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+
     return await this.baseRepository_.serialize<
       ProductTypes.ProductOptionDTO[]
     >(productOptions, {
@@ -471,11 +501,16 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async deleteOptions(
     productOptionIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
     await this.productOptionService_.delete(productOptionIds, sharedContext)
+
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
   }
 
   @InjectManager("baseRepository_")
@@ -524,61 +559,55 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async createCollections(
     data: ProductTypes.CreateProductCollectionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productCollections = await this.productCollectionService_.create(
       data,
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
-      productCollections.map(({ id }) => ({
-        eventName: ProductCollectionEvents.COLLECTION_CREATED,
-        data: { id },
-      }))
-    )
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
 
     return JSON.parse(JSON.stringify(productCollections))
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async updateCollections(
     data: ProductTypes.UpdateProductCollectionDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productCollections = await this.productCollectionService_.update(
       data,
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
-      productCollections.map(({ id }) => ({
-        eventName: ProductCollectionEvents.COLLECTION_UPDATED,
-        data: { id },
-      }))
-    )
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
 
     return JSON.parse(JSON.stringify(productCollections))
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async deleteCollections(
     productCollectionIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
     await this.productCollectionService_.delete(
       productCollectionIds,
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
-      productCollectionIds.map((id) => ({
-        eventName: ProductCollectionEvents.COLLECTION_DELETED,
-        data: { id },
-      }))
-    )
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
   }
 
   @InjectManager("baseRepository_")
@@ -612,28 +641,31 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async createCategory(
     data: CreateProductCategoryDTO,
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productCategory = await this.productCategoryService_.create(
       data,
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
-      ProductCategoryEvents.CATEGORY_CREATED,
-      { id: productCategory.id }
-    )
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
 
     return JSON.parse(JSON.stringify(productCategory))
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async updateCategory(
     categoryId: string,
     data: UpdateProductCategoryDTO,
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ) {
     const productCategory = await this.productCategoryService_.update(
       categoryId,
@@ -641,25 +673,22 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
-      ProductCategoryEvents.CATEGORY_UPDATED,
-      { id: productCategory.id }
-    )
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
 
     return JSON.parse(JSON.stringify(productCategory))
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async deleteCategory(
     categoryId: string,
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
     await this.productCategoryService_.delete(categoryId, sharedContext)
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
-      ProductCategoryEvents.CATEGORY_DELETED,
-      { id: categoryId }
-    )
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
   }
 
   @InjectManager("baseRepository_")
@@ -677,9 +706,12 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async create(
     data: ProductTypes.CreateProductDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
     const createdProducts = await this.baseRepository_.serialize<
@@ -688,19 +720,17 @@ export default class ProductModuleService<
       populate: true,
     })
 
-    await this.eventBusModuleService_?.emit<ProductEventData>(
-      createdProducts.map(({ id }) => ({
-        eventName: ProductEvents.PRODUCT_CREATED,
-        data: { id },
-      }))
-    )
+    await this.emitEvents_(sharedContext?.messageAggregator?.getMessages())
 
     return createdProducts
   }
 
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async update(
     data: ProductTypes.UpdateProductDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.update_(data, sharedContext)
 
@@ -710,12 +740,7 @@ export default class ProductModuleService<
       populate: true,
     })
 
-    await this.eventBusModuleService_?.emit<ProductEventData>(
-      updatedProducts.map(({ id }) => ({
-        eventName: ProductEvents.PRODUCT_UPDATED,
-        data: { id },
-      }))
-    )
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
 
     return updatedProducts
   }
@@ -723,8 +748,11 @@ export default class ProductModuleService<
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async create_(
     data: ProductTypes.CreateProductDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<TProduct[]> {
+    const messageAggregator = new MessageAggregator()
+    sharedContext.messageAggregator = messageAggregator
+
     const productVariantsMap = new Map<
       string,
       ProductTypes.CreateProductVariantDTO[]
@@ -832,7 +860,7 @@ export default class ProductModuleService<
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async update_(
     data: ProductTypes.UpdateProductDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<TProduct[]> {
     const productIds = data.map((pd) => pd.id)
     const existingProductVariants = await this.productVariantService_.list(
@@ -1012,7 +1040,7 @@ export default class ProductModuleService<
 
   protected async upsertAndAssignImagesToProductData(
     productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
-    sharedContext: Context = {}
+    sharedContext: InternalContext = {}
   ) {
     if (!productData.thumbnail && productData.images?.length) {
       productData.thumbnail = isString(productData.images[0])
@@ -1021,7 +1049,7 @@ export default class ProductModuleService<
     }
 
     if (productData.images?.length) {
-      productData.images = await this.productImageService_.upsert(
+      const [images] = await this.productImageService_.upsert(
         productData.images.map((image) => {
           if (isString(image)) {
             return image
@@ -1031,27 +1059,30 @@ export default class ProductModuleService<
         }),
         sharedContext
       )
+
+      productData.images = images
     }
   }
 
   protected async upsertAndAssignProductTagsToProductData(
     productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
-    sharedContext: Context = {}
+    sharedContext: InternalContext = {}
   ) {
     if (productData.tags?.length) {
-      productData.tags = await this.productTagService_.upsert(
+      const [tags] = await this.productTagService_.upsert(
         productData.tags,
         sharedContext
       )
+      productData.tags = tags
     }
   }
 
   protected async upsertAndAssignProductTypeToProductData(
     productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
-    sharedContext: Context = {}
+    sharedContext: InternalContext = {}
   ) {
     if (isDefined(productData.type)) {
-      const productType = await this.productTypeService_.upsert(
+      const [productType] = await this.productTypeService_.upsert(
         [productData.type!],
         sharedContext
       )
@@ -1061,20 +1092,21 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async delete(
     productIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
     await this.productService_.delete(productIds, sharedContext)
 
-    await this.eventBusModuleService_?.emit<ProductEventData>(
-      productIds.map((id) => ({
-        eventName: ProductEvents.PRODUCT_DELETED,
-        data: { id },
-      }))
-    )
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
   }
 
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async softDelete<
     TReturnableLinkableKeys extends string = Lowercase<
       keyof typeof LinkableKeys
@@ -1082,24 +1114,11 @@ export default class ProductModuleService<
   >(
     productIds: string[],
     { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    sharedContext: InternalContext = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
-    const [products, cascadedEntitiesMap] = await this.softDelete_(
+    const [, cascadedEntitiesMap] = await this.softDelete_(
       productIds,
       sharedContext
-    )
-
-    const softDeletedProducts = await this.baseRepository_.serialize<
-      ProductTypes.ProductDTO[]
-    >(products, {
-      populate: true,
-    })
-
-    await this.eventBusModuleService_?.emit<ProductEventData>(
-      softDeletedProducts.map(({ id }) => ({
-        eventName: ProductEvents.PRODUCT_DELETED,
-        data: { id },
-      }))
     )
 
     let mappedCascadedEntitiesMap
@@ -1117,11 +1136,19 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   protected async softDelete_(
     productIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<[TProduct[], Record<string, unknown[]>]> {
-    return await this.productService_.softDelete(productIds, sharedContext)
+    const [entities, cascadedEntitiesMap] =
+      await this.productService_.softDelete(productIds, sharedContext)
+
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+
+    return [entities, cascadedEntitiesMap]
   }
 
   async restore<
@@ -1131,7 +1158,7 @@ export default class ProductModuleService<
   >(
     productIds: string[],
     { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
-    sharedContext: Context = {}
+    sharedContext: InternalContext = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [_, cascadedEntitiesMap] = await this.restore_(
       productIds,
@@ -1153,6 +1180,9 @@ export default class ProductModuleService<
   }
 
   @InjectManager("baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async restoreVariants<
     TReturnableLinkableKeys extends string = Lowercase<
       keyof typeof LinkableKeys
@@ -1160,12 +1190,14 @@ export default class ProductModuleService<
   >(
     variantIds: string[],
     { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [_, cascadedEntitiesMap] = await this.productVariantService_.restore(
       variantIds,
       sharedContext
     )
+
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
 
     let mappedCascadedEntitiesMap
     if (returnLinkableKeys) {
@@ -1180,10 +1212,33 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async restore_(
     productIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<[TProduct[], Record<string, unknown[]>]> {
-    return await this.productService_.restore(productIds, sharedContext)
+    const [entities, cascadedEntitiesMap] = await this.productService_.restore(
+      productIds,
+      sharedContext
+    )
+
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+
+    return [entities, cascadedEntitiesMap]
+  }
+
+  private async emitEvents_(groupedEvents) {
+    if (!this.eventBusModuleService_) {
+      return
+    }
+
+    const promises: Promise<void>[] = []
+    for (const group of Object.keys(groupedEvents)) {
+      promises.push(this.eventBusModuleService_?.emit(groupedEvents[group]))
+    }
+
+    await Promise.all(promises)
   }
 }

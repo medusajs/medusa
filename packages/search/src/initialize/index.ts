@@ -7,9 +7,9 @@ import {
 } from "@medusajs/modules-sdk"
 import { IEventBusModuleService, RemoteJoinerQuery } from "@medusajs/types"
 
+import { SearchModuleService } from "@services"
 import { moduleDefinition } from "../module-definition"
 import { SearchModuleOptions } from "../types"
-import { SearchModuleService } from "@services"
 
 export const initialize = async (
   options:
@@ -38,13 +38,15 @@ export const initialize = async (
 
   const serviceKey = Modules.SEARCH
 
-  const loaded = await MedusaModule.bootstrap<SearchModuleService>(
-    serviceKey,
-    MODULE_PACKAGE_NAMES[Modules.SEARCH],
-    options as InternalModuleDeclaration | ExternalModuleDeclaration,
-    moduleDefinition,
-    injectedDependencies
-  )
+  const loaded = await MedusaModule.bootstrap<SearchModuleService>({
+    moduleKey: serviceKey,
+    defaultPath: MODULE_PACKAGE_NAMES[Modules.SEARCH],
+    declaration: options as
+      | InternalModuleDeclaration
+      | ExternalModuleDeclaration,
+    injectedDependencies,
+    moduleExports: moduleDefinition,
+  })
 
   return loaded[serviceKey]
 }

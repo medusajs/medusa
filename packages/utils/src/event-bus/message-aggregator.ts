@@ -1,53 +1,62 @@
-import { IEventBusModuleService, Message } from "@medusajs/types"
+import { Message } from "@medusajs/types"
 
-export interface EventAggregatorFormat {
+export interface MessageAggregatorFormat {
   groupBy: string[]
   sortBy: { [key: string]: string[] | string | number }
 }
 
-export class EventAggregator {
-  private events: Message<unknown>[]
-  private eventBusModule_: IEventBusModuleService
+export class MessageAggregator {
+  private messages: Message[]
 
-  constructor(eventBusModule: IEventBusModuleService) {
-    this.events = []
-    this.eventBusModule_ = eventBusModule
+  constructor() {
+    this.messages = []
   }
 
-  emit(event: Message<unknown> | Message<unknown>[]): void {
-    if (Array.isArray(event)) {
-      this.events.push(...event)
+  save(msg: Message | Message[]): void {
+    if (!msg || (Array.isArray(msg) && msg.length === 0)) {
+      return
+    }
+
+    if (Array.isArray(msg)) {
+      this.messages.push(...msg)
     } else {
-      this.events.push(event)
+      this.messages.push(msg)
     }
   }
 
-  async publishEvents(format: EventAggregatorFormat): Promise<void> {
-    const { groupBy, sortBy } = format
+  getMessages(format?: MessageAggregatorFormat): {
+    [group: string]: Message[]
+  } {
+    const { groupBy, sortBy } = format ?? {}
 
-    this.events.sort((a, b) => this.compareEvents(a, b, sortBy))
-
-    const groupedEvents = this.events.reduce<{
-      [key: string]: Message<unknown>[]
-    }>((acc, event) => {
-      const key = groupBy
-        .map((field) => this.getValueFromPath(event, field))
-        .join("-")
-      if (!acc[key]) {
-        acc[key] = []
-      }
-      acc[key].push(event)
-      return acc
-    }, {})
-
-    const promises: Promise<void>[] = []
-    for (const group of Object.keys(groupedEvents)) {
-      promises.push(this.eventBusModule_.emit(groupedEvents[group]))
+    if (sortBy) {
+      this.messages.sort((a, b) => this.compareMessages(a, b, sortBy))
     }
 
-    await Promise.all(promises)
+    let messages: { [group: string]: Message[] } = { default: this.messages }
 
-    this.events = []
+    if (groupBy) {
+      const groupedMessages = this.messages.reduce<{
+        [key: string]: Message[]
+      }>((acc, msg) => {
+        const key = groupBy
+          .map((field) => this.getValueFromPath(msg, field))
+          .join("-")
+        if (!acc[key]) {
+          acc[key] = []
+        }
+        acc[key].push(msg)
+        return acc
+      }, {})
+
+      messages = groupedMessages
+    }
+
+    return messages
+  }
+
+  clearMessages(): void {
+    this.messages = []
   }
 
   private getValueFromPath(obj: any, path: string): any {
@@ -59,10 +68,10 @@ export class EventAggregator {
     return obj
   }
 
-  private compareEvents(
-    a: Message<unknown>,
-    b: Message<unknown>,
-    sortBy: EventAggregatorFormat["sortBy"]
+  private compareMessages(
+    a: Message,
+    b: Message,
+    sortBy: MessageAggregatorFormat["sortBy"]
   ): number {
     for (const key of Object.keys(sortBy)) {
       const orderCriteria = sortBy[key]

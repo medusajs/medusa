@@ -1,17 +1,13 @@
-import { EventAggregator } from "../event-aggregator"
+import { MessageAggregator } from "../message-aggregator"
 
-const eventBus = {
-  emit: jest.fn((events) => {}),
-} as any
-
-describe("EventAggregator", function () {
+describe("MessageAggregator", function () {
   afterEach(() => {
     jest.resetAllMocks
   })
 
-  it("should group events by any given group of keys", function () {
-    const aggregator = new EventAggregator(eventBus)
-    aggregator.emit({
+  it("should group messages by any given group of keys", function () {
+    const aggregator = new MessageAggregator()
+    aggregator.save({
       eventName: "ProductVariant.created",
       body: {
         metadata: {
@@ -23,7 +19,7 @@ describe("EventAggregator", function () {
         data: { id: 999 },
       },
     })
-    aggregator.emit({
+    aggregator.save({
       eventName: "Product.created",
       body: {
         metadata: {
@@ -35,7 +31,7 @@ describe("EventAggregator", function () {
         data: { id: 1 },
       },
     })
-    aggregator.emit({
+    aggregator.save({
       eventName: "ProductVariant.created",
       body: {
         metadata: {
@@ -47,7 +43,7 @@ describe("EventAggregator", function () {
         data: { id: 222 },
       },
     })
-    aggregator.emit({
+    aggregator.save({
       eventName: "ProductType.dettached",
       body: {
         metadata: {
@@ -59,7 +55,7 @@ describe("EventAggregator", function () {
         data: { id: 333 },
       },
     })
-    aggregator.emit({
+    aggregator.save({
       eventName: "ProductVariant.updated",
       body: {
         metadata: {
@@ -80,10 +76,13 @@ describe("EventAggregator", function () {
       },
     }
 
-    aggregator.publishEvents(format)
+    const messages = aggregator.getMessages(format)
 
-    expect(eventBus.emit).toHaveBeenCalledTimes(4)
-    expect(eventBus.emit).toHaveBeenNthCalledWith(1, [
+    expect(Object.keys(messages)).toHaveLength(4)
+
+    const allGroups = Object.values(messages)
+
+    expect(allGroups[0]).toEqual([
       {
         eventName: "ProductType.dettached",
         body: {
@@ -98,7 +97,7 @@ describe("EventAggregator", function () {
       },
     ])
 
-    expect(eventBus.emit).toHaveBeenNthCalledWith(2, [
+    expect(allGroups[1]).toEqual([
       {
         eventName: "ProductVariant.updated",
         body: {
@@ -113,7 +112,7 @@ describe("EventAggregator", function () {
       },
     ])
 
-    expect(eventBus.emit).toHaveBeenNthCalledWith(3, [
+    expect(allGroups[2]).toEqual([
       {
         eventName: "ProductVariant.created",
         body: {
@@ -140,7 +139,7 @@ describe("EventAggregator", function () {
       },
     ])
 
-    expect(eventBus.emit).toHaveBeenNthCalledWith(4, [
+    expect(allGroups[3]).toEqual([
       {
         eventName: "Product.created",
         body: {

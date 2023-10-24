@@ -141,12 +141,12 @@ export const initialize = async (
       },
     }
 
-    const loaded = await MedusaModule.bootstrapLink(
-      linkModuleDefinition,
-      options as InternalModuleDeclaration,
-      moduleDefinition,
-      injectedDependencies
-    )
+    const loaded = await MedusaModule.bootstrapLink({
+      definition: linkModuleDefinition,
+      declaration: options as InternalModuleDeclaration,
+      moduleExports: moduleDefinition,
+      injectedDependencies,
+    })
 
     allLinks[serviceKey as string] = Object.values(loaded)[0]
   }

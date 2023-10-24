@@ -50,6 +50,23 @@ type ModuleAlias = {
   main?: boolean
 }
 
+export type ModuleBootstrapOptions = {
+  moduleKey: string
+  defaultPath: string
+  declaration?: InternalModuleDeclaration | ExternalModuleDeclaration
+  moduleExports?: ModuleExports
+  globalContainer?: MedusaContainer
+  moduleDefinition?: ModuleDefinition
+  injectedDependencies?: Record<string, any>
+}
+
+export type LinkModuleBootstrapOptions = {
+  definition: LinkModuleDefinition
+  declaration?: InternalModuleDeclaration
+  moduleExports?: ModuleExports
+  injectedDependencies?: Record<string, any>
+}
+
 export class MedusaModule {
   private static instances_: Map<string, { [key: string]: IModuleService }> =
     new Map()
@@ -164,14 +181,15 @@ export class MedusaModule {
     MedusaModule.modules_.set(moduleKey, modules!)
   }
 
-  public static async bootstrap<T>(
-    moduleKey: string,
-    defaultPath: string,
-    declaration?: InternalModuleDeclaration | ExternalModuleDeclaration,
-    moduleExports?: ModuleExports,
-    globalContainer?: MedusaContainer,
-    moduleDefinition?: ModuleDefinition
-  ): Promise<{
+  public static async bootstrap<T>({
+    moduleKey,
+    defaultPath,
+    declaration,
+    moduleExports,
+    globalContainer,
+    moduleDefinition,
+    injectedDependencies,
+  }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
     const hashKey = simpleHash(
@@ -212,6 +230,12 @@ export class MedusaModule {
     }
 
     const container = globalContainer ?? createMedusaContainer()
+
+    if (!globalContainer && injectedDependencies) {
+      for (const service in injectedDependencies) {
+        container.register(service, asValue(injectedDependencies[service]))
+      }
+    }
 
     const moduleResolutions = registerMedusaModule(
       moduleKey,
@@ -267,12 +291,12 @@ export class MedusaModule {
     return services
   }
 
-  public static async bootstrapLink(
-    definition: LinkModuleDefinition,
-    declaration?: InternalModuleDeclaration,
-    moduleExports?: ModuleExports,
-    injectedDependencies?: Record<string, any>
-  ): Promise<{
+  public static async bootstrapLink({
+    definition,
+    declaration,
+    moduleExports,
+    injectedDependencies,
+  }: LinkModuleBootstrapOptions): Promise<{
     [key: string]: unknown
   }> {
     const moduleKey = definition.key

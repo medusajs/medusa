@@ -2,12 +2,6 @@ export type ProductCategoryEventData = {
   id: string
 }
 
-export enum ProductCategoryEvents {
-  CATEGORY_UPDATED = "product-category.updated",
-  CATEGORY_CREATED = "product-category.created",
-  CATEGORY_DELETED = "product-category.deleted",
-}
-
 export interface CreateProductCategoryDTO {
   name: string
   handle?: string

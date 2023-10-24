@@ -7,9 +7,9 @@ import {
 } from "@models"
 
 import {
+  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  LoadStrategy,
 } from "@mikro-orm/core"
 
 import {
@@ -18,8 +18,8 @@ import {
   ProductTypes,
   WithRequiredProperty,
 } from "@medusajs/types"
+import { DALUtils, MedusaError, isDefined } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
 

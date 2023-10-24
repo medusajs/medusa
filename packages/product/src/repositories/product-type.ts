@@ -1,18 +1,18 @@
 import {
-  FilterQuery as MikroFilterQuery,
-  FindOptions as MikroOptions,
-  LoadStrategy,
-  RequiredEntityData,
-} from "@mikro-orm/core"
-import { ProductType } from "@models"
-import {
   Context,
   CreateProductTypeDTO,
   DAL,
   UpdateProductTypeDTO,
 } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { DALUtils, MedusaError } from "@medusajs/utils"
+import {
+  LoadStrategy,
+  FilterQuery as MikroFilterQuery,
+  FindOptions as MikroOptions,
+  RequiredEntityData,
+} from "@mikro-orm/core"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ProductType } from "@models"
 
 export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -67,7 +67,7 @@ export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
   async upsert(
     types: CreateProductTypeDTO[],
     context: Context = {}
-  ): Promise<ProductType[]> {
+  ): Promise<[ProductType[], ProductType[], ProductType[]]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const typesValues = types.map((type) => type.value)
@@ -99,8 +99,8 @@ export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
       }
     })
 
+    const newTypes: ProductType[] = []
     if (typesToCreate.length) {
-      const newTypes: ProductType[] = []
       typesToCreate.forEach((type) => {
         newTypes.push((manager as SqlEntityManager).create(ProductType, type))
       })
@@ -109,7 +109,7 @@ export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
       upsertedTypes.push(...newTypes)
     }
 
-    return upsertedTypes
+    return [upsertedTypes, existingTypes, newTypes]
   }
 
   async delete(ids: string[], context: Context = {}): Promise<void> {

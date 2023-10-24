@@ -63,11 +63,7 @@ export type SharedResources = {
   }
 }
 
-async function loadModules(
-  modulesConfig,
-  globalContainer,
-  injectedDependencies
-) {
+async function loadModules(modulesConfig, globalContainer) {
   const allModules = {}
 
   await Promise.all(
@@ -95,14 +91,13 @@ async function loadModules(
         declaration.resources = MODULE_RESOURCE_TYPE.SHARED
       }
 
-      const loaded = (await MedusaModule.bootstrap(
-        moduleName,
-        path,
+      const loaded = (await MedusaModule.bootstrap({
+        moduleKey: moduleName,
+        defaultPath: path,
         declaration,
-        undefined,
         globalContainer,
-        definition
-      )) as LoadedModule
+        moduleDefinition: definition,
+      })) as LoadedModule
 
       const service = loaded[moduleName]
       globalContainer.register({
@@ -247,11 +242,7 @@ export async function MedusaApp(
     })
   }
 
-  const allModules = await loadModules(
-    modules,
-    globalContainer,
-    injectedDependencies
-  )
+  const allModules = await loadModules(modules, globalContainer)
 
   // Share Event bus with link modules
   injectedDependencies[ModuleRegistrationName.EVENT_BUS] =

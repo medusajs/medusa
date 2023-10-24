@@ -1,6 +1,7 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
+  MODULE_PACKAGE_NAMES,
   MedusaModule,
   Modules,
 } from "@medusajs/modules-sdk"
@@ -15,13 +16,15 @@ export const initialize = async (
   }
 ): Promise<IInventoryService> => {
   const serviceKey = Modules.INVENTORY
-  const loaded = await MedusaModule.bootstrap<IInventoryService>(
-    serviceKey,
-    "@medusajs/inventory",
-    options as InternalModuleDeclaration | ExternalModuleDeclaration,
-    moduleDefinition,
-    injectedDependencies
-  )
+  const loaded = await MedusaModule.bootstrap<IInventoryService>({
+    moduleKey: serviceKey,
+    defaultPath: MODULE_PACKAGE_NAMES[Modules.INVENTORY],
+    declaration: options as
+      | InternalModuleDeclaration
+      | ExternalModuleDeclaration,
+    injectedDependencies,
+    moduleExports: moduleDefinition,
+  })
 
   return loaded[serviceKey]
 }

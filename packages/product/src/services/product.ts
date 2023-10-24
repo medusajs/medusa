@@ -1,3 +1,4 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
   Context,
   DAL,
@@ -12,11 +13,12 @@ import {
   MedusaError,
   ModulesSdkUtils,
   ProductUtils,
+  composeMessage,
   isDefined,
 } from "@medusajs/utils"
 import { Product } from "@models"
 import { ProductRepository } from "@repositories"
-
+import { InternalContext, ProductEvents } from "../types"
 import { ProductServiceTypes } from "../types/services"
 import { doNotForceTransaction } from "../utils"
 
@@ -121,13 +123,15 @@ export default class ProductService<TEntity extends Product = Product> {
   @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async create(
     data: ProductTypes.CreateProductOnlyDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<TEntity[]> {
     data.forEach((product) => {
       product.status ??= ProductUtils.ProductStatus.DRAFT
     })
 
-    return (await (this.productRepository_ as ProductRepository).create(
+    const products = await (
+      this.productRepository_ as ProductRepository
+    ).create(
       data as WithRequiredProperty<
         ProductTypes.CreateProductOnlyDTO,
         "status"
@@ -135,15 +139,30 @@ export default class ProductService<TEntity extends Product = Product> {
       {
         transactionManager: sharedContext.transactionManager,
       }
-    )) as TEntity[]
+    )
+
+    sharedContext.messageAggregator?.save(
+      products.map(({ id }) => {
+        return composeMessage(ProductEvents.PRODUCT_CREATED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: Product.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return products as TEntity[]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async update(
     data: ProductServiceTypes.UpdateProductDTO[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<TEntity[]> {
-    return (await (this.productRepository_ as ProductRepository).update(
+    const products = await (
+      this.productRepository_ as ProductRepository
+    ).update(
       data as WithRequiredProperty<
         ProductServiceTypes.UpdateProductDTO,
         "id"
@@ -151,36 +170,90 @@ export default class ProductService<TEntity extends Product = Product> {
       {
         transactionManager: sharedContext.transactionManager,
       }
-    )) as TEntity[]
+    )
+
+    sharedContext.messageAggregator?.save(
+      products.map(({ id }) => {
+        return composeMessage(ProductEvents.PRODUCT_UPDATED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: Product.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return products as TEntity[]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async delete(
     ids: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
     await this.productRepository_.delete(ids, {
       transactionManager: sharedContext.transactionManager,
     })
+
+    sharedContext.messageAggregator?.save(
+      ids.map((id) => {
+        return composeMessage(ProductEvents.PRODUCT_DELETED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: Product.name,
+          context: sharedContext,
+        })
+      })
+    )
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async softDelete(
     productIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<[TEntity[], Record<string, unknown[]>]> {
-    return await this.productRepository_.softDelete(productIds, {
-      transactionManager: sharedContext.transactionManager,
-    })
+    const [entities, cascadeEntities] =
+      await this.productRepository_.softDelete(productIds, {
+        transactionManager: sharedContext.transactionManager,
+      })
+
+    sharedContext.messageAggregator?.save(
+      entities.map(({ id }) => {
+        return composeMessage(ProductEvents.PRODUCT_DELETED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: Product.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return [entities, cascadeEntities]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async restore(
     productIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<[TEntity[], Record<string, unknown[]>]> {
-    return await this.productRepository_.restore(productIds, {
-      transactionManager: sharedContext.transactionManager,
-    })
+    const [entities, cascadeEntities] = await this.productRepository_.restore(
+      productIds,
+      {
+        transactionManager: sharedContext.transactionManager,
+      }
+    )
+
+    sharedContext.messageAggregator?.save(
+      entities.map(({ id }) => {
+        return composeMessage(ProductEvents.PRODUCT_CREATED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: Product.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return [entities, cascadeEntities]
   }
 }
