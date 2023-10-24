@@ -1,3 +1,5 @@
+const NewTotalsService = require("../new-totals")
+
 export const newTotalsServiceMock = {
   withTransaction: function () {
     return this
@@ -15,6 +17,11 @@ export const newTotalsServiceMock = {
     }),
   getShippingMethodTotals: jest.fn().mockImplementation((order, lineItems) => {
     return Promise.resolve({})
+  }),
+  getGiftCardableAmount: jest.fn().mockImplementation((data) => {
+    return Promise.resolve(
+      NewTotalsService.prototype.getGiftCardableAmount(data)
+    )
   }),
 }
 
