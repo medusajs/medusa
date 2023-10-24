@@ -45,17 +45,6 @@ const UserMenu: React.FC = () => {
           side="bottom"
           className="ml-large rounded-rounded border-grey-20 bg-grey-0 p-xsmall shadow-dropdown z-30 min-w-[200px] border"
         >
-          <DropdownMenu.Item className="mb-1 outline-none">
-            <Button
-              variant="ghost"
-              size="small"
-              className={"w-full justify-start"}
-              onClick={() => navigate("/a/settings")}
-            >
-              <GearIcon />
-              Settings
-            </Button>
-          </DropdownMenu.Item>
           <DropdownMenu.Item className="outline-none">
             <Button
               variant="ghost"

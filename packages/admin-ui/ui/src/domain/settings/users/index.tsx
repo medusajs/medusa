@@ -44,7 +44,7 @@ const Users: React.FC = () => {
       ),
     },
   ]
-
+  
   return (
     <div className="flex h-full flex-col">
       <div className="flex w-full grow flex-col">
@@ -67,9 +67,6 @@ const Users: React.FC = () => {
               invites={invites}
               triggerRefetch={triggerRefetch}
             />
-            <p className="inter-small-regular text-grey-50">
-              {t("users-count", "{{count}}", { count: users.length })}
-            </p>
           </div>
           {showInviteModal && (
             <InviteModal
