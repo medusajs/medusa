@@ -88,11 +88,11 @@ export default class SearchModuleService
       this.moduleOptions_
     )
 
+    this.registerListeners()
+
     if (this.storageProvider_.onApplicationStart) {
       await this.storageProvider_.onApplicationStart()
     }
-
-    this.registerListeners()
   }
 
   async query(...args) {

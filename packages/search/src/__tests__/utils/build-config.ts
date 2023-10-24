@@ -77,7 +77,7 @@ describe("buildSchemaObjectRepresentation", function () {
       ],
       alias: "variant",
       listeners: ["variants.created", "variants.updated"],
-      fields: ["id", "product_id", "sku", "product.id"],
+      fields: ["id", "product_id", "sku", "product.id", "product.title"],
       moduleConfig: expect.any(Object),
     }
 
@@ -94,7 +94,13 @@ describe("buildSchemaObjectRepresentation", function () {
         "LinkProductVariantPriceSet.attached",
         "LinkProductVariantPriceSet.detached",
       ],
-      fields: ["variant_id", "price_set_id", "variant.id"],
+      fields: [
+        "variant_id",
+        "price_set_id",
+        "variant.id",
+        "variant.product_id",
+        "variant.sku",
+      ],
       moduleConfig: expect.any(Object),
     }
 
@@ -109,7 +115,12 @@ describe("buildSchemaObjectRepresentation", function () {
       ],
       alias: "price_set",
       listeners: ["PriceSet.created", "PriceSet.updated"],
-      fields: ["id", "product_variant_price_set.id"],
+      fields: [
+        "id",
+        "product_variant_price_set.id",
+        "product_variant_price_set.variant_id",
+        "product_variant_price_set.price_set_id",
+      ],
       moduleConfig: expect.any(Object),
     }
 

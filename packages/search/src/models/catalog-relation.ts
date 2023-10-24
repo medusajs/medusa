@@ -1,5 +1,4 @@
 import {
-  BeforeCreate,
   Entity,
   Index,
   ManyToOne,
@@ -32,7 +31,9 @@ export class CatalogRelation {
   id!: string
 
   // if added as PK, BeforeCreate value isn't set
-  @Property({ columnType: "text" })
+  @Property({
+    columnType: "text",
+  })
   pivot: string
 
   @Property({ columnType: "text" })
@@ -60,11 +61,6 @@ export class CatalogRelation {
     persist: false,
   })
   child?: Ref<Catalog>
-
-  @BeforeCreate()
-  onCreate() {
-    this.pivot = `${this.parent_name}-${this.child_name}`
-  }
 }
 
 export default CatalogRelation

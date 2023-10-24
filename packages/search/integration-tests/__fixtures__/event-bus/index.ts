@@ -1,6 +1,7 @@
 import {
   EventBusTypes,
   IEventBusModuleService,
+  Message,
   Subscriber,
 } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
@@ -17,7 +18,12 @@ export class EventBusService implements IEventBusModuleService {
 
   async emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
 
-  async emit<T, TInput extends string | EventBusTypes.EmitData<T>[] = string>(
+  async emit<T>(data: EventBusTypes.Message<T>[]): Promise<void>
+
+  async emit<
+    T,
+    TInput extends string | EventBusTypes.EmitData<T>[] | Message<T>[] = string
+  >(
     eventOrData: TInput,
     data?: T,
     options: Record<string, unknown> = {}
@@ -30,10 +36,16 @@ export class EventBusService implements IEventBusModuleService {
         }
       : eventOrData
 
-    for (const event of eventData as EventBusTypes.EmitData[]) {
+    for (const event of eventData as
+      | EventBusTypes.EmitData[]
+      | EventBusTypes.Message<T>[]) {
       const subscribers = this.subscribers_.get(event.eventName)
+
       for (const subscriber of subscribers ?? []) {
-        await subscriber(event.data, event.eventName)
+        await subscriber(
+          (event as EventBusTypes.EmitData).data ?? (event as Message<T>).body,
+          event.eventName
+        )
       }
     }
   }

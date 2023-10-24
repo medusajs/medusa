@@ -13,7 +13,6 @@ import {
   QueryOptions,
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
-  SchemaPropertiesMap,
   SearchModuleOptions,
   StorageProvider,
 } from "../types"
@@ -125,7 +124,7 @@ export class PostgresProvider {
 
     // Always keep the id in the entity properties
     const entityProperties: string[] = ["id"]
-    const parentsProperties: string[] = []
+    const parentsProperties: { [entity: string]: string[] } = {}
 
     /**
      * Split fields into entity properties and parents properties
@@ -133,7 +132,22 @@ export class PostgresProvider {
 
     schemaEntityObjectRepresentation.fields.forEach((field) => {
       if (field.includes(".")) {
-        parentsProperties.push(field)
+        const parentAlias = field.split(".")[0]
+        const parentSchemaObjectRepresentation =
+          schemaEntityObjectRepresentation.parents.find(
+            (parent) => parent.ref.alias === parentAlias
+          )
+
+        if (!parentSchemaObjectRepresentation) {
+          throw new Error(
+            `SearchModule error, unable to parse data for ${schemaEntityObjectRepresentation.entity}. The parent schema object representation could not be found for the alias ${parentAlias} for the entity ${schemaEntityObjectRepresentation.entity}.`
+          )
+        }
+
+        parentsProperties[parentSchemaObjectRepresentation.ref.entity] ??= []
+        parentsProperties[parentSchemaObjectRepresentation.ref.entity].push(
+          field
+        )
       } else {
         entityProperties.push(field)
       }
@@ -321,6 +335,7 @@ export class PostgresProvider {
   }) {
     await this.container_.manager.transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
+      const catalogRelationRepository = em.getRepository(CatalogRelation)
 
       const {
         data: data_,
@@ -347,41 +362,47 @@ export class PostgresProvider {
           id: cleanedEntityData.id,
           name: entity,
           data: cleanedEntityData,
-        })
+        }) as Catalog
+        catalogRepository.persist(catalogEntry)
 
         /**
          * Retrieve the parents to attach it to the catalog entry.
          */
 
-        for (const parentProperty of parentsProperties) {
-          const parentAlias = parentProperty.split(".")[0]
-          const parentEntities = entityData[parentAlias] as TData[]
+        for (const [parentEntity, parentProperties] of Object.entries(
+          parentsProperties
+        )) {
+          const parentAlias = parentProperties[0].split(".")[0]
+          const parentData = entityData[parentAlias] as TData[]
 
-          if (!parentEntities) {
-            return
+          if (!parentData) {
+            continue
           }
 
-          const parentSchemaObjectRepresentation = this
-            .schemaObjectRepresentation_._schemaPropertiesMap[
-            parentAlias
-          ] as SchemaPropertiesMap[0]
+          const parentDataCollection = Array.isArray(parentData)
+            ? parentData
+            : [parentData]
 
-          if (!parentSchemaObjectRepresentation) {
-            throw new Error(
-              `SearchModule error, unable to find the parent entity representation from the alias ${parentAlias}.`
-            )
-          }
-
-          for (const parentEntity of parentEntities) {
-            const parentCatalogEntry = (await catalogRepository.findOne({
-              id: parentEntity.id,
-              name: parentSchemaObjectRepresentation.ref.entity,
+          for (const parentData_ of parentDataCollection) {
+            const parentCatalogEntry = (await catalogRepository.upsert({
+              id: (parentData_ as any).id,
+              name: parentEntity,
+              data: parentData_,
             })) as Catalog
-            catalogEntry.parents.add(parentCatalogEntry)
+            catalogRepository.persist(parentCatalogEntry)
+
+            const parentCatalogRelationEntry = catalogRelationRepository.create(
+              {
+                parent_id: (parentData_ as any).id,
+                parent_name: parentEntity,
+                child_id: cleanedEntityData.id,
+                child_name: entity,
+                pivot: `${parentEntity}-${entity}`,
+              }
+            )
+            catalogRelationRepository.persist(parentCatalogRelationEntry)
           }
         }
-
-        catalogRepository.persist(catalogEntry)
       }
 
       await em.flush()
