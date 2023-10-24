@@ -1,12 +1,16 @@
 import { useMedusa } from "medusa-react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react"
 
+type accessType = {
+    path: string,
+    access: boolean
+}
+
 type AccessContextType = {
-    access: any
+    access?: accessType[]
+    startPage?: string
     checkAccess: (path: string) => boolean,
-    startPage: string
-  }
-  
+}
 
 export const AccessContext = createContext<AccessContextType | null>(null)
 
@@ -16,15 +20,15 @@ export const AccessProvider = ({
   children: React.ReactNode
 }) => {
 
-    const [access, setAccess] = useState();
+    const [access, setAccess] = useState<accessType[]>();
 
     const { client: medusaClient } = useMedusa()
 
     const [startPage, setStartPage] = useState('');
     
-    const getAccess = async () => {
+    const getAccess = async () : Promise<accessType[]> => {
         let res = await medusaClient.admin.custom.get('admin/access');
-        return res.access;
+        return res.access || [];
     }
 
     useEffect(()=>{
@@ -41,7 +45,8 @@ export const AccessProvider = ({
 
         let starts = [
           '/orders',
-          '/products'
+          '/products',
+          '/customers',
         ];
         
         // Check default start pages
@@ -49,16 +54,29 @@ export const AccessProvider = ({
         for(let s of starts) {
           if(checkAccess(s)) {
             setStartPage('/a'+s);
-            break;
+            return;
           }
         }
 
-      }
+        // Check from access
+
+        if(startPage === '' && access?.length)
+            for(let a of access) {
+                setStartPage('/a'+a.path);
+                return;
+            }
+        }
+
+        // Default orders
+
+        if(startPage === '')
+            setStartPage('/a/orders');
+
     },[access])
 
     const checkAccessArray = (path: string): boolean => {
 
-        if(access.length)
+        if(access?.length)
             if(access.find(a=>String(path).startsWith(a.path) && a.access===true))
               return true;
         
@@ -76,7 +94,7 @@ export const AccessProvider = ({
             
             // Check superuser
             
-            if(access === true)
+            if(checkAccessArray('_superuser'))
                 return true;
 
             // Check access
@@ -94,8 +112,8 @@ export const AccessProvider = ({
     const values = useMemo(
         () => ({
           access,
-          checkAccess,
-          startPage
+          startPage,
+          checkAccess
         }),
         [access, checkAccess]
       )
