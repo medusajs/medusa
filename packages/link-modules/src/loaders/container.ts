@@ -1,5 +1,5 @@
 import { BaseRepository, getLinkRepository } from "@repositories"
-import { LinkService, getModuleService } from "@services"
+import { getModuleService, LinkService } from "@services"
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import {
@@ -9,7 +9,7 @@ import {
 } from "@medusajs/types"
 import { lowerCaseFirst, simpleHash, toPascalCase } from "@medusajs/utils"
 import { asClass, asValue } from "awilix"
-import { composeLinkName, composeTableName } from "src/utils"
+import { composeLinkName, composeTableName } from "../utils"
 
 export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
   return async (
