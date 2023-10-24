@@ -1,17 +1,18 @@
 import React from "react"
 import Details from "../../theme/Details"
 import clsx from "clsx"
+import { MarkdownContent } from "docs-ui"
 
 type TroubleshootingSection = {
   title: string
   content: React.ReactNode
 }
 
-type TroubleshootingProps = {
+type DetailsListProps = {
   sections: TroubleshootingSection[]
 } & React.AllHTMLAttributes<HTMLDivElement>
 
-const Troubleshooting: React.FC<TroubleshootingProps> = ({ sections }) => {
+const DetailsList: React.FC<DetailsListProps> = ({ sections }) => {
   return (
     <>
       {sections.map(({ title, content }, index) => (
@@ -20,11 +21,14 @@ const Troubleshooting: React.FC<TroubleshootingProps> = ({ sections }) => {
           key={index}
           className={clsx(index !== 0 && "border-t-0")}
         >
-          {content}
+          {React.isValidElement(content) && content}
+          {!React.isValidElement(content) && typeof content === "string" && (
+            <MarkdownContent>content</MarkdownContent>
+          )}
         </Details>
       ))}
     </>
   )
 }
 
-export default Troubleshooting
+export default DetailsList
