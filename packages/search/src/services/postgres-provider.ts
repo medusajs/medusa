@@ -358,12 +358,11 @@ export class PostgresProvider {
           return acc
         }, {}) as TData
 
-        const catalogEntry = catalogRepository.create({
+        await catalogRepository.upsert({
           id: cleanedEntityData.id,
           name: entity,
           data: cleanedEntityData,
-        }) as Catalog
-        catalogRepository.persist(catalogEntry)
+        })
 
         /**
          * Retrieve the parents to attach it to the catalog entry.
@@ -384,12 +383,11 @@ export class PostgresProvider {
             : [parentData]
 
           for (const parentData_ of parentDataCollection) {
-            const parentCatalogEntry = (await catalogRepository.upsert({
+            await catalogRepository.upsert({
               id: (parentData_ as any).id,
               name: parentEntity,
               data: parentData_,
-            })) as Catalog
-            catalogRepository.persist(parentCatalogEntry)
+            })
 
             const parentCatalogRelationEntry = catalogRelationRepository.create(
               {

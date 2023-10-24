@@ -419,16 +419,7 @@ function processEntity(
         })
 
         currentObjectRepresentationRef.fields.push(
-          ...Array.from(
-            new Set([
-              parentObjectRepresentationRef.alias + ".id",
-              ...parentObjectRepresentationRef.fields
-                .filter((field) => !field.includes("."))
-                .map(
-                  (field) => parentObjectRepresentationRef.alias + "." + field
-                ),
-            ])
-          )
+          parentObjectRepresentationRef.alias + ".id"
         )
       } else {
         /**
@@ -484,16 +475,7 @@ function processEntity(
                   relationship.foreignKey
               )
               .filter((v): v is string => Boolean(v)),
-            ...Array.from(
-              new Set([
-                parentObjectRepresentationRef.alias + ".id",
-                ...parentObjectRepresentationRef.fields
-                  .filter((field) => !field.includes("."))
-                  .map(
-                    (field) => parentObjectRepresentationRef.alias + "." + field
-                  ),
-              ])
-            ),
+            parentObjectRepresentationRef.alias + ".id",
           ]
 
           /**
@@ -549,16 +531,7 @@ function processEntity(
               intermediateEntityModule
             intermediateEntityObjectRepresentationRef.fields = [
               "id",
-              ...Array.from(
-                new Set([
-                  linkObjectRepresentationRef.alias + ".id",
-                  ...linkObjectRepresentationRef.fields
-                    .filter((field) => !field.includes("."))
-                    .map(
-                      (field) => linkObjectRepresentationRef.alias + "." + field
-                    ),
-                ])
-              ),
+              linkObjectRepresentationRef.alias + ".id",
             ]
           }
 
@@ -578,16 +551,7 @@ function processEntity(
           })
 
           currentObjectRepresentationRef.fields.push(
-            ...Array.from(
-              new Set([
-                currentParentIntermediateRef.alias + ".id",
-                ...currentParentIntermediateRef.fields
-                  .filter((field) => !field.includes("."))
-                  .map(
-                    (field) => currentParentIntermediateRef.alias + "." + field
-                  ),
-              ])
-            )
+            currentParentIntermediateRef.alias + ".id"
           )
         }
       }

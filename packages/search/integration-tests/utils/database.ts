@@ -1,5 +1,5 @@
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
-import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
+import { MikroORM, SqlEntityManager } from "@mikro-orm/postgresql"
 import * as ProductModels from "@models"
 import * as process from "process"
 
@@ -10,24 +10,6 @@ const DB_NAME = process.env.DB_TEMP_NAME
 export const DB_URL = `postgres://${DB_USERNAME}${
   DB_PASSWORD ? `:${DB_PASSWORD}` : ""
 }@${DB_HOST}/${DB_NAME}`
-
-const ORMConfig: Options = {
-  type: "postgresql",
-  clientUrl: DB_URL,
-  entities: Object.values(ProductModels),
-  schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
-  debug: false,
-  migrations: {
-    tableName: "mikro_orm_migrations",
-    path: "./dist/migrations",
-    silent: true,
-    dropTables: true,
-    transactional: true,
-    allOrNothing: true,
-    safe: false,
-    generator: TSMigrationGenerator,
-  },
-}
 
 interface TestDatabase {
   orm: MikroORM | null
@@ -70,13 +52,39 @@ export const TestDatabase: TestDatabase = {
 
   async setupDatabase() {
     // Initializing the ORM
-    this.orm = await MikroORM.init(ORMConfig)
+    this.orm = await MikroORM.init({
+      type: "postgresql",
+      clientUrl: DB_URL,
+      entities: Object.values(ProductModels),
+      schema: process.env.MEDUSA_SEARCH_DB_SCHEMA,
+      debug: false,
+      migrations: {
+        tableName: "mikro_orm_migrations",
+        path: "./dist/migrations",
+        silent: true,
+        dropTables: true,
+        transactional: true,
+        allOrNothing: true,
+        safe: false,
+        generator: TSMigrationGenerator,
+      },
+    })
 
     if (this.orm === null) {
       throw new Error("ORM not configured")
     }
 
     this.manager = await this.orm.em
+
+    try {
+      await this.orm.getSchemaGenerator().ensureDatabase()
+    } catch (err) {}
+
+    await this.manager?.execute(
+      `CREATE SCHEMA IF NOT EXISTS "${
+        process.env.MEDUSA_SEARCH_DB_SCHEMA ?? "public"
+      }";`
+    )
 
     const pendingMigrations = await this.orm
       .getMigrator()
@@ -94,6 +102,11 @@ export const TestDatabase: TestDatabase = {
       throw new Error("ORM not configured")
     }
 
+    await this.manager?.execute(
+      `DROP SCHEMA IF EXISTS "${
+        process.env.MEDUSA_SEARCH_DB_SCHEMA ?? "public"
+      }" CASCADE;`
+    )
     await this.orm.close()
 
     this.orm = null
