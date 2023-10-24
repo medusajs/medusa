@@ -4,6 +4,7 @@ import {
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
+  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
@@ -168,7 +169,7 @@ export class MedusaModule {
     defaultPath: string,
     declaration?: InternalModuleDeclaration | ExternalModuleDeclaration,
     moduleExports?: ModuleExports,
-    injectedDependencies?: Record<string, any>,
+    globalContainer?: MedusaContainer,
     moduleDefinition?: ModuleDefinition
   ): Promise<{
     [key: string]: T
@@ -210,13 +211,7 @@ export class MedusaModule {
       }
     }
 
-    const container = createMedusaContainer()
-
-    if (injectedDependencies) {
-      for (const service in injectedDependencies) {
-        container.register(service, asValue(injectedDependencies[service]))
-      }
-    }
+    const container = globalContainer ?? createMedusaContainer()
 
     const moduleResolutions = registerMedusaModule(
       moduleKey,

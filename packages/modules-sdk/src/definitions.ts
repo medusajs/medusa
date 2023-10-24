@@ -59,7 +59,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isRequired: false,
       canOverride: true,
       isQueryable: true,
-      dependencies: ["eventBusService"],
+      dependencies: [ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -74,7 +74,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isRequired: false,
       canOverride: true,
       isQueryable: true,
-      dependencies: ["eventBusService"],
+      dependencies: [ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -127,7 +127,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       defaultPackage: MODULE_PACKAGE_NAMES[Modules.SEARCH],
       label: "SearchModuleService",
       isQueryable: false,
-      dependencies: ["logger", "eventBusModuleService", "remoteQuery"],
+      dependencies: ["logger", ModuleRegistrationName.EVENT_BUS, "remoteQuery"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
