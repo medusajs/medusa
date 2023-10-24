@@ -6,6 +6,8 @@ addHowToData: true
 import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
 import LearningPath from '@site/src/components/LearningPath';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # How to Create a Plugin
 
@@ -194,17 +196,11 @@ Make sure to delete these files if you're not using them in your plugin.
 
 ### Plugin Structure
 
-While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, endpoints, migrations, and other resources.
+While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, API Routes, migrations, and other resources.
 
 However, before you test the changes on a Medusa backend or publish your plugin, you must transpile your files and move them either to a `dist` directory or to the root of the plugin's directory.
 
-For example, if you have an endpoint in `src/api/index.js`, after running the `build` or `watch` commands [as defined earlier](#recommended-change-scripts), the file should be transpiled into `dist/api/index.js` in your plugin's root. You can alternative transpile them into the `api/index.js` in your plugin's root.
-
-:::note
-
-It was previously required to output your files into the root of the plugin's directory (for example, `api/index.js` instead of `dist/api/index.js`). As of v1.8, you can either have your files in the root of the directory or under the `dist` directory.
-
-:::
+For example, if you have an API Route in `src/api/store/custom/route.ts`, after running the `build` or `watch` commands [as defined earlier](#recommended-change-scripts), the file should be transpiled into `dist/api/store/custom/route.ts` in your plugin's root. You can alternative transpile them into the `api/store/custom/route.ts` in your plugin's root.
 
 ### Development Resources
 
@@ -231,11 +227,11 @@ This guide doesn't cover how to create different files and components. If you’
   },
   {
     type: 'link',
-    href: '/development/endpoints/create',
-    label: 'Create an Endpoint',
+    href: '/development/api-routes/create',
+    label: 'Create an API Route',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to create an endpoint.'
+      description: 'Learn how to create an API Route.'
     }
   },
   {
@@ -319,7 +315,7 @@ If you're developing something specific, such as a payment processor plugin, you
   },
   {
     type: 'link',
-    href: '/development/file-service/create-file-service',
+    href: '/development/notification/create-notification-provider',
     label: 'Create a Notification Service',
     customProps: {
       icon: Icons['academic-cap-solid'],
@@ -359,27 +355,6 @@ class MyService extends TransactionBaseService {
     this.name = options.name
   }
   // ...
-}
-```
-
-You can also access the options in your plugin's endpoints. The second parameter that the function declared in `src/api/index.ts` receives is an object including your plugin's configurations.
-
-For example:
-
-```js title=src/api/index.ts
-// in an endpoint in your plugin
-export default (rootDirectory, options) => {
-  // options contain the plugin options
-  const router = Router()
-
-  router.get("/hello-world", (req, res) => {
-    res.json({
-      message: 
-      `Welcome to ${options.name ? options.name : "Medusa"}!`,
-    })
-  })
-
-  return router
 }
 ```
 
@@ -521,9 +496,36 @@ npx medusa migrations run
 
 In the directory of the Medusa backend, start the backend with the `dev` command passing it the `--preserve-symlinks` option:
 
-```bash npm2yarn
-npm run dev -- -- --preserve-symlinks
-```
+<Tabs groupId="npm2yarn" isCodeTabs={true}>
+  <TabItem value="npm" label="npm" default>
+
+  ```bash
+  npm run dev -- -- --preserve-symlinks
+  ```
+
+  </TabItem>
+  <TabItem value="yarn-1" label="Yarn v1">
+
+  ```bash
+  yarn dev -- -- --preserve-symlinks
+  ```
+
+  </TabItem>
+  <TabItem value="yarn-berry" label="Yarn berry">
+
+  ```bash
+  yarn dev -- --preserve-symlinks
+  ```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+  ```bash
+  pnpm run dev -- -- --preserve-symlinks
+  ```
+
+  </TabItem>
+</Tabs>
 
 ### Making Changes to the Plugin
 

@@ -11,7 +11,7 @@ import { Ref } from "@/types"
 
 export type ModalProps = {
   className?: string
-  title?: string
+  title?: React.ReactNode
   actions?: ButtonProps[]
   modalContainerClassName?: string
   contentClassName?: string
@@ -19,7 +19,8 @@ export type ModalProps = {
   open?: boolean
   footerContent?: React.ReactNode
   passedRef?: Ref<HTMLDialogElement>
-} & Omit<React.ComponentProps<"dialog">, "ref">
+  headerClassName?: string
+} & Omit<React.ComponentProps<"dialog">, "ref" | "title">
 
 export const Modal = ({
   className,

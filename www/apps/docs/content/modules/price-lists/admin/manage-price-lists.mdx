@@ -230,7 +230,7 @@ You can check the full list of request body parameters in the [API reference](ht
 
 ## Get Price List’s Details
 
-You can retrieve all of a price list’s details using the Get a Price List endpoint:
+You can retrieve all of a price list’s details using the Get a Price List API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -294,7 +294,7 @@ curl -L -X GET '<BACKEND_URL>/admin/price-lists/{id}' \
 
 ## Update a Price List
 
-After creating a price list, you can update all of its fields including its status, prices, and more using the [Update Price List](https://docs.medusajs.com/api/admin#price-lists_postpricelistspricelistpricelist) endpoint.
+After creating a price list, you can update all of its fields including its status, prices, and more using the [Update Price List API Route](https://docs.medusajs.com/api/admin#price-lists_postpricelistspricelistpricelist).
 
 For example, by sending the following request the end date of the price list will be updated:
 
@@ -381,7 +381,7 @@ For a full list of request body parameters, check out the [API reference](https:
 
 ### Add Prices
 
-You can add prices to your price list after creating it using the [Update Prices](https://docs.medusajs.com/api/admin#price-lists_postpricelistspricelistpricesbatch) endpoint.
+You can add prices to your price list after creating it using the [Update Prices API Route](https://docs.medusajs.com/api/admin#price-lists_postpricelistspricelistpricesbatch).
 
 You can also set the `override` request body parameter to `true` to replace the existing prices in the price list.
 
@@ -488,7 +488,7 @@ For a full list of request body parameters, check out the [API reference](https:
 
 ### Delete a Product’s Prices
 
-You can delete all the prices of a product’s variants using the [Delete Product Prices](https://docs.medusajs.com/api/admin#price-lists_deletepricelistspricelistpricesbatch) endpoint:
+You can delete all the prices of a product’s variants using the [Delete Product Prices API Route](https://docs.medusajs.com/api/admin#price-lists_deletepricelistspricelistpricesbatch):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -562,7 +562,7 @@ This request returns the IDs of the deleted prices.
 
 ### Delete a Variant’s Prices
 
-You can delete all the prices of a variant using the [Delete Variant Prices](https://docs.medusajs.com/api/admin#price-lists_deletepricelistspricelistvariantsvariantprices) endpoint:
+You can delete all the prices of a variant using the [Delete Variant Prices API Route](https://docs.medusajs.com/api/admin#price-lists_deletepricelistspricelistvariantsvariantprices):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -639,7 +639,7 @@ This request returns the IDs of the deleted prices.
 
 ## Delete Price List
 
-You can delete a price list, and subsequently all prices defined in it, using the [Delete Price List](https://docs.medusajs.com/api/admin#price-lists_deletepricelistspricelist) endpoint:
+You can delete a price list, and subsequently all prices defined in it, using the [Delete Price List API Route](https://docs.medusajs.com/api/admin#price-lists_deletepricelistspricelist):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>

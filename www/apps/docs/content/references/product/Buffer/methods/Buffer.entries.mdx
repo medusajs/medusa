@@ -1,0 +1,73 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# entries
+
+[Buffer](../../interfaces/Buffer.mdx).entries
+
+**entries**(): [`IterableIterator`](../../interfaces/IterableIterator.mdx)<[`number`, `number`]\>
+
+Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of `[index, byte]` pairs from the contents
+of `buf`.
+
+```js
+import { Buffer } from 'buffer';
+
+// Log the entire contents of a `Buffer`.
+
+const buf = Buffer.from('buffer');
+
+for (const pair of buf.entries()) {
+  console.log(pair);
+}
+// Prints:
+//   [0, 98]
+//   [1, 117]
+//   [2, 102]
+//   [3, 102]
+//   [4, 101]
+//   [5, 114]
+```
+
+#### Returns
+
+[`IterableIterator`](../../interfaces/IterableIterator.mdx)<[`number`, `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "IterableIterator",
+    "type": "[`IterableIterator`](../../interfaces/IterableIterator.mdx)<[`number`, `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "children": []
+      },
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Since
+
+v1.1.0
+
+#### Overrides
+
+Uint8Array.entries

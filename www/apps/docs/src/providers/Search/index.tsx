@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { SearchProvider as UiSearchProvider, checkArraySameElms } from "docs-ui"
+import {
+  AiAssistantCommandIcon,
+  AiAssistantProvider,
+  SearchProvider as UiSearchProvider,
+  checkArraySameElms,
+} from "docs-ui"
 import { ThemeConfig } from "@medusajs/docs"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import { useLocalPathname } from "@docusaurus/theme-common/internal"
@@ -10,7 +15,8 @@ type SearchProviderProps = {
 
 const SearchProvider = ({ children }: SearchProviderProps) => {
   const [defaultFilters, setDefaultFilters] = useState<string[]>([])
-  const { algoliaConfig: algolia } = useThemeConfig() as ThemeConfig
+  const { algoliaConfig: algolia, aiAssistant } =
+    useThemeConfig() as ThemeConfig
   const currentPath = useLocalPathname()
 
   useEffect(() => {
@@ -53,16 +59,34 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             title: "Developing with Medusa",
             items: [
               "Recipes",
-              "How to create endpoints",
+              "How to create API routes",
               "How to create an entity",
               "How to create a plugin",
               "How to create an admin widget",
             ],
           },
         ],
-        className: "z-[500]",
       }}
+      commands={[
+        aiAssistant && {
+          name: "ai-assistant",
+          icon: <AiAssistantCommandIcon />,
+          component: (
+            <AiAssistantProvider
+              apiUrl={aiAssistant.apiUrl}
+              websiteId={aiAssistant.websiteId}
+              recaptchaSiteKey={aiAssistant.recaptchaSiteKey}
+            />
+          ),
+          title: "AI Assistant",
+          badge: {
+            variant: "purple",
+            children: "Beta",
+          },
+        },
+      ]}
       initialDefaultFilters={defaultFilters}
+      modalClassName="z-[500]"
     >
       {children}
     </UiSearchProvider>

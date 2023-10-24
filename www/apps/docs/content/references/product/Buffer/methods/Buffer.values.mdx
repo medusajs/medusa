@@ -1,0 +1,74 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# values
+
+[Buffer](../../interfaces/Buffer.mdx).values
+
+**values**(): [`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\>
+
+Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) for `buf` values (bytes). This function is
+called automatically when a `Buffer` is used in a `for..of` statement.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from('buffer');
+
+for (const value of buf.values()) {
+  console.log(value);
+}
+// Prints:
+//   98
+//   117
+//   102
+//   102
+//   101
+//   114
+
+for (const value of buf) {
+  console.log(value);
+}
+// Prints:
+//   98
+//   117
+//   102
+//   102
+//   101
+//   114
+```
+
+#### Returns
+
+[`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "IterableIterator",
+    "type": "[`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Since
+
+v1.1.0
+
+#### Overrides
+
+Uint8Array.values

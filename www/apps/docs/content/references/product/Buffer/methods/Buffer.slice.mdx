@@ -1,0 +1,87 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# slice
+
+[Buffer](../../interfaces/Buffer.mdx).slice
+
+**slice**(`start?`, `end?`): [`Buffer`](../../variables/Buffer-1.mdx)
+
+Returns a new `Buffer` that references the same memory as the original, but
+offset and cropped by the `start` and `end` indices.
+
+This method is not compatible with the `Uint8Array.prototype.slice()`,
+which is a superclass of `Buffer`. To copy the slice, use`Uint8Array.prototype.slice()`.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from('buffer');
+
+const copiedBuf = Uint8Array.prototype.slice.call(buf);
+copiedBuf[0]++;
+console.log(copiedBuf.toString());
+// Prints: cuffer
+
+console.log(buf.toString());
+// Prints: buffer
+
+// With buf.slice(), the original buffer is modified.
+const notReallyCopiedBuf = buf.slice();
+notReallyCopiedBuf[0]++;
+console.log(notReallyCopiedBuf.toString());
+// Prints: cuffer
+console.log(buf.toString());
+// Also prints: cuffer (!)
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "start",
+    "type": "`number`",
+    "description": "Where the new `Buffer` will start.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "end",
+    "type": "`number`",
+    "description": "Where the new `Buffer` will end (not inclusive).",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.3.0
+
+#### Deprecated
+
+Use `subarray` instead.
+
+#### Overrides
+
+Uint8Array.slice

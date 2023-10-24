@@ -60,16 +60,14 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
                 </div>
               </div>
             )}
-            {index < currentStep && (
-              <Link
-                href={step.path}
-                className={clsx("absolute top-0 left-0 w-full h-full")}
-                onClick={(e) => {
-                  e.preventDefault()
-                  goToStep(index)
-                }}
-              />
-            )}
+            <Link
+              href={step.path}
+              className={clsx("absolute top-0 left-0 w-full h-full")}
+              onClick={(e) => {
+                e.preventDefault()
+                goToStep(index)
+              }}
+            />
           </div>
         ))}
       </div>

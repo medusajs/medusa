@@ -22,6 +22,10 @@ export const CodeBlock = ({
 }: CodeBlockProps) => {
   const { colorMode } = useColorMode()
 
+  if (!source.length) {
+    return <></>
+  }
+
   return (
     <div
       className={clsx(
@@ -54,8 +58,8 @@ export const CodeBlock = ({
             <pre
               style={{ ...style, fontStretch: "100%" }}
               className={clsx(
-                "xs:max-w-[90%] relative !mt-0 break-words bg-transparent !outline-none",
-                "overflow-auto break-words rounded-docs_DEFAULT",
+                "xs:max-w-[90%] relative !my-0 break-words bg-transparent !outline-none",
+                "overflow-auto break-words rounded-docs_DEFAULT p-0",
                 preClassName
               )}
             >
