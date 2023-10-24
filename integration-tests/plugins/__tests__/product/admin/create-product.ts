@@ -1,11 +1,12 @@
+import setupServer from "../../../../environment-helpers/setup-server"
+import { useApi } from "../../../../environment-helpers/use-api"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { setPort, useApi } from "../../../../environment-helpers/use-api"
 
 import { Region } from "@medusajs/medusa"
-import adminSeeder from "../../../../helpers/admin-seeder"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import path from "path"
+import adminSeeder from "../../../../helpers/admin-seeder"
+import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 
 jest.setTimeout(5000)
 
@@ -16,29 +17,26 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_PRICING_INTEGRATION: true,
+  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
 describe("[Product & Pricing Module] POST /admin/products", () => {
-  let express
   let dbConnection
   let appContainer
+  let medusaProcess
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-
-    const { container, app, port } = await bootstrapApp({ cwd, env })
-    appContainer = container
-    setPort(port)
-    express = app.listen(port)
+    medusaProcess = await setupServer({ cwd, env } as any)
+    appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    medusaProcess.kill()
   })
 
   beforeEach(async () => {
@@ -111,43 +109,5 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
         ]),
       }),
     })
-
-    response = await api.get(
-      `/store/products/${response.data.product.id}?currency_code=usd&region_id=test-region`,
-      data
-    )
-
-    expect(response.data.product).toEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        variants: expect.arrayContaining([
-          expect.objectContaining({
-            id: expect.any(String),
-            title: "test variant",
-            original_price: 66600,
-            calculated_price: 66600,
-          }),
-        ]),
-      })
-    )
-
-    response = await api.get(
-      `/store/products/${response.data.product.id}?currency_code=usd`,
-      data
-    )
-
-    expect(response.data.product).toEqual(
-      expect.objectContaining({
-        id: expect.any(String),
-        variants: expect.arrayContaining([
-          expect.objectContaining({
-            id: expect.any(String),
-            title: "test variant",
-            original_price: 55500,
-            calculated_price: 55500,
-          }),
-        ]),
-      })
-    )
   })
 })

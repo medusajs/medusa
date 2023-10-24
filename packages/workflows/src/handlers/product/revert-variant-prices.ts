@@ -1,0 +1,39 @@
+import { PricingTypes } from "@medusajs/types"
+import { WorkflowArguments } from "../../helper"
+
+type HandlerInput = {
+  createdLinks: Record<any, any>[]
+  originalMoneyAmounts: PricingTypes.MoneyAmountDTO[]
+  createdPriceSets: PricingTypes.PriceSetDTO[]
+}
+
+export async function revertVariantPrices({
+  container,
+  context,
+  data,
+}: WorkflowArguments<HandlerInput>): Promise<void> {
+  const {
+    createdLinks = [],
+    originalMoneyAmounts = [],
+    createdPriceSets = [],
+  } = data
+
+  const pricingModuleService = container.resolve("pricingModuleService")
+  const medusaApp = container.resolve("medusaApp")
+
+  await medusaApp.link.remove(createdLinks)
+
+  if (originalMoneyAmounts.length) {
+    await pricingModuleService.updateMoneyAmounts(originalMoneyAmounts)
+  }
+
+  if (createdPriceSets.length) {
+    await pricingModuleService.delete({
+      id: createdPriceSets.map((cps) => cps.id),
+    })
+  }
+}
+
+revertVariantPrices.aliases = {
+  productVariantsPrices: "productVariantsPrices",
+}
