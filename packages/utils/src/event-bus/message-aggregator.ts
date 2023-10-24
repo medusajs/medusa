@@ -1,8 +1,8 @@
 import { Message } from "@medusajs/types"
 
 export interface MessageAggregatorFormat {
-  groupBy: string[]
-  sortBy: { [key: string]: string[] | string | number }
+  groupBy?: string[]
+  sortBy?: { [key: string]: string[] | string | number }
 }
 
 export class MessageAggregator {
@@ -73,8 +73,8 @@ export class MessageAggregator {
     b: Message,
     sortBy: MessageAggregatorFormat["sortBy"]
   ): number {
-    for (const key of Object.keys(sortBy)) {
-      const orderCriteria = sortBy[key]
+    for (const key of Object.keys(sortBy!)) {
+      const orderCriteria = sortBy![key]
       const valueA = this.getValueFromPath(a, key)
       const valueB = this.getValueFromPath(b, key)
 

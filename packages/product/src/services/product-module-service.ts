@@ -720,7 +720,11 @@ export default class ProductModuleService<
       populate: true,
     })
 
-    await this.emitEvents_(sharedContext?.messageAggregator?.getMessages())
+    await this.emitEvents_(
+      sharedContext?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
 
     return createdProducts
   }
@@ -740,7 +744,11 @@ export default class ProductModuleService<
       populate: true,
     })
 
-    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+    await this.emitEvents_(
+      sharedContext.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
 
     return updatedProducts
   }
@@ -1146,6 +1154,7 @@ export default class ProductModuleService<
     const [entities, cascadedEntitiesMap] =
       await this.productService_.softDelete(productIds, sharedContext)
 
+    // TODO: Emit events of affected entities in cascade
     await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
 
     return [entities, cascadedEntitiesMap]
