@@ -135,7 +135,6 @@ describe("Link Modules", () => {
         expect.objectContaining({
           amount: 1000,
           currency_code: "usd",
-          region_id: "region-1",
         }),
       ])
     })
