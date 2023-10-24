@@ -7,10 +7,10 @@ import { AllocationType } from "@medusajs/medusa"
 import { AxiosInstance } from "axios"
 import { DiscountRuleType } from "@medusajs/medusa"
 import { ProductVariantMoneyAmount } from "@medusajs/medusa"
+import adminSeeder from "../../../../helpers/admin-seeder"
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import path from "path"
 import setupServer from "../../../../environment-helpers/setup-server"
-import adminSeeder from "../../../../helpers/admin-seeder"
 
 jest.setTimeout(30000)
 
@@ -35,7 +35,7 @@ describe("/store/carts", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({ cwd, verbose: true })
     const { app, port } = await bootstrapApp({ cwd, env: { 
-      // MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true
+      MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true
     } })
     setPort(port)
     express = app.listen(port, () => {
@@ -192,7 +192,7 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
     })
 
-    it.skip("should apply discount to cart", async () => {
+    it.only("should apply discount to cart", async () => {
       const api = useApi()! as AxiosInstance
       
       await simpleDiscountFactory(dbConnection, {
@@ -215,6 +215,7 @@ describe("/store/carts", () => {
           {
             title: "Test variant",
             inventory_quantity: 10,
+            allow_backorder: true,
             prices: [{ currency_code: "usd", amount: 100 }],
             options: [{ value: "large" }, { value: "green" }],
           },
@@ -227,6 +228,7 @@ describe("/store/carts", () => {
 
       const response = await api
         .post("/store/carts", {
+          region_id: 'region', 
           items: [
             {
               variant_id: variantId,
