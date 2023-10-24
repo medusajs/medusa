@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import IsolateProductDomain from "../loaders/feature-flags/isolate-product-domain"
+import IsolateSalesChannelDomainFeatureFlag from "../loaders/feature-flags/isolate-sales-channel-domain"
 
-export const featureFlag = IsolateProductDomain.key
+export const featureFlag = IsolateSalesChannelDomainFeatureFlag.key
 
 export class ProductSalesChannelsLink1698056997411
   implements MigrationInterface
