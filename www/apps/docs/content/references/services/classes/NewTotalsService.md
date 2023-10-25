@@ -1,4 +1,4 @@
-# Class: NewTotalsService
+# NewTotalsService
 
 ## Hierarchy
 
@@ -10,12 +10,12 @@
 
 ### constructor
 
-• **new NewTotalsService**(`«destructured»`)
+**new NewTotalsService**(`«destructured»`)
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `«destructured»` | `InjectedDependencies` |
 
 #### Overrides
@@ -24,13 +24,13 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:67](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L67)
+[medusa/src/services/new-totals.ts:67](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L67)
 
 ## Properties
 
 ### \_\_configModule\_\_
 
-• `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: `Record`<`string`, `unknown`\>
+ `Protected` `Optional` `Readonly` **\_\_configModule\_\_**: Record<`string`, `unknown`\>
 
 #### Inherited from
 
@@ -38,13 +38,13 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
 ### \_\_container\_\_
 
-• `Protected` `Readonly` **\_\_container\_\_**: `any`
+ `Protected` `Readonly` **\_\_container\_\_**: `any`
 
 #### Inherited from
 
@@ -52,13 +52,13 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
 ### \_\_moduleDeclaration\_\_
 
-• `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: `Record`<`string`, `unknown`\>
+ `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: Record<`string`, `unknown`\>
 
 #### Inherited from
 
@@ -66,23 +66,23 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### featureFlagRouter\_
 
-• `Protected` `Readonly` **featureFlagRouter\_**: `FlagRouter`
+ `Protected` `Readonly` **featureFlagRouter\_**: `FlagRouter`
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:64](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L64)
+[medusa/src/services/new-totals.ts:64](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L64)
 
 ___
 
 ### manager\_
 
-• `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: `EntityManager`
 
 #### Inherited from
 
@@ -90,33 +90,33 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### taxCalculationStrategy\_
 
-• `Protected` `Readonly` **taxCalculationStrategy\_**: `ITaxCalculationStrategy`
+ `Protected` `Readonly` **taxCalculationStrategy\_**: `ITaxCalculationStrategy`
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:65](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L65)
+[medusa/src/services/new-totals.ts:65](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L65)
 
 ___
 
 ### taxProviderService\_
 
-• `Protected` `Readonly` **taxProviderService\_**: [`TaxProviderService`](TaxProviderService.md)
+ `Protected` `Readonly` **taxProviderService\_**: [`TaxProviderService`](TaxProviderService.md)
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:63](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L63)
+[medusa/src/services/new-totals.ts:63](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L63)
 
 ___
 
 ### transactionManager\_
 
-• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
 #### Inherited from
 
@@ -124,17 +124,19 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
 `EntityManager`
+
+-`EntityManager`: 
 
 #### Inherited from
 
@@ -142,29 +144,27 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
 transaction manager is created.
 
-#### Type parameters
-
 | Name |
 | :------ |
-| `TResult` |
-| `TError` |
+| `TResult` | `object` |
+| `TError` | `object` |
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
+| Name | Description |
+| :------ | :------ |
 | `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
 | `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
@@ -173,7 +173,7 @@ transaction manager is created.
 
 `Promise`<`TResult`\>
 
-the result of the transactional work
+-`Promise`: the result of the transactional work
 
 #### Inherited from
 
@@ -181,22 +181,22 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### getGiftCardTotals
 
-▸ **getGiftCardTotals**(`giftCardableAmount`, `«destructured»`): `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
+**getGiftCardTotals**(`giftCardableAmount`, `«destructured»`): `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
 
 Calculate and return the gift cards totals
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `giftCardableAmount` | `number` |
-| `«destructured»` | `Object` |
+| `«destructured»` | `object` |
 | › `giftCardTransactions?` | `GiftCardTransaction`[] |
 | › `giftCards?` | `GiftCard`[] |
 | › `region` | `Region` |
@@ -205,31 +205,36 @@ Calculate and return the gift cards totals
 
 `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
 
+-`Promise`: 
+	-``object``: (optional) 
+
 #### Defined in
 
-[medusa/src/services/new-totals.ts:447](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L447)
+[medusa/src/services/new-totals.ts:447](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L447)
 
 ___
 
 ### getGiftCardTransactionsTotals
 
-▸ **getGiftCardTransactionsTotals**(`«destructured»`): `Object`
+**getGiftCardTransactionsTotals**(`«destructured»`): { `tax_total`: `number` ; `total`: `number`  }
 
 Calculate and return the gift cards totals based on their transactions
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `«destructured»` | `Object` |
+| Name |
+| :------ |
+| `«destructured»` | `object` |
 | › `giftCardTransactions` | `GiftCardTransaction`[] |
-| › `region` | `Object` |
+| › `region` | `object` |
 | › `region.gift_cards_taxable` | `boolean` |
 | › `region.tax_rate` | `number` |
 
 #### Returns
 
-`Object`
+`object`
+
+-``object``: (optional) 
 
 | Name | Type |
 | :------ | :------ |
@@ -238,27 +243,27 @@ Calculate and return the gift cards totals based on their transactions
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:526](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L526)
+[medusa/src/services/new-totals.ts:526](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L526)
 
 ___
 
 ### getLineItemRefund
 
-▸ **getLineItemRefund**(`lineItem`, `«destructured»`): `number`
+**getLineItemRefund**(`lineItem`, `«destructured»`): `number`
 
 Return the amount that can be refund on a line item
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `lineItem` | `Object` |
+| Name |
+| :------ |
+| `lineItem` | `object` |
 | `lineItem.id` | `string` |
 | `lineItem.includes_tax` | `boolean` |
 | `lineItem.quantity` | `number` |
 | `lineItem.tax_lines` | `LineItemTaxLine`[] |
 | `lineItem.unit_price` | `number` |
-| `«destructured»` | `Object` |
+| `«destructured»` | `object` |
 | › `calculationContext` | `TaxCalculationContext` |
 | › `taxRate?` | ``null`` \| `number` |
 
@@ -266,26 +271,28 @@ Return the amount that can be refund on a line item
 
 `number`
 
+-`number`: (optional) 
+
 #### Defined in
 
-[medusa/src/services/new-totals.ts:333](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L333)
+[medusa/src/services/new-totals.ts:333](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L333)
 
 ___
 
 ### getLineItemRefundLegacy
 
-▸ `Protected` **getLineItemRefundLegacy**(`lineItem`, `«destructured»`): `number`
+`Protected` **getLineItemRefundLegacy**(`lineItem`, `«destructured»`): `number`
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `lineItem` | `Object` |
+| Name |
+| :------ |
+| `lineItem` | `object` |
 | `lineItem.id` | `string` |
 | `lineItem.includes_tax` | `boolean` |
 | `lineItem.quantity` | `number` |
 | `lineItem.unit_price` | `number` |
-| `«destructured»` | `Object` |
+| `«destructured»` | `object` |
 | › `calculationContext` | `TaxCalculationContext` |
 | › `taxRate` | `number` |
 
@@ -293,24 +300,26 @@ ___
 
 `number`
 
+-`number`: (optional) 
+
 #### Defined in
 
-[medusa/src/services/new-totals.ts:403](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L403)
+[medusa/src/services/new-totals.ts:403](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L403)
 
 ___
 
 ### getLineItemTotals
 
-▸ **getLineItemTotals**(`items`, `«destructured»`): `Promise`<{ `[lineItemId: string]`: `LineItemTotals`;  }\>
+**getLineItemTotals**(`items`, `«destructured»`): `Promise`<{ `[lineItemId: string]`: `LineItemTotals`;  }\>
 
 Calculate and return the items totals for either the legacy calculation or the new calculation
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `items` | `LineItem` \| `LineItem`[] |
-| `«destructured»` | `Object` |
+| `«destructured»` | `object` |
 | › `calculationContext` | `TaxCalculationContext` |
 | › `includeTax?` | `boolean` |
 | › `taxRate?` | ``null`` \| `number` |
@@ -319,26 +328,29 @@ Calculate and return the items totals for either the legacy calculation or the n
 
 `Promise`<{ `[lineItemId: string]`: `LineItemTotals`;  }\>
 
+-`Promise`: 
+	-``object``: (optional) 
+
 #### Defined in
 
-[medusa/src/services/new-totals.ts:87](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L87)
+[medusa/src/services/new-totals.ts:87](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L87)
 
 ___
 
 ### getLineItemTotalsLegacy
 
-▸ `Protected` **getLineItemTotalsLegacy**(`item`, `«destructured»`): `Promise`<`LineItemTotals`\>
+`Protected` **getLineItemTotalsLegacy**(`item`, `«destructured»`): `Promise`<`LineItemTotals`\>
 
 Calculate and return the legacy calculated totals using the tax rate
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `item` | `LineItem` |
-| `«destructured»` | `Object` |
+| `«destructured»` | `object` |
 | › `calculationContext` | `TaxCalculationContext` |
-| › `lineItemAllocation` | `Object` |
+| › `lineItemAllocation` | `object` |
 | › `lineItemAllocation.discount?` | `DiscountAllocation` |
 | › `lineItemAllocation.gift_card?` | `GiftCardAllocation` |
 | › `taxRate` | `number` |
@@ -347,27 +359,29 @@ Calculate and return the legacy calculated totals using the tax rate
 
 `Promise`<`LineItemTotals`\>
 
+-`Promise`: 
+
 #### Defined in
 
-[medusa/src/services/new-totals.ts:254](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L254)
+[medusa/src/services/new-totals.ts:254](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L254)
 
 ___
 
 ### getLineItemTotals\_
 
-▸ `Protected` **getLineItemTotals_**(`item`, `«destructured»`): `Promise`<`LineItemTotals`\>
+`Protected` **getLineItemTotals_**(`item`, `«destructured»`): `Promise`<`LineItemTotals`\>
 
 Calculate and return the totals for an item
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `item` | `LineItem` |
-| `«destructured»` | `Object` |
+| `«destructured»` | `object` |
 | › `calculationContext` | `TaxCalculationContext` |
 | › `includeTax?` | `boolean` |
-| › `lineItemAllocation` | `Object` |
+| › `lineItemAllocation` | `object` |
 | › `lineItemAllocation.discount?` | `DiscountAllocation` |
 | › `lineItemAllocation.gift_card?` | `GiftCardAllocation` |
 | › `taxLines?` | `LineItemTaxLine`[] |
@@ -376,24 +390,26 @@ Calculate and return the totals for an item
 
 `Promise`<`LineItemTotals`\>
 
+-`Promise`: 
+
 #### Defined in
 
-[medusa/src/services/new-totals.ts:147](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L147)
+[medusa/src/services/new-totals.ts:147](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L147)
 
 ___
 
 ### getShippingMethodTotals
 
-▸ **getShippingMethodTotals**(`shippingMethods`, `«destructured»`): `Promise`<{ `[shippingMethodId: string]`: `ShippingMethodTotals`;  }\>
+**getShippingMethodTotals**(`shippingMethods`, `«destructured»`): `Promise`<{ `[shippingMethodId: string]`: `ShippingMethodTotals`;  }\>
 
 Calculate and return the shipping methods totals for either the legacy calculation or the new calculation
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `shippingMethods` | `ShippingMethod` \| `ShippingMethod`[] |
-| `«destructured»` | `Object` |
+| `«destructured»` | `object` |
 | › `calculationContext` | `TaxCalculationContext` |
 | › `discounts?` | `Discount`[] |
 | › `includeTax?` | `boolean` |
@@ -403,24 +419,27 @@ Calculate and return the shipping methods totals for either the legacy calculati
 
 `Promise`<{ `[shippingMethodId: string]`: `ShippingMethodTotals`;  }\>
 
+-`Promise`: 
+	-``object``: (optional) 
+
 #### Defined in
 
-[medusa/src/services/new-totals.ts:572](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L572)
+[medusa/src/services/new-totals.ts:572](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L572)
 
 ___
 
 ### getShippingMethodTotalsLegacy
 
-▸ `Protected` **getShippingMethodTotalsLegacy**(`shippingMethod`, `«destructured»`): `Promise`<`ShippingMethodTotals`\>
+`Protected` **getShippingMethodTotalsLegacy**(`shippingMethod`, `«destructured»`): `Promise`<`ShippingMethodTotals`\>
 
 Calculate and return the shipping method totals legacy using the tax rate
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `shippingMethod` | `ShippingMethod` |
-| `«destructured»` | `Object` |
+| `«destructured»` | `object` |
 | › `calculationContext` | `TaxCalculationContext` |
 | › `discounts?` | `Discount`[] |
 | › `taxRate` | `number` |
@@ -429,24 +448,26 @@ Calculate and return the shipping method totals legacy using the tax rate
 
 `Promise`<`ShippingMethodTotals`\>
 
+-`Promise`: 
+
 #### Defined in
 
-[medusa/src/services/new-totals.ts:729](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L729)
+[medusa/src/services/new-totals.ts:729](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L729)
 
 ___
 
 ### getShippingMethodTotals\_
 
-▸ `Protected` **getShippingMethodTotals_**(`shippingMethod`, `«destructured»`): `Promise`<`ShippingMethodTotals`\>
+`Protected` **getShippingMethodTotals_**(`shippingMethod`, `«destructured»`): `Promise`<`ShippingMethodTotals`\>
 
 Calculate and return the shipping method totals
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `shippingMethod` | `ShippingMethod` |
-| `«destructured»` | `Object` |
+| `«destructured»` | `object` |
 | › `calculationContext` | `TaxCalculationContext` |
 | › `discounts?` | `Discount`[] |
 | › `includeTax?` | `boolean` |
@@ -456,25 +477,29 @@ Calculate and return the shipping method totals
 
 `Promise`<`ShippingMethodTotals`\>
 
+-`Promise`: 
+
 #### Defined in
 
-[medusa/src/services/new-totals.ts:646](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/new-totals.ts#L646)
+[medusa/src/services/new-totals.ts:646](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/services/new-totals.ts#L646)
 
 ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+| Name |
+| :------ |
+| `err` | Record<`string`, `unknown`\> \| { `code`: `string`  } |
 
 #### Returns
 
 `boolean`
+
+-`boolean`: (optional) 
 
 #### Inherited from
 
@@ -482,23 +507,25 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`NewTotalsService`](NewTotalsService.md)
+**withTransaction**(`transactionManager?`): [`NewTotalsService`](NewTotalsService.md)
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`NewTotalsService`](NewTotalsService.md)
+
+-`default`: 
 
 #### Inherited from
 
@@ -506,4 +533,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/39f807849/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
