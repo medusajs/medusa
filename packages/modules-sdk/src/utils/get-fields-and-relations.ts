@@ -7,7 +7,7 @@ export function getFieldsAndRelations(
 ) {
   const result: string[] = []
 
-  function traverseFields(typeName, prefix) {
+  function traverseFields(typeName, prefix = "") {
     const type = schemaTypeMap[typeName]
 
     if (!(type instanceof GraphQLObjectType)) {
@@ -32,6 +32,6 @@ export function getFieldsAndRelations(
     }
   }
 
-  traverseFields(typeName, "")
+  traverseFields(typeName)
   return result
 }

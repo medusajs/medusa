@@ -9,6 +9,7 @@ import {
   Index,
   ManyToOne,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -71,6 +72,7 @@ class ProductOption {
   deleted_at?: Date
 
   @BeforeCreate()
+  @OnInit()
   beforeCreate() {
     this.id = generateEntityId(this.id, "opt")
   }

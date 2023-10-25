@@ -8,6 +8,7 @@ import {
   Index,
   ManyToOne,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -140,6 +141,7 @@ class ProductVariant {
   options = new Collection<ProductOptionValue>(this)
 
   @BeforeCreate()
+  @OnInit()
   onCreate() {
     this.id = generateEntityId(this.id, "variant")
   }

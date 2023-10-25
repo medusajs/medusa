@@ -356,8 +356,8 @@ function processEntity(
       value.astNode &&
       (value.astNode as ObjectTypeDefinitionNode).fields?.some((field: any) => {
         let currentType = field.type
-        while (currentType.type) {
-          currentType = currentType.type
+        while (currentType.ofType) {
+          currentType = currentType.ofType
         }
 
         return currentType.name?.value === entityName

@@ -8,6 +8,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -177,6 +178,7 @@ class Product {
   metadata?: Record<string, unknown> | null
 
   @BeforeCreate()
+  @OnInit()
   beforeCreate() {
     this.id = generateEntityId(this.id, "prod")
     if (!this.handle) {

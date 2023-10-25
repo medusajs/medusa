@@ -19,6 +19,10 @@ export async function attachSalesChannelToProducts({
   const productsHandleSalesChannelsMap = data.productsHandleSalesChannelsMap
   const products = data.products
 
+  if (!products?.length) {
+    return
+  }
+
   const salesChannelService = container.resolve("salesChannelService")
   const salesChannelServiceTx = salesChannelService.withTransaction(manager)
 

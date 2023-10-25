@@ -5,6 +5,7 @@ import {
   Filter,
   Index,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -62,6 +63,7 @@ class ProductCollection {
   deleted_at?: Date
 
   @BeforeCreate()
+  @OnInit()
   onCreate() {
     this.id = generateEntityId(this.id, "pcol")
 

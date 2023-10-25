@@ -50,9 +50,12 @@
     "tsc-alias": "^1.8.6",
     "typescript": "^5.1.6"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@graphql-tools/merge": "^9.0.0",
     "@graphql-tools/schema": "^10.0.0",
+    "graphql": "^16.6.0"
+  },
+  "dependencies": {
     "@medusajs/modules-sdk": "^1.11.0",
     "@medusajs/utils": "^1.10.1",
     "@mikro-orm/core": "5.7.12",
@@ -60,7 +63,6 @@
     "@mikro-orm/postgresql": "5.7.12",
     "awilix": "^8.0.0",
     "dotenv": "^16.1.4",
-    "graphql": "^16.8.1",
     "knex": "2.4.2",
     "lodash": "^4.17.21"
   }

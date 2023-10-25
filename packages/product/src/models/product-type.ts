@@ -3,6 +3,7 @@ import {
   Entity,
   Filter,
   Index,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -47,6 +48,7 @@ class ProductType {
   deleted_at?: Date
 
   @BeforeCreate()
+  @OnInit()
   onCreate() {
     this.id = generateEntityId(this.id, "ptyp")
   }

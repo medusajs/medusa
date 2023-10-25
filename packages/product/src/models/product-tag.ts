@@ -5,6 +5,7 @@ import {
   Filter,
   Index,
   ManyToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -54,6 +55,7 @@ class ProductTag {
   products = new Collection<Product>(this)
 
   @BeforeCreate()
+  @OnInit()
   onCreate() {
     this.id = generateEntityId(this.id, "ptag")
   }

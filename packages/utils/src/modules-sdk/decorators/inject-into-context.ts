@@ -15,6 +15,7 @@ export function InjectIntoContext(
     }
 
     const argIndex = target.MedusaContextIndex_[propertyKey]
+    const original = descriptor.value
     descriptor.value = async function (...args: any[]) {
       const context: Context = args[argIndex] ?? {}
 
@@ -25,6 +26,8 @@ export function InjectIntoContext(
             ? (properties[key] as Function)(context)
             : properties[key]
       }
+
+      return await original.apply(this, args)
     }
   }
 }

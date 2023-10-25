@@ -4,6 +4,7 @@ import {
   Filter,
   Index,
   ManyToOne,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -73,6 +74,7 @@ class ProductOptionValue {
   deleted_at?: Date
 
   @BeforeCreate()
+  @OnInit()
   beforeCreate() {
     this.id = generateEntityId(this.id, "optval")
   }

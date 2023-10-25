@@ -8,6 +8,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -84,6 +85,15 @@ class ProductCategory {
 
   @ManyToMany(() => Product, (product) => product.categories)
   products = new Collection<Product>(this)
+
+  @OnInit()
+  async onInit() {
+    this.id = generateEntityId(this.id, "pcat")
+
+    if (!this.handle) {
+      this.handle = kebabCase(this.name)
+    }
+  }
 
   @BeforeCreate()
   async onCreate(args: EventArgs<ProductCategory>) {

@@ -160,12 +160,14 @@ export class PostgresProvider {
     }
   }
 
-  protected static parseMessageData<T>(message?: Message<T>): {
+  protected static parseMessageData<T>(message?: Message<T>["body"]): {
     action: string
     data: { id: string }[]
     ids: string[]
   } | void {
-    const isMessageShape = isDefined((message as Message<unknown>)?.body)
+    const isMessageShape =
+      isDefined((message as Message["body"])?.metadata) &&
+      isDefined((message as Message["body"])?.data)
 
     if (!isMessageShape) {
       return
@@ -181,8 +183,8 @@ export class PostgresProvider {
       ids: [],
     }
 
-    result.action = (message as Message<unknown>).body.metadata.action
-    result.data = (message as Message<unknown>).body.data as { id: string }[]
+    result.action = (message as Message["body"]).metadata.action
+    result.data = (message as Message["body"]).data as { id: string }[]
     result.data = Array.isArray(result.data) ? result.data : [result.data]
     result.ids = result.data.map((d) => d.id)
 
