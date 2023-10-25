@@ -8,7 +8,6 @@ import WidgetContainer from "../../extensions/widget-container"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
 import { useAccess } from "../../../providers/access-provider"
-import { useEffect, useState } from "react"
 
 type FormValues = {
   email: string
@@ -31,23 +30,14 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
   const { t } = useTranslation()
 
   const { getWidgets } = useWidgets()
-  const { startPage, getAccess } = useAccess();
-
-  const [redirect, setRedirect] = useState(false);
-
-  useEffect(()=>{
-    if(redirect && startPage) {
-      setRedirect(false);
-      navigate(startPage);
-    }
-  },[redirect, startPage])
+  const { getAccess } = useAccess();
 
   const onSubmit = (values: FormValues) => {
     mutate(values, {
-      onSuccess: () => {
-        getAccess().then(()=>{
-          setRedirect(true);
-        });
+      onSuccess: async () => {
+        getAccess().then((startPage)=>{
+          navigate(startPage);
+        })
       },
       onError: () => {
         setError(

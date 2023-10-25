@@ -6,11 +6,12 @@ import { useAccess } from "../providers/access-provider"
 
 const IndexPage = () => {
   const navigate = useNavigate()
-  const { startPage } = useAccess();
+  const { getAccess } = useAccess();
   useEffect(() => {
-    if(startPage)
-      navigate(startPage)
-  }, [startPage])
+    getAccess().then((startPage)=>{
+      navigate(startPage);
+    })
+  }, [])
 
   return (
     <div className="bg-grey-5 text-grey-90 flex h-screen w-full items-center justify-center">
