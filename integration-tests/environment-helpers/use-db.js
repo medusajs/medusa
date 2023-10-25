@@ -88,12 +88,17 @@ module.exports = {
     const pgConnectionLoader =
       require("@medusajs/medusa/dist/loaders/pg-connection").default
 
+    const IsolateProductDomainFeatureFlag =
+      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-product-domain").default
+    const IsolatePricingDomainFeatureFlag =
+      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-pricing-domain").default
+
     await pgConnectionLoader({ configModule, container })
 
     const medusaAppLoader =
       require("@medusajs/medusa/dist/loaders/medusa-app").default
 
-    const featureFlagsRouter = featureFlagsLoader({ featureFlags })
+    const featureFlagRouter = featureFlagsLoader({ featureFlags })
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
     const entities = modelsLoader({}, { register: false })
 
@@ -119,10 +124,10 @@ module.exports = {
     } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
     const { migrations: moduleMigrations, models: moduleModels } =
-      getModuleSharedResources(configModule, featureFlagsRouter)
+      getModuleSharedResources(configModule, featureFlagRouter)
 
     const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
-      featureFlagsRouter.isFeatureEnabled(flag)
+      featureFlagRouter.isFeatureEnabled(flag)
     )
 
     const enabledEntities = entities.filter(
@@ -144,17 +149,23 @@ module.exports = {
 
     instance.setDb(dbDataSource)
 
-    const { runMigrations } = await medusaAppLoader(
-      { configModule, container },
-      { register: false }
-    )
+    if (
+      featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
+      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
+    ) {
+      console.warn("running migrations")
+      const { runMigrations } = await medusaAppLoader(
+        { configModule, container },
+        { register: false }
+      )
 
-    const options = {
-      database: {
-        clientUrl: DB_URL,
-      },
+      const options = {
+        database: {
+          clientUrl: DB_URL,
+        },
+      }
+      await runMigrations(options)
     }
-    await runMigrations(options)
 
     return dbDataSource
   },
