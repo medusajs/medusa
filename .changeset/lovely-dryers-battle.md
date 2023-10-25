@@ -1,5 +1,5 @@
 ---
-"@medusajs/admin-ui": minor
+"@medusajs/admin-ui": patch
 ---
 
 Fix activity drawer z-index
