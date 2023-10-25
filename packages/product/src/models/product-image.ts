@@ -55,8 +55,12 @@ class ProductImage {
   @ManyToMany(() => Product, (product) => product.images)
   products = new Collection<Product>(this)
 
-  @BeforeCreate()
   @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "img")
+  }
+
+  @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "img")
   }

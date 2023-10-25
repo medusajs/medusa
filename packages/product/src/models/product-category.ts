@@ -89,10 +89,6 @@ class ProductCategory {
   @OnInit()
   async onInit() {
     this.id = generateEntityId(this.id, "pcat")
-
-    if (!this.handle) {
-      this.handle = kebabCase(this.name)
-    }
   }
 
   @BeforeCreate()

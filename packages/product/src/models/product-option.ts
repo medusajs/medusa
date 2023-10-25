@@ -71,8 +71,12 @@ class ProductOption {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 
-  @BeforeCreate()
   @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "opt")
+  }
+
+  @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "opt")
   }

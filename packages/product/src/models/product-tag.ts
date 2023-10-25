@@ -54,8 +54,11 @@ class ProductTag {
   @ManyToMany(() => Product, (product) => product.tags)
   products = new Collection<Product>(this)
 
-  @BeforeCreate()
   @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "ptag")
+  }
+  @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ptag")
   }

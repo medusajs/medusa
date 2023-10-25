@@ -140,8 +140,12 @@ class ProductVariant {
   })
   options = new Collection<ProductOptionValue>(this)
 
-  @BeforeCreate()
   @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "variant")
+  }
+
+  @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "variant")
   }

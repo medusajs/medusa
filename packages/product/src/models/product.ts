@@ -177,8 +177,12 @@ class Product {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
-  @BeforeCreate()
   @OnInit()
+  onInit() {
+    this.id = generateEntityId(this.id, "prod")
+  }
+
+  @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "prod")
     if (!this.handle) {
