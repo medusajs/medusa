@@ -75,7 +75,6 @@ export const resetFactBox = (
     clearInterval(interval)
   }
 
-  // spinner.spinner = "dots"
   spinner.succeed(chalk.green(successMessage)).start()
   let newInterval = null
   if (newTitle) {
