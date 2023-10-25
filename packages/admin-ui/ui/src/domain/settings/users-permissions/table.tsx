@@ -57,7 +57,7 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
   }
 
   const handleDlete = async () => {
-    remove(selectedPermission.id).then(() => {
+    selectedPermission && remove(selectedPermission.id).then(() => {
       notification(
         //t("templates-success", "Success"),
         //t("users-permissions-has-been-removed", "Permission has been removed"),
@@ -81,6 +81,7 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
             onClick: () => setSelectedPermission(row),
             icon: <EditIcon size={20} />,
           },
+          /*
           {
             label: t("templates-remove-user-permission", "Remove Permission"),
             variant: "danger",
@@ -90,7 +91,9 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
             },
             icon: <TrashIcon size={20} />,
           },
+          */
         ]}
+        forceDropdown={true}
       >
         <Table.Cell className="w-80">{row.name}</Table.Cell>
         <Table.Cell className="inter-small-semibold text-violet-60">
