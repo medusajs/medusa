@@ -46,8 +46,8 @@ export type StoreAuthRes = {
  * @schema StoreBearerAuthRes
  * type: object
  * properties:
- *   accessToken:
- *     description: Access token for subsequent authorization.
+ *   access_token:
+ *     description: Access token that can be used to send authenticated requests.
  *     type: string
  */
 export type StoreBearerAuthRes = {

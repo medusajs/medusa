@@ -1,0 +1,137 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# reduce
+
+[Buffer](../../interfaces/Buffer.mdx).reduce
+
+**reduce**(`callbackfn`): `number`
+
+Calls the specified callback function for all the elements in an array. The return value of
+the callback function is the accumulated result, and is provided as an argument in the next
+call to the callback function.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "callbackfn",
+    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
+    "description": "A function that accepts up to four arguments. The reduce method calls the callbackfn function one time for each element in the array.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Inherited from
+
+Uint8Array.reduce
+
+**reduce**(`callbackfn`, `initialValue`): `number`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "callbackfn",
+    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "initialValue",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Inherited from
+
+Uint8Array.reduce
+
+**reduce**<`U`\>(`callbackfn`, `initialValue`): `U`
+
+Calls the specified callback function for all the elements in an array. The return value of
+the callback function is the accumulated result, and is provided as an argument in the next
+call to the callback function.
+
+<ParameterTypes parameters={[
+  {
+    "name": "U",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "callbackfn",
+    "type": "(`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `U`",
+    "description": "A function that accepts up to four arguments. The reduce method calls the callbackfn function one time for each element in the array.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "initialValue",
+    "type": "`U`",
+    "description": "If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of an array value.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`U`
+
+<ParameterTypes parameters={[]} />
+
+#### Inherited from
+
+Uint8Array.reduce

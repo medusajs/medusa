@@ -146,6 +146,14 @@ export function load(app: Application) {
           }
         } while (missing.size > 0)
 
+        // remove paths from reflection name
+        internalNs?.children?.forEach((item) => {
+          if (item.name.indexOf(`"`) === 0) {
+            item.name =
+              context.converter.application.options.getValue("internalModule")
+          }
+        })
+
         // All the missing symbols were excluded, so get rid of our namespace.
         if (internalNs && !internalNs.children?.length) {
           context.project.removeReflection(internalNs)

@@ -10,40 +10,62 @@ module.exports = ({
   tsconfigPath = "",
   moduleName = "",
   documentsToFormat = [],
-  additionalFormatting = {},
   extraOptions = {},
 }) => {
   const formatting = {}
-  documentsToFormat.forEach((document) => {
-    formatting[document] = {
-      reflectionTitle: {
-        kind: false,
-        typeParameters: false,
-        suffix: "Reference",
-      },
-      expandMembers: true,
-      showCommentsAsHeader: true,
-      parameterStyle: "list",
-      useTsLinkResolution: false,
-      showReturnSignature: false,
-      sections: {
-        reflection_typeParameters: false,
-        member_declaration_typeParameters: false,
-        reflection_implements: false,
-        reflection_implementedBy: false,
-        reflection_callable: false,
-        reflection_indexable: false,
-        member_signature_typeParameters: false,
-        member_signature_sources: false,
-        member_signature_title: false,
-      },
-      reflectionGroups: {
-        Constructors: false,
-        Properties: false,
-      },
-      ...additionalFormatting,
+  documentsToFormat.forEach(
+    ({ pattern, additionalFormatting, useDefaults = false }) => {
+      formatting[pattern] = {
+        ...(!useDefaults
+          ? {
+              reflectionTitle: {
+                kind: false,
+                typeParameters: false,
+                suffix: "Reference",
+              },
+              expandMembers: true,
+              showCommentsAsHeader: true,
+              parameterStyle: "component",
+              useTsLinkResolution: false,
+              sections: {
+                reflection_typeParameters: false,
+                member_declaration_typeParameters: false,
+                reflection_implements: false,
+                reflection_implementedBy: false,
+                reflection_callable: false,
+                reflection_indexable: false,
+                member_signature_typeParameters: false,
+                member_signature_sources: false,
+                member_signature_title: false,
+                title_reflectionPath: false,
+                member_sources_definedIn: false,
+                member_signature_returns: false,
+              },
+              reflectionGroups: {
+                Constructors: false,
+                Properties: false,
+              },
+              parameterComponent: "ParameterTypes",
+              mdxImports: [
+                `import ParameterTypes from "@site/src/components/ParameterTypes"`,
+              ],
+            }
+          : {
+              showCommentsAsHeader: true,
+              sections: {
+                member_sources_definedIn: false,
+                reflection_hierarchy: false,
+              },
+              parameterStyle: "component",
+              parameterComponent: "ParameterTypes",
+              mdxImports: [
+                `import ParameterTypes from "@site/src/components/ParameterTypes"`,
+              ],
+            }),
+        ...additionalFormatting,
+      }
     }
-  })
+  )
   return {
     ...globalTypedocOptions,
     entryPoints: [path.join(pathPrefix, entryPointPath)],
@@ -64,8 +86,10 @@ module.exports = ({
       "typedoc-plugin-rename-defaults",
       "typedoc-plugin-frontmatter",
     ],
-    hideMembersSymbol: true,
     formatting,
+    allReflectionsHaveOwnDocument: true,
+    objectLiteralTypeDeclarationStyle: "component",
+    mdxOutput: true,
     ...extraOptions,
   }
 }
