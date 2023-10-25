@@ -4,13 +4,15 @@ import {
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
+  composeMessage,
   isString,
   retrieveEntity,
 } from "@medusajs/utils"
 import { Product, ProductVariant } from "@models"
 import { ProductVariantRepository } from "@repositories"
 
-import { InternalContext } from "../types"
+import { Modules } from "@medusajs/modules-sdk"
+import { InternalContext, ProductVariantEvents } from "../types"
 import { ProductVariantServiceTypes } from "../types/services"
 import { doNotForceTransaction } from "../utils"
 import ProductService from "./product"
@@ -113,11 +115,24 @@ export default class ProductVariantService<
       })
     })
 
-    return (await (
+    const variants = await (
       this.productVariantRepository_ as ProductVariantRepository
     ).create(data_, {
       transactionManager: sharedContext.transactionManager,
-    })) as TEntity[]
+    })
+
+    sharedContext.messageAggregator?.save(
+      variants.map(({ id }) => {
+        return composeMessage(ProductVariantEvents.PRODUCT_VARIANT_CREATED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: ProductVariant.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return variants as TEntity[]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
@@ -139,11 +154,24 @@ export default class ProductVariantService<
     const variantsData = [...data]
     variantsData.forEach((variant) => Object.assign(variant, { product }))
 
-    return (await (
+    const variants = await (
       this.productVariantRepository_ as ProductVariantRepository
     ).update(variantsData, {
       transactionManager: sharedContext.transactionManager,
-    })) as TEntity[]
+    })
+
+    sharedContext.messageAggregator?.save(
+      variants.map(({ id }) => {
+        return composeMessage(ProductVariantEvents.PRODUCT_VARIANT_UPDATED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: ProductVariant.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return variants as TEntity[]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
@@ -151,19 +179,44 @@ export default class ProductVariantService<
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
-    return await this.productVariantRepository_.delete(ids, {
+    await this.productVariantRepository_.delete(ids, {
       transactionManager: sharedContext.transactionManager,
     })
+
+    sharedContext.messageAggregator?.save(
+      ids.map((id) => {
+        return composeMessage(ProductVariantEvents.PRODUCT_VARIANT_DELETED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: ProductVariant.name,
+          context: sharedContext,
+        })
+      })
+    )
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
   async softDelete(
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}
-  ): Promise<void> {
-    await this.productVariantRepository_.softDelete(ids, {
-      transactionManager: sharedContext.transactionManager,
-    })
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    const [entities, cascadeEntities] =
+      await this.productVariantRepository_.softDelete(ids, {
+        transactionManager: sharedContext.transactionManager,
+      })
+
+    sharedContext.messageAggregator?.save(
+      entities.map(({ id }) => {
+        return composeMessage(ProductVariantEvents.PRODUCT_VARIANT_DELETED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: Product.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return [entities, cascadeEntities]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
@@ -171,8 +224,22 @@ export default class ProductVariantService<
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<[TEntity[], Record<string, unknown[]>]> {
-    return await this.productVariantRepository_.restore(ids, {
-      transactionManager: sharedContext.transactionManager,
-    })
+    const [entities, cascadeEntities] =
+      await this.productVariantRepository_.restore(ids, {
+        transactionManager: sharedContext.transactionManager,
+      })
+
+    sharedContext.messageAggregator?.save(
+      entities.map(({ id }) => {
+        return composeMessage(ProductVariantEvents.PRODUCT_VARIANT_CREATED, {
+          data: { id },
+          service: Modules.PRODUCT,
+          entity: Product.name,
+          context: sharedContext,
+        })
+      })
+    )
+
+    return [entities, cascadeEntities]
   }
 }
