@@ -18,6 +18,9 @@ export class CartSalesChannelsLink1698160215000 implements MigrationInterface {
             CONSTRAINT "cart_sales_channel_cart_id_unique"  UNIQUE ("cart_id")
             );
 
+        insert into "cart_sales_channel" (id, cart_id, sales_channel_id)
+            (select 'cartsc_' || substr(md5(random()::text), 0, 27), id, sales_channel_id from "cart");
+
         ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_a2bd3c26f42e754b9249ba78fd6";
     `)
   }
