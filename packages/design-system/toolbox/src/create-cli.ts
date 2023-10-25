@@ -1,8 +1,8 @@
 import { generateIcons } from "@/commands/icons/command"
 import { Command } from "commander"
 
+import { generateTokens } from "@/commands/tokens/command"
 import pkg from "../package.json"
-import { generateTokens } from "./commands/tokens/command"
 
 export async function createCli() {
   const program = new Command()

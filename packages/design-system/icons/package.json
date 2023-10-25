@@ -24,10 +24,12 @@
     "build:types": "tsc --emitDeclarationOnly",
     "test": "vitest --run",
     "test:watch": "vitest",
-    "test:coverage": "vitest --run --coverage"
+    "test:coverage": "vitest --run --coverage",
+    "generate": "rimraf ./src/components && toolbox icons -o './src/components'"
   },
   "devDependencies": {
     "@atomico/rollup-plugin-sizes": "^1.1.4",
+    "@medusajs/toolbox": "^0.0.1",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-replace": "^5.0.2",
     "@testing-library/dom": "^9.3.1",
@@ -42,6 +44,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "resize-observer-polyfill": "^1.5.1",
+    "rimraf": "^5.0.1",
     "rollup": "^3.26.0",
     "rollup-plugin-esbuild": "^5.0.0",
     "rollup-plugin-license": "^3.0.1",

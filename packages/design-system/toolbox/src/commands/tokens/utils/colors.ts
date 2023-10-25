@@ -1,11 +1,6 @@
-import {
-  PaintType,
-  type Color,
-  type PaintGradient,
-  type Vector,
-} from "@medusajs/figma-api"
+import { PaintType, type Color, type PaintGradient, type Vector } from "@/figma"
+import { logger } from "@/logger"
 import type { CSSProperties } from "react"
-import { logger } from "../../../logger"
 
 /**
  * Normalizes a color's opacity to a 0-1 range.

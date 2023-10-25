@@ -1,4 +1,4 @@
-import { Effect } from "@medusajs/figma-api"
+import { Effect } from "@/figma"
 import { colorToRGBA } from "./colors"
 
 /**

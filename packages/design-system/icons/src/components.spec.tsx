@@ -1,6 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react"
 import fs from "fs"
 import path from "path"
+import * as React from "react"
 
 const componentsDir = path.join(__dirname, "components")
 

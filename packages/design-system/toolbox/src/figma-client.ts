@@ -1,6 +1,6 @@
-import Figma from "@medusajs/figma-api"
 import dotenv from "dotenv"
 import { resolve } from "path"
+import Figma from "./figma"
 
 dotenv.config({ path: resolve(process.cwd(), ".env") })
 
