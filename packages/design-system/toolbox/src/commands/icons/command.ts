@@ -1,6 +1,7 @@
 import { client } from "@/figma-client"
 import fse from "fs-extra"
-import { resolve } from "path"
+import { extname, join, resolve } from "path"
+import dedent from "ts-dedent"
 
 import { generateIndex, getIconData } from "@/commands/icons/utils"
 import { transformSvg } from "@/transformers"
@@ -107,7 +108,7 @@ export async function generateIcons({ output }: GenerateIconsArgs) {
         return
       }
 
-      const { componentName, fileName, fixed } = getIconData(
+      const { componentName, fileName, testName, fixed } = getIconData(
         icon.name,
         icon.frame_name
       )
@@ -121,6 +122,35 @@ export async function generateIcons({ output }: GenerateIconsArgs) {
       const filePath = resolve(output, fileName)
 
       await fse.outputFile(filePath, component)
+
+      // Get fileName without extension
+      const ext = extname(fileName)
+      const fileNameWithoutExt = fileName.replace(ext, "")
+
+      // Generate a test file for the icon
+      const testFilePath = resolve(join(output, "__tests__"), testName)
+
+      const testFile = dedent`
+        import * as React from "react"
+        import { cleanup, render, screen } from "@testing-library/react"
+
+        import ${componentName} from "../${fileNameWithoutExt}"
+
+        describe("${componentName}", () => {
+          it("should render without crashing", async () => {
+            render(<${componentName} data-testid="icon" />)
+
+      
+            const svgElement = screen.getByTestId("icon")
+
+            expect(svgElement).toBeInTheDocument()
+
+            cleanup()
+          })
+        })
+      `
+
+      await fse.outputFile(testFilePath, testFile)
     })
 
     await Promise.all(requests)

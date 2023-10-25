@@ -13,6 +13,10 @@ function getFileName(name: string) {
   return `${name.replace("$", "").replace("/", "-")}.tsx`
 }
 
+function getTestName(name: string) {
+  return `${name.replace("$", "").replace("/", "-")}.spec.tsx`
+}
+
 const FIXED_FRAMES = ["Flags", "Brands"]
 
 function isFixedIcon(name: string, frame_name: string) {
@@ -30,11 +34,13 @@ function isFixedIcon(name: string, frame_name: string) {
 export function getIconData(name: string, frame_name: string) {
   const componentName = getComponentName(name)
   const fileName = getFileName(name)
+  const testName = getTestName(name)
 
   const fixed = isFixedIcon(name, frame_name)
 
   return {
     componentName,
+    testName,
     fileName,
     fixed,
   }
