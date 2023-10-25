@@ -137,7 +137,7 @@ export async function generateIcons({ output }: GenerateIconsArgs) {
         import ${componentName} from "../${fileNameWithoutExt}"
 
         describe("${componentName}", () => {
-          it("should render without crashing", async () => {
+          it("should render the icon without errors", async () => {
             render(<${componentName} data-testid="icon" />)
 
       
