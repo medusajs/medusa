@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 import Feedback from '@site/src/components/Feedback';
 import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
-import Troubleshooting from '@site/src/components/Troubleshooting'
+import DetailsList from '@site/src/components/DetailsList'
 import TypeErrorSection from "./troubleshooting/create-medusa-app-errors/_typeerror.md"
 import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_other-errors.mdx"
 import EagainError from "./troubleshooting/create-medusa-app-errors/_eagain-error.md"
@@ -18,16 +18,6 @@ import EaddrinuseSection from './troubleshooting/eaddrinuse.md'
 import InvalidTokenError from './troubleshooting/create-medusa-app-errors/_no-browser-token-error.md'
 
 # Install Medusa with create-medusa-app
-
-In this document, you’ll learn how to use create-medusa-app to set up a Medusa backend and an admin dashboard.
-
-:::tip
-
-`create-medusa-app` allows you to install and setup a Medusa backend project with minimal configurations. If you're more familiar with Medusa or you need to have more control over the configurations of the Medusa backend, such as database connection details, you can either use the [command's options](#command-options) to customize the setup, or use the [backend quickstart instead](./development/backend/install.mdx).
-
-:::
-
-## Overview
 
 Medusa is a toolkit for developers to create digital commerce applications. In its simplest form, Medusa is a Node.js backend with the core API, plugins, and modules installed through npm.
 
@@ -73,7 +63,10 @@ In your terminal, run the following command:
   </TabItem>
 </Tabs>
 
-### Command Options
+<details>
+<summary>
+Command Options
+</summary>
 
 The `create-medusa-app` command can accept the following options:
 
@@ -87,7 +80,12 @@ The `create-medusa-app` command can accept the following options:
 - `--directory-path <path>`: Allows specifying the parent directory path to create the directory of the new project in.
 - `--with-nextjs-starter`: Installs the Next.js starter storefront under the `<PROJECT_NAME>-storefront` directory, where `<PROJECT_NAME>` is the name of the project you enter in the first question. If the `<PROJECT_NAME>-storefront` directory already exists, random characters are added at the end of `<PROJECT_NAME>-storefront`.
 
-### Example: Connect to a Vercel PostgreSQL Database
+</details>
+
+<details className="border-t-0">
+<summary>
+Example: Connect to a Vercel PostgreSQL Database
+</summary>
 
 If you want to use a PostgreSQL database hosted on Vercel, you must use the `--db-url` option and add to the end of your connection URL `?sslmode=require`. For example:
 
@@ -101,7 +99,12 @@ If the database already has the necessary migrations and you don't need the comm
 
 :::
 
-### Example: Connect to a Supabase Database
+</details>
+
+<details className="border-t-0">
+<summary>
+Example: Connect to a Supabase Database
+</summary>
 
 If you want to connect to a Supabase database, you must use the `--db-url` option with its value beign the connection URL to your Supabase database. For example:
 
@@ -115,7 +118,7 @@ If the database already has the necessary migrations and you don't need the comm
 
 :::
 
----
+</details>
 
 ## Step 2: Specify Project Name
 
@@ -220,7 +223,7 @@ Based on what you're building, you can find a development path for you in the Re
 
 ## Troubleshooting
 
-<Troubleshooting
+<DetailsList
   sections={[
     {
       title: 'Error: EADDRINUSE',

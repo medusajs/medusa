@@ -3,35 +3,24 @@ post:
   summary: Customer Login (JWT)
   x-authenticated: false
   description: >-
-    After a successful login, a JWT token is returned for subsequent
-    authorization.
-  parameters: []
+    After a successful login, a JWT token is returned, which can be used to send
+    authenticated requests.
   requestBody:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - email
-            - password
-          properties:
-            email:
-              type: string
-              description: The User's email.
-            password:
-              type: string
-              description: The User's password.
+          $ref: ../components/schemas/StorePostAuthReq.yaml
   x-codegen:
     method: getToken
   x-codeSamples:
     - lang: JavaScript
       label: JS Client
       source:
-        $ref: ../code_samples/JavaScript/store_token/post.js
+        $ref: ../code_samples/JavaScript/store_auth_token/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: ../code_samples/Shell/store_token/post.sh
+        $ref: ../code_samples/Shell/store_auth_token/post.sh
   tags:
     - Auth
   responses:

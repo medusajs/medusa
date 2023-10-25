@@ -24,7 +24,7 @@ import { defaultRelations } from "."
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/auth' \
- *       -H 'Cookie: connect.sid={sid}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

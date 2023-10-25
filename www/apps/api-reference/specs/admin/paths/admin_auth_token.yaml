@@ -3,24 +3,13 @@ post:
   summary: User Login (JWT)
   x-authenticated: false
   description: >-
-    After a successful login, a JWT token is returned for subsequent
-    authorization.
-  parameters: []
+    After a successful login, a JWT token is returned, which can be used to send
+    authenticated requests.
   requestBody:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - email
-            - password
-          properties:
-            email:
-              type: string
-              description: The User's email.
-            password:
-              type: string
-              description: The User's password.
+          $ref: ../components/schemas/AdminPostAuthReq.yaml
   x-codegen:
     method: getToken
   x-codeSamples:
