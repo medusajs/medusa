@@ -35,11 +35,5 @@ export default {
       foreignKey: "customer_id",
       alias: "customer",
     },
-    // {
-    //   serviceName: "salesChannelService",
-    //   primaryKey: "id",
-    //   foreignKey: "sales_channel_id",
-    //   alias: "sales_channel",
-    // },
   ],
 } as ModuleJoinerConfig
