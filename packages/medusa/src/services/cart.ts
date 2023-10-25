@@ -1,8 +1,11 @@
+import { FlagRouter, isDefined, MedusaError } from "@medusajs/utils"
+import { isEmpty, isEqual } from "lodash"
+import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -22,13 +25,13 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -48,21 +51,16 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
-import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { isEmpty, isEqual } from "lodash"
 
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
-import { FlagRouter } from "@medusajs/utils"
-import { IsNumber } from "class-validator"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import { LineItemRepository } from "../repositories/line-item"
 import { PaymentSessionInput } from "../types/payment"
 import { PaymentSessionRepository } from "../repositories/payment-session"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { validateEmail } from "../utils/is-email"
 
@@ -2753,8 +2751,21 @@ class CartService extends TransactionBaseService {
       }
     )
 
+    cart.tax_total = cart.item_tax_total + cart.shipping_tax_total
+
+    cart.raw_discount_total = cart.discount_total
+    cart.discount_total = Math.round(cart.discount_total)
+
+    const giftCardableAmount = this.newTotalsService_.getGiftCardableAmount({
+      gift_cards_taxable: cart.region?.gift_cards_taxable,
+      subtotal: cart.subtotal,
+      discount_total: cart.discount_total,
+      shipping_total: cart.shipping_total,
+      tax_total: cart.tax_total,
+    })
+
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
-      cart.subtotal - cart.discount_total,
+      giftCardableAmount,
       {
         region: cart.region,
         giftCards: cart.gift_cards,
@@ -2763,11 +2774,6 @@ class CartService extends TransactionBaseService {
 
     cart.gift_card_total = giftCardTotal.total || 0
     cart.gift_card_tax_total = giftCardTotal.tax_total || 0
-
-    cart.tax_total = cart.item_tax_total + cart.shipping_tax_total
-
-    cart.raw_discount_total = cart.discount_total
-    cart.discount_total = Math.round(cart.discount_total)
 
     cart.total =
       cart.subtotal +
