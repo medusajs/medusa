@@ -17,12 +17,15 @@ export class CartSalesChannelsLink1698160215000 implements MigrationInterface {
             CONSTRAINT "cart_sales_channel_pk"              PRIMARY KEY ("id"),
             CONSTRAINT "cart_sales_channel_cart_id_unique"  UNIQUE ("cart_id")
             );
+
+        ALTER TABLE "cart" DROP CONSTRAINT IF EXISTS "FK_a2bd3c26f42e754b9249ba78fd6";
     `)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
         DROP TABLE IF EXISTS "cart_sales_channel";
+        ALTER TABLE "cart" ADD CONSTRAINT "cart_sales_channel_id_fk" FOREIGN KEY ("sales_channel_id") REFERENCES "sales_channel"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
     `)
   }
 }
