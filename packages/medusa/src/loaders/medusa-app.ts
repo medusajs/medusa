@@ -1,6 +1,6 @@
+import { CommonTypes, MedusaContainer } from "@medusajs/types"
 import { MedusaApp, ModulesDefinition } from "@medusajs/modules-sdk"
 
-import { CommonTypes } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { joinerConfig } from "../joiner-config"
@@ -12,12 +12,15 @@ export const loadMedusaApp = async (
   {
     configModule,
     container,
-  }: { configModule: CommonTypes.ConfigModule; container: any },
-  config = { register: true }
+  }: { configModule: CommonTypes.ConfigModule; container: MedusaContainer },
+  config = { registerInContainer: true }
 ) => {
   mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
 
   const injectedDependencies = {
+    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    ),
   }
 
   const sharedResourcesConfig = {
@@ -30,11 +33,11 @@ export const loadMedusaApp = async (
     modulesConfig,
     servicesConfig: joinerConfig,
     remoteFetchData: remoteQueryFetchData(container),
-    sharedResourcesConfig, 
-    injectedDependencies
+    sharedResourcesConfig,
+    injectedDependencies,
   })
 
-  if (!config.register) {
+  if (!config.registerInContainer) {
     return medusaApp
   }
 

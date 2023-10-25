@@ -40,7 +40,7 @@ const runLinkMigrations = async (directory) => {
 
   const { runMigrations } = await loadMedusaApp(
     { configModule },
-    { register: false }
+    { registerInContainer: false }
   )
 
   const options = {

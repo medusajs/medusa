@@ -1,9 +1,4 @@
 import {
-  RemoteFetchDataCallback,
-  RemoteJoiner,
-  toRemoteJoinerQuery,
-} from "@medusajs/orchestration"
-import {
   JoinerRelationship,
   JoinerServiceConfig,
   LoadedModule,
@@ -11,7 +6,13 @@ import {
   RemoteExpandProperty,
   RemoteJoinerQuery,
 } from "@medusajs/types"
+import {
+  RemoteFetchDataCallback,
+  RemoteJoiner,
+  toRemoteJoinerQuery,
+} from "@medusajs/orchestration"
 import { isString, toPascalCase } from "@medusajs/utils"
+
 import { MedusaModule } from "./medusa-module"
 
 export class RemoteQuery {
@@ -28,11 +29,14 @@ export class RemoteQuery {
     customRemoteFetchData?: RemoteFetchDataCallback
     servicesConfig?: ModuleJoinerConfig[]
   }) {
+    const servicesConfig_ = [...servicesConfig]
+    
     if (!modulesLoaded?.length) {
       modulesLoaded = MedusaModule.getLoadedModules().map(
         (mod) => Object.values(mod)[0]
       )
     }
+
     for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
@@ -47,19 +51,13 @@ export class RemoteQuery {
       }
 
       this.modulesMap.set(serviceName, mod)
-      const serviceIndex = servicesConfig!.findIndex(sc => sc.serviceName === mod.__joinerConfig.serviceName)
-
-      if(serviceIndex > -1) {
-        servicesConfig![serviceIndex] = mod.__joinerConfig
-      } else {
-        servicesConfig!.push(mod.__joinerConfig) 
-      }
+      servicesConfig_.push(mod.__joinerConfig)
     }
 
     this.customRemoteFetchData = customRemoteFetchData
 
     this.remoteJoiner = new RemoteJoiner(
-      servicesConfig as JoinerServiceConfig[],
+      servicesConfig_ as JoinerServiceConfig[],
       this.remoteFetchData.bind(this)
     )
   }

@@ -129,8 +129,6 @@ describe("Link Modules", () => {
         `/store/products/${productId}?cart_id=${cartId}`
       )
 
-      console.warn(JSON.stringify(response.data.product.variants, null, 2))
-
       expect(response.data.product.variants[0].prices).toEqual([
         expect.objectContaining({
           amount: 1000,
