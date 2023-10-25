@@ -3,14 +3,17 @@ import fs from "fs"
 import path from "path"
 import * as React from "react"
 
-const componentsDir = path.join(__dirname, "components")
-
-const icons = fs
-  .readdirSync(componentsDir)
-  .filter((file) => file !== "index.ts")
-
 describe("Icon", () => {
   let testedIcons = 0
+  let icons: string[] = []
+
+  beforeAll(() => {
+    const componentsDir = path.join(__dirname, "components")
+
+    icons = [
+      ...fs.readdirSync(componentsDir).filter((file) => file !== "index.ts"),
+    ]
+  })
 
   it("should render each icon", async () => {
     const components = await Promise.all(
