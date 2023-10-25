@@ -70,7 +70,7 @@ jobs:
           add-paths: www/apps/docs/content/references/**
           branch: "docs/generate-reference"
           branch-suffix: "timestamp"
-          body: ${{ steps.pr-message.body }}
+          body: ${{ steps.pr-message.outputs.body }}
   api:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'release' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
