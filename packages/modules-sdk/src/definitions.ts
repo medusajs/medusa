@@ -59,7 +59,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isRequired: false,
       canOverride: true,
       isQueryable: true,
-      dependencies: [ModuleRegistrationName.EVENT_BUS],
+      dependencies: ["eventBusService"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -74,7 +74,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isRequired: false,
       canOverride: true,
       isQueryable: true,
-      dependencies: [ModuleRegistrationName.EVENT_BUS],
+      dependencies: ["eventBusService"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,

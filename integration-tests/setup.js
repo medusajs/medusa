@@ -11,8 +11,6 @@ const pgGodCredentials = {
   host: DB_HOST,
 }
 
-global.performance = require("perf_hooks").performance
-
 afterAll(async () => {
   await dropDatabase({ databaseName: DB_NAME }, pgGodCredentials)
 })
