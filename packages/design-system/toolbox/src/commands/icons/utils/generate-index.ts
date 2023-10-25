@@ -16,7 +16,7 @@ export async function generateIndex(path: string) {
   const entries = await fse.readdir(path)
 
   for (const entry of entries) {
-    if (entry === "index.ts") {
+    if (entry === "index.ts" || entry === "__tests__") {
       continue
     }
 

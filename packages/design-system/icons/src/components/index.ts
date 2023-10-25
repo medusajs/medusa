@@ -1,5 +1,4 @@
 // This file is generated automatically.
-export { default as Tests  } from "./__tests__"
 export { default as AcademicCapSolid } from "./academic-cap-solid"
 export { default as AcademicCap } from "./academic-cap"
 export { default as Adjustments } from "./adjustments"

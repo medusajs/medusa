@@ -27,5 +27,5 @@
     }
   },
   "include": ["src"],
-  "exclude": ["dist", "build", "node_modules", "src/*.spec.tsx"]
+  "exclude": ["dist", "build", "node_modules", "./src/**/*.spec.tsx"]
 }
