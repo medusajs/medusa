@@ -31,21 +31,23 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
   const { t } = useTranslation()
 
   const { getWidgets } = useWidgets()
-  const { startPage } = useAccess();
+  const { startPage, getAccess } = useAccess();
 
   const [redirect, setRedirect] = useState(false);
 
   useEffect(()=>{
-    if(redirect && startPage) {
+    if(redirect) {
       setRedirect(false);
-      navigate(startPage);
+      navigate(startPage || '/a/orders');
     }
   },[redirect, startPage])
 
   const onSubmit = (values: FormValues) => {
     mutate(values, {
       onSuccess: () => {
-        setRedirect(true);
+        getAccess().then(()=>{
+          setRedirect(true);
+        });
       },
       onError: () => {
         setError(
