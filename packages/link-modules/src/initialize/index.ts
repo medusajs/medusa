@@ -1,4 +1,8 @@
-import { InternalModuleDeclaration, MedusaModule } from "@medusajs/modules-sdk"
+import {
+  InternalModuleDeclaration,
+  MedusaModule,
+  ModuleRegistrationName,
+} from "@medusajs/modules-sdk"
 import {
   ExternalModuleDeclaration,
   ILinkModule,
@@ -131,6 +135,7 @@ export const initialize = async (
       key: serviceKey,
       registrationName: serviceKey,
       label: serviceKey,
+      dependencies: [ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: injectedDependencies?.[

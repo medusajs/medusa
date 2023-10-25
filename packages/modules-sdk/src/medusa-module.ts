@@ -229,11 +229,13 @@ export class MedusaModule {
       }
     }
 
-    const container = globalContainer ?? createMedusaContainer()
+    const container = createMedusaContainer({}, globalContainer)
 
-    if (!globalContainer && injectedDependencies) {
+    if (injectedDependencies) {
       for (const service in injectedDependencies) {
-        container.register(service, asValue(injectedDependencies[service]))
+        if (!container.hasRegistration(service)) {
+          container.register(service, asValue(injectedDependencies[service]))
+        }
       }
     }
 

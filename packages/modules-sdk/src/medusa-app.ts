@@ -29,6 +29,7 @@ import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
+import { asValue } from "awilix"
 
 const LinkModulePackage = "@medusajs/link-modules"
 
@@ -238,7 +239,7 @@ export async function MedusaApp(
 
   for (const injectedDependency of Object.keys(injectedDependencies)) {
     globalContainer.register({
-      [injectedDependency]: injectedDependencies[injectedDependency],
+      [injectedDependency]: asValue(injectedDependencies[injectedDependency]),
     })
   }
 
