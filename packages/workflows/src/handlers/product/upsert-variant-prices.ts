@@ -28,6 +28,15 @@ export async function upsertVariantPrices({
 }: WorkflowArguments<HandlerInput>) {
   const { variantPricesMap } = data
 
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+  const isPricingDomainEnabled = featureFlagRouter.isFeatureEnabled(
+    "isolate_pricing_domain"
+  )
+
+  if (!isPricingDomainEnabled) {
+    return variantPricesMap
+  }
+
   const pricingModuleService = container.resolve("pricingModuleService")
   const regionService = container.resolve("regionService")
   const medusaApp = container.resolve("medusaApp")

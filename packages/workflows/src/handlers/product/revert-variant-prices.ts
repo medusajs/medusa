@@ -18,6 +18,15 @@ export async function revertVariantPrices({
     createdPriceSets = [],
   } = data
 
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+  const isPricingDomainEnabled = featureFlagRouter.isFeatureEnabled(
+    "isolate_pricing_domain"
+  )
+
+  if (!isPricingDomainEnabled) {
+    return
+  }
+
   const pricingModuleService = container.resolve("pricingModuleService")
   const medusaApp = container.resolve("medusaApp")
 

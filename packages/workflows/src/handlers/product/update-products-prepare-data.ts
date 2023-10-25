@@ -26,6 +26,11 @@ export async function updateProductsPrepareData({
   context,
   data,
 }: WorkflowArguments<WorkflowTypes.ProductWorkflow.UpdateProductsWorkflowInputDTO>): Promise<UpdateProductsPreparedData> {
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+  const isPricingDomainEnabled = featureFlagRouter.isFeatureEnabled(
+    "isolate_pricing_domain"
+  )
+
   const variantPricesMap = new Map<string, VariantPrice[]>()
   const ids = data.products.map((product) => product.id)
 
@@ -78,6 +83,10 @@ export async function updateProductsPrepareData({
     for (const variantInput of productInput.variants || []) {
       if (variantInput.id) {
         variantPricesMap.set(variantInput.id, variantInput.prices || [])
+      }
+
+      if (isPricingDomainEnabled) {
+        delete variantInput.prices
       }
     }
 

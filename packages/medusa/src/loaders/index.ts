@@ -1,4 +1,3 @@
-import { Express, NextFunction, Request, Response } from "express"
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
@@ -7,38 +6,39 @@ import {
   moduleLoader,
   registerModules,
 } from "@medusajs/modules-sdk"
-import databaseLoader, { dataSource } from "./database"
+import { Express, NextFunction, Request, Response } from "express"
 import { isObject, remoteQueryFetchData } from "../utils"
+import databaseLoader, { dataSource } from "./database"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 
 import { ConfigModule } from "@medusajs/types"
-import { Connection } from "typeorm"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { EOL } from "os"
-import IsolatePricingDomainFeatureFlag from "./feature-flags/isolate-pricing-domain"
-import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
-import Logger from "./logger"
-import { MedusaContainer } from "../types/global"
-import apiLoader from "./api"
 import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
+import { track } from "medusa-telemetry"
+import { EOL } from "os"
+import requestIp from "request-ip"
+import { Connection } from "typeorm"
+import { joinerConfig } from "../joiner-config"
+import modulesConfig from "../modules-config"
+import { MedusaContainer } from "../types/global"
+import apiLoader from "./api"
+import loadConfig from "./config"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
-import { joinerConfig } from "../joiner-config"
-import loadConfig from "./config"
+import IsolatePricingDomainFeatureFlag from "./feature-flags/isolate-pricing-domain"
+import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
+import Logger from "./logger"
 import modelsLoader from "./models"
-import modulesConfig from "../modules-config"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
-import requestIp from "request-ip"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import { track } from "medusa-telemetry"
 
 type Options = {
   directory: string
@@ -201,6 +201,7 @@ export default async ({
         asValue(moduleService)
       )
     }
+
     container.register("remoteQuery", asValue(query))
   }
 
