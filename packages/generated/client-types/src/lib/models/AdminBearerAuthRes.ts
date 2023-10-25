@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminBearerAuthRes {
   /**
-   * Access token for subsequent authorization.
+   * Access token that can be used to send authenticated requests.
    */
-  accessToken?: string
+  access_token?: string
 }

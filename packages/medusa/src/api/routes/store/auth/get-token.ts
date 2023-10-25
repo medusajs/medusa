@@ -6,14 +6,11 @@ import { validator } from "../../../../utils/validator"
 import { StorePostAuthReq } from "./create-session"
 
 /**
- * @oas [post] /store/token
+ * @oas [post] /store/auth/token
  * operationId: "PostToken"
  * summary: "Customer Login (JWT)"
  * x-authenticated: false
- * description: "After a successful login, a JWT token is returned for subsequent authorization."
- * parameters:
- *   - (body) email=* {string} The User's email.
- *   - (body) password=* {string} The User's password.
+ * description: "After a successful login, a JWT token is returned, which can be used to send authenticated requests."
  * requestBody:
  *   content:
  *     application/json:
@@ -27,18 +24,18 @@ import { StorePostAuthReq } from "./create-session"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.store.auth.getToken({
+ *       medusa.auth.getToken({
  *         email: 'user@example.com',
  *         password: 'supersecret'
  *       })
- *       .then(({ accessToken }) => {
- *         console.log(accessToken);
+ *       .then(({ access_token }) => {
+ *         console.log(access_token);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/auth/token' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/store/auth/token' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "email": "user@example.com",
  *         "password": "supersecret"
