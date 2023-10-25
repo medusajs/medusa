@@ -29,12 +29,13 @@ export async function upsertVariantPrices({
   const { variantPricesMap } = data
 
   const featureFlagRouter = container.resolve("featureFlagRouter")
-  const isPricingDomainEnabled = featureFlagRouter.isFeatureEnabled(
-    "isolate_pricing_domain"
-  )
 
-  if (!isPricingDomainEnabled) {
-    return variantPricesMap
+  if (!featureFlagRouter.isFeatureEnabled("isolate_pricing_domain")) {
+    return {
+      createdLinks: [],
+      originalMoneyAmounts: [],
+      createdPriceSets: [],
+    }
   }
 
   const pricingModuleService = container.resolve("pricingModuleService")
