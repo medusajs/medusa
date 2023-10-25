@@ -87,7 +87,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     } as EmitOptions
 
     const dataBody = isString(eventNameOrData)
-      ? (data as EmitData).data ?? (data as Message<T>).body
+      ? data ?? (data as Message<T>).body
       : undefined
 
     const events = isBulkEmit

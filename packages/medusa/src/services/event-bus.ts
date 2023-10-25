@@ -148,7 +148,7 @@ export default class EventBusService
     const manager = this.activeManager_
     const isBulkEmit = !isString(eventNameOrData)
     const dataBody = isString(eventNameOrData)
-      ? (data as EmitData).data ?? (data as Message<T>).body
+      ? data ?? (data as Message<T>).body
       : undefined
     const events: EventBusTypes.EmitData[] = isBulkEmit
       ? eventNameOrData.map((event) => ({
