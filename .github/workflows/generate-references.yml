@@ -73,7 +73,7 @@ jobs:
           body: ${{ steps.pr-message.body }}
   api:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'release' || github.event.inputs.referenceName != 'all' }}
+    if: ${{ github.event_name == 'release' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
