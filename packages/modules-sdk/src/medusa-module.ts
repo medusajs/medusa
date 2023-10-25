@@ -180,7 +180,7 @@ export class MedusaModule {
     )
 
     if (MedusaModule.instances_.has(hashKey)) {
-      return { [moduleKey]: MedusaModule.instances_.get(hashKey) as T }
+      return MedusaModule.instances_.get(hashKey)
     }
 
     if (MedusaModule.loading_.has(hashKey)) {
