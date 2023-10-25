@@ -10,7 +10,7 @@ type AccessContextType = {
     access?: accessType[]
     startPage?: string
     checkAccess: (path: string) => boolean,
-    getAccess: () => Promise<accessType[]>
+    getAccess: () => Promise<boolean>
 }
 
 export const AccessContext = createContext<AccessContextType | null>(null)
@@ -27,15 +27,15 @@ export const AccessProvider = ({
 
     const [startPage, setStartPage] = useState('');
     
-    const getAccess = async () : Promise<accessType[]> => {
+    const getAccess = async () : Promise<boolean> => {
         try{
             let res = await medusaClient.admin.custom.get('admin/access');
             setAccess(res.access || []);
-            return res.access || [];
+            return true;
         }
         catch(e) {
             setAccess([]);
-            return [];
+            return false;
         }
     }
 
