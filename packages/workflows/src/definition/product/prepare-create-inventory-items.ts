@@ -13,7 +13,12 @@ export async function prepareCreateInventoryItems({
   products: ObjectWithVariant[]
 }>) {
   if (!data.products?.length) {
-    return
+    return {
+      alias: prepareCreateInventoryItems.aliases.output,
+      value: {
+        inventoryItems: [],
+      },
+    }
   }
 
   const taggedVariants = data.products.reduce<AssociationTaggedVariant[]>(

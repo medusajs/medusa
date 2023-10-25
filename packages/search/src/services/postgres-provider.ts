@@ -16,7 +16,7 @@ import {
   SearchModuleOptions,
   StorageProvider,
 } from "../types"
-import { createPartitions, QueryBuilder } from "../utils"
+import { QueryBuilder, createPartitions } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -281,7 +281,7 @@ export class PostgresProvider {
       let action = eventName.split(".").pop() || ""
 
       const parsedMessage = PostgresProvider.parseMessageData(
-        data as Message<unknown>
+        data as Message["body"]
       )
       if (parsedMessage) {
         action = parsedMessage.action
