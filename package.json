@@ -92,6 +92,7 @@
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
     "@redocly/cli/react-dom": "^17.0.1",
-    "pg": "8.10.0"
+    "pg": "8.10.0",
+    "class-variance-authority@0.6.1": "patch:class-variance-authority@npm:0.6.1#.yarn/patches/class-variance-authority-npm-0.6.1-22a468e86e.patch"
   }
 }
