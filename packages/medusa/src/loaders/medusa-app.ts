@@ -1,5 +1,9 @@
 import { CommonTypes, MedusaContainer } from "@medusajs/types"
-import { MedusaApp, ModulesDefinition } from "@medusajs/modules-sdk"
+import {
+  MedusaApp,
+  MedusaAppOutput,
+  ModulesDefinition,
+} from "@medusajs/modules-sdk"
 
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -14,7 +18,7 @@ export const loadMedusaApp = async (
     container,
   }: { configModule: CommonTypes.ConfigModule; container: MedusaContainer },
   config = { registerInContainer: true }
-) => {
+): Promise<MedusaAppOutput> => {
   mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
 
   const injectedDependencies = {
@@ -40,8 +44,6 @@ export const loadMedusaApp = async (
   if (!config.registerInContainer) {
     return medusaApp
   }
-
-  container.register("medusaApp", asValue(medusaApp))
 
   const { query, modules } = medusaApp
 
