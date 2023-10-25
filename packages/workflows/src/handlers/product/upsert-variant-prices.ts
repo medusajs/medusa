@@ -29,7 +29,7 @@ export async function upsertVariantPrices({
   const { variantPricesMap } = data
 
   const featureFlagRouter = container.resolve("featureFlagRouter")
-
+  
   if (!featureFlagRouter.isFeatureEnabled("isolate_pricing_domain")) {
     return {
       createdLinks: [],
