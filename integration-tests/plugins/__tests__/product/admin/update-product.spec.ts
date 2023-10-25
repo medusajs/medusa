@@ -10,7 +10,7 @@ import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
 
-jest.setTimeout(50000)
+jest.setTimeout(30000)
 
 const adminHeaders = {
   headers: {
