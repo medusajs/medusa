@@ -197,7 +197,9 @@ export class MedusaModule {
     )
 
     if (MedusaModule.instances_.has(hashKey)) {
-      return MedusaModule.instances_.get(hashKey)!
+      return MedusaModule.instances_.get(hashKey)! as {
+        [key: string]: T
+      }
     }
 
     if (MedusaModule.loading_.has(hashKey)) {
