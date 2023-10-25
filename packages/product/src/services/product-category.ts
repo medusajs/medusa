@@ -1,17 +1,23 @@
-import { ProductCategory } from "@models"
-import { ProductCategoryRepository } from "@repositories"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
-  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  composeMessage,
+  isDefined,
 } from "@medusajs/utils"
+import { ProductCategory } from "@models"
+import { ProductCategoryRepository } from "@repositories"
 
+import { Modules } from "@medusajs/modules-sdk"
+import {
+  InternalContext,
+  ProductCategoryEvents,
+  ProductCategoryServiceTypes,
+} from "../types"
 import { shouldForceTransaction } from "../utils"
-import { ProductCategoryServiceTypes } from "../types"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
@@ -120,11 +126,23 @@ export default class ProductCategoryService<
   )
   async create(
     data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<TEntity> {
-    return (await (
+    // TODO: bulk create
+    const variant = await (
       this.productCategoryRepository_ as unknown as ProductCategoryRepository
-    ).create(data, sharedContext)) as TEntity
+    ).create(data, sharedContext)
+
+    sharedContext.messageAggregator?.save(
+      composeMessage(ProductCategoryEvents.CATEGORY_CREATED, {
+        data: { id: variant.id },
+        service: Modules.PRODUCT,
+        entity: ProductCategory.name,
+        context: sharedContext,
+      })
+    )
+
+    return variant as TEntity
   }
 
   @InjectTransactionManager(
@@ -134,11 +152,23 @@ export default class ProductCategoryService<
   async update(
     id: string,
     data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<TEntity> {
-    return (await (
+    // TODO: bulk update
+    const variant = await (
       this.productCategoryRepository_ as unknown as ProductCategoryRepository
-    ).update(id, data, sharedContext)) as TEntity
+    ).update(id, data, sharedContext)
+
+    sharedContext.messageAggregator?.save(
+      composeMessage(ProductCategoryEvents.CATEGORY_UPDATED, {
+        data: { id: variant.id },
+        service: Modules.PRODUCT,
+        entity: ProductCategory.name,
+        context: sharedContext,
+      })
+    )
+
+    return variant as TEntity
   }
 
   @InjectTransactionManager(
@@ -147,8 +177,18 @@ export default class ProductCategoryService<
   )
   async delete(
     id: string,
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<void> {
+    // TODO: bulk delete
     await this.productCategoryRepository_.delete(id, sharedContext)
+
+    sharedContext.messageAggregator?.save(
+      composeMessage(ProductCategoryEvents.CATEGORY_DELETED, {
+        data: { id },
+        service: Modules.PRODUCT,
+        entity: ProductCategory.name,
+        context: sharedContext,
+      })
+    )
   }
 }
