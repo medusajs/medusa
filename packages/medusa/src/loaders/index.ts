@@ -36,6 +36,7 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
+import loadMedusaApp from "./medusa-app"
 
 type Options = {
   directory: string
@@ -134,47 +135,12 @@ export default async ({
   })
 
   container.register("remoteQuery", asValue(null)) // ensure remoteQuery is always registered
-
   // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
   if (
     featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
     featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
   ) {
-<<<<<<< HEAD
-    mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
-
-    const injectedDependencies = {
-      [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-        ContainerRegistrationKeys.PG_CONNECTION
-      ),
-    }
-
-    const medusaApp = await MedusaApp({
-      modulesConfig,
-      servicesConfig: joinerConfig,
-      remoteFetchData: remoteQueryFetchData(container),
-      injectedDependencies,
-    })
-
-    container.register("medusaApp", asValue(medusaApp))
-
-    const { query, modules, runMigrations } = medusaApp
-
-    await runMigrations()
-
-    // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
-    // We might decide to do it elsewhere but for now I think it is fine
-    for (const [serviceKey, moduleService] of Object.entries(modules)) {
-      container.register(
-        ModulesDefinition[serviceKey].registrationName,
-        asValue(moduleService)
-      )
-    }
-
-    container.register("remoteQuery", asValue(query))
-=======
     await loadMedusaApp({ configModule, container })
->>>>>>> c52a0a066 (update integration tests and remote-query loader)
   }
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)

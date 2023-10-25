@@ -45,6 +45,8 @@ export const loadMedusaApp = async (
     return medusaApp
   }
 
+  container.register("medusaApp", asValue(medusaApp))
+
   const { query, modules } = medusaApp
 
   // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
