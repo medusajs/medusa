@@ -36,9 +36,9 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
   const [redirect, setRedirect] = useState(false);
 
   useEffect(()=>{
-    if(redirect) {
+    if(redirect && startPage) {
       setRedirect(false);
-      navigate(startPage || '/a/orders');
+      navigate(startPage);
     }
   },[redirect, startPage])
 

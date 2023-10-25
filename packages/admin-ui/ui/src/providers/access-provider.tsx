@@ -22,10 +22,10 @@ export const AccessProvider = ({
 }) => {
 
     const [access, setAccess] = useState<accessType[]>();
-
     const { client: medusaClient } = useMedusa()
-
     const [startPage, setStartPage] = useState('');
+
+    // Get access
     
     const getAccess = async () : Promise<boolean> => {
         try{
@@ -34,7 +34,6 @@ export const AccessProvider = ({
             return true;
         }
         catch(e) {
-            setAccess([]);
             return false;
         }
     }
@@ -43,37 +42,52 @@ export const AccessProvider = ({
         getAccess();
     },[])
 
-    useEffect(()=>{
-      
-      if(access) {
+    // Get start page
 
-        // Init start pages
+    const getStartPage = () => {
+            
+        if(access) {
 
-        let starts = [
-          '/orders',
-          '/products',
-          '/customers',
-        ];
-        
-        // Check default start pages
-        
-        for(let s of starts) {
-          if(checkAccess(s)) {
-            setStartPage('/a'+s);
-            return;
-          }
-        }
-
-        // Check from access
-
-        if(startPage === '' && access?.length)
-            for(let a of access) {
-                setStartPage('/a'+a.path);
+            // Init start pages
+    
+            let starts = [
+              '/orders',
+              '/products',
+              '/customers',
+            ];
+            
+            // Check default start pages
+            
+            for(let s of starts) {
+              if(checkAccess(s)) {
+                setStartPage('/a'+s);
                 return;
+              }
             }
+    
+            // Check from access
+    
+            if(startPage === '' && access?.length)
+                for(let a of access) {
+                    setStartPage('/a'+a.path);
+                    return;
+                }
+            
+            // Default
+
+            if(startPage === '') {
+                setStartPage('/a/orders');
+            }
+
         }
 
+    }
+
+    useEffect(()=>{
+      getStartPage();
     },[access])
+
+    // Check access array
 
     const checkAccessArray = (path: string): boolean => {
 
@@ -84,6 +98,8 @@ export const AccessProvider = ({
         return false;
 
     }
+
+    // Check access
 
     const checkAccess = (path: string) => {
         
@@ -109,6 +125,8 @@ export const AccessProvider = ({
         
         return false;
     }
+
+    // Init provider
 
     const values = useMemo(
         () => ({
