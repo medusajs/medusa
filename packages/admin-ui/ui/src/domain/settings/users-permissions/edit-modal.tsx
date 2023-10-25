@@ -65,7 +65,7 @@ const EditPermissionModal = ({ permission, open, onClose, onSuccess }: Props) =>
         <Modal.Header handleClose={onReset}>
           <h1 className="inter-xlarge-semibold m-0">
             {t(
-              "product-general-section-edit-general-information",
+              "users-premissions-edit-title",
               "Edit Permission"
             )}
           </h1>
@@ -85,7 +85,7 @@ const EditPermissionModal = ({ permission, open, onClose, onSuccess }: Props) =>
             </div>
             <div className="mt-xlarge">
               <h2 className="inter-base-semibold mb-base">
-                {t("product-general-section-metadata", "Permissions")}
+                {t("users-permissions-permissions", "Permissions")}
               </h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
@@ -98,7 +98,7 @@ const EditPermissionModal = ({ permission, open, onClose, onSuccess }: Props) =>
                 type="button"
                 onClick={onReset}
               >
-                {t("product-general-section-cancel", "Cancel")}
+                {t("users-permissions-cancel-button", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -107,7 +107,7 @@ const EditPermissionModal = ({ permission, open, onClose, onSuccess }: Props) =>
                 disabled={!isDirty}
                 loading={updating}
               >
-                {t("product-general-section-save", "Save")}
+                {t("users-permissions-save-button", "Save")}
               </Button>
             </div>
           </Modal.Footer>

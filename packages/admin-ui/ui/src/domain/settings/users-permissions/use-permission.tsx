@@ -18,6 +18,8 @@ const usePermissions = () => {
     const { client } = useMedusa();
     const [permissions, setUsersPermissions] = useState([]);
     const [updating, setUpdating] = useState(false);
+    const [creating, setCreating] = useState(false);
+    const [removing, setRemoving] = useState(false);
 
     useEffect(()=>{
         getPermissions();
@@ -46,27 +48,47 @@ const usePermissions = () => {
         data: PermissionsDataType,
         onSuccess: any
     ): ResponsePromise<any> => {
+        setUpdating(true);
         try {
             let res = client.admin.custom.post(`/admin/permission/${id}`, data);
             onSuccess && onSuccess();
+            setUpdating(false);
             return res;
         }
         catch(e) {
             console.log(e);
+            setUpdating(false);
             return null;
         }
     }
 
     // Insert
 
-    const insert = (
+    const create = async (
         data: PermissionsDataType,
-        onReset: any
-    ) => {
-        onReset();
+        onSuccess: any
+    ): ResponsePromise<any> => {
+        setCreating(true);
+        try {
+            let res = client.admin.custom.post(`/admin/permission/`, data);
+            onSuccess && onSuccess();
+            setCreating(false);
+            return res;
+        }
+        catch(e) {
+            console.log(e);
+            setCreating(false);
+            return null;
+        }
     }
 
-  return {permissions, getPermissions, updating, update, insert}
+    // Remove
+
+    const remove = async (id: string): Promise<boolean> => {
+        return true;
+    }
+
+  return {permissions, getPermissions, updating, update, create, creating, remove, removing}
 }
 
 export default usePermissions

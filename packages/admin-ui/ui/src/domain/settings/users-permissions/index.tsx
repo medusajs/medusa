@@ -4,8 +4,7 @@ import BackButton from "../../../components/atoms/back-button"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../../components/organisms/body-card"
 import UserPermissionsTable from "./table"
-import UsersPermissionsModal from "./add-modal"
-import { useMedusa } from "medusa-react"
+import AddPermissionModal from "./add-modal"
 import usePermissions from "./use-permission"
 
 const UsersPermissions: React.FC = () => {
@@ -22,6 +21,16 @@ const UsersPermissions: React.FC = () => {
   useEffect(() => {
     getPermissions();
   }, [shouldRefetch])
+
+  const handleClose = () => {
+    triggerRefetch()
+    setShowModal(false)
+  }
+
+  const handleSuccess = () => {
+    handleClose();
+    triggerRefetch();
+  }
 
   const actionables = [
     {
@@ -58,11 +67,9 @@ const UsersPermissions: React.FC = () => {
             />
           </div>
           {showModal && (
-            <UsersPermissionsModal
-              handleClose={() => {
-                triggerRefetch()
-                setShowModal(false)
-              }}
+            <AddPermissionModal
+              onClose={handleClose}
+              onSuccess={handleSuccess}
             />
           )}
         </BodyCard>

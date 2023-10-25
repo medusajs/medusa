@@ -6,7 +6,7 @@ import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import Table from "../../../components/molecules/table"
 import DeletePrompt from "../../../components/organisms/delete-prompt"
 import { useTranslation } from "react-i18next"
-import { PermissionsType } from "./use-permission"
+import usePermissions, { PermissionsType } from "./use-permission"
 import EditPermissionModal from "./edit-modal"
 
 type UserPermissionsListElement = {
@@ -30,6 +30,7 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
   const [deletePermission, setDeletePermission] = useState(false)
   const notification = useNotification()
   const { t } = useTranslation()
+  const { remove, removing } = usePermissions()
 
   useEffect(() => {
     setElements([
@@ -50,20 +51,23 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
     setSelectedPermission(null)
   }
 
-  const handleSubmit = () => {
+  const handleSuccess = () => {
     handleClose();
     triggerRefetch();
   }
 
-  const handleDlete = () => {
-    //Medusa.users.delete(selectedPermission.id).then(() => {
+  const handleDlete = async () => {
+    remove(selectedPermission.id).then(() => {
       notification(
-        t("templates-success", "Success"),
-        t("users-permissions-has-been-removed", "Permission has been removed"),
-        "success"
+        //t("templates-success", "Success"),
+        //t("users-permissions-has-been-removed", "Permission has been removed"),
+        //"success",
+        t("Warning"),
+        t("This function is temporary disabled"),
+        "warning"
       );
       triggerRefetch();
-    //});
+    });
   }
 
   const getTableRow = (row: PermissionsType, index: number) => {
@@ -138,7 +142,7 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
           <EditPermissionModal
             onClose={handleClose}
             permission={selectedPermission}
-            onSuccess={handleSubmit}
+            onSuccess={handleSuccess}
           />
         ))}
     </div>

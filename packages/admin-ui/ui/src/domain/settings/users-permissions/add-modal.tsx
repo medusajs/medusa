@@ -1,130 +1,125 @@
-import { useAdminCreateInvite } from "medusa-react"
-import React from "react"
-import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import useNotification from "../../../hooks/use-notification"
-import { Role } from "../../../types/shared"
-import { getErrorMessage } from "../../../utils/error-messages"
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
+import { nestedForm } from "../../../utils/nested-form"
+import MetadataForm, {
+  getMetadataFormValues,
+  getSubmittableMetadata,
+  MetadataFormType,
+} from "../../../components/forms/general/metadata-form"
 import Button from "../../../components/fundamentals/button"
-import InputField from "../../../components/molecules/input"
 import Modal from "../../../components/molecules/modal"
-import { NextSelect } from "../../../components/molecules/select/next-select"
+import usePermissions from "./use-permission"
+import InputField from "../../../components/molecules/input"
 
-type PermissionsModalProps = {
-  handleClose: () => void
+type Props = {
+  open?: boolean
+  onClose?: () => void,
+  onSuccess?: () => void
 }
 
-type PermissionsModalFormData = {
-  user: string
-  role: Role
+type GeneralFormWrapper = {
+  name: string
+  metadata: MetadataFormType
 }
 
-const UsersPermissionsModal: React.FC<PermissionsModalProps> = ({ handleClose }) => {
-  const notification = useNotification()
+const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
   const { t } = useTranslation()
+  const { create, updating } = usePermissions()
+  const form = useForm<GeneralFormWrapper>({
+    defaultValues: getDefaultValues(),
+  })
 
-  const { mutate, isLoading } = useAdminCreateInvite()
+  const {
+    register,
+    formState: { errors },
+    formState: { isDirty },
+    handleSubmit,
+    reset,
+  } = form
 
-  const { control, register, handleSubmit } = useForm<PermissionsModalFormData>()
+  useEffect(() => {
+    reset(getDefaultValues())
+  }, [reset])
 
-  const onSubmit = (data: PermissionsModalFormData) => {
-    mutate(
-      {
-        user: data.user,
-        role: data.role.value,
-      },
-      {
-        onSuccess: () => {
-          notification(
-            t("users-permissions-modal-success", "Success"),
-            t("invite-modal-invitation-sent-to", "Permission added"),
-            "success"
-          )
-          handleClose()
-        },
-        onError: (error) => {
-          notification(
-            t("users-permissions-modal-error", "Error"),
-            getErrorMessage(error),
-            "error"
-          )
-        },
-      }
-    )
+  const onReset = () => {
+    reset(getDefaultValues())
+    onClose && onClose()
   }
 
-  const roleOptions: Role[] = [
-    { value: "member", label: t("invite-modal-member", "Member") },
-    { value: "admin", label: t("invite-modal-admin", "Admin") },
-    { value: "developer", label: t("invite-modal-developer", "Developer") },
-  ]
+  const onSubmit = handleSubmit((data) => {
+    create(
+      {
+        name: data.name,
+        metadata: getSubmittableMetadata(data.metadata),
+      },
+      onSuccess
+    )
+  })
 
   return (
-    <Modal handleClose={handleClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Modal.Body>
-          <Modal.Header handleClose={handleClose}>
-            <span className="inter-xlarge-semibold">
-              {t("users-permissions-modal-title", "Add permission")}
-            </span>
-          </Modal.Header>
+    <Modal open={open} handleClose={onReset} isLargeModal>
+      <Modal.Body>
+        <Modal.Header handleClose={onReset}>
+          <h1 className="inter-xlarge-semibold m-0">
+            {t(
+              "users-premissions-add-title",
+              "Add Permission"
+            )}
+          </h1>
+        </Modal.Header>
+        <form onSubmit={onSubmit}>
           <Modal.Content>
-            <div className="gap-y-base flex flex-col">
-              <InputField
-                label={t("users-permissions-modal-name", "Name")}
-                placeholder=""
-                required
-                {...register("user", { required: true })}
-              />
-              <Controller
-                name="role"
-                control={control}
-                defaultValue={{
-                  label: t("invite-modal-member", "Member"),
-                  value: "member",
-                }}
-                render={({ field: { value, onChange, onBlur, ref } }) => {
-                  return (
-                    <NextSelect
-                      label={t("users-permissions-modal-permissions", "Permissions")}
-                      placeholder={''}
-                      onBlur={onBlur}
-                      ref={ref}
-                      onChange={onChange}
-                      options={roleOptions}
-                      value={value}
-                    />
-                  )
-                }}
-              />
+            <div>
+            <InputField
+              label="Name"
+              placeholder={"Name"}
+              required
+              {...register("name", {
+                required: "Name is required",
+              })}
+              errors={errors}
+            />
+            </div>
+            <div className="mt-xlarge">
+              <h2 className="inter-base-semibold mb-base">
+                {t("users-permissions-permissions", "Permissions")}
+              </h2>
+              <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </Modal.Content>
           <Modal.Footer>
-            <div className="flex h-8 w-full justify-end">
+            <div className="flex w-full justify-end gap-x-2">
               <Button
-                variant="ghost"
-                className="text-small mr-2 w-32 justify-center"
-                size="large"
+                size="small"
+                variant="secondary"
                 type="button"
-                onClick={handleClose}
+                onClick={onReset}
               >
-                {t("users-permissions-modal-cancel", "Cancel")}
+                {t("users-permissions-cancel-button", "Cancel")}
               </Button>
               <Button
-                loading={isLoading}
-                disabled={isLoading}
-                size="large"
-                className="text-small w-32 justify-center"
+                size="small"
                 variant="primary"
+                type="submit"
+                disabled={!isDirty}
+                loading={updating}
               >
-                {t("users-permissions-modal-submit", "Submit")}
+                {t("users-permissions-add-button", "Add")}
               </Button>
             </div>
           </Modal.Footer>
-        </Modal.Body>
-      </form>
+        </form>
+      </Modal.Body>
     </Modal>
   )
 }
 
-export default UsersPermissionsModal
+const getDefaultValues = (): GeneralFormWrapper => {
+  return {
+    name: '',
+    metadata: getMetadataFormValues({}),
+  }
+}
+
+export default AddPermissionModal
