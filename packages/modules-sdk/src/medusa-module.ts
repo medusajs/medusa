@@ -3,6 +3,7 @@ import {
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
+  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
@@ -46,6 +47,23 @@ type ModuleAlias = {
   isLink: boolean
   alias?: string
   main?: boolean
+}
+
+export type ModuleBootstrapOptions = {
+  moduleKey: string
+  defaultPath: string
+  declaration?: InternalModuleDeclaration | ExternalModuleDeclaration
+  moduleExports?: ModuleExports
+  globalContainer?: MedusaContainer
+  moduleDefinition?: ModuleDefinition
+  injectedDependencies?: Record<string, any>
+}
+
+export type LinkModuleBootstrapOptions = {
+  definition: LinkModuleDefinition
+  declaration?: InternalModuleDeclaration
+  moduleExports?: ModuleExports
+  injectedDependencies?: Record<string, any>
 }
 
 export class MedusaModule {
@@ -146,14 +164,15 @@ export class MedusaModule {
     MedusaModule.modules_.set(moduleKey, modules!)
   }
 
-  public static async bootstrap<T>(
-    moduleKey: string,
-    defaultPath: string,
-    declaration?: InternalModuleDeclaration | ExternalModuleDeclaration,
-    moduleExports?: ModuleExports,
-    injectedDependencies?: Record<string, any>,
-    moduleDefinition?: ModuleDefinition
-  ): Promise<{
+  public static async bootstrap<T>({
+    moduleKey,
+    defaultPath,
+    declaration,
+    moduleExports,
+    globalContainer,
+    moduleDefinition,
+    injectedDependencies,
+  }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
     const hashKey = simpleHash(
@@ -161,7 +180,7 @@ export class MedusaModule {
     )
 
     if (MedusaModule.instances_.has(hashKey)) {
-      return MedusaModule.instances_.get(hashKey)
+      return { [moduleKey]: MedusaModule.instances_.get(hashKey) as T }
     }
 
     if (MedusaModule.loading_.has(hashKey)) {
@@ -193,11 +212,14 @@ export class MedusaModule {
       }
     }
 
-    const container = createMedusaContainer()
+    const container = createMedusaContainer({}, globalContainer)
 
     if (injectedDependencies) {
       for (const service in injectedDependencies) {
         container.register(service, asValue(injectedDependencies[service]))
+        if (!container.hasRegistration(service)) {
+          container.register(service, asValue(injectedDependencies[service]))
+        }
       }
     }
 
@@ -255,19 +277,19 @@ export class MedusaModule {
     return services
   }
 
-  public static async bootstrapLink(
-    definition: LinkModuleDefinition,
-    declaration?: InternalModuleDeclaration,
-    moduleExports?: ModuleExports,
-    injectedDependencies?: Record<string, any>
-  ): Promise<{
+  public static async bootstrapLink({
+    definition,
+    declaration,
+    moduleExports,
+    injectedDependencies,
+  }: LinkModuleBootstrapOptions): Promise<{
     [key: string]: unknown
   }> {
     const moduleKey = definition.key
     const hashKey = simpleHash(stringifyCircular({ moduleKey, declaration }))
 
     if (MedusaModule.instances_.has(hashKey)) {
-      return MedusaModule.instances_.get(hashKey)
+      return { [moduleKey]: MedusaModule.instances_.get(hashKey) }
     }
 
     if (MedusaModule.loading_.has(hashKey)) {
