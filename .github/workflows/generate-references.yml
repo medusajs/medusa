@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       referenceName:
-        description: 'Reference to Generate.'
+        description: 'Reference to Generate. Use either `all` to generate all references, `api` to generate the API reference, or a name of a config file in `docs-util/packages/typedoc-config` such as `product`'
         required: false
         default: 'all'
   release:
