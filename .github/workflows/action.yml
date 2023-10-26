@@ -334,6 +334,10 @@ jobs:
       - name: Build Packages
         run: yarn build
 
+      - name: Build tests
+        run: yarn build 
+        working-directory: ./integration-tests/servicesgi 
+
       - name: Run service integration tests
         run: yarn test:integration:services
         env:
