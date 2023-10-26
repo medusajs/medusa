@@ -93,7 +93,7 @@ A service that calculates total and subtotals for orders, carts etc..
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -118,7 +118,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -195,7 +195,7 @@ ___
 
 ### calculateDiscount\_
 
-▸ **calculateDiscount_**(`lineItem`, `variant`, `variantPrice`, `value`, `discountType`): [`LineDiscount`](../../admin_discounts/modules/admin_discounts.internal.mdx#linediscount)
+**calculateDiscount_**(`lineItem`, `variant`, `variantPrice`, `value`, `discountType`): [`LineDiscount`](../../admin_discounts/modules/admin_discounts.internal.mdx#linediscount)
 
 Calculates either fixed or percentage discount of a variant
 
@@ -267,7 +267,7 @@ ___
 
 ### getAllocationItemDiscounts
 
-▸ **getAllocationItemDiscounts**(`discount`, `cart`): [`LineDiscount`](../../admin_discounts/modules/admin_discounts.internal.mdx#linediscount)[]
+**getAllocationItemDiscounts**(`discount`, `cart`): [`LineDiscount`](../../admin_discounts/modules/admin_discounts.internal.mdx#linediscount)[]
 
 If the rule of a discount has allocation="item", then we need
 to calculate discount on each item in the cart. Furthermore, we need to
@@ -324,7 +324,7 @@ ___
 
 ### getAllocationMap
 
-▸ **getAllocationMap**(`orderOrCart`, `options?`): `Promise`<[`LineAllocationsMap`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineallocationsmap)\>
+**getAllocationMap**(`orderOrCart`, `options?`): `Promise`<[`LineAllocationsMap`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineallocationsmap)\>
 
 Gets a map of discounts and gift cards that apply to line items in an
 order. The function calculates the amount of a discount or gift card that
@@ -411,7 +411,7 @@ ___
 
 ### getCalculationContext
 
-▸ **getCalculationContext**(`calculationContextData`, `options?`): `Promise`<[`TaxCalculationContext`](../modules/admin_discounts.internal.internal.mdx#taxcalculationcontext)\>
+**getCalculationContext**(`calculationContextData`, `options?`): `Promise`<[`TaxCalculationContext`](../modules/admin_discounts.internal.internal.mdx#taxcalculationcontext)\>
 
 Prepares the calculation context for a tax total calculation.
 
@@ -464,7 +464,7 @@ ___
 
 ### getDiscountTotal
 
-▸ **getDiscountTotal**(`cartOrOrder`): `Promise`<`number`\>
+**getDiscountTotal**(`cartOrOrder`): `Promise`<`number`\>
 
 Calculates the total discount amount for each of the different supported
 discount types. If discounts aren't present or invalid returns 0.
@@ -510,7 +510,7 @@ ___
 
 ### getGiftCardTotal
 
-▸ **getGiftCardTotal**(`cartOrOrder`, `opts?`): `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
+**getGiftCardTotal**(`cartOrOrder`, `opts?`): `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
 
 Gets the gift card amount on a cart or order.
 
@@ -571,7 +571,7 @@ ___
 
 ### getGiftCardableAmount
 
-▸ **getGiftCardableAmount**(`cartOrOrder`): `Promise`<`number`\>
+**getGiftCardableAmount**(`cartOrOrder`): `Promise`<`number`\>
 
 Gets the amount that can be gift carded on a cart. In regions where gift
 cards are taxable this amount should exclude taxes.
@@ -617,7 +617,7 @@ ___
 
 ### getLineDiscounts
 
-▸ **getLineDiscounts**(`cartOrOrder`, `discount?`): [`LineDiscountAmount`](../../admin_discounts/modules/admin_discounts.internal.mdx#linediscountamount)[]
+**getLineDiscounts**(`cartOrOrder`, `discount?`): [`LineDiscountAmount`](../../admin_discounts/modules/admin_discounts.internal.mdx#linediscountamount)[]
 
 Returns the discount amount allocated to the line items of an order.
 
@@ -694,7 +694,7 @@ ___
 
 ### getLineItemAdjustmentsTotal
 
-▸ **getLineItemAdjustmentsTotal**(`cartOrOrder`): `number`
+**getLineItemAdjustmentsTotal**(`cartOrOrder`): `number`
 
 #### Parameters
 
@@ -728,7 +728,7 @@ ___
 
 ### getLineItemDiscountAdjustment
 
-▸ **getLineItemDiscountAdjustment**(`lineItem`, `discount`): `number`
+**getLineItemDiscountAdjustment**(`lineItem`, `discount`): `number`
 
 #### Parameters
 
@@ -770,7 +770,7 @@ ___
 
 ### getLineItemRefund
 
-▸ **getLineItemRefund**(`order`, `lineItem`): `Promise`<`number`\>
+**getLineItemRefund**(`order`, `lineItem`): `Promise`<`number`\>
 
 The amount that can be refunded for a given line item.
 
@@ -823,7 +823,7 @@ ___
 
 ### getLineItemTotal
 
-▸ **getLineItemTotal**(`lineItem`, `cartOrOrder`, `options?`): `Promise`<`number`\>
+**getLineItemTotal**(`lineItem`, `cartOrOrder`, `options?`): `Promise`<`number`\>
 
 Gets a total for a line item. The total can take gift cards, discounts and
 taxes into account. This can be controlled through the options.
@@ -885,7 +885,7 @@ ___
 
 ### getLineItemTotals
 
-▸ **getLineItemTotals**(`lineItem`, `cartOrOrder`, `options?`): `Promise`<[`LineItemTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineitemtotals-1)\>
+**getLineItemTotals**(`lineItem`, `cartOrOrder`, `options?`): `Promise`<[`LineItemTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#lineitemtotals-1)\>
 
 Breaks down the totals related to a line item; these are the subtotal, the
 amount of discount applied to the line item, the amount of a gift card
@@ -948,7 +948,7 @@ ___
 
 ### getPaidTotal
 
-▸ **getPaidTotal**(`order`): `number`
+**getPaidTotal**(`order`): `number`
 
 Gets the total payments made on an order
 
@@ -984,7 +984,7 @@ ___
 
 ### getRefundTotal
 
-▸ **getRefundTotal**(`order`, `lineItems`): `Promise`<`number`\>
+**getRefundTotal**(`order`, `lineItems`): `Promise`<`number`\>
 
 Calculates refund total of line items.
 If any of the items to return have been discounted, we need to
@@ -1039,7 +1039,7 @@ ___
 
 ### getRefundedTotal
 
-▸ **getRefundedTotal**(`order`): `number`
+**getRefundedTotal**(`order`): `number`
 
 Gets the total refund amount for an order.
 
@@ -1075,7 +1075,7 @@ ___
 
 ### getShippingMethodTotals
 
-▸ **getShippingMethodTotals**(`shippingMethod`, `cartOrOrder`, `opts?`): `Promise`<[`ShippingMethodTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingmethodtotals-1)\>
+**getShippingMethodTotals**(`shippingMethod`, `cartOrOrder`, `opts?`): `Promise`<[`ShippingMethodTotals`](../../admin_discounts/modules/admin_discounts.internal.mdx#shippingmethodtotals-1)\>
 
 Gets the totals breakdown for a shipping method. Fetches tax lines if not
 already provided.
@@ -1137,7 +1137,7 @@ ___
 
 ### getShippingTotal
 
-▸ **getShippingTotal**(`cartOrOrder`): `Promise`<`number`\>
+**getShippingTotal**(`cartOrOrder`): `Promise`<`number`\>
 
 Calculates shipping total
 
@@ -1182,7 +1182,7 @@ ___
 
 ### getSubtotal
 
-▸ **getSubtotal**(`cartOrOrder`, `opts?`): `Promise`<`number`\>
+**getSubtotal**(`cartOrOrder`, `opts?`): `Promise`<`number`\>
 
 Calculates subtotal of a given cart or order.
 
@@ -1235,7 +1235,7 @@ ___
 
 ### getSwapTotal
 
-▸ **getSwapTotal**(`order`): `number`
+**getSwapTotal**(`order`): `number`
 
 The total paid for swaps. May be negative in case of negative swap
 difference.
@@ -1272,7 +1272,7 @@ ___
 
 ### getTaxTotal
 
-▸ **getTaxTotal**(`cartOrOrder`, `forceTaxes?`): `Promise`<``null`` \| `number`\>
+**getTaxTotal**(`cartOrOrder`, `forceTaxes?`): `Promise`<``null`` \| `number`\>
 
 Calculates tax total
 Currently based on the Danish tax system
@@ -1326,7 +1326,7 @@ ___
 
 ### getTotal
 
-▸ **getTotal**(`cartOrOrder`, `options?`): `Promise`<`number`\>
+**getTotal**(`cartOrOrder`, `options?`): `Promise`<`number`\>
 
 Calculates total of a given cart or order.
 
@@ -1379,7 +1379,7 @@ ___
 
 ### rounded
 
-▸ **rounded**(`value`): `number`
+**rounded**(`value`): `number`
 
 Rounds a number using Math.round.
 
@@ -1415,7 +1415,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -1453,7 +1453,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`TotalsService`](admin_discounts.internal.internal.TotalsService.mdx)
+**withTransaction**(`transactionManager?`): [`TotalsService`](admin_discounts.internal.internal.TotalsService.mdx)
 
 #### Parameters
 

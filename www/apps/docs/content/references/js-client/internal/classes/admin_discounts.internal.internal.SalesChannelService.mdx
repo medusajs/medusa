@@ -113,7 +113,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -138,7 +138,7 @@ TransactionBaseService.activeManager\_
 
 ### addProducts
 
-▸ **addProducts**(`salesChannelId`, `productIds`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
+**addProducts**(`salesChannelId`, `productIds`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
 
 Add a batch of product to a sales channel
 
@@ -191,7 +191,7 @@ ___
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -268,7 +268,7 @@ ___
 
 ### create
 
-▸ **create**(`data`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
+**create**(`data`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
 
 Creates a SalesChannel
 
@@ -316,7 +316,7 @@ ___
 
 ### createDefault
 
-▸ **createDefault**(): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
+**createDefault**(): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
 
 Creates a default sales channel, if this does not already exist.
 
@@ -348,7 +348,7 @@ ___
 
 ### delete
 
-▸ **delete**(`salesChannelId`): `Promise`<`void`\>
+**delete**(`salesChannelId`): `Promise`<`void`\>
 
 Deletes a sales channel from
  This feature is under development and may change in the future.
@@ -386,7 +386,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)[], `number`]\>
 
 Lists sales channels based on the provided parameters and includes the count of
 sales channels that match the query.
@@ -448,7 +448,7 @@ ___
 
 ### listProductIdsBySalesChannelIds
 
-▸ **listProductIdsBySalesChannelIds**(`salesChannelIds`): `Promise`<{ `[salesChannelId: string]`: `string`[];  }\>
+**listProductIdsBySalesChannelIds**(`salesChannelIds`): `Promise`<{ `[salesChannelId: string]`: `string`[];  }\>
 
 List all product ids that belongs to the sales channels ids
 
@@ -493,7 +493,7 @@ ___
 
 ### removeProducts
 
-▸ **removeProducts**(`salesChannelId`, `productIds`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
+**removeProducts**(`salesChannelId`, `productIds`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
 
 Remove a batch of product from a sales channel
 
@@ -546,7 +546,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`salesChannelId`, `config?`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
+**retrieve**(`salesChannelId`, `config?`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
 
 Retrieve a SalesChannel by id
 
@@ -599,7 +599,7 @@ ___
 
 ### retrieveByName
 
-▸ **retrieveByName**(`name`, `config?`): `Promise`<`unknown`\>
+**retrieveByName**(`name`, `config?`): `Promise`<`unknown`\>
 
 Find a sales channel by name.
 
@@ -652,7 +652,7 @@ ___
 
 ### retrieveDefault
 
-▸ **retrieveDefault**(): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
+**retrieveDefault**(): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
 
 Retrieves the default sales channel.
 
@@ -684,7 +684,7 @@ ___
 
 ### retrieve\_
 
-▸ `Protected` **retrieve_**(`selector`, `config?`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
+`Protected` **retrieve_**(`selector`, `config?`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
 
 A generic retrieve used to find a sales channel by different attributes.
 
@@ -737,7 +737,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -775,7 +775,7 @@ ___
 
 ### update
 
-▸ **update**(`salesChannelId`, `data`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
+**update**(`salesChannelId`, `data`): `Promise`<[`SalesChannel`](admin_collections.internal.SalesChannel.mdx)\>
 
 #### Parameters
 
@@ -826,7 +826,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`SalesChannelService`](admin_discounts.internal.internal.SalesChannelService.mdx)
+**withTransaction**(`transactionManager?`): [`SalesChannelService`](admin_discounts.internal.internal.SalesChannelService.mdx)
 
 #### Parameters
 

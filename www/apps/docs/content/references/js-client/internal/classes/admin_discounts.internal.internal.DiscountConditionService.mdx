@@ -77,7 +77,7 @@ Provides layer to manipulate discount conditions.
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -102,7 +102,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -179,7 +179,7 @@ ___
 
 ### delete
 
-▸ **delete**(`discountConditionId`): `Promise`<`void` \| [`DiscountCondition`](admin_collections.internal.DiscountCondition.mdx)\>
+**delete**(`discountConditionId`): `Promise`<`void` \| [`DiscountCondition`](admin_collections.internal.DiscountCondition.mdx)\>
 
 #### Parameters
 
@@ -222,7 +222,7 @@ ___
 
 ### removeResources
 
-▸ **removeResources**(`data`): `Promise`<`void`\>
+**removeResources**(`data`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -256,7 +256,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`conditionId`, `config?`): `Promise`<[`DiscountCondition`](admin_collections.internal.DiscountCondition.mdx)\>
+**retrieve**(`conditionId`, `config?`): `Promise`<[`DiscountCondition`](admin_collections.internal.DiscountCondition.mdx)\>
 
 #### Parameters
 
@@ -307,7 +307,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -345,7 +345,7 @@ ___
 
 ### upsertCondition
 
-▸ **upsertCondition**(`data`, `overrideExisting?`): `Promise`<([`DiscountConditionCustomerGroup`](admin_discounts.internal.internal.DiscountConditionCustomerGroup.mdx) \| [`DiscountConditionProduct`](admin_discounts.internal.internal.DiscountConditionProduct.mdx) \| [`DiscountConditionProductCollection`](admin_discounts.internal.internal.DiscountConditionProductCollection.mdx) \| [`DiscountConditionProductTag`](admin_discounts.internal.internal.DiscountConditionProductTag.mdx) \| [`DiscountConditionProductType`](admin_discounts.internal.internal.DiscountConditionProductType.mdx))[]\>
+**upsertCondition**(`data`, `overrideExisting?`): `Promise`<([`DiscountConditionCustomerGroup`](admin_discounts.internal.internal.DiscountConditionCustomerGroup.mdx) \| [`DiscountConditionProduct`](admin_discounts.internal.internal.DiscountConditionProduct.mdx) \| [`DiscountConditionProductCollection`](admin_discounts.internal.internal.DiscountConditionProductCollection.mdx) \| [`DiscountConditionProductTag`](admin_discounts.internal.internal.DiscountConditionProductTag.mdx) \| [`DiscountConditionProductType`](admin_discounts.internal.internal.DiscountConditionProductType.mdx))[]\>
 
 #### Parameters
 
@@ -405,7 +405,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`DiscountConditionService`](admin_discounts.internal.internal.DiscountConditionService.mdx)
+**withTransaction**(`transactionManager?`): [`DiscountConditionService`](admin_discounts.internal.internal.DiscountConditionService.mdx)
 
 #### Parameters
 
@@ -443,7 +443,7 @@ ___
 
 ### resolveConditionType\_
 
-▸ `Static` `Protected` **resolveConditionType_**(`data`): `undefined` \| { `resource_ids`: (`string` \| { `id`: `string`  })[] ; `type`: [`DiscountConditionType`](../enums/admin_collections.internal.DiscountConditionType.mdx)  }
+`Static` `Protected` **resolveConditionType_**(`data`): `undefined` \| { `resource_ids`: (`string` \| { `id`: `string`  })[] ; `type`: [`DiscountConditionType`](../enums/admin_collections.internal.DiscountConditionType.mdx)  }
 
 #### Parameters
 

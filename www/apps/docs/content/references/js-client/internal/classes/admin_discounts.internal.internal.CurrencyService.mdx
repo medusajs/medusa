@@ -97,7 +97,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -122,7 +122,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -199,7 +199,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`Currency`](admin_collections.internal.Currency.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`Currency`](admin_collections.internal.Currency.mdx)[], `number`]\>
 
 Lists currencies based on the provided parameters and includes the count of
 currencies that match the query.
@@ -261,7 +261,7 @@ ___
 
 ### retrieveByCode
 
-▸ **retrieveByCode**(`code`): `Promise`<[`Currency`](admin_collections.internal.Currency.mdx)\>
+**retrieveByCode**(`code`): `Promise`<[`Currency`](admin_collections.internal.Currency.mdx)\>
 
 Return the currency
 
@@ -306,7 +306,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -344,7 +344,7 @@ ___
 
 ### update
 
-▸ **update**(`code`, `data`): `Promise`<`undefined` \| [`Currency`](admin_collections.internal.Currency.mdx)\>
+**update**(`code`, `data`): `Promise`<`undefined` \| [`Currency`](admin_collections.internal.Currency.mdx)\>
 
 Update a currency
 
@@ -397,7 +397,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`CurrencyService`](admin_discounts.internal.internal.CurrencyService.mdx)
+**withTransaction**(`transactionManager?`): [`CurrencyService`](admin_discounts.internal.internal.CurrencyService.mdx)
 
 #### Parameters
 

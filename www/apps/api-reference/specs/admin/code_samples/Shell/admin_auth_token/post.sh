@@ -1,5 +1,5 @@
-curl --location --request POST 'https://medusa-url.com/admin/auth/token' \
---header 'Content-Type: application/json' \
+curl -X POST '{backend_url}/admin/auth/token' \
+-H 'Content-Type: application/json' \
 --data-raw '{
   "email": "user@example.com",
   "password": "supersecret"

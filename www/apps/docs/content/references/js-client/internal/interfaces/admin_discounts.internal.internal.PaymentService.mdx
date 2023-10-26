@@ -67,7 +67,7 @@ in the near future use the new PaymentProcessor interface instead
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -92,7 +92,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -169,7 +169,7 @@ ___
 
 ### authorizePayment
 
-▸ **authorizePayment**(`paymentSession`, `context`): `Promise`<{ `data`: [`Data`](../modules/admin_discounts.internal.internal.mdx#data) ; `status`: [`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)  }\>
+**authorizePayment**(`paymentSession`, `context`): `Promise`<{ `data`: [`Data`](../modules/admin_discounts.internal.internal.mdx#data) ; `status`: [`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)  }\>
 
 This will be
 
@@ -226,7 +226,7 @@ ___
 
 ### cancelPayment
 
-▸ **cancelPayment**(`payment`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+**cancelPayment**(`payment`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -275,7 +275,7 @@ ___
 
 ### capturePayment
 
-▸ **capturePayment**(`payment`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+**capturePayment**(`payment`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -324,7 +324,7 @@ ___
 
 ### createPayment
 
-▸ **createPayment**(`context`): `Promise`<[`PaymentSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentsessionresponse)\>
+**createPayment**(`context`): `Promise`<[`PaymentSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentsessionresponse)\>
 
 This will be
 
@@ -369,7 +369,7 @@ This will be
 
 in the near future use PaymentProcessor.initiatePayment instead
 
-▸ **createPayment**(`cart`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+**createPayment**(`cart`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -418,7 +418,7 @@ ___
 
 ### deletePayment
 
-▸ **deletePayment**(`paymentSession`): `Promise`<`void`\>
+**deletePayment**(`paymentSession`): `Promise`<`void`\>
 
 This will be
 
@@ -458,7 +458,7 @@ ___
 
 ### getIdentifier
 
-▸ **getIdentifier**(): `string`
+**getIdentifier**(): `string`
 
 #### Returns
 
@@ -479,7 +479,7 @@ ___
 
 ### getPaymentData
 
-▸ **getPaymentData**(`paymentSession`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+**getPaymentData**(`paymentSession`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -528,7 +528,7 @@ ___
 
 ### getStatus
 
-▸ **getStatus**(`data`): `Promise`<[`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)\>
+**getStatus**(`data`): `Promise`<[`PaymentSessionStatus`](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)\>
 
 This will be
 
@@ -609,7 +609,7 @@ ___
 
 ### refundPayment
 
-▸ **refundPayment**(`payment`, `refundAmount`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+**refundPayment**(`payment`, `refundAmount`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -666,7 +666,7 @@ ___
 
 ### retrievePayment
 
-▸ **retrievePayment**(`paymentData`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+**retrievePayment**(`paymentData`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -715,7 +715,7 @@ ___
 
 ### retrieveSavedMethods
 
-▸ **retrieveSavedMethods**(`customer`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)[]\>
+**retrieveSavedMethods**(`customer`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)[]\>
 
 This will be
 
@@ -773,7 +773,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -811,7 +811,7 @@ ___
 
 ### updatePayment
 
-▸ **updatePayment**(`paymentSessionData`, `context`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data) \| [`PaymentSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentsessionresponse)\>
+**updatePayment**(`paymentSessionData`, `context`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data) \| [`PaymentSessionResponse`](../modules/admin_discounts.internal.internal.mdx#paymentsessionresponse)\>
 
 #### Parameters
 
@@ -858,7 +858,7 @@ ___
   }
 ]} />
 
-▸ **updatePayment**(`paymentSessionData`, `cart`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+**updatePayment**(`paymentSessionData`, `cart`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -915,7 +915,7 @@ ___
 
 ### updatePaymentData
 
-▸ **updatePaymentData**(`paymentSessionData`, `data`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
+**updatePaymentData**(`paymentSessionData`, `data`): `Promise`<[`Data`](../modules/admin_discounts.internal.internal.mdx#data)\>
 
 This will be
 
@@ -972,7 +972,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`PaymentService`](admin_discounts.internal.internal.PaymentService.mdx)
+**withTransaction**(`transactionManager?`): [`PaymentService`](admin_discounts.internal.internal.PaymentService.mdx)
 
 #### Parameters
 

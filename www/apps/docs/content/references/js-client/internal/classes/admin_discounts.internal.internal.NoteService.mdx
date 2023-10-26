@@ -105,7 +105,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -130,7 +130,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -207,7 +207,7 @@ ___
 
 ### create
 
-▸ **create**(`data`, `config?`): `Promise`<[`Note`](admin_discounts.internal.internal.Note.mdx)\>
+**create**(`data`, `config?`): `Promise`<[`Note`](admin_discounts.internal.internal.Note.mdx)\>
 
 Creates a note associated with a given author
 
@@ -268,7 +268,7 @@ ___
 
 ### delete
 
-▸ **delete**(`noteId`): `Promise`<`void`\>
+**delete**(`noteId`): `Promise`<`void`\>
 
 Deletes a given note
 
@@ -304,7 +304,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`Note`](admin_discounts.internal.internal.Note.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`Note`](admin_discounts.internal.internal.Note.mdx)[]\>
 
 Fetches all notes related to the given selector
 
@@ -366,7 +366,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`Note`](admin_discounts.internal.internal.Note.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`Note`](admin_discounts.internal.internal.Note.mdx)[], `number`]\>
 
 Fetches all notes related to the given selector
 
@@ -427,7 +427,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`noteId`, `config?`): `Promise`<[`Note`](admin_discounts.internal.internal.Note.mdx)\>
+**retrieve**(`noteId`, `config?`): `Promise`<[`Note`](admin_discounts.internal.internal.Note.mdx)\>
 
 Retrieves a specific note.
 
@@ -480,7 +480,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -518,7 +518,7 @@ ___
 
 ### update
 
-▸ **update**(`noteId`, `value`): `Promise`<[`Note`](admin_discounts.internal.internal.Note.mdx)\>
+**update**(`noteId`, `value`): `Promise`<[`Note`](admin_discounts.internal.internal.Note.mdx)\>
 
 Updates a given note with a new value
 
@@ -571,7 +571,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`NoteService`](admin_discounts.internal.internal.NoteService.mdx)
+**withTransaction**(`transactionManager?`): [`NoteService`](admin_discounts.internal.internal.NoteService.mdx)
 
 #### Parameters
 

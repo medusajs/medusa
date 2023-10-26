@@ -1,0 +1,2224 @@
+---
+displayed_sidebar: entitiesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PaymentSession
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "amount",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "cart",
+    "type": "[`Cart`](Cart.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [`Cart`](Cart.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "billing_address",
+        "type": "[`Address`](Address.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`Address`](Address.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "address_1",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "address_2",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "city",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "company",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "country",
+            "type": "``null`` \\| [`Country`](Country.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "country_code",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "customer",
+            "type": "``null`` \\| [`Customer`](Customer.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "customer_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "first_name",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "last_name",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "phone",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "postal_code",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "province",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "billing_address_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "completed_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "context",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "customer",
+        "type": "[`Customer`](Customer.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`Customer`](Customer.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "billing_address",
+            "type": "[`Address`](Address.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "billing_address_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "email",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "first_name",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "groups",
+            "type": "[`CustomerGroup`](CustomerGroup.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "has_account",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "last_name",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "orders",
+            "type": "[`Order`](Order.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "password_hash",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "phone",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "shipping_addresses",
+            "type": "[`Address`](Address.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "``null`` \\| `Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "discount_total",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "discounts",
+        "type": "[`Discount`](Discount.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`Discount`](Discount.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "ends_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_disabled",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_dynamic",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "parent_discount",
+            "type": "[`Discount`](Discount.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "parent_discount_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "regions",
+            "type": "[`Region`](Region.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "rule",
+            "type": "[`DiscountRule`](DiscountRule.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "rule_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "starts_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "usage_count",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "usage_limit",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "valid_duration",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "upperCaseCodeAndTrim",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "gift_card_tax_total",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "gift_card_total",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "gift_cards",
+        "type": "[`GiftCard`](GiftCard.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`GiftCard`](GiftCard.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "balance",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "ends_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_disabled",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order",
+            "type": "[`Order`](Order.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "region",
+            "type": "[`Region`](Region.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "region_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_rate",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "value",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "idempotency_key",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "item_tax_total",
+        "type": "``null`` \\| `number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "items",
+        "type": "[`LineItem`](LineItem.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`LineItem`](LineItem.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "adjustments",
+            "type": "[`LineItemAdjustment`](LineItemAdjustment.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "allow_discounts",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "cart",
+            "type": "[`Cart`](Cart.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "cart_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "claim_order",
+            "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "claim_order_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "discount_total",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "fulfilled_quantity",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "gift_card_total",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "has_shipping",
+            "type": "``null`` \\| `boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "includes_tax",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_giftcard",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_return",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order",
+            "type": "[`Order`](Order.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order_edit",
+            "type": "``null`` \\| [`OrderEdit`](OrderEdit.mdx)",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order_edit_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "original_item_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "original_tax_total",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "original_total",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "product_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "quantity",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "raw_discount_total",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "refundable",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "returned_quantity",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "shipped_quantity",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "should_merge",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "subtotal",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "swap",
+            "type": "[`Swap`](Swap.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "swap_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_lines",
+            "type": "[`LineItemTaxLine`](LineItemTaxLine.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_total",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "thumbnail",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "total",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "unit_price",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "variant",
+            "type": "[`ProductVariant`](ProductVariant.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "variant_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "afterUpdateOrLoad",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeUpdate",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "``\"cart\"``",
+        "description": "",
+        "optional": false,
+        "defaultValue": "`\"cart\"`",
+        "children": []
+      },
+      {
+        "name": "payment",
+        "type": "[`Payment`](Payment.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`Payment`](Payment.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "amount",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "amount_refunded",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "canceled_at",
+            "type": "`string` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "captured_at",
+            "type": "`string` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "cart",
+            "type": "[`Cart`](Cart.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "cart_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "currency",
+            "type": "[`Currency`](Currency.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "currency_code",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "data",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "idempotency_key",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order",
+            "type": "[`Order`](Order.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "provider_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "swap",
+            "type": "[`Swap`](Swap.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "swap_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "payment_authorized_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "payment_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "payment_session",
+        "type": "``null`` \\| [`PaymentSession`](PaymentSession.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "payment_sessions",
+        "type": "[`PaymentSession`](PaymentSession.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`PaymentSession`](PaymentSession.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "amount",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "cart",
+            "type": "[`Cart`](Cart.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "cart_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "data",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "idempotency_key",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_initiated",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_selected",
+            "type": "``null`` \\| `boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "payment_authorized_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "provider_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "status",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "raw_discount_total",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "refundable_amount",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "refunded_total",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "region",
+        "type": "[`Region`](Region.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`Region`](Region.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "automatic_taxes",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "countries",
+            "type": "[`Country`](Country.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "currency",
+            "type": "[`Currency`](Currency.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "currency_code",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "fulfillment_providers",
+            "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "gift_cards_taxable",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "includes_tax",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "payment_providers",
+            "type": "[`PaymentProvider`](PaymentProvider.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_code",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_provider",
+            "type": "[`TaxProvider`](TaxProvider.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_provider_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_rate",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_rates",
+            "type": "``null`` \\| [`TaxRate`](TaxRate.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "sales_channel",
+        "type": "[`SalesChannel`](SalesChannel.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`SalesChannel`](SalesChannel.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_disabled",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "locations",
+            "type": "[`SalesChannelLocation`](SalesChannelLocation.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "sales_channel_id",
+        "type": "``null`` \\| `string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "shipping_address",
+        "type": "``null`` \\| [`Address`](Address.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "shipping_address_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "shipping_methods",
+        "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`ShippingMethod`](ShippingMethod.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "cart",
+            "type": "[`Cart`](Cart.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "cart_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "claim_order",
+            "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "claim_order_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "data",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "includes_tax",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order",
+            "type": "[`Order`](Order.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "order_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "price",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "return_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "return_order",
+            "type": "[`Return`](Return.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "shipping_option",
+            "type": "[`ShippingOption`](ShippingOption.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "shipping_option_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "subtotal",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "swap",
+            "type": "[`Swap`](Swap.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "swap_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_lines",
+            "type": "[`ShippingMethodTaxLine`](ShippingMethodTaxLine.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tax_total",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "total",
+            "type": "`number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "shipping_tax_total",
+        "type": "``null`` \\| `number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "shipping_total",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "subtotal",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "tax_total",
+        "type": "``null`` \\| `number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "total",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "type",
+        "type": "[`CartType`](../enums/CartType.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "CLAIM",
+            "type": "``\"claim\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "DEFAULT",
+            "type": "``\"default\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "DRAFT_ORDER",
+            "type": "``\"draft_order\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "PAYMENT_LINK",
+            "type": "``\"payment_link\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "SWAP",
+            "type": "``\"swap\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "afterLoad",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "cart_id",
+    "type": "``null`` \\| `string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "idempotency_key",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "is_initiated",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "is_selected",
+    "type": "``null`` \\| `boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "payment_authorized_at",
+    "type": "`Date`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />

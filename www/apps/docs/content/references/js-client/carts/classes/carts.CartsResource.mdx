@@ -25,7 +25,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### addShippingMethod
 
-▸ **addShippingMethod**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**addShippingMethod**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Adds a shipping method to cart
 
@@ -86,7 +86,7 @@ ___
 
 ### complete
 
-▸ **complete**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCompleteCartRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecompletecartres)\>
+**complete**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCompleteCartRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecompletecartres)\>
 
 Completes a cart.
 Payment authorization is attempted and if more work is required, we simply return the cart for further updates.
@@ -143,7 +143,7 @@ ___
 
 ### create
 
-▸ **create**(`payload?`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**create**(`payload?`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Creates a cart
 
@@ -196,7 +196,7 @@ ___
 
 ### createPaymentSessions
 
-▸ **createPaymentSessions**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**createPaymentSessions**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Creates payment sessions.
 Initializes the payment sessions that can be used to pay for the items of the cart.
@@ -251,7 +251,7 @@ ___
 
 ### deleteDiscount
 
-▸ **deleteDiscount**(`cart_id`, `code`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**deleteDiscount**(`cart_id`, `code`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Removes a discount from cart.
 
@@ -312,7 +312,7 @@ ___
 
 ### deletePaymentSession
 
-▸ **deletePaymentSession**(`cart_id`, `provider_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**deletePaymentSession**(`cart_id`, `provider_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Removes a payment session from a cart.
 Can be useful in case a payment has failed
@@ -374,7 +374,7 @@ ___
 
 ### refreshPaymentSession
 
-▸ **refreshPaymentSession**(`cart_id`, `provider_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**refreshPaymentSession**(`cart_id`, `provider_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Refreshes a payment session.
 
@@ -435,7 +435,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**retrieve**(`cart_id`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Retrieves a cart
 
@@ -488,7 +488,7 @@ ___
 
 ### setPaymentSession
 
-▸ **setPaymentSession**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**setPaymentSession**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Refreshes a payment session.
 
@@ -549,7 +549,7 @@ ___
 
 ### update
 
-▸ **update**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**update**(`cart_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Updates a cart
 
@@ -610,7 +610,7 @@ ___
 
 ### updatePaymentSession
 
-▸ **updatePaymentSession**(`cart_id`, `provider_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
+**updatePaymentSession**(`cart_id`, `provider_id`, `payload`, `customHeaders?`): [`ResponsePromise`](../../swaps/modules/swaps.internal.mdx#responsepromise)<[`StoreCartsRes`](../../internal/modules/admin_discounts.internal.internal.mdx#storecartsres)\>
 
 Updates the payment method
 

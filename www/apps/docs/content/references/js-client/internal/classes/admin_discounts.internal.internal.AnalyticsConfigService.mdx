@@ -73,7 +73,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -98,7 +98,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -175,7 +175,7 @@ ___
 
 ### create
 
-▸ **create**(`userId`, `data`): `Promise`<[`AnalyticsConfig`](admin_discounts.internal.internal.AnalyticsConfig.mdx)\>
+**create**(`userId`, `data`): `Promise`<[`AnalyticsConfig`](admin_discounts.internal.internal.AnalyticsConfig.mdx)\>
 
 Creates an analytics config.
 
@@ -228,7 +228,7 @@ ___
 
 ### delete
 
-▸ **delete**(`userId`): `Promise`<`void`\>
+**delete**(`userId`): `Promise`<`void`\>
 
 Deletes an analytics config.
 
@@ -264,7 +264,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`userId`): `Promise`<[`AnalyticsConfig`](admin_discounts.internal.internal.AnalyticsConfig.mdx)\>
+**retrieve**(`userId`): `Promise`<[`AnalyticsConfig`](admin_discounts.internal.internal.AnalyticsConfig.mdx)\>
 
 #### Parameters
 
@@ -307,7 +307,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -345,7 +345,7 @@ ___
 
 ### update
 
-▸ **update**(`userId`, `update`): `Promise`<[`AnalyticsConfig`](admin_discounts.internal.internal.AnalyticsConfig.mdx)\>
+**update**(`userId`, `update`): `Promise`<[`AnalyticsConfig`](admin_discounts.internal.internal.AnalyticsConfig.mdx)\>
 
 Updates an analytics config. If the config does not exist, it will be created instead.
 
@@ -398,7 +398,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`AnalyticsConfigService`](admin_discounts.internal.internal.AnalyticsConfigService.mdx)
+**withTransaction**(`transactionManager?`): [`AnalyticsConfigService`](admin_discounts.internal.internal.AnalyticsConfigService.mdx)
 
 #### Parameters
 

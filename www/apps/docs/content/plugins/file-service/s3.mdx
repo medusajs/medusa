@@ -3,7 +3,7 @@ description: 'Learn how to integrate the S3 plugin with the Medusa backend. Lear
 addHowToData: true
 ---
 
-import Troubleshooting from '@site/src/components/Troubleshooting'
+import DetailsList from '@site/src/components/DetailsList'
 import AclErrorSection from '../../troubleshooting/s3-acl-error.md'
 
 # S3
@@ -121,7 +121,7 @@ const plugins = [
         // optional
         download_file_duration:
           process.env.S3_DOWNLOAD_FILE_DURATION,
-        prefix: process.env.S3_PREFIX
+        prefix: process.env.S3_PREFIX,
     },
   },
 ]
@@ -237,7 +237,7 @@ Where:
 
 ## Troubleshooting
 
-<Troubleshooting
+<DetailsList
   sections={[
     {
       title: 'Error: AccessControlListNotSupported: The bucket does not allow ACLs',

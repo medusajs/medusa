@@ -18,8 +18,8 @@ The Medusa core provides the necessary implementation and functionalities that a
 
 Some of the attributes of the `Swap` entity include:
 
-- `fulfillment_status`: a string indicating the status of the swap’s fulfillment. Its possible values indicated by the [SwapFulfillmentStatus enum](../../references/entities/enums/SwapFulfillmentStatus.md) can determine whether all items have been fulfilled, shipped, or canceled.
-- `payment_status`: a string indicating the status of the swap’s payment. Its possible values indicated by the [SwapPaymentStatus enum](../../references/entities/enums/SwapFulfillmentStatus.md) can determine whether the payment of the swap has been captured or refunded.
+- `fulfillment_status`: a string indicating the status of the swap’s fulfillment. Its possible values indicated by the [SwapFulfillmentStatus enum](../../references/entities/enums/SwapFulfillmentStatus.mdx) can determine whether all items have been fulfilled, shipped, or canceled.
+- `payment_status`: a string indicating the status of the swap’s payment. Its possible values indicated by the [SwapPaymentStatus enum](../../references/entities/enums/SwapFulfillmentStatus.mdx) can determine whether the payment of the swap has been captured or refunded.
 - `difference_due`: An integer indicating the difference amount between the order’s original total and the new total imposed by the swap.
   - If the value of `difference_due` is negative, that means the customer should be refunded.
   - If it’s positive, that means the customer must authorize additional payment.
@@ -29,7 +29,7 @@ Some of the attributes of the `Swap` entity include:
 - `no_notification`: a boolean value indicating whether the customer should receive notifications when the order is updated.
 - `allow_backorder`: a boolean value indicating whether a swap can be created and completed with items that are out of stock.
 
-There are other important attributes discussed in later sections. Check out the full [Swap entity in the entities reference](../../references/entities/classes/Swap.md).
+There are other important attributes discussed in later sections. Check out the full [Swap entity in the entities reference](../../references/entities/classes/Swap.mdx).
 
 ---
 

@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -90,7 +90,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -167,7 +167,7 @@ ___
 
 ### create
 
-▸ **create**<`T`, `TResult`\>(`data`): `Promise`<`TResult`\>
+**create**<`T`, `TResult`\>(`data`): `Promise`<`TResult`\>
 
 Creates a custom shipping option
 
@@ -222,7 +222,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`CustomShippingOption`](admin_discounts.internal.internal.CustomShippingOption.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`CustomShippingOption`](admin_discounts.internal.internal.CustomShippingOption.mdx)[]\>
 
 Fetches all custom shipping options based on the given selector
 
@@ -284,7 +284,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<[`CustomShippingOption`](admin_discounts.internal.internal.CustomShippingOption.mdx)\>
+**retrieve**(`id`, `config?`): `Promise`<[`CustomShippingOption`](admin_discounts.internal.internal.CustomShippingOption.mdx)\>
 
 Retrieves a specific shipping option.
 
@@ -337,7 +337,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -375,7 +375,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`CustomShippingOptionService`](admin_discounts.internal.internal.CustomShippingOptionService.mdx)
+**withTransaction**(`transactionManager?`): [`CustomShippingOptionService`](admin_discounts.internal.internal.CustomShippingOptionService.mdx)
 
 #### Parameters
 

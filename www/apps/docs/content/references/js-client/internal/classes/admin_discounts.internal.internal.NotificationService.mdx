@@ -105,7 +105,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-• `Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): `EntityManager`
 
 #### Returns
 
@@ -130,7 +130,7 @@ TransactionBaseService.activeManager\_
 
 ### atomicPhase\_
 
-▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -207,7 +207,7 @@ ___
 
 ### handleEvent
 
-▸ **handleEvent**(`eventName`, `data`): `Promise`<`undefined` \| `void` \| [`Notification`](admin_discounts.internal.internal.Notification.mdx)[]\>
+**handleEvent**(`eventName`, `data`): `Promise`<`undefined` \| `void` \| [`Notification`](admin_discounts.internal.internal.Notification.mdx)[]\>
 
 Handles an event by relaying the event data to the subscribing providers.
 The result of the notification send will be persisted in the database in
@@ -262,7 +262,7 @@ ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<[`Notification`](admin_discounts.internal.internal.Notification.mdx)[]\>
+**list**(`selector`, `config?`): `Promise`<[`Notification`](admin_discounts.internal.internal.Notification.mdx)[]\>
 
 Retrieves a list of notifications.
 
@@ -324,7 +324,7 @@ ___
 
 ### listAndCount
 
-▸ **listAndCount**(`selector`, `config?`): `Promise`<[[`Notification`](admin_discounts.internal.internal.Notification.mdx)[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`Notification`](admin_discounts.internal.internal.Notification.mdx)[], `number`]\>
 
 Retrieves a list of notifications and total count.
 
@@ -385,7 +385,7 @@ ___
 
 ### registerAttachmentGenerator
 
-▸ **registerAttachmentGenerator**(`service`): `void`
+**registerAttachmentGenerator**(`service`): `void`
 
 Registers an attachment generator to the service. The generator can be
 used to generate on demand invoices or other documents.
@@ -422,7 +422,7 @@ ___
 
 ### registerInstalledProviders
 
-▸ **registerInstalledProviders**(`providerIds`): `Promise`<`void`\>
+**registerInstalledProviders**(`providerIds`): `Promise`<`void`\>
 
 Takes a list of notification provider ids and persists them in the database.
 
@@ -458,7 +458,7 @@ ___
 
 ### resend
 
-▸ **resend**(`id`, `config?`): `Promise`<[`Notification`](admin_discounts.internal.internal.Notification.mdx)\>
+**resend**(`id`, `config?`): `Promise`<[`Notification`](admin_discounts.internal.internal.Notification.mdx)\>
 
 Resends a notification by retrieving a prior notification and calling the
 underlying provider's resendNotification method.
@@ -512,7 +512,7 @@ ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<[`Notification`](admin_discounts.internal.internal.Notification.mdx)\>
+**retrieve**(`id`, `config?`): `Promise`<[`Notification`](admin_discounts.internal.internal.Notification.mdx)\>
 
 Retrieves a notification with a given id
 
@@ -565,7 +565,7 @@ ___
 
 ### retrieveProvider\_
 
-▸ `Protected` **retrieveProvider_**(`id`): [`AbstractNotificationService`](admin_discounts.internal.internal.AbstractNotificationService.mdx)
+`Protected` **retrieveProvider_**(`id`): [`AbstractNotificationService`](admin_discounts.internal.internal.AbstractNotificationService.mdx)
 
 Finds a provider with a given id. Will throw a NOT_FOUND error if the
 resolution fails.
@@ -602,7 +602,7 @@ ___
 
 ### send
 
-▸ **send**(`event`, `eventData`, `providerId`): `Promise`<`undefined` \| [`Notification`](admin_discounts.internal.internal.Notification.mdx)\>
+**send**(`event`, `eventData`, `providerId`): `Promise`<`undefined` \| [`Notification`](admin_discounts.internal.internal.Notification.mdx)\>
 
 Sends a notification, by calling the given provider's sendNotification
 method. Persists the Notification in the database.
@@ -664,7 +664,7 @@ ___
 
 ### shouldRetryTransaction\_
 
-▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
 
 #### Parameters
 
@@ -702,7 +702,7 @@ ___
 
 ### subscribe
 
-▸ **subscribe**(`eventName`, `providerId`): `void`
+**subscribe**(`eventName`, `providerId`): `void`
 
 Subscribes a given provider to an event.
 
@@ -746,7 +746,7 @@ ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager?`): [`NotificationService`](admin_discounts.internal.internal.NotificationService.mdx)
+**withTransaction**(`transactionManager?`): [`NotificationService`](admin_discounts.internal.internal.NotificationService.mdx)
 
 #### Parameters
 

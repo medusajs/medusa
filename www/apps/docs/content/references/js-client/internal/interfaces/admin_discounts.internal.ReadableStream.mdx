@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### [asyncIterator]
 
-▸ **[asyncIterator]**(): [`AsyncIterableIterator`](admin_discounts.internal.AsyncIterableIterator.mdx)<`string` \| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\>
+**[asyncIterator]**(): [`AsyncIterableIterator`](admin_discounts.internal.AsyncIterableIterator.mdx)<`string` \| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\>
 
 #### Returns
 
@@ -59,7 +59,7 @@ ___
 
 ### addListener
 
-▸ **addListener**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**addListener**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 Alias for `emitter.on(eventName, listener)`.
 
@@ -111,7 +111,7 @@ ___
 
 ### emit
 
-▸ **emit**(`eventName`, `...args`): `boolean`
+**emit**(`eventName`, `...args`): `boolean`
 
 Synchronously calls each of the listeners registered for the event named`eventName`, in the order they were registered, passing the supplied arguments
 to each.
@@ -199,7 +199,7 @@ ___
 
 ### eventNames
 
-▸ **eventNames**(): (`string` \| `symbol`)[]
+**eventNames**(): (`string` \| `symbol`)[]
 
 Returns an array listing the events for which the emitter has registered
 listeners. The values in the array are strings or `Symbol`s.
@@ -254,7 +254,7 @@ ___
 
 ### getMaxListeners
 
-▸ **getMaxListeners**(): `number`
+**getMaxListeners**(): `number`
 
 Returns the current max listener value for the `EventEmitter` which is either
 set by `emitter.setMaxListeners(n)` or defaults to defaultMaxListeners.
@@ -286,7 +286,7 @@ ___
 
 ### isPaused
 
-▸ **isPaused**(): `boolean`
+**isPaused**(): `boolean`
 
 #### Returns
 
@@ -307,7 +307,7 @@ ___
 
 ### listenerCount
 
-▸ **listenerCount**(`eventName`, `listener?`): `number`
+**listenerCount**(`eventName`, `listener?`): `number`
 
 Returns the number of listeners listening for the event named `eventName`.
 If `listener` is provided, it will return how many times the listener is found
@@ -361,7 +361,7 @@ ___
 
 ### listeners
 
-▸ **listeners**(`eventName`): `Function`[]
+**listeners**(`eventName`): `Function`[]
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -413,7 +413,7 @@ ___
 
 ### off
 
-▸ **off**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**off**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 Alias for `emitter.removeListener()`.
 
@@ -465,7 +465,7 @@ ___
 
 ### on
 
-▸ **on**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**on**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 Adds the `listener` function to the end of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -542,7 +542,7 @@ ___
 
 ### once
 
-▸ **once**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**once**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 Adds a **one-time**`listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -617,7 +617,7 @@ ___
 
 ### pause
 
-▸ **pause**(): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**pause**(): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 #### Returns
 
@@ -638,7 +638,7 @@ ___
 
 ### pipe
 
-▸ **pipe**<`T`\>(`destination`, `options?`): `T`
+**pipe**<`T`\>(`destination`, `options?`): `T`
 
 <ParameterTypes parameters={[
   {
@@ -690,7 +690,7 @@ ___
 
 ### prependListener
 
-▸ **prependListener**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**prependListener**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 Adds the `listener` function to the _beginning_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -753,7 +753,7 @@ ___
 
 ### prependOnceListener
 
-▸ **prependOnceListener**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**prependOnceListener**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
@@ -814,7 +814,7 @@ ___
 
 ### rawListeners
 
-▸ **rawListeners**(`eventName`): `Function`[]
+**rawListeners**(`eventName`): `Function`[]
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -884,7 +884,7 @@ ___
 
 ### read
 
-▸ **read**(`size?`): `string` \| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
+**read**(`size?`): `string` \| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)
 
 #### Parameters
 
@@ -918,7 +918,7 @@ ___
 
 ### removeAllListeners
 
-▸ **removeAllListeners**(`event?`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**removeAllListeners**(`event?`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 Removes all listeners, or those of the specified `eventName`.
 
@@ -968,7 +968,7 @@ ___
 
 ### removeListener
 
-▸ **removeListener**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**removeListener**(`eventName`, `listener`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 Removes the specified `listener` from the listener array for the event named`eventName`.
 
@@ -1098,7 +1098,7 @@ ___
 
 ### resume
 
-▸ **resume**(): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**resume**(): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 #### Returns
 
@@ -1119,7 +1119,7 @@ ___
 
 ### setEncoding
 
-▸ **setEncoding**(`encoding`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**setEncoding**(`encoding`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 #### Parameters
 
@@ -1153,7 +1153,7 @@ ___
 
 ### setMaxListeners
 
-▸ **setMaxListeners**(`n`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**setMaxListeners**(`n`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 By default `EventEmitter`s will print a warning if more than `10` listeners are
 added for a particular event. This is a useful default that helps finding
@@ -1202,7 +1202,7 @@ ___
 
 ### unpipe
 
-▸ **unpipe**(`destination?`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**unpipe**(`destination?`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 #### Parameters
 
@@ -1236,7 +1236,7 @@ ___
 
 ### unshift
 
-▸ **unshift**(`chunk`, `encoding?`): `void`
+**unshift**(`chunk`, `encoding?`): `void`
 
 #### Parameters
 
@@ -1278,7 +1278,7 @@ ___
 
 ### wrap
 
-▸ **wrap**(`oldStream`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
+**wrap**(`oldStream`): [`ReadableStream`](admin_discounts.internal.ReadableStream.mdx)
 
 #### Parameters
 
