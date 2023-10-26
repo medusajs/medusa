@@ -2,36 +2,37 @@ import { ResponsePromise } from "@medusajs/medusa-js";
 import { useMedusa } from "medusa-react";
 import { useEffect, useState } from "react"
 
-export type PermissionsType = {
+export type RolesType = {
     id: string,
     name: string,
     metadata?: Record<string, unknown>
 }
 
-export type PermissionsDataType = {
+export type RolesDataType = {
     name: string,
     metadata?: Record<string, unknown>
 }
 
-const usePermissions = () => {
+const useRoles = () => {
   
     const { client } = useMedusa();
-    const [permissions, setUsersPermissions] = useState([]);
+    const [roles, setUsersRoles] = useState([]);
     const [updating, setUpdating] = useState(false);
     const [creating, setCreating] = useState(false);
     const [removing, setRemoving] = useState(false);
 
     useEffect(()=>{
-        getPermissions();
+        getRoles();
     },[])
 
     // Get
 
-    const getPermissions = () => {
+    const getRoles = () => {
         setUpdating(true);
         try{
-            client.admin.custom.get('admin/permission').then(res=>{
-                setUsersPermissions(res.permissions);
+            client.admin.custom.get('admin/role').then(res=>{
+                setUsersRoles(res.roles);
+                console.log(res.roles)
                 setUpdating(false);
             })
         }
@@ -44,12 +45,12 @@ const usePermissions = () => {
 
     const update = async (
         id: string,
-        data: PermissionsDataType,
+        data: RolesDataType,
         onSuccess: any
     ): ResponsePromise<any> => {
         setUpdating(true);
         try {
-            let res = client.admin.custom.post(`/admin/permission/${id}`, data);
+            let res = client.admin.custom.post(`/admin/role/${id}`, data);
             onSuccess && onSuccess();
             setUpdating(false);
             return res;
@@ -64,12 +65,12 @@ const usePermissions = () => {
     // Insert
 
     const create = async (
-        data: PermissionsDataType,
+        data: RolesDataType,
         onSuccess: any
     ): ResponsePromise<any> => {
         setCreating(true);
         try {
-            let res = client.admin.custom.post(`/admin/permission/`, data);
+            let res = client.admin.custom.post(`/admin/role/`, data);
             onSuccess && onSuccess();
             setCreating(false);
             return res;
@@ -89,7 +90,7 @@ const usePermissions = () => {
         return true;
     }
 
-  return {permissions, getPermissions, updating, update, create, creating, remove, removing}
+  return {roles, getRoles, updating, update, create, creating, remove, removing}
 }
 
-export default usePermissions
+export default useRoles

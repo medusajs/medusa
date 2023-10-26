@@ -3,40 +3,41 @@ import { useTranslation } from "react-i18next"
 import BackButton from "../../../components/atoms/back-button"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../../components/organisms/body-card"
-import InviteModal from "../../../components/organisms/invite-modal"
-import UserTable from "../../../components/templates/user-table"
-import Medusa from "../../../services/api"
+import UserRolesTable from "./table"
+import AddRoleModal from "./add-modal"
+import useRoles from "./use-role"
 
 const UsersRoles: React.FC = () => {
   const { t } = useTranslation()
-  const [users, setUsers] = useState([])
-  const [invites, setInvites] = useState([])
   const [shouldRefetch, setShouldRefetch] = useState(0)
-  const [showInviteModal, setShowInviteModal] = useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   const triggerRefetch = () => {
     setShouldRefetch((prev) => prev + 1)
   }
 
+  const { roles, getRoles } = useRoles()
+  
   useEffect(() => {
-    Medusa.users
-      .list()
-      .then((res) => res.data)
-      .then((userData) => {
-        Medusa.invites
-          .list()
-          .then((res) => res.data)
-          .then((inviteData) => {
-            setUsers(userData.users)
-            setInvites(inviteData.invites)
-          })
-      })
+    setTimeout(()=>{
+      getRoles();
+    },500)
   }, [shouldRefetch])
+
+  const handleClose = () => {
+    triggerRefetch()
+    setShowModal(false)
+  }
+
+  const handleSuccess = () => {
+    handleClose();
+    triggerRefetch();
+  }
 
   const actionables = [
     {
-      label: t("users-invite-users", "Invite Users"),
-      onClick: () => setShowInviteModal(true),
+      label: t("users-roles-add", "Add role"),
+      onClick: () => setShowModal(true),
       icon: (
         <span className="text-grey-90">
           <PlusIcon size={20} />
@@ -54,26 +55,23 @@ const UsersRoles: React.FC = () => {
           className="mb-xsmall"
         />
         <BodyCard
-          title={t("users-the-team", "The Team")}
+          title={t("users-roles-title", "Users Roles")}
           subtitle={t(
-            "users-manage-users-of-your-medusa-store",
-            "Manage users of your Medusa Store"
+            "users-roles-description",
+            "Manage users roles"
           )}
           actionables={actionables}
         >
           <div className="flex grow flex-col justify-between">
-            <UserTable
-              users={users}
-              invites={invites}
+            <UserRolesTable
+              roles={roles}
               triggerRefetch={triggerRefetch}
             />
           </div>
-          {showInviteModal && (
-            <InviteModal
-              handleClose={() => {
-                triggerRefetch()
-                setShowInviteModal(false)
-              }}
+          {showModal && (
+            <AddRoleModal
+              onClose={handleClose}
+              onSuccess={handleSuccess}
             />
           )}
         </BodyCard>

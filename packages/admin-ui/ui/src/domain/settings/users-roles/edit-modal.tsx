@@ -2,17 +2,13 @@ import { useTranslation } from "react-i18next"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { nestedForm } from "../../../utils/nested-form"
-import MetadataForm, {
-  getMetadataFormValues,
-  getSubmittableMetadata,
-  MetadataFormType,
-} from "../../../components/forms/general/metadata-form"
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
-import usePermissions from "./use-permission"
+import useRoles, { RolesType, RolesDataType } from "./use-role"
 import InputField from "../../../components/molecules/input"
 
 type Props = {
+  role: RolesType
   open?: boolean
   onClose?: () => void,
   onSuccess?: () => void
@@ -20,14 +16,13 @@ type Props = {
 
 type GeneralFormWrapper = {
   name: string
-  metadata: MetadataFormType
 }
 
-const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
+const EditRoleModal = ({ role, open, onClose, onSuccess }: Props) => {
   const { t } = useTranslation()
-  const { create, updating } = usePermissions()
+  const { update, updating } = useRoles()
   const form = useForm<GeneralFormWrapper>({
-    defaultValues: getDefaultValues(),
+    defaultValues: getDefaultValues(role),
   })
 
   const {
@@ -39,19 +34,19 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
   } = form
 
   useEffect(() => {
-    reset(getDefaultValues())
-  }, [reset])
+    reset(getDefaultValues(role))
+  }, [role, reset])
 
   const onReset = () => {
-    reset(getDefaultValues())
+    reset(getDefaultValues(role))
     onClose && onClose()
   }
 
   const onSubmit = handleSubmit((data) => {
-    create(
+    update(
+      role.id,
       {
         name: data.name,
-        metadata: getSubmittableMetadata(data.metadata),
       },
       onSuccess
     )
@@ -63,8 +58,8 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
         <Modal.Header handleClose={onReset}>
           <h1 className="inter-xlarge-semibold m-0">
             {t(
-              "users-premissions-add-title",
-              "Add Permission"
+              "users-premissions-edit-title",
+              "Edit Role"
             )}
           </h1>
         </Modal.Header>
@@ -83,9 +78,9 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
             </div>
             <div className="mt-xlarge">
               <h2 className="inter-base-semibold mb-base">
-                {t("users-permissions-rules", "Rules")}
+                {t("users-roles-roles", "Roles")}
               </h2>
-              <MetadataForm form={nestedForm(form, "metadata")} />
+              
             </div>
           </Modal.Content>
           <Modal.Footer>
@@ -96,7 +91,7 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                {t("users-permissions-cancel-button", "Cancel")}
+                {t("users-roles-cancel-button", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -105,7 +100,7 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                {t("users-permissions-add-button", "Add")}
+                {t("users-roles-save-button", "Save")}
               </Button>
             </div>
           </Modal.Footer>
@@ -115,11 +110,10 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
   )
 }
 
-const getDefaultValues = (): GeneralFormWrapper => {
+const getDefaultValues = (role: RolesDataType): GeneralFormWrapper => {
   return {
-    name: '',
-    metadata: getMetadataFormValues({}),
+    name: role.name,
   }
 }
 
-export default AddPermissionModal
+export default EditRoleModal

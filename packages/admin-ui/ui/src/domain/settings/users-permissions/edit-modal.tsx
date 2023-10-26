@@ -85,7 +85,7 @@ const EditPermissionModal = ({ permission, open, onClose, onSuccess }: Props) =>
             </div>
             <div className="mt-xlarge">
               <h2 className="inter-base-semibold mb-base">
-                {t("users-permissions-permissions", "Permissions")}
+                {t("users-permissions-rules", "Rules")}
               </h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>

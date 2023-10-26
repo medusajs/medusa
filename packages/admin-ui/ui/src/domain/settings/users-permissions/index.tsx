@@ -19,7 +19,9 @@ const UsersPermissions: React.FC = () => {
   const { permissions, getPermissions } = usePermissions()
   
   useEffect(() => {
-    getPermissions();
+    setTimeout(()=>{
+      getPermissions();
+    },500)
   }, [shouldRefetch])
 
   const handleClose = () => {

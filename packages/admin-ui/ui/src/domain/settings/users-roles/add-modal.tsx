@@ -9,7 +9,7 @@ import MetadataForm, {
 } from "../../../components/forms/general/metadata-form"
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
-import usePermissions from "./use-permission"
+import useRoles from "./use-role"
 import InputField from "../../../components/molecules/input"
 
 type Props = {
@@ -23,9 +23,9 @@ type GeneralFormWrapper = {
   metadata: MetadataFormType
 }
 
-const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
+const AddRoleModal = ({ open, onClose, onSuccess }: Props) => {
   const { t } = useTranslation()
-  const { create, updating } = usePermissions()
+  const { create, updating } = useRoles()
   const form = useForm<GeneralFormWrapper>({
     defaultValues: getDefaultValues(),
   })
@@ -64,7 +64,7 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
           <h1 className="inter-xlarge-semibold m-0">
             {t(
               "users-premissions-add-title",
-              "Add Permission"
+              "Add Role"
             )}
           </h1>
         </Modal.Header>
@@ -83,7 +83,7 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
             </div>
             <div className="mt-xlarge">
               <h2 className="inter-base-semibold mb-base">
-                {t("users-permissions-rules", "Rules")}
+                {t("users-roles-roles", "Roles")}
               </h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
@@ -96,7 +96,7 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                {t("users-permissions-cancel-button", "Cancel")}
+                {t("users-roles-cancel-button", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -105,7 +105,7 @@ const AddPermissionModal = ({ open, onClose, onSuccess }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                {t("users-permissions-add-button", "Add")}
+                {t("users-roles-add-button", "Add")}
               </Button>
             </div>
           </Modal.Footer>
@@ -122,4 +122,4 @@ const getDefaultValues = (): GeneralFormWrapper => {
   }
 }
 
-export default AddPermissionModal
+export default AddRoleModal

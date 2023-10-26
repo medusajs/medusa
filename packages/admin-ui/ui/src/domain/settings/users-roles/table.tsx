@@ -5,49 +5,49 @@ import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import Table from "../../../components/molecules/table"
 import DeletePrompt from "../../../components/organisms/delete-prompt"
 import { useTranslation } from "react-i18next"
-import usePermissions, { PermissionsType } from "./use-permission"
-import EditPermissionModal from "./edit-modal"
+import useRoles, { RolesType } from "./use-role"
+import EditRoleModal from "./edit-modal"
 
-type UserPermissionsListElement = {
+type UserRolesListElement = {
   entity: any
   entityType: string
   tableElement: JSX.Element
 }
 
-type UserPermissionsTableProps = {
-  permissions: any[]
+type UserRolesTableProps = {
+  roles: any[]
   triggerRefetch: () => void
 }
 
-const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
-  permissions,
+const UserRolesTable: React.FC<UserRolesTableProps> = ({
+  roles,
   triggerRefetch,
 }) => {
-  const [elements, setElements] = useState<UserPermissionsListElement[]>([])
-  const [shownElements, setShownElements] = useState<UserPermissionsListElement[]>([])
-  const [selectedPermission, setSelectedPermission] = useState<PermissionsType | null>(null)
-  const [deletePermission, setDeletePermission] = useState(false)
+  const [elements, setElements] = useState<UserRolesListElement[]>([])
+  const [shownElements, setShownElements] = useState<UserRolesListElement[]>([])
+  const [selectedRole, setSelectedRole] = useState<RolesType | null>(null)
+  const [deleteRole, setDeleteRole] = useState(false)
   const notification = useNotification()
   const { t } = useTranslation()
-  const { remove, removing } = usePermissions()
+  const { remove, removing } = useRoles()
 
   useEffect(() => {
     setElements([
-      ...permissions.map((permission, i) => ({
-        entity: permission,
+      ...roles.map((role, i) => ({
+        entity: role,
         entityType: "user",
-        tableElement: getTableRow(permission, i),
+        tableElement: getTableRow(role, i),
       }))
     ])
-  }, [permissions])
+  }, [roles])
 
   useEffect(() => {
     setShownElements(elements)
   }, [elements])
 
   const handleClose = () => {
-    setDeletePermission(false)
-    setSelectedPermission(null)
+    setDeleteRole(false)
+    setSelectedRole(null)
   }
 
   const handleSuccess = () => {
@@ -56,10 +56,10 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
   }
 
   const handleDlete = async () => {
-    selectedPermission && remove(selectedPermission.id).then(() => {
+    selectedRole && remove(selectedRole.id).then(() => {
       notification(
         //t("templates-success", "Success"),
-        //t("users-permissions-has-been-removed", "Permission has been removed"),
+        //t("users-roles-has-been-removed", "Role has been removed"),
         //"success",
         t("Warning"),
         t("This function is temporary disabled"),
@@ -69,24 +69,24 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
     });
   }
 
-  const getTableRow = (row: PermissionsType, index: number) => {
+  const getTableRow = (row: RolesType, index: number) => {
     return (
       <Table.Row
-        key={`permission-${index}`}
+        key={`role-${index}`}
         color={"inherit"}
         actions={[
           {
-            label: t("templates-edit-user-permission", "Edit Permission"),
-            onClick: () => setSelectedPermission(row),
+            label: t("templates-edit-user-role", "Edit Role"),
+            onClick: () => setSelectedRole(row),
             icon: <EditIcon size={20} />,
           },
           /*
           {
-            label: t("templates-remove-user-permission", "Remove Permission"),
+            label: t("templates-remove-user-role", "Remove Role"),
             variant: "danger",
             onClick: () => {
-              setDeletePermission(true);
-              setSelectedPermission(row);
+              setDeleteRole(true);
+              setSelectedRole(row);
             },
             icon: <TrashIcon size={20} />,
           },
@@ -96,13 +96,13 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
       >
         <Table.Cell className="w-80">{row.name}</Table.Cell>
         <Table.Cell className="inter-small-semibold text-violet-60">
-            {!!row.metadata && Object.keys(row.metadata).length}
+            {!!row.permissions && Object.keys(row.permissions).length}
         </Table.Cell>
       </Table.Row>
     )
   }
 
-  const handleUsersPermissionsSearch = (term: string) => {
+  const handleUsersRolesSearch = (term: string) => {
     setShownElements(
       elements.filter(
         (e) =>
@@ -115,35 +115,35 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
     <div className="h-full w-full overflow-y-auto">
       <Table
         enableSearch
-        handleSearch={handleUsersPermissionsSearch}
+        handleSearch={handleUsersRolesSearch}
       >
         <Table.Head>
           <Table.HeadRow>
             <Table.HeadCell>
-              {t("permissions-name", "Name")}
+              {t("roles-name", "Name")}
             </Table.HeadCell>
             <Table.HeadCell className="w-32">
-              {t("permissions-paths", "Rules")}
+              {t("roles-paths", "Permissions")}
             </Table.HeadCell>
           </Table.HeadRow>
         </Table.Head>
         <Table.Body>{shownElements.map((e) => e.tableElement)}</Table.Body>
       </Table>
-      {selectedPermission &&
-        (deletePermission ? (
+      {selectedRole &&
+        (deleteRole ? (
           <DeletePrompt
             text={t(
-              "users-permissions-confirm-remove",
-              "Are you sure you want to remove this permission?"
+              "users-roles-confirm-remove",
+              "Are you sure you want to remove this role?"
             )}
-            heading={t("users-permissions-remove-heading", "Remove permission")}
+            heading={t("users-roles-remove-heading", "Remove role")}
             onDelete={handleDlete}
             handleClose={handleClose}
           />
         ) : (
-          <EditPermissionModal
+          <EditRoleModal
             onClose={handleClose}
-            permission={selectedPermission}
+            role={selectedRole}
             onSuccess={handleSuccess}
           />
         ))}
@@ -151,4 +151,4 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
   )
 }
 
-export default UserPermissionsTable
+export default UserRolesTable
