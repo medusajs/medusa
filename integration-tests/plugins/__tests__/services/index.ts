@@ -23,7 +23,6 @@ describe("product", () => {
     })
 
     medusaContainer = container
-    console.log(medusaContainer)
   })
 
   afterAll(async () => {
