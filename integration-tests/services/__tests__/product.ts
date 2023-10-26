@@ -23,7 +23,7 @@ describe("/admin/products", () => {
     })
 
     medusaContainer = container
-    productService = medusaContainer.resolve("productService")
+    console.warn(container)
   })
 
   afterAll(async () => {
@@ -40,6 +40,8 @@ describe("/admin/products", () => {
 
 
   it("should create variant prices correctly in service creation", async () => {
+    productService = medusaContainer.resolve("productService")
+    
     const payload = {
       title: "test-product",
       handle: "test-product",
