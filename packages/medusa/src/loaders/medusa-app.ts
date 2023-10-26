@@ -30,6 +30,7 @@ export const loadMedusaApp = async (
   const sharedResourcesConfig = {
     database: {
       clientUrl: configModule.projectConfig.database_url,
+      driverOptions: configModule.projectConfig.database_extra,
     },
   }
 

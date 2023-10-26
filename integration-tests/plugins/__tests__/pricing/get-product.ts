@@ -123,7 +123,7 @@ describe("Link Modules", () => {
       })
     })
 
-    it("Should values in a declared link", async () => {
+    it("Should get prices declared in pricing module", async () => {
       const api = useApi()! as AxiosInstance
 
       const response = await api.get(
