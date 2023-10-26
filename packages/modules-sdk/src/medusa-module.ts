@@ -55,7 +55,7 @@ export type ModuleBootstrapOptions = {
   defaultPath: string
   declaration?: InternalModuleDeclaration | ExternalModuleDeclaration
   moduleExports?: ModuleExports
-  globalContainer?: MedusaContainer
+  sharedContainer?: MedusaContainer
   moduleDefinition?: ModuleDefinition
   injectedDependencies?: Record<string, any>
 }
@@ -186,7 +186,7 @@ export class MedusaModule {
     defaultPath,
     declaration,
     moduleExports,
-    globalContainer,
+    sharedContainer,
     moduleDefinition,
     injectedDependencies,
   }: ModuleBootstrapOptions): Promise<{

@@ -1,8 +1,8 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MODULE_PACKAGE_NAMES,
   MedusaModule,
+  MODULE_PACKAGE_NAMES,
   Modules,
 } from "@medusajs/modules-sdk"
 import { IProductModuleService, ModulesSdkTypes } from "@medusajs/types"

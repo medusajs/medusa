@@ -34,7 +34,8 @@ export class RemoteQuery {
       )
     }
 
-    const serviceConfigs_ = [...servicesConfig]
+    const servicesConfig_ = [...servicesConfig]
+
     for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
@@ -49,12 +50,12 @@ export class RemoteQuery {
       }
 
       this.modulesMap.set(serviceName, mod)
-      serviceConfigs_!.push(mod.__joinerConfig)
+      servicesConfig_!.push(mod.__joinerConfig)
     }
 
     this.customRemoteFetchData = customRemoteFetchData
     this.remoteJoiner = new RemoteJoiner(
-      serviceConfigs_ as JoinerServiceConfig[],
+      servicesConfig_ as JoinerServiceConfig[],
       this.remoteFetchData.bind(this)
     )
   }

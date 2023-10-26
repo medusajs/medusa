@@ -288,5 +288,32 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
+  // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
+
+    const { query, modules } = await MedusaApp({
+      modulesConfig,
+      servicesConfig: joinerConfig,
+      remoteFetchData: remoteQueryFetchData(container),
+      sharedContainer: container,
+      injectedDependencies: {
+        [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+          ContainerRegistrationKeys.PG_CONNECTION
+        ),
+      },
+    })
+
+    // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
+    // We might decide to do it elsewhere but for now I think it is fine
+    for (const [serviceKey, moduleService] of Object.entries(modules)) {
+      container.register(
+        ModulesDefinition[serviceKey].registrationName,
+        asValue(moduleService)
+      )
+    }
+    container.register("remoteQuery", asValue(query))
+  }
+
   return { container, dbConnection, app: expressApp }
 }
