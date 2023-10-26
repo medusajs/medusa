@@ -4,12 +4,10 @@ const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 
-const enableResponseCompression =
-  process.env.ENABLE_RESPONSE_COMPRESSION || true
-
 module.exports = {
   plugins: [],
   projectConfig: {
+    redis_url: process.env.REDIS_URL,
     database_url: DB_URL,
     database_type: "postgres",
     jwt_secret: "test",
