@@ -48,6 +48,10 @@ export const supportedLanguages = [
   {
     locale: "tl",
     name: "Telugu",
+  },
+  {
+    locale: "tm",
+    name: "Tamil",
   }
 ]
 
