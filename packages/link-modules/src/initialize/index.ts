@@ -107,9 +107,11 @@ export const initialize = async (
       continue
     }
 
-    if (!definition.isReadOnlyLink) {
-      definition.schema = generateGraphQLSchema(definition, primary, foreign)
-    }
+    const logger =
+      injectedDependencies?.[ContainerRegistrationKeys.LOGGER] ?? console.log
+    definition.schema = generateGraphQLSchema(definition, primary, foreign, {
+      logger,
+    })
 
     definition.alias ??= []
     for (const alias of definition.alias) {

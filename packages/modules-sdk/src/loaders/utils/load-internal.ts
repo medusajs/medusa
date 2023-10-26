@@ -1,9 +1,7 @@
 import {
-  Constructor,
   InternalModuleDeclaration,
   Logger,
   MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   MedusaContainer,
   ModuleExports,
   ModuleResolution,
@@ -21,7 +19,7 @@ export async function loadInternalModule(
 ): Promise<{ error?: Error } | void> {
   const registrationName = resolution.definition.registrationName
 
-  const { scope, resources } =
+  const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
 
   let loadedModule: ModuleExports
@@ -62,18 +60,6 @@ export async function loadInternalModule(
       error: new Error(
         "No service found in module. Make sure your module exports a service."
       ),
-    }
-  }
-
-  if (
-    scope === MODULE_SCOPE.INTERNAL &&
-    resources === MODULE_RESOURCE_TYPE.SHARED
-  ) {
-    const moduleModels = loadedModule?.models || null
-    if (moduleModels) {
-      moduleModels.map((val: Constructor<unknown>) => {
-        container.registerAdd("db_entities", asValue(val))
-      })
     }
   }
 

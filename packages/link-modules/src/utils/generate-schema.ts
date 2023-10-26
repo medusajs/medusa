@@ -6,10 +6,10 @@ import { composeTableName } from "./compose-link-name"
 export function generateGraphQLSchema(
   joinerConfig: ModuleJoinerConfig,
   primary: ModuleJoinerRelationship,
-  foreign: ModuleJoinerRelationship
+  foreign: ModuleJoinerRelationship,
+  { logger }
 ) {
   const fieldNames = primary.foreignKey.split(",").concat(foreign.foreignKey)
-
   const entityName = toPascalCase(
     "Link_" +
       (joinerConfig.databaseConfig?.tableName ??
@@ -20,6 +20,52 @@ export function generateGraphQLSchema(
           foreign.foreignKey
         ))
   )
+
+  let typeDef = ""
+
+  for (const extend of joinerConfig.extends ?? []) {
+    const extendedModule = MedusaModule.getModuleInstance(extend.serviceName)
+    if (!extendedModule && !extend.relationship.isInternalService) {
+      throw new Error(
+        `Module ${extend.serviceName} not found. Please verify that the module is configured and installed, also the module must be loaded before the link modules.`
+      )
+    }
+
+    const joinerConfig = MedusaModule.getJoinerConfig(
+      extend.relationship.serviceName
+    )
+    let extendedEntityName =
+      joinerConfig?.linkableKeys?.[extend.relationship.foreignKey]!
+
+    if (!extendedEntityName && (!primary || !foreign)) {
+      logger.warn(
+        `Link modules schema: No linkable key found for ${extend.relationship.foreignKey} on module ${extend.relationship.serviceName}.`
+      )
+
+      continue
+    }
+
+    const fieldName = camelToSnakeCase(
+      lowerCaseFirst(extend.relationship.alias)
+    )
+
+    let type = extend.relationship.isList ? `[${entityName}]` : entityName
+    if (joinerConfig.isReadOnlyLink) {
+      type = extend.relationship.isList
+        ? `[${extendedEntityName}]`
+        : extendedEntityName
+    }
+
+    typeDef += `    
+      extend type ${extend.serviceName} {
+        ${fieldName}: ${type}
+      }
+    `
+  }
+
+  if (joinerConfig.isReadOnlyLink) {
+    return typeDef
+  }
 
   // Pivot table fields
   const fields = fieldNames.reduce((acc, curr) => {
@@ -48,7 +94,7 @@ export function generateGraphQLSchema(
     composeTableName(foreign.serviceName)
   )}`
 
-  let typeDef = `
+  typeDef += `
     type ${entityName} {
       ${(Object.entries(fields) as any)
         .map(
@@ -65,36 +111,6 @@ export function generateGraphQLSchema(
       deletedAt: String
     }
   `
-
-  for (const extend of joinerConfig.extends ?? []) {
-    const extendedModule = MedusaModule.getModuleInstance(extend.serviceName)
-    if (!extendedModule && !extend.relationship.isInternalService) {
-      throw new Error(
-        `Module ${extend.serviceName} not found. Please verify that the module is configured and installed, also the module must be loaded before the link modules.`
-      )
-    }
-
-    const joinerConfig = MedusaModule.getJoinerConfig(extend.serviceName)
-    let extendedEntityName =
-      joinerConfig?.linkableKeys?.[extend.relationship.primaryKey]!
-
-    if (!extendedEntityName) {
-      continue
-    }
-
-    extendedEntityName = toPascalCase(extendedEntityName)
-
-    const linkTableFieldName = camelToSnakeCase(
-      lowerCaseFirst(extend.relationship.alias)
-    )
-    const type = extend.relationship.isList ? `[${entityName}]` : entityName
-
-    typeDef += `    
-      extend type ${extendedEntityName} {
-        ${linkTableFieldName}: ${type}
-      }
-    `
-  }
 
   return typeDef
 }
