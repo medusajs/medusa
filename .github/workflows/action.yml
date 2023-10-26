@@ -318,7 +318,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
@@ -336,7 +336,7 @@ jobs:
 
       - name: Build tests
         run: yarn build 
-        working-directory: ./integration-tests/servicesgi 
+        working-directory: integration-tests/services
 
       - name: Run service integration tests
         run: yarn test:integration:services
