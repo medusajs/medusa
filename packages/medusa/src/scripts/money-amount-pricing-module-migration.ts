@@ -33,6 +33,13 @@ const migrateProductVariant = async (
     { registerInContainer: false }
   )
 
+  if (!link) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "Can't migrate money_amounts: Pricing module is not configured correctly"
+    )
+  }
+
   const priceSet = await pricingService.create({
     rules: [{ rule_attribute: "region_id" }],
     prices: variant.prices.map((price) => ({
@@ -46,7 +53,7 @@ const migrateProductVariant = async (
     })),
   })
 
-  await link!.create({
+  await link.create({
     productService: {
       variant_id: variant.id,
     },

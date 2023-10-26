@@ -155,7 +155,7 @@ module.exports = {
 
       const { runMigrations } = await medusaAppLoader(
         { configModule, container },
-        { register: false }
+        { registerInContainer: false }
       )
 
       const options = {
