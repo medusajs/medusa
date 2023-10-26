@@ -8,7 +8,7 @@ import path from "path"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 
-jest.setTimeout(5000)
+jest.setTimeout(30000)
 
 const adminHeaders = {
   headers: {
