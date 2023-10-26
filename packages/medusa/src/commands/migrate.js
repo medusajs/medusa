@@ -12,6 +12,8 @@ import configModuleLoader from "../loaders/config"
 import databaseLoader from "../loaders/database"
 import featureFlagLoader from "../loaders/feature-flags"
 import { loadMedusaApp } from "../loaders/medusa-app"
+import pgConnectionLoader from "../loaders/pg-connection"
+import { createMedusaContainer } from "@medusajs/utils"
 
 const getDataSource = async (directory) => {
   const configModule = configModuleLoader(directory)
@@ -37,9 +39,12 @@ const getDataSource = async (directory) => {
 
 const runLinkMigrations = async (directory) => {
   const configModule = configModuleLoader(directory)
+  const container = createMedusaContainer()
+
+  await pgConnectionLoader({ configModule, container })
 
   const { runMigrations } = await loadMedusaApp(
-    { configModule },
+    { configModule, container },
     { registerInContainer: false }
   )
 
