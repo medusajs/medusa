@@ -560,6 +560,22 @@ module.exports = {
             opacity: 0.3,
           },
         },
+        minimize: {
+          from: {
+            transform: "scale(1)",
+          },
+          to: {
+            transform: "scale(0)",
+          },
+        },
+        maximize: {
+          from: {
+            transform: "scale(0)",
+          },
+          to: {
+            transform: "scale(1)",
+          },
+        },
       }),
       animation: {
         fadeIn: "fadeIn 500ms",
@@ -576,6 +592,8 @@ module.exports = {
         slideInLeft: "slideInLeft 500ms",
         slideOutLeft: "slideOutLeft 500ms",
         pulsingDots: "pulsingDots 1s alternate infinite",
+        minimize: "minimize 500ms",
+        maximize: "maximize 500ms",
       },
     },
     fontFamily: {
@@ -685,6 +703,9 @@ module.exports = {
             "&::-webkit-details-marker": {
               display: "none",
             },
+          },
+          ".flip-y": {
+            transform: "rotateY(180deg)",
           },
         })
         addComponents({
