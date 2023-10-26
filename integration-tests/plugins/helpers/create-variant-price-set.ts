@@ -26,7 +26,7 @@ export const createVariantPriceSet = async ({
   prices?: CreatePriceSetDTO["prices"]
   rules?: CreatePriceSetDTO["rules"]
 }): Promise<PriceSetDTO> => {
-  const medusaApp = container.resolve("medusaApp")
+  const remoteLink = container.resolve("remoteLink")
   const pricingModuleService: IPricingModuleService = container.resolve(
     "pricingModuleService"
   )
@@ -36,7 +36,7 @@ export const createVariantPriceSet = async ({
     prices,
   })
 
-  await medusaApp.link.create({
+  await remoteLink.create({
     productService: {
       variant_id: variantId,
     },

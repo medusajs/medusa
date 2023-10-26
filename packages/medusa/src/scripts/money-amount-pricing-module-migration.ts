@@ -1,16 +1,17 @@
-import { IPricingModuleService } from "@medusajs/types"
-import { ProductVariantService } from "../services"
+import { FlagRouter, MedusaError } from "@medusajs/utils"
+import { IPricingModuleService, MedusaContainer } from "@medusajs/types"
 
 import { AwilixContainer } from "awilix"
 import { EntityManager } from "typeorm"
-import { ProductVariant } from "../models"
-import dotenv from "dotenv"
-import express from "express"
-import loaders from "../loaders"
-import { createDefaultRuleTypes } from "./create-default-rule-types"
-import { FlagRouter, MedusaError } from "@medusajs/utils"
 import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
 import { Modules } from "@medusajs/modules-sdk"
+import { ProductVariant } from "../models"
+import { ProductVariantService } from "../services"
+import { createDefaultRuleTypes } from "./create-default-rule-types"
+import dotenv from "dotenv"
+import express from "express"
+import loadMedusaApp from "../loaders/medusa-app"
+import loaders from "../loaders"
 
 dotenv.config()
 
@@ -20,13 +21,24 @@ const migrateProductVariant = async (
   variant: ProductVariant,
   {
     container,
-  }: { container: AwilixContainer; transactionManager: EntityManager }
+  }: { container: MedusaContainer; transactionManager: EntityManager }
 ) => {
   const pricingService: IPricingModuleService = container.resolve(
     "pricingModuleService"
   )
 
-  const { link } = container.resolve("medusaApp")
+  const configModule = await container.resolve("configModule")
+  const { link } = await loadMedusaApp(
+    { configModule, container },
+    { registerInContainer: false }
+  )
+
+  if (!link) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "Can't migrate money_amounts: Pricing module is not configured correctly"
+    )
+  }
 
   const priceSet = await pricingService.create({
     rules: [{ rule_attribute: "region_id" }],
@@ -53,7 +65,7 @@ const migrateProductVariant = async (
 
 const processBatch = async (
   variants: ProductVariant[],
-  container: AwilixContainer
+  container: MedusaContainer
 ) => {
   const manager = container.resolve("manager")
   return await manager.transaction(async (transactionManager) => {
@@ -87,7 +99,10 @@ const migrate = async function ({ directory }) {
     !featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key) &&
     !featureFlagRouter.isFeatureEnabled(Modules.PRICING)
   ) {
-    throw new MedusaError(MedusaError.Types.NOT_ALLOWED, "Pricing module not enabled")
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "Pricing module not enabled"
+    )
   }
 
   await createDefaultRuleTypes(container)

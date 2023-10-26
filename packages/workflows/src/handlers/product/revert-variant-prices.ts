@@ -28,9 +28,9 @@ export async function revertVariantPrices({
   }
 
   const pricingModuleService = container.resolve("pricingModuleService")
-  const medusaApp = container.resolve("medusaApp")
+  const remoteLink = container.resolve("remoteLink")
 
-  await medusaApp.link.remove(createdLinks)
+  await remoteLink.remove(createdLinks)
 
   if (originalMoneyAmounts.length) {
     await pricingModuleService.updateMoneyAmounts(originalMoneyAmounts)

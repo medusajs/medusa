@@ -29,7 +29,6 @@ export async function updateProductsVariantsPrices({
   const productVariantService = container.resolve("productVariantService")
   const regionService = container.resolve("regionService")
   const featureFlagRouter = container.resolve("featureFlagRouter")
-  const medusaApp = container.resolve("medusaApp")
   const productVariantServiceTx = productVariantService.withTransaction(manager)
   const variantIdsPricesData: any[] = []
   const variantPricesMap = new Map<string, any[]>()
@@ -80,6 +79,7 @@ export async function updateProductsVariantsPrices({
   }
 
   if (featureFlagRouter.isFeatureEnabled("isolate_pricing_domain")) {
+    const remoteLink = container.resolve("remoteLink")
     const pricingModuleService = container.resolve("pricingModuleService")
 
     for (let { variantId } of variantIdsPricesData) {
@@ -88,7 +88,7 @@ export async function updateProductsVariantsPrices({
         prices: variantPricesMap.get(variantId),
       })
 
-      await medusaApp.link.create({
+      await remoteLink.create({
         productService: {
           variant_id: variantId,
         },

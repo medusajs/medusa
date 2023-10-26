@@ -1,9 +1,4 @@
 import {
-  RemoteFetchDataCallback,
-  RemoteJoiner,
-  toRemoteJoinerQuery,
-} from "@medusajs/orchestration"
-import {
   JoinerRelationship,
   JoinerServiceConfig,
   LoadedModule,
@@ -11,7 +6,13 @@ import {
   RemoteExpandProperty,
   RemoteJoinerQuery,
 } from "@medusajs/types"
+import {
+  RemoteFetchDataCallback,
+  RemoteJoiner,
+  toRemoteJoinerQuery,
+} from "@medusajs/orchestration"
 import { isString, toPascalCase } from "@medusajs/utils"
+
 import { MedusaModule } from "./medusa-module"
 
 export class RemoteQuery {
@@ -28,6 +29,8 @@ export class RemoteQuery {
     customRemoteFetchData?: RemoteFetchDataCallback
     servicesConfig?: ModuleJoinerConfig[]
   }) {
+    const servicesConfig_ = [...servicesConfig]
+    
     if (!modulesLoaded?.length) {
       modulesLoaded = MedusaModule.getLoadedModules().map(
         (mod) => Object.values(mod)[0]
@@ -50,10 +53,15 @@ export class RemoteQuery {
       }
 
       this.modulesMap.set(serviceName, mod)
+<<<<<<< HEAD
       servicesConfig_!.push(mod.__joinerConfig)
+=======
+      servicesConfig_.push(mod.__joinerConfig)
+>>>>>>> 5fc6284ae (Feat(medusa): update migration and initDb to run link-migrations (#5437))
     }
 
     this.customRemoteFetchData = customRemoteFetchData
+
     this.remoteJoiner = new RemoteJoiner(
       servicesConfig_ as JoinerServiceConfig[],
       this.remoteFetchData.bind(this)

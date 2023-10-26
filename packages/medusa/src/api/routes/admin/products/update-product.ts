@@ -137,7 +137,6 @@ export default async (req, res) => {
     req.scope.resolve("inventoryService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-
   const productModuleService = req.scope.resolve("productModuleService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
