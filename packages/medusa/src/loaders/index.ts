@@ -2,9 +2,8 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MedusaApp,
-  moduleLoader,
+  ModuleDefinition,
   ModulesDefinition,
-  registerModules,
 } from "@medusajs/modules-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -37,7 +36,7 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import { ConfigModule } from "@medusajs/types"
+import { ConfigModule, MODULE_RESOURCE_TYPE } from "@medusajs/types"
 
 type Options = {
   directory: string
@@ -54,6 +53,7 @@ function mergeModulesConfig(
   modules: ConfigModule["modules"],
   medusaInternalModulesConfig
 ) {
+  const modules_ = { ...modules }
   for (const [moduleName, moduleConfig] of Object.entries(modules as any)) {
     const moduleDefinition = ModulesDefinition[moduleName]
 
@@ -66,9 +66,39 @@ function mergeModulesConfig(
     if (!isModuleEnabled) {
       delete medusaInternalModulesConfig[moduleName]
     } else {
-      medusaInternalModulesConfig[moduleName] = moduleConfig as Partial<
+      modules_[moduleName] = moduleConfig as Partial<
         InternalModuleDeclaration | ExternalModuleDeclaration
       >
+    }
+  }
+
+  return modules_
+}
+
+async function loadLegacyModulesEntities(configModules, container) {
+  for (const [moduleName, moduleConfig] of Object.entries(configModules)) {
+    const definition = ModulesDefinition[moduleName]
+
+    if (!definition.isLegacy) {
+      continue
+    }
+
+    if (
+      (moduleConfig as InternalModuleDeclaration).resources ===
+        MODULE_RESOURCE_TYPE.SHARED ||
+      (definition.defaultModuleDeclaration as InternalModuleDeclaration)
+        .resources === MODULE_RESOURCE_TYPE.SHARED
+    ) {
+      const module = await import(
+        (moduleConfig as InternalModuleDeclaration).resolve ??
+          (definition.defaultPackage as string)
+      )
+
+      if (module.default?.models) {
+        module.default.models.map((model) =>
+          container.registerAdd("db_entities", asValue(model))
+        )
+      }
     }
   }
 }
@@ -133,32 +163,20 @@ export default async ({
 
   await pgConnectionLoader({ container, configModule })
 
-  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
-
-  track("MODULES_INIT_STARTED")
+  // prepare modules configuration + Load shared resources entities
   const defaultModules = Object.values(ModulesDefinition).filter(
-    (definition) => {
+    (definition: ModuleDefinition) => {
       return !!definition.defaultPackage
     }
   )
 
-  const configModules = configModule.modules ?? {}
+  let configModules = { ...configModule.modules } ?? {}
 
-  for (const defaultModule of defaultModules) {
+  for (const defaultModule of defaultModules as ModuleDefinition[]) {
     configModules[defaultModule.key] ??= defaultModule.defaultModuleDeclaration
   }
 
-  await moduleLoader({
-    container,
-    moduleResolutions: registerModules(configModule?.modules, {
-      loadLegacyOnly: featureFlagRouter.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      ),
-    }),
-    logger: Logger,
-  })
-  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
-  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
+  await loadLegacyModulesEntities(configModules, container)
 
   const dbActivity = Logger.activity(`Initializing database${EOL}`)
   track("DATABASE_INIT_STARTED")
@@ -178,6 +196,38 @@ export default async ({
   container.register({
     [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
   })
+
+  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
+  track("MODULES_INIT_STARTED")
+
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    configModules = mergeModulesConfig(configModules ?? {}, modulesConfig)
+  }
+
+  const { query, modules } = await MedusaApp({
+    modulesConfig: configModules,
+    servicesConfig: joinerConfig,
+    remoteFetchData: remoteQueryFetchData(container),
+    sharedContainer: container,
+    injectedDependencies: {
+      [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+        ContainerRegistrationKeys.PG_CONNECTION
+      ),
+    },
+  })
+
+  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
+  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
+
+  // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
+  // We might decide to do it elsewhere but for now I think it is fine
+  for (const [serviceKey, moduleService] of Object.entries(modules)) {
+    container.register(
+      ModulesDefinition[serviceKey].registrationName,
+      asValue(moduleService)
+    )
+  }
+  container.register("remoteQuery", asValue(query))
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
@@ -237,33 +287,6 @@ export default async ({
   const searchAct =
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
-
-  // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
-    mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
-
-    const { query, modules } = await MedusaApp({
-      modulesConfig,
-      servicesConfig: joinerConfig,
-      remoteFetchData: remoteQueryFetchData(container),
-      sharedContainer: container,
-      injectedDependencies: {
-        [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-          ContainerRegistrationKeys.PG_CONNECTION
-        ),
-      },
-    })
-
-    // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
-    // We might decide to do it elsewhere but for now I think it is fine
-    for (const [serviceKey, moduleService] of Object.entries(modules)) {
-      container.register(
-        ModulesDefinition[serviceKey].registrationName,
-        asValue(moduleService)
-      )
-    }
-    container.register("remoteQuery", asValue(query))
-  }
 
   return { container, dbConnection, app: expressApp }
 }

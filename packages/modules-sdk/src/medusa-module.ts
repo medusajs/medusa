@@ -231,7 +231,12 @@ export class MedusaModule {
       }
     }
 
-    const container = createMedusaContainer({}, globalContainer)
+    // TODO: Only do that while legacy modules sharing the manager exists then remove the ternary in favor of createMedusaContainer({}, globalContainer)
+    const container =
+      modDeclaration.scope === MODULE_SCOPE.INTERNAL &&
+      modDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+        ? globalContainer ?? createMedusaContainer()
+        : createMedusaContainer({}, globalContainer)
 
     if (injectedDependencies) {
       for (const service in injectedDependencies) {

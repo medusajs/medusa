@@ -107,7 +107,9 @@ export const initialize = async (
       continue
     }
 
-    definition.schema = generateGraphQLSchema(definition, primary, foreign)
+    if (!definition.isReadOnlyLink) {
+      definition.schema = generateGraphQLSchema(definition, primary, foreign)
+    }
 
     definition.alias ??= []
     for (const alias of definition.alias) {

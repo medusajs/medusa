@@ -133,7 +133,7 @@ function retrieveLinkModuleAndAlias({
   }[] = []
 
   for (const linkModuleJoinerConfig of moduleJoinerConfigs.filter(
-    (config) => config.isLink
+    (config) => config.isLink && !config.isReadOnlyLink
   )) {
     const linkPrimary =
       linkModuleJoinerConfig.relationships![0] as ModuleJoinerRelationship
@@ -249,8 +249,9 @@ function retrieveLinkModuleAndAlias({
   }
 
   if (!linkModulesMetadata.length) {
-    throw new Error(
-      `CatalogModule error, unable to retrieve the link module that correspond to the entities ${primaryEntity} - ${foreignEntity}.`
+    // TODO: change to use the logger
+    console.warn(
+      `CatalogModule warning, unable to retrieve the link module that correspond to the entities ${primaryEntity} - ${foreignEntity}.`
     )
   }
 

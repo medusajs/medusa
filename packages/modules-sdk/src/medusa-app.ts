@@ -40,8 +40,9 @@ export type RunMigrationFn = (
 
 export type MedusaModuleConfig = {
   [key: string | Modules]:
+    | string
+    | boolean
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-    | true
 }
 
 export type SharedResources = {
@@ -102,7 +103,7 @@ async function loadModules(modulesConfig, globalContainer) {
 
       const service = loaded[moduleName]
       globalContainer.register({
-        [service.__definition.registrationName]: service,
+        [service.__definition.registrationName]: asValue(service),
       })
 
       if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
