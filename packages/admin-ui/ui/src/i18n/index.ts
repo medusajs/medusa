@@ -44,6 +44,10 @@ export const supportedLanguages = [
   {
     locale: "bs",
     name: "Bosanski",
+  },
+  {
+    locale: "tl",
+    name: "Telugu",
   }
 ]
 
