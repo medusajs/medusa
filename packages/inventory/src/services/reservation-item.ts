@@ -163,15 +163,12 @@ export default class ReservationItemService {
 
     context.messageAggregator?.save(
       newReservationItems.map(({ id }) => {
-        return composeMessage(
-          ReservationItemEvents.RESERVATION_ITEM_CREATED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: ReservationItem.name,
-            context: context,
-          }
-        )
+        return composeMessage(ReservationItemEvents.RESERVATION_ITEM_CREATED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: ReservationItem.name,
+          context: context,
+        })
       })
     )
 
@@ -238,15 +235,12 @@ export default class ReservationItemService {
     await Promise.all(ops)
 
     context.messageAggregator?.save(
-      composeMessage(
-        ReservationItemEvents.RESERVATION_ITEM_UPDATED as unknown as string,
-        {
-          data: { id: mergedItem.id },
-          service: Modules.INVENTORY,
-          entity: ReservationItem.name,
-          context: context,
-        }
-      )
+      composeMessage(ReservationItemEvents.RESERVATION_ITEM_UPDATED, {
+        data: { id: mergedItem.id },
+        service: Modules.INVENTORY,
+        entity: ReservationItem.name,
+        context: context,
+      })
     )
 
     return mergedItem
@@ -297,15 +291,12 @@ export default class ReservationItemService {
 
     context.messageAggregator?.save(
       softDeletedReservationIds.map((id) => {
-        return composeMessage(
-          ReservationItemEvents.RESERVATION_ITEM_DELETED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: ReservationItem.name,
-            context: context,
-          }
-        )
+        return composeMessage(ReservationItemEvents.RESERVATION_ITEM_DELETED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: ReservationItem.name,
+          context: context,
+        })
       })
     )
   }
@@ -331,15 +322,12 @@ export default class ReservationItemService {
 
     context.messageAggregator?.save(
       softDeletedReservationIds.map((id) => {
-        return composeMessage(
-          ReservationItemEvents.RESERVATION_ITEM_DELETED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: ReservationItem.name,
-            context: context,
-          }
-        )
+        return composeMessage(ReservationItemEvents.RESERVATION_ITEM_DELETED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: ReservationItem.name,
+          context: context,
+        })
       })
     )
   }
@@ -376,15 +364,12 @@ export default class ReservationItemService {
 
     context.messageAggregator?.save(
       ids.map((id) => {
-        return composeMessage(
-          ReservationItemEvents.RESERVATION_ITEM_DELETED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: ReservationItem.name,
-            context: context,
-          }
-        )
+        return composeMessage(ReservationItemEvents.RESERVATION_ITEM_DELETED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: ReservationItem.name,
+          context: context,
+        })
       })
     )
   }

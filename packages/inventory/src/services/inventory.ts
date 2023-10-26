@@ -263,11 +263,7 @@ export default class InventoryService implements IInventoryService {
 
     const result = await this.reservationItemService_.create(input, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
 
     return result
   }
@@ -303,11 +299,7 @@ export default class InventoryService implements IInventoryService {
   ): Promise<InventoryItemDTO[]> {
     const result = await this.inventoryItemService_.create(input, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
 
     return result
   }
@@ -331,11 +323,7 @@ export default class InventoryService implements IInventoryService {
   ): Promise<InventoryItemDTO> {
     const [result] = await this.createInventoryItems([input], context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
 
     return result
   }
@@ -353,11 +341,7 @@ export default class InventoryService implements IInventoryService {
   ): Promise<InventoryLevelDTO[]> {
     const result = await this.inventoryLevelService_.create(input, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
 
     return result
   }
@@ -406,11 +390,7 @@ export default class InventoryService implements IInventoryService {
       context
     )
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
 
     return { ...inventoryItem }
   }
@@ -438,11 +418,7 @@ export default class InventoryService implements IInventoryService {
 
     await this.inventoryItemService_.delete(inventoryItemId, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
   }
 
   /**
@@ -468,11 +444,7 @@ export default class InventoryService implements IInventoryService {
 
     await this.inventoryItemService_.restore(inventoryItemId, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
   }
 
   @InjectEntityManager(
@@ -488,11 +460,7 @@ export default class InventoryService implements IInventoryService {
   ): Promise<void> {
     await this.inventoryLevelService_.deleteByLocationId(locationId, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
   }
 
   @InjectEntityManager(
@@ -508,11 +476,7 @@ export default class InventoryService implements IInventoryService {
   ): Promise<void> {
     await this.reservationItemService_.deleteByLocationId(locationId, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
   }
 
   /**
@@ -545,11 +509,7 @@ export default class InventoryService implements IInventoryService {
 
     await this.inventoryLevelService_.delete(inventoryLevel.id, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
   }
 
   @InjectEntityManager(
@@ -586,11 +546,7 @@ export default class InventoryService implements IInventoryService {
       })
     )
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
 
     return result
   }
@@ -652,11 +608,7 @@ export default class InventoryService implements IInventoryService {
       context
     )
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
 
     return result
   }
@@ -679,11 +631,7 @@ export default class InventoryService implements IInventoryService {
   ): Promise<void> {
     await this.reservationItemService_.deleteByLineItem(lineItemId, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
   }
 
   /**
@@ -704,11 +652,7 @@ export default class InventoryService implements IInventoryService {
   ): Promise<void> {
     await this.reservationItemService_.delete(reservationItemId, context)
 
-    await this.emitEvents_(
-      context?.messageAggregator?.getMessages({
-        groupBy: ["eventName", "body.metadata.object"],
-      })
-    )
+    await this.emitEvents_(context?.messageAggregator?.getMessages())
   }
 
   /**

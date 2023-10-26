@@ -144,15 +144,12 @@ export default class InventoryLevelService {
 
     context.messageAggregator?.save(
       saved.map(({ id }) => {
-        return composeMessage(
-          InventoryLevelEvents.INVENTORY_LEVEL_CREATED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: InventoryLevel.name,
-            context: context,
-          }
-        )
+        return composeMessage(InventoryLevelEvents.INVENTORY_LEVEL_CREATED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: InventoryLevel.name,
+          context: context,
+        })
       })
     )
 
@@ -190,15 +187,12 @@ export default class InventoryLevelService {
       await levelRepository.save(item)
 
       context.messageAggregator?.save(
-        composeMessage(
-          InventoryItemEvents.INVENTORY_ITEM_UPDATED as unknown as string,
-          {
-            data: { id: item.id },
-            service: Modules.INVENTORY,
-            entity: InventoryLevel.name,
-            context: context,
-          }
-        )
+        composeMessage(InventoryItemEvents.INVENTORY_ITEM_UPDATED, {
+          data: { id: item.id },
+          service: Modules.INVENTORY,
+          entity: InventoryLevel.name,
+          context: context,
+        })
       )
     }
 
@@ -252,15 +246,12 @@ export default class InventoryLevelService {
 
     context.messageAggregator?.save(
       ids.map((id) => {
-        return composeMessage(
-          InventoryLevelEvents.INVENTORY_LEVEL_DELETED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: InventoryLevel.name,
-            context: context,
-          }
-        )
+        return composeMessage(InventoryLevelEvents.INVENTORY_LEVEL_DELETED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: InventoryLevel.name,
+          context: context,
+        })
       })
     )
   }
@@ -286,15 +277,12 @@ export default class InventoryLevelService {
 
     context.messageAggregator?.save(
       ids.map((id) => {
-        return composeMessage(
-          InventoryLevelEvents.INVENTORY_LEVEL_CREATED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: InventoryLevel.name,
-            context: context,
-          }
-        )
+        return composeMessage(InventoryLevelEvents.INVENTORY_LEVEL_CREATED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: InventoryLevel.name,
+          context: context,
+        })
       })
     )
   }
@@ -320,15 +308,12 @@ export default class InventoryLevelService {
 
     context.messageAggregator?.save(
       ids.map((id) => {
-        return composeMessage(
-          InventoryLevelEvents.INVENTORY_LEVEL_DELETED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: InventoryLevel.name,
-            context: context,
-          }
-        )
+        return composeMessage(InventoryLevelEvents.INVENTORY_LEVEL_DELETED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: InventoryLevel.name,
+          context: context,
+        })
       })
     )
   }
@@ -352,15 +337,12 @@ export default class InventoryLevelService {
 
     context.messageAggregator?.save(
       ids.map((id) => {
-        return composeMessage(
-          InventoryLevelEvents.INVENTORY_LEVEL_DELETED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: InventoryLevel.name,
-            context: context,
-          }
-        )
+        return composeMessage(InventoryLevelEvents.INVENTORY_LEVEL_DELETED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: InventoryLevel.name,
+          context: context,
+        })
       })
     )
   }

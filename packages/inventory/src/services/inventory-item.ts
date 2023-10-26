@@ -146,15 +146,12 @@ export default class InventoryItemService {
 
     context.messageAggregator?.save(
       result.map(({ id }) => {
-        return composeMessage(
-          InventoryItemEvents.INVENTORY_ITEM_CREATED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: InventoryItem.name,
-            context: context,
-          }
-        )
+        return composeMessage(InventoryItemEvents.INVENTORY_ITEM_CREATED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: InventoryItem.name,
+          context: context,
+        })
       })
     )
 
@@ -191,15 +188,12 @@ export default class InventoryItemService {
       await itemRepository.save(item)
 
       context.messageAggregator?.save(
-        composeMessage(
-          InventoryItemEvents.INVENTORY_ITEM_UPDATED as unknown as string,
-          {
-            data: { id: item.id },
-            service: Modules.INVENTORY,
-            entity: InventoryItem.name,
-            context: context,
-          }
-        )
+        composeMessage(InventoryItemEvents.INVENTORY_ITEM_UPDATED, {
+          data: { id: item.id },
+          service: Modules.INVENTORY,
+          entity: InventoryItem.name,
+          context: context,
+        })
       )
     }
 
@@ -226,15 +220,12 @@ export default class InventoryItemService {
 
     context.messageAggregator?.save(
       ids.map((id) => {
-        return composeMessage(
-          InventoryItemEvents.INVENTORY_ITEM_DELETED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: InventoryItem.name,
-            context: context,
-          }
-        )
+        return composeMessage(InventoryItemEvents.INVENTORY_ITEM_DELETED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: InventoryItem.name,
+          context: context,
+        })
       })
     )
   }
@@ -259,15 +250,12 @@ export default class InventoryItemService {
 
     context.messageAggregator?.save(
       ids.map((id) => {
-        return composeMessage(
-          InventoryItemEvents.INVENTORY_ITEM_CREATED as unknown as string,
-          {
-            data: { id },
-            service: Modules.INVENTORY,
-            entity: InventoryItem.name,
-            context: context,
-          }
-        )
+        return composeMessage(InventoryItemEvents.INVENTORY_ITEM_CREATED, {
+          data: { id },
+          service: Modules.INVENTORY,
+          entity: InventoryItem.name,
+          context: context,
+        })
       })
     )
   }
