@@ -1,5 +1,27 @@
 # @medusajs/workflows
 
+## 0.2.4
+
+### Patch Changes
+
+- [#5301](https://github.com/medusajs/medusa/pull/5301) [`66413d094`](https://github.com/medusajs/medusa/commit/66413d094e916debbdb74b68800c96ca2c9302c9) Thanks [@srindom](https://github.com/srindom)! - fix: move create inventory workflow to @medusajs/workflows
+
+- Updated dependencies [[`378ca1b36`](https://github.com/medusajs/medusa/commit/378ca1b36e909a67e39c69ea5ca94ec58a345878), [`b62af612c`](https://github.com/medusajs/medusa/commit/b62af612c7baa244075e546c949b89c4589bd2cf), [`e47461d95`](https://github.com/medusajs/medusa/commit/e47461d95caecf3a447ee9fa0b0950340b93f282), [`66413d094`](https://github.com/medusajs/medusa/commit/66413d094e916debbdb74b68800c96ca2c9302c9)]:
+  - @medusajs/utils@1.10.4
+  - @medusajs/modules-sdk@1.12.1
+  - @medusajs/orchestration@0.4.2
+
+## 0.2.3
+
+### Patch Changes
+
+- [#5081](https://github.com/medusajs/medusa/pull/5081) [`202049f8a`](https://github.com/medusajs/medusa/commit/202049f8aa3682df7e545b1c42ab0bdab1c52639) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, workflows): Create product workflow with Isolated modules + module registration
+
+- Updated dependencies [[`cc4169a94`](https://github.com/medusajs/medusa/commit/cc4169a94c7c5f5bf4d04f7b6e815b409a0a8192), [`30233712c`](https://github.com/medusajs/medusa/commit/30233712cb93b38de50c266a9841cea413949611), [`dfa5d041c`](https://github.com/medusajs/medusa/commit/dfa5d041c90b849b288f8ae9f5a0a1aa3ee1b32e), [`1e7db5a5c`](https://github.com/medusajs/medusa/commit/1e7db5a5cb7c955e72c52e64df8a16b1607eef70)]:
+  - @medusajs/utils@1.10.2
+  - @medusajs/orchestration@0.4.1
+  - @medusajs/modules-sdk@1.11.3
+
 ## 0.2.2
 
 ### Patch Changes

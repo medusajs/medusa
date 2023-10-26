@@ -47,7 +47,7 @@ describe("/admin/return-reasons", () => {
       const response = await api
         .post("/admin/return-reasons", payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -80,7 +80,7 @@ describe("/admin/return-reasons", () => {
       const response = await api
         .post("/admin/return-reasons", payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -107,7 +107,7 @@ describe("/admin/return-reasons", () => {
       const nested_response = await api
         .post("/admin/return-reasons", nested_payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -141,7 +141,7 @@ describe("/admin/return-reasons", () => {
       const response = await api
         .post("/admin/return-reasons", payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -168,7 +168,7 @@ describe("/admin/return-reasons", () => {
       const nested_response = await api
         .post("/admin/return-reasons", nested_payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -185,7 +185,7 @@ describe("/admin/return-reasons", () => {
       const dbl_nested_response = await api
         .post("/admin/return-reasons", dbl_nested_payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -209,7 +209,7 @@ describe("/admin/return-reasons", () => {
       const response = await api
         .post("/admin/return-reasons", payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -229,7 +229,7 @@ describe("/admin/return-reasons", () => {
       const deleteResponse = await api
         .delete(`/admin/return-reasons/${response.data.return_reason.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -259,7 +259,7 @@ describe("/admin/return-reasons", () => {
       const response = await api
         .post("/admin/return-reasons", payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -285,7 +285,7 @@ describe("/admin/return-reasons", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -314,7 +314,7 @@ describe("/admin/return-reasons", () => {
       const response = await api
         .post("/admin/return-reasons", payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -331,7 +331,7 @@ describe("/admin/return-reasons", () => {
       const resp = await api
         .post("/admin/return-reasons", nested_payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -341,7 +341,7 @@ describe("/admin/return-reasons", () => {
       const nested_response = await api
         .get("/admin/return-reasons", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -381,7 +381,7 @@ describe("/admin/return-reasons", () => {
       await api
         .post("/admin/return-reasons", payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -391,7 +391,7 @@ describe("/admin/return-reasons", () => {
       const response = await api
         .get("/admin/return-reasons", {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -439,7 +439,7 @@ describe("/admin/return-reasons", () => {
       const response = await api
         .post("/admin/return-reasons", payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -460,7 +460,7 @@ describe("/admin/return-reasons", () => {
         `/admin/return-reasons/${response.data.return_reason.id}`,
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -476,7 +476,7 @@ describe("/admin/return-reasons", () => {
       const getResult = await api
         .get(`/admin/return-reasons/${response.data.return_reason.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -499,7 +499,7 @@ describe("/admin/return-reasons", () => {
       const response = await api
         .post("/admin/return-reasons", payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -526,7 +526,7 @@ describe("/admin/return-reasons", () => {
       const response_child = await api
         .post("/admin/return-reasons", payload_child, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -547,7 +547,7 @@ describe("/admin/return-reasons", () => {
       const deleteResult = await api
         .delete(`/admin/return-reasons/${response.data.return_reason.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -565,7 +565,7 @@ describe("/admin/return-reasons", () => {
       await api
         .get(`/admin/return-reasons/${response.data.return_reason.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -576,7 +576,7 @@ describe("/admin/return-reasons", () => {
       await api
         .get(`/admin/return-reasons/${response_child.data.return_reason.id}`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {

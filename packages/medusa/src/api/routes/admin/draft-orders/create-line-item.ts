@@ -1,4 +1,10 @@
-import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  IsBoolean,
+  IsInt,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
@@ -47,7 +53,7 @@ import { validator } from "../../../../utils/validator"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/draft-orders/{id}/line-items' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "quantity": 1
@@ -55,6 +61,7 @@ import { validator } from "../../../../utils/validator"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Draft Orders
  * responses:
@@ -114,7 +121,10 @@ export default async (req, res) => {
           validated.variant_id,
           draftOrder.cart.region_id,
           validated.quantity,
-          { metadata: validated.metadata, unit_price: validated.unit_price }
+          {
+            metadata: validated.metadata,
+            unit_price: validated.unit_price,
+          }
         )
 
       await cartService

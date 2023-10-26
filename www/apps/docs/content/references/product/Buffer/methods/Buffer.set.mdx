@@ -1,0 +1,62 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# set
+
+[Buffer](../../interfaces/Buffer.mdx).set
+
+**set**(`array`, `offset?`): `void`
+
+Sets a value or an array of values.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "array",
+    "type": "[`ArrayLike`](../../interfaces/ArrayLike.mdx)<`number`\\>",
+    "description": "A typed or untyped array of values to set.",
+    "optional": false,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "length",
+        "type": "`number`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "The index in the current array at which the values are to be written.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Inherited from
+
+Uint8Array.set

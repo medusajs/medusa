@@ -2,10 +2,10 @@ import { FlagRouter } from "@medusajs/utils"
 import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-    LineItem,
-    LineItemTaxLine,
-    ShippingMethod,
-    ShippingMethodTaxLine,
+  LineItem,
+  LineItemTaxLine,
+  ShippingMethod,
+  ShippingMethodTaxLine,
 } from "../models"
 import { calculatePriceTaxAmount } from "../utils"
 
@@ -28,13 +28,18 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
       (tl) => "shipping_method_id" in tl
     ) as ShippingMethodTaxLine[]
 
-    return Math.round(
-      this.calculateLineItemsTax(items, lineItemsTaxLines, calculationContext) +
-        this.calculateShippingMethodsTax(
-          calculationContext.shipping_methods,
-          shippingMethodsTaxLines
-        )
+    const lineItemsTax = this.calculateLineItemsTax(
+      items,
+      lineItemsTaxLines,
+      calculationContext
     )
+
+    const shippingMethodsTax = this.calculateShippingMethodsTax(
+      calculationContext.shipping_methods,
+      shippingMethodsTaxLines
+    )
+
+    return Math.round(lineItemsTax + shippingMethodsTax)
   }
 
   private calculateLineItemsTax(

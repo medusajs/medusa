@@ -8,7 +8,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+  defaultAdminProductRemoteQueryObject,
+} from "."
 import {
   PricingService,
   ProductService,
@@ -43,13 +47,14 @@ import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
 import { validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /admin/products
  * operationId: "PostProducts"
  * summary: "Create a Product"
  * x-authenticated: true
- * description: "Create a new Product. This endpoint can also be used to create a gift card if the `is_giftcard` field is set to `true`."
+ * description: "Create a new Product. This API Route can also be used to create a gift card if the `is_giftcard` field is set to `true`."
  * requestBody:
  *   content:
  *     application/json:
@@ -76,7 +81,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/products' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Shirt"
@@ -84,6 +89,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -151,12 +157,6 @@ export default async (req, res) => {
       products: [
         validated,
       ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
-      config: {
-        listConfig: {
-          select: defaultAdminProductFields,
-          relations: defaultAdminProductRelations,
-        },
-      },
     }
 
     const { result } = await createProductWorkflow.run({
@@ -259,14 +259,39 @@ export default async (req, res) => {
     })
   }
 
-  const rawProduct = await productService.retrieve(product.id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  let rawProduct
+  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+    rawProduct = await getProductWithIsolatedProductModule(req, product.id)
+  } else {
+    rawProduct = await productService.retrieve(product.id, {
+      select: defaultAdminProductFields,
+      relations: defaultAdminProductRelations,
+    })
+  }
 
   const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product: pricedProduct })
+}
+
+async function getProductWithIsolatedProductModule(req, id) {
+  // TODO: Add support for fields/expands
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const variables = { id }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultAdminProductRemoteQueryObject,
+    },
+  }
+
+  const [product] = await remoteQuery(query)
+
+  product.profile_id = product.profile?.id
+
+  return product
 }
 
 class ProductVariantOptionReq {
@@ -383,12 +408,12 @@ class ProductVariantReq {
  *     type: boolean
  *     default: true
  *   images:
- *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload endpoints to upload the image and obtain a URL.
+ *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload API Routes to upload the image and obtain a URL.
  *     type: array
  *     items:
  *       type: string
  *   thumbnail:
- *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload endpoints to upload the thumbnail and obtain a URL.
+ *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload API Routes to upload the thumbnail and obtain a URL.
  *     type: string
  *   handle:
  *     description: A unique handle to identify the Product by. If not provided, the kebab-case version of the product title will be used. This can be used as a slug in URLs.

@@ -47,4 +47,20 @@ describe("/admin/auth", () => {
       updated_at: expect.any(String),
     })
   })
+
+  it("creates admin JWT token correctly", async () => {
+    const api = useApi()
+
+    const response = await api
+      .post("/admin/auth/token", {
+        email: "admin@medusa.js",
+        password: "secret_password",
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    expect(response.status).toEqual(200)
+    expect(response.data.access_token).toEqual(expect.any(String))
+  })
 })

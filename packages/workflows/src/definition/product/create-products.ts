@@ -11,6 +11,7 @@ import {
   MiddlewaresHandlers,
   ProductHandlers,
 } from "../../handlers"
+import { prepareCreateInventoryItems } from "./prepare-create-inventory-items"
 
 export enum CreateProductsActions {
   prepare = "prepare",
@@ -175,9 +176,10 @@ const handlers = new Map([
           merge: true,
           invoke: {
             from: CreateProductsActions.createProducts,
-            alias: InventoryHandlers.createInventoryItems.aliases.products,
+            alias: prepareCreateInventoryItems.aliases.products,
           },
         },
+        prepareCreateInventoryItems,
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(

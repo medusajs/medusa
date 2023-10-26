@@ -1,0 +1,70 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# JoinerServiceConfig
+
+[admin/discounts](../../modules/admin_discounts.mdx).[internal](../../admin_discounts/modules/admin_discounts.internal.mdx).JoinerServiceConfig
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "alias",
+    "type": "[`JoinerServiceConfigAlias`](admin_discounts.internal.JoinerServiceConfigAlias.mdx) \\| [`JoinerServiceConfigAlias`](admin_discounts.internal.JoinerServiceConfigAlias.mdx)[]",
+    "description": "Property name to use as entrypoint to the service",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "args",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Extra arguments to pass to the remoteFetchData callback",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "extends",
+    "type": "{ `relationship`: [`JoinerRelationship`](../../admin_discounts/modules/admin_discounts.internal.mdx#joinerrelationship) ; `serviceName`: `string`  }[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "fieldAlias",
+    "type": "Record<`string`, `string` \\| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\\>",
+    "description": "alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "primaryKeys",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "relationships",
+    "type": "[`JoinerRelationship`](../../admin_discounts/modules/admin_discounts.internal.mdx#joinerrelationship)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "serviceName",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />

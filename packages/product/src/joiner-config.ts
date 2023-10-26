@@ -11,54 +11,36 @@ import {
   ProductVariant,
 } from "@models"
 import ProductImage from "./models/product-image"
+import moduleSchema from "./schema"
 
-export enum LinkableKeys {
-  PRODUCT_ID = "product_id", // Main service ID must the first
-  PRODUCT_HANDLE = "product_handle",
-  VARIANT_ID = "variant_id",
-  VARIANT_SKU = "variant_sku",
-  PRODUCT_OPTION_ID = "product_option_id",
-  PRODUCT_TYPE_ID = "product_type_id",
-  PRODUCT_CATEGORY_ID = "product_category_id",
-  PRODUCT_COLLECTION_ID = "product_collection_id",
-  PRODUCT_TAG_ID = "product_tag_id",
-  PRODUCT_IMAGE_ID = "product_image_id",
+export const LinkableKeys = {
+  product_id: Product.name,
+  product_handle: Product.name,
+  variant_id: ProductVariant.name,
+  variant_sku: ProductVariant.name,
+  product_option_id: ProductOption.name,
+  product_type_id: ProductType.name,
+  product_category_id: ProductCategory.name,
+  product_collection_id: ProductCollection.name,
+  product_tag_id: ProductTag.name,
+  product_image_id: ProductImage.name,
 }
 
-export const entityNameToLinkableKeysMap: MapToConfig = {
-  [Product.name]: [
-    { mapTo: LinkableKeys.PRODUCT_ID, valueFrom: "id" },
-    {
-      mapTo: LinkableKeys.PRODUCT_HANDLE,
-      valueFrom: "handle",
-    },
-  ],
-  [ProductVariant.name]: [
-    { mapTo: LinkableKeys.VARIANT_ID, valueFrom: "id" },
-    { mapTo: LinkableKeys.VARIANT_SKU, valueFrom: "sku" },
-  ],
-  [ProductOption.name]: [
-    { mapTo: LinkableKeys.PRODUCT_OPTION_ID, valueFrom: "id" },
-  ],
-  [ProductType.name]: [
-    { mapTo: LinkableKeys.PRODUCT_TYPE_ID, valueFrom: "id" },
-  ],
-  [ProductCategory.name]: [
-    { mapTo: LinkableKeys.PRODUCT_CATEGORY_ID, valueFrom: "id" },
-  ],
-  [ProductCollection.name]: [
-    { mapTo: LinkableKeys.PRODUCT_COLLECTION_ID, valueFrom: "id" },
-  ],
-  [ProductTag.name]: [{ mapTo: LinkableKeys.PRODUCT_TAG_ID, valueFrom: "id" }],
-  [ProductImage.name]: [
-    { mapTo: LinkableKeys.PRODUCT_IMAGE_ID, valueFrom: "id" },
-  ],
-}
+const entityLinkableKeysMap: MapToConfig = {}
+Object.entries(LinkableKeys).forEach(([key, value]) => {
+  entityLinkableKeysMap[value] ??= []
+  entityLinkableKeysMap[value].push({
+    mapTo: key,
+    valueFrom: key.split("_").pop()!,
+  })
+})
+export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
 
 export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
-  linkableKeys: Object.values(LinkableKeys),
+  linkableKeys: LinkableKeys,
+  schema: moduleSchema,
   alias: [
     {
       name: "product",

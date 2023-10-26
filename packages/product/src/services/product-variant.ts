@@ -154,4 +154,24 @@ export default class ProductVariantService<
       transactionManager: sharedContext.transactionManager,
     })
   }
+
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  async softDelete(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productVariantRepository_.softDelete(ids, {
+      transactionManager: sharedContext.transactionManager,
+    })
+  }
+
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  async restore(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
+    return await this.productVariantRepository_.restore(ids, {
+      transactionManager: sharedContext.transactionManager,
+    })
+  }
 }

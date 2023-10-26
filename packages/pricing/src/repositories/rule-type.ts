@@ -4,7 +4,7 @@ import {
   DAL,
   UpdateRuleTypeDTO,
 } from "@medusajs/types"
-import { DALUtils, MedusaError } from "@medusajs/utils"
+import { DALUtils, MedusaError, validateRuleAttributes } from "@medusajs/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
@@ -72,6 +72,8 @@ export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
     data: CreateRuleTypeDTO[],
     context: Context = {}
   ): Promise<RuleType[]> {
+    validateRuleAttributes(data.map((d) => d.rule_attribute))
+
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const ruleTypes = data.map((ruleTypeData) => {
@@ -87,6 +89,8 @@ export class RuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
     data: UpdateRuleTypeDTO[],
     context: Context = {}
   ): Promise<RuleType[]> {
+    validateRuleAttributes(data.map((d) => d.rule_attribute))
+
     const manager = this.getActiveManager<SqlEntityManager>(context)
     const ruleTypeIds = data.map((ruleType) => ruleType.id)
     const existingRuleTypes = await this.find(

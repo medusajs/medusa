@@ -1,0 +1,27 @@
+{{#if getSignature}}
+
+{{#if (sectionEnabled "member_getteSetter_getSignature")}}
+
+{{#with getSignature}}
+
+{{> member.signature accessor="get" showSources=true }}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if setSignature}}
+
+{{#if (sectionEnabled "member_getteSetter_setSignature")}}
+
+{{#with setSignature}}
+
+{{> member.signature accessor="set" showSources=true }}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
