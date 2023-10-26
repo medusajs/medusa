@@ -725,12 +725,8 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      const giftCardableAmount =
-        (cart.region?.gift_cards_taxable
-          ? cart.subtotal! - cart.discount_total!
-          : cart.total! + cart.gift_card_total!) || 0 // we re add the gift card total to compensate the fact that the decorate total already removed this amount from the total
+      let giftCardableAmountBalance = cart.gift_card_total ?? 0
 
-      let giftCardableAmountBalance = giftCardableAmount
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
       // Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
@@ -739,6 +735,7 @@ class OrderService extends TransactionBaseService {
         const bEnd = b.ends_at ?? new Date(2100, 1, 1)
         return aEnd.getTime() - bEnd.getTime() || a.balance - b.balance
       })
+
       for (const giftCard of orderedGiftCards) {
         const newGiftCardBalance = Math.max(
           0,
@@ -1898,8 +1895,20 @@ class OrderService extends TransactionBaseService {
       }
     )
 
+    order.item_tax_total = item_tax_total
+    order.shipping_tax_total = shipping_tax_total
+    order.tax_total = item_tax_total + shipping_tax_total
+
+    const giftCardableAmount = this.newTotalsService_.getGiftCardableAmount({
+      gift_cards_taxable: order.region?.gift_cards_taxable,
+      subtotal: order.subtotal,
+      discount_total: order.discount_total,
+      shipping_total: order.shipping_total,
+      tax_total: order.tax_total,
+    })
+
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
-      order.subtotal - order.discount_total,
+      giftCardableAmount,
       {
         region: order.region,
         giftCards: order.gift_cards,
@@ -1909,12 +1918,7 @@ class OrderService extends TransactionBaseService {
     order.gift_card_total = giftCardTotal.total || 0
     order.gift_card_tax_total = giftCardTotal.tax_total || 0
 
-    order.item_tax_total = item_tax_total
-    order.shipping_tax_total = shipping_tax_total
-    order.tax_total =
-      order.item_tax_total +
-      order.shipping_tax_total -
-      order.gift_card_tax_total
+    order.tax_total -= order.gift_card_tax_total
 
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {
