@@ -4,7 +4,7 @@ const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
-const DB_URL = `postgres://postgres:@localhost/medusa-integration-1`
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 process.env.POSTGRES_URL = DB_URL
 
 const enablePricing = process.env.MEDUSA_FF_ISOLATE_PRICING_DOMAIN == "true"
