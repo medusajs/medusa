@@ -1,11 +1,9 @@
-// SERVICES
 process.chdir(__dirname)
 
 module.exports = {
-  name: "services",
+  name: "Services",
   testEnvironment: `node`,
   rootDir: "./",
-  testTimeout: 10000,
   testPathIgnorePatterns: [
     `/examples/`,
     `/www/`,

@@ -7,17 +7,13 @@ const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 module.exports = {
   plugins: [],
   projectConfig: {
-    redis_url: process.env.REDIS_URL,
+    // redis_url: REDIS_URL,
     database_url: DB_URL,
     database_type: "postgres",
     jwt_secret: "test",
     cookie_secret: "test",
     database_extra: { idle_in_transaction_session_timeout: 0 },
   },
-  modules: {
-    cacheService: {
-      resolve: "@medusajs/cache-inmemory",
-      options: { ttl: 5 },
-    },
-  },
+  featureFlags: {},
+  modules: {},
 }
