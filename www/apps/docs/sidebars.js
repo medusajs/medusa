@@ -1608,6 +1608,11 @@ module.exports = {
           ],
         },
         {
+          type: "doc",
+          id: "development/logging/index",
+          label: "Logging",
+        },
+        {
           type: "category",
           label: "Module",
           items: [

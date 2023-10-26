@@ -30,6 +30,10 @@ export const supportedLanguages = [
     name: "Português (Brasil)",
   },
   {
+    locale: "uk",
+    name: "Українська",
+  },
+  {
     locale: "ar",
     name: "العربية",
   },
@@ -48,6 +52,10 @@ export const supportedLanguages = [
   {
     locale: "vi",
     name: "Tiếng Việt",
+  },
+  {
+    locale: "tm",
+    name: "Tamil",
   }
 ]
 
