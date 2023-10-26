@@ -107,8 +107,9 @@ export default async (req: Request, res: Response) => {
  *   - operator
  * properties:
  *   operator:
- *      description: "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
- *       discountable resources are everything but the specified resources."
+ *      description: >-
+ *        Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *        discountable resources are everything but the specified resources.
  *      type: string
  *      enum: [in, not_in]
  *   products:

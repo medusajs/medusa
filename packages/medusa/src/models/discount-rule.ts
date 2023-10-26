@@ -70,7 +70,8 @@ export class DiscountRule extends SoftDeletableEntity {
  *     type: string
  *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   type:
- *     description: The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.
+ *     description: >-
+ *       The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.
  *     type: string
  *     enum:
  *       - fixed

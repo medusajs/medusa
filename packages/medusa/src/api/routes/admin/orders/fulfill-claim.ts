@@ -148,7 +148,8 @@ export default async (req, res) => {
  *       description: "Learn about the metadata attribute, and how to delete and update it."
  *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Claim.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Claim.
  *     type: boolean
  */
 export class AdminPostOrdersOrderClaimsClaimFulfillmentsReq {

@@ -335,10 +335,12 @@ export default async (req, res) => {
  *           description: The custom price of the Shipping Option.
  *           type: integer
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Swap.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Swap.
  *     type: boolean
  *   allow_backorder:
- *     description: If set to `true`, swaps can be completed with items out of stock
+ *     description: >-
+ *       If set to `true`, swaps can be completed with items out of stock
  *     type: boolean
  *     default: true
  */

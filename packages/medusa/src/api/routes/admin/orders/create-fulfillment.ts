@@ -224,7 +224,8 @@ export const updateInventoryAndReservations = async (
  *           description: The quantity of the Line Item to fulfill.
  *           type: integer
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this fulfillment.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this fulfillment.
  *     type: boolean
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.

@@ -270,7 +270,8 @@ export class Item {
  *           description: The quantity to add into the cart.
  *           type: integer
  *   context:
- *     description: "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *     description: >-
+ *       An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
  *     type: object
  *     example:
  *       ip: "::1"

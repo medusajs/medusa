@@ -1,5 +1,5 @@
 {
-  "name": "typedoc-plugin-modules",
+  "name": "typedoc-plugin-custom",
   "private": true,
   "version": "0.0.0",
   "license": "MIT",
@@ -33,6 +33,7 @@
   ],
   "dependencies": {
     "glob": "^10.3.10",
-    "typedoc-plugin-markdown": "^3.16.0"
+    "typedoc-plugin-markdown": "^3.16.0",
+    "yaml": "^2.3.3"
   }
 }

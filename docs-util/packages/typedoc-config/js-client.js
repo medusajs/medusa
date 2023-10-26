@@ -17,17 +17,17 @@ module.exports = {
   hideBreadcrumbs: true,
   plugin: [
     ...globalTypedocOptions.plugin,
-    "typedoc-plugin-reference-excluder",
-    "typedoc-plugin-frontmatter",
+    // "typedoc-plugin-reference-excluder",
+    // "typedoc-plugin-frontmatter",
     "typedoc-plugin-rename-defaults",
-    "typedoc-plugin-modules",
+    "typedoc-plugin-custom",
   ],
   exclude: [
     path.join(pathPrefix, "packages/medusa-js/src/resources/base.ts"),
     path.join(pathPrefix, "node_modules/**"),
     path.join(pathPrefix, "packages/**/node_modules"),
   ],
-  excludeConstructors: true,
+  // excludeConstructors: true,
   frontmatterData: {
     displayed_sidebar: "jsClientSidebar",
   },
@@ -44,6 +44,9 @@ module.exports = {
       mdxImports: [
         `import ParameterTypes from "@site/src/components/ParameterTypes"`,
       ],
+      reflectionGroups: {
+        Constructors: false,
+      },
     },
   },
   objectLiteralTypeDeclarationStyle: "component",

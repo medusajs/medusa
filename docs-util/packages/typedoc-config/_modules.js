@@ -82,7 +82,7 @@ module.exports = ({
     hideBreadcrumbs: true,
     plugin: [
       ...globalTypedocOptions.plugin,
-      "typedoc-plugin-modules",
+      "typedoc-plugin-custom",
       "typedoc-plugin-rename-defaults",
       "typedoc-plugin-frontmatter",
     ],

@@ -119,7 +119,8 @@ export default async (req, res) => {
  *     description: A note with additional details about the Refund.
  *     type: string
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Refund.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Refund.
  *     type: boolean
  */
 export class AdminPostOrdersOrderRefundsReq {

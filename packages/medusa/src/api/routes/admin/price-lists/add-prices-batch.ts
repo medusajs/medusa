@@ -144,7 +144,8 @@ export default async (req, res) => {
  *           description: The maximum quantity for which the price will be used.
  *           type: integer
  *   override:
- *     description: "If set to `true`, the prices will replace all existing prices associated with the Price List."
+ *     description: >-
+ *       If set to `true`, the prices will replace all existing prices associated with the Price List.
  *     type: boolean
  */
 export class AdminPostPriceListPricesPricesReq {

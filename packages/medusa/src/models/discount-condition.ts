@@ -167,8 +167,9 @@ export class DiscountCondition extends SoftDeletableEntity {
  *       - product_tags
  *       - customer_groups
  *   operator:
- *     description: "The operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
- *       discountable resources are everything but the specified resources."
+ *     description: >-
+ *       The operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *       discountable resources are everything but the specified resources.
  *     type: string
  *     enum:
  *       - in

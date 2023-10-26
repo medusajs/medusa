@@ -162,7 +162,8 @@ export default async (req, res) => {
  *           $ref: "#/components/schemas/LineItem"
  *         description: Items to ship
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this order.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this order.
  *     type: boolean
  */
 export class AdminPostOrdersOrderReq {

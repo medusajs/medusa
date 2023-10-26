@@ -314,7 +314,8 @@ export default async (req, res) => {
  *   - claim_items
  * properties:
  *   type:
- *     description: "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items."
+ *     description: >-
+ *       The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.
  *     type: string
  *     enum:
  *       - replace

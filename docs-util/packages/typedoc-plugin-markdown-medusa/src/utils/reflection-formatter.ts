@@ -12,6 +12,16 @@ import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
 import getType, { getReflectionType } from "./type-utils"
 
 const MAX_LEVEL = 3
+const ALLOWED_KINDS: ReflectionKind[] = [
+  ReflectionKind.EnumMember,
+  ReflectionKind.TypeParameter,
+  ReflectionKind.Property,
+  ReflectionKind.Parameter,
+  ReflectionKind.TypeAlias,
+  ReflectionKind.TypeLiteral,
+  ReflectionKind.Variable,
+  ReflectionKind.Reference,
+]
 
 export default function reflectionFormatter(
   reflection: ReflectionParameterType,
@@ -107,11 +117,13 @@ export function reflectionComponentFormatter(
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, reflection.project)
-    children?.forEach((childItem) => {
-      componentItem.children?.push(
-        reflectionComponentFormatter(childItem, level + 1)
-      )
-    })
+    children
+      ?.filter((childItem) => childItem.kindOf(ALLOWED_KINDS))
+      .forEach((childItem) => {
+        componentItem.children?.push(
+          reflectionComponentFormatter(childItem, level + 1)
+        )
+      })
   }
 
   return componentItem
@@ -256,7 +268,9 @@ export function getTypeChildren(
   switch (reflectionType.type) {
     case "reference":
       // eslint-disable-next-line no-case-declarations
-      const referencedReflection = project?.getChildByName(reflectionType.name)
+      const referencedReflection =
+        reflectionType.reflection ||
+        project?.getChildByName(reflectionType.name)
 
       if (
         referencedReflection instanceof DeclarationReflection &&

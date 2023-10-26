@@ -344,7 +344,8 @@ type ReturnObj = {
  *     type: boolean
  *     default: false
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Return.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Return.
  *     type: boolean
  *   refund:
  *     description: The amount to refund.

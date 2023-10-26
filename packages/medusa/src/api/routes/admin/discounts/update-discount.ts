@@ -132,7 +132,8 @@ export default async (req: Request, res: Response) => {
  *         description: "The value that the discount represents. This will depend on the type of the discount."
  *       allocation:
  *         type: string
- *         description: "The scope that the discount should apply to. `total` indicates that the discount should be applied on the cart total, and `item` indicates that the discount should be applied to each discountable item in the cart."
+ *         description: >-
+ *           The scope that the discount should apply to. `total` indicates that the discount should be applied on the cart total, and `item` indicates that the discount should be applied to each discountable item in the cart.
  *         enum: [total, item]
  *       conditions:
  *         type: array
@@ -147,8 +148,9 @@ export default async (req: Request, res: Response) => {
  *               description: "The ID of the condition"
  *             operator:
  *               type: string
- *               description: "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
- *                discountable resources are everything but the specified resources."
+ *               description: >-
+ *                 Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *                 discountable resources are everything but the specified resources.
  *               enum: [in, not_in]
  *             products:
  *               type: array
@@ -177,7 +179,8 @@ export default async (req: Request, res: Response) => {
  *                 type: string
  *   is_disabled:
  *     type: boolean
- *     description: Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.
+ *     description: >-
+ *       Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.
  *   starts_at:
  *     type: string
  *     format: date-time

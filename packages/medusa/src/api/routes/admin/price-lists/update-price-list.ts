@@ -140,7 +140,8 @@ class CustomerGroup {
  *      - sale
  *      - override
  *   status:
- *     description: "The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer."
+ *     description: >-
+ *       The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer.
  *     type: string
  *     enum:
  *      - active
