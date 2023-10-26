@@ -69,7 +69,6 @@
     "test:integration:packages": "turbo run test:integration --no-daemon --filter='./packages/*'",
     "test:integration:api": "turbo run test:integration --no-daemon --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test:integration --no-daemon --filter=integration-tests-plugins",
-    "test:integration:services": "turbo run test:integration --no-daemon --filter=integration-tests-services",
     "test:integration:repositories": "turbo run test:integration --no-daemon --filter=integration-tests-repositories",
     "openapi:generate": "yarn ./packages/oas/oas-github-ci run ci",
     "medusa-oas": "yarn ./packages/oas/medusa-oas-cli run medusa-oas",
