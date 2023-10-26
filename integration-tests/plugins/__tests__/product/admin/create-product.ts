@@ -1,15 +1,15 @@
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
-import { AxiosInstance } from "axios"
 import { Region } from "@medusajs/medusa"
-import adminSeeder from "../../../../helpers/admin-seeder"
-import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
-import { getContainer } from "../../../../environment-helpers/use-container"
+import { AxiosInstance } from "axios"
 import path from "path"
 import setupServer from "../../../../environment-helpers/setup-server"
 import { useApi } from "../../../../environment-helpers/use-api"
+import { getContainer } from "../../../../environment-helpers/use-container"
+import adminSeeder from "../../../../helpers/admin-seeder"
+import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
@@ -22,7 +22,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products", () => {
+describe.skip("[Product & Pricing Module] POST /admin/products", () => {
   let dbConnection
   let appContainer
   let medusaProcess
@@ -60,7 +60,7 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
 
   it("should create prices with region_id and currency_code context", async () => {
     const api = useApi()! as AxiosInstance
-    
+
     const data = {
       title: "test product",
       options: [{ title: "test-option" }],

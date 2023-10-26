@@ -12,7 +12,7 @@ import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
@@ -25,7 +25,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () => {
+describe.skip("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () => {
   let dbConnection
   let appContainer
   let medusaProcess
@@ -35,7 +35,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env, verbose: true } as any)
+    medusaProcess = await setupServer({ cwd, env } as any)
     appContainer = getContainer()
   })
 

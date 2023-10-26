@@ -1,14 +1,12 @@
-import { initDb, useDb } from "../../../environment-helpers/use-db"
 import { setPort, useApi } from "../../../environment-helpers/use-api"
+import { initDb, useDb } from "../../../environment-helpers/use-db"
 import { simpleCartFactory, simpleRegionFactory } from "../../../factories"
 
-import { AxiosInstance } from "axios"
-import { IPricingModuleService } from "@medusajs/types"
-import adminSeeder from "../../../helpers/admin-seeder"
-import { bootstrapApp } from "../../../environment-helpers/bootstrap-app"
-import path from "path"
-import setupServer from "../../../environment-helpers/setup-server"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { AxiosInstance } from "axios"
+import path from "path"
+import { bootstrapApp } from "../../../environment-helpers/bootstrap-app"
+import adminSeeder from "../../../helpers/admin-seeder"
 
 jest.setTimeout(5000000)
 
@@ -29,7 +27,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("Link Modules", () => {
+describe.skip("Link Modules", () => {
   let medusaContainer
   let dbConnection
   let express

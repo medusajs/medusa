@@ -1,12 +1,12 @@
 import { MoneyAmount, PriceList, Region } from "@medusajs/medusa"
 import path from "path"
 
+import { ProductVariantMoneyAmount } from "@medusajs/medusa"
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import setupServer from "../../../../environment-helpers/setup-server"
 import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
-import { ProductVariantMoneyAmount } from "@medusajs/medusa"
 
 jest.setTimeout(30000)
 
@@ -23,7 +23,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
     const { app, port } = await bootstrapApp({ cwd })
     setPort(port)
     express = app.listen(port, () => {
@@ -134,7 +134,7 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(ma_sale_1)
 
       await dbConnection.manager.insert(ProductVariantMoneyAmount, {
-        id: 'pvma-test', 
+        id: "pvma-test",
         variant_id: prodSale.variants[0].id,
         money_amount_id: ma_sale_1.id,
       })

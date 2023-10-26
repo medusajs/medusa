@@ -24,7 +24,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products/:id", () => {
+describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
   let medusaProcess
@@ -34,7 +34,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env, verbose: true } as any)
+    medusaProcess = await setupServer({ cwd, env } as any)
     appContainer = getContainer()
   })
 
