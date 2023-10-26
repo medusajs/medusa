@@ -669,7 +669,7 @@ export class AdminPostProductsProductReq {
   @IsEnum(ProductStatus)
   @NotEquals(null)
   @ValidateIf((object, value) => value !== undefined)
-  status: ProductStatus
+  status?: ProductStatus
 
   @IsOptional()
   @Type(() => ProductTypeReq)
