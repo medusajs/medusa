@@ -23,6 +23,12 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
   permissions,
   triggerRefetch,
 }) => {
+
+  if(!permissions.length)
+    return (
+      <div>No permissions added</div>
+    )
+
   const [elements, setElements] = useState<UserPermissionsListElement[]>([])
   const [shownElements, setShownElements] = useState<UserPermissionsListElement[]>([])
   const [selectedPermission, setSelectedPermission] = useState<PermissionsType | null>(null)

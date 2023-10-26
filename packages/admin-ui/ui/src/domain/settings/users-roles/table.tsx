@@ -23,6 +23,12 @@ const UserRolesTable: React.FC<UserRolesTableProps> = ({
   roles,
   triggerRefetch,
 }) => {
+
+  if(!roles.length)
+    return (
+      <div>No roles added</div>
+    )
+
   const [elements, setElements] = useState<UserRolesListElement[]>([])
   const [shownElements, setShownElements] = useState<UserRolesListElement[]>([])
   const [selectedRole, setSelectedRole] = useState<RolesType | null>(null)
