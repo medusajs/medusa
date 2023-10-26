@@ -14,74 +14,74 @@ import {
 
 import { FindConfig } from "../common"
 import { ModuleJoinerConfig } from "../modules-sdk"
-import { SharedContext } from "../shared-context"
+import { Context } from "../shared-context"
 
 export interface IInventoryService {
   __joinerConfig(): ModuleJoinerConfig
   listInventoryItems(
     selector: FilterableInventoryItemProps,
     config?: FindConfig<InventoryItemDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<[InventoryItemDTO[], number]>
 
   listReservationItems(
     selector: FilterableReservationItemProps,
     config?: FindConfig<ReservationItemDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<[ReservationItemDTO[], number]>
 
   listInventoryLevels(
     selector: FilterableInventoryLevelProps,
     config?: FindConfig<InventoryLevelDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<[InventoryLevelDTO[], number]>
 
   retrieveInventoryItem(
     inventoryItemId: string,
     config?: FindConfig<InventoryItemDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryItemDTO>
 
   retrieveInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO>
 
   retrieveReservationItem(
     reservationId: string,
-    context?: SharedContext
+    context?: Context
   ): Promise<ReservationItemDTO>
 
   createReservationItem(
     input: CreateReservationItemInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<ReservationItemDTO>
 
   // TODO make it bulk
   createReservationItems(
     input: CreateReservationItemInput[],
-    context?: SharedContext
+    context?: Context
   ): Promise<ReservationItemDTO[]>
 
   createInventoryItem(
     input: CreateInventoryItemInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryItemDTO>
 
   createInventoryItems(
     input: CreateInventoryItemInput[],
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryItemDTO[]>
 
   createInventoryLevel(
     data: CreateInventoryLevelInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO>
 
   createInventoryLevels(
     data: CreateInventoryLevelInput[],
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO[]>
 
   updateInventoryLevels(
@@ -89,94 +89,94 @@ export interface IInventoryService {
       inventory_item_id: string
       location_id: string
     } & UpdateInventoryLevelInput)[],
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO[]>
 
   updateInventoryLevel(
     inventoryItemId: string,
     locationId: string,
     update: UpdateInventoryLevelInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO>
 
   updateInventoryItem(
     inventoryItemId: string,
     input: CreateInventoryItemInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryItemDTO>
 
   updateReservationItem(
     reservationItemId: string,
     input: UpdateReservationItemInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<ReservationItemDTO>
 
   deleteReservationItemsByLineItem(
     lineItemId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   deleteReservationItem(
     reservationItemId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   // TODO make it bulk
   deleteInventoryItem(
     inventoryItemId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   restoreInventoryItem(
     inventoryItemId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   deleteInventoryItemLevelByLocationId(
     locationId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   deleteReservationItemByLocationId(
     locationId: string | string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   deleteInventoryLevel(
     inventoryLevelId: string,
     locationId: string,
-    context?: SharedContext
+    context?: Context
   ): Promise<void>
 
   adjustInventory(
     inventoryItemId: string,
     locationId: string,
     adjustment: number,
-    context?: SharedContext
+    context?: Context
   ): Promise<InventoryLevelDTO>
 
   confirmInventory(
     inventoryItemId: string,
     locationIds: string[],
     quantity: number,
-    context?: SharedContext
+    context?: Context
   ): Promise<boolean>
 
   retrieveAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<number>
 
   retrieveStockedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<number>
 
   retrieveReservedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context?: SharedContext
+    context?: Context
   ): Promise<number>
 }

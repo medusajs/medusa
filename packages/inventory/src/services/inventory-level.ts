@@ -1,26 +1,26 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
+  Context,
   CreateInventoryLevelInput,
   FilterableInventoryLevelProps,
   FindConfig,
   IEventBusService,
-  SharedContext,
 } from "@medusajs/types"
 import {
-  composeMessage,
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  composeMessage,
+  isDefined,
 } from "@medusajs/utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevel } from "../models"
-import { buildQuery } from "../utils/build-query"
 import {
   InternalContext,
   InventoryItemEvents,
   InventoryLevelEvents,
 } from "../types"
-import { Modules } from "@medusajs/modules-sdk"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -46,7 +46,7 @@ export default class InventoryLevelService {
   async list(
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<InventoryLevel[]> {
     const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
@@ -65,7 +65,7 @@ export default class InventoryLevelService {
   async listAndCount(
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<[InventoryLevel[], number]> {
     const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
@@ -85,7 +85,7 @@ export default class InventoryLevelService {
   async retrieve(
     inventoryLevelId: string,
     config: FindConfig<InventoryLevel> = {},
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<InventoryLevel> {
     if (!isDefined(inventoryLevelId)) {
       throw new MedusaError(
@@ -211,7 +211,7 @@ export default class InventoryLevelService {
     inventoryItemId: string,
     locationId: string,
     quantity: number,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     await manager
@@ -357,7 +357,7 @@ export default class InventoryLevelService {
   async getStockedQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
@@ -386,7 +386,7 @@ export default class InventoryLevelService {
   async getAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
@@ -415,7 +415,7 @@ export default class InventoryLevelService {
   async getReservedQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]

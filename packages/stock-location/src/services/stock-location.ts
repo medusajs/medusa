@@ -1,12 +1,12 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
+  Context,
   CreateStockLocationInput,
   FilterableStockLocationProps,
   FindConfig,
   IEventBusService,
   MODULE_RESOURCE_TYPE,
   ModuleJoinerConfig,
-  SharedContext,
   StockLocationAddressInput,
   UpdateStockLocationInput,
 } from "@medusajs/types"
@@ -20,6 +20,7 @@ import {
 import { EntityManager } from "typeorm"
 import { joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
+import { StockLocationEvents } from "../types/events"
 import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
@@ -32,12 +33,6 @@ type InjectedDependencies = {
  */
 
 export default class StockLocationService {
-  static Events = {
-    CREATED: "stock-location.created",
-    UPDATED: "stock-location.updated",
-    DELETED: "stock-location.deleted",
-  }
-
   protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService
 
@@ -64,7 +59,7 @@ export default class StockLocationService {
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<StockLocation[]> {
     const manager = context.transactionManager ?? this.manager_
     const locationRepo = manager.getRepository(StockLocation)
@@ -83,7 +78,7 @@ export default class StockLocationService {
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<[StockLocation[], number]> {
     const manager = context.transactionManager ?? this.manager_
     const locationRepo = manager.getRepository(StockLocation)
@@ -103,7 +98,7 @@ export default class StockLocationService {
   async retrieve(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {},
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<StockLocation> {
     if (!isDefined(stockLocationId)) {
       throw new MedusaError(
@@ -140,7 +135,7 @@ export default class StockLocationService {
   )
   async create(
     data: CreateStockLocationInput,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<StockLocation> {
     const manager = context.transactionManager!
 
@@ -168,7 +163,7 @@ export default class StockLocationService {
     }
     const result = await locationRepo.save(loc)
 
-    await this.eventBusService_?.emit?.(StockLocationService.Events.CREATED, {
+    await this.eventBusService_?.emit(StockLocationEvents.CREATED, {
       id: result.id,
     })
 
@@ -189,7 +184,7 @@ export default class StockLocationService {
   async update(
     stockLocationId: string,
     updateData: UpdateStockLocationInput,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<StockLocation> {
     const manager = context.transactionManager!
     const locationRepo = manager.getRepository(StockLocation)
@@ -218,7 +213,7 @@ export default class StockLocationService {
 
     await locationRepo.save(toSave)
 
-    await this.eventBusService_?.emit?.(StockLocationService.Events.UPDATED, {
+    await this.eventBusService_?.emit(StockLocationEvents.UPDATED, {
       id: stockLocationId,
     })
 
@@ -239,7 +234,7 @@ export default class StockLocationService {
   protected async updateAddress(
     addressId: string,
     address: StockLocationAddressInput,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<StockLocationAddress> {
     if (!isDefined(addressId)) {
       throw new MedusaError(
@@ -283,14 +278,14 @@ export default class StockLocationService {
   )
   async delete(
     id: string,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const locationRepo = manager.getRepository(StockLocation)
 
     await locationRepo.softRemove({ id })
 
-    await this.eventBusService_?.emit?.(StockLocationService.Events.DELETED, {
+    await this.eventBusService_?.emit(StockLocationEvents.DELETED, {
       id,
     })
   }

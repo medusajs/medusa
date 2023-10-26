@@ -1,24 +1,24 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
+  Context,
   CreateReservationItemInput,
   FilterableReservationItemProps,
   FindConfig,
   IEventBusService,
-  SharedContext,
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
-  composeMessage,
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  composeMessage,
+  isDefined,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
-import { buildQuery } from "../utils/build-query"
 import { InternalContext, ReservationItemEvents } from "../types"
-import { Modules } from "@medusajs/modules-sdk"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -51,7 +51,7 @@ export default class ReservationItemService {
   async list(
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<ReservationItem[]> {
     const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
@@ -71,7 +71,7 @@ export default class ReservationItemService {
   async listAndCount(
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<[ReservationItem[], number]> {
     const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
@@ -92,7 +92,7 @@ export default class ReservationItemService {
   async retrieve(
     reservationItemId: string,
     config: FindConfig<ReservationItem> = {},
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<ReservationItem> {
     if (!isDefined(reservationItemId)) {
       throw new MedusaError(

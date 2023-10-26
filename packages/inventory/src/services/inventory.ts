@@ -1,6 +1,7 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   BulkUpdateInventoryLevelInput,
+  Context,
   CreateInventoryItemInput,
   CreateInventoryLevelInput,
   CreateReservationItemInput,
@@ -15,7 +16,6 @@ import {
   MODULE_RESOURCE_TYPE,
   ModuleJoinerConfig,
   ReservationItemDTO,
-  SharedContext,
   UpdateInventoryLevelInput,
   UpdateReservationItemInput,
 } from "@medusajs/types"
@@ -28,10 +28,10 @@ import {
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { joinerConfig } from "../joiner-config"
+import { InternalContext } from "../types"
 import InventoryItemService from "./inventory-item"
 import InventoryLevelService from "./inventory-level"
 import ReservationItemService from "./reservation-item"
-import { InternalContext } from "../types"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -81,7 +81,7 @@ export default class InventoryService implements IInventoryService {
   async listInventoryItems(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<[InventoryItemDTO[], number]> {
     return await this.inventoryItemService_.listAndCount(
       selector,
@@ -92,7 +92,7 @@ export default class InventoryService implements IInventoryService {
   async list(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<InventoryItemDTO[]> {
     return await this.inventoryItemService_.list(selector, config, context)
   }
@@ -111,7 +111,7 @@ export default class InventoryService implements IInventoryService {
       skip: 0,
       take: 10,
     },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<[InventoryLevelDTO[], number]> {
     return await this.inventoryLevelService_.listAndCount(
       selector,
@@ -134,7 +134,7 @@ export default class InventoryService implements IInventoryService {
       skip: 0,
       take: 10,
     },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<[ReservationItemDTO[], number]> {
     return await this.reservationItemService_.listAndCount(
       selector,
@@ -153,7 +153,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveInventoryItem(
     inventoryItemId: string,
     config?: FindConfig<InventoryItemDTO>,
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_.retrieve(
       inventoryItemId,
@@ -173,7 +173,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
@@ -198,7 +198,7 @@ export default class InventoryService implements IInventoryService {
    */
   async retrieveReservationItem(
     reservationId: string,
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<ReservationItemDTO> {
     return await this.reservationItemService_.retrieve(
       reservationId,
@@ -209,7 +209,7 @@ export default class InventoryService implements IInventoryService {
 
   private async ensureInventoryLevels(
     data: { location_id: string; inventory_item_id: string }[],
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<InventoryLevelDTO[]> {
     const inventoryLevels = await this.inventoryLevelService_.list(
       {
@@ -279,7 +279,7 @@ export default class InventoryService implements IInventoryService {
   )
   async createReservationItem(
     input: CreateReservationItemInput,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<ReservationItemDTO> {
     const [result] = await this.createReservationItems([input], context)
 
@@ -358,7 +358,7 @@ export default class InventoryService implements IInventoryService {
   )
   async createInventoryLevel(
     input: CreateInventoryLevelInput,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryLevelDTO> {
     const [result] = await this.createInventoryLevels([input], context)
 
@@ -567,7 +567,7 @@ export default class InventoryService implements IInventoryService {
     inventoryItemId: string,
     locationIdOrContext?: string,
     input?: UpdateInventoryLevelInput,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryLevelDTO> {
     const updates: BulkUpdateInventoryLevelInput[] = [
       {
@@ -672,7 +672,7 @@ export default class InventoryService implements IInventoryService {
     inventoryItemId: string,
     locationId: string,
     adjustment: number,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
@@ -708,7 +708,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_.retrieve(
@@ -744,7 +744,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveStockedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_.retrieve(
@@ -780,7 +780,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveReservedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_.retrieve(
@@ -821,7 +821,7 @@ export default class InventoryService implements IInventoryService {
     inventoryItemId: string,
     locationIds: string[],
     quantity: number,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: Context<EntityManager> = {}
   ): Promise<boolean> {
     const availableQuantity = await this.retrieveAvailableQuantity(
       inventoryItemId,

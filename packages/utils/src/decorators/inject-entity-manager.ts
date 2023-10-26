@@ -1,4 +1,4 @@
-import { Context, SharedContext } from "@medusajs/types"
+import { Context } from "@medusajs/types"
 
 export function InjectEntityManager(
   shouldForceTransaction: (target: any) => boolean = () => false,
@@ -20,7 +20,7 @@ export function InjectEntityManager(
     const argIndex = target.MedusaContextIndex_[propertyKey]
     descriptor.value = async function (...args: any[]) {
       const shouldForceTransactionRes = shouldForceTransaction(target)
-      const context: SharedContext | Context = args[argIndex] ?? {}
+      const context: Context = args[argIndex] ?? {}
 
       if (!shouldForceTransactionRes && context?.transactionManager) {
         return await originalMethod.apply(this, args)

@@ -1,24 +1,24 @@
+import { Modules } from "@medusajs/modules-sdk"
 import {
+  Context,
   CreateInventoryItemInput,
   FilterableInventoryItemProps,
   FindConfig,
   IEventBusService,
   InventoryItemDTO,
-  SharedContext,
 } from "@medusajs/types"
 import {
-  composeMessage,
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  composeMessage,
+  isDefined,
 } from "@medusajs/utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryItem } from "../models"
-import { getListQuery } from "../utils/query"
-import { buildQuery } from "../utils/build-query"
 import { InternalContext, InventoryItemEvents } from "../types"
-import { Modules } from "@medusajs/modules-sdk"
+import { buildQuery } from "../utils/build-query"
+import { getListQuery } from "../utils/query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -43,7 +43,7 @@ export default class InventoryItemService {
   async list(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<InventoryItemDTO[]> {
     const queryBuilder = getListQuery(
       context.transactionManager ?? this.manager_,
@@ -64,7 +64,7 @@ export default class InventoryItemService {
   async retrieve(
     inventoryItemId: string,
     config: FindConfig<InventoryItem> = {},
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<InventoryItem> {
     if (!isDefined(inventoryItemId)) {
       throw new MedusaError(
@@ -98,7 +98,7 @@ export default class InventoryItemService {
   async listAndCount(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context<EntityManager> = {}
   ): Promise<[InventoryItemDTO[], number]> {
     const queryBuilder = getListQuery(
       context.transactionManager ?? this.manager_,

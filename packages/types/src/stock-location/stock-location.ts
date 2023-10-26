@@ -6,37 +6,37 @@ import {
 } from "./common"
 
 import { FindConfig } from "../common/common"
-import { SharedContext } from "../shared-context"
+import { Context } from "../shared-context"
 
 export interface IStockLocationService {
   list(
     selector: FilterableStockLocationProps,
     config?: FindConfig<StockLocationDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<StockLocationDTO[]>
 
   listAndCount(
     selector: FilterableStockLocationProps,
     config?: FindConfig<StockLocationDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<[StockLocationDTO[], number]>
 
   retrieve(
     id: string,
     config?: FindConfig<StockLocationDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<StockLocationDTO>
 
   create(
     input: CreateStockLocationInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<StockLocationDTO>
 
   update(
     id: string,
     input: UpdateStockLocationInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<StockLocationDTO>
 
-  delete(id: string, context?: SharedContext): Promise<void>
+  delete(id: string, context?: Context): Promise<void>
 }
