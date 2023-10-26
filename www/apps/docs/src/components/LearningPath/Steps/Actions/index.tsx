@@ -30,7 +30,7 @@ const LearningPathStepActions: React.FC<LearningPathStepActionsType> = ({
         <Button
           onClick={() => setCollapsed(true)}
           variant="secondary"
-          className="text-medusa-fg-subtle !p-[6px]"
+          className="!text-medusa-fg-subtle !p-[6px]"
         >
           <ArrowDownLeftMini className="flip-y hidden md:inline" />
           <ArrowDownMini className="inline md:hidden" />

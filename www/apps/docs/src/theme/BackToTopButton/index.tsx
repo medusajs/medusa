@@ -18,7 +18,7 @@ export default function BackToTopButton(): JSX.Element {
       })}
       className={clsx(
         "fixed right-1 rounded-full !p-[10px] !border-0",
-        "shadow-flyout dark:shadow-flyout-dark text-medusa-fg-subtle",
+        "shadow-flyout dark:shadow-flyout-dark !text-medusa-fg-subtle",
         "!transition-all opacity-0 scale-0 invisible",
         shown && "!opacity-100 !scale-100 !visible",
         notifications.length && "bottom-4",
