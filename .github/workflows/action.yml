@@ -329,7 +329,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          extension: pipeline
+          extension: pipeline-services
 
       - name: Build Packages
         run: yarn build

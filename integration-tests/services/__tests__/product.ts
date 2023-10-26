@@ -23,7 +23,6 @@ describe("/admin/products", () => {
     })
 
     medusaContainer = container
-    console.warn(container)
   })
 
   afterAll(async () => {
@@ -34,14 +33,16 @@ describe("/admin/products", () => {
   })
 
   afterEach(async () => {
+    jest.clearAllMocks()
     const db = useDb()
     await db.teardown()
   })
 
 
   it("should create variant prices correctly in service creation", async () => {
+    console.log(medusaContainer)
     productService = medusaContainer.resolve("productService")
-    
+
     const payload = {
       title: "test-product",
       handle: "test-product",
