@@ -64,7 +64,7 @@ export type SharedResources = {
   }
 }
 
-async function loadModules(modulesConfig, globalContainer) {
+async function loadModules(modulesConfig, sharedContainer) {
   const allModules = {}
 
   await Promise.all(
@@ -96,12 +96,12 @@ async function loadModules(modulesConfig, globalContainer) {
         moduleKey: moduleName,
         defaultPath: path,
         declaration,
-        globalContainer,
+        sharedContainer,
         moduleDefinition: definition,
       })) as LoadedModule
 
       const service = loaded[moduleName]
-      globalContainer.register({
+      sharedContainer.register({
         [service.__definition.registrationName]: asValue(service),
       })
 
@@ -198,7 +198,7 @@ export async function MedusaApp(
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
 }> {
-  const globalContainer = createMedusaContainer({}, sharedContainer)
+  const sharedContainer_ = createMedusaContainer({}, sharedContainer)
 
   const modules: MedusaModuleConfig =
     modulesConfig ??
@@ -238,16 +238,16 @@ export async function MedusaApp(
   }
 
   for (const injectedDependency of Object.keys(injectedDependencies)) {
-    globalContainer.register({
+    sharedContainer_.register({
       [injectedDependency]: asValue(injectedDependencies[injectedDependency]),
     })
   }
 
-  const allModules = await loadModules(modules, globalContainer)
+  const allModules = await loadModules(modules, sharedContainer_)
 
   // Share Event bus with link modules
   injectedDependencies[ModuleRegistrationName.EVENT_BUS] =
-    globalContainer.resolve(ModuleRegistrationName.EVENT_BUS, {
+    sharedContainer_.resolve(ModuleRegistrationName.EVENT_BUS, {
       allowUnregistered: true,
     })
 

@@ -54,7 +54,7 @@ export type ModuleBootstrapOptions = {
   defaultPath: string
   declaration?: InternalModuleDeclaration | ExternalModuleDeclaration
   moduleExports?: ModuleExports
-  globalContainer?: MedusaContainer
+  sharedContainer?: MedusaContainer
   moduleDefinition?: ModuleDefinition
   injectedDependencies?: Record<string, any>
 }
@@ -169,7 +169,7 @@ export class MedusaModule {
     defaultPath,
     declaration,
     moduleExports,
-    globalContainer,
+    sharedContainer,
     moduleDefinition,
     injectedDependencies,
   }: ModuleBootstrapOptions): Promise<{
@@ -212,7 +212,7 @@ export class MedusaModule {
       }
     }
 
-    const container = createMedusaContainer({}, globalContainer)
+    const container = createMedusaContainer({}, sharedContainer)
 
     if (injectedDependencies) {
       for (const service in injectedDependencies) {
