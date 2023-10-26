@@ -78,12 +78,11 @@ module.exports = {
     }
 
     const { configModule } = getConfigFile(cwd, `medusa-config`)
-    const { featureFlags } = configModule
 
     const featureFlagsLoader =
       require("@medusajs/medusa/dist/loaders/feature-flags").default
 
-    const featureFlagRouter = featureFlagsLoader({ featureFlags })
+    const featureFlagRouter = featureFlagsLoader(configModule)
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
     const entities = modelsLoader({}, { register: false })
 
