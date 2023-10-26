@@ -41,7 +41,7 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
     where: buildWhere<TWhereKeys, TEntity>(selector),
   }
 
-  if ("deleted_at" in selector) {
+  if ("deleted_at" in selector || config.withDeleted) {
     query.withDeleted = true
   }
 

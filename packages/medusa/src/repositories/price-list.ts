@@ -1,5 +1,5 @@
 import { FindOperator, FindOptionsWhere, ILike, In } from "typeorm"
-import { PriceList } from "../models"
+import { PriceList, ProductVariantMoneyAmount } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 
@@ -53,6 +53,29 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
     }
 
     return await Promise.all([this.find(query_), this.count(query_)])
+  },
+
+  async listPriceListsVariantIdsMap(
+    priceListIds: string | string[]
+  ): Promise<{ [priceListId: string]: string[] }> {
+    priceListIds = Array.isArray(priceListIds) ? priceListIds : [priceListIds]
+
+    const data = await this.createQueryBuilder("pl")
+      .innerJoin("pl.prices", "prices")
+      .innerJoinAndSelect(
+        ProductVariantMoneyAmount,
+        "pvma",
+        "pvma.money_amount_id = prices.id"
+      )
+      .where("pl.id IN (:...ids)", { ids: priceListIds })
+      .execute()
+
+    return data.reduce((acc, curr) => {
+      acc[curr["pl_id"]] ??= []
+      acc[curr["pl_id"]].push(curr["pvma_variant_id"])
+      acc[curr["pl_id"]] = [...new Set(acc[curr["pl_id"]])]
+      return acc
+    }, {})
   },
 })
 

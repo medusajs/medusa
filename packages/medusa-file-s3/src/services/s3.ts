@@ -2,11 +2,11 @@ import fs from "fs"
 import type { S3ClientConfigType, PutObjectCommandInput, GetObjectCommandOutput } from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
-import { 
-  S3Client, 
-  PutObjectCommand, 
-  DeleteObjectCommand, 
-  GetObjectCommand 
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+  GetObjectCommand
 } from "@aws-sdk/client-s3"
 import { parse } from "path"
 import { AbstractFileService, IFileService } from "@medusajs/medusa"
@@ -20,6 +20,7 @@ import {
 import stream from "stream"
 
 class S3Service extends AbstractFileService implements IFileService {
+  protected prefix_: string
   protected bucket_: string
   protected s3Url_: string
   protected accessKeyId_: string
@@ -34,6 +35,7 @@ class S3Service extends AbstractFileService implements IFileService {
   constructor({ logger }, options) {
     super({}, options)
 
+    this.prefix_ = options.prefix ? `${options.prefix}/` : ''
     this.bucket_ = options.bucket
     this.s3Url_ = options.s3_url
     this.accessKeyId_ = options.access_key_id
@@ -49,8 +51,8 @@ class S3Service extends AbstractFileService implements IFileService {
   protected getClient(overwriteConfig: Partial<S3ClientConfigType> = {}) {
     const config: S3ClientConfigType = {
       credentials: {
-         accessKeyId: this.accessKeyId_,
-         secretAccessKey: this.secretAccessKey_,
+        accessKeyId: this.accessKeyId_,
+        secretAccessKey: this.secretAccessKey_,
       },
       region: this.region_,
       ...this.awsConfigObject_,
@@ -79,7 +81,7 @@ class S3Service extends AbstractFileService implements IFileService {
 
     const parsedFilename = parse(file.originalname)
 
-    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+    const fileKey = `${this.prefix_}${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     const command = new PutObjectCommand({
       ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
@@ -103,7 +105,7 @@ class S3Service extends AbstractFileService implements IFileService {
   }
 
   async delete(file: DeleteFileType): Promise<void> {
-   const command = new DeleteObjectCommand({
+    const command = new DeleteObjectCommand({
       Bucket: this.bucket_,
       Key: `${file.file_key}`,
     })
@@ -120,7 +122,7 @@ class S3Service extends AbstractFileService implements IFileService {
 
     const isPrivate = fileData.isPrivate ?? true // default to private
 
-    const fileKey = `${fileData.name}.${fileData.ext}`
+    const fileKey = `${this.prefix_}${fileData.name}.${fileData.ext}`
     const params: PutObjectCommandInput = {
       ACL: isPrivate ? "private" : "public-read",
       Bucket: this.bucket_,

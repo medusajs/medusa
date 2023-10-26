@@ -24,10 +24,11 @@ import _ from "lodash"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/auth' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Auth
  * responses:
@@ -52,8 +53,10 @@ import _ from "lodash"
  */
 export default async (req, res) => {
   try {
+    const userId = req.user.id || req.user.userId
+
     const userService: UserService = req.scope.resolve("userService")
-    const user = await userService.retrieve(req.user.userId)
+    const user = await userService.retrieve(userId)
 
     const cleanRes = _.omit(user, ["password_hash"])
     res.status(200).json({ user: cleanRes })

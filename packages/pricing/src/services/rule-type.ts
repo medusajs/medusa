@@ -43,8 +43,10 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     config: FindConfig<PricingTypes.RuleTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
+
     return (await this.ruleTypeRepository_.find(
-      this.buildQueryForList(filters, config),
+      queryOptions,
       sharedContext
     )) as TEntity[]
   }
@@ -55,23 +57,12 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     config: FindConfig<PricingTypes.RuleTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    return (await this.ruleTypeRepository_.findAndCount(
-      this.buildQueryForList(filters, config),
-      sharedContext
-    )) as [TEntity[], number]
-  }
-
-  private buildQueryForList(
-    filters: PricingTypes.FilterableRuleTypeProps = {},
-    config: FindConfig<PricingTypes.RuleTypeDTO> = {}
-  ) {
     const queryOptions = ModulesSdkUtils.buildQuery<RuleType>(filters, config)
 
-    if (filters.id) {
-      queryOptions.where["id"] = { $in: filters.id }
-    }
-
-    return queryOptions
+    return (await this.ruleTypeRepository_.findAndCount(
+      queryOptions,
+      sharedContext
+    )) as [TEntity[], number]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "ruleTypeRepository_")

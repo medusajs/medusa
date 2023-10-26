@@ -12,7 +12,7 @@ import { defaultStoreCategoryScope } from "."
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
  * description: "Retrieve a list of product categories. The product categories can be filtered by fields such as `handle` or `q`. The product categories can also be paginated.
- *  This endpoint can also be used to retrieve a product category by its handle."
+ *  This API Route can also be used to retrieve a product category by its handle."
  * x-featureFlag: "product_categories"
  * externalDocs:
  *   description: "How to retrieve a product category by its handle"
@@ -43,10 +43,11 @@ import { defaultStoreCategoryScope } from "."
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/product-categories' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Categories
  * responses:

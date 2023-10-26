@@ -8,7 +8,7 @@ import {
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
 import { DeepPartial, EntityManager } from "typeorm"
 import { FindConfig, Selector } from "../types/common"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 
 import { CustomerGroupService } from "."
 import { FilterableProductProps } from "../types/product"
@@ -104,6 +104,35 @@ class PriceListService extends TransactionBaseService {
     }
 
     return priceList
+  }
+
+  async listPriceListsVariantIdsMap(
+    priceListIds: string | string[]
+  ): Promise<{ [priceListId: string]: string[] }> {
+    priceListIds = Array.isArray(priceListIds) ? priceListIds : [priceListIds]
+
+    if (!priceListIds.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"priceListIds" must be defined`
+      )
+    }
+
+    const priceListRepo = this.activeManager_.withRepository(
+      this.priceListRepo_
+    )
+
+    const priceListsVariantIdsMap =
+      await priceListRepo.listPriceListsVariantIdsMap(priceListIds)
+
+    if (!Object.keys(priceListsVariantIdsMap)?.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `No PriceLists found with ids: ${priceListIds.join(", ")}`
+      )
+    }
+
+    return priceListsVariantIdsMap
   }
 
   /**

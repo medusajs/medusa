@@ -127,6 +127,11 @@ export interface IInventoryService {
     context?: SharedContext
   ): Promise<void>
 
+  restoreInventoryItem(
+    inventoryItemId: string | string[],
+    context?: SharedContext
+  ): Promise<void>
+
   deleteInventoryItemLevelByLocationId(
     locationId: string | string[],
     context?: SharedContext

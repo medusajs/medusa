@@ -34,10 +34,11 @@ import { Type } from "class-transformer"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/customer-groups/{id}/customers' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customer Groups
  * responses:

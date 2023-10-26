@@ -61,7 +61,7 @@ const settings: SettingsCardType[] = [
   },
   {
     heading: "Return Reasons",
-    description: "Manage resons for returned items",
+    description: "Manage reasons for returned items",
     icon: ArrowUTurnLeft,
     to: "/a/settings/return-reasons",
   },

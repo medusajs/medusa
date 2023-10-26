@@ -66,6 +66,8 @@ function CustomerGroupCustomersList(props: CustomerGroupCustomersListProps) {
   // toggle to show/hide "edit customers" modal
   const [showCustomersModal, setShowCustomersModal] = useState(false)
 
+  const { t } = useTranslation()
+
   const { q, queryObject, paginate, setQuery } =
     useQueryFilters(defaultQueryProps)
 
@@ -243,6 +245,7 @@ function CustomerGroupDetailsHeader(props: CustomerGroupDetailsHeaderProps) {
  */
 function CustomerGroupDetails() {
   const { id } = useParams()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const { customer_group, isLoading, error } = useAdminCustomerGroup(id!)

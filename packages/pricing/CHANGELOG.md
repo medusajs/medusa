@@ -1,5 +1,44 @@
 # @medusajs/pricing
 
+## 0.1.1
+
+### Patch Changes
+
+- [#5294](https://github.com/medusajs/medusa/pull/5294) [`378ca1b36`](https://github.com/medusajs/medusa/commit/378ca1b36e909a67e39c69ea5ca94ec58a345878) Thanks [@riqwan](https://github.com/riqwan)! - feat(pricing,types,utils): Move calculate pricing query to a repository + rule type validation
+
+- [#5317](https://github.com/medusajs/medusa/pull/5317) [`b62af612c`](https://github.com/medusajs/medusa/commit/b62af612c7baa244075e546c949b89c4589bd2cf) Thanks [@riqwan](https://github.com/riqwan)! - feat(link-modules,modules-sdk,pricing): Medusa App Migrations + Core compatible migrations
+
+- Updated dependencies [[`378ca1b36`](https://github.com/medusajs/medusa/commit/378ca1b36e909a67e39c69ea5ca94ec58a345878), [`69cf7215f`](https://github.com/medusajs/medusa/commit/69cf7215f1f730ffb332129e65211470be1f88f1), [`453297f52`](https://github.com/medusajs/medusa/commit/453297f525bd9f3aaa95bf0b28ff6cd31e6696b4), [`b62af612c`](https://github.com/medusajs/medusa/commit/b62af612c7baa244075e546c949b89c4589bd2cf), [`e47461d95`](https://github.com/medusajs/medusa/commit/e47461d95caecf3a447ee9fa0b0950340b93f282), [`66413d094`](https://github.com/medusajs/medusa/commit/66413d094e916debbdb74b68800c96ca2c9302c9)]:
+  - @medusajs/utils@1.10.4
+  - @medusajs/types@1.11.4
+  - @medusajs/modules-sdk@1.12.1
+
+## 0.1.0
+
+### Minor Changes
+
+- [#5242](https://github.com/medusajs/medusa/pull/5242) [`130cbc1f4`](https://github.com/medusajs/medusa/commit/130cbc1f437af211b6d05f80128d90138abcd38d) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Modules exporting schema with entities and fields
+
+### Patch Changes
+
+- [#5237](https://github.com/medusajs/medusa/pull/5237) [`c5703a476`](https://github.com/medusajs/medusa/commit/c5703a4765a55da697885438cf3089d923669f21) Thanks [@riqwan](https://github.com/riqwan)! - feat(pricing,types): addPrice and removePricremoveRules APIs
+
+- Updated dependencies [[`eeceec791`](https://github.com/medusajs/medusa/commit/eeceec791c141996cf7fd06555afb6e738b52840), [`130cbc1f4`](https://github.com/medusajs/medusa/commit/130cbc1f437af211b6d05f80128d90138abcd38d), [`cb569c2df`](https://github.com/medusajs/medusa/commit/cb569c2dfe2d83e1ff72a49f2331450a83b73325), [`c5703a476`](https://github.com/medusajs/medusa/commit/c5703a4765a55da697885438cf3089d923669f21)]:
+  - @medusajs/utils@1.10.3
+  - @medusajs/modules-sdk@1.12.0
+  - @medusajs/types@1.11.3
+
+## 0.0.4
+
+### Patch Changes
+
+- [#5214](https://github.com/medusajs/medusa/pull/5214) [`1e7db5a5c`](https://github.com/medusajs/medusa/commit/1e7db5a5cb7c955e72c52e64df8a16b1607eef70) Thanks [@riqwan](https://github.com/riqwan)! - feat(types,pricing,utils): Exact match based on context + fallback on rule priority if not
+
+- Updated dependencies [[`cc4169a94`](https://github.com/medusajs/medusa/commit/cc4169a94c7c5f5bf4d04f7b6e815b409a0a8192), [`dfa5d041c`](https://github.com/medusajs/medusa/commit/dfa5d041c90b849b288f8ae9f5a0a1aa3ee1b32e), [`1e7db5a5c`](https://github.com/medusajs/medusa/commit/1e7db5a5cb7c955e72c52e64df8a16b1607eef70)]:
+  - @medusajs/utils@1.10.2
+  - @medusajs/modules-sdk@1.11.3
+  - @medusajs/types@1.11.2
+
 ## 0.0.3
 
 ### Patch Changes

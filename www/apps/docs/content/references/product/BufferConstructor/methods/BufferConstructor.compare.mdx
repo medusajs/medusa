@@ -1,0 +1,65 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# compare
+
+[BufferConstructor](../../interfaces/BufferConstructor.mdx).compare
+
+**compare**(`buf1`, `buf2`): ``0`` \| ``1`` \| ``-1``
+
+Compares `buf1` to `buf2`, typically for the purpose of sorting arrays of`Buffer` instances. This is equivalent to calling `buf1.compare(buf2)`.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf1 = Buffer.from('1234');
+const buf2 = Buffer.from('0123');
+const arr = [buf1, buf2];
+
+console.log(arr.sort(Buffer.compare));
+// Prints: [ <Buffer 30 31 32 33>, <Buffer 31 32 33 34> ]
+// (This result is equal to: [buf2, buf1].)
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "buf1",
+    "type": "`Uint8Array`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "buf2",
+    "type": "`Uint8Array`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+``0`` \| ``1`` \| ``-1``
+
+<ParameterTypes parameters={[
+  {
+    "name": "``0`` \\| ``1`` \\| ``-1``",
+    "type": "``0`` \\| ``1`` \\| ``-1``",
+    "optional": true,
+    "defaultValue": "",
+    "description": "Either `-1`, `0`, or `1`, depending on the result of the comparison. See `compare` for details.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.11.13

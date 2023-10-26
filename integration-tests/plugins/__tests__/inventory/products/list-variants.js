@@ -12,7 +12,7 @@ jest.setTimeout(30000)
 
 const { simpleProductFactory } = require("../../../../factories")
 const { simpleSalesChannelFactory } = require("../../../../factories")
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("List Variants", () => {
   let appContainer

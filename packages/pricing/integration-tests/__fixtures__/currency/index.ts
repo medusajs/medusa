@@ -2,6 +2,8 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Currency } from "@models"
 import { defaultCurrencyData } from "./data"
 
+export * from "./data"
+
 export async function createCurrencies(
   manager: SqlEntityManager,
   currencyData: any[] = defaultCurrencyData

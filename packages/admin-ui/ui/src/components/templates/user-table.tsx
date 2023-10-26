@@ -14,6 +14,7 @@ import Table from "../molecules/table"
 import DeletePrompt from "../organisms/delete-prompt"
 import EditUser from "../organisms/edit-user-modal"
 import { useTranslation } from "react-i18next"
+import { getFullAdminPath } from "../../utils/get-admin-path"
 
 type UserListElement = {
   entity: any
@@ -110,9 +111,9 @@ const UserTable: React.FC<UserTableProps> = ({
       return store.invite_link_template
     }
 
-    return `${window.location.origin}${
-      process.env.ADMIN_PATH ? `${process.env.ADMIN_PATH}/` : "/"
-    }invite?token={invite_token}`
+    const adminPath = getFullAdminPath()
+
+    return `${adminPath}invite?token={invite_token}`
   }, [store])
 
   const getInviteTableRow = (invite: Invite, index: number) => {

@@ -376,6 +376,27 @@ export default class InventoryService implements IInventoryService {
     return await this.inventoryItemService_.delete(inventoryItemId, context)
   }
 
+  /**
+   * Restore an inventory item and levels
+   * @param inventoryItemId - the id of the inventory item to delete
+   * @param context
+   */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async restoreInventoryItem(
+    inventoryItemId: string | string[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    await this.inventoryLevelService_.restoreByInventoryItemId(
+      inventoryItemId,
+      context
+    )
+
+    return await this.inventoryItemService_.restore(inventoryItemId, context)
+  }
+
   @InjectEntityManager(
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED

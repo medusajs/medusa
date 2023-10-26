@@ -15,7 +15,7 @@ const {
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -68,7 +68,7 @@ describe("/admin/shipping-options", () => {
 
       const res = await api.post(`/admin/shipping-options/test-out`, payload, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -115,7 +115,7 @@ describe("/admin/shipping-options", () => {
       const res = await api
         .post(`/admin/shipping-options/test-out`, payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -150,7 +150,7 @@ describe("/admin/shipping-options", () => {
       const res = await api
         .post(`/admin/shipping-options/test-option-req`, payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -176,7 +176,7 @@ describe("/admin/shipping-options", () => {
       const res = await api
         .post(`/admin/shipping-options/test-option-req`, payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -207,7 +207,7 @@ describe("/admin/shipping-options", () => {
       const res = await api
         .post(`/admin/shipping-options/test-option-req`, payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -240,7 +240,7 @@ describe("/admin/shipping-options", () => {
       const res = await api
         .post(`/admin/shipping-options/test-option-req`, payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -269,7 +269,7 @@ describe("/admin/shipping-options", () => {
         },
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -312,7 +312,7 @@ describe("/admin/shipping-options", () => {
 
       const res = await api.post(`/admin/shipping-options`, payload, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -324,7 +324,7 @@ describe("/admin/shipping-options", () => {
       const api = useApi()
       const res = await api.post(`/admin/shipping-options`, payload, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -348,7 +348,7 @@ describe("/admin/shipping-options", () => {
       try {
         await api.post(`/admin/shipping-options`, payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
       } catch (error) {
@@ -374,7 +374,7 @@ describe("/admin/shipping-options", () => {
       try {
         await api.post(`/admin/shipping-options`, payload, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
       } catch (error) {
@@ -399,7 +399,7 @@ describe("/admin/shipping-options", () => {
       const api = useApi()
       const res = await api.get(`/admin/shipping-options`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -410,7 +410,7 @@ describe("/admin/shipping-options", () => {
       const api = useApi()
       const res = await api.get(`/admin/shipping-options?admin_only=true`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -429,7 +429,7 @@ describe("/admin/shipping-options", () => {
       const api = useApi()
       const res = await api.get(`/admin/shipping-options?is_return=true`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -450,7 +450,7 @@ describe("/admin/shipping-options", () => {
         `/admin/shipping-options?is_return=false&admin_only=true`,
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )

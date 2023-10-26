@@ -45,8 +45,13 @@ export default class MoneyAmountService<
     config: FindConfig<PricingTypes.MoneyAmountDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<MoneyAmount>(
+      filters,
+      config
+    )
+
     return (await this.moneyAmountRepository_.find(
-      this.buildQueryForList(filters, config),
+      queryOptions,
       sharedContext
     )) as TEntity[]
   }
@@ -57,26 +62,15 @@ export default class MoneyAmountService<
     config: FindConfig<PricingTypes.MoneyAmountDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
-    return (await this.moneyAmountRepository_.findAndCount(
-      this.buildQueryForList(filters, config),
-      sharedContext
-    )) as [TEntity[], number]
-  }
-
-  private buildQueryForList(
-    filters: PricingTypes.FilterableMoneyAmountProps = {},
-    config: FindConfig<PricingTypes.MoneyAmountDTO> = {}
-  ) {
     const queryOptions = ModulesSdkUtils.buildQuery<MoneyAmount>(
       filters,
       config
     )
 
-    if (filters.id) {
-      queryOptions.where["id"] = { $in: filters.id }
-    }
-
-    return queryOptions
+    return (await this.moneyAmountRepository_.findAndCount(
+      queryOptions,
+      sharedContext
+    )) as [TEntity[], number]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "moneyAmountRepository_")
