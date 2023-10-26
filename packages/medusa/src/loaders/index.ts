@@ -136,6 +136,18 @@ export default async ({
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
 
   track("MODULES_INIT_STARTED")
+  const defaultModules = Object.values(ModulesDefinition).filter(
+    (definition) => {
+      return !!definition.defaultPackage
+    }
+  )
+
+  const configModules = configModule.modules ?? {}
+
+  for (const defaultModule of defaultModules) {
+    configModules[defaultModule.key] ??= defaultModule.defaultModuleDeclaration
+  }
+
   await moduleLoader({
     container,
     moduleResolutions: registerModules(configModule?.modules, {

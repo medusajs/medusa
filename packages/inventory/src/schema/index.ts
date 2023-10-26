@@ -21,6 +21,8 @@ type InventoryItem {
   title: String
   thumbnail: String
   metadata: JSON
+  
+  inventory_levels: [InventoryLevel]
 }
 
 type InventoryLevel {
