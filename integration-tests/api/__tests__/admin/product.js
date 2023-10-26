@@ -909,6 +909,93 @@ describe("/admin/products", () => {
     })
   })
 
+  describe("GET /admin/products/:id", () => {
+    const productId = "testing-get-product"
+
+    beforeEach(async () => {
+      await simpleProductFactory(dbConnection, {
+        id: productId,
+        variants: [
+          {
+            title: "Test variant",
+            prices: [
+              {
+                currency: "usd",
+                amount: 100,
+              },
+            ],
+          },
+        ],
+      })
+
+      await adminSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should get a product", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get(`/admin/products/${productId}`, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.product.id).toEqual(productId)
+    })
+
+    it("should get a product with prices", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get(
+          `/admin/products/${productId}?expand=variants,variants.prices`,
+          adminHeaders
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const { id, variants } = res.data.product
+
+      expect(id).toEqual(productId)
+      expect(variants[0].prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 100,
+            currency_code: "usd",
+          }),
+        ])
+      )
+    })
+
+    it("should get a product only with variants expanded", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get(`/admin/products/${productId}?expand=variants`, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const { id, variants } = res.data.product
+
+      expect(id).toEqual(productId)
+      expect(variants[0]).toEqual(
+        expect.objectContaining({
+          title: "Test variant",
+        })
+      )
+      // prices is one of many properties that should not be expanded
+      expect(variants[0].prices).toBeUndefined()
+    })
+  })
+
   describe("POST /admin/products", () => {
     beforeEach(async () => {
       await productSeeder(dbConnection)

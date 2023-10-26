@@ -18,7 +18,11 @@ const Edit = () => {
 
   const { getWidgets } = useWidgets()
 
-  const { product, status, error } = useAdminProduct(id || "")
+  const { product, status, error } = useAdminProduct(id || "", {
+    expand:
+      // default relations
+      "variants,variants.prices,variants.options,profiles,images,options,tags,type,collection",
+  })
 
   if (error) {
     const errorStatus = getErrorStatus(error)
