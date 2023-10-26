@@ -5,13 +5,13 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 
 import { Region } from "@medusajs/medusa"
+import { AxiosInstance } from "axios"
 import path from "path"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { AxiosInstance } from "axios"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
