@@ -27,7 +27,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe.skip("Link Modules", () => {
+describe("Link Modules", () => {
   let medusaContainer
   let dbConnection
   let express
