@@ -40,7 +40,7 @@ export async function upsertVariantPrices({
 
   const pricingModuleService = container.resolve("pricingModuleService")
   const regionService = container.resolve("regionService")
-  const medusaApp = container.resolve("medusaApp")
+  const remoteLink = container.resolve("remoteLink")
   const remoteQuery = container.resolve("remoteQuery")
 
   const variables = {
@@ -141,7 +141,7 @@ export async function upsertVariantPrices({
     })
   }
 
-  const createdLinks = await medusaApp.link.create(linksToCreate)
+  const createdLinks = await remoteLink.create(linksToCreate)
 
   let originalMoneyAmounts = await pricingModuleService.listMoneyAmounts(
     {

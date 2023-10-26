@@ -79,7 +79,7 @@ export async function updateProductsVariantsPrices({
   }
 
   if (featureFlagRouter.isFeatureEnabled("isolate_pricing_domain")) {
-    const medusaApp = container.resolve("medusaApp")
+    const remoteLink = container.resolve("remoteLink")
     const pricingModuleService = container.resolve("pricingModuleService")
 
     for (let { variantId } of variantIdsPricesData) {
@@ -88,7 +88,7 @@ export async function updateProductsVariantsPrices({
         prices: variantPricesMap.get(variantId),
       })
 
-      await medusaApp.link.create({
+      await remoteLink.create({
         productService: {
           variant_id: variantId,
         },

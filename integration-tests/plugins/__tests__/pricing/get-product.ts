@@ -8,6 +8,7 @@ import adminSeeder from "../../../helpers/admin-seeder"
 import { bootstrapApp } from "../../../environment-helpers/bootstrap-app"
 import path from "path"
 import setupServer from "../../../environment-helpers/setup-server"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 jest.setTimeout(5000000)
 
@@ -66,7 +67,7 @@ describe("Link Modules", () => {
     const cartId = "test-cart"
     beforeEach(async () => {
       const pricingModuleService = medusaContainer.resolve(
-        "pricingModuleService"
+        ModuleRegistrationName.PRICING
       )
       const api = useApi()! as AxiosInstance
 
@@ -110,9 +111,9 @@ describe("Link Modules", () => {
         ],
       })
 
-      const medusaApp = medusaContainer.resolve("medusaApp") as any
+      const remoteLink = medusaContainer.resolve("remoteLink") as any
 
-      await medusaApp.link.create({
+      await remoteLink.create({
         productService: {
           variant_id: variant.id,
         },

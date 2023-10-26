@@ -45,7 +45,7 @@ export const loadMedusaApp = async (
     return medusaApp
   }
 
-  container.register("medusaApp", asValue(medusaApp))
+  container.register("remoteLink", asValue(medusaApp.link))
 
   const { query, modules } = medusaApp
 

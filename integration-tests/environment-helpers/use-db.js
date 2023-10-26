@@ -77,26 +77,11 @@ module.exports = {
       Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
     }
 
-    const container = createMedusaContainer()
-
     const { configModule } = getConfigFile(cwd, `medusa-config`)
     const { featureFlags } = configModule
 
     const featureFlagsLoader =
       require("@medusajs/medusa/dist/loaders/feature-flags").default
-
-    const pgConnectionLoader =
-      require("@medusajs/medusa/dist/loaders/pg-connection").default
-
-    const IsolateProductDomainFeatureFlag =
-      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-product-domain").default
-    const IsolatePricingDomainFeatureFlag =
-      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-pricing-domain").default
-
-    await pgConnectionLoader({ configModule, container })
-
-    const medusaAppLoader =
-      require("@medusajs/medusa/dist/loaders/medusa-app").default
 
     const featureFlagRouter = featureFlagsLoader({ featureFlags })
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
@@ -149,11 +134,25 @@ module.exports = {
 
     instance.setDb(dbDataSource)
 
+    const IsolateProductDomainFeatureFlag =
+      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-product-domain").default
+    const IsolatePricingDomainFeatureFlag =
+      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-pricing-domain").default
+
     if (
       featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
       featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
     ) {
-      console.warn("running migrations")
+      const pgConnectionLoader =
+        require("@medusajs/medusa/dist/loaders/pg-connection").default
+
+      const medusaAppLoader =
+        require("@medusajs/medusa/dist/loaders/medusa-app").default
+
+      const container = createMedusaContainer()
+
+      await pgConnectionLoader({ configModule, container })
+
       const { runMigrations } = await medusaAppLoader(
         { configModule, container },
         { register: false }

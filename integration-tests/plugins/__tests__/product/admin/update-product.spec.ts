@@ -9,6 +9,7 @@ import path from "path"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
+import { AxiosInstance } from "axios"
 
 jest.setTimeout(30000)
 
@@ -207,7 +208,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
   })
 
   it("should add prices if price set is already present", async () => {
-    const medusaApp = appContainer.resolve("medusaApp")
+    const remoteLink = appContainer.resolve("remoteLink")
     const pricingModuleService = appContainer.resolve("pricingModuleService")
 
     const priceSet = await pricingModuleService.create({
@@ -215,7 +216,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
       prices: [],
     })
 
-    await medusaApp.link.create({
+    await remoteLink.create({
       productService: {
         variant_id: variant.id,
       },
@@ -224,7 +225,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
       },
     })
 
-    const api = useApi()
+    const api = useApi()! as AxiosInstance
 
     const data = {
       title: "test product update",
