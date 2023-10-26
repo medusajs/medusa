@@ -70,7 +70,7 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.2.1",
     "md5": "^2.3.0",
-    "medusa-react": "^9.0.8",
+    "medusa-react": "^9.0.9",
     "mini-css-extract-plugin": "^2.7.6",
     "moment": "^2.29.4",
     "path-browserify": "^1.0.1",

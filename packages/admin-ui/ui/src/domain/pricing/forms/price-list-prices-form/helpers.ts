@@ -20,7 +20,9 @@ export const getDefaultAmount = (code: string, amount?: number) => {
     return null
   }
 
-  return amount / Math.pow(10, meta.decimal_digits)
+  const num = amount / Math.pow(10, meta.decimal_digits)
+
+  return parseFloat(num.toFixed(meta.decimal_digits))
 }
 
 export const getDbSafeAmount = (code: string, amount?: number) => {
@@ -38,5 +40,7 @@ export const getDbSafeAmount = (code: string, amount?: number) => {
     return null
   }
 
-  return amount * Math.pow(10, meta.decimal_digits)
+  const num = amount * Math.pow(10, meta.decimal_digits)
+
+  return parseFloat(num.toFixed(0))
 }
