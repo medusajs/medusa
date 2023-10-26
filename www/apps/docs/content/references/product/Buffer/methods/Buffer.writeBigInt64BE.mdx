@@ -1,0 +1,66 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# writeBigInt64BE
+
+[Buffer](../../interfaces/Buffer.mdx).writeBigInt64BE
+
+**writeBigInt64BE**(`value`, `offset?`): `number`
+
+Writes `value` to `buf` at the specified `offset` as big-endian.
+
+`value` is interpreted and written as a two's complement signed integer.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.allocUnsafe(8);
+
+buf.writeBigInt64BE(0x0102030405060708n, 0);
+
+console.log(buf);
+// Prints: <Buffer 01 02 03 04 05 06 07 08>
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`bigint`",
+    "description": "Number to be written to `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to write. Must satisfy: `0 <= offset <= buf.length - 8`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "`offset` plus the number of bytes written.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v12.0.0, v10.20.0

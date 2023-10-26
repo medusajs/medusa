@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.2.3
+
+### Patch Changes
+
+- [#5404](https://github.com/medusajs/medusa/pull/5404) [`a1807aea8`](https://github.com/medusajs/medusa/commit/a1807aea83a5bf82c4221839a1fa57b41d2cc6ac) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): add tracking for selected options
+
+## 1.2.2
+
+### Patch Changes
+
+- [#5189](https://github.com/medusajs/medusa/pull/5189) [`18a05dee8`](https://github.com/medusajs/medusa/commit/18a05dee86f55366c92a2669eacbccf526373ff5) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): fix inconsistency in checking errors in migrations
+
 ## 1.2.1
 
 ### Patch Changes

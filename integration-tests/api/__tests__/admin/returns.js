@@ -15,7 +15,7 @@ jest.setTimeout(30000)
 
 const authHeader = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -181,7 +181,7 @@ describe("/admin/returns", () => {
         {},
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )

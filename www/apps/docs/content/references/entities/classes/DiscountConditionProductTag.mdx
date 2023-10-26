@@ -1,0 +1,1022 @@
+---
+displayed_sidebar: entitiesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# DiscountConditionProductTag
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "condition_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "discount_condition",
+    "type": "[`DiscountCondition`](DiscountCondition.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [`DiscountCondition`](DiscountCondition.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "customer_groups",
+        "type": "[`CustomerGroup`](CustomerGroup.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`CustomerGroup`](CustomerGroup.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "customers",
+            "type": "[`Customer`](Customer.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "price_lists",
+            "type": "[`PriceList`](PriceList.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "deleted_at",
+        "type": "``null`` \\| `Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "discount_rule",
+        "type": "[`DiscountRule`](DiscountRule.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`DiscountRule`](DiscountRule.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "allocation",
+            "type": "[`AllocationType`](../enums/AllocationType.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "conditions",
+            "type": "[`DiscountCondition`](DiscountCondition.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "type",
+            "type": "[`DiscountRuleType`](../enums/DiscountRuleType.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "value",
+            "type": "`number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "discount_rule_id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "operator",
+        "type": "[`DiscountConditionOperator`](../enums/DiscountConditionOperator.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "IN",
+            "type": "``\"in\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "NOT_IN",
+            "type": "``\"not_in\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "product_collections",
+        "type": "[`ProductCollection`](ProductCollection.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`ProductCollection`](ProductCollection.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "handle",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "products",
+            "type": "[`Product`](Product.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "createHandleIfNotProvided",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "product_tags",
+        "type": "[`ProductTag`](ProductTag.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`ProductTag`](ProductTag.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "value",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "product_types",
+        "type": "[`ProductType`](ProductType.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`ProductType`](ProductType.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "value",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "products",
+        "type": "[`Product`](Product.mdx)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "constructor",
+            "type": "() => [`Product`](Product.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "categories",
+            "type": "[`ProductCategory`](ProductCategory.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "collection",
+            "type": "[`ProductCollection`](ProductCollection.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "collection_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "discountable",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "external_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "handle",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "height",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "hs_code",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "images",
+            "type": "[`Image`](Image.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_giftcard",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "length",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "material",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "mid_code",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "options",
+            "type": "[`ProductOption`](ProductOption.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "origin_country",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "profile",
+            "type": "[`ShippingProfile`](ShippingProfile.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "profile_id",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "profiles",
+            "type": "[`ShippingProfile`](ShippingProfile.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "sales_channels",
+            "type": "[`SalesChannel`](SalesChannel.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "status",
+            "type": "[`ProductStatus`](../enums/ProductStatus.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "subtitle",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tags",
+            "type": "[`ProductTag`](ProductTag.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "thumbnail",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "type",
+            "type": "[`ProductType`](ProductType.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "type_id",
+            "type": "``null`` \\| `string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "variants",
+            "type": "[`ProductVariant`](ProductVariant.mdx)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "weight",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "width",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "afterLoad",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeInsert",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "beforeUpdate",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "type",
+        "type": "[`DiscountConditionType`](../enums/DiscountConditionType.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "CUSTOMER_GROUPS",
+            "type": "``\"customer_groups\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "PRODUCTS",
+            "type": "``\"products\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "PRODUCT_COLLECTIONS",
+            "type": "``\"product_collections\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "PRODUCT_TAGS",
+            "type": "``\"product_tags\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "PRODUCT_TYPES",
+            "type": "``\"product_types\"``",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "product_tag",
+    "type": "[`ProductTag`](ProductTag.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "constructor",
+        "type": "() => [`ProductTag`](ProductTag.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "deleted_at",
+        "type": "``null`` \\| `Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "value",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "beforeInsert",
+        "type": "() => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "product_tag_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />

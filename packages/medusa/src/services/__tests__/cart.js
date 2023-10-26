@@ -21,7 +21,7 @@ import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
 import { ShippingProfileServiceMock } from "../__mocks__/shipping-profile"
 import { taxProviderServiceMock } from "../__mocks__/tax-provider"
 import CartService from "../cart"
-import { NewTotalsService, TaxProviderService } from "../index"
+import { NewTotalsService, PricingService, TaxProviderService } from "../index"
 import SystemTaxService from "../system-tax"
 
 const eventBusService = {
@@ -2657,6 +2657,7 @@ describe("CartService", () => {
       .register("taxProviderService", asClass(TaxProviderService))
       .register("newTotalsService", asClass(NewTotalsService))
       .register("cartService", asClass(CartService))
+      .register("pricingService", asClass(PricingService))
 
     const cartService = container.resolve("cartService")
 

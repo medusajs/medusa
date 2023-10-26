@@ -1,0 +1,96 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# toString
+
+[Buffer](../../interfaces/Buffer.mdx).toString
+
+**toString**(`encoding?`, `start?`, `end?`): `string`
+
+Decodes `buf` to a string according to the specified character encoding in`encoding`. `start` and `end` may be passed to decode only a subset of `buf`.
+
+If `encoding` is `'utf8'` and a byte sequence in the input is not valid UTF-8,
+then each invalid byte is replaced with the replacement character `U+FFFD`.
+
+The maximum length of a string instance (in UTF-16 code units) is available
+as constants.MAX_STRING_LENGTH.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf1 = Buffer.allocUnsafe(26);
+
+for (let i = 0; i < 26; i++) {
+  // 97 is the decimal ASCII value for 'a'.
+  buf1[i] = i + 97;
+}
+
+console.log(buf1.toString('utf8'));
+// Prints: abcdefghijklmnopqrstuvwxyz
+console.log(buf1.toString('utf8', 0, 5));
+// Prints: abcde
+
+const buf2 = Buffer.from('tést');
+
+console.log(buf2.toString('hex'));
+// Prints: 74c3a97374
+console.log(buf2.toString('utf8', 0, 3));
+// Prints: té
+console.log(buf2.toString(undefined, 0, 3));
+// Prints: té
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "description": "The character encoding to use.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "start",
+    "type": "`number`",
+    "description": "The byte offset to start decoding at.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "end",
+    "type": "`number`",
+    "description": "The byte offset to stop decoding at (not inclusive).",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`string`
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.1.90
+
+#### Overrides
+
+Uint8Array.toString

@@ -16,7 +16,7 @@ const testProduct1Id = "test-product1"
 const testProductFilteringId1 = "test-product_filtering_1"
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 

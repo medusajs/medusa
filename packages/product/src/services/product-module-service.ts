@@ -446,7 +446,11 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productOptions))
+    return await this.baseRepository_.serialize<
+      ProductTypes.ProductOptionDTO[]
+    >(productOptions, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -459,7 +463,11 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(productOptions))
+    return await this.baseRepository_.serialize<
+      ProductTypes.ProductOptionDTO[]
+    >(productOptions, {
+      populate: true,
+    })
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -990,7 +998,7 @@ export default class ProductModuleService<
 
     if (productVariantIdsToDelete.length) {
       promises.push(
-        this.productVariantService_.delete(
+        this.productVariantService_.softDelete(
           productVariantIdsToDelete,
           sharedContext
         )
@@ -1134,6 +1142,33 @@ export default class ProductModuleService<
     if (returnLinkableKeys) {
       // Map internal table/column names to their respective external linkable keys
       // eg: product.id = product_id, variant.id = variant_id
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
+  }
+
+  @InjectManager("baseRepository_")
+  async restoreVariants<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
+    variantIds: string[],
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const [_, cascadedEntitiesMap] = await this.productVariantService_.restore(
+      variantIds,
+      sharedContext
+    )
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
       mappedCascadedEntitiesMap = mapObjectTo<
         Record<Lowercase<keyof typeof LinkableKeys>, string[]>
       >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {

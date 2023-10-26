@@ -31,10 +31,11 @@ import { ExtendedStoreDTO } from "../../../../types/store"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/store' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Store
  * responses:

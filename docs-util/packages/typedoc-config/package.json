@@ -1,0 +1,10 @@
+{
+  "name": "typedoc-config",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "_base.js",
+  "version": "0.0.0"
+}

@@ -49,22 +49,22 @@ describe("toRemoteJoinerQuery", () => {
       fields: ["id", "title", "handle"],
       expands: [
         {
-          property: "product.variants",
+          property: "variants",
           fields: ["sku"],
         },
         {
-          property: "product.variants.shipping_profiles",
+          property: "variants.shipping_profiles",
         },
         {
-          property: "product.variants.shipping_profiles.profile",
+          property: "variants.shipping_profiles.profile",
           fields: ["id", "name"],
         },
         {
-          property: "product.variants.options",
+          property: "variants.options",
           fields: ["value"],
         },
         {
-          property: "product.options",
+          property: "options",
           fields: ["value", "name"],
         },
       ],
@@ -106,7 +106,7 @@ describe("toRemoteJoinerQuery", () => {
       fields: ["id", "title", "handle"],
       expands: [
         {
-          property: "product.variants",
+          property: "variants",
           directives: [
             {
               name: "directiveName",
@@ -116,10 +116,10 @@ describe("toRemoteJoinerQuery", () => {
           fields: ["sku"],
         },
         {
-          property: "product.variants.shipping_profiles",
+          property: "variants.shipping_profiles",
         },
         {
-          property: "product.variants.shipping_profiles.profile",
+          property: "variants.shipping_profiles.profile",
           args: [
             {
               name: "context",

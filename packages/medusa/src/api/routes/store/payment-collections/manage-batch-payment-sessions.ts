@@ -78,6 +78,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       }'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payment Collections
  * responses:
