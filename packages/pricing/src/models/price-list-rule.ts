@@ -11,25 +11,17 @@ import { generateEntityId } from "@medusajs/utils"
 import PriceSet from "./price-set"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
+import PriceList from "./price-list"
 
-type OptionalFields = "id" | "is_dynamic" | "priority"
-type OptionalRelations = "price_set" | "rule_type" | "price_set_money_amount"
+type OptionalFields = "id" | "priority" 
+type OptionalRelations = "rule_type" | "price_list"
 
 @Entity()
-export default class PriceRule {
+export default class PriceListRule {
   [OptionalProps]: OptionalFields | OptionalRelations
 
   @PrimaryKey({ columnType: "text" })
   id!: string
-
-  @ManyToOne({
-    entity: () => PriceSet,
-    fieldName: "price_set_id",
-    name: "price_rule_price_set_id_unique",
-    onDelete: "cascade",
-    index: "IDX_price_rule_price_set_id",
-  })
-  price_set: PriceSet
 
   @ManyToOne({
     entity: () => RuleType,
@@ -39,23 +31,19 @@ export default class PriceRule {
   })
   rule_type: RuleType
 
-  @Property({ columnType: "boolean", default: false })
-  is_dynamic: boolean
-
   @Property({ columnType: "text" })
   value: string
 
   @Property({ columnType: "integer", default: 0 })
   priority: number
 
-  @ManyToOne({
-    onDelete: "cascade",
-    entity: () => PriceSetMoneyAmount,
-    fieldName: "price_set_money_amount_id",
-    name: "price_set_money_amount_id_unique",
-    index: "IDX_price_rule_price_set_money_amount_id",
+  @ManyToOne({ 
+    entity: () => PriceList,
+    fieldName: "price_list_id",
+    name: "price_rule_price_list_id",
+    index: "IDX_price_rule_price_list_id",
   })
-  price_set_money_amount: PriceSetMoneyAmount
+  price_list: PriceList
 
   @BeforeCreate()
   beforeCreate() {
