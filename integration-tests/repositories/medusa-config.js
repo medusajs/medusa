@@ -6,7 +6,6 @@ const DB_NAME = process.env.DB_TEMP_NAME
 module.exports = {
   plugins: [],
   projectConfig: {
-    redis_url: process.env.REDIS_URL,
     database_url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
     database_type: "postgres",
     jwt_secret: "test",
