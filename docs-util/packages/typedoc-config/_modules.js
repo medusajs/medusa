@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path")
-const globalTypedocOptions = require("./base")
+const globalTypedocOptions = require("./_base")
 
 const pathPrefix = path.join(__dirname, "..", "..", "..")
 
@@ -81,7 +81,7 @@ module.exports = ({
     hideInPageTOC: true,
     hideBreadcrumbs: true,
     plugin: [
-      "typedoc-plugin-markdown-medusa",
+      ...globalTypedocOptions.plugin,
       "typedoc-plugin-modules",
       "typedoc-plugin-rename-defaults",
       "typedoc-plugin-frontmatter",

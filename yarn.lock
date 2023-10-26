@@ -6318,7 +6318,7 @@ __metadata:
     i18next-parser: ^8.0.0
     jest: 25.5.4
     md5: ^2.3.0
-    medusa-react: ^9.0.8
+    medusa-react: ^9.0.9
     mini-css-extract-plugin: ^2.7.6
     moment: ^2.29.4
     path-browserify: ^1.0.1
@@ -32542,7 +32542,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@^9.0.6, medusa-react@^9.0.8, medusa-react@workspace:packages/medusa-react":
+"medusa-react@^9.0.6, medusa-react@^9.0.9, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
