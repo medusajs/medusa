@@ -1,27 +1,27 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
-import { useAdminRegions, useAdminUpdateVariant } from "medusa-react"
 import { MoneyAmount, Product } from "@medusajs/client-types"
+import mapKeys from "lodash/mapKeys"
 import pick from "lodash/pick"
 import pickBy from "lodash/pickBy"
-import mapKeys from "lodash/mapKeys"
+import { useAdminRegions, useAdminUpdateVariant } from "medusa-react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 
-import Modal from "../../../molecules/modal"
+import useNotification from "../../../../hooks/use-notification"
 import Fade from "../../../atoms/fade-wrapper"
 import Button from "../../../fundamentals/button"
+import CrossIcon from "../../../fundamentals/icons/cross-icon"
+import Modal from "../../../molecules/modal"
+import DeletePrompt from "../../delete-prompt"
+import EditPricesActions from "./edit-prices-actions"
+import EditPricesTable from "./edit-prices-table"
+import SavePrompt from "./save-prompt"
 import {
   getAllProductPricesCurrencies,
   getAllProductPricesRegions,
   getCurrencyPricesOnly,
   getRegionPricesOnly,
 } from "./utils"
-import CrossIcon from "../../../fundamentals/icons/cross-icon"
-import EditPricesTable from "./edit-prices-table"
-import EditPricesActions from "./edit-prices-actions"
-import useNotification from "../../../../hooks/use-notification"
-import DeletePrompt from "../../delete-prompt"
-import SavePrompt from "./save-prompt"
 
 type EditPricesModalProps = {
   close: () => void
@@ -194,12 +194,15 @@ function EditPricesModal(props: EditPricesModalProps) {
 
             if (typeof regionPriceEdits[price.region_id] === "number") {
               const p = { ...price }
-              p.amount =
+              const num =
                 regionPriceEdits[price.region_id]! *
                 Math.pow(
                   10,
                   CURRENCY_MAP[price.currency_code.toUpperCase()].decimal_digits
                 )
+
+              p.amount = parseFloat(num.toFixed(0))
+
               pricesPayload.push(p)
             } else {
               // amount is unset -> DELETED case just skip
@@ -217,12 +220,15 @@ function EditPricesModal(props: EditPricesModalProps) {
 
             if (typeof currencyPriceEdits[price.currency_code] === "number") {
               const p = { ...price }
-              p.amount =
+              const num =
                 currencyPriceEdits[price.currency_code] *
                 Math.pow(
                   10,
                   CURRENCY_MAP[price.currency_code.toUpperCase()].decimal_digits
                 )
+
+              p.amount = parseFloat(num.toFixed(0))
+
               pricesPayload.push(p)
             } else {
               // amount is unset -> DELETED case just skip
@@ -237,10 +243,12 @@ function EditPricesModal(props: EditPricesModalProps) {
 
       Object.entries(currencyPriceEdits).forEach(([currency, amount]) => {
         if (typeof amount === "number") {
-          amount *= Math.pow(
-            10,
-            CURRENCY_MAP[currency.toUpperCase()].decimal_digits
-          )
+          const num =
+            amount *
+            Math.pow(10, CURRENCY_MAP[currency.toUpperCase()].decimal_digits)
+
+          amount = parseFloat(num.toFixed(0))
+
           pricesPayload.push({ currency_code: currency, amount })
         }
       })
@@ -248,10 +256,13 @@ function EditPricesModal(props: EditPricesModalProps) {
       Object.entries(regionPriceEdits).forEach(([region, amount]) => {
         if (typeof amount === "number") {
           const currency = regionCurrenciesMap[region]
-          amount *= Math.pow(
-            10,
-            CURRENCY_MAP[currency.toUpperCase()].decimal_digits
-          )
+
+          const num =
+            amount *
+            Math.pow(10, CURRENCY_MAP[currency.toUpperCase()].decimal_digits)
+
+          amount = parseFloat(num.toFixed(0))
+
           pricesPayload.push({ region_id: region, amount })
         }
       })
