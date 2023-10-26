@@ -44,7 +44,7 @@ export const supportedLanguages = [
   {
     locale: "bs",
     name: "Bosanski",
-  },
+  }
 ].sort((a, b) => a.locale.localeCompare(b.locale))
 
 const adminPath = getFullAdminPath()
