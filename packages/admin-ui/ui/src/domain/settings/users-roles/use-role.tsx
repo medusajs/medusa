@@ -1,43 +1,46 @@
 import { ResponsePromise } from "@medusajs/medusa-js";
 import { useMedusa } from "medusa-react";
 import { useEffect, useState } from "react"
+import usePermissions, { PermissionsType } from "../users-permissions/use-permission";
 
 export type RolesType = {
     id: string,
     name: string,
-    metadata?: Record<string, unknown>
+    permissions?: PermissionsType[]
 }
 
 export type RolesDataType = {
     name: string,
-    metadata?: Record<string, unknown>
+    permissions?: string[]
 }
 
 const useRoles = () => {
   
     const { client } = useMedusa();
-    const [roles, setUsersRoles] = useState([]);
-    const [updating, setUpdating] = useState(false);
-    const [creating, setCreating] = useState(false);
-    const [removing, setRemoving] = useState(false);
-
+    
+    const [roles, setRoles] = useState<RolesType[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    
     useEffect(()=>{
-        getRoles();
-    },[])
+        fetch();
+    },[]);
+
+    // Fetch
+
+    const fetch = async () => {
+        let rs = await get();
+        setRoles(rs);
+    }
 
     // Get
 
-    const getRoles = () => {
-        setUpdating(true);
+    const get = async (): Promise<RolesType[]> => {
         try{
-            client.admin.custom.get('admin/role').then(res=>{
-                setUsersRoles(res.roles);
-                console.log(res.roles)
-                setUpdating(false);
-            })
+            let res = await client.admin.custom.get('admin/role');
+            return res?.roles || [];
         }
         catch(e) {
-            setUpdating(false);
+            return [];
         }
     }
 
@@ -48,16 +51,16 @@ const useRoles = () => {
         data: RolesDataType,
         onSuccess: any
     ): ResponsePromise<any> => {
-        setUpdating(true);
+        setIsLoading(true);
         try {
             let res = client.admin.custom.post(`/admin/role/${id}`, data);
             onSuccess && onSuccess();
-            setUpdating(false);
+            setIsLoading(false);
             return res;
         }
         catch(e) {
             console.error(e);
-            setUpdating(false);
+            setIsLoading(false);
             return null;
         }
     }
@@ -68,16 +71,16 @@ const useRoles = () => {
         data: RolesDataType,
         onSuccess: any
     ): ResponsePromise<any> => {
-        setCreating(true);
+        setIsLoading(true);
         try {
             let res = client.admin.custom.post(`/admin/role/`, data);
             onSuccess && onSuccess();
-            setCreating(false);
+            setIsLoading(false);
             return res;
         }
         catch(e) {
             console.error(e);
-            setCreating(false);
+            setIsLoading(false);
             return null;
         }
     }
@@ -85,12 +88,12 @@ const useRoles = () => {
     // Remove
 
     const remove = async (id: string): Promise<boolean> => {
-        setRemoving(true);
-        setRemoving(false);
+        setIsLoading(true);
+        setIsLoading(false);
         return true;
     }
 
-  return {roles, getRoles, updating, update, create, creating, remove, removing}
+  return {roles, fetch, get, update, create, remove, isLoading}
 }
 
 export default useRoles

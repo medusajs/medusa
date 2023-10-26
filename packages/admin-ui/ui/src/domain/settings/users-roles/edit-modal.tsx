@@ -1,11 +1,14 @@
 import { useTranslation } from "react-i18next"
-import { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import { nestedForm } from "../../../utils/nested-form"
+import { useEffect, useState } from "react"
+import { Controller, useForm } from "react-hook-form"
 import Button from "../../../components/fundamentals/button"
 import Modal from "../../../components/molecules/modal"
-import useRoles, { RolesType, RolesDataType } from "./use-role"
+import useRoles, { RolesType } from "./use-role"
 import InputField from "../../../components/molecules/input"
+import { NextSelect } from "../../../components/molecules/select/next-select"
+import FormValidator from "../../../utils/form-validator"
+import usePermissions from "../users-permissions/use-permission"
+import { PermissionsOptionsType, getPermissionsOptions, getPermissionsOptionsValues } from "./utils"
 
 type Props = {
   role: RolesType
@@ -16,11 +19,23 @@ type Props = {
 
 type GeneralFormWrapper = {
   name: string
+  permissions: PermissionsOptionsType[]
 }
 
 const EditRoleModal = ({ role, open, onClose, onSuccess }: Props) => {
   const { t } = useTranslation()
-  const { update, updating } = useRoles()
+  const { update, isLoading } = useRoles()
+  const { get: getOptions } = usePermissions();
+  const [permissionsOptions, setPermissionsOptions] = useState<PermissionsOptionsType[]>();
+  
+  useEffect(()=>{
+    getOptions().then(options=>{
+      setPermissionsOptions(
+        getPermissionsOptions(options)
+      );
+    })
+  },[])
+
   const form = useForm<GeneralFormWrapper>({
     defaultValues: getDefaultValues(role),
   })
@@ -31,6 +46,7 @@ const EditRoleModal = ({ role, open, onClose, onSuccess }: Props) => {
     formState: { isDirty },
     handleSubmit,
     reset,
+    control
   } = form
 
   useEffect(() => {
@@ -47,10 +63,14 @@ const EditRoleModal = ({ role, open, onClose, onSuccess }: Props) => {
       role.id,
       {
         name: data.name,
+        permissions: getPermissionsOptionsValues(data.permissions)
       },
       onSuccess
     )
   })
+
+  if(!permissionsOptions)
+    return null;
 
   return (
     <Modal open={open} handleClose={onReset} isLargeModal>
@@ -66,21 +86,43 @@ const EditRoleModal = ({ role, open, onClose, onSuccess }: Props) => {
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-            <InputField
-              label="Name"
-              placeholder={"Name"}
-              required
-              {...register("name", {
-                required: "Name is required",
-              })}
-              errors={errors}
-            />
+              <InputField
+                label="Name"
+                placeholder={"Name"}
+                required
+                {...register("name", {
+                  required: "Name is required",
+                })}
+                errors={errors}
+              />
             </div>
-            <div className="mt-xlarge">
-              <h2 className="inter-base-semibold mb-base">
-                {t("users-roles-roles", "Roles")}
-              </h2>
-              
+            <div className="mt-large">
+              <Controller
+                name={"permissions"}
+                control={control}
+                rules={{
+                  required: FormValidator.required("Permissions"),
+                }}
+                render={({ field: { value, onChange, name, ref } }) => {
+                  return (
+                    <NextSelect
+                      name={name}
+                      ref={ref}
+                      value={value}
+                      onChange={(value) => {
+                        onChange(value)
+                      }}
+                      label="Choose permissions"
+                      isMulti={true}
+                      selectAll={false}
+                      isSearchable
+                      required
+                      options={permissionsOptions}
+                      errors={errors}
+                    />
+                  )
+                }}
+              />
             </div>
           </Modal.Content>
           <Modal.Footer>
@@ -98,7 +140,7 @@ const EditRoleModal = ({ role, open, onClose, onSuccess }: Props) => {
                 variant="primary"
                 type="submit"
                 disabled={!isDirty}
-                loading={updating}
+                loading={isLoading}
               >
                 {t("users-roles-save-button", "Save")}
               </Button>
@@ -110,9 +152,10 @@ const EditRoleModal = ({ role, open, onClose, onSuccess }: Props) => {
   )
 }
 
-const getDefaultValues = (role: RolesDataType): GeneralFormWrapper => {
+const getDefaultValues = (role: RolesType): GeneralFormWrapper => {
   return {
     name: role.name,
+    permissions: getPermissionsOptions(role.permissions)
   }
 }
 

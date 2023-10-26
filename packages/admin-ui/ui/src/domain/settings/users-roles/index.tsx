@@ -16,7 +16,7 @@ const UsersRoles: React.FC = () => {
     setShouldRefetch((prev) => prev + 1)
   }
 
-  const { roles, getRoles } = useRoles()
+  const { roles, fetch: getRoles } = useRoles()
   
   useEffect(() => {
     setTimeout(()=>{

@@ -26,7 +26,7 @@ type GeneralFormWrapper = {
 
 const EditPermissionModal = ({ permission, open, onClose, onSuccess }: Props) => {
   const { t } = useTranslation()
-  const { update, updating } = usePermissions()
+  const { update, isLoading } = usePermissions()
   const form = useForm<GeneralFormWrapper>({
     defaultValues: getDefaultValues(permission),
   })
@@ -73,15 +73,15 @@ const EditPermissionModal = ({ permission, open, onClose, onSuccess }: Props) =>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-            <InputField
-              label="Name"
-              placeholder={"Name"}
-              required
-              {...register("name", {
-                required: "Name is required",
-              })}
-              errors={errors}
-            />
+              <InputField
+                label="Name"
+                placeholder={"Name"}
+                required
+                {...register("name", {
+                  required: "Name is required",
+                })}
+                errors={errors}
+              />
             </div>
             <div className="mt-xlarge">
               <h2 className="inter-base-semibold mb-base">
@@ -105,7 +105,7 @@ const EditPermissionModal = ({ permission, open, onClose, onSuccess }: Props) =>
                 variant="primary"
                 type="submit"
                 disabled={!isDirty}
-                loading={updating}
+                loading={isLoading}
               >
                 {t("users-permissions-save-button", "Save")}
               </Button>

@@ -16,27 +16,29 @@ export type PermissionsDataType = {
 const usePermissions = () => {
   
     const { client } = useMedusa();
-    const [permissions, setUsersPermissions] = useState([]);
-    const [updating, setUpdating] = useState(false);
-    const [creating, setCreating] = useState(false);
-    const [removing, setRemoving] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [permissions, setPermissions] = useState<PermissionsType[]>([]);
 
     useEffect(()=>{
-        getPermissions();
-    },[])
+        fetch();
+    },[]);
+
+    // Refetch
+
+    const fetch = async () => {
+        let ps = await get();
+        setPermissions(ps);
+    }
 
     // Get
 
-    const getPermissions = () => {
-        setUpdating(true);
+    const get = async (): Promise<PermissionsType[]> => {
         try{
-            client.admin.custom.get('admin/permission').then(res=>{
-                setUsersPermissions(res.permissions);
-                setUpdating(false);
-            })
+            let res = await client.admin.custom.get('admin/permission');
+            return res?.permissions || [];
         }
         catch(e) {
-            setUpdating(false);
+            return [];
         }
     }
 
@@ -47,16 +49,16 @@ const usePermissions = () => {
         data: PermissionsDataType,
         onSuccess: any
     ): ResponsePromise<any> => {
-        setUpdating(true);
+        setIsLoading(true);
         try {
             let res = client.admin.custom.post(`/admin/permission/${id}`, data);
             onSuccess && onSuccess();
-            setUpdating(false);
+            setIsLoading(false);
             return res;
         }
         catch(e) {
             console.error(e);
-            setUpdating(false);
+            setIsLoading(false);
             return null;
         }
     }
@@ -67,16 +69,16 @@ const usePermissions = () => {
         data: PermissionsDataType,
         onSuccess: any
     ): ResponsePromise<any> => {
-        setCreating(true);
+        setIsLoading(true);
         try {
             let res = client.admin.custom.post(`/admin/permission/`, data);
             onSuccess && onSuccess();
-            setCreating(false);
+            setIsLoading(false);
             return res;
         }
         catch(e) {
             console.error(e);
-            setCreating(false);
+            setIsLoading(false);
             return null;
         }
     }
@@ -84,12 +86,12 @@ const usePermissions = () => {
     // Remove
 
     const remove = async (id: string): Promise<boolean> => {
-        setRemoving(true);
-        setRemoving(false);
+        setIsLoading(true);
+        setIsLoading(false);
         return true;
     }
 
-  return {permissions, getPermissions, updating, update, create, creating, remove, removing}
+  return {permissions, fetch, get, update, create, remove, isLoading}
 }
 
 export default usePermissions

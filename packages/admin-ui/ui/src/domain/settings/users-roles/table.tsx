@@ -29,7 +29,7 @@ const UserRolesTable: React.FC<UserRolesTableProps> = ({
   const [deleteRole, setDeleteRole] = useState(false)
   const notification = useNotification()
   const { t } = useTranslation()
-  const { remove, removing } = useRoles()
+  const { remove, isLoading } = useRoles()
 
   useEffect(() => {
     setElements([
@@ -96,7 +96,7 @@ const UserRolesTable: React.FC<UserRolesTableProps> = ({
       >
         <Table.Cell className="w-80">{row.name}</Table.Cell>
         <Table.Cell className="inter-small-semibold text-violet-60">
-            {!!row.permissions && Object.keys(row.permissions).length}
+            {row.permissions?.map(p=><div>{p.name}</div>)}
         </Table.Cell>
       </Table.Row>
     )

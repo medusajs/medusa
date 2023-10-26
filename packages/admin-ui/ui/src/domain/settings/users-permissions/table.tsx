@@ -29,7 +29,7 @@ const UserPermissionsTable: React.FC<UserPermissionsTableProps> = ({
   const [deletePermission, setDeletePermission] = useState(false)
   const notification = useNotification()
   const { t } = useTranslation()
-  const { remove, removing } = usePermissions()
+  const { remove, isLoading } = usePermissions()
 
   useEffect(() => {
     setElements([

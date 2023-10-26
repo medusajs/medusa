@@ -16,7 +16,7 @@ const UsersPermissions: React.FC = () => {
     setShouldRefetch((prev) => prev + 1)
   }
 
-  const { permissions, getPermissions } = usePermissions()
+  const { permissions, fetch: getPermissions } = usePermissions();
   
   useEffect(() => {
     setTimeout(()=>{
