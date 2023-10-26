@@ -6,6 +6,7 @@ import {
   SharedContext,
 } from "@medusajs/types"
 import {
+  composeMessage,
   InjectEntityManager,
   isDefined,
   MedusaContext,
@@ -14,6 +15,12 @@ import {
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevel } from "../models"
 import { buildQuery } from "../utils/build-query"
+import {
+  InternalContext,
+  InventoryItemEvents,
+  InventoryLevelEvents,
+} from "../types"
+import { Modules } from "@medusajs/modules-sdk"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -21,13 +28,6 @@ type InjectedDependencies = {
 }
 
 export default class InventoryLevelService {
-  static Events = {
-    CREATED: "inventory-level.created",
-    UPDATED: "inventory-level.updated",
-    DELETED: "inventory-level.deleted",
-    RESTORED: "inventory-level.restored",
-  }
-
   protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService | undefined
 
@@ -122,7 +122,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async create(
     data: CreateInventoryLevelInput[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<InventoryLevel[]> {
     const manager = context.transactionManager!
 
@@ -141,9 +141,20 @@ export default class InventoryLevelService {
     const inventoryLevels = levelRepository.create(toCreate)
 
     const saved = await levelRepository.save(inventoryLevels)
-    await this.eventBusService_?.emit?.(InventoryLevelService.Events.CREATED, {
-      ids: saved.map((i) => i.id),
-    })
+
+    context.messageAggregator?.save(
+      saved.map(({ id }) => {
+        return composeMessage(
+          InventoryLevelEvents.INVENTORY_LEVEL_CREATED as unknown as string,
+          {
+            data: { id },
+            service: Modules.INVENTORY,
+            entity: InventoryLevel.name,
+            context: context,
+          }
+        )
+      })
+    )
 
     return saved
   }
@@ -163,7 +174,7 @@ export default class InventoryLevelService {
       DeepPartial<InventoryLevel>,
       "id" | "created_at" | "metadata" | "deleted_at"
     >,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<InventoryLevel> {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
@@ -178,11 +189,16 @@ export default class InventoryLevelService {
       levelRepository.merge(item, data)
       await levelRepository.save(item)
 
-      await this.eventBusService_?.emit?.(
-        InventoryLevelService.Events.UPDATED,
-        {
-          id: item.id,
-        }
+      context.messageAggregator?.save(
+        composeMessage(
+          InventoryItemEvents.INVENTORY_ITEM_UPDATED as unknown as string,
+          {
+            data: { id: item.id },
+            service: Modules.INVENTORY,
+            entity: InventoryLevel.name,
+            context: context,
+          }
+        )
       )
     }
 
@@ -223,7 +239,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async deleteByInventoryItemId(
     inventoryItemId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
     const ids = Array.isArray(inventoryItemId)
       ? inventoryItemId
@@ -234,9 +250,19 @@ export default class InventoryLevelService {
 
     await levelRepository.softDelete({ inventory_item_id: In(ids) })
 
-    await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
-      inventory_item_id: inventoryItemId,
-    })
+    context.messageAggregator?.save(
+      ids.map((id) => {
+        return composeMessage(
+          InventoryLevelEvents.INVENTORY_LEVEL_DELETED as unknown as string,
+          {
+            data: { id },
+            service: Modules.INVENTORY,
+            entity: InventoryLevel.name,
+            context: context,
+          }
+        )
+      })
+    )
   }
 
   /**
@@ -247,7 +273,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async restoreByInventoryItemId(
     inventoryItemId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
     const ids = Array.isArray(inventoryItemId)
       ? inventoryItemId
@@ -258,9 +284,19 @@ export default class InventoryLevelService {
 
     await levelRepository.restore({ inventory_item_id: In(ids) })
 
-    await this.eventBusService_?.emit?.(InventoryLevelService.Events.RESTORED, {
-      inventory_item_id: inventoryItemId,
-    })
+    context.messageAggregator?.save(
+      ids.map((id) => {
+        return composeMessage(
+          InventoryLevelEvents.INVENTORY_LEVEL_CREATED as unknown as string,
+          {
+            data: { id },
+            service: Modules.INVENTORY,
+            entity: InventoryLevel.name,
+            context: context,
+          }
+        )
+      })
+    )
   }
 
   /**
@@ -271,7 +307,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async delete(
     inventoryLevelId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
     const ids = Array.isArray(inventoryLevelId)
       ? inventoryLevelId
@@ -282,9 +318,19 @@ export default class InventoryLevelService {
 
     await levelRepository.softDelete({ id: In(ids) })
 
-    await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
-      ids: inventoryLevelId,
-    })
+    context.messageAggregator?.save(
+      ids.map((id) => {
+        return composeMessage(
+          InventoryLevelEvents.INVENTORY_LEVEL_DELETED as unknown as string,
+          {
+            data: { id },
+            service: Modules.INVENTORY,
+            entity: InventoryLevel.name,
+            context: context,
+          }
+        )
+      })
+    )
   }
 
   /**
@@ -295,7 +341,7 @@ export default class InventoryLevelService {
   @InjectEntityManager()
   async deleteByLocationId(
     locationId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
@@ -304,9 +350,19 @@ export default class InventoryLevelService {
 
     await levelRepository.softDelete({ location_id: In(ids) })
 
-    await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
-      location_ids: ids,
-    })
+    context.messageAggregator?.save(
+      ids.map((id) => {
+        return composeMessage(
+          InventoryLevelEvents.INVENTORY_LEVEL_DELETED as unknown as string,
+          {
+            data: { id },
+            service: Modules.INVENTORY,
+            entity: InventoryLevel.name,
+            context: context,
+          }
+        )
+      })
+    )
   }
 
   /**

@@ -7,6 +7,7 @@ import {
   SharedContext,
 } from "@medusajs/types"
 import {
+  composeMessage,
   InjectEntityManager,
   isDefined,
   MedusaContext,
@@ -16,6 +17,8 @@ import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
 import { buildQuery } from "../utils/build-query"
+import { InternalContext, InventoryItemEvents } from "../types"
+import { Modules } from "@medusajs/modules-sdk"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -23,13 +26,6 @@ type InjectedDependencies = {
 }
 
 export default class InventoryItemService {
-  static Events = {
-    CREATED: "inventory-item.created",
-    UPDATED: "inventory-item.updated",
-    DELETED: "inventory-item.deleted",
-    RESTORED: "inventory-item.restored",
-  }
-
   protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService | undefined
 
@@ -122,7 +118,7 @@ export default class InventoryItemService {
   @InjectEntityManager()
   async create(
     data: CreateInventoryItemInput[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<InventoryItem[]> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
@@ -148,9 +144,19 @@ export default class InventoryItemService {
 
     const result = await itemRepository.save(inventoryItem)
 
-    await this.eventBusService_?.emit?.(InventoryItemService.Events.CREATED, {
-      ids: result.map((i) => i.id),
-    })
+    context.messageAggregator?.save(
+      result.map(({ id }) => {
+        return composeMessage(
+          InventoryItemEvents.INVENTORY_ITEM_CREATED as unknown as string,
+          {
+            data: { id },
+            service: Modules.INVENTORY,
+            entity: InventoryItem.name,
+            context: context,
+          }
+        )
+      })
+    )
 
     return result
   }
@@ -169,7 +175,7 @@ export default class InventoryItemService {
       DeepPartial<InventoryItem>,
       "id" | "created_at" | "metadata" | "deleted_at"
     >,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<InventoryItem> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
@@ -184,9 +190,17 @@ export default class InventoryItemService {
       itemRepository.merge(item, data)
       await itemRepository.save(item)
 
-      await this.eventBusService_?.emit?.(InventoryItemService.Events.UPDATED, {
-        id: item.id,
-      })
+      context.messageAggregator?.save(
+        composeMessage(
+          InventoryItemEvents.INVENTORY_ITEM_UPDATED as unknown as string,
+          {
+            data: { id: item.id },
+            service: Modules.INVENTORY,
+            entity: InventoryItem.name,
+            context: context,
+          }
+        )
+      )
     }
 
     return item
@@ -199,7 +213,7 @@ export default class InventoryItemService {
   @InjectEntityManager()
   async delete(
     inventoryItemId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
@@ -210,9 +224,19 @@ export default class InventoryItemService {
 
     await itemRepository.softDelete({ id: In(ids) })
 
-    await this.eventBusService_?.emit?.(InventoryItemService.Events.DELETED, {
-      ids: inventoryItemId,
-    })
+    context.messageAggregator?.save(
+      ids.map((id) => {
+        return composeMessage(
+          InventoryItemEvents.INVENTORY_ITEM_DELETED as unknown as string,
+          {
+            data: { id },
+            service: Modules.INVENTORY,
+            entity: InventoryItem.name,
+            context: context,
+          }
+        )
+      })
+    )
   }
 
   /**
@@ -222,7 +246,7 @@ export default class InventoryItemService {
   @InjectEntityManager()
   async restore(
     inventoryItemId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
@@ -233,8 +257,18 @@ export default class InventoryItemService {
 
     await itemRepository.restore({ id: In(ids) })
 
-    await this.eventBusService_?.emit?.(InventoryItemService.Events.RESTORED, {
-      ids: inventoryItemId,
-    })
+    context.messageAggregator?.save(
+      ids.map((id) => {
+        return composeMessage(
+          InventoryItemEvents.INVENTORY_ITEM_CREATED as unknown as string,
+          {
+            data: { id },
+            service: Modules.INVENTORY,
+            entity: InventoryItem.name,
+            context: context,
+          }
+        )
+      })
+    )
   }
 }

@@ -8,6 +8,7 @@ import {
   FilterableInventoryLevelProps,
   FilterableReservationItemProps,
   FindConfig,
+  IEventBusService,
   IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
@@ -20,20 +21,24 @@ import {
 } from "@medusajs/types"
 import {
   InjectEntityManager,
+  InjectIntoContext,
   MedusaContext,
   MedusaError,
+  MessageAggregator,
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { joinerConfig } from "../joiner-config"
 import InventoryItemService from "./inventory-item"
 import InventoryLevelService from "./inventory-level"
 import ReservationItemService from "./reservation-item"
+import { InternalContext } from "../types"
 
 type InjectedDependencies = {
   manager: EntityManager
   inventoryItemService: InventoryItemService
   inventoryLevelService: InventoryLevelService
   reservationItemService: ReservationItemService
+  eventBusService: IEventBusService
 }
 
 export default class InventoryService implements IInventoryService {
@@ -42,6 +47,7 @@ export default class InventoryService implements IInventoryService {
   protected readonly inventoryItemService_: InventoryItemService
   protected readonly reservationItemService_: ReservationItemService
   protected readonly inventoryLevelService_: InventoryLevelService
+  protected readonly eventBusService_: IEventBusService
 
   constructor(
     {
@@ -49,6 +55,7 @@ export default class InventoryService implements IInventoryService {
       inventoryItemService,
       inventoryLevelService,
       reservationItemService,
+      eventBusService,
     }: InjectedDependencies,
     options?: unknown,
     protected readonly moduleDeclaration?: InternalModuleDeclaration
@@ -57,6 +64,7 @@ export default class InventoryService implements IInventoryService {
     this.inventoryItemService_ = inventoryItemService
     this.inventoryLevelService_ = inventoryLevelService
     this.reservationItemService_ = reservationItemService
+    this.eventBusService_ = eventBusService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -244,13 +252,24 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async createReservationItems(
     input: CreateReservationItemInput[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<ReservationItemDTO[]> {
     await this.ensureInventoryLevels(input, context)
 
-    return await this.reservationItemService_.create(input, context)
+    const result = await this.reservationItemService_.create(input, context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
+
+    return result
   }
 
   /**
@@ -275,11 +294,22 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async createInventoryItems(
     input: CreateInventoryItemInput[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<InventoryItemDTO[]> {
-    return await this.inventoryItemService_.create(input, context)
+    const result = await this.inventoryItemService_.create(input, context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
+
+    return result
   }
 
   /**
@@ -292,11 +322,20 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async createInventoryItem(
     input: CreateInventoryItemInput,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<InventoryItemDTO> {
     const [result] = await this.createInventoryItems([input], context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
 
     return result
   }
@@ -305,11 +344,22 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async createInventoryLevels(
     input: CreateInventoryLevelInput[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<InventoryLevelDTO[]> {
-    return await this.inventoryLevelService_.create(input, context)
+    const result = await this.inventoryLevelService_.create(input, context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
+
+    return result
   }
 
   /**
@@ -342,16 +392,26 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async updateInventoryItem(
     inventoryItemId: string,
     input: Partial<CreateInventoryItemInput>,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_.update(
       inventoryItemId,
       input,
       context
     )
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
+
     return { ...inventoryItem }
   }
 
@@ -364,16 +424,25 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async deleteInventoryItem(
     inventoryItemId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
     await this.inventoryLevelService_.deleteByInventoryItemId(
       inventoryItemId,
       context
     )
 
-    return await this.inventoryItemService_.delete(inventoryItemId, context)
+    await this.inventoryItemService_.delete(inventoryItemId, context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
   }
 
   /**
@@ -385,29 +454,24 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async restoreInventoryItem(
     inventoryItemId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
     await this.inventoryLevelService_.restoreByInventoryItemId(
       inventoryItemId,
       context
     )
 
-    return await this.inventoryItemService_.restore(inventoryItemId, context)
-  }
+    await this.inventoryItemService_.restore(inventoryItemId, context)
 
-  @InjectEntityManager(
-    (target) =>
-      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
-  )
-  async deleteInventoryItemLevelByLocationId(
-    locationId: string | string[],
-    @MedusaContext() context: SharedContext = {}
-  ): Promise<void> {
-    return await this.inventoryLevelService_.deleteByLocationId(
-      locationId,
-      context
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
     )
   }
 
@@ -415,13 +479,39 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
+  async deleteInventoryItemLevelByLocationId(
+    locationId: string | string[],
+    @MedusaContext() context: InternalContext = {}
+  ): Promise<void> {
+    await this.inventoryLevelService_.deleteByLocationId(locationId, context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
+  }
+
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async deleteReservationItemByLocationId(
     locationId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
-    return await this.reservationItemService_.deleteByLocationId(
-      locationId,
-      context
+    await this.reservationItemService_.deleteByLocationId(locationId, context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
     )
   }
 
@@ -435,10 +525,13 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async deleteInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
@@ -450,19 +543,28 @@ export default class InventoryService implements IInventoryService {
       return
     }
 
-    return await this.inventoryLevelService_.delete(inventoryLevel.id, context)
+    await this.inventoryLevelService_.delete(inventoryLevel.id, context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
   }
 
   @InjectEntityManager(
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async updateInventoryLevels(
     updates: ({
       inventory_item_id: string
       location_id: string
     } & UpdateInventoryLevelInput)[],
-    context?: SharedContext
+    @MedusaContext() context: InternalContext = {}
   ): Promise<InventoryLevelDTO[]> {
     const inventoryLevels = await this.ensureInventoryLevels(updates)
 
@@ -473,7 +575,7 @@ export default class InventoryService implements IInventoryService {
       return acc
     }, new Map())
 
-    return await Promise.all(
+    const result = await Promise.all(
       updates.map(async (update) => {
         const levelId = levelMap
           .get(update.inventory_item_id)
@@ -483,6 +585,14 @@ export default class InventoryService implements IInventoryService {
         return this.inventoryLevelService_.update(levelId, update, context)
       })
     )
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
+
+    return result
   }
 
   /**
@@ -528,16 +638,27 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async updateReservationItem(
     reservationItemId: string,
     input: UpdateReservationItemInput,
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<ReservationItemDTO> {
-    return await this.reservationItemService_.update(
+    const result = await this.reservationItemService_.update(
       reservationItemId,
       input,
       context
     )
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
+
+    return result
   }
 
   /**
@@ -549,13 +670,19 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async deleteReservationItemsByLineItem(
     lineItemId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
-    return await this.reservationItemService_.deleteByLineItem(
-      lineItemId,
-      context
+    await this.reservationItemService_.deleteByLineItem(lineItemId, context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
     )
   }
 
@@ -568,11 +695,20 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
+  @InjectIntoContext({
+    messageAggregator: new MessageAggregator(),
+  })
   async deleteReservationItem(
     reservationItemId: string | string[],
-    @MedusaContext() context: SharedContext = {}
+    @MedusaContext() context: InternalContext = {}
   ): Promise<void> {
-    return await this.reservationItemService_.delete(reservationItemId, context)
+    await this.reservationItemService_.delete(reservationItemId, context)
+
+    await this.emitEvents_(
+      context?.messageAggregator?.getMessages({
+        groupBy: ["eventName", "body.metadata.object"],
+      })
+    )
   }
 
   /**
@@ -749,5 +885,18 @@ export default class InventoryService implements IInventoryService {
       context
     )
     return availableQuantity >= quantity
+  }
+
+  private async emitEvents_(groupedEvents) {
+    if (!this.eventBusService_) {
+      return
+    }
+
+    const promises: Promise<unknown>[] = []
+    for (const group of Object.keys(groupedEvents)) {
+      promises.push(this.eventBusService_?.emit(groupedEvents[group]))
+    }
+
+    await Promise.all(promises)
   }
 }
