@@ -79,10 +79,3 @@ export type BuildArgs = BaseArgs & {
 }
 
 export type DevelopArgs = BaseArgs
-
-export type AdminConfig = {
-  indexHTML: string
-  entry: string
-  buildPath: string
-  barStyle?: "fancy" | "minimal"
-}
