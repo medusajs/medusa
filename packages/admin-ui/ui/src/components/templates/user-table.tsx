@@ -100,7 +100,7 @@ const UserTable: React.FC<UserTableProps> = ({
         <Table.Cell className="inter-small-semibold text-violet-60">
           {user.teamRole ? user.teamRole.name : 'Superadmin'}
         </Table.Cell>
-        <Table.Cell className="inter-small-semibold text-violet-60">
+        <Table.Cell className="inter-small-semibold text-yellow-70">
           {user.Region ? user.Region.name : ''}
         </Table.Cell>
         <Table.Cell></Table.Cell>

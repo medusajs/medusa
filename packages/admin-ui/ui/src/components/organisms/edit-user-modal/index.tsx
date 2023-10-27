@@ -43,7 +43,6 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors },
   } = useForm<EditUserModalFormData>()
   const notification = useNotification()
@@ -56,8 +55,8 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
   const {get: getRoles, setRole, setRegion} = useRoles();
   
   const onSubmit = (data: EditUserModalFormData) => {
-    const role_id = data.role_id.value || '';
-    const region_id = data.region_id.value || '';
+    const role_id = data.role_id?.value || '';
+    const region_id = data.region_id?.value || '';
     delete data.role_id;
     delete data.region_id;
     mutate(data, {
