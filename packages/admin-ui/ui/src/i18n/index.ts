@@ -37,6 +37,10 @@ export const supportedLanguages = [
     locale: "es",
     name: "Español",
   },
+  {
+    locale: "hi",
+    name: "Hindi"
+  }
 ]
 
 const adminPath = getFullAdminPath()
