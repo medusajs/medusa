@@ -108,6 +108,12 @@ export const TestDatabase: TestDatabase = {
       }" CASCADE;`
     )
 
+    await this.manager?.execute(
+      `CREATE SCHEMA IF NOT EXISTS "${
+        process.env.MEDUSA_SEARCH_DB_SCHEMA ?? "public"
+      }";`
+    )
+
     await this.orm.close()
 
     this.orm = null
