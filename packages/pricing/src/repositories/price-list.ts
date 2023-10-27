@@ -1,4 +1,4 @@
-import { UpdatePriceListDTO } from "@medusajs/types"
+import { CreatePriceListDTO } from "@medusajs/types"
 import {
   Context,
   DAL,
@@ -13,8 +13,9 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
+import PriceList from "src/models/price-list"
 
-export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
+export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -25,9 +26,9 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async find(
-    findOptions: DAL.FindOptions<PriceSet> = { where: {} },
+    findOptions: DAL.FindOptions<PriceList> = { where: {} },
     context: Context = {}
-  ): Promise<PriceSet[]> {
+  ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
@@ -38,16 +39,16 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
     })
 
     return await manager.find(
-      PriceSet,
-      findOptions_.where as MikroFilterQuery<PriceSet>,
-      findOptions_.options as MikroOptions<PriceSet>
+      PriceList,
+      findOptions_.where as MikroFilterQuery<PriceList>,
+      findOptions_.options as MikroOptions<PriceList>
     )
   }
 
   async findAndCount(
-    findOptions: DAL.FindOptions<PriceSet> = { where: {} },
+    findOptions: DAL.FindOptions<PriceList> = { where: {} },
     context: Context = {}
-  ): Promise<[PriceSet[], number]> {
+  ): Promise<[PriceList[], number]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
@@ -58,25 +59,25 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
     })
 
     return await manager.findAndCount(
-      PriceSet,
-      findOptions_.where as MikroFilterQuery<PriceSet>,
-      findOptions_.options as MikroOptions<PriceSet>
+      PriceList,
+      findOptions_.where as MikroFilterQuery<PriceList>,
+      findOptions_.options as MikroOptions<PriceList>
     )
   }
 
   async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    await manager.nativeDelete(PriceSet, { id: { $in: ids } }, {})
+    await manager.nativeDelete(PriceList, { id: { $in: ids } }, {})
   }
 
   async create(
-    data: Omit<CreatePriceSetDTO, "rules">[],
+    data: Omit<CreatePriceListDTO, "rules">[],
     context: Context = {}
-  ): Promise<PriceSet[]> {
+  ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const priceSets = data.map((priceSetData) => {
-      return manager.create(PriceSet, priceSetData)
+      return manager.create(PriceList, priceSetData)
     })
 
     manager.persist(priceSets)
@@ -85,9 +86,9 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: Omit<UpdatePriceListDTO, "rules">[],
+    data: UpdatePriceSetDTO[],
     context: Context = {}
-  ): Promise<PriceSet[]> {
+  ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
     const priceSetIds = data.map((priceSetData) => priceSetData.id)
     const existingPriceSets = await this.find(
@@ -102,7 +103,7 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
     )
 
     const existingPriceSetMap = new Map(
-      existingPriceSets.map<[string, PriceSet]>((priceSet) => [
+      existingPriceSets.map<[string, PriceList]>((priceSet) => [
         priceSet.id,
         priceSet,
       ])
@@ -114,7 +115,7 @@ export class PriceSetRepository extends DALUtils.MikroOrmBaseRepository {
       if (!existingPriceSet) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `PriceSet with id "${priceSetData.id}" not found`
+          `PriceList with id "${priceSetData.id}" not found`
         )
       }
 

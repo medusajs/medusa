@@ -6,3 +6,5 @@ export { default as PriceSetMoneyAmount } from "./price-set-money-amount"
 export { default as PriceSetMoneyAmountRules } from "./price-set-money-amount-rules"
 export { default as PriceSetRuleType } from "./price-set-rule-type"
 export { default as RuleType } from "./rule-type"
+export { default as PriceList } from './price-list'
+export { default as PriceListRule } from './price-list-rule' 

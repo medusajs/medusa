@@ -20,7 +20,7 @@ import { PriceListStatus } from "@medusajs/types"
 
 @Entity()
 export default class PriceList {
-  [OptionalProps]?: "price_set_money_amounts" | "rule_types"
+  [OptionalProps]?: "price_set_money_amounts" | "rule_types" | "status" | "rules" | "number_rules" | "starts_at" | "ends_at"
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -48,7 +48,7 @@ export default class PriceList {
   @OneToMany(() => PriceListRule, (pr) => pr.price_list, {
     cascade: [Cascade.REMOVE],
   })
-  price_list_rules = new Collection<PriceListRule>(this)
+  rules = new Collection<PriceListRule>(this)
 
   // @ManyToMany({
   //   entity: () => MoneyAmount,

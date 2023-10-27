@@ -8,3 +8,5 @@ export { PriceSetMoneyAmountRulesRepository } from "./price-set-money-amount-rul
 export { PriceSetRuleTypeRepository } from "./price-set-rule-type"
 export { PricingRepository } from "./pricing"
 export { RuleTypeRepository } from "./rule-type"
+export { PriceListRepository } from "./price-list"
+export { PriceListRuleRepository } from "./price-list-rule"

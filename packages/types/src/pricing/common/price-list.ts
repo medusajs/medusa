@@ -16,7 +16,24 @@ export interface PriceListDTO {
   price_set_money_amounts: PriceSetMoneyAmountDTO
   money_amounts?: MoneyAmountDTO[]
   rule_types?: RuleTypeDTO[]
-  price_list_rules: PriceListRuleDTO[]
+  rules: PriceListRuleDTO[]
+}
+
+export interface CreatePriceListDTO {
+  starts_at?: Date
+  ends_at?: Date
+  status?: PriceListStatus
+  number_rules?: number
+  rules: PriceListRuleDTO[]
+}
+
+export interface UpdatePriceListDTO {
+  id: string
+  starts_at?: Date
+  ends_at?: Date
+  status?: PriceListStatus
+  number_rules?: number
+  rules: PriceListRuleDTO[]
 }
 
 
@@ -26,4 +43,16 @@ export interface PriceListRuleDTO {
   priority: number
   rule_type: RuleTypeDTO
   price_list: PriceListDTO
+}
+
+export interface CreatePriceListRuleDTO {
+  id: string
+  rule_type_id: string
+  value: string
+  price_list_id: string
+}
+
+export interface UpdatePriceListRuleDTO {
+  id: string
+  value: string
 }
