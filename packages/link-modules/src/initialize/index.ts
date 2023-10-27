@@ -120,12 +120,12 @@ export const initialize = async (
       },
     }
 
-    const loaded = await MedusaModule.bootstrapLink(
-      linkModuleDefinition,
-      options as InternalModuleDeclaration,
-      moduleDefinition,
-      injectedDependencies
-    )
+    const loaded = await MedusaModule.bootstrapLink({
+      definition: linkModuleDefinition,
+      declaration: options as InternalModuleDeclaration,
+      moduleExports: moduleDefinition,
+      injectedDependencies,
+    })
 
     allLinks[serviceKey as string] = Object.values(loaded)[0]
   }
@@ -171,9 +171,7 @@ export async function runMigrations(
         )
     )
 
-    if (modulesLoadedKeys.includes(serviceKey)) {
-      continue
-    } else if (allLinks.has(serviceKey)) {
+    if (allLinks.has(serviceKey)) {
       throw new Error(`Link module ${serviceKey} already exists.`)
     }
 

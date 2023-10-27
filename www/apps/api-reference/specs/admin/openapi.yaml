@@ -13,11 +13,11 @@ tags:
       that, they can create an Oauth provider within the plugin that handles the
       authentication.
 
-      The Apps Oauth endpoints allows admins to manage and generate token for an
-      app using its oauth provider.
+      The Apps Oauth API Routes allows admins to manage and generate token for
+      an app using its oauth provider.
   - name: Auth
     description: >
-      Authentication endpoints allow admin users to manage their session, such
+      Authentication API Routes allow admin users to manage their session, such
       as login or log out.
 
       When an admin user is logged in, the cookie header is set indicating the
@@ -31,7 +31,7 @@ tags:
       asynchronusly. For example, the Import Product feature is implemented
       using batch jobs.
 
-      Batch Job endpoints allows admins to manage the batch jobs and their
+      Batch Job API Routes allows admins to manage the batch jobs and their
       state.
     externalDocs:
       description: How to import products
@@ -41,8 +41,8 @@ tags:
       A store can use unlimited currencies, and each region must be associated
       with at least one currency.
 
-      Currencies are defined within the Medusa backend. Currency endpoints allow
-      admins to list and update currencies.
+      Currencies are defined within the Medusa backend. Currency API Routes
+      allow admins to list and update currencies.
     externalDocs:
       description: How to manage currencies
       url: >-
@@ -69,7 +69,7 @@ tags:
       Admins can create discounts with conditions and rules, providing them with
       advanced settings for variety of cases.
 
-      The Discount endpoints can be used to manage discounts, their conditions,
+      The Discount API Routes can be used to manage discounts, their conditions,
       resources, and more.
     externalDocs:
       description: How to manage discounts
@@ -87,7 +87,7 @@ tags:
       specifying options like their balance, region, and more.
 
       These gift cards are different than the saleable gift cards in a store,
-      which are created and managed through Product endpoints.
+      which are created and managed through Product API Routes.
     externalDocs:
       description: How to manage gift cards
       url: >-
@@ -195,7 +195,7 @@ tags:
       Product variants are the actual salable item in your store. Each variant
       is a combination of the different option values available on the product.
 
-      Product variants can be managed through the Products endpoints.
+      Product variants can be managed through the Products API Routes.
     externalDocs:
       description: How to manage product variants
       url: >-
@@ -207,7 +207,7 @@ tags:
 
       For example, a publishable API key can be associated with one or more
       sales channels. When it is passed in the header of a request to the List
-      Product store endpoint,
+      Product store API Route,
 
       the sales channels are inferred from the key and only products associated
       with those sales channels are retrieved.
@@ -330,7 +330,7 @@ tags:
       url: https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates
   - name: Uploads
     description: >
-      The upload endpoints are used to upload any type of resources. For
+      The upload API Routes are used to upload any type of resources. For
       example, they can be used to upload CSV files that are used to import
       products into the store.
     externalDocs:
@@ -353,6 +353,8 @@ paths:
     $ref: paths/admin_apps_authorizations.yaml
   /admin/auth:
     $ref: paths/admin_auth.yaml
+  /admin/auth/token:
+    $ref: paths/admin_auth_token.yaml
   /admin/batch-jobs:
     $ref: paths/admin_batch-jobs.yaml
   /admin/batch-jobs/{id}:
@@ -647,8 +649,6 @@ paths:
     $ref: paths/admin_tax-rates_{id}_products_batch.yaml
   /admin/tax-rates/{id}/shipping-options/batch:
     $ref: paths/admin_tax-rates_{id}_shipping-options_batch.yaml
-  /admin/token:
-    $ref: paths/admin_token.yaml
   /admin/uploads:
     $ref: paths/admin_uploads.yaml
   /admin/uploads/download-url:

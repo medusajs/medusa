@@ -1565,8 +1565,9 @@ const PriceListProductPricesForm = ({
                       <span>
                         {t(
                           "price-list-product-prices-form-column-regions-price-label",
-                          "Price {{code}}",
+                          "Price {{name}} ({{code}})",
                           {
+                            name: region.name,
                             code: region.currency_code.toUpperCase(),
                           }
                         )}
@@ -1851,6 +1852,15 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
       }
     }, [isAnchor, onBlur, setIsEditing])
 
+    const onFocusInput = React.useCallback(() => {
+      inputRef.current?.focus()
+
+      inputRef.current?.setSelectionRange(
+        inputRef.current.value.length,
+        inputRef.current.value.length
+      )
+    }, [])
+
     const onMouseDown = React.useCallback(
       (e: React.MouseEvent) => {
         e.stopPropagation()
@@ -1874,12 +1884,16 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
           if (e.detail === 2) {
             setIsActive(true)
             setIsEditing(true)
+
+            onFocusInput()
+
+            return
           }
         }
 
         onCellMouseDown(e)
       },
-      [onCellMouseDown, setIsEditing, isAnchor, isActive]
+      [onCellMouseDown, setIsEditing, onFocusInput, isAnchor, isActive]
     )
 
     const onEnter = React.useCallback(
@@ -1896,9 +1910,9 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
         setIsActive(true)
         setIsEditing(true)
 
-        inputRef.current?.focus()
+        onFocusInput()
       },
-      [isAnchor, isActive, onNextRow, setIsEditing]
+      [isAnchor, isActive, onNextRow, setIsEditing, onFocusInput]
     )
 
     const onSpace = React.useCallback(
@@ -2005,8 +2019,12 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
 
         inputRef.current?.focus()
         setIsActive(false)
+
+        onBlur()
+
+        return
       },
-      [isActive]
+      [isActive, onBlur]
     )
 
     const onKeydown = React.useCallback(
@@ -2044,7 +2062,7 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
 
     const onActiveAwareBlur = React.useCallback(() => {
       if (isActive) {
-        return
+        setIsActive(false)
       }
 
       onBlur()

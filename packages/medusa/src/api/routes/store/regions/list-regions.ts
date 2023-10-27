@@ -11,7 +11,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /store/regions
  * operationId: GetRegions
  * summary: List Regions
- * description: "Retrieve a list of regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated. This endpoint is useful to
+ * description: "Retrieve a list of regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated. This API Route is useful to
  *  show the customer all available regions to choose from."
  * externalDocs:
  *   description: "How to use regions in a storefront"

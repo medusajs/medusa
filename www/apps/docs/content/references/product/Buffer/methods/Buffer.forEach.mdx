@@ -1,0 +1,53 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# forEach
+
+[Buffer](../../interfaces/Buffer.mdx).forEach
+
+**forEach**(`callbackfn`, `thisArg?`): `void`
+
+Performs the specified action for each element in an array.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "callbackfn",
+    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `void`",
+    "description": "A function that accepts up to three arguments. forEach calls the callbackfn function one time for each element in the array.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "thisArg",
+    "type": "`any`",
+    "description": "An object to which the this keyword can refer in the callbackfn function. If thisArg is omitted, undefined is used as the this value.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Inherited from
+
+Uint8Array.forEach

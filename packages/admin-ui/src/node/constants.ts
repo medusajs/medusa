@@ -10,4 +10,7 @@ export const ALIASED_PACKAGES = [
   "@tanstack/react-table",
   "@emotion/react",
   "medusa-react",
+  "@medusajs/ui",
+  "@medusajs/icons",
+  "@medusajs/ui-preset",
 ] as const

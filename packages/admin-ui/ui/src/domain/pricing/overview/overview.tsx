@@ -384,7 +384,9 @@ const PriceListTableRowActions = ({ row }: PriceListTableRowActionsProps) => {
 
   const navigate = useNavigate()
 
-  const handleDelete = async () => {
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+
     const response = await prompt({
       title: "Are you sure?",
       description: "This will permanently delete the price list",

@@ -25,6 +25,7 @@ export default class InventoryLevelService {
     CREATED: "inventory-level.created",
     UPDATED: "inventory-level.updated",
     DELETED: "inventory-level.deleted",
+    RESTORED: "inventory-level.restored",
   }
 
   protected readonly manager_: EntityManager
@@ -231,9 +232,33 @@ export default class InventoryLevelService {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    await levelRepository.delete({ inventory_item_id: In(ids) })
+    await levelRepository.softDelete({ inventory_item_id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
+      inventory_item_id: inventoryItemId,
+    })
+  }
+
+  /**
+   * Restores inventory levels by inventory Item ID.
+   * @param inventoryItemId - The ID or IDs of the inventory item to restore inventory levels for.
+   * @param context
+   */
+  @InjectEntityManager()
+  async restoreByInventoryItemId(
+    inventoryItemId: string | string[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    const ids = Array.isArray(inventoryItemId)
+      ? inventoryItemId
+      : [inventoryItemId]
+
+    const manager = context.transactionManager!
+    const levelRepository = manager.getRepository(InventoryLevel)
+
+    await levelRepository.restore({ inventory_item_id: In(ids) })
+
+    await this.eventBusService_?.emit?.(InventoryLevelService.Events.RESTORED, {
       inventory_item_id: inventoryItemId,
     })
   }
@@ -255,7 +280,7 @@ export default class InventoryLevelService {
     const manager = context.transactionManager!
     const levelRepository = manager.getRepository(InventoryLevel)
 
-    await levelRepository.delete({ id: In(ids) })
+    await levelRepository.softDelete({ id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
       ids: inventoryLevelId,
@@ -277,7 +302,7 @@ export default class InventoryLevelService {
 
     const ids = Array.isArray(locationId) ? locationId : [locationId]
 
-    await levelRepository.delete({ location_id: In(ids) })
+    await levelRepository.softDelete({ location_id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
       location_ids: ids,

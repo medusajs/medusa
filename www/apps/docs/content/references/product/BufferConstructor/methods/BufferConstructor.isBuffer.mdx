@@ -1,0 +1,55 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# isBuffer
+
+[BufferConstructor](../../interfaces/BufferConstructor.mdx).isBuffer
+
+**isBuffer**(`obj`): obj is Buffer
+
+Returns `true` if `obj` is a `Buffer`, `false` otherwise.
+
+```js
+import { Buffer } from 'buffer';
+
+Buffer.isBuffer(Buffer.alloc(10)); // true
+Buffer.isBuffer(Buffer.from('foo')); // true
+Buffer.isBuffer('a string'); // false
+Buffer.isBuffer([]); // false
+Buffer.isBuffer(new Uint8Array(1024)); // false
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "obj",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+obj is Buffer
+
+<ParameterTypes parameters={[
+  {
+    "name": "obj",
+    "type": "obj is Buffer",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.1.101

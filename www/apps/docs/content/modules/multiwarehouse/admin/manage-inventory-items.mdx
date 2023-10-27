@@ -57,7 +57,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 ## List Inventory Items
 
-You can list inventory items by sending a request to the [List Inventory Items endpoint](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitems):
+You can list inventory items by sending a request to the [List Inventory Items API Route](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitems):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -126,7 +126,7 @@ curl -L -X GET '<BACKEND_URL>/admin/inventory-items' \
 </TabItem>
 </Tabs>
 
-This endpoint does not require any path or query parameters. You can, however, pass path parameters to search or filter inventory items. For example, you can get inventory items in a specific location by passing the `location_id` query parameter. You can learn more about available query parameters in the [API reference](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitems).
+This API Route doesn't require any path or query parameters. You can, however, pass path parameters to search or filter inventory items. For example, you can get inventory items in a specific location by passing the `location_id` query parameter. You can learn more about available query parameters in the [API reference](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitems).
 
 This request returns an array of inventory item objects.
 
@@ -140,7 +140,7 @@ Inventory items are automatically created when a variant is created with `manage
 
 :::
 
-You can create an inventory item by sending a request to the [Create Inventory Item endpoint](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitems):
+You can create an inventory item by sending a request to the [Create Inventory Item API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitems):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -211,7 +211,7 @@ curl -L -X POST '<BACKEND_URL>/admin/inventory-items' \
 </TabItem>
 </Tabs>
 
-This endpoint requires in the body parameter the `variant_id` parameter, which is the ID of the variant to create this inventory item for. You can also pass other inventory-related parameters, such as `sku`. You can learn more about other available parameters in the [API reference](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitems).
+This API Route requires in the body parameter the `variant_id` parameter, which is the ID of the variant to create this inventory item for. You can also pass other inventory-related parameters, such as `sku`. You can learn more about other available parameters in the [API reference](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitems).
 
 This request returns the created inventory item as an object.
 
@@ -219,7 +219,7 @@ This request returns the created inventory item as an object.
 
 ## Retrieve Inventory Item
 
-You can retrieve an inventory item by sending a request to the [Get Inventory Item endpoint](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitemsinventoryitem):
+You can retrieve an inventory item by sending a request to the [Get Inventory Item API Route](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitemsinventoryitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -281,7 +281,7 @@ curl -L -X GET '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint accepts the ID of the inventory item as a path parameter. You can also path query parameters such as [expand](https://docs.medusajs.com/api/admin#expanding-fields) and [fields](https://docs.medusajs.com/api/admin#selecting-fields).
+This API Route accepts the ID of the inventory item as a path parameter. You can also path query parameters such as [expand](https://docs.medusajs.com/api/admin#expanding-fields) and [fields](https://docs.medusajs.com/api/admin#selecting-fields).
 
 The request returns the inventory item as an object.
 
@@ -289,7 +289,7 @@ The request returns the inventory item as an object.
 
 ## Update Inventory Item
 
-You can update an inventory item by sending a request to the [Update Inventory Item endpoint](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitem):
+You can update an inventory item by sending a request to the [Update Inventory Item API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -364,7 +364,7 @@ curl -L -X POST '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the inventory item’s ID as a path parameter. You can pass any of the inventory item’s attributes that you want to update in its body parameter. The example above updates the value of the `origin_country` attribute. You can learn more about available body parameters in the [API reference](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitem).
+This API Route requires the inventory item’s ID as a path parameter. You can pass any of the inventory item’s attributes that you want to update in its body parameter. The example above updates the value of the `origin_country` attribute. You can learn more about available body parameters in the [API reference](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitem).
 
 The request returns the updated inventory item as an object.
 
@@ -376,7 +376,7 @@ This section shows you the different ways you can manage inventory levels. Each 
 
 ### List inventory levels
 
-You can list inventory levels of an inventory item by sending a request to the [List inventory levels endpoint](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitemsinventoryitemlocationlevels):
+You can list inventory levels of an inventory item by sending a request to the [List inventory levels API Route](https://docs.medusajs.com/api/admin#inventory-items_getinventoryitemsinventoryitemlocationlevels):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -445,13 +445,13 @@ curl -L -X GET '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the ID of the inventory item as a path parameter. You can also pass [expand](https://docs.medusajs.com/api/admin#expanding-fields) and [fields](https://docs.medusajs.com/api/admin#selecting-fields) query parameters.
+This API Route requires the ID of the inventory item as a path parameter. You can also pass [expand](https://docs.medusajs.com/api/admin#expanding-fields) and [fields](https://docs.medusajs.com/api/admin#selecting-fields) query parameters.
 
 The request returns the inventory item as an object. In that object, the list of inventory levels are available under the property `location_levels`.
 
 ### Create Inventory Level
 
-You can create a location level by sending a request to the [Create Inventory Level endpoint](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitemlocationlevels):
+You can create a location level by sending a request to the [Create Inventory Level API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitemlocationlevels):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -533,7 +533,7 @@ curl -L -X POST '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels' 
 </TabItem>
 </Tabs>
 
-This endpoint requires the inventory item ID as a path parameter. In the request body, it requires the following parameters:
+This API Route requires the inventory item ID as a path parameter. In the request body, it requires the following parameters:
 
 - `location_id`: The ID of the location associated with this location level. This ID is typically available through using the stock location module.
 - `stocked_quantity`: A number indicating the item’s quantity in stock.
@@ -544,7 +544,7 @@ This request returns the inventory item associated with the created location lev
 
 ### Update Location Level
 
-You can update a location level by sending a request to the [Update Location Level endpoint](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitemlocationlevelslocationlevel):
+You can update a location level by sending a request to the [Update Location Level API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitemlocationlevelslocationlevel):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -624,7 +624,7 @@ curl -L -X POST '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels/<
 </TabItem>
 </Tabs>
 
-This endpoint requires two path parameters: the first one being the ID of the inventory item, and the second one being the ID of the location.
+This API Route requires two path parameters: the first one being the ID of the inventory item, and the second one being the ID of the location.
 
 In the body, you can optionally pass any of the location level’s attributes to update. In the example above, you update the `stocked_quantity` attribute of the location level.
 
@@ -632,7 +632,7 @@ The request returns the inventory item associated with the location level as an 
 
 ### Delete Location Level
 
-You can delete a location level of an inventory item by sending a request to the [Delete Location Level endpoint](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsinventoryitelocationlevelslocation):
+You can delete a location level of an inventory item by sending a request to the [Delete Location Level API Route](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsinventoryitelocationlevelslocation):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -696,7 +696,7 @@ curl -L -X DELETE '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels
 </TabItem>
 </Tabs>
 
-This endpoint requires two path parameters: the first one being the inventory item’s ID and the second one being the location level’s ID.
+This API Route requires two path parameters: the first one being the inventory item’s ID and the second one being the location level’s ID.
 
 The request returns the inventory item as an object.
 
@@ -704,7 +704,7 @@ The request returns the inventory item as an object.
 
 ## Delete Inventory Item
 
-You can delete an inventory item by sending a request to the [Delete Inventory Item endpoint](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsinventoryitem):
+You can delete an inventory item by sending a request to the [Delete Inventory Item API Route](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsinventoryitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -765,7 +765,7 @@ curl -L -X DELETE '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>' \
 </TabItem>
 </Tabs>
 
-This endpoint requires the inventory item’s ID be passed as a path parameter.
+This API Route requires the inventory item’s ID be passed as a path parameter.
 
 It returns the following fields in the response:
 

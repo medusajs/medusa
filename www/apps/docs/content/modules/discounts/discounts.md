@@ -32,7 +32,7 @@ Discounts can be used in many use cases including:
 
 ## Discount Entity Overview
 
-A discount is represented by the [`Discount`](../../references/entities/classes/Discount.md) entity. Some of its important attributes are:
+A discount is represented by the [`Discount`](../../references/entities/classes/Discount.mdx) entity. Some of its important attributes are:
 
 - `code` is a unique code that you specify when you create the discount. Customers use this code to apply the discount during checkout. The code can only include upper-case letters and numbers.
 - `rule_id` is the ID of the rule of this discount. The `rule` attribute is the expanded object of the `DiscountRule` entity. You can use the `rule` attribute to get details regarding the discount type. You can learn more about this in the [`DiscountRule` entity overview](#discountrule-entity-overview) later.
@@ -54,7 +54,7 @@ The `is_dynamic` attribute in the `Discount` entity is a boolean value that dete
 
 ## DiscountRule Entity Overview
 
-Every `Discount` entity belongs to a [`DiscountRule`](../../references/entities/classes/DiscountRule.md) entity. `DiscountRule` includes details such as the type of discount, the amount to be discounted, and more.
+Every `Discount` entity belongs to a [`DiscountRule`](../../references/entities/classes/DiscountRule.mdx) entity. `DiscountRule` includes details such as the type of discount, the amount to be discounted, and more.
 
 Some of the `DiscountRule` entity’s important attributes are:
 
@@ -71,7 +71,7 @@ Some of the `DiscountRule` entity’s important attributes are:
 
 A discount can optionally have discount conditions. Discount conditions are used to further add limitations on when the discount can be applied.
 
-A [`DiscountCondition`](../../references/entities/classes/DiscountCondition.md) belongs to a `DiscountRule` entity. The `discount_rule_id` attribute indicates the ID of the `DiscountRule` it belongs to.
+A [`DiscountCondition`](../../references/entities/classes/DiscountCondition.mdx) belongs to a `DiscountRule` entity. The `discount_rule_id` attribute indicates the ID of the `DiscountRule` it belongs to.
 
 Discount conditions have an attribute `type` that indicates the condition’s type. Its value must be one of the following:
 
@@ -92,11 +92,11 @@ Discount conditions also have an attribute `operator` that indicates how the con
 
 Based on the value of `type`, one of the following relations can be used to retrieve the condition’s items:
 
-- `products` is an array of products that this condition applies to if the condition’s `type` is `products`. Each item of the array would be a [`DiscountConditionProduct`](../../references/entities/classes/DiscountConditionProduct.md).
-- `product_types` is an array of product types that this condition applies to if the condition’s `type` is `product_types`. Each item of the array would be a [`DiscountConditionProductType`](../../references/entities/classes/DiscountConditionProductType.md).
-- `product_collections` is an array of product collections that this condition applies to if the condition’s `type` is `product_collections`. Each item of the array would be a [`DiscountConditionProductCollection`](../../references/entities/classes/DiscountConditionProductCollection.md).
-- `product_tags` is an array of product tags that this condition applies to if the condition’s `type` is `product_tags`. Each item of the array would be a [`DiscountConditionProductTag`](../../references/entities/classes/DiscountConditionProductTag.md).
-- `customer_groups` is an array of customer groups that this condition applies to if the condition’s `type` is `customer_groups`. Each item of the array would be a [`DiscountConditionCustomerGroup`](../../references/entities/classes/DiscountConditionCustomerGroup.md).
+- `products` is an array of products that this condition applies to if the condition’s `type` is `products`. Each item of the array would be a [`DiscountConditionProduct`](../../references/entities/classes/DiscountConditionProduct.mdx).
+- `product_types` is an array of product types that this condition applies to if the condition’s `type` is `product_types`. Each item of the array would be a [`DiscountConditionProductType`](../../references/entities/classes/DiscountConditionProductType.mdx).
+- `product_collections` is an array of product collections that this condition applies to if the condition’s `type` is `product_collections`. Each item of the array would be a [`DiscountConditionProductCollection`](../../references/entities/classes/DiscountConditionProductCollection.mdx).
+- `product_tags` is an array of product tags that this condition applies to if the condition’s `type` is `product_tags`. Each item of the array would be a [`DiscountConditionProductTag`](../../references/entities/classes/DiscountConditionProductTag.mdx).
+- `customer_groups` is an array of customer groups that this condition applies to if the condition’s `type` is `customer_groups`. Each item of the array would be a [`DiscountConditionCustomerGroup`](../../references/entities/classes/DiscountConditionCustomerGroup.mdx).
 
 ![Discounts Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1678372360/Medusa%20Docs/Diagrams/discounts_ioivrl.png)
 

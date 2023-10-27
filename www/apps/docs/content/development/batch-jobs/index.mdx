@@ -21,7 +21,7 @@ You can also create a custom batch job or overwrite Medusa’s batch jobs.
 
 ### BatchJob Entity Overview
 
-A batch job is stored in the database as a [BatchJob](../../references/entities/classes/BatchJob) entity. Some of its important attributes are:
+A batch job is stored in the database as a [BatchJob](../../references/entities/classes/BatchJob.mdx) entity. Some of its important attributes are:
 
 - `status`: A string that determines the current status of the Batch Job.
 - `context`: An object that can be used to store configurations related to the batch job. For example, you can use it to store listing configurations such as the limit or offset of the list to be retrieved during the processing of the batch job.
@@ -49,15 +49,15 @@ When you create a batch job strategy, the `batchType` class property indicates t
 
 A batch job’s flow from creation to completion is:
 
-1. A batch job is created using the [Create Batch Job API endpoint](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobs).
+1. A batch job is created using the [Create Batch Job API route](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobs).
 2. Once the batch job is created, the batch job’s status is changed to `created` and the `batch.created` event is triggered by the `BatchJobService`.
 3. The `BatchJobSubscriber` handles the `created` event. It resolves the batch job strategy based on the `type` of the batch job, then uses it to pre-process the batch job. After this, the batch job’s status is changed to `pre_processed`. Only when the batch job has the status `pre_processed` can be confirmed.
-4. If `dry_run` is not set in the Create Batch Job request in step one or if it is set to `false`, the batch job will automatically be confirmed after processing. Otherwise, if `dry_run` is set to `true`, the batch job can be confirmed using the [Confirm Batch Job API](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobsbatchjobconfirmprocessing) endpoint.
+4. If `dry_run` is not set in the Create Batch Job request in step one or if it is set to `false`, the batch job will automatically be confirmed after processing. Otherwise, if `dry_run` is set to `true`, the batch job can be confirmed using the [Confirm Batch Job API Route](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobsbatchjobconfirmprocessing).
 5. Once the batch job is confirmed, the batch job’s status is changed to `confirmed` and the `batch.confirmed` event is triggered by the `BatchJobService`.
 6. The `BatchJobSubscriber` handles the `confirmed` event. It resolves the batch job strategy, then uses it to process the batch job. 
 7. Once the batch job is processed successfully, the batch job has the status `completed`.
 
-You can track the progress of the batch job at any point using the [Retrieve Batch Job](https://docs.medusajs.com/api/admin#batch-jobs_getbatchjobsbatchjob) endpoint.
+You can track the progress of the batch job at any point using the [Retrieve Batch Job API Route](https://docs.medusajs.com/api/admin#batch-jobs_getbatchjobsbatchjob).
 
 :::info
 

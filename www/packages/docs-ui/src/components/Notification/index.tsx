@@ -24,7 +24,15 @@ export const NotificationContainer = () => {
     className?: string
   ) => {
     return (
-      <TransitionGroup className={className}>
+      <TransitionGroup
+        className={clsx(
+          "flex fixed flex-col gap-docs_0.5 right-0",
+          "md:w-auto w-full overflow-y-auto",
+          "max-h-[50%] md:max-h-[calc(100vh-57px)]",
+          notifications.length && "max-[768px]:h-[50%]",
+          className
+        )}
+      >
         {notifications.filter(condition).map((notification) => (
           <CSSTransition
             key={notification.id}
@@ -52,11 +60,11 @@ export const NotificationContainer = () => {
     <>
       {renderFilteredNotifications(
         (notification) => notification.placement === "top",
-        "flex fixed flex-col gap-docs_0.5 right-0 top-0 md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
+        "top-0"
       )}
       {renderFilteredNotifications(
         (notification) => notification.placement !== "top",
-        "flex flex-col gap-docs_0.5 fixed right-0 bottom-0 md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
+        "bottom-0"
       )}
     </>
   )

@@ -9,6 +9,7 @@ import { useDebounce } from "../../../../hooks/use-debounce"
 import { NestedForm } from "../../../../utils/nested-form"
 import { ProductFilter, ProductFilterMenu } from "../../components"
 import { PriceListPricesSchema } from "./types"
+import { Form } from "../../../../components/helpers/form"
 
 type PriceListPricesFormProps = {
   form: NestedForm<PriceListPricesSchema>
@@ -23,7 +24,12 @@ const PriceListPricesForm = ({
   productIds,
   priceListId,
 }: PriceListPricesFormProps) => {
-  const { path, getValues } = form
+  const {
+    control,
+    path,
+    getValues,
+    formState: { isDirty },
+  } = form
 
   const { t } = useTranslation()
 
@@ -87,9 +93,24 @@ const PriceListPricesForm = ({
     <div className="relative flex h-full w-full flex-col">
       <div>
         <div className="border-ui-border-base bg-ui-bg-base z-10 flex items-center justify-between border-b px-4 py-3">
-          <Heading>
-            {t("price-list-prices-form-heading", "Edit prices")}
-          </Heading>
+          <div className="flex items-center gap-x-3">
+            <Heading>
+              {t("price-list-prices-form-heading", "Edit prices")}
+            </Heading>
+            {isDirty && (
+              <Form.Field
+                control={control}
+                name={path("products")}
+                render={() => {
+                  return (
+                    <Form.Item>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+            )}
+          </div>
           <div className="flex items-center gap-x-2">
             <ProductFilterMenu
               onClearFilters={() => setFilters({})}
