@@ -12,4 +12,5 @@ export const ALIASED_PACKAGES = [
   "medusa-react",
   "@medusajs/ui",
   "@medusajs/icons",
+  "@medusajs/ui-preset",
 ] as const
