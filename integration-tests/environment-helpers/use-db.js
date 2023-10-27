@@ -1,6 +1,7 @@
 const path = require("path")
 
 const { getConfigFile } = require("medusa-core-utils")
+const { isObject, createMedusaContainer } = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
@@ -71,14 +72,17 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd, database_extra }) {
+  initDb: async function ({ cwd, database_extra, env }) {
+    if (isObject(env)) {
+      Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
+    }
+
     const { configModule } = getConfigFile(cwd, `medusa-config`)
-    const { featureFlags } = configModule
 
     const featureFlagsLoader =
       require("@medusajs/medusa/dist/loaders/feature-flags").default
 
-    const featureFlagsRouter = featureFlagsLoader({ featureFlags })
+    const featureFlagRouter = featureFlagsLoader(configModule)
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
     const entities = modelsLoader({}, { register: false })
 
@@ -104,10 +108,10 @@ module.exports = {
     } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
     const { migrations: moduleMigrations, models: moduleModels } =
-      getModuleSharedResources(configModule, featureFlagsRouter)
+      getModuleSharedResources(configModule, featureFlagRouter)
 
     const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
-      featureFlagsRouter.isFeatureEnabled(flag)
+      featureFlagRouter.isFeatureEnabled(flag)
     )
 
     const enabledEntities = entities.filter(
@@ -128,6 +132,39 @@ module.exports = {
     await dbDataSource.runMigrations()
 
     instance.setDb(dbDataSource)
+
+    const IsolateProductDomainFeatureFlag =
+      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-product-domain").default
+    const IsolatePricingDomainFeatureFlag =
+      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-pricing-domain").default
+
+    if (
+      featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
+      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
+    ) {
+      const pgConnectionLoader =
+        require("@medusajs/medusa/dist/loaders/pg-connection").default
+
+      const medusaAppLoader =
+        require("@medusajs/medusa/dist/loaders/medusa-app").default
+
+      const container = createMedusaContainer()
+
+      await pgConnectionLoader({ configModule, container })
+
+      const { runMigrations } = await medusaAppLoader(
+        { configModule, container },
+        { registerInContainer: false }
+      )
+
+      const options = {
+        database: {
+          clientUrl: DB_URL,
+        },
+      }
+      await runMigrations(options)
+    }
+
     return dbDataSource
   },
   useDb: function () {
