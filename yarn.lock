@@ -35842,6 +35842,7 @@ __metadata:
   dependencies:
     "@medusajs/admin": ^7.1.3
     "@medusajs/medusa": ^1.17.0
+    "@tanstack/react-table": ^8.7.9
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1
     body-parser: ^1.19.0
@@ -35855,6 +35856,7 @@ __metadata:
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
+    "@tanstack/react-table": ^8.7.9
     medusa-react: ^9.0.0
   peerDependenciesMeta:
     medusa-react:
