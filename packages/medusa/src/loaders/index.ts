@@ -196,6 +196,7 @@ export default async ({
   container.register({
     [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
   })
+  container.register(ContainerRegistrationKeys.REMOTE_QUERY, asValue(undefined))
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
