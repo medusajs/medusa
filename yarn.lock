@@ -7277,11 +7277,11 @@ __metadata:
     "@babel/types": 7.22.5
     "@hookform/error-message": ^2.0.1
     "@hookform/resolvers": ^3.3.1
-    "@medusajs/icons": 1.1.0
+    "@medusajs/icons": ^1.1.0
     "@medusajs/medusa": ^1.17.2
     "@medusajs/types": ^1.11.4
     "@medusajs/ui": ^2.2.0
-    "@medusajs/ui-preset": 1.0.2
+    "@medusajs/ui-preset": ^1.0.2
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
@@ -7500,7 +7500,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/icons@1.1.0, @medusajs/icons@^1.1.0, @medusajs/icons@workspace:packages/design-system/icons":
+"@medusajs/icons@^1.1.0, @medusajs/icons@workspace:packages/design-system/icons":
   version: 0.0.0-use.local
   resolution: "@medusajs/icons@workspace:packages/design-system/icons"
   dependencies:
@@ -7942,7 +7942,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui-preset@1.0.2, @medusajs/ui-preset@^1.0.2, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
+"@medusajs/ui-preset@^1.0.2, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
   version: 0.0.0-use.local
   resolution: "@medusajs/ui-preset@workspace:packages/design-system/ui-preset"
   dependencies:
