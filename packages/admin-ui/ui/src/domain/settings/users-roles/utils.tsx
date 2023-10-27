@@ -1,23 +1,35 @@
 import { PermissionsType } from "../users-permissions/use-permission";
+import { RolesType } from "./use-role";
 
-export type PermissionsOptionsType = {
+export type OptionsType = {
     value: string
     label: string
 }
 
+// Get options values
+
+export const getOptionsValues = (options: OptionsType[]): string[] => {
+    return options.length ? options.map(o=>o.value) : []
+}
+
 // Get permissions options
 
-export const getPermissionsOptions = (permissions?: PermissionsType[]): PermissionsOptionsType[] => {
+export const getPermissionsOptions = (permissions?: PermissionsType[]): OptionsType[] => {
     return permissions?.map(p=>{
         return({
             value: p.id,
-            label: p.name,
+            label: p.name
         });
     }) || [];
 }
 
-// Get permissions options values
+// Get roles options
 
-export const getPermissionsOptionsValues = (options: PermissionsOptionsType[]): string[] => {
-    return options.length ? options.map(o=>o.value) : []
+export const getRolesOptions = (roles?: RolesType[]): OptionsType[] => {
+    return roles?.map(p=>{
+        return({
+            value: p.id,
+            label: p.name
+        });
+    }) || [];
 }

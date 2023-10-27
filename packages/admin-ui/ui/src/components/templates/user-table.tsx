@@ -15,6 +15,7 @@ import DeletePrompt from "../organisms/delete-prompt"
 import EditUser from "../organisms/edit-user-modal"
 import { useTranslation } from "react-i18next"
 import { getFullAdminPath } from "../../utils/get-admin-path"
+import { UserWithRole } from "../../types/users"
 
 type UserListElement = {
   entity: any
@@ -71,7 +72,7 @@ const UserTable: React.FC<UserTableProps> = ({
     setSelectedInvite(null)
   }
 
-  const getUserTableRow = (user: User, index: number) => {
+  const getUserTableRow = (user: UserWithRole, index: number) => {
     return (
       <Table.Row
         key={`user-${index}`}
@@ -98,8 +99,7 @@ const UserTable: React.FC<UserTableProps> = ({
         </Table.Cell>
         <Table.Cell className="w-80">{user.email}</Table.Cell>
         <Table.Cell className="inter-small-semibold text-violet-60">
-          {user.role.charAt(0).toUpperCase()}
-          {user.role.slice(1)}
+          {user.teamRole ? user.teamRole.name : 'Superadmin'}
         </Table.Cell>
         <Table.Cell></Table.Cell>
       </Table.Row>
@@ -192,46 +192,6 @@ const UserTable: React.FC<UserTableProps> = ({
 
   const filteringOptions = [
     {
-      title: "Team permissions",
-      options: [
-        {
-          title: t("templates-all", "All"),
-          count: elements.length,
-          onClick: () => setShownElements(elements),
-        },
-        {
-          title: t("templates-member", "Member"),
-          count: elements.filter(
-            (e) => e.entityType === "user" && e.entity.role === "member"
-          ).length,
-          onClick: () =>
-            setShownElements(
-              elements.filter(
-                (e) => e.entityType === "user" && e.entity.role === "member"
-              )
-            ),
-        },
-        {
-          title: t("templates-admin", "Admin"),
-          count: elements.filter(
-            (e) => e.entityType === "user" && e.entity.role === "admin"
-          ).length,
-          onClick: () =>
-            setShownElements(
-              elements.filter(
-                (e) => e.entityType === "user" && e.entity.role === "admin"
-              )
-            ),
-        },
-        {
-          title: t("templates-no-team-permissions", "No team permissions"),
-          count: elements.filter((e) => e.entityType === "invite").length,
-          onClick: () =>
-            setShownElements(elements.filter((e) => e.entityType === "invite")),
-        },
-      ],
-    },
-    {
       title: t("templates-status", "Status"),
       options: [
         {
@@ -309,7 +269,7 @@ const UserTable: React.FC<UserTableProps> = ({
               {t("templates-email", "Email")}
             </Table.HeadCell>
             <Table.HeadCell className="w-72">
-              {t("templates-team-permissions", "Team permissions")}
+              {t("templates-team-role", "Team role")}
             </Table.HeadCell>
             <Table.HeadCell>Status</Table.HeadCell>
           </Table.HeadRow>

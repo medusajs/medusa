@@ -19,18 +19,23 @@ const Users: React.FC = () => {
   }
 
   useEffect(() => {
-    Medusa.users
-      .list()
-      .then((res) => res.data)
-      .then((userData) => {
-        Medusa.invites
-          .list()
-          .then((res) => res.data)
-          .then((inviteData) => {
-            setUsers(userData.users)
-            setInvites(inviteData.invites)
-          })
-      })
+    try{
+      Medusa.users
+        .list()
+        .then((res) => res.data)
+        .then((userData) => {
+          Medusa.invites
+            .list()
+            .then((res) => res.data)
+            .then((inviteData) => {
+              setUsers(userData.users)
+              setInvites(inviteData.invites)
+            })
+        })
+      }
+      catch(e) {
+        console.error(e);
+      }
   }, [shouldRefetch])
 
   const actionables = [

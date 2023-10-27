@@ -1,7 +1,7 @@
 import { ResponsePromise } from "@medusajs/medusa-js";
 import { useMedusa } from "medusa-react";
 import { useEffect, useState } from "react"
-import usePermissions, { PermissionsType } from "../users-permissions/use-permission";
+import { PermissionsType } from "../users-permissions/use-permission";
 
 export type RolesType = {
     id: string,
@@ -93,7 +93,23 @@ const useRoles = () => {
         return true;
     }
 
-  return {roles, fetch, get, update, create, remove, isLoading}
+    // Set role for user
+
+    const setRole = async (user_id: string, id:string) => {
+        setIsLoading(true);
+        try {
+            let res = client.admin.custom.post(`/admin/user/${user_id}/setrole`, {role_id: id});
+            setIsLoading(false);
+            return res;
+        }
+        catch(e) {
+            console.error(e);
+            setIsLoading(false);
+            return null;
+        }
+    }
+
+  return {roles, fetch, get, update, create, remove, setRole, isLoading}
 }
 
 export default useRoles

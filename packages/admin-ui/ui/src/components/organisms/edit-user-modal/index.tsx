@@ -1,7 +1,7 @@
 import { User } from "@medusajs/medusa"
 import { useAdminUpdateUser } from "medusa-react"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import React, { useEffect, useState } from "react"
+import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
@@ -9,6 +9,10 @@ import FormValidator from "../../../utils/form-validator"
 import Button from "../../fundamentals/button"
 import InputField from "../../molecules/input"
 import Modal from "../../molecules/modal"
+import { NextSelect } from "../../molecules/select/next-select"
+import { OptionsType, getRolesOptions } from "../../../domain/settings/users-roles/utils"
+import useRoles from "../../../domain/settings/users-roles/use-role"
+import { UserWithRole } from "../../../types/users"
 
 type EditUserModalProps = {
   handleClose: () => void
@@ -19,6 +23,12 @@ type EditUserModalProps = {
 type EditUserModalFormData = {
   first_name: string
   last_name: string
+  role_id: any
+}
+
+const defaultRole = {
+  id: '',
+  name: 'Superadmin'
 }
 
 const EditUserModal: React.FC<EditUserModalProps> = ({
@@ -28,6 +38,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
 }) => {
   const { mutate, isLoading } = useAdminUpdateUser(user.id)
   const {
+    control,
     register,
     handleSubmit,
     reset,
@@ -40,15 +51,21 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     reset(mapUser(user))
   }, [user])
 
+  const {get: getRoles, setRole} = useRoles();
+  
   const onSubmit = (data: EditUserModalFormData) => {
+    const role_id = data.role_id.value;
+    delete data.role_id;
     mutate(data, {
       onSuccess: () => {
-        notification(
-          t("edit-user-modal-success", "Success"),
-          t("edit-user-modal-user-was-updated", "User was updated"),
-          "success"
-        )
-        onSuccess()
+        setRole(user.id, role_id).then(res=>{
+          notification(
+            t("edit-user-modal-success", "Success"),
+            t("edit-user-modal-user-was-updated", "User was updated"),
+            "success"
+          )
+          onSuccess()
+        })
       },
       onError: (error) => {
         notification(
@@ -63,6 +80,18 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     })
   }
 
+  const [roleOptions, setRoleOptions] = useState<OptionsType[]>();
+  
+  useEffect(()=>{
+    getRoles().then(roles=>{
+      roles.unshift(defaultRole);
+      setRoleOptions(getRolesOptions(roles))
+    })
+  },[])
+
+  if(!roleOptions)
+    return '';
+  
   return (
     <Modal handleClose={handleClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -103,11 +132,34 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                 errors={errors}
               />
             </div>
-            <InputField
-              label={t("edit-user-modal-email", "Email")}
-              disabled
-              value={user.email}
-            />
+            <div className="mb-base">
+              <InputField
+                label={t("edit-user-modal-email", "Email")}
+                disabled
+                value={user.email}
+              />
+            </div>
+            <div>
+              <Controller
+                name="role_id"
+                control={control}
+                render={({ field: { value, onChange, onBlur, ref } }) => {
+                  return (
+                    <NextSelect
+                      label={t("edit-user-modal-role", "Role")}
+                      placeholder={t("edit-user-modal-select-role", "Select role")}
+                      onBlur={onBlur}
+                      ref={ref}
+                      onChange={onChange}
+                      options={roleOptions}
+                      value={value}
+                      defaultValue={defaultRole}
+                      required
+                    />
+                  )
+                }}
+              />
+            </div>
           </Modal.Content>
           <Modal.Footer>
             <div className="flex w-full justify-end">
@@ -135,10 +187,11 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
   )
 }
 
-const mapUser = (user: User): EditUserModalFormData => {
+const mapUser = (user: UserWithRole): EditUserModalFormData => {
   return {
     first_name: user.first_name,
     last_name: user.last_name,
+    role_id: user.role_id ? user.role_id : defaultRole
   }
 }
 
