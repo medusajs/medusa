@@ -37,8 +37,6 @@ export class RemoteQuery {
       )
     }
 
-    const servicesConfig_ = [...servicesConfig]
-
     for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
@@ -53,11 +51,7 @@ export class RemoteQuery {
       }
 
       this.modulesMap.set(serviceName, mod)
-<<<<<<< HEAD
       servicesConfig_!.push(mod.__joinerConfig)
-=======
-      servicesConfig_.push(mod.__joinerConfig)
->>>>>>> 5fc6284ae (Feat(medusa): update migration and initDb to run link-migrations (#5437))
     }
 
     this.customRemoteFetchData = customRemoteFetchData
