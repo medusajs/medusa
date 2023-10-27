@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [delete] /admin/draft-orders/{id}
  * operationId: DeleteDraftOrdersDraftOrder
  * summary: Delete a Draft Order
- * description: "Delete a Draft Order"
+ * description: "Delete a Draft Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.

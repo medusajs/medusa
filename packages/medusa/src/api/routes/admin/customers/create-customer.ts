@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/customers
  * operationId: "PostCustomers"
  * summary: "Create a Customer"
- * description: "Allow admins to create a customer."
+ * description: "Create a customer as an admin."
  * x-authenticated: true
  * requestBody:
  *   content:

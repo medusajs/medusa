@@ -17,7 +17,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: "PostDraftOrdersDraftOrderLineItemsItem"
  * summary: "Update a Line Item"
- * description: "Update a Line Item in a Draft Order"
+ * description: "Update a Line Item in a Draft Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.

@@ -9,7 +9,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  * @oas [get] /admin/inventory-items/{id}/location-levels
  * operationId: "GetInventoryItemsInventoryItemLocationLevels"
  * summary: "List Inventory Level"
- * description: "Retrieve a list of inventory levels of an inventory item. The inventory levels can be filtered by fields such as `location_id`. The inventory levels can also be paginated."
+ * description: "Retrieve a list of inventory levels of an inventory item. The inventory levels can be filtered by fields such as `location_id`."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item the locations are associated with.

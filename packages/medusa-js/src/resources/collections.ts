@@ -7,12 +7,23 @@ import qs from "qs"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
+/**
+ * This class is used to send requests to [Store Product Collection API Routes](https://docs.medusajs.com/api/store#product-collections).
+ */
 class CollectionsResource extends BaseResource {
   /**
-   * @description Retrieves a single collection
-   * @param {string} id id of the collection
-   * @param customHeaders
-   * @return {ResponsePromise<StoreCollectionsRes>}
+   * Retrieve a product collection's details.
+   * @param {string} id - The ID of the product collection.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<StoreCollectionsRes>} The collection's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * medusa.collections.retrieve(collectionId)
+   * .then(({ collection }) => {
+   *   console.log(collection.id);
+   * });
    */
   retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCollectionsRes> {
     const path = `/store/collections/${id}`
@@ -20,10 +31,37 @@ class CollectionsResource extends BaseResource {
   }
 
   /**
-   * @description Retrieves a list of collections
-   * @param {string} query is optional. Can contain a limit and offset for the returned list
-   * @param customHeaders
-   * @return {ResponsePromise<StoreCollectionsListRes>}
+   * Retrieve a list of product collections. The product collections can be filtered by fields such as `handle` or `created_at` passed in the `query` parameter. 
+   * The product collections can also be paginated.
+   * @param {StoreGetCollectionsParams} query - Filters and pagination configurations to apply on the retrieved product collections.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<StoreCollectionsListRes>} The list of product collections with pagination fields.
+   * 
+   * @example
+   * To list product collections:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * medusa.collections.list()
+   * .then(({ collections, limit, offset, count }) => {
+   *   console.log(collections.length);
+   * });
+   * ```
+   * 
+   * By default, only the first `10` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * medusa.collections.list({
+   *   limit,
+   *   offset
+   * })
+   * .then(({ collections, limit, offset, count }) => {
+   *   console.log(collections.length);
+   * });
+   * ```
    */
   list(
     query?: StoreGetCollectionsParams,

@@ -6,12 +6,43 @@ import qs from "qs"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
+/**
+ * This class is used to send requests to [Store Product Type API Routes](https://docs.medusajs.com/api/store#product-types).
+ */
 class ProductTypesResource extends BaseResource {
   /**
-   * @description Retrieves a list of product types
-   * @param {StoreGetProductTypesParams} query is optional. Can contain a limit and offset for the returned list
-   * @param customHeaders
-   * @return {ResponsePromise<StoreProductTypesListRes>}
+   * Retrieve a list of product types. The product types can be filtered by fields such as `value` or `q` passed in the `query` parameter. The product types can also be sorted or paginated.
+   * @param {StoreGetProductTypesParams} query - Filters and pagination configurations to apply on retrieved product types.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<StoreProductTypesListRes>} The list of product types with pagination fields.
+   * 
+   * @example
+   * To list product types:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.productTypes.list()
+   * .then(({ product_types }) => {
+   *   console.log(product_types.length);
+   * });
+   * ```
+   * 
+   * By default, only the first `20` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.productTypes.list({
+   *   limit,
+   *   offset
+   * })
+   * .then(({ product_types }) => {
+   *   console.log(product_types.length);
+   * });
+   * ```
    */
   list(
     query?: StoreGetProductTypesParams,

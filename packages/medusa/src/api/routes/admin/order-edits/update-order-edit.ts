@@ -12,7 +12,7 @@ import {
  * @oas [post] /admin/order-edits/{id}
  * operationId: "PostOrderEditsOrderEdit"
  * summary: "Update an Order Edit"
- * description: "Updates an Order Edit's details."
+ * description: "Update an Order Edit's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.

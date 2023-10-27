@@ -100,6 +100,16 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   method: list
  *   queryParams: StoreGetVariantsParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.product.variants.list()
+ *       .then(({ variants }) => {
+ *         console.log(variants.length);
+ *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

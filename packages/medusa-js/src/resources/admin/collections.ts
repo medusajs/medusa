@@ -13,12 +13,28 @@ import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
+/**
+ * This class is used to send requests to [Admin Product Collection API Routes](https://docs.medusajs.com/api/admin#product-collections).
+ * 
+ * All methods in this class require {@link auth.createSession | user authentication}.
+ */
 class AdminCollectionsResource extends BaseResource {
   /**
-   * @description Creates a collection.
-   * @param payload
-   * @param customHeaders
-   * @returns Created collection.
+   * Create a product collection.
+   * @param {AdminPostCollectionsReq} payload - The data of the product collection to create.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminCollectionsRes>} The product collection's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.collections.create({
+   *   title: "New Collection"
+   * })
+   * .then(({ collection }) => {
+   *   console.log(collection.id);
+   * });
    */
   create(
     payload: AdminPostCollectionsReq,
@@ -29,11 +45,22 @@ class AdminCollectionsResource extends BaseResource {
   }
 
   /**
-   * @description Updates a collection
-   * @param id id of the collection to update.
-   * @param payload update to apply to collection.
-   * @param customHeaders
-   * @returns the updated collection.
+   * Update a product collection's details.
+   * @param {string} id - The ID of the product collection.
+   * @param {AdminPostCollectionsCollectionReq} payload - The data to update in the product collection.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminCollectionsRes>} the product collection's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.collections.update(collectionId, {
+   *   title: "New Collection"
+   * })
+   * .then(({ collection }) => {
+   *   console.log(collection.id);
+   * });
    */
   update(
     id: string,
@@ -45,10 +72,19 @@ class AdminCollectionsResource extends BaseResource {
   }
 
   /**
-   * @description deletes a collection
-   * @param id id of collection to delete.
-   * @param customHeaders
-   * @returns Deleted response
+   * Delete a product collection. This does not delete associated products.
+   * @param {string} id - The ID of the product collection.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminCollectionsDeleteRes>} The deletion operation details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.collections.delete(collectionId)
+   * .then(({ id, object, deleted }) => {
+   *   console.log(id);
+   * });
    */
   delete(
     id: string,
@@ -59,10 +95,19 @@ class AdminCollectionsResource extends BaseResource {
   }
 
   /**
-   * @description get a collection
-   * @param id id of the collection to retrieve.
-   * @param customHeaders
-   * @returns the collection with the given id
+   * Retrieve a product collection by its ID. The products associated with it are expanded and returned as well.
+   * @param {string} id - The ID of the product collection.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminCollectionsRes>} The product collection's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.collections.retrieve(collectionId)
+   * .then(({ collection }) => {
+   *   console.log(collection.id);
+   * });
    */
   retrieve(
     id: string,
@@ -73,10 +118,38 @@ class AdminCollectionsResource extends BaseResource {
   }
 
   /**
-   * @description Lists collections matching a query
-   * @param query Query for searching collections
-   * @param customHeaders
-   * @returns a list of collections matching the query.
+   * Retrieve a list of product collections. The product collections can be filtered by fields such as `handle` or `title`. The collections can also be sorted or paginated.
+   * @param {AdminGetCollectionsParams} query - Filters and pagination configurations to apply on the retrieved product collections.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminCollectionsListRes>} The list of product collections with pagination fields.
+   * 
+   * @example
+   * To list product collections:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.collections.list()
+   * .then(({ collections, limit, offset, count }) => {
+   *   console.log(collections.length);
+   * });
+   * ```
+   * 
+   * By default, only the first `10` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * 
+   * ```ts
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.collections.list({
+   *   limit,
+   *   offset
+   * })
+   * .then(({ collections, limit, offset, count }) => {
+   *   console.log(collections.length);
+   * });
+   * ```
    */
   list(
     query?: AdminGetCollectionsParams,
@@ -93,10 +166,25 @@ class AdminCollectionsResource extends BaseResource {
   }
 
   /**
-   * @description Updates products associated with a Product Collection
-   * @param id the id of the Collection
-   * @param payload - an object which contains an array of Product IDs to add to the Product Collection
-   * @param customHeaders
+   * Add products to collection.
+   * @param {string} id - The ID of the product collection.
+   * @param {AdminPostProductsToCollectionReq} payload - The details of the products to add.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminCollectionsRes>} The product collection's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.collections.addProducts(collectionId, {
+   *   product_ids: [
+   *     productId1,
+   *     productId2
+   *   ]
+   * })
+   * .then(({ collection }) => {
+   *   console.log(collection.products)
+   * })
    */
   addProducts(
     id: string,
@@ -108,10 +196,25 @@ class AdminCollectionsResource extends BaseResource {
   }
 
   /**
-   * @description Removes products associated with a Product Collection
-   * @param id - the id of the Collection
-   * @param payload - an object which contains an array of Product IDs to add to the Product Collection
-   * @param customHeaders
+   * Remove a list of products from a collection. This would not delete the product, only the association between the product and the collection.
+   * @param {string} id - the ID of the product collection
+   * @param {AdminDeleteProductsFromCollectionReq} payload - The details of the products to remove from the collection.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminDeleteProductsFromCollectionRes>} The deletion operation details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.collections.removeProducts(collectionId, {
+   *   product_ids: [
+   *     productId1,
+   *     productId2
+   *   ]
+   * })
+   * .then(({ id, object, removed_products }) => {
+   *   console.log(removed_products)
+   * })
    */
   removeProducts(
     id: string,

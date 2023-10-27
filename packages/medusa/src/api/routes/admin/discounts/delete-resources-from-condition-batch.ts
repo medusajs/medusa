@@ -12,7 +12,7 @@ import { FindParams } from "../../../../types/common"
  * @oas [delete] /admin/discounts/{discount_id}/conditions/{condition_id}/batch
  * operationId: "DeleteDiscountsDiscountConditionsConditionBatch"
  * summary: "Remove Batch Resources"
- * description: "Remove a batch of resources from a discount condition. This will only remove the association between the resource and the discount condition, but not the resource itself."
+ * description: "Remove a batch of resources from a discount condition. This will only remove the association between the resource and the discount condition, not the resource itself."
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The ID of the discount.

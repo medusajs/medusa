@@ -11,7 +11,7 @@ import { PaymentCollectionService } from "../../../../services"
  * description: "Create, update, or delete a list of payment sessions of a Payment Collections. If a payment session is not provided in the `sessions` array, it's deleted."
  * x-authenticated: false
  * parameters:
- *   - (path) id=* {string} The ID of the Payment Collections.
+ *   - (path) id=* {string} The ID of the Payment Collection.
  * requestBody:
  *   content:
  *     application/json:

@@ -14,7 +14,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [delete] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
  * summary: Delete a Line Item
- * description: "Deletes a Line Item from a Draft Order."
+ * description: "Delete a Line Item from a Draft Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.

@@ -11,13 +11,17 @@ import { parse } from "yaml"
 // a simplified schema type
 // mainly focusing on properties used
 // within this plugin
-type ParsedSchema = {
+type Schema = {
   description?: string
   properties?: {
-    [k: string]: {
-      description?: string
-    }
+    [k: string]: SchemaProperty
   }
+}
+
+type SchemaProperty = {
+  description?: string
+  "x-expandable"?: string
+  "x-featureFlag"?: string
 }
 
 type ParsedTags = {
@@ -49,7 +53,7 @@ export function load(app: Application) {
 }
 
 function parseSchema(schema: string): ParsedTags {
-  const parsed: ParsedSchema = parse(`schema: ${schema}`)
+  const parsed: Schema = parse(`schema: ${schema}`)
   const parsedTags: ParsedTags = {
     tags: [],
   }
@@ -71,13 +75,28 @@ function parseSchema(schema: string): ParsedTags {
           },
           {
             kind: "text",
-            text: value.description || "",
+            text: getPropertyDescription(value),
           },
         ])
       )
     })
   }
 
-  // TODO change to parsed
   return parsedTags
+}
+
+// TODO maybe add expandable and feature flag as tags instead
+function getPropertyDescription(schemaProperty: SchemaProperty): string {
+  let result = schemaProperty.description || ""
+
+  if (schemaProperty["x-expandable"]) {
+    result +=
+      " This property is only available if it's expanded using the `expand` parameter, if it's accepted by the associated request."
+  }
+
+  if (schemaProperty["x-featureFlag"]) {
+    result += ` This property is only available if the [feature flag ${schemaProperty["x-featureFlag"]} is enabled](https://docs.medusajs.com/development/feature-flags/toggle).`
+  }
+
+  return result
 }

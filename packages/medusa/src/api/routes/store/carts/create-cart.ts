@@ -36,7 +36,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   Create a Cart. Although optional, specifying the cart's region and sales channel can affect the cart's pricing and
  *   the products that can be added to the cart respectively. So, make sure to set those early on and change them if necessary, such as when the customer changes their region.
  *
- *   If a customer is logged in, the cart's customer ID and email will automatically be set.
+ *   If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
  * requestBody:
  *   content:
  *     application/json:
