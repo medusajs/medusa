@@ -6,13 +6,14 @@ import { useAccess } from "../providers/access-provider"
 
 const IndexPage = () => {
   const navigate = useNavigate()
-  const { getAccess } = useAccess();
+  const { startPage } = useAccess();
+  
   useEffect(() => {
-    getAccess().then((startPage)=>{
+    if(startPage) {
       navigate(startPage);
-    })
-  }, [])
-
+    }
+  }, [startPage])
+  
   return (
     <div className="bg-grey-5 text-grey-90 flex h-screen w-full items-center justify-center">
       <SEO title="Home" />

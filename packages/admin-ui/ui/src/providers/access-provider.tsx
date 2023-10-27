@@ -8,8 +8,10 @@ type accessType = {
 
 type AccessContextType = {
   access?: accessType[]
+  startPage?: string
+  loaded?: boolean
   checkAccess: (path: string) => boolean,
-  getAccess: () => Promise<string>
+  getAccess: () => Promise<boolean>
 }
 
 export const AccessContext = createContext<AccessContextType | null>(null)
@@ -21,61 +23,82 @@ export const AccessProvider = ({
 }) => {
 
   const { client: medusaClient } = useMedusa();
+  
   const [access, setAccess] = useState<accessType[]>();
+  const [startPage, setStartPage] = useState<string>();
+  const [loaded, setLoaded] = useState<boolean>(false);
   
   // Get access
   
-  const getAccess = async () : Promise<string> => {
+  const getAccess = async (): Promise<boolean> => {
+    setLoaded(false);
     try{
       let res = await medusaClient.admin.custom.get('admin/access');
       setAccess(res.access || []);
-      return getStartPage(res.access);
+      setLoaded(true);
+      return true;
     }
     catch(e) {
       setAccess(undefined);
-      return getStartPage();
+      setLoaded(true);
+      return false;
     }
   }
 
   useEffect(()=>{
-    if(!access)
-      getAccess();
+    getAccess();
   },[])
 
   // Get start page
 
-  const getStartPage = (access?: accessType[]) => {
+  useEffect(()=>{
+    getStartPage();
+  },[loaded])
+
+  const getStartPage = () => {
+
+    if(loaded) {
+       
+      if(access) {
+
+          // Init start pages
+
+          let starts = [
+            '/orders',
+            '/products',
+            '/customers',
+          ];
           
-    if(access) {
-
-        // Init start pages
-
-        let starts = [
-          '/orders',
-          '/products',
-          '/customers',
-        ];
-        
-        // Check default start pages
-        
-        for(let s of starts) {
-          if(checkAccess(s)) {
-            return '/a'+s;
+          // Check default start pages
+          
+          for(let s of starts) {
+            if(checkAccess(s)) {
+              setStartPage('/a'+s);
+              return;
+            }
           }
-        }
 
-        // Get first from access
+          // Get first from access
 
-        if(access?.length)
-          for(let a of access)
-            if(a.path !== '_superuser')
-              return '/a'+a.path;
-    
+          if(access?.length)
+            for(let a of access)
+              if(a.path !== '_superuser') {
+                setStartPage('/a'+a.path);
+                return;
+              }
+
+      }
+
+      // Default
+
+      setStartPage('/a/orders');
+      return;
+
     }
-
-    // Default
-
-    return '/a/orders';
+    else {
+      setStartPage(undefined);
+      return;
+    }
 
   }
 
@@ -122,11 +145,13 @@ export const AccessProvider = ({
 
   const values = useMemo(
     () => ({
+      getAccess,
       access,
-      checkAccess,
-      getAccess
+      startPage,
+      loaded,
+      checkAccess
     }),
-    [access, checkAccess]
+    [getAccess, access, startPage, loaded, checkAccess]
   )
   
   return (
