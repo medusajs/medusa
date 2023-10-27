@@ -3,7 +3,6 @@ import {
   InternalModuleDeclaration,
   MedusaApp,
   ModuleDefinition,
-  Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
@@ -197,30 +196,6 @@ export default async ({
   container.register({
     [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
   })
-
-  // Load the event bus module first as it is required by both the core event bus which is consumed by legacy module such as the inventory
-  // TODO: Remove once we don't have any legacy modules anymore
-
-  const { modules: modules_ } = await MedusaApp({
-    modulesConfig: { [Modules.EVENT_BUS]: configModules[Modules.EVENT_BUS] },
-    servicesConfig: joinerConfig,
-    remoteFetchData: remoteQueryFetchData(container),
-    sharedContainer: container,
-    injectedDependencies: {
-      [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-        ContainerRegistrationKeys.PG_CONNECTION
-      ),
-    },
-  })
-
-  delete configModules[Modules.EVENT_BUS]
-
-  for (const [serviceKey, moduleService] of Object.entries(modules_)) {
-    container.register(
-      ModulesDefinition[serviceKey].registrationName,
-      asValue(moduleService)
-    )
-  }
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
