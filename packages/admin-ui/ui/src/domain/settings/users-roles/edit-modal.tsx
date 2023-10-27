@@ -8,7 +8,8 @@ import InputField from "../../../components/molecules/input"
 import { NextSelect } from "../../../components/molecules/select/next-select"
 import FormValidator from "../../../utils/form-validator"
 import usePermissions from "../users-permissions/use-permission"
-import { OptionsType, getPermissionsOptions, getOptionsValues } from "./utils"
+import { getPermissionsOptions, getOptionsValues } from "./utils"
+import { Option } from "../../../types/shared"
 
 type Props = {
   role: RolesType
@@ -19,14 +20,14 @@ type Props = {
 
 type GeneralFormWrapper = {
   name: string
-  permissions: OptionsType[]
+  permissions: Option[]
 }
 
 const EditRoleModal = ({ role, open, onClose, onSuccess }: Props) => {
   const { t } = useTranslation()
   const { update, isLoading } = useRoles()
   const { get: getOptions } = usePermissions();
-  const [permissionsOptions, setPermissionsOptions] = useState<OptionsType[]>();
+  const [permissionsOptions, setPermissionsOptions] = useState<Option[]>();
   
   useEffect(()=>{
     getOptions().then(options=>{

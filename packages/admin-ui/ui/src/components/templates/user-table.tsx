@@ -1,4 +1,3 @@
-import { Invite, User } from "@medusajs/medusa"
 import copy from "copy-to-clipboard"
 import { useAdminStore } from "medusa-react"
 import React, { useEffect, useMemo, useState } from "react"
@@ -15,7 +14,7 @@ import DeletePrompt from "../organisms/delete-prompt"
 import EditUser from "../organisms/edit-user-modal"
 import { useTranslation } from "react-i18next"
 import { getFullAdminPath } from "../../utils/get-admin-path"
-import { UserWithRole } from "../../types/users"
+import { InvitwWithRole, UserWithRole } from "../../types/users"
 
 type UserListElement = {
   entity: any
@@ -29,7 +28,7 @@ type UserTableProps = {
   triggerRefetch: () => void
 }
 
-const getInviteStatus = (invite: Invite) => {
+const getInviteStatus = (invite: InvitwWithRole) => {
   return new Date(invite.expires_at) < new Date() ? "expired" : "pending"
 }
 
@@ -40,9 +39,9 @@ const UserTable: React.FC<UserTableProps> = ({
 }) => {
   const [elements, setElements] = useState<UserListElement[]>([])
   const [shownElements, setShownElements] = useState<UserListElement[]>([])
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [selectedUser, setSelectedUser] = useState<UserWithRole | null>(null)
   const [deleteUser, setDeleteUser] = useState(false)
-  const [selectedInvite, setSelectedInvite] = useState<Invite | null>(null)
+  const [selectedInvite, setSelectedInvite] = useState<InvitwWithRole | null>(null)
   const notification = useNotification()
   const { store, isLoading } = useAdminStore()
   const { t } = useTranslation()
@@ -101,6 +100,9 @@ const UserTable: React.FC<UserTableProps> = ({
         <Table.Cell className="inter-small-semibold text-violet-60">
           {user.teamRole ? user.teamRole.name : 'Superadmin'}
         </Table.Cell>
+        <Table.Cell className="inter-small-semibold text-violet-60">
+          {user.Region ? user.Region.name : ''}
+        </Table.Cell>
         <Table.Cell></Table.Cell>
       </Table.Row>
     )
@@ -116,7 +118,7 @@ const UserTable: React.FC<UserTableProps> = ({
     return `${adminPath}invite?token={invite_token}`
   }, [store])
 
-  const getInviteTableRow = (invite: Invite, index: number) => {
+  const getInviteTableRow = (invite: InvitwWithRole, index: number) => {
     return (
       <Table.Row
         key={`invite-${index}`}
@@ -172,7 +174,12 @@ const UserTable: React.FC<UserTableProps> = ({
         <Table.Cell className="text-grey-40 w-80">
           {invite.user_email}
         </Table.Cell>
-        <Table.Cell></Table.Cell>
+        <Table.Cell className="inter-small-semibold text-violet-60">
+          {invite.teamRole ? invite.teamRole.name : 'Superadmin'}
+        </Table.Cell>
+        <Table.Cell className="inter-small-semibold text-violet-60">
+          {invite.Region ? invite.Region.name : ''}
+        </Table.Cell>
         <Table.Cell>
           {new Date(invite?.expires_at) < new Date() ? (
             <StatusIndicator
@@ -270,6 +277,9 @@ const UserTable: React.FC<UserTableProps> = ({
             </Table.HeadCell>
             <Table.HeadCell className="w-72">
               {t("templates-team-role", "Team role")}
+            </Table.HeadCell>
+            <Table.HeadCell className="w-72">
+              {t("templates-team-region", "Region restriction")}
             </Table.HeadCell>
             <Table.HeadCell>Status</Table.HeadCell>
           </Table.HeadRow>

@@ -109,7 +109,23 @@ const useRoles = () => {
         }
     }
 
-  return {roles, fetch, get, update, create, remove, setRole, isLoading}
+    // Set region for user
+
+    const setRegion = async (user_id: string, id:string) => {
+        setIsLoading(true);
+        try {
+            let res = client.admin.custom.post(`/admin/user/${user_id}/setregion`, {region_id: id});
+            setIsLoading(false);
+            return res;
+        }
+        catch(e) {
+            console.error(e);
+            setIsLoading(false);
+            return null;
+        }
+    }
+
+  return {roles, fetch, get, update, create, remove, setRole, setRegion, isLoading}
 }
 
 export default useRoles

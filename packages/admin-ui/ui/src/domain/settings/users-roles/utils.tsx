@@ -1,20 +1,20 @@
+import { Option } from "../../../types/shared";
 import { PermissionsType } from "../users-permissions/use-permission";
-import { RolesType } from "./use-role";
 
-export type OptionsType = {
-    value: string
-    label: string
+type OptionsType = {
+    id: string,
+    name: string
 }
 
 // Get options values
 
-export const getOptionsValues = (options: OptionsType[]): string[] => {
+export const getOptionsValues = (options: Option[]): string[] => {
     return options.length ? options.map(o=>o.value) : []
 }
 
 // Get permissions options
 
-export const getPermissionsOptions = (permissions?: PermissionsType[]): OptionsType[] => {
+export const getPermissionsOptions = (permissions?: PermissionsType[]): Option[] => {
     return permissions?.map(p=>{
         return({
             value: p.id,
@@ -23,10 +23,10 @@ export const getPermissionsOptions = (permissions?: PermissionsType[]): OptionsT
     }) || [];
 }
 
-// Get roles options
+// Get options
 
-export const getRolesOptions = (roles?: RolesType[]): OptionsType[] => {
-    return roles?.map(p=>{
+export const getOptions = (options?: OptionsType[]): Option[] => {
+    return options?.map(p=>{
         return({
             value: p.id,
             label: p.name
