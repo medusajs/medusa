@@ -289,7 +289,7 @@ export default async ({
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  /* if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
     mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
 
     const { query, modules } = await MedusaApp({
@@ -313,7 +313,7 @@ export default async ({
       )
     }
     container.register("remoteQuery", asValue(query))
-  }
+  }*/
 
   return { container, dbConnection, app: expressApp }
 }
