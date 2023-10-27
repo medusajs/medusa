@@ -6,6 +6,7 @@ import {
   InternalModuleDeclaration,
   LoadedModule,
   LoaderOptions,
+  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
@@ -15,14 +16,20 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModulesSdkUtils,
+  createMedusaContainer,
   isObject,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
-import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
+import {
+  MODULE_PACKAGE_NAMES,
+  ModuleRegistrationName,
+  Modules,
+} from "./definitions"
 import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { cleanGraphQLSchema } from "./utils"
+import { asValue } from "awilix"
 
 const LinkModulePackage = "@medusajs/link-modules"
 
@@ -57,7 +64,7 @@ export type SharedResources = {
   }
 }
 
-async function loadModules(modulesConfig, injectedDependencies) {
+async function loadModules(modulesConfig, sharedContainer) {
   const allModules = {}
 
   await Promise.all(
@@ -85,14 +92,18 @@ async function loadModules(modulesConfig, injectedDependencies) {
         declaration.resources = MODULE_RESOURCE_TYPE.SHARED
       }
 
-      const loaded = (await MedusaModule.bootstrap(
-        moduleName,
-        path,
+      const loaded = (await MedusaModule.bootstrap({
+        moduleKey: moduleName,
+        defaultPath: path,
         declaration,
-        undefined,
-        injectedDependencies,
-        definition
-      )) as LoadedModule
+        sharedContainer,
+        moduleDefinition: definition,
+      })) as LoadedModule
+
+      const service = loaded[moduleName]
+      sharedContainer.register({
+        [service.__definition.registrationName]: asValue(service),
+      })
 
       if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
         allModules[moduleName] = []
@@ -153,6 +164,7 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
 
 export async function MedusaApp(
   {
+    sharedContainer,
     sharedResourcesConfig,
     servicesConfig,
     modulesConfigPath,
@@ -162,6 +174,7 @@ export async function MedusaApp(
     remoteFetchData,
     injectedDependencies,
   }: {
+    sharedContainer?: MedusaContainer
     sharedResourcesConfig?: SharedResources
     loadedModules?: LoadedModule[]
     servicesConfig?: ModuleJoinerConfig[]
@@ -185,6 +198,8 @@ export async function MedusaApp(
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
 }> {
+  const sharedContainer_ = createMedusaContainer({}, sharedContainer)
+
   const modules: MedusaModuleConfig =
     modulesConfig ??
     (
@@ -222,7 +237,20 @@ export async function MedusaApp(
     linkModuleOptions = linkModule
   }
 
-  const allModules = await loadModules(modules, injectedDependencies)
+  for (const injectedDependency of Object.keys(injectedDependencies)) {
+    sharedContainer_.register({
+      [injectedDependency]: asValue(injectedDependencies[injectedDependency]),
+    })
+  }
+
+  const allModules = await loadModules(modules, sharedContainer_)
+
+  // Share Event bus with link modules
+  injectedDependencies[ModuleRegistrationName.EVENT_BUS] =
+    sharedContainer_.resolve(ModuleRegistrationName.EVENT_BUS, {
+      allowUnregistered: true,
+    })
+
   const {
     remoteLink,
     linkResolution,
