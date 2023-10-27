@@ -38,6 +38,7 @@ export const loadMedusaApp = async (
     modulesConfig,
     servicesConfig: joinerConfig,
     remoteFetchData: remoteQueryFetchData(container),
+    sharedContainer: container,
     sharedResourcesConfig,
     injectedDependencies,
   })
