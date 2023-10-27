@@ -1,8 +1,8 @@
 import { ISearchModuleService } from "@medusajs/types"
 import { Catalog, CatalogRelation } from "@models"
+import { EventBusService } from "../__fixtures__"
 import { TestDatabase } from "../utils"
 import { initModules } from "../utils/init-module"
-import { EventBusService } from "../__fixtures__"
 
 const eventBus = new EventBusService()
 const remoteQueryMock = jest.fn()
@@ -182,7 +182,9 @@ describe("SearchEngineModuleService", function () {
     manager.clear()
   })
 
-  afterEach(afterEach_)
+  afterEach(async () => {
+    await afterEach_()
+  })
 
   it("should query all products", async () => {
     const [result, count] = await module.queryAndCount(

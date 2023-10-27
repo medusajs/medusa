@@ -1,7 +1,7 @@
-import { MedusaApp, MedusaModule, Modules } from "@medusajs/modules-sdk"
-import { EventBusTypes, ISearchModuleService } from "@medusajs/types"
+import { MedusaModule } from "@medusajs/modules-sdk"
+import { EventBusTypes } from "@medusajs/types"
 import { Catalog, CatalogRelation } from "@models"
-import { EventBusService, joinerConfig, modulesConfig } from "../__fixtures__"
+import { EventBusService } from "../__fixtures__"
 import { TestDatabase } from "../utils"
 import { initModules } from "../utils/init-module"
 
@@ -10,131 +10,135 @@ const remoteQueryMock = jest.fn()
 
 jest.setTimeout(300000)
 
-const beforeEach_ = async () => {
-  try {
-    await TestDatabase.clearDatabase()
-  } catch (e) {}
-
+const beforeEach_ = async (eventDataToEmit) => {
   MedusaModule.clearInstances()
   await TestDatabase.setupDatabase()
   jest.clearAllMocks()
+
+  await initModules({
+    remoteQueryMock,
+    eventBusMock: eventBus,
+  })
+
+  await sendEvents(eventDataToEmit)
   return await TestDatabase.forkManager()
 }
 
+const afterEach_ = async () => {
+  await TestDatabase.clearDatabase()
+}
+
+const productId = "prod_1"
+const variantId = "var_1"
+const priceSetId = "price_set_1"
+const moneyAmountId = "money_amount_1"
+const linkId = "link_id_1"
+
+const sendEvents = async (eventDataToEmit) => {
+  let a = 0
+  remoteQueryMock.mockImplementation((query) => {
+    if (query.product) {
+      return {
+        id: a++ > 0 ? "aaaa" : productId,
+      }
+    } else if (query.variant) {
+      return {
+        id: variantId,
+        sku: "aaa test aaa",
+        product: {
+          id: productId,
+        },
+      }
+    } else if (query.price_set) {
+      return {
+        id: priceSetId,
+      }
+    } else if (query.money_amount) {
+      return {
+        id: moneyAmountId,
+        amount: 100,
+        price_set: [
+          {
+            id: priceSetId,
+          },
+        ],
+      }
+    } else if (query.product_variant_price_set) {
+      return {
+        id: linkId,
+        variant_id: variantId,
+        price_set_id: priceSetId,
+        variant: [
+          {
+            id: variantId,
+          },
+        ],
+      }
+    }
+
+    return {}
+  })
+
+  await eventBus.emit(eventDataToEmit)
+}
+
 describe("SearchEngineModuleService", function () {
-  const productId = "prod_1"
-  const variantId = "var_1"
-  const priceSetId = "price_set_1"
-  const moneyAmountId = "money_amount_1"
-  const linkId = "link_id_1"
-
-  let searchEngineModuleOptions
-  let injectedDependencies
-
   describe("on created or attached events", function () {
-    let module: ISearchModuleService
     let manager
 
-    beforeEach(async () => {
-      manager = await beforeEach_()
-
-      module = await initModules({
-        remoteQueryMock,
-        eventBusMock: eventBus,
-      })
-
-      let a = 0
-      remoteQueryMock.mockImplementation((query) => {
-        if (query.product) {
-          return {
-            id: a++ > 0 ? "aaaa" : productId,
-          }
-        } else if (query.variant) {
-          return {
-            id: variantId,
-            sku: "aaa test aaa",
-            product: {
-              id: productId,
-            },
-          }
-        } else if (query.price_set) {
-          return {
-            id: priceSetId,
-          }
-        } else if (query.money_amount) {
-          return {
-            id: moneyAmountId,
-            amount: 100,
-            price_set: [
-              {
-                id: priceSetId,
-              },
-            ],
-          }
-        } else if (query.product_variant_price_set) {
-          return {
-            id: linkId,
-            variant_id: variantId,
-            price_set_id: priceSetId,
-            variant: [
-              {
-                id: variantId,
-              },
-            ],
-          }
-        }
-
-        return {}
-      })
-
-      const eventDataToEmit: EventBusTypes.EmitData[] = [
-        {
-          eventName: "product.created",
-          data: {
+    const eventDataToEmit: EventBusTypes.EmitData[] = [
+      {
+        eventName: "product.created",
+        data: {
+          id: productId,
+        },
+      },
+      {
+        eventName: "product.created",
+        data: {
+          id: "PRODUCTASDASDAS",
+        },
+      },
+      {
+        eventName: "variant.created",
+        data: {
+          id: variantId,
+          product: {
             id: productId,
           },
         },
-        {
-          eventName: "product.created",
-          data: {
-            id: "PRODUCTASDASDAS",
-          },
+      },
+      {
+        eventName: "PriceSet.created",
+        data: {
+          id: priceSetId,
         },
-        {
-          eventName: "variant.created",
-          data: {
-            id: variantId,
-            product: {
-              id: productId,
-            },
-          },
-        },
-        {
-          eventName: "PriceSet.created",
-          data: {
+      },
+      {
+        eventName: "price.created",
+        data: {
+          id: moneyAmountId,
+          price_set: {
             id: priceSetId,
           },
         },
-        {
-          eventName: "price.created",
-          data: {
-            id: moneyAmountId,
-            price_set: {
-              id: priceSetId,
-            },
-          },
+      },
+      {
+        eventName: "LinkProductVariantPriceSet.attached",
+        data: {
+          id: linkId,
+          variant_id: variantId,
+          price_set_id: priceSetId,
         },
-        {
-          eventName: "LinkProductVariantPriceSet.attached",
-          data: {
-            id: linkId,
-            variant_id: variantId,
-            price_set_id: priceSetId,
-          },
-        },
-      ]
+      },
+    ]
 
-      await eventBus.emit(eventDataToEmit)
+    beforeEach(async () => {
+      manager = await beforeEach_(eventDataToEmit)
+    })
+
+    afterEach(async () => {
+      await afterEach_()
     })
 
     it("should create the corresponding catalog entries and catalog relation entries", async function () {
@@ -236,117 +240,60 @@ describe("SearchEngineModuleService", function () {
   })
 
   describe("on unordered created or attached events", function () {
-    let module: ISearchModuleService
     let manager
 
-    beforeEach(async () => {
-      manager = await beforeEach_()
-
-      const { modules } = await MedusaApp({
-        modulesConfig: {
-          ...modulesConfig,
-          [Modules.SEARCH]: {
-            options: searchEngineModuleOptions,
-          },
-        },
-        servicesConfig: joinerConfig,
-        injectedDependencies,
-      })
-
-      module = modules.searchService as unknown as ISearchModuleService
-
-      let a = 0
-      remoteQueryMock.mockImplementation((query) => {
-        if (query.product) {
-          return {
-            id: a++ > 0 ? "aaaa" : productId,
-          }
-        } else if (query.variant) {
-          return {
-            id: variantId,
-            sku: "aaa test aaa",
-            product: {
-              id: productId,
-            },
-          }
-        } else if (query.price_set) {
-          return {
-            id: priceSetId,
-          }
-        } else if (query.money_amount) {
-          return {
-            id: moneyAmountId,
-            amount: 100,
-            price_set: [
-              {
-                id: priceSetId,
-              },
-            ],
-          }
-        } else if (query.product_variant_price_set) {
-          return {
-            id: linkId,
-            variant_id: variantId,
-            price_set_id: priceSetId,
-            variant: [
-              {
-                id: variantId,
-              },
-            ],
-          }
-        }
-
-        return {}
-      })
-
-      const eventDataToEmit: EventBusTypes.EmitData[] = [
-        {
-          eventName: "variant.created",
-          data: {
-            id: variantId,
-            product: {
-              id: productId,
-            },
-          },
-        },
-        {
-          eventName: "product.created",
-          data: {
+    const eventDataToEmit: EventBusTypes.EmitData[] = [
+      {
+        eventName: "variant.created",
+        data: {
+          id: variantId,
+          product: {
             id: productId,
           },
         },
-        {
-          eventName: "product.created",
-          data: {
-            id: "PRODUCTASDASDAS",
-          },
+      },
+      {
+        eventName: "product.created",
+        data: {
+          id: productId,
         },
-        {
-          eventName: "PriceSet.created",
-          data: {
+      },
+      {
+        eventName: "product.created",
+        data: {
+          id: "PRODUCTASDASDAS",
+        },
+      },
+      {
+        eventName: "PriceSet.created",
+        data: {
+          id: priceSetId,
+        },
+      },
+      {
+        eventName: "price.created",
+        data: {
+          id: moneyAmountId,
+          price_set: {
             id: priceSetId,
           },
         },
-        {
-          eventName: "price.created",
-          data: {
-            id: moneyAmountId,
-            price_set: {
-              id: priceSetId,
-            },
-          },
+      },
+      {
+        eventName: "LinkProductVariantPriceSet.attached",
+        data: {
+          id: linkId,
+          variant_id: variantId,
+          price_set_id: priceSetId,
         },
-        {
-          eventName: "LinkProductVariantPriceSet.attached",
-          data: {
-            id: linkId,
-            variant_id: variantId,
-            price_set_id: priceSetId,
-          },
-        },
-      ]
+      },
+    ]
 
-      await eventBus.emit(eventDataToEmit)
+    beforeEach(async () => {
+      manager = await beforeEach_(eventDataToEmit)
+    })
+    afterEach(async () => {
+      await afterEach_()
     })
 
     it("should create the corresponding catalog entries and catalog relation entries", async function () {
@@ -453,30 +400,59 @@ describe("SearchEngineModuleService", function () {
   })
 
   describe("on updated events", function () {
-    let module: ISearchModuleService
     let manager
 
-    beforeEach(async () => {
-      manager = await beforeEach_()
-
-      const { modules } = await MedusaApp({
-        modulesConfig: {
-          ...modulesConfig,
-          [Modules.SEARCH]: {
-            options: searchEngineModuleOptions,
+    const updateData = async (manager) => {
+      const catalogRepository = manager.getRepository(Catalog)
+      await catalogRepository.upsertMany([
+        {
+          id: productId,
+          name: "Product",
+          data: {
+            id: productId,
           },
         },
-        servicesConfig: joinerConfig,
-        injectedDependencies,
-      })
+        {
+          id: variantId,
+          name: "ProductVariant",
+          data: {
+            id: variantId,
+            sku: "aaa test aaa",
+            product: {
+              id: productId,
+            },
+          },
+        },
+      ])
+      manager.clear()
+    }
 
-      module = modules.searchService as unknown as ISearchModuleService
+    const eventDataToEmit: EventBusTypes.EmitData[] = [
+      {
+        eventName: "product.updated",
+        data: {
+          id: productId,
+        },
+      },
+      {
+        eventName: "variant.updated",
+        data: {
+          id: variantId,
+          product: {
+            id: productId,
+          },
+        },
+      },
+    ]
+    beforeEach(async () => {
+      manager = await beforeEach_(eventDataToEmit)
 
-      let a = 0
+      await updateData(manager)
+
       remoteQueryMock.mockImplementation((query) => {
         if (query.product) {
           return {
-            id: a++ > 0 ? "aaaa" : productId,
+            id: productId,
             title: "updated Title",
           }
         } else if (query.variant) {
@@ -493,56 +469,14 @@ describe("SearchEngineModuleService", function () {
 
         return {}
       })
-
-      const catalogRepository = manager.getRepository(Catalog)
-      await manager.persistAndFlush(
-        [
-          {
-            id: productId,
-            name: "Product",
-            data: {
-              id: productId,
-            },
-          },
-          {
-            id: variantId,
-            name: "ProductVariant",
-            data: {
-              id: variantId,
-              sku: "aaa test aaa",
-              product: {
-                id: productId,
-              },
-            },
-          },
-        ].map((data) => catalogRepository.create(data))
-      )
-
-      manager.clear()
-
-      const eventDataToEmit: EventBusTypes.EmitData[] = [
-        {
-          eventName: "product.updated",
-          data: {
-            id: productId,
-          },
-        },
-        {
-          eventName: "variant.updated",
-          data: {
-            id: variantId,
-            product: {
-              id: productId,
-            },
-          },
-        },
-      ]
-
       await eventBus.emit(eventDataToEmit)
+    })
+    afterEach(async () => {
+      await afterEach_()
     })
 
     it("should update the corresponding catalog entries", async () => {
-      expect(remoteQueryMock).toHaveBeenCalledTimes(2)
+      expect(remoteQueryMock).toHaveBeenCalledTimes(4)
 
       const updatedCatalogEntries = await manager.find(Catalog, {})
 
@@ -562,158 +496,52 @@ describe("SearchEngineModuleService", function () {
     })
   })
 
-  describe.skip("on deleted events", function () {
-    let module: ISearchModuleService
+  describe("on deleted events", function () {
     let manager
 
     beforeEach(async () => {
-      manager = await beforeEach_()
-
-      const { modules } = await MedusaApp({
-        modulesConfig: {
-          ...modulesConfig,
-          [Modules.SEARCH]: {
-            options: searchEngineModuleOptions,
+      const eventDataToEmit: EventBusTypes.EmitData[] = [
+        {
+          eventName: "product.created",
+          data: {
+            id: productId,
           },
         },
-        servicesConfig: joinerConfig,
-        injectedDependencies,
-      })
-
-      module = modules.searchService as unknown as ISearchModuleService
-
-      let a = 0
-      remoteQueryMock.mockImplementation((query) => {
-        if (query.product) {
-          return {
-            id: a++ > 0 ? "aaaa" : productId,
-          }
-        } else if (query.variant) {
-          return {
+        {
+          eventName: "variant.created",
+          data: {
             id: variantId,
-            sku: "aaa test aaa",
-            product: [
-              {
-                id: productId,
-              },
-            ],
-          }
-        } else if (query.price_set) {
-          return {
-            id: priceSetId,
-          }
-        } else if (query.money_amount) {
-          return {
-            id: moneyAmountId,
-            amount: 100,
-            price_set: [
-              {
-                id: priceSetId,
-              },
-            ],
-          }
-        } else if (query.product_variant_price_set) {
-          return {
-            id: linkId,
-            variant_id: variantId,
-            price_set_id: priceSetId,
-            variant: [
-              {
-                id: variantId,
-              },
-            ],
-          }
-        }
-
-        return {}
-      })
-
-      const catalogRepository = manager.getRepository(Catalog)
-      await manager.persistAndFlush(
-        [
-          {
-            id: productId,
-            name: "Product",
-            data: {
+            product: {
               id: productId,
             },
           },
-          {
-            id: variantId,
-            name: "ProductVariant",
-            data: {
-              id: variantId,
-              sku: "aaa test aaa",
-              product: {
-                id: productId,
-              },
-            },
-          },
-          {
-            id: linkId,
-            name: "LinkProductVariantPriceSet",
-            data: {
-              id: linkId,
-              variant_id: variantId,
-              price_set_id: priceSetId,
-            },
-          },
-          {
+        },
+        {
+          eventName: "PriceSet.created",
+          data: {
             id: priceSetId,
-            name: "PriceSet",
-            data: {
-              id: priceSetId,
-              link_product_variant_price_set: {
-                id: linkId,
-              },
-            },
           },
-          {
+        },
+        {
+          eventName: "price.created",
+          data: {
             id: moneyAmountId,
-            name: "MoneyAmount",
-            data: {
-              id: moneyAmountId,
-              price_set: {
-                id: priceSetId,
-              },
+            price_set: {
+              id: priceSetId,
             },
           },
-        ].map((data) => catalogRepository.create(data))
-      )
+        },
+        {
+          eventName: "LinkProductVariantPriceSet.attached",
+          data: {
+            id: linkId,
+            variant_id: variantId,
+            price_set_id: priceSetId,
+          },
+        },
+      ]
 
-      const catalogRelationRepository = manager.getRepository(CatalogRelation)
-      await manager.persistAndFlush(
-        [
-          {
-            parent_id: productId,
-            parent_name: "Product",
-            child_id: variantId,
-            child_name: "ProductVariant",
-          },
-          {
-            parent_id: variantId,
-            parent_name: "ProductVariant",
-            child_id: linkId,
-            child_name: "LinkProductVariantPriceSet",
-          },
-          {
-            parent_id: linkId,
-            parent_name: "LinkProductVariantPriceSet",
-            child_id: priceSetId,
-            child_name: "PriceSet",
-          },
-          {
-            parent_id: priceSetId,
-            parent_name: "PriceSet",
-            child_id: moneyAmountId,
-            child_name: "MoneyAmount",
-          },
-        ].map((data) => catalogRelationRepository.create(data))
-      )
-
-      manager.clear()
-
-      const eventDataToEmit: EventBusTypes.EmitData[] = [
+      const deleteEventDataToEmit: EventBusTypes.EmitData[] = [
         {
           eventName: "product.deleted",
           data: {
@@ -724,18 +552,39 @@ describe("SearchEngineModuleService", function () {
           eventName: "variant.deleted",
           data: {
             id: variantId,
-            product: {
-              id: productId,
-            },
           },
         },
       ]
 
-      await eventBus.emit(eventDataToEmit)
+      manager = await beforeEach_(eventDataToEmit)
+
+      remoteQueryMock.mockImplementation((query) => {
+        if (query.product) {
+          return {
+            id: productId,
+          }
+        } else if (query.variant) {
+          return {
+            id: variantId,
+            product: [
+              {
+                id: productId,
+              },
+            ],
+          }
+        }
+
+        return {}
+      })
+
+      await eventBus.emit(deleteEventDataToEmit)
+    })
+    afterEach(async () => {
+      await afterEach_()
     })
 
     it("should consume all deleted events and delete the catalog entries", async () => {
-      expect(remoteQueryMock).toHaveBeenCalledTimes(2)
+      expect(remoteQueryMock).toHaveBeenCalledTimes(7)
 
       const catalogEntries = await manager.find(Catalog, {})
       const catalogRelationEntries = await manager.find(CatalogRelation, {})
@@ -791,60 +640,4 @@ describe("SearchEngineModuleService", function () {
       )
     })
   })
-
-  /*describe("query", function () {
-    let module: ISearchModuleService
-    let manager: SqlEntityManager
-
-    beforeEach(async () => {
-      manager = await beforeEach_()
-
-      const { modules } = await MedusaApp({
-        modulesConfig: {
-          ...modulesConfig,
-          [Modules.SEARCH]: {
-            options: searchEngineModuleOptions,
-          },
-        },
-        servicesConfig: joinerConfig,
-        injectedDependencies,
-      })
-
-      module = modules.searchService as unknown as ISearchModuleService
-
-      await run({
-        path: "./src/scripts/seed-data/index.ts",
-        options: searchEngineModuleOptions,
-      })
-
-      await new Promise((resolve) => setTimeout(resolve, 90000))
-    })
-
-    it("should query the data filtered by money amount amount", async function () {
-      const moneyAmountToSearchFor = (await manager.findOne(Catalog, {
-        name: "MoneyAmount",
-      })) as Catalog
-
-      const [, count] = await module.queryAndCount(
-        {
-          select: {
-            product: {
-              variants: {
-                money_amounts: true,
-              },
-            },
-          },
-          where: {
-            "product.variants.money_amounts.amount":
-              moneyAmountToSearchFor.data.amount,
-          },
-        },
-        {
-          skip: 0,
-        }
-      )
-
-      expect(count).toBeGreaterThan(0)
-    })
-  })*/
 })

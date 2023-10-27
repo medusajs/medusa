@@ -108,6 +108,7 @@ export class QueryBuilder {
       $gte: ">=",
       $ne: "!=",
       $in: "IN",
+      $is: "IS",
       $like: "LIKE",
       $ilike: "ILIKE",
     }
@@ -153,6 +154,10 @@ export class QueryBuilder {
             const castType = this.getPostgresCastType(attr, field)
 
             const val = operator === "IN" ? subValue : [subValue]
+            if (operator === "=" && subValue === null) {
+              operator = "IS"
+            }
+
             builder.whereRaw(
               `(${aliasMapping[attr]}.data->>?)${castType} ${operator} ?`,
               [field, ...val]
@@ -174,11 +179,13 @@ export class QueryBuilder {
             [field, ...value]
           )
         } else {
+          const operator = value === null ? "IS" : "="
+
           const castType = this.getPostgresCastType(attr, field)
-          builder.whereRaw(`(${aliasMapping[attr]}.data->>?)${castType} = ?`, [
-            field,
-            value,
-          ])
+          builder.whereRaw(
+            `(${aliasMapping[attr]}.data->>?)${castType} ${operator} ?`,
+            [field, value]
+          )
         }
       }
     })

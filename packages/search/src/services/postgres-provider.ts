@@ -16,7 +16,7 @@ import {
   SearchModuleOptions,
   StorageProvider,
 } from "../types"
-import { createPartitions, QueryBuilder } from "../utils"
+import { QueryBuilder, createPartitions } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager

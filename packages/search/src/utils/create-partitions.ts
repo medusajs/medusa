@@ -1,8 +1,8 @@
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   SchemaObjectRepresentation,
   schemaObjectRepresentationPropertiesToOmit,
 } from "../types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export async function createPartitions(
   schemaObjectRepresentation: SchemaObjectRepresentation,
