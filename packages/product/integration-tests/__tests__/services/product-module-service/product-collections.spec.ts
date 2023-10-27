@@ -1,12 +1,11 @@
-import { IProductModuleService } from "@medusajs/types"
-import { Product, ProductCollection } from "@models"
+import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductTypes } from "@medusajs/types"
+import { Product, ProductCollection } from "@models"
 
 import { initialize } from "../../../../src"
-import { DB_URL, TestDatabase } from "../../../utils"
-import { createCollections } from "../../../__fixtures__/product"
 import { EventBusService } from "../../../__fixtures__/event-bus"
+import { createCollections } from "../../../__fixtures__/product"
+import { DB_URL, TestDatabase } from "../../../utils"
 
 describe("ProductModuleService product collections", () => {
   let service: IProductModuleService
@@ -24,14 +23,17 @@ describe("ProductModuleService product collections", () => {
     repositoryManager = await TestDatabase.forkManager()
     eventBus = new EventBusService()
 
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+    service = await initialize(
+      {
+        database: {
+          clientUrl: DB_URL,
+          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+        },
       },
-    }, {
-      eventBusModuleService: eventBus
-    })
+      {
+        eventBusModuleService: eventBus,
+      }
+    )
 
     testManager = await TestDatabase.forkManager()
 
@@ -47,15 +49,18 @@ describe("ProductModuleService product collections", () => {
       status: ProductTypes.ProductStatus.PUBLISHED,
     })
 
-    const productCollectionsData = [{
-      id: "test-1",
-      title: "collection 1",
-      products: [productOne],
-    },{
-      id: "test-2",
-      title: "collection",
-      products: [productTwo],
-    }]
+    const productCollectionsData = [
+      {
+        id: "test-1",
+        title: "collection 1",
+        products: [productOne],
+      },
+      {
+        id: "test-2",
+        title: "collection",
+        products: [productTwo],
+      },
+    ]
 
     productCollections = await createCollections(
       testManager,
@@ -65,7 +70,10 @@ describe("ProductModuleService product collections", () => {
     productCollectionOne = productCollections[0]
     productCollectionTwo = productCollections[1]
 
-    await testManager.persistAndFlush([productCollectionOne, productCollectionTwo])
+    await testManager.persistAndFlush([
+      productCollectionOne,
+      productCollectionTwo,
+    ])
   })
 
   afterEach(async () => {
@@ -130,7 +138,7 @@ describe("ProductModuleService product collections", () => {
             expect.objectContaining({
               id: "product-1",
               title: "product 1",
-            })
+            }),
           ],
         }),
       ])
@@ -198,10 +206,12 @@ describe("ProductModuleService product collections", () => {
         expect.objectContaining({
           id: "test-1",
           title: "collection 1",
-          products: [expect.objectContaining({
-            id: "product-1",
-            title: "product 1",
-          })],
+          products: [
+            expect.objectContaining({
+              id: "product-1",
+              title: "product 1",
+            }),
+          ],
         }),
       ])
     })
@@ -215,28 +225,27 @@ describe("ProductModuleService product collections", () => {
         expect.objectContaining({
           id: "test-1",
           title: "collection 1",
-        }),
+        })
       )
     })
 
     it("should return requested attributes when requested through config", async () => {
-      const result = await service.retrieveCollection(
-        productCollectionOne.id,
-        {
-          select: ["id", "title", "products.title"],
-          relations: ["products"],
-        }
-      )
+      const result = await service.retrieveCollection(productCollectionOne.id, {
+        select: ["id", "title", "products.title"],
+        relations: ["products"],
+      })
 
       expect(result).toEqual(
         expect.objectContaining({
           id: "test-1",
           title: "collection 1",
-          products: [expect.objectContaining({
-            id: "product-1",
-            title: "product 1",
-          })],
-        }),
+          products: [
+            expect.objectContaining({
+              id: "product-1",
+              title: "product 1",
+            }),
+          ],
+        })
       )
     })
 
@@ -249,7 +258,9 @@ describe("ProductModuleService product collections", () => {
         error = e
       }
 
-      expect(error.message).toEqual("ProductCollection with id: does-not-exist was not found")
+      expect(error.message).toEqual(
+        "ProductCollection with id: does-not-exist was not found"
+      )
     })
   })
 
@@ -257,28 +268,26 @@ describe("ProductModuleService product collections", () => {
     const collectionId = "test-1"
 
     it("should delete the product collection given an ID successfully", async () => {
-      await service.deleteCollections(
-        [collectionId],
-      )
+      await service.deleteCollections([collectionId])
 
       const collections = await service.listCollections({
-        id: collectionId
+        id: collectionId,
       })
 
       expect(collections).toHaveLength(0)
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
-      await service.deleteCollections(
-        [collectionId],
-      )
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+      await service.deleteCollections([collectionId])
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith([{
-        eventName: "product-collection.deleted",
-        data: { id: collectionId }
-      }])
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        {
+          eventName: "product-collection.deleted",
+          data: { id: collectionId },
+        },
+      ])
     })
   })
 
@@ -286,33 +295,62 @@ describe("ProductModuleService product collections", () => {
     const collectionId = "test-1"
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
 
-      await service.updateCollections(
-        [{
+      await service.updateCollections([
+        {
           id: collectionId,
-          title: "New Collection"
-        }]
-      )
+          title: "New Collection",
+        },
+      ])
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith([{
-        eventName: "product-collection.updated",
-        data: { id: collectionId }
-      }])
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        {
+          eventName: "product-collection.updated",
+          data: { id: collectionId },
+        },
+      ])
     })
 
     it("should update the value of the collection successfully", async () => {
-      await service.updateCollections(
-        [{
+      await service.updateCollections([
+        {
           id: collectionId,
-          title: "New Collection"
-        }]
-      )
+          title: "New Collection",
+        },
+      ])
 
       const productCollection = await service.retrieveCollection(collectionId)
 
       expect(productCollection.title).toEqual("New Collection")
+    })
+
+    it("should add products to a collection successfully", async () => {
+      await service.updateCollections([
+        {
+          id: collectionId,
+          product_ids: [productOne.id, productTwo.id],
+        },
+      ])
+
+      const productCollection = await service.retrieveCollection(collectionId, {
+        select: ["products.id"],
+        relations: ["products"],
+      })
+
+      expect(productCollection).toEqual(
+        expect.objectContaining({
+          products: [
+            expect.objectContaining({
+              id: productOne.id,
+            }),
+            expect.objectContaining({
+              id: productTwo.id,
+            }),
+          ],
+        })
+      )
     })
 
     it("should throw an error when an id does not exist", async () => {
@@ -322,47 +360,85 @@ describe("ProductModuleService product collections", () => {
         await service.updateCollections([
           {
             id: "does-not-exist",
-            title: "New Collection"
-          }
+            title: "New Collection",
+          },
         ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('ProductCollection with id "does-not-exist" not found')
+      expect(error.message).toEqual(
+        'ProductCollection with id "does-not-exist" not found'
+      )
     })
   })
 
   describe("createCollections", () => {
     it("should create a collection successfully", async () => {
-      const res = await service.createCollections(
-        [{
-          title: "New Collection"
-        }]
-      )
+      const res = await service.createCollections([
+        {
+          title: "New Collection",
+        },
+      ])
 
       const [productCollection] = await service.listCollections({
-        title: "New Collection"
+        title: "New Collection",
       })
 
       expect(productCollection.title).toEqual("New Collection")
     })
 
-    it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+    it("should create collection with products successfully", async () => {
+      await service.createCollections([
+        {
+          title: "New Collection with products",
+          handle: "new-collection-with-products",
+          product_ids: [productOne.id, productTwo.id],
+        },
+      ])
 
-      const collections = await service.createCollections(
-        [{
-          title: "New Collection"
-        }]
+      const [productCollection] = await service.listCollections(
+        {
+          handle: "new-collection-with-products",
+        },
+        {
+          select: ["title", "handle", "products.id"],
+          relations: ["products"],
+        }
       )
 
+      expect(productCollection).toEqual(
+        expect.objectContaining({
+          title: "New Collection with products",
+          handle: "new-collection-with-products",
+          products: [
+            expect.objectContaining({
+              id: productOne.id,
+            }),
+            expect.objectContaining({
+              id: productTwo.id,
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should emit events through event bus", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
+
+      const collections = await service.createCollections([
+        {
+          title: "New Collection",
+        },
+      ])
+
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith([{
-        eventName: "product-collection.created",
-        data: { id: collections[0].id }
-      }])
+      expect(eventBusSpy).toHaveBeenCalledWith([
+        {
+          eventName: "product-collection.created",
+          data: { id: collections[0].id },
+        },
+      ])
     })
   })
 })
-

@@ -10,6 +10,8 @@ export default function (theme: MarkdownTheme) {
 
       if (parameterStyle === "list") {
         return Handlebars.helpers.typeParameterList.call(this)
+      } else if (parameterStyle === "component") {
+        return Handlebars.helpers.typeParameterComponent.call(this)
       } else {
         return Handlebars.helpers.typeParameterTable.call(this)
       }

@@ -1,0 +1,65 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# writeDoubleLE
+
+[Buffer](../../interfaces/Buffer.mdx).writeDoubleLE
+
+**writeDoubleLE**(`value`, `offset?`): `number`
+
+Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a JavaScript number. Behavior is undefined when `value` is anything
+other than a JavaScript number.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.allocUnsafe(8);
+
+buf.writeDoubleLE(123.456, 0);
+
+console.log(buf);
+// Prints: <Buffer 77 be 9f 1a 2f dd 5e 40>
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`number`",
+    "description": "Number to be written to `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to write. Must satisfy `0 <= offset <= buf.length - 8`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "`offset` plus the number of bytes written.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.11.15

@@ -18,6 +18,7 @@ export default function (theme: MarkdownTheme) {
             case "@label":
             case "@inheritdoc":
               break
+            case "@schema":
             case "@link":
             case "@linkcode":
             case "@linkplain": {

@@ -18,12 +18,20 @@ export const supportedLanguages = [
     name: "Français",
   },
   {
+    locale: "hr",
+    name: "Hrvatski",
+  },
+  {
     locale: "it",
     name: "Italiano",
   },
   {
     locale: "pt",
     name: "Português (Brasil)",
+  },
+  {
+    locale: "uk",
+    name: "Українська",
   },
   {
     locale: "ar",
@@ -38,8 +46,17 @@ export const supportedLanguages = [
     name: "Español",
   },
   {
+
     locale: "hi",
     name: "Hindi"
+  },
+  {
+    locale: "bs",
+    name: "Bosanski",
+  },
+  {
+    locale: "tm",
+    name: "Tamil",
   }
 ]
 

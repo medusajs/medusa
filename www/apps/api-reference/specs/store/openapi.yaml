@@ -8,7 +8,7 @@ info:
 tags:
   - name: Auth
     description: >
-      Authentication endpoints allow customers to manage their session, such as
+      Authentication API Routes allow customers to manage their session, such as
       login or log out.
 
       When a customer is logged in, the cookie header is set indicating the
@@ -40,8 +40,8 @@ tags:
       Customers can use gift cards during checkout to deduct the gift card's
       balance from the checkout total.
 
-      The Gift Card endpoints allow retrieving a gift card's details by its
-      code. A gift card can be applied to a cart using the Carts endpoints.
+      The Gift Card API Routes allow retrieving a gift card's details by its
+      code. A gift card can be applied to a cart using the Carts API Routes.
     externalDocs:
       description: How to use gift cards in a storefront
       url: https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards
@@ -49,8 +49,8 @@ tags:
     description: >
       Orders are purchases made by customers, typically through a storefront.
 
-      Orders are placed and created using the Carts endpoints. The Orders
-      endpoints allow retrieving and claiming orders.
+      Orders are placed and created using the Carts API Routes. The Orders API
+      Routes allow retrieving and claiming orders.
     externalDocs:
       description: How to retrieve order details in a storefront
       url: >-
@@ -75,8 +75,8 @@ tags:
       cards](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards)
       in a store.
 
-      Using these endpoints, you can filter products by categories, collections,
-      sales channels, and more.
+      Using these API Routes, you can filter products by categories,
+      collections, sales channels, and more.
     externalDocs:
       description: How to show products in a storefront
       url: https://docs.medusajs.com/modules/products/storefront/show-products
@@ -89,7 +89,7 @@ tags:
       Products can be categoriezed into categories. A product can be associated
       more than one category.
 
-      Using these endpoints, you can list or retrieve a category's details and
+      Using these API Routes, you can list or retrieve a category's details and
       products.
     externalDocs:
       description: How to use product categories in a storefront
@@ -100,8 +100,8 @@ tags:
       such as marketing or discount purposes. For example, you can create a
       Summer Collection.
 
-      Using these endpoints, you can list or retrieve a collection's details and
-      products.
+      Using these API Routes, you can list or retrieve a collection's details
+      and products.
   - name: Product Tags
     description: |
       Product tags are string values that can be used to filter products by.
@@ -154,6 +154,8 @@ servers:
 paths:
   /store/auth:
     $ref: paths/store_auth.yaml
+  /store/auth/token:
+    $ref: paths/store_auth_token.yaml
   /store/auth/{email}:
     $ref: paths/store_auth_{email}.yaml
   /store/carts:
@@ -262,8 +264,6 @@ paths:
     $ref: paths/store_swaps.yaml
   /store/swaps/{cart_id}:
     $ref: paths/store_swaps_{cart_id}.yaml
-  /store/token:
-    $ref: paths/store_token.yaml
   /store/variants:
     $ref: paths/store_variants.yaml
   /store/variants/{id}:

@@ -4,14 +4,14 @@ import { CreateCurrencyDTO, CurrencyDTO } from "./currency"
 /**
  * @interface
  * 
- * An object that holds prices, which typically belong to a price set.
+ * A money amount's data. A money amount represents a price.
  * 
- * @prop id - A string that indicates the ID of the money amount. A money amount represents a price.
- * @prop currency_code - A string that indicates the currency code of this price.
- * @prop currency - An object of type {@link CurrencyDTO} that holds the details of the price's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.
- * @prop amount - A number indicating the amount of this price.
- * @prop min_quantity - A number that indicates the minimum quantity required to be purchased for this price to be applied.
- * @prop max_quantity - A number that indicates the maximum quantity required to be purchased for this price to be applied.
+ * @prop id - The ID of the money amount.
+ * @prop currency_code - The currency code of this money amount.
+ * @prop currency - The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.
+ * @prop amount - The price of this money amount.
+ * @prop min_quantity - The minimum quantity required to be purchased for this price to be applied.
+ * @prop max_quantity - The maximum quantity required to be purchased for this price to be applied.
  */
 export interface MoneyAmountDTO {
   id: string
@@ -23,16 +23,16 @@ export interface MoneyAmountDTO {
 }
 
 /**
- *  * @interface
+ * @interface
  * 
- * An object that holds data to create a money amount.
+ * The money amount to create.
  * 
- * @prop id - A string that indicates the ID of the money amount.
- * @prop currency_code - A string that indicates the currency code of this money amount.
- * @prop currency - An object of type {@link CurrencyDTO} that holds the details of the money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.
- * @prop amount - A number indicating the amount of this money amount.
- * @prop min_quantity - A number that indicates the minimum quantity required to be purchased for this money amount to be applied.
- * @prop max_quantity - A number that indicates the maximum quantity required to be purchased for this money amount to be applied.
+ * @prop id - The ID of the money amount.
+ * @prop currency_code - The currency code of this money amount.
+ * @prop currency - The currency of this money amount.
+ * @prop amount - The amount of this money amount.
+ * @prop min_quantity - The minimum quantity required to be purchased for this money amount to be applied.
+ * @prop max_quantity - The maximum quantity required to be purchased for this money amount to be applied.
  */
 export interface CreateMoneyAmountDTO {
   id?: string
@@ -46,14 +46,14 @@ export interface CreateMoneyAmountDTO {
 /**
  *  * @interface
  * 
- * An object that holds data to update a money amount.
+ * The data to update in a money amount. The `id` is used to identify which money amount to update.
  * 
- * @prop id - A string that indicates the ID of the money amount to update.
- * @prop currency_code - A string that indicates the currency code of the money amount.
- * @prop currency - An object of type {@link CurrencyDTO} that holds the details of the money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.
- * @prop amount - A number indicating the amount of this money amount.
- * @prop min_quantity - A number that indicates the minimum quantity required to be purchased for this money amount to be applied.
- * @prop max_quantity - A number that indicates the maximum quantity required to be purchased for this money amount to be applied.
+ * @prop id - The ID of the money amount to update.
+ * @prop currency_code - The code of the currency to associate with the money amount.
+ * @prop currency - The currency to associte with the money amount.
+ * @prop amount - The price of this money amount.
+ * @prop min_quantity - The minimum quantity required to be purchased for this money amount to be applied.
+ * @prop max_quantity - The maximum quantity required to be purchased for this money amount to be applied.
  */
 export interface UpdateMoneyAmountDTO {
   id: string
@@ -66,10 +66,10 @@ export interface UpdateMoneyAmountDTO {
 /**
  * @interface
  * 
- * An object that can be used to filter money amounts.
+ * Filters to apply on a money amount.
  * 
- * @prop id - An array of strings, each being an ID to filter money amounts.
- * @prop currency_code - A string or an array of strings, each being a currency code to filter money amounts.
+ * @prop id - IDs to filter money amounts by.
+ * @prop currency_code - Currency codes to filter money amounts by.
  */
 export interface FilterableMoneyAmountProps
   extends BaseFilterable<FilterableMoneyAmountProps> {

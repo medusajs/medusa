@@ -1948,7 +1948,7 @@ Triggered when a payment is created.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1966,7 +1966,7 @@ Triggered when a payment is updated.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1984,7 +1984,7 @@ Triggered when a payment is captured.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2002,7 +2002,7 @@ Triggered when the capturing of a payment fails.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.mdx) for an idea of what fields to expect.
 
 In addition, an error object is passed within the same object as the Payment Processor:
 
@@ -2034,7 +2034,7 @@ Triggered when a refund of a payment is created.
 </td>
 <td>
 
-The entire refund passed as an object. You can refer to the [Refund entity](../../references/entities/classes/Refund.md) for an idea of what fields to expect.
+The entire refund passed as an object. You can refer to the [Refund entity](../../references/entities/classes/Refund.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2052,7 +2052,7 @@ Triggered when a payment's refund fails.
 </td>
 <td>
 
-The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.md) for an idea of what fields to expect.
+The entire payment passed as an object. You can refer to the [Payment entity](../../references/entities/classes/Payment.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2095,7 +2095,7 @@ Triggered when a payment collection is created.
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2113,7 +2113,7 @@ Triggered when a payment collection is update.
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2131,7 +2131,7 @@ Triggered when a payment collection is deleted.
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2149,7 +2149,7 @@ Triggered when a payment collection is either marked authorized or its payment s
 </td>
 <td>
 
-The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.md) for an idea of what fields to expect.
+The entire payment collection passed as an object. You can refer to the [Payment Collection entity](../../references/entities/classes/PaymentCollection.mdx) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -2216,9 +2216,9 @@ Triggered when a product and data associated with it (options, variant orders, e
 </td>
 <td>
 
-The entire product passed as an object. You can refer to the [Product entity](../../references/entities/classes/Product.md) for an idea of what fields to expect.
+The entire product passed as an object. You can refer to the [Product entity](../../references/entities/classes/Product.mdx) for an idea of what fields to expect.
 
-In one case, when the `/admin/products/{id}` endpoint is used to update the product, the payload is an object of the following format:
+In one case, when the `/admin/products/{id}` API Route is used to update the product, the payload is an object of the following format:
 
 ```js noReport noCopy
 {

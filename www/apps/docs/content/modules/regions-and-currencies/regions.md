@@ -43,7 +43,7 @@ There is no limit on how many regions you can create, and regions can share simi
 
 ## Region Entity Overview
 
-A region is stored in the database as a [Region](../../references/entities/classes/Region.md) entity. Some of its important attributes are:
+A region is stored in the database as a [Region](../../references/entities/classes/Region.mdx) entity. Some of its important attributes are:
 
 - `name`: The name of the region. Customers will see this name on the storefront.
 - `tax_rate`: A number that indicates the tax rate. The tax rate is a percentage.
