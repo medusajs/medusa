@@ -1,6 +1,7 @@
 const path = require("path")
 const { spawn } = require("child_process")
 const { setPort, useExpressServer } = require("./use-api")
+const { setContainer } = require("./use-container")
 
 module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
   const serverPath = path.join(__dirname, "test-server.js")
@@ -50,6 +51,8 @@ module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
     medusaProcess.on("exit", () => {
       console.log("MedusaChildProcess: on exit")
       const expressServer = useExpressServer()
+
+      setContainer(null)
 
       if (expressServer) {
         console.log("MedusaChildProcess: express server found. Closing server")
