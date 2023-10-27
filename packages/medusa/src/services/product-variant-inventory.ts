@@ -6,11 +6,17 @@ import {
   InventoryItemDTO,
   InventoryLevelDTO,
   IStockLocationService,
+  RemoteQueryFunction,
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { isDefined, MedusaError } from "@medusajs/utils"
+import {
+  FlagRouter,
+  isDefined,
+  MedusaError,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
@@ -19,6 +25,7 @@ import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
 import { TransactionBaseService } from "../interfaces"
 import { getSetDifference } from "../utils/diff-set"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -28,6 +35,8 @@ type InjectedDependencies = {
   stockLocationService: IStockLocationService
   inventoryService: IInventoryService
   eventBusService: IEventBusService
+  featureFlagRouter: FlagRouter
+  remoteQuery: RemoteQueryFunction
 }
 
 type AvailabilityContext = {
@@ -46,6 +55,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly inventoryService_: IInventoryService
   protected readonly eventBusService_: IEventBusService
   protected readonly cacheService_: ICacheService
+  protected readonly featureFlagRouter_: FlagRouter
+  protected readonly remoteQuery_: RemoteQueryFunction
 
   constructor({
     stockLocationService,
@@ -54,6 +65,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
     productVariantService,
     inventoryService,
     eventBusService,
+    featureFlagRouter,
+    remoteQuery,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -64,6 +77,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
     this.productVariantService_ = productVariantService
     this.inventoryService_ = inventoryService
     this.eventBusService_ = eventBusService
+    this.featureFlagRouter_ = featureFlagRouter
+    this.remoteQuery_ = remoteQuery
   }
 
   /**
@@ -301,16 +316,33 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     // Verify that variant exists
-    const variants = await this.productVariantService_
-      .withTransaction(this.activeManager_)
-      .list(
-        {
-          id: data.map((d) => d.variantId),
-        },
-        {
-          select: ["id"],
-        }
+    let variants
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
       )
+    ) {
+      variants = await this.remoteQuery_(
+        remoteQueryObjectFromString({
+          entryPoint: "variants",
+          variables: {
+            id: data.map((d) => d.variantId),
+          },
+          fields: ["id"],
+        })
+      )
+    } else {
+      variants = await this.productVariantService_
+        .withTransaction(this.activeManager_)
+        .list(
+          {
+            id: data.map((d) => d.variantId),
+          },
+          {
+            select: ["id"],
+          }
+        )
+    }
 
     const foundVariantIds = new Set(variants.map((v) => v.id))
     const requestedVariantIds = new Set(data.map((v) => v.variantId))

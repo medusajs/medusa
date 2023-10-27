@@ -13,6 +13,7 @@ import {
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   RemoteJoinerQuery,
+  RemoteQueryFunction,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -167,7 +168,6 @@ export async function MedusaApp(
   {
     sharedContainer,
     sharedResourcesConfig,
-    sharedContainer,
     servicesConfig,
     modulesConfigPath,
     modulesConfigFileName,
@@ -192,15 +192,11 @@ export async function MedusaApp(
 ): Promise<{
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
-  query: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
+  query: RemoteQueryFunction
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
 }> {
-
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
 
   const modules: MedusaModuleConfig =

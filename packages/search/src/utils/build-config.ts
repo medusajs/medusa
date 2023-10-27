@@ -177,9 +177,15 @@ function retrieveLinkModuleAndAlias({
         isTheForeignKeyEntityEqualPrimaryEntity &&
         isTheForeignKeyEntityEqualForeignEntity
       ) {
+        /**
+         * The link will become the parent of the foreign entity, that is why the alias must be the one that correspond to the extended foreign module
+         */
+
         linkModulesMetadata.push({
           entityName: linkModuleJoinerConfig.alias[0].args.entity,
-          alias: linkModuleJoinerConfig.alias[0].name,
+          alias: linkModuleJoinerConfig.extends!.find(
+            (extend) => extend.serviceName === foreignModuleConfig.serviceName
+          )!.relationship.alias,
           linkModuleConfig: linkModuleJoinerConfig,
           intermediateEntityNames: [],
         })
@@ -238,9 +244,15 @@ function retrieveLinkModuleAndAlias({
 
         intermediateEntities.push(intermediateEntityName!)
 
+        /**
+         * The link will become the parent of the foreign entity, that is why the alias must be the one that correspond to the extended foreign module
+         */
+
         linkModulesMetadata.push({
           entityName: linkModuleJoinerConfig.alias[0].args.entity,
-          alias: linkModuleJoinerConfig.alias[0].name,
+          alias: linkModuleJoinerConfig.extends!.find(
+            (extend) => extend.serviceName === foreignModuleConfig.serviceName
+          )!.relationship.alias,
           linkModuleConfig: linkModuleJoinerConfig,
           intermediateEntityNames: intermediateEntities,
         })

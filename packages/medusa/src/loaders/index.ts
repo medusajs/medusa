@@ -3,6 +3,7 @@ import {
   InternalModuleDeclaration,
   MedusaApp,
   ModuleDefinition,
+  Modules,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
@@ -197,6 +198,36 @@ export default async ({
     [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
   })
 
+  // Load the event bus module first as it is required by both the core event bus which is consumed by legacy module such as the inventory
+  // TODO: Remove once we don't have any legacy modules anymore
+
+  const { modules: modules_ } = await MedusaApp({
+    modulesConfig: { [Modules.EVENT_BUS]: configModules[Modules.EVENT_BUS] },
+    servicesConfig: joinerConfig,
+    remoteFetchData: remoteQueryFetchData(container),
+    sharedContainer: container,
+    injectedDependencies: {
+      [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+        ContainerRegistrationKeys.PG_CONNECTION
+      ),
+    },
+  })
+
+  delete configModules[Modules.EVENT_BUS]
+
+  for (const [serviceKey, moduleService] of Object.entries(modules_)) {
+    container.register(
+      ModulesDefinition[serviceKey].registrationName,
+      asValue(moduleService)
+    )
+  }
+
+  const servicesActivity = Logger.activity(`Initializing services${EOL}`)
+  track("SERVICES_INIT_STARTED")
+  servicesLoader({ container, configModule, isTest })
+  const servAct = Logger.success(servicesActivity, "Services initialized") || {}
+  track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
+
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
 
@@ -216,24 +247,16 @@ export default async ({
     },
   })
 
-  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
-  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
-
-  // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
-  // We might decide to do it elsewhere but for now I think it is fine
   for (const [serviceKey, moduleService] of Object.entries(modules)) {
     container.register(
       ModulesDefinition[serviceKey].registrationName,
       asValue(moduleService)
     )
   }
-  container.register("remoteQuery", asValue(query))
+  container.register(ContainerRegistrationKeys.REMOTE_QUERY, asValue(query))
 
-  const servicesActivity = Logger.activity(`Initializing services${EOL}`)
-  track("SERVICES_INIT_STARTED")
-  servicesLoader({ container, configModule, isTest })
-  const servAct = Logger.success(servicesActivity, "Services initialized") || {}
-  track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
+  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
+  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")

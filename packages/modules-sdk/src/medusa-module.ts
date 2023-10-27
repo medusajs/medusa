@@ -235,8 +235,8 @@ export class MedusaModule {
     const container =
       modDeclaration.scope === MODULE_SCOPE.INTERNAL &&
       modDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
-        ? globalContainer ?? createMedusaContainer()
-        : createMedusaContainer({}, globalContainer)
+        ? sharedContainer ?? createMedusaContainer()
+        : createMedusaContainer({}, sharedContainer)
 
     if (injectedDependencies) {
       for (const service in injectedDependencies) {

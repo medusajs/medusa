@@ -1,4 +1,8 @@
-import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
+import {
+  JoinerRelationship,
+  JoinerServiceConfig,
+  RemoteJoinerQuery,
+} from "../joiner"
 
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
@@ -268,3 +272,8 @@ export interface IModuleService {
     onApplicationStart?: () => Promise<void>
   }
 }
+
+export type RemoteQueryFunction = (
+  query: string | RemoteJoinerQuery | object,
+  variables?: Record<string, unknown>
+) => Promise<any> | null
