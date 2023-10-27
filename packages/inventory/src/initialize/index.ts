@@ -1,7 +1,6 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  MODULE_PACKAGE_NAMES,
   MedusaModule,
   MODULE_PACKAGE_NAMES,
   Modules,

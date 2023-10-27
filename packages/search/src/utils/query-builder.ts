@@ -60,6 +60,10 @@ export class QueryBuilder {
   }
 
   private transformValueToType(path, field, value) {
+    if (value === null) {
+      return null
+    }
+
     const typeToFn = {
       Int: (val) => parseInt(val, 10),
       Float: (val) => parseFloat(val),

@@ -31,11 +31,11 @@ export function generateGraphQLSchema(
       )
     }
 
-    const joinerConfig = MedusaModule.getJoinerConfig(
+    const extJoinerConfig = MedusaModule.getJoinerConfig(
       extend.relationship.serviceName
     )
     let extendedEntityName =
-      joinerConfig?.linkableKeys?.[extend.relationship.foreignKey]!
+      extJoinerConfig?.linkableKeys?.[extend.relationship.foreignKey]!
 
     if (!extendedEntityName && (!primary || !foreign)) {
       logger.warn(
@@ -50,7 +50,7 @@ export function generateGraphQLSchema(
     )
 
     let type = extend.relationship.isList ? `[${entityName}]` : entityName
-    if (joinerConfig.isReadOnlyLink) {
+    if (extJoinerConfig?.isReadOnlyLink) {
       type = extend.relationship.isList
         ? `[${extendedEntityName}]`
         : extendedEntityName
