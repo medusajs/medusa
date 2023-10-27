@@ -5,15 +5,15 @@ import getMigrations, {
   runIsolatedModulesMigration,
 } from "./utils/get-migrations"
 
-import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
-import Logger from "../loaders/logger"
+import { createMedusaContainer } from "@medusajs/utils"
 import configModuleLoader from "../loaders/config"
 import databaseLoader from "../loaders/database"
 import featureFlagLoader from "../loaders/feature-flags"
+import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
+import Logger from "../loaders/logger"
 import { loadMedusaApp } from "../loaders/medusa-app"
 import pgConnectionLoader from "../loaders/pg-connection"
-import { createMedusaContainer } from "@medusajs/utils"
 
 const getDataSource = async (directory) => {
   const configModule = configModuleLoader(directory)
@@ -71,6 +71,14 @@ const main = async function ({ directory }) {
     await dataSource.runMigrations()
     await dataSource.destroy()
     await runIsolatedModulesMigration(configModule)
+    if (
+      featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
+      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
+    ) {
+      await runLinkMigrations(directory)
+    }
+    process.exit()
+
     Logger.info("Migrations completed.")
   } else if (args[0] === "revert") {
     await dataSource.undoLastMigration({ transaction: "all" })
@@ -83,14 +91,6 @@ const main = async function ({ directory }) {
     await dataSource.destroy()
     process.exit(unapplied ? 1 : 0)
   }
-
-  if (
-    featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
-    featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
-  ) {
-    await runLinkMigrations(directory)
-  }
-  process.exit()
 }
 
 export default main
