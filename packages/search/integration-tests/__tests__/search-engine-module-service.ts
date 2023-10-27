@@ -1,17 +1,9 @@
 import { MedusaApp, MedusaModule, Modules } from "@medusajs/modules-sdk"
 import { EventBusTypes, ISearchModuleService } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { Catalog, CatalogRelation } from "@models"
-import { knex } from "knex"
-import {
-  EventBusService,
-  joinerConfig,
-  modulesConfig,
-  schema,
-} from "../__fixtures__"
-import { DB_URL, TestDatabase } from "../utils"
-import { run } from "../../src/scripts/seed"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { EventBusService, joinerConfig, modulesConfig } from "../__fixtures__"
+import { TestDatabase } from "../utils"
+import { initModules } from "../utils/init-module"
 
 const eventBus = new EventBusService()
 const remoteQueryMock = jest.fn()
@@ -36,35 +28,8 @@ describe("SearchEngineModuleService", function () {
   const moneyAmountId = "money_amount_1"
   const linkId = "link_id_1"
 
-  let sharedPgConnection
   let searchEngineModuleOptions
   let injectedDependencies
-
-  beforeAll(async () => {
-    sharedPgConnection = knex<any, any>({
-      client: "pg",
-      searchPath: process.env.MEDUSA_SEARCH_DB_SCHEMA ?? "public",
-      connection: {
-        connectionString: DB_URL,
-      },
-    })
-
-    searchEngineModuleOptions = {
-      defaultAdapterOptions: {
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_SEARCH_DB_SCHEMA,
-        },
-      },
-      schema,
-    }
-
-    injectedDependencies = {
-      [ContainerRegistrationKeys.PG_CONNECTION]: sharedPgConnection,
-      eventBusModuleService: eventBus,
-      remoteQuery: remoteQueryMock,
-    }
-  })
 
   describe("on created or attached events", function () {
     let module: ISearchModuleService
@@ -73,18 +38,10 @@ describe("SearchEngineModuleService", function () {
     beforeEach(async () => {
       manager = await beforeEach_()
 
-      const { modules } = await MedusaApp({
-        modulesConfig: {
-          ...modulesConfig,
-          [Modules.SEARCH]: {
-            options: searchEngineModuleOptions,
-          },
-        },
-        servicesConfig: joinerConfig,
-        injectedDependencies,
+      module = await initModules({
+        remoteQueryMock,
+        eventBusMock: eventBus,
       })
-
-      module = modules.searchService as unknown as ISearchModuleService
 
       let a = 0
       remoteQueryMock.mockImplementation((query) => {
@@ -835,7 +792,7 @@ describe("SearchEngineModuleService", function () {
     })
   })
 
-  describe.skip("query", function () {
+  /*describe("query", function () {
     let module: ISearchModuleService
     let manager: SqlEntityManager
 
@@ -889,5 +846,5 @@ describe("SearchEngineModuleService", function () {
 
       expect(count).toBeGreaterThan(0)
     })
-  })
+  })*/
 })

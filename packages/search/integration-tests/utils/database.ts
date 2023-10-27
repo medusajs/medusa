@@ -74,7 +74,7 @@ export const TestDatabase: TestDatabase = {
       throw new Error("ORM not configured")
     }
 
-    this.manager = await this.orm.em
+    this.manager = this.orm.em
 
     try {
       await this.orm.getSchemaGenerator().ensureDatabase()
@@ -107,6 +107,7 @@ export const TestDatabase: TestDatabase = {
         process.env.MEDUSA_SEARCH_DB_SCHEMA ?? "public"
       }" CASCADE;`
     )
+
     await this.orm.close()
 
     this.orm = null

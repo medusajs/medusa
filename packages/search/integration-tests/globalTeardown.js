@@ -11,7 +11,7 @@ const pgGodCredentials = {
   host: DB_HOST,
 }
 
-afterAll(async () => {
+const teardown = async () => {
   try {
     await dropDatabase({ databaseName: DB_NAME }, pgGodCredentials)
   } catch (e) {
@@ -19,4 +19,6 @@ afterAll(async () => {
       `This might fail if it is run during the unit tests since there is no database to drop. Otherwise, please check what is the issue. ${e.message}`
     )
   }
-})
+}
+
+module.exports = teardown
