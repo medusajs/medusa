@@ -8,7 +8,6 @@ import { joinerConfig } from "../../src/__tests__/__fixtures__/joiner-config"
 import modulesConfig from "../../src/__tests__/__fixtures__/modules-config"
 import { EventBusService, schema } from "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
-import console from "console"
 
 jest.setTimeout(300000)
 
@@ -216,9 +215,6 @@ describe("SearchEngineModuleService", function () {
     })
 
     module = modules.searchService as unknown as ISearchModuleService
-
-    console.log("waiting 90s for all indexes and partition to be done.")
-    await new Promise((resolve) => setTimeout(resolve, 90000))
   })
 
   beforeEach(beforeEach_)
@@ -419,6 +415,29 @@ describe("SearchEngineModuleService", function () {
         skip: 1,
       }
     )
+
+    expect(result).toEqual([
+      {
+        id: "prod_2",
+        title: "Product 2 title",
+        variants: [],
+      },
+    ])
+  })
+
+  it("should handle null values on where clause", async () => {
+    const result = await module.query({
+      select: {
+        product: {
+          variants: {
+            money_amounts: true,
+          },
+        },
+      },
+      where: {
+        "product.variants.sku": null,
+      },
+    })
 
     expect(result).toEqual([
       {
