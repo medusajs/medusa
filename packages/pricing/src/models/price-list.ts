@@ -50,11 +50,11 @@ export default class PriceList {
   })
   price_list_rules = new Collection<PriceListRule>(this)
 
-  @ManyToMany({
-    entity: () => MoneyAmount,
-    pivotEntity: () => PriceSetMoneyAmount,
-  })
-  money_amounts = new Collection<MoneyAmount>(this)
+  // @ManyToMany({
+  //   entity: () => MoneyAmount,
+  //   pivotEntity: () => PriceSetMoneyAmount,
+  // })
+  // money_amounts = new Collection<MoneyAmount>(this)
 
   @ManyToMany({
     entity: () => RuleType,
