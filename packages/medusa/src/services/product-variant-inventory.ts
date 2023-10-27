@@ -12,6 +12,7 @@ import {
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
 import {
+  buildEventMessages,
   FlagRouter,
   isDefined,
   MedusaError,
@@ -430,7 +431,24 @@ class ProductVariantInventoryService extends TransactionBaseService {
       ): tc is ProductVariantInventoryItem => !!tc
     )
 
-    return await variantInventoryRepo.save(toCreate)
+    const createdVariantInventoryItems = await variantInventoryRepo.save(
+      toCreate
+    )
+
+    await this.eventBusService_.emit(
+      buildEventMessages({
+        // TODO: align the event entity format later
+        eventName: "LinkProductVariantInventoryItem.attached",
+        data: createdVariantInventoryItems.map((v) => ({ id: v.id })),
+        metadata: {
+          object: "LinkProductVariantInventoryItem",
+          service: "product-variant-inventory",
+          action: "attached",
+        },
+      })
+    )
+
+    return createdVariantInventoryItems
   }
 
   /**

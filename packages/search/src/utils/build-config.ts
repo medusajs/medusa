@@ -183,9 +183,7 @@ function retrieveLinkModuleAndAlias({
 
         linkModulesMetadata.push({
           entityName: linkModuleJoinerConfig.alias[0].args.entity,
-          alias: linkModuleJoinerConfig.extends!.find(
-            (extend) => extend.serviceName === foreignModuleConfig.serviceName
-          )!.relationship.alias,
+          alias: linkModuleJoinerConfig.alias[0].name,
           linkModuleConfig: linkModuleJoinerConfig,
           intermediateEntityNames: [],
         })
@@ -250,9 +248,7 @@ function retrieveLinkModuleAndAlias({
 
         linkModulesMetadata.push({
           entityName: linkModuleJoinerConfig.alias[0].args.entity,
-          alias: linkModuleJoinerConfig.extends!.find(
-            (extend) => extend.serviceName === foreignModuleConfig.serviceName
-          )!.relationship.alias,
+          alias: linkModuleJoinerConfig.alias[0].name,
           linkModuleConfig: linkModuleJoinerConfig,
           intermediateEntityNames: intermediateEntities,
         })
@@ -369,8 +365,8 @@ function processEntity(
       value.astNode &&
       (value.astNode as ObjectTypeDefinitionNode).fields?.some((field: any) => {
         let currentType = field.type
-        while (currentType.ofType) {
-          currentType = currentType.ofType
+        while (currentType.type) {
+          currentType = currentType.type
         }
 
         return currentType.name?.value === entityName
@@ -471,6 +467,7 @@ function processEntity(
           ]
           linkObjectRepresentationRef.alias = linkModuleMetadata.alias
           linkObjectRepresentationRef.listeners = [
+            // TODO: align event entity name
             `${linkModuleMetadata.entityName}.attached`,
             `${linkModuleMetadata.entityName}.detached`,
           ]
@@ -478,6 +475,7 @@ function processEntity(
             linkModuleMetadata.linkModuleConfig
 
           linkObjectRepresentationRef.fields = [
+            "id",
             ...linkModuleMetadata.linkModuleConfig
               .relationships!.map(
                 (relationship) =>
@@ -488,7 +486,6 @@ function processEntity(
                   relationship.foreignKey
               )
               .filter((v): v is string => Boolean(v)),
-            parentObjectRepresentationRef.alias + ".id",
           ]
 
           /**
@@ -504,12 +501,15 @@ function processEntity(
           ) {
             const intermediateEntityName =
               linkModuleMetadata.intermediateEntityNames[i]
-            const parentIntermediateEntityRef =
+
+            const isLastIntermediateEntity =
               i === linkModuleMetadata.intermediateEntityNames.length - 1
-                ? linkObjectRepresentationRef
-                : objectRepresentationRef[
-                    linkModuleMetadata.intermediateEntityNames[i + 1]
-                  ]
+
+            const parentIntermediateEntityRef = isLastIntermediateEntity
+              ? linkObjectRepresentationRef
+              : objectRepresentationRef[
+                  linkModuleMetadata.intermediateEntityNames[i + 1]
+                ]
 
             const {
               relatedModule: intermediateEntityModule,
@@ -542,11 +542,23 @@ function processEntity(
             ]
             intermediateEntityObjectRepresentationRef.moduleConfig =
               intermediateEntityModule
-            intermediateEntityObjectRepresentationRef.fields = [
-              "id",
-              linkObjectRepresentationRef.alias + ".id",
-            ]
+            intermediateEntityObjectRepresentationRef.fields = ["id"]
+
+            /**
+             * We push the parent id only between intermediate entities but not between intermediate and link
+             */
+
+            if (!isLastIntermediateEntity) {
+              intermediateEntityObjectRepresentationRef.fields.push(
+                parentIntermediateEntityRef.alias + ".id"
+              )
+            }
           }
+
+          /**
+           * If there is any intermediate entity then we need to set the last one as the parent field for the current entity.
+           * otherwise there is not need to set the link id field into the current entity.
+           */
 
           let currentParentIntermediateRef = linkObjectRepresentationRef
           if (linkModuleMetadata.intermediateEntityNames.length) {
@@ -554,6 +566,9 @@ function processEntity(
               objectRepresentationRef[
                 linkModuleMetadata.intermediateEntityNames[0]
               ]
+            currentObjectRepresentationRef.fields.push(
+              currentParentIntermediateRef.alias + ".id"
+            )
           }
 
           currentObjectRepresentationRef.parents.push({
@@ -562,10 +577,6 @@ function processEntity(
             targetProp: entityTargetPropertyNameInParent,
             isList: isEntityListInParent,
           })
-
-          currentObjectRepresentationRef.fields.push(
-            currentParentIntermediateRef.alias + ".id"
-          )
         }
       }
     }

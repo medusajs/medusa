@@ -16,7 +16,7 @@ import {
   SearchModuleOptions,
   StorageProvider,
 } from "../types"
-import { QueryBuilder, createPartitions } from "../utils"
+import { createPartitions, QueryBuilder } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -297,7 +297,7 @@ export class PostgresProvider {
               id: ids,
             },
           },
-          fields,
+          fields: [...new Set(["id", ...fields])],
         })
       )
 
@@ -582,13 +582,11 @@ export class PostgresProvider {
           return acc
         }, {}) as TData
 
-        const catalogEntry = catalogRepository.create({
+        await catalogRepository.upsert({
           id: cleanedEntityData.id,
           name: entity,
           data: cleanedEntityData,
         })
-
-        catalogRepository.persist(catalogEntry)
 
         /**
          * Create the catalog relation entries for the parent entity and the child entity
