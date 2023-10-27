@@ -234,6 +234,7 @@ export default async ({
       modulesConfig,
       servicesConfig: joinerConfig,
       remoteFetchData: remoteQueryFetchData(container),
+      sharedContainer: container,
       injectedDependencies: {
         [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
           ContainerRegistrationKeys.PG_CONNECTION
