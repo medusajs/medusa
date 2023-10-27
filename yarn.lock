@@ -35859,6 +35859,8 @@ __metadata:
     "@tanstack/react-table": ^8.7.9
     medusa-react: ^9.0.0
   peerDependenciesMeta:
+    "@tanstack/react-table":
+      optional: true
     medusa-react:
       optional: true
   languageName: unknown

@@ -32,10 +32,10 @@
     "typescript": "^4.9.5"
   },
   "peerDependenciesMeta": {
-    "medusa-react": {
+    "@tanstack/react-table": {
       "optional": true
     },
-    "@tanstack/react-table": {
+    "medusa-react": {
       "optional": true
     }
   },
