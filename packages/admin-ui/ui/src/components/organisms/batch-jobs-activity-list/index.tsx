@@ -86,7 +86,7 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
     to: batchJob.created_at,
   })
 
-  let operation = batchJob.type.split("-")[0]
+  let operation = batchJob.type.split("-").pop()
   operation = operation.charAt(0).toUpperCase() + operation.slice(1)
 
   const batchJobActivityDescription = batchJobDescriptionBuilder(
