@@ -13,8 +13,8 @@ tags:
       that, they can create an Oauth provider within the plugin that handles the
       authentication.
 
-      The Apps Oauth API Routes allows admins to manage and generate token for an
-      app using its oauth provider.
+      The Apps Oauth API Routes allows admins to manage and generate token for
+      an app using its oauth provider.
   - name: Auth
     description: >
       Authentication API Routes allow admin users to manage their session, such
@@ -41,8 +41,8 @@ tags:
       A store can use unlimited currencies, and each region must be associated
       with at least one currency.
 
-      Currencies are defined within the Medusa backend. Currency API Routes allow
-      admins to list and update currencies.
+      Currencies are defined within the Medusa backend. Currency API Routes
+      allow admins to list and update currencies.
     externalDocs:
       description: How to manage currencies
       url: >-

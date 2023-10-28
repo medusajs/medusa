@@ -44,8 +44,8 @@ export type AdminAuthRes = {
  * @schema AdminBearerAuthRes
  * type: object
  * properties:
- *   accessToken:
- *     description: Access token for subsequent authorization.
+ *   access_token:
+ *     description: Access token that can be used to send authenticated requests.
  *     type: string
  */
 export type AdminBearerAuthRes = {

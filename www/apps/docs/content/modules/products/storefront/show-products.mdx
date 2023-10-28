@@ -613,8 +613,8 @@ fetch(`<BACKEND_URL>/store/products/search`, {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    q: "Shirt"
-  })
+    q: "Shirt",
+  }),
 })
 .then((response) => response.json())
 .then(({ hits }) => {

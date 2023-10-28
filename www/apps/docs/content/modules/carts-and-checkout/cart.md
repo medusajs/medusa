@@ -26,7 +26,7 @@ A cart is represented by the `Cart` entity. Some of the `Cart` entity’s attrib
 - `completed_at`: the date the cart was completed. A completed cart means that it has been used for its main purpose. For example, if the cart is used to place an order, then a completed cart means that the order was placed.
 - `payment_authorized_at`: the date a payment was authorized.
 
-There are other important attributes discussed in later sections. Check out the [full Cart entity in the entities reference](../../references/entities/classes/Cart.md).
+There are other important attributes discussed in later sections. Check out the [full Cart entity in the entities reference](../../references/entities/classes/Cart.mdx).
 
 ---
 

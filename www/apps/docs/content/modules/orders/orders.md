@@ -37,7 +37,7 @@ Some of the attributes of the `Order` entity include:
 - `no_notification`: a boolean value indicating whether the customer should receive notifications when the order is updated.
 - `external_id`: a string indicating an ID of the order in an external system. This can be useful if you’re migrating your orders from another commerce system or you’re linking your order to a third-party service.
 
-There are other important attributes discussed in later sections. Check out the full [Order entity in the entities reference](../../references/entities/classes/Order.md).
+There are other important attributes discussed in later sections. Check out the full [Order entity in the entities reference](../../references/entities/classes/Order.mdx).
 
 ---
 
@@ -145,7 +145,7 @@ Some of the `OrderEdit`'s other attributes include:
 - `confirmed_by`: a string that typically should hold the ID of who confirmed the order edit. Similar to the `created_by` attribute, there are no restrictions on what value this attribute can actually hold.
 - `declined_by`: a string that typically should hold the ID of who declined the order edit. Similar to the `created_by` attribute, there are no restrictions on what value this attribute can actually hold.
 
-There are other attributes explained in other sections. You can also check out the full [OrderEdit entity in the entities reference](../../references/entities/classes/OrderEdit.md).
+There are other attributes explained in other sections. You can also check out the full [OrderEdit entity in the entities reference](../../references/entities/classes/OrderEdit.mdx).
 
 ### Item Changes
 

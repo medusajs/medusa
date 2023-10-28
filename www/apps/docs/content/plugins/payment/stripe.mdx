@@ -3,7 +3,7 @@ description: 'Learn how to integrate Stripe with the Medusa backend. Learn how t
 addHowToData: true
 ---
 
-import Troubleshooting from '@site/src/components/Troubleshooting'
+import DetailsList from '@site/src/components/DetailsList'
 import MissingPaymentProvider from '../../troubleshooting/missing-payment-providers.md'
 
 # Stripe
@@ -284,7 +284,7 @@ client.carts.createPaymentSessions(cart.id)
     // check if stripe is selected
     const isStripeAvailable = cart.payment_sessions?.some(
       (session) => (
-        session.processor_id === "stripe"
+        session.provider_id === "stripe"
       )
     )
     if (!isStripeAvailable) {
@@ -293,7 +293,7 @@ client.carts.createPaymentSessions(cart.id)
 
     // select stripe payment session
     client.carts.setPaymentSession(cart.id, {
-      processor_id: "stripe",
+      provider_id: "stripe",
     }).then(({ cart }) => {
       setClientSecret(cart.payment_session.data.client_secret)
     })
@@ -384,7 +384,7 @@ This plugin handles the following Stripe webhook events:
 
 ## Troubleshooting
 
-<Troubleshooting
+<DetailsList
   sections={[
     {
       title: 'Stripe not showing in checkout',
