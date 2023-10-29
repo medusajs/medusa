@@ -97,8 +97,8 @@ const UserTable: React.FC<UserTableProps> = ({
           <SidebarTeamMember user={user} />
         </Table.Cell>
         <Table.Cell className="w-80">{user.email}</Table.Cell>
-        <Table.Cell className="inter-small-semibold text-violet-60">
-          {user.teamRole ? user.teamRole.name : 'Superadmin'}
+        <Table.Cell className="inter-small-semibold">
+          {user.teamRole ? <span className="text-violet-60">{user.teamRole.name}</span> : 'Superadmin'}
         </Table.Cell>
         <Table.Cell className="inter-small-semibold text-yellow-70">
           {user.Region ? user.Region.name : ''}
