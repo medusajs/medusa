@@ -936,7 +936,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it("should get a product", async () => {
+    it("should get a product with default relations", async () => {
       const api = useApi()
 
       const res = await api
@@ -945,8 +945,52 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
+      const keysInResponse = Object.keys(res.data.product)
+
       expect(res.status).toEqual(200)
       expect(res.data.product.id).toEqual(productId)
+      expect(keysInResponse).toEqual(
+        expect.arrayContaining([
+          // fields
+          "id",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "title",
+          "subtitle",
+          "description",
+          "handle",
+          "is_giftcard",
+          "status",
+          "thumbnail",
+          "weight",
+          "length",
+          "height",
+          "width",
+          "hs_code",
+          "origin_country",
+          "mid_code",
+          "material",
+          "collection_id",
+          "type_id",
+          "discountable",
+          "external_id",
+          "metadata",
+
+          // relations
+          "categories",
+          "collection",
+          "images",
+          "options",
+          "profiles",
+          "profile",
+          "profile_id",
+          "sales_channels",
+          "tags",
+          "type",
+          "variants",
+        ])
+      )
     })
 
     it("should get a product with prices", async () => {
