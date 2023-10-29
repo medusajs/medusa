@@ -30,7 +30,7 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env } as any)
+    medusaProcess = await setupServer({ cwd, env, bootstrapApp: true } as any)
     appContainer = getContainer()
   })
 
