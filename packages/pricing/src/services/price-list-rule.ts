@@ -41,7 +41,7 @@ export default class PriceListRuleService<
 
   @InjectManager("priceListRuleRepository_")
   async list(
-    filters: PricingTypes.FilterablePriceSetProps = {},
+    filters: PricingTypes.FilterablePriceListRuleProps = {},
     config: FindConfig<PricingTypes.PriceListRuleDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
@@ -58,7 +58,7 @@ export default class PriceListRuleService<
 
   @InjectManager("priceListRuleRepository_")
   async listAndCount(
-    filters: PricingTypes.FilterablePriceSetProps = {},
+    filters: PricingTypes.FilterablePriceListRuleProps = {},
     config: FindConfig<PricingTypes.PriceListRuleDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {

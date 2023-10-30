@@ -1,17 +1,17 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { PriceListRuleRepository } from "@repositories"
-import { PriceListRuleService } from "@services"
+import { initialize } from "../../../../src"
 
-import { MikroOrmWrapper } from "../../../utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
+import { IPricingModuleService } from "@medusajs/types"
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
 describe("PriceListRule Service", () => {
-  let service: PriceListRuleService
+  let service: IPricingModuleService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
 
@@ -19,12 +19,11 @@ describe("PriceListRule Service", () => {
     await MikroOrmWrapper.setupDatabase()
     repositoryManager = await MikroOrmWrapper.forkManager()
 
-    const priceListRuleRepository = new PriceListRuleRepository({
-      manager: repositoryManager,
-    })
-
-    service = new PriceListRuleService({
-      priceListRuleRepository,
+    service = await initialize({
+      database: {
+        clientUrl: DB_URL,
+        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
+      },
     })
 
     testManager = await MikroOrmWrapper.forkManager()
@@ -39,7 +38,7 @@ describe("PriceListRule Service", () => {
 
   describe("list", () => {
     it("list priceListRules", async () => {
-      const priceListRuleResult = await service.list()
+      const priceListRuleResult = await service.listPriceListRules()
 
       expect(priceListRuleResult).toEqual([
         expect.objectContaining({
@@ -52,7 +51,7 @@ describe("PriceListRule Service", () => {
     })
 
     it("list priceListRules by pricelist id", async () => {
-      const priceListRuleResult = await service.list({
+      const priceListRuleResult = await service.listPriceListRules({
         id: ["price-list-rule-1"],
       })
 
@@ -66,7 +65,7 @@ describe("PriceListRule Service", () => {
 
   describe("listAndCount", () => {
     it("should return pricelistrules and count", async () => {
-      const [priceListRuleResult, count] = await service.listAndCount()
+      const [priceListRuleResult, count] = await service.listAndCountPriceListRules()
 
       expect(count).toEqual(2)
       expect(priceListRuleResult).toEqual([
@@ -80,7 +79,7 @@ describe("PriceListRule Service", () => {
     })
 
     it("should return pricelistrules and count when filtered", async () => {
-      const [priceListRuleResult, count] = await service.listAndCount({
+      const [priceListRuleResult, count] = await service.listAndCountPriceListRules({
         id: ["price-list-rule-1"],
       })
 
@@ -93,7 +92,7 @@ describe("PriceListRule Service", () => {
     })
 
     it("should return pricelistrules and count when using skip and take", async () => {
-      const [priceListRuleResult, count] = await service.listAndCount(
+      const [priceListRuleResult, count] = await service.listAndCountPriceListRules(
         {},
         { skip: 1, take: 1 }
       )
@@ -107,7 +106,7 @@ describe("PriceListRule Service", () => {
     })
 
     it("should return requested fields", async () => {
-      const [priceListRuleResult, count] = await service.listAndCount(
+      const [priceListRuleResult, count] = await service.listAndCountPriceListRules(
         {},
         {
           take: 1,
@@ -130,7 +129,7 @@ describe("PriceListRule Service", () => {
     const id = "price-list-rule-1"
 
     it("should return priceList for the given id", async () => {
-      const priceListRuleResult = await service.retrieve(id)
+      const priceListRuleResult = await service.retrievePriceListRule(id)
 
       expect(priceListRuleResult).toEqual(
         expect.objectContaining({
@@ -143,7 +142,7 @@ describe("PriceListRule Service", () => {
       let error
 
       try {
-        await service.retrieve("does-not-exist")
+        await service.retrievePriceListRule("does-not-exist")
       } catch (e) {
         error = e
       }
@@ -157,7 +156,7 @@ describe("PriceListRule Service", () => {
       let error
 
       try {
-        await service.retrieve(undefined as unknown as string)
+        await service.retrievePriceListRule(undefined as unknown as string)
       } catch (e) {
         error = e
       }
@@ -170,9 +169,9 @@ describe("PriceListRule Service", () => {
     const id = "price-list-rule-1"
 
     it("should delete the pricelists given an id successfully", async () => {
-      await service.delete([id])
+      await service.deletePriceListRules([id])
 
-      const priceListResult = await service.list({
+      const priceListResult = await service.listPriceListRules({
         id: [id],
       })
 
@@ -184,14 +183,14 @@ describe("PriceListRule Service", () => {
     const id = "price-list-rule-2"
 
     it("should update the value of the priceListRule successfully", async () => {
-      await service.update([
+      await service.updatePriceListRules([
         {
           id,
           value: 'test'
         },
       ])
 
-      const priceList = await service.retrieve(id)
+      const priceList = await service.retrievePriceListRule(id)
 
       expect(priceList.value).toEqual("test")
     })
@@ -200,7 +199,7 @@ describe("PriceListRule Service", () => {
       let error
 
       try {
-        await service.update([
+        await service.updatePriceListRules([
           {
             id: "does-not-exist",
             value: 'test'
@@ -218,7 +217,7 @@ describe("PriceListRule Service", () => {
 
   describe("create", () => {
     it("should create a priceList successfully", async () => {
-      await service.create([
+      await service.createPriceListRules([
         {
           id: "price-list-rule-3",
           value: 'USD',
@@ -227,7 +226,7 @@ describe("PriceListRule Service", () => {
         },
       ])
 
-      const [priceList] = await service.list({
+      const [priceList] = await service.listPriceListRules({
         id: ["price-list-rule-3"],
       })
 

@@ -1,9 +1,9 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { PriceListRepository } from "@repositories"
 import { PriceListService } from "@services"
+import { initialize } from "../../../../src"
 
-import { MikroOrmWrapper } from "../../../utils"
+import { MikroOrmWrapper, DB_URL } from "../../../utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 
 jest.setTimeout(30000)
@@ -11,18 +11,16 @@ jest.setTimeout(30000)
 describe("PriceList Service", () => {
   let service: PriceListService
   let testManager: SqlEntityManager
-  let repositoryManager: SqlEntityManager
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
-    repositoryManager = await MikroOrmWrapper.forkManager()
+    await MikroOrmWrapper.forkManager()
 
-    const priceListRepository = new PriceListRepository({
-      manager: repositoryManager,
-    })
-
-    service = new PriceListService({
-      priceListRepository,
+    service = await initialize({
+      database: {
+        clientUrl: DB_URL,
+        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
+      },
     })
 
     testManager = await MikroOrmWrapper.forkManager()
@@ -35,7 +33,7 @@ describe("PriceList Service", () => {
 
   describe("list", () => {
     it("list priceLists", async () => {
-      const priceListResult = await service.list()
+      const priceListResult = await service.listPriceLists()
 
       expect(priceListResult).toEqual([
         expect.objectContaining({
@@ -48,7 +46,7 @@ describe("PriceList Service", () => {
     })
 
     it("list pricelists by id", async () => {
-      const priceListResult = await service.list({
+      const priceListResult = await service.listPriceLists({
         id: ["price-list-1"],
       })
 
@@ -62,7 +60,7 @@ describe("PriceList Service", () => {
 
   describe("listAndCount", () => {
     it("should return pricelists and count", async () => {
-      const [priceListResult, count] = await service.listAndCount()
+      const [priceListResult, count] = await service.listAndCountPriceLists()
 
       expect(count).toEqual(2)
       expect(priceListResult).toEqual([
@@ -76,7 +74,7 @@ describe("PriceList Service", () => {
     })
 
     it("should return pricelists and count when filtered", async () => {
-      const [priceListResult, count] = await service.listAndCount({
+      const [priceListResult, count] = await service.listAndCountPriceLists({
         id: ["price-list-1"],
       })
 
@@ -89,7 +87,7 @@ describe("PriceList Service", () => {
     })
 
     it("should return pricelists and count when using skip and take", async () => {
-      const [priceListResult, count] = await service.listAndCount(
+      const [priceListResult, count] = await service.listAndCountPriceLists(
         {},
         { skip: 1, take: 1 }
       )
@@ -103,7 +101,7 @@ describe("PriceList Service", () => {
     })
 
     it("should return requested fields", async () => {
-      const [priceListResult, count] = await service.listAndCount(
+      const [priceListResult, count] = await service.listAndCountPriceLists(
         {},
         {
           take: 1,
@@ -126,7 +124,7 @@ describe("PriceList Service", () => {
     const id = "price-list-1"
 
     it("should return priceList for the given id", async () => {
-      const priceListResult = await service.retrieve(id)
+      const priceListResult = await service.retrievePriceList(id)
 
       expect(priceListResult).toEqual(
         expect.objectContaining({
@@ -139,7 +137,7 @@ describe("PriceList Service", () => {
       let error
 
       try {
-        await service.retrieve("does-not-exist")
+        await service.retrievePriceList("does-not-exist")
       } catch (e) {
         error = e
       }
@@ -153,7 +151,7 @@ describe("PriceList Service", () => {
       let error
 
       try {
-        await service.retrieve(undefined as unknown as string)
+        await service.retrievePriceList(undefined as unknown as string)
       } catch (e) {
         error = e
       }
@@ -166,9 +164,9 @@ describe("PriceList Service", () => {
     const id = "price-list-1"
 
     it("should delete the pricelists given an id successfully", async () => {
-      await service.delete([id])
+      await service.deletePriceLists([id])
 
-      const priceListResult = await service.list({
+      const priceListResult = await service.listPriceLists({
         id: [id],
       })
 
@@ -181,14 +179,14 @@ describe("PriceList Service", () => {
 
     it("should update the starts_at date of the priceList successfully", async () => {
       const updateDate = new Date()
-      await service.update([
+      await service.updatePriceLists([
         {
           id,
           starts_at: updateDate
         },
       ])
 
-      const priceList = await service.retrieve(id)
+      const priceList = await service.retrievePriceList(id)
 
       expect(priceList.starts_at).toEqual(updateDate)
     })
@@ -197,7 +195,7 @@ describe("PriceList Service", () => {
       let error
 
       try {
-        await service.update([
+        await service.updatePriceLists([
           {
             id: "does-not-exist",
             amount: 666,
@@ -215,14 +213,14 @@ describe("PriceList Service", () => {
 
   describe("create", () => {
     it("should create a priceList successfully", async () => {
-      await service.create([
+      await service.createPriceLists([
         {
           id: "price-list-3",
           number_rules: 4,
         },
       ])
 
-      const [priceList] = await service.list({
+      const [priceList] = await service.listPriceLists({
         id: ["price-list-3"],
       })
 

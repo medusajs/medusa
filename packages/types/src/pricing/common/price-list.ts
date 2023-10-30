@@ -45,6 +45,13 @@ export interface FilterablePriceListProps
   status?: PriceListStatus[]
   number_rules?: number[]
 }
+export interface FilterablePriceListRuleProps
+  extends BaseFilterable<FilterablePriceListProps> {
+  id?: string[]
+  value?: string[]
+  rule_type?: string[]
+  price_list_id?: string[]
+}
 
 
 export interface PriceListRuleDTO { 
