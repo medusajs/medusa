@@ -58,13 +58,11 @@ module.exports = ({
     })
 
     medusaProcess.on("exit", () => {
-      console.log("MedusaChildProcess: on exit")
       const expressServer = useExpressServer()
 
       setContainer(null)
 
       if (expressServer) {
-        console.log("MedusaChildProcess: express server found. Closing server")
         expressServer.close()
       }
     })
