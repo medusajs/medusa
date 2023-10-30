@@ -1,15 +1,17 @@
+import { WorkflowTypes } from "@medusajs/types"
 import {
   Handlers,
   pipe,
   updateProducts,
   UpdateProductsActions,
 } from "@medusajs/workflows"
-import { WorkflowTypes } from "@medusajs/types"
 import path from "path"
 
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
+
+jest.setTimeout(30000)
 
 describe("UpdateProduct workflow", function () {
   let medusaProcess

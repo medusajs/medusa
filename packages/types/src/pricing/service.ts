@@ -12,12 +12,14 @@ import {
   FilterableCurrencyProps,
   FilterableMoneyAmountProps,
   FilterablePriceRuleProps,
+  FilterablePriceSetMoneyAmountProps,
   FilterablePriceSetMoneyAmountRulesProps,
   FilterablePriceSetProps,
   FilterableRuleTypeProps,
   MoneyAmountDTO,
   PriceRuleDTO,
   PriceSetDTO,
+  PriceSetMoneyAmountDTO,
   PriceSetMoneyAmountRulesDTO,
   PricingContext,
   PricingFilters,
@@ -31,9 +33,9 @@ import {
   UpdateRuleTypeDTO,
 } from "./common"
 
+import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { ModuleJoinerConfig } from "../modules-sdk"
-import { Context } from "../shared-context"
 
 export interface IPricingModuleService {
   /**
@@ -2197,6 +2199,20 @@ export interface IPricingModuleService {
     config?: FindConfig<PriceSetMoneyAmountRulesDTO>,
     sharedContext?: Context
   ): Promise<[PriceSetMoneyAmountRulesDTO[], number]>
+
+
+  listPriceSetMoneyAmounts(
+    filters?: FilterablePriceSetMoneyAmountProps,
+    config?: FindConfig<PriceSetMoneyAmountDTO>,
+    sharedContext?: Context
+  ): Promise<PriceSetMoneyAmountDTO[]> 
+
+  listAndCountPriceSetMoneyAmounts(
+    filters?: FilterablePriceSetMoneyAmountProps,
+    config?: FindConfig<PriceSetMoneyAmountDTO>,
+    sharedContext?: Context
+  ): Promise<[PriceSetMoneyAmountDTO[], number]> 
+
 
   /**
    * This method is used to create new price set money amount rules. A price set money amount rule creates an association between a price set money amount and

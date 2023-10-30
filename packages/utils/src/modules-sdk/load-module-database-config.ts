@@ -1,5 +1,5 @@
-import { ModulesSdkTypes } from "@medusajs/types"
 import { MedusaError } from "../common"
+import { ModulesSdkTypes } from "@medusajs/types"
 
 function getEnv(key: string, moduleName: string): string {
   const value =
@@ -66,7 +66,7 @@ export function loadDatabaseConfig(
   "clientUrl" | "schema" | "driverOptions" | "debug"
 > {
   const clientUrl = getEnv("POSTGRES_URL", moduleName)
-
+  
   const database = {
     clientUrl,
     schema: getEnv("POSTGRES_SCHEMA", moduleName) ?? "public",

@@ -1,16 +1,17 @@
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 
-import { InputAlias, Workflows } from "../../definitions"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, pipe } from "../../helper"
-import { CreateProductsActions } from "./create-products"
+import { InputAlias, Workflows } from "../../definitions"
 import { InventoryHandlers, ProductHandlers } from "../../handlers"
 import * as MiddlewareHandlers from "../../handlers/middlewares"
 import { detachSalesChannelFromProducts } from "../../handlers/product"
+import { exportWorkflow, pipe } from "../../helper"
+import { CreateProductsActions } from "./create-products"
 import { prepareCreateInventoryItems } from "./prepare-create-inventory-items"
+import { UpdateProductVariantsActions } from "./update-product-variants"
 
 export enum UpdateProductsActions {
   prepare = "prepare",
@@ -32,6 +33,10 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
     next: {
       action: UpdateProductsActions.updateProducts,
       next: [
+        {
+          action: UpdateProductVariantsActions.upsertPrices,
+          saveResponse: false,
+        },
         {
           action: UpdateProductsActions.attachSalesChannels,
           saveResponse: false,
@@ -59,7 +64,7 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
   },
 }
 
-const handlers = new Map([
+const handlers = new Map<string, any>([
   [
     UpdateProductsActions.prepare,
     {
@@ -347,6 +352,37 @@ const handlers = new Map([
           ],
         },
         InventoryHandlers.restoreInventoryItems
+      ),
+    },
+  ],
+  [
+    UpdateProductVariantsActions.upsertPrices,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: InputAlias.ProductsInputData,
+              alias: ProductHandlers.updateProducts.aliases.products,
+            },
+            {
+              from: UpdateProductsActions.prepare,
+            },
+          ],
+        },
+        ProductHandlers.upsertVariantPrices
+      ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: UpdateProductVariantsActions.upsertPrices,
+            },
+          ],
+        },
+        ProductHandlers.revertVariantPrices
       ),
     },
   ],

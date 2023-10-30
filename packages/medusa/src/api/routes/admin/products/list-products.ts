@@ -9,10 +9,10 @@ import {
 
 import { FilterableProductProps } from "../../../../types/product"
 import { IInventoryService } from "@medusajs/types"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../../models"
 import { Type } from "class-transformer"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
@@ -275,7 +275,7 @@ export default async (req, res) => {
   )
 
   if (shouldSetPricing) {
-    products = await pricingService.setProductPrices(rawProducts)
+    products = await pricingService.setAdminProductPricing(rawProducts)
   }
 
   // We only set availability if variants are requested
