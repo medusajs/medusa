@@ -1,6 +1,5 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { Currency, MoneyAmount } from "@models"
 import { PriceListRepository } from "@repositories"
 import { PriceListService } from "@services"
 
@@ -13,8 +12,6 @@ describe("MoneyAmount Service", () => {
   let service: PriceListService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
-  let data!: MoneyAmount[]
-  let currencyData!: Currency[]
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
@@ -29,7 +26,7 @@ describe("MoneyAmount Service", () => {
     })
 
     testManager = await MikroOrmWrapper.forkManager()
-    data = await createPriceLists(testManager)
+    await createPriceLists(testManager)
   })
 
   afterEach(async () => {

@@ -1,3 +1,4 @@
+import { BaseFilterable } from "../../dal"
 import { MoneyAmountDTO } from "./money-amount"
 import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 import { RuleTypeDTO } from "./rule-type"
@@ -34,6 +35,15 @@ export interface UpdatePriceListDTO {
   status?: PriceListStatus
   number_rules?: number
   rules: PriceListRuleDTO[]
+}
+
+export interface FilterablePriceListProps
+  extends BaseFilterable<FilterablePriceListProps> {
+  id?: string[]
+  starts_at?: Date[]
+  ends_at?: Date[]
+  status?: PriceListStatus[]
+  number_rules?: number[]
 }
 
 
