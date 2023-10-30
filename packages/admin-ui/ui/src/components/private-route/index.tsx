@@ -1,7 +1,9 @@
 import { useAdminGetSession } from "medusa-react"
 import { ReactNode, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Spinner from "../atoms/spinner"
+import { useAccess } from "../../providers/access-provider"
+import NotFoundPage from "../../pages/404"
 
 type PrivateRouteProps = {
   children: ReactNode
@@ -16,6 +18,15 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
       navigate("/login")
     }
   }, [user, isLoading, navigate])
+
+  // Check access
+
+  const {checkAccess} = useAccess();
+  const location = useLocation();
+  if(!checkAccess(location.pathname))
+    return(<NotFoundPage />);
+  
+  //
 
   if (user && !isLoading) {
     return <>{children}</>
