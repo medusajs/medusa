@@ -7,7 +7,7 @@ export default (): RequestHandler => {
       return next()
     }
 
-    passport.authenticate(["store-jwt", "bearer"], { session: false })(
+    passport.authenticate(["store-session", "store-bearer"], { session: false })(
       req,
       res,
       next

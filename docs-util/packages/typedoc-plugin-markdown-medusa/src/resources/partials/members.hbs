@@ -1,0 +1,43 @@
+{{#if (sectionEnabled "members_categories")}}
+
+{{#if categories}}
+
+{{#each categories}}
+
+{{#unless allChildrenHaveOwnDocument}}
+
+{{#unless (getFormattingOption "expandMembers")}}
+
+## {{title}}
+
+{{/unless}}
+
+{{#each children}}
+
+{{#unless hasOwnDocument}}
+
+{{> member}}
+
+{{/unless}}
+
+{{/each}}
+
+{{/unless}}
+
+{{/each}}
+
+{{else}}
+
+{{#each groups}}
+
+{{#unless allChildrenHaveOwnDocument}}
+
+{{> members.group}}
+
+{{/unless}}
+
+{{/each}}
+
+{{/if}}
+
+{{/if}}

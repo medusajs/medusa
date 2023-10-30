@@ -26,10 +26,11 @@ import InviteService from "../../../../services/invite"
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/invites/{invite_id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Invites
  * responses:

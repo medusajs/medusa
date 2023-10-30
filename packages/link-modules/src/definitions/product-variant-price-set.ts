@@ -1,6 +1,6 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig } from "@medusajs/types"
 import { LINKS } from "../links"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/modules-sdk"
 
 export const ProductVariantPriceSet: ModuleJoinerConfig = {
   serviceName: LINKS.ProductVariantPriceSet,
@@ -21,6 +21,8 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
   relationships: [
     {
       serviceName: Modules.PRODUCT,
+      // TODO: Remove this when product module is the default product service
+      isInternalService: true,
       primaryKey: "id",
       foreignKey: "variant_id",
       alias: "variant",

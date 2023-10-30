@@ -17,14 +17,14 @@ import { Transform, Type } from "class-transformer"
 import { DateComparisonOperator } from "../../../../types/common"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import PricingService from "../../../../services/pricing"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
+import { defaultStoreProductRemoteQueryObject } from "./index"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultStoreProductsFields } from "./index"
 
 /**
  * @oas [get] /store/products
@@ -32,7 +32,7 @@ import { defaultStoreProductsFields } from "./index"
  * summary: List Products
  * description: |
  *   Retrieves a list of products. The products can be filtered by fields such as `id` or `q`. The products can also be sorted or paginated.
- *   This endpoint can also be used to retrieve a product by its handle.
+ *   This API Route can also be used to retrieve a product by its handle.
  *
  *   For accurate and correct pricing of the products based on the customer's context, it's highly recommended to pass fields such as
  *   `region_id`, `currency_code`, and `cart_id` when available.
@@ -394,125 +394,17 @@ async function listAndCountProductWithIsolatedProductModule(
     take: listConfig.take,
   }
 
-  // prettier-ignore
-  const args = `
-    filters: $filters,
-    order: $order,
-    skip: $skip, 
-    take: $take
-  `
-
-  const query = `
-      query ($filters: any, $order: any, $skip: Int, $take: Int) {
-        product (${args}) {
-          ${defaultStoreProductsFields.join("\n")}
-          
-          images {
-            id
-            created_at
-            updated_at
-            deleted_at
-            url
-            metadata
-          }
-          
-          tags {
-            id
-            created_at
-            updated_at
-            deleted_at
-            value
-          }
-          
-          type {
-            id
-            created_at
-            updated_at
-            deleted_at
-            value
-          }
-          
-          collection {
-            title
-            handle
-            id
-            created_at
-            updated_at
-            deleted_at
-          }
-          
-          options {
-            id
-            created_at
-            updated_at
-            deleted_at
-            title
-            product_id
-            metadata
-            values {
-              id
-              created_at
-              updated_at
-              deleted_at
-              value
-              option_id
-              variant_id
-              metadata
-            }
-          }
-          
-          variants {
-            id
-            created_at
-            updated_at
-            deleted_at
-            title
-            product_id
-            sku
-            barcode
-            ean
-            upc
-            variant_rank
-            inventory_quantity
-            allow_backorder
-            manage_inventory
-            hs_code
-            origin_country
-            mid_code
-            material
-            weight
-            length
-            height
-            width
-            metadata
-            options {
-              id
-              created_at
-              updated_at
-              deleted_at
-              value
-              option_id
-              variant_id
-              metadata
-            }
-          }
-          
-          profile {
-            id
-            created_at
-            updated_at
-            deleted_at
-            name
-            type
-          }
-        } 
-      }
-    `
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultStoreProductRemoteQueryObject,
+    },
+  }
 
   const {
     rows: products,
     metadata: { count },
-  } = await remoteQuery(query, variables)
+  } = await remoteQuery(query)
 
   products.forEach((product) => {
     product.profile_id = product.profile?.id

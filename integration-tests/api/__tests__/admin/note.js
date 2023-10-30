@@ -52,7 +52,7 @@ describe("/admin/notes", () => {
 
       const response = await api.get("/admin/notes/note1", {
         headers: {
-          authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -91,7 +91,7 @@ describe("/admin/notes", () => {
           },
           {
             headers: {
-              authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -136,7 +136,7 @@ describe("/admin/notes", () => {
       const response = await api
         .get("/admin/notes?resource_id=resource1", {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -169,7 +169,7 @@ describe("/admin/notes", () => {
       const response = await api
         .get("/admin/notes?limit=2", {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -204,7 +204,7 @@ describe("/admin/notes", () => {
           { value: "new text" },
           {
             headers: {
-              authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )
@@ -215,7 +215,7 @@ describe("/admin/notes", () => {
       const response = await api
         .get("/admin/notes/note1", {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -246,7 +246,7 @@ describe("/admin/notes", () => {
       await api
         .delete("/admin/notes/note1", {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -257,7 +257,7 @@ describe("/admin/notes", () => {
       await api
         .get("/admin/notes/note1", {
           headers: {
-            authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => (error = err))

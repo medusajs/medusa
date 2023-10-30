@@ -1,0 +1,7 @@
+type: object
+properties:
+  product_ids:
+    description: The IDs of the products to delete their associated prices.
+    type: array
+    items:
+      type: string

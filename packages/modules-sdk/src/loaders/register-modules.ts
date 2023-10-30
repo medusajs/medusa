@@ -16,6 +16,7 @@ import { MODULE_DEFINITIONS, ModulesDefinition } from "../definitions"
  * @param modules
  * @param isolatedModules Will be removed once the isolated flag is being removed
  */
+// TODO: Remove once we have all modules migrated + rename to something like getResolutions
 export const registerModules = (
   modules?: Record<
     string,

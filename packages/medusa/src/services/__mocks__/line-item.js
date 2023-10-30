@@ -58,7 +58,7 @@ export const LineItemServiceMock = {
         variant_id: variantId,
         unit_price: 100,
         quantity,
-        metadata,
+        ...metadata,
       })
     }),
   delete: jest.fn().mockImplementation(() => Promise.resolve()),

@@ -24,10 +24,11 @@ import { ProductService } from "../../../../services"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/products/types' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:

@@ -1,8 +1,8 @@
-import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
+import { JoinerRelationship, JoinerServiceConfig, RemoteJoinerQuery } from "../joiner"
 
+import { Logger } from "../logger"
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
-import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
@@ -133,6 +133,10 @@ export type ModuleJoinerConfig = Omit<
   JoinerServiceConfig,
   "serviceName" | "primaryKeys" | "relationships" | "extends"
 > & {
+  /**
+   * GraphQL schema for the all module's available entities and fields
+   */
+  schema?: string
   relationships?: ModuleJoinerRelationship[]
   extends?: {
     serviceName: string
@@ -153,9 +157,9 @@ export type ModuleJoinerConfig = Omit<
    */
   isLink?: boolean
   /**
-   * Keys that can be used to link to other modules
+   * Keys that can be used to link to other modules. e.g { product_id: "Product" } "Product" being the entity it refers to
    */
-  linkableKeys?: string[]
+  linkableKeys?: Record<string, string>
   /**
    * If true it expands a RemoteQuery property but doesn't create a pivot table
    */
@@ -256,3 +260,8 @@ export type ModuleServiceInitializeCustomDataLayerOptions = {
     [key: string]: Constructor<RepositoryService>
   }
 }
+
+export type RemoteQueryFunction = (
+  query: string | RemoteJoinerQuery | object,
+  variables?: Record<string, unknown>
+) => Promise<any> | null

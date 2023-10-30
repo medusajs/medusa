@@ -31,10 +31,11 @@ import {
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/order-edits/{id}/confirm' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Order Edits
  * responses:

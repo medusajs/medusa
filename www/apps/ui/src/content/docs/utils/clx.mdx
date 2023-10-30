@@ -1,0 +1,42 @@
+---
+title: "clx"
+description: "Utility function for working with classNames."
+---
+
+## Usage
+---
+
+The `clx` function is a utility function for working with classNames. It is built using [clsx](https://www.npmjs.com/package/clsx) and [tw-merge](https://www.npmjs.com/package/tw-merge) and is intended to be used with [Tailwind CSS](https://tailwindcss.com/).
+
+```tsx
+import { clx } from "@medusajs/ui"
+
+type BoxProps = {
+    className?: string
+    children: React.ReactNode
+    mt?: "sm" | "md" | "lg"
+}
+
+const Box = ({ className, children }: BoxProps) => {
+  return (
+    <div
+      className={clx(
+        "flex items-center justify-center",
+        {
+          "mt-4": mt === "sm",
+          "mt-8": mt === "md",
+          "mt-12": mt === "lg",
+        },
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
+}
+```
+
+In the above example the utility is used to apply a base style, a margin top that is dependent on the `mt` prop and a custom className.
+The Box component accepts a `className` prop that is merged with the other classNames, and the underlying usage of `tw-merge` ensures that all Tailwind CSS classes are merged without style conflicts.
+
+<Feedback title={"clx"} />

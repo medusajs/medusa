@@ -24,12 +24,22 @@ export async function runCreateDb({
   client: pg.Client
   dbName: string
   spinner: Ora
-}) {
-  // create postgres database
+}): Promise<pg.Client> {
+  let newClient = client
+
   try {
+    // create postgres database
     await createDb({
       client,
       db: dbName,
+    })
+
+    // create a new connection with database selected
+    await client.end()
+    newClient = await postgresClient({
+      user: client.user,
+      password: client.password,
+      database: dbName,
     })
   } catch (e) {
     spinner.stop()
@@ -38,6 +48,8 @@ export async function runCreateDb({
       type: "error",
     })
   }
+
+  return newClient
 }
 
 async function getForDbName(dbName: string): Promise<{

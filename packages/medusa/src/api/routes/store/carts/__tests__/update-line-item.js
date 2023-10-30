@@ -1,6 +1,6 @@
+import { CartServiceMock } from "../../../../../services/__mocks__/cart"
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { CartServiceMock } from "../../../../../services/__mocks__/cart"
 
 describe("POST /store/carts/:id/line-items/:line_id", () => {
   describe("successfully updates a line item", () => {
@@ -34,6 +34,7 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
           region_id: IdMap.getId("region-france"),
           quantity: 3,
           metadata: {},
+          should_calculate_prices: true,
         }
       )
     })
@@ -126,6 +127,7 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
           quantity: 3,
           region_id: expect.any(String),
           variant_id: expect.any(String),
+          should_calculate_prices: true,
         }
       )
     })
@@ -170,6 +172,7 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
           quantity: 3,
           region_id: expect.any(String),
           variant_id: expect.any(String),
+          should_calculate_prices: true,
         }
       )
     })
@@ -215,6 +218,7 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
           quantity: 3,
           region_id: expect.any(String),
           variant_id: expect.any(String),
+          should_calculate_prices: true,
         }
       )
     })

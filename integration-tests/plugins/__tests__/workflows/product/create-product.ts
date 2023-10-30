@@ -1,17 +1,18 @@
-import path from "path"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
 import {
-  createProducts,
   CreateProductsActions,
   Handlers,
+  createProducts,
   pipe,
 } from "@medusajs/workflows"
-import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import path from "path"
+import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
+
+jest.setTimeout(30000)
 
 describe("CreateProduct workflow", function () {
-  let medusaProcess
   let medusaContainer
 
   beforeAll(async () => {
@@ -24,8 +25,6 @@ describe("CreateProduct workflow", function () {
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-
-    medusaProcess.kill()
   })
 
   it("should compensate all the invoke if something fails", async () => {
