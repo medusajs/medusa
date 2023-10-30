@@ -637,7 +637,8 @@ class ProductService extends TransactionBaseService {
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+        !this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
       ) {
         if (isDefined(salesChannels)) {
           product.sales_channels = []
@@ -659,6 +660,19 @@ class ProductService extends TransactionBaseService {
       await Promise.all(promises)
 
       const result = await productRepo.save(product)
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+      ) {
+        if (salesChannels?.length) {
+          await Promise.all(
+            salesChannels?.map(
+              async (sc) =>
+                await this.salesChannelService_.addProducts(sc.id, [product.id])
+            )
+          )
+        }
+      }
 
       await this.eventBus_
         .withTransaction(manager)
