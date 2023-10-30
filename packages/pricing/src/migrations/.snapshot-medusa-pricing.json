@@ -848,7 +848,7 @@
             "rule_type_id"
           ],
           "composite": false,
-          "keyName": "IDX_price_rule_rule_type_id",
+          "keyName": "IDX_price_list_rule_rule_type_id",
           "primary": false,
           "unique": false
         },
@@ -857,7 +857,7 @@
             "price_list_id"
           ],
           "composite": false,
-          "keyName": "IDX_price_rule_price_list_id",
+          "keyName": "IDX_price_list_rule_price_list_id",
           "primary": false,
           "unique": false
         },

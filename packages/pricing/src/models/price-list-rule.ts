@@ -27,7 +27,7 @@ export default class PriceListRule {
     entity: () => RuleType,
     fieldName: "rule_type_id",
     name: "price_rule_rule_type_id_unique",
-    index: "IDX_price_rule_rule_type_id",
+    index: "IDX_price_list_rule_rule_type_id",
   })
   rule_type: RuleType
 
@@ -41,7 +41,7 @@ export default class PriceListRule {
     entity: () => PriceList,
     fieldName: "price_list_id",
     name: "price_rule_price_list_id",
-    index: "IDX_price_rule_price_list_id",
+    index: "IDX_price_list_rule_price_list_id",
   })
   price_list: PriceList
 
