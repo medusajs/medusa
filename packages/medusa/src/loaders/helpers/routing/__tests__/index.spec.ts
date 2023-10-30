@@ -5,19 +5,10 @@ import request from "supertest"
 import {
   customersCreateMiddlewareMock,
   customersGlobalMiddlewareMock,
+  mockConfigModule,
   storeCorsMiddlewareMock,
 } from "../__fixtures__/mocks"
 import { RoutesLoader } from "../index"
-
-const mockConfigModule = {
-  projectConfig: {
-    store_cors: "http://localhost:8000",
-    admin_cors: "http://localhost:7001",
-    database_logging: false,
-  },
-  featureFlags: {},
-  plugins: [],
-}
 
 describe("RoutesLoader", function () {
   afterEach(function () {

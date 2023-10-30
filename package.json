@@ -66,6 +66,7 @@
     "prettier": "prettier",
     "jest": "jest",
     "test": "turbo run test --no-daemon",
+    "test:os": "turbo run test:os --no-daemon",
     "test:integration:packages": "turbo run test:integration --no-daemon --filter='./packages/*'",
     "test:integration:api": "turbo run test:integration --no-daemon --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test:integration --no-daemon --filter=integration-tests-plugins",

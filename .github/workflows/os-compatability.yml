@@ -1,0 +1,66 @@
+name: Medusa Pipeline
+on:
+  pull_request:
+
+jobs:
+  setup:
+    runs-on: windows-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.20.2"
+          cache: "yarn"
+
+      - name: Assert changed
+        run: ./scripts/assert-changed-files-actions.sh "packages"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
+  unit-tests:
+    needs: setup
+    runs-on: windows-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.20.2"
+          cache: "yarn"
+
+      - name: Assert changed
+        run: ./scripts/assert-changed-files-actions.sh "packages"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Run unit tests
+        run: yarn test:os
