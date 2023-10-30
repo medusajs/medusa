@@ -82,7 +82,7 @@ export default async (req, res) => {
   const product = rawProduct
 
   if (shouldSetPricing) {
-    await pricingService.setProductPrices([product])
+    await pricingService.setAdminProductPricing([product])
   }
 
   res.json({ product })
