@@ -1,4 +1,4 @@
-name: Medusa Pipeline
+name: Medusa OS Test Pipeline
 on:
   pull_request:
 
