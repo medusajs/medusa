@@ -5,6 +5,8 @@ const { isObject, createMedusaContainer } = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
+const { getContainer } = require("./use-container")
+const { ContainerRegistrationKeys } = require("@medusajs/utils")
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
@@ -46,9 +48,7 @@ const DbTestUtil = {
 
   teardown: async function ({ forceDelete } = {}) {
     forceDelete = forceDelete || []
-
     const entities = this.db_.entityMetadatas
-
     const manager = this.db_.manager
 
     await manager.query(`SET session_replication_role = 'replica';`)
@@ -69,8 +69,14 @@ const DbTestUtil = {
   },
 
   shutdown: async function () {
+    const container = getContainer()
+    const containerPgConnection = container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    )
+
     await this.db_.destroy()
     await this.pgConnection_?.context?.destroy()
+    await containerPgConnection?.context?.destroy()
 
     return await dropDatabase({ DB_NAME }, pgGodCredentials)
   },
