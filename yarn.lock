@@ -6344,7 +6344,6 @@ __metadata:
     react-router-dom: 6.8.0
     react-select: ^5.5.4
     react-table: ^7.7.0
-    source-map-loader: ^4.0.1
     style-loader: ^3.3.3
     swc-loader: ^0.2.3
     swc-minify-webpack-plugin: ^2.1.1
@@ -26180,7 +26179,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iconv-lite@npm:0.6.3, iconv-lite@npm:^0.6.2, iconv-lite@npm:^0.6.3":
+"iconv-lite@npm:0.6.3, iconv-lite@npm:^0.6.2":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
   dependencies:
@@ -40546,19 +40545,6 @@ __metadata:
   version: 1.0.2
   resolution: "source-map-js@npm:1.0.2"
   checksum: 32f2dfd1e9b7168f9a9715eb1b4e21905850f3b50cf02cf476e47e4eebe8e6b762b63a64357896aa29b37e24922b4282df0f492e0d2ace572b43d15525976ff8
-  languageName: node
-  linkType: hard
-
-"source-map-loader@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "source-map-loader@npm:4.0.1"
-  dependencies:
-    abab: ^2.0.6
-    iconv-lite: ^0.6.3
-    source-map-js: ^1.0.2
-  peerDependencies:
-    webpack: ^5.72.1
-  checksum: 880b2c2dd74a71ade45f40bb9de72654eed7e6e6a3c00fb9fb0de28868084f4f00b9376988e43e250fae7c4bb54e85edce32c7651e66388c8bd433e9d6ff4772
   languageName: node
   linkType: hard
 
