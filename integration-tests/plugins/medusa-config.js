@@ -35,6 +35,7 @@ module.exports = {
   featureFlags: {
     workflows: {
       [Workflows.CreateProducts]: true,
+      [Workflows.UpdateProducts]: true,
       [Workflows.CreateCart]: true,
     },
   },

@@ -210,6 +210,7 @@ get:
         $ref: ../code_samples/Shell/store_customers_me_orders/get.sh
   security:
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Customers
   responses:

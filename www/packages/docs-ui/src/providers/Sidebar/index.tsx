@@ -24,6 +24,7 @@ export type SidebarItemType = {
   children?: SidebarItemType[]
   loaded?: boolean
   isPathHref?: boolean
+  linkProps?: React.AllHTMLAttributes<HTMLAnchorElement>
 }
 
 export type SidebarSectionItemsType = {

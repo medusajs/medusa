@@ -36,6 +36,7 @@ get:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Customers
   responses:
@@ -102,6 +103,7 @@ post:
   security:
     - api_token: []
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Customers
   responses:

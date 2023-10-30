@@ -1,2 +1,2 @@
 curl -X POST '{backend_url}/admin/payments/{id}/capture' \
--H 'Authorization: Bearer {api_token}'
+-H 'x-medusa-access-token: {api_token}'

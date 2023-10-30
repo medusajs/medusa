@@ -5,6 +5,7 @@ const snippets = [
     label: "cURL",
     language: "markdown",
     code: `curl -H 'x-publishable-key: YOUR_API_KEY' 'http://localhost:9000/store/products/PRODUCT_ID'`,
+    hideLineNumbers: true,
   },
   {
     label: "Medusa JS Client",

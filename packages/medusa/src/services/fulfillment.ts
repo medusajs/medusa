@@ -89,7 +89,7 @@ class FulfillmentService extends TransactionBaseService {
       const methodProfile = method.shipping_option.profile_id
 
       temp.items = items.filter(({ variant }) => {
-        variant.product.profile_id === methodProfile
+        return variant.product.profile_id === methodProfile
       })
       partitioned.push(temp)
     }

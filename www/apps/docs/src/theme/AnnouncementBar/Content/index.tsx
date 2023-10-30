@@ -11,14 +11,14 @@ export default function AnnouncementBarContent(
   return (
     <div
       className={clsx(
-        "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+        "text-medusa-fg-subtle",
         "text-compact-x-small-plus",
         props.className
       )}
     >
       <div
         {...props}
-        className={clsx("text-medusa-fg-base dark:text-medusa-fg-base-dark")}
+        className={clsx("text-medusa-fg-base")}
         // Developer provided the HTML, so assume it's safe.
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: content }}

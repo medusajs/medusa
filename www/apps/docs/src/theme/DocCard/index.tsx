@@ -36,7 +36,7 @@ function CardContainer({
         href={href}
         className={clsx(
           "card",
-          "bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark",
+          "bg-medusa-bg-subtle dark:bg-medusa-bg-base",
           "rounded shadow-card-rest dark:shadow-card-rest-dark",
           "transition-all duration-200 ease-ease",
           "flex p-1 !pb-1.5 h-full",
@@ -66,7 +66,7 @@ function CardLayout({
       className={clsx(
         containerClassName,
         !isSoon &&
-          "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover-dark",
+          "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover",
         isSoon && "pointer-events-none",
         isHighlighted &&
           "md:before:content-[''] md:before:absolute md:before:top-0 before:right-0 md:before:w-1/2 md:before:h-full md:before:bg-no-repeat md:before:bg-cover md:before:bg-card-highlighted dark:md:before:bg-card-highlighted-dark",
@@ -81,11 +81,10 @@ function CardLayout({
       <div className={clsx("w-[calc(100%-20px)] [&>*:last-child]:mb-0")}>
         <span
           className={clsx(
-            "text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark",
+            "text-compact-medium-plus text-medusa-fg-base",
             "mb-0.25 block",
             "transition-all duration-200 ease-ease",
-            isSoon &&
-              "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark"
+            isSoon && "group-hover:text-medusa-fg-disabled"
           )}
           title={title}
         >
@@ -94,10 +93,9 @@ function CardLayout({
         {description && (
           <p
             className={clsx(
-              "text-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+              "text-medium text-medusa-fg-subtle",
               "transition-all duration-200 ease-ease",
-              isSoon &&
-                "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
+              isSoon && "group-hover:text-medusa-fg-disabled",
               isHighlighted && "md:w-1/2"
             )}
             title={description}
@@ -108,10 +106,9 @@ function CardLayout({
         {html && (
           <p
             className={clsx(
-              "text-compact-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+              "text-compact-medium text-medusa-fg-subtle",
               "transition-all duration-200 ease-ease",
-              isSoon &&
-                "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
+              isSoon && "group-hover:text-medusa-fg-disabled",
               isHighlighted && "md:w-1/2"
             )}
             dangerouslySetInnerHTML={{

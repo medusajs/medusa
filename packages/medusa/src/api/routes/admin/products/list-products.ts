@@ -203,10 +203,11 @@ import { defaultAdminProductRemoteQueryObject } from "./index"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/products' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:

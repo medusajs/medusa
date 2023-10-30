@@ -115,12 +115,12 @@ export default function CodeBlockString({
                       target="_blank"
                       className={clsx(
                         "bg-transparent border-none p-0.25 cursor-pointer rounded",
-                        "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base-dark [&:not(:first-child)]:ml-0.5",
+                        "hover:bg-medusa-code-bg-base [&:not(:first-child)]:ml-0.5",
                         "inline-flex justify-center items-center invisible xs:visible"
                       )}
                       rel="noreferrer"
                     >
-                      <ExclamationCircleSolid className="text-medusa-code-icon dark:text-medusa-code-icon-dark" />
+                      <ExclamationCircleSolid className="text-medusa-code-icon" />
                     </a>
                   </Tooltip>
                 )}
@@ -131,7 +131,7 @@ export default function CodeBlockString({
                     )}
                     text={code}
                   >
-                    <SquareTwoStackSolid className="text-medusa-code-icon dark:text-medusa-code-icon-dark" />
+                    <SquareTwoStackSolid className="text-medusa-code-icon" />
                   </CopyButton>
                 )}
               </div>

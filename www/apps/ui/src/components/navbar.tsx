@@ -1,8 +1,8 @@
 "use client"
 
 import { docsConfig } from "@/config/docs"
-import { Navbar as UiNavbar, useSidebar } from "docs-ui"
 import { basePathUrl } from "@/lib/base-path-url"
+import { Navbar as UiNavbar, useSidebar } from "docs-ui"
 
 const Navbar = () => {
   const { mobileSidebarOpen, setMobileSidebarOpen } = useSidebar()
@@ -18,7 +18,6 @@ const Navbar = () => {
         setMobileSidebarOpen,
         mobileSidebarOpen,
       }}
-      className="!z-[99]"
     />
   )
 }

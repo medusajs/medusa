@@ -32,7 +32,7 @@ const HookValues = ({ hook }: HookValuesProps) => {
       <Container className="mb-6 mt-8 overflow-hidden p-0">
         <React.Suspense
           fallback={
-            <div className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark flex flex-1 items-center justify-center">
+            <div className="text-medusa-fg-muted flex flex-1 items-center justify-center">
               <Spinner className="animate-spin" />
             </div>
           }

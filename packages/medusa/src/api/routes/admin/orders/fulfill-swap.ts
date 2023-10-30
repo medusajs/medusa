@@ -50,10 +50,11 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/orders/{id}/swaps/{swap_id}/fulfillments' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Orders
  * responses:

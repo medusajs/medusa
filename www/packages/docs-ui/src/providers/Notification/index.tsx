@@ -122,10 +122,12 @@ export const NotificationProvider = ({
   )
 }
 
-export const useNotifications = (): NotificationContextType => {
+export const useNotifications = (
+  suppressError?: boolean
+): NotificationContextType | null => {
   const context = useContext(NotificationContext)
 
-  if (!context) {
+  if (!context && !suppressError) {
     throw new Error(
       "useNotifications must be used within a NotificationProvider"
     )

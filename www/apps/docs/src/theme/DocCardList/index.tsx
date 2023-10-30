@@ -7,9 +7,12 @@ import {
 import DocCard from "@theme/DocCard"
 import type { Props } from "@theme/DocCardList"
 
-function DocCardListForCurrentSidebarCategory({ className }: Props) {
+function DocCardListForCurrentSidebarCategory({
+  className,
+  ...rest
+}: ModifiedProps) {
   const category = useCurrentSidebarCategory()
-  return <DocCardList items={category.items} className={className} />
+  return <DocCardList className={className} {...rest} items={category.items} />
 }
 
 type ModifiedProps = {
@@ -22,7 +25,7 @@ export default function DocCardList(props: ModifiedProps): JSX.Element {
     return <DocCardListForCurrentSidebarCategory {...props} />
   }
   const filteredItems = filterDocCardListItems(items).filter(
-    (item) => !item.customProps.excludeFromDocList
+    (item) => !item.customProps?.exclude_from_doclist
   )
 
   return (

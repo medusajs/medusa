@@ -31,6 +31,7 @@ post:
           ../code_samples/Shell/store_customers_me_addresses_{address_id}/post.sh
   security:
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Customers
   responses:
@@ -79,6 +80,7 @@ delete:
           ../code_samples/Shell/store_customers_me_addresses_{address_id}/delete.sh
   security:
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Customers
   responses:

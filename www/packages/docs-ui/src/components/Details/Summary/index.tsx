@@ -3,8 +3,8 @@ import clsx from "clsx"
 import { PlusMini } from "@medusajs/icons"
 
 export type DetailsSummaryProps = {
-  title: React.ReactNode
-  subtitle?: string
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
   badge?: React.ReactNode
   expandable?: boolean
   open?: boolean
@@ -15,6 +15,7 @@ export type DetailsSummaryProps = {
 export const DetailsSummary = ({
   title,
   subtitle,
+  children,
   badge,
   expandable = true,
   open = false,
@@ -28,7 +29,8 @@ export const DetailsSummary = ({
         "py-docs_0.75 flex items-center justify-between",
         expandable && "cursor-pointer",
         !expandable &&
-          "border-medusa-border-base dark:border-medusa-border-base-dark border-y",
+          "border-medusa-border-base border-y border-solid border-x-0",
+        (expandable || badge) && "gap-0.5",
         "no-marker",
         className
       )}
@@ -37,14 +39,14 @@ export const DetailsSummary = ({
       <span className="gap-docs_0.25 flex flex-col">
         <span
           className={clsx(
-            "text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark",
+            "text-compact-medium-plus text-medusa-fg-base",
             titleClassName
           )}
         >
-          {title}
+          {title || children}
         </span>
         {subtitle && (
-          <span className="text-compact-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark">
+          <span className="text-compact-medium text-medusa-fg-subtle mt-0.5">
             {subtitle}
           </span>
         )}

@@ -43,6 +43,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
   const { ref } = useInView({
     threshold: 0.5,
     rootMargin: `112px 0px 112px 0px`,
+    root: document.getElementById("main") || document.body,
     onChange: (inView) => {
       if (inView && !loadPaths) {
         setLoadPaths(true)

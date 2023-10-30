@@ -50,21 +50,15 @@ export const SidebarItem = ({
     () =>
       clsx(
         "flex items-center justify-between gap-docs_0.5 rounded-docs_sm px-docs_0.5 py-[6px] hover:no-underline",
-        !item.children &&
-          "text-compact-small-plus text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+        !item.children && "text-compact-small-plus text-medusa-fg-subtle",
         item.children &&
-          "text-compact-x-small-plus text-medusa-fg-muted dark:text-medusa-fg-muted-dark uppercase",
+          "text-compact-x-small-plus text-medusa-fg-muted uppercase",
         item.path !== undefined &&
-          active && [
-            "!text-medusa-fg-base bg-medusa-bg-base-pressed",
-            "dark:!text-medusa-fg-base-dark dark:bg-medusa-bg-base-pressed-dark",
-          ],
-        item.path !== undefined &&
-          active &&
-          "border border-medusa-border-base dark:border-medusa-border-base-dark",
+          active && ["!text-medusa-fg-base bg-medusa-bg-base-pressed"],
+        item.path !== undefined && active && "border border-medusa-border-base",
         item.path !== undefined &&
           !active &&
-          "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark border-transparent"
+          "hover:bg-medusa-bg-base-hover border-transparent"
       ),
     [item.children, active, item.path]
   )
@@ -100,6 +94,7 @@ export const SidebarItem = ({
           }}
           replace
           shallow
+          {...item.linkProps}
         >
           <span>{item.title}</span>
           {item.additionalElms}

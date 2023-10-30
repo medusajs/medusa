@@ -43,6 +43,7 @@ const TagOperation = ({
   const { ref } = useInView({
     threshold: 0.3,
     rootMargin: `112px 0px 112px 0px`,
+    root: document.getElementById("main") || document.body,
     onChange: (changedInView) => {
       if (changedInView) {
         if (!show) {

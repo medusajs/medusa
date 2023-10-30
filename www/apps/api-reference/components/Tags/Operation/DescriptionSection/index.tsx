@@ -54,7 +54,7 @@ const TagsOperationDescriptionSection = ({
         {operation["x-featureFlag"] && (
           <TagsOperationFeatureFlagNotice
             featureFlag={operation["x-featureFlag"]}
-            tooltipTextClassName="font-normal text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
+            tooltipTextClassName="font-normal text-medusa-fg-subtle"
             badgeClassName="ml-0.5"
           />
         )}
@@ -72,7 +72,7 @@ const TagsOperationDescriptionSection = ({
         reportLink={formatReportLink(area, operation.summary)}
         className="!my-2"
         vertical={true}
-        question="Did this endpoint run successfully?"
+        question="Did this API Route run successfully?"
       />
       {operation.externalDocs && (
         <>

@@ -1,13 +1,13 @@
 import { EllipsisHorizontal, PencilSquare, Plus, Trash } from "@medusajs/icons"
-import { Button, DropdownMenu } from "@medusajs/ui"
+import { DropdownMenu, IconButton } from "@medusajs/ui"
 
 export default function DropdownMenuDemo() {
   return (
     <DropdownMenu>
       <DropdownMenu.Trigger asChild>
-        <Button variant="secondary" format={"icon"}>
+        <IconButton>
           <EllipsisHorizontal />
-        </Button>
+        </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         <DropdownMenu.Item className="gap-x-2">

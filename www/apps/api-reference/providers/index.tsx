@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  AiAssistantProvider,
   AnalyticsProvider,
   ColorModeProvider,
   MobileProvider,
@@ -26,7 +27,7 @@ const Providers = ({ children }: ProvidersProps) => {
             <BaseSpecsProvider>
               <SidebarProvider>
                 <NavbarProvider>
-                  <ScrollControllerProvider>
+                  <ScrollControllerProvider scrollableSelector="#main">
                     <SearchProvider>
                       <MobileProvider>{children}</MobileProvider>
                     </SearchProvider>

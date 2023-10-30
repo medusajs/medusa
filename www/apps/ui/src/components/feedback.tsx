@@ -20,15 +20,12 @@ export const Feedback = ({ title, ...props }: FeedbackProps) => {
     <UiFeedback
       event="survey"
       pathName={absoluteUrl(pathname)}
-      reportLink={formatReportLink("UI Docs", title)}
+      reportLink={formatReportLink("UI Docs", title, "ui")}
       extraData={{
         section: title,
       }}
       {...props}
-      className={clsx(
-        "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-        props.className
-      )}
+      className={clsx("text-medusa-fg-subtle", props.className)}
     />
   )
 }

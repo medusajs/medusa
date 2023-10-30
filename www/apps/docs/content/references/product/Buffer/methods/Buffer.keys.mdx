@@ -1,0 +1,62 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# keys
+
+[Buffer](../../interfaces/Buffer.mdx).keys
+
+**keys**(): [`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\>
+
+Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of `buf` keys (indices).
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from('buffer');
+
+for (const key of buf.keys()) {
+  console.log(key);
+}
+// Prints:
+//   0
+//   1
+//   2
+//   3
+//   4
+//   5
+```
+
+#### Returns
+
+[`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "IterableIterator",
+    "type": "[`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "number",
+        "type": "`number`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Since
+
+v1.1.0
+
+#### Overrides
+
+Uint8Array.keys

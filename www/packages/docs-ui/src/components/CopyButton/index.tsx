@@ -1,9 +1,9 @@
 "use client"
 
-import React, { useState, useEffect, useRef, useCallback } from "react"
-import copy from "copy-text-to-clipboard"
+import React from "react"
 import clsx from "clsx"
-import { Tooltip } from "@/components/Tooltip"
+import { Tooltip } from "@/components"
+import { useCopy } from "../../hooks"
 
 export type CopyButtonProps = {
   text: string
@@ -16,24 +16,15 @@ export const CopyButton = ({
   buttonClassName = "",
   tooltipClassName = "",
   children,
+  className,
 }: CopyButtonProps) => {
-  const [isCopied, setIsCopied] = useState(false)
-  const copyTimeout = useRef<number>(0)
-
-  const handleCopy = useCallback(() => {
-    copy(text)
-    setIsCopied(true)
-    copyTimeout.current = window.setTimeout(() => {
-      setIsCopied(false)
-    }, 1000)
-  }, [text])
-
-  useEffect(() => () => window.clearTimeout(copyTimeout.current), [])
+  const { isCopied, handleCopy } = useCopy(text)
 
   return (
     <Tooltip
       text={isCopied ? `Copied!` : `Copy to Clipboard`}
       tooltipClassName={tooltipClassName}
+      className={className}
     >
       <span
         className={clsx("cursor-pointer", buttonClassName)}

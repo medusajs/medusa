@@ -103,6 +103,7 @@ import ProductTypeService from "../../../../services/product-type"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Types
  * responses:

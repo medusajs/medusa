@@ -19,14 +19,6 @@ const buttonProps: PropDataMap = [
     defaultValue: "base",
   },
   {
-    prop: "format",
-    type: {
-      type: "enum",
-      values: ["default", "icon"],
-    },
-    defaultValue: "default",
-  },
-  {
     prop: "isLoading",
     type: "boolean",
     defaultValue: false,

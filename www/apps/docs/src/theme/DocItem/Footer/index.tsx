@@ -19,7 +19,7 @@ export default function FooterWrapper(props: Props): JSX.Element {
         <div className="mt-[42px]">
           <Feedback
             {...footerFeedback}
-            className="border-0 border-t border-solid border-medusa-border-base dark:border-medusa-border-base-dark"
+            className="border-0 border-t border-solid border-medusa-border-base"
           />
           <Footer {...props} />
         </div>

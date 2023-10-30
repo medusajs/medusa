@@ -38,6 +38,7 @@ get:
         $ref: ../code_samples/Shell/store_payment-collections_{id}/get.sh
   security:
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Payment Collections
   responses:

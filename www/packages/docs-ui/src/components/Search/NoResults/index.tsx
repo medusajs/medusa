@@ -7,7 +7,7 @@ export const SearchNoResult = () => {
     <div
       className={clsx(
         "flex h-full w-full flex-col items-center justify-center gap-docs_1",
-        "text-medusa-fg-muted dark:text-medusa-fg-muted-dark"
+        "text-medusa-fg-muted"
       )}
     >
       <ExclamationCircleSolid />

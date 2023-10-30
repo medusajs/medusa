@@ -15,7 +15,7 @@ export const Card = ({ icon, title, text, href, className }: CardProps) => {
   return (
     <div
       className={clsx(
-        "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark w-full rounded",
+        "bg-medusa-bg-subtle w-full rounded",
         "shadow-card-rest dark:shadow-card-rest-dark py-docs_0.75 relative px-docs_1",
         "flex items-center gap-docs_1 transition-shadow",
         href && "hover:shadow-card-hover dark:hover:shadow-card-hover-dark",
@@ -25,11 +25,11 @@ export const Card = ({ icon, title, text, href, className }: CardProps) => {
       {icon}
       <div className="flex items-center gap-docs_1 justify-between flex-1">
         <div className="flex flex-col">
-          <span className="text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark">
+          <span className="text-compact-medium-plus text-medusa-fg-base">
             {title}
           </span>
           {text && (
-            <span className="text-compact-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark">
+            <span className="text-compact-medium text-medusa-fg-subtle">
               {text}
             </span>
           )}
@@ -37,7 +37,7 @@ export const Card = ({ icon, title, text, href, className }: CardProps) => {
 
         {href && (
           <>
-            <ArrowUpRightOnBox className="text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark" />
+            <ArrowUpRightOnBox className="text-medusa-fg-subtle" />
             <Link
               href={href}
               className="absolute left-0 top-0 h-full w-full rounded"

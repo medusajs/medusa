@@ -23,34 +23,7 @@ Another example is the Algolia plugin, which uses a loader to update the index s
 
 Loaders can be used to access the dependency container and register custom resources in it.
 
-Loaders can also be used to create [scheduled jobs](../scheduled-jobs/overview.mdx) that run at a specified interval of time. For example:
-
-```ts
-const publishJob = async (container, options) => {
-  const jobSchedulerService = 
-    container.resolve("jobSchedulerService")
-  jobSchedulerService.create(
-    "publish-products", 
-    {}, 
-    "0 0 * * *", 
-    async () => {
-      // job to execute
-      const productService = container.resolve("productService")
-      const draftProducts = await productService.list({
-        status: "draft",
-      })
-
-      for (const product of draftProducts) {
-        await productService.update(product.id, {
-          status: "published",
-        })
-      }
-    }
-  )
-}
-
-export default publishJob
-```
+Loaders can also be used to create [scheduled jobs](../scheduled-jobs/overview.mdx) that run at a specified interval of time.
 
 ---
 

@@ -27,7 +27,7 @@ properties:
   images:
     description: >-
       An array of images of the Product. Each value in the array is a URL to the
-      image. You can use the upload endpoints to upload the image and obtain a
+      image. You can use the upload API Routes to upload the image and obtain a
       URL.
     type: array
     items:
@@ -35,7 +35,8 @@ properties:
   thumbnail:
     description: >-
       The thumbnail to use for the Product. The value is a URL to the thumbnail.
-      You can use the upload endpoints to upload the thumbnail and obtain a URL.
+      You can use the upload API Routes to upload the thumbnail and obtain a
+      URL.
     type: string
   handle:
     description: >-

@@ -26,7 +26,7 @@ export default function AnnouncementBarCloseButton(
         width={20}
         height={20}
         strokeWidth={1.5}
-        className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark"
+        className="!text-medusa-fg-muted"
       />
     </button>
   )

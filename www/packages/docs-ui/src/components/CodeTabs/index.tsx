@@ -71,15 +71,15 @@ export const CodeTabs = ({
     >
       <span
         className={clsx(
-          "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border dark:xs:border-medusa-code-border-dark xs:bg-medusa-code-bg-base dark:xs:bg-medusa-code-bg-base-dark ",
-          "xs:transition-all xs:duration-200 xs:ease-ease xs:top-[13px] xs:z-[1] xs:rounded-full"
+          "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border xs:bg-medusa-code-bg-base",
+          "xs:transition-all xs:duration-200 xs:ease-ease xs:top-[13px] xs:rounded-full"
         )}
         ref={codeTabSelectorRef}
       ></span>
       <ul
         className={clsx(
-          "bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark py-docs_0.75 flex !list-none rounded-t-docs_DEFAULT px-docs_1",
-          "border-medusa-code-border dark:border-medusa-code-border-dark border border-b-0",
+          "bg-medusa-code-bg-header py-docs_0.75 flex !list-none rounded-t-docs_DEFAULT px-docs_1",
+          "border-medusa-code-border border border-b-0",
           "gap-docs_0.25 mb-0"
         )}
       >
@@ -87,14 +87,14 @@ export const CodeTabs = ({
           <li key={index}>
             <button
               className={clsx(
-                "text-compact-small-plus xs:border-0 py-docs_0.25 px-docs_0.75 relative z-[2] rounded-full border",
+                "text-compact-small-plus xs:border-0 py-docs_0.25 px-docs_0.75 relative rounded-full border",
                 (!selectedTab || selectedTab.value !== tab.value) && [
-                  "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark border-transparent",
-                  "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base-dark",
+                  "text-medusa-code-text-subtle border-transparent",
+                  "hover:bg-medusa-code-bg-base",
                 ],
                 selectedTab?.value === tab.value && [
                   "text-medusa-code-text-base bg-medusa-code-bg-base xs:!bg-transparent",
-                  "dark:text-medusa-code-text-base-dark dark:bg-medusa-code-bg-base-dark xs:!bg-transparent",
+                  "xs:!bg-transparent",
                 ]
               )}
               ref={(tabControl) => tabRefs.push(tabControl)}

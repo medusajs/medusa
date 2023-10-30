@@ -36,7 +36,7 @@ import SalesChannelService from "../../../../services/sales-channel"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/sales-channels' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "App"
@@ -44,6 +44,7 @@ import SalesChannelService from "../../../../services/sales-channel"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Sales Channels
  * responses:

@@ -35,6 +35,7 @@ S3_BUCKET=<YOUR_BUCKET_NAME>
 S3_REGION=<YOUR_BUCKET_REGION>
 S3_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
 S3_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
+S3_PREFIX=<YOUR_BUCKET_PREFIX> (optional)
 ```
 
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
@@ -47,6 +48,7 @@ const plugins = [
     options: {
       s3_url: process.env.S3_URL,
       bucket: process.env.S3_BUCKET,
+      prefix: process.env.S3_PREFIX, // optional
       region: process.env.S3_REGION,
       access_key_id: process.env.S3_ACCESS_KEY_ID,
       secret_access_key: process.env.S3_SECRET_ACCESS_KEY,

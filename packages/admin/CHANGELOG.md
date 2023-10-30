@@ -1,5 +1,38 @@
 # @medusajs/admin
 
+## 7.1.5
+
+### Patch Changes
+
+- [#5339](https://github.com/medusajs/medusa/pull/5339) [`e04927a3c`](https://github.com/medusajs/medusa/commit/e04927a3cb0b8159b1f10a377beee705da6eef31) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): minor bugs throughout Price List domain plus improved form validation
+
+- [#5377](https://github.com/medusajs/medusa/pull/5377) [`d30f4477d`](https://github.com/medusajs/medusa/commit/d30f4477d908e2665ab951d93d559e5db8c4211e) Thanks [@anamarijapapic](https://github.com/anamarijapapic)! - feat(admin-ui): Add Croatian translation
+
+- [#5395](https://github.com/medusajs/medusa/pull/5395) [`3aba6269e`](https://github.com/medusajs/medusa/commit/3aba6269ed5efb6353d193e71d241ae55a40e721) Thanks [@samiralibabic](https://github.com/samiralibabic)! - feat(admin-ui): add Bosnian translation
+
+- [#5394](https://github.com/medusajs/medusa/pull/5394) [`a0963f0ed`](https://github.com/medusajs/medusa/commit/a0963f0edf909f6cfea17bd7a0c7899707808057) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Remove t() on product.status update
+
+- Updated dependencies [[`e04927a3c`](https://github.com/medusajs/medusa/commit/e04927a3cb0b8159b1f10a377beee705da6eef31), [`d30f4477d`](https://github.com/medusajs/medusa/commit/d30f4477d908e2665ab951d93d559e5db8c4211e), [`3376f4ccc`](https://github.com/medusajs/medusa/commit/3376f4ccc1acb0a8896c7f10c45a980aec8188b1), [`3aba6269e`](https://github.com/medusajs/medusa/commit/3aba6269ed5efb6353d193e71d241ae55a40e721), [`a0963f0ed`](https://github.com/medusajs/medusa/commit/a0963f0edf909f6cfea17bd7a0c7899707808057)]:
+  - @medusajs/admin-ui@2.1.5
+
+## 7.1.4
+
+### Patch Changes
+
+- [#5233](https://github.com/medusajs/medusa/pull/5233) [`0f34e0f38`](https://github.com/medusajs/medusa/commit/0f34e0f381833a4790ee590a9cbf93b7660634f3) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin-ui, medusa, medusa-react, medusa-js): Price List UI revamp
+
+- Updated dependencies [[`0f34e0f38`](https://github.com/medusajs/medusa/commit/0f34e0f381833a4790ee590a9cbf93b7660634f3)]:
+  - @medusajs/admin-ui@2.1.4
+
+## 7.1.3
+
+### Patch Changes
+
+- [#5173](https://github.com/medusajs/medusa/pull/5173) [`adb6fb3f7`](https://github.com/medusajs/medusa/commit/adb6fb3f7d2bce941395516cd61bcfae2908a74f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Allow nullish values in update variant
+
+- Updated dependencies [[`25dad081b`](https://github.com/medusajs/medusa/commit/25dad081b7f99b5398d0d64eba50ebcb08e1138f), [`f88e3865a`](https://github.com/medusajs/medusa/commit/f88e3865a07eafe476c8d7295d806674de478c19), [`adb6fb3f7`](https://github.com/medusajs/medusa/commit/adb6fb3f7d2bce941395516cd61bcfae2908a74f)]:
+  - @medusajs/admin-ui@2.1.3
+
 ## 7.1.2
 
 ### Patch Changes

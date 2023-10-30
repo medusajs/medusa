@@ -17,7 +17,6 @@ export const Link = ({ href, children, className, ...rest }: LinkProps) => {
       {...rest}
       className={clsx(
         "text-medusa-fg-interactive hover:text-medusa-fg-interactive-hover",
-        "dark:text-medusa-fg-interactive-dark dark:hover:text-medusa-fg-interactive-hover-dark",
         className
       )}
     >

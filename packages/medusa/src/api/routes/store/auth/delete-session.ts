@@ -11,9 +11,10 @@
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/store/auth' \
- *       -H 'Cookie: connect.sid={sid}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Auth
  * responses:
@@ -33,6 +34,11 @@
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  req.session.jwt_store = {}
-  res.json({})
+  if(req.session.user_id) { // if we are also logged in as a user, persist that session
+    delete req.session.customer_id
+  } else { // otherwise, destroy the session
+    req.session.destroy()
+  }
+
+  res.sendStatus(200)
 }

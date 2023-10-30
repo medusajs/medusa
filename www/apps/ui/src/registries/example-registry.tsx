@@ -57,15 +57,60 @@ export const ExampleRegistry: Record<string, ExampleType> = {
     component: React.lazy(async () => import("@/examples/badge-large")),
     file: "src/examples/badge-large.tsx",
   },
-  "badge-rounded": {
+  "badge-rounded-full": {
     name: "badge-rounded",
-    component: React.lazy(async () => import("@/examples/badge-rounded")),
-    file: "src/examples/badge-rounded.tsx",
+    component: React.lazy(async () => import("@/examples/badge-rounded-full")),
+    file: "src/examples/badge-rounded-full.tsx",
   },
-  "badge-icon": {
-    name: "badge-icon",
-    component: React.lazy(async () => import("@/examples/badge-icon")),
-    file: "src/examples/badge-icon.tsx",
+  "badge-rounded-base": {
+    name: "badge-rounded",
+    component: React.lazy(async () => import("@/examples/badge-rounded-base")),
+    file: "src/examples/badge-rounded-base.tsx",
+  },
+  "icon-badge-demo": {
+    name: "icon-badge-demo",
+    component: React.lazy(async () => import("@/examples/icon-badge-demo")),
+    file: "src/examples/icon-badge-demo.tsx",
+  },
+  "icon-badge-blue": {
+    name: "icon-badge-blue",
+    component: React.lazy(async () => import("@/examples/icon-badge-blue")),
+    file: "src/examples/icon-badge-blue.tsx",
+  },
+  "icon-badge-green": {
+    name: "icon-badge-green",
+    component: React.lazy(async () => import("@/examples/icon-badge-green")),
+    file: "src/examples/icon-badge-green.tsx",
+  },
+  "icon-badge-red": {
+    name: "icon-badge-red",
+    component: React.lazy(async () => import("@/examples/icon-badge-red")),
+    file: "src/examples/icon-badge-red.tsx",
+  },
+  "icon-badge-orange": {
+    name: "icon-badge-orange",
+    component: React.lazy(async () => import("@/examples/icon-badge-orange")),
+    file: "src/examples/icon-badge-orange.tsx",
+  },
+  "icon-badge-purple": {
+    name: "icon-badge-purple",
+    component: React.lazy(async () => import("@/examples/icon-badge-purple")),
+    file: "src/examples/icon-badge-purple.tsx",
+  },
+  "icon-badge-grey": {
+    name: "icon-badge-grey",
+    component: React.lazy(async () => import("@/examples/icon-badge-grey")),
+    file: "src/examples/icon-badge-grey.tsx",
+  },
+  "icon-badge-base": {
+    name: "icon-badge-base",
+    component: React.lazy(async () => import("@/examples/icon-badge-base")),
+    file: "src/examples/icon-badge-base.tsx",
+  },
+  "icon-badge-large": {
+    name: "icon-badge-small",
+    component: React.lazy(async () => import("@/examples/icon-badge-large")),
+    file: "src/examples/icon-badge-large.tsx",
   },
   "button-demo": {
     name: "button-demo",
@@ -370,10 +415,137 @@ export const ExampleRegistry: Record<string, ExampleType> = {
     component: React.lazy(async () => import("@/examples/button-with-icon")),
     file: "src/examples/button-with-icon.tsx",
   },
-  "button-icon-only": {
-    name: "button-icon-only",
-    component: React.lazy(async () => import("@/examples/button-icon-only")),
-    file: "src/examples/button-icon-only.tsx",
+  "icon-button-demo": {
+    name: "icon-button-demo",
+    component: React.lazy(async () => import("@/examples/icon-button-demo")),
+    file: "src/examples/icon-button-demo.tsx",
+  },
+  "icon-button-primary": {
+    name: "icon-button-primary",
+    component: React.lazy(async () => import("@/examples/icon-button-primary")),
+    file: "src/examples/icon-button-primary.tsx",
+  },
+  "icon-button-transparent": {
+    name: "icon-button-transparent",
+    component: React.lazy(
+      async () => import("@/examples/icon-button-transparent")
+    ),
+    file: "src/examples/icon-button-transparent.tsx",
+  },
+  "icon-button-disabled": {
+    name: "icon-button-disabled",
+    component: React.lazy(
+      async () => import("@/examples/icon-button-disabled")
+    ),
+    file: "src/examples/icon-button-disabled.tsx",
+  },
+  "icon-button-loading": {
+    name: "icon-button-with-text",
+    component: React.lazy(async () => import("@/examples/icon-button-loading")),
+    file: "src/examples/icon-button-loading.tsx",
+  },
+  "icon-button-base": {
+    name: "icon-button-base",
+    component: React.lazy(async () => import("@/examples/icon-button-base")),
+    file: "src/examples/icon-button-base.tsx",
+  },
+  "icon-button-large": {
+    name: "icon-button-large",
+    component: React.lazy(async () => import("@/examples/icon-button-large")),
+    file: "src/examples/icon-button-large.tsx",
+  },
+  "icon-button-xlarge": {
+    name: "icon-button-xlarge",
+    component: React.lazy(async () => import("@/examples/icon-button-xlarge")),
+    file: "src/examples/icon-button-xlarge.tsx",
+  },
+  "currency-input-demo": {
+    name: "currency-input-demo",
+    component: React.lazy(async () => import("@/examples/currency-input-demo")),
+    file: "src/examples/currency-input-demo.tsx",
+  },
+  "currency-input-small": {
+    name: "currency-input-small",
+    component: React.lazy(
+      async () => import("@/examples/currency-input-small")
+    ),
+    file: "src/examples/currency-input-small.tsx",
+  },
+  "status-badge-demo": {
+    name: "status-badge-demo",
+    component: React.lazy(async () => import("@/examples/status-badge-demo")),
+    file: "src/examples/status-badge-demo.tsx",
+  },
+  "status-badge-blue": {
+    name: "status-badge-blue",
+    component: React.lazy(async () => import("@/examples/status-badge-blue")),
+    file: "src/examples/status-badge-blue.tsx",
+  },
+  "status-badge-green": {
+    name: "status-badge-green",
+    component: React.lazy(async () => import("@/examples/status-badge-green")),
+    file: "src/examples/status-badge-green.tsx",
+  },
+  "status-badge-red": {
+    name: "status-badge-red",
+    component: React.lazy(async () => import("@/examples/status-badge-red")),
+    file: "src/examples/status-badge-red.tsx",
+  },
+  "status-badge-orange": {
+    name: "status-badge-orange",
+    component: React.lazy(async () => import("@/examples/status-badge-orange")),
+    file: "src/examples/status-badge-orange.tsx",
+  },
+  "status-badge-purple": {
+    name: "status-badge-purple",
+    component: React.lazy(async () => import("@/examples/status-badge-purple")),
+    file: "src/examples/status-badge-purple.tsx",
+  },
+  "status-badge-grey": {
+    name: "status-badge-grey",
+    component: React.lazy(async () => import("@/examples/status-badge-grey")),
+    file: "src/examples/status-badge-grey.tsx",
+  },
+  "command-bar-demo": {
+    name: "command-bar-demo",
+    component: React.lazy(async () => import("@/examples/command-bar-demo")),
+    file: "src/examples/command-bar-demo.tsx",
+  },
+  "progress-accordion-demo": {
+    name: "progress-accordion-demo",
+    component: React.lazy(
+      async () => import("@/examples/progress-accordion-demo")
+    ),
+    file: "src/examples/progress-accordion-demo.tsx",
+  },
+  "progress-accordion-single": {
+    name: "progress-accordion-single",
+    component: React.lazy(
+      async () => import("@/examples/progress-accordion-single")
+    ),
+    file: "src/examples/progress-accordion-single.tsx",
+  },
+  "progress-accordion-multiple": {
+    name: "progress-accordion-multiple",
+    component: React.lazy(
+      async () => import("@/examples/progress-accordion-multiple")
+    ),
+    file: "src/examples/progress-accordion-multiple.tsx",
+  },
+  "progress-tabs-demo": {
+    name: "progress-tabs-demo",
+    component: React.lazy(async () => import("@/examples/progress-tabs-demo")),
+    file: "src/examples/progress-tabs-demo.tsx",
+  },
+  "tabs-demo": {
+    name: "tabs-demo",
+    component: React.lazy(async () => import("@/examples/tabs-demo")),
+    file: "src/examples/tabs-demo.tsx",
+  },
+  "currency-input-base": {
+    name: "currency-input-base",
+    component: React.lazy(async () => import("@/examples/currency-input-base")),
+    file: "src/examples/currency-input-base.tsx",
   },
   "button-loading": {
     name: "button-loading",

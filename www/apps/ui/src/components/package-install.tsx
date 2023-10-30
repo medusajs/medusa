@@ -23,8 +23,8 @@ const PackageInstall = ({
   return (
     <CodeTabs
       tabs={[
-        { code: { lang: "bash", source: yarn }, label: "npm", value: "npm" },
-        { code: { lang: "bash", source: npm }, label: "yarn", value: "yarn" },
+        { code: { lang: "bash", source: npm }, label: "npm", value: "npm" },
+        { code: { lang: "bash", source: yarn }, label: "yarn", value: "yarn" },
         { code: { lang: "bash", source: pnpm }, label: "pnpm", value: "pnpm" },
       ]}
       className={clx("my-4", className)}

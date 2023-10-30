@@ -151,10 +151,11 @@ import { pickBy } from "lodash"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/price-lists/{id}/products' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Price Lists
  * responses:

@@ -9,7 +9,7 @@ export const Label = ({ children, className }: LabelProps) => {
   return (
     <span
       className={clsx(
-        "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium-plus",
+        "text-medusa-fg-base text-compact-medium-plus",
         className
       )}
     >

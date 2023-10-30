@@ -1,12 +1,12 @@
+import { Context, DAL, ProductTypes } from "@medusajs/types"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
+  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  LoadStrategy,
 } from "@mikro-orm/core"
-import { Product, ProductOption } from "@models"
-import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils, MedusaError } from "@medusajs/utils"
+import { Product, ProductOption } from "@models"
 
 // eslint-disable-next-line max-len
 export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseRepository<ProductOption> {
@@ -97,7 +97,7 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
       if (productId) {
         const product = existingProductsMap.get(productId)
 
-        optionData.product = product
+        optionData.product_id = product?.id
       }
 
       return manager.create(ProductOption, optionData)

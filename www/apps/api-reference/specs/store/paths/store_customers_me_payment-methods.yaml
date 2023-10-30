@@ -2,7 +2,7 @@ get:
   operationId: GetCustomersCustomerPaymentMethods
   summary: Get Saved Payment Methods
   description: >-
-    Retrieve the logged-in customer's saved payment methods. This endpoint only
+    Retrieve the logged-in customer's saved payment methods. This API Route only
     works with payment providers created with the deprecated Payment Service
     interface. The payment methods are saved using the Payment Service's
     third-party service, and not on the Medusa backend. So, they're retrieved
@@ -22,6 +22,7 @@ get:
         $ref: ../code_samples/Shell/store_customers_me_payment-methods/get.sh
   security:
     - cookie_auth: []
+    - jwt_token: []
   tags:
     - Customers
   responses:

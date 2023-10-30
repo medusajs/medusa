@@ -34,7 +34,7 @@ As custom gift cards can be used once they’re created, they’re also represen
 
 ## GiftCard Entity Overview
 
-Some of the [GiftCard](../../references/entities/classes/GiftCard.md) entity’s attributes are:
+Some of the [GiftCard](../../references/entities/classes/GiftCard.mdx) entity’s attributes are:
 
 - `code`: a unique string of random characters. This is the code that the customer can use during their checkout to redeem the gift card.
 - `value`: The amount of the gift card. This is the amount the customer purchased, or was gifted in the case of custom gift cards.

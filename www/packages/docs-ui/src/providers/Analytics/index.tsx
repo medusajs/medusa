@@ -1,6 +1,12 @@
 "use client"
 
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 import { Analytics, AnalyticsBrowser } from "@segment/analytics-next"
 
 export type ExtraData = {
@@ -16,6 +22,11 @@ export type AnalyticsContextType = {
     options?: Record<string, any>,
     callback?: () => void
   ) => void
+}
+
+export type TrackedEvent = {
+  event: string
+  options?: Record<string, any>
 }
 
 const AnalyticsContext = createContext<AnalyticsContextType | null>(null)
@@ -37,8 +48,9 @@ export const AnalyticsProvider = ({
   const [loaded, setLoaded] = useState<boolean>(false)
   const [analytics, setAnalytics] = useState<Analytics | null>(null)
   const analyticsBrowser = new AnalyticsBrowser()
+  const [queue, setQueue] = useState<TrackedEvent[]>([])
 
-  const init = () => {
+  const init = useCallback(() => {
     if (!loaded) {
       analyticsBrowser
         .load(
@@ -60,33 +72,56 @@ export const AnalyticsProvider = ({
         )
         .finally(() => setLoaded(true))
     }
-  }
+  }, [loaded, writeKey])
 
-  const track = async (
-    event: string,
-    options?: Record<string, any>,
-    callback?: () => void
-  ) => {
-    if (analytics) {
-      void analytics.track(
-        event,
-        {
-          ...options,
-          uuid: analytics.user().anonymousId(),
-        },
-        callback
-      )
-    } else if (callback) {
-      console.warn(
-        "Segment is either not installed or not configured. Simulating success..."
-      )
-      callback()
-    }
-  }
+  const track = useCallback(
+    async (
+      event: string,
+      options?: Record<string, any>,
+      callback?: () => void
+    ) => {
+      if (analytics) {
+        void analytics.track(
+          event,
+          {
+            ...options,
+            uuid: analytics.user().anonymousId(),
+          },
+          callback
+        )
+      } else {
+        // push the event into the queue
+        setQueue((prevQueue) => [
+          ...prevQueue,
+          {
+            event,
+            options,
+          },
+        ])
+        if (callback) {
+          console.warn(
+            "Segment is either not installed or not configured. Simulating success..."
+          )
+          callback()
+        }
+      }
+    },
+    [analytics, loaded]
+  )
 
   useEffect(() => {
     init()
-  }, [])
+  }, [init])
+
+  useEffect(() => {
+    if (analytics && queue.length) {
+      // track stuff in queue
+      queue.forEach(async (trackEvent) =>
+        track(trackEvent.event, trackEvent.options)
+      )
+      setQueue([])
+    }
+  }, [analytics, queue])
 
   return (
     <AnalyticsContext.Provider

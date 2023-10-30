@@ -16,6 +16,8 @@ type ProductListPrice = {
   currency_code: string
   region_id: string
   amount: number
+  min_quantity?: number
+  max_quantity?: number
 }
 
 export type PriceListFactoryData = {

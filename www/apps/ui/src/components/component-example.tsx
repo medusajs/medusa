@@ -1,13 +1,12 @@
 "use client"
 
 import { Spinner } from "@medusajs/icons"
-import * as React from "react"
-import { ExampleRegistry } from "../registries/example-registry"
-
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tabs"
-import { Feedback } from "./feedback"
-import clsx from "clsx"
+import { Tabs, clx } from "@medusajs/ui"
 import { CodeBlock } from "docs-ui"
+import * as React from "react"
+
+import { Feedback } from "@/components/feedback"
+import { ExampleRegistry } from "@/registries/example-registry"
 
 interface ComponentExampleProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -34,22 +33,24 @@ export function ComponentExample({
   return (
     <div className="relative my-4 flex flex-col space-y-2" {...props}>
       <Tabs defaultValue="preview" className="relative mr-auto w-full">
-        <div className="flex flex-col items-center justify-between pb-3">
-          <TabsList className="">
-            <TabsTrigger value="preview">Preview</TabsTrigger>
-            <TabsTrigger value="code">Code</TabsTrigger>
-          </TabsList>
-          <TabsContent value="preview" className="relative">
+        <div className="flex flex-col pb-3">
+          <Tabs.List>
+            <Tabs.Trigger value="preview">Preview</Tabs.Trigger>
+            <Tabs.Trigger value="code">Code</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content
+            value="preview"
+            className="relative data-[state=active]:mt-4"
+          >
             <div
-              className={clsx(
+              className={clx(
                 "bg-docs-bg border-medusa-border-base flex max-h-[400px] min-h-[400px]",
-                "dark:bg-docs-bg-dark dark:border-medusa-border-base-dark",
                 "w-full items-center justify-center overflow-auto rounded-md border px-10 py-5"
               )}
             >
               <React.Suspense
                 fallback={
-                  <div className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark flex items-center text-sm">
+                  <div className="text-medusa-fg-muted flex items-center text-sm">
                     <Spinner className="animate-spin" />
                   </div>
                 }
@@ -57,10 +58,13 @@ export function ComponentExample({
                 {Preview}
               </React.Suspense>
             </div>
-          </TabsContent>
-          <TabsContent value="code" className="relative ">
+          </Tabs.Content>
+          <Tabs.Content
+            value="code"
+            className="relative data-[state=active]:mt-4"
+          >
             <CodeBlock source={Code} lang="tsx" />
-          </TabsContent>
+          </Tabs.Content>
         </div>
       </Tabs>
       <Feedback

@@ -44,7 +44,7 @@ const TagsOperationDescriptionSectionParameters = ({
     <>
       {Object.values(pathParameters.properties).length > 0 && (
         <>
-          <h3 className="border-medusa-border-base dark:border-medusa-border-base-dark border-b py-1.5">
+          <h3 className="border-medusa-border-base border-b py-1.5">
             Path Parameters
           </h3>
           <TagOperationParameters
@@ -55,7 +55,7 @@ const TagsOperationDescriptionSectionParameters = ({
       )}
       {Object.values(queryParameters.properties).length > 0 && (
         <>
-          <h3 className="border-medusa-border-base dark:border-medusa-border-base-dark border-b py-1.5">
+          <h3 className="border-medusa-border-base border-b py-1.5">
             Query Parameters
           </h3>
           <TagOperationParameters

@@ -31,14 +31,14 @@ export const Navbar = ({
   return (
     <nav
       className={clsx(
-        "h-navbar sticky top-0 w-full justify-between",
-        "bg-docs-bg dark:bg-docs-bg-dark border-medusa-border-base dark:border-medusa-border-base-dark z-[400] border-b",
+        "h-navbar w-full justify-between",
+        "bg-docs-bg dark:bg-docs-bg-dark border-medusa-border-base border-b",
         className
       )}
     >
       <div
         className={clsx(
-          "h-navbar max-w-xxl py-docs_0.75 sticky top-0 mx-auto flex w-full justify-between px-docs_1 lg:px-docs_3"
+          "h-navbar max-w-xxl py-docs_0.75 mx-auto flex w-full justify-between px-docs_1 lg:px-docs_3"
         )}
       >
         <div className="hidden w-full items-center gap-docs_0.5 lg:flex lg:w-auto lg:gap-docs_1.5">

@@ -57,7 +57,7 @@ const Row = ({ value, type, description }: HookData) => {
           >
             <div className="flex items-center gap-x-1">
               <span>enum</span>
-              <InformationCircleSolid className="text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark" />
+              <InformationCircleSolid className="text-medusa-fg-subtle" />
             </div>
           </Tooltip>
         )}
@@ -69,7 +69,7 @@ const Row = ({ value, type, description }: HookData) => {
           >
             <div className="flex items-center gap-x-1">
               <span>{type.name}</span>
-              <InformationCircleSolid className="text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark" />
+              <InformationCircleSolid className="text-medusa-fg-subtle" />
             </div>
           </Tooltip>
         )}
@@ -81,7 +81,7 @@ const Row = ({ value, type, description }: HookData) => {
           >
             <div className="flex items-center gap-x-1">
               <span>function</span>
-              <InformationCircleSolid className="text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark" />
+              <InformationCircleSolid className="text-medusa-fg-subtle" />
             </div>
           </Tooltip>
         )}

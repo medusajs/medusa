@@ -12,16 +12,16 @@ type SocialLinksProps = {
 const SocialLinks: React.FC<SocialLinksProps> = ({ links = [] }) => {
   const socialIcons = {
     twitter: (
-      <IconTwitter className="text-ui-fg-muted group-hover:text-ui-fg-subtle" />
+      <IconTwitter className="!text-ui-fg-muted group-hover:!text-ui-fg-subtle" />
     ),
     github: (
-      <IconGitHub className="text-ui-fg-muted group-hover:text-ui-fg-subtle" />
+      <IconGitHub className="!text-ui-fg-muted group-hover:!text-ui-fg-subtle" />
     ),
     discord: (
-      <IconDiscord className="text-ui-fg-muted group-hover:text-ui-fg-subtle" />
+      <IconDiscord className="!text-ui-fg-muted group-hover:!text-ui-fg-subtle" />
     ),
     linkedin: (
-      <IconLinkedIn className="text-ui-fg-muted group-hover:text-ui-fg-subtle" />
+      <IconLinkedIn className="!text-ui-fg-muted group-hover:!text-ui-fg-subtle" />
     ),
   }
 

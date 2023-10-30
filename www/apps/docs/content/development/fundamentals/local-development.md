@@ -43,6 +43,16 @@ yarn build
 
 Medusa provides a CLI tool to be used for development. This tool facilitates testing your local installment and changes to Medusa’s core without having to publish the changes to NPM.
 
+:::note
+
+The Medusa Dev CLI tool only works with yarn v1. You can use the following command to change the yarn version:
+
+```bash
+yarn set version classic
+```
+
+:::
+
 To install Medusa’s dev CLI tool:
 
 ```bash npm2yarn
@@ -94,7 +104,7 @@ yarn test
 
 ### Run API Integration Tests
 
-API integration tests are used to test out Medusa’s core endpoints.
+API integration tests are used to test out Medusa’s core API Routes.
 
 To run the API integration tests, run the following command in the root directory of the repository:
 

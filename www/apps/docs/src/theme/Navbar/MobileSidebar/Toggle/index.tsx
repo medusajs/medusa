@@ -18,12 +18,8 @@ export default function MobileSidebarToggle(): JSX.Element {
       className="navbar__toggle !block lg:!hidden clean-btn"
       type="button"
     >
-      {!shown && (
-        <Sidebar className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
-      )}
-      {shown && (
-        <XMark className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
-      )}
+      {!shown && <Sidebar className="text-medusa-fg-muted" />}
+      {shown && <XMark className="text-medusa-fg-muted" />}
     </button>
   )
 }

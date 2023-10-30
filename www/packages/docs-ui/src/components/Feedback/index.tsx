@@ -94,6 +94,10 @@ export const Feedback = ({
             : "no",
         message: message?.length ? message : null,
         os: window.navigator.userAgent,
+        steps,
+        medusaVersion,
+        errorFix,
+        contactInfo,
         ...extraData,
       },
       function () {

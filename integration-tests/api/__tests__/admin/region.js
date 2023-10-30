@@ -11,7 +11,7 @@ const { simpleRegionFactory } = require("../../../factories")
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    "x-medusa-access-token": "test_token",
   },
 }
 
@@ -61,7 +61,7 @@ describe("/admin/regions", () => {
       const response = await api
         .delete(`/admin/regions/test-region`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -87,7 +87,7 @@ describe("/admin/regions", () => {
         },
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -159,7 +159,7 @@ describe("/admin/regions", () => {
       const response = await api
         .get(`/admin/regions`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -188,7 +188,7 @@ describe("/admin/regions", () => {
 
       const response = await api.get(`/admin/regions?limit=2`, {
         headers: {
-          Authorization: "Bearer test_token",
+          "x-medusa-access-token": "test_token",
         },
       })
 
@@ -203,7 +203,7 @@ describe("/admin/regions", () => {
       const response = await api
         .get(`/admin/regions?updated_at[gt]=10-10-2005`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -257,7 +257,7 @@ describe("/admin/regions", () => {
         },
         {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         }
       )
@@ -265,7 +265,7 @@ describe("/admin/regions", () => {
       const response = await api
         .delete(`/admin/regions/test-region`, {
           headers: {
-            Authorization: "Bearer test_token",
+            "x-medusa-access-token": "test_token",
           },
         })
         .catch((err) => {
@@ -296,7 +296,7 @@ describe("/admin/regions", () => {
           },
           {
             headers: {
-              Authorization: "Bearer test_token",
+              "x-medusa-access-token": "test_token",
             },
           }
         )

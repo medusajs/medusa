@@ -1,13 +1,6 @@
 import { BorderedIcon } from "docs-ui"
-import { Figma } from "./icons"
+import { basePathUrl } from "../lib/base-path-url"
 
 export const FigmaIcon = () => {
-  return (
-    <BorderedIcon
-      IconComponent={Figma}
-      iconWrapperClassName={
-        "bg-medusa-button-inverted bg-button-inverted !p-[6px]"
-      }
-    />
-  )
+  return <BorderedIcon icon={basePathUrl("/images/figma.png")} />
 }

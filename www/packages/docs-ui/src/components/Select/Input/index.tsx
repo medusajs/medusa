@@ -45,19 +45,17 @@ export const SelectInput = ({
     <div
       className={clsx(
         "px-docs_0.75 relative py-[9px]",
-        "border-medusa-border-base dark:border-medusa-border-base-dark rounded-docs_sm border border-solid",
-        "bg-medusa-bg-field dark:bg-medusa-bg-field-dark shadow-button-neutral dark:shadow-button-neutral-dark",
-        "hover:bg-medusa-bg-field-hover dark:hover:bg-medusa-bg-field-hover-dark",
+        "border-medusa-border-base rounded-docs_sm border border-solid",
+        "bg-medusa-bg-field shadow-button-neutral dark:shadow-button-neutral-dark",
+        "hover:bg-medusa-bg-field-hover",
         "active:shadow-active dark:active:shadow-active-dark",
         "focus:shadow-active dark:focus:shadow-active-dark",
-        "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium",
-        "disabled:bg-medusa-bg-disabled dark:disabled:bg-medusa-bg-disabled-dark",
-        "disabled:text-medusa-fg-disabled dark:disabled:text-medusa-fg-disabled-dark",
+        "text-medusa-fg-base text-compact-medium",
+        "disabled:bg-medusa-bg-disabled",
+        "disabled:text-medusa-fg-disabled",
         "flex items-center gap-docs_0.5",
-        !hasSelectedValues &&
-          "placeholder:text-medusa-fg-muted dark:placeholder:text-medusa-fg-muted-dark",
-        hasSelectedValues &&
-          "placeholder:text-medusa-fg-base dark:placeholder:text-medusa-fg-base-dark",
+        !hasSelectedValues && "placeholder:text-medusa-fg-muted",
+        hasSelectedValues && "placeholder:text-medusa-fg-base",
         className
       )}
       ref={ref}
@@ -82,7 +80,7 @@ export const SelectInput = ({
           </span>
           {showClearButton && (
             <XMarkMini
-              className="text-medusa-tag-neutral-icon dark:text-medusa-tag-neutral-icon-dark"
+              className="text-medusa-tag-neutral-icon"
               onClick={(e) => {
                 e.stopPropagation()
                 setSelected?.([])
@@ -101,7 +99,7 @@ export const SelectInput = ({
           ? selectedValues[0].label
           : props.placeholder}
       </span>
-      <ChevronUpDown className="text-medusa-fg-muted dark:text-medusa-fg-muted-dark" />
+      <ChevronUpDown className="text-medusa-fg-muted" />
       <input
         type="hidden"
         name={props.name}

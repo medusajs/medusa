@@ -49,12 +49,12 @@
 
 .menu__list-item .menu__list:not(.theme-doc-sidebar-menu) [class*=theme-doc-sidebar-item-]::before,
 .menu__list-item .menu__list:not(.theme-doc-sidebar-menu) .theme-doc-sidebar-item-category:first-child .menu__list-item-collapsible::before {
-  @apply bg-medusa-border-base dark:bg-medusa-border-base-dark;
+  @apply bg-medusa-border-base;
 }
 
 .theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible .menu__link--active::before,
 .menu__list:not(.theme-doc-sidebar-menu) > .theme-doc-sidebar-item-link.theme-doc-sidebar-item-link-level-2 > .menu__link--active::before {
-  @apply bg-medusa-fg-interactive dark:bg-medusa-fg-interactive-dark !z-[2] !top-[6px];
+  @apply bg-medusa-fg-interactive !z-[2] !top-[6px];
 }
 
 .theme-doc-sidebar-item-category-level-2:only-child > .menu__list-item-collapsible .menu__link--active::before,
@@ -113,7 +113,7 @@
 }
 
 .menu__list-item-collapsible .menu__link--sublist:hover {
-  @apply !bg-medusa-bg-base-hover dark:!bg-medusa-bg-subtle-hover-dark;
+  @apply !bg-medusa-bg-base-hover dark:!bg-medusa-bg-subtle-hover;
 }
 
 .menu__list:not(.theme-doc-sidebar-menu) > .theme-doc-sidebar-item-link:last-child > .menu__link--active::before {
@@ -143,7 +143,7 @@
 
 /** General sidebar styles **/
 .theme-doc-sidebar-container {
-  @apply z-[398] border-0 border-r border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
+  @apply z-[398] border-0 border-r border-solid border-medusa-border-base;
 }
 
 /** Mobile Sidebar **/
@@ -158,10 +158,10 @@
 /** Redocly sidebar **/
 
 .redocusaurus .menu-content > div > ul > li > ul label:not([type=tag]):not(.active) {
-  @apply text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark;
-  @apply hover:text-medusa-fg-base dark:hover:text-medusa-fg-base-dark;
+  @apply text-medusa-fg-subtle;
+  @apply hover:text-medusa-fg-base;
 }
 
 .redocusaurus .menu-content > div > ul > li > ul label:not([type=tag]).active {
-  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
+  @apply text-medusa-fg-base;
 }
