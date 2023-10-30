@@ -99,12 +99,9 @@ export function getInternalModules(configModule) {
   const moduleResolutions = {}
 
   Object.entries(configModule.modules ?? {}).forEach(([moduleKey, module]) => {
-    moduleResolutions[moduleKey] = registerMedusaModule(
-      moduleKey,
-      module.defaultModuleDeclaration,
-      undefined,
-      module
-    )[moduleKey]
+    moduleResolutions[moduleKey] = registerMedusaModule(moduleKey, module)[
+      moduleKey
+    ]
   })
 
   for (const moduleResolution of Object.values(moduleResolutions)) {
