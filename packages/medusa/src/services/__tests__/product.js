@@ -78,7 +78,7 @@ describe("ProductService", () => {
         title: "Suit",
         options: [],
         collection: { id: IdMap.getId("cat"), title: "Suits" },
-        variants: product.variants,
+        variants: product.variants ?? [],
       }),
       findOneWithRelations: () => ({
         id: IdMap.getId("ironman"),
@@ -117,6 +117,13 @@ describe("ProductService", () => {
         Promise.resolve({ id: IdMap.getId("cat"), title: "Suits" }),
     }
 
+    const productVariantService = {
+      withTransaction: function () {
+        return this
+      },
+      create: (id, data) => Promise.resolve(data),
+    }
+
     const productService = new ProductService({
       manager: MockManager,
       productRepository,
@@ -124,6 +131,7 @@ describe("ProductService", () => {
       productCollectionService,
       productTagRepository,
       productTypeRepository,
+      productVariantService,
       featureFlagRouter: new FlagRouter({}),
     })
 
@@ -131,7 +139,7 @@ describe("ProductService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully create a product", async () => {
+    it("should successfully create a product", async () => {
       await productService.create({
         title: "Suit",
         options: [],
@@ -158,16 +166,6 @@ describe("ProductService", () => {
       expect(productRepository.create).toHaveBeenCalledTimes(1)
       expect(productRepository.create).toHaveBeenCalledWith({
         title: "Suit",
-        variants: [
-          {
-            id: "test1",
-            title: "green",
-          },
-          {
-            id: "test2",
-            title: "blue",
-          },
-        ],
       })
 
       expect(productTagRepository.upsertTags).toHaveBeenCalledTimes(1)
@@ -197,10 +195,12 @@ describe("ProductService", () => {
         variants: [
           {
             id: "test1",
+            options: [],
             title: "green",
           },
           {
             id: "test2",
+            options: [],
             title: "blue",
           },
         ],
