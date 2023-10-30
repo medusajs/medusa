@@ -12,8 +12,7 @@ import {
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PriceSet } from "@models"
-import PriceList from "src/models/price-list"
+import { PriceList } from "@models"
 
 export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
