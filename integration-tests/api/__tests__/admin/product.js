@@ -991,6 +991,11 @@ describe("/admin/products", () => {
           "variants",
         ])
       )
+
+      const variants = res.data.product.variants
+      const hasPrices = variants.some((variant) => !!variant.prices)
+
+      expect(hasPrices).toBe(true)
     })
 
     it("should get a product with prices", async () => {
