@@ -3,8 +3,19 @@ const { spawn } = require("child_process")
 const { setPort, useExpressServer } = require("./use-api")
 const { setContainer } = require("./use-container")
 
-module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
+module.exports = ({
+  cwd,
+  redisUrl,
+  uploadDir,
+  verbose,
+  env,
+  bootstrapApp = false,
+}) => {
   const serverPath = path.join(__dirname, "test-server.js")
+
+  if (bootstrapApp) {
+    require(serverPath)
+  }
 
   // in order to prevent conflicts in redis, use a different db for each worker
   // same fix as for databases (works with up to 15)
@@ -47,15 +58,8 @@ module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
     })
 
     medusaProcess.on("exit", () => {
-      console.log("MedusaChildProcess: on exit")
-      const expressServer = useExpressServer()
-
+      useExpressServer()?.close()
       setContainer(null)
-
-      if (expressServer) {
-        console.log("MedusaChildProcess: express server found. Closing server")
-        expressServer.close()
-      }
     })
   })
 }
