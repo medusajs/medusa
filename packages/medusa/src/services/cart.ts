@@ -534,6 +534,7 @@ class CartService extends TransactionBaseService {
         }
 
         if (cart.shipping_methods?.length) {
+          const shippingOptionsToDelete: ShippingMethod[] = []
           for (const sm of cart.shipping_methods) {
             try {
               await this.shippingOptionService_
@@ -541,11 +542,13 @@ class CartService extends TransactionBaseService {
                 .validateCartOption(sm.shipping_option, cart)
             } catch (err) {
               // in case the shipping option is no longer valid, we remove it
-              await this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .deleteShippingMethods(sm)
+              shippingOptionsToDelete.push(sm)
             }
           }
+
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(shippingOptionsToDelete)
         }
 
         const lineItemRepository = transactionManager.withRepository(
@@ -765,6 +768,7 @@ class CartService extends TransactionBaseService {
           })
 
         if (cart.shipping_methods?.length) {
+          const shippingOptionsToDelete: ShippingMethod[] = []
           for (const sm of cart.shipping_methods) {
             try {
               await this.shippingOptionService_
@@ -772,11 +776,13 @@ class CartService extends TransactionBaseService {
                 .validateCartOption(sm.shipping_option, cart)
             } catch (err) {
               // in case the shipping option is no longer valid, we remove it
-              await this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .deleteShippingMethods(sm)
+              shippingOptionsToDelete.push(sm)
             }
           }
+
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(shippingOptionsToDelete)
         }
 
         cart = await this.retrieve(cart.id, {
@@ -984,6 +990,7 @@ class CartService extends TransactionBaseService {
           })
 
         if (cart.shipping_methods?.length) {
+          const shippingOptionsToDelete: ShippingMethod[] = []
           for (const sm of cart.shipping_methods) {
             try {
               await this.shippingOptionService_
@@ -991,11 +998,13 @@ class CartService extends TransactionBaseService {
                 .validateCartOption(sm.shipping_option, cart)
             } catch (err) {
               // in case the shipping option is no longer valid, we remove it
-              await this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .deleteShippingMethods(sm)
+              shippingOptionsToDelete.push(sm)
             }
           }
+
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(shippingOptionsToDelete)
         }
 
         cart = await this.retrieve(cart.id, {
@@ -1096,6 +1105,7 @@ class CartService extends TransactionBaseService {
         }
 
         if (cart.shipping_methods?.length) {
+          const shippingOptionsToDelete: ShippingMethod[] = []
           for (const sm of cart.shipping_methods) {
             try {
               await this.shippingOptionService_
@@ -1103,11 +1113,13 @@ class CartService extends TransactionBaseService {
                 .validateCartOption(sm.shipping_option, cart)
             } catch (err) {
               // in case the shipping option is no longer valid, we remove it
-              await this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .deleteShippingMethods(sm)
+              shippingOptionsToDelete.push(sm)
             }
           }
+
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(shippingOptionsToDelete)
         }
 
         await this.lineItemService_
