@@ -5,6 +5,10 @@ const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
+process.env.POSTGRES_URL = DB_URL
+
+const enablePricing = process.env.MEDUSA_FF_ISOLATE_PRICING_DOMAIN == "true"
+const enableProduct = process.env.MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN == "true"
 
 module.exports = {
   plugins: [
@@ -33,6 +37,8 @@ module.exports = {
     database_extra: { idle_in_transaction_session_timeout: 0 },
   },
   featureFlags: {
+    isolate_product_domain: enableProduct,
+    isolate_pricing_domain: enablePricing,
     workflows: {
       [Workflows.CreateProducts]: true,
       [Workflows.UpdateProducts]: true,
@@ -58,6 +64,11 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/product",
+    },
+    [Modules.PRICING]: {
+      scope: "internal",
+      resources: "shared",
+      resolve: "@medusajs/pricing",
     },
   },
 }
