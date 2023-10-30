@@ -84,7 +84,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.taxRates.list()
  *       .then(({ tax_rates, limit, offset, count }) => {
  *         console.log(tax_rates.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

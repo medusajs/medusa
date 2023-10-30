@@ -24,7 +24,7 @@ import { IsString } from "class-validator"
  *       })
  *       .then(({ download_url }) => {
  *         console.log(download_url);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

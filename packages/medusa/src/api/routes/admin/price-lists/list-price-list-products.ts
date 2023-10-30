@@ -146,7 +146,7 @@ import { pickBy } from "lodash"
  *       medusa.admin.priceLists.listProducts(priceListId)
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -38,7 +38,7 @@ import { TokenEvents } from "../../../../types/token"
  *       })
  *       .catch(() => {
  *         // an error occurred
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

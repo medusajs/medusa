@@ -12,6 +12,8 @@ import qs from "qs"
 
 /**
  * This class is used to send requests to [Store Payment Collection API Routes](https://docs.medusajs.com/api/store#payment-collections).
+ * 
+ * A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
  */
 class PaymentCollectionsResource extends BaseResource {
 
@@ -30,9 +32,9 @@ class PaymentCollectionsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.paymentCollections.retrieve(paymentCollectionId)
-   *   .then(({ payment_collection }) => {
-   *     console.log(payment_collection.id)
-   *   })
+   * .then(({ payment_collection }) => {
+   *   console.log(payment_collection.id)
+   * })
    * ```
    * 
    * To specify relations that should be retrieved:
@@ -44,9 +46,9 @@ class PaymentCollectionsResource extends BaseResource {
    * medusa.paymentCollections.retrieve(paymentCollectionId, {
    *   expand: "region"
    * })
-   *   .then(({ payment_collection }) => {
-   *     console.log(payment_collection.id)
-   *   })
+   * .then(({ payment_collection }) => {
+   *   console.log(payment_collection.id)
+   * })
    * ```
    */
   retrieve(
@@ -78,7 +80,7 @@ class PaymentCollectionsResource extends BaseResource {
    * medusa.paymentCollections.authorize(paymentId, sessionId)
    * .then(({ payment_collection }) => {
    *   console.log(payment_collection.id);
-   * });
+   * })
    */
   authorizePaymentSession(
     id: string,
@@ -103,7 +105,7 @@ class PaymentCollectionsResource extends BaseResource {
    * medusa.paymentCollections.authorize(paymentId)
    * .then(({ payment_collection }) => {
    *   console.log(payment_collection.id);
-   * });
+   * })
    */
   authorizePaymentSessionsBatch(
     id: string,
@@ -144,7 +146,7 @@ class PaymentCollectionsResource extends BaseResource {
    * })
    * .then(({ payment_collection }) => {
    *   console.log(payment_collection.id);
-   * });
+   * })
    * ```
    * 
    * To update a payment session and another one by not including it in the payload:
@@ -161,7 +163,7 @@ class PaymentCollectionsResource extends BaseResource {
    * })
    * .then(({ payment_collection }) => {
    *   console.log(payment_collection.id);
-   * });
+   * })
    * ```
    */
   managePaymentSessionsBatch(
@@ -176,7 +178,7 @@ class PaymentCollectionsResource extends BaseResource {
   /**
    * Create a Payment Session for a payment provider in a Payment Collection.
    * @param {string} id - The ID of the payment collection.
-   * @param {StorePaymentCollectionSessionsReq} payload - The details of the payment session to create.
+   * @param {StorePaymentCollectionSessionsReq} payload - The payment session to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StorePaymentCollectionsRes>} The payment collection's details.
    * 
@@ -187,7 +189,7 @@ class PaymentCollectionsResource extends BaseResource {
    * medusa.paymentCollections.managePaymentSession(payment_id, { provider_id: "stripe" })
    * .then(({ payment_collection }) => {
    *   console.log(payment_collection.id);
-   * });
+   * })
    */
   managePaymentSession(
     id: string,
@@ -211,7 +213,7 @@ class PaymentCollectionsResource extends BaseResource {
    * medusa.paymentCollections.refreshPaymentSession(paymentCollectionId, sessionId)
    * .then(({ payment_session }) => {
    *   console.log(payment_session.id);
-   * });
+   * })
    */
   refreshPaymentSession(
     id: string,

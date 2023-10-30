@@ -45,7 +45,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

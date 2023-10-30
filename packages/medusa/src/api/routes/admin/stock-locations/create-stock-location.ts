@@ -39,7 +39,7 @@ import { IStockLocationService } from "@medusajs/types"
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

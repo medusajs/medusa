@@ -14,7 +14,7 @@ import BaseResource from "./base"
 class AddressesResource extends BaseResource {
   /**
    * Add an address to the logged-in customer's saved addresses.
-   * @param {StorePostCustomersCustomerAddressesReq} payload - The details of the address to add.
+   * @param {StorePostCustomersCustomerAddressesReq} payload - The address to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCustomersRes>} The customer's details, including the customer's addresses in the `shipping_addresses` attribute.
    * 
@@ -37,7 +37,7 @@ class AddressesResource extends BaseResource {
    * })
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   addAddress(
     payload: StorePostCustomersCustomerAddressesReq,
@@ -60,7 +60,7 @@ class AddressesResource extends BaseResource {
    * medusa.customers.addresses.deleteAddress(addressId)
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   deleteAddress(
     address_id: string,
@@ -72,7 +72,7 @@ class AddressesResource extends BaseResource {
 
   /**
    * Update an address of the logged-in customer.
-   * @param {string} address_id - The ID of the address.
+   * @param {string} address_id - The address's ID.
    * @param {StorePostCustomersCustomerAddressesAddressReq} payload - The attributes to update in the address.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCustomersRes>} The customer's details, including the customer's addresses in the `shipping_addresses` attribute.
@@ -86,7 +86,7 @@ class AddressesResource extends BaseResource {
    * })
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   updateAddress(
     address_id: string,

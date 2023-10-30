@@ -8,6 +8,9 @@ import BaseResource from "./base"
 
 /**
  * This class is used to send requests to [Store Product Type API Routes](https://docs.medusajs.com/api/store#product-types).
+ * 
+ * Product types are string values that can be used to filter products by.
+ * Products can have more than one tag, and products can share types.
  */
 class ProductTypesResource extends BaseResource {
   /**
@@ -26,10 +29,10 @@ class ProductTypesResource extends BaseResource {
    * medusa.productTypes.list()
    * .then(({ product_types }) => {
    *   console.log(product_types.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `20` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -41,7 +44,7 @@ class ProductTypesResource extends BaseResource {
    * })
    * .then(({ product_types }) => {
    *   console.log(product_types.length);
-   * });
+   * })
    * ```
    */
   list(

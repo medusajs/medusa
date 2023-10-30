@@ -37,7 +37,7 @@ import customerController from "../../../../controllers/customers"
  *       medusa.admin.customers.list()
  *       .then(({ customers, limit, offset, count }) => {
  *         console.log(customers.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

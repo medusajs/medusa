@@ -5,6 +5,13 @@ import BaseResource from "../base"
 
 /**
  * This class is used to send requests to [Admin Auth API Routes](https://docs.medusajs.com/api/admin#auth_getauth).
+ * 
+ * The methods in this class allow admin users to manage their session, such as login or log out.
+ * You can send authenticated requests for an admin user either using the Cookie header, their API token, or the JWT Token.
+ * When you log the admin user in using the {@link createSession} method, the JS client will automatically attach the
+ * cookie header in all subsequent requests.
+ * 
+ * Related Guide: [How to implement user profiles](https://docs.medusajs.com/modules/users/admin/manage-profile).
  */
 class AdminAuthResource extends BaseResource {
   /**
@@ -19,7 +26,7 @@ class AdminAuthResource extends BaseResource {
    * medusa.admin.auth.getSession()
    * .then(({ user }) => {
    *   console.log(user.id);
-   * });
+   * })
    */
   getSession(
     customHeaders: Record<string, any> = {}
@@ -56,13 +63,13 @@ class AdminAuthResource extends BaseResource {
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-   * medusa.admin.auth.createSession({
+   * medusa.admin.AdminAuthResource.createSession({
    *   email: "user@example.com",
    *   password: "supersecret"
    * })
    * .then(({ user }) => {
    *   console.log(user.id);
-   * });
+   * })
    */
   createSession(
     payload: AdminPostAuthReq,
@@ -87,7 +94,7 @@ class AdminAuthResource extends BaseResource {
    * })
    * .then(({ access_token }) => {
    *   console.log(access_token);
-   * });
+   * })
    */
   getToken(
     payload: AdminPostAuthReq,

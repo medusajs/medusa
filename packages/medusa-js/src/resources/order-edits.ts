@@ -7,6 +7,11 @@ import BaseResource from "./base"
 
 /**
  * This class is used to send requests to [Store Order Edits API Routes](https://docs.medusajs.com/api/store#order-edits).
+ * 
+ * Order edits are changes made to items in an order such as adding, updating their quantity, or deleting them. Order edits are created by the admin.
+ * A customer can review order edit requests created by an admin and confirm or decline them.
+ * 
+ * Related Guide: [How to handle order edits in a storefront](https://docs.medusajs.com/modules/orders/storefront/handle-order-edits).
  */
 class OrderEditsResource extends BaseResource {
   /**
@@ -21,7 +26,7 @@ class OrderEditsResource extends BaseResource {
    * medusa.orderEdits.retrieve(orderEditId)
    * .then(({ order_edit }) => {
    *   console.log(order_edit.id);
-   * });
+   * })
    */
   retrieve(
     id: string,
@@ -42,9 +47,9 @@ class OrderEditsResource extends BaseResource {
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * medusa.orderEdits.decline(orderEditId)
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id);
-   *   })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id);
+   * })
    */
   decline(
     id: string,
@@ -65,9 +70,9 @@ class OrderEditsResource extends BaseResource {
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * medusa.orderEdits.complete(orderEditId)
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    */
   complete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreOrderEditsRes> {
     const path = `/store/order-edits/${id}/complete`

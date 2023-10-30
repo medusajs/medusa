@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/regions
  * operationId: "GetRegions"
  * summary: "List Regions"
- * description: "Retrieve a list of Regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated"
+ * description: "Retrieve a list of Regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated."
  * x-authenticated: true
  * parameters:
  *  - in: query
@@ -111,7 +111,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.regions.list()
  *       .then(({ regions, limit, offset, count }) => {
  *         console.log(regions.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

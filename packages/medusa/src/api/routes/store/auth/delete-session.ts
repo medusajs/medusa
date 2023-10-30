@@ -15,7 +15,7 @@
  *       medusa.auth.deleteSession()
  *       .then(() => {
  *         // customer logged out successfully
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

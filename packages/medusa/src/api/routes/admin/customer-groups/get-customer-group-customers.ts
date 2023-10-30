@@ -29,7 +29,7 @@ import { Type } from "class-transformer"
  *       medusa.admin.customerGroups.listCustomers(customerGroupId)
  *       .then(({ customers }) => {
  *         console.log(customers.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

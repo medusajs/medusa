@@ -4,6 +4,11 @@ import BaseResource from "./base"
 
 /**
  * This class is used to send requests to [Store Swap API Routes](https://docs.medusajs.com/api/store#swaps)
+ * 
+ * A swap is created by a customer or an admin to exchange an item with a new one.
+ * Creating a swap implicitely includes creating a return for the item being exchanged.
+ * 
+ * Related Guide: [How to create a swap in a storefront](https://docs.medusajs.com/modules/orders/storefront/create-swap)
  */
 class SwapsResource extends BaseResource {
   /**
@@ -37,7 +42,7 @@ class SwapsResource extends BaseResource {
    * })
    * .then(({ swap }) => {
    *   console.log(swap.id);
-   * });
+   * })
    */
   create(payload: StorePostSwapsReq, customHeaders: Record<string, any> = {}): ResponsePromise<StoreSwapsRes> {
     const path = `/store/swaps`
@@ -46,7 +51,7 @@ class SwapsResource extends BaseResource {
 
   /**
    * Retrieve a Swap's details by the ID of its cart.
-   * @param {string} cart_id - The ID of the cart.
+   * @param {string} cart_id - The cart's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreSwapsRes>} The swap's details.
    * 
@@ -56,7 +61,7 @@ class SwapsResource extends BaseResource {
    * medusa.swaps.retrieveByCartId(cartId)
    * .then(({ swap }) => {
    *   console.log(swap.id);
-   * });
+   * })
    */
   retrieveByCartId(cart_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreSwapsRes> {
     const path = `/store/swaps/${cart_id}`

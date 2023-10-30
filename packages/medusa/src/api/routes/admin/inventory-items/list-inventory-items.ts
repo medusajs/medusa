@@ -76,7 +76,7 @@ import { Transform } from "class-transformer"
  *       medusa.admin.inventoryItems.list()
  *       .then(({ inventory_items, count, offset, limit }) => {
  *         console.log(inventory_items.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

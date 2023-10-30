@@ -31,7 +31,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.draftOrders.removeLineItem(draftOrderId, itemId)
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

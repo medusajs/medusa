@@ -4,6 +4,10 @@ import { StoreReturnsRes, StorePostReturnsReq } from "@medusajs/medusa"
 
 /**
  * This class is used to send requests to [Store Return API Routes](https://docs.medusajs.com/api/store#returns).
+ * 
+ * A return can be created by a customer to return items in an order.
+ * 
+ * Related Guide: [How to create a return in a storefront](https://docs.medusajs.com/modules/orders/storefront/create-return).
  */
 class ReturnsResource extends BaseResource {
   /**
@@ -26,7 +30,7 @@ class ReturnsResource extends BaseResource {
    * })
    * .then((data) => {
    *   console.log(data.return.id);
-   * });
+   * })
    */
   create(payload: StorePostReturnsReq, customHeaders: Record<string, any> = {}): ResponsePromise<StoreReturnsRes> {
     const path = `/store/returns`

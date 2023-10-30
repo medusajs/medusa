@@ -28,7 +28,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.swaps.list()
  *       .then(({ swaps }) => {
  *         console.log(swaps.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -80,6 +80,9 @@ export default async (req, res) => {
   res.json({ swaps, count, offset, limit })
 }
 
+/**
+ * {@inheritDocs FindPaginationParams}
+ */
 export class AdminGetSwapsParams {
   @IsInt()
   @IsOptional()

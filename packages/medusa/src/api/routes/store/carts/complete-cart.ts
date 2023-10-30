@@ -31,7 +31,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.complete(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

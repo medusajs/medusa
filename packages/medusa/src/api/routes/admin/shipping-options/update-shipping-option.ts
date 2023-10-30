@@ -51,7 +51,7 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  *       })
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -13,6 +13,11 @@ import LineItemsResource from "./line-items"
 
 /**
  * This class is used to send requests to [Store Cart API Routes](https://docs.medusajs.com/api/store#carts).
+ * 
+ * A cart is a virtual shopping bag that customers can use to add items they want to purchase.
+ * A cart is then used to checkout and place an order.
+ * 
+ * Related Guide: [How to implement cart functionality in your storefront](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart).
  */
 class CartsResource extends BaseResource {
   /**
@@ -23,7 +28,7 @@ class CartsResource extends BaseResource {
   /**
    * Add a shipping method to the cart. The validation of the `data` field is handled by the fulfillment provider of the chosen shipping option.
    * @param {string} cart_id - The ID of the cart to add the shipping method to.
-   * @param {StorePostCartsCartShippingMethodReq} payload - The details of the shipping method to add.
+   * @param {StorePostCartsCartShippingMethodReq} payload - The shipping method to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCartsRes>} - The cart's details.
    * 
@@ -35,7 +40,7 @@ class CartsResource extends BaseResource {
    * })
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   addShippingMethod(
     cart_id: string,
@@ -62,7 +67,7 @@ class CartsResource extends BaseResource {
    * medusa.carts.complete(cartId)
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   complete(
     cart_id: string,
@@ -76,7 +81,7 @@ class CartsResource extends BaseResource {
    * Create a Cart. Although optional, specifying the cart's region and sales channel can affect the cart's pricing and
    * the products that can be added to the cart respectively. So, make sure to set those early on and change them if necessary, such as when the customer changes their region.
    * If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
-   * @param {StorePostCartReq} payload - The details of the cart to create.
+   * @param {StorePostCartReq} payload - The cart to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCartsRes>} The created cart's details.
    * 
@@ -86,7 +91,7 @@ class CartsResource extends BaseResource {
    * medusa.carts.create()
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   create(
     payload?: StorePostCartReq,
@@ -109,7 +114,7 @@ class CartsResource extends BaseResource {
    * medusa.carts.createPaymentSessions(cartId)
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   createPaymentSessions(
     cart_id: string,
@@ -133,7 +138,7 @@ class CartsResource extends BaseResource {
    * medusa.carts.deleteDiscount(cartId, code)
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   deleteDiscount(
     cart_id: string,
@@ -157,7 +162,7 @@ class CartsResource extends BaseResource {
    * medusa.carts.deletePaymentSession(cartId, "manual")
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   deletePaymentSession(
     cart_id: string,
@@ -181,7 +186,7 @@ class CartsResource extends BaseResource {
    * medusa.carts.refreshPaymentSession(cartId, "manual")
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   refreshPaymentSession(
     cart_id: string,
@@ -194,7 +199,7 @@ class CartsResource extends BaseResource {
 
   /**
    * Retrieve a Cart's details. This includes recalculating its totals.
-   * @param {string} cart_id - The ID of the cart.
+   * @param {string} cart_id - The cart's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
    * 
@@ -204,7 +209,7 @@ class CartsResource extends BaseResource {
    * medusa.carts.retrieve(cartId)
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   retrieve(
     cart_id: string,
@@ -217,8 +222,8 @@ class CartsResource extends BaseResource {
   /**
    * Select the Payment Session that will be used to complete the cart. This is typically used when the customer chooses their preferred payment method during checkout.
    * The totals of the cart will be recalculated.
-   * @param {string} cart_id - The ID of the cart.
-   * @param {StorePostCartsCartPaymentSessionReq} payload - The details of the associated payment provider.
+   * @param {string} cart_id - The cart's ID.
+   * @param {StorePostCartsCartPaymentSessionReq} payload - The associated payment provider.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
    * 
@@ -230,7 +235,7 @@ class CartsResource extends BaseResource {
    * })
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   setPaymentSession(
     cart_id: string,
@@ -243,7 +248,7 @@ class CartsResource extends BaseResource {
 
   /**
    * Update a Cart's details. If the cart has payment sessions and the region was not changed, the payment sessions are updated. The cart's totals are also recalculated.
-   * @param {string} cart_id - The ID of the cart.
+   * @param {string} cart_id - The cart's ID.
    * @param {StorePostCartsCartReq} payload - The attributes to update in the cart.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
@@ -256,7 +261,7 @@ class CartsResource extends BaseResource {
    * })
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   update(
     cart_id: string,
@@ -270,7 +275,7 @@ class CartsResource extends BaseResource {
   /**
    * Update a Payment Session with additional data. This can be useful depending on the payment provider used.
    * All payment sessions are updated and cart totals are recalculated afterwards.
-   * @param {string} cart_id - The ID of the cart.
+   * @param {string} cart_id - The cart's ID.
    * @param {string} provider_id - The ID of the payment provider that the payment session is associated with.
    * @param {StorePostCartsCartPaymentSessionUpdateReq} payload - The attributes to update in the payment session.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
@@ -286,7 +291,7 @@ class CartsResource extends BaseResource {
    * })
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   updatePaymentSession(
     cart_id: string,

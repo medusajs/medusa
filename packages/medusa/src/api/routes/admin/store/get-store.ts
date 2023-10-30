@@ -26,7 +26,7 @@ import { ExtendedStoreDTO } from "../../../../types/store"
  *       medusa.admin.store.retrieve()
  *       .then(({ store }) => {
  *         console.log(store.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

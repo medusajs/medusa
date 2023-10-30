@@ -10,6 +10,13 @@ import BaseResource from "./base"
 
 /**
  * This class is used to send requests to [Store Auth API Routes](https://docs.medusajs.com/api/store#auth).
+ * 
+ * The methods in this class allows you to manage a customer's session, such as login or log out.
+ * You can send authenticated requests for a customer either using the Cookie header or using the JWT Token.
+ * When you log the customer in using the {@link authenticate} method, the JS client will automatically attach the
+ * cookie header in all subsequent requests.
+ * 
+ * Related Guide: [How to implement customer profiles in your storefront](https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles).
  */
 class AuthResource extends BaseResource {
   /**
@@ -27,7 +34,7 @@ class AuthResource extends BaseResource {
    * })
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   authenticate(payload: StorePostAuthReq, customHeaders: Record<string, any> = {}): ResponsePromise<StoreAuthRes> {
     const path = `/store/auth`
@@ -35,7 +42,7 @@ class AuthResource extends BaseResource {
   }
 
   /**
-   * Log out the customer and remove their authentication session.
+   * Log out the customer and remove their authentication session. This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<void>} Resolves when customer is logged out successfully.
    * 
@@ -45,7 +52,7 @@ class AuthResource extends BaseResource {
    * medusa.auth.deleteSession()
    * .then(() => {
    *   // customer logged out successfully
-   * });
+   * })
    */
    deleteSession(customHeaders: Record<string, any> = {}): ResponsePromise<void> {
     const path = `/store/auth`
@@ -54,6 +61,7 @@ class AuthResource extends BaseResource {
 
   /**
    * Retrieve the details of the logged-in customer. Can also be used to check if there is an authenticated customer.
+   * This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreAuthRes>} The customer's details.
    * 
@@ -64,7 +72,7 @@ class AuthResource extends BaseResource {
    * medusa.auth.getSession()
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   getSession(customHeaders: Record<string, any> = {}): ResponsePromise<StoreAuthRes> {
     const path = `/store/auth`
@@ -102,7 +110,7 @@ class AuthResource extends BaseResource {
    * })
    * .then(({ access_token }) => {
    *   console.log(access_token);
-   * });
+   * })
    */
   getToken(
     payload: StorePostAuthReq,

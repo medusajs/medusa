@@ -29,7 +29,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ store }) => {
  *         console.log(store.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -187,7 +187,7 @@ import { defaultStoreProductRemoteQueryObject } from "./index"
  *       medusa.products.list()
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

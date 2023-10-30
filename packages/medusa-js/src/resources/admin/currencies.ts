@@ -11,7 +11,12 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Currency API Routes](https://docs.medusajs.com/api/admin#currencies).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * A store can use unlimited currencies, and each region must be associated with at least one currency.
+ * Currencies are defined within the Medusa backend. The methods in this class allow admins to list and update currencies.
+ * 
+ * Related Guide: [How to manage currencies](https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies).
  */
 class AdminCurrenciesResource extends BaseResource {
   /**
@@ -30,10 +35,10 @@ class AdminCurrenciesResource extends BaseResource {
    * medusa.admin.currencies.list()
    * .then(({ currencies, count, offset, limit }) => {
    *   console.log(currencies.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `20` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -45,7 +50,7 @@ class AdminCurrenciesResource extends BaseResource {
    * })
    * .then(({ currencies, count, offset, limit }) => {
    *   console.log(currencies.length);
-   * });
+   * })
    * ```
    */
   list(
@@ -78,7 +83,7 @@ class AdminCurrenciesResource extends BaseResource {
    * })
    * .then(({ currency }) => {
    *   console.log(currency.code);
-   * });
+   * })
    */
   update(
     code: string,

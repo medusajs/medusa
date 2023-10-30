@@ -41,7 +41,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.shippingOptions.list()
  *       .then(({ shipping_options, count }) => {
  *         console.log(shipping_options.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

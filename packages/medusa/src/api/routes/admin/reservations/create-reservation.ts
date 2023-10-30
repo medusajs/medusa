@@ -30,7 +30,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       })
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

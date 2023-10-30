@@ -109,7 +109,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       medusa.product.variants.list()
  *       .then(({ variants }) => {
  *         console.log(variants.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

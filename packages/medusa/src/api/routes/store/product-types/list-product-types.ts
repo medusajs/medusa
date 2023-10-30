@@ -95,7 +95,7 @@ import ProductTypeService from "../../../../services/product-type"
  *       medusa.productTypes.list()
  *       .then(({ product_types }) => {
  *         console.log(product_types.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

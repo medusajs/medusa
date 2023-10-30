@@ -97,7 +97,7 @@ import { Type } from "class-transformer"
  *       medusa.admin.collections.list()
  *       .then(({ collections, limit, offset, count }) => {
  *         console.log(collections.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

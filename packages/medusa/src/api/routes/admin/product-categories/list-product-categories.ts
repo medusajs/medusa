@@ -37,7 +37,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *       medusa.admin.productCategories.list()
  *       .then(({ product_categories, limit, offset, count }) => {
  *         console.log(product_categories.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

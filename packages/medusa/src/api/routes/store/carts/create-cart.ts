@@ -53,7 +53,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       medusa.carts.create()
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

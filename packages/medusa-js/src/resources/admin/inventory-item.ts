@@ -21,7 +21,11 @@ import qs from "qs"
  * This class is used to send requests to [Admin Inventory Item API Routes](https://docs.medusajs.com/api/admin#inventory-items). To use these API Routes, make sure to install the
  * [@medusajs/inventory](https://docs.medusajs.com/modules/multiwarehouse/install-modules#inventory-module) module in your Medusa backend.
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * Inventory items, provided by the [Inventory Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module), can be used to manage the inventory of saleable items in your store.
+ * 
+ * Related Guide: [How to manage inventory items](https://docs.medusajs.com/modules/multiwarehouse/admin/manage-inventory-items).
  */
 class AdminInventoryItemsResource extends BaseResource {
   /**
@@ -38,7 +42,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * medusa.admin.inventoryItems.retrieve(inventoryItemId)
    * .then(({ inventory_item }) => {
    *   console.log(inventory_item.id);
-   * });
+   * })
    */
   retrieve(
     inventoryItemId: string,
@@ -72,7 +76,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * })
    * .then(({ inventory_item }) => {
    *   console.log(inventory_item.id);
-   * });
+   * })
    */
   update(
     inventoryItemId: string,
@@ -101,9 +105,9 @@ class AdminInventoryItemsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.inventoryItems.delete(inventoryItemId)
-   *   .then(({ id, object, deleted }) => {
-   *     console.log(id)
-   *   })
+   * .then(({ id, object, deleted }) => {
+   *   console.log(id)
+   * })
    */
   delete(
     inventoryItemId: string,
@@ -115,7 +119,7 @@ class AdminInventoryItemsResource extends BaseResource {
 
   /**
    * Create an Inventory Item for a product variant.
-   * @param {AdminPostInventoryItemsReq} payload - The details of the inventory item to create.
+   * @param {AdminPostInventoryItemsReq} payload - The inventory item to create.
    * @param {AdminPostInventoryItemsParams} query - Configurations to apply on the retrieved inventory item.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminInventoryItemsRes>} The inventory item's details.
@@ -129,7 +133,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * })
    * .then(({ inventory_item }) => {
    *   console.log(inventory_item.id);
-   * });
+   * })
    */
   create(
     payload: AdminPostInventoryItemsReq,
@@ -160,7 +164,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * medusa.admin.inventoryItems.list()
    * .then(({ inventory_items, count, offset, limit }) => {
    *   console.log(inventory_items.length);
-   * });
+   * })
    * 
    * @example
    * To list inventory items:
@@ -172,10 +176,10 @@ class AdminInventoryItemsResource extends BaseResource {
    * medusa.admin.inventoryItems.list()
    * .then(({ inventory_items, count, offset, limit }) => {
    *   console.log(inventory_items.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `20` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -187,7 +191,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * })
    * .then(({ inventory_items, count, offset, limit }) => {
    *   console.log(inventory_items.length);
-   * });
+   * })
    * ```
    */
   list(
@@ -222,7 +226,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * })
    * .then(({ inventory_item }) => {
    *   console.log(inventory_item.id);
-   * });
+   * })
    */
   updateLocationLevel(
     inventoryItemId: string,
@@ -244,7 +248,7 @@ class AdminInventoryItemsResource extends BaseResource {
   /**
    * Create a Location Level for a given Inventory Item.
    * @param {string} inventoryItemId - The ID of the inventory item that the location level belongs to.
-   * @param {AdminPostInventoryItemsItemLocationLevelsReq} payload - The details of the location level to create.
+   * @param {AdminPostInventoryItemsItemLocationLevelsReq} payload - The location level to create.
    * @param {AdminGetInventoryItemsParams} query - Configurations to apply on the returned inventory item.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminInventoryItemsRes>} the inventory item's details.
@@ -259,7 +263,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * })
    * .then(({ inventory_item }) => {
    *   console.log(inventory_item.id);
-   * });
+   * })
    */
   createLocationLevel(
     inventoryItemId: string,
@@ -292,7 +296,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * medusa.admin.inventoryItems.deleteLocationLevel(inventoryItemId, locationId)
    * .then(({ inventory_item }) => {
    *   console.log(inventory_item.id);
-   * });
+   * })
    */
   deleteLocationLevel(
     inventoryItemId: string,
@@ -324,7 +328,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * medusa.admin.inventoryItems.listLocationLevels(inventoryItemId)
    * .then(({ inventory_item }) => {
    *   console.log(inventory_item.location_levels);
-   * });
+   * })
    */
   listLocationLevels(
     inventoryItemId: string,

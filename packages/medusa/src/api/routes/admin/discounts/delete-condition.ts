@@ -28,7 +28,7 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.discounts.deleteCondition(discountId, conditionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

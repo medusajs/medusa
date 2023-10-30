@@ -11,6 +11,11 @@ import BaseResource from "./base"
 /**
  * This class is used to send requests to [Store Product Category API Routes](https://docs.medusajs.com/api/store#product-categories_getproductcategories).
  * 
+ * Products can be categoriezed into categories. A product can be associated more than one category.
+ * Using the methods in this class, you can list or retrieve a category's details and products.
+ * 
+ * Related Guide: [How to use product categories in a storefront](https://docs.medusajs.com/modules/products/storefront/use-categories).
+ * 
  * @featureFlag product_categories
  */
 class ProductCategoriesResource extends BaseResource {
@@ -29,9 +34,9 @@ class ProductCategoriesResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.productCategories.retrieve(productCategoryId)
-   *   .then(({ product_category }) => {
-   *     console.log(product_category.id);
-   *   });
+   * .then(({ product_category }) => {
+   *   console.log(product_category.id);
+   * })
    * ```
    * 
    * To specify relations that should be retrieved:
@@ -43,9 +48,9 @@ class ProductCategoriesResource extends BaseResource {
    * medusa.productCategories.retrieve(productCategoryId, {
    *   expand: "products"
    * })
-   *   .then(({ product_category }) => {
-   *     console.log(product_category.id);
-   *   });
+   * .then(({ product_category }) => {
+   *   console.log(product_category.id);
+   * })
    * ```
    */
   retrieve(
@@ -79,7 +84,7 @@ class ProductCategoriesResource extends BaseResource {
    * medusa.productCategories.list()
    * .then(({ product_categories, limit, offset, count }) => {
    *   console.log(product_categories.length);
-   * });
+   * })
    * ```
    * 
    * To retrieve a product category by its handle:
@@ -108,10 +113,10 @@ class ProductCategoriesResource extends BaseResource {
    * })
    * .then(({ product_categories, limit, offset, count }) => {
    *   console.log(product_categories.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `100` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -123,7 +128,7 @@ class ProductCategoriesResource extends BaseResource {
    * })
    * .then(({ product_categories, limit, offset, count }) => {
    *   console.log(product_categories.length);
-   * });
+   * })
    * ```
    */
   list(

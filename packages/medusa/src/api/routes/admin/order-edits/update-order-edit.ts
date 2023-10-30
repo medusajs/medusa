@@ -33,9 +33,9 @@ import {
  *       medusa.admin.orderEdits.update(orderEditId, {
  *         internal_note: "internal reason XY"
  *       })
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

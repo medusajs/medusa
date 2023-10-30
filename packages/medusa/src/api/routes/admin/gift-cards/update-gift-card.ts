@@ -33,7 +33,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

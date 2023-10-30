@@ -28,7 +28,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notes.list()
  *       .then(({ notes, limit, offset, count }) => {
  *         console.log(notes.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

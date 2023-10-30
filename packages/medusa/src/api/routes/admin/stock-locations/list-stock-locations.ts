@@ -102,7 +102,7 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *       medusa.admin.stockLocations.list()
  *       .then(({ stock_locations, limit, offset, count }) => {
  *         console.log(stock_locations.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

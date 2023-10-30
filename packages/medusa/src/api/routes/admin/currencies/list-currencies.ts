@@ -36,7 +36,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       medusa.admin.currencies.list()
  *       .then(({ currencies, count, offset, limit }) => {
  *         console.log(currencies.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

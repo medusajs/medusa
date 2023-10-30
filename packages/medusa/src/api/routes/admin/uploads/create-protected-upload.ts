@@ -26,7 +26,7 @@ import { IFileService } from "../../../../interfaces"
  *       medusa.admin.uploads.createProtected(file)
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

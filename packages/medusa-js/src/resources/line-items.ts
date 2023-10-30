@@ -12,8 +12,8 @@ import BaseResource from "./base"
 class LineItemsResource extends BaseResource {
   /**
    * Generates a Line Item with a given Product Variant and adds it to the Cart
-   * @param {string} cart_id - The ID of the cart.
-   * @param {StorePostCartsCartLineItemsReq} payload - The details of the line item to be created.
+   * @param {string} cart_id - The cart's ID.
+   * @param {StorePostCartsCartLineItemsReq} payload - The line item to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCartsRes>} The associated cart's details.
    * 
@@ -26,7 +26,7 @@ class LineItemsResource extends BaseResource {
    * })
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   create(
     cart_id: string,
@@ -52,7 +52,7 @@ class LineItemsResource extends BaseResource {
    * })
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   update(
     cart_id: string,
@@ -76,7 +76,7 @@ class LineItemsResource extends BaseResource {
    * medusa.carts.lineItems.delete(cartId, lineId)
    * .then(({ cart }) => {
    *   console.log(cart.id);
-   * });
+   * })
    */
   delete(cart_id: string, line_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/line-items/${line_id}`

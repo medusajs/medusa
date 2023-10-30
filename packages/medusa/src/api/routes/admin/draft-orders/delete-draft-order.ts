@@ -21,7 +21,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.draftOrders.delete(draftOrderId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

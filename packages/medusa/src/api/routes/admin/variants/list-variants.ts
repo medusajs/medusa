@@ -125,7 +125,7 @@ import { omit } from "lodash"
  *       medusa.admin.variants.list()
  *       .then(({ variants, limit, offset, count }) => {
  *         console.log(variants.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

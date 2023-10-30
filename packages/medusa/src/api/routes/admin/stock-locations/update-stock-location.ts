@@ -33,7 +33,7 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

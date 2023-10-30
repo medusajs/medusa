@@ -13,12 +13,17 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Gift Card API Routes](https://docs.medusajs.com/api/admin#gift-cards).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * Admins can create gift cards and send them directly to customers, specifying options like their balance, region, and more.
+ * These gift cards are different than the saleable gift cards in a store, which are created and managed through {@link AdminProductsResource}.
+ * 
+ * Related Guide: [How to manage gift cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-custom-gift-cards).
  */
 class AdminGiftCardsResource extends BaseResource {
   /**
    * Create a gift card that can redeemed by its unique code. The Gift Card is only valid within 1 region.
-   * @param {AdminPostGiftCardsReq} payload - The details of the gift card to be created.
+   * @param {AdminPostGiftCardsReq} payload - The gift card to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminGiftCardsRes>} The gift card's details.
    * 
@@ -31,7 +36,7 @@ class AdminGiftCardsResource extends BaseResource {
    * })
    * .then(({ gift_card }) => {
    *   console.log(gift_card.id);
-   * });
+   * })
    */
   create(
     payload: AdminPostGiftCardsReq,
@@ -57,7 +62,7 @@ class AdminGiftCardsResource extends BaseResource {
    * })
    * .then(({ gift_card }) => {
    *   console.log(gift_card.id);
-   * });
+   * })
    */
   update(
     id: string,
@@ -81,7 +86,7 @@ class AdminGiftCardsResource extends BaseResource {
    * medusa.admin.giftCards.delete(giftCardId)
    * .then(({ id, object, deleted }) => {
    *   console.log(id);
-   * });
+   * })
    */
   delete(
     id: string,
@@ -104,7 +109,7 @@ class AdminGiftCardsResource extends BaseResource {
    * medusa.admin.giftCards.retrieve(giftCardId)
    * .then(({ gift_card }) => {
    *   console.log(gift_card.id);
-   * });
+   * })
    */
   retrieve(
     id: string,
@@ -130,10 +135,10 @@ class AdminGiftCardsResource extends BaseResource {
    * medusa.admin.giftCards.list()
    * .then(({ gift_cards, limit, offset, count }) => {
    *   console.log(gift_cards.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `50` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -145,7 +150,7 @@ class AdminGiftCardsResource extends BaseResource {
    * })
    * .then(({ gift_cards, limit, offset, count }) => {
    *   console.log(gift_cards.length);
-   * });
+   * })
    * ```
    */
   list(

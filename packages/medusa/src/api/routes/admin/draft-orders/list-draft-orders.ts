@@ -34,7 +34,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.draftOrders.list()
  *       .then(({ draft_orders, limit, offset, count }) => {
  *         console.log(draft_orders.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -37,7 +37,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       medusa.admin.inventoryItems.listLocationLevels(inventoryItemId)
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.location_levels);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

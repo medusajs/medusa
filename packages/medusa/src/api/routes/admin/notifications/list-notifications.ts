@@ -40,7 +40,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notifications.list()
  *       .then(({ notifications }) => {
  *         console.log(notifications.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -102,8 +102,8 @@ import { Type } from "class-transformer"
  *       // must be previously logged in or use api token
  *       medusa.admin.salesChannels.list()
  *       .then(({ sales_channels, limit, offset, count }) => {
- *         console.log(sales_channels.length);
- *       });
+ *         console.log(sales_channels.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

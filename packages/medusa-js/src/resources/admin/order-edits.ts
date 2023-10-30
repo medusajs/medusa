@@ -17,7 +17,11 @@ import qs from "qs"
 /**
  * This class is used to send requests to [Admin Order Edit API Routes](https://docs.medusajs.com/api/admin#order-edits).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * An admin can edit an order to remove, add, or update an item's quantity. When an admin edits an order, they're stored as an `OrderEdit`.
+ * 
+ * Related Guide: [How to edit an order](https://docs.medusajs.com/modules/orders/admin/edit-order).
  */
 class AdminOrderEditsResource extends BaseResource {
   /**
@@ -35,9 +39,9 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.retrieve(orderEditId)
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    * ```
    * 
    * To specify relations that should be retrieved:
@@ -49,9 +53,9 @@ class AdminOrderEditsResource extends BaseResource {
    * medusa.admin.orderEdits.retrieve(orderEditId, {
    *   expand: "order"
    * })
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    * ```
    */
   retrieve(
@@ -83,9 +87,9 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.list()
-   *   .then(({ order_edits, count, limit, offset }) => {
-   *     console.log(order_edits.length)
-   *   })
+   * .then(({ order_edits, count, limit, offset }) => {
+   *   console.log(order_edits.length)
+   * })
    * ```
    * 
    * To specify relations that should be retrieved within the order edits:
@@ -97,12 +101,12 @@ class AdminOrderEditsResource extends BaseResource {
    * medusa.admin.orderEdits.list({
    *   expand: "order"
    * })
-   *   .then(({ order_edits, count, limit, offset }) => {
-   *     console.log(order_edits.length)
-   *   })
+   * .then(({ order_edits, count, limit, offset }) => {
+   *   console.log(order_edits.length)
+   * })
    * ```
    * 
-   * By default, only the first `50` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -113,9 +117,9 @@ class AdminOrderEditsResource extends BaseResource {
    *   limit,
    *   offset
    * })
-   *   .then(({ order_edits, count, limit, offset }) => {
-   *     console.log(order_edits.length)
-   *   })
+   * .then(({ order_edits, count, limit, offset }) => {
+   *   console.log(order_edits.length)
+   * })
    * ```
    */
   list(
@@ -134,7 +138,7 @@ class AdminOrderEditsResource extends BaseResource {
 
   /**
    * Create an order edit.
-   * @param {AdminPostOrderEditsReq} payload - The details of the order edit to create.
+   * @param {AdminPostOrderEditsReq} payload - The order edit to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
    * 
@@ -143,9 +147,9 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.create({ orderId })
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    */
   create(
     payload: AdminPostOrderEditsReq,
@@ -169,9 +173,9 @@ class AdminOrderEditsResource extends BaseResource {
    * medusa.admin.orderEdits.update(orderEditId, {
    *   internal_note: "internal reason XY"
    * })
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    */
   update(
     id: string,
@@ -193,9 +197,9 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.delete(orderEditId)
-   *   .then(({ id, object, deleted }) => {
-   *     console.log(id)
-   *   })
+   * .then(({ id, object, deleted }) => {
+   *   console.log(id)
+   * })
    */
   delete(
     id: string,
@@ -209,7 +213,7 @@ class AdminOrderEditsResource extends BaseResource {
    * Create a line item change in the order edit that indicates adding an item in the original order. The item will not be added to the original order until the order edit is
    * confirmed.
    * @param {string} id - The ID of the order edit to add the line item change to.
-   * @param {AdminPostOrderEditsEditLineItemsReq} payload - The details of the line item change to be created.
+   * @param {AdminPostOrderEditsEditLineItemsReq} payload - The line item change to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
    * 
@@ -246,9 +250,9 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.deleteItemChange(orderEdit_id, itemChangeId)
-   *   .then(({ id, object, deleted }) => {
-   *     console.log(id)
-   *   })
+   * .then(({ id, object, deleted }) => {
+   *   console.log(id)
+   * })
    */
   deleteItemChange(
     orderEditId: string,
@@ -271,9 +275,9 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.requestConfirmation(orderEditId)
-   *   .then({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   * .then({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    */
   requestConfirmation(
     id: string,
@@ -294,9 +298,9 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.cancel(orderEditId)
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    */
   cancel(
     id: string,
@@ -317,9 +321,9 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.confirm(orderEditId)
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    */
   confirm(
     id: string,
@@ -334,7 +338,7 @@ class AdminOrderEditsResource extends BaseResource {
    * are only reflected on the original order after the order edit is confirmed.
    * @param {string} orderEditId - The ID of the order edit that the line item belongs to.
    * @param {string} itemId - The ID of the line item to create or update its line item change.
-   * @param {AdminPostOrderEditsEditLineItemsLineItemReq} payload - The details of the creation or update of the line item change.
+   * @param {AdminPostOrderEditsEditLineItemsLineItemReq} payload - The creation or update of the line item change.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
    * 
@@ -343,11 +347,11 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.updateLineItem(orderEditId, lineItemId, {
-   *     quantity: 5
-   *   })
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   *   quantity: 5
+   * })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    */
   updateLineItem(
     orderEditId: string,
@@ -372,9 +376,9 @@ class AdminOrderEditsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.admin.orderEdits.removeLineItem(orderEditId, lineItemId)
-   *   .then(({ order_edit }) => {
-   *     console.log(order_edit.id)
-   *   })
+   * .then(({ order_edit }) => {
+   *   console.log(order_edit.id)
+   * })
    */
   removeLineItem(
     orderEditId: string,

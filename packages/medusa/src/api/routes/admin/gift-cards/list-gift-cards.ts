@@ -29,7 +29,7 @@ import { isDefined } from "medusa-core-utils"
  *       medusa.admin.giftCards.list()
  *       .then(({ gift_cards, limit, offset, count }) => {
  *         console.log(gift_cards.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

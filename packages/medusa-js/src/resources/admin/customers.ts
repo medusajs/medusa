@@ -12,12 +12,16 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Customer API Routes](https://docs.medusajs.com/api/admin#customers).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * Customers can either be created when they register through the {@link CustomerResource.create} method, or created by the admin using the {@link create} method.
+ * 
+ * Related Guide: [How to manage customers](https://docs.medusajs.com/modules/customers/admin/manage-customers).
  */
 class AdminCustomersResource extends BaseResource {
   /**
    * Create a customer as an admin.
-   * @param {AdminPostCustomersReq} payload - The details of the customer to create.
+   * @param {AdminPostCustomersReq} payload - The customer to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminCustomersRes>} the customer's details.
    * 
@@ -33,7 +37,7 @@ class AdminCustomersResource extends BaseResource {
    * })
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   create(
     payload: AdminPostCustomersReq,
@@ -45,7 +49,7 @@ class AdminCustomersResource extends BaseResource {
 
   /**
    * Update a customer's details.
-   * @param {string} id - The ID of the customer.
+   * @param {string} id - The customer's ID.
    * @param {AdminPostCustomersCustomerReq} payload - The attributes to update in the customer.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminCustomersRes>} the customer's details.
@@ -59,7 +63,7 @@ class AdminCustomersResource extends BaseResource {
    * })
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   update(
     id: string,
@@ -72,7 +76,7 @@ class AdminCustomersResource extends BaseResource {
 
   /**
    * Retrieve the details of a customer.
-   * @param {string} id - The ID of the customer.
+   * @param {string} id - The customer's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminCustomersRes>} The customer's details.
    * 
@@ -83,7 +87,7 @@ class AdminCustomersResource extends BaseResource {
    * medusa.admin.customers.retrieve(customerId)
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   retrieve(
     id: string,
@@ -109,7 +113,7 @@ class AdminCustomersResource extends BaseResource {
    * medusa.admin.customers.list()
    * .then(({ customers, limit, offset, count }) => {
    *   console.log(customers.length);
-   * });
+   * })
    * ```
    * 
    * To specify relations that should be retrieved within the customers:
@@ -123,10 +127,10 @@ class AdminCustomersResource extends BaseResource {
    * })
    * .then(({ customers, limit, offset, count }) => {
    *   console.log(customers.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `50` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -139,7 +143,7 @@ class AdminCustomersResource extends BaseResource {
    * })
    * .then(({ customers, limit, offset, count }) => {
    *   console.log(customers.length);
-   * });
+   * })
    * ```
    */
   list(

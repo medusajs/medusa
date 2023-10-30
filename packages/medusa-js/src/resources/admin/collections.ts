@@ -16,7 +16,9 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Collection API Routes](https://docs.medusajs.com/api/admin#product-collections).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * A product collection is used to organize products for different purposes such as marketing or discount purposes. For example, you can create a Summer Collection.
  */
 class AdminCollectionsResource extends BaseResource {
   /**
@@ -34,7 +36,7 @@ class AdminCollectionsResource extends BaseResource {
    * })
    * .then(({ collection }) => {
    *   console.log(collection.id);
-   * });
+   * })
    */
   create(
     payload: AdminPostCollectionsReq,
@@ -60,7 +62,7 @@ class AdminCollectionsResource extends BaseResource {
    * })
    * .then(({ collection }) => {
    *   console.log(collection.id);
-   * });
+   * })
    */
   update(
     id: string,
@@ -84,7 +86,7 @@ class AdminCollectionsResource extends BaseResource {
    * medusa.admin.collections.delete(collectionId)
    * .then(({ id, object, deleted }) => {
    *   console.log(id);
-   * });
+   * })
    */
   delete(
     id: string,
@@ -107,7 +109,7 @@ class AdminCollectionsResource extends BaseResource {
    * medusa.admin.collections.retrieve(collectionId)
    * .then(({ collection }) => {
    *   console.log(collection.id);
-   * });
+   * })
    */
   retrieve(
     id: string,
@@ -133,10 +135,10 @@ class AdminCollectionsResource extends BaseResource {
    * medusa.admin.collections.list()
    * .then(({ collections, limit, offset, count }) => {
    *   console.log(collections.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `10` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -148,7 +150,7 @@ class AdminCollectionsResource extends BaseResource {
    * })
    * .then(({ collections, limit, offset, count }) => {
    *   console.log(collections.length);
-   * });
+   * })
    * ```
    */
   list(
@@ -168,7 +170,7 @@ class AdminCollectionsResource extends BaseResource {
   /**
    * Add products to collection.
    * @param {string} id - The ID of the product collection.
-   * @param {AdminPostProductsToCollectionReq} payload - The details of the products to add.
+   * @param {AdminPostProductsToCollectionReq} payload - The products to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminCollectionsRes>} The product collection's details.
    * 
@@ -198,7 +200,7 @@ class AdminCollectionsResource extends BaseResource {
   /**
    * Remove a list of products from a collection. This would not delete the product, only the association between the product and the collection.
    * @param {string} id - the ID of the product collection
-   * @param {AdminDeleteProductsFromCollectionReq} payload - The details of the products to remove from the collection.
+   * @param {AdminDeleteProductsFromCollectionReq} payload - The products to remove from the collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDeleteProductsFromCollectionRes>} The deletion operation details.
    * 

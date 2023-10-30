@@ -18,7 +18,7 @@ import { ProductService } from "../../../../services"
  *       medusa.admin.products.listTags()
  *       .then(({ tags }) => {
  *         console.log(tags.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

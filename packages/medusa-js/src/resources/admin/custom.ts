@@ -29,7 +29,7 @@ class AdminCustomResource extends BaseResource {
    * )
    * .then(({ posts }) => {
    *   console.log(posts.length);
-   * });
+   * })
    */
   get<TQuery extends Record<string, any>, TResponse = any>(
     path: string,
@@ -80,7 +80,7 @@ class AdminCustomResource extends BaseResource {
    * )
    * .then(({ post }) => {
    *   console.log(post.id);
-   * });
+   * })
    */
   post<TPayload extends Record<string, any>, TResponse = any>(
     path: string,
@@ -115,7 +115,7 @@ class AdminCustomResource extends BaseResource {
    * )
    * .then(() => {
    *   // deleted successfully
-   * });
+   * })
    */
   delete<TResponse = any>(
     path: string,

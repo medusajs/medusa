@@ -9,13 +9,17 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Invite API Routes](https://docs.medusajs.com/api/admin#invites).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * An admin can invite new users to manage their team. This would allow new users to authenticate as admins and perform admin functionalities.
+ * 
+ * Related Guide: [How to manage invites](https://docs.medusajs.com/modules/users/admin/manage-invites).
  */
 class AdminInvitesResource extends BaseResource {
   /**
    * Accept an Invite. This will also delete the invite and create a new user that can log in and perform admin functionalities. 
    * The user will have the email associated with the invite, and the password provided in the `payload` parameter.
-   * @param {AdminPostInvitesInviteAcceptReq} payload - The details of the user accepting the invite.
+   * @param {AdminPostInvitesInviteAcceptReq} payload - The user accepting the invite.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise} Resolves when the invite is accepted successfully.
    * 
@@ -36,7 +40,7 @@ class AdminInvitesResource extends BaseResource {
    * })
    * .catch(() => {
    *   // an error occurred
-   * });
+   * })
    */
   accept(
     payload: AdminPostInvitesInviteAcceptReq,
@@ -49,7 +53,7 @@ class AdminInvitesResource extends BaseResource {
   /**
    * Create an invite. This will generate a token associated with the invite and trigger an `invite.created` event. If you have a Notification Provider installed that handles this
    * event, a notification should be sent to the email associated with the invite to allow them to accept the invite.
-   * @param {AdminPostInvitesPayload} payload - The details of the invite to be created.
+   * @param {AdminPostInvitesPayload} payload - The invite to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise} Resolves when the invite is created successfully.
    * 
@@ -66,7 +70,7 @@ class AdminInvitesResource extends BaseResource {
    * })
    * .catch(() => {
    *   // an error occurred
-   * });
+   * })
    */
   create(
     payload: AdminPostInvitesPayload,
@@ -78,7 +82,7 @@ class AdminInvitesResource extends BaseResource {
 
   /**
    * Delete an invite. Only invites that weren't accepted can be deleted.
-   * @param {string} id - The ID of the invite.
+   * @param {string} id - The invite's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminInviteDeleteRes>} The deletion operation's details.
    * 
@@ -89,7 +93,7 @@ class AdminInvitesResource extends BaseResource {
    * medusa.admin.invites.delete(inviteId)
    * .then(({ id, object, deleted }) => {
    *   console.log(id);
-   * });
+   * })
    */
   delete(
     id: string,
@@ -111,7 +115,7 @@ class AdminInvitesResource extends BaseResource {
    * medusa.admin.invites.list()
    * .then(({ invites }) => {
    *   console.log(invites.length);
-   * });
+   * })
    */
   list(
     customHeaders: Record<string, any> = {}
@@ -124,7 +128,7 @@ class AdminInvitesResource extends BaseResource {
    * Resend an invite. This renews the expiry date by 7 days and generates a new token for the invite. It also triggers the `invite.created` event, 
    * so if you have a Notification Provider installed that handles this event, a notification should be sent to the email associated with the 
    * invite to allow them to accept the invite.
-   * @param {string} id - The ID of the invite.
+   * @param {string} id - The invite's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise} Resolves when the invite is resent successfully.
    * 
@@ -138,7 +142,7 @@ class AdminInvitesResource extends BaseResource {
    * })
    * .catch(() => {
    *   // an error occurred
-   * });
+   * })
    */
   resend(id: string, customHeaders: Record<string, any> = {}): ResponsePromise {
     const path = `/admin/invites/${id}`

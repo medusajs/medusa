@@ -96,7 +96,7 @@ import { Request, Response } from "express"
  *       medusa.admin.productTags.list()
  *       .then(({ product_tags }) => {
  *         console.log(product_tags.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -21,7 +21,7 @@ class PaymentMethodsResource extends BaseResource {
    * medusa.customers.paymentMethods.list()
    * .then(({ payment_methods }) => {
    *   console.log(payment_methods.length);
-   * });
+   * })
    */
   list(
     customHeaders: Record<string, any> = {}

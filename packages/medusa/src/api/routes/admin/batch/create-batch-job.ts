@@ -35,7 +35,7 @@ import { validator } from "../../../../utils/validator"
  *         dry_run: false
  *       }).then((({ batch_job }) => {
  *         console.log(batch_job.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

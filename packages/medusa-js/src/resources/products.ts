@@ -12,6 +12,11 @@ import ProductVariantsResource from "./product-variants"
 
 /**
  * This class is used to send requests to [Store Product API Routes](https://docs.medusajs.com/api/store#products).
+ * 
+ * Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards) in a store.
+ * Using the methods in this class, you can filter products by categories, collections, sales channels, and more.
+ * 
+ * Related Guide: [How to show products in a storefront](https://docs.medusajs.com/modules/products/storefront/show-products).
  */
 class ProductsResource extends BaseResource {
   /**
@@ -25,7 +30,7 @@ class ProductsResource extends BaseResource {
    * 
    * Passing `sales_channel_id` ensures retrieving only products available in the current sales channel.
    * You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
-   * @param {string} id - The ID of the product.
+   * @param {string} id - The product's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreProductsRes>} The product's details.
    * 
@@ -35,7 +40,7 @@ class ProductsResource extends BaseResource {
    * medusa.products.retrieve(productId)
    * .then(({ product }) => {
    *   console.log(product.id);
-   * });
+   * })
    */
   retrieve(
     id: string,
@@ -60,7 +65,7 @@ class ProductsResource extends BaseResource {
    * })
    * .then(({ hits }) => {
    *   console.log(hits.length);
-   * });
+   * })
    */
   search(
     searchOptions: StorePostSearchReq,
@@ -92,7 +97,7 @@ class ProductsResource extends BaseResource {
    * medusa.products.list()
    * .then(({ products, limit, offset, count }) => {
    *   console.log(products.length);
-   * });
+   * })
    * ```
    * 
    * To specify relations that should be retrieved within the products:
@@ -105,10 +110,10 @@ class ProductsResource extends BaseResource {
    * })
    * .then(({ products, limit, offset, count }) => {
    *   console.log(products.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `100` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -120,7 +125,7 @@ class ProductsResource extends BaseResource {
    * })
    * .then(({ products, limit, offset, count }) => {
    *   console.log(products.length);
-   * });
+   * })
    * ```
    */
   list(

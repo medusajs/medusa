@@ -16,12 +16,16 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Draft Order API Routes](https://docs.medusajs.com/api/admin#draft-orders).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * A draft order is an order created manually by the admin. It allows admins to create orders without direct involvement from the customer.
+ * 
+ * Related Guide: [How to manage draft orders](https://docs.medusajs.com/modules/orders/admin/manage-draft-orders).
  */
 class AdminDraftOrdersResource extends BaseResource {
   /**
    * Create a Draft Order. A draft order is not transformed into an order until payment is captured.
-   * @param {AdminPostDraftOrdersReq} payload - The details of the draft order to create.
+   * @param {AdminPostDraftOrdersReq} payload - The draft order to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDraftOrdersRes>} The draft order's details
    * 
@@ -45,7 +49,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * })
    * .then(({ draft_order }) => {
    *   console.log(draft_order.id);
-   * });
+   * })
    */
   create(
     payload: AdminPostDraftOrdersReq,
@@ -57,7 +61,7 @@ class AdminDraftOrdersResource extends BaseResource {
   /**
    * Create a Line Item in the Draft Order.
    * @param {string} id - The ID of the draft order.
-   * @param {AdminPostDraftOrdersDraftOrderLineItemsReq} payload - The details of the line item to create.
+   * @param {AdminPostDraftOrdersDraftOrderLineItemsReq} payload - The line item to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDraftOrdersRes>} The draft order's details
    * 
@@ -70,7 +74,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * })
    * .then(({ draft_order }) => {
    *   console.log(draft_order.id);
-   * });
+   * })
    */
   addLineItem(
     id: string,
@@ -94,7 +98,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * medusa.admin.draftOrders.delete(draftOrderId)
    * .then(({ id, object, deleted }) => {
    *   console.log(id);
-   * });
+   * })
    */
   delete(
     id: string,
@@ -118,7 +122,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * medusa.admin.draftOrders.removeLineItem(draftOrderId, itemId)
    * .then(({ draft_order }) => {
    *   console.log(draft_order.id);
-   * });
+   * })
    */
   removeLineItem(
     id: string,
@@ -142,7 +146,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * medusa.admin.draftOrders.retrieve(draftOrderId)
    * .then(({ draft_order }) => {
    *   console.log(draft_order.id);
-   * });
+   * })
    */
   retrieve(
     id: string,
@@ -171,7 +175,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * })
    * ```
    * 
-   * By default, only the first `50` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -214,7 +218,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * medusa.admin.draftOrders.markPaid(draftOrderId)
    * .then(({ order }) => {
    *   console.log(order.id);
-   * });
+   * })
    */
   markPaid(
     id: string,
@@ -240,7 +244,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * })
    * .then(({ draft_order }) => {
    *   console.log(draft_order.id);
-   * });
+   * })
    */
   update(
     id: string,
@@ -268,7 +272,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * })
    * .then(({ draft_order }) => {
    *   console.log(draft_order.id);
-   * });
+   * })
    */
   updateLineItem(
     id: string,

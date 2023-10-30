@@ -396,22 +396,40 @@ export class AddressCreatePayload {
   postal_code: string
 }
 
+/**
+ * This class defines request parameters that can be used to configure how data is retrieved.
+ */
 export class FindParams {
+  /**
+   * @prop expand - Comma-separated relations that should be expanded in the returned data.
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * @prop fields - Comma-separated fields that should be included in the returned data.
+   */
   @IsString()
   @IsOptional()
   fields?: string
 }
 
+/**
+ * This class defines request parameters that can be used to configure how a list of data is paginated.
+ */
 export class FindPaginationParams {
+  /**
+   * @prop offset - The number of items to skip when retrieving a list.
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * @prop limit - Limit the number of items returned in the list.
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)

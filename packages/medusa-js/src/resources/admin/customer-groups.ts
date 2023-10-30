@@ -19,7 +19,12 @@ import { ResponsePromise } from "../.."
 /**
  * This class is used to send requests to [Admin Customer Group API Routes](https://docs.medusajs.com/api/admin#customer-groups).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * Customer Groups can be used to organize customers that share similar data or attributes into dedicated groups.
+ * This can be useful for different purposes such as setting a different price for a specific customer group.
+ * 
+ * Related Guide: [How to manage customer groups](https://docs.medusajs.com/modules/customers/admin/manage-customer-groups).
  */
 class AdminCustomerGroupsResource extends BaseResource {
   /**
@@ -37,7 +42,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * })
    * .then(({ customer_group }) => {
    *   console.log(customer_group.id);
-   * });
+   * })
    */
   create(
     payload: AdminPostCustomerGroupsReq,
@@ -61,7 +66,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * medusa.admin.customerGroups.retrieve(customerGroupId)
    * .then(({ customer_group }) => {
    *   console.log(customer_group.id);
-   * });
+   * })
    */
   retrieve(
     id: string,
@@ -106,7 +111,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * medusa.admin.customerGroups.delete(customerGroupId)
    * .then(({ id, object, deleted }) => {
    *   console.log(id);
-   * });
+   * })
    */
   delete(
     id: string,
@@ -132,7 +137,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * medusa.admin.customerGroups.list()
    * .then(({ customer_groups, limit, offset, count }) => {
    *   console.log(customer_groups.length);
-   * });
+   * })
    * ```
    * 
    * To specify relations that should be retrieved within the customer groups:
@@ -146,10 +151,10 @@ class AdminCustomerGroupsResource extends BaseResource {
    * })
    * .then(({ customer_groups, limit, offset, count }) => {
    *   console.log(customer_groups.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `10` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -162,7 +167,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * })
    * .then(({ customer_groups, limit, offset, count }) => {
    *   console.log(customer_groups.length);
-   * });
+   * })
    * ```
    */
   list(
@@ -182,7 +187,7 @@ class AdminCustomerGroupsResource extends BaseResource {
   /**
    * Add a list of customers to a customer group.
    * @param {string} id - The ID of the customer group.
-   * @param {AdminPostCustomerGroupsGroupCustomersBatchReq} payload - The details of the customers to add to the customer group.
+   * @param {AdminPostCustomerGroupsGroupCustomersBatchReq} payload - The customers to add to the customer group.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminCustomerGroupsRes>} The customer group's details.
    */
@@ -198,7 +203,7 @@ class AdminCustomerGroupsResource extends BaseResource {
   /**
    * Remove a list of customers from a customer group. This doesn't delete the customer, only the association between the customer and the customer group.
    * @param {string} id - The ID of the customer group.
-   * @param {AdminDeleteCustomerGroupsGroupCustomerBatchReq} payload - The details of the customers to remove from the customer group.
+   * @param {AdminDeleteCustomerGroupsGroupCustomerBatchReq} payload - The customers to remove from the customer group.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminCustomerGroupsRes>} The customer group's details.
    * 
@@ -215,7 +220,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * })
    * .then(({ customer_group }) => {
    *   console.log(customer_group.id);
-   * });
+   * })
    */
   removeCustomers(
     id: string,
@@ -240,7 +245,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * medusa.admin.customerGroups.listCustomers(customerGroupId)
    * .then(({ customers }) => {
    *   console.log(customers.length);
-   * });
+   * })
    */
   listCustomers(
     id: string,

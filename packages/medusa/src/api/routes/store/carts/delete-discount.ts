@@ -23,7 +23,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.deleteDiscount(cartId, code)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

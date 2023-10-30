@@ -13,12 +13,14 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Note API Routes](https://docs.medusajs.com/api/admin#notes).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * Notes are created by admins and can be associated with any resource. For example, an admin can add a note to an order for additional details or remarks.
  */
 class AdminNotesResource extends BaseResource {
   /**
    * Create a Note which can be associated with any resource.
-   * @param {AdminPostNotesReq} payload - The details of the note to be created.
+   * @param {AdminPostNotesReq} payload - The note to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminNotesRes>} The note's details.
    * 
@@ -33,7 +35,7 @@ class AdminNotesResource extends BaseResource {
    * })
    * .then(({ note }) => {
    *   console.log(note.id);
-   * });
+   * })
    */
   create(
     payload: AdminPostNotesReq,
@@ -45,7 +47,7 @@ class AdminNotesResource extends BaseResource {
 
   /**
    * Update a Note's details.
-   * @param {string} id - The ID of the note.
+   * @param {string} id - The note's ID.
    * @param {AdminPostNotesNoteReq} payload - The attributes to update in the note.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminNotesRes>} The note's details.
@@ -59,7 +61,7 @@ class AdminNotesResource extends BaseResource {
    * })
    * .then(({ note }) => {
    *   console.log(note.id);
-   * });
+   * })
    */
   update(
     id: string,
@@ -72,7 +74,7 @@ class AdminNotesResource extends BaseResource {
 
   /**
    * Delete a Note.
-   * @param {string} id - The ID of the note.
+   * @param {string} id - The note's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminNotesDeleteRes>} The deletion operation's details.
    * 
@@ -83,7 +85,7 @@ class AdminNotesResource extends BaseResource {
    * medusa.admin.notes.delete(noteId)
    * .then(({ id, object, deleted }) => {
    *   console.log(id);
-   * });
+   * })
    */
   delete(
     id: string,
@@ -95,7 +97,7 @@ class AdminNotesResource extends BaseResource {
 
   /**
    * Retrieve a note's details.
-   * @param {string} id - The ID of the note.
+   * @param {string} id - The note's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminNotesRes>} The note's details.
    * 
@@ -106,7 +108,7 @@ class AdminNotesResource extends BaseResource {
    * medusa.admin.notes.retrieve(noteId)
    * .then(({ note }) => {
    *   console.log(note.id);
-   * });
+   * })
    */
   retrieve(
     id: string,
@@ -132,10 +134,10 @@ class AdminNotesResource extends BaseResource {
    * medusa.admin.notes.list()
    * .then(({ notes, limit, offset, count }) => {
    *   console.log(notes.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `50` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -147,7 +149,7 @@ class AdminNotesResource extends BaseResource {
    * })
    * .then(({ notes, limit, offset, count }) => {
    *   console.log(notes.length);
-   * });
+   * })
    * ```
    */
   list(

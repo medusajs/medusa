@@ -8,11 +8,15 @@ import BaseResource from "./base"
 
 /**
  * This class is used to send requests to [Store Shipping Option API Routes](https://docs.medusajs.com/api/store#shipping-options).
+ * 
+ * A shipping option is used to define the available shipping methods during checkout or when creating a return.
+ * 
+ * Related Guide: [Shipping Option architecture](https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option).
  */
 class ShippingOptionsResource extends BaseResource {
   /**
    * Retrieve a list of shipping options available for a cart.
-   * @param {string} cart_id - The ID of the cart.
+   * @param {string} cart_id - The cart's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreShippingOptionsListRes>} The list of shipping options.
    * 
@@ -22,7 +26,7 @@ class ShippingOptionsResource extends BaseResource {
    * medusa.shippingOptions.listCartOptions(cartId)
    * .then(({ shipping_options }) => {
    *   console.log(shipping_options.length);
-   * });
+   * })
    */
   listCartOptions(cart_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreShippingOptionsListRes> {
     const path = `/store/shipping-options/${cart_id}`
@@ -41,7 +45,7 @@ class ShippingOptionsResource extends BaseResource {
    * medusa.shippingOptions.list()
    * .then(({ shipping_options }) => {
    *   console.log(shipping_options.length);
-   * });
+   * })
    */
   list(
     query?: StoreGetShippingOptionsParams,

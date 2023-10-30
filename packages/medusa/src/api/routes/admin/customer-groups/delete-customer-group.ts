@@ -23,7 +23,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.customerGroups.delete(customerGroupId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

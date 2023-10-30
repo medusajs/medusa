@@ -55,7 +55,7 @@ import { MedusaError } from "@medusajs/utils"
  *       medusa.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

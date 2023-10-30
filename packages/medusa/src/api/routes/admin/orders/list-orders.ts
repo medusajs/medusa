@@ -165,7 +165,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.list()
  *       .then(({ orders, limit, offset, count }) => {
  *         console.log(orders.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

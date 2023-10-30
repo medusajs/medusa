@@ -36,7 +36,7 @@ import { PricingService } from "../../../../services"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

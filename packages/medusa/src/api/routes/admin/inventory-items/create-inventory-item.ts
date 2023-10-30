@@ -39,7 +39,7 @@ import { MedusaError } from "@medusajs/utils"
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

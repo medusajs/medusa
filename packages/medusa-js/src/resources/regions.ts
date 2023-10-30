@@ -4,6 +4,11 @@ import BaseResource from "./base"
 
 /**
  * This class is used to send requests to [Store Region API Routes](https://docs.medusajs.com/api/store#regions_getregions).
+ * 
+ * Regions are different countries or geographical regions that the commerce store serves customers in.
+ * Customers can choose what region they're in, which can be used to change the prices shown based on the region and its currency.
+ * 
+ * Related Guide: [How to use regions in a storefront](https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions)
  */
 class RegionsResource extends BaseResource {
   /**
@@ -26,7 +31,7 @@ class RegionsResource extends BaseResource {
 
   /**
    * Retrieve a Region's details.
-   * @param {string} id - The ID of the region.
+   * @param {string} id - The region's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreRegionsRes>} The region's details.
    * 
@@ -36,7 +41,7 @@ class RegionsResource extends BaseResource {
    * medusa.regions.retrieve(regionId)
    * .then(({ region }) => {
    *   console.log(region.id);
-   * });
+   * })
    */
   retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreRegionsRes> {
     const path = `/store/regions/${id}`

@@ -35,7 +35,7 @@ import { IInventoryService } from "@medusajs/types"
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

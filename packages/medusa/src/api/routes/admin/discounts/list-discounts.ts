@@ -52,7 +52,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *       medusa.admin.discounts.list()
  *       .then(({ discounts, limit, offset, count }) => {
  *         console.log(discounts.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -11,7 +11,10 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Notification API Routes](https://docs.medusajs.com/api/admin#notifications).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * Notifications are sent to customers to inform them of new updates. For example, a notification can be sent to the customer when their order is place or its state is updated.
+ * The notification's type, such as an email or SMS, is determined by the notification provider installed on the Medusa backend.
  */
 class AdminNotificationsResource extends BaseResource {
   /**
@@ -31,7 +34,7 @@ class AdminNotificationsResource extends BaseResource {
    * medusa.admin.notifications.list()
    * .then(({ notifications }) => {
    *   console.log(notifications.length);
-   * });
+   * })
    * ```
    * 
    * To specify relations that should be retrieved within the notifications:
@@ -45,10 +48,10 @@ class AdminNotificationsResource extends BaseResource {
    * })
    * .then(({ notifications }) => {
    *   console.log(notifications.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `50` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -61,7 +64,7 @@ class AdminNotificationsResource extends BaseResource {
    * })
    * .then(({ notifications }) => {
    *   console.log(notifications.length);
-   * });
+   * })
    * ```
    */
   list(
@@ -80,7 +83,7 @@ class AdminNotificationsResource extends BaseResource {
 
   /**
    * Resend a previously sent notifications, with the same data but optionally to a different address.
-   * @param {string} id - The ID of the notification. 
+   * @param {string} id - The notification's ID. 
    * @param {AdminPostNotificationsNotificationResendReq} payload - The details necessary to resend the notification.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminNotificationsRes>} The notification's details.
@@ -92,7 +95,7 @@ class AdminNotificationsResource extends BaseResource {
    * medusa.admin.notifications.resend(notificationId)
    * .then(({ notification }) => {
    *   console.log(notification.id);
-   * });
+   * })
    */
   resend(
     id: string,

@@ -24,9 +24,9 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.listSalesChannels()
- *         .then(({ sales_channels }) => {
- *           console.log(sales_channels.length)
- *         })
+ *       .then(({ sales_channels }) => {
+ *         console.log(sales_channels.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

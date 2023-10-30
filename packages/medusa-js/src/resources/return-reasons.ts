@@ -7,6 +7,8 @@ import { ResponsePromise } from "../typings"
 
 /**
  * This class is used to send requests to [Store Return Reason API Routes](https://docs.medusajs.com/api/store#return-reasons).
+ * 
+ * Return reasons are key-value pairs that are used to specify why an order return is being created.
  */
 class ReturnReasonsResource extends BaseResource {
   /**
@@ -21,7 +23,7 @@ class ReturnReasonsResource extends BaseResource {
    * medusa.returnReasons.retrieve(reasonId)
    * .then(({ return_reason }) => {
    *   console.log(return_reason.id);
-   * });
+   * })
    */
   retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreReturnReasonsRes> {
     const path = `/store/return-reasons/${id}`
@@ -39,7 +41,7 @@ class ReturnReasonsResource extends BaseResource {
    * medusa.returnReasons.list()
    * .then(({ return_reasons }) => {
    *   console.log(return_reasons.length);
-   * });
+   * })
    */
   list(customHeaders: Record<string, any> = {}): ResponsePromise<StoreReturnReasonsListRes> {
     const path = `/store/return-reasons`

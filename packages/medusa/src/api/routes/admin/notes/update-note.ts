@@ -30,7 +30,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ note }) => {
  *         console.log(note.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

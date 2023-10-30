@@ -12,7 +12,12 @@ import { stringifyNullProperties } from "../../utils"
 /**
  * This class is used to send requests to [Admin Batch Job API Routes](https://docs.medusajs.com/api/admin#batch-jobs).
  * 
- * All methods in this class require {@link auth.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * A batch job is a task that is performed by the Medusa backend asynchronusly. For example, the Import Product feature is implemented using batch jobs.
+ * The methods in this class allow admins to manage the batch jobs and their state.
+ * 
+ * Related Guide: [How to import products](https://docs.medusajs.com/modules/products/admin/import-products).
  */
 class AdminBatchJobsResource extends BaseResource {
 
@@ -33,7 +38,7 @@ class AdminBatchJobsResource extends BaseResource {
    *   dry_run: false
    * }).then((({ batch_job }) => {
    *   console.log(batch_job.id);
-   * });
+   * })
    */
   create(
     payload: AdminPostBatchesReq,
@@ -76,7 +81,7 @@ class AdminBatchJobsResource extends BaseResource {
    * })
    * ```
    * 
-   * By default, only the first `10` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -119,7 +124,7 @@ class AdminBatchJobsResource extends BaseResource {
    * medusa.admin.batchJobs.cancel(batchJobId)
    * .then(({ batch_job }) => {
    *   console.log(batch_job.id);
-   * });
+   * })
    */
   cancel(
     batchJobId: string,
@@ -142,7 +147,7 @@ class AdminBatchJobsResource extends BaseResource {
    * medusa.admin.batchJobs.confirm(batchJobId)
    * .then(({ batch_job }) => {
    *   console.log(batch_job.id);
-   * });
+   * })
    */
   confirm(
     batchJobId: string,
@@ -165,7 +170,7 @@ class AdminBatchJobsResource extends BaseResource {
    * medusa.admin.batchJobs.retrieve(batchJobId)
    * .then(({ batch_job }) => {
    *   console.log(batch_job.id);
-   * });
+   * })
    */
   retrieve(
     batchJobId: string,

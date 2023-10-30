@@ -10,11 +10,16 @@ import BaseResource from "./base"
 
 /**
  * This class is used to send requests to [Store Order API Routes](https://docs.medusajs.com/api/store#orders).
+ * 
+ * Orders are purchases made by customers, typically through a storefront.
+ * Orders are placed and created using {@link CartsResource}. The methods in this class allow retrieving and claiming orders.
+ * 
+ * Related Guide: [How to retrieve order details in a storefront](https://docs.medusajs.com/modules/orders/storefront/retrieve-order-details).
  */
 class OrdersResource extends BaseResource {
   /**
    * Retrieve an Order's details.
-   * @param {string} id - The ID of the order.
+   * @param {string} id - The order's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreOrdersRes>} The details of the order.
    * 
@@ -24,7 +29,7 @@ class OrdersResource extends BaseResource {
    * medusa.orders.retrieve(orderId)
    * .then(({ order }) => {
    *   console.log(order.id);
-   * });
+   * })
    */
   retrieve(
     id: string,
@@ -36,7 +41,7 @@ class OrdersResource extends BaseResource {
 
   /**
    * Retrieve an order's details by the ID of the cart that was used to create the order.
-   * @param {string} cart_id - The ID of the cart.
+   * @param {string} cart_id - The cart's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreOrdersRes>} The details of the order.
    * 
@@ -46,7 +51,7 @@ class OrdersResource extends BaseResource {
    * medusa.orders.retrieveByCartId(cartId)
    * .then(({ order }) => {
    *   console.log(order.id);
-   * });
+   * })
    */
   retrieveByCartId(
     cart_id: string,
@@ -71,7 +76,7 @@ class OrdersResource extends BaseResource {
    * })
    * .then(({ order }) => {
    *   console.log(order.id);
-   * });
+   * })
    */
   lookupOrder(
     payload: StoreGetOrdersParams,
@@ -89,7 +94,7 @@ class OrdersResource extends BaseResource {
    * Allow the logged-in customer to claim ownership of one or more orders. This generates a token that can be used later on to verify the claim using the {@link confirmRequest} method.
    * This also emits the event `order-update-token.created`. So, if you have a notification provider installed that handles this event and sends the customer a notification, such as an email,
    * the customer should receive instructions on how to finalize their claim ownership.
-   * @param {StorePostCustomersCustomerOrderClaimReq} payload - The details of the orders to claim.
+   * @param {StorePostCustomersCustomerOrderClaimReq} payload - The orders to claim.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise} Resolves when the request is created successfully.
    * 
@@ -105,7 +110,7 @@ class OrdersResource extends BaseResource {
    * })
    * .catch(() => {
    *   // an error occurred
-   * });
+   * })
    */
   requestCustomerOrders(
     payload: StorePostCustomersCustomerOrderClaimReq,
@@ -117,7 +122,7 @@ class OrdersResource extends BaseResource {
 
   /**
    * Verify the claim order token provided to the customer when they request ownership of an order.
-   * @param {StorePostCustomersCustomerAcceptClaimReq} payload - The details of the claim order to verify.
+   * @param {StorePostCustomersCustomerAcceptClaimReq} payload - The claim order to verify.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise} Resolves when the claim order is verified successfully.
    * 
@@ -133,7 +138,7 @@ class OrdersResource extends BaseResource {
    * })
    * .catch(() => {
    *   // an error occurred
-   * });
+   * })
    */
   confirmRequest(
     payload: StorePostCustomersCustomerAcceptClaimReq,

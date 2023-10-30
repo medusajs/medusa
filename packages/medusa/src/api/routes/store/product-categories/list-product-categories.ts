@@ -38,7 +38,7 @@ import { defaultStoreCategoryScope } from "."
  *       medusa.productCategories.list()
  *       .then(({ product_categories, limit, offset, count }) => {
  *         console.log(product_categories.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

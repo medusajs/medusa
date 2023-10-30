@@ -95,7 +95,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       medusa.productTags.list()
  *       .then(({ product_tags }) => {
  *         console.log(product_tags.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

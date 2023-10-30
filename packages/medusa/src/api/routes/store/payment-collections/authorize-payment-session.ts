@@ -23,7 +23,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.paymentCollections.authorize(paymentId, sessionId)
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

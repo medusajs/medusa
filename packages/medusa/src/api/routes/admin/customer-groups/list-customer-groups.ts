@@ -113,7 +113,7 @@ import { Type } from "class-transformer"
  *       medusa.admin.customerGroups.list()
  *       .then(({ customer_groups, limit, offset, count }) => {
  *         console.log(customer_groups.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

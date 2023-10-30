@@ -9,6 +9,8 @@ import BaseResource from "./base"
 
 /**
  * This class is used to send requests to [Store Product Variant API Routes](https://docs.medusajs.com/api/store#product-variants).
+ * 
+ * Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
  */
 class ProductVariantsResource extends BaseResource {
   /**
@@ -26,9 +28,9 @@ class ProductVariantsResource extends BaseResource {
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
    * medusa.product.variants.retrieve(productVariantId)
-   *   .then(({ variant }) => {
-   *     console.log(variant.id);
-   *   });
+   * .then(({ variant }) => {
+   *   console.log(variant.id);
+   * })
    */
   retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreVariantsRes> {
     const path = `/store/variants/${id}`
@@ -57,7 +59,7 @@ class ProductVariantsResource extends BaseResource {
    * medusa.product.variants.list()
    * .then(({ variants }) => {
    *   console.log(variants.length);
-   * });
+   * })
    * ```
    * 
    * To specify relations that should be retrieved within the product variants:
@@ -71,10 +73,10 @@ class ProductVariantsResource extends BaseResource {
    * })
    * .then(({ variants }) => {
    *   console.log(variants.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `100` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -87,7 +89,7 @@ class ProductVariantsResource extends BaseResource {
    * })
    * .then(({ variants }) => {
    *   console.log(variants.length);
-   * });
+   * })
    * ```
    */
   list(query?: StoreGetVariantsParams, customHeaders: Record<string, any> = {}): ResponsePromise<StoreVariantsListRes> {

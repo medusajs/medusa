@@ -128,7 +128,7 @@ import { Type } from "class-transformer"
  *       medusa.admin.priceLists.list()
  *       .then(({ price_lists, limit, offset, count }) => {
  *         console.log(price_lists.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

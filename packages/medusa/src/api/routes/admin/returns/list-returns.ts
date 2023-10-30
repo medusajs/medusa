@@ -27,8 +27,8 @@ import { validator } from "../../../../utils/validator"
  *       // must be previously logged in or use api token
  *       medusa.admin.returns.list()
  *       .then(({ returns, limit, offset, count }) => {
- *         console.log(returns.length);
- *       });
+ *         console.log(returns.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

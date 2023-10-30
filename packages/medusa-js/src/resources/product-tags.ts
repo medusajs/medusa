@@ -8,6 +8,9 @@ import BaseResource from "./base"
 
 /**
  * This class is used to send requests to [Store Product Tag API Routes](https://docs.medusajs.com/api/store#product-tags).
+ * 
+ * Product tags are string values that can be used to filter products by.
+ * Products can have more than one tag, and products can share tags.
  */
 class ProductTagsResource extends BaseResource {
   /**
@@ -25,10 +28,10 @@ class ProductTagsResource extends BaseResource {
    * medusa.productTags.list()
    * .then(({ product_tags }) => {
    *   console.log(product_tags.length);
-   * });
+   * })
    * ```
    * 
-   * By default, only the first `20` records are retrieved. You can control pagination by specifying the skip and take parameters:
+   * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
    * 
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
@@ -39,7 +42,7 @@ class ProductTagsResource extends BaseResource {
    * })
    * .then(({ product_tags }) => {
    *   console.log(product_tags.length);
-   * });
+   * })
    * ```
    */
   list(

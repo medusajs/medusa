@@ -42,7 +42,7 @@ import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/i
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -10,7 +10,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  * @oas [post] /admin/reservations/{id}
  * operationId: "PostReservationsReservation"
  * summary: "Update a Reservation"
- * description: "Update a Reservation's details.'"
+ * description: "Update a Reservation's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Reservation.
@@ -31,7 +31,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       })
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

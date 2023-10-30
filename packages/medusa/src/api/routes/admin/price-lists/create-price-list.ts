@@ -60,7 +60,7 @@ import { PriceList } from "../../../../models"
  *       })
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

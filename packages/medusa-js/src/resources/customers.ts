@@ -15,6 +15,10 @@ import PaymentMethodsResource from "./payment-methods"
 
 /**
  * This class is used to send requests to [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers).
+ * 
+ * A customer can register and manage their information such as addresses, orders, payment methods, and more.
+ * 
+ * Related Guide: [How to implement customer profiles in your storefront](https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles).
  */
 class CustomerResource extends BaseResource {
   /**
@@ -29,7 +33,7 @@ class CustomerResource extends BaseResource {
   /**
    * Register a new customer. This will also automatically authenticate the customer and set their login session in the response Cookie header.
    * Subsequent requests sent with the JS client are sent with the Cookie session automatically.
-   * @param {StorePostCustomersReq} payload - The details of the customer to create.d_at`. The product collections can also be paginated.
+   * @param {StorePostCustomersReq} payload - The customer to create.d_at`. The product collections can also be paginated.
    * @param {string} query - Filters and pagination configurations to apply on the retrieved product collections.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns { ResponsePromise<StoreCustomersRes>} The created customer's details.
@@ -45,7 +49,7 @@ class CustomerResource extends BaseResource {
    * })
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   create(
     payload: StorePostCustomersReq,
@@ -56,7 +60,7 @@ class CustomerResource extends BaseResource {
   }
 
   /**
-   * Retrieve the logged-in customer's details.
+   * Retrieve the logged-in customer's details. This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCustomersRes>} The logged-in customer's details.
    * 
@@ -67,7 +71,7 @@ class CustomerResource extends BaseResource {
    * medusa.customers.retrieve()
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   retrieve(
     customHeaders: Record<string, any> = {}
@@ -77,7 +81,7 @@ class CustomerResource extends BaseResource {
   }
 
   /**
-   * Update the logged-in customer's details.
+   * Update the logged-in customer's details. This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {StorePostCustomersCustomerReq} payload - The attributes to update in the logged-in customer.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCustomersRes>} The logged-in customer's details.
@@ -91,7 +95,7 @@ class CustomerResource extends BaseResource {
    * })
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   update(
     payload: StorePostCustomersCustomerReq,
@@ -103,6 +107,7 @@ class CustomerResource extends BaseResource {
 
   /**
    * Retrieve a list of the logged-in customer's orders. The orders can be filtered by fields such as `status` or `fulfillment_status`. The orders can also be paginated.
+   * This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {StoreGetCustomersCustomerOrdersParams} params - Filters and pagination configurations to apply on the retrieved orders.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<StoreCustomersListOrdersRes>} The list of orders with pagination fields.
@@ -114,7 +119,7 @@ class CustomerResource extends BaseResource {
    * medusa.customers.listOrders()
    * .then(({ orders, limit, offset, count }) => {
    *   console.log(orders);
-   * });
+   * })
    */
   listOrders(
     params?: StoreGetCustomersCustomerOrdersParams,
@@ -147,7 +152,7 @@ class CustomerResource extends BaseResource {
    * })
    * .then(({ customer }) => {
    *   console.log(customer.id);
-   * });
+   * })
    */
   resetPassword(
     payload: StorePostCustomersResetPasswordReq,

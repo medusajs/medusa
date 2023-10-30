@@ -31,7 +31,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.shippingOptions.list()
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

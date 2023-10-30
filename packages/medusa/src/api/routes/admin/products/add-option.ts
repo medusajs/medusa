@@ -32,7 +32,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

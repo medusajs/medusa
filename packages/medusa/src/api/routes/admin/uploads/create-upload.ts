@@ -25,7 +25,7 @@ import fs from "fs"
  *       medusa.admin.uploads.create(file)
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

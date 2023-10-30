@@ -33,7 +33,7 @@ import { handleAddOrUpdateLineItem } from "./create-line-item/utils/handler-step
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -34,7 +34,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notifications.resend(notificationId)
  *       .then(({ notification }) => {
  *         console.log(notification.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

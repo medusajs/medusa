@@ -75,7 +75,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.regions.list()
  *       .then(({ regions, count, limit, offset }) => {
  *         console.log(regions.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
