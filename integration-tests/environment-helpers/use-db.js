@@ -30,9 +30,14 @@ const keepTables = [
 
 const DbTestUtil = {
   db_: null,
+  pgConnection_: null,
 
   setDb: function (dataSource) {
     this.db_ = dataSource
+  },
+
+  setPgConnection: function (pgConnection) {
+    this.pgConnection_ = pgConnection
   },
 
   clear: async function () {
@@ -65,6 +70,8 @@ const DbTestUtil = {
 
   shutdown: async function () {
     await this.db_.destroy()
+    await this.pgConnection_?.context?.destroy()
+
     return await dropDatabase({ DB_NAME }, pgGodCredentials)
   },
 }
@@ -150,7 +157,8 @@ module.exports = {
 
       const container = createMedusaContainer()
 
-      await pgConnectionLoader({ configModule, container })
+      const pgConnection = await pgConnectionLoader({ configModule, container })
+      instance.setPgConnection(pgConnection)
 
       const { runMigrations } = await medusaAppLoader(
         { configModule, container },
