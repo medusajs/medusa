@@ -281,7 +281,7 @@ post:
   summary: Create a Product
   x-authenticated: true
   description: >-
-    Create a new Product. This endpoint can also be used to create a gift card
+    Create a new Product. This API Route can also be used to create a gift card
     if the `is_giftcard` field is set to `true`.
   requestBody:
     content:

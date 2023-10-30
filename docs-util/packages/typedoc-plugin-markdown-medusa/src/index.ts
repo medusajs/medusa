@@ -71,7 +71,7 @@ export function load(app: Application) {
     help: "[Markdown Plugin] Do not add special symbols for class members.",
     name: "hideMembersSymbol",
     type: ParameterType.Boolean,
-    defaultValue: false,
+    defaultValue: true,
   })
 
   app.options.addDeclaration({

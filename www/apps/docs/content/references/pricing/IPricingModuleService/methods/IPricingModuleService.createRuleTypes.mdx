@@ -38,8 +38,150 @@ async function createRuleTypes () {
 
 ## Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"[`CreateRuleTypeDTO`](../../interfaces/CreateRuleTypeDTO.mdx)[]","description":"The rule types to create.","optional":false,"defaultValue":"","children":[{"name":"default_priority","type":"`number`","description":"The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.","optional":true,"defaultValue":"","children":[]},{"name":"id","type":"`string`","description":"The ID of the rule type.","optional":true,"defaultValue":"","children":[]},{"name":"name","type":"`string`","description":"The display name of the rule type.","optional":false,"defaultValue":"","children":[]},{"name":"rule_attribute","type":"`string`","description":"The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.","optional":false,"defaultValue":"","children":[]}]},{"name":"sharedContext","type":"[`Context`](../../interfaces/Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","children":[{"name":"enableNestedTransactions","type":"`boolean`","description":"a boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","children":[]},{"name":"manager","type":"`TManager`","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","children":[]},{"name":"transactionId","type":"`string`","description":"a string indicating the ID of the current transaction.","optional":true,"defaultValue":"","children":[]},{"name":"transactionManager","type":"`TManager`","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","children":[]}]}]} />
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`CreateRuleTypeDTO`](../../interfaces/CreateRuleTypeDTO.mdx)[]",
+    "description": "The rule types to create.",
+    "optional": false,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "default_priority",
+        "type": "`number`",
+        "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the rule type.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The display name of the rule type.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "rule_attribute",
+        "type": "`string`",
+        "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "a string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
 
 ## Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"`Promise`<[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]\\>","optional":false,"defaultValue":"","description":"The list of created rule types.","children":[{"name":"RuleTypeDTO[]","type":"[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]","optional":false,"defaultValue":"","description":"","children":[{"name":"RuleTypeDTO","type":"`object`","description":"A rule type's data.","optional":false,"defaultValue":"","children":[]}]}]}]} />
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The list of created rule types.",
+    "children": [
+      {
+        "name": "RuleTypeDTO[]",
+        "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "children": [
+          {
+            "name": "default_priority",
+            "type": "`number`",
+            "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The display name of the rule type.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "rule_attribute",
+            "type": "`string`",
+            "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />

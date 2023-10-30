@@ -1,13 +1,13 @@
-import { asValue, AwilixContainer } from "awilix"
-import { ConfigModule } from "../types/global"
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
+import { AwilixContainer, asValue } from "awilix"
+import { ConfigModule } from "../types/global"
 
 type Options = {
   configModule: ConfigModule
   container: AwilixContainer
 }
 
-export default async ({ container, configModule }: Options): Promise<void> => {
+export default async ({ container, configModule }: Options): Promise<any> => {
   if (container.hasRegistration(ContainerRegistrationKeys.PG_CONNECTION)) {
     return
   }
@@ -36,4 +36,6 @@ export default async ({ container, configModule }: Options): Promise<void> => {
     ContainerRegistrationKeys.PG_CONNECTION,
     asValue(pgConnection)
   )
+
+  return pgConnection
 }

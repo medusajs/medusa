@@ -28,7 +28,7 @@ import CustomerService from "../../../../services/customer"
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/store/customers/me/addresses/{address_id}' \
- *       -H 'Cookie: connect.sid={sid}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []
