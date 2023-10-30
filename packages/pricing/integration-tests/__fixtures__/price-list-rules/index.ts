@@ -4,7 +4,7 @@ import { defaultPriceListRuleData } from "./data"
 
 export * from "./data"
 
-export async function createPricelistRules(
+export async function createPriceListRules(
   manager: SqlEntityManager,
   priceListRuleData: any[] = defaultPriceListRuleData
 ): Promise<PriceListRule[]> {
