@@ -8,12 +8,7 @@ import {
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { joinerConfig } from "../joiner-config"
-import { mergeModulesConfig } from "../utils/merge-modules-config"
-import modulesConfig from "../modules-config"
 import { remoteQueryFetchData } from ".."
-import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
-import IsolatePricingDomainFeatureFlag from "./feature-flags/isolate-pricing-domain"
-import { featureFlagRouter } from "./feature-flags"
 
 export const loadMedusaApp = async (
   {
@@ -38,14 +33,7 @@ export const loadMedusaApp = async (
   container.register(ContainerRegistrationKeys.REMOTE_QUERY, asValue(undefined))
   container.register(ContainerRegistrationKeys.REMOTE_LINK, asValue(undefined))
 
-  let configModules = { ...configModule.modules } ?? {}
-
-  if (
-    featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
-    featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
-  ) {
-    configModules = mergeModulesConfig(configModules ?? {}, modulesConfig)
-  }
+  const configModules = { ...configModule.modules } ?? {}
 
   const medusaApp = await MedusaApp({
     modulesConfig: configModules,

@@ -169,7 +169,10 @@ export default async ({
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
 
-  await loadMedusaApp({ configModule, container })
+  await loadMedusaApp(
+    { configModule, container },
+    { registerInContainer: true }
+  )
 
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
