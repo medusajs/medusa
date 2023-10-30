@@ -1,6 +1,7 @@
 const path = require("path")
 
 const { getConfigFile } = require("medusa-core-utils")
+const { asValue } = require("awilix")
 const { isObject, createMedusaContainer } = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
@@ -162,6 +163,12 @@ module.exports = {
         require("@medusajs/medusa/dist/loaders/medusa-app").default
 
       const container = createMedusaContainer()
+
+      container.register({
+        [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
+        [ContainerRegistrationKeys.LOGGER]: asValue(console),
+        [ContainerRegistrationKeys.MANAGER]: asValue(dbDataSource.manager),
+      })
 
       const pgConnection = await pgConnectionLoader({ configModule, container })
       instance.setPgConnection(pgConnection)

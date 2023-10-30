@@ -30,8 +30,8 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import { MODULE_RESOURCE_TYPE, ModuleDefinition } from "@medusajs/types"
-import loadMedusaApp from "./medusa-app"
+import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
+import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 
 type Options = {
   directory: string
@@ -127,18 +127,7 @@ export default async ({
 
   await pgConnectionLoader({ container, configModule })
 
-  const defaultModules = Object.values(ModulesDefinition).filter(
-    (definition: ModuleDefinition) => {
-      return !!definition.defaultPackage
-    }
-  )
-
-  const configModules = { ...configModule.modules } ?? {}
-
-  for (const defaultModule of defaultModules as ModuleDefinition[]) {
-    configModules[defaultModule.key] ??= defaultModule.defaultModuleDeclaration
-  }
-
+  const configModules = mergeDefaultModules(configModule.modules)
   await loadLegacyModulesEntities(configModules, container)
 
   const dbActivity = Logger.activity(`Initializing database${EOL}`)
@@ -170,7 +159,10 @@ export default async ({
   track("MODULES_INIT_STARTED")
 
   await loadMedusaApp(
-    { configModule, container },
+    {
+      configModule,
+      container,
+    },
     { registerInContainer: true }
   )
 

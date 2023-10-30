@@ -1,20 +1,49 @@
-import { CommonTypes, MedusaContainer } from "@medusajs/types"
+import {
+  CommonTypes,
+  InternalModuleDeclaration,
+  MedusaContainer,
+  ModuleDefinition,
+} from "@medusajs/types"
 import {
   MedusaApp,
   MedusaAppOutput,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { joinerConfig } from "../joiner-config"
 import { remoteQueryFetchData } from ".."
+
+export function mergeDefaultModules(
+  modulesConfig: CommonTypes.ConfigModule["modules"]
+) {
+  const defaultModules = Object.values(ModulesDefinition).filter(
+    (definition: ModuleDefinition) => {
+      return !!definition.defaultPackage
+    }
+  )
+
+  const configModules = { ...modulesConfig } ?? {}
+
+  for (const defaultModule of defaultModules as ModuleDefinition[]) {
+    configModules[defaultModule.key] ??= defaultModule.defaultModuleDeclaration
+  }
+
+  return configModules
+}
 
 export const loadMedusaApp = async (
   {
     configModule,
     container,
-  }: { configModule: CommonTypes.ConfigModule; container: MedusaContainer },
+  }: {
+    configModule: {
+      modules?: CommonTypes.ConfigModule["modules"]
+      projectConfig: CommonTypes.ConfigModule["projectConfig"]
+    }
+    container: MedusaContainer
+  },
   config = { registerInContainer: true }
 ): Promise<MedusaAppOutput> => {
   const injectedDependencies = {
@@ -33,7 +62,28 @@ export const loadMedusaApp = async (
   container.register(ContainerRegistrationKeys.REMOTE_QUERY, asValue(undefined))
   container.register(ContainerRegistrationKeys.REMOTE_LINK, asValue(undefined))
 
-  const configModules = { ...configModule.modules } ?? {}
+  const configModules = mergeDefaultModules(configModule.modules)
+
+  // Apply default options to legacy modules
+  for (const moduleKey of Object.keys(configModules)) {
+    if (!ModulesDefinition[moduleKey].isLegacy) {
+      continue
+    }
+
+    if (isObject(configModules[moduleKey])) {
+      ;(
+        configModules[moduleKey] as Partial<InternalModuleDeclaration>
+      ).options ??= {
+        database: {
+          type: "postgres",
+          url: configModule.projectConfig.database_url,
+          extra: configModule.projectConfig.database_extra,
+          schema: configModule.projectConfig.database_schema,
+          logging: configModule.projectConfig.database_logging,
+        },
+      }
+    }
+  }
 
   const medusaApp = await MedusaApp({
     modulesConfig: configModules,
