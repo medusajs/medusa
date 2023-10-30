@@ -20,12 +20,19 @@ import { PriceListStatus } from "@medusajs/types"
 
 @Entity()
 export default class PriceList {
-  [OptionalProps]?: "price_set_money_amounts" | "rule_types" | "status" | "rules" | "number_rules" | "starts_at" | "ends_at"
+  [OptionalProps]?:
+    | "price_set_money_amounts"
+    | "rule_types"
+    | "status"
+    | "rules"
+    | "number_rules"
+    | "starts_at"
+    | "ends_at"
 
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @Enum({ items: () => PriceListStatus, default: PriceListStatus.DRAFT})
+  @Enum({ items: () => PriceListStatus, default: PriceListStatus.DRAFT })
   status!: PriceListStatus
 
   @Property({

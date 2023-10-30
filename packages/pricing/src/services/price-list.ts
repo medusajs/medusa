@@ -8,9 +8,8 @@ import {
   retrieveEntity,
   shouldForceTransaction,
 } from "@medusajs/utils"
-import { PriceSet } from "@models"
+import { PriceList } from "@models"
 import { PriceListRepository } from "@repositories"
-import PriceList from "src/models/price-list"
 
 type InjectedDependencies = {
   priceListRepository: DAL.RepositoryService
@@ -25,13 +24,13 @@ export default class PriceListService<TEntity extends PriceList = PriceList> {
 
   @InjectManager("priceListRepository_")
   async retrieve(
-    priceSetId: string,
+    priceListId: string,
     config: FindConfig<PricingTypes.PriceSetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await retrieveEntity<PriceList, PricingTypes.PriceSetDTO>({
-      id: priceSetId,
-      entityName: PriceSet.name,
+      id: priceListId,
+      entityName: PriceList.name,
       repository: this.priceListRepository_,
       config,
       sharedContext,

@@ -1,4 +1,4 @@
-import { CreatePriceListDTO } from "@medusajs/types"
+import { CreatePriceListDTO, UpdatePriceListDTO } from "@medusajs/types"
 import {
   Context,
   DAL,
@@ -85,7 +85,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: UpdatePriceSetDTO[],
+    data: Omit<UpdatePriceListDTO, "rules">[],
     context: Context = {}
   ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -101,7 +101,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
       context
     )
 
-    const existingPriceSetMap = new Map(
+    const existingPriceListMap = new Map(
       existingPriceSets.map<[string, PriceList]>((priceSet) => [
         priceSet.id,
         priceSet,
@@ -109,16 +109,24 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
     )
 
     const priceSets = data.map((priceSetData) => {
-      const existingPriceSet = existingPriceSetMap.get(priceSetData.id)
+      const existingPriceList = existingPriceListMap.get(priceSetData.id)
 
-      if (!existingPriceSet) {
+      if (!existingPriceList) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
           `PriceList with id "${priceSetData.id}" not found`
         )
       }
+      
+      if(!!priceSetData.starts_at) { 
+        priceSetData.starts_at = priceSetData.starts_at.toISOString() as any
+      }
 
-      return manager.assign(existingPriceSet, priceSetData)
+      if(!!priceSetData.ends_at) { 
+        priceSetData.ends_at = priceSetData.ends_at.toISOString() as any
+      }
+
+      return manager.assign(existingPriceList, priceSetData)
     })
 
     manager.persist(priceSets)
