@@ -88,10 +88,13 @@ export const SalesChannelRepository = dataSource
 
     async addProducts(
       salesChannelId: string,
-      productIds: string[]
+      productIds: string[],
+      isIsolatedSalesChannelDomainFlagOn?: boolean
     ): Promise<void> {
       const valuesToInsert = productIds.map((id) => ({
-        id: generateEntityId(undefined, "prodsc"),
+        id: isIsolatedSalesChannelDomainFlagOn
+          ? generateEntityId(undefined, "prodsc")
+          : undefined,
         sales_channel_id: salesChannelId,
         product_id: id,
       }))
