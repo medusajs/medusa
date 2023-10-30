@@ -1,6 +1,8 @@
 import {
-    buildRelations,
-    buildSelects, FlagRouter, objectToStringPath
+  buildRelations,
+  buildSelects,
+  FlagRouter,
+  objectToStringPath,
 } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
@@ -8,19 +10,19 @@ import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-    Product,
-    ProductCategory,
-    ProductOption,
-    ProductTag,
-    ProductType,
-    ProductVariant,
-    SalesChannel,
-    ShippingProfile,
+  Product,
+  ProductCategory,
+  ProductOption,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+  SalesChannel,
+  ShippingProfile,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
-    FindWithoutRelationsOptions,
-    ProductRepository,
+  FindWithoutRelationsOptions,
+  ProductRepository,
 } from "../repositories/product"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
@@ -29,15 +31,17 @@ import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
 import { Selector } from "../types/common"
 import {
-    CreateProductInput,
-    FilterableProductProps,
-    FindProductConfig,
-    ProductOptionInput,
-    ProductSelector,
-    UpdateProductInput,
+  CreateProductInput,
+  FilterableProductProps,
+  FindProductConfig,
+  ProductOptionInput,
+  ProductSelector,
+  UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
+import SalesChannelService from "./sales-channel"
+import IsolateSalesChannelDomain from "../loaders/feature-flags/isolate-sales-channel-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -50,6 +54,7 @@ type InjectedDependencies = {
   productCategoryRepository: typeof ProductCategoryRepository
   productVariantService: ProductVariantService
   searchService: SearchService
+  salesChannelService: SalesChannelService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
 }
@@ -65,6 +70,7 @@ class ProductService extends TransactionBaseService {
   protected readonly productCategoryRepository_: typeof ProductCategoryRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
+  protected readonly salesChannelService_: SalesChannelService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
@@ -86,6 +92,7 @@ class ProductService extends TransactionBaseService {
     productCategoryRepository,
     imageRepository,
     searchService,
+    salesChannelService,
     featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
@@ -101,6 +108,7 @@ class ProductService extends TransactionBaseService {
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
+    this.salesChannelService_ = salesChannelService
     this.featureFlagRouter_ = featureFlagRouter
   }
 
@@ -462,7 +470,8 @@ class ProductService extends TransactionBaseService {
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+        !this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
       ) {
         if (isDefined(salesChannels)) {
           product.sales_channels = []
@@ -489,6 +498,20 @@ class ProductService extends TransactionBaseService {
       }
 
       product = await productRepo.save(product)
+
+      if (
+        isDefined(salesChannels) &&
+        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+      ) {
+        if (salesChannels?.length) {
+          await Promise.all(
+            salesChannels?.map(
+              async (sc) =>
+                await this.salesChannelService_.addProducts(sc.id, [product.id])
+            )
+          )
+        }
+      }
 
       product.options = await Promise.all(
         (options ?? []).map(async (option) => {

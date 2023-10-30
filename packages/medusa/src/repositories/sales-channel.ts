@@ -2,6 +2,8 @@ import { DeleteResult, FindOptionsWhere, ILike, In } from "typeorm"
 import { SalesChannel } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+import { generateEntityId } from "../utils"
+import { ProductSalesChannel } from "../models/product-sales-channel"
 
 const productSalesChannelTable = "product_sales_channel"
 
@@ -89,13 +91,14 @@ export const SalesChannelRepository = dataSource
       productIds: string[]
     ): Promise<void> {
       const valuesToInsert = productIds.map((id) => ({
+        id: generateEntityId(undefined, "prodsc"),
         sales_channel_id: salesChannelId,
         product_id: id,
       }))
 
       await this.createQueryBuilder()
         .insert()
-        .into(productSalesChannelTable)
+        .into(ProductSalesChannel)
         .values(valuesToInsert)
         .orIgnore()
         .execute()
