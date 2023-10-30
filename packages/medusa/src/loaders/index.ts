@@ -1,85 +1,42 @@
 import {
   InternalModuleDeclaration,
-  MedusaApp,
-  MedusaModuleConfig,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
+import { Express, NextFunction, Request, Response } from "express"
+
+import databaseLoader, { dataSource } from "./database"
+import pluginsLoader, { registerPluginModels } from "./plugins"
+
+import { Connection } from "typeorm"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { Express, NextFunction, Request, Response } from "express"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
-import "reflect-metadata"
 import requestIp from "request-ip"
-import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
-import { remoteQueryFetchData } from "../utils"
 import apiLoader from "./api"
-import loadConfig from "./config"
-import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
+import loadConfig from "./config"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
-import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import {
-  ConfigModule,
-  MODULE_RESOURCE_TYPE,
-  ModuleDefinition,
-} from "@medusajs/types"
-import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
-import modulesConfig from "../modules-config"
-import { joinerConfig } from "../joiner-config"
+import { MODULE_RESOURCE_TYPE, ModuleDefinition } from "@medusajs/types"
+import loadMedusaApp from "./medusa-app"
 
 type Options = {
   directory: string
   expressApp: Express
   isTest: boolean
-}
-
-/**
- * Merge the modules config from the medusa-config file with the modules config from medusa package
- * if not present in the medusa-config but present in the internal config, then add it to the config
- * @param modules
- * @param medusaInternalModulesConfig
- */
-function mergeModulesConfig(
-  modules: ConfigModule["modules"] = {},
-  medusaInternalModulesConfig: MedusaModuleConfig = {}
-) {
-  const modules_ = ({ ...modules } as ConfigModule["modules"])!
-
-  const userModulesConfigKeys = Object.keys(modules)
-  const internalModulesConfigKeys = Object.keys(medusaInternalModulesConfig)
-
-  const allModulesKeys = new Set([
-    ...userModulesConfigKeys,
-    ...internalModulesConfigKeys,
-  ])
-
-  for (const moduleName of allModulesKeys) {
-    const internalModuleConfig = medusaInternalModulesConfig[moduleName]
-
-    const moduleDefinition = ModulesDefinition[moduleName]
-
-    if (moduleDefinition?.isLegacy) {
-      continue
-    }
-
-    modules_[moduleName] ??= internalModuleConfig
-  }
-
-  return modules_
 }
 
 async function loadLegacyModulesEntities(configModules, container) {
@@ -176,7 +133,7 @@ export default async ({
     }
   )
 
-  let configModules = { ...configModule.modules } ?? {}
+  const configModules = { ...configModule.modules } ?? {}
 
   for (const defaultModule of defaultModules as ModuleDefinition[]) {
     configModules[defaultModule.key] ??= defaultModule.defaultModuleDeclaration
@@ -212,29 +169,7 @@ export default async ({
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
 
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
-    configModules = mergeModulesConfig(configModules ?? {}, modulesConfig)
-  }
-
-  const { query, modules } = await MedusaApp({
-    modulesConfig: configModules,
-    servicesConfig: joinerConfig,
-    remoteFetchData: remoteQueryFetchData(container),
-    sharedContainer: container,
-    injectedDependencies: {
-      [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-        ContainerRegistrationKeys.PG_CONNECTION
-      ),
-    },
-  })
-
-  for (const [serviceKey, moduleService] of Object.entries(modules)) {
-    container.register(
-      ModulesDefinition[serviceKey].registrationName,
-      asValue(moduleService)
-    )
-  }
-  container.register(ContainerRegistrationKeys.REMOTE_QUERY, asValue(query))
+  await loadMedusaApp({ configModule, container })
 
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
