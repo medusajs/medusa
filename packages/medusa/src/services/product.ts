@@ -40,6 +40,7 @@ import {
 } from "../types/product"
 import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
+import { CreateProductVariantInput } from "../types/product-variant"
 import SalesChannelService from "./sales-channel"
 import IsolateSalesChannelDomain from "../loaders/feature-flags/isolate-sales-channel-domain"
 
@@ -437,6 +438,7 @@ class ProductService extends TransactionBaseService {
         tags,
         type,
         images,
+        variants,
         sales_channels: salesChannels,
         categories: categories,
         ...rest
@@ -523,6 +525,27 @@ class ProductService extends TransactionBaseService {
           return res
         })
       )
+
+      if (variants) {
+        const toCreate = variants.map((variant) => {
+          return {
+            ...variant,
+            options:
+              variant.options?.map((option, index) => {
+                return {
+                  option_id: product.options[index].id,
+                  ...option,
+                }
+              }) ?? [],
+          }
+        })
+        product.variants = await this.productVariantService_
+          .withTransaction(manager)
+          .create(
+            product.id,
+            toCreate as unknown as CreateProductVariantInput[]
+          )
+      }
 
       const result = await this.retrieve(product.id, {
         relations: ["options"],
