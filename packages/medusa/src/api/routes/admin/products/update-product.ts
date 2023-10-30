@@ -137,7 +137,6 @@ export default async (req, res) => {
     req.scope.resolve("inventoryService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-
   const productModuleService = req.scope.resolve("productModuleService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
@@ -211,6 +210,7 @@ export default async (req, res) => {
             prices: variant.prices || [],
           })
           variantsToCreate.push(variant)
+
           continue
         }
 
@@ -298,7 +298,7 @@ export default async (req, res) => {
     })
   }
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }
