@@ -5,8 +5,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/ui.git",
-    "directory": "packages/ui-preset"
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/design-system/ui-preset"
   },
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "exports": {

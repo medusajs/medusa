@@ -5,8 +5,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/ui.git",
-    "directory": "packages/ui"
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/design-system/ui"
   },
   "main": "./dist/cjs/index.js",
   "types": "./dist/cjs/index.d.ts",
