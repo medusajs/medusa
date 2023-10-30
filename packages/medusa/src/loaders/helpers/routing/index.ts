@@ -535,7 +535,7 @@ export class RoutesLoader {
   }
 
   async load() {
-    performance.mark("file-base-routing-start" + this.rootDir)
+    performance && performance.mark("file-base-routing-start" + this.rootDir)
 
     let apiExists = true
 
@@ -563,14 +563,16 @@ export class RoutesLoader {
       await this.registerRoutes()
     }
 
-    performance.mark("file-base-routing-end" + this.rootDir)
-    const timeSpent = performance
-      .measure(
-        "file-base-routing-measure" + this.rootDir,
-        "file-base-routing-start" + this.rootDir,
-        "file-base-routing-end" + this.rootDir
-      )
-      ?.duration?.toFixed(2)
+    performance && performance.mark("file-base-routing-end" + this.rootDir)
+    const timeSpent =
+      performance &&
+      performance
+        .measure(
+          "file-base-routing-measure" + this.rootDir,
+          "file-base-routing-start" + this.rootDir,
+          "file-base-routing-end" + this.rootDir
+        )
+        ?.duration?.toFixed(2)
 
     log({
       activityId: this.activityId,

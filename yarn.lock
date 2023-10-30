@@ -6705,7 +6705,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.12.0, @medusajs/modules-sdk@^1.12.1, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@^1.12.0, @medusajs/modules-sdk@^1.12.1, @medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
@@ -6788,7 +6788,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/pricing@workspace:packages/pricing":
+"@medusajs/pricing@workspace:^, @medusajs/pricing@workspace:packages/pricing":
   version: 0.0.0-use.local
   resolution: "@medusajs/pricing@workspace:packages/pricing"
   dependencies:
@@ -26517,6 +26517,8 @@ __metadata:
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/inventory": "workspace:^"
     "@medusajs/medusa": "workspace:*"
+    "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
