@@ -13,9 +13,7 @@ module.exports = ({
 }) => {
   const serverPath = path.join(__dirname, "test-server.js")
 
-  if (bootstrapApp) {
-    require(serverPath)
-  }
+  require(serverPath)
 
   // in order to prevent conflicts in redis, use a different db for each worker
   // same fix as for databases (works with up to 15)
