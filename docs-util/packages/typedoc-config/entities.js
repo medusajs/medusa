@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path")
-const globalTypedocOptions = require("./base")
+const globalTypedocOptions = require("./_base")
 
 const pathPrefix = path.join(__dirname, "..", "..", "..")
 
@@ -14,7 +14,7 @@ module.exports = {
   entryDocument: "_index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
-  plugin: ["typedoc-plugin-markdown-medusa", "typedoc-plugin-frontmatter"],
+  plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-frontmatter"],
   frontmatterData: {
     displayed_sidebar: "entitiesSidebar",
   },

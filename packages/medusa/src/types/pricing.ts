@@ -124,3 +124,14 @@ export type PricedVariant = Partial<ProductVariant> & ProductVariantPricing
 export type PricedProduct = Omit<Partial<Product>, "variants"> & {
   variants: PricedVariant[]
 }
+
+export type VariantPriceSetRes = {
+  id: string
+  title: string
+  price: PriceModulePrice | PriceModulePrice[]
+}
+
+type PriceModulePrice = {
+  variant_id: string
+  price_set_id: string
+}
