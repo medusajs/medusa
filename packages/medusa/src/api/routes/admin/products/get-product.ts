@@ -95,7 +95,7 @@ export default async (req, res) => {
 
   const decoratePromises: Promise<any>[] = []
   if (shouldSetPricing) {
-    decoratePromises.push(pricingService.setProductPrices([product]))
+    decoratePromises.push(pricingService.setAdminProductPricing([product]))
   }
 
   const shouldSetAvailability =
