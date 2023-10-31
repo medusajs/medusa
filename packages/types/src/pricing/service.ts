@@ -40,6 +40,7 @@ import {
   UpdatePriceSetDTO,
   UpdatePriceSetMoneyAmountRulesDTO,
   UpdateRuleTypeDTO,
+  setPriceListRulesDTO,
 } from "./common"
 
 import { Context } from "../shared-context"
@@ -2744,4 +2745,9 @@ export interface IPricingModuleService {
     data: AddPriceListPricesDTO,
     sharedContext?: Context
   ): Promise<PriceListDTO>
+
+  setPriceListRules(
+    data: setPriceListRulesDTO,
+    sharedContext?: Context
+  ): Promise<PriceListDTO> 
 }

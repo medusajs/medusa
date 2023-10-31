@@ -63,10 +63,10 @@ export interface PriceListRuleDTO {
 }
 
 export interface CreatePriceListRuleDTO {
-  id: string
-  rule_type_id: string
+  id?: string
+  rule_type: string
   value: string
-  price_list_id: string
+  price_list: string
 }
 
 export interface UpdatePriceListRuleDTO {
@@ -83,4 +83,16 @@ export interface AddPriceListPricesDTO{
 			price_set_id: string,
     },
   ],
+}
+export interface setPriceListRulesDTO{
+	priceListId: string,
+	rules: Record<string, string>
+  // {
+
+	// 	// // updating rules will be entirely replacing what is currently present
+	// 	// customer_group_id: [
+	// 	// 	"vip-customer-group-id",
+	// 	// 	"another-vip-customer-group-id"
+	// 	// ],
+	// }
 }

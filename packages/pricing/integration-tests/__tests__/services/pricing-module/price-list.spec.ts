@@ -228,4 +228,5 @@ describe("PriceList Service", () => {
       expect(priceList.id).toEqual("price-list-3")
     })
   })
+
 })

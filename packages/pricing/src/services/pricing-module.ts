@@ -51,6 +51,9 @@ import {
 import { AddPricesDTO } from "@medusajs/types"
 import { joinerConfig } from "../joiner-config"
 import { PricingRepositoryService } from "../types"
+import { CreatePriceListRuleDTO } from "@medusajs/types"
+import { PriceListRuleDTO } from "@medusajs/types"
+import { UpdatePriceListRuleDTO } from "@medusajs/types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -106,7 +109,7 @@ export default class PricingModuleService<
       priceSetRuleTypeService,
       priceSetMoneyAmountService,
       priceListService,
-      priceListRuleService
+      priceListRuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -1388,7 +1391,10 @@ export default class PricingModuleService<
     data: PricingTypes.CreatePriceListRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceListRuleDTO[]> {
-    const priceLists = await this.priceListRuleService_.create(data, sharedContext)
+    const priceLists = await this.priceListRuleService_.create(
+      data,
+      sharedContext
+    )
 
     return this.baseRepository_.serialize<PricingTypes.PriceListRuleDTO[]>(
       priceLists,
@@ -1403,7 +1409,10 @@ export default class PricingModuleService<
     data: PricingTypes.UpdatePriceListRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceListRuleDTO[]> {
-    const priceLists = await this.priceListRuleService_.update(data, sharedContext)
+    const priceLists = await this.priceListRuleService_.update(
+      data,
+      sharedContext
+    )
 
     return this.baseRepository_.serialize<PricingTypes.PriceListRuleDTO[]>(
       priceLists,
@@ -1425,7 +1434,7 @@ export default class PricingModuleService<
   async addPriceListPrices(
     data: PricingTypes.AddPriceListPricesDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListDTO> { 
+  ): Promise<PricingTypes.PriceListDTO> {
     const [priceList] = await this.addPriceListPrices_([data], sharedContext)
 
     return this.baseRepository_.serialize<PricingTypes.PriceListDTO>(
@@ -1440,16 +1449,19 @@ export default class PricingModuleService<
   protected async addPriceListPrices_(
     data: PricingTypes.AddPriceListPricesDTO[],
     sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListDTO[]> { 
-    const priceLists = await this.listPriceLists({id: data.map(d => d.priceListId)}, {}, sharedContext)
+  ): Promise<PricingTypes.PriceListDTO[]> {
+    const priceLists = await this.listPriceLists(
+      { id: data.map((d) => d.priceListId) },
+      {},
+      sharedContext
+    )
 
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
 
     for (const { priceListId, prices } of data) {
-
       const priceList = priceListMap.get(priceListId)
 
-      if(!priceList) {
+      if (!priceList) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Price list with id: ${priceListId} not found`
@@ -1469,8 +1481,8 @@ export default class PricingModuleService<
                 price_set: price.price_set_id,
                 money_amount: moneyAmount,
                 title: "test",
-                number_rules: 0, 
-                price_list: priceList.id
+                number_rules: 0,
+                price_list: priceList.id,
               },
             ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
             sharedContext
@@ -1482,5 +1494,91 @@ export default class PricingModuleService<
     }
 
     return priceLists
+  }
+
+  @InjectManager("baseRepository_")
+  async setPriceListRules(
+    data: PricingTypes.setPriceListRulesDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceListDTO> {
+    const [priceList] = await this.setPriceListRules_([data], sharedContext)
+
+    return priceList
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async setPriceListRules_(
+    data: PricingTypes.setPriceListRulesDTO[],
+    sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceListDTO[]> {
+    const priceLists = await this.priceListService_.list(
+      { id: data.map((d) => d.priceListId) },
+      { relations: ["rules", "rules.rule_type"] },
+      sharedContext
+    )
+
+    const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
+
+    const ruleTypes = await this.listRuleTypes({
+      rule_attribute: data.map((d) => Object.keys(d.rules)).flat(),
+    })
+
+    const ruleTypeMap = new Map(ruleTypes.map((rt) => [rt.rule_attribute, rt]))
+
+    const rulesToUpdate: UpdatePriceListRuleDTO[] = []
+    const rulesToCreate: CreatePriceListRuleDTO[] = []
+    for (const { priceListId, rules } of data) {
+      const priceList = priceListMap.get(priceListId)
+
+      if (!priceList) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Price list with id: ${priceListId} not found`
+        )
+      }
+
+      const priceListRulesMap: Map<string, PriceListRule> = new Map(
+        priceList.rules.getItems().map((p) => [p.rule_type.rule_attribute, p])
+      )
+
+      await Promise.all(
+        Object.entries(rules).map(async ([key, value]) => {
+          const ruleType = ruleTypeMap.get(key)
+          if (!ruleType) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Rule type with attribute: ${key} not found`
+            )
+          }
+
+          const rule = priceListRulesMap.get(key)
+
+          if (!rule) {
+            rulesToCreate.push({
+              rule_type: ruleType.id,
+              price_list: priceListId,
+              value,
+            })
+          } else {
+            rulesToUpdate.push({
+              id: rule.id,
+              value,
+            })
+          }
+        })
+      )
+    }
+
+    await Promise.all([
+      await this.priceListRuleService_.create(rulesToCreate),
+      await this.priceListRuleService_.update(rulesToUpdate),
+    ])
+
+    return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
+      priceLists,
+      {
+        populate: true,
+      }
+    )
   }
 }
