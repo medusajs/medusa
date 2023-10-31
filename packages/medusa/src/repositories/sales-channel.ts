@@ -105,7 +105,11 @@ export const SalesChannelRepository = dataSource
 
       await this.createQueryBuilder()
         .insert()
-        .into(ProductSalesChannel)
+        .into(
+          isIsolatedSalesChannelDomainFlagOn
+            ? ProductSalesChannel
+            : productSalesChannelTable
+        )
         .values(valuesToInsert)
         .orIgnore()
         .execute()
