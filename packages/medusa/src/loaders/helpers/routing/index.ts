@@ -168,6 +168,8 @@ export class RoutesLoader {
 
       const matches = [...route_.matchAll(replacer)]
 
+      console.warn("MATCHES", matches, "ROUTE", route, "REPLACER", replacer)
+
       const parameters = new Set()
 
       for (const match of matches) {
@@ -194,6 +196,8 @@ export class RoutesLoader {
         route_ = route_.replace(extension, "")
       }
     }
+
+    console.warn("NEW ROUTE", route_, "OLD ROUTE", route)
 
     route = route_
 
