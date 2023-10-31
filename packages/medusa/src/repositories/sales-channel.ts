@@ -91,13 +91,17 @@ export const SalesChannelRepository = dataSource
       productIds: string[],
       isIsolatedSalesChannelDomainFlagOn?: boolean
     ): Promise<void> {
-      const valuesToInsert = productIds.map((id) => ({
-        id: isIsolatedSalesChannelDomainFlagOn
-          ? generateEntityId(undefined, "prodsc")
-          : undefined,
+      let valuesToInsert = productIds.map((id) => ({
         sales_channel_id: salesChannelId,
         product_id: id,
       }))
+
+      if (isIsolatedSalesChannelDomainFlagOn) {
+        valuesToInsert = valuesToInsert.map((v) => ({
+          ...v,
+          id: generateEntityId(undefined, "prodsc"),
+        }))
+      }
 
       await this.createQueryBuilder()
         .insert()
