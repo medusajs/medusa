@@ -1,7 +1,7 @@
-import { PricingService, ProductService } from "../../../../services"
-
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { MedusaError } from "@medusajs/utils"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { PricingService, ProductService } from "../../../../services"
+import { FindParams } from "../../../../types/common"
 import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
@@ -114,3 +114,5 @@ async function getProductWithIsolatedProductModule(req, id, retrieveConfig) {
 
   return product
 }
+
+export class AdminGetProductParams extends FindParams {}
