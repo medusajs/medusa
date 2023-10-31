@@ -184,9 +184,9 @@ async function validateOAS(
     console.log(`🟢 Valid OAS - ${apiType}`)
   } catch (err) {
     console.error(`🔴 Invalid OAS - ${apiType}`, err)
-    // if (!force) {
-    //   process.exit(1)
-    // }
+    if (!force) {
+      process.exit(1)
+    }
   }
 }
 

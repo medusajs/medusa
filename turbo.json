@@ -18,9 +18,6 @@
       "outputs": []
     },
     "test:os": {
-      "dependsOn": [
-        "build"
-      ],
       "outputs": []
     },
     "test:integration": {
