@@ -8,6 +8,7 @@ import {
 import path from "path"
 
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 
@@ -21,6 +22,7 @@ describe("UpdateProduct workflow", function () {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
     await startBootstrapApp({ cwd, skipExpressListen: true })
+    medusaContainer = getContainer()
   })
 
   afterAll(async () => {
