@@ -1,4 +1,5 @@
 import {
+  AddPriceListPricesDTO,
   AddPricesDTO,
   AddRulesDTO,
   CalculatedPriceSetDTO,
@@ -2738,4 +2739,9 @@ export interface IPricingModuleService {
     priceListRuleIds: string[],
     sharedContext?: Context
   ): Promise<void> 
+
+  addPriceListPrices(
+    data: AddPriceListPricesDTO,
+    sharedContext?: Context
+  ): Promise<PriceListDTO>
 }

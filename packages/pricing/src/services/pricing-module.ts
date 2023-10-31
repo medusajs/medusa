@@ -1437,22 +1437,22 @@ export default class PricingModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  async addPriceListPrices_(
+  protected async addPriceListPrices_(
     data: PricingTypes.AddPriceListPricesDTO[],
     sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListDTO> { 
+  ): Promise<PricingTypes.PriceListDTO[]> { 
     const priceLists = await this.listPriceLists({id: data.map(d => d.priceListId)}, {}, sharedContext)
 
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
 
-    for (const { priceSetId, prices } of data) {
+    for (const { priceListId, prices } of data) {
 
-      const priceList = priceListMap.get(priceSetId)
+      const priceList = priceListMap.get(priceListId)
 
       if(!priceList) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Price list with id: ${priceSetId} not found`
+          `Price list with id: ${priceListId} not found`
         )
       }
 
