@@ -2,7 +2,7 @@ import cors from "cors"
 import { Express, json, urlencoded } from "express"
 import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
-import { extname, join } from "path"
+import { extname, join, sep } from "path"
 import {
   authenticate,
   authenticateCustomer,
@@ -312,7 +312,7 @@ export class RoutesLoader {
 
     let routeToParse = childPath
 
-    const pathSegments = childPath.split("/")
+    const pathSegments = childPath.split(sep)
     const lastSegment = pathSegments[pathSegments.length - 1]
 
     if (lastSegment.startsWith("route")) {
