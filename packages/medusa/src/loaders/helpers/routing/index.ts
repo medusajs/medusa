@@ -2,7 +2,7 @@ import cors from "cors"
 import { Express, json, urlencoded } from "express"
 import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
-import { extname, join } from "path"
+import { extname, join, sep } from "path"
 import {
   authenticate,
   authenticateCustomer,
@@ -95,7 +95,7 @@ export class RoutesLoader {
   protected excludes: RegExp[] = [
     /\.DS_Store/,
     /(\.ts\.map|\.js\.map|\.d\.ts)/,
-    /^_/,
+    /^_[^/\\]*(\.[^/\\]+)?$/,
   ]
 
   constructor({
@@ -157,7 +157,7 @@ export class RoutesLoader {
    * @param route - The route to parse
    *
    * @example
-   * "/admin/orders/[id]/index.ts" => "/admin/orders/:id/index.ts"
+   * "/admin/orders/[id]/route.ts => "/admin/orders/:id/route.ts"
    */
   protected parseRoute(route: string): string {
     let route_ = route
@@ -308,7 +308,7 @@ export class RoutesLoader {
 
     let routeToParse = childPath
 
-    const pathSegments = childPath.split("/")
+    const pathSegments = childPath.split(sep)
     const lastSegment = pathSegments[pathSegments.length - 1]
 
     if (lastSegment.startsWith("route")) {
@@ -404,8 +404,6 @@ export class RoutesLoader {
       await readdir(dirPath, { withFileTypes: true }).then((entries) => {
         return entries
           .filter((entry) => {
-            const fullPath = join(dirPath, entry.name)
-
             if (
               this.excludes.length &&
               this.excludes.some((exclude) => exclude.test(entry.name))
@@ -413,8 +411,13 @@ export class RoutesLoader {
               return false
             }
 
-            // Get entry name without extension
-            const name = entry.name.replace(/\.[^/.]+$/, "")
+            let name = entry.name
+
+            const extension = extname(name)
+
+            if (extension) {
+              name = name.replace(extension, "")
+            }
 
             if (entry.isFile() && name !== ROUTE_NAME) {
               return false
@@ -541,7 +544,7 @@ export class RoutesLoader {
 
     /**
      * Since the file based routing does not require a index file
-     * we can check if it exists using require. Instead we try
+     * we can't check if it exists using require. Instead we try
      * to read the directory and if it fails we know that the
      * directory does not exist.
      */
