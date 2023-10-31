@@ -78,7 +78,7 @@ const InvitePage = () => {
   } = useAdminCreateAnalyticsConfig()
   const { mutateAsync: doLogin, isLoading: loginIsLoading } = useAdminLogin()
 
-  const {access, getAccess, loaded} = useAccess();
+  const {getAccess} = useAccess();
 
   const isLoading =
     acceptInviteIsLoading || createAnalyticsConfigIsLoading || loginIsLoading

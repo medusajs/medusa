@@ -6,7 +6,6 @@ useQueryClient,
 } from "@tanstack/react-query"
 import { adminInviteKeys, useMedusa } from "medusa-react"
 import { buildOptions } from "../utils/build-options"
-import { Role } from "../types/shared"
 
 type InviteFormData = {
   user: string
