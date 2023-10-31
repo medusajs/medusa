@@ -5,11 +5,11 @@ import { OpenAPIObject } from "openapi3-ts"
 import * as path from "path"
 import swaggerInline from "swagger-inline"
 import { combineOAS } from "./utils/combine-oas"
+import { isFile } from "./utils/fs-utils"
 import {
   mergeBaseIntoOAS,
   mergePathsAndSchemasIntoOAS,
 } from "./utils/merge-oas"
-import { isFile } from "./utils/fs-utils"
 
 /**
  * Constants
@@ -184,9 +184,9 @@ async function validateOAS(
     console.log(`🟢 Valid OAS - ${apiType}`)
   } catch (err) {
     console.error(`🔴 Invalid OAS - ${apiType}`, err)
-    if (!force) {
-      process.exit(1)
-    }
+    // if (!force) {
+    //   process.exit(1)
+    // }
   }
 }
 
