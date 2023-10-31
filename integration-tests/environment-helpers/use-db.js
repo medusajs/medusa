@@ -69,9 +69,7 @@ const DbTestUtil = {
   },
 
   shutdown: async function () {
-    if (this.db_.isInitialized) {
-      await this.db_?.destroy()
-    }
+    await this.db_?.destroy()
     await this.pgConnection_?.context?.destroy()
 
     return await dropDatabase({ databaseName: DB_NAME }, pgGodCredentials)
