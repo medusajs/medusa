@@ -157,7 +157,7 @@ export class RoutesLoader {
    * @param route - The route to parse
    *
    * @example
-   * "/admin/orders/[id] => "/admin/orders/:id"
+   * "/admin/orders/[id]/route.ts => "/admin/orders/:id/route.ts"
    */
   protected parseRoute(route: string): string {
     let route_ = route
