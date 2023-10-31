@@ -3,19 +3,8 @@ const { spawn } = require("child_process")
 const { setPort, useExpressServer } = require("./use-api")
 const { setContainer } = require("./use-container")
 
-module.exports = async ({
-  cwd,
-  redisUrl,
-  uploadDir,
-  verbose,
-  env,
-  bootstrapApp = false,
-}) => {
+module.exports = async ({ cwd, redisUrl, uploadDir, verbose, env }) => {
   const serverPath = path.join(__dirname, "test-server.js")
-
-  if (bootstrapApp) {
-    require(serverPath)
-  }
 
   // in order to prevent conflicts in redis, use a different db for each worker
   // same fix as for databases (works with up to 15)

@@ -173,6 +173,7 @@ module.exports = {
 
       const options = {
         database: {
+          clientUrl: DB_URL,
           connection: pgConnection,
         },
       }

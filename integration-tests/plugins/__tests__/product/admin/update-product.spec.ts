@@ -1,6 +1,7 @@
-import setupServer from "../../../../environment-helpers/setup-server"
-import { useApi } from "../../../../environment-helpers/use-api"
-import { getContainer } from "../../../../environment-helpers/use-container"
+import {
+  useApi,
+  useExpressServer,
+} from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 
@@ -10,6 +11,8 @@ import path from "path"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { getContainer } from "../../../../environment-helpers/use-container"
 
 jest.setTimeout(50000)
 
@@ -27,21 +30,20 @@ const env = {
 describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
-  let medusaProcess
   let product
   let variant
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env, bootstrapApp: true } as any)
+    await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    ;(useExpressServer() as any)?.close?.()
   })
 
   beforeEach(async () => {
@@ -80,7 +82,7 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
   })
 
   it("should update product variant price sets and prices", async () => {
-    const api = useApi()
+    const api = useApi() as any
     const data = {
       title: "test product update",
       variants: [
@@ -150,7 +152,7 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
 
     const moneyAmountToUpdate = priceSet.money_amounts?.[0]
 
-    const api = useApi()
+    const api = useApi() as any
     const data = {
       title: "test product update",
       variants: [
@@ -173,13 +175,12 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    let response = await api.post(
+    await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+
+    const response = await api.get(
       `/admin/products/${product.id}`,
-      data,
       adminHeaders
     )
-
-    response = await api.get(`/admin/products/${product.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data.product).toEqual(
