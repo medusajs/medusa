@@ -47,6 +47,12 @@ describe("SearchEngineModuleService", function () {
           data: {
             id: "prod_2",
             title: "Product 2 title",
+            deep: {
+              a: 1,
+              obj: {
+                b: 15,
+              },
+            },
           },
         },
         {
@@ -207,6 +213,12 @@ describe("SearchEngineModuleService", function () {
       {
         id: "prod_2",
         title: "Product 2 title",
+        deep: {
+          a: 1,
+          obj: {
+            b: 15,
+          },
+        },
         variants: [],
       },
       {
@@ -359,6 +371,12 @@ describe("SearchEngineModuleService", function () {
       {
         id: "prod_2",
         title: "Product 2 title",
+        deep: {
+          a: 1,
+          obj: {
+            b: 15,
+          },
+        },
         variants: [],
       },
     ])
@@ -385,6 +403,12 @@ describe("SearchEngineModuleService", function () {
       {
         id: "prod_2",
         title: "Product 2 title",
+        deep: {
+          a: 1,
+          obj: {
+            b: 15,
+          },
+        },
         variants: [],
       },
     ])
@@ -408,7 +432,36 @@ describe("SearchEngineModuleService", function () {
       {
         id: "prod_2",
         title: "Product 2 title",
+        deep: {
+          a: 1,
+          obj: {
+            b: 15,
+          },
+        },
         variants: [],
+      },
+    ])
+  })
+
+  it("should query products filtering by deep nested levels", async () => {
+    const [result] = await module.queryAndCount({
+      select: {
+        product: true,
+      },
+      where: {
+        "product.deep.obj.b": 15,
+      },
+    })
+    expect(result).toEqual([
+      {
+        id: "prod_2",
+        title: "Product 2 title",
+        deep: {
+          a: 1,
+          obj: {
+            b: 15,
+          },
+        },
       },
     ])
   })

@@ -12,7 +12,11 @@ export async function createPartitions(
     ? `"${manager.config.get("schema")}".`
     : ""
   const partitions = Object.keys(schemaObjectRepresentation)
-    .filter((key) => !schemaObjectRepresentationPropertiesToOmit.includes(key))
+    .filter(
+      (key) =>
+        !schemaObjectRepresentationPropertiesToOmit.includes(key) &&
+        schemaObjectRepresentation[key].listeners.length > 0
+    )
     .map((key) => {
       const cName = key.toLowerCase()
       const part: string[] = []

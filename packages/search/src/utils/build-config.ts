@@ -25,6 +25,7 @@ export const CustomDirectives = {
 
 function makeSchemaExecutable(inputSchema: string) {
   const { schema: cleanedSchema } = cleanGraphQLSchema(inputSchema)
+
   return makeExecutableSchema({ typeDefs: cleanedSchema })
 }
 
@@ -92,9 +93,7 @@ function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
   }
 
   if (!relatedModule) {
-    throw new Error(
-      `CatalogModule error, unable to retrieve the module that correspond to the entity ${entityName}. Please add the entity to the module schema or add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
-    )
+    return { relatedModule: null, alias: null }
   }
 
   if (!alias) {
@@ -288,12 +287,6 @@ function setCustomDirectives(currentObjectRepresentationRef, directives) {
     )
 
     if (!directive) {
-      if (customDirectiveConfiguration.isRequired) {
-        throw new Error(
-          `CatalogModule error, the type ${currentObjectRepresentationRef.entity} defined in the schema is missing the ${customDirectiveConfiguration.directive} directive which is required`
-        )
-      }
-
       return
     }
 
@@ -350,12 +343,13 @@ function processEntity(
     moduleJoinerConfigs
   )
 
-  objectRepresentationRef._serviceNameModuleConfigMap[
-    currentEntityModule.serviceName
-  ] = currentEntityModule
-  currentObjectRepresentationRef.moduleConfig = currentEntityModule
-  currentObjectRepresentationRef.alias = alias
-
+  if (currentEntityModule) {
+    objectRepresentationRef._serviceNameModuleConfigMap[
+      currentEntityModule.serviceName
+    ] = currentEntityModule
+    currentObjectRepresentationRef.moduleConfig = currentEntityModule
+    currentObjectRepresentationRef.alias = alias
+  }
   /**
    * Retrieve the parent entities for the current entity.
    */
@@ -374,210 +368,220 @@ function processEntity(
     )
   })
 
+  if (!schemaParentEntity.length) {
+    return
+  }
+
   /**
    * If the current entity has parent entities, then we need to process them.
    */
+  const parentEntityNames = schemaParentEntity.map((parent: any) => {
+    return parent.name
+  })
 
-  if (schemaParentEntity.length) {
-    const parentEntityNames = schemaParentEntity.map((parent: any) => {
-      return parent.name
+  for (const parent of parentEntityNames) {
+    /**
+     * Retrieve the parent entity field in the schema
+     */
+
+    const entityFieldInParent = (
+      entitiesMap[parent].astNode as any
+    )?.fields?.find((field) => {
+      let currentType = field.type
+      while (currentType.type) {
+        currentType = currentType.type
+      }
+      return currentType.name?.value === entityName
     })
 
-    for (const parent of parentEntityNames) {
+    const isEntityListInParent =
+      entityFieldInParent.type.kind === Kind.LIST_TYPE
+    const entityTargetPropertyNameInParent = entityFieldInParent.name.value
+
+    /**
+     * Retrieve the parent entity object representation reference.
+     */
+
+    const parentObjectRepresentationRef = getObjectRepresentationRef(parent, {
+      objectRepresentationRef,
+    })
+    const parentModuleConfig = parentObjectRepresentationRef.moduleConfig
+
+    // If the entity is not part of any module, just set the parent and continue
+    if (!currentObjectRepresentationRef.moduleConfig) {
+      currentObjectRepresentationRef.parents.push({
+        ref: parentObjectRepresentationRef,
+        targetProp: entityTargetPropertyNameInParent,
+        isList: isEntityListInParent,
+      })
+      continue
+    }
+
+    /**
+     * If the parent entity and the current entity are part of the same servive then configure the parent and
+     * add the parent id as a field to the current entity.
+     */
+
+    if (
+      currentObjectRepresentationRef.moduleConfig.serviceName ===
+        parentModuleConfig.serviceName ||
+      parentModuleConfig.isLink
+    ) {
+      currentObjectRepresentationRef.parents.push({
+        ref: parentObjectRepresentationRef,
+        targetProp: entityTargetPropertyNameInParent,
+        isList: isEntityListInParent,
+      })
+
+      currentObjectRepresentationRef.fields.push(
+        parentObjectRepresentationRef.alias + ".id"
+      )
+    } else {
       /**
-       * Retrieve the parent entity field in the schema
+       * If the parent entity and the current entity are not part of the same service then we need to
+       * find the link module that join them.
        */
 
-      const entityFieldInParent = (
-        entitiesMap[parent].astNode as any
-      )?.fields?.find((field) => {
-        let currentType = field.type
-        while (currentType.type) {
-          currentType = currentType.type
+      const linkModuleMetadatas = retrieveLinkModuleAndAlias({
+        primaryEntity: parentObjectRepresentationRef.entity,
+        primaryModuleConfig: parentModuleConfig,
+        foreignEntity: currentObjectRepresentationRef.entity,
+        foreignModuleConfig: currentEntityModule,
+        moduleJoinerConfigs,
+      })
+
+      for (const linkModuleMetadata of linkModuleMetadatas) {
+        const linkObjectRepresentationRef = getObjectRepresentationRef(
+          linkModuleMetadata.entityName,
+          { objectRepresentationRef }
+        )
+
+        objectRepresentationRef._serviceNameModuleConfigMap[
+          linkModuleMetadata.linkModuleConfig.serviceName ||
+            linkModuleMetadata.entityName
+        ] = currentEntityModule
+
+        /**
+         * Add the schema parent entity as a parent to the link module and configure it.
+         */
+
+        linkObjectRepresentationRef.parents = [
+          {
+            ref: parentObjectRepresentationRef,
+            targetProp: linkModuleMetadata.alias,
+          },
+        ]
+        linkObjectRepresentationRef.alias = linkModuleMetadata.alias
+        linkObjectRepresentationRef.listeners = [
+          // TODO: align event entity name
+          `${linkModuleMetadata.entityName}.attached`,
+          `${linkModuleMetadata.entityName}.detached`,
+        ]
+        linkObjectRepresentationRef.moduleConfig =
+          linkModuleMetadata.linkModuleConfig
+
+        linkObjectRepresentationRef.fields = [
+          "id",
+          ...linkModuleMetadata.linkModuleConfig
+            .relationships!.map(
+              (relationship) =>
+                [
+                  parentModuleConfig.serviceName,
+                  currentEntityModule.serviceName,
+                ].includes(relationship.serviceName) && relationship.foreignKey
+            )
+            .filter((v): v is string => Boolean(v)),
+        ]
+
+        /**
+         * If the current entity is not the entity that is used to join the link module and the parent entity
+         * then we need to add the new entity that join them and then add the link as its parent
+         * before setting the new entity as the true parent of the current entity.
+         */
+
+        for (
+          let i = linkModuleMetadata.intermediateEntityNames.length - 1;
+          i >= 0;
+          --i
+        ) {
+          const intermediateEntityName =
+            linkModuleMetadata.intermediateEntityNames[i]
+
+          const isLastIntermediateEntity =
+            i === linkModuleMetadata.intermediateEntityNames.length - 1
+
+          const parentIntermediateEntityRef = isLastIntermediateEntity
+            ? linkObjectRepresentationRef
+            : objectRepresentationRef[
+                linkModuleMetadata.intermediateEntityNames[i + 1]
+              ]
+
+          const {
+            relatedModule: intermediateEntityModule,
+            alias: intermediateEntityAlias,
+          } = retrieveModuleAndAlias(
+            intermediateEntityName,
+            moduleJoinerConfigs
+          )
+
+          const intermediateEntityObjectRepresentationRef =
+            getObjectRepresentationRef(intermediateEntityName, {
+              objectRepresentationRef,
+            })
+
+          objectRepresentationRef._serviceNameModuleConfigMap[
+            intermediateEntityModule.serviceName
+          ] = intermediateEntityModule
+
+          intermediateEntityObjectRepresentationRef.parents.push({
+            ref: parentIntermediateEntityRef,
+            targetProp: intermediateEntityAlias,
+            isList: true, // TODO: check if it is a list in retrieveLinkModuleAndAlias and return the intermediate entity names + isList for each
+          })
+
+          intermediateEntityObjectRepresentationRef.alias =
+            intermediateEntityAlias
+          intermediateEntityObjectRepresentationRef.listeners = [
+            intermediateEntityName + ".created",
+            intermediateEntityName + ".updated",
+          ]
+          intermediateEntityObjectRepresentationRef.moduleConfig =
+            intermediateEntityModule
+          intermediateEntityObjectRepresentationRef.fields = ["id"]
+
+          /**
+           * We push the parent id only between intermediate entities but not between intermediate and link
+           */
+
+          if (!isLastIntermediateEntity) {
+            intermediateEntityObjectRepresentationRef.fields.push(
+              parentIntermediateEntityRef.alias + ".id"
+            )
+          }
         }
-        return currentType.name?.value === entityName
-      })
 
-      const isEntityListInParent =
-        entityFieldInParent.type.kind === Kind.LIST_TYPE
-      const entityTargetPropertyNameInParent = entityFieldInParent.name.value
+        /**
+         * If there is any intermediate entity then we need to set the last one as the parent field for the current entity.
+         * otherwise there is not need to set the link id field into the current entity.
+         */
 
-      /**
-       * Retrieve the parent entity object representation reference.
-       */
+        let currentParentIntermediateRef = linkObjectRepresentationRef
+        if (linkModuleMetadata.intermediateEntityNames.length) {
+          currentParentIntermediateRef =
+            objectRepresentationRef[
+              linkModuleMetadata.intermediateEntityNames[0]
+            ]
+          currentObjectRepresentationRef.fields.push(
+            currentParentIntermediateRef.alias + ".id"
+          )
+        }
 
-      const parentObjectRepresentationRef = getObjectRepresentationRef(parent, {
-        objectRepresentationRef,
-      })
-      const parentModuleConfig = parentObjectRepresentationRef.moduleConfig
-
-      /**
-       * If the parent entity and the current entity are part of the same servive then configure the parent and
-       * add the parent id as a field to the current entity.
-       */
-
-      if (
-        currentObjectRepresentationRef.moduleConfig.serviceName ===
-          parentModuleConfig.serviceName ||
-        parentModuleConfig.isLink
-      ) {
         currentObjectRepresentationRef.parents.push({
-          ref: parentObjectRepresentationRef,
+          ref: currentParentIntermediateRef,
+          inSchemaRef: parentObjectRepresentationRef,
           targetProp: entityTargetPropertyNameInParent,
           isList: isEntityListInParent,
         })
-
-        currentObjectRepresentationRef.fields.push(
-          parentObjectRepresentationRef.alias + ".id"
-        )
-      } else {
-        /**
-         * If the parent entity and the current entity are not part of the same service then we need to
-         * find the link module that join them.
-         */
-
-        const linkModuleMetadatas = retrieveLinkModuleAndAlias({
-          primaryEntity: parentObjectRepresentationRef.entity,
-          primaryModuleConfig: parentModuleConfig,
-          foreignEntity: currentObjectRepresentationRef.entity,
-          foreignModuleConfig: currentEntityModule,
-          moduleJoinerConfigs,
-        })
-
-        for (const linkModuleMetadata of linkModuleMetadatas) {
-          const linkObjectRepresentationRef = getObjectRepresentationRef(
-            linkModuleMetadata.entityName,
-            { objectRepresentationRef }
-          )
-
-          objectRepresentationRef._serviceNameModuleConfigMap[
-            linkModuleMetadata.linkModuleConfig.serviceName ||
-              linkModuleMetadata.entityName
-          ] = currentEntityModule
-
-          /**
-           * Add the schema parent entity as a parent to the link module and configure it.
-           */
-
-          linkObjectRepresentationRef.parents = [
-            {
-              ref: parentObjectRepresentationRef,
-              targetProp: linkModuleMetadata.alias,
-            },
-          ]
-          linkObjectRepresentationRef.alias = linkModuleMetadata.alias
-          linkObjectRepresentationRef.listeners = [
-            // TODO: align event entity name
-            `${linkModuleMetadata.entityName}.attached`,
-            `${linkModuleMetadata.entityName}.detached`,
-          ]
-          linkObjectRepresentationRef.moduleConfig =
-            linkModuleMetadata.linkModuleConfig
-
-          linkObjectRepresentationRef.fields = [
-            "id",
-            ...linkModuleMetadata.linkModuleConfig
-              .relationships!.map(
-                (relationship) =>
-                  [
-                    parentModuleConfig.serviceName,
-                    currentEntityModule.serviceName,
-                  ].includes(relationship.serviceName) &&
-                  relationship.foreignKey
-              )
-              .filter((v): v is string => Boolean(v)),
-          ]
-
-          /**
-           * If the current entity is not the entity that is used to join the link module and the parent entity
-           * then we need to add the new entity that join them and then add the link as its parent
-           * before setting the new entity as the true parent of the current entity.
-           */
-
-          for (
-            let i = linkModuleMetadata.intermediateEntityNames.length - 1;
-            i >= 0;
-            --i
-          ) {
-            const intermediateEntityName =
-              linkModuleMetadata.intermediateEntityNames[i]
-
-            const isLastIntermediateEntity =
-              i === linkModuleMetadata.intermediateEntityNames.length - 1
-
-            const parentIntermediateEntityRef = isLastIntermediateEntity
-              ? linkObjectRepresentationRef
-              : objectRepresentationRef[
-                  linkModuleMetadata.intermediateEntityNames[i + 1]
-                ]
-
-            const {
-              relatedModule: intermediateEntityModule,
-              alias: intermediateEntityAlias,
-            } = retrieveModuleAndAlias(
-              intermediateEntityName,
-              moduleJoinerConfigs
-            )
-
-            const intermediateEntityObjectRepresentationRef =
-              getObjectRepresentationRef(intermediateEntityName, {
-                objectRepresentationRef,
-              })
-
-            objectRepresentationRef._serviceNameModuleConfigMap[
-              intermediateEntityModule.serviceName
-            ] = intermediateEntityModule
-
-            intermediateEntityObjectRepresentationRef.parents.push({
-              ref: parentIntermediateEntityRef,
-              targetProp: intermediateEntityAlias,
-              isList: true, // TODO: check if it is a list in retrieveLinkModuleAndAlias and return the intermediate entity names + isList for each
-            })
-
-            intermediateEntityObjectRepresentationRef.alias =
-              intermediateEntityAlias
-            intermediateEntityObjectRepresentationRef.listeners = [
-              intermediateEntityName + ".created",
-              intermediateEntityName + ".updated",
-            ]
-            intermediateEntityObjectRepresentationRef.moduleConfig =
-              intermediateEntityModule
-            intermediateEntityObjectRepresentationRef.fields = ["id"]
-
-            /**
-             * We push the parent id only between intermediate entities but not between intermediate and link
-             */
-
-            if (!isLastIntermediateEntity) {
-              intermediateEntityObjectRepresentationRef.fields.push(
-                parentIntermediateEntityRef.alias + ".id"
-              )
-            }
-          }
-
-          /**
-           * If there is any intermediate entity then we need to set the last one as the parent field for the current entity.
-           * otherwise there is not need to set the link id field into the current entity.
-           */
-
-          let currentParentIntermediateRef = linkObjectRepresentationRef
-          if (linkModuleMetadata.intermediateEntityNames.length) {
-            currentParentIntermediateRef =
-              objectRepresentationRef[
-                linkModuleMetadata.intermediateEntityNames[0]
-              ]
-            currentObjectRepresentationRef.fields.push(
-              currentParentIntermediateRef.alias + ".id"
-            )
-          }
-
-          currentObjectRepresentationRef.parents.push({
-            ref: currentParentIntermediateRef,
-            inSchemaRef: parentObjectRepresentationRef,
-            targetProp: entityTargetPropertyNameInParent,
-            isList: isEntityListInParent,
-          })
-        }
       }
     }
   }

@@ -1,4 +1,5 @@
 import { isObject, isString } from "@medusajs/utils"
+import { GraphQLList } from "graphql"
 import { Knex } from "knex"
 import {
   OrderBy,
@@ -52,11 +53,16 @@ export class QueryBuilder {
     }
 
     let currentType = fieldRef.type
+    let isArray = false
     while (currentType.ofType) {
+      if (currentType instanceof GraphQLList) {
+        isArray = true
+      }
+
       currentType = currentType.ofType
     }
 
-    return currentType.name
+    return currentType.name + (isArray ? "[]" : "")
   }
 
   private transformValueToType(path, field, value) {
@@ -74,7 +80,11 @@ export class QueryBuilder {
       Time: (val) => new Date(`1970-01-01T${val}Z`).toISOString(),
     }
 
-    const graphqlType = this.getGraphQLType(path, field)
+    const fullPath = [path, ...field]
+    const prop = fullPath.pop()
+    const fieldPath = fullPath.join(".")
+    const graphqlType = this.getGraphQLType(fieldPath, prop).replace("[]", "")
+
     const fn = typeToFn[graphqlType]
     if (Array.isArray(value)) {
       return value.map((v) => (!fn ? v : fn(v)))
@@ -84,15 +94,24 @@ export class QueryBuilder {
 
   private getPostgresCastType(path, field) {
     const graphqlToPostgresTypeMap = {
-      Int: "::integer",
+      Int: "::int",
       Float: "::double precision",
       Boolean: "::boolean",
       Date: "::timestamp",
       Time: "::time",
+      "": "",
     }
 
-    const graphqlType = this.getGraphQLType(path, field)
-    return graphqlToPostgresTypeMap[graphqlType] ?? ""
+    const fullPath = [path, ...field]
+    const prop = fullPath.pop()
+    const fieldPath = fullPath.join(".")
+    let graphqlType = this.getGraphQLType(fieldPath, prop)
+    const isList = graphqlType.endsWith("[]")
+    graphqlType = graphqlType.replace("[]", "")
+
+    return (
+      (graphqlToPostgresTypeMap[graphqlType] ?? "") + (isList ? "[]" : "") ?? ""
+    )
   }
 
   private parseWhere(
@@ -113,6 +132,33 @@ export class QueryBuilder {
       $ilike: "ILIKE",
     }
     const keys = Object.keys(obj)
+
+    const getPathAndField = (key: string) => {
+      const path = key.split(".")
+      const field = [path.pop()]
+
+      while (!aliasMapping[path.join(".")] && path.length > 0) {
+        field.unshift(path.pop())
+      }
+
+      const attr = path.join(".")
+
+      return { field, attr }
+    }
+
+    const getPathOperation = (
+      attr: string,
+      path: string[],
+      value: unknown
+    ): string => {
+      const partialPath = path.slice(0, -1)
+      const val = this.transformValueToType(attr, partialPath, value)
+      const result = path.reduceRight((acc, key) => {
+        return { [key]: acc }
+      }, val)
+
+      return JSON.stringify(result)
+    }
 
     keys.forEach((key) => {
       let value = obj[key]
@@ -142,9 +188,8 @@ export class QueryBuilder {
         subKeys.forEach((subKey) => {
           let operator = OPERATOR_MAP[subKey]
           if (operator) {
-            const path = key.split(".")
-            const field = path.pop()
-            const attr = path.join(".")
+            const { field, attr } = getPathAndField(key)
+            const nested = new Array(field.length).join("->?")
 
             const subValue = this.transformValueToType(
               attr,
@@ -158,34 +203,54 @@ export class QueryBuilder {
               operator = "IS"
             }
 
-            builder.whereRaw(
-              `(${aliasMapping[attr]}.data->>?)${castType} ${operator} ?`,
-              [field, ...val]
-            )
+            if (operator === "=") {
+              builder.whereRaw(
+                `${aliasMapping[attr]}.data @> '${getPathOperation(
+                  attr,
+                  field as string[],
+                  subValue
+                )}'::jsonb`
+              )
+            } else {
+              builder.whereRaw(
+                `(${aliasMapping[attr]}.data${nested}->>?)${castType} ${operator} ?`,
+                [...field, ...val]
+              )
+            }
           } else {
             throw new Error(`Unsupported operator: ${subKey}`)
           }
         })
       } else {
-        const path = key.split(".")
-        const field = path.pop()
-        const attr = path.join(".")
+        const { field, attr } = getPathAndField(key)
+        const nested = new Array(field.length).join("->?")
 
         value = this.transformValueToType(attr, field, value)
         if (Array.isArray(value)) {
           const castType = this.getPostgresCastType(attr, field)
+          const inPlaceholders = value.map(() => "?").join(",")
           builder.whereRaw(
-            `(${aliasMapping[attr]}.data->>?)${castType} IN (?)`,
-            [field, ...value]
+            `(${aliasMapping[attr]}.data${nested}->>?)${castType} IN (${inPlaceholders})`,
+            [...field, ...value]
           )
         } else {
           const operator = value === null ? "IS" : "="
 
-          const castType = this.getPostgresCastType(attr, field)
-          builder.whereRaw(
-            `(${aliasMapping[attr]}.data->>?)${castType} ${operator} ?`,
-            [field, value]
-          )
+          if (operator === "=") {
+            builder.whereRaw(
+              `${aliasMapping[attr]}.data @> '${getPathOperation(
+                attr,
+                field as string[],
+                value
+              )}'::jsonb`
+            )
+          } else {
+            const castType = this.getPostgresCastType(attr, field)
+            builder.whereRaw(
+              `(${aliasMapping[attr]}.data${nested}->>?)${castType} ${operator} ?`,
+              [...field, value]
+            )
+          }
         }
       }
     })

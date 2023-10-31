@@ -7,9 +7,9 @@ import {
 } from "@medusajs/types"
 import {
   SchemaObjectRepresentation,
-  schemaObjectRepresentationPropertiesToOmit,
   SearchModuleOptions,
   StorageProvider,
+  schemaObjectRepresentationPropertiesToOmit,
 } from "../types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { joinerConfig } from "./../joiner-config"
@@ -77,21 +77,25 @@ export default class SearchModuleService
   }
 
   protected async onApplicationStart_() {
-    this.buildSchemaObjectRepresentation_()
+    try {
+      this.buildSchemaObjectRepresentation_()
 
-    this.storageProvider_ = new this.storageProviderCtr_(
-      this.container_,
-      Object.assign(this.storageProviderCtrOptions_ ?? {}, {
-        schemaObjectRepresentation: this.schemaObjectRepresentation_,
-        entityMap: this.schemaEntitiesMap_,
-      }),
-      this.moduleOptions_
-    )
+      this.storageProvider_ = new this.storageProviderCtr_(
+        this.container_,
+        Object.assign(this.storageProviderCtrOptions_ ?? {}, {
+          schemaObjectRepresentation: this.schemaObjectRepresentation_,
+          entityMap: this.schemaEntitiesMap_,
+        }),
+        this.moduleOptions_
+      )
 
-    this.registerListeners()
+      this.registerListeners()
 
-    if (this.storageProvider_.onApplicationStart) {
-      await this.storageProvider_.onApplicationStart()
+      if (this.storageProvider_.onApplicationStart) {
+        await this.storageProvider_.onApplicationStart()
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 
