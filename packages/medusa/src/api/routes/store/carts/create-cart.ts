@@ -1,9 +1,9 @@
-import { MedusaContainer } from "@medusajs/modules-sdk"
 import {
-  createCart as createCartWorkflow,
-  Workflows,
-} from "@medusajs/workflows"
-import { Type } from "class-transformer"
+  CartService,
+  LineItemService,
+  ProductVariantInventoryService,
+  RegionService,
+} from "../../../../services"
 import {
   IsArray,
   IsInt,
@@ -12,21 +12,23 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import reqIp from "request-ip"
-import { EntityManager } from "typeorm"
-import { FlagRouter } from "@medusajs/utils"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { LineItem } from "../../../../models"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import {
-  CartService,
-  LineItemService,
-  RegionService,
-} from "../../../../services"
+  Workflows,
+  createCart as createCartWorkflow,
+} from "@medusajs/workflows"
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
 import { CartCreateProps } from "../../../../types/cart"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { EntityManager } from "typeorm"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FlagRouter } from "@medusajs/utils"
+import { LineItem } from "../../../../models"
+import { MedusaContainer } from "@medusajs/modules-sdk"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Type } from "class-transformer"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+import reqIp from "request-ip"
 
 /**
  * @oas [post] /store/carts
@@ -82,6 +84,8 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   const validated = req.validatedBody as StorePostCartReq
 
@@ -218,6 +222,11 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    cart.items.map((i) => i.variant),
+    cart.sales_channel_id!
+  )
 
   res.status(200).json({ cart: cleanResponseData(cart, []) })
 }

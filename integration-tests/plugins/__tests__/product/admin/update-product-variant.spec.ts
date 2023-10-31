@@ -11,6 +11,7 @@ import path from "path"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
+import { AxiosInstance } from "axios"
 
 jest.setTimeout(50000)
 
@@ -80,7 +81,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
   })
 
   it("should create product variant price sets and prices", async () => {
-    const api = useApi()
+    const api = useApi()! as AxiosInstance
     const data = {
       title: "test variant update",
       prices: [
@@ -144,7 +145,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
 
     const moneyAmountToUpdate = priceSet.money_amounts?.[0]
 
-    const api = useApi()
+    const api = useApi()! as AxiosInstance
     const data = {
       title: "test variant update",
       prices: [
@@ -202,7 +203,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () 
       prices: [],
     })
 
-    const api = useApi()
+    const api = useApi()! as AxiosInstance
     const data = {
       title: "test variant update",
       prices: [

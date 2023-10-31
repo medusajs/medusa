@@ -69,14 +69,8 @@ const DbTestUtil = {
   },
 
   shutdown: async function () {
-    const container = getContainer()
-    const containerPgConnection = container.resolve(
-      ContainerRegistrationKeys.PG_CONNECTION
-    )
-
     await this.db_.destroy()
     await this.pgConnection_?.context?.destroy()
-    await containerPgConnection?.context?.destroy()
 
     return await dropDatabase({ DB_NAME }, pgGodCredentials)
   },
