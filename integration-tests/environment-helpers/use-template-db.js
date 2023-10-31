@@ -103,7 +103,7 @@ class DatabaseFactory {
   async createFromTemplate(dbName) {
     const dataSource = await this.getMasterDataSource()
 
-    await dataSource.query(`DROP DATABASE IF EXISTS "${dbName}";`)
+    await dropDatabase({ databaseName: dbName }, pgGodCredentials)
     await dataSource.query(
       `CREATE DATABASE "${dbName}" TEMPLATE "${this.templateDbName}";`
     )
