@@ -74,9 +74,7 @@ const useEditProductActions = (productId: string) => {
     updateVariant.mutate(
       {
         variant_id: id,
-        ...removeFalsy(payload),
-        manage_inventory: payload.manage_inventory,
-        allow_backorder: payload.allow_backorder,
+        ...payload,
       },
       {
         onSuccess: () => {

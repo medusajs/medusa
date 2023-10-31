@@ -1,0 +1,53 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# some
+
+[Buffer](../../interfaces/Buffer.mdx).some
+
+**some**(`predicate`, `thisArg?`): `boolean`
+
+Determines whether the specified callback function returns true for any element of an array.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "predicate",
+    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
+    "description": "A function that accepts up to three arguments. The some method calls the predicate function for each element in the array until the predicate returns a value which is coercible to the Boolean value true, or until the end of the array.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "thisArg",
+    "type": "`any`",
+    "description": "An object to which the this keyword can refer in the predicate function. If thisArg is omitted, undefined is used as the this value.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Inherited from
+
+Uint8Array.some

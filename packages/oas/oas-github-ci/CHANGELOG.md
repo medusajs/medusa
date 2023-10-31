@@ -1,5 +1,35 @@
 # @medusajs/oas-github-ci
 
+## 1.0.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.22
+
+## 1.0.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.21
+
+## 1.0.20
+
+### Patch Changes
+
+- [#5174](https://github.com/medusajs/medusa/pull/5174) [`fa7c94b4c`](https://github.com/medusajs/medusa/commit/fa7c94b4ccf864d7a6c7ed4bba26b7086ed99b2f) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(@medusajs/oas-github-ci): changed output path to match new docs workspace
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.20
+
+## 1.0.19
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.19
+
 ## 1.0.18
 
 ### Patch Changes

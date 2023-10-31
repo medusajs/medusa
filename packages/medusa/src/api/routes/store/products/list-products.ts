@@ -2,6 +2,7 @@ import {
   CartService,
   ProductService,
   ProductVariantInventoryService,
+  SalesChannelService,
 } from "../../../../services"
 import {
   IsArray,
@@ -16,11 +17,13 @@ import { Transform, Type } from "class-transformer"
 import { DateComparisonOperator } from "../../../../types/common"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import PricingService from "../../../../services/pricing"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
+import { defaultStoreProductRemoteQueryObject } from "./index"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
@@ -29,7 +32,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  * summary: List Products
  * description: |
  *   Retrieves a list of products. The products can be filtered by fields such as `id` or `q`. The products can also be sorted or paginated.
- *   This endpoint can also be used to retrieve a product by its handle.
+ *   This API Route can also be used to retrieve a product by its handle.
  *
  *   For accurate and correct pricing of the products based on the customer's context, it's highly recommended to pass fields such as
  *   `region_id`, `currency_code`, and `cart_id` when available.
@@ -216,6 +219,8 @@ export default async (req, res) => {
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
 
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+
   const validated = req.validatedQuery as StoreGetProductsParams
 
   let {
@@ -224,7 +229,6 @@ export default async (req, res) => {
     currency_code: currencyCode,
     ...filterableFields
   } = req.filterableFields
-
   const listConfig = req.listConfig
 
   // get only published products for store endpoint
@@ -246,9 +250,23 @@ export default async (req, res) => {
     }
   }
 
+  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
+    IsolateProductDomain.key
+  )
+
   const promises: Promise<any>[] = []
 
-  promises.push(productService.listAndCount(filterableFields, listConfig))
+  if (isIsolateProductDomain) {
+    promises.push(
+      listAndCountProductWithIsolatedProductModule(
+        req,
+        filterableFields,
+        listConfig
+      )
+    )
+  } else {
+    promises.push(productService.listAndCount(filterableFields, listConfig))
+  }
 
   if (validated.cart_id) {
     promises.push(
@@ -310,6 +328,89 @@ export default async (req, res) => {
     offset: validated.offset,
     limit: validated.limit,
   })
+}
+
+async function listAndCountProductWithIsolatedProductModule(
+  req,
+  filterableFields,
+  listConfig
+) {
+  // TODO: Add support for fields/expands
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  let salesChannelIdFilter = filterableFields.sales_channel_id
+  if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
+    salesChannelIdFilter ??= req.publishableApiKeyScopes.sales_channel_ids
+  }
+
+  delete filterableFields.sales_channel_id
+
+  filterableFields["categories"] = {
+    $or: [
+      {
+        id: null,
+      },
+      {
+        ...(filterableFields.categories || {}),
+        // Store APIs are only allowed to query active and public categories
+        ...defaultStoreCategoryScope,
+      },
+    ],
+  }
+
+  // This is not the best way of handling cross filtering but for now I would say it is fine
+  if (salesChannelIdFilter) {
+    const salesChannelService = req.scope.resolve(
+      "salesChannelService"
+    ) as SalesChannelService
+
+    const productIdsInSalesChannel =
+      await salesChannelService.listProductIdsBySalesChannelIds(
+        salesChannelIdFilter
+      )
+
+    let filteredProductIds = productIdsInSalesChannel[salesChannelIdFilter]
+
+    if (filterableFields.id) {
+      filterableFields.id = Array.isArray(filterableFields.id)
+        ? filterableFields.id
+        : [filterableFields.id]
+
+      const salesChannelProductIdsSet = new Set(filteredProductIds)
+
+      filteredProductIds = filterableFields.id.filter((productId) =>
+        salesChannelProductIdsSet.has(productId)
+      )
+    }
+
+    filterableFields.id = filteredProductIds
+  }
+
+  const variables = {
+    filters: filterableFields,
+    order: listConfig.order,
+    skip: listConfig.skip,
+    take: listConfig.take,
+  }
+
+  const query = {
+    product: {
+      __args: variables,
+      ...defaultStoreProductRemoteQueryObject,
+    },
+  }
+
+  const {
+    rows: products,
+    metadata: { count },
+  } = await remoteQuery(query)
+
+  products.forEach((product) => {
+    product.profile_id = product.profile?.id
+  })
+
+  return [products, count]
 }
 
 export class StoreGetProductsPaginationParams extends PriceSelectionParams {

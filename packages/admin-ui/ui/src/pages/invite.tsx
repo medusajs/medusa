@@ -12,11 +12,13 @@ import PublicLayout from "../components/templates/login-layout"
 import useNotification from "../hooks/use-notification"
 import { getErrorMessage } from "../utils/error-messages"
 import FormValidator from "../utils/form-validator"
-import { analytics, useAdminCreateAnalyticsConfig } from "../services/analytics"
+import { useAdminCreateAnalyticsConfig } from "../services/analytics"
+import { useAnalytics } from "../providers/analytics-provider"
 import AnalyticsConfigForm, {
   AnalyticsConfigFormType,
 } from "../components/organisms/analytics-config-form"
 import { nestedForm } from "../utils/nested-form"
+import { useFeatureFlag } from "../providers/feature-flag-provider"
 
 type FormValues = {
   password: string
@@ -30,6 +32,7 @@ const InvitePage = () => {
   const location = useLocation()
   const parsed = qs.parse(location.search.substring(1))
   const [signUp, setSignUp] = useState(false)
+  const { trackUserEmail } = useAnalytics()
 
   const first_run = !!parsed.first_run
 
@@ -66,6 +69,8 @@ const InvitePage = () => {
     formState: { errors },
     setError,
   } = form
+
+  const { isFeatureEnabled } = useFeatureFlag()
 
   const { mutateAsync: acceptInvite, isLoading: acceptInviteIsLoading } =
     useAdminAcceptInvite()
@@ -114,10 +119,14 @@ const InvitePage = () => {
         !data.analytics.opt_out &&
         token?.user_email
 
-      await createAnalyticsConfig(data.analytics)
+      try {
+        await createAnalyticsConfig(data.analytics)
+      } catch (e) {
+        // gracefully handle error if analytics are disabled
+      }
 
       if (shouldTrackEmail) {
-        await analytics.track("userEmail", {
+        trackUserEmail({
           email: token?.user_email,
         })
       }

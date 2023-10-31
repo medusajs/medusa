@@ -100,10 +100,11 @@ import ProductTypeService from "../../../../services/product-type"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/product-types' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Types
  * responses:

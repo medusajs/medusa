@@ -59,6 +59,7 @@ export type WebpackConfigArgs = {
   env: "development" | "production"
   options?: AdminOptions
   template?: string
+  publicFolder?: string
   reporting?: BuildReporting
 }
 

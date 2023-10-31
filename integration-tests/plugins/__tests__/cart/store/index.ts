@@ -1,6 +1,7 @@
 import { MoneyAmount, PriceList, Region } from "@medusajs/medusa"
 import path from "path"
 
+import { ProductVariantMoneyAmount } from "@medusajs/medusa"
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import setupServer from "../../../../environment-helpers/setup-server"
 import { setPort, useApi } from "../../../../environment-helpers/use-api"
@@ -22,7 +23,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
     const { app, port } = await bootstrapApp({ cwd })
     setPort(port)
     express = app.listen(port, () => {
@@ -125,13 +126,18 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(priceList1)
 
       const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
-        variant_id: prodSale.variants[0].id,
         currency_code: "usd",
         amount: 800,
         price_list_id: "pl_current",
       })
 
       await dbConnection.manager.save(ma_sale_1)
+
+      await dbConnection.manager.insert(ProductVariantMoneyAmount, {
+        id: "pvma-test",
+        variant_id: prodSale.variants[0].id,
+        money_amount_id: ma_sale_1.id,
+      })
 
       const api = useApi()
 

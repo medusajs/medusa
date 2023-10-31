@@ -1,0 +1,54 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# readFloatBE
+
+[Buffer](../../interfaces/Buffer.mdx).readFloatBE
+
+**readFloatBE**(`offset?`): `number`
+
+Reads a 32-bit, big-endian float from `buf` at the specified `offset`.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.from([1, 2, 3, 4]);
+
+console.log(buf.readFloatBE(0));
+// Prints: 2.387939260590663e-38
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to read. Must satisfy `0 <= offset <= buf.length - 4`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.11.15

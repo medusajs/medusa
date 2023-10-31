@@ -4,6 +4,9 @@ import LineItemService from "../line-item"
 import { PricingServiceMock } from "../__mocks__/pricing"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
+
+const unknownVariantId = "unknown-variant"
+
 ;[true, false].forEach((isTaxInclusiveEnabled) => {
   describe(`tax inclusive flag set to: ${isTaxInclusiveEnabled}`, () => {
     describe("LineItemService", () => {
@@ -480,16 +483,21 @@ describe("LineItemService", () => {
         })
       })
     })
+
     describe("generate", () => {
       const lineItemRepository = MockRepository({
         create: (data) => data,
       })
 
       const cartRepository = MockRepository({
-        findOne: () =>
-          Promise.resolve({
-            region_id: IdMap.getId("test-region"),
-          }),
+        findOne: ({ id }) =>
+          Promise.resolve(
+            !id
+              ? null
+              : {
+                  region_id: IdMap.getId("test-region"),
+                }
+          ),
       })
 
       const regionService = {
@@ -521,16 +529,22 @@ describe("LineItemService", () => {
         },
         getRegionPrice: () => 100,
         list: jest.fn().mockImplementation(async (selector) => {
-          return (selector.id || []).map((id) => {
-            return {
-              id,
-              title: "Test variant",
-              product: {
-                title: "Test product",
-                thumbnail: "",
-              },
-            }
-          })
+          return (selector.id || [])
+            .map((id) => {
+              if (id === unknownVariantId) {
+                return null
+              }
+
+              return {
+                id,
+                title: "Test variant",
+                product: {
+                  title: "Test product",
+                  thumbnail: "",
+                },
+              }
+            })
+            .filter(Boolean)
         }),
       }
 
@@ -568,6 +582,48 @@ describe("LineItemService", () => {
 
       beforeEach(async () => {
         jest.clearAllMocks()
+      })
+
+      it("should not succeed to generate a line item if a variant id is not provided", async () => {
+        const err = await lineItemService
+          .generate(
+            [
+              {
+                variantId: "",
+                quantity: 1,
+              },
+            ],
+            {
+              region_id: IdMap.getId("test-region"),
+            }
+          )
+          .catch((e) => e)
+
+        expect(err).toBeDefined()
+        expect(err.message).toEqual(
+          "Unable to generate the line item because one or more required argument(s) are missing. Ensure a variant id is passed for each variant"
+        )
+      })
+
+      it("should not succeed to generate a line item if a variant id is not found", async () => {
+        const err = await lineItemService
+          .generate(
+            [
+              {
+                variantId: unknownVariantId,
+                quantity: 1,
+              },
+            ],
+            {
+              region_id: IdMap.getId("test-region"),
+            }
+          )
+          .catch((e) => e)
+
+        expect(err).toBeDefined()
+        expect(err.message).toEqual(
+          "Unable to generate the line items, some variant has not been found: unknown-variant"
+        )
       })
 
       it("successfully create a line item with tax inclusive set to false", async () => {

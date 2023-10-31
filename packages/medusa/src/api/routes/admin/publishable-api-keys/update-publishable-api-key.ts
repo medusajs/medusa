@@ -36,7 +36,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/publishable-api-key/{id}' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "new title"
@@ -44,6 +44,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Publishable Api Keys
  * responses:

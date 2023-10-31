@@ -1,13 +1,16 @@
 import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
+  Collection,
   Entity,
+  ManyToMany,
   ManyToOne,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
 import Currency from "./currency"
+import PriceSet from "./price-set"
 
 @Entity()
 class MoneyAmount {
@@ -16,6 +19,12 @@ class MoneyAmount {
 
   @Property({ columnType: "text", nullable: true })
   currency_code?: string
+
+  @ManyToMany({
+    entity: () => PriceSet,
+    mappedBy: (ps) => ps.money_amounts,
+  })
+  price_sets = new Collection<PriceSet>(this)
 
   @ManyToOne(() => Currency, {
     nullable: true,

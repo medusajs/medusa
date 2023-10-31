@@ -3,6 +3,7 @@ import {
   InternalModuleDeclaration,
   LinkModuleDefinition,
   LoadedModule,
+  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleDefinition,
@@ -48,10 +49,29 @@ type ModuleAlias = {
   main?: boolean
 }
 
+export type ModuleBootstrapOptions = {
+  moduleKey: string
+  defaultPath: string
+  declaration?: InternalModuleDeclaration | ExternalModuleDeclaration
+  moduleExports?: ModuleExports
+  sharedContainer?: MedusaContainer
+  moduleDefinition?: ModuleDefinition
+  injectedDependencies?: Record<string, any>
+}
+
+export type LinkModuleBootstrapOptions = {
+  definition: LinkModuleDefinition
+  declaration?: InternalModuleDeclaration
+  moduleExports?: ModuleExports
+  injectedDependencies?: Record<string, any>
+}
+
 export class MedusaModule {
   private static instances_: Map<string, any> = new Map()
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
+  private static joinerConfig_: Map<string, ModuleJoinerConfig> = new Map()
+  private static moduleResolutions_: Map<string, ModuleResolution> = new Map()
 
   public static getLoadedModules(
     aliases?: Map<string, string>
@@ -68,6 +88,8 @@ export class MedusaModule {
   public static clearInstances(): void {
     MedusaModule.instances_.clear()
     MedusaModule.modules_.clear()
+    MedusaModule.joinerConfig_.clear()
+    MedusaModule.moduleResolutions_.clear()
   }
 
   public static isInstalled(moduleKey: string, alias?: string): boolean {
@@ -79,6 +101,40 @@ export class MedusaModule {
     }
 
     return MedusaModule.modules_.has(moduleKey)
+  }
+
+  public static getJoinerConfig(moduleKey: string): ModuleJoinerConfig {
+    return MedusaModule.joinerConfig_.get(moduleKey)!
+  }
+
+  public static getAllJoinerConfigs(): ModuleJoinerConfig[] {
+    return [...MedusaModule.joinerConfig_.values()]
+  }
+
+  public static getModuleResolutions(moduleKey: string): ModuleResolution {
+    return MedusaModule.moduleResolutions_.get(moduleKey)!
+  }
+
+  public static getAllModuleResolutions(): ModuleResolution[] {
+    return [...MedusaModule.moduleResolutions_.values()]
+  }
+
+  public static setModuleResolution(
+    moduleKey: string,
+    resolution: ModuleResolution
+  ): ModuleResolution {
+    MedusaModule.moduleResolutions_.set(moduleKey, resolution)
+
+    return resolution
+  }
+
+  public static setJoinerConfig(
+    moduleKey: string,
+    config: ModuleJoinerConfig
+  ): ModuleJoinerConfig {
+    MedusaModule.joinerConfig_.set(moduleKey, config)
+
+    return config
   }
 
   public static getModuleInstance(
@@ -128,14 +184,15 @@ export class MedusaModule {
     MedusaModule.modules_.set(moduleKey, modules!)
   }
 
-  public static async bootstrap<T>(
-    moduleKey: string,
-    defaultPath: string,
-    declaration?: InternalModuleDeclaration | ExternalModuleDeclaration,
-    moduleExports?: ModuleExports,
-    injectedDependencies?: Record<string, any>,
-    moduleDefinition?: ModuleDefinition
-  ): Promise<{
+  public static async bootstrap<T>({
+    moduleKey,
+    defaultPath,
+    declaration,
+    moduleExports,
+    sharedContainer,
+    moduleDefinition,
+    injectedDependencies,
+  }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
     const hashKey = simpleHash(
@@ -175,11 +232,14 @@ export class MedusaModule {
       }
     }
 
-    const container = createMedusaContainer()
+    const container = createMedusaContainer({}, sharedContainer)
 
     if (injectedDependencies) {
       for (const service in injectedDependencies) {
         container.register(service, asValue(injectedDependencies[service]))
+        if (!container.hasRegistration(service)) {
+          container.register(service, asValue(injectedDependencies[service]))
+        }
       }
     }
 
@@ -218,7 +278,10 @@ export class MedusaModule {
         ].__joinerConfig()
 
         services[keyName].__joinerConfig = joinerConfig
+        MedusaModule.setJoinerConfig(keyName, joinerConfig)
       }
+
+      MedusaModule.setModuleResolution(keyName, resolution)
 
       MedusaModule.registerModule(keyName, {
         key: keyName,
@@ -236,19 +299,19 @@ export class MedusaModule {
     return services
   }
 
-  public static async bootstrapLink(
-    definition: LinkModuleDefinition,
-    declaration?: InternalModuleDeclaration,
-    moduleExports?: ModuleExports,
-    injectedDependencies?: Record<string, any>
-  ): Promise<{
+  public static async bootstrapLink({
+    definition,
+    declaration,
+    moduleExports,
+    injectedDependencies,
+  }: LinkModuleBootstrapOptions): Promise<{
     [key: string]: unknown
   }> {
     const moduleKey = definition.key
     const hashKey = simpleHash(stringifyCircular({ moduleKey, declaration }))
 
     if (MedusaModule.instances_.has(hashKey)) {
-      return MedusaModule.instances_.get(hashKey)
+      return { [moduleKey]: MedusaModule.instances_.get(hashKey) }
     }
 
     if (MedusaModule.loading_.has(hashKey)) {
@@ -329,6 +392,7 @@ export class MedusaModule {
         ].__joinerConfig()
 
         services[keyName].__joinerConfig = joinerConfig
+        MedusaModule.setJoinerConfig(keyName, joinerConfig)
 
         if (!joinerConfig.isLink) {
           throw new Error(
@@ -337,6 +401,7 @@ export class MedusaModule {
         }
       }
 
+      MedusaModule.setModuleResolution(keyName, resolution)
       MedusaModule.registerModule(keyName, {
         key: keyName,
         hash: hashKey,

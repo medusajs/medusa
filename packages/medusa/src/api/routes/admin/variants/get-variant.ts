@@ -30,10 +30,11 @@ import { FindParams } from "../../../../types/common"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/admin/variants/{id}' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Variants
  * responses:
@@ -69,7 +70,7 @@ export default async (req, res) => {
     req.retrieveConfig
   )
 
-  const [variant] = await pricingService.setVariantPrices([rawVariant])
+  const [variant] = await pricingService.setAdminVariantPricing([rawVariant])
 
   res.status(200).json({ variant })
 }

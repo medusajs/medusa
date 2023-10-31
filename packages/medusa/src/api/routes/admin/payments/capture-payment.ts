@@ -25,10 +25,11 @@ import { PaymentService } from "../../../../services"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/payments/{id}/capture' \
- *       -H 'Authorization: Bearer {api_token}'
+ *       -H 'x-medusa-access-token: {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Payments
  * responses:

@@ -1,18 +1,22 @@
-import { FlagRouter } from "@medusajs/utils"
 import { NextFunction, Request, Response } from "express"
+
+import { FlagRouter } from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../loaders/feature-flags/sales-channels"
 import { SalesChannelService } from "../../services"
+import IsolateProductDomain from "../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * Middleware that includes the default sales channel on the request, if no sales channels present
  * @param context Object of options
  * @param context.attachChannelAsArray Whether to attach the default sales channel as an array or just a string
  */
-export function withDefaultSalesChannel({
-  attachChannelAsArray,
-}: {
-  attachChannelAsArray?: boolean
-}): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+export function withDefaultSalesChannel(
+  {
+    attachChannelAsArray,
+  }: {
+    attachChannelAsArray: boolean
+  } = { attachChannelAsArray: false }
+): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, _, next: NextFunction) => {
     const featureFlagRouter = req.scope.resolve(
       "featureFlagRouter"
@@ -20,6 +24,8 @@ export function withDefaultSalesChannel({
 
     if (
       !featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key) ||
+      // Do not attach the default SC if the isolate product domain feature flag is enabled
+      featureFlagRouter.isFeatureEnabled(IsolateProductDomain.key) ||
       req.query.sales_channel_id?.length ||
       req.get("x-publishable-api-key")
     ) {
@@ -38,6 +44,7 @@ export function withDefaultSalesChannel({
           : defaultSalesChannel.id
       }
     } catch {
+      // noop
     } finally {
       next()
     }

@@ -1,0 +1,515 @@
+---
+displayed_sidebar: productReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/product/retrieveOption
+sidebar_label: retrieveOption
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# retrieveOption - Product Module Reference
+
+This documentation provides a reference to the retrieveOption method. This belongs to the Product Module.
+
+This method is used to retrieve a product option by its ID.
+
+## Example
+
+A simple example that retrieves a product option by its ID:
+
+```ts
+import { 
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+async function retrieveProductOption (id: string) {
+  const productModule = await initializeProductModule()
+
+  const productOption = await productModule.retrieveOption(id)
+
+  // do something with the product option or return it
+}
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import { 
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+async function retrieveProductOption (id: string) {
+  const productModule = await initializeProductModule()
+
+  const productOption = await productModule.retrieveOption(id, {
+    relations: ["product"]
+  })
+
+  // do something with the product option or return it
+}
+```
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "optionId",
+    "type": "`string`",
+    "description": "The ID of the product option to retrieve.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)\\>",
+    "description": "The configurations determining how the product option is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product option.",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "order",
+        "type": "`object`",
+        "description": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "relations",
+        "type": "`string`[]",
+        "description": "An array of strings, each being relation names of the entity to retrieve in the result.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "select",
+        "type": "(`string` \\| keyof `Entity`)[]",
+        "description": "An array of strings, each being attribute names of the entity to retrieve in the result.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "skip",
+        "type": "`number`",
+        "description": "A number indicating the number of records to skip before retrieving the results.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "take",
+        "type": "`number`",
+        "description": "A number indicating the number of records to return in the result.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "withDeleted",
+        "type": "`boolean`",
+        "description": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "a string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The retrieved product option.",
+    "children": [
+      {
+        "name": "deleted_at",
+        "type": "`string` \\| `Date`",
+        "description": "When the product option was deleted.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the product option.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "``null`` \\| Record<`string`, `unknown`\\>",
+        "description": "Holds custom data in key-value pairs.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "product",
+        "type": "[`ProductDTO`](../../interfaces/ProductDTO.mdx)",
+        "description": "The associated product. It may only be available if the `product` relation is expanded.",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "categories",
+            "type": "``null`` \\| [`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "collection",
+            "type": "[`ProductCollectionDTO`](../../interfaces/ProductCollectionDTO.mdx)",
+            "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "created_at",
+            "type": "`string` \\| `Date`",
+            "description": "When the product was created.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date`",
+            "description": "When the product was deleted.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "``null`` \\| `string`",
+            "description": "The description of the product. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "discountable",
+            "type": "`boolean`",
+            "description": "Whether the product can be discounted.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "external_id",
+            "type": "``null`` \\| `string`",
+            "description": "The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "handle",
+            "type": "``null`` \\| `string`",
+            "description": "The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "height",
+            "type": "``null`` \\| `number`",
+            "description": "The height of the product. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "hs_code",
+            "type": "``null`` \\| `string`",
+            "description": "The HS Code of the product. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the product.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "images",
+            "type": "[`ProductImageDTO`](../../interfaces/ProductImageDTO.mdx)[]",
+            "description": "The associated product images. It may only be available if the `images` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "is_giftcard",
+            "type": "`boolean`",
+            "description": "Whether the product is a gift card.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "length",
+            "type": "``null`` \\| `number`",
+            "description": "The length of the product. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "material",
+            "type": "``null`` \\| `string`",
+            "description": "The material of the product. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "mid_code",
+            "type": "``null`` \\| `string`",
+            "description": "The MID Code of the product. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "options",
+            "type": "[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]",
+            "description": "The associated product options. It may only be available if the `options` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "origin_country",
+            "type": "``null`` \\| `string`",
+            "description": "The origin country of the product. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "status",
+            "type": "[`ProductStatus`](../../enums/ProductStatus.mdx)",
+            "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../../enums/ProductStatus.mdx).",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "subtitle",
+            "type": "``null`` \\| `string`",
+            "description": "The subttle of the product. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "tags",
+            "type": "[`ProductTagDTO`](../../interfaces/ProductTagDTO.mdx)[]",
+            "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "thumbnail",
+            "type": "``null`` \\| `string`",
+            "description": "The URL of the product's thumbnail. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The title of the product.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "type",
+            "type": "[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]",
+            "description": "The associated product type. It may only be available if the `type` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`string` \\| `Date`",
+            "description": "When the product was updated.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "variants",
+            "type": "[`ProductVariantDTO`](../../interfaces/ProductVariantDTO.mdx)[]",
+            "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "weight",
+            "type": "``null`` \\| `number`",
+            "description": "The weight of the product. It can possibly be `null`.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "width",
+            "type": "``null`` \\| `number`",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "The title of the product option.",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "values",
+        "type": "[`ProductOptionValueDTO`](../../interfaces/ProductOptionValueDTO.mdx)[]",
+        "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
+        "optional": false,
+        "defaultValue": "",
+        "children": [
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date`",
+            "description": "When the product option value was deleted.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the product option value.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "description": "Holds custom data in key-value pairs.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "option",
+            "type": "[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)",
+            "description": "The associated product option. It may only be available if the `option` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "value",
+            "type": "`string`",
+            "description": "The value of the product option value.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "variant",
+            "type": "[`ProductVariantDTO`](../../interfaces/ProductVariantDTO.mdx)",
+            "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />

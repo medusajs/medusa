@@ -178,7 +178,7 @@ export class LineItem extends BaseEntity {
     }
   }
 
-  @FeatureFlagDecorators(IsolateProductDomain.key, [BeforeUpdate])
+  @FeatureFlagDecorators(IsolateProductDomain.key, [BeforeUpdate()])
   beforeUpdate(): void {
     if (
       this.variant &&
@@ -189,7 +189,7 @@ export class LineItem extends BaseEntity {
     }
   }
 
-  @FeatureFlagDecorators(IsolateProductDomain.key, [AfterLoad, AfterUpdate])
+  @FeatureFlagDecorators(IsolateProductDomain.key, [AfterLoad(), AfterUpdate()])
   afterUpdateOrLoad(): void {
     if (this.variant) {
       return

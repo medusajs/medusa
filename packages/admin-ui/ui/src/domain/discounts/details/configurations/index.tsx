@@ -1,5 +1,6 @@
 import { Discount } from "@medusajs/medusa"
 import React from "react"
+import { useTranslation } from "react-i18next"
 import EditIcon from "../../../../components/fundamentals/icons/edit-icon"
 import NumberedItem from "../../../../components/molecules/numbered-item"
 import BodyCard from "../../../../components/organisms/body-card"
@@ -12,17 +13,21 @@ type ConfigurationsProps = {
 }
 
 const Configurations: React.FC<ConfigurationsProps> = ({ discount }) => {
+  const { t } = useTranslation()
   const configurations = useDiscountConfigurations(discount)
   const { state, open, close } = useToggleState()
 
   return (
     <>
       <BodyCard
-        title={"Configurations"}
+        title={t("configurations-configurations", "Configurations")}
         className="min-h-[200px]"
         actionables={[
           {
-            label: "Edit configurations",
+            label: t(
+              "configurations-edit-configurations",
+              "Edit configurations"
+            ),
             onClick: open,
             icon: <EditIcon size={20} />,
           },

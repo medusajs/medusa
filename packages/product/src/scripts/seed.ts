@@ -72,7 +72,7 @@ async function createProductCategories(
       parentCategory = await manager.findOne(ProductCategory, parentCategoryId)
     }
 
-    const category = await manager.create(ProductCategory, {
+    const category = manager.create(ProductCategory, {
       ...categoryDataClone,
       parent_category: parentCategory,
     })

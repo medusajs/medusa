@@ -1,5 +1,6 @@
-import { AdminAuthRes, AdminPostAuthReq } from "@medusajs/medusa"
+import { AdminAuthRes, AdminPostAuthReq, AdminBearerAuthRes } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
+import JwtTokenManager from "../../jwt-token-manager"
 import BaseResource from "../base"
 
 class AdminAuthResource extends BaseResource {
@@ -40,6 +41,25 @@ class AdminAuthResource extends BaseResource {
   ): ResponsePromise<AdminAuthRes> {
     const path = `/admin/auth`
     return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Retrieves a new JWT access token
+   * @param {AdminPostAuthReq} payload
+   * @param customHeaders
+   * @return {ResponsePromise<AdminBearerAuthRes>}
+   */
+  getToken(
+    payload: AdminPostAuthReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminBearerAuthRes> {
+    const path = `/admin/auth/token`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+      .then((res) => {
+        JwtTokenManager.registerJwt(res.access_token, "admin");
+        
+        return res
+      });
   }
 }
 

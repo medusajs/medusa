@@ -1,5 +1,7 @@
-import { IInventoryService } from "@medusajs/types"
-import { Type } from "class-transformer"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
 import {
   IsArray,
   IsBoolean,
@@ -9,20 +11,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { EntityManager } from "typeorm"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
-import { validator } from "../../../../utils/validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { EntityManager } from "typeorm"
+import { IInventoryService } from "@medusajs/types"
+import { Type } from "class-transformer"
 import { createVariantsTransaction } from "./transaction/create-product-variant"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/products/{id}/variants
@@ -69,7 +70,7 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  *     label: cURL
  *     source: |
  *       curl -X POST '{backend_url}/admin/products/{id}/variants' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Color",
@@ -89,6 +90,7 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Products
  * responses:
@@ -151,7 +153,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }

@@ -1,13 +1,13 @@
 import {
-    AbstractPriceSelectionStrategy,
-    PriceSelectionContext,
-    PriceSelectionResult,
-    PriceType,
+  AbstractPriceSelectionStrategy,
+  PriceSelectionContext,
+  PriceSelectionResult,
+  PriceType,
 } from "../interfaces"
 
 import { ICacheService } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
-import { isDefined } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -96,7 +96,9 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     await Promise.all(
       [...results].map(async ([variantId, prices]) => {
         variantPricesMap.set(variantId, prices)
-        await this.cacheService_.set(cacheKeysMap.get(variantId)!, prices)
+        if (!context.ignore_cache) {
+          await this.cacheService_.set(cacheKeysMap.get(variantId)!, prices)
+        }
       })
     )
 

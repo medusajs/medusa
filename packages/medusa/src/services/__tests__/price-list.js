@@ -127,14 +127,19 @@ describe("PriceListService", () => {
     updateRelatedMoneyAmountRepository.create = jest
       .fn()
       .mockImplementation((rawEntity) => Promise.resolve(rawEntity))
+
     updateRelatedMoneyAmountRepository.save = jest
       .fn()
       .mockImplementation(() => Promise.resolve())
     updateRelatedMoneyAmountRepository.updatePriceListPrices =
       MoneyAmountRepository.updatePriceListPrices
 
+    const manager = {
+      save: (entities) => Promise.resolve(entities),
+      create: (entities) => Promise.resolve(entities),
+    }
     const updateRelatedPriceListService = new PriceListService({
-      manager: MockManager,
+      manager: { ...MockManager, ...manager },
       customerGroupService,
       priceListRepository,
       moneyAmountRepository: updateRelatedMoneyAmountRepository,

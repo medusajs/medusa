@@ -1,6 +1,7 @@
 import { Customer } from "@medusajs/medusa"
 import { useAdminCustomerGroups, useAdminCustomers } from "medusa-react"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import {
   HeaderGroup,
   Row,
@@ -74,6 +75,7 @@ type EditCustomersTableProps = {
  * Container for the "edit customers" table.
  */
 function EditCustomersTable(props: EditCustomersTableProps) {
+  const { t } = useTranslation()
   const { setSelectedCustomerIds, selectedCustomerIds, handleSubmit, onClose } =
     props
 
@@ -131,10 +133,10 @@ function EditCustomersTable(props: EditCustomersTableProps) {
 
   const filteringOptions = [
     {
-      title: "Groups",
+      title: t("customer-group-table-groups", "Groups"),
       options: [
         {
-          title: "All",
+          title: t("customer-group-table-all", "All"),
           onClick: () => setActiveGroupId(null),
         },
         ...(customer_groups || []).map((g) => ({
@@ -176,7 +178,9 @@ function EditCustomersTable(props: EditCustomersTableProps) {
     <Modal handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h3 className="inter-xlarge-semibold">Edit Customers</h3>
+          <h3 className="inter-xlarge-semibold">
+            {t("customer-group-table-edit-customers", "Edit Customers")}
+          </h3>
         </Modal.Header>
 
         <Modal.Content>
@@ -188,7 +192,7 @@ function EditCustomersTable(props: EditCustomersTableProps) {
               count: count!,
               offset: queryObject.offset,
               pageSize: queryObject.offset + table.rows.length,
-              title: "Customers",
+              title: t("customer-group-table-customers", "Customers"),
               currentPage: table.state.pageIndex + 1,
               pageCount: table.pageCount,
               nextPage: handleNext,
@@ -228,7 +232,7 @@ function EditCustomersTable(props: EditCustomersTableProps) {
               className="w-eventButton"
               onClick={onClose}
             >
-              Cancel
+              {t("customer-group-table-cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -236,7 +240,7 @@ function EditCustomersTable(props: EditCustomersTableProps) {
               className="w-eventButton"
               onClick={handleSubmit}
             >
-              Save
+              {t("customer-group-table-save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

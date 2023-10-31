@@ -1,6 +1,7 @@
 import { useAdminProducts } from "medusa-react"
 import React, { useEffect, useState } from "react"
 import { Column, usePagination, useRowSelect, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import { useDebounce } from "../../../hooks/use-debounce"
 import IndeterminateCheckbox from "../../molecules/indeterminate-checkbox"
 import Table from "../../molecules/table"
@@ -17,6 +18,7 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
   addedProducts,
   setProducts,
 }) => {
+  const { t } = useTranslation()
   const [query, setQuery] = useState("")
   const [limit, setLimit] = useState(10)
   const [offset, setOffset] = useState(0)
@@ -39,18 +41,18 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
   useEffect(() => {
     setFilteringOptions([
       {
-        title: "Sort by",
+        title: t("collection-product-table-sort-by", "Sort by"),
         options: [
           {
-            title: "All",
+            title: t("collection-product-table-all", "All"),
             onClick: () => {},
           },
           {
-            title: "Newest",
+            title: t("collection-product-table-newest", "Newest"),
             onClick: () => {},
           },
           {
-            title: "Oldest",
+            title: t("collection-product-table-oldest", "Oldest"),
             onClick: () => {},
           },
         ],
@@ -152,7 +154,7 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
         count: count!,
         offset: offset,
         pageSize: offset + rows.length,
-        title: "Products",
+        title: t("collection-product-table-products", "Products"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,
@@ -164,7 +166,10 @@ const CollectionProductTable: React.FC<CollectionProductTableProps> = ({
       <Table
         enableSearch
         handleSearch={handleSearch}
-        searchPlaceholder="Search Products"
+        searchPlaceholder={t(
+          "collection-product-table-search-products",
+          "Search Products"
+        )}
         filteringOptions={filteringOptions}
         {...getTableProps()}
         className="h-full"

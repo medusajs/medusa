@@ -7,13 +7,10 @@ import {
 } from "../../../../services"
 import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { Type } from "class-transformer"
-import { defaultStoreVariantRelations } from "."
-import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -129,38 +126,21 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   const validated = await validator(StoreGetVariantsParams, req.query)
-  const { expand, offset, limit } = validated
-
-  let expandFields: string[] = []
-  if (expand) {
-    expandFields = expand.split(",")
-  }
 
   const customer_id = req.user?.customer_id
 
-  const listConfig = {
-    relations: expandFields.length
-      ? expandFields
-      : defaultStoreVariantRelations,
-    skip: offset,
-    take: limit,
-  }
-
-  const filterableFields: FilterableProductVariantProps = omit(validated, [
-    "ids",
-    "limit",
-    "offset",
-    "expand",
-    "cart_id",
-    "region_id",
-    "currency_code",
-  ])
+  let {
+    cart_id,
+    region_id,
+    currency_code,
+    sales_channel_id,
+    ids,
+    ...filterableFields
+  } = req.filterableFields
 
   if (validated.ids) {
-    filterableFields.id = validated.ids.split(",")
+    filterableFields["id"] = validated.ids.split(",")
   }
-
-  let sales_channel_id = validated.sales_channel_id
 
   if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
     sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
@@ -174,8 +154,9 @@ export default async (req, res) => {
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
   const regionService: RegionService = req.scope.resolve("regionService")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
-  const rawVariants = await variantService.list(filterableFields, listConfig)
+  const variants = await variantService.list(filterableFields, req.listConfig)
 
   let regionId = validated.region_id
   let currencyCode = validated.currency_code
@@ -190,18 +171,25 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const pricedVariants = await pricingService.setVariantPrices(rawVariants, {
-    cart_id: validated.cart_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    customer_id: customer_id,
-    include_discount_prices: true,
-  })
+  const decoratePromises: Promise<any>[] = []
 
-  const variants = await productVariantInventoryService.setVariantAvailability(
-    pricedVariants,
-    sales_channel_id
+  decoratePromises.push(
+    (await pricingService.setVariantPrices(variants, {
+      cart_id: validated.cart_id,
+      region_id: regionId,
+      currency_code: currencyCode,
+      customer_id: customer_id,
+      include_discount_prices: true,
+    })) as any
   )
+
+  decoratePromises.push(
+    (await productVariantInventoryService.setVariantAvailability(
+      variants,
+      sales_channel_id
+    )) as any
+  )
+  await Promise.all(decoratePromises)
 
   res.json({ variants })
 }

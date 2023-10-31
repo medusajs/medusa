@@ -39,7 +39,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *     label: cURL
  *     source: |
  *       curl -X DELETE '{backend_url}/admin/collections/{id}/products/batch' \
- *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
@@ -49,6 +49,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Product Collections
  * responses:

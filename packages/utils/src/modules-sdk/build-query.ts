@@ -14,7 +14,11 @@ export function buildQuery<T = any, TDto = any>(
     populate: deduplicate(config.relations ?? []),
     fields: config.select as string[],
     limit: config.take ?? 15,
-    offset: config.skip,
+    offset: config.skip ?? 0,
+  }
+
+  if (config.order) {
+    findOptions.orderBy = config.order as DAL.OptionsQuery<T>["orderBy"]
   }
 
   if (config.withDeleted) {
@@ -29,6 +33,15 @@ export function buildQuery<T = any, TDto = any>(
 
 function buildWhere(filters: Record<string, any> = {}, where = {}) {
   for (let [prop, value] of Object.entries(filters)) {
+    if (["$or", "$and"].includes(prop)) {
+      where[prop] = value.map((val) => {
+        const deepWhere = {}
+        buildWhere(val, deepWhere)
+        return deepWhere
+      })
+      continue
+    }
+
     if (Array.isArray(value)) {
       value = deduplicate(value)
       where[prop] = ["$in", "$nin"].includes(prop) ? value : { $in: value }

@@ -16,7 +16,7 @@ export const StockLocationModule = {
   __joinerConfig: {
     serviceName: "stockLocationService",
     primaryKeys: ["id"],
-    linkableKeys: ["stock_location_id"],
+    linkableKeys: { stock_location_id: "StockLocation" },
     alias: [],
   },
 

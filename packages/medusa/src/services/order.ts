@@ -1,63 +1,63 @@
 import { IInventoryService } from "@medusajs/types"
 import {
-    buildRelations,
-    buildSelects,
-    FlagRouter,
-    isDefined,
-    MedusaError,
+  buildRelations,
+  buildSelects,
+  FlagRouter,
+  isDefined,
+  MedusaError,
 } from "@medusajs/utils"
 import {
-    EntityManager,
-    FindManyOptions,
-    FindOptionsWhere,
-    ILike,
-    IsNull,
-    Not,
-    Raw,
+  EntityManager,
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+  IsNull,
+  Not,
+  Raw,
 } from "typeorm"
 import {
-    CartService,
-    CustomerService,
-    DiscountService,
-    DraftOrderService,
-    FulfillmentProviderService,
-    FulfillmentService,
-    GiftCardService,
-    LineItemService,
-    NewTotalsService,
-    PaymentProviderService,
-    ProductVariantInventoryService,
-    RegionService,
-    ShippingOptionService,
-    ShippingProfileService,
-    TaxProviderService,
-    TotalsService,
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  FulfillmentProviderService,
+  FulfillmentService,
+  GiftCardService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TaxProviderService,
+  TotalsService,
 } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-    Address,
-    Cart,
-    ClaimOrder,
-    Fulfillment,
-    FulfillmentItem,
-    FulfillmentStatus,
-    GiftCard,
-    LineItem,
-    Order,
-    OrderStatus,
-    Payment,
-    PaymentStatus,
-    Return,
-    Swap,
-    TrackingLink,
+  Address,
+  Cart,
+  ClaimOrder,
+  Fulfillment,
+  FulfillmentItem,
+  FulfillmentStatus,
+  GiftCard,
+  LineItem,
+  Order,
+  OrderStatus,
+  Payment,
+  PaymentStatus,
+  Return,
+  Swap,
+  TrackingLink,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
-    CreateFulfillmentOrder,
-    FulFillmentItemType,
+  CreateFulfillmentOrder,
+  FulFillmentItemType,
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
@@ -725,20 +725,17 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      const giftCardableAmount =
-        (cart.region?.gift_cards_taxable
-          ? cart.subtotal! - cart.discount_total!
-          : cart.total! + cart.gift_card_total!) || 0 // we re add the gift card total to compensate the fact that the decorate total already removed this amount from the total
+      let giftCardableAmountBalance = cart.gift_card_total ?? 0
 
-      let giftCardableAmountBalance = giftCardableAmount
       const giftCardService = this.giftCardService_.withTransaction(manager)
 
-      //Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
+      // Order the gift cards by first ends_at date, then remaining amount. To ensure largest possible amount left, for longest possible time.
       const orderedGiftCards = cart.gift_cards.sort((a, b) => {
-        let aEnd = a.ends_at ?? new Date(2100, 1, 1)
-        let bEnd = b.ends_at ?? new Date(2100, 1, 1)
+        const aEnd = a.ends_at ?? new Date(2100, 1, 1)
+        const bEnd = b.ends_at ?? new Date(2100, 1, 1)
         return aEnd.getTime() - bEnd.getTime() || a.balance - b.balance
       })
+
       for (const giftCard of orderedGiftCards) {
         const newGiftCardBalance = Math.max(
           0,
@@ -762,8 +759,9 @@ class OrderService extends TransactionBaseService {
         giftCardableAmountBalance =
           giftCardableAmountBalance - giftCardBalanceUsed
 
-        if (giftCardableAmountBalance == 0)
-          break;
+        if (giftCardableAmountBalance == 0) {
+          break
+        }
       }
 
       const shippingOptionServiceTx =
@@ -1897,8 +1895,20 @@ class OrderService extends TransactionBaseService {
       }
     )
 
+    order.item_tax_total = item_tax_total
+    order.shipping_tax_total = shipping_tax_total
+    order.tax_total = item_tax_total + shipping_tax_total
+
+    const giftCardableAmount = this.newTotalsService_.getGiftCardableAmount({
+      gift_cards_taxable: order.region?.gift_cards_taxable,
+      subtotal: order.subtotal,
+      discount_total: order.discount_total,
+      shipping_total: order.shipping_total,
+      tax_total: order.tax_total,
+    })
+
     const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
-      order.subtotal - order.discount_total,
+      giftCardableAmount,
       {
         region: order.region,
         giftCards: order.gift_cards,
@@ -1908,8 +1918,7 @@ class OrderService extends TransactionBaseService {
     order.gift_card_total = giftCardTotal.total || 0
     order.gift_card_tax_total = giftCardTotal.tax_total || 0
 
-    order.tax_total =
-      item_tax_total + shipping_tax_total - order.gift_card_tax_total
+    order.tax_total -= order.gift_card_tax_total
 
     for (const swap of order.swaps ?? []) {
       swap.additional_items = swap.additional_items.map((item) => {

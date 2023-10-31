@@ -24,9 +24,10 @@ import CustomerService from "../../../../services/customer"
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/customers/me' \
- *       -H 'Cookie: connect.sid={sid}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
+ *   - jwt_token: []
  * tags:
  *   - Customers
  * responses:

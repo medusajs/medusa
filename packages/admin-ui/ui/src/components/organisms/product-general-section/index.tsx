@@ -1,4 +1,5 @@
 import { Product } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import useToggleState from "../../../hooks/use-toggle-state"
 import {
@@ -22,6 +23,7 @@ type Props = {
 }
 
 const ProductGeneralSection = ({ product }: Props) => {
+  const { t } = useTranslation()
   const { onDelete, onStatusChange } = useEditProductActions(product.id)
   const {
     state: infoState,
@@ -39,12 +41,15 @@ const ProductGeneralSection = ({ product }: Props) => {
 
   const actions: ActionType[] = [
     {
-      label: "Edit General Information",
+      label: t(
+        "product-general-section-edit-general-information",
+        "Edit General Information"
+      ),
       onClick: toggleInfo,
       icon: <EditIcon size={20} />,
     },
     {
-      label: "Delete",
+      label: t("product-general-section-delete", "Delete"),
       onClick: onDelete,
       variant: "danger",
       icon: <TrashIcon size={20} />,
@@ -53,7 +58,10 @@ const ProductGeneralSection = ({ product }: Props) => {
 
   if (isFeatureEnabled("sales_channels")) {
     actions.splice(1, 0, {
-      label: "Edit Sales Channels",
+      label: t(
+        "product-general-section-edit-sales-channels",
+        "Edit Sales Channels"
+      ),
       onClick: toggleChannels,
       icon: <ChannelsIcon size={20} />,
     })
@@ -68,8 +76,8 @@ const ProductGeneralSection = ({ product }: Props) => {
         status={
           <StatusSelector
             isDraft={product?.status === "draft"}
-            activeState="Published"
-            draftState="Draft"
+            activeState={t("product-general-section-published", "Published")}
+            draftState={t("product-general-section-draft", "Draft")}
             onChange={() => onStatusChange(product.status)}
           />
         }
@@ -123,33 +131,50 @@ const Detail = ({ title, value }: DetailProps) => {
 
 const ProductDetails = ({ product }: Props) => {
   const { isFeatureEnabled } = useFeatureFlag()
+  const { t } = useTranslation()
 
   return (
     <div className="mt-8 flex flex-col gap-y-3">
-      <h2 className="inter-base-semibold">Details</h2>
-      <Detail title="Subtitle" value={product.subtitle} />
-      <Detail title="Handle" value={product.handle} />
-      <Detail title="Type" value={product.type?.value} />
-      <Detail title="Collection" value={product.collection?.title} />
+      <h2 className="inter-base-semibold">
+        {t("product-general-section-details", "Details")}
+      </h2>
+      <Detail
+        title={t("product-general-section-subtitle", "Subtitle")}
+        value={product.subtitle}
+      />
+      <Detail
+        title={t("product-general-section-handle", "Handle")}
+        value={product.handle}
+      />
+      <Detail
+        title={t("product-general-section-type", "Type")}
+        value={product.type?.value}
+      />
+      <Detail
+        title={t("product-general-section-collection", "Collection")}
+        value={product.collection?.title}
+      />
       {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) && (
         <Detail
-          title="Category"
+          title={t("product-general-section-category", "Category")}
           value={product.categories.map((c) => c.name)}
         />
       )}
       <Detail
-        title="Discountable"
-        value={product.discountable ? "True" : "False"}
+        title={t("product-general-section-discountable", "Discountable")}
+        value={
+          product.discountable
+            ? t("product-general-section-true", "True")
+            : t("product-general-section-false", "False")
+        }
       />
       <Detail
-        title="Metadata"
+        title={t("product-general-section-metadata", "Metadata")}
         value={
           Object.entries(product.metadata || {}).length > 0
-            ? `${Object.entries(product.metadata || {}).length} ${
-                Object.keys(product.metadata || {}).length === 1
-                  ? "item"
-                  : "items"
-              }`
+            ? t("product-general-section-count", "{{count}}", {
+                count: Object.keys(product.metadata || {}).length,
+              })
             : undefined
         }
       />
@@ -176,10 +201,13 @@ const ProductTags = ({ product }: Props) => {
 }
 
 const ProductSalesChannels = ({ product }: Props) => {
+  const { t } = useTranslation()
   return (
     <FeatureToggle featureFlag="sales_channels">
       <div className="mt-xlarge">
-        <h2 className="inter-base-semibold mb-xsmall">Sales channels</h2>
+        <h2 className="inter-base-semibold mb-xsmall">
+          {t("product-general-section-sales-channels", "Sales channels")}
+        </h2>
         <SalesChannelsDisplay channels={product.sales_channels} />
       </div>
     </FeatureToggle>

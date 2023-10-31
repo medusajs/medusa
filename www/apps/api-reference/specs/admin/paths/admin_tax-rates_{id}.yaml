@@ -1,0 +1,193 @@
+get:
+  operationId: GetTaxRatesTaxRate
+  summary: Get a Tax Rate
+  description: Retrieve a Tax Rate's details.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: ID of the tax rate.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma-separated fields that should be included in the returned tax rate.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: expand
+      description: >-
+        Comma-separated relations that should be expanded in the returned tax
+        rate.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+  x-authenticated: true
+  x-codegen:
+    method: retrieve
+    queryParams: AdminGetTaxRatesTaxRateParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_tax-rates_{id}/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_tax-rates_{id}/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  tags:
+    - Tax Rates
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminTaxRatesRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+post:
+  operationId: PostTaxRatesTaxRate
+  summary: Update a Tax Rate
+  description: Update a Tax Rate's details.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: ID of the tax rate.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma-separated fields that should be included in the returned tax rate.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
+      name: expand
+      description: >-
+        Comma-separated relations that should be expanded in the returned tax
+        rate.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+  x-authenticated: true
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostTaxRatesTaxRateReq.yaml
+  x-codegen:
+    method: update
+    queryParams: AdminPostTaxRatesTaxRateParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_tax-rates_{id}/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_tax-rates_{id}/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  tags:
+    - Tax Rates
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminTaxRatesRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+delete:
+  operationId: DeleteTaxRatesTaxRate
+  summary: Delete a Tax Rate
+  description: >-
+    Delete a Tax Rate. Resources associated with the tax rate, such as products
+    or product types, are not deleted.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Shipping Option.
+      schema:
+        type: string
+  x-codegen:
+    method: delete
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_tax-rates_{id}/delete.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_tax-rates_{id}/delete.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  tags:
+    - Tax Rates
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminTaxRatesDeleteRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
