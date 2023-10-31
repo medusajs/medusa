@@ -40,8 +40,8 @@ export const getFact = () => {
 
 export const showFact = (spinner: Ora, title: string) => {
   const fact = getFact()
-  spinner.text = `${boxen(`${emojify(":bulb:")} Medusa Tips\n\n${fact}`, {
-    title: chalk.cyan(title),
+  spinner.text = `${title}\n${boxen(`${fact}`, {
+    title: chalk.cyan(`${emojify(":bulb:")} Medusa Tips`),
     titleAlignment: "center",
     textAlignment: "center",
     padding: 1,
@@ -54,9 +54,6 @@ export const createFactBox = (
   title: string,
   processManager: ProcessManager
 ): NodeJS.Timer => {
-  spinner.spinner = {
-    frames: [""],
-  }
   showFact(spinner, title)
   const interval = setInterval(() => {
     showFact(spinner, title)
@@ -78,7 +75,6 @@ export const resetFactBox = (
     clearInterval(interval)
   }
 
-  spinner.spinner = "dots"
   spinner.succeed(chalk.green(successMessage)).start()
   let newInterval = null
   if (newTitle) {
