@@ -62,6 +62,7 @@
     "hooks:install": "husky install",
     "hooks:uninstall": "husky uninstall",
     "build": "turbo run build --no-daemon",
+    "build:os": "turbo run build --no-daemon --filter=!@medusajs/client-types",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts,.tsx .",
     "prettier": "prettier",
     "jest": "jest",

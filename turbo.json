@@ -11,6 +11,16 @@
         "*/**"
       ]
     },
+    "build:os": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "!node_modules/**",
+        "!src/**",
+        "*/**"
+      ]
+    },
     "test": {
       "dependsOn": [
         "build"
@@ -18,6 +28,9 @@
       "outputs": []
     },
     "test:os": {
+      "dependsOn": [
+        "build:os"
+      ],
       "outputs": []
     },
     "test:integration": {

@@ -59,5 +59,8 @@ jobs:
         with:
           extension: pipeline
 
+      - name: Build Packages
+        run: yarn build:os
+
       - name: Run unit tests
         run: yarn test:os
