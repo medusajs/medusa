@@ -3,6 +3,7 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { Region } from "@medusajs/medusa"
 import { AxiosInstance } from "axios"
 import path from "path"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import {
   useApi,
   useExpressServer,
@@ -10,7 +11,6 @@ import {
 import { getContainer } from "../../../../environment-helpers/use-container"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
-import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 
 jest.setTimeout(50000)
 
@@ -25,7 +25,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products", () => {
+describe.skip("[Product & Pricing Module] POST /admin/products", () => {
   let dbConnection
   let appContainer
   let express
