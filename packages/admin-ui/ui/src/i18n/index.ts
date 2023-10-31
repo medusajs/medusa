@@ -55,8 +55,16 @@ export const supportedLanguages = [
     name: "Bosanski",
   },
   {
+    locale: "vi",
+    name: "Tiếng Việt",
+  },
+  {
     locale: "tm",
     name: "Tamil",
+  },
+  {
+    locale: "ru",
+    name: "Русский"
   }
 ]
 

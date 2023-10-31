@@ -1,5 +1,7 @@
-import { IInventoryService } from "@medusajs/types"
-import { Type } from "class-transformer"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
 import {
   IsArray,
   IsBoolean,
@@ -9,20 +11,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { EntityManager } from "typeorm"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
-import { validator } from "../../../../utils/validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { EntityManager } from "typeorm"
+import { IInventoryService } from "@medusajs/types"
+import { Type } from "class-transformer"
 import { createVariantsTransaction } from "./transaction/create-product-variant"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/products/{id}/variants
@@ -152,7 +153,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }

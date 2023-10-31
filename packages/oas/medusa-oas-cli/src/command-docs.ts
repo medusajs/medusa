@@ -59,6 +59,10 @@ export const commandOptions: Option[] = [
     "--html",
     "Generate a static HTML using Redocly's build-docs command."
   ),
+  new Option(
+    "--main-file-name <mainFileName>",
+    "The name of the main YAML file."
+  ).default("openapi.yaml")
 ]
 
 export function getCommand(): Command {
@@ -95,7 +99,6 @@ export async function execute(cliParams: OptionValues): Promise<void> {
       throw new Error(`--config must be a file - ${configFileCustom}`)
     }
     if (![".json", ".yaml"].includes(path.extname(configFileCustom))) {
-      console.log(path.extname(configFileCustom))
       throw new Error(
         `--config file must be of type .json or .yaml - ${configFileCustom}`
       )
@@ -110,7 +113,7 @@ export async function execute(cliParams: OptionValues): Promise<void> {
   const tmpDir = await getTmpDirectory()
   const configTmpFile = path.resolve(tmpDir, "redocly-config.yaml")
   /** matches naming convention from `redocly split` */
-  const finalOASFile = path.resolve(outDir, "openapi.yaml")
+  const finalOASFile = cliParams.mainFileName
 
   await createTmpConfig(configFileDefault, configTmpFile)
   if (configFileCustom) {
@@ -143,7 +146,7 @@ export async function execute(cliParams: OptionValues): Promise<void> {
   if (shouldSplit) {
     await generateReference(srcFileSanitized, outDir)
   } else {
-    await jsonFileToYamlFile(srcFileSanitized, finalOASFile)
+    await jsonFileToYamlFile(srcFileSanitized, path.join(outDir, finalOASFile))
   }
   if (shouldBuildHTML) {
     const outHTMLFile = path.resolve(outDir, "index.html")
