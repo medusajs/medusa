@@ -469,6 +469,8 @@ export class RoutesLoader {
       }
 
       for (const route of routes) {
+        console.warn("REGISTERING", route.method, descriptor.route)
+
         log({
           activityId: this.activityId,
           message: `Registering route [${route.method?.toUpperCase()}] - ${
