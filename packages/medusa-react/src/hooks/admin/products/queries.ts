@@ -1,4 +1,5 @@
 import {
+  AdminGetProductParams,
   AdminGetProductsParams,
   AdminProductsListRes,
   AdminProductsListTagsRes,
@@ -35,6 +36,7 @@ export const useAdminProducts = (
 
 export const useAdminProduct = (
   id: string,
+  query?: AdminGetProductParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminProductsRes>,
     Error,
@@ -44,7 +46,7 @@ export const useAdminProduct = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminProductKeys.detail(id),
-    () => client.admin.products.retrieve(id),
+    () => client.admin.products.retrieve(id, query),
     options
   )
   return { ...data, ...rest } as const
