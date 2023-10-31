@@ -73,3 +73,14 @@ export interface UpdatePriceListRuleDTO {
   id: string
   value: string
 }
+
+export interface AddPriceListPricesDTO{ 
+  priceListId: string,
+  prices: [
+    {
+      amount: number,
+			currency_code: string,
+			price_set_id: string,
+    },
+  ],
+}

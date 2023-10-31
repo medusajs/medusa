@@ -1420,4 +1420,67 @@ export default class PricingModuleService<
   ): Promise<void> {
     await this.priceListRuleService_.delete(priceListRuleIds, sharedContext)
   }
+
+  @InjectManager("baseRepository_")
+  async addPriceListPrices(
+    data: PricingTypes.AddPriceListPricesDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceListDTO> { 
+    const [priceList] = await this.addPriceListPrices_([data], sharedContext)
+
+    return this.baseRepository_.serialize<PricingTypes.PriceListDTO>(
+      priceList,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async addPriceListPrices_(
+    data: PricingTypes.AddPriceListPricesDTO[],
+    sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceListDTO> { 
+    const priceLists = await this.listPriceLists({id: data.map(d => d.priceListId)}, {}, sharedContext)
+
+    const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
+
+    for (const { priceSetId, prices } of data) {
+
+      const priceList = priceListMap.get(priceSetId)
+
+      if(!priceList) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Price list with id: ${priceSetId} not found`
+        )
+      }
+
+      await Promise.all(
+        prices.map(async (price) => {
+          const [moneyAmount] = await this.moneyAmountService_.create(
+            [price] as unknown as CreateMoneyAmountDTO[],
+            sharedContext
+          )
+
+          await this.priceSetMoneyAmountService_.create(
+            [
+              {
+                price_set: price.price_set_id,
+                money_amount: moneyAmount,
+                title: "test",
+                number_rules: 0, 
+                price_list: priceList.id
+              },
+            ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
+            sharedContext
+          )
+
+          return moneyAmount
+        })
+      )
+    }
+
+    return priceLists
+  }
 }
