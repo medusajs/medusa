@@ -50,12 +50,6 @@ const settings: SettingsCardType[] = [
     to: "/a/settings/currencies",
   },
   {
-    heading: "Personal Information",
-    description: "Manage your Medusa profile",
-    icon: HappyIcon,
-    to: "/a/settings/personal-information",
-  },
-  {
     heading: "Regions",
     description: "Manage shipping, payment, and fulfillment across regions",
     icon: MapPinIcon,
@@ -88,7 +82,7 @@ const settings: SettingsCardType[] = [
   },
   {
     heading: "The Team",
-    description: "Manage users of your Medusa Store",
+    description: "Manage users of your Store",
     icon: UsersIcon,
     to: "/a/settings/team",
   },

@@ -15,8 +15,20 @@ const defaultFeatureFlagContext: {
   featureToggleList: Record<string, boolean>
   isFeatureEnabled: (flag: string) => boolean
 } = {
-  featureToggleList: {},
+  featureToggleList: {
+    analytics: false,
+    opt_out: true,
+    anonymize: true
+  },
   isFeatureEnabled: function (flag): boolean {
+
+    if(flag == 'analytics')
+      return false;
+    else if(flag == 'opt_out')
+      return true;
+    else if(flag == 'anonymize')
+      return true;
+
     return !!this.featureToggleList[flag]
   },
 }
@@ -56,7 +68,17 @@ export const FeatureFlagProvider = ({ children }: PropsWithChildren) => {
     {} as Record<string, boolean>
   )
 
-  const isFeatureEnabled = (flag: string) => !!featureToggleList[flag]
+  const isFeatureEnabled = (flag: string) => {
+
+    if(flag == 'analytics')
+      return false;
+    else if(flag == 'opt_out')
+      return true;
+    else if(flag == 'anonymize')
+      return true;
+    
+    return !!featureToggleList[flag];
+  }
 
   return (
     <FeatureFlagContext.Provider

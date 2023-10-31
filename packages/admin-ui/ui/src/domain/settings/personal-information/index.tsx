@@ -10,14 +10,9 @@ const PersonalInformation = () => {
   const { isFeatureEnabled } = useFeatureFlag()
   const { user } = useAdminGetSession()
   const { t } = useTranslation()
-
+console.log('***',isFeatureEnabled("analytics"))
   return (
     <div>
-      <BackButton
-        label={t("personal-information-back-to-settings", "Back to Settings")}
-        path="/a/settings"
-        className="mb-xsmall"
-      />
       <div className="rounded-rounded border-grey-20 pt-large pb-xlarge px-xlarge gap-y-xlarge large:max-w-[50%] flex flex-col border bg-white">
         <div className="gap-y-2xsmall flex flex-col">
           <h1 className="inter-xlarge-semibold">

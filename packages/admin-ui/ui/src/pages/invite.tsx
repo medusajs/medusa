@@ -57,8 +57,8 @@ const InvitePage = () => {
       password: "",
       repeat_password: "",
       analytics: {
-        opt_out: false,
-        anonymize: false,
+        opt_out: true,
+        anonymize: true,
       },
     },
   })
@@ -129,7 +129,7 @@ const InvitePage = () => {
         })
       }
 
-      navigate("/a/orders")
+      navigate("/")
     } catch (err) {
       notification("Error", getErrorMessage(err), "error")
     }
@@ -162,7 +162,7 @@ const InvitePage = () => {
         <form onSubmit={handleAcceptInvite}>
           <div className="flex w-[300px] flex-col items-center">
             <h1 className="inter-xlarge-semibold mb-large text-[20px]">
-              Create your Medusa account
+              Create your account
             </h1>
             <div className="gap-y-small flex flex-col">
               <div>
@@ -190,12 +190,6 @@ const InvitePage = () => {
                 <InputError errors={errors} name="repeat_password" />
               </div>
             </div>
-            <div className="gap-y-small my-8 flex w-[300px] flex-col">
-              <AnalyticsConfigForm
-                form={nestedForm(form, "analytics")}
-                compact={true}
-              />
-            </div>
             <Button
               variant="secondary"
               size="medium"
@@ -218,13 +212,13 @@ const InvitePage = () => {
           </h1>
           {first_run ? (
             <p className="inter-base-regular text-grey-50 mt-xsmall">
-              Create an admin account to access your <br /> Medusa dashboard.
+              Create an admin account to access your dashboard.
             </p>
           ) : (
             <p className="inter-base-regular text-grey-50 mt-xsmall">
               You can now join the team. Sign up below and get started
               <br />
-              with your Medusa account right away.
+              with your account right away.
             </p>
           )}
           <Button
