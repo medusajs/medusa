@@ -343,6 +343,25 @@ function processEntity(
     moduleJoinerConfigs
   )
 
+  if (
+    !currentEntityModule &&
+    currentObjectRepresentationRef.listeners.length > 0
+  ) {
+    const example = JSON.stringify({
+      alias: [
+        {
+          name: "entity-alias",
+          args: {
+            entity: entityName,
+          },
+        },
+      ],
+    })
+    throw new Error(
+      `CatalogModule error, unable to retrieve the module that corresponds to the entity ${entityName}.\nPlease add the entity to the module schema or add an alias to the joiner config like the example below:\n${example}`
+    )
+  }
+
   if (currentEntityModule) {
     objectRepresentationRef._serviceNameModuleConfigMap[
       currentEntityModule.serviceName
