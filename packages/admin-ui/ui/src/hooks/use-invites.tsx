@@ -10,7 +10,7 @@ import { Role } from "../types/shared"
 
 type InviteFormData = {
   user: string
-  role: Role
+  role: string
   role_id: string
   region_id: string
 }

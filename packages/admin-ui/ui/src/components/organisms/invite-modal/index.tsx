@@ -20,9 +20,9 @@ type InviteModalProps = {
 
 export type InviteModalFormData = {
   user: string
-  role: Role
-  role_id: Option
-  region_id: Option
+  role: any
+  role_id: any
+  region_id: any
 }
 
 const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {

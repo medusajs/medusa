@@ -14,11 +14,9 @@ import { getErrorMessage } from "../utils/error-messages"
 import FormValidator from "../utils/form-validator"
 import { useAdminCreateAnalyticsConfig } from "../services/analytics"
 import { useAnalytics } from "../providers/analytics-provider"
-import AnalyticsConfigForm, {
-  AnalyticsConfigFormType,
-} from "../components/organisms/analytics-config-form"
-import { nestedForm } from "../utils/nested-form"
+import { AnalyticsConfigFormType } from "../components/organisms/analytics-config-form"
 import { useFeatureFlag } from "../providers/feature-flag-provider"
+import { useAccess } from "../providers/access-provider"
 
 type FormValues = {
   password: string
@@ -80,6 +78,8 @@ const InvitePage = () => {
   } = useAdminCreateAnalyticsConfig()
   const { mutateAsync: doLogin, isLoading: loginIsLoading } = useAdminLogin()
 
+  const {access, getAccess, loaded} = useAccess();
+
   const isLoading =
     acceptInviteIsLoading || createAnalyticsConfigIsLoading || loginIsLoading
 
@@ -113,6 +113,8 @@ const InvitePage = () => {
       })
 
       await doLogin({ email: token!.user_email, password: data.password })
+
+      await getAccess();
 
       const shouldTrackEmail =
         !data.analytics.anonymize &&
