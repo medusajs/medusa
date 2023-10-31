@@ -84,7 +84,7 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
   })
 
   it("should update product variant price sets and prices", async () => {
-    const api = useApi()
+    const api = useApi() as any
     const data = {
       title: "test product update",
       variants: [
@@ -106,13 +106,12 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    let response = await api.post(
+    await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+
+    const response = await api.get(
       `/admin/products/${product.id}`,
-      data,
       adminHeaders
     )
-
-    response = await api.get(`/admin/products/${product.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data.product).toEqual(
@@ -154,7 +153,7 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
 
     const moneyAmountToUpdate = priceSet.money_amounts?.[0]
 
-    const api = useApi()
+    const api = useApi() as any
     const data = {
       title: "test product update",
       variants: [
@@ -177,13 +176,14 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    let response = await api.post(
+    console.log("I am here first")
+    await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+    console.log("I am here")
+
+    const response = await api.get(
       `/admin/products/${product.id}`,
-      data,
       adminHeaders
     )
-
-    response = await api.get(`/admin/products/${product.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data.product).toEqual(
@@ -252,13 +252,12 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    let response = await api.post(
+    await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+
+    const response = await api.get(
       `/admin/products/${product.id}`,
-      data,
       adminHeaders
     )
-
-    response = await api.get(`/admin/products/${product.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data.product).toEqual(
