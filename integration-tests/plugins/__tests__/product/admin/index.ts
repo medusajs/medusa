@@ -1,6 +1,9 @@
 import path from "path"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { setPort, useApi } from "../../../../environment-helpers/use-api"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import {
+  useApi,
+  useExpressServer,
+} from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 import adminSeeder from "../../../../helpers/admin-seeder"
@@ -13,6 +16,7 @@ import {
   simpleProductFactory,
   simpleSalesChannelFactory,
 } from "../../../../factories"
+import { getContainer } from "../../../../environment-helpers/use-container"
 
 jest.setTimeout(5000000)
 
@@ -29,20 +33,15 @@ describe("/admin/products", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd } as any)
-    const { app, port, container } = await bootstrapApp({ cwd })
-    medusaContainer = container
-
-    setPort(port)
-    express = app.listen(port, () => {
-      process.send?.(port)
-    })
+    dbConnection = await initDb({ cwd })
+    await startBootstrapApp({ cwd })
+    medusaContainer = getContainer()
+    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-
     express.close()
   })
 

@@ -2,30 +2,60 @@ const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
 const { isObject } = require("@medusajs/utils")
+const { setContainer } = require("./use-container")
+const { setPort, setExpressServer } = require("./use-api")
+
+async function bootstrapApp({ cwd, env = {} } = {}) {
+  const app = express()
+
+  if (isObject(env)) {
+    Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
+  }
+
+  const loaders = require("@medusajs/medusa/dist/loaders").default
+
+  const { container, dbConnection } = await loaders({
+    directory: path.resolve(cwd || process.cwd()),
+    expressApp: app,
+    isTest: false,
+  })
+
+  const PORT = await getPort()
+
+  return {
+    container,
+    db: dbConnection,
+    app,
+    port: PORT,
+  }
+}
 
 module.exports = {
-  bootstrapApp: async ({ cwd, env = {} } = {}) => {
-    const app = express()
+  bootstrapApp,
+  startBootstrapApp: async ({
+    cwd,
+    env = {},
+    skipExpressListen = false,
+  } = {}) => {
+    const { app, port, container } = await bootstrapApp({ cwd, env })
 
-    if (isObject(env)) {
-      Object.entries(env).forEach(([k, v]) => (process.env[k] = v))
+    setContainer(container)
+
+    if (skipExpressListen) {
+      return
     }
 
-    const loaders = require("@medusajs/medusa/dist/loaders").default
+    return await new Promise((resolve, reject) => {
+      const expressServer = app.listen(port, (err) => {
+        if (err) {
+          return reject(err)
+        }
+        setPort(port)
+        process.send(port)
+        resolve()
+      })
 
-    const { container, dbConnection } = await loaders({
-      directory: path.resolve(cwd || process.cwd()),
-      expressApp: app,
-      isTest: false,
+      setExpressServer(expressServer)
     })
-
-    const PORT = await getPort()
-
-    return {
-      container,
-      db: dbConnection,
-      app,
-      port: PORT,
-    }
   },
 }

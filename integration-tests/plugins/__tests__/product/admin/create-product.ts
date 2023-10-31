@@ -3,11 +3,14 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { Region } from "@medusajs/medusa"
 import { AxiosInstance } from "axios"
 import path from "path"
-import setupServer from "../../../../environment-helpers/setup-server"
-import { useApi } from "../../../../environment-helpers/use-api"
+import {
+  useApi,
+  useExpressServer,
+} from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 
 jest.setTimeout(50000)
 
@@ -25,19 +28,20 @@ const env = {
 describe.skip("[Product & Pricing Module] POST /admin/products", () => {
   let dbConnection
   let appContainer
-  let medusaProcess
+  let express
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env, bootstrapApp: true } as any)
+    dbConnection = await initDb({ cwd })
+    await startBootstrapApp({ cwd })
     appContainer = getContainer()
+    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    express.close()
   })
 
   beforeEach(async () => {

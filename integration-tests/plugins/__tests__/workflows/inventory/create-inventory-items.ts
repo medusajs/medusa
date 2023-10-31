@@ -6,7 +6,7 @@ import {
   pipe,
 } from "@medusajs/workflows"
 import path from "path"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 jest.setTimeout(30000)
@@ -16,9 +16,8 @@ describe("CreateInventoryItem workflow", function () {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    await initDb({ cwd } as any)
-    const { container } = await bootstrapApp({ cwd })
-    medusaContainer = container
+    await initDb({ cwd })
+    await startBootstrapApp({ cwd, skipExpressListen: true })
   })
 
   afterAll(async () => {

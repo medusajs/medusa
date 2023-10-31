@@ -2,19 +2,21 @@ const path = require("path")
 const { ProductVariantInventoryService } = require("@medusajs/medusa")
 
 const {
-  bootstrapApp,
+  startBootstrapApp,
 } = require("../../../../environment-helpers/bootstrap-app")
 const { initDb, useDb } = require("../../../../environment-helpers/use-db")
-const { setPort, useApi } = require("../../../../environment-helpers/use-api")
+const {
+  useApi,
+  useExpressServer,
+} = require("../../../../environment-helpers/use-api")
 
 const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
 const {
-  simpleProductFactory,
-  simpleOrderFactory,
-} = require("../../../../factories")
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("Inventory Items endpoints", () => {
@@ -22,31 +24,16 @@ describe("Inventory Items endpoints", () => {
   let dbConnection
   let express
 
-  let variantId
-  let inventoryItems
-  let locationId
-  let location2Id
-  let location3Id
-
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
+    await startBootstrapApp({ cwd })
+    appContainer = getContainer()
+    express = useExpressServer()
 
     // Set feature flag
     const flagRouter = appContainer.resolve("featureFlagRouter")
     flagRouter.setFlag("many_to_many_inventory", true)
-
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
-  })
-
-  beforeEach(async () => {
-    await adminSeeder(dbConnection)
   })
 
   afterAll(async () => {
@@ -56,6 +43,10 @@ describe("Inventory Items endpoints", () => {
     const db = useDb()
     await db.shutdown()
     express.close()
+  })
+
+  beforeEach(async () => {
+    await adminSeeder(dbConnection)
   })
 
   afterEach(async () => {

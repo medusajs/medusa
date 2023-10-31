@@ -1,10 +1,13 @@
 const path = require("path")
 
 const {
-  bootstrapApp,
+  startBootstrapApp,
 } = require("../../../../environment-helpers/bootstrap-app")
 const { initDb, useDb } = require("../../../../environment-helpers/use-db")
-const { setPort, useApi } = require("../../../../environment-helpers/use-api")
+const {
+  useApi,
+  useExpressServer,
+} = require("../../../../environment-helpers/use-api")
 
 const {
   ProductVariantInventoryService,
@@ -16,6 +19,9 @@ const adminSeeder = require("../../../../helpers/admin-seeder")
 jest.setTimeout(30000)
 
 const { simpleProductFactory } = require("../../../../factories")
+const {
+  getContainer,
+} = require("../../../../environment-helpers/use-container")
 
 describe("Create Variant", () => {
   let appContainer
@@ -25,13 +31,9 @@ describe("Create Variant", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
-    appContainer = container
-
-    setPort(port)
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+    await startBootstrapApp({ cwd })
+    appContainer = getContainer()
+    express = useExpressServer()
   })
 
   afterAll(async () => {

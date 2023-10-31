@@ -1,8 +1,12 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../environment-helpers/bootstrap-app")
+const {
+  startBootstrapApp,
+} = require("../../../environment-helpers/bootstrap-app")
 const { initDb, useDb } = require("../../../environment-helpers/use-db")
 const { simpleProductFactory } = require("../../../factories")
+const { getContainer } = require("../../../environment-helpers/use-container")
+const { useExpressServer } = require("../../../environment-helpers/use-api")
 
 jest.setTimeout(50000)
 
@@ -19,12 +23,9 @@ describe("Inventory Module", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd, verbose: false })
-    appContainer = container
-
-    express = app.listen(port, (err) => {
-      process.send(port)
-    })
+    await startBootstrapApp({ cwd })
+    appContainer = getContainer()
+    express = useExpressServer()
   })
 
   afterAll(async () => {

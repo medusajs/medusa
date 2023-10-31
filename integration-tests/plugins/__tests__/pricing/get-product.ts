@@ -1,12 +1,13 @@
-import { setPort, useApi } from "../../../environment-helpers/use-api"
+import { useApi, useExpressServer } from "../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../environment-helpers/use-db"
 import { simpleCartFactory, simpleRegionFactory } from "../../../factories"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { AxiosInstance } from "axios"
 import path from "path"
-import { bootstrapApp } from "../../../environment-helpers/bootstrap-app"
+import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../helpers/admin-seeder"
+import { getContainer } from "../../../environment-helpers/use-container"
 
 jest.setTimeout(5000000)
 
@@ -34,19 +35,15 @@ describe("Link Modules", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd, env } as any)
-
-    const { container, app, port } = await bootstrapApp({ cwd, env })
-    medusaContainer = container
-    setPort(port)
-
-    express = app.listen(port)
+    dbConnection = await initDb({ cwd })
+    await startBootstrapApp({ cwd })
+    medusaContainer = getContainer()
+    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-
     express.close()
   })
 

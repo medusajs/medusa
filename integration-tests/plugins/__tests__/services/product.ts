@@ -1,7 +1,8 @@
 import path from "path"
 import { initDb, useDb } from "../../../environment-helpers/use-db"
-import { bootstrapApp } from "../../../environment-helpers/bootstrap-app"
-import { setPort } from "../../../environment-helpers/use-api"
+import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
+import { useExpressServer } from "../../../environment-helpers/use-api"
+import { getContainer } from "../../../environment-helpers/use-container"
 
 jest.setTimeout(30000)
 
@@ -14,21 +15,15 @@ describe("product", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd } as any)
-    const { container, port, app } = await bootstrapApp({ cwd })
-
-    setPort(port)
-    express = app.listen(port, () => {
-      process.send!(port)
-    })
-
-    medusaContainer = container
+    dbConnection = await initDb({ cwd })
+    await startBootstrapApp({ cwd })
+    medusaContainer = getContainer()
+    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-
     express.close()
   })
 
