@@ -36,8 +36,8 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd })
+    dbConnection = await initDb({ cwd, env } as any)
+    await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
     express = useExpressServer()
   })
