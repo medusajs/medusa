@@ -27,9 +27,14 @@ type EditUserModalFormData = {
   region_id: any
 }
 
-const defaultRole = {
+export const defaultRole = {
   id: '',
   name: 'Superadmin'
+}
+
+export const defaultRegion = {
+  id: '',
+  name: ''
 }
 
 const EditUserModal: React.FC<EditUserModalProps> = ({
@@ -52,7 +57,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     reset(mapUser(user))
   }, [user])
 
-  const {get: getRoles, setRole, setRegion} = useRoles();
+  const {get: getRoles, setRole} = useRoles();
   
   const onSubmit = (data: EditUserModalFormData) => {
     const role_id = data.role_id?.value || '';
@@ -61,15 +66,13 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     delete data.region_id;
     mutate(data, {
       onSuccess: () => {
-        setRole(user.id, role_id).then(res=>{
-          setRegion(user.id, region_id).then(res=>{
-            notification(
-              t("edit-user-modal-success", "Success"),
-              t("edit-user-modal-user-was-updated", "User was updated"),
-              "success"
-            )
-            onSuccess()
-          })
+        setRole(user.id, role_id, region_id).then(res=>{
+          notification(
+            t("edit-user-modal-success", "Success"),
+            t("edit-user-modal-user-was-updated", "User was updated"),
+            "success"
+          )
+          onSuccess()
         })
       },
       onError: (error) => {
@@ -194,7 +197,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                         onChange={onChange}
                         options={regionOptions}
                         value={value}
-                        defaultValue={defaultRole}
+                        defaultValue={defaultRegion}
                         isClearable
                         isSearchable
                       />

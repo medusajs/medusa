@@ -59,7 +59,7 @@ const Users: React.FC = () => {
           className="mb-xsmall"
         />
         <BodyCard
-          title={t("users-the-team", "The Team")}
+          title={t("users-users", "Users")}
           subtitle={t(
             "users-manage-users-of-your-medusa-store",
             "Manage users of your Medusa Store"

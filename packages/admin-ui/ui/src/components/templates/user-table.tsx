@@ -174,10 +174,10 @@ const UserTable: React.FC<UserTableProps> = ({
         <Table.Cell className="text-grey-40 w-80">
           {invite.user_email}
         </Table.Cell>
-        <Table.Cell className="inter-small-semibold text-violet-60">
-          {invite.teamRole ? invite.teamRole.name : 'Superadmin'}
+        <Table.Cell className="inter-small-semibold">
+          {invite.teamRole ? <span className="text-violet-60">{invite.teamRole.name}</span> : 'Superadmin'}
         </Table.Cell>
-        <Table.Cell className="inter-small-semibold text-violet-60">
+        <Table.Cell className="inter-small-semibold text-yellow-70">
           {invite.Region ? invite.Region.name : ''}
         </Table.Cell>
         <Table.Cell>

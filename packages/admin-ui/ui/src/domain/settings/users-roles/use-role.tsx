@@ -95,10 +95,10 @@ const useRoles = () => {
 
     // Set role for user
 
-    const setRole = async (user_id: string, id:string) => {
+    const setRole = async (user_id: string, role_id:string, region_id: string) => {
         setIsLoading(true);
         try {
-            let res = client.admin.custom.post(`/admin/user/${user_id}/setrole`, {role_id: id});
+            let res = client.admin.custom.post(`/admin/user/${user_id}/setrole`, {role_id: role_id, region_id: region_id});
             setIsLoading(false);
             return res;
         }
@@ -109,23 +109,7 @@ const useRoles = () => {
         }
     }
 
-    // Set region for user
-
-    const setRegion = async (user_id: string, id:string) => {
-        setIsLoading(true);
-        try {
-            let res = client.admin.custom.post(`/admin/user/${user_id}/setregion`, {region_id: id});
-            setIsLoading(false);
-            return res;
-        }
-        catch(e) {
-            console.error(e);
-            setIsLoading(false);
-            return null;
-        }
-    }
-
-  return {roles, fetch, get, update, create, remove, setRole, setRegion, isLoading}
+  return {roles, fetch, get, update, create, remove, setRole, isLoading}
 }
 
 export default useRoles

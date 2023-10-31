@@ -81,7 +81,7 @@ const settings: SettingsCardType[] = [
     to: "/a/settings/taxes",
   },
   {
-    heading: "The Team",
+    heading: "Users",
     description: "Manage users of your Store",
     icon: UsersIcon,
     to: "/a/settings/team",
