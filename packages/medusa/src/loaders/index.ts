@@ -2,36 +2,34 @@ import {
   InternalModuleDeclaration,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
-import { Express, NextFunction, Request, Response } from "express"
-
-import databaseLoader, { dataSource } from "./database"
-import pluginsLoader, { registerPluginModels } from "./plugins"
-
-import { Connection } from "typeorm"
+import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
+import { Express, NextFunction, Request, Response } from "express"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
 import requestIp from "request-ip"
+import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
+import loadConfig from "./config"
+import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
-import loadConfig from "./config"
+import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
+import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
-import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 
 type Options = {
   directory: string
@@ -75,6 +73,7 @@ export default async ({
   container: MedusaContainer
   dbConnection: Connection
   app: Express
+  pgConnection: unknown
 }> => {
   const configModule = loadConfig(rootDirectory)
 
@@ -125,7 +124,7 @@ export default async ({
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
-  await pgConnectionLoader({ container, configModule })
+  const pgConnection = await pgConnectionLoader({ container, configModule })
 
   const configModules = mergeDefaultModules(configModule.modules)
   await loadLegacyModulesEntities(configModules, container)
@@ -222,5 +221,5 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-  return { container, dbConnection, app: expressApp }
+  return { container, dbConnection, app: expressApp, pgConnection }
 }
