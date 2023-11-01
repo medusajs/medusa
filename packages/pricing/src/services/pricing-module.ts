@@ -1581,4 +1581,62 @@ export default class PricingModuleService<
       }
     )
   }
+
+  @InjectManager("baseRepository_")
+  async removePriceListRules(
+    data: PricingTypes.removePriceListRulesDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceListDTO> {
+    const [priceList] = await this.removePriceListRules_([data], sharedContext)
+
+    return priceList
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async removePriceListRules_(
+    data: PricingTypes.removePriceListRulesDTO[],
+    sharedContext: Context = {}
+  ): Promise<PricingTypes.PriceListDTO[]> {
+    const priceLists = await this.priceListService_.list(
+      { id: data.map((d) => d.priceListId) },
+      { relations: ["rules", "rules.rule_type"] },
+      sharedContext
+    )
+
+    const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
+
+    const idsToDelete: string[] = []
+    for (const { priceListId, rules } of data) {
+      const priceList = priceListMap.get(priceListId)
+
+      if (!priceList) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Price list with id: ${priceListId} not found`
+        )
+      }
+
+      const priceListRulesMap: Map<string, PriceListRule> = new Map(
+        priceList.rules.getItems().map((p) => [p.rule_type.rule_attribute, p])
+      )
+
+      await Promise.all(
+        rules.map(async (rule_attribute) => {
+          const rule = priceListRulesMap.get(rule_attribute)
+          if (rule) {
+            idsToDelete.push(rule.id)
+          }
+        })
+      )
+    }
+
+    await this.priceListRuleService_.delete(idsToDelete)
+
+    return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
+      priceLists,
+      {
+        populate: true,
+      }
+    )
+  }
 }

@@ -236,7 +236,7 @@ describe("PriceListRule Service", () => {
   })
 
   describe("setPriceListRules", () => {
-    it.only("should add a priceListRule to a priceList", async () => {
+    it("should add a priceListRule to a priceList", async () => {
       await createRuleTypes(testManager, [
         {
           id: "rule-type-3",
@@ -265,6 +265,32 @@ describe("PriceListRule Service", () => {
         expect.arrayContaining([
           expect.objectContaining({ rule_type: "rule-type-3" }),
         ])
+      )
+    })
+  })
+ 
+  describe("removePriceListRules", () => {
+    it.only("should remove a priceListRule from a priceList", async () => {
+      await service.removePriceListRules({
+        priceListId: "price-list-1",
+        rules: [
+          "currency_code"
+        ]
+      })
+
+      const [priceList] = await service.listPriceLists(
+        {
+          id: ["price-list-1"],
+        },
+        {
+          relations: ["rules"],
+        }
+      )
+
+      expect(priceList.rules).toEqual(
+        [
+          expect.objectContaining({ rule_type: "rule-type-1" }),
+        ]
       )
     })
   })
