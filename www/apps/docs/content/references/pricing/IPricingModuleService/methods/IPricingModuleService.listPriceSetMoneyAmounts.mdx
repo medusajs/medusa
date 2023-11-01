@@ -13,13 +13,106 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 This documentation provides a reference to the `listPriceSetMoneyAmounts` method. This belongs to the Pricing Module.
 
+This method is used to retrieve a paginated list of price set money amounts based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of price set money amounts using their IDs:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceSetMoneyAmounts (id: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
+    id: [id]
+  })
+
+  // do something with the price set money amounts or return them
+}
+```
+
+To specify relations that should be retrieved within the price set money amounts:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceSetMoneyAmounts (id: string) {
+  const pricingService = await initializePricingModule()
+
+  const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
+    id: [id]
+  }, {
+    relations: ["price_rules"]
+  })
+
+  // do something with the price set money amounts or return them
+}
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceSetMoneyAmounts (id: string, skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
+    id: [id]
+  }, {
+    relations: ["price_rules"],
+    skip,
+    take
+  })
+
+  // do something with the price set money amounts or return them
+}
+```
+
+You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
+
+```ts
+import { 
+  initialize as initializePricingModule,
+} from "@medusajs/pricing"
+
+async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], skip: number, take: number) {
+  const pricingService = await initializePricingModule()
+
+  const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
+    $and: [
+      {
+        id: ids
+      },
+      {
+        title: titles
+      }
+    ]
+  }, {
+    relations: ["price_rules"],
+    skip,
+    take
+  })
+
+  // do something with the price set money amounts or return them
+}
+```
+
 ## Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "filters",
     "type": "[`FilterablePriceSetMoneyAmountProps`](../../interfaces/FilterablePriceSetMoneyAmountProps.mdx)",
-    "description": "",
+    "description": "The filters to apply on the retrieved price set money amounts.",
     "optional": true,
     "defaultValue": "",
     "children": [
@@ -42,7 +135,7 @@ This documentation provides a reference to the `listPriceSetMoneyAmounts` method
       {
         "name": "id",
         "type": "`string`[]",
-        "description": "",
+        "description": "The IDs to filter the price set money amounts by.",
         "optional": true,
         "defaultValue": "",
         "children": []
@@ -50,7 +143,7 @@ This documentation provides a reference to the `listPriceSetMoneyAmounts` method
       {
         "name": "price_set_id",
         "type": "`string`[]",
-        "description": "",
+        "description": "The IDs to filter the price set money amount's associated price set.",
         "optional": true,
         "defaultValue": "",
         "children": []
@@ -60,7 +153,7 @@ This documentation provides a reference to the `listPriceSetMoneyAmounts` method
   {
     "name": "config",
     "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`PriceSetMoneyAmountDTO`](../../interfaces/PriceSetMoneyAmountDTO.mdx)\\>",
-    "description": "",
+    "description": "The configurations determining how the price set money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount.",
     "optional": true,
     "defaultValue": "",
     "children": [
@@ -117,7 +210,7 @@ This documentation provides a reference to the `listPriceSetMoneyAmounts` method
   {
     "name": "sharedContext",
     "type": "[`Context`](../../interfaces/Context.mdx)",
-    "description": "",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "children": [
@@ -173,7 +266,7 @@ This documentation provides a reference to the `listPriceSetMoneyAmounts` method
     "type": "`Promise`<[`PriceSetMoneyAmountDTO`](../../interfaces/PriceSetMoneyAmountDTO.mdx)[]\\>",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The list of price set money amounts.",
     "children": [
       {
         "name": "PriceSetMoneyAmountDTO[]",
