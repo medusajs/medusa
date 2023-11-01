@@ -104,7 +104,6 @@ class DatabaseFactory {
     await dataSource.query(
       `CREATE DATABASE "${dbName}" TEMPLATE "${this.templateDbName}";`
     )
-    await dataSource.destroy()
   }
 
   async destroy() {
