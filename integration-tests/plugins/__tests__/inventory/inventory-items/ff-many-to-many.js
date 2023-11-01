@@ -22,14 +22,13 @@ const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 describe("Inventory Items endpoints", () => {
   let appContainer
   let dbConnection
-  let express
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd })
     appContainer = getContainer()
-    express = useExpressServer()
 
     // Set feature flag
     const flagRouter = appContainer.resolve("featureFlagRouter")
@@ -42,7 +41,7 @@ describe("Inventory Items endpoints", () => {
 
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   beforeEach(async () => {

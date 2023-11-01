@@ -1,7 +1,6 @@
 const path = require("path")
 
 const {
-  bootstrapApp,
   startBootstrapApp,
 } = require("../../../../environment-helpers/bootstrap-app")
 const { initDb, useDb } = require("../../../../environment-helpers/use-db")
@@ -31,22 +30,21 @@ jest.setTimeout(150000)
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
 describe("/store/carts", () => {
-  let express
+  let shutdownServer
   let appContainer
   let dbConnection
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd })
     appContainer = getContainer()
-    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {

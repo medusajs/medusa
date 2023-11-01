@@ -17,20 +17,19 @@ jest.setTimeout(30000)
 describe("Sales channels", () => {
   let appContainer
   let dbConnection
-  let express
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd })
     appContainer = getContainer()
-    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {

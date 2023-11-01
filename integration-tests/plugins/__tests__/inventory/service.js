@@ -10,22 +10,21 @@ const { useExpressServer } = require("../../../environment-helpers/use-api")
 jest.setTimeout(50000)
 
 describe("Inventory Module", () => {
-  let express
+  let shutdownServer
   let appContainer
   let dbConnection
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd })
     appContainer = getContainer()
-    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {

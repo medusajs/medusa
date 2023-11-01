@@ -26,7 +26,7 @@ const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 describe("Get products", () => {
   let appContainer
   let dbConnection
-  let express
+  let shutdownServer
   const productId = "test-product"
   const variantId = "test-variant"
   let invItem
@@ -34,15 +34,14 @@ describe("Get products", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd })
     appContainer = getContainer()
-    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {

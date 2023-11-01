@@ -14,7 +14,7 @@ async function bootstrapApp({ cwd, env = {} } = {}) {
 
   const loaders = require("@medusajs/medusa/dist/loaders").default
 
-  const { container, dbConnection } = await loaders({
+  const { container, dbConnection, pgConnection } = await loaders({
     directory: path.resolve(cwd || process.cwd()),
     expressApp: app,
     isTest: false,
@@ -25,6 +25,7 @@ async function bootstrapApp({ cwd, env = {} } = {}) {
   return {
     container,
     db: dbConnection,
+    pgConnection,
     app,
     port: PORT,
   }
@@ -37,7 +38,11 @@ module.exports = {
     env = {},
     skipExpressListen = false,
   } = {}) => {
-    const { app, port, container } = await bootstrapApp({ cwd, env })
+    const { app, port, container, db, pgConnection } = await bootstrapApp({
+      cwd,
+      env,
+    })
+    let expressServer
 
     setContainer(container)
 
@@ -45,14 +50,26 @@ module.exports = {
       return
     }
 
+    const shutdown = async () => {
+      await Promise.all([
+        expressServer.close(),
+        db?.destroy(),
+        pgConnection?.context?.destroy(),
+      ])
+
+      if (typeof global !== "undefined" && global?.gc) {
+        global.gc()
+      }
+    }
+
     return await new Promise((resolve, reject) => {
-      const expressServer = app.listen(port, (err) => {
+      expressServer = app.listen(port, async (err) => {
         if (err) {
+          await shutdown()
           return reject(err)
         }
         setPort(port)
-        process.send(port)
-        resolve()
+        resolve(shutdown)
       })
 
       setExpressServer(expressServer)

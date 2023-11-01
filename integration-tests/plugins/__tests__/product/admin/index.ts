@@ -1,9 +1,6 @@
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import {
-  useApi,
-  useExpressServer,
-} from "../../../../environment-helpers/use-api"
+import { useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 import adminSeeder from "../../../../helpers/admin-seeder"
@@ -12,11 +9,11 @@ import productSeeder from "../../../../helpers/product-seeder"
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { Workflows } from "@medusajs/workflows"
 import { AxiosInstance } from "axios"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import {
   simpleProductFactory,
   simpleSalesChannelFactory,
 } from "../../../../factories"
-import { getContainer } from "../../../../environment-helpers/use-container"
 
 jest.setTimeout(5000000)
 
@@ -28,21 +25,20 @@ const adminHeaders = {
 
 describe("/admin/products", () => {
   let dbConnection
-  let express
+  let shutdownServer
   let medusaContainer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd })
     medusaContainer = getContainer()
-    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   it("Should have loaded the product module", function () {

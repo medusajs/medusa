@@ -17,17 +17,19 @@ jest.setTimeout(30000)
 describe("UpdateProduct workflow", function () {
   let dbConnection
   let medusaContainer
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd, skipExpressListen: true })
+    shutdownServer = await startBootstrapApp({ cwd, skipExpressListen: true })
     medusaContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
+    await shutdownServer()
   })
 
   beforeEach(async () => {

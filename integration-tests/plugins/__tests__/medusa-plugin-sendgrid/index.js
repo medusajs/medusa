@@ -24,7 +24,7 @@ const { getContainer } = require("../../../environment-helpers/use-container")
 describe("medusa-plugin-sendgrid", () => {
   let appContainer
   let dbConnection
-  let express
+  let shutdownServer
 
   const doAfterEach = async () => {
     const db = useDb()
@@ -34,15 +34,14 @@ describe("medusa-plugin-sendgrid", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd })
     appContainer = getContainer()
-    express = useExpressServer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {

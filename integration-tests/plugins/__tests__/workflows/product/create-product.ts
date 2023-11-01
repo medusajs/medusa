@@ -1,9 +1,9 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
 import {
-  createProducts,
   CreateProductsActions,
   Handlers,
+  createProducts,
   pipe,
 } from "@medusajs/workflows"
 import path from "path"
@@ -15,17 +15,21 @@ jest.setTimeout(30000)
 
 describe("CreateProduct workflow", function () {
   let medusaContainer
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     await initDb({ cwd })
-    await startBootstrapApp({ cwd, skipExpressListen: true })
+    shutdownServer = await startBootstrapApp({ cwd, skipExpressListen: true })
     medusaContainer = getContainer()
   })
 
   afterAll(async () => {
+    console.log("GLOABL GC()", typeof global)
+
     const db = useDb()
     await db.shutdown()
+    await shutdownServer()
   })
 
   it("should compensate all the invoke if something fails", async () => {

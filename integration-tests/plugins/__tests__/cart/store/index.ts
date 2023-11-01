@@ -6,10 +6,7 @@ import {
 } from "@medusajs/medusa"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import {
-  useApi,
-  useExpressServer,
-} from "../../../../environment-helpers/use-api"
+import { useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 
@@ -17,7 +14,7 @@ jest.setTimeout(30000)
 
 describe("/store/carts", () => {
   let dbConnection
-  let express
+  let shutdownServer
 
   const doAfterEach = async () => {
     const db = useDb()
@@ -27,14 +24,13 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    await startBootstrapApp({ cwd })
-    express = useExpressServer()
+    shutdownServer = await startBootstrapApp({ cwd })
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    express.close()
+    await shutdownServer()
   })
 
   describe("POST /store/carts", () => {

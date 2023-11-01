@@ -14,17 +14,19 @@ jest.setTimeout(30000)
 
 describe("CreateInventoryItem workflow", function () {
   let medusaContainer
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     await initDb({ cwd })
-    await startBootstrapApp({ cwd, skipExpressListen: true })
+    shutdownServer = await startBootstrapApp({ cwd, skipExpressListen: true })
     medusaContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
+    await shutdownServer()
   })
 
   it("should compensate all the invoke if something fails", async () => {
