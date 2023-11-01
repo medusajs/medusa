@@ -1,15 +1,14 @@
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
+
+import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { PriceListService } from "@services"
-import { initialize } from "../../../../src"
-
-import { MikroOrmWrapper, DB_URL } from "../../../utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
+import { initialize } from "../../../../src"
 
 jest.setTimeout(30000)
 
 describe("PriceList Service", () => {
-  let service: PriceListService
+  let service: IPricingModuleService
   let testManager: SqlEntityManager
 
   beforeEach(async () => {
@@ -198,7 +197,7 @@ describe("PriceList Service", () => {
         await service.updatePriceLists([
           {
             id: "does-not-exist",
-            amount: 666,
+            starts_at: new Date(),
           },
         ])
       } catch (e) {

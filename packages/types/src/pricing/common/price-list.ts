@@ -21,11 +21,12 @@ export interface PriceListDTO {
 }
 
 export interface CreatePriceListDTO {
+  id?: string
   starts_at?: Date
   ends_at?: Date
   status?: PriceListStatus
   number_rules?: number
-  rules: PriceListRuleDTO[]
+  rules?: PriceListRuleDTO[]
 }
 
 export interface UpdatePriceListDTO {
@@ -34,7 +35,7 @@ export interface UpdatePriceListDTO {
   ends_at?: Date
   status?: PriceListStatus
   number_rules?: number
-  rules: PriceListRuleDTO[]
+  rules?: PriceListRuleDTO[]
 }
 
 export interface FilterablePriceListProps

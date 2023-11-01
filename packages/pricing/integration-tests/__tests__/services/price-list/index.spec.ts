@@ -1,9 +1,7 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-
+import { MikroOrmWrapper } from "../../../utils"
 import { PriceListRepository } from "@repositories"
 import { PriceListService } from "@services"
-
-import { MikroOrmWrapper } from "../../../utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 
 jest.setTimeout(30000)
@@ -200,7 +198,7 @@ describe("PriceList Service", () => {
         await service.update([
           {
             id: "does-not-exist",
-            amount: 666,
+            starts_at: new Date()
           },
         ])
       } catch (e) {
