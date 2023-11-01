@@ -3,10 +3,10 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceListRuleRepository } from "@repositories"
 import { PriceListRuleService } from "@services"
 
-import { MikroOrmWrapper } from "../../../utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
-import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
+import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -187,7 +187,7 @@ describe("PriceListRule Service", () => {
       await service.update([
         {
           id,
-          value: 'test'
+          value: ["test"],
         },
       ])
 
@@ -203,7 +203,7 @@ describe("PriceListRule Service", () => {
         await service.update([
           {
             id: "does-not-exist",
-            value: 'test'
+            value: ["test"],
           },
         ])
       } catch (e) {
@@ -218,21 +218,20 @@ describe("PriceListRule Service", () => {
 
   describe("create", () => {
     it("should create a priceList successfully", async () => {
-      await service.create([
+      const [created] = await service.create([
         {
-          id: "price-list-rule-3",
-          value: 'USD',
-          price_list: "price-list-1",
-          rule_type: "rule-type-1",
+          value: ["USD"],
+          price_list_id: "price-list-1",
+          rule_type_id: "rule-type-1",
         },
       ])
 
       const [priceList] = await service.list({
-        id: ["price-list-rule-3"],
+        id: [created.id],
       })
 
-      expect(priceList.value).toEqual("USD")
-      expect(priceList.id).toEqual("price-list-rule-3")
+      expect(priceList.value).toEqual(["USD"])
+      expect(priceList.id).toEqual(created.id)
     })
   })
 })

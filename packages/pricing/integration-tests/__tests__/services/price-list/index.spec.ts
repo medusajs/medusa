@@ -3,8 +3,8 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceListRepository } from "@repositories"
 import { PriceListService } from "@services"
 
-import { MikroOrmWrapper } from "../../../utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
+import { MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -184,7 +184,7 @@ describe("PriceList Service", () => {
       await service.update([
         {
           id,
-          starts_at: updateDate
+          starts_at: updateDate,
         },
       ])
 
@@ -200,7 +200,6 @@ describe("PriceList Service", () => {
         await service.update([
           {
             id: "does-not-exist",
-            amount: 666,
           },
         ])
       } catch (e) {
@@ -215,19 +214,17 @@ describe("PriceList Service", () => {
 
   describe("create", () => {
     it("should create a priceList successfully", async () => {
-      await service.create([
+      const [created] = await service.create([
         {
-          id: "price-list-3",
-          number_rules: 4,
+          starts_at: new Date("01/01/2023"),
         },
       ])
 
       const [priceList] = await service.list({
-        id: ["price-list-3"],
+        id: [created.id],
       })
 
-      expect(priceList.number_rules).toEqual(4)
-      expect(priceList.id).toEqual("price-list-3")
+      expect(priceList.id).toEqual(expect.any(String))
     })
   })
 })

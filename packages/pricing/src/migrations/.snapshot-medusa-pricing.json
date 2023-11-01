@@ -813,12 +813,12 @@
         },
         "value": {
           "name": "value",
-          "type": "text",
+          "type": "text[]",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "text"
+          "mappedType": "array"
         },
         "priority": {
           "name": "priority",

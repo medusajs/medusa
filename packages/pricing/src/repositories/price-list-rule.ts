@@ -1,5 +1,9 @@
-import { CreatePriceListRuleDTO, UpdatePriceListRuleDTO } from "@medusajs/types"
-import { Context, DAL } from "@medusajs/types"
+import {
+  Context,
+  CreatePriceListRuleDTO,
+  DAL,
+  UpdatePriceListRuleDTO,
+} from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   LoadStrategy,
@@ -71,7 +75,17 @@ export class PriceListRuleRepository extends DALUtils.MikroOrmBaseRepository {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const priceSets = data.map((priceSetData) => {
-      return manager.create(PriceListRule, priceSetData)
+      const priceListId = priceSetData.price_list_id
+      delete priceSetData.price_list_id
+
+      const ruleTypeId = priceSetData.rule_type_id
+      delete priceSetData.rule_type_id
+
+      return manager.create(PriceListRule, {
+        ...priceSetData,
+        price_list: priceListId,
+        rule_type: ruleTypeId,
+      })
     })
 
     manager.persist(priceSets)

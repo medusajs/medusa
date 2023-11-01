@@ -2,10 +2,10 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { initialize } from "../../../../src"
 
-import { createPriceLists } from "../../../__fixtures__/price-list"
-import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
 import { IPricingModuleService } from "@medusajs/types"
+import { createPriceLists } from "../../../__fixtures__/price-list"
+import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
+import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
@@ -65,7 +65,8 @@ describe("PriceListRule Service", () => {
 
   describe("listAndCount", () => {
     it("should return pricelistrules and count", async () => {
-      const [priceListRuleResult, count] = await service.listAndCountPriceListRules()
+      const [priceListRuleResult, count] =
+        await service.listAndCountPriceListRules()
 
       expect(count).toEqual(2)
       expect(priceListRuleResult).toEqual([
@@ -79,9 +80,10 @@ describe("PriceListRule Service", () => {
     })
 
     it("should return pricelistrules and count when filtered", async () => {
-      const [priceListRuleResult, count] = await service.listAndCountPriceListRules({
-        id: ["price-list-rule-1"],
-      })
+      const [priceListRuleResult, count] =
+        await service.listAndCountPriceListRules({
+          id: ["price-list-rule-1"],
+        })
 
       expect(count).toEqual(1)
       expect(priceListRuleResult).toEqual([
@@ -92,10 +94,8 @@ describe("PriceListRule Service", () => {
     })
 
     it("should return pricelistrules and count when using skip and take", async () => {
-      const [priceListRuleResult, count] = await service.listAndCountPriceListRules(
-        {},
-        { skip: 1, take: 1 }
-      )
+      const [priceListRuleResult, count] =
+        await service.listAndCountPriceListRules({}, { skip: 1, take: 1 })
 
       expect(count).toEqual(2)
       expect(priceListRuleResult).toEqual([
@@ -106,13 +106,14 @@ describe("PriceListRule Service", () => {
     })
 
     it("should return requested fields", async () => {
-      const [priceListRuleResult, count] = await service.listAndCountPriceListRules(
-        {},
-        {
-          take: 1,
-          select: ["id"],
-        }
-      )
+      const [priceListRuleResult, count] =
+        await service.listAndCountPriceListRules(
+          {},
+          {
+            take: 1,
+            select: ["id"],
+          }
+        )
 
       const serialized = JSON.parse(JSON.stringify(priceListRuleResult))
 
@@ -186,13 +187,13 @@ describe("PriceListRule Service", () => {
       await service.updatePriceListRules([
         {
           id,
-          value: 'test'
+          value: ["test"],
         },
       ])
 
       const priceList = await service.retrievePriceListRule(id)
 
-      expect(priceList.value).toEqual("test")
+      expect(priceList.value).toEqual(["test"])
     })
 
     it("should throw an error when a id does not exist", async () => {
@@ -202,7 +203,7 @@ describe("PriceListRule Service", () => {
         await service.updatePriceListRules([
           {
             id: "does-not-exist",
-            value: 'test'
+            value: ["test"],
           },
         ])
       } catch (e) {
@@ -217,21 +218,19 @@ describe("PriceListRule Service", () => {
 
   describe("create", () => {
     it("should create a priceList successfully", async () => {
-      await service.createPriceListRules([
+      const [created] = await service.createPriceListRules([
         {
-          id: "price-list-rule-3",
-          value: 'USD',
-          price_list: "price-list-1",
-          rule_type: "rule-type-1",
+          value: ["TEST-123"],
+          price_list_id: "price-list-1",
+          rule_type_id: "rule-type-1",
         },
       ])
-
+      console.log("created-  ", created)
       const [priceList] = await service.listPriceListRules({
-        id: ["price-list-rule-3"],
+        value: ["TEST-123"],
       })
 
-      expect(priceList.value).toEqual("USD")
-      expect(priceList.id).toEqual("price-list-rule-3")
+      expect(priceList.value).toEqual(["TEST-123"])
     })
   })
 })

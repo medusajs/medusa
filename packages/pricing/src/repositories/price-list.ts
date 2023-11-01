@@ -1,10 +1,4 @@
-import { CreatePriceListDTO, UpdatePriceListDTO } from "@medusajs/types"
-import {
-  Context,
-  DAL,
-  UpdatePriceSetDTO,
-  CreatePriceSetDTO,
-} from "@medusajs/types"
+import { Context, DAL, UpdatePriceListDTO } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
   LoadStrategy,
@@ -13,6 +7,7 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceList } from "@models"
+import { CreatePriceListDTO } from "../types"
 
 export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -70,7 +65,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async create(
-    data: Omit<CreatePriceListDTO, "rules">[],
+    data: CreatePriceListDTO[],
     context: Context = {}
   ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -117,12 +112,12 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
           `PriceList with id "${priceSetData.id}" not found`
         )
       }
-      
-      if(!!priceSetData.starts_at) { 
+
+      if (!!priceSetData.starts_at) {
         priceSetData.starts_at = priceSetData.starts_at.toISOString() as any
       }
 
-      if(!!priceSetData.ends_at) { 
+      if (!!priceSetData.ends_at) {
         priceSetData.ends_at = priceSetData.ends_at.toISOString() as any
       }
 

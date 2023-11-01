@@ -1,19 +1,21 @@
 import {
   BeforeCreate,
+  Cascade,
+  Collection,
   Entity,
   ManyToOne,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
-import PriceSet from "./price-set"
-import PriceSetMoneyAmount from "./price-set-money-amount"
-import RuleType from "./rule-type"
 import PriceList from "./price-list"
+import PriceListRuleValue from "./price-list-rule-value"
+import RuleType from "./rule-type"
 
-type OptionalFields = "id" | "priority" 
+type OptionalFields = "id" | "priority"
 type OptionalRelations = "rule_type" | "price_list"
 
 @Entity()
@@ -31,13 +33,15 @@ export default class PriceListRule {
   })
   rule_type: RuleType
 
-  @Property({ columnType: "text" })
-  value: string
+  @OneToMany(() => PriceListRuleValue, (plrv) => plrv.price_list_rule, {
+    cascade: [Cascade.REMOVE],
+  })
+  price_list_rule_values = new Collection<PriceListRuleValue>(this)
 
   @Property({ columnType: "integer", default: 0 })
   priority: number
 
-  @ManyToOne({ 
+  @ManyToOne({
     entity: () => PriceList,
     fieldName: "price_list_id",
     name: "price_rule_price_list_id",
