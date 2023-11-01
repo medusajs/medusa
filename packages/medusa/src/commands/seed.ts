@@ -12,23 +12,23 @@ import {
 } from "../services"
 import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
 
-import { ConfigModule } from "../types/global"
-import { CreateProductCategoryInput } from "../types/product-category"
-import { CreateProductInput } from "../types/product"
 import { IPricingModuleService } from "@medusajs/types"
+import express from "express"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import { getConfigFile } from "medusa-core-utils"
+import { track } from "medusa-telemetry"
+import path from "path"
+import loaders from "../loaders"
+import { handleConfigError } from "../loaders/config"
+import featureFlagLoader from "../loaders/feature-flags"
 import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
 import Logger from "../loaders/logger"
-import PublishableApiKeyService from "../services/publishable-api-key"
 import { SalesChannel } from "../models"
-import { sync as existsSync } from "fs-exists-cached"
-import express from "express"
-import featureFlagLoader from "../loaders/feature-flags"
-import fs from "fs"
-import { getConfigFile } from "medusa-core-utils"
-import { handleConfigError } from "../loaders/config"
-import loaders from "../loaders"
-import path from "path"
-import { track } from "medusa-telemetry"
+import PublishableApiKeyService from "../services/publishable-api-key"
+import { ConfigModule } from "../types/global"
+import { CreateProductInput } from "../types/product"
+import { CreateProductCategoryInput } from "../types/product-category"
 
 type SeedOptions = {
   directory: string
@@ -122,7 +122,8 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
     "shippingProfileService"
   )
   const pricingModuleService: IPricingModuleService = container.resolve(
-    "pricingModuleService"
+    "pricingModuleService",
+    { allowUnregistered: true }
   )
   /* eslint-enable */
 
