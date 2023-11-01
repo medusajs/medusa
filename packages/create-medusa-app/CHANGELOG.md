@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.4
+
+### Patch Changes
+
+- [#5474](https://github.com/medusajs/medusa/pull/5474) [`03959c3e3`](https://github.com/medusajs/medusa/commit/03959c3e3a38c155607647e70668ee250b76fda9) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): improve spinner style
+
 ## 1.2.3
 
 ### Patch Changes

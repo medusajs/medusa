@@ -1,5 +1,22 @@
 # @medusajs/admin
 
+## 7.1.6
+
+### Patch Changes
+
+- [#5456](https://github.com/medusajs/medusa/pull/5456) [`ea2ee343f`](https://github.com/medusajs/medusa/commit/ea2ee343f0f2bee347d0e2a3ece2eb3252564c67) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): PriceList bulk editor fixes
+
+- [#5442](https://github.com/medusajs/medusa/pull/5442) [`ca05436fc`](https://github.com/medusajs/medusa/commit/ca05436fc1d03c2f6512b2b9399eadafb3d5d721) Thanks [@huuduc2312](https://github.com/huuduc2312)! - feat(admin-ui): add Vietnamese translation
+
+- [#5356](https://github.com/medusajs/medusa/pull/5356) [`397da6c2b`](https://github.com/medusajs/medusa/commit/397da6c2ba39532ebf09b91d61ca2b7f1c4b8126) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): TIP in shipping option creation
+
+- [#5480](https://github.com/medusajs/medusa/pull/5480) [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): admin get product should return prices when expected
+
+- [#5315](https://github.com/medusajs/medusa/pull/5315) [`4ce8279d2`](https://github.com/medusajs/medusa/commit/4ce8279d2527fa691c3ca043b914ebb85cb4ac55) Thanks [@ram-you](https://github.com/ram-you)! - Enhanced 'activity-drawer' visibility with z-index adjustment
+
+- Updated dependencies [[`ea2ee343f`](https://github.com/medusajs/medusa/commit/ea2ee343f0f2bee347d0e2a3ece2eb3252564c67), [`f08a295ad`](https://github.com/medusajs/medusa/commit/f08a295ad4e2886b9df5c4c4471c0f4e004fc1d9), [`2057d3b24`](https://github.com/medusajs/medusa/commit/2057d3b24733680571ff977130b3e23bcc12d733), [`ca05436fc`](https://github.com/medusajs/medusa/commit/ca05436fc1d03c2f6512b2b9399eadafb3d5d721), [`ebba93e03`](https://github.com/medusajs/medusa/commit/ebba93e03d223fb3a79276090f7cfad612d70243), [`397da6c2b`](https://github.com/medusajs/medusa/commit/397da6c2ba39532ebf09b91d61ca2b7f1c4b8126), [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1), [`b69f18257`](https://github.com/medusajs/medusa/commit/b69f1825711a9d62da4e2ab4f1900eff473ec8e2), [`4ce8279d2`](https://github.com/medusajs/medusa/commit/4ce8279d2527fa691c3ca043b914ebb85cb4ac55)]:
+  - @medusajs/admin-ui@2.1.6
+
 ## 7.1.5
 
 ### Patch Changes

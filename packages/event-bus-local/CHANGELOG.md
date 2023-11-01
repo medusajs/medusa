@@ -1,5 +1,14 @@
 # @medusajs/event-bus-local
 
+## 1.9.7
+
+### Patch Changes
+
+- [#5468](https://github.com/medusajs/medusa/pull/5468) [`a45da9215`](https://github.com/medusajs/medusa/commit/a45da9215d2a7834c368037726aaa3961caadaf9) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, modules-sdk, modules): Module loading was missing the expected dependencies and remote query reference fix
+
+- Updated dependencies [[`a45da9215`](https://github.com/medusajs/medusa/commit/a45da9215d2a7834c368037726aaa3961caadaf9)]:
+  - @medusajs/modules-sdk@1.12.2
+
 ## 1.9.6
 
 ### Patch Changes
