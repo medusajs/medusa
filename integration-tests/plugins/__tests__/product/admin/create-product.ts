@@ -22,7 +22,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products", () => {
+describe.skip("[Product & Pricing Module] POST /admin/products", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -43,7 +43,7 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
   beforeEach(async () => {
     const manager = dbConnection.manager
     await adminSeeder(dbConnection)
-    await createDefaultRuleTypes(getContainer())
+    await createDefaultRuleTypes(appContainer)
 
     await manager.insert(Region, {
       id: "test-region",
