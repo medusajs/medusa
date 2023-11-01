@@ -270,7 +270,7 @@ describe("PriceListRule Service", () => {
   })
  
   describe("removePriceListRules", () => {
-    it.only("should remove a priceListRule from a priceList", async () => {
+    itg("should remove a priceListRule from a priceList", async () => {
       await service.removePriceListRules({
         priceListId: "price-list-1",
         rules: [
