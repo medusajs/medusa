@@ -69,6 +69,7 @@ module.exports = {
           return reject(err)
         }
         setPort(port)
+        process.send(port)
         resolve(shutdown)
       })
 
