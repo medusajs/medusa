@@ -6,8 +6,8 @@ post:
     with the swap. If a return shipping option is specified, the return will
     automatically be fulfilled.
 
-    To complete the swap, you must use the Complete Cart endpoint passing it the
-    ID of the swap's cart.
+    To complete the swap, you must use the Complete Cart API Route passing it
+    the ID of the swap's cart.
 
 
     An idempotency key will be generated if none is provided in the header

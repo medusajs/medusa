@@ -1,0 +1,58 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# equals
+
+[Buffer](../../interfaces/Buffer.mdx).equals
+
+**equals**(`otherBuffer`): `boolean`
+
+Returns `true` if both `buf` and `otherBuffer` have exactly the same bytes,`false` otherwise. Equivalent to `buf.compare(otherBuffer) === 0`.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf1 = Buffer.from('ABC');
+const buf2 = Buffer.from('414243', 'hex');
+const buf3 = Buffer.from('ABCD');
+
+console.log(buf1.equals(buf2));
+// Prints: true
+console.log(buf1.equals(buf3));
+// Prints: false
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "otherBuffer",
+    "type": "`Uint8Array`",
+    "description": "A `Buffer` or Uint8Array with which to compare `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.11.13

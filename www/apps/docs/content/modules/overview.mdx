@@ -126,24 +126,41 @@ Medusa's products configuration allows managing products of different types incl
 
 
   </LargeCard>
+
+  <LargeCard
+    Icon={Icons['currency-dollar-solid']}
+    title='Price Lists'
+    action={{
+      label: 'Learn more',
+      href: '/modules/price-lists/overview'
+    }}
+  >
+
+  - Override product prices or offer sales using price lists.
+  - Set special conditions for price lists such as specific customer groups.
+  - Override the price selection strategy used to show customers the best prices.
+  - Bulk-edit prices in a price list when managing them using the Medusa Admin.
+
+
+  </LargeCard>
+
+  <LargeCard
+    Icon={Icons['receipt-percent']}
+    title='Discounts'
+    action={{
+      label: 'Learn more',
+      href: '/modules/discounts/overview'
+    }}
+  >
+
+  - Create discounts and deals with advanced conditions and rules such as minimum cart quantity or specific products.
+  - Offer free shipping, fixed discount, or percentage discount to your customers.
+  - Set start and end dates for your discounts to ensure they run for a specified period of time
+
+
+  </LargeCard>
+
 </LargeCardList>
-
-
-<LargeCard
-  Icon={Icons['currency-dollar-solid']}
-  title='Price Lists and Discounts'
-  action={{
-    label: 'Learn more',
-    href: '/modules/price-lists/overview'
-  }}
->
-
-- Create discounts and deals with advanced conditions and rules such as minimum cart quantity or specific products.
-- Offer free shipping, fixed discount, or percentage discount.
-- Override product prices using price lists and set special conditions such as specific customer groups.
-
-
-</LargeCard>
 
 ### Ready Configurations for International Selling
 
@@ -152,13 +169,14 @@ Medusa's multi-region setup and sales channels allow businesses to sell internat
 <LargeCardList colSize={6}>
   <LargeCard
     Icon={Icons['globe-europe-solid']}
-    title='Multi-Region'
+    title='Region and Currencies'
     action={{
       label: 'Learn more',
       href: '/modules/regions-and-currencies/overview'
     }}
   >
 
+  - Support multi-region and multi-currencies in your store.
   - Create an unlimited number of regions, each associated with a currency and at least one country.
   - Manage each region’s settings including payment processors, shipping options, and more.
   - Set prices for products and shipping options specific to a currency or a region.

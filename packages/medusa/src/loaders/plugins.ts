@@ -38,8 +38,8 @@ import path from "path"
 import { EntitySchema } from "typeorm"
 import { MiddlewareService } from "../services"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
-import logger from "./logger"
 import { RoutesLoader } from "./helpers/routing"
+import logger from "./logger"
 
 type Options = {
   rootDirectory: string
@@ -362,7 +362,7 @@ async function registerApi(
      */
     await new RoutesLoader({
       app,
-      rootDir: `${pluginDetails.resolve}/api`,
+      rootDir: path.join(pluginDetails.resolve, "api"),
       activityId: activityId,
       configModule: configmodule,
     }).load()

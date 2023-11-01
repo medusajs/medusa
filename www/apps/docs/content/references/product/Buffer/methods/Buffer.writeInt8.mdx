@@ -1,0 +1,69 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# writeInt8
+
+[Buffer](../../interfaces/Buffer.mdx).writeInt8
+
+**writeInt8**(`value`, `offset?`): `number`
+
+Writes `value` to `buf` at the specified `offset`. `value` must be a valid
+signed 8-bit integer. Behavior is undefined when `value` is anything other than
+a signed 8-bit integer.
+
+`value` is interpreted and written as a two's complement signed integer.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.allocUnsafe(2);
+
+buf.writeInt8(2, 0);
+buf.writeInt8(-2, 1);
+
+console.log(buf);
+// Prints: <Buffer 02 fe>
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`number`",
+    "description": "Number to be written to `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to write. Must satisfy `0 <= offset <= buf.length - 1`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "`offset` plus the number of bytes written.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.5.0

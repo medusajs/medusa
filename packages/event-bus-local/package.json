@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/event-bus-local",
-  "version": "1.9.6",
+  "version": "1.9.7",
   "description": "Local Event Bus Module for Medusa",
   "main": "dist/index.js",
   "files": [

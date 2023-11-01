@@ -23,7 +23,6 @@ const adminHeaders = {
 }
 
 describe("/admin/products", () => {
-  let medusaProcess
   let dbConnection
   let express
   let medusaContainer
@@ -44,7 +43,7 @@ describe("/admin/products", () => {
     const db = useDb()
     await db.shutdown()
 
-    medusaProcess.kill()
+    express.close()
   })
 
   it("Should have loaded the product module", function () {

@@ -10,7 +10,10 @@ const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../../factories")
+const {
+  simpleProductFactory,
+  simpleSalesChannelFactory,
+} = require("../../../../factories")
 
 const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
 
@@ -53,7 +56,17 @@ describe("Get products", () => {
       "productVariantInventoryService"
     )
     const inventoryService = appContainer.resolve("inventoryService")
+    const locationService = appContainer.resolve("stockLocationService")
+    const salesChannelService = appContainer.resolve("salesChannelService")
+    const salesChannelLocationService = appContainer.resolve(
+      "salesChannelLocationService"
+    )
 
+    const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+      is_default: true,
+    })
+
+    const location = await locationService.create({ name: "test-location" })
     await simpleProductFactory(
       dbConnection,
       {
@@ -63,7 +76,11 @@ describe("Get products", () => {
       },
       100
     )
-
+    await salesChannelService.addProducts(salesChannel.id, [productId])
+    await salesChannelLocationService.associateLocation(
+      salesChannel.id,
+      location.id
+    )
     invItem = await inventoryService.createInventoryItem({
       sku: "test-sku",
     })
@@ -72,33 +89,62 @@ describe("Get products", () => {
       variantId,
       invItem.id
     )
+
+    await inventoryService.createInventoryLevel({
+      inventory_item_id: invItem.id,
+      location_id: location.id,
+      stocked_quantity: 100,
+    })
   })
 
-  it("Expands inventory items when getting product with expand parameters", async () => {
-    const api = useApi()
+  describe("/store/products/:id", () => {
+    it("Expands inventory items when getting product with expand parameters", async () => {
+      const api = useApi()
 
-    const res = await api.get(
-      `/store/products/${productId}?expand=variants,variants.inventory_items`,
-      adminHeaders
-    )
+      const res = await api.get(
+        `/store/products/${productId}?expand=variants,variants.inventory_items`
+      )
 
-    expect(res.status).toEqual(200)
-    expect(res.data.product).toEqual(
-      expect.objectContaining({
-        id: productId,
-        variants: [
-          expect.objectContaining({
-            id: variantId,
-            inventory_items: [
-              expect.objectContaining({
-                inventory_item_id: invItem.id,
-                variant_id: variantId,
-              }),
-            ],
-          }),
-        ],
-      }),
-      expect.objectContaining({})
-    )
+      expect(res.status).toEqual(200)
+      expect(res.data.product).toEqual(
+        expect.objectContaining({
+          id: productId,
+          variants: [
+            expect.objectContaining({
+              id: variantId,
+              inventory_items: [
+                expect.objectContaining({
+                  inventory_item_id: invItem.id,
+                  variant_id: variantId,
+                }),
+              ],
+            }),
+          ],
+        }),
+        expect.objectContaining({})
+      )
+    })
+  })
+
+  describe("/admin/products/:id", () => {
+    it("should get inventory quantity for products fetched through the admin api", async () => {
+      const api = useApi()
+
+      const res = await api.get(`/admin/products/${productId}`, adminHeaders)
+
+      expect(res.status).toEqual(200)
+      expect(res.data.product).toEqual(
+        expect.objectContaining({
+          id: productId,
+          variants: [
+            expect.objectContaining({
+              id: variantId,
+              inventory_quantity: 100,
+            }),
+          ],
+        }),
+        expect.objectContaining({})
+      )
+    })
   })
 })

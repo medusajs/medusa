@@ -1,0 +1,65 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# writeFloatLE
+
+[Buffer](../../interfaces/Buffer.mdx).writeFloatLE
+
+**writeFloatLE**(`value`, `offset?`): `number`
+
+Writes `value` to `buf` at the specified `offset` as little-endian. Behavior is
+undefined when `value` is anything other than a JavaScript number.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.allocUnsafe(4);
+
+buf.writeFloatLE(0xcafebabe, 0);
+
+console.log(buf);
+// Prints: <Buffer bb fe 4a 4f>
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`number`",
+    "description": "Number to be written to `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to write. Must satisfy `0 <= offset <= buf.length - 4`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "`offset` plus the number of bytes written.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.11.15

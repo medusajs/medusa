@@ -262,7 +262,7 @@ It accepts four parameters:
    1. If the resource the fulfillment is being created for is a claim, the `is_claim` property in the object will be `true`.
    2. If the resource the fulfillment is being created for is a swap, the `is_swap` property in the object will be `true`.
    3. Otherwise, the resource is an order.
-4. The fourth parameter is an object of type [Fulfillment](../../../references/entities/classes/Fulfillment.md), which is the fulfillment being created.
+4. The fourth parameter is an object of type [Fulfillment](../../../references/entities/classes/Fulfillment.mdx), which is the fulfillment being created.
 
 You can use the `data` property in the shipping method (first parameter) to access the data specific to the shipping option. This is based on your implementation of previous methods.
 
@@ -328,7 +328,7 @@ This method receives three parameters:
    1. If the price is being calculated for the list of shipping options available for a cart, it's the `data` object of the shipping option.
    2. If the price is being calculated when the shipping method is being created, it's the data returned by the [validateFulfillmentData](#validatefulfillmentdata) method used during the shipping method creation.
    3. If the price is being calculated while calculating the cart's totals, it will be the `data` object of the cart's shipping method.
-3. The third parameter is either the [Cart](../../../references/entities/classes/Cart.md) or the [Order](../../../references/entities/classes/Order.md) object.
+3. The third parameter is either the [Cart](../../../references/entities/classes/Cart.mdx) or the [Order](../../../references/entities/classes/Order.mdx) object.
 
 The method is expected to return a number that will be used to set the price of the shipping method or option, based on the context it's used in.
 
@@ -368,7 +368,7 @@ Fulfillment providers can also be used to return products. A shipping option can
 
 This method is used when the admin [creates a return request](https://docs.medusajs.com/api/admin#orders_postordersorderreturns) for an order, [creates a swap](https://docs.medusajs.com/api/admin#orders_postordersorderswaps) for an order, or when the customer [creates a return of their order](https://docs.medusajs.com/api/store#returns_postreturns). The fulfillment is created automatically for the order return.
 
-The method receives as a parameter the [Return](../../../references/entities/classes/Return.md) object, which is the return that the fulfillment is being created for.
+The method receives as a parameter the [Return](../../../references/entities/classes/Return.mdx) object, which is the return that the fulfillment is being created for.
 
 The method must return an object that will be used to set the value of the `shipping_data` attribute of the return being created.
 
