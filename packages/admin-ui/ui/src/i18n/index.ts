@@ -46,6 +46,11 @@ export const supportedLanguages = [
     name: "Español",
   },
   {
+
+    locale: "hi",
+    name: "Hindi"
+  },
+  {
     locale: "bs",
     name: "Bosanski",
   },

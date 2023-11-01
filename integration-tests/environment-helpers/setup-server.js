@@ -32,11 +32,13 @@ module.exports = async ({ cwd, redisUrl, uploadDir, verbose, env }) => {
     })
 
     medusaProcess.on("error", (err) => {
+      console.log(err)
       reject(err)
       process.exit()
     })
 
     medusaProcess.on("uncaughtException", (err) => {
+      console.log(err)
       reject(err)
       medusaProcess.kill()
     })

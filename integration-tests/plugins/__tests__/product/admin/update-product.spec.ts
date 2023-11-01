@@ -1,18 +1,15 @@
-import {
-  useApi,
-  useExpressServer,
-} from "../../../../environment-helpers/use-api"
+import { useApi } from "../../../../environment-helpers/use-api"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 
 import { Region } from "@medusajs/medusa"
 import { AxiosInstance } from "axios"
 import path from "path"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { getContainer } from "../../../../environment-helpers/use-container"
 
 jest.setTimeout(50000)
 
@@ -30,20 +27,21 @@ const env = {
 describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
+  let shutdownServer
   let product
   let variant
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    await startBootstrapApp({ cwd, env })
+    shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    ;(useExpressServer() as any)?.close?.()
+    await shutdownServer()
   })
 
   beforeEach(async () => {
@@ -104,13 +102,12 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    let response = await api.post(
+    await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+
+    const response = await api.get(
       `/admin/products/${product.id}`,
-      data,
       adminHeaders
     )
-
-    response = await api.get(`/admin/products/${product.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data.product).toEqual(
@@ -175,7 +172,9 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
+    console.log("I am here first")
     await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+    console.log("I am here")
 
     const response = await api.get(
       `/admin/products/${product.id}`,
@@ -249,13 +248,12 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    let response = await api.post(
+    await api.post(`/admin/products/${product.id}`, data, adminHeaders)
+
+    const response = await api.get(
       `/admin/products/${product.id}`,
-      data,
       adminHeaders
     )
-
-    response = await api.get(`/admin/products/${product.id}`, adminHeaders)
 
     expect(response.status).toEqual(200)
     expect(response.data.product).toEqual(

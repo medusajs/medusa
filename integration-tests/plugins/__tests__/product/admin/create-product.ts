@@ -3,14 +3,11 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { Region } from "@medusajs/medusa"
 import { AxiosInstance } from "axios"
 import path from "path"
-import {
-  useApi,
-  useExpressServer,
-} from "../../../../environment-helpers/use-api"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { useApi } from "../../../../environment-helpers/use-api"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
-import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { getContainer } from "../../../../environment-helpers/use-container"
 
 jest.setTimeout(50000)
 
@@ -27,17 +24,20 @@ const env = {
 
 describe("[Product & Pricing Module] POST /admin/products", () => {
   let dbConnection
+  let appContainer
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    await startBootstrapApp({ cwd, env })
+    shutdownServer = await startBootstrapApp({ cwd, env })
+    appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    ;(useExpressServer() as any)?.close?.()
+    await shutdownServer()
   })
 
   beforeEach(async () => {
