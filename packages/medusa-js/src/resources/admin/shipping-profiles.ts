@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Shipping Profile API Routes](https://docs.medusajs.com/api/admin#shipping-profiles).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A shipping profile is used to group products that can be shipped in the same manner.
  * They are created by the admin and they're not associated with a fulfillment provider.

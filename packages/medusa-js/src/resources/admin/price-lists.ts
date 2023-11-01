@@ -21,7 +21,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Price List API Routes](https://docs.medusajs.com/api/admin#price-lists).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A price list are special prices applied to products based on a set of conditions, such as customer group.
  * 

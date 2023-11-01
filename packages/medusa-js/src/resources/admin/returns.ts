@@ -12,7 +12,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Return API Routes](https://docs.medusajs.com/api/admin#returns).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A return can be created by a customer or an admin to return items in an order.
  * Admins can manage these returns and change their state.

@@ -17,7 +17,7 @@ class AdminAuthResource extends BaseResource {
   /**
    * Get the currently logged in user's details. Can also be used to check if there is an authenticated user.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminAuthRes>} The logged-in user's details.
+   * @returns {ResponsePromise<AdminAuthRes>} Resolves to the logged-in user's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -58,7 +58,7 @@ class AdminAuthResource extends BaseResource {
    * Log a User in using their credentials. If the user is authenticated successfully, the cookie is automatically attached to subsequent requests sent with the JS Client.
    * @param {AdminPostAuthReq} payload - The credentials of the user.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminAuthRes>} The user's details.
+   * @returns {ResponsePromise<AdminAuthRes>} Resolves to the user's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -83,7 +83,7 @@ class AdminAuthResource extends BaseResource {
    * Authenticate the user and retrieve a JWT token to use for subsequent authenticated requests.
    * @param {AdminPostAuthReq} payload - The credentials of the user.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminBearerAuthRes>} The access token of the user, if they're authenticated successfully.
+   * @returns {ResponsePromise<AdminBearerAuthRes>} Resolves to the access token of the user, if they're authenticated successfully.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

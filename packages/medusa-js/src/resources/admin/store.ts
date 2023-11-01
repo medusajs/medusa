@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Store API Routes](https://docs.medusajs.com/api/admin#store).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A store indicates the general configurations and details about the commerce store. By default, there's only one store in the Medusa backend.
  * Admins can manage the store and its details or configurations.

@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Currency API Routes](https://docs.medusajs.com/api/admin#currencies).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A store can use unlimited currencies, and each region must be associated with at least one currency.
  * Currencies are defined within the Medusa backend. The methods in this class allow admins to list and update currencies.

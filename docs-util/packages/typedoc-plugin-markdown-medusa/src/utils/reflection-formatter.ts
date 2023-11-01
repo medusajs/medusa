@@ -279,6 +279,11 @@ export function getTypeChildren(
         children = referencedReflection.children
       }
       break
+    case "reflection":
+      children = reflectionType.declaration.children || [
+        reflectionType.declaration,
+      ]
+      break
     case "array":
       children = getTypeChildren(reflectionType.elementType, project)
   }

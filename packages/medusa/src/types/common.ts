@@ -401,14 +401,14 @@ export class AddressCreatePayload {
  */
 export class FindParams {
   /**
-   * @prop expand - Comma-separated relations that should be expanded in the returned data.
+   * Comma-separated relations that should be expanded in the returned data.
    */
   @IsString()
   @IsOptional()
   expand?: string
 
   /**
-   * @prop fields - Comma-separated fields that should be included in the returned data.
+   * Comma-separated fields that should be included in the returned data.
    */
   @IsString()
   @IsOptional()
@@ -420,7 +420,7 @@ export class FindParams {
  */
 export class FindPaginationParams {
   /**
-   * @prop offset - The number of items to skip when retrieving a list.
+   * The number of items to skip when retrieving a list.
    */
   @IsNumber()
   @IsOptional()
@@ -428,7 +428,7 @@ export class FindPaginationParams {
   offset?: number = 0
 
   /**
-   * @prop limit - Limit the number of items returned in the list.
+   * Limit the number of items returned in the list.
    */
   @IsNumber()
   @IsOptional()

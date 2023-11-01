@@ -13,7 +13,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Shipping Option API Routes](https://docs.medusajs.com/api/admin#shipping-options).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A shipping option is used to define the available shipping methods during checkout or when creating a return.
  * Admins can create an unlimited number of shipping options, each associated with a shipping profile and fulfillment provider, among other resources.

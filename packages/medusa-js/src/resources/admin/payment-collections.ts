@@ -11,7 +11,7 @@ import qs from "qs"
 /**
  * This class is used to send requests to [Admin Payment Collection API Routes](https://docs.medusajs.com/api/admin#payment-collections).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
  */

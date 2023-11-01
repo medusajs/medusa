@@ -9,7 +9,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Type API Routes](https://docs.medusajs.com/api/admin#product-types).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Product types are string values created when you create or update a product with a new type.
  * Products can have one type, and products can share types. This allows admins to associate products with a type that can be used to filter products.

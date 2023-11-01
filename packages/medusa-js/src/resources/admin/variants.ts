@@ -12,7 +12,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Variant API Routes](https://docs.medusajs.com/api/admin#product-variants).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
  * Product variants can be managed through {@link AdminProductsResource}.

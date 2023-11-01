@@ -16,7 +16,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Draft Order API Routes](https://docs.medusajs.com/api/admin#draft-orders).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A draft order is an order created manually by the admin. It allows admins to create orders without direct involvement from the customer.
  * 

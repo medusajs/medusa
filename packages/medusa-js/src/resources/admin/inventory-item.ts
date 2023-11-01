@@ -21,7 +21,7 @@ import qs from "qs"
  * This class is used to send requests to [Admin Inventory Item API Routes](https://docs.medusajs.com/api/admin#inventory-items). To use these API Routes, make sure to install the
  * [@medusajs/inventory](https://docs.medusajs.com/modules/multiwarehouse/install-modules#inventory-module) module in your Medusa backend.
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Inventory items, provided by the [Inventory Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module), can be used to manage the inventory of saleable items in your store.
  * 

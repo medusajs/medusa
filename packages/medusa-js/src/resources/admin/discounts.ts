@@ -23,7 +23,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Discount API Routes](https://docs.medusajs.com/api/admin#discounts).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Admins can create discounts with conditions and rules, providing them with advanced settings for variety of cases.
  * The methods in this class can be used to manage discounts, their conditions, resources, and more.

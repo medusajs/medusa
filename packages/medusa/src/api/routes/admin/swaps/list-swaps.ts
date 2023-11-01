@@ -81,14 +81,20 @@ export default async (req, res) => {
 }
 
 /**
- * {@inheritDocs FindPaginationParams}
+ * {@inheritDoc FindPaginationParams}
  */
 export class AdminGetSwapsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)

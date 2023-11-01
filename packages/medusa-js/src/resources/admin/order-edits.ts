@@ -17,7 +17,7 @@ import qs from "qs"
 /**
  * This class is used to send requests to [Admin Order Edit API Routes](https://docs.medusajs.com/api/admin#order-edits).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * An admin can edit an order to remove, add, or update an item's quantity. When an admin edits an order, they're stored as an `OrderEdit`.
  * 

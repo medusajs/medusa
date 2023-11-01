@@ -114,6 +114,7 @@ export const allowedStoreCustomersFields = [
 /**
  * @schema StoreCustomersRes
  * type: object
+ * description: "The customer's details."
  * x-expanded-relations:
  *   field: customer
  *   relations:

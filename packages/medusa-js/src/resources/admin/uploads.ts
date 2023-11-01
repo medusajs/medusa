@@ -11,13 +11,17 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Upload API Routes](https://docs.medusajs.com/api/admin#uploads).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * The methods in this class are used to upload any type of resources. For example, they can be used to upload CSV files that are used to import products into the store.
  * 
  * Related Guide: [How to upload CSV file when importing a product](https://docs.medusajs.com/modules/products/admin/import-products#1-upload-csv-file).
  */
 class AdminUploadsResource extends BaseResource {
+  /**
+   * @ignore
+   * @privateRemark No need to include this in the generated documentation.
+   */
   private headers = {
     "Content-Type": "multipart/form-data",
   }

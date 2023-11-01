@@ -26,7 +26,7 @@ class AdminBatchJobsResource extends BaseResource {
    * which can be done using the {@link confirm} method.
    * @param payload - The data of the batch job to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminBatchJobRes>} The batch job's details.
+   * @returns {ResponsePromise<AdminBatchJobRes>} Resolves to the batch job's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -115,7 +115,7 @@ class AdminBatchJobsResource extends BaseResource {
    * Mark a batch job as canceled. When a batch job is canceled, the processing of the batch job doesn’t automatically stop.
    * @param {string} batchJobId - The ID of the batch job.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminBatchJobRes>} The batch job's details.
+   * @returns {ResponsePromise<AdminBatchJobRes>} Resolves to the batch job's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -135,7 +135,7 @@ class AdminBatchJobsResource extends BaseResource {
   }
 
   /**
-   * When a batch job is created, it is not executed automatically if `dry_run` is set to `true`. This method confirms that the batch job should be executed.
+   * When a batch job is created, it's not executed automatically if `dry_run` is set to `true`. This method confirms that the batch job should be executed.
    * @param {string} batchJobId - The ID of the batch job.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminBatchJobRes>} The batch job's details.

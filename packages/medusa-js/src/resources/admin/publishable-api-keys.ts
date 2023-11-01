@@ -19,7 +19,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Publishable API Key API Routes](https://docs.medusajs.com/api/admin#publishable-api-keys).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Publishable API Keys can be used to scope Store API calls with an API key, determining what resources are retrieved when querying the API.
  * For example, a publishable API key can be associated with one or more sales channels. When it is passed in the header of a request to the List Product store API Route,

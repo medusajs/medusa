@@ -5,7 +5,7 @@ import BaseResource from "./base"
 /**
  * This class is used to send requests to Payment Method API Routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers).
  * 
- * All methods in this class require {@link auth.authenticate | customer authentication}.
+ * All methods in this class require {@link AuthResource.authenticate | customer authentication}.
  */
 class PaymentMethodsResource extends BaseResource {
   /**

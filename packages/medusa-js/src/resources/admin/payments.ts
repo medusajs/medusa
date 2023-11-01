@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Payment API Routes](https://docs.medusajs.com/api/admin#payments).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A payment can be related to an order, swap, return, or more. It can be captured or refunded.
  */

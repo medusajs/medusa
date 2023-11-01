@@ -17,7 +17,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Region API Routes](https://docs.medusajs.com/api/admin#regions).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Regions are different countries or geographical regions that the commerce store serves customers in.
  * Admins can manage these regions, their providers, and more.

@@ -7,7 +7,7 @@ const pathPrefix = path.join(__dirname, "..", "..", "..")
 module.exports = {
   ...globalTypedocOptions,
   entryPoints: [path.join(pathPrefix, "packages/medusa-js/src/resources")],
-  entryPointStrategy: "expand",
+  // entryPointStrategy: "expand",
   out: [path.join(pathPrefix, "www/apps/docs/content/references/js-client")],
   tsconfig: path.join(pathPrefix, "packages/medusa-js/tsconfig.json"),
   name: "JS Client Reference",
@@ -25,7 +25,8 @@ module.exports = {
   exclude: [
     path.join(pathPrefix, "packages/medusa-js/src/resources/base.ts"),
     path.join(pathPrefix, "node_modules/**"),
-    path.join(pathPrefix, "packages/**/node_modules"),
+    // path.join(pathPrefix, "packages/**/node_modules"),
+    // `!${path.join(pathPrefix, "packages/**/node_modules/@medusajs")}`,
   ],
   // excludeConstructors: true,
   frontmatterData: {
@@ -38,6 +39,10 @@ module.exports = {
       sections: {
         member_sources_definedIn: false,
         reflection_hierarchy: false,
+        member_signature_typeParameters: false,
+        member_signature_sources: false,
+        member_signature_title: false,
+        member_signature_returns: false,
       },
       parameterStyle: "component",
       parameterComponent: "ParameterTypes",

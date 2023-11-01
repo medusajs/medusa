@@ -16,7 +16,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Collection API Routes](https://docs.medusajs.com/api/admin#product-collections).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A product collection is used to organize products for different purposes such as marketing or discount purposes. For example, you can create a Summer Collection.
  */

@@ -15,7 +15,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin User API Routes](https://docs.medusajs.com/api/admin#users).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A store can have more than one user, each having the same privileges. Admins can manage users, their passwords, and more.
  * 

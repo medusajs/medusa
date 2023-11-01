@@ -9,7 +9,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Invite API Routes](https://docs.medusajs.com/api/admin#invites).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * An admin can invite new users to manage their team. This would allow new users to authenticate as admins and perform admin functionalities.
  * 

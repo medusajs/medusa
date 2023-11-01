@@ -22,7 +22,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product API Routes](https://docs.medusajs.com/api/admin#products).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product) in a store.
  * 

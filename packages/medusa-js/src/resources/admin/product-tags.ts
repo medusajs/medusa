@@ -9,7 +9,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Tag API Routes](https://docs.medusajs.com/api/admin#product-tags).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Product tags are string values created when you create or update a product with a new tag.
  * Products can have more than one tag, and products can share tags. This allows admins to associate products to similar tags that can be used to filter products.

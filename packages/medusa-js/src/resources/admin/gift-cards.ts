@@ -13,7 +13,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Gift Card API Routes](https://docs.medusajs.com/api/admin#gift-cards).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Admins can create gift cards and send them directly to customers, specifying options like their balance, region, and more.
  * These gift cards are different than the saleable gift cards in a store, which are created and managed through {@link AdminProductsResource}.

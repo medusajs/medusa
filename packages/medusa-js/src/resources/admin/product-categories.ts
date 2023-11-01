@@ -17,7 +17,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Category API Routes](https://docs.medusajs.com/api/admin#product-categories).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Products can be categoriezed into categories. A product can be added into more than one category.
  * 

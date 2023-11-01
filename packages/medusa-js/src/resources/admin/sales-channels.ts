@@ -17,7 +17,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Sales Channel API Routes](https://docs.medusajs.com/api/admin#sales-channels).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A sales channel indicates a channel where products can be sold in. For example, a webshop or a mobile app.
  * Admins can manage sales channels and the products available in them.

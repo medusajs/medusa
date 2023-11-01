@@ -10,7 +10,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Swap API Routes](https://docs.medusajs.com/api/admin#swaps).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A swap is created by a customer or an admin to exchange an item with a new one.
  * Creating a swap implicitely includes creating a return for the item being exchanged.

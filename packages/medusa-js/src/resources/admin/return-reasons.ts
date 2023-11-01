@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Return Reason API Routes](https://docs.medusajs.com/api/admin#return-reasons).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Return reasons are key-value pairs that are used to specify why an order return is being created.
  * Admins can manage available return reasons, and they can be used by both admins and customers when creating a return.

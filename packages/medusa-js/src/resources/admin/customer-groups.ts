@@ -19,7 +19,7 @@ import { ResponsePromise } from "../.."
 /**
  * This class is used to send requests to [Admin Customer Group API Routes](https://docs.medusajs.com/api/admin#customer-groups).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Customer Groups can be used to organize customers that share similar data or attributes into dedicated groups.
  * This can be useful for different purposes such as setting a different price for a specific customer group.

@@ -1,10 +1,14 @@
 import {
   Application,
+  Comment,
   CommentDisplayPart,
-  CommentTag,
   Context,
   Converter,
+  DeclarationReflection,
+  ProjectReflection,
+  Reflection,
   ReflectionKind,
+  SomeType,
 } from "typedoc"
 import { parse } from "yaml"
 
@@ -24,11 +28,6 @@ type SchemaProperty = {
   "x-featureFlag"?: string
 }
 
-type ParsedTags = {
-  schema?: CommentDisplayPart
-  tags: CommentTag[]
-}
-
 export function load(app: Application) {
   app.converter.on(Converter.EVENT_RESOLVE_BEGIN, (context: Context) => {
     for (const reflection of context.project.getReflectionsByKind(
@@ -37,13 +36,22 @@ export function load(app: Application) {
       const { comment } = reflection
       if (comment) {
         comment.getTags("@schema").forEach((part) => {
-          const p = part.content[0]
-          if (p?.text) {
-            const parsedTags = parseSchema(p.text)
-            if (parsedTags.schema) {
-              comment.summary.push(parsedTags.schema)
+          if (part.content.length) {
+            const schemaComment = prepareSchemaComment(part.content)
+            const schema: Schema = parse(schemaComment)
+
+            if (schema.description) {
+              comment.summary.push({
+                kind: "text",
+                text: schema.description,
+              })
             }
-            comment.blockTags.push(...parsedTags.tags)
+
+            if (reflection.kind === ReflectionKind.TypeAlias) {
+              comment.modifierTags.add(`@interface`)
+            }
+
+            addComments(schema, reflection)
           }
         })
         comment.removeTags("@schema")
@@ -52,37 +60,43 @@ export function load(app: Application) {
   })
 }
 
-function parseSchema(schema: string): ParsedTags {
-  const parsed: Schema = parse(`schema: ${schema}`)
-  const parsedTags: ParsedTags = {
-    tags: [],
+function prepareSchemaComment(commentParts: CommentDisplayPart[]) {
+  let result = `schema: `
+  commentParts.forEach((commentPart) => {
+    result += commentPart.text
+  })
+  return result
+}
+
+function addComments(schema: Schema, reflection: Reflection) {
+  if (!schema.properties) {
+    return
   }
 
-  if (parsed.description) {
-    parsedTags.schema = {
-      kind: "text",
-      text: parsed.description,
+  const children =
+    "type" in reflection
+      ? getTypeChildren(reflection.type as SomeType, reflection.project)
+      : "children" in reflection
+      ? (reflection.children as DeclarationReflection[])
+      : []
+
+  Object.entries(schema.properties).forEach(([key, value]) => {
+    const childItem =
+      children.find((child) => child.name === key) ||
+      reflection.getChildByName(key)
+
+    if (childItem) {
+      let { comment } = childItem
+      if (!comment) {
+        comment = new Comment()
+      }
+      comment.summary.push({
+        kind: "text",
+        text: getPropertyDescription(value),
+      })
+      childItem.comment = comment
     }
-  }
-
-  if (parsed.properties) {
-    Object.entries(parsed.properties).forEach(([key, value]) => {
-      parsedTags.tags.push(
-        new CommentTag(`@prop`, [
-          {
-            kind: "text",
-            text: key,
-          },
-          {
-            kind: "text",
-            text: getPropertyDescription(value),
-          },
-        ])
-      )
-    })
-  }
-
-  return parsedTags
+  })
 }
 
 // TODO maybe add expandable and feature flag as tags instead
@@ -99,4 +113,36 @@ function getPropertyDescription(schemaProperty: SchemaProperty): string {
   }
 
   return result
+}
+
+function getTypeChildren(
+  reflectionType: SomeType,
+  project: ProjectReflection
+): DeclarationReflection[] {
+  let children: DeclarationReflection[] = []
+
+  switch (reflectionType.type) {
+    case "reference":
+      // eslint-disable-next-line no-case-declarations
+      const referencedReflection =
+        reflectionType.reflection ||
+        project?.getChildByName(reflectionType.name)
+
+      if (
+        referencedReflection instanceof DeclarationReflection &&
+        referencedReflection.children
+      ) {
+        children = referencedReflection.children
+      }
+      break
+    case "reflection":
+      children = reflectionType.declaration.children || [
+        reflectionType.declaration,
+      ]
+      break
+    case "array":
+      children = getTypeChildren(reflectionType.elementType, project)
+  }
+
+  return children
 }

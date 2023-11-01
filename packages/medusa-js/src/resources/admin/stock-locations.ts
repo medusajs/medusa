@@ -14,7 +14,7 @@ import qs from "qs"
  * This class is used to send requests to [Admin Stock Location API Routes](https://docs.medusajs.com/api/admin#stock-locations). To use these API Routes, make sure to install the
  * [@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module in your Medusa backend.
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * A stock location, provided by the [Stock Location module](https://docs.medusajs.com/modules/multiwarehouse/stock-location-module), indicates a physical address that stock-kept items, such as physical products, can be stored in.
  * An admin can create and manage available stock locations.

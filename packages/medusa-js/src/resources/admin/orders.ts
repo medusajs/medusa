@@ -24,7 +24,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Order API Routes](https://docs.medusajs.com/api/admin#orders).
  * 
- * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
  * 
  * Orders are purchases made by customers, typically through a storefront using {@link CartsResource}. Draft orders created by the admin are also transformed to an Order once the payment is captured.
  * Managing orders include managing fulfillment, payment, claims, reservations, and more.

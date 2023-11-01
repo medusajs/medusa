@@ -102,7 +102,8 @@ export default async (req, res) => {
  * properties:
  *   type:
  *     type: string
- *     description: The type of batch job to start, which is defined by the `batchType` property of the associated batch job strategy.
+ *     description: >-
+ *       The type of batch job to start, which is defined by the `batchType` property of the associated batch job strategy.
  *     example: product-export
  *   context:
  *     type: object

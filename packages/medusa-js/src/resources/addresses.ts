@@ -9,14 +9,14 @@ import BaseResource from "./base"
 /**
  * This class is used to send requests to Address API Routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers).
  * 
- * All methods in this class require {@link auth.authenticate | customer authentication}.
+ * All methods in this class require {@link AuthResource.authenticate | customer authentication}.
  */
 class AddressesResource extends BaseResource {
   /**
    * Add an address to the logged-in customer's saved addresses.
    * @param {StorePostCustomersCustomerAddressesReq} payload - The address to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCustomersRes>} The customer's details, including the customer's addresses in the `shipping_addresses` attribute.
+   * @returns {ResponsePromise<StoreCustomersRes>} Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -51,7 +51,7 @@ class AddressesResource extends BaseResource {
    * Delete an address of the logged-in customer.
    * @param {string} address_id - The ID of the address to delete.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCustomersRes>} The customer's details, including the customer's addresses in the `shipping_addresses` attribute.
+   * @returns {ResponsePromise<StoreCustomersRes>} Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -75,7 +75,7 @@ class AddressesResource extends BaseResource {
    * @param {string} address_id - The address's ID.
    * @param {StorePostCustomersCustomerAddressesAddressReq} payload - The attributes to update in the address.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCustomersRes>} The customer's details, including the customer's addresses in the `shipping_addresses` attribute.
+   * @returns {ResponsePromise<StoreCustomersRes>} Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
