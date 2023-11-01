@@ -65,6 +65,10 @@ export const supportedLanguages = [
   {
     locale: "ru",
     name: "Русский"
+  },
+  {
+    locale: "zh",
+    name: "中文"
   }
 ]
 
