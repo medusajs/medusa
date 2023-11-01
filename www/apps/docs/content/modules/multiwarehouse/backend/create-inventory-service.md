@@ -19,7 +19,7 @@ This guide will only explain what is required to create in your custom inventory
 
 :::note
 
-It should be noted that the Medusa backend expects the inventory module to have entities for an inventory item, an inventory level, and a reservation item, as it uses the IDs of those entities when orchestrating between different modules and the in the endpoints it exposes. You can learn more about this in the [Inventory Module Architecture documentation](../inventory-module.md).
+It should be noted that the Medusa backend expects the inventory module to have entities for an inventory item, an inventory level, and a reservation item, as it uses the IDs of those entities when orchestrating between different modules and the in the API Routes it exposes. You can learn more about this in the [Inventory Module Architecture documentation](../inventory-module.md).
 
 :::
 
@@ -329,7 +329,7 @@ Make sure to replace `CustomInventoryItem` with your inventory item entity.
 
 ### Implementing listReservationItems Method
 
-This method is used to retrieve a list of reservation items. It accepts the same parameters as the [[listInventoryItems method](#implementing-listinventoryitems-method)](#implementing-listinventoryitems-method), but the `selector` parameter has the following properties:
+This method is used to retrieve a list of reservation items. It accepts the same parameters as the [listInventoryItems method](#implementing-listinventoryitems-method)](#implementing-listinventoryitems-method), but the `selector` parameter has the following properties:
 
 1. `id`: an optional string or array of strings indicating the IDs of reservation items. It is used to filter the retrieved reservation items by ID.
 2. `type`: an optional string or array of strings indicating the type of reservation items. It is used to filter the retrieved reservation items by type.

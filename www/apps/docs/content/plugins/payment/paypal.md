@@ -25,7 +25,7 @@ In addition, you need to configure a webhook listener on your PayPal Developer D
 
 Webhooks are used in scenarios where the customer might leave the page during the authorization and before the checkout flow is fully complete. It will then create the order or swap after the payment is authorized if they weren’t created.
 
-The endpoint for PayPal webhook integration with your Medusa backend should be set to `{BACKEND_URL}/paypal/hooks`. Make sure to replace `{BACKEND_URL}` with the URL to your backend.
+The API Route for PayPal webhook integration with your Medusa backend should be set to `{BACKEND_URL}/paypal/hooks`. Make sure to replace `{BACKEND_URL}` with the URL to your backend.
 
 Additionally, you need a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../development/backend/install.mdx) to get started.
 
@@ -62,7 +62,7 @@ Notice that during development it’s highly recommended to set `PAYPAL_SANDBOX`
 
 Then, in `medusa-config.js`, add the PayPal plugin to the `plugins` array with the configurations necessary:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // other plugins...
   {
@@ -192,7 +192,7 @@ function Paypal() {
       const response = await client
         .carts
         .setPaymentSession(cart.id, {
-          "processor_id": "paypal",
+          "provider_id": "paypal",
         })
 
       if (!response.cart) {

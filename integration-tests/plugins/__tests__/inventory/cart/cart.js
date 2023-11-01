@@ -234,6 +234,54 @@ describe("/store/carts", () => {
       expect(count).toEqual(0)
     })
 
+    it("should decorate line item variant inventory_quantity when creating a line-item", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart"
+
+      // Add standard line item to cart
+      const addCart = await api
+        .post(
+          `/store/carts/${cartId}/line-items`,
+          {
+            variant_id: variantId,
+            quantity: 3,
+          },
+          { withCredentials: true }
+        )
+        .catch((e) => e)
+
+      expect(addCart.status).toEqual(200)
+      expect(addCart.data.cart.items[0].variant.inventory_quantity).toEqual(5)
+    })
+
+    it("should decorate line item variant inventory_quantity when getting cart", async () => {
+      const api = useApi()
+
+      const cartId = "test-cart"
+
+      // Add standard line item to cart
+      await api
+        .post(
+          `/store/carts/${cartId}/line-items`,
+          {
+            variant_id: variantId,
+            quantity: 3,
+          },
+          { withCredentials: true }
+        )
+        .catch((e) => e)
+
+      const cartResponse = await api
+        .get(`/store/carts/${cartId}`, { withCredentials: true })
+        .catch((e) => e)
+
+      expect(cartResponse.status).toEqual(200)
+      expect(
+        cartResponse.data.cart.items[0].variant.inventory_quantity
+      ).toEqual(5)
+    })
+
     it("fails to add a item on the cart if the inventory isn't enough", async () => {
       const api = useApi()
 

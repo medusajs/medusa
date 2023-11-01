@@ -1,11 +1,18 @@
 const { bootstrapApp } = require("./bootstrap-app")
+const { setContainer } = require("./use-container")
+const { setPort, setExpressServer } = require("./use-api")
 
 const setup = async () => {
-  const { app, port } = await bootstrapApp()
+  const { app, port, container } = await bootstrapApp()
 
-  app.listen(port, (err) => {
+  setContainer(container)
+
+  const expressServer = app.listen(port, (err) => {
+    setPort(port)
     process.send(port)
   })
+
+  setExpressServer(expressServer)
 }
 
 setup()

@@ -37,7 +37,7 @@ Some of the attributes of the `Order` entity include:
 - `no_notification`: a boolean value indicating whether the customer should receive notifications when the order is updated.
 - `external_id`: a string indicating an ID of the order in an external system. This can be useful if you’re migrating your orders from another commerce system or you’re linking your order to a third-party service.
 
-There are other important attributes discussed in later sections. Check out the full [Order entity in the entities reference](../../references/entities/classes/Order.md).
+There are other important attributes discussed in later sections. Check out the full [Order entity in the entities reference](../../references/entities/classes/Order.mdx).
 
 ---
 
@@ -145,7 +145,7 @@ Some of the `OrderEdit`'s other attributes include:
 - `confirmed_by`: a string that typically should hold the ID of who confirmed the order edit. Similar to the `created_by` attribute, there are no restrictions on what value this attribute can actually hold.
 - `declined_by`: a string that typically should hold the ID of who declined the order edit. Similar to the `created_by` attribute, there are no restrictions on what value this attribute can actually hold.
 
-There are other attributes explained in other sections. You can also check out the full [OrderEdit entity in the entities reference](../../references/entities/classes/OrderEdit.md).
+There are other attributes explained in other sections. You can also check out the full [OrderEdit entity in the entities reference](../../references/entities/classes/OrderEdit.mdx).
 
 ### Item Changes
 
@@ -182,7 +182,7 @@ Medusa provides the necessary infrastructure and tooling that allows automating 
 
 The Medusa backend facilitates automating these flows by allowing the customer to submit a [return](https://docs.medusajs.com/api/store#returns_postreturns) or [swap](https://docs.medusajs.com/api/store#swaps_postswaps) requests through the store APIs. The merchant can then review and handle these requests. This eliminates the need for the customer to perform the same action through customer support or other means.
 
-You can also integrate these flows within bigger processes that trigger requesting or creating these flows. It can be done through core APIs, [custom endpoints](../../development/endpoints/overview.mdx), or [custom services](../../development/services/overview.mdx). You can also listen to events related to orders such as [Order](../../development/events/events-list.md#order-events) or [Swap](../../development/events/events-list.md#swap-events) events with [subscribers](../../development/events/subscribers.mdx) to perform asynchronous actions.
+You can also integrate these flows within bigger processes that trigger requesting or creating these flows. It can be done through core APIs, [custom API Routes](../../development/api-routes/overview.mdx), or [custom services](../../development/services/overview.mdx). You can also listen to events related to orders such as [Order](../../development/events/events-list.md#order-events) or [Swap](../../development/events/events-list.md#swap-events) events with [subscribers](../../development/events/subscribers.mdx) to perform asynchronous actions.
 
 ---
 

@@ -80,7 +80,7 @@ const plugins = [
 
 ## Test it Out
 
-This plugin adds new `POST` and `PUT` endpoints at `/mailchimp/subscribe`. These endpoints require in the body of the request an `email` field. You can also optionally include a `data` object that holds any additional data you want to send to Mailchimp. You can check out [Mailchimp’s subscription documentation](https://mailchimp.com/developer/marketing/api/list-merges/) for more details on the data you can send.
+This plugin adds new `POST` and `PUT` API Routes at `/mailchimp/subscribe`. These API Routes require in the body of the request an `email` field. You can also optionally include a `data` object that holds any additional data you want to send to Mailchimp. You can check out [Mailchimp’s subscription documentation](https://mailchimp.com/developer/marketing/api/list-merges/) for more details on the data you can send.
 
 ### Without Additional Data
 
@@ -92,7 +92,7 @@ Try sending a `POST` or `PUT` request to `/mailchimp/subscribe` with the followi
 }
 ```
 
-If the subscription is successful, a `200` response code will be returned with `OK` message. If the same email address is used again in the `POST`, a `400` response will be returned with an error page. If this can occur in your usecase, use the `PUT` endpoint to prevent this.
+If the subscription is successful, a `200` response code will be returned with `OK` message. If the same email address is used again in the `POST`, a `400` response will be returned with an error page. If this can occur in your usecase, use the `PUT` API Route to prevent this.
 
 ![Postman](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000185/Medusa%20Docs/Mailchimp/tpr7uCF_g4rymn.png)
 
@@ -119,22 +119,34 @@ All fields inside `data` will be sent to Mailchimp’s API along with the email.
 
 ## Use Mailchimp Service
 
-If you want to subscribe to users without using this endpoint or at a specific place in your code, you can use Mailchimp’s service `mailchimpService` in your endpoints, services, or subscribers. This service has a method `subscribeNewsletter` which lets you use the subscribe functionality.
+To subscribe users to the newsletter without using this API Route or at a specific place in your code, you can use Mailchimp’s service `mailchimpService` in your API Routes, services, or subscribers. This service has a method `subscribeNewsletter` which lets you use the subscribe functionality.
 
-Here’s an example of using the `mailchimpService` inside an endpoint:
+Here’s an example of using the `mailchimpService` in an API Route:
 
-```jsx title=src/api/index.ts
-const mailchimpService = req.scope.resolve("mailchimpService")
+```ts title=src/api/store/subscribe/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 
-mailchimpService.subscribeNewsletter(
-  "example@gmail.com",
-  { tags: ["customer"] } // optional
-)
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const mailchimpService = req.scope.resolve(
+    "mailchimpService"
+  )
+
+  mailchimpService.subscribeNewsletter(
+    "example@gmail.com",
+    { tags: ["customer"] } // optional
+  )
+}
 ```
 
 :::tip
 
-You can learn more about how you can use services in your endpoints, services, and subscribers in the [Services documentation](../../development/services/create-service.mdx#using-your-custom-service).
+You can learn more about how you can use services in your API Routes, services, and subscribers in the [Services documentation](../../development/services/create-service.mdx#using-your-custom-service).
 
 :::
 
