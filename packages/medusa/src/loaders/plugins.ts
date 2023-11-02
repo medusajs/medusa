@@ -362,17 +362,27 @@ async function registerApi(
 
   logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
 
+  /**
+   * Register the plugin's api routes using the file based routing.
+   */
   try {
-    /**
-     * Register the plugin's api routes using the file based routing.
-     */
     await new RoutesLoader({
       app,
       rootDir: path.join(pluginDetails.resolve, "api"),
       activityId: activityId,
       configModule: configmodule,
     }).load()
+  } catch (err) {
+    logger.warn(
+      `An error occurred while registering API Routes in ${projectName}`
+    )
 
+    if (err.stack) {
+      logger.warn(`${err.stack}`)
+    }
+  }
+
+  try {
     /**
      * For backwards compatibility we also support loading routes from
      * `/api/index` if the file exists.
@@ -391,8 +401,6 @@ async function registerApi(
         app.use("/", routes(rootDirectory, pluginDetails.options))
       }
     }
-
-    return app
   } catch (err) {
     if (err.code !== "MODULE_NOT_FOUND") {
       logger.warn(
@@ -403,9 +411,9 @@ async function registerApi(
         logger.warn(`${err.stack}`)
       }
     }
-
-    return app
   }
+
+  return app
 }
 
 /**
