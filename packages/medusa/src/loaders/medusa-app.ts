@@ -1,26 +1,51 @@
-import { CommonTypes, MedusaContainer } from "@medusajs/types"
+import {
+  CommonTypes,
+  InternalModuleDeclaration,
+  MedusaContainer,
+  ModuleDefinition,
+} from "@medusajs/types"
 import {
   MedusaApp,
   MedusaAppOutput,
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { joinerConfig } from "../joiner-config"
-import { mergeModulesConfig } from "../utils/merge-modules-config"
-import modulesConfig from "../modules-config"
 import { remoteQueryFetchData } from ".."
+
+export function mergeDefaultModules(
+  modulesConfig: CommonTypes.ConfigModule["modules"]
+) {
+  const defaultModules = Object.values(ModulesDefinition).filter(
+    (definition: ModuleDefinition) => {
+      return !!definition.defaultPackage
+    }
+  )
+
+  const configModules = { ...modulesConfig } ?? {}
+
+  for (const defaultModule of defaultModules as ModuleDefinition[]) {
+    configModules[defaultModule.key] ??= defaultModule.defaultModuleDeclaration
+  }
+
+  return configModules
+}
 
 export const loadMedusaApp = async (
   {
     configModule,
     container,
-  }: { configModule: CommonTypes.ConfigModule; container: MedusaContainer },
+  }: {
+    configModule: {
+      modules?: CommonTypes.ConfigModule["modules"]
+      projectConfig: CommonTypes.ConfigModule["projectConfig"]
+    }
+    container: MedusaContainer
+  },
   config = { registerInContainer: true }
 ): Promise<MedusaAppOutput> => {
-  mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
-
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
@@ -34,8 +59,34 @@ export const loadMedusaApp = async (
     },
   }
 
+  container.register(ContainerRegistrationKeys.REMOTE_QUERY, asValue(undefined))
+  container.register(ContainerRegistrationKeys.REMOTE_LINK, asValue(undefined))
+
+  const configModules = mergeDefaultModules(configModule.modules)
+
+  // Apply default options to legacy modules
+  for (const moduleKey of Object.keys(configModules)) {
+    if (!ModulesDefinition[moduleKey].isLegacy) {
+      continue
+    }
+
+    if (isObject(configModules[moduleKey])) {
+      ;(
+        configModules[moduleKey] as Partial<InternalModuleDeclaration>
+      ).options ??= {
+        database: {
+          type: "postgres",
+          url: configModule.projectConfig.database_url,
+          extra: configModule.projectConfig.database_extra,
+          schema: configModule.projectConfig.database_schema,
+          logging: configModule.projectConfig.database_logging,
+        },
+      }
+    }
+  }
+
   const medusaApp = await MedusaApp({
-    modulesConfig,
+    modulesConfig: configModules,
     servicesConfig: joinerConfig,
     remoteFetchData: remoteQueryFetchData(container),
     sharedContainer: container,
@@ -48,18 +99,25 @@ export const loadMedusaApp = async (
   }
 
   container.register("remoteLink", asValue(medusaApp.link))
+  container.register(
+    ContainerRegistrationKeys.REMOTE_QUERY,
+    asValue(medusaApp.query)
+  )
 
-  const { query, modules } = medusaApp
-
-  // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
-  // We might decide to do it elsewhere but for now I think it is fine
-  for (const [serviceKey, moduleService] of Object.entries(modules)) {
+  for (const [serviceKey, moduleService] of Object.entries(medusaApp.modules)) {
     container.register(
       ModulesDefinition[serviceKey].registrationName,
       asValue(moduleService)
     )
   }
-  container.register("remoteQuery", asValue(query))
+
+  // Register all unresolved modules as undefined to be present in the container with undefined value by defaul
+  // but still resolvable
+  for (const [, moduleDefinition] of Object.entries(ModulesDefinition)) {
+    if (!container.hasRegistration(moduleDefinition.registrationName)) {
+      container.register(moduleDefinition.registrationName, asValue(undefined))
+    }
+  }
 
   return medusaApp
 }
