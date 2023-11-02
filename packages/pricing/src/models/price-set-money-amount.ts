@@ -51,15 +51,6 @@ export default class PriceSetMoneyAmount {
   })
   price_set_money_amount_rules = new Collection<PriceSetMoneyAmountRules>(this)
 
-  // @ManyToOne({
-  //   entity: () => PriceList,
-  //   nullable: true,
-  //   fieldName: "price_list_id",
-  //   name: "price_rule_price_list_id",
-  //   index: "IDX_price_rule_price_list_id",
-  // })
-  // price_list: PriceList | null
-
   @ManyToOne(() => PriceList, {
     index: "IDX_price_rule_price_list_id",
     nullable: true,

@@ -226,11 +226,18 @@ describe("PriceListRule Service", () => {
         },
       ])
 
-      const [priceListRule] = await service.list({
-        id: [created.id],
-      })
+      const [priceListRule] = await service.list(
+        {
+          id: [created.id],
+        },
+        {
+          relations: ["price_list", "rule_type"],
+          select: ["price_list.id", "rule_type.id"],
+        }
+      )
 
       expect(priceListRule.price_list.id).toEqual("price-list-2")
+      expect(priceListRule.rule_type.id).toEqual("rule-type-1")
     })
   })
 })
