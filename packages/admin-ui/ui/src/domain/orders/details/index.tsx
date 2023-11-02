@@ -324,6 +324,11 @@ const OrderDetails = () => {
       ? `${MEDUSA_BACKEND_URL_NOSLASH}/admin/invoice/${order?.id}/invoice-${order.display_id}.pdf`
       : null
 
+  const packingUrl =
+    order?.payment_status === "captured"
+      ? `${MEDUSA_BACKEND_URL_NOSLASH}/admin/packing/${order?.id}/packing-slip-${order.display_id}.pdf`
+      : null
+
   return (
     <div>
       <OrderEditProvider orderId={id!}>
@@ -335,19 +340,38 @@ const OrderDetails = () => {
               className="mb-xsmall"
             />
           </div>
-          <div>
+          <div className="inline-flex flex-row gap-4">
             {!!invoiceUrl && (
-              <Button
-                key="export"
-                variant="secondary"
-                size="small"
-                onClick={() => {
-                  openUrlNewWindow(invoiceUrl)
-                }}
-              >
-                <DownloadIcon size={20} />
-                Invoice Download
-              </Button>
+              <div>
+                <Button
+                  key="export"
+                  variant="secondary"
+                  size="small"
+                  onClick={() => {
+                    openUrlNewWindow(invoiceUrl)
+                  }}
+                  className="min-w-[140px]"
+                >
+                  <DownloadIcon size={20} />
+                  Invoice
+                </Button>
+              </div>
+            )}
+            {!!packingUrl && (
+              <div>
+                <Button
+                  key="export"
+                  variant="secondary"
+                  size="small"
+                  onClick={() => {
+                    openUrlNewWindow(packingUrl)
+                  }}
+                  className="min-w-[140px]"
+                >
+                  <DownloadIcon size={20} />
+                  Packing Slip
+                </Button>
+              </div>
             )}
           </div>
         </div>
