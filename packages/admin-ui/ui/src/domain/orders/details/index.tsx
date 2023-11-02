@@ -321,7 +321,7 @@ const OrderDetails = () => {
 
   const invoiceUrl =
     order?.payment_status === "captured"
-      ? `${MEDUSA_BACKEND_URL_NOSLASH}/invoice/${order?.id}`
+      ? `${MEDUSA_BACKEND_URL_NOSLASH}/admin/invoice/${order?.id}/invoice-${order.display_id}.pdf`
       : null
 
   return (

@@ -50,7 +50,7 @@ const SalesReportModal: React.FC<ExportModalProps> = ({
 
   const getUrl = () => {
 
-      let reportUrl = MEDUSA_BACKEND_URL_NOSLASH+'/sales-report/'
+      let reportUrl = MEDUSA_BACKEND_URL_NOSLASH+'/admin/sales-report/'
 
       reportUrl += '?start_date='+moment(startDate).format("YYYY-MM-DD")+'T00:00:00'
 
