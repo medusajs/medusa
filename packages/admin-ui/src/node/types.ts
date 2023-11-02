@@ -23,6 +23,11 @@ export type DevelopOptions = {
    * @default "normal"
    */
   stats?: "normal" | "debug"
+  /**
+   * The development server allowed hosts.
+   * @default "auto"
+   * */
+  allowedHosts: "auto" | string[]
 }
 
 export type AdminOptions = {
