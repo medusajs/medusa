@@ -70,13 +70,13 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const priceSets = data.map((priceSetData) => {
-      return manager.create(PriceList, priceSetData)
+    const priceLists = data.map((priceListData) => {
+      return manager.create(PriceList, priceListData)
     })
 
-    manager.persist(priceSets)
+    manager.persist(priceLists)
 
-    return priceSets
+    return priceLists
   }
 
   async update(
@@ -84,12 +84,12 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
     context: Context = {}
   ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const priceSetIds = data.map((priceSetData) => priceSetData.id)
+    const priceListIds = data.map((priceListData) => priceListData.id)
     const existingPriceSets = await this.find(
       {
         where: {
           id: {
-            $in: priceSetIds,
+            $in: priceListIds,
           },
         },
       },
@@ -97,35 +97,35 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
     )
 
     const existingPriceListMap = new Map(
-      existingPriceSets.map<[string, PriceList]>((priceSet) => [
-        priceSet.id,
-        priceSet,
+      existingPriceSets.map<[string, PriceList]>((priceList) => [
+        priceList.id,
+        priceList,
       ])
     )
 
-    const priceSets = data.map((priceSetData) => {
-      const existingPriceList = existingPriceListMap.get(priceSetData.id)
+    const priceLists = data.map((priceListData) => {
+      const existingPriceList = existingPriceListMap.get(priceListData.id)
 
       if (!existingPriceList) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `PriceList with id "${priceSetData.id}" not found`
+          `PriceList with id "${priceListData.id}" not found`
         )
       }
 
-      if (!!priceSetData.starts_at) {
-        priceSetData.starts_at = priceSetData.starts_at.toISOString() as any
+      if (!!priceListData.starts_at) {
+        priceListData.starts_at = priceListData.starts_at.toISOString() as any
       }
 
-      if (!!priceSetData.ends_at) {
-        priceSetData.ends_at = priceSetData.ends_at.toISOString() as any
+      if (!!priceListData.ends_at) {
+        priceListData.ends_at = priceListData.ends_at.toISOString() as any
       }
 
-      return manager.assign(existingPriceList, priceSetData)
+      return manager.assign(existingPriceList, priceListData)
     })
 
-    manager.persist(priceSets)
+    manager.persist(priceLists)
 
-    return priceSets
+    return priceLists
   }
 }

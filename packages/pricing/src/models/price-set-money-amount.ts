@@ -11,10 +11,10 @@ import {
 } from "@mikro-orm/core"
 
 import MoneyAmount from "./money-amount"
+import PriceList from "./price-list"
 import PriceRule from "./price-rule"
 import PriceSet from "./price-set"
 import PriceSetMoneyAmountRules from "./price-set-money-amount-rules"
-import PriceList from "./price-list"
 
 @Entity()
 export default class PriceSetMoneyAmount {
@@ -51,15 +51,21 @@ export default class PriceSetMoneyAmount {
   })
   price_set_money_amount_rules = new Collection<PriceSetMoneyAmountRules>(this)
 
-  @ManyToOne({ 
-    entity: () => PriceList,
-    nullable: true,
-    fieldName: "price_list_id",
-    name: "price_rule_price_list_id",
+  // @ManyToOne({
+  //   entity: () => PriceList,
+  //   nullable: true,
+  //   fieldName: "price_list_id",
+  //   name: "price_rule_price_list_id",
+  //   index: "IDX_price_rule_price_list_id",
+  // })
+  // price_list: PriceList | null
+
+  @ManyToOne(() => PriceList, {
     index: "IDX_price_rule_price_list_id",
+    nullable: true,
   })
-  price_list: PriceList | null
-  
+  price_list?: PriceList
+
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "psma")

@@ -710,53 +710,44 @@ describe("PricingModule Service - Calculate Price", () => {
       ])
     })
 
-    describe.only("Price Lists", () => {
-      let priceListOne
-      let priceListTwo
+    describe("Price Lists", () => {
+      beforeEach(async () => {
+        await service.createPriceLists([
+          {
+            title: "Test Price List",
+            starts_at: "10/01/2023" as unknown as Date,
+            ends_at: "10/30/2023" as unknown as Date,
+            rules: {
+              customer_group_id: [
+                "vip-customer-group-id",
+                "another-vip-customer-group-id",
+              ],
+              region_id: ["DE", "DK"],
+            },
+            prices: [
+              {
+                amount: 232,
+                currency_code: "PLN",
+                price_set_id: "price-set-PLN",
+              },
+              {
+                amount: 455,
+                currency_code: "EUR",
+                price_set_id: "price-set-EUR",
+              },
+            ],
+          },
+        ])
+      })
 
       it("should return price list prices when price list conditions match", async () => {
-        // ;[priceListOne] = await service.createPriceLists([
-        //   {
-        //     name: "Test Price List",
-        //     starts_at: "10/01/2023" as unknown as Date,
-        //     ends_at: "10/30/2023" as unknown as Date,
-        //     rules: {
-        //       customer_group_id: [
-        //         "vip-customer-group-id",
-        //         "another-vip-customer-group-id",
-        //       ],
-        //       region_id: ["DE", "DK"],
-        //     },
-        //     prices: [
-        //       {
-        //         amount: 400,
-        //         currency_code: "EUR",
-        //         price_set_id: "price-set-PLN",
-        //       },
-        //     ],
-        //   },
-        // ])
-
-        // const priceLists = await service.listPriceLists(
-        //   {},
-        //   {
-        //     relations: [
-        //       "price_set_money_amounts.money_amount",
-        //       "price_set_money_amounts.price_set",
-        //       "rules",
-        //     ],
-        //   }
-        // )
-
-        // console.log("priceLists - ", priceLists)
-
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-EUR", "price-set-PLN"] },
           {
             context: {
-              currency_code: "EUR",
-              region_id: "PL",
-              customer_group_id: "test-customer-group",
+              currency_code: "PLN",
+              region_id: "DE",
+              customer_group_id: "vip-customer-group-id",
               company_id: "medusa-company-id",
             },
           }
@@ -770,13 +761,74 @@ describe("PricingModule Service - Calculate Price", () => {
             min_quantity: null,
             max_quantity: null,
           },
-          // Currency Code + Region value + customer group id
           {
             id: "price-set-PLN",
-            amount: "100",
-            currency_code: "EUR",
+            amount: "232",
+            currency_code: "PLN",
+            min_quantity: null,
+            max_quantity: null,
+          },
+        ])
+      })
+
+      it("should not return price list prices when price list conditions only partially match", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-EUR", "price-set-PLN"] },
+          {
+            context: {
+              currency_code: "PLN",
+              region_id: "PL",
+              customer_group_id: "vip-customer-group-id",
+              company_id: "does-not-exist",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-EUR",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          {
+            id: "price-set-PLN",
+            amount: "300",
+            currency_code: "PLN",
             min_quantity: "1",
-            max_quantity: "3",
+            max_quantity: "4",
+          },
+        ])
+      })
+
+      it("should not return price list prices when price list conditions dont match", async () => {
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-EUR", "price-set-PLN"] },
+          {
+            context: {
+              currency_code: "PLN",
+              region_id: "PL",
+              customer_group_id: "does-not-exist",
+              company_id: "does-not-exist",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-EUR",
+            amount: null,
+            currency_code: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          {
+            id: "price-set-PLN",
+            amount: "300",
+            currency_code: "PLN",
+            min_quantity: "1",
+            max_quantity: "4",
           },
         ])
       })

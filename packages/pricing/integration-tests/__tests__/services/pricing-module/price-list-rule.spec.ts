@@ -187,13 +187,17 @@ describe("PriceListRule Service", () => {
       await service.updatePriceListRules([
         {
           id,
-          value: ["test"],
+          price_list_id: "price-list-2",
+          rule_type_id: "rule-type-2",
         },
       ])
 
-      const priceList = await service.retrievePriceListRule(id)
+      const priceList = await service.retrievePriceListRule(id, {
+        relations: ["price_list", "rule_type"],
+      })
 
-      expect(priceList.value).toEqual(["test"])
+      expect(priceList.price_list.id).toEqual("price-list-2")
+      expect(priceList.rule_type.id).toEqual("rule-type-2")
     })
 
     it("should throw an error when a id does not exist", async () => {
@@ -203,7 +207,6 @@ describe("PriceListRule Service", () => {
         await service.updatePriceListRules([
           {
             id: "does-not-exist",
-            value: ["test"],
           },
         ])
       } catch (e) {
@@ -217,20 +220,25 @@ describe("PriceListRule Service", () => {
   })
 
   describe("create", () => {
-    it("should create a priceList successfully", async () => {
+    it("should create a priceListRule successfully", async () => {
       const [created] = await service.createPriceListRules([
         {
-          value: ["TEST-123"],
           price_list_id: "price-list-1",
           rule_type_id: "rule-type-1",
         },
       ])
-      console.log("created-  ", created)
-      const [priceList] = await service.listPriceListRules({
-        value: ["TEST-123"],
-      })
 
-      expect(priceList.value).toEqual(["TEST-123"])
+      const [priceListRule] = await service.listPriceListRules(
+        {
+          id: [created.id],
+        },
+        {
+          relations: ["price_list", "rule_type"],
+        }
+      )
+
+      expect(priceListRule.price_list.id).toEqual("price-list-1")
+      expect(priceListRule.rule_type.id).toEqual("rule-type-1")
     })
   })
 })

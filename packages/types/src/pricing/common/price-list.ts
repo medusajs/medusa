@@ -26,6 +26,7 @@ export interface PriceListPriceDTO extends CreateMoneyAmountDTO {
 
 export interface CreatePriceListRules extends Record<string, string[]> {}
 export interface CreatePriceListDTO {
+  title: string
   starts_at?: Date
   ends_at?: Date
   status?: PriceListStatus
@@ -52,11 +53,18 @@ export interface FilterablePriceListProps
   number_rules?: number[]
 }
 export interface FilterablePriceListRuleProps
-  extends BaseFilterable<FilterablePriceListProps> {
+  extends BaseFilterable<FilterablePriceListRuleProps> {
   id?: string[]
   value?: string[]
   rule_type?: string[]
   price_list_id?: string[]
+}
+
+export interface FilterablePriceListRuleValueProps
+  extends BaseFilterable<FilterablePriceListRuleValueProps> {
+  id?: string[]
+  value?: string[]
+  price_list_rule_id?: string[]
 }
 
 export interface PriceListRuleDTO {
@@ -69,15 +77,33 @@ export interface PriceListRuleDTO {
 
 export interface CreatePriceListRuleDTO {
   rule_type_id?: string
-  rule_type?: string
-  value: string[]
+  rule_type?: string | RuleTypeDTO
   price_list_id?: string
-  price_list?: string
+  price_list?: string | PriceListDTO
 }
 
 export interface UpdatePriceListRuleDTO {
   id: string
-  value: string[]
+  price_list_id?: string
+  rule_type_id?: string
+}
+
+export interface PriceListRuleValueDTO {
+  id: string
+  value: string
+  price_list_rule: PriceListRuleDTO
+}
+
+export interface CreatePriceListRuleValueDTO {
+  value: string
+  price_list_rule_id?: string
+  price_list_rule?: PriceListRuleDTO | string
+}
+
+export interface UpdatePriceListRuleValueDTO {
+  id: string
+  value: string
+  price_list_rule_id: string
 }
 
 export interface AddPriceListPricesDTO {

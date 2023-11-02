@@ -12,11 +12,10 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import MoneyAmount from "./money-amount"
+import { PriceListStatus } from "@medusajs/types"
+import PriceListRule from "./price-list-rule"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
-import PriceListRule from "./price-list-rule"
-import { PriceListStatus } from "@medusajs/types"
 
 @Entity()
 export default class PriceList {
@@ -31,6 +30,9 @@ export default class PriceList {
 
   @PrimaryKey({ columnType: "text" })
   id!: string
+
+  @Property({ columnType: "text" })
+  title: string
 
   @Enum({ items: () => PriceListStatus, default: PriceListStatus.DRAFT })
   status!: PriceListStatus
@@ -55,7 +57,7 @@ export default class PriceList {
   @OneToMany(() => PriceListRule, (pr) => pr.price_list, {
     cascade: [Cascade.REMOVE],
   })
-  rules = new Collection<PriceListRule>(this)
+  price_list_rules = new Collection<PriceListRule>(this)
 
   // @ManyToMany({
   //   entity: () => MoneyAmount,

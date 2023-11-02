@@ -74,23 +74,27 @@ export class PriceListRuleRepository extends DALUtils.MikroOrmBaseRepository {
   ): Promise<PriceListRule[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const priceSets = data.map((priceSetData) => {
-      const priceListId = priceSetData.price_list_id
-      delete priceSetData.price_list_id
+    const priceListRule = data.map((priceListRule) => {
+      const {
+        price_list_id: priceListId,
+        rule_type_id: ruleTypeId,
+        ...createData
+      } = priceListRule
 
-      const ruleTypeId = priceSetData.rule_type_id
-      delete priceSetData.rule_type_id
+      if (priceListId) {
+        createData.price_list = priceListId
+      }
 
-      return manager.create(PriceListRule, {
-        ...priceSetData,
-        price_list: priceListId,
-        rule_type: ruleTypeId,
-      })
+      if (ruleTypeId) {
+        createData.rule_type = ruleTypeId
+      }
+
+      return manager.create(PriceListRule, createData)
     })
 
-    manager.persist(priceSets)
+    manager.persist(priceListRule)
 
-    return priceSets
+    return priceListRule
   }
 
   async update(
@@ -98,40 +102,58 @@ export class PriceListRuleRepository extends DALUtils.MikroOrmBaseRepository {
     context: Context = {}
   ): Promise<PriceListRule[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const priceSetIds = data.map((priceSetData) => priceSetData.id)
-    const existingPriceSets = await this.find(
+    const priceListIds = data.map((priceListRule) => priceListRule.id)
+    const existingPriceListRules = await this.find(
       {
         where: {
           id: {
-            $in: priceSetIds,
+            $in: priceListIds,
           },
         },
       },
       context
     )
 
-    const existingPriceSetMap = new Map(
-      existingPriceSets.map<[string, PriceListRule]>((priceSet) => [
-        priceSet.id,
-        priceSet,
+    const existingPriceListRuleMap = new Map(
+      existingPriceListRules.map<[string, PriceListRule]>((priceList) => [
+        priceList.id,
+        priceList,
       ])
     )
 
-    const priceSets = data.map((priceSetData) => {
-      const existingPriceSet = existingPriceSetMap.get(priceSetData.id)
+    const priceListRule = data.map((priceListRule) => {
+      const { price_list_id, rule_type_id, ...priceListRuleData } =
+        priceListRule
+      const existingPriceListRule = existingPriceListRuleMap.get(
+        priceListRule.id
+      )
 
-      if (!existingPriceSet) {
+      if (!existingPriceListRule) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `PriceListRule with id "${priceSetData.id}" not found`
+          `PriceListRule with id "${priceListRule.id}" not found`
         )
       }
 
-      return manager.assign(existingPriceSet, priceSetData)
+      const updateData = {
+        ...priceListRuleData,
+        price_list: price_list_id,
+        rule_type: rule_type_id,
+      }
+
+      if (!updateData.price_list) {
+        delete updateData.price_list
+      }
+
+      if (!updateData.rule_type) {
+        delete updateData.rule_type
+      }
+
+      return manager.assign(existingPriceListRule, updateData)
     })
 
-    manager.persist(priceSets)
+    manager.persist(priceListRule)
 
-    return priceSets
+    return priceListRule
   }
 }

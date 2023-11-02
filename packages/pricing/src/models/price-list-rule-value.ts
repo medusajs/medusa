@@ -7,7 +7,7 @@ import {
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
-import PriceListRule from "./price-set"
+import PriceListRule from "./price-list-rule"
 
 @Entity()
 export default class PriceListRuleValue {

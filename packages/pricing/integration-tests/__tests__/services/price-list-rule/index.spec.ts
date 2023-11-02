@@ -187,13 +187,15 @@ describe("PriceListRule Service", () => {
       await service.update([
         {
           id,
-          value: ["test"],
+          price_list_id: "price-list-1",
         },
       ])
 
-      const priceList = await service.retrieve(id)
+      const priceList = await service.retrieve(id, {
+        relations: ["price_list"],
+      })
 
-      expect(priceList.value).toEqual("test")
+      expect(priceList.price_list.id).toEqual("price-list-1")
     })
 
     it("should throw an error when a id does not exist", async () => {
@@ -203,7 +205,6 @@ describe("PriceListRule Service", () => {
         await service.update([
           {
             id: "does-not-exist",
-            value: ["test"],
           },
         ])
       } catch (e) {
@@ -217,21 +218,19 @@ describe("PriceListRule Service", () => {
   })
 
   describe("create", () => {
-    it("should create a priceList successfully", async () => {
+    it("should create a priceListRule successfully", async () => {
       const [created] = await service.create([
         {
-          value: ["USD"],
-          price_list_id: "price-list-1",
+          price_list_id: "price-list-2",
           rule_type_id: "rule-type-1",
         },
       ])
 
-      const [priceList] = await service.list({
+      const [priceListRule] = await service.list({
         id: [created.id],
       })
 
-      expect(priceList.value).toEqual(["USD"])
-      expect(priceList.id).toEqual(created.id)
+      expect(priceListRule.price_list.id).toEqual("price-list-2")
     })
   })
 })

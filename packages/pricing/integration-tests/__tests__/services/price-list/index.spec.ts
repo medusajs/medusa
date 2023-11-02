@@ -216,7 +216,7 @@ describe("PriceList Service", () => {
     it("should create a priceList successfully", async () => {
       const [created] = await service.create([
         {
-          starts_at: new Date("01/01/2023"),
+          title: "test",
         },
       ])
 
@@ -224,7 +224,7 @@ describe("PriceList Service", () => {
         id: [created.id],
       })
 
-      expect(priceList.id).toEqual(expect.any(String))
+      expect(priceList.title).toEqual("test")
     })
   })
 })

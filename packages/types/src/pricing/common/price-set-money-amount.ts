@@ -1,13 +1,14 @@
 import { BaseFilterable } from "../../dal"
 import { MoneyAmountDTO } from "./money-amount"
+import { PriceListDTO } from "./price-list"
 import { PriceRuleDTO } from "./price-rule"
 import { PriceSetDTO } from "./price-set"
 
 /**
  * @interface
- * 
+ *
  * A price set money amount's data.
- * 
+ *
  * @prop id - The ID of a price set money amount.
  * @prop title - The title of the price set money amount.
  * @prop price_set - The price set associated with the price set money amount. It may only be available if the relation `price_set` is expanded.
@@ -32,6 +33,7 @@ export interface UpdatePriceSetMoneyAmountDTO {
 export interface CreatePriceSetMoneyAmountDTO {
   title?: string
   price_set?: PriceSetDTO | string
+  price_list?: PriceListDTO | string
   money_amount?: MoneyAmountDTO | string
 }
 
