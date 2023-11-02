@@ -30,7 +30,6 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import loadMedusaApp from "./medusa-app"
 import IsolateSalesChannelDomain from "./feature-flags/isolate-sales-channel-domain"
 
 type Options = {
