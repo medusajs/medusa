@@ -121,7 +121,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
       let stripeCustomer
       try {
         stripeCustomer = await this.stripe_.customers.create({
-          email,
+          email: email ?? undefined,
         })
       } catch (e) {
         return this.buildError(

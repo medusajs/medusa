@@ -3,7 +3,7 @@ import { MedusaContainer } from "../types/global"
 
 export type PaymentProcessorContext = {
   billing_address?: Address | null
-  email: string
+  email: string | null
   currency_code: string
   amount: number
   resource_id: string
