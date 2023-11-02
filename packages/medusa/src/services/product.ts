@@ -1141,7 +1141,7 @@ class ProductService extends TransactionBaseService {
   ): Promise<Record<string, SalesChannel[]>> {
     const query = {
       product: {
-        __args: { variables: { id: productIds } },
+        __args: { filters: { id: productIds } },
         fields: ["id"],
         sales_channels: {
           fields: [
