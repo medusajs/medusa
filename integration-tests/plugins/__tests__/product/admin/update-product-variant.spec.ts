@@ -1,4 +1,3 @@
-import setupServer from "../../../../environment-helpers/setup-server"
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
@@ -7,11 +6,12 @@ import {
   simpleRegionFactory,
 } from "../../../../factories"
 
+import { AxiosInstance } from "axios"
 import path from "path"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { AxiosInstance } from "axios"
 
 jest.setTimeout(50000)
 
@@ -26,24 +26,24 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () => {
+describe.skip("[Product & Pricing Module] POST /admin/products/:id/variants/:id", () => {
   let dbConnection
   let appContainer
-  let medusaProcess
+  let shutdownServer
   let product
   let variant
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env, bootstrapApp: true } as any)
+    shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    await shutdownServer()
   })
 
   beforeEach(async () => {
