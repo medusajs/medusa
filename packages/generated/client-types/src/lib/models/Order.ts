@@ -202,7 +202,11 @@ export interface Order {
   /**
    * The total of shipping
    */
-  shipping_total?: number
+  shipping_total?: number | null
+  /**
+   * The tax total applied on shipping
+   */
+  shipping_tax_total?: number
   /**
    * The total of discount
    */
@@ -215,6 +219,10 @@ export interface Order {
    * The total of tax
    */
   tax_total?: number
+  /**
+   * The tax total applied on items
+   */
+  item_tax_total?: number | null
   /**
    * The total amount refunded if the order is returned.
    */

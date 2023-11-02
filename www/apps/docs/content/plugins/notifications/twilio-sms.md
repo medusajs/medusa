@@ -55,7 +55,7 @@ Make sure to replace `<YOUR_ACCOUNT_SID>`, `<YOUR_AUTH_TOKEN>`, and `<YOUR_TWILI
 
 Finally, add the plugin and its options in the `medusa-config.js` file to the `plugins` array:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // ...
   {
@@ -85,7 +85,7 @@ For this example to work, you'll need to have an event bus module installed and 
 
 Create the file `src/services/sms.js` in your Medusa backend with the following content:
 
-```jsx title=src/services/sms.js
+```js title=src/services/sms.js
 class SmsSubscriber {
   constructor({ 
     twilioSmsService, 

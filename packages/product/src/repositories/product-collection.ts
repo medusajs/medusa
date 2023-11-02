@@ -1,12 +1,20 @@
-import { ProductCollection } from "@models"
+import { Context, DAL, ProductTypes } from "@medusajs/types"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
+  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  LoadStrategy,
 } from "@mikro-orm/core"
-import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { DALUtils, MedusaError } from "@medusajs/utils"
+import { ProductCollection } from "@models"
+
+type UpdateProductCollection = ProductTypes.UpdateProductCollectionDTO & {
+  products?: string[]
+}
+
+type CreateProductCollection = ProductTypes.CreateProductCollectionDTO & {
+  products?: string[]
+}
 
 // eslint-disable-next-line max-len
 export class ProductCollectionRepository extends DALUtils.MikroOrmBaseRepository {
@@ -71,12 +79,18 @@ export class ProductCollectionRepository extends DALUtils.MikroOrmBaseRepository
   }
 
   async create(
-    data: ProductTypes.CreateProductCollectionDTO[],
+    data: CreateProductCollection[],
     context: Context = {}
   ): Promise<ProductCollection[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const productCollections = data.map((collectionData) => {
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
+
+        delete collectionData.product_ids
+      }
+
       return manager.create(ProductCollection, collectionData)
     })
 
@@ -86,7 +100,7 @@ export class ProductCollectionRepository extends DALUtils.MikroOrmBaseRepository
   }
 
   async update(
-    data: ProductTypes.UpdateProductCollectionDTO[],
+    data: UpdateProductCollection[],
     context: Context = {}
   ): Promise<ProductCollection[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -117,6 +131,12 @@ export class ProductCollectionRepository extends DALUtils.MikroOrmBaseRepository
           MedusaError.Types.NOT_FOUND,
           `ProductCollection with id "${collectionData.id}" not found`
         )
+      }
+
+      if (collectionData.product_ids) {
+        collectionData.products = collectionData.product_ids
+
+        delete collectionData.product_ids
       }
 
       return manager.assign(existingCollection, collectionData)

@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.12
+
+### Patch Changes
+
+- [#5390](https://github.com/medusajs/medusa/pull/5390) [`04e9dd6a6`](https://github.com/medusajs/medusa/commit/04e9dd6a6a00bb67a1ce55bf575e7c13fb9db223) Thanks [@josipmatichr](https://github.com/josipmatichr)! - fix(medusa-plugin-brightpearl): Missing discounts rule relation
+
 ## 1.3.11
 
 ### Patch Changes

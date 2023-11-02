@@ -33,7 +33,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:36](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L36)
+[medusa/src/services/event-bus.ts:36](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L36)
 
 ## Properties
 
@@ -47,7 +47,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -61,7 +61,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -75,7 +75,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:27](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L27)
+[medusa/src/services/event-bus.ts:27](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L27)
 
 ___
 
@@ -95,7 +95,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:34](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L34)
+[medusa/src/services/event-bus.ts:34](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L34)
 
 ___
 
@@ -105,7 +105,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:30](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L30)
+[medusa/src/services/event-bus.ts:30](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L30)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:31](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L31)
+[medusa/src/services/event-bus.ts:31](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L31)
 
 ___
 
@@ -129,7 +129,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -139,7 +139,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:33](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L33)
+[medusa/src/services/event-bus.ts:33](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L33)
 
 ___
 
@@ -149,7 +149,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:28](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L28)
+[medusa/src/services/event-bus.ts:28](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L28)
 
 ___
 
@@ -163,7 +163,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -181,7 +181,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -220,7 +220,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -254,7 +254,7 @@ EventBusTypes.IEventBusService.emit
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:117](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L117)
+[medusa/src/services/event-bus.ts:117](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L117)
 
 ▸ **emit**<`T`\>(`eventName`, `data`, `options?`): `Promise`<`void` \| `StagedJob`\>
 
@@ -286,7 +286,7 @@ EventBusTypes.IEventBusService.emit
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:126](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L126)
+[medusa/src/services/event-bus.ts:126](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L126)
 
 ___
 
@@ -300,7 +300,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:190](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L190)
+[medusa/src/services/event-bus.ts:190](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L190)
 
 ___
 
@@ -320,7 +320,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:220](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L220)
+[medusa/src/services/event-bus.ts:220](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L220)
 
 ___
 
@@ -344,7 +344,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -358,7 +358,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:180](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L180)
+[medusa/src/services/event-bus.ts:180](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L180)
 
 ___
 
@@ -372,7 +372,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:185](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L185)
+[medusa/src/services/event-bus.ts:185](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L185)
 
 ___
 
@@ -402,7 +402,7 @@ EventBusTypes.IEventBusService.subscribe
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:83](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L83)
+[medusa/src/services/event-bus.ts:83](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L83)
 
 ___
 
@@ -432,7 +432,7 @@ EventBusTypes.IEventBusService.unsubscribe
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:103](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L103)
+[medusa/src/services/event-bus.ts:103](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L103)
 
 ___
 
@@ -460,4 +460,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/services/event-bus.ts:54](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/event-bus.ts#L54)
+[medusa/src/services/event-bus.ts:54](https://github.com/medusajs/medusa/blob/b38f73726/packages/medusa/src/services/event-bus.ts#L54)

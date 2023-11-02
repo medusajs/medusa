@@ -1,76 +1,40 @@
-import {
-  ExternalModuleDeclaration,
-  InternalModuleDeclaration,
-  MedusaApp,
-  moduleLoader,
-  ModulesDefinition,
-  registerModules,
-} from "@medusajs/modules-sdk"
+import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
+import { Express, NextFunction, Request, Response } from "express"
+
+import databaseLoader, { dataSource } from "./database"
+import pluginsLoader, { registerPluginModels } from "./plugins"
+
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { Express, NextFunction, Request, Response } from "express"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
-import "reflect-metadata"
 import requestIp from "request-ip"
 import { Connection } from "typeorm"
-import { joinerConfig } from "../joiner-config"
-import modulesConfig from "../modules-config"
 import { MedusaContainer } from "../types/global"
-import { isObject, remoteQueryFetchData } from "../utils"
 import apiLoader from "./api"
 import loadConfig from "./config"
-import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
+import IsolatePricingDomainFeatureFlag from "./feature-flags/isolate-pricing-domain"
 import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
 import Logger from "./logger"
+import loadMedusaApp from "./medusa-app"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
-import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
-import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   directory: string
   expressApp: Express
   isTest: boolean
-}
-
-/**
- * Merge the modules config from the medusa-config file with the modules config from medusa package
- * @param modules
- * @param medusaInternalModulesConfig
- */
-function mergeModulesConfig(
-  modules: ConfigModule["modules"],
-  medusaInternalModulesConfig
-) {
-  for (const [moduleName, moduleConfig] of Object.entries(modules as any)) {
-    const moduleDefinition = ModulesDefinition[moduleName]
-
-    if (moduleDefinition?.isLegacy) {
-      continue
-    }
-
-    const isModuleEnabled = moduleConfig === true || isObject(moduleConfig)
-
-    if (!isModuleEnabled) {
-      delete medusaInternalModulesConfig[moduleName]
-    } else {
-      medusaInternalModulesConfig[moduleName] = moduleConfig as Partial<
-        InternalModuleDeclaration | ExternalModuleDeclaration
-      >
-    }
-  }
 }
 
 export default async ({
@@ -81,6 +45,7 @@ export default async ({
   container: MedusaContainer
   dbConnection: Connection
   app: Express
+  pgConnection: unknown
 }> => {
   const configModule = loadConfig(rootDirectory)
 
@@ -131,18 +96,14 @@ export default async ({
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
-  await pgConnectionLoader({ container, configModule })
+  const pgConnection = await pgConnectionLoader({ container, configModule })
 
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
 
   track("MODULES_INIT_STARTED")
   await moduleLoader({
     container,
-    moduleResolutions: registerModules(configModule?.modules, {
-      loadLegacyOnly: featureFlagRouter.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      ),
-    }),
+    moduleResolutions: registerModules(configModule?.modules),
     logger: Logger,
   })
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
@@ -166,6 +127,15 @@ export default async ({
   container.register({
     [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
   })
+
+  container.register("remoteQuery", asValue(null)) // ensure remoteQuery is always registered
+  // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
+  if (
+    featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
+    featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
+  ) {
+    await loadMedusaApp({ configModule, container })
+  }
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
@@ -226,31 +196,5 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-  // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
-    mergeModulesConfig(configModule.modules ?? {}, modulesConfig)
-
-    const { query, modules } = await MedusaApp({
-      modulesConfig,
-      servicesConfig: joinerConfig,
-      remoteFetchData: remoteQueryFetchData(container),
-      injectedDependencies: {
-        [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
-          ContainerRegistrationKeys.PG_CONNECTION
-        ),
-      },
-    })
-
-    // Medusa app load all non legacy modules, so we need to register them in the container since they are into their own container
-    // We might decide to do it elsewhere but for now I think it is fine
-    for (const [serviceKey, moduleService] of Object.entries(modules)) {
-      container.register(
-        ModulesDefinition[serviceKey].registrationName,
-        asValue(moduleService)
-      )
-    }
-    container.register("remoteQuery", asValue(query))
-  }
-
-  return { container, dbConnection, app: expressApp }
+  return { container, dbConnection, app: expressApp, pgConnection }
 }

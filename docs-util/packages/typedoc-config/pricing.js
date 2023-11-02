@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const modulesConfig = require("./modules")
+const modulesConfig = require("./_modules")
 
 module.exports = modulesConfig({
   entryPointPath: "packages/types/src/pricing/service.ts",
@@ -18,7 +18,6 @@ module.exports = modulesConfig({
             text: "Beta",
           },
           slug: "/references/pricing",
-          // hide_table_of_contents: true,
         },
       },
     },
@@ -26,7 +25,7 @@ module.exports = modulesConfig({
       pattern: "IPricingModuleService/methods",
       additionalFormatting: {
         reflectionDescription:
-          "This documentation provides a reference to the {{alias}} {{kind}}. This belongs to the Pricing Module.",
+          "This documentation provides a reference to the `{{alias}}` {{kind}}. This belongs to the Pricing Module.",
         frontmatterData: {
           displayed_sidebar: "pricingReference",
           badge: {
@@ -53,14 +52,4 @@ module.exports = modulesConfig({
       },
     },
   ],
-  extraOptions: {
-    // frontmatterData: {
-    //   displayed_sidebar: "modules",
-    //   badge: {
-    //     variant: "orange",
-    //     text: "Beta",
-    //   },
-    //   // hide_table_of_contents: true,
-    // },
-  },
 })

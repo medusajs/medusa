@@ -1,7 +1,7 @@
 import * as Handlebars from "handlebars"
-import reflectionFomatter from "../../utils/reflection-formatter"
 import { ReflectionParameterType } from "../../types"
 import { parseParams } from "../../utils/params-utils"
+import reflectionFormatter from "../../utils/reflection-formatter"
 
 export default function () {
   Handlebars.registerHelper(
@@ -21,7 +21,7 @@ export default function () {
 
 function list(parameters: ReflectionParameterType[]) {
   const items = parameters.map((parameter) => {
-    return reflectionFomatter(parameter)
+    return reflectionFormatter(parameter, "list")
   })
 
   return items.join("\n")

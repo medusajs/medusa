@@ -1,5 +1,5 @@
 import { FlagRouter } from "@medusajs/utils"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
   ITaxCalculationStrategy,
@@ -633,6 +633,26 @@ export default class NewTotalsService extends TransactionBaseService {
     }
 
     return shippingMethodsTotals
+  }
+
+  getGiftCardableAmount({
+    gift_cards_taxable,
+    subtotal,
+    shipping_total,
+    discount_total,
+    tax_total,
+  }: {
+    gift_cards_taxable?: boolean
+    subtotal: number
+    shipping_total: number
+    discount_total: number
+    tax_total: number
+  }): number {
+    return (
+      (gift_cards_taxable
+        ? subtotal + shipping_total - discount_total
+        : subtotal + shipping_total + tax_total - discount_total) || 0
+    )
   }
 
   /**

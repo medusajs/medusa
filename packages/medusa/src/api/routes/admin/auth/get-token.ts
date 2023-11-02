@@ -6,14 +6,11 @@ import { validator } from "../../../../utils/validator"
 import { AdminPostAuthReq } from "./create-session"
 
 /**
- * @oas [post] /admin/token
+ * @oas [post] /admin/auth/token
  * operationId: "PostToken"
  * summary: "User Login (JWT)"
  * x-authenticated: false
- * description: "After a successful login, a JWT token is returned for subsequent authorization."
- * parameters:
- *   - (body) email=* {string} The User's email.
- *   - (body) password=* {string} The User's password.
+ * description: "After a successful login, a JWT token is returned, which can be used to send authenticated requests."
  * requestBody:
  *   content:
  *     application/json:
@@ -31,14 +28,14 @@ import { AdminPostAuthReq } from "./create-session"
  *         email: 'user@example.com',
  *         password: 'supersecret'
  *       })
- *       .then(({ accessToken }) => {
- *         console.log(accessToekn);
+ *       .then(({ access_token }) => {
+ *         console.log(access_token);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/auth/token' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST '{backend_url}/admin/auth/token' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "email": "user@example.com",
  *         "password": "supersecret"

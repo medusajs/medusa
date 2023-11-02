@@ -4,6 +4,7 @@ import { LinearClient } from "@linear/sdk"
 import { Octokit } from "@octokit/core"
 import fs from "fs"
 import path from "path"
+import { fileURLToPath } from "url"
 
 const octokit = new Octokit({
   auth: process.env.GH_TOKEN,
@@ -12,6 +13,9 @@ const octokit = new Octokit({
 const linearClient = new LinearClient({
   apiKey: process.env.LINEAR_API_KEY,
 })
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const repoPath = path.join(
   __dirname,
