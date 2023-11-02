@@ -17,7 +17,7 @@ import qs from "qs"
 /**
  * This class is used to send requests to [Admin Order Edit API Routes](https://docs.medusajs.com/api/admin#order-edits).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * An admin can edit an order to remove, add, or update an item's quantity. When an admin edits an order, they're stored as an `OrderEdit`.
  * 
@@ -29,7 +29,7 @@ class AdminOrderEditsResource extends BaseResource {
    * @param {string} id - The ID of the order edit.
    * @param {GetOrderEditsOrderEditParams} query - Configurations to apply on the retrieved order edit.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<AdminOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * A simple example that retrieves an order edit by its ID:
@@ -77,7 +77,7 @@ class AdminOrderEditsResource extends BaseResource {
    * Retrieve a list of order edits. The order edits can be filtered by fields such as `q` or `order_id` passed to the `query` parameter. The order edits can also be paginated.
    * @param {GetOrderEditsParams} query - Filters and pagination configurations applied to retrieved order edits.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsListRes>} The list of order edits with pagination fields.
+   * @returns {ResponsePromise<AdminOrderEditsListRes>} Resolves to the list of order edits with pagination fields.
    * 
    * @example
    * To list order edits:
@@ -140,7 +140,7 @@ class AdminOrderEditsResource extends BaseResource {
    * Create an order edit.
    * @param {AdminPostOrderEditsReq} payload - The order edit to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<AdminOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -164,7 +164,7 @@ class AdminOrderEditsResource extends BaseResource {
    * @param {string} id - The ID of the order edit.
    * @param {AdminPostOrderEditsOrderEditReq} payload - The attributes to update in an order edit.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<AdminOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -190,7 +190,7 @@ class AdminOrderEditsResource extends BaseResource {
    * Delete an order edit. Only order edits that have the status `created` can be deleted.
    * @param {string} id - The ID of the order edit.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminOrderEditDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -215,7 +215,7 @@ class AdminOrderEditsResource extends BaseResource {
    * @param {string} id - The ID of the order edit to add the line item change to.
    * @param {AdminPostOrderEditsEditLineItemsReq} payload - The line item change to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<AdminOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -243,7 +243,7 @@ class AdminOrderEditsResource extends BaseResource {
    * @param {string} orderEditId - The ID of the order edit.
    * @param {string} itemChangeId - The ID of the line item change.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditItemChangeDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminOrderEditItemChangeDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -268,7 +268,7 @@ class AdminOrderEditsResource extends BaseResource {
    * a notification to the customer about the order edit.
    * @param {string} id - The ID of the order edit.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<AdminOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -291,7 +291,7 @@ class AdminOrderEditsResource extends BaseResource {
    * Cancel an order edit.
    * @param {string} id - The ID of the order edit to cancel.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<AdminOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -314,7 +314,7 @@ class AdminOrderEditsResource extends BaseResource {
    * Confirm an order edit. This will reflect the changes in the order edit on the associated order.
    * @param {string} id - The ID of the order edit to confirm.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<AdminOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -340,7 +340,7 @@ class AdminOrderEditsResource extends BaseResource {
    * @param {string} itemId - The ID of the line item to create or update its line item change.
    * @param {AdminPostOrderEditsEditLineItemsLineItemReq} payload - The creation or update of the line item change.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<AdminOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -369,7 +369,7 @@ class AdminOrderEditsResource extends BaseResource {
    * @param {string} orderEditId - The ID of the order edit that the line item change belongs to. 
    * @param {string} itemId - The ID of the line item.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<AdminOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

@@ -128,7 +128,7 @@ export default async (req: Request, res: Response) => {
  *         - id
  *       properties:
  *         id:
- *           description: The id of the item
+ *           description: The ID of the item
  *           type: string
  */
 export class AdminPostDiscountsDiscountConditionsConditionBatchReq {

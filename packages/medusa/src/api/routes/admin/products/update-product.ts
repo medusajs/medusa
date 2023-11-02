@@ -621,6 +621,9 @@ class ProductVariantReq {
  *   width:
  *     description: The width of the Product.
  *     type: number
+ *   hs_code:
+ *     description: The Harmonized System code of the product variant.
+ *     type: string
  *   origin_country:
  *     description: The country of origin of the Product.
  *     type: string

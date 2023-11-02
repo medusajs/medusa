@@ -158,6 +158,9 @@ export default async (req, res) => {
  *   no_notification:
  *     description: If set to `true`, no notification will be sent to the customer related to this swap.
  *     type: boolean
+ *   location_id:
+ *     description: "The ID of the fulfillment's location."
+ *     type: string
  */
 export class AdminPostOrdersOrderSwapsSwapFulfillmentsReq {
   @IsObject()

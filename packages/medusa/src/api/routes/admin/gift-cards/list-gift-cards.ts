@@ -79,17 +79,31 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved gift cards.
+ */
 export class AdminGetGiftCardsParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * Search term to search gift cards by their code and display ID.
+   */
   @IsOptional()
   @IsString()
   q?: string

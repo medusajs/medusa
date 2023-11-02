@@ -106,7 +106,7 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   email:
- *     description: the email associated with the order
+ *     description: The email associated with the order
  *     type: string
  *   billing_address:
  *     description: The order's billing address
@@ -212,36 +212,66 @@ export class AdminPostOrdersOrderReq {
   no_notification?: boolean
 }
 
+/**
+ * The attributes to update in the order's payment method.
+ */
 class PaymentMethod {
+  /**
+   * The ID of the payment provider used in the order.
+   */
   @IsString()
   @IsOptional()
   provider_id?: string
 
+  /**
+   * The data to attach to the payment.
+   */
   @IsObject()
   @IsOptional()
   data?: Record<string, unknown>
 }
 
+/**
+ * The attributes to update in the order's shipping method.
+ */
 class ShippingMethod {
+  /**
+   * The ID of the shipping provider used in the order.
+   */
   @IsString()
   @IsOptional()
   provider_id?: string
 
+  /**
+   * The ID of the shipping profile used in the order.
+   */
   @IsString()
   @IsOptional()
   profile_id?: string
 
+  /**
+   * The price of the shipping method.
+   */
   @IsInt()
   @IsOptional()
   price?: number
 
+  /**
+   * The data to attach to the shipping method.
+   */
   @IsObject()
   @IsOptional()
   data?: Record<string, unknown>
 
+  /**
+   * The line items associated with this shipping methods.
+   */
   @IsArray()
   @IsOptional()
   items?: Record<string, unknown>[]
 }
 
+/**
+ * Parameters used to configure the retrieved order.
+ */
 export class AdminPostOrdersOrderParams extends FindParams {}

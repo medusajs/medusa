@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Payment API Routes](https://docs.medusajs.com/api/admin#payments).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A payment can be related to an order, swap, return, or more. It can be captured or refunded.
  */
@@ -21,7 +21,7 @@ class AdminPaymentsResource extends BaseResource {
    * @param {string} id - The payment's ID.
    * @param {GetPaymentsParams} query - Configurations to apply on the retrieved payment.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPaymentRes>} - The payment's details.
+   * @returns {ResponsePromise<AdminPaymentRes>} Resolves to the payment's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -51,7 +51,7 @@ class AdminPaymentsResource extends BaseResource {
    * Capture a payment.
    * @param {string} id - The payment's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPaymentRes>} - The payment's details.
+   * @returns {ResponsePromise<AdminPaymentRes>} Resolves to the payment's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -75,9 +75,20 @@ class AdminPaymentsResource extends BaseResource {
    * @param {string} id - The payment's ID.
    * @param {AdminPostPaymentRefundsReq} payload - The refund to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRefundRes>} - The refund's details.
+   * @returns {ResponsePromise<AdminRefundRes>} Resolves to the refund's details.
    * 
-   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.payments.refundPayment(paymentId, {
+   *   amount: 1000,
+   *   reason: "return",
+   *   note: "Do not like it",
+   * })
+   * .then(({ payment }) => {
+   *   console.log(payment.id);
+   * })
    */
   refundPayment(
     id: string,

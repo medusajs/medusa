@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Notification API Routes](https://docs.medusajs.com/api/admin#notifications).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Notifications are sent to customers to inform them of new updates. For example, a notification can be sent to the customer when their order is place or its state is updated.
  * The notification's type, such as an email or SMS, is determined by the notification provider installed on the Medusa backend.
@@ -22,7 +22,7 @@ class AdminNotificationsResource extends BaseResource {
    * The notifications can also be paginated.
    * @param {AdminGetNotificationsParams} query - Filters and pagination configurations applied to the retrieved notifications.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminNotificationsListRes>} The list of notifications with pagination fields.
+   * @returns {ResponsePromise<AdminNotificationsListRes>} Resolves to the list of notifications with pagination fields.
    * 
    * @example
    * To list notifications:
@@ -86,7 +86,7 @@ class AdminNotificationsResource extends BaseResource {
    * @param {string} id - The notification's ID. 
    * @param {AdminPostNotificationsNotificationResendReq} payload - The details necessary to resend the notification.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminNotificationsRes>} The notification's details.
+   * @returns {ResponsePromise<AdminNotificationsRes>} Resolves to the notification's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

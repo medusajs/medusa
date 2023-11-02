@@ -309,6 +309,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderClaimsReq
  * type: object
+ * description: "The details of the claim to be created."
  * required:
  *   - type
  *   - claim_items
@@ -407,6 +408,9 @@ export default async (req, res) => {
  *   no_notification:
  *      description: If set to true no notification will be send related to this Claim.
  *      type: boolean
+ *   return_location_id:
+ *      description: The ID of the location used for the associated return.
+ *      type: string
  *   metadata:
  *      description: An optional set of key-value pairs to hold additional information.
  *      type: object
@@ -465,11 +469,20 @@ export class AdminPostOrdersOrderClaimsReq {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * The return's shipping method details.
+ */
 class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
   @IsString()
   @IsOptional()
   option_id?: string
 
+  /**
+   * The shipping method's price.
+   */
   @IsInt()
   @IsOptional()
   price?: number

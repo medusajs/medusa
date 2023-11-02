@@ -78,17 +78,31 @@ export default async (req: ExtendedRequest<Currency>, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved currencies.
+ */
 export class AdminGetCurrenciesParams extends FindPaginationParams {
+  /**
+   * Code to filter currencies by.
+   */
   @IsString()
   @IsOptional()
   code?: string
 
+  /**
+   * @featureFlag tax_inclusive_pricing
+   * Filter currencies by whether they include tax.
+   */
   @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
     IsBoolean(),
     IsOptional(),
   ])
   includes_tax?: boolean
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   * By default, the returned currencies will be sorted by their `created_at` field.
+   */
   @IsString()
   @IsOptional()
   order?: string

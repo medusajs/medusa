@@ -9,7 +9,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Tag API Routes](https://docs.medusajs.com/api/admin#product-tags).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Product tags are string values created when you create or update a product with a new tag.
  * Products can have more than one tag, and products can share tags. This allows admins to associate products to similar tags that can be used to filter products.
@@ -18,7 +18,7 @@ class AdminProductTagsResource extends BaseResource {
   /**
    * Retrieve a list of product tags. The product tags can be filtered by fields such as `q` or `value` passed in the `query` parameter. The product tags can also be sorted or paginated.
    * @param {AdminGetProductTagsParams} query - Filters and pagination configurations to apply on the retrieved product tags.
-   * @returns {ResponsePromise<AdminProductTagsListRes>} The list of product tags with pagination fields.
+   * @returns {ResponsePromise<AdminProductTagsListRes>} Resolves to the list of product tags with pagination fields.
    * 
    * @example
    * To list product tags:

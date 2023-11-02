@@ -13,7 +13,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Note API Routes](https://docs.medusajs.com/api/admin#notes).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Notes are created by admins and can be associated with any resource. For example, an admin can add a note to an order for additional details or remarks.
  */
@@ -22,7 +22,7 @@ class AdminNotesResource extends BaseResource {
    * Create a Note which can be associated with any resource.
    * @param {AdminPostNotesReq} payload - The note to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminNotesRes>} The note's details.
+   * @returns {ResponsePromise<AdminNotesRes>} Resolves to the note's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -50,7 +50,7 @@ class AdminNotesResource extends BaseResource {
    * @param {string} id - The note's ID.
    * @param {AdminPostNotesNoteReq} payload - The attributes to update in the note.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminNotesRes>} The note's details.
+   * @returns {ResponsePromise<AdminNotesRes>} Resolves to the note's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -76,7 +76,7 @@ class AdminNotesResource extends BaseResource {
    * Delete a Note.
    * @param {string} id - The note's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminNotesDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminNotesDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -99,7 +99,7 @@ class AdminNotesResource extends BaseResource {
    * Retrieve a note's details.
    * @param {string} id - The note's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminNotesRes>} The note's details.
+   * @returns {ResponsePromise<AdminNotesRes>} Resolves to the note's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -122,7 +122,7 @@ class AdminNotesResource extends BaseResource {
    * Retrieve a list of notes. The notes can be filtered by fields such as `resource_id` passed in the `query` parameter. The notes can also be paginated.
    * @param {AdminGetNotesParams} query - Filters and pagination configurations applied on retrieved notes.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminNotesListRes>} The list of notes with pagination fields.
+   * @returns {ResponsePromise<AdminNotesListRes>} Resolves to the list of notes with pagination fields.
    * 
    * @example
    * To list notes:

@@ -1,15 +1,9 @@
-import {
-  Comment,
-  DeclarationReflection,
-  ReflectionKind,
-  ProjectReflection,
-  ReflectionType,
-  SomeType,
-} from "typedoc"
+import { Comment, ReflectionKind, ReflectionType } from "typedoc"
 import * as Handlebars from "handlebars"
-import { stripLineBreaks } from "../utils"
+import { stripCode, stripLineBreaks } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
 import getType, { getReflectionType } from "./type-utils"
+import { getTypeChildren } from "utils"
 
 const MAX_LEVEL = 3
 const ALLOWED_KINDS: ReflectionKind[] = [
@@ -104,7 +98,7 @@ export function reflectionComponentFormatter(
       ? getType(reflection.type, "object")
       : getReflectionType(reflection, "object"),
     description: comments
-      ? stripLineBreaks(Handlebars.helpers.comments(comments))
+      ? stripLineBreaks(Handlebars.helpers.comments(comments, true, false))
       : "",
     optional,
     defaultValue,
@@ -207,11 +201,17 @@ export function getTableHeaders(
 export function getDefaultValue(
   parameter: ReflectionParameterType
 ): string | null {
-  if (!("defaultValue" in parameter)) {
+  const defaultComment = parameter.comment?.getTag(`@defaultValue`)
+  if (!("defaultValue" in parameter) && !defaultComment) {
     return null
   }
-  return parameter.defaultValue && parameter.defaultValue !== "..."
-    ? `\`${parameter.defaultValue}\``
+
+  return "defaultValue" in parameter &&
+    parameter.defaultValue &&
+    parameter.defaultValue !== "..."
+    ? `${parameter.defaultValue}`
+    : defaultComment
+    ? defaultComment.content.map((content) => stripCode(content.text)).join()
     : null
 }
 
@@ -257,36 +257,4 @@ function getItemExpandText(
     default:
       return "It accepts the following properties"
   }
-}
-
-export function getTypeChildren(
-  reflectionType: SomeType,
-  project: ProjectReflection
-) {
-  let children: DeclarationReflection[] = []
-
-  switch (reflectionType.type) {
-    case "reference":
-      // eslint-disable-next-line no-case-declarations
-      const referencedReflection =
-        reflectionType.reflection ||
-        project?.getChildByName(reflectionType.name)
-
-      if (
-        referencedReflection instanceof DeclarationReflection &&
-        referencedReflection.children
-      ) {
-        children = referencedReflection.children
-      }
-      break
-    case "reflection":
-      children = reflectionType.declaration.children || [
-        reflectionType.declaration,
-      ]
-      break
-    case "array":
-      children = getTypeChildren(reflectionType.elementType, project)
-  }
-
-  return children
 }

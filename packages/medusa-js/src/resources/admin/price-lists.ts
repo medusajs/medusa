@@ -21,7 +21,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Price List API Routes](https://docs.medusajs.com/api/admin#price-lists).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A price list are special prices applied to products based on a set of conditions, such as customer group.
  * 
@@ -32,7 +32,7 @@ class AdminPriceListResource extends BaseResource {
    * Create a price list.
    * @param {AdminPostPriceListsPriceListReq} payload - The price list to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListRes>} The price list details.
+   * @returns {ResponsePromise<AdminPriceListRes>} Resolves to the price list details.
    * 
    * @example
    * medusa.admin.priceLists.create({
@@ -64,7 +64,7 @@ class AdminPriceListResource extends BaseResource {
    * @param {string} id - The ID of the price list.
    * @param {AdminPostPriceListsPriceListPriceListReq} payload - The attributes to update in the price list.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListRes>} The price list details.
+   * @returns {ResponsePromise<AdminPriceListRes>} Resolves to the price list details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -90,7 +90,7 @@ class AdminPriceListResource extends BaseResource {
    * Delete a price list and its associated prices.
    * @param {string} id - The ID of the price list.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminPriceListDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -113,7 +113,7 @@ class AdminPriceListResource extends BaseResource {
    * Retrieve a price list's details.
    * @param {string} id - The ID of the price list.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListRes>} The price list details.
+   * @returns {ResponsePromise<AdminPriceListRes>} Resolves to the price list details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -136,7 +136,7 @@ class AdminPriceListResource extends BaseResource {
    * Retrieve a list of price lists. The price lists can be filtered by fields such as `q` or `status` passed in the `query` parameter. The price lists can also be sorted or paginated.
    * @param {AdminGetPriceListPaginationParams} query - Filters and pagination configurations to apply on the retrieved price lists.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListsListRes>} The list of price lists with pagination fields.
+   * @returns {ResponsePromise<AdminPriceListsListRes>} Resolves to the list of price lists with pagination fields.
    * 
    * @example
    * To list price lists:
@@ -200,7 +200,7 @@ class AdminPriceListResource extends BaseResource {
    * @param {string} id - The ID of the price list.
    * @param {AdminGetPriceListsPriceListProductsParams} query - Filters and pagination configurations applied on the retrieved products.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListsProductsListRes>} The list of products with pagination fields.
+   * @returns {ResponsePromise<AdminPriceListsProductsListRes>} Resolves to the list of products with pagination fields.
    * 
    * @example
    * To list products in a price list:
@@ -265,7 +265,7 @@ class AdminPriceListResource extends BaseResource {
    * @param {string} id - The ID of the price list.
    * @param {AdminPostPriceListPricesPricesReq} payload - The details of prices to add or update.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListRes>} The price list's details.
+   * @returns {ResponsePromise<AdminPriceListRes>} Resolves to the price list's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -298,7 +298,7 @@ class AdminPriceListResource extends BaseResource {
    * @param {string} id - The ID of the price list.
    * @param {AdminDeletePriceListPricesPricesReq} payload - The prices to delete.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListDeleteBatchRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminPriceListDeleteBatchRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -327,7 +327,7 @@ class AdminPriceListResource extends BaseResource {
    * @param {string} priceListId - The ID of the price list.
    * @param {string} productId - The product's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListDeleteProductPricesRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminPriceListDeleteProductPricesRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -352,7 +352,7 @@ class AdminPriceListResource extends BaseResource {
    * @param {string} priceListId - The ID of the price list.
    * @param {string} variantId - The ID of the product variant.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListDeleteVariantPricesRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminPriceListDeleteVariantPricesRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -377,7 +377,7 @@ class AdminPriceListResource extends BaseResource {
    * @param {string} priceListId - The ID of the price list.
    * @param {AdminDeletePriceListsPriceListProductsPricesBatchReq} payload - The products whose prices should be deleted.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPriceListDeleteProductPricesRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminPriceListDeleteProductPricesRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

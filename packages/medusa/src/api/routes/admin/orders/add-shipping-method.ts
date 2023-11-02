@@ -105,6 +105,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostOrdersOrderShippingMethodsReq
  * type: object
+ * description: "The shipping method's details."
  * required:
  *   - price
  *   - option_id
@@ -115,7 +116,7 @@ export default async (req, res) => {
  *   option_id:
  *     type: string
  *     description: The ID of the Shipping Option to create the Shipping Method from.
- *   date:
+ *   data:
  *     type: object
  *     description: The data required for the Shipping Option to create a Shipping Method. This depends on the Fulfillment Provider.
  */

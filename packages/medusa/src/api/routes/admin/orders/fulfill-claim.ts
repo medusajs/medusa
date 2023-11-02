@@ -152,6 +152,9 @@ export default async (req, res) => {
  *     description: >-
  *       If set to `true`, no notification will be sent to the customer related to this Claim.
  *     type: boolean
+ *   location_id:
+ *     description: "The ID of the fulfillment's location."
+ *     type: string
  */
 export class AdminPostOrdersOrderClaimsClaimFulfillmentsReq {
   @IsObject()

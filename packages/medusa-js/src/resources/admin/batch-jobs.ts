@@ -138,7 +138,7 @@ class AdminBatchJobsResource extends BaseResource {
    * When a batch job is created, it's not executed automatically if `dry_run` is set to `true`. This method confirms that the batch job should be executed.
    * @param {string} batchJobId - The ID of the batch job.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminBatchJobRes>} The batch job's details.
+   * @returns {ResponsePromise<AdminBatchJobRes>} Resolves to the batch job's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -161,7 +161,7 @@ class AdminBatchJobsResource extends BaseResource {
    * Retrieve the details of a batch job.
    * @param {string} batchJobId - The ID of the batch job.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminBatchJobRes>} The batch job's details.
+   * @returns {ResponsePromise<AdminBatchJobRes>} Resolves to the batch job's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

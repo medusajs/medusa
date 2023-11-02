@@ -59,6 +59,7 @@ export default (app) => {
 /**
  * @schema AdminCustomerGroupsRes
  * type: object
+ * description: "The customer group's details."
  * required:
  *   - customer_group
  * properties:

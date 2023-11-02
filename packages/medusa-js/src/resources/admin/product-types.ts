@@ -9,7 +9,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Type API Routes](https://docs.medusajs.com/api/admin#product-types).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Product types are string values created when you create or update a product with a new type.
  * Products can have one type, and products can share types. This allows admins to associate products with a type that can be used to filter products.
@@ -20,7 +20,7 @@ class AdminProductTypesResource extends BaseResource {
    * The product types can also be sorted or paginated.
    * @param {AdminGetProductTypesParams} query - Filters and pagination configurations to apply on the retrieved product types.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductTypesListRes>} The list of product types with pagination fields.
+   * @returns {ResponsePromise<AdminProductTypesListRes>} Resolves to the list of product types with pagination fields.
    * 
    * @example
    * To list product types:

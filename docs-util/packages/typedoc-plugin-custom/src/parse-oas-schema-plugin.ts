@@ -5,27 +5,31 @@ import {
   Context,
   Converter,
   DeclarationReflection,
-  ProjectReflection,
   Reflection,
   ReflectionKind,
   SomeType,
 } from "typedoc"
 import { parse } from "yaml"
+import { getTypeChildren } from "utils"
 
 // a simplified schema type
 // mainly focusing on properties used
 // within this plugin
 type Schema = {
   description?: string
-  properties?: {
-    [k: string]: SchemaProperty
-  }
+  properties?: SchemaProperties
+}
+
+type SchemaProperties = {
+  [k: string]: SchemaProperty
 }
 
 type SchemaProperty = {
   description?: string
   "x-expandable"?: string
   "x-featureFlag"?: string
+  default?: string
+  items?: Schema
 }
 
 export function load(app: Application) {
@@ -54,7 +58,7 @@ export function load(app: Application) {
             addComments(schema, reflection)
           }
         })
-        comment.removeTags("@schema")
+        reflection.comment?.removeTags("@schema")
       }
     }
   })
@@ -72,7 +76,6 @@ function addComments(schema: Schema, reflection: Reflection) {
   if (!schema.properties) {
     return
   }
-
   const children =
     "type" in reflection
       ? getTypeChildren(reflection.type as SomeType, reflection.project)
@@ -86,15 +89,25 @@ function addComments(schema: Schema, reflection: Reflection) {
       reflection.getChildByName(key)
 
     if (childItem) {
-      let { comment } = childItem
-      if (!comment) {
-        comment = new Comment()
+      if (!childItem.comment) {
+        const comment = new Comment()
+        comment.summary.push({
+          kind: "text",
+          text: getPropertyDescription(value),
+        })
+        childItem.comment = comment
       }
-      comment.summary.push({
-        kind: "text",
-        text: getPropertyDescription(value),
-      })
-      childItem.comment = comment
+      if (
+        value.default &&
+        "defaultValue" in childItem &&
+        !childItem.defaultValue
+      ) {
+        childItem.defaultValue = value.default
+      }
+
+      if (value.items) {
+        addComments(value.items, childItem)
+      }
     }
   })
 }
@@ -113,36 +126,4 @@ function getPropertyDescription(schemaProperty: SchemaProperty): string {
   }
 
   return result
-}
-
-function getTypeChildren(
-  reflectionType: SomeType,
-  project: ProjectReflection
-): DeclarationReflection[] {
-  let children: DeclarationReflection[] = []
-
-  switch (reflectionType.type) {
-    case "reference":
-      // eslint-disable-next-line no-case-declarations
-      const referencedReflection =
-        reflectionType.reflection ||
-        project?.getChildByName(reflectionType.name)
-
-      if (
-        referencedReflection instanceof DeclarationReflection &&
-        referencedReflection.children
-      ) {
-        children = referencedReflection.children
-      }
-      break
-    case "reflection":
-      children = reflectionType.declaration.children || [
-        reflectionType.declaration,
-      ]
-      break
-    case "array":
-      children = getTypeChildren(reflectionType.elementType, project)
-  }
-
-  return children
 }

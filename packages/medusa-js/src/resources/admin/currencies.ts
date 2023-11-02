@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Currency API Routes](https://docs.medusajs.com/api/admin#currencies).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A store can use unlimited currencies, and each region must be associated with at least one currency.
  * Currencies are defined within the Medusa backend. The methods in this class allow admins to list and update currencies.
@@ -23,7 +23,7 @@ class AdminCurrenciesResource extends BaseResource {
    * Retrieve a list of currencies. The currencies can be filtered by fields such as `code`. The currencies can also be sorted or paginated.
    * @param {AdminGetCurrenciesParams} query - Filters and pagination configurations to apply on retrieved currencies.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCurrenciesListRes>} The list of currencies with pagination fields.
+   * @returns {ResponsePromise<AdminCurrenciesListRes>} Resolves to the list of currencies with pagination fields.
    * 
    * @example
    * To list currencies:
@@ -72,7 +72,7 @@ class AdminCurrenciesResource extends BaseResource {
    * @param {string} code - The code of the currency to update.
    * @param {AdminPostCurrenciesCurrencyReq} payload - The attributes to update in the currency.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCurrenciesRes>} The currency's details.
+   * @returns {ResponsePromise<AdminCurrenciesRes>} Resolves to the currency's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

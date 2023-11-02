@@ -11,7 +11,7 @@ import qs from "qs"
 /**
  * This class is used to send requests to [Admin Payment Collection API Routes](https://docs.medusajs.com/api/admin#payment-collections).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
  */
@@ -21,7 +21,7 @@ class AdminPaymentCollectionsResource extends BaseResource {
    * @param {string} id - The ID of the payment collection.
    * @param {AdminGetPaymentCollectionsParams} query - Configurations to apply on the retrieved payment collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPaymentCollectionsRes>} - The payment collection's details.
+   * @returns {ResponsePromise<AdminPaymentCollectionsRes>} Resolves to the payment collection's details.
    * 
    * @example
    * A simple example that retrieves a payment collection by its ID:
@@ -70,7 +70,7 @@ class AdminPaymentCollectionsResource extends BaseResource {
    * @param {string} id - The ID of the payment collection.
    * @param {AdminUpdatePaymentCollectionsReq} payload - The attributes to update in the payment collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPaymentCollectionsRes>} - The payment collection's details.
+   * @returns {ResponsePromise<AdminPaymentCollectionsRes>} Resolves to the payment collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -96,7 +96,7 @@ class AdminPaymentCollectionsResource extends BaseResource {
    * Delete a payment collection. Only payment collections with the statuses `canceled` or `not_paid` can be deleted.
    * @param {string} id - The ID of the payment collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPaymentCollectionDeleteRes>} - The deletion operation's details.
+   * @returns {ResponsePromise<AdminPaymentCollectionDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -119,7 +119,7 @@ class AdminPaymentCollectionsResource extends BaseResource {
    * Set the status of a payment collection as `authorized`. This will also change the `authorized_amount` of the payment collection.
    * @param {string} id - The ID of the payment collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPaymentCollectionsRes>} - The payment collection's details.
+   * @returns {ResponsePromise<AdminPaymentCollectionsRes>} Resolves to the payment collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

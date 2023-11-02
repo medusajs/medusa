@@ -110,71 +110,153 @@ export type QueryConfig<TEntity extends BaseEntity> = {
   isList?: boolean
 }
 
+/**
+ * @interface
+ *
+ * Request parameters used to configure and paginate retrieved data.
+ */
 export type RequestQueryFields = {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   expand?: string
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   fields?: string
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   offset?: number
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   limit?: number
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   order?: string
 }
 
+/**
+ * @interface
+ *
+ * Pagination fields returned in the response of an API route.
+ *
+ * @prop limit - The maximum number of items that can be returned in the list.
+ * @prop offset - The number of items skipped before the returned items in the list.
+ * @prop count - The total number of items available.
+ */
 export type PaginatedResponse = { limit: number; offset: number; count: number }
 
+/**
+ * @interface
+ *
+ * The response returned for a DELETE request.
+ */
 export type DeleteResponse = {
+  /**
+   * The ID of the deleted item.
+   */
   id: string
+  /**
+   * The type of the deleted item.
+   */
   object: string
+  /**
+   * Whether the item was deleted successfully.
+   */
   deleted: boolean
 }
 
 export class EmptyQueryParams {}
 
+/**
+ * This class holds fields used to apply flexible filters on dates.
+ */
 export class DateComparisonOperator {
+  /**
+   * The filtered date must be less than this value.
+   */
   @IsOptional()
   @IsDate()
   @Transform(transformDate)
   lt?: Date
 
+  /**
+   * The filtered date must be greater than this value.
+   */
   @IsOptional()
   @IsDate()
   @Transform(transformDate)
   gt?: Date
 
+  /**
+   * The filtered date must be greater than or equal to this value.
+   */
   @IsOptional()
   @IsDate()
   @Transform(transformDate)
   gte?: Date
 
+  /**
+   * The filtered date must be less than or equal to this value.
+   */
   @IsOptional()
   @IsDate()
   @Transform(transformDate)
   lte?: Date
 }
 
+/**
+ * This class holds fields used to apply flexible filters on strings.
+ */
 export class StringComparisonOperator {
+  /**
+   * The filtered string must be less than this value.
+   */
   @IsString()
   @IsOptional()
   lt?: string
 
+  /**
+   * The filtered string must be greater than this value.
+   */
   @IsString()
   @IsOptional()
   gt?: string
 
+  /**
+   * The filtered string must be greater than or equal to this value.
+   */
   @IsString()
   @IsOptional()
   gte?: string
 
+  /**
+   * The filtered string must be less than or equal to this value.
+   */
   @IsString()
   @IsOptional()
   lte?: string
 
+  /**
+   * The filtered string must contain this value.
+   */
   @IsString()
   @IsOptional()
   contains?: string
 
+  /**
+   * The filtered string must start with this value.
+   */
   @IsString()
   @IsOptional()
   starts_with?: string
 
+  /**
+   * The filtered string must end with this value.
+   */
   @IsString()
   @IsOptional()
   ends_with?: string
@@ -221,6 +303,7 @@ export class NumericalComparisonOperator {
  *     example: 16128234334802
  *   company:
  *     type: string
+ *     description: Company
  *   address_1:
  *     description: Address line 1
  *     type: string
@@ -397,7 +480,7 @@ export class AddressCreatePayload {
 }
 
 /**
- * This class defines request parameters that can be used to configure how data is retrieved.
+ * Parameters that can be used to configure how data is retrieved.
  */
 export class FindParams {
   /**
@@ -416,11 +499,12 @@ export class FindParams {
 }
 
 /**
- * This class defines request parameters that can be used to configure how a list of data is paginated.
+ * Parameters that can be used to configure how a list of data is paginated.
  */
 export class FindPaginationParams {
   /**
    * The number of items to skip when retrieving a list.
+   * @defaultValue 0
    */
   @IsNumber()
   @IsOptional()
@@ -429,6 +513,7 @@ export class FindPaginationParams {
 
   /**
    * Limit the number of items returned in the list.
+   * @defaultValue 20
    */
   @IsNumber()
   @IsOptional()
@@ -443,12 +528,23 @@ export function extendedFindParamsMixin({
   limit?: number
   offset?: number
 } = {}): ClassConstructor<FindParams & FindPaginationParams> {
+  /**
+   * {@inheritDoc FindParams}
+   */
   class FindExtendedPaginationParams extends FindParams {
+    /**
+     * {@inheritDoc FindPaginationParams.offset}
+     * @defaultValue 0
+     */
     @IsNumber()
     @IsOptional()
     @Type(() => Number)
     offset?: number = offset ?? 0
 
+    /**
+     * {@inheritDoc FindPaginationParams.limit}
+     * @defaultValue 20
+     */
     @IsNumber()
     @IsOptional()
     @Type(() => Number)

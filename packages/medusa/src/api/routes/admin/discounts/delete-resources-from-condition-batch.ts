@@ -110,12 +110,16 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ discount })
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 // eslint-disable-next-line max-len
 export class AdminDeleteDiscountsDiscountConditionsConditionBatchParams extends FindParams {}
 
 /**
  * @schema AdminDeleteDiscountsDiscountConditionsConditionBatchReq
  * type: object
+ * description: "The resources to remove."
  * required:
  *   - resources
  * properties:

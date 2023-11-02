@@ -206,6 +206,7 @@ export const updateInventoryAndReservations = async (
 /**
  * @schema AdminPostOrdersOrderFulfillmentsReq
  * type: object
+ * description: "The details of the fulfillment to be created."
  * required:
  *   - items
  * properties:
@@ -224,6 +225,9 @@ export const updateInventoryAndReservations = async (
  *         quantity:
  *           description: The quantity of the Line Item to fulfill.
  *           type: integer
+ *   location_id:
+ *     type: string
+ *     description: "The ID of the location where the items will be fulfilled from."
  *   no_notification:
  *     description: >-
  *       If set to `true`, no notification will be sent to the customer related to this fulfillment.

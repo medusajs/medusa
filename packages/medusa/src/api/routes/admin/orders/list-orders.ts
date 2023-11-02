@@ -217,21 +217,38 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved orders.
+ */
 export class AdminGetOrdersParams extends AdminListOrdersSelector {
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string

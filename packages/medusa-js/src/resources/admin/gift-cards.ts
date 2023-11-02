@@ -13,7 +13,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Gift Card API Routes](https://docs.medusajs.com/api/admin#gift-cards).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Admins can create gift cards and send them directly to customers, specifying options like their balance, region, and more.
  * These gift cards are different than the saleable gift cards in a store, which are created and managed through {@link AdminProductsResource}.
@@ -22,10 +22,10 @@ import BaseResource from "../base"
  */
 class AdminGiftCardsResource extends BaseResource {
   /**
-   * Create a gift card that can redeemed by its unique code. The Gift Card is only valid within 1 region.
+   * Create a gift card that can redeemed by its unique code. The Gift Card is only valid within `1` region.
    * @param {AdminPostGiftCardsReq} payload - The gift card to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminGiftCardsRes>} The gift card's details.
+   * @returns {ResponsePromise<AdminGiftCardsRes>} Resolves to the gift card's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -51,7 +51,7 @@ class AdminGiftCardsResource extends BaseResource {
    * @param {string} id - The ID of the gift card.
    * @param {AdminPostGiftCardsGiftCardReq} payload - The attributes to update in the gift card.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminGiftCardsRes>} The gift card's details.
+   * @returns {ResponsePromise<AdminGiftCardsRes>} Resolves to the gift card's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -77,7 +77,7 @@ class AdminGiftCardsResource extends BaseResource {
    * Delete a gift card. Once deleted, it can't be used by customers.
    * @param {string} id - The ID of the gift card.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminGiftCardsDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminGiftCardsDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -100,7 +100,7 @@ class AdminGiftCardsResource extends BaseResource {
    * Retrieve a gift card's details.
    * @param {string} id - The ID of the gift card.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminGiftCardsRes>} The gift card's details.
+   * @returns {ResponsePromise<AdminGiftCardsRes>} Resolves to the gift card's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -123,7 +123,7 @@ class AdminGiftCardsResource extends BaseResource {
    * Retrieve a list of gift cards. The gift cards can be filtered by fields such as `q` passed in the `query` parameter. The gift cards can also paginated.
    * @param {AdminGetGiftCardsParams} query - Filters and pagination configurations to apply on the retrieved gift cards.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminGiftCardsListRes>} The list of gift cards with pagination fields.
+   * @returns {ResponsePromise<AdminGiftCardsListRes>} Resolves to the list of gift cards with pagination fields.
    * 
    * @example
    * To list gift cards:

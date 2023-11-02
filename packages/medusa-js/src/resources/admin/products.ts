@@ -22,7 +22,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product API Routes](https://docs.medusajs.com/api/admin#products).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards#manage-gift-card-product) in a store.
  * 
@@ -33,7 +33,7 @@ class AdminProductsResource extends BaseResource {
    * Create a new Product. This API Route can also be used to create a gift card if the `is_giftcard` field is set to `true`.
    * @param {AdminPostProductsReq} payload - The product to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsRes>} The product's details.
+   * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -60,7 +60,7 @@ class AdminProductsResource extends BaseResource {
    * Retrieve a product's details.
    * @param {string} id - The product's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsRes>} The product's details.
+   * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -84,7 +84,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} id - The product's ID.
    * @param {AdminPostProductsProductReq} payload - The attributes to update in a product.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsRes>} The product's details.
+   * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -110,7 +110,7 @@ class AdminProductsResource extends BaseResource {
    * Delete a product and its associated product variants and options.
    * @param {string} id - The product's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminProductsDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -133,7 +133,7 @@ class AdminProductsResource extends BaseResource {
    * Retrieve a list of products. The products can be filtered by fields such as `q` or `status` passed in the `query` parameter. The products can also be sorted or paginated.
    * @param {AdminGetProductsParams} query - Filters and pagination configurations to apply on the retrieved products.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsListRes>} The list of products with pagination fields.
+   * @returns {ResponsePromise<AdminProductsListRes>} Resolves to the list of products with pagination fields.
    * 
    * @example
    * To list products:
@@ -206,7 +206,7 @@ class AdminProductsResource extends BaseResource {
   /**
    * Retrieve a list of Product Tags with how many times each is used in products.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsListTagsRes>} The list of tags.
+   * @returns {ResponsePromise<AdminProductsListTagsRes>} Resolves to the list of tags.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -230,7 +230,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} id - The product's ID.
    * @param {AdminPostProductsProductMetadataReq} payload - The metadata details to add, update, or delete.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsRes>} The product's details.
+   * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -258,7 +258,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} id - The ID of the product that the variant belongs to.
    * @param {AdminPostProductsProductVariantsReq} payload - The product variant to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsRes>} The product's details. You can access the variant under the `variants` property.
+   * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details. You can access the variant under the `variants` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -299,7 +299,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} variantId - The ID of the product variant. 
    * @param {AdminPostProductsProductVariantsVariantReq} payload - The attributes to update in the product variant.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsRes>} The product's details. You can access the variant under the `variants` property.
+   * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details. You can access the variant under the `variants` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -340,7 +340,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} id - The ID of the product that the variant belongs to.
    * @param {string} variantId - The ID of the product variant. 
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsDeleteVariantRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminProductsDeleteVariantRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -365,7 +365,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} id - The product's ID.
    * @param {AdminPostProductsProductOptionsReq} payload - The option to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsRes>} The product's details. You can access the variant under the `options` property.
+   * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details. You can access the variant under the `options` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -393,7 +393,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} optionId - The ID of the product option.
    * @param {AdminPostProductsProductOptionsOption} payload - The attributes to update in the product option.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsRes>} The product's details. You can access the variant under the `options` property.
+   * @returns {ResponsePromise<AdminProductsRes>} Resolves to the product's details. You can access the variant under the `options` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -421,7 +421,7 @@ class AdminProductsResource extends BaseResource {
    * @param {string} id - The ID of the product that the option belongs to.
    * @param {string} optionId - The ID of the product option.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductsDeleteOptionRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminProductsDeleteOptionRes>} Resolves to the deletion operation's details.
    */
   deleteOption(
     id: string,

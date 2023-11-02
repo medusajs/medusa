@@ -24,7 +24,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Order API Routes](https://docs.medusajs.com/api/admin#orders).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Orders are purchases made by customers, typically through a storefront using {@link CartsResource}. Draft orders created by the admin are also transformed to an Order once the payment is captured.
  * Managing orders include managing fulfillment, payment, claims, reservations, and more.
@@ -37,7 +37,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The order's ID.
    * @param {AdminPostOrdersOrderReq} payload - The attributes to update in the order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -64,7 +64,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The order's ID.
    * @param {FindParams} query - Configurations to apply on the retrieved order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * A simple example that retrieves an order by its ID:
@@ -112,7 +112,7 @@ class AdminOrdersResource extends BaseResource {
    * Retrieve a list of orders. The orders can be filtered by fields such as `status` or `display_id` passed in the `query` parameter. The order can also be paginated.
    * @param {AdminGetOrdersParams} query - Filters and pagination configurations applied on the retrieved orders.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersListRes>} The list of orders with pagination fields.
+   * @returns {ResponsePromise<AdminOrdersListRes>} Resolves to the list of orders with pagination fields.
    * 
    * @example
    * To list orders:
@@ -175,7 +175,7 @@ class AdminOrdersResource extends BaseResource {
    * Complete an order and change its status. A canceled order can't be completed.
    * @param {string} id - The order's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -198,7 +198,7 @@ class AdminOrdersResource extends BaseResource {
    * Capture all the payments associated with an order. The payment of canceled orders can't be captured.
    * @param {string} id - The ID of the order whose payments should be captured.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -220,9 +220,9 @@ class AdminOrdersResource extends BaseResource {
   /**
    * Refund an amount for an order. The amount must be less than or equal the `refundable_amount` of the order.
    * @param {string} id - The ID of the order whose customer should be refunded.
-   * @param {AdminPostOrdersOrderRefundsReq} payload - The refund.
+   * @param {AdminPostOrdersOrderRefundsReq} payload - The refund's details.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -251,7 +251,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The ID of the order that the fulfillment belongs to.
    * @param {AdminPostOrdersOrderFulfillmentsReq} payload - The fulfillment to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -283,7 +283,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The ID of the order that the fulfillment belongs to.
    * @param {string} fulfillmentId - The fulfillment's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -309,7 +309,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} swapId - The ID of the swap the fulfillment belongs to.
    * @param {string} fulfillmentId - The fulfillment's ID. 
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -336,7 +336,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} claimId - The claim's ID.
    * @param {string} fulfillmentId - The fulfillment's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -363,7 +363,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The ID of the order
    * @param {AdminPostOrdersOrderShipmentReq} payload - The shipment to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -390,7 +390,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The order's ID.
    * @param {AdminPostOrdersOrderReturnsReq} payload - The return to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the return under the `returns` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the return under the `returns` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -422,7 +422,7 @@ class AdminOrdersResource extends BaseResource {
    * is unable to cancel the payment/fulfillment.
    * @param {string} id - The order's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -446,7 +446,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The order's ID. 
    * @param {AdminPostOrdersOrderShippingMethodsReq} payload - The shipping method to be added.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -473,7 +473,7 @@ class AdminOrdersResource extends BaseResource {
    * Archive an order and change its status.
    * @param {string} id - The order's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -497,7 +497,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The order's ID.
    * @param {AdminPostOrdersOrderSwapsReq} payload - The swap to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `swaps` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `swaps` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -529,7 +529,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The ID of the order that the swap belongs to.
    * @param {string} swapId - The swap's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `swaps` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `swaps` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -556,7 +556,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} swapId - The swap's ID.
    * @param {AdminPostOrdersOrderSwapsSwapFulfillmentsReq} payload - The fulfillment to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `swaps` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `swaps` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -586,7 +586,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} swapId - The swap's ID.
    * @param {AdminPostOrdersOrderSwapsSwapShipmentsReq} payload - The shipment to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `swaps` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `swaps` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -615,7 +615,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The ID of the order that the swap belongs to.
    * @param {string} swapId - The swap's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `swaps` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `swaps` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -641,7 +641,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The order's ID.
    * @param {AdminPostOrdersOrderClaimsReq} payload - The claim to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `claims` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `claims` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -674,7 +674,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} id - The ID of the order that the claim belongs to.
    * @param {string} claimId - The claim's ID. 
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `claims` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `claims` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -700,7 +700,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} claimId - The claim's ID.
    * @param {AdminPostOrdersOrderClaimsClaimReq} payload - The attributes to update in the claim.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `claims` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `claims` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -730,7 +730,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} claimId - The claim's ID.
    * @param {AdminPostOrdersOrderClaimsClaimFulfillmentsReq} payload - The fulfillment to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `claims` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `claims` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -759,7 +759,7 @@ class AdminOrdersResource extends BaseResource {
    * @param {string} claimId - The claim's ID.
    * @param {AdminPostOrdersOrderClaimsClaimShipmentsReq} payload - The shipment to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminOrdersRes>} - The order's details. You can access the swap under the `claims` property.
+   * @returns {ResponsePromise<AdminOrdersRes>} Resolves to the order's details. You can access the swap under the `claims` property.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

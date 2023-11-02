@@ -230,6 +230,7 @@ export const defaultAdminProductRemoteQueryObject = {
 /**
  * @schema AdminProductsDeleteOptionRes
  * type: object
+ * description: "The details of deleting a product's option."
  * x-expanded-relations:
  *   field: product
  *   relations:
@@ -272,6 +273,7 @@ export type AdminProductsDeleteOptionRes = {
 /**
  * @schema AdminProductsDeleteVariantRes
  * type: object
+ * description: "The details of deleting a product's variant."
  * x-expanded-relations:
  *   field: product
  *   relations:
@@ -314,6 +316,7 @@ export type AdminProductsDeleteVariantRes = {
 /**
  * @schema AdminProductsDeleteRes
  * type: object
+ * description: "The details of deleting a product."
  * required:
  *   - id
  *   - object
@@ -340,6 +343,7 @@ export type AdminProductsDeleteRes = {
 /**
  * @schema AdminProductsListRes
  * type: object
+ * description: "The list of products with pagination fields."
  * x-expanded-relations:
  *   field: products
  *   relations:
@@ -425,6 +429,7 @@ export type AdminProductsListTypesRes = {
 /**
  * @schema AdminProductsListTagsRes
  * type: object
+ * description: "The usage details of product tags."
  * required:
  *   - tags
  * properties:
@@ -459,6 +464,7 @@ export type AdminProductsListTagsRes = {
 /**
  * @schema AdminProductsRes
  * type: object
+ * description: "The product's details."
  * x-expanded-relations:
  *   field: product
  *   relations:

@@ -19,7 +19,7 @@ import { ResponsePromise } from "../.."
 /**
  * This class is used to send requests to [Admin Customer Group API Routes](https://docs.medusajs.com/api/admin#customer-groups).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Customer Groups can be used to organize customers that share similar data or attributes into dedicated groups.
  * This can be useful for different purposes such as setting a different price for a specific customer group.
@@ -31,7 +31,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * Create a customer group.
    * @param {AdminPostCustomerGroupsReq} payload - The data of the customer group to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomerGroupsRes>} The customer group's details.
+   * @returns {ResponsePromise<AdminCustomerGroupsRes>} Resolves to the customer group's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -57,7 +57,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * @param {string} id - The ID of the customer group.
    * @param {AdminGetCustomerGroupsGroupParams} query - Configurations to apply on the retrieved customer group.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomerGroupsRes>} The customer group's details.
+   * @returns {ResponsePromise<AdminCustomerGroupsRes>} Resolves to the customer group's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -87,7 +87,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * @param {string} id - The ID of the customer group.
    * @param {AdminPostCustomerGroupsGroupReq} payload - The attributes to update in the customer group.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomerGroupsRes>} The customer group's details.
+   * @returns {ResponsePromise<AdminCustomerGroupsRes>} Resolves to the customer group's details.
    */
   update(
     id: string,
@@ -102,7 +102,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * Delete a customer group. This doesn't delete the customers associated with the customer group.
    * @param {string} id - The ID of the customer group.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomerGroupsDeleteRes>} The deletion operation details.
+   * @returns {ResponsePromise<AdminCustomerGroupsDeleteRes>} Resolves to the deletion operation details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -122,10 +122,10 @@ class AdminCustomerGroupsResource extends BaseResource {
   }
 
   /**
-   * Retrieve a list of customer groups. The customer groups can be filtered by fields such as `name` or `id. The customer groups can also be sorted or paginated.
+   * Retrieve a list of customer groups. The customer groups can be filtered by fields such as `name` or `id`. The customer groups can also be sorted or paginated.
    * @param {AdminGetCustomerGroupsParams} query - Filters and pagination configurations to apply on the retrieved customer groups.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomerGroupsListRes>} The list of customer groups with pagination fields.
+   * @returns {ResponsePromise<AdminCustomerGroupsListRes>} Resolves to the list of customer groups with pagination fields.
    * 
    * @example
    * To list customer groups:
@@ -189,7 +189,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * @param {string} id - The ID of the customer group.
    * @param {AdminPostCustomerGroupsGroupCustomersBatchReq} payload - The customers to add to the customer group.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomerGroupsRes>} The customer group's details.
+   * @returns {ResponsePromise<AdminCustomerGroupsRes>} Resolves to the customer group's details.
    */
   addCustomers(
     id: string,
@@ -205,7 +205,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * @param {string} id - The ID of the customer group.
    * @param {AdminDeleteCustomerGroupsGroupCustomerBatchReq} payload - The customers to remove from the customer group.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomerGroupsRes>} The customer group's details.
+   * @returns {ResponsePromise<AdminCustomerGroupsRes>} Resolves to the customer group's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -236,7 +236,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * @param {string} id - The ID of the customer group.
    * @param {AdminGetCustomersParams} query - Filters and pagination configurations to apply on the retrieved customers.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomersListRes>} The list of customers with pagination fields.
+   * @returns {ResponsePromise<AdminCustomersListRes>} Resolves to the list of customers with pagination fields.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

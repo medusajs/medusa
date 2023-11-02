@@ -85,14 +85,23 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved order edits.
+ */
 export class GetOrderEditsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Search term to search order edits by their internal note.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Filter the order edits by their associated order's ID.
+   */
   @IsString()
   @IsOptional()
   order_id?: string

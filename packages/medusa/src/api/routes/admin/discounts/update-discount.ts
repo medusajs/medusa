@@ -252,25 +252,43 @@ export class AdminPostDiscountsDiscountReq {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * The attributes of the discount rule to update.
+ */
 export class AdminUpdateDiscountRule {
+  /**
+   * The discount rule's ID.
+   */
   @IsString()
   @IsNotEmpty()
   id: string
 
+  /**
+   * The discount rule's description.
+   */
   @IsString()
   @IsOptional()
   description?: string
 
+  /**
+   * The discount rule's value.
+   */
   @IsNumber()
   @IsOptional()
   value?: number
 
+  /**
+   * The discount rule's allocation.
+   */
   @IsOptional()
   @IsEnum(AllocationType, {
     message: `Invalid allocation type, must be one of "total" or "item"`,
   })
   allocation?: AllocationType
 
+  /**
+   * The discount rule's discount conditions.
+   */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
@@ -278,11 +296,20 @@ export class AdminUpdateDiscountRule {
   conditions?: AdminUpsertCondition[]
 }
 
+/**
+ * The attributes to create or update in the discount condition.
+ */
 export class AdminUpsertCondition extends AdminUpsertConditionsReq {
+  /**
+   * The discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * The discount condition's operator.
+   */
   @IsString()
   @IsOptional()
   operator: DiscountConditionOperator

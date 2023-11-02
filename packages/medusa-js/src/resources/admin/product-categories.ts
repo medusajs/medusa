@@ -17,7 +17,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Category API Routes](https://docs.medusajs.com/api/admin#product-categories).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Products can be categoriezed into categories. A product can be added into more than one category.
  * 
@@ -31,7 +31,7 @@ class AdminProductCategoriesResource extends BaseResource {
    * @param {string} productCategoryId - The ID of the product category.
    * @param {AdminGetProductCategoryParams} query - Configurations to apply on the retrieved product category.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} The product category's details.
+   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} Resolves to the product category's details.
    * 
    * @example
    * A simple example that retrieves an order by its ID:
@@ -79,7 +79,7 @@ class AdminProductCategoriesResource extends BaseResource {
    * Create a product category.
    * @param {AdminPostProductCategoriesReq} payload - The product category's details.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} The product category's details.
+   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} Resolves to the product category's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -105,7 +105,7 @@ class AdminProductCategoriesResource extends BaseResource {
    * @param {string} productCategoryId - The ID of the product category.
    * @param {AdminPostProductCategoriesCategoryReq} payload - The attributes to update in the product category.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} The product category's details.
+   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} Resolves to the product category's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -132,7 +132,7 @@ class AdminProductCategoriesResource extends BaseResource {
    * The product categories can also be paginated.
    * @param {AdminGetProductCategoriesParams} query - Filters and pagination configurations to apply on the retrieved product categories.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductCategoriesListRes>} The list of product categories with pagination fields.
+   * @returns {ResponsePromise<AdminProductCategoriesListRes>} Resolves to the list of product categories with pagination fields.
    * 
    * @example
    * To list product categories:
@@ -195,7 +195,7 @@ class AdminProductCategoriesResource extends BaseResource {
    * Delete a product category. This does not delete associated products.
    * @param {string} productCategoryId - The ID of the product category.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductCategoriesCategoryDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminProductCategoriesCategoryDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -219,7 +219,7 @@ class AdminProductCategoriesResource extends BaseResource {
    * @param {string} productCategoryId - The ID of the product category.
    * @param {AdminDeleteProductCategoriesCategoryProductsBatchReq} payload - The products to delete.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} The product category's details.
+   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} Resolves to the product category's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -250,7 +250,7 @@ class AdminProductCategoriesResource extends BaseResource {
    * @param {string} productCategoryId - The ID of the product category.
    * @param {AdminPostProductCategoriesCategoryProductsBatchReq} payload - The products to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} The product category's details.
+   * @returns {ResponsePromise<AdminProductCategoriesCategoryRes>} Resolves to the product category's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

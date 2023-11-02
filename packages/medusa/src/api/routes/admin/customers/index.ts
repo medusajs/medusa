@@ -23,6 +23,7 @@ export default (app) => {
 /**
  * @schema AdminCustomersRes
  * type: object
+ * description: "The customer's details."
  * x-expanded-relations:
  *   field: customer
  *   relations:
@@ -41,6 +42,7 @@ export type AdminCustomersRes = {
 
 /**
  * @schema AdminCustomersListRes
+ * description: The list of customers with pagination fields.
  * type: object
  * required:
  *   - customers

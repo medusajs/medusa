@@ -30,8 +30,19 @@ export enum DiscountConditionType {
   CUSTOMER_GROUPS = "customer_groups",
 }
 
+/**
+ * @enum
+ * 
+ * The possible operators used for a discount condition.
+ */
 export enum DiscountConditionOperator {
+  /**
+   * The discountable resources are within the specified resources.
+   */
   IN = "in",
+  /**
+   * The discountable resources are everything but the specified resources.
+   */
   NOT_IN = "not_in",
 }
 

@@ -25,7 +25,7 @@ class AdminCollectionsResource extends BaseResource {
    * Create a product collection.
    * @param {AdminPostCollectionsReq} payload - The data of the product collection to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCollectionsRes>} The product collection's details.
+   * @returns {ResponsePromise<AdminCollectionsRes>} Resolves to the created product collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -51,7 +51,7 @@ class AdminCollectionsResource extends BaseResource {
    * @param {string} id - The ID of the product collection.
    * @param {AdminPostCollectionsCollectionReq} payload - The data to update in the product collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCollectionsRes>} the product collection's details.
+   * @returns {ResponsePromise<AdminCollectionsRes>} Resolves to the product collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -77,7 +77,7 @@ class AdminCollectionsResource extends BaseResource {
    * Delete a product collection. This does not delete associated products.
    * @param {string} id - The ID of the product collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCollectionsDeleteRes>} The deletion operation details.
+   * @returns {ResponsePromise<AdminCollectionsDeleteRes>} Resolves to the deletion operation details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -100,7 +100,7 @@ class AdminCollectionsResource extends BaseResource {
    * Retrieve a product collection by its ID. The products associated with it are expanded and returned as well.
    * @param {string} id - The ID of the product collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCollectionsRes>} The product collection's details.
+   * @returns {ResponsePromise<AdminCollectionsRes>} Resolves to the product collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -123,7 +123,7 @@ class AdminCollectionsResource extends BaseResource {
    * Retrieve a list of product collections. The product collections can be filtered by fields such as `handle` or `title`. The collections can also be sorted or paginated.
    * @param {AdminGetCollectionsParams} query - Filters and pagination configurations to apply on the retrieved product collections.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCollectionsListRes>} The list of product collections with pagination fields.
+   * @returns {ResponsePromise<AdminCollectionsListRes>} Resolves to the list of product collections with pagination fields.
    * 
    * @example
    * To list product collections:
@@ -172,7 +172,7 @@ class AdminCollectionsResource extends BaseResource {
    * @param {string} id - The ID of the product collection.
    * @param {AdminPostProductsToCollectionReq} payload - The products to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCollectionsRes>} The product collection's details.
+   * @returns {ResponsePromise<AdminCollectionsRes>} Resolves to the product collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -202,7 +202,7 @@ class AdminCollectionsResource extends BaseResource {
    * @param {string} id - the ID of the product collection
    * @param {AdminDeleteProductsFromCollectionReq} payload - The products to remove from the collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDeleteProductsFromCollectionRes>} The deletion operation details.
+   * @returns {ResponsePromise<AdminDeleteProductsFromCollectionRes>} Resolves to the deletion operation details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

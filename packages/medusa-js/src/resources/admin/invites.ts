@@ -9,7 +9,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Invite API Routes](https://docs.medusajs.com/api/admin#invites).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * An admin can invite new users to manage their team. This would allow new users to authenticate as admins and perform admin functionalities.
  * 
@@ -84,7 +84,7 @@ class AdminInvitesResource extends BaseResource {
    * Delete an invite. Only invites that weren't accepted can be deleted.
    * @param {string} id - The invite's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminInviteDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminInviteDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -106,7 +106,7 @@ class AdminInvitesResource extends BaseResource {
   /**
    * Retrieve a list of invites.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminListInvitesRes>} The list of invites.
+   * @returns {ResponsePromise<AdminListInvitesRes>} Resolves to the list of invites.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -125,7 +125,7 @@ class AdminInvitesResource extends BaseResource {
   }
 
   /**
-   * Resend an invite. This renews the expiry date by 7 days and generates a new token for the invite. It also triggers the `invite.created` event, 
+   * Resend an invite. This renews the expiry date by seven days and generates a new token for the invite. It also triggers the `invite.created` event, 
    * so if you have a Notification Provider installed that handles this event, a notification should be sent to the email associated with the 
    * invite to allow them to accept the invite.
    * @param {string} id - The invite's ID.

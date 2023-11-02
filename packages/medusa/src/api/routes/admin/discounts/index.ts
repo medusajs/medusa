@@ -222,6 +222,7 @@ export const defaultAdminDiscountConditionRelations = ["discount_rule"]
 /**
  * @schema AdminDiscountsRes
  * type: object
+ * description: "The discount's details."
  * x-expanded-relations:
  *   field: discount
  *   relations:
@@ -314,6 +315,7 @@ export type AdminDiscountConditionsDeleteRes = DeleteResponse & {
 /**
  * @schema AdminDiscountsListRes
  * type: object
+ * description: The list of discounts with pagination fields.
  * x-expanded-relations:
  *   field: discounts
  *   relations:
@@ -329,6 +331,7 @@ export type AdminDiscountConditionsDeleteRes = DeleteResponse & {
  * properties:
  *   discounts:
  *     type: array
+ *     description: "The list of discounts."
  *     items:
  *       $ref: "#/components/schemas/Discount"
  *   count:

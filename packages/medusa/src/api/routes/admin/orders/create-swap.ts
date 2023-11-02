@@ -319,6 +319,9 @@ export default async (req, res) => {
  *         quantity:
  *           description: The quantity of the Product Variant.
  *           type: integer
+ *   sales_channel_id:
+ *     type: string
+ *     description: "The ID of the sales channel associated with the swap."
  *   custom_shipping_options:
  *     description: An array of custom shipping options to potentially create a Shipping Method from to send the additional items.
  *     type: array
@@ -338,6 +341,9 @@ export default async (req, res) => {
  *     description: >-
  *       If set to `true`, no notification will be sent to the customer related to this Swap.
  *     type: boolean
+ *   return_location_id:
+ *     type: string
+ *     description: "The ID of the location used for the associated return."
  *   allow_backorder:
  *     description: >-
  *       If set to `true`, swaps can be completed with items out of stock
@@ -405,11 +411,20 @@ class ReturnItem {
   note?: string
 }
 
+/**
+ * The return's shipping method details.
+ */
 class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
   @IsString()
   @IsNotEmpty()
   option_id: string
 
+  /**
+   * The shipping method's price.
+   */
   @IsInt()
   @IsOptional()
   price?: number

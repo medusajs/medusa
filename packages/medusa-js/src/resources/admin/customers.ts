@@ -23,7 +23,7 @@ class AdminCustomersResource extends BaseResource {
    * Create a customer as an admin.
    * @param {AdminPostCustomersReq} payload - The customer to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomersRes>} the customer's details.
+   * @returns {ResponsePromise<AdminCustomersRes>} Resolves to the customer's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -52,7 +52,7 @@ class AdminCustomersResource extends BaseResource {
    * @param {string} id - The customer's ID.
    * @param {AdminPostCustomersCustomerReq} payload - The attributes to update in the customer.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomersRes>} the customer's details.
+   * @returns {ResponsePromise<AdminCustomersRes>} Resolves to the customer's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -78,7 +78,7 @@ class AdminCustomersResource extends BaseResource {
    * Retrieve the details of a customer.
    * @param {string} id - The customer's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomersRes>} The customer's details.
+   * @returns {ResponsePromise<AdminCustomersRes>} Resolves to the customer's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -101,7 +101,7 @@ class AdminCustomersResource extends BaseResource {
    * Retrieve a list of Customers. The customers can be filtered by fields such as `q` or `groups`. The customers can also be paginated.
    * @param {AdminGetCustomersParams} query - Filters and pagination configurations to apply on the retrieved customers.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminCustomersListRes>} The list of customers with pagination fields.
+   * @returns {ResponsePromise<AdminCustomersListRes>} Resolves to the list of customers with pagination fields.
    * 
    * @example
    * To list customers:

@@ -16,7 +16,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Draft Order API Routes](https://docs.medusajs.com/api/admin#draft-orders).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A draft order is an order created manually by the admin. It allows admins to create orders without direct involvement from the customer.
  * 
@@ -27,7 +27,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * Create a Draft Order. A draft order is not transformed into an order until payment is captured.
    * @param {AdminPostDraftOrdersReq} payload - The draft order to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDraftOrdersRes>} The draft order's details
+   * @returns {ResponsePromise<AdminDraftOrdersRes>} Resolves to the draft order's details
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -63,7 +63,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * @param {string} id - The ID of the draft order.
    * @param {AdminPostDraftOrdersDraftOrderLineItemsReq} payload - The line item to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDraftOrdersRes>} The draft order's details
+   * @returns {ResponsePromise<AdminDraftOrdersRes>} Resolves to the draft order's details
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -89,7 +89,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * Delete a Draft Order
    * @param {string} id - The ID of the draft order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDraftOrdersDeleteRes>} The deletion operation details.
+   * @returns {ResponsePromise<AdminDraftOrdersDeleteRes>} Resolves to the deletion operation details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -113,7 +113,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * @param {string} id - The ID of the draft order that the line item belongs to.
    * @param {string} itemId - The ID of the line item to delete from the draft order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDraftOrdersRes>} The draft order's details
+   * @returns {ResponsePromise<AdminDraftOrdersRes>} Resolves to the draft order's details
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -137,7 +137,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * Retrieve a Draft Order's details.
    * @param {string} id - The ID of the draft order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDraftOrdersRes>} The draft order's details.
+   * @returns {ResponsePromise<AdminDraftOrdersRes>} Resolves to the draft order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -160,7 +160,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * Retrieve an list of Draft Orders. The draft orders can be filtered by parameters such as `query`. The draft orders can also paginated.
    * @param {AdminGetDraftOrdersParams} query - Filters and pagination configurations to apply on the retrieved draft orders.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDraftOrdersListRes>} The list of draft orders with pagination fields.
+   * @returns {ResponsePromise<AdminDraftOrdersListRes>} Resolves to the list of draft orders with pagination fields.
    * 
    * @example
    * To list draft orders:
@@ -209,7 +209,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * which is manual payment that isn't integrated with any third-party payment provider. It is assumed that the payment capturing is handled manually by the admin.
    * @param {string} id - The ID of the draft order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPostDraftOrdersDraftOrderRegisterPaymentRes>} The created order's details.
+   * @returns {ResponsePromise<AdminPostDraftOrdersDraftOrderRegisterPaymentRes>} Resolves to the created order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -233,7 +233,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * @param {string} id - The ID of the draft order.
    * @param {AdminPostDraftOrdersDraftOrderReq} payload - The attributes to update in the draft order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDraftOrdersRes>} The draft order's details.
+   * @returns {ResponsePromise<AdminDraftOrdersRes>} Resolves to the draft order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -261,7 +261,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * @param {string} itemId - The ID of the line item to update.
    * @param {AdminPostDraftOrdersDraftOrderLineItemsItemReq} payload - The attributes to update in the line item.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDraftOrdersRes>} The draft order's details.
+   * @returns {ResponsePromise<AdminDraftOrdersRes>} Resolves to the draft order's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
