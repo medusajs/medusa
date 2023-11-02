@@ -2,7 +2,6 @@ import {
   CalculatedPriceSetDTO,
   IPricingModuleService,
   PriceSetMoneyAmountDTO,
-  RemoteJoinerQuery,
   RemoteQueryFunction,
 } from "@medusajs/types"
 import { FlagRouter, removeNullish } from "@medusajs/utils"

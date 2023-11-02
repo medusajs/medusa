@@ -37,6 +37,7 @@ import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
 import loadMedusaApp from "./medusa-app"
+import IsolateSalesChannelDomain from "./feature-flags/isolate-sales-channel-domain"
 
 type Options = {
   directory: string
@@ -138,7 +139,8 @@ export default async ({
   // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
   if (
     featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
-    featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
+    featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key) ||
+    featureFlagRouter.isFeatureEnabled(IsolateSalesChannelDomain.key)
   ) {
     await loadMedusaApp({ configModule, container })
   }
