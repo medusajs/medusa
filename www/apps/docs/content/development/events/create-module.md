@@ -62,7 +62,7 @@ In the class you must implement the `emit` method. You can optionally implement 
 
 ### Note About the eventToSubscribersMap Property
 
-The `AbstractEventBusModuleService` implements two methods for handling subscription: `subscribe` and `unsubscribe`. In these methods, the subscribed handler methods are managed within a class property `eventToSubscribersMap`, which is a JavaScript Map. The map keys are the event names, whereas the value of each key is an array of subscribed handler methods.
+The `AbstractEventBusModuleService` implements two methods for handling subscription: `subscribe` and `unsubscribe`. In these methods, the subscribed handler methods are managed within a class property `eventToSubscribersMap`, which is a JavaScript Map. The map's keys are the event names, whereas the value of each key is an array of subscribed handler methods.
 
 In your custom implementation, you can use this property to manage the subscribed handler methods. For example, you can get the subscribers of a method using the `get` method of the map:
 
