@@ -1,7 +1,7 @@
 import { useAdminRegions } from "medusa-react"
 import { useCallback, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
+import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import GearIcon from "../../../components/fundamentals/icons/gear-icon"
@@ -71,6 +71,7 @@ const Taxes = () => {
                 onClick: () => navigate("/a/settings/regions"),
               },
             ]}
+            className="no-scrollbar overflow-y-auto"
           >
             {isLoading || !regions ? (
               <div className="flex h-full flex-grow items-center justify-center">
