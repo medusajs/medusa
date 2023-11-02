@@ -1,11 +1,6 @@
-import {
-  ConfigModule,
-  ExternalModuleDeclaration,
-  InternalModuleDeclaration,
-} from "@medusajs/types"
+import { ConfigModule } from "@medusajs/types"
 
 import { ModulesDefinition } from "@medusajs/modules-sdk"
-import { isObject } from "./is-object"
 
 /**
  * Merge the modules config from the medusa-config file with the modules config from medusa package
@@ -13,24 +8,30 @@ import { isObject } from "./is-object"
  * @param medusaInternalModulesConfig
  */
 export function mergeModulesConfig(
-  modules: ConfigModule["modules"],
-  medusaInternalModulesConfig
+  modules: ConfigModule["modules"] = {},
+  medusaInternalModulesConfig = {}
 ) {
-  for (const [moduleName, moduleConfig] of Object.entries(modules as any)) {
+  const modules_ = ({ ...modules } as ConfigModule["modules"])!
+
+  const userModulesConfigKeys = Object.keys(modules)
+  const internalModulesConfigKeys = Object.keys(medusaInternalModulesConfig)
+
+  const allModulesKeys = new Set([
+    ...userModulesConfigKeys,
+    ...internalModulesConfigKeys,
+  ])
+
+  for (const moduleName of allModulesKeys) {
+    const internalModuleConfig = medusaInternalModulesConfig[moduleName]
+
     const moduleDefinition = ModulesDefinition[moduleName]
 
     if (moduleDefinition?.isLegacy) {
       continue
     }
 
-    const isModuleEnabled = moduleConfig === true || isObject(moduleConfig)
-
-    if (!isModuleEnabled) {
-      delete medusaInternalModulesConfig[moduleName]
-    } else {
-      medusaInternalModulesConfig[moduleName] = moduleConfig as Partial<
-        InternalModuleDeclaration | ExternalModuleDeclaration
-      >
-    }
+    modules_[moduleName] ??= internalModuleConfig
   }
+
+  return modules_
 }
