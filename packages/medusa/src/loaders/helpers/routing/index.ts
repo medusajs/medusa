@@ -85,39 +85,51 @@ function calculatePriority(path: string): number {
   return depth + specifity + catchall
 }
 
-/**
- * Calcualtes the priority of a middleware route matcher.
- *
- * The highest priority is given to a string matcher that is equal to the path.
- *
- * If the matcher is a string and it contains wildcards, then a wildcard penalty is applied,
- * the score is then improved based on the number of literal characters in the matcher.
- *
- * Regular expressions are given the worst base score and then improved based on the number of
- * literal characters in the matcher.
- *
- * @return An integer ranging from `0` to `Infinity` where `0` is the highest priority.
- */
-function calculateMiddlewaresPriority(path: string, matcher: string | RegExp) {
-  const basePriorityForRegExp = Number.MAX_SAFE_INTEGER // Base priority for all RegExps
-  const basePriorityForWildcard = 5000 // Base priority for wildcard strings
+const BASE_PRIORITY_FOR_REGEXP = Number.MAX_SAFE_INTEGER // Highest possible safe integer in JavaScript.
+const BASE_PRIORITY_FOR_WILDCARD = 5000 // Base priority for wildcard strings.
 
+/**
+ * Calculates the priority of a middleware route matcher.
+ *
+ * Normally we don't want to apply middlewares in order of priority, but rather
+ * in the order they are defined in the file. However, we want to prioritize
+ *
+ * - Highest priority (0) is given to a string matcher that is equal to the path.
+ * - For a string matcher with wildcards, a penalty is applied. The score is improved
+ *   based on the number of literal characters in the matcher.
+ * - Regular expressions are given a high base score which is then reduced based on
+ *   the number of literal characters in the matcher to improve its priority.
+ *
+ * @param path - The path to match against.
+ * @param matcher - The matcher used for routing, either a string with possible wildcards or a RegExp.
+ * @return An integer ranging from `0` to `Infinity`, where `0` is the highest priority.
+ */
+function calculateMiddlewaresPriority(
+  path: string,
+  matcher: string | RegExp
+): number {
   if (typeof matcher === "string") {
     if (matcher === path) {
-      return 0 // Highest priority for exact matches
+      return 0 // Exact match has the highest priority.
     } else {
       const wildcardPenalty = matcher.includes("*")
-        ? basePriorityForWildcard
+        ? BASE_PRIORITY_FOR_WILDCARD
         : 0
-      return wildcardPenalty + path.length - matcher.length // Lower number for longer literal prefix
+      // Prioritize based on the number of static characters in the matcher.
+      return wildcardPenalty + path.length - matcher.length
     }
   } else if (matcher instanceof RegExp) {
-    // Improve the score based on the number of literal characters, but always worse than wildcard strings
-    const literalsCount = matcher.source.replace(/\\.|[^\\]/g, "x").length
-    return basePriorityForRegExp - literalsCount // More literals result in a lower (better) score, but not better than wildcards
+    // Calculate the number of literal characters by replacing any non-literal parts.
+    const literalsCount = matcher.source.replace(
+      /\\.|[\^$.*+?()[\]{}|]/g,
+      ""
+    ).length
+    // Subtract literals count from base regExp priority to improve score.
+    return BASE_PRIORITY_FOR_REGEXP - literalsCount
   }
 
-  return Infinity // If it's neither string nor RegExp, it's the worst match.
+  // If it's neither string nor RegExp, it's the worst match.
+  return Infinity
 }
 
 function matchMethod(
