@@ -162,6 +162,7 @@ export default async ({
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
 
+  // Move before services init once all modules are migrated and do not rely on core resources anymore
   await loadMedusaApp({
     configModule,
     container,
