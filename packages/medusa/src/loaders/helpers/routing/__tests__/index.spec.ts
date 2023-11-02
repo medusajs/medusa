@@ -123,6 +123,22 @@ describe("RoutesLoader", function () {
 
       expect(storeCorsMiddlewareMock).toHaveBeenCalled()
     })
+
+    it("should apply raw middleware on POST `/webhooks/payment` route", async function () {
+      await request(server)
+        .post("/webhooks/payment")
+        .send({ test: "test" })
+        .expect(200)
+        .expect("OK")
+    })
+
+    it("should apply default bodyParser middleware on `/webhooks/orders` routes", async function () {
+      await request(server)
+        .post("/webhooks/orders")
+        .send({ test: "test" })
+        .expect(200)
+        .expect("OK")
+    })
   })
 
   describe("Duplicate parameters", function () {

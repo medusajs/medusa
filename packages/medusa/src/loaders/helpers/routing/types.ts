@@ -41,9 +41,16 @@ export type MiddlewareFunction =
   | MedusaRequestHandler
   | ((...args: any[]) => any)
 
+type ParserConfig =
+  | false
+  | {
+      sizeLimit?: string | number | undefined
+    }
+
 export type MiddlewareRoute = {
   method?: MiddlewareVerb | MiddlewareVerb[]
   matcher: string | RegExp
+  bodyParser?: ParserConfig
   middlewares: MiddlewareFunction[]
 }
 

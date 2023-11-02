@@ -1,5 +1,5 @@
 import cors from "cors"
-import { Express, json, urlencoded } from "express"
+import { json, text, urlencoded, type Express } from "express"
 import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
@@ -13,6 +13,7 @@ import logger from "../../logger"
 import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
+  MiddlewareRoute,
   MiddlewaresConfig,
   RouteConfig,
   RouteDescriptor,
@@ -82,6 +83,120 @@ function calculatePriority(path: string): number {
   const catchall = (path.match(/\/\*/g)?.length || 0) > 0 ? Infinity : 0
 
   return depth + specifity + catchall
+}
+
+/**
+ * Calcualtes the priority of a middleware route matcher.
+ *
+ * The highest priority is given to a string matcher that is equal to the path.
+ *
+ * If the matcher is a string and it contains wildcards, then a wildcard penalty is applied,
+ * the score is then improved based on the number of literal characters in the matcher.
+ *
+ * Regular expressions are given the worst base score and then improved based on the number of
+ * literal characters in the matcher.
+ *
+ * @return An integer ranging from `0` to `Infinity` where `0` is the highest priority.
+ */
+function calculateMiddlewaresPriority(path: string, matcher: string | RegExp) {
+  const basePriorityForRegExp = 10000 // Base priority for all RegExps
+  const basePriorityForWildcard = 5000 // Base priority for wildcard strings
+
+  if (typeof matcher === "string") {
+    if (matcher === path) {
+      return 0 // Highest priority for exact matches
+    } else {
+      const wildcardPenalty = matcher.includes("*")
+        ? basePriorityForWildcard
+        : 0
+      return wildcardPenalty + path.length - matcher.length // Lower number for longer literal prefix
+    }
+  } else if (matcher instanceof RegExp) {
+    // Improve the score based on the number of literal characters, but always worse than wildcard strings
+    const literalsCount = matcher.source.replace(/\\.|[^\\]/g, "x").length
+    return basePriorityForRegExp - literalsCount // More literals result in a lower (better) score, but not better than wildcards
+  }
+
+  return Infinity // If it's neither string nor RegExp, it's the worst match.
+}
+
+function matchMethod(
+  method: RouteVerb,
+  configMethod: MiddlewareRoute["method"]
+): boolean {
+  if (!configMethod || configMethod === "USE" || configMethod === "ALL") {
+    return true
+  } else if (Array.isArray(configMethod)) {
+    return (
+      configMethod.includes(method) ||
+      configMethod.includes("ALL") ||
+      configMethod.includes("USE")
+    )
+  } else {
+    return method === configMethod
+  }
+}
+
+function findBestMatch(
+  path: string,
+  method: RouteVerb,
+  routes: MiddlewareRoute[]
+): MiddlewareRoute | undefined {
+  let bestMatch: MiddlewareRoute | undefined = undefined
+  let bestMatchLength = 0
+  let bestMatchPriority = Infinity
+
+  routes.forEach((route) => {
+    const { matcher, method: configMethod } = route
+
+    if (matchMethod(method, configMethod)) {
+      let matchLength = 0
+      let matchPriority = 0
+      let isMatch = false
+
+      if (typeof matcher === "string") {
+        const regex = new RegExp(`^${matcher.replace("*", ".*")}$`)
+        const match = regex.exec(path)
+        if (match) {
+          matchLength = match[0].length
+          matchPriority = calculateMiddlewaresPriority(path, matcher)
+          isMatch = true
+        }
+      } else if (matcher instanceof RegExp) {
+        const match = matcher.exec(path)
+        if (match) {
+          matchLength = match[0].length
+          matchPriority = calculateMiddlewaresPriority(path, matcher)
+          isMatch = true
+        }
+      }
+
+      if (
+        isMatch &&
+        matchLength >= bestMatchLength &&
+        matchPriority < bestMatchPriority
+      ) {
+        bestMatchLength = matchLength
+        bestMatchPriority = matchPriority
+
+        bestMatch = route
+      }
+    }
+  })
+
+  if (path === "/webhooks/orders") {
+    console.log("bestMatch", bestMatch)
+  }
+
+  return bestMatch
+}
+
+function getBodyParserMiddleware(sizeLimit?: string | number | undefined) {
+  return [
+    json({ limit: sizeLimit }),
+    text({ limit: sizeLimit }),
+    urlencoded({ limit: sizeLimit, extended: true }),
+  ]
 }
 
 export class RoutesLoader {
@@ -445,6 +560,39 @@ export class RoutesLoader {
     )
   }
 
+  applyBodyParser(path: string, method: RouteVerb): void {
+    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+
+    const mostSpecificConfig = findBestMatch(
+      path,
+      method,
+      middlewareDescriptor?.config?.routes ?? []
+    )
+
+    if (!mostSpecificConfig || mostSpecificConfig?.bodyParser === undefined) {
+      console.warn(
+        "No bodyParser middleware found for",
+        path,
+        method,
+        mostSpecificConfig,
+        "Applying default bodyParser middleware"
+      )
+
+      this.app[method.toLowerCase()](path, ...getBodyParserMiddleware())
+
+      return
+    }
+
+    if (mostSpecificConfig?.bodyParser) {
+      const sizeLimit = mostSpecificConfig?.bodyParser?.sizeLimit
+      this.app[method.toLowerCase()](path, getBodyParserMiddleware(sizeLimit))
+
+      return
+    }
+
+    return
+  }
+
   protected async registerRoutes(): Promise<void> {
     const prioritizedRoutes = prioritize([...this.routesMap.values()])
 
@@ -474,6 +622,8 @@ export class RoutesLoader {
             descriptor.route
           }`,
         })
+
+        this.applyBodyParser(descriptor.route, route.method!)
         this.app[route.method!.toLowerCase()](descriptor.route, route.handler)
       }
     }
@@ -518,8 +668,6 @@ export class RoutesLoader {
 
   applyGlobalMiddlewares() {
     if (this.routesMap.size > 0) {
-      this.app.use(json(), urlencoded({ extended: true }))
-
       const adminCors = this.configModule.projectConfig.admin_cors || ""
       this.app.use(
         "/admin",

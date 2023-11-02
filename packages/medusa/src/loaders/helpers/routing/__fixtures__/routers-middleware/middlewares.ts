@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express"
+import { NextFunction, Request, Response, json, raw } from "express"
 import { MiddlewaresConfig } from "../../types"
 import {
   customersCreateMiddlewareMock,
@@ -43,6 +43,17 @@ export const config: MiddlewaresConfig = {
     {
       matcher: "/store/*",
       middlewares: [storeCors],
+    },
+    {
+      matcher: "/webhooks/orders",
+      method: "POST",
+      middlewares: [json()],
+    },
+    {
+      matcher: "/webhooks/*",
+      method: "POST",
+      bodyParser: false,
+      middlewares: [raw({ type: "application/json" })],
     },
   ],
 }

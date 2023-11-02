@@ -325,7 +325,10 @@ function registerCoreRouters(
     const splat = descriptor.split("/")
     const path = `${splat[splat.length - 2]}/${splat[splat.length - 1]}`
     const loaded = require(fn).default
-    middlewareService.addRouter(path, loaded())
+
+    if (loaded && typeof loaded === "function") {
+      middlewareService.addRouter(path, loaded())
+    }
   })
 
   storeFiles.forEach((fn) => {
@@ -333,7 +336,10 @@ function registerCoreRouters(
     const splat = descriptor.split("/")
     const path = `${splat[splat.length - 2]}/${splat[splat.length - 1]}`
     const loaded = require(fn).default
-    middlewareService.addRouter(path, loaded())
+
+    if (loaded && typeof loaded === "function") {
+      middlewareService.addRouter(path, loaded())
+    }
   })
 }
 
