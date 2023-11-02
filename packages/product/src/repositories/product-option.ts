@@ -1,9 +1,10 @@
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
+  RequiredEntityData,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product, ProductOption } from "@models"
@@ -148,5 +149,59 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
     manager.persist(productOptions)
 
     return productOptions
+  }
+
+  async upsert(
+    data:
+      | ProductTypes.CreateProductOptionDTO[]
+      | ProductTypes.UpdateProductOptionDTO[],
+    context: Context = {}
+  ): Promise<ProductOption[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    const optionIds = data.map((optionData) => optionData.id).filter((o) => o)
+
+    let existingOptions
+    let existingOptionsMap = new Map()
+
+    if (optionIds.length) {
+      existingOptions = await this.find(
+        {
+          where: {
+            id: {
+              $in: optionIds,
+            },
+          },
+        },
+        context
+      )
+
+      existingOptionsMap = new Map(
+        existingOptions.map((option) => [option.id, option])
+      )
+    }
+
+    const upsertedOptions: ProductOption[] = []
+    const optionToCreate: ProductOption[] = []
+
+    data.forEach((option) => {
+      const existingOption = existingOptionsMap.get(option.id)
+      if (existingOption) {
+        upsertedOptions.push(existingOption)
+      } else {
+        const newOption = (manager as SqlEntityManager).create(
+          ProductOption,
+          option as RequiredEntityData<ProductOption>
+        )
+        optionToCreate.push(newOption)
+      }
+    })
+
+    if (optionToCreate.length) {
+      manager.persist(optionToCreate)
+      upsertedOptions.push(...optionToCreate)
+    }
+
+    return upsertedOptions
   }
 }

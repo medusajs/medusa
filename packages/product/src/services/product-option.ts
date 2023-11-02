@@ -107,4 +107,15 @@ export default class ProductOptionService<
   ): Promise<void> {
     return await this.productOptionRepository_.delete(ids, sharedContext)
   }
+
+  @InjectTransactionManager("productOptionRepository_")
+  async upsert(
+    data:
+      | ProductTypes.CreateProductOptionDTO[]
+      | ProductTypes.UpdateProductOptionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    return (await (this.productOptionRepository_ as ProductOptionRepository)
+      .upsert!(data, sharedContext)) as TEntity[]
+  }
 }
