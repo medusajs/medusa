@@ -1,5 +1,5 @@
 import cors from "cors"
-import { json, text, urlencoded, type Express } from "express"
+import { Router, json, text, urlencoded, type Express } from "express"
 import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
@@ -99,7 +99,7 @@ function calculatePriority(path: string): number {
  * @return An integer ranging from `0` to `Infinity` where `0` is the highest priority.
  */
 function calculateMiddlewaresPriority(path: string, matcher: string | RegExp) {
-  const basePriorityForRegExp = 10000 // Base priority for all RegExps
+  const basePriorityForRegExp = Number.MAX_SAFE_INTEGER // Base priority for all RegExps
   const basePriorityForWildcard = 5000 // Base priority for wildcard strings
 
   if (typeof matcher === "string") {
@@ -184,10 +184,6 @@ function findBestMatch(
     }
   })
 
-  if (path === "/webhooks/orders") {
-    console.log("bestMatch", bestMatch)
-  }
-
   return bestMatch
 }
 
@@ -204,6 +200,7 @@ export class RoutesLoader {
   protected globalMiddlewaresDescriptor: GlobalMiddlewareDescriptor | undefined
 
   protected app: Express
+  protected router: Router
   protected activityId?: string
   protected rootDir: string
   protected configModule: ConfigModule
@@ -227,6 +224,7 @@ export class RoutesLoader {
     excludes?: RegExp[]
   }) {
     this.app = app
+    this.router = Router()
     this.activityId = activityId
     this.rootDir = rootDir
     this.configModule = configModule
@@ -570,22 +568,18 @@ export class RoutesLoader {
     )
 
     if (!mostSpecificConfig || mostSpecificConfig?.bodyParser === undefined) {
-      console.warn(
-        "No bodyParser middleware found for",
-        path,
-        method,
-        mostSpecificConfig,
-        "Applying default bodyParser middleware"
-      )
-
-      this.app[method.toLowerCase()](path, ...getBodyParserMiddleware())
+      this.router[method.toLowerCase()](path, ...getBodyParserMiddleware())
 
       return
     }
 
     if (mostSpecificConfig?.bodyParser) {
       const sizeLimit = mostSpecificConfig?.bodyParser?.sizeLimit
-      this.app[method.toLowerCase()](path, getBodyParserMiddleware(sizeLimit))
+
+      this.router[method.toLowerCase()](
+        path,
+        getBodyParserMiddleware(sizeLimit)
+      )
 
       return
     }
@@ -624,7 +618,11 @@ export class RoutesLoader {
         })
 
         this.applyBodyParser(descriptor.route, route.method!)
-        this.app[route.method!.toLowerCase()](descriptor.route, route.handler)
+
+        this.router[route.method!.toLowerCase()](
+          descriptor.route,
+          route.handler
+        )
       }
     }
   }
@@ -658,7 +656,7 @@ export class RoutesLoader {
           message: `Registering middleware [${route.method}] - ${route.matcher}`,
         })
 
-        this.app[route.method!.toLowerCase()](
+        this.router[route.method!.toLowerCase()](
           route.matcher,
           ...route.middlewares
         )
@@ -669,7 +667,7 @@ export class RoutesLoader {
   applyGlobalMiddlewares() {
     if (this.routesMap.size > 0) {
       const adminCors = this.configModule.projectConfig.admin_cors || ""
-      this.app.use(
+      this.router.use(
         "/admin",
         cors({
           origin: parseCorsOrigins(adminCors),
@@ -678,7 +676,7 @@ export class RoutesLoader {
       )
 
       const storeCors = this.configModule.projectConfig.store_cors || ""
-      this.app.use(
+      this.router.use(
         "/store",
         cors({ origin: parseCorsOrigins(storeCors), credentials: true })
       )
@@ -712,6 +710,14 @@ export class RoutesLoader {
 
       await this.registerMiddlewares()
       await this.registerRoutes()
+
+      /**
+       * Apply the router to the app.
+       *
+       * This prevents middleware from a plugin from
+       * bleeding into the global middleware stack.
+       */
+      this.app.use("/", this.router)
     }
 
     performance && performance.mark("file-base-routing-end" + this.rootDir)

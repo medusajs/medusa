@@ -54,6 +54,10 @@ export type MiddlewareRoute = {
   middlewares: MiddlewareFunction[]
 }
 
+export type MiddlewareDescriptor = {
+  priority: number
+}
+
 export type MiddlewaresConfig = {
   routes?: MiddlewareRoute[]
 }
