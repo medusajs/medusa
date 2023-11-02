@@ -127,7 +127,7 @@ The line item tax line object has the following properties:
 
 - `rate`: a number indicating the tax rate.
 - `name`: a string indicating the name of the tax rate.
-- `code`: an optional string indicating the tax code.
+- `code`: a string indicating the tax code.
 - `item_id`: the ID of the line item.
 - `metadata`: an optional object that can hold any necessary additional data to be added to the line item tax lines.
 
@@ -135,7 +135,7 @@ The shipping method tax line object has the following properties:
 
 - `rate`: a number indicating the tax rate.
 - `name`: a string indicating the name of the tax rate.
-- `code`: an optional string indicating the tax code.
+- `code`: a string indicating the tax code.
 - `shipping_method_id`: the ID of the shipping method.
 - `metadata`: an optional object that can hold any necessary additional data to be added to the shipping method tax lines.
 
