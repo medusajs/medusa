@@ -62,8 +62,6 @@ import {
   MedusaContext,
   MedusaError,
 } from "@medusajs/utils"
-
-import { shouldForceTransaction } from "../utils"
 import {
   entityNameToLinkableKeysMap,
   joinerConfig,
@@ -277,7 +275,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(tags)), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createTags(
     data: ProductTypes.CreateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -290,7 +288,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTags))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateTags(
     data: ProductTypes.UpdateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -303,7 +301,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTags))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteTags(
     productTagIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -356,7 +354,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(types)), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createTypes(
     data: ProductTypes.CreateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -369,7 +367,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTypes))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateTypes(
     data: ProductTypes.UpdateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -382,7 +380,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTypes))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteTypes(
     productTypeIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -436,7 +434,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(productOptions)), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createOptions(
     data: ProductTypes.CreateProductOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -453,7 +451,7 @@ export default class ProductModuleService<
     })
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateOptions(
     data: ProductTypes.UpdateProductOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -470,7 +468,7 @@ export default class ProductModuleService<
     })
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteOptions(
     productOptionIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -523,7 +521,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(collections))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createCollections(
     data: ProductTypes.CreateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -543,7 +541,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCollections))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateCollections(
     data: ProductTypes.UpdateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -563,7 +561,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCollections))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteCollections(
     productCollectionIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -611,7 +609,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createCategory(
     data: CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -629,7 +627,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCategory))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateCategory(
     categoryId: string,
     data: UpdateProductCategoryDTO,
@@ -649,7 +647,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCategory))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteCategory(
     categoryId: string,
     @MedusaContext() sharedContext: Context = {}
@@ -720,7 +718,7 @@ export default class ProductModuleService<
     return updatedProducts
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async create_(
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -829,7 +827,7 @@ export default class ProductModuleService<
     return products
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async update_(
     data: ProductTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1060,7 +1058,7 @@ export default class ProductModuleService<
     }
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async delete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -1116,7 +1114,7 @@ export default class ProductModuleService<
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async softDelete_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -1179,7 +1177,7 @@ export default class ProductModuleService<
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async restore_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}

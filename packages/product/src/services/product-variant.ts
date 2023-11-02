@@ -12,7 +12,6 @@ import {
 
 import { ProductVariantServiceTypes } from "../types/services"
 import ProductService from "./product"
-import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productVariantRepository: DAL.RepositoryService
@@ -86,7 +85,7 @@ export default class ProductVariantService<
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async create(
     productOrId: TProduct | string,
     data: ProductTypes.CreateProductVariantOnlyDTO[],
@@ -119,7 +118,7 @@ export default class ProductVariantService<
     })) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async update(
     productOrId: TProduct | string,
     data: ProductVariantServiceTypes.UpdateProductVariantDTO[],
@@ -145,7 +144,7 @@ export default class ProductVariantService<
     })) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -155,7 +154,7 @@ export default class ProductVariantService<
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async softDelete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -165,7 +164,7 @@ export default class ProductVariantService<
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async restore(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}

@@ -1,4 +1,5 @@
 import {
+  AddPricesDTO,
   Context,
   CreateMoneyAmountDTO,
   DAL,
@@ -35,16 +36,13 @@ import {
 } from "@services"
 
 import {
+  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
-  groupBy,
   removeNullish,
-  shouldForceTransaction,
 } from "@medusajs/utils"
-
-import { AddPricesDTO } from "@medusajs/types"
 import { joinerConfig } from "../joiner-config"
 import { PricingRepositoryService } from "../types"
 
@@ -218,7 +216,6 @@ export default class PricingModuleService<
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
 
-  @InjectManager("baseRepository_")
   async create(
     data: PricingTypes.CreatePriceSetDTO | PricingTypes.CreatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -231,7 +228,8 @@ export default class PricingModuleService<
       { id: priceSets.filter((p) => !!p).map((p) => p!.id) },
       {
         relations: ["rule_types", "money_amounts", "price_rules"],
-      }
+      },
+      sharedContext
     )
 
     return (Array.isArray(data) ? dbPriceSets : dbPriceSets[0]) as unknown as
@@ -239,7 +237,7 @@ export default class PricingModuleService<
       | PriceSetDTO[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async create_(
     data: PricingTypes.CreatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -380,14 +378,15 @@ export default class PricingModuleService<
       | PricingTypes.PriceSetDTO
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async addRules_(
     inputs: PricingTypes.AddRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceSetDTO[]> {
     const priceSets = await this.priceSetService_.list(
       { id: inputs.map((d) => d.priceSetId) },
-      { relations: ["rule_types"] }
+      { relations: ["rule_types"] },
+      sharedContext
     )
 
     const priceSetRuleTypeMap: Map<string, Map<string, RuleTypeDTO>> = new Map(
@@ -480,7 +479,6 @@ export default class PricingModuleService<
     sharedContext?: Context
   ): Promise<PricingTypes.PriceSetDTO[]>
 
-  @InjectManager("baseRepository_")
   async addPrices(
     data: AddPricesDTO | AddPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -492,10 +490,14 @@ export default class PricingModuleService<
     return (await this.list(
       { id: input.map((d) => d.priceSetId) },
       { relations: ["money_amounts"] }
-    )) as unknown as PricingTypes.PriceSetDTO[] | PricingTypes.PriceSetDTO
+    ),
+    undefined,
+    sharedContext) as unknown as
+      | PricingTypes.PriceSetDTO[]
+      | PricingTypes.PriceSetDTO
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async addPrices_(
     input: AddPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -591,25 +593,37 @@ export default class PricingModuleService<
     return priceSets
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async removeRules(
     data: PricingTypes.RemovePriceSetRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    const priceSets = await this.priceSetService_.list({
-      id: data.map((d) => d.id),
-    })
+    const priceSets = await this.priceSetService_.list(
+      {
+        id: data.map((d) => d.id),
+      },
+      undefined,
+      sharedContext
+    )
     const priceSetIds = priceSets.map((ps) => ps.id)
 
-    const ruleTypes = await this.ruleTypeService_.list({
-      rule_attribute: data.map((d) => d.rules || []).flat(),
-    })
+    const ruleTypes = await this.ruleTypeService_.list(
+      {
+        rule_attribute: data.map((d) => d.rules || []).flat(),
+      },
+      undefined,
+      sharedContext
+    )
     const ruleTypeIds = ruleTypes.map((rt) => rt.id)
 
-    const priceSetRuleTypes = await this.priceSetRuleTypeService_.list({
-      price_set_id: priceSetIds,
-      rule_type_id: ruleTypeIds,
-    })
+    const priceSetRuleTypes = await this.priceSetRuleTypeService_.list(
+      {
+        price_set_id: priceSetIds,
+        rule_type_id: ruleTypeIds,
+      },
+      undefined,
+      sharedContext
+    )
 
     const priceRules = await this.priceRuleService_.list(
       {
@@ -618,7 +632,8 @@ export default class PricingModuleService<
       },
       {
         select: ["price_set_money_amount"],
-      }
+      },
+      sharedContext
     )
 
     await this.priceSetRuleTypeService_.delete(
@@ -632,7 +647,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async update(
     data: PricingTypes.UpdatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -647,7 +662,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -718,7 +733,7 @@ export default class PricingModuleService<
     ]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createMoneyAmounts(
     data: PricingTypes.CreateMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -736,7 +751,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateMoneyAmounts(
     data: PricingTypes.UpdateMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -754,7 +769,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteMoneyAmounts(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -822,7 +837,7 @@ export default class PricingModuleService<
     ]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createCurrencies(
     data: PricingTypes.CreateCurrencyDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -837,7 +852,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateCurrencies(
     data: PricingTypes.UpdateCurrencyDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -852,7 +867,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteCurrencies(
     currencyCodes: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -920,7 +935,7 @@ export default class PricingModuleService<
     ]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createRuleTypes(
     data: PricingTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -935,7 +950,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateRuleTypes(
     data: PricingTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -950,7 +965,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteRuleTypes(
     ruleTypeIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -1062,7 +1077,7 @@ export default class PricingModuleService<
     ]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createPriceSetMoneyAmountRules(
     data: PricingTypes.CreatePriceSetMoneyAmountRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1079,7 +1094,7 @@ export default class PricingModuleService<
     })
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updatePriceSetMoneyAmountRules(
     data: PricingTypes.UpdatePriceSetMoneyAmountRulesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1096,7 +1111,7 @@ export default class PricingModuleService<
     })
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deletePriceSetMoneyAmountRules(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -1167,7 +1182,7 @@ export default class PricingModuleService<
     ]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createPriceRules(
     data: PricingTypes.CreatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1182,7 +1197,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updatePriceRules(
     data: PricingTypes.UpdatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1197,7 +1212,7 @@ export default class PricingModuleService<
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deletePriceRules(
     priceRuleIds: string[],
     @MedusaContext() sharedContext: Context = {}
