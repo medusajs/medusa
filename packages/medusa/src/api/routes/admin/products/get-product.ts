@@ -1,6 +1,12 @@
-import { MedusaError } from "@medusajs/utils"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  SalesChannelService,
+} from "../../../../services"
+
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { PricingService, ProductService } from "../../../../services"
+import { MedusaError } from "@medusajs/utils"
 import { FindParams } from "../../../../types/common"
 import { defaultAdminProductRemoteQueryObject } from "./index"
 
@@ -63,6 +69,12 @@ export default async (req, res) => {
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
+
   let rawProduct
   if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
     rawProduct = await getProductWithIsolatedProductModule(
@@ -81,9 +93,28 @@ export default async (req, res) => {
 
   const product = rawProduct
 
+  const decoratePromises: Promise<any>[] = []
   if (shouldSetPricing) {
-    await pricingService.setAdminProductPricing([product])
+    decoratePromises.push(pricingService.setAdminProductPricing([product]))
   }
+
+  const shouldSetAvailability =
+    req.retrieveConfig.relations?.includes("variants")
+
+  if (shouldSetAvailability) {
+    const [salesChannelsIds] = await salesChannelService.listAndCount(
+      {},
+      { select: ["id"] }
+    )
+
+    decoratePromises.push(
+      productVariantInventoryService.setProductAvailability(
+        [product],
+        salesChannelsIds.map((salesChannel) => salesChannel.id)
+      )
+    )
+  }
+  await Promise.all(decoratePromises)
 
   res.json({ product })
 }
