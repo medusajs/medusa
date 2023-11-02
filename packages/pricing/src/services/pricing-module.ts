@@ -216,6 +216,7 @@ export default class PricingModuleService<
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
 
+  @InjectManager("baseRepository_")
   async create(
     data: PricingTypes.CreatePriceSetDTO | PricingTypes.CreatePriceSetDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -479,6 +480,7 @@ export default class PricingModuleService<
     sharedContext?: Context
   ): Promise<PricingTypes.PriceSetDTO[]>
 
+  @InjectManager("baseRepository_")
   async addPrices(
     data: AddPricesDTO | AddPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -489,12 +491,9 @@ export default class PricingModuleService<
 
     return (await this.list(
       { id: input.map((d) => d.priceSetId) },
-      { relations: ["money_amounts"] }
-    ),
-    undefined,
-    sharedContext) as unknown as
-      | PricingTypes.PriceSetDTO[]
-      | PricingTypes.PriceSetDTO
+      { relations: ["money_amounts"] },
+      sharedContext
+    )) as unknown as PricingTypes.PriceSetDTO[] | PricingTypes.PriceSetDTO
   }
 
   @InjectTransactionManager("baseRepository_")

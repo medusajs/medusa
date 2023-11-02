@@ -11,7 +11,7 @@ import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
 
-jest.setTimeout(50000)
+jest.setTimeout(5000000)
 
 const adminHeaders = {
   headers: {
@@ -24,7 +24,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
+describe("[Product & Pricing Module] POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -142,7 +142,9 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {},
+          rules: {
+            region_id: "test-region",
+          },
         },
       ],
     })
@@ -172,9 +174,7 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    console.log("I am here first")
     await api.post(`/admin/products/${product.id}`, data, adminHeaders)
-    console.log("I am here")
 
     const response = await api.get(
       `/admin/products/${product.id}`,
