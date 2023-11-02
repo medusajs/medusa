@@ -362,10 +362,10 @@ async function registerApi(
 
   logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
 
-  /**
-   * Register the plugin's api routes using the file based routing.
-   */
   try {
+    /**
+     * Register the plugin's API routes using the file based routing.
+     */
     await new RoutesLoader({
       app,
       rootDir: path.join(pluginDetails.resolve, "api"),

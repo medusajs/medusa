@@ -335,19 +335,37 @@ export class RoutesLoader {
           }
 
           /**
-           * If the developer has not exported the authenticate flag
-           * we default to true.
+           * If the developer has not exported the
+           * AUTHENTICATE flag we default to true.
            */
           const shouldRequireAuth =
             import_[AUTHTHENTICATE] !== undefined
               ? (import_[AUTHTHENTICATE] as boolean)
               : true
 
-          if (
-            shouldRequireAuth &&
-            absolutePath.includes(join("api", "admin"))
-          ) {
-            config.shouldRequireAdminAuth = shouldRequireAuth
+          /**
+           * If the developer has not exported the
+           * CORS flag we default to true.
+           */
+          const shouldAddCors =
+            import_["CORS"] !== undefined ? (import_["CORS"] as boolean) : true
+
+          if (absolutePath.includes(join("api", "admin"))) {
+            if (shouldAddCors) {
+              config.shouldAppendAdminCors = true
+            }
+
+            if (shouldRequireAuth) {
+              config.shouldRequireAdminAuth = true
+            }
+          }
+
+          if (absolutePath.includes(join("api", "store"))) {
+            config.shouldAppendCustomer = true
+
+            if (shouldAddCors) {
+              config.shouldAppendStoreCors = true
+            }
           }
 
           if (
@@ -355,10 +373,6 @@ export class RoutesLoader {
             absolutePath.includes(join("api", "store", "me"))
           ) {
             config.shouldRequireCustomerAuth = shouldRequireAuth
-          }
-
-          if (absolutePath.includes(join("api", "store"))) {
-            config.shouldAppendCustomer = true
           }
 
           const handlers = Object.keys(import_).filter((key) => {
@@ -558,7 +572,7 @@ export class RoutesLoader {
     )
   }
 
-  applyBodyParser(path: string, method: RouteVerb): void {
+  applyBodyParserMiddleware(path: string, method: RouteVerb): void {
     const middlewareDescriptor = this.globalMiddlewaresDescriptor
 
     const mostSpecificConfig = findBestMatch(
@@ -578,7 +592,7 @@ export class RoutesLoader {
 
       this.router[method.toLowerCase()](
         path,
-        getBodyParserMiddleware(sizeLimit)
+        ...getBodyParserMiddleware(sizeLimit)
       )
 
       return
@@ -597,16 +611,60 @@ export class RoutesLoader {
 
       const routes = descriptor.config.routes
 
-      if (descriptor.config.shouldAppendCustomer) {
-        this.app.use(descriptor.route, authenticateCustomer())
-      }
+      /**
+       * Apply default store and admin middlewares if
+       * not opted out of.
+       */
 
-      if (descriptor.config.shouldRequireAdminAuth) {
-        this.app.use(descriptor.route, authenticate())
+      if (descriptor.config.shouldAppendCustomer) {
+        /**
+         * Add the customer to the request object
+         */
+        this.router.use(descriptor.route, authenticateCustomer())
       }
 
       if (descriptor.config.shouldRequireCustomerAuth) {
-        this.app.use(descriptor.route, requireCustomerAuthentication())
+        /**
+         * Require the customer to be authenticated
+         */
+        this.router.use(descriptor.route, requireCustomerAuthentication())
+      }
+
+      if (descriptor.config.shouldAppendStoreCors) {
+        /**
+         * Apply the store cors
+         */
+        this.router.use(
+          descriptor.route,
+          cors({
+            origin: parseCorsOrigins(
+              this.configModule.projectConfig.store_cors || ""
+            ),
+            credentials: true,
+          })
+        )
+      }
+
+      if (descriptor.config.shouldRequireAdminAuth) {
+        /**
+         * Require the admin to be authenticated
+         */
+        this.router.use(descriptor.route, authenticate())
+      }
+
+      if (descriptor.config.shouldAppendAdminCors) {
+        /**
+         * Apply the admin cors
+         */
+        this.router.use(
+          descriptor.route,
+          cors({
+            origin: parseCorsOrigins(
+              this.configModule.projectConfig.admin_cors || ""
+            ),
+            credentials: true,
+          })
+        )
       }
 
       for (const route of routes) {
@@ -617,7 +675,11 @@ export class RoutesLoader {
           }`,
         })
 
-        this.applyBodyParser(descriptor.route, route.method!)
+        /**
+         * Apply the body parser middleware if the route
+         * has not opted out of it.
+         */
+        this.applyBodyParserMiddleware(descriptor.route, route.method!)
 
         this.router[route.method!.toLowerCase()](
           descriptor.route,
@@ -639,6 +701,13 @@ export class RoutesLoader {
     }
 
     const routes = descriptor.config.routes
+
+    /**
+     * We don't sort the middlewares to preserve the order
+     * in which they are defined in the file. This is to
+     * maintain the same behavior as how middleware is applied
+     * in express.
+     */
 
     for (const route of routes) {
       if (Array.isArray(route.method)) {
@@ -664,25 +733,6 @@ export class RoutesLoader {
     }
   }
 
-  applyGlobalMiddlewares() {
-    if (this.routesMap.size > 0) {
-      const adminCors = this.configModule.projectConfig.admin_cors || ""
-      this.router.use(
-        "/admin",
-        cors({
-          origin: parseCorsOrigins(adminCors),
-          credentials: true,
-        })
-      )
-
-      const storeCors = this.configModule.projectConfig.store_cors || ""
-      this.router.use(
-        "/store",
-        cors({ origin: parseCorsOrigins(storeCors), credentials: true })
-      )
-    }
-  }
-
   async load() {
     performance && performance.mark("file-base-routing-start" + this.rootDir)
 
@@ -705,8 +755,6 @@ export class RoutesLoader {
 
       await this.createRoutesMap({ dirPath: this.rootDir })
       await this.createRoutesConfig()
-
-      this.applyGlobalMiddlewares()
 
       await this.registerMiddlewares()
       await this.registerRoutes()
