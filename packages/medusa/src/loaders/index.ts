@@ -1,4 +1,3 @@
-import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
 import { Express, NextFunction, Request, Response } from "express"
 
 import databaseLoader, { dataSource } from "./database"
@@ -17,8 +16,6 @@ import loadConfig from "./config"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
-import IsolatePricingDomainFeatureFlag from "./feature-flags/isolate-pricing-domain"
-import IsolateProductDomainFeatureFlag from "./feature-flags/isolate-product-domain"
 import Logger from "./logger"
 import loadMedusaApp from "./medusa-app"
 import modelsLoader from "./models"
@@ -42,6 +39,7 @@ export default async ({
   expressApp,
   isTest,
 }: Options): Promise<{
+  disposeResources: () => Promise<void>
   container: MedusaContainer
   dbConnection: Connection
   app: Express
@@ -98,17 +96,6 @@ export default async ({
 
   const pgConnection = await pgConnectionLoader({ container, configModule })
 
-  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
-
-  track("MODULES_INIT_STARTED")
-  await moduleLoader({
-    container,
-    moduleResolutions: registerModules(configModule?.modules),
-    logger: Logger,
-  })
-  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
-  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
-
   const dbActivity = Logger.activity(`Initializing database${EOL}`)
   track("DATABASE_INIT_STARTED")
   const dbConnection = await databaseLoader({
@@ -129,19 +116,23 @@ export default async ({
   })
 
   container.register("remoteQuery", asValue(null)) // ensure remoteQuery is always registered
-  // Only load non legacy modules, the legacy modules (non migrated yet) are retrieved by the registerModule above
-  if (
-    featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
-    featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
-  ) {
-    await loadMedusaApp({ configModule, container })
-  }
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
   servicesLoader({ container, configModule, isTest })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
+
+  const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
+  track("MODULES_INIT_STARTED")
+
+  await loadMedusaApp({
+    configModule,
+    container,
+  })
+
+  const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
+  track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")
@@ -196,5 +187,24 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-  return { container, dbConnection, app: expressApp, pgConnection }
+  /**
+   * One shouldn't have to know what resources need to be disposed
+   * under the hood. This function should be called when the server
+   * is shutting down.
+   */
+  async function disposeResources() {
+    await Promise.all([
+      dbConnection?.destroy(),
+      pgConnection?.context?.destroy(),
+      container?.dispose(),
+    ])
+  }
+
+  return {
+    disposeResources,
+    container,
+    dbConnection,
+    app: expressApp,
+    pgConnection,
+  }
 }

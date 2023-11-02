@@ -14,15 +14,17 @@ async function bootstrapApp({ cwd, env = {} } = {}) {
 
   const loaders = require("@medusajs/medusa/dist/loaders").default
 
-  const { container, dbConnection, pgConnection } = await loaders({
-    directory: path.resolve(cwd || process.cwd()),
-    expressApp: app,
-    isTest: false,
-  })
+  const { container, dbConnection, pgConnection, disposeResources } =
+    await loaders({
+      directory: path.resolve(cwd || process.cwd()),
+      expressApp: app,
+      isTest: false,
+    })
 
   const PORT = await getPort()
 
   return {
+    disposeResources,
     container,
     db: dbConnection,
     pgConnection,
@@ -38,7 +40,7 @@ module.exports = {
     env = {},
     skipExpressListen = false,
   } = {}) => {
-    const { app, port, container, db, pgConnection } = await bootstrapApp({
+    const { app, port, container, disposeResources } = await bootstrapApp({
       cwd,
       env,
     })
@@ -51,11 +53,7 @@ module.exports = {
     }
 
     const shutdown = async () => {
-      await Promise.all([
-        expressServer.close(),
-        db?.destroy(),
-        pgConnection?.context?.destroy(),
-      ])
+      await Promise.all([expressServer.close(), disposeResources()])
 
       if (typeof global !== "undefined" && global?.gc) {
         global.gc()
