@@ -10,6 +10,9 @@ export enum Workflows {
   CreateCart = "create-cart",
 
   CreateInventoryItems = "create-inventory-items",
+
+  // Price list workflows
+  CreatePriceList = 'create-price-list',
 }
 
 export enum InputAlias {

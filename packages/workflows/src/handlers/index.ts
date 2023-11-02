@@ -7,3 +7,4 @@ export * as MiddlewaresHandlers from "./middlewares"
 export * as ProductHandlers from "./product"
 export * as RegionHandlers from "./region"
 export * as SalesChannelHandlers from "./sales-channel"
+export * as PriceListHandlers from './price-list'

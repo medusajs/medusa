@@ -1,4 +1,10 @@
 import {
+  AdminPriceListPricesCreateReq,
+  CreatePriceListInput,
+  PriceListStatus,
+  PriceListType,
+} from "../../../../types/price-list"
+import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -6,24 +12,21 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import {
-  AdminPriceListPricesCreateReq,
-  CreatePriceListInput,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
-
-import { Type } from "class-transformer"
-import { Request } from "express"
-import { EntityManager } from "typeorm"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import PriceListService from "../../../../services/price-list"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { Workflows, createPriceLists } from "@medusajs/workflows"
 import {
   defaultAdminPriceListFields,
   defaultAdminPriceListRelations,
 } from "./index"
+
+import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FlagRouter } from "@medusajs/utils"
 import { PriceList } from "../../../../models"
+import PriceListService from "../../../../services/price-list"
+import { Request } from "express"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { Type } from "class-transformer"
+import { WorkflowTypes } from "@medusajs/types"
 
 /**
  * @oas [post] /admin/price-lists
@@ -110,16 +113,41 @@ export default async (req: Request, res) => {
     req.scope.resolve("priceListService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  let priceList = await manager.transaction(async (transactionManager) => {
-    return await priceListService
-      .withTransaction(transactionManager)
-      .create(req.validatedBody as CreatePriceListInput)
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  let priceList
+
+  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
+    workflows: Workflows.CreatePriceList,
   })
 
-  priceList = await priceListService.retrieve(priceList.id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+  if (isWorkflowEnabled) {
+    const createPriceListWorkflow = createPriceLists(req.scope)
+
+    const input = {
+      priceLists: [
+        req.validatedBody,
+      ] as WorkflowTypes.PriceListWorkflow.CreatePriceListDTO[],
+    }
+
+    const { result } = await createPriceListWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+    priceList = result[0]
+  } else {
+    const createdPl = await manager.transaction(async (transactionManager) => {
+      return await priceListService
+        .withTransaction(transactionManager)
+        .create(req.validatedBody as CreatePriceListInput)
+    })
+
+    priceList = await priceListService.retrieve(createdPl.id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.json({ price_list: priceList })
 }
