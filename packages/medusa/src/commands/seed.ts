@@ -29,6 +29,7 @@ import PublishableApiKeyService from "../services/publishable-api-key"
 import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
 import { CreateProductCategoryInput } from "../types/product-category"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 type SeedOptions = {
   directory: string
@@ -122,8 +123,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
     "shippingProfileService"
   )
   const pricingModuleService: IPricingModuleService = container.resolve(
-    "pricingModuleService",
-    { allowUnregistered: true }
+    ModuleRegistrationName.PRICING
   )
   /* eslint-enable */
 
