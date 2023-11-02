@@ -8,638 +8,1583 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [admin/discounts](../../modules/admin_discounts.mdx).[internal](../../admin_discounts/modules/admin_discounts.internal.mdx).internal
 
+## Namespaces
+
+- [CacheTypes](../../internal-1/modules/admin_discounts.internal.internal-1.CacheTypes.mdx)
+- [CommonTypes](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx)
+- [DAL](../../internal-1/modules/admin_discounts.internal.internal-1.DAL.mdx)
+- [EventBusTypes](../../internal-1/modules/admin_discounts.internal.internal-1.EventBusTypes.mdx)
+- [FeatureFlagTypes](../../internal-1/modules/admin_discounts.internal.internal-1.FeatureFlagTypes.mdx)
+- [InventoryTypes](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx)
+- [LoggerTypes](../../internal-1/modules/admin_discounts.internal.internal-1.LoggerTypes.mdx)
+- [ModulesSdkTypes](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx)
+- [PricingTypes](../../internal-1/modules/admin_discounts.internal.internal-1.PricingTypes.mdx)
+- [ProductTypes](../../internal-1/modules/admin_discounts.internal.internal-1.ProductTypes.mdx)
+- [SalesChannelTypes](../../internal-1/modules/admin_discounts.internal.internal-1.SalesChannelTypes.mdx)
+- [SearchTypes](../../internal-1/modules/admin_discounts.internal.internal-1.SearchTypes.mdx)
+- [StockLocationTypes](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx)
+- [TransactionBaseTypes](../../internal-1/modules/admin_discounts.internal.internal-1.TransactionBaseTypes.mdx)
+- [WorkflowTypes](../../internal-1/modules/admin_discounts.internal.internal-1.WorkflowTypes.mdx)
+
+## Interfaces
+
+- [Context](../../internal-1/interfaces/admin_discounts.internal.internal-1.Context.mdx)
+- [ILinkModule](../../internal-1/interfaces/admin_discounts.internal.internal-1.ILinkModule.mdx)
+- [JoinerArgument](../../internal-1/interfaces/admin_discounts.internal.internal-1.JoinerArgument.mdx)
+- [JoinerDirective](../../internal-1/interfaces/admin_discounts.internal.internal-1.JoinerDirective.mdx)
+- [JoinerServiceConfig](../../internal-1/interfaces/admin_discounts.internal.internal-1.JoinerServiceConfig.mdx)
+- [JoinerServiceConfigAlias](../../internal-1/interfaces/admin_discounts.internal.internal-1.JoinerServiceConfigAlias.mdx)
+- [ProductCategoryTransformOptions](../../internal-1/interfaces/admin_discounts.internal.internal-1.ProductCategoryTransformOptions.mdx)
+- [RemoteExpandProperty](../../internal-1/interfaces/admin_discounts.internal.internal-1.RemoteExpandProperty.mdx)
+- [RemoteJoinerQuery](../../internal-1/interfaces/admin_discounts.internal.internal-1.RemoteJoinerQuery.mdx)
+- [RemoteNestedExpands](../../internal-1/interfaces/admin_discounts.internal.internal-1.RemoteNestedExpands.mdx)
+
 ## References
 
-### Address
+### AddPricesDTO
 
-Re-exports [Address](../classes/admin_collections.internal.Address.mdx)
+Re-exports [AddPricesDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.AddPricesDTO.mdx)
 
 ___
 
-### AllocationType
+### AddRulesDTO
 
-Re-exports [AllocationType](../enums/admin_collections.internal.AllocationType.mdx)
+Re-exports [AddRulesDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.AddRulesDTO.mdx)
 
 ___
 
-### AnalyticsConfig
+### AddressCreatePayload
 
-Re-exports [AnalyticsConfig](../classes/admin_discounts.internal.internal.AnalyticsConfig.mdx)
+Re-exports [AddressCreatePayload](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.AddressCreatePayload.mdx)
 
 ___
 
-### BatchJob
+### AddressPayload
 
-Re-exports [BatchJob](../classes/admin_batch_jobs.internal.BatchJob.mdx)
+Re-exports [AddressPayload](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.AddressPayload.mdx)
 
 ___
 
-### Cart
+### BaseEntity
 
-Re-exports [Cart](../classes/admin_collections.internal.Cart.mdx)
+Re-exports [BaseEntity](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.BaseEntity.mdx)
 
 ___
 
-### CartType
+### BaseFilterable
 
-Re-exports [CartType](../enums/admin_collections.internal.CartType.mdx)
+Re-exports [BaseFilterable](../../DAL/interfaces/admin_discounts.internal.internal-1.DAL.BaseFilterable.mdx)
 
 ___
 
-### ClaimFulfillmentStatus
+### BulkUpdateInventoryLevelInput
 
-Re-exports [ClaimFulfillmentStatus](../enums/admin_collections.internal.ClaimFulfillmentStatus.mdx)
+Re-exports [BulkUpdateInventoryLevelInput](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx#bulkupdateinventorylevelinput)
 
 ___
 
-### ClaimImage
+### CalculatedPriceSetDTO
 
-Re-exports [ClaimImage](../classes/admin_collections.internal.ClaimImage.mdx)
+Re-exports [CalculatedPriceSetDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CalculatedPriceSetDTO.mdx)
 
 ___
 
-### ClaimItem
+### CartWorkflow
 
-Re-exports [ClaimItem](../classes/admin_collections.internal.ClaimItem.mdx)
+Re-exports [CartWorkflow](../../WorkflowTypes/modules/admin_discounts.internal.internal-1.WorkflowTypes.CartWorkflow.mdx)
 
 ___
 
-### ClaimOrder
+### CommonWorkflow
 
-Re-exports [ClaimOrder](../classes/admin_collections.internal.ClaimOrder.mdx)
+Re-exports [CommonWorkflow](../../WorkflowTypes/modules/admin_discounts.internal.internal-1.WorkflowTypes.CommonWorkflow.mdx)
 
 ___
 
-### ClaimPaymentStatus
+### ConfigModule
 
-Re-exports [ClaimPaymentStatus](../enums/admin_collections.internal.ClaimPaymentStatus.mdx)
+Re-exports [ConfigModule](../../admin_discounts/modules/admin_discounts.internal.mdx#configmodule)
 
 ___
 
-### ClaimReason
+### Constructor
 
-Re-exports [ClaimReason](../enums/admin_collections.internal.ClaimReason.mdx)
+Re-exports [Constructor](../../admin_discounts/modules/admin_discounts.internal.mdx#constructor)
 
 ___
 
-### ClaimTag
+### CreateCurrencyDTO
 
-Re-exports [ClaimTag](../classes/admin_collections.internal.ClaimTag.mdx)
+Re-exports [CreateCurrencyDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CreateCurrencyDTO.mdx)
 
 ___
 
-### ClaimType
+### CreateInventoryItemInput
 
-Re-exports [ClaimType](../enums/admin_collections.internal.ClaimType.mdx)
+Re-exports [CreateInventoryItemInput](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx#createinventoryiteminput)
 
 ___
 
-### Country
+### CreateInventoryLevelInput
 
-Re-exports [Country](../classes/admin_collections.internal.Country.mdx)
+Re-exports [CreateInventoryLevelInput](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx#createinventorylevelinput)
 
 ___
 
-### Currency
+### CreateMoneyAmountDTO
 
-Re-exports [Currency](../classes/admin_collections.internal.Currency.mdx)
+Re-exports [CreateMoneyAmountDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CreateMoneyAmountDTO.mdx)
 
 ___
 
-### CustomShippingOption
+### CreatePriceRuleDTO
 
-Re-exports [CustomShippingOption](../classes/admin_discounts.internal.internal.CustomShippingOption.mdx)
+Re-exports [CreatePriceRuleDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CreatePriceRuleDTO.mdx)
 
 ___
 
-### Customer
+### CreatePriceSetDTO
 
-Re-exports [Customer](../classes/admin_collections.internal.Customer.mdx)
+Re-exports [CreatePriceSetDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CreatePriceSetDTO.mdx)
 
 ___
 
-### CustomerGroup
+### CreatePriceSetMoneyAmountDTO
 
-Re-exports [CustomerGroup](../classes/admin_collections.internal.CustomerGroup.mdx)
+Re-exports [CreatePriceSetMoneyAmountDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CreatePriceSetMoneyAmountDTO.mdx)
 
 ___
 
-### Discount
+### CreatePriceSetMoneyAmountRulesDTO
 
-Re-exports [Discount](../classes/admin_collections.internal.Discount.mdx)
+Re-exports [CreatePriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CreatePriceSetMoneyAmountRulesDTO.mdx)
 
 ___
 
-### DiscountCondition
+### CreatePriceSetRuleTypeDTO
 
-Re-exports [DiscountCondition](../classes/admin_collections.internal.DiscountCondition.mdx)
+Re-exports [CreatePriceSetRuleTypeDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CreatePriceSetRuleTypeDTO.mdx)
 
 ___
 
-### DiscountConditionCustomerGroup
+### CreatePricesDTO
 
-Re-exports [DiscountConditionCustomerGroup](../classes/admin_discounts.internal.internal.DiscountConditionCustomerGroup.mdx)
+Re-exports [CreatePricesDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CreatePricesDTO.mdx)
 
 ___
 
-### DiscountConditionOperator
+### CreateProductCategoryDTO
 
-Re-exports [DiscountConditionOperator](../enums/admin_collections.internal.DiscountConditionOperator.mdx)
+Re-exports [CreateProductCategoryDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductCategoryDTO.mdx)
 
 ___
 
-### DiscountConditionProduct
+### CreateProductCollectionDTO
 
-Re-exports [DiscountConditionProduct](../classes/admin_discounts.internal.internal.DiscountConditionProduct.mdx)
+Re-exports [CreateProductCollectionDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductCollectionDTO.mdx)
 
 ___
 
-### DiscountConditionProductCollection
+### CreateProductDTO
 
-Re-exports [DiscountConditionProductCollection](../classes/admin_discounts.internal.internal.DiscountConditionProductCollection.mdx)
+Re-exports [CreateProductDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductDTO.mdx)
 
 ___
 
-### DiscountConditionProductTag
+### CreateProductOnlyDTO
 
-Re-exports [DiscountConditionProductTag](../classes/admin_discounts.internal.internal.DiscountConditionProductTag.mdx)
+Re-exports [CreateProductOnlyDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductOnlyDTO.mdx)
 
 ___
 
-### DiscountConditionProductType
+### CreateProductOptionDTO
 
-Re-exports [DiscountConditionProductType](../classes/admin_discounts.internal.internal.DiscountConditionProductType.mdx)
+Re-exports [CreateProductOptionDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductOptionDTO.mdx)
 
 ___
 
-### DiscountConditionType
+### CreateProductOptionOnlyDTO
 
-Re-exports [DiscountConditionType](../enums/admin_collections.internal.DiscountConditionType.mdx)
+Re-exports [CreateProductOptionOnlyDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductOptionOnlyDTO.mdx)
 
 ___
 
-### DiscountRule
+### CreateProductTagDTO
 
-Re-exports [DiscountRule](../classes/admin_collections.internal.DiscountRule.mdx)
+Re-exports [CreateProductTagDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductTagDTO.mdx)
 
 ___
 
-### DiscountRuleType
+### CreateProductTypeDTO
 
-Re-exports [DiscountRuleType](../enums/admin_collections.internal.DiscountRuleType.mdx)
+Re-exports [CreateProductTypeDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductTypeDTO.mdx)
 
 ___
 
-### DraftOrder
+### CreateProductVariantDTO
 
-Re-exports [DraftOrder](../classes/admin_collections.internal.DraftOrder.mdx)
+Re-exports [CreateProductVariantDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductVariantDTO.mdx)
 
 ___
 
-### DraftOrderStatus
+### CreateProductVariantOnlyDTO
 
-Re-exports [DraftOrderStatus](../enums/admin_collections.internal.DraftOrderStatus.mdx)
+Re-exports [CreateProductVariantOnlyDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductVariantOnlyDTO.mdx)
 
 ___
 
-### Fulfillment
+### CreateProductVariantOptionDTO
 
-Re-exports [Fulfillment](../classes/admin_collections.internal.Fulfillment.mdx)
+Re-exports [CreateProductVariantOptionDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.CreateProductVariantOptionDTO.mdx)
 
 ___
 
-### FulfillmentItem
+### CreateReservationItemInput
 
-Re-exports [FulfillmentItem](../classes/admin_collections.internal.FulfillmentItem.mdx)
+Re-exports [CreateReservationItemInput](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx#createreservationiteminput)
 
 ___
 
-### FulfillmentProvider
+### CreateRuleTypeDTO
 
-Re-exports [FulfillmentProvider](../classes/admin_collections.internal.FulfillmentProvider.mdx)
+Re-exports [CreateRuleTypeDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CreateRuleTypeDTO.mdx)
 
 ___
 
-### FulfillmentStatus
+### CreateStockLocationInput
 
-Re-exports [FulfillmentStatus](../enums/admin_collections.internal.FulfillmentStatus.mdx)
+Re-exports [CreateStockLocationInput](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#createstocklocationinput)
 
 ___
 
-### GiftCard
+### CurrencyDTO
 
-Re-exports [GiftCard](../classes/admin_collections.internal.GiftCard.mdx)
+Re-exports [CurrencyDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.CurrencyDTO.mdx)
 
 ___
 
-### GiftCardTransaction
+### CustomFindOptions
 
-Re-exports [GiftCardTransaction](../classes/admin_collections.internal.GiftCardTransaction.mdx)
+Re-exports [CustomFindOptions](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.CustomFindOptions.mdx)
 
 ___
 
-### IdempotencyKey
+### DateComparisonOperator
 
-Re-exports [IdempotencyKey](../classes/admin_discounts.internal.internal.IdempotencyKey.mdx)
+Re-exports [DateComparisonOperator](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.DateComparisonOperator.mdx)
 
 ___
 
-### Image
+### DeleteFileType
 
-Re-exports [Image](../classes/admin_collections.internal.Image.mdx)
+Re-exports [DeleteFileType](../../admin_discounts/modules/admin_discounts.internal.mdx#deletefiletype)
 
 ___
 
-### Invite
+### DeleteResponse
 
-Re-exports [Invite](../classes/admin_discounts.internal.internal.Invite.mdx)
+Re-exports [DeleteResponse](../../admin_discounts/modules/admin_discounts.internal.mdx#deleteresponse)
 
 ___
 
-### LineItem
+### EmitData
 
-Re-exports [LineItem](../classes/admin_collections.internal.LineItem.mdx)
+Re-exports [EmitData](../../admin_discounts/modules/admin_discounts.internal.mdx#emitdata)
 
 ___
 
-### LineItemAdjustment
+### EmptyQueryParams
 
-Re-exports [LineItemAdjustment](../classes/admin_collections.internal.LineItemAdjustment.mdx)
+Re-exports [EmptyQueryParams](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.EmptyQueryParams.mdx)
 
 ___
 
-### LineItemTaxLine
+### EntityDateColumns
 
-Re-exports [LineItemTaxLine](../classes/admin_collections.internal.LineItemTaxLine.mdx)
+Re-exports [EntityDateColumns](../../internal-1/modules/admin_discounts.internal.internal-1.DAL.mdx#entitydatecolumns)
 
 ___
 
-### MoneyAmount
+### EventHandler
 
-Re-exports [MoneyAmount](../classes/admin_collections.internal.MoneyAmount.mdx)
+Re-exports [EventHandler](../../internal-1/modules/admin_discounts.internal.internal-1.EventBusTypes.mdx#eventhandler)
 
 ___
 
-### Note
+### ExtendedFindConfig
 
-Re-exports [Note](../classes/admin_discounts.internal.internal.Note.mdx)
+Re-exports [ExtendedFindConfig](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#extendedfindconfig)
 
 ___
 
-### Notification
+### ExternalModuleDeclaration
 
-Re-exports [Notification](../classes/admin_discounts.internal.internal.Notification.mdx)
+Re-exports [ExternalModuleDeclaration](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#externalmoduledeclaration)
 
 ___
 
-### Oauth
+### FeatureFlagsResponse
 
-Re-exports [Oauth](../classes/admin_discounts.internal.internal.Oauth.mdx)
+Re-exports [FeatureFlagsResponse](../../internal-1/modules/admin_discounts.internal.internal-1.FeatureFlagTypes.mdx#featureflagsresponse)
 
 ___
 
-### Order
+### FileServiceGetUploadStreamResult
 
-Re-exports [Order](../classes/admin_collections.internal.Order.mdx)
+Re-exports [FileServiceGetUploadStreamResult](../../admin_discounts/modules/admin_discounts.internal.mdx#fileservicegetuploadstreamresult)
 
 ___
 
-### OrderEdit
+### FileServiceUploadResult
 
-Re-exports [OrderEdit](../classes/admin_collections.internal.OrderEdit.mdx)
+Re-exports [FileServiceUploadResult](../../admin_discounts/modules/admin_discounts.internal.mdx#fileserviceuploadresult)
 
 ___
 
-### OrderEditItemChangeType
+### FilterQuery
 
-Re-exports [OrderEditItemChangeType](../enums/admin_collections.internal.OrderEditItemChangeType.mdx)
+Re-exports [FilterQuery](../../internal-1/modules/admin_discounts.internal.internal-1.DAL.mdx#filterquery)
 
 ___
 
-### OrderEditStatus
+### FilterableCurrencyProps
 
-Re-exports [OrderEditStatus](../enums/admin_collections.internal.OrderEditStatus.mdx)
+Re-exports [FilterableCurrencyProps](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx)
 
 ___
 
-### OrderItemChange
+### FilterableInventoryItemProps
 
-Re-exports [OrderItemChange](../classes/admin_collections.internal.OrderItemChange.mdx)
+Re-exports [FilterableInventoryItemProps](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx#filterableinventoryitemprops)
 
 ___
 
-### OrderStatus
+### FilterableInventoryLevelProps
 
-Re-exports [OrderStatus](../enums/admin_collections.internal.OrderStatus.mdx)
+Re-exports [FilterableInventoryLevelProps](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx#filterableinventorylevelprops)
 
 ___
 
-### Payment
+### FilterableMoneyAmountProps
 
-Re-exports [Payment](../classes/admin_collections.internal.Payment.mdx)
+Re-exports [FilterableMoneyAmountProps](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx)
 
 ___
 
-### PaymentCollection
+### FilterablePriceRuleProps
 
-Re-exports [PaymentCollection](../classes/admin_collections.internal.PaymentCollection.mdx)
+Re-exports [FilterablePriceRuleProps](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx)
 
 ___
 
-### PaymentCollectionStatus
+### FilterablePriceSetMoneyAmountProps
 
-Re-exports [PaymentCollectionStatus](../enums/admin_collections.internal.PaymentCollectionStatus.mdx)
+Re-exports [FilterablePriceSetMoneyAmountProps](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountProps.mdx)
 
 ___
 
-### PaymentCollectionType
+### FilterablePriceSetMoneyAmountRulesProps
 
-Re-exports [PaymentCollectionType](../enums/admin_discounts.internal.internal.PaymentCollectionType.mdx)
+Re-exports [FilterablePriceSetMoneyAmountRulesProps](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountRulesProps.mdx)
 
 ___
 
-### PaymentProvider
+### FilterablePriceSetProps
 
-Re-exports [PaymentProvider](../classes/admin_collections.internal.PaymentProvider.mdx)
+Re-exports [FilterablePriceSetProps](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx)
 
 ___
 
-### PaymentSession
+### FilterablePriceSetRuleTypeProps
 
-Re-exports [PaymentSession](../classes/admin_collections.internal.PaymentSession.mdx)
+Re-exports [FilterablePriceSetRuleTypeProps](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.FilterablePriceSetRuleTypeProps.mdx)
 
 ___
 
-### PaymentSessionStatus
+### FilterableProductCategoryProps
 
-Re-exports [PaymentSessionStatus](../enums/admin_discounts.internal.internal.PaymentSessionStatus.mdx)
+Re-exports [FilterableProductCategoryProps](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.FilterableProductCategoryProps.mdx)
 
 ___
 
-### PaymentStatus
+### FilterableProductCollectionProps
 
-Re-exports [PaymentStatus](../enums/admin_collections.internal.PaymentStatus.mdx)
+Re-exports [FilterableProductCollectionProps](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.FilterableProductCollectionProps.mdx)
 
 ___
 
-### PriceList
+### FilterableProductOptionProps
 
-Re-exports [PriceList](../classes/admin_collections.internal.PriceList.mdx)
+Re-exports [FilterableProductOptionProps](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx)
 
 ___
 
-### Product
+### FilterableProductProps
 
-Re-exports [Product](../classes/admin_collections.internal.Product.mdx)
+Re-exports [FilterableProductProps](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.FilterableProductProps.mdx)
 
 ___
 
-### ProductCategory
+### FilterableProductTagProps
 
-Re-exports [ProductCategory](../classes/admin_collections.internal.ProductCategory.mdx)
+Re-exports [FilterableProductTagProps](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.FilterableProductTagProps.mdx)
 
 ___
 
-### ProductCollection
+### FilterableProductTypeProps
 
-Re-exports [ProductCollection](../classes/admin_collections.internal.ProductCollection.mdx)
+Re-exports [FilterableProductTypeProps](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.FilterableProductTypeProps.mdx)
 
 ___
 
-### ProductOption
+### FilterableProductVariantProps
 
-Re-exports [ProductOption](../classes/admin_collections.internal.ProductOption.mdx)
+Re-exports [FilterableProductVariantProps](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.FilterableProductVariantProps.mdx)
 
 ___
 
-### ProductOptionValue
+### FilterableReservationItemProps
 
-Re-exports [ProductOptionValue](../classes/admin_collections.internal.ProductOptionValue.mdx)
+Re-exports [FilterableReservationItemProps](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx#filterablereservationitemprops)
+
+___
+
+### FilterableRuleTypeProps
+
+Re-exports [FilterableRuleTypeProps](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx)
+
+___
+
+### FilterableStockLocationProps
+
+Re-exports [FilterableStockLocationProps](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#filterablestocklocationprops)
+
+___
+
+### FindConfig
+
+Re-exports [FindConfig](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.FindConfig.mdx)
+
+___
+
+### FindOptions
+
+Re-exports [FindOptions](../../internal-1/modules/admin_discounts.internal.internal-1.DAL.mdx#findoptions)
+
+___
+
+### FindPaginationParams
+
+Re-exports [FindPaginationParams](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.FindPaginationParams.mdx)
+
+___
+
+### FindParams
+
+Re-exports [FindParams](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.FindParams.mdx)
+
+___
+
+### FlagSettings
+
+Re-exports [FlagSettings](../../internal-1/modules/admin_discounts.internal.internal-1.FeatureFlagTypes.mdx#flagsettings)
+
+___
+
+### GetUploadedFileType
+
+Re-exports [GetUploadedFileType](../../admin_discounts/modules/admin_discounts.internal.mdx#getuploadedfiletype)
+
+___
+
+### HttpCompressionOptions
+
+Re-exports [HttpCompressionOptions](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#httpcompressionoptions)
+
+___
+
+### ICacheService
+
+Re-exports [ICacheService](../interfaces/admin_discounts.internal.ICacheService.mdx)
+
+___
+
+### IEventBusModuleService
+
+Re-exports [IEventBusModuleService](../interfaces/admin_discounts.internal.IEventBusModuleService.mdx)
+
+___
+
+### IEventBusService
+
+Re-exports [IEventBusService](../interfaces/admin_discounts.internal.IEventBusService.mdx)
+
+___
+
+### IFlagRouter
+
+Re-exports [IFlagRouter](../../FeatureFlagTypes/interfaces/admin_discounts.internal.internal-1.FeatureFlagTypes.IFlagRouter.mdx)
+
+___
+
+### IInventoryService
+
+Re-exports [IInventoryService](../interfaces/admin_discounts.internal.IInventoryService.mdx)
+
+___
+
+### IPricingModuleService
+
+Re-exports [IPricingModuleService](../interfaces/admin_discounts.internal.IPricingModuleService.mdx)
+
+___
+
+### IProductModuleService
+
+Re-exports [IProductModuleService](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.IProductModuleService.mdx)
+
+___
+
+### ISearchService
+
+Re-exports [ISearchService](../../SearchTypes/interfaces/admin_discounts.internal.internal-1.SearchTypes.ISearchService.mdx)
+
+___
+
+### IStockLocationService
+
+Re-exports [IStockLocationService](../interfaces/admin_discounts.internal.IStockLocationService.mdx)
+
+___
+
+### ITransactionBaseService
+
+Re-exports [ITransactionBaseService](../interfaces/admin_discounts.internal.ITransactionBaseService.mdx)
+
+___
+
+### IndexSettings
+
+Re-exports [IndexSettings](../../internal-1/modules/admin_discounts.internal.internal-1.SearchTypes.mdx#indexsettings)
+
+___
+
+### InternalModuleDeclaration
+
+Re-exports [InternalModuleDeclaration](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#internalmoduledeclaration)
+
+___
+
+### InventoryItemDTO
+
+Re-exports [InventoryItemDTO](../../admin_discounts/modules/admin_discounts.internal.mdx#inventoryitemdto)
+
+___
+
+### InventoryLevelDTO
+
+Re-exports [InventoryLevelDTO](../../admin_discounts/modules/admin_discounts.internal.mdx#inventoryleveldto)
+
+___
+
+### InventoryWorkflow
+
+Re-exports [InventoryWorkflow](../../WorkflowTypes/modules/admin_discounts.internal.internal-1.WorkflowTypes.InventoryWorkflow.mdx)
+
+___
+
+### LinkModuleDefinition
+
+Re-exports [LinkModuleDefinition](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#linkmoduledefinition)
+
+___
+
+### LoadedModule
+
+Re-exports [LoadedModule](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#loadedmodule)
+
+___
+
+### LoaderOptions
+
+Re-exports [LoaderOptions](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#loaderoptions)
+
+___
+
+### LogLevel
+
+Re-exports [LogLevel](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#loglevel)
+
+___
+
+### Logger
+
+Re-exports [Logger](../interfaces/admin_discounts.internal.Logger.mdx)
+
+___
+
+### LoggerOptions
+
+Re-exports [LoggerOptions](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#loggeroptions)
+
+___
+
+### MODULE\_RESOURCE\_TYPE
+
+Re-exports [MODULE_RESOURCE_TYPE](../../ModulesSdkTypes/enums/admin_discounts.internal.internal-1.ModulesSdkTypes.MODULE_RESOURCE_TYPE.mdx)
+
+___
+
+### MODULE\_SCOPE
+
+Re-exports [MODULE_SCOPE](../../ModulesSdkTypes/enums/admin_discounts.internal.internal-1.ModulesSdkTypes.MODULE_SCOPE.mdx)
+
+___
+
+### MedusaContainer
+
+Re-exports [MedusaContainer](../../admin_discounts/modules/admin_discounts.internal.mdx#medusacontainer)
+
+___
+
+### ModuleConfig
+
+Re-exports [ModuleConfig](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#moduleconfig)
+
+___
+
+### ModuleDefinition
+
+Re-exports [ModuleDefinition](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#moduledefinition)
+
+___
+
+### ModuleExports
+
+Re-exports [ModuleExports](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#moduleexports)
+
+___
+
+### ModuleJoinerConfig
+
+Re-exports [ModuleJoinerConfig](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#modulejoinerconfig)
+
+___
+
+### ModuleJoinerRelationship
+
+Re-exports [ModuleJoinerRelationship](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#modulejoinerrelationship)
+
+___
+
+### ModuleLoaderFunction
+
+Re-exports [ModuleLoaderFunction](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#moduleloaderfunction)
+
+___
+
+### ModuleResolution
+
+Re-exports [ModuleResolution](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#moduleresolution)
+
+___
+
+### ModuleServiceInitializeCustomDataLayerOptions
+
+Re-exports [ModuleServiceInitializeCustomDataLayerOptions](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#moduleserviceinitializecustomdatalayeroptions)
+
+___
+
+### ModuleServiceInitializeOptions
+
+Re-exports [ModuleServiceInitializeOptions](../../ModulesSdkTypes/interfaces/admin_discounts.internal.internal-1.ModulesSdkTypes.ModuleServiceInitializeOptions.mdx)
+
+___
+
+### ModulesResponse
+
+Re-exports [ModulesResponse](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#modulesresponse)
+
+___
+
+### MoneyAmountDTO
+
+Re-exports [MoneyAmountDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)
+
+___
+
+### NumericalComparisonOperator
+
+Re-exports [NumericalComparisonOperator](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.NumericalComparisonOperator.mdx)
+
+___
+
+### OptionsQuery
+
+Re-exports [OptionsQuery](../../DAL/interfaces/admin_discounts.internal.internal-1.DAL.OptionsQuery.mdx)
+
+___
+
+### PaginatedResponse
+
+Re-exports [PaginatedResponse](../../admin_discounts/modules/admin_discounts.internal.mdx#paginatedresponse)
+
+___
+
+### PartialPick
+
+Re-exports [PartialPick](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#partialpick)
+
+___
+
+### PriceRuleDTO
+
+Re-exports [PriceRuleDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.PriceRuleDTO.mdx)
+
+___
+
+### PriceSetDTO
+
+Re-exports [PriceSetDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.PriceSetDTO.mdx)
+
+___
+
+### PriceSetMoneyAmountDTO
+
+Re-exports [PriceSetMoneyAmountDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)
+
+___
+
+### PriceSetMoneyAmountRulesDTO
+
+Re-exports [PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)
+
+___
+
+### PriceSetRuleTypeDTO
+
+Re-exports [PriceSetRuleTypeDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.PriceSetRuleTypeDTO.mdx)
+
+___
+
+### PricingContext
+
+Re-exports [PricingContext](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.PricingContext.mdx)
+
+___
+
+### PricingFilters
+
+Re-exports [PricingFilters](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.PricingFilters.mdx)
+
+___
+
+### ProductCategoryDTO
+
+Re-exports [ProductCategoryDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)
+
+___
+
+### ProductCollectionDTO
+
+Re-exports [ProductCollectionDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)
+
+___
+
+### ProductDTO
+
+Re-exports [ProductDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.ProductDTO.mdx)
+
+___
+
+### ProductImageDTO
+
+Re-exports [ProductImageDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.ProductImageDTO.mdx)
+
+___
+
+### ProductOptionDTO
+
+Re-exports [ProductOptionDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.ProductOptionDTO.mdx)
+
+___
+
+### ProductOptionValueDTO
+
+Re-exports [ProductOptionValueDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.ProductOptionValueDTO.mdx)
 
 ___
 
 ### ProductStatus
 
-Re-exports [ProductStatus](../enums/admin_collections.internal.ProductStatus.mdx)
+Re-exports [ProductStatus](../../ProductTypes/enums/admin_discounts.internal.internal-1.ProductTypes.ProductStatus.mdx)
 
 ___
 
-### ProductTag
+### ProductTagDTO
 
-Re-exports [ProductTag](../classes/admin_collections.internal.ProductTag.mdx)
-
-___
-
-### ProductTaxRate
-
-Re-exports [ProductTaxRate](../classes/admin_discounts.internal.internal.ProductTaxRate.mdx)
+Re-exports [ProductTagDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.ProductTagDTO.mdx)
 
 ___
 
-### ProductType
+### ProductTypeDTO
 
-Re-exports [ProductType](../classes/admin_collections.internal.ProductType.mdx)
-
-___
-
-### ProductTypeTaxRate
-
-Re-exports [ProductTypeTaxRate](../classes/admin_discounts.internal.internal.ProductTypeTaxRate.mdx)
+Re-exports [ProductTypeDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.ProductTypeDTO.mdx)
 
 ___
 
-### ProductVariant
+### ProductVariantDTO
 
-Re-exports [ProductVariant](../classes/admin_collections.internal.ProductVariant.mdx)
-
-___
-
-### ProductVariantInventoryItem
-
-Re-exports [ProductVariantInventoryItem](../classes/admin_collections.internal.ProductVariantInventoryItem.mdx)
+Re-exports [ProductVariantDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.ProductVariantDTO.mdx)
 
 ___
 
-### ProductVariantMoneyAmount
+### ProductWorkflow
 
-Re-exports [ProductVariantMoneyAmount](../classes/admin_discounts.internal.internal.ProductVariantMoneyAmount.mdx)
-
-___
-
-### PublishableApiKey
-
-Re-exports [PublishableApiKey](../classes/admin_discounts.internal.internal.PublishableApiKey.mdx)
+Re-exports [ProductWorkflow](../../WorkflowTypes/modules/admin_discounts.internal.internal-1.WorkflowTypes.ProductWorkflow.mdx)
 
 ___
 
-### PublishableApiKeySalesChannel
+### ProjectConfigOptions
 
-Re-exports [PublishableApiKeySalesChannel](../classes/admin_discounts.internal.internal.PublishableApiKeySalesChannel.mdx)
-
-___
-
-### Refund
-
-Re-exports [Refund](../classes/admin_collections.internal.Refund.mdx)
+Re-exports [ProjectConfigOptions](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#projectconfigoptions)
 
 ___
 
-### RefundReason
+### QueryConfig
 
-Re-exports [RefundReason](../enums/admin_discounts.internal.internal.RefundReason.mdx)
-
-___
-
-### Region
-
-Re-exports [Region](../classes/admin_collections.internal.Region.mdx)
+Re-exports [QueryConfig](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#queryconfig)
 
 ___
 
-### RequirementType
+### QuerySelector
 
-Re-exports [RequirementType](../enums/admin_collections.internal.RequirementType.mdx)
-
-___
-
-### Return
-
-Re-exports [Return](../classes/admin_collections.internal.Return.mdx)
+Re-exports [QuerySelector](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#queryselector)
 
 ___
 
-### ReturnItem
+### RemoteQueryFunction
 
-Re-exports [ReturnItem](../classes/admin_collections.internal.ReturnItem.mdx)
-
-___
-
-### ReturnReason
-
-Re-exports [ReturnReason](../classes/admin_collections.internal.ReturnReason.mdx)
+Re-exports [RemoteQueryFunction](../../admin_discounts/modules/admin_discounts.internal.mdx#remotequeryfunction)
 
 ___
 
-### ReturnStatus
+### RemovePriceSetRulesDTO
 
-Re-exports [ReturnStatus](../enums/admin_collections.internal.ReturnStatus.mdx)
-
-___
-
-### SalesChannel
-
-Re-exports [SalesChannel](../classes/admin_collections.internal.SalesChannel.mdx)
+Re-exports [RemovePriceSetRulesDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.RemovePriceSetRulesDTO.mdx)
 
 ___
 
-### SalesChannelLocation
+### RepositoryService
 
-Re-exports [SalesChannelLocation](../classes/admin_collections.internal.SalesChannelLocation.mdx)
-
-___
-
-### ShippingMethod
-
-Re-exports [ShippingMethod](../classes/admin_collections.internal.ShippingMethod.mdx)
+Re-exports [RepositoryService](../../DAL/interfaces/admin_discounts.internal.internal-1.DAL.RepositoryService.mdx)
 
 ___
 
-### ShippingMethodTaxLine
+### RepositoryTransformOptions
 
-Re-exports [ShippingMethodTaxLine](../classes/admin_collections.internal.ShippingMethodTaxLine.mdx)
-
-___
-
-### ShippingOption
-
-Re-exports [ShippingOption](../classes/admin_collections.internal.ShippingOption.mdx)
+Re-exports [RepositoryTransformOptions](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.RepositoryTransformOptions.mdx)
 
 ___
 
-### ShippingOptionPriceType
+### RequestQueryFields
 
-Re-exports [ShippingOptionPriceType](../enums/admin_collections.internal.ShippingOptionPriceType.mdx)
-
-___
-
-### ShippingOptionRequirement
-
-Re-exports [ShippingOptionRequirement](../classes/admin_collections.internal.ShippingOptionRequirement.mdx)
+Re-exports [RequestQueryFields](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#requestqueryfields)
 
 ___
 
-### ShippingProfile
+### ReservationItemDTO
 
-Re-exports [ShippingProfile](../classes/admin_collections.internal.ShippingProfile.mdx)
-
-___
-
-### ShippingProfileType
-
-Re-exports [ShippingProfileType](../enums/admin_collections.internal.ShippingProfileType.mdx)
+Re-exports [ReservationItemDTO](../../admin_discounts/modules/admin_discounts.internal.mdx#reservationitemdto)
 
 ___
 
-### ShippingTaxRate
+### ReserveQuantityContext
 
-Re-exports [ShippingTaxRate](../classes/admin_discounts.internal.internal.ShippingTaxRate.mdx)
-
-___
-
-### StagedJob
-
-Re-exports [StagedJob](../classes/admin_discounts.internal.internal.StagedJob.mdx)
+Re-exports [ReserveQuantityContext](../../admin_discounts/modules/admin_discounts.internal.mdx#reservequantitycontext)
 
 ___
 
-### Store
+### RestoreReturn
 
-Re-exports [Store](../classes/admin_discounts.internal.internal.Store.mdx)
-
-___
-
-### Swap
-
-Re-exports [Swap](../classes/admin_collections.internal.Swap.mdx)
+Re-exports [RestoreReturn](../../DAL/interfaces/admin_discounts.internal.internal-1.DAL.RestoreReturn.mdx)
 
 ___
 
-### SwapFulfillmentStatus
+### RuleTypeDTO
 
-Re-exports [SwapFulfillmentStatus](../enums/admin_collections.internal.SwapFulfillmentStatus.mdx)
-
-___
-
-### SwapPaymentStatus
-
-Re-exports [SwapPaymentStatus](../enums/admin_collections.internal.SwapPaymentStatus.mdx)
+Re-exports [RuleTypeDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.RuleTypeDTO.mdx)
 
 ___
 
-### TaxProvider
+### SalesChannelDTO
 
-Re-exports [TaxProvider](../classes/admin_collections.internal.TaxProvider.mdx)
-
-___
-
-### TaxRate
-
-Re-exports [TaxRate](../classes/admin_collections.internal.TaxRate.mdx)
+Re-exports [SalesChannelDTO](../../SalesChannelTypes/interfaces/admin_discounts.internal.internal-1.SalesChannelTypes.SalesChannelDTO.mdx)
 
 ___
 
-### TrackingLink
+### SalesChannelLocationDTO
 
-Re-exports [TrackingLink](../classes/admin_collections.internal.TrackingLink.mdx)
-
-___
-
-### User
-
-Re-exports [User](../classes/admin_auth.internal.User.mdx)
+Re-exports [SalesChannelLocationDTO](../../SalesChannelTypes/interfaces/admin_discounts.internal.internal-1.SalesChannelTypes.SalesChannelLocationDTO.mdx)
 
 ___
 
-### UserRoles
+### Selector
 
-Re-exports [UserRoles](../enums/admin_auth.internal.UserRoles.mdx)
+Re-exports [Selector](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#selector)
+
+___
+
+### SoftDeletableEntity
+
+Re-exports [SoftDeletableEntity](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.SoftDeletableEntity.mdx)
+
+___
+
+### SoftDeletableEntityDateColumns
+
+Re-exports [SoftDeletableEntityDateColumns](../../internal-1/modules/admin_discounts.internal.internal-1.DAL.mdx#softdeletableentitydatecolumns)
+
+___
+
+### SoftDeleteReturn
+
+Re-exports [SoftDeleteReturn](../../DAL/interfaces/admin_discounts.internal.internal-1.DAL.SoftDeleteReturn.mdx)
+
+___
+
+### StockLocationAddressDTO
+
+Re-exports [StockLocationAddressDTO](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#stocklocationaddressdto)
+
+___
+
+### StockLocationAddressInput
+
+Re-exports [StockLocationAddressInput](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#stocklocationaddressinput)
+
+___
+
+### StockLocationDTO
+
+Re-exports [StockLocationDTO](../../admin_discounts/modules/admin_discounts.internal.mdx#stocklocationdto)
+
+___
+
+### StockLocationExpandedDTO
+
+Re-exports [StockLocationExpandedDTO](../../admin_discounts/modules/admin_discounts.internal.mdx#stocklocationexpandeddto)
+
+___
+
+### StringComparisonOperator
+
+Re-exports [StringComparisonOperator](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.StringComparisonOperator.mdx)
+
+___
+
+### Subscriber
+
+Re-exports [Subscriber](../../admin_discounts/modules/admin_discounts.internal.mdx#subscriber)
+
+___
+
+### SubscriberContext
+
+Re-exports [SubscriberContext](../../admin_discounts/modules/admin_discounts.internal.mdx#subscribercontext)
+
+___
+
+### SubscriberDescriptor
+
+Re-exports [SubscriberDescriptor](../../internal-1/modules/admin_discounts.internal.internal-1.EventBusTypes.mdx#subscriberdescriptor)
+
+___
+
+### TotalField
+
+Re-exports [TotalField](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#totalfield)
+
+___
+
+### TreeQuerySelector
+
+Re-exports [TreeQuerySelector](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#treequeryselector)
+
+___
+
+### TreeRepositoryService
+
+Re-exports [TreeRepositoryService](../../DAL/interfaces/admin_discounts.internal.internal-1.DAL.TreeRepositoryService.mdx)
+
+___
+
+### UpdateCurrencyDTO
+
+Re-exports [UpdateCurrencyDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.UpdateCurrencyDTO.mdx)
+
+___
+
+### UpdateInventoryLevelInput
+
+Re-exports [UpdateInventoryLevelInput](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx#updateinventorylevelinput)
+
+___
+
+### UpdateMoneyAmountDTO
+
+Re-exports [UpdateMoneyAmountDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.UpdateMoneyAmountDTO.mdx)
+
+___
+
+### UpdatePriceRuleDTO
+
+Re-exports [UpdatePriceRuleDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.UpdatePriceRuleDTO.mdx)
+
+___
+
+### UpdatePriceSetDTO
+
+Re-exports [UpdatePriceSetDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.UpdatePriceSetDTO.mdx)
+
+___
+
+### UpdatePriceSetMoneyAmountDTO
+
+Re-exports [UpdatePriceSetMoneyAmountDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.UpdatePriceSetMoneyAmountDTO.mdx)
+
+___
+
+### UpdatePriceSetMoneyAmountRulesDTO
+
+Re-exports [UpdatePriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.UpdatePriceSetMoneyAmountRulesDTO.mdx)
+
+___
+
+### UpdatePriceSetRuleTypeDTO
+
+Re-exports [UpdatePriceSetRuleTypeDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.UpdatePriceSetRuleTypeDTO.mdx)
+
+___
+
+### UpdateProductCategoryDTO
+
+Re-exports [UpdateProductCategoryDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpdateProductCategoryDTO.mdx)
+
+___
+
+### UpdateProductCollectionDTO
+
+Re-exports [UpdateProductCollectionDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpdateProductCollectionDTO.mdx)
+
+___
+
+### UpdateProductDTO
+
+Re-exports [UpdateProductDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpdateProductDTO.mdx)
+
+___
+
+### UpdateProductOptionDTO
+
+Re-exports [UpdateProductOptionDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpdateProductOptionDTO.mdx)
+
+___
+
+### UpdateProductTagDTO
+
+Re-exports [UpdateProductTagDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpdateProductTagDTO.mdx)
+
+___
+
+### UpdateProductTypeDTO
+
+Re-exports [UpdateProductTypeDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpdateProductTypeDTO.mdx)
+
+___
+
+### UpdateProductVariantDTO
+
+Re-exports [UpdateProductVariantDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpdateProductVariantDTO.mdx)
+
+___
+
+### UpdateProductVariantOnlyDTO
+
+Re-exports [UpdateProductVariantOnlyDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpdateProductVariantOnlyDTO.mdx)
+
+___
+
+### UpdateReservationItemInput
+
+Re-exports [UpdateReservationItemInput](../../internal-1/modules/admin_discounts.internal.internal-1.InventoryTypes.mdx#updatereservationiteminput)
+
+___
+
+### UpdateRuleTypeDTO
+
+Re-exports [UpdateRuleTypeDTO](../../PricingTypes/interfaces/admin_discounts.internal.internal-1.PricingTypes.UpdateRuleTypeDTO.mdx)
+
+___
+
+### UpdateStockLocationInput
+
+Re-exports [UpdateStockLocationInput](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#updatestocklocationinput)
+
+___
+
+### UploadStreamDescriptorType
+
+Re-exports [UploadStreamDescriptorType](../../admin_discounts/modules/admin_discounts.internal.mdx#uploadstreamdescriptortype)
+
+___
+
+### UpsertProductTagDTO
+
+Re-exports [UpsertProductTagDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpsertProductTagDTO.mdx)
+
+___
+
+### UpsertProductTypeDTO
+
+Re-exports [UpsertProductTypeDTO](../../ProductTypes/interfaces/admin_discounts.internal.internal-1.ProductTypes.UpsertProductTypeDTO.mdx)
+
+___
+
+### WithRequiredProperty
+
+Re-exports [WithRequiredProperty](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#withrequiredproperty)
+
+___
+
+### Writable
+
+Re-exports [Writable](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#writable)
+
+## Type Aliases
+
+### AddressDTO
+
+ **AddressDTO**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "address_1",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "address_2",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "city",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "company",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "country_code",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`string` \\| `Date`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "deleted_at",
+    "type": "`string` \\| `Date` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\> \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "phone",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "postal_code",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "province",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`string` \\| `Date`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
+### CartDTO
+
+ **CartDTO**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "billing_address_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "completed_at",
+    "type": "`Date`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "customer_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "discount_total",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "email",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "gift_card_tax_total",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "gift_card_total",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "idempotency_key",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "item_tax_total",
+    "type": "`number` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "payment_authorized_at",
+    "type": "`Date`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "payment_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "raw_discount_total",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "refundable_amount",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "refunded_total",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "region_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "sales_channel_id",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "shipping_address_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "shipping_tax_total",
+    "type": "`number` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "shipping_total",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "subtotal",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "tax_total",
+    "type": "`number` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "total",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
+### JoinerRelationship
+
+ **JoinerRelationship**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "alias",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "args",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Extra arguments to pass to the remoteFetchData callback",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "foreignKey",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "inverse",
+    "type": "`boolean`",
+    "description": "In an inverted relationship the foreign key is on the other service and the primary key is on the current service",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "isInternalService",
+    "type": "`boolean`",
+    "description": "If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more \"internal\" services",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "isList",
+    "type": "`boolean`",
+    "description": "Force the relationship to return a list",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "primaryKey",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "serviceName",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
+### SharedContext
+
+ **SharedContext**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "manager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />

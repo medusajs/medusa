@@ -1,11 +1,11 @@
 const path = require("path")
 
 const { getConfigFile } = require("medusa-core-utils")
+const { asValue } = require("awilix")
 const { isObject, createMedusaContainer } = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
-const { getContainer } = require("./use-container")
 const { ContainerRegistrationKeys } = require("@medusajs/utils")
 
 const DB_HOST = process.env.DB_HOST
@@ -69,10 +69,10 @@ const DbTestUtil = {
   },
 
   shutdown: async function () {
-    await this.db_.destroy()
+    await this.db_?.destroy()
     await this.pgConnection_?.context?.destroy()
 
-    return await dropDatabase({ DB_NAME }, pgGodCredentials)
+    return await dropDatabase({ databaseName: DB_NAME }, pgGodCredentials)
   },
 }
 
@@ -157,6 +157,12 @@ module.exports = {
 
       const container = createMedusaContainer()
 
+      container.register({
+        [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
+        [ContainerRegistrationKeys.LOGGER]: asValue(console),
+        [ContainerRegistrationKeys.MANAGER]: asValue(dbDataSource.manager),
+      })
+
       const pgConnection = await pgConnectionLoader({ configModule, container })
       instance.setPgConnection(pgConnection)
 
@@ -168,6 +174,7 @@ module.exports = {
       const options = {
         database: {
           clientUrl: DB_URL,
+          connection: pgConnection,
         },
       }
       await runMigrations(options)
