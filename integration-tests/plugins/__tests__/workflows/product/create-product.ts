@@ -7,24 +7,29 @@ import {
   pipe,
 } from "@medusajs/workflows"
 import path from "path"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 jest.setTimeout(30000)
 
 describe("CreateProduct workflow", function () {
   let medusaContainer
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    await initDb({ cwd } as any)
-    const { container } = await bootstrapApp({ cwd })
-    medusaContainer = container
+    await initDb({ cwd })
+    shutdownServer = await startBootstrapApp({ cwd, skipExpressListen: true })
+    medusaContainer = getContainer()
   })
 
   afterAll(async () => {
+    console.log("GLOABL GC()", typeof global)
+
     const db = useDb()
     await db.shutdown()
+    await shutdownServer()
   })
 
   it("should compensate all the invoke if something fails", async () => {
