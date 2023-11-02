@@ -1,12 +1,10 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { initialize } from "../../../../src"
-
 import { IPricingModuleService } from "@medusajs/types"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { initialize } from "../../../../src"
 
 jest.setTimeout(30000)
 
@@ -239,6 +237,66 @@ describe("PriceListRule Service", () => {
 
       expect(priceListRule.price_list.id).toEqual("price-list-1")
       expect(priceListRule.rule_type.id).toEqual("rule-type-1")
+    })
+  })
+
+  describe("setPriceListRules", () => {
+    it("should add a priceListRule to a priceList", async () => {
+      await createRuleTypes(testManager, [
+        {
+          id: "rule-type-3",
+          name: "test",
+          rule_attribute: "sales_channel",
+        },
+      ])
+
+      await service.setPriceListRules({
+        priceListId: "price-list-1",
+        rules: {
+          sales_channel: "sc-1",
+        },
+      })
+
+      const [priceList] = await service.listPriceLists(
+        {
+          id: ["price-list-1"],
+        },
+        {
+          relations: ["rules"],
+        }
+      )
+
+      expect(priceList.rules).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ rule_type: "rule-type-3" }),
+        ])
+      )
+    })
+  })
+ 
+  describe("removePriceListRules", () => {
+    it("should remove a priceListRule from a priceList", async () => {
+      await service.removePriceListRules({
+        priceListId: "price-list-1",
+        rules: [
+          "currency_code"
+        ]
+      })
+
+      const [priceList] = await service.listPriceLists(
+        {
+          id: ["price-list-1"],
+        },
+        {
+          relations: ["rules"],
+        }
+      )
+
+      expect(priceList.rules).toEqual(
+        [
+          expect.objectContaining({ rule_type: "rule-type-1" }),
+        ]
+      )
     })
   })
 })

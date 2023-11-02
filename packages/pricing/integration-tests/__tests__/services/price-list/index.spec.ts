@@ -1,8 +1,8 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-
+import { MikroOrmWrapper } from "../../../utils"
 import { PriceListRepository } from "@repositories"
 import { PriceListService } from "@services"
 
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { MikroOrmWrapper } from "../../../utils"
 

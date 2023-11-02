@@ -41,7 +41,7 @@ export interface UpdatePriceListDTO {
   ends_at?: Date
   status?: PriceListStatus
   number_rules?: number
-  rules: PriceListRuleDTO[]
+  rules?: PriceListRuleDTO[]
 }
 
 export interface FilterablePriceListProps
@@ -115,4 +115,14 @@ export interface AddPriceListPricesDTO {
       price_set_id: string
     }
   ]
+}
+
+export interface setPriceListRulesDTO{
+	priceListId: string,
+	rules: Record<string, string>
+}
+
+export interface removePriceListRulesDTO{
+	priceListId: string,
+	rules: string[]
 }

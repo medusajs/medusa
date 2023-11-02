@@ -1,5 +1,4 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
 import { IPricingModuleService } from "@medusajs/types"
 import { initialize } from "../../../../src"
 
@@ -317,4 +316,5 @@ describe("PriceList Service", () => {
       )
     })
   })
+
 })
