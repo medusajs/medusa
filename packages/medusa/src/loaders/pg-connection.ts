@@ -1,5 +1,5 @@
 import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
-import { AwilixContainer, asValue } from "awilix"
+import { asValue, AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
 
 type Options = {
@@ -9,7 +9,7 @@ type Options = {
 
 export default async ({ container, configModule }: Options): Promise<any> => {
   if (container.hasRegistration(ContainerRegistrationKeys.PG_CONNECTION)) {
-    return
+    return container.resolve(ContainerRegistrationKeys.PG_CONNECTION)
   }
 
   // Share a knex connection to be consumed by the shared modules
