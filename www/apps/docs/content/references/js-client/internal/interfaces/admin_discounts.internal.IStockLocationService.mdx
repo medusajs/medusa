@@ -12,16 +12,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### \_\_joinerConfig
 
-**__joinerConfig**(): [`ModuleJoinerConfig`](../../admin_discounts/modules/admin_discounts.internal.mdx#modulejoinerconfig)
+**__joinerConfig**(): [`ModuleJoinerConfig`](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#modulejoinerconfig)
 
 #### Returns
 
-[`ModuleJoinerConfig`](../../admin_discounts/modules/admin_discounts.internal.mdx#modulejoinerconfig)
+[`ModuleJoinerConfig`](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#modulejoinerconfig)
 
 <ParameterTypes parameters={[
   {
     "name": "ModuleJoinerConfig",
-    "type": "[`Omit`](../../admin_auth/modules/admin_auth.internal.mdx#omit)<[`JoinerServiceConfig`](admin_discounts.internal.JoinerServiceConfig.mdx), ``\"serviceName\"`` \\| ``\"primaryKeys\"`` \\| ``\"relationships\"`` \\| ``\"extends\"``\\> & { `databaseConfig?`: { `extraFields?`: Record<`string`, { `defaultValue?`: `string` ; `nullable?`: `boolean` ; `options?`: Record<`string`, `unknown`\\> ; `type`: ``\"date\"`` \\| ``\"time\"`` \\| ``\"datetime\"`` \\| ``\"bigint\"`` \\| ``\"blob\"`` \\| ``\"uint8array\"`` \\| ``\"array\"`` \\| ``\"enumArray\"`` \\| ``\"enum\"`` \\| ``\"json\"`` \\| ``\"integer\"`` \\| ``\"smallint\"`` \\| ``\"tinyint\"`` \\| ``\"mediumint\"`` \\| ``\"float\"`` \\| ``\"double\"`` \\| ``\"boolean\"`` \\| ``\"decimal\"`` \\| ``\"string\"`` \\| ``\"uuid\"`` \\| ``\"text\"``  }\\> ; `idPrefix?`: `string` ; `tableName?`: `string`  } ; `extends?`: { `fieldAlias?`: Record<`string`, `string` \\| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\\> ; `relationship`: [`ModuleJoinerRelationship`](../../admin_discounts/modules/admin_discounts.internal.mdx#modulejoinerrelationship) ; `serviceName`: `string`  }[] ; `isLink?`: `boolean` ; `isReadOnlyLink?`: `boolean` ; `linkableKeys?`: Record<`string`, `string`\\> ; `primaryKeys?`: `string`[] ; `relationships?`: [`ModuleJoinerRelationship`](../../admin_discounts/modules/admin_discounts.internal.mdx#modulejoinerrelationship)[] ; `schema?`: `string` ; `serviceName?`: `string`  }",
+    "type": "[`Omit`](../../admin_auth/modules/admin_auth.internal.mdx#omit)<[`JoinerServiceConfig`](../../internal-1/interfaces/admin_discounts.internal.internal-1.JoinerServiceConfig.mdx), ``\"serviceName\"`` \\| ``\"primaryKeys\"`` \\| ``\"relationships\"`` \\| ``\"extends\"``\\> & { `databaseConfig?`: { `extraFields?`: Record<`string`, { `defaultValue?`: `string` ; `nullable?`: `boolean` ; `options?`: Record<`string`, `unknown`\\> ; `type`: ``\"date\"`` \\| ``\"time\"`` \\| ``\"datetime\"`` \\| ``\"bigint\"`` \\| ``\"blob\"`` \\| ``\"uint8array\"`` \\| ``\"array\"`` \\| ``\"enumArray\"`` \\| ``\"enum\"`` \\| ``\"json\"`` \\| ``\"integer\"`` \\| ``\"smallint\"`` \\| ``\"tinyint\"`` \\| ``\"mediumint\"`` \\| ``\"float\"`` \\| ``\"double\"`` \\| ``\"boolean\"`` \\| ``\"decimal\"`` \\| ``\"string\"`` \\| ``\"uuid\"`` \\| ``\"text\"``  }\\> ; `idPrefix?`: `string` ; `tableName?`: `string`  } ; `extends?`: { `fieldAlias?`: Record<`string`, `string` \\| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\\> ; `relationship`: [`ModuleJoinerRelationship`](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#modulejoinerrelationship) ; `serviceName`: `string`  }[] ; `isLink?`: `boolean` ; `isReadOnlyLink?`: `boolean` ; `linkableKeys?`: Record<`string`, `string`\\> ; `primaryKeys?`: `string`[] ; `relationships?`: [`ModuleJoinerRelationship`](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#modulejoinerrelationship)[] ; `schema?`: `string` ; `serviceName?`: `string`  }",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -40,7 +40,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[`CreateStockLocationInput`](../../admin_discounts/modules/admin_discounts.internal.mdx#createstocklocationinput)",
+    "type": "[`CreateStockLocationInput`](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#createstocklocationinput)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -48,7 +48,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../admin_discounts/modules/admin_discounts.internal.mdx#sharedcontext)",
+    "type": "[`SharedContext`](../modules/admin_discounts.internal.internal-1.mdx#sharedcontext)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -99,7 +99,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../admin_discounts/modules/admin_discounts.internal.mdx#sharedcontext)",
+    "type": "[`SharedContext`](../modules/admin_discounts.internal.internal-1.mdx#sharedcontext)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -133,7 +133,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableStockLocationProps`](../../admin_discounts/modules/admin_discounts.internal.mdx#filterablestocklocationprops)",
+    "type": "[`FilterableStockLocationProps`](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#filterablestocklocationprops)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -141,7 +141,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](admin_discounts.internal.FindConfig.mdx)<[`StockLocationDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#stocklocationdto)\\>",
+    "type": "[`FindConfig`](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#stocklocationdto)\\>",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -149,7 +149,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../admin_discounts/modules/admin_discounts.internal.mdx#sharedcontext)",
+    "type": "[`SharedContext`](../modules/admin_discounts.internal.internal-1.mdx#sharedcontext)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -201,7 +201,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableStockLocationProps`](../../admin_discounts/modules/admin_discounts.internal.mdx#filterablestocklocationprops)",
+    "type": "[`FilterableStockLocationProps`](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#filterablestocklocationprops)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -209,7 +209,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](admin_discounts.internal.FindConfig.mdx)<[`StockLocationDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#stocklocationdto)\\>",
+    "type": "[`FindConfig`](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#stocklocationdto)\\>",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -217,7 +217,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../admin_discounts/modules/admin_discounts.internal.mdx#sharedcontext)",
+    "type": "[`SharedContext`](../modules/admin_discounts.internal.internal-1.mdx#sharedcontext)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -276,7 +276,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](admin_discounts.internal.FindConfig.mdx)<[`StockLocationDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#stocklocationdto)\\>",
+    "type": "[`FindConfig`](../../CommonTypes/interfaces/admin_discounts.internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../../admin_discounts/modules/admin_discounts.internal.mdx#stocklocationdto)\\>",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -284,7 +284,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../admin_discounts/modules/admin_discounts.internal.mdx#sharedcontext)",
+    "type": "[`SharedContext`](../modules/admin_discounts.internal.internal-1.mdx#sharedcontext)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -335,7 +335,7 @@ ___
   },
   {
     "name": "input",
-    "type": "[`UpdateStockLocationInput`](../../admin_discounts/modules/admin_discounts.internal.mdx#updatestocklocationinput)",
+    "type": "[`UpdateStockLocationInput`](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#updatestocklocationinput)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -343,7 +343,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../admin_discounts/modules/admin_discounts.internal.mdx#sharedcontext)",
+    "type": "[`SharedContext`](../modules/admin_discounts.internal.internal-1.mdx#sharedcontext)",
     "description": "",
     "optional": true,
     "defaultValue": "",

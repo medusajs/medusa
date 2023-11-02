@@ -24,6 +24,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [FilterableCurrencyProps](interfaces/FilterableCurrencyProps.mdx)
 - [FilterableMoneyAmountProps](interfaces/FilterableMoneyAmountProps.mdx)
 - [FilterablePriceRuleProps](interfaces/FilterablePriceRuleProps.mdx)
+- [FilterablePriceSetMoneyAmountProps](interfaces/FilterablePriceSetMoneyAmountProps.mdx)
 - [FilterablePriceSetMoneyAmountRulesProps](interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx)
 - [FilterablePriceSetProps](interfaces/FilterablePriceSetProps.mdx)
 - [FilterableRuleTypeProps](interfaces/FilterableRuleTypeProps.mdx)

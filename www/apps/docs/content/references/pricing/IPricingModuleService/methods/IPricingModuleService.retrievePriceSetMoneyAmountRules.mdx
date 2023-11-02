@@ -212,9 +212,25 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
             "children": []
           },
           {
+            "name": "price_rules",
+            "type": "[`PriceRuleDTO`](../../interfaces/PriceRuleDTO.mdx)[]",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
             "name": "price_set",
             "type": "[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)",
             "description": "The price set associated with the price set money amount. It may only be available if the relation `price_set` is expanded.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "price_set_id",
+            "type": "`string`",
+            "description": "",
             "optional": true,
             "defaultValue": "",
             "children": []
