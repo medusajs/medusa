@@ -52,6 +52,7 @@ module.exports = {
 
     const shutdown = async () => {
       await Promise.all([
+        container.dispose(),
         expressServer.close(),
         db?.destroy(),
         pgConnection?.context?.destroy(),
