@@ -11,7 +11,7 @@ import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
 
-jest.setTimeout(5000000)
+jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
@@ -142,9 +142,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id", () => {
         {
           amount: 3000,
           currency_code: "usd",
-          rules: {
-            region_id: "test-region",
-          },
+          rules: {},
         },
       ],
     })
