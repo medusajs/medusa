@@ -3,9 +3,13 @@ import {
   ModulesDefinition,
 } from "@medusajs/modules-sdk"
 import { MODULE_RESOURCE_TYPE } from "@medusajs/types"
+import { Express, NextFunction, Request, Response } from "express"
+
+import databaseLoader, { dataSource } from "./database"
+import pluginsLoader, { registerPluginModels } from "./plugins"
+
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { Express, NextFunction, Request, Response } from "express"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
@@ -14,7 +18,6 @@ import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
-import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
@@ -23,7 +26,6 @@ import loadMedusaApp, { mergeDefaultModules } from "./medusa-app"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pgConnectionLoader from "./pg-connection"
-import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
@@ -70,6 +72,7 @@ export default async ({
   expressApp,
   isTest,
 }: Options): Promise<{
+  disposeResources: () => Promise<void>
   container: MedusaContainer
   dbConnection: Connection
   app: Express
@@ -148,6 +151,8 @@ export default async ({
     [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
   })
 
+  container.register("remoteQuery", asValue(null)) // ensure remoteQuery is always registered
+
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
   servicesLoader({ container, configModule, isTest })
@@ -157,13 +162,10 @@ export default async ({
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
 
-  await loadMedusaApp(
-    {
-      configModule,
-      container,
-    },
-    { registerInContainer: true }
-  )
+  await loadMedusaApp({
+    configModule,
+    container,
+  })
 
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
@@ -221,5 +223,24 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-  return { container, dbConnection, app: expressApp, pgConnection }
+  /**
+   * One shouldn't have to know what resources need to be disposed
+   * under the hood. This function should be called when the server
+   * is shutting down.
+   */
+  async function disposeResources() {
+    await Promise.all([
+      dbConnection?.destroy(),
+      pgConnection?.context?.destroy(),
+      container?.dispose(),
+    ])
+  }
+
+  return {
+    disposeResources,
+    container,
+    dbConnection,
+    app: expressApp,
+    pgConnection,
+  }
 }
