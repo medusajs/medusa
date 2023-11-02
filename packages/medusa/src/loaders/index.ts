@@ -158,15 +158,20 @@ export default async ({
   })
 
   const pluginsActivity = Logger.activity(`Initializing plugins${EOL}`)
+  let pAct
   track("PLUGINS_INIT_STARTED")
-  await pluginsLoader({
-    container,
-    rootDirectory,
-    configModule,
-    app: expressApp,
-    activityId: pluginsActivity,
-  })
-  const pAct = Logger.success(pluginsActivity, "Plugins intialized") || {}
+  try {
+    await pluginsLoader({
+      container,
+      rootDirectory,
+      configModule,
+      app: expressApp,
+      activityId: pluginsActivity,
+    })
+    pAct = Logger.success(pluginsActivity, "Plugins intialized") || {}
+  } catch (error) {
+    pAct = Logger.failure(pluginsActivity, "Plugins failed to intialize") || {}
+  }
   track("PLUGINS_INIT_COMPLETED", { duration: pAct.duration })
 
   const subActivity = Logger.activity(`Initializing subscribers${EOL}`)

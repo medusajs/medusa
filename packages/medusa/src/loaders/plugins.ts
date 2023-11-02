@@ -75,28 +75,83 @@ export default async ({
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
   const logger = container.resolve("logger") as Logger
   await Promise.all(
-    resolved.map(
-      async (pluginDetails) => await runSetupFunctions(pluginDetails)
-    )
+    resolved.map(async (pluginDetails) => {
+      const activityLog = logger.activity(
+        `initialzing setup of plugin ${pluginDetails.name}...`
+      )
+      try {
+        const result = await runSetupFunctions(pluginDetails)
+        logger.success(
+          activityLog,
+          `initialzing setup of plugin ${pluginDetails.name}... done`
+        )
+        return result
+      } catch (e) {
+        logger.failure(
+          activityLog,
+          `initialzing plugins ${pluginDetails.name}...` +
+            "failed: " +
+            JSON.stringify(e)
+        )
+      }
+    })
   )
 
   await Promise.all(
     resolved.map(async (pluginDetails) => {
-      logger.activity(`initialzing plugins ${pluginDetails.name}...`)
-      registerRepositories(pluginDetails, container)
-      await registerServices(pluginDetails, container)
-      await registerMedusaApi(pluginDetails, container)
-      await registerApi(
-        pluginDetails,
-        app,
-        rootDirectory,
-        container,
-        configModule,
-        activityId
+      const activityLog = logger.activity(
+        `initialzing plugins ${pluginDetails.name}...`
       )
-      registerCoreRouters(pluginDetails, container)
-      registerSubscribers(pluginDetails, container)
-      logger.success(`initialzing plugins ${pluginDetails.name}...`, "done")
+      try {
+        logger.progress(
+          activityLog,
+          `initialzing plugin repositories ${pluginDetails.name}...`
+        )
+        registerRepositories(pluginDetails, container)
+        logger.progress(
+          activityLog,
+          `initialzing plugin services ${pluginDetails.name}...`
+        )
+        await registerServices(pluginDetails, container)
+        logger.progress(
+          activityLog,
+          `initialzing plugin medusa apis ${pluginDetails.name}...`
+        )
+        await registerMedusaApi(pluginDetails, container)
+        logger.progress(
+          activityLog,
+          `initialzing plugin api ${pluginDetails.name}...`
+        )
+        await registerApi(
+          pluginDetails,
+          app,
+          rootDirectory,
+          container,
+          configModule,
+          activityId
+        )
+        logger.progress(
+          activityLog,
+          `initialzing plugin core routers api ${pluginDetails.name}...`
+        )
+        registerCoreRouters(pluginDetails, container)
+        logger.progress(
+          activityLog,
+          `initialzing plugin subcribers api ${pluginDetails.name}...`
+        )
+        registerSubscribers(pluginDetails, container)
+        logger.success(
+          activityLog,
+          `initialzing plugin  ${pluginDetails.name}... done`
+        )
+      } catch (e) {
+        logger.failure(
+          activityLog,
+          `initialzing plugins ${pluginDetails.name}...` +
+            "failed: " +
+            JSON.stringify(e)
+        )
+      }
     })
   )
 
