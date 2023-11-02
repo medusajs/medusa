@@ -406,6 +406,7 @@ async function listAndCountProductWithIsolatedProductModule(
     },
   }
 
+  // TODO: Change when support for fields/expands is added
   if (isSalesChannelModuleIsolationFFOn) {
     query.product["sales_channels"] = {
       fields: [
