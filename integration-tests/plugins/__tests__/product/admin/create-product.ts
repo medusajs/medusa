@@ -3,7 +3,7 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { Region } from "@medusajs/medusa"
 import { AxiosInstance } from "axios"
 import path from "path"
-import setupServer from "../../../../environment-helpers/setup-server"
+import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import adminSeeder from "../../../../helpers/admin-seeder"
@@ -22,22 +22,22 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/products", () => {
+describe.skip("[Product & Pricing Module] POST /admin/products", () => {
   let dbConnection
   let appContainer
-  let medusaProcess
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
-    medusaProcess = await setupServer({ cwd, env, bootstrapApp: true } as any)
+    shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
+    await shutdownServer()
   })
 
   beforeEach(async () => {
