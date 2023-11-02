@@ -913,15 +913,6 @@ export default class ProductModuleService<
       products.map((product) => [product.id, product])
     )
 
-    const productOptions = [...productOptionsMap]
-      .map(([id, options]) =>
-        options.map((option) => ({
-          ...option,
-          product: productByIdMap.get(id)!,
-        }))
-      )
-      .flat()
-
     const productVariantIdsToDelete: string[] = []
     const productVariantsToCreateMap = new Map<
       string,
@@ -937,6 +928,7 @@ export default class ProductModuleService<
       const variantsToCreate: ProductTypes.CreateProductVariantDTO[] = []
       const variantsToUpdate: ProductTypes.UpdateProductVariantDTO[] = []
       const existingVariants = existingProductVariantsMap.get(productId)
+      const productOptions = productOptionsMap.get(productId)!
 
       variants.forEach((variant) => {
         const isVariantIdDefined = "id" in variant && isDefined(variant.id)
@@ -955,7 +947,7 @@ export default class ProductModuleService<
           }
         })
 
-        if (variantOptions) {
+        if (variantOptions?.length) {
           variant.options = variantOptions
         }
       })
