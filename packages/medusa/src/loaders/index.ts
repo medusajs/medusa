@@ -72,7 +72,6 @@ export default async ({
   expressApp,
   isTest,
 }: Options): Promise<{
-  disposeResources: () => Promise<void>
   container: MedusaContainer
   dbConnection: Connection
   app: Express
@@ -224,21 +223,7 @@ export default async ({
     Logger.success(searchActivity, "Indexing event emitted") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-  /**
-   * One shouldn't have to know what resources need to be disposed
-   * under the hood. This function should be called when the server
-   * is shutting down.
-   */
-  async function disposeResources() {
-    await Promise.all([
-      dbConnection?.destroy(),
-      pgConnection?.context?.destroy(),
-      container?.dispose(),
-    ])
-  }
-
   return {
-    disposeResources,
     container,
     dbConnection,
     app: expressApp,

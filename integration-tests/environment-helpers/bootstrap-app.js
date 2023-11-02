@@ -40,7 +40,7 @@ module.exports = {
     env = {},
     skipExpressListen = false,
   } = {}) => {
-    const { app, port, container, disposeResources } = await bootstrapApp({
+    const { app, port, container, db, pgConnection } = await bootstrapApp({
       cwd,
       env,
     })
@@ -53,7 +53,12 @@ module.exports = {
     }
 
     const shutdown = async () => {
-      await Promise.all([expressServer.close(), disposeResources()])
+      await Promise.all([
+        expressServer.close(),
+        db?.destroy(),
+        pgConnection?.context?.destroy(),
+        container.dispose(),
+      ])
 
       if (typeof global !== "undefined" && global?.gc) {
         global.gc()
