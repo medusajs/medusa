@@ -59,6 +59,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [AdminGetPriceListsPriceListProductsParams](../classes/admin_discounts.internal.internal.AdminGetPriceListsPriceListProductsParams.mdx)
 - [AdminGetProductCategoriesParams](../classes/admin_discounts.internal.internal.AdminGetProductCategoriesParams.mdx)
 - [AdminGetProductCategoryParams](../classes/admin_discounts.internal.internal.AdminGetProductCategoryParams.mdx)
+- [AdminGetProductParams](../classes/admin_discounts.internal.internal.AdminGetProductParams.mdx)
 - [AdminGetProductTagsPaginationParams](../classes/admin_discounts.internal.internal.AdminGetProductTagsPaginationParams.mdx)
 - [AdminGetProductTagsParams](../classes/admin_discounts.internal.internal.AdminGetProductTagsParams.mdx)
 - [AdminGetProductTypesParams](../classes/admin_discounts.internal.internal.AdminGetProductTypesParams.mdx)
@@ -5756,8 +5757,8 @@ ___
 StoreBearerAuthRes
 type: object
 properties:
-  accessToken:
-    description: Access token for subsequent authorization.
+  access_token:
+    description: Access token that can be used to send authenticated requests.
     type: string
 
 #### Type declaration
@@ -7629,6 +7630,12 @@ ___
 ### filterableAdminOrdersFields
 
  `Const` **filterableAdminOrdersFields**: `string`[]
+
+___
+
+### joinerConfig
+
+ `Const` **joinerConfig**: [`internal`](admin_discounts.internal.internal-1.mdx)[]
 
 ## Functions
 
