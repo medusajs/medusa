@@ -63,6 +63,7 @@ import { PaymentSessionInput } from "../types/payment"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { validateEmail } from "../utils/is-email"
+import IsolateSalesChannelDomainFeatureFlag from "../loaders/feature-flags/isolate-sales-channel-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -360,7 +361,12 @@ class CartService extends TransactionBaseService {
         }
 
         if (
-          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+          this.featureFlagRouter_.isFeatureEnabled(
+            SalesChannelFeatureFlag.key
+          ) &&
+          !this.featureFlagRouter_.isFeatureEnabled(
+            IsolateSalesChannelDomainFeatureFlag.key
+          )
         ) {
           rawCart.sales_channel_id = (
             await this.getValidatedSalesChannel(data.sales_channel_id)
@@ -475,6 +481,18 @@ class CartService extends TransactionBaseService {
 
         const createdCart = cartRepo.create(rawCart)
         const cart = await cartRepo.save(createdCart)
+
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            IsolateSalesChannelDomainFeatureFlag.key
+          )
+        ) {
+          const salesChannel = await this.getValidatedSalesChannel(
+            data.sales_channel_id
+          )
+          await this.salesChannelService_.addCarts(salesChannel.id, [cart.id])
+        }
+
         await this.eventBus_
           .withTransaction(transactionManager)
           .emit(CartService.Events.CREATED, {
@@ -1223,6 +1241,7 @@ class CartService extends TransactionBaseService {
           data.sales_channel_id != cart.sales_channel_id
         ) {
           await this.onSalesChannelChange(cart, data.sales_channel_id)
+          // TODO: update SC here if IsolatedSCDomain
           cart.sales_channel_id = data.sales_channel_id
         }
 

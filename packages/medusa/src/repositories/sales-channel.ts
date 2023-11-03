@@ -4,6 +4,7 @@ import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { generateEntityId } from "../utils"
 import { ProductSalesChannel } from "../models/product-sales-channel"
+import { CartSalesChannel } from "../models/cart-sales-channel"
 
 const productSalesChannelTable = "product_sales_channel"
 
@@ -112,6 +113,37 @@ export const SalesChannelRepository = dataSource
         )
         .values(valuesToInsert)
         .orIgnore()
+        .execute()
+    },
+
+    async addCarts(salesChannelId: string, cartIds: string[]): Promise<void> {
+      const valuesToInsert = cartIds.map((id) => ({
+        id: generateEntityId(undefined, "cartsc"),
+        sales_channel_id: salesChannelId,
+        cart_id: id,
+      }))
+
+      await this.createQueryBuilder()
+        .insert()
+        .into(CartSalesChannel)
+        .values(valuesToInsert)
+        .orIgnore()
+        .execute()
+    },
+
+    async removeCarts(
+      salesChannelId: string,
+      cartIds: string[]
+    ): Promise<DeleteResult> {
+      const whereOptions = {
+        sales_channel_id: salesChannelId,
+        product_id: In(cartIds),
+      }
+
+      return await this.createQueryBuilder()
+        .delete()
+        .from(CartSalesChannel)
+        .where(whereOptions)
         .execute()
     },
 
