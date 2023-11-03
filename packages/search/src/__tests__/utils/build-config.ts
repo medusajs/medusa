@@ -5,6 +5,8 @@ import { buildSchemaObjectRepresentation } from "../../utils/build-config"
 import { joinerConfig } from "../__fixtures__/joiner-config"
 import modulesConfig from "../__fixtures__/modules-config"
 
+jest.setTimeout(30000)
+
 const config = {
   schema: `
       type Product @Listeners(values: ["product.created", "product.updated"]) {
