@@ -613,8 +613,6 @@ export default class PricingModuleService<
         sharedContext
       )
     }
-
-    return priceSets
   }
 
   @InjectTransactionManager("baseRepository_")
