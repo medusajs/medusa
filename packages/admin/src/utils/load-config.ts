@@ -52,6 +52,7 @@ export const loadConfig = (isDev?: boolean): PluginOptions | null => {
         open: options.develop?.open ?? config.develop.open,
         port: options.develop?.port ?? config.develop.port,
         allowedHosts: options.develop?.allowedHosts ?? config.develop.allowedHosts,
+        webSocketURL: options.develop?.webSocketURL ?? config.develop.webSocketURL,
       },
     }
   }

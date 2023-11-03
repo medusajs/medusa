@@ -60,6 +60,7 @@ export async function develop({
         errors: true,
         warnings: false,
       },
+      webSocketURL: options.develop.webSocketURL ? options.develop.webSocketURL : `ws://localhost:${options.develop.port}/ws`,
     },
     open: false,
     onListening: options.develop.open
