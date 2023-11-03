@@ -18,6 +18,7 @@ export * from "./object-from-string-path"
 export * from "./object-to-string-path"
 export * from "./remote-query-object-from-string"
 export * from "./remote-query-object-to-string"
+export * from './remove-nullisih'
 export * from "./set-metadata"
 export * from "./simple-hash"
 export * from "./string-to-select-relation-object"

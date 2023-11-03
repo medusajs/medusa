@@ -35,11 +35,12 @@ The Payment Processor is also required to implement the following methods:
 2. `retrievePayment`: Used to retrieve payment session data, which can be retrieved from a third-party provider.
 3. `getPaymentStatus`: Used to get the status of a Payment or Payment Session.
 4. `updatePayment`: Used to update the Payment Session whenever the cart and its related data are updated.
-5. `deletePayment`: Used to perform any action necessary before a Payment Session is deleted. For example, you can cancel the payment with the third-party provider.
-6. `authorizePayment`: Used to authorize the payment amount of the cart before the order or swap is created.
-7. `capturePayment`: Used to capture the payment amount of an order or swap.
-8. `refundPayment`: Used to refund a payment amount of an order or swap.
-9. `cancelPayment`: Used to perform any necessary action with the third-party payment provider when an order or swap is canceled.
+5. `updatePaymentData`: Used to update the `data` of a payment session.
+6. `deletePayment`: Used to perform any action necessary before a Payment Session is deleted. For example, you can cancel the payment with the third-party provider.
+7. `authorizePayment`: Used to authorize the payment amount of the cart before the order or swap is created.
+8. `capturePayment`: Used to capture the payment amount of an order or swap.
+9. `refundPayment`: Used to refund a payment amount of an order or swap.
+10. `cancelPayment`: Used to perform any necessary action with the third-party payment provider when an order or swap is canceled.
 
 :::note
 
@@ -127,6 +128,15 @@ class MyPaymentProcessor extends AbstractPaymentProcessor {
     void | 
     PaymentProcessorError | 
     PaymentProcessorSessionResponse
+  > {
+    throw new Error("Method not implemented.")
+  }
+  async updatePaymentData(
+    sessionId: string,
+    data: Record<string, unknown>
+  ): Promise<
+    Record<string, unknown> | 
+    PaymentProcessorError
   > {
     throw new Error("Method not implemented.")
   }
@@ -346,7 +356,7 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 ### updatePayment
 
-This method is used to perform any necessary updates on the payment. This method is called whenever the cart or any of its related data is updated. For example, when a [line item is added to the cart](https://docs.medusajs.com/api/store#carts_postcartscartlineitems) or when a [shipping method is selected](https://docs.medusajs.com/api/store#carts_postcartscartshippingmethod).
+This method is used to update the payment session when the payment amount changes. It's called whenever the cart or any of its related data is updated. For example, when a [line item is added to the cart](https://docs.medusajs.com/api/store#carts_postcartscartlineitems) or when a [shipping method is selected](https://docs.medusajs.com/api/store#carts_postcartscartshippingmethod).
 
 :::tip
 
@@ -409,6 +419,41 @@ class MyPaymentService extends AbstractPaymentProcessor {
       session_data,
       update_requests,
     }
+  }
+}
+```
+
+### updatePaymentData
+
+This method is used to update the `data` field of a payment session. It's called when a request is sent to the [Update Payment Session API Route](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsessionupdate), or when the `CartService`'s `updatePaymentSession` is used.
+
+This method can also be used to update the data in the third-party payment provider, if necessary.
+
+The method accepts the following parameters:
+
+1. `sessionId`: A string that indicates the ID of the payment session.
+2. `data`: An object containing the data to be updated.
+
+The method returns the data to store in the `data` field of the payment session. You can keep the data as-is, or make changes to it by communicating with the third-party provider.
+
+An example of a minimal implementation of `updatePaymentData` that returns the `data` field as-is:
+
+```ts
+import { 
+  PaymentProcessorError,
+} from "@medusajs/medusa"
+// ...
+
+class MyPaymentService extends AbstractPaymentProcessor {
+  // ...
+  async updatePaymentData(
+    sessionId: string,
+    data: Record<string, unknown>
+  ): Promise<
+    Record<string, unknown> | 
+    PaymentProcessorError
+  > {
+    return data
   }
 }
 ```
@@ -510,7 +555,7 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.
 
-This method is also used for capturing payments of a swap of an order, or when the [Capture Payment](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture) endpoint is called.
+This method is also used for capturing payments of a swap of an order, or when a request is sent to the [Capture Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture).
 
 You can utilize this method to interact with the third-party provider and perform any actions necessary to capture the payment.
 
@@ -538,7 +583,7 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 This method is used to refund an order’s payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total order amount or part of it.
 
-This method is also used for refunding payments of a swap or a claim of an order, or when the [Refund Payment](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds) endpoint is called.
+This method is also used for refunding payments of a swap or a claim of an order, or when a request is sent to the [Refund Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds).
 
 You can utilize this method to interact with the third-party provider and perform any actions necessary to refund the payment.
 

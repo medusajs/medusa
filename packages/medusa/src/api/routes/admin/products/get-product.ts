@@ -1,7 +1,15 @@
-import { PricingService, ProductService } from "../../../../services"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  SalesChannelService,
+} from "../../../../services"
+
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { defaultAdminProductRemoteQueryObject } from "./index"
 import { MedusaError } from "@medusajs/utils"
+import { FindParams } from "../../../../types/common"
+import { defaultAdminProductRemoteQueryObject } from "./index"
+import IsolateSalesChannelDomain from "../../../../loaders/feature-flags/isolate-sales-channel-domain"
 
 /**
  * @oas [get] /admin/products/{id}
@@ -61,6 +69,12 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
+    IsolateSalesChannelDomain.key
+  )
+
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   let rawProduct
   if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
@@ -80,9 +94,43 @@ export default async (req, res) => {
 
   const product = rawProduct
 
-  if (!shouldSetPricing) {
-    await pricingService.setProductPrices([product])
+  const decoratePromises: Promise<any>[] = []
+  if (shouldSetPricing) {
+    decoratePromises.push(pricingService.setAdminProductPricing([product]))
   }
+
+  const shouldSetAvailability =
+    req.retrieveConfig.relations?.includes("variants")
+
+  if (shouldSetAvailability) {
+    let salesChannels
+
+    if (isSalesChannelModuleIsolationFFOn) {
+      const remoteQuery = req.scope.resolve("remoteQuery")
+      const query = {
+        sales_channels: {
+          fields: ["id"],
+        },
+      }
+      salesChannels = await remoteQuery(query)
+    } else {
+      const salesChannelService: SalesChannelService = req.scope.resolve(
+        "salesChannelService"
+      )
+      ;[salesChannels] = await salesChannelService.listAndCount(
+        {},
+        { select: ["id"] }
+      )
+    }
+
+    decoratePromises.push(
+      productVariantInventoryService.setProductAvailability(
+        [product],
+        salesChannels.map((salesChannel) => salesChannel.id)
+      )
+    )
+  }
+  await Promise.all(decoratePromises)
 
   res.json({ product })
 }
@@ -90,6 +138,10 @@ export default async (req, res) => {
 async function getProductWithIsolatedProductModule(req, id, retrieveConfig) {
   // TODO: Add support for fields/expands
   const remoteQuery = req.scope.resolve("remoteQuery")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
+    IsolateSalesChannelDomain.key
+  )
 
   const variables = { id }
 
@@ -98,6 +150,20 @@ async function getProductWithIsolatedProductModule(req, id, retrieveConfig) {
       __args: variables,
       ...defaultAdminProductRemoteQueryObject,
     },
+  }
+  // TODO: Change when support for fields/expands is added
+  if (isSalesChannelModuleIsolationFFOn) {
+    query.product["sales_channels"] = {
+      fields: [
+        "id",
+        "name",
+        "description",
+        "is_disabled",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+      ],
+    }
   }
 
   const [product] = await remoteQuery(query)
@@ -113,3 +179,5 @@ async function getProductWithIsolatedProductModule(req, id, retrieveConfig) {
 
   return product
 }
+
+export class AdminGetProductParams extends FindParams {}

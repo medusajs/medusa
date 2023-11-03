@@ -1,0 +1,173 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# write
+
+[Buffer](../../interfaces/Buffer.mdx).write
+
+**write**(`string`, `encoding?`): `number`
+
+Writes `string` to `buf` at `offset` according to the character encoding in`encoding`. The `length` parameter is the number of bytes to write. If `buf` did
+not contain enough space to fit the entire string, only part of `string` will be
+written. However, partially encoded characters will not be written.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.alloc(256);
+
+const len = buf.write('\u00bd + \u00bc = \u00be', 0);
+
+console.log(`${len} bytes: ${buf.toString('utf8', 0, len)}`);
+// Prints: 12 bytes: ½ + ¼ = ¾
+
+const buffer = Buffer.alloc(10);
+
+const length = buffer.write('abcd', 8);
+
+console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
+// Prints: 2 bytes : ab
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "description": "String to write to `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "description": "The character encoding of `string`.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "Number of bytes written.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.1.90
+
+**write**(`string`, `offset`, `encoding?`): `number`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+**write**(`string`, `offset`, `length`, `encoding?`): `number`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "length",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />

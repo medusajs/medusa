@@ -9,11 +9,12 @@ import {
 
 import { FilterableProductProps } from "../../../../types/product"
 import { IInventoryService } from "@medusajs/types"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../../models"
 import { Type } from "class-transformer"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultAdminProductRemoteQueryObject } from "./index"
+import IsolateSalesChannelDomain from "../../../../loaders/feature-flags/isolate-sales-channel-domain"
 
 /**
  * @oas [get] /admin/products
@@ -275,7 +276,7 @@ export default async (req, res) => {
   )
 
   if (shouldSetPricing) {
-    products = await pricingService.setProductPrices(rawProducts)
+    products = await pricingService.setAdminProductPricing(rawProducts)
   }
 
   // We only set availability if variants are requested
@@ -309,6 +310,10 @@ async function listAndCountProductWithIsolatedProductModule(
   // TODO: Add support for fields/expands
 
   const remoteQuery = req.scope.resolve("remoteQuery")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
+    IsolateSalesChannelDomain.key
+  )
 
   const productIdsFilter: Set<string> = new Set()
   const variantIdsFilter: Set<string> = new Set()
@@ -319,7 +324,7 @@ async function listAndCountProductWithIsolatedProductModule(
   const salesChannelIdFilter = filterableFields.sales_channel_id
   delete filterableFields.sales_channel_id
 
-  if (salesChannelIdFilter) {
+  if (salesChannelIdFilter && !isSalesChannelModuleIsolationFFOn) {
     const salesChannelService = req.scope.resolve(
       "salesChannelService"
     ) as SalesChannelService
@@ -401,7 +406,27 @@ async function listAndCountProductWithIsolatedProductModule(
     },
   }
 
-  const {
+  // TODO: Change when support for fields/expands is added
+  if (isSalesChannelModuleIsolationFFOn) {
+    query.product["sales_channels"] = {
+      fields: [
+        "id",
+        "name",
+        "description",
+        "is_disabled",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+      ],
+    }
+    if (salesChannelIdFilter) {
+      query.product["sales_channels"]["__args"] = {
+        filters: { id: salesChannelIdFilter },
+      }
+    }
+  }
+
+  let {
     rows: products,
     metadata: { count },
   } = await remoteQuery(query)
@@ -409,6 +434,10 @@ async function listAndCountProductWithIsolatedProductModule(
   products.forEach((product) => {
     product.profile_id = product.profile?.id
   })
+
+  if (salesChannelIdFilter) {
+    products = products.filter((product) => product.sales_channels?.length)
+  }
 
   return [products, count]
 }

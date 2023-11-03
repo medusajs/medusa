@@ -2,6 +2,8 @@ import { DeleteResult, FindOptionsWhere, ILike, In } from "typeorm"
 import { SalesChannel } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+import { generateEntityId } from "../utils"
+import { ProductSalesChannel } from "../models/product-sales-channel"
 
 const productSalesChannelTable = "product_sales_channel"
 
@@ -86,16 +88,28 @@ export const SalesChannelRepository = dataSource
 
     async addProducts(
       salesChannelId: string,
-      productIds: string[]
+      productIds: string[],
+      isIsolatedSalesChannelDomainFlagOn?: boolean
     ): Promise<void> {
-      const valuesToInsert = productIds.map((id) => ({
+      let valuesToInsert = productIds.map((id) => ({
         sales_channel_id: salesChannelId,
         product_id: id,
       }))
 
+      if (isIsolatedSalesChannelDomainFlagOn) {
+        valuesToInsert = valuesToInsert.map((v) => ({
+          ...v,
+          id: generateEntityId(undefined, "prodsc"),
+        }))
+      }
+
       await this.createQueryBuilder()
         .insert()
-        .into(productSalesChannelTable)
+        .into(
+          isIsolatedSalesChannelDomainFlagOn
+            ? ProductSalesChannel
+            : productSalesChannelTable
+        )
         .values(valuesToInsert)
         .orIgnore()
         .execute()

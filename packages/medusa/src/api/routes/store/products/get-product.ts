@@ -1,3 +1,4 @@
+import { IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -5,13 +6,13 @@ import {
   ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
-import { IsOptional, IsString } from "class-validator"
 
+import { MedusaError } from "@medusajs/utils"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils"
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultStoreProductRemoteQueryObject } from "./index"
-import { MedusaError } from "@medusajs/utils"
+import IsolateSalesChannelDomain from "../../../../loaders/feature-flags/isolate-sales-channel-domain"
 
 /**
  * @oas [get] /store/products/{id}
@@ -165,6 +166,10 @@ export default async (req, res) => {
 
 async function getProductWithIsolatedProductModule(req, id: string) {
   const remoteQuery = req.scope.resolve("remoteQuery")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
+    IsolateSalesChannelDomain.key
+  )
 
   const variables = { id }
 
@@ -173,6 +178,22 @@ async function getProductWithIsolatedProductModule(req, id: string) {
       __args: variables,
       ...defaultStoreProductRemoteQueryObject,
     },
+  }
+
+  // TODO: sales_channel filter
+
+  if (isSalesChannelModuleIsolationFFOn) {
+    query.product["sales_channels"] = {
+      fields: [
+        "id",
+        "name",
+        "description",
+        "is_disabled",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+      ],
+    }
   }
 
   const [product] = await remoteQuery(query)

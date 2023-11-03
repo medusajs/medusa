@@ -1,5 +1,29 @@
 # Change Log
 
+## 9.0.10
+
+### Patch Changes
+
+- [#5480](https://github.com/medusajs/medusa/pull/5480) [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): admin get product should return prices when expected
+
+## 9.0.9
+
+### Patch Changes
+
+- [`045d1b6a0`](https://github.com/medusajs/medusa/commit/045d1b6a0c2b0d03e5fa1db886d1f81c843059ce) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump @medusajs/medusa dep
+
+- Updated dependencies [[`045d1b6a0`](https://github.com/medusajs/medusa/commit/045d1b6a0c2b0d03e5fa1db886d1f81c843059ce)]:
+  - @medusajs/medusa-js@6.1.3
+
+## 9.0.8
+
+### Patch Changes
+
+- [#5400](https://github.com/medusajs/medusa/pull/5400) [`5a5c96e21`](https://github.com/medusajs/medusa/commit/5a5c96e2118e50a558d9d6dc340e505454d4c593) Thanks [@dwene](https://github.com/dwene)! - add types to exports to help projects using moduleResolution bundler
+
+- Updated dependencies [[`5a5c96e21`](https://github.com/medusajs/medusa/commit/5a5c96e2118e50a558d9d6dc340e505454d4c593), [`98e275551`](https://github.com/medusajs/medusa/commit/98e275551415583602763cf457c3f95400209d0a)]:
+  - @medusajs/medusa-js@6.1.2
+
 ## 9.0.7
 
 ### Patch Changes

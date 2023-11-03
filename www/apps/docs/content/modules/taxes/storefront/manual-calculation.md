@@ -1,5 +1,4 @@
 ---
-description: 'Learn how to manually calculate taxes during checkout in the Medusa backend. There are different methods including using endpoints or services.'
 addHowToData: true
 ---
 
@@ -19,9 +18,9 @@ If you disable this behavior, you must manually trigger taxes calculation. When 
 
 This section explores different ways you can calculate taxes based on your purpose.
 
-### Use Calculate Cart Taxes Endpoint
+### Use Calculate Cart Taxes API Route
 
-The [Calculate Cart Taxes](https://docs.medusajs.com/api/store#carts_postcartscarttaxes) endpoint forces the calculation of taxes for a cart during checkout. This bypasses the option set in admin to not calculate taxes automatically, which results in sending requests to the tax provider.
+The [Calculate Cart Taxes](https://docs.medusajs.com/api/store#carts_postcartscarttaxes) API Route forces the calculation of taxes for a cart during checkout. This bypasses the option set in admin to not calculate taxes automatically, which results in sending requests to the tax provider.
 
 This calculates and retrieves the taxes on the cart and each of the line items in that cart.
 
@@ -53,24 +52,30 @@ You can learn how to [retrieve and use services](../../../development/services/c
 
 Another way you can use the `CartService` to calculate taxes is using the method `decorateTotals`:
 
-```jsx
+```ts title=src/api/store/line-taxes/[cart_id]/route.ts
+import { CartService } from "@medusajs/medusa"
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
 
-export default () => {
+export const GET = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  // example of retrieving cart
+  const cartService = req.scope.resolve<CartService>(
+    "cartService"
+  )
+  const cart = await cartService.retrieve(req.params.cart_id)
+  
   // ...
-
-  router.get("/store/line-taxes", async (req, res) => {
-    // example of retrieving cart
-    const cartService = req.scope.resolve("cartService")
-    const cart = await cartService.retrieve(cart_id)
-    
-    // ...
-    // retrieve taxes of line items
-    const data = await decorateTotals(cart, {
-      force_taxes: true,
-    })
-    
-    return res.status(200).json({ cart: data })
+  // retrieve taxes of line items
+  const data = await cartService.decorateTotals(cart, {
+    force_taxes: true,
   })
+  
+  return res.status(200).json({ cart: data })
 }
 ```
 
@@ -80,7 +85,7 @@ The `decorateTotals` method accepts the cart as a first parameter and an options
 
 You can calculate and retrieve taxes of line items using the `getLineItemTotals` method available in the `TotalService` class. All you need to do is pass in the third argument to that method an options object with the key `include_tax` set to true:
 
-```jsx
+```ts
 const itemTotals = await totalsService
   .getLineItemTotals(item, cart, {
     include_tax: true,

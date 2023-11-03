@@ -17,11 +17,10 @@ export default function () {
         md.push(Handlebars.helpers.comment(comment.summary))
       }
 
-      const filteredTags = comment.blockTags
-        .filter((tag) => tag.tag !== "@returns")
-        .filter((tag) => tag.tag !== "@example")
-
       if (showTags && comment.blockTags?.length) {
+        const filteredTags = comment.blockTags
+          .filter((tag) => tag.tag !== "@returns")
+          .filter((tag) => tag.tag !== "@example")
         const tags = filteredTags.map((tag) => {
           return Handlebars.helpers.commentTag(
             tag,

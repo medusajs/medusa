@@ -1,23 +1,27 @@
+import { EntityManager } from "typeorm"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { FlagRouter } from "@medusajs/utils"
+
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
 
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
 import { buildQuery } from "../utils"
 import EventBusService from "./event-bus"
 import StoreService from "./store"
+import IsolateSalesChannelDomain from "../loaders/feature-flags/isolate-sales-channel-domain"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
   eventBusService: EventBusService
   manager: EntityManager
   storeService: StoreService
+  featureFlagRouter: FlagRouter
 }
 
 class SalesChannelService extends TransactionBaseService {
@@ -30,11 +34,13 @@ class SalesChannelService extends TransactionBaseService {
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBusService_: EventBusService
   protected readonly storeService_: StoreService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     salesChannelRepository,
     eventBusService,
     storeService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -42,6 +48,7 @@ class SalesChannelService extends TransactionBaseService {
     this.salesChannelRepository_ = salesChannelRepository
     this.eventBusService_ = eventBusService
     this.storeService_ = storeService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -387,7 +394,14 @@ class SalesChannelService extends TransactionBaseService {
         this.salesChannelRepository_
       )
 
-      await salesChannelRepo.addProducts(salesChannelId, productIds)
+      const isIsolatedSalesChannelDomainFlagOn =
+        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+
+      await salesChannelRepo.addProducts(
+        salesChannelId,
+        productIds,
+        isIsolatedSalesChannelDomainFlagOn
+      )
 
       return await this.retrieve(salesChannelId)
     })

@@ -1,0 +1,73 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# writeIntLE
+
+[Buffer](../../interfaces/Buffer.mdx).writeIntLE
+
+**writeIntLE**(`value`, `offset`, `byteLength`): `number`
+
+Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as little-endian. Supports up to 48 bits of accuracy. Behavior is undefined
+when `value` is anything other than a signed integer.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.allocUnsafe(6);
+
+buf.writeIntLE(0x1234567890ab, 0, 6);
+
+console.log(buf);
+// Prints: <Buffer ab 90 78 56 34 12>
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`number`",
+    "description": "Number to be written to `buf`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "Number of bytes to skip before starting to write. Must satisfy `0 <= offset <= buf.length - byteLength`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "byteLength",
+    "type": "`number`",
+    "description": "Number of bytes to write. Must satisfy `0 < byteLength <= 6`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`number`
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "`offset` plus the number of bytes written.",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v0.11.15

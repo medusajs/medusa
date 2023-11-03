@@ -56,11 +56,11 @@ Before testing the plugin, run the following command in the directory of the Med
 npx medusa develop
 ```
 
-The plugin exposes four endpoints.
+The plugin exposes four API Routes.
 
-### Add Item to Wishlist Endpoint
+### Add Item to Wishlist API Route
 
-The `POST` endpoint at `/store/customer/<CUSTOMER_ID>/wishlist` allows customers to add items to their existing or new wishlist, where `<CUSTOMER_ID>` is the ID of the customer. It accepts the following body parameters:
+The `POST` API Route at `/store/customer/<CUSTOMER_ID>/wishlist` allows customers to add items to their existing or new wishlist, where `<CUSTOMER_ID>` is the ID of the customer. It accepts the following body parameters:
 
 - `variant_id`: a string indicating the ID of the product variant to add to the wishlist.
 - `quantity`: (optional) a number indicating the quantity of the product variant.
@@ -68,27 +68,27 @@ The `POST` endpoint at `/store/customer/<CUSTOMER_ID>/wishlist` allows customers
 
 The request returns the full customer object. The wishlist is available at `customer.metadata.wishlist`, where its value is an array of items.
 
-### Delete Item from Wishlist Endpoint
+### Delete Item from Wishlist API Route
 
-The `DELETE` endpoint at `/store/customer/<CUSTOMER_ID>/wishlist` allows customers to delete items from their wishlist, where `<CUSTOMER_ID>` is the ID of the customer.
+The `DELETE` API Route at `/store/customer/<CUSTOMER_ID>/wishlist` allows customers to delete items from their wishlist, where `<CUSTOMER_ID>` is the ID of the customer.
 
-The endpoint accepts one request body parameter `index`, which indicates the index of the item in the `customer.metadata.wishlist` array.
+The API Route accepts one request body parameter `index`, which indicates the index of the item in the `customer.metadata.wishlist` array.
 
 The request returns the full customer object. The wishlist is available at `customer.metadata.wishlist`, where its value is an array of items.
 
-#### Generate Share Token Endpoint
+#### Generate Share Token API Route
 
-The `POST` endpoint at `/store/customer/<CUSTOMER_ID>/wishlist/share-token` allows customers to retrieve a token that can be used to access the wishlist, where `<CUSTOMER_ID>` is the ID of the customer.
+The `POST` API Route at `/store/customer/<CUSTOMER_ID>/wishlist/share-token` allows customers to retrieve a token that can be used to access the wishlist, where `<CUSTOMER_ID>` is the ID of the customer.
 
-The endpoint doesn't accept any request body parameters.
+The API Route doesn't accept any request body parameters.
 
 The request returns an object in the response having the property `share_token`, being the token that can be used to access the wishlist.
 
-#### Access Wishlist with Token Endpoint
+#### Access Wishlist with Token API Route
 
-The `GET` endpoint at `/wishlists/<TOKEN>` allows anyone to access the wishlist using its token, where `<TOKEN>` is the token retrieved from the [Generate Share Token Endpoint](#generate-share-token-endpoint).
+The `GET` API Route at `/wishlists/<TOKEN>` allows anyone to access the wishlist using its token, where `<TOKEN>` is the token retrieved from the [Generate Share Token API Route](#generate-share-token-api-token).
 
-The endpoint doesn't accept any request body parameters.
+The API Route doesn't accept any request body parameters.
 
 The request returns an object in the response having the following properties:
 

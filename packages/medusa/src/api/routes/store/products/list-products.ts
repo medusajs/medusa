@@ -17,14 +17,15 @@ import { Transform, Type } from "class-transformer"
 import { DateComparisonOperator } from "../../../../types/common"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import PricingService from "../../../../services/pricing"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultStoreProductRemoteQueryObject } from "./index"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import IsolateSalesChannelDomain from "../../../../loaders/feature-flags/isolate-sales-channel-domain"
 
 /**
  * @oas [get] /store/products
@@ -32,7 +33,7 @@ import { defaultStoreProductRemoteQueryObject } from "./index"
  * summary: List Products
  * description: |
  *   Retrieves a list of products. The products can be filtered by fields such as `id` or `q`. The products can also be sorted or paginated.
- *   This endpoint can also be used to retrieve a product by its handle.
+ *   This API Route can also be used to retrieve a product by its handle.
  *
  *   For accurate and correct pricing of the products based on the customer's context, it's highly recommended to pass fields such as
  *   `region_id`, `currency_code`, and `cart_id` when available.
@@ -338,6 +339,10 @@ async function listAndCountProductWithIsolatedProductModule(
   // TODO: Add support for fields/expands
 
   const remoteQuery = req.scope.resolve("remoteQuery")
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
+    IsolateSalesChannelDomain.key
+  )
 
   let salesChannelIdFilter = filterableFields.sales_channel_id
   if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
@@ -360,7 +365,7 @@ async function listAndCountProductWithIsolatedProductModule(
   }
 
   // This is not the best way of handling cross filtering but for now I would say it is fine
-  if (salesChannelIdFilter) {
+  if (salesChannelIdFilter && !isSalesChannelModuleIsolationFFOn) {
     const salesChannelService = req.scope.resolve(
       "salesChannelService"
     ) as SalesChannelService
@@ -401,7 +406,27 @@ async function listAndCountProductWithIsolatedProductModule(
     },
   }
 
-  const {
+  // TODO: Change when support for fields/expands is added
+  if (isSalesChannelModuleIsolationFFOn) {
+    query.product["sales_channels"] = {
+      fields: [
+        "id",
+        "name",
+        "description",
+        "is_disabled",
+        "created_at",
+        "updated_at",
+        "deleted_at",
+      ],
+    }
+    if (salesChannelIdFilter) {
+      query.product["sales_channels"]["__args"] = {
+        filters: { id: salesChannelIdFilter }, // TODO: check why this isn't working
+      }
+    }
+  }
+
+  let {
     rows: products,
     metadata: { count },
   } = await remoteQuery(query)
@@ -409,6 +434,10 @@ async function listAndCountProductWithIsolatedProductModule(
   products.forEach((product) => {
     product.profile_id = product.profile?.id
   })
+
+  if (salesChannelIdFilter) {
+    products = products.filter((product) => product.sales_channels?.length)
+  }
 
   return [products, count]
 }

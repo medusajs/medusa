@@ -1,9 +1,13 @@
-import { BeforeInsert, Column, OneToMany } from "typeorm"
+import { BeforeInsert, Column, JoinTable, ManyToMany, OneToMany } from "typeorm"
 
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
+import {
+  FeatureFlagDecorators,
+  FeatureFlagEntity,
+} from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
 import { DbAwareColumn, generateEntityId } from "../utils"
 import { SalesChannelLocation } from "./sales-channel-location"
+import { Product } from "./product"
 
 @FeatureFlagEntity("sales_channels")
 export class SalesChannel extends SoftDeletableEntity {
@@ -18,6 +22,22 @@ export class SalesChannel extends SoftDeletableEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
+
+  @FeatureFlagDecorators("isolate_sales_channel_domain", [
+    ManyToMany(() => Product),
+    JoinTable({
+      name: "product_sales_channel",
+      inverseJoinColumn: {
+        name: "product_id",
+        referencedColumnName: "id",
+      },
+      joinColumn: {
+        name: "sales_channel_id",
+        referencedColumnName: "id",
+      },
+    }),
+  ])
+  product: Product[]
 
   @OneToMany(
     () => SalesChannelLocation,

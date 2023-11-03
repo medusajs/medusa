@@ -26,13 +26,13 @@ Some of the `DraftOrder`'s attributes include:
 - `completed_at`: a date indicating when the draft order was completed.
 - `no_notification_order`: a boolean indicating whether the customer should receive notifications when the order is updated.
 
-There are other important attributes discussed in later sections. Check out the [full DraftOrder entity in the entities reference](../../references/entities/classes/DraftOrder.md).
+There are other important attributes discussed in later sections. Check out the [full DraftOrder entity in the entities reference](../../references/entities/classes/DraftOrder.mdx).
 
 ---
 
 ## How Draft Orders Work
 
-You have full freedom in how you choose to implement creating draft orders. This section explains how it’s created in the Medusa backend using the [Create Draft Order](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders) and [Register Payment](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderregisterpayment) endpoints.
+You have full freedom in how you choose to implement creating draft orders. This section explains how it’s created in the Medusa backend using the [Create Draft Order](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders) and [Register Payment](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderregisterpayment) API Routes.
 
 A draft order is created using the `DraftOrderService`'s [create method](../../references/services/classes/DraftOrderService.md#create). Within that method, a cart is created along with it. The cart is used to store the order’s details, such as the draft order’s items, shipping options, and more. The cart has the type `draft_order`.
 
@@ -42,7 +42,7 @@ The payment must be authorized before the cart can be completed, which can be do
 
 :::note
 
-In the Register Payment endpoint, the `system` payment method is used by default as the payment session of the cart. This means that the authorization and capturing of the payment don’t actually trigger any processes with existing payment processors integrated into your Medusa backend. It’s expected that the merchant will handle these processes manually.
+In the Register Payment API Route, the `system` payment method is used by default as the payment session of the cart. This means that the authorization and capturing of the payment don’t actually trigger any processes with existing payment processors integrated into your Medusa backend. It’s expected that the merchant will handle these processes manually.
 
 :::
 

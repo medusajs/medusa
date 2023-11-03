@@ -1,26 +1,30 @@
 import {
-    buildRelations,
-    buildSelects, FlagRouter, objectToStringPath
+  buildRelations,
+  buildSelects,
+  FlagRouter,
+  objectToStringPath,
 } from "@medusajs/utils"
+import { RemoteQueryFunction } from "@medusajs/types"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
+
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-    Product,
-    ProductCategory,
-    ProductOption,
-    ProductTag,
-    ProductType,
-    ProductVariant,
-    SalesChannel,
-    ShippingProfile,
+  Product,
+  ProductCategory,
+  ProductOption,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+  SalesChannel,
+  ShippingProfile,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
-    FindWithoutRelationsOptions,
-    ProductRepository,
+  FindWithoutRelationsOptions,
+  ProductRepository,
 } from "../repositories/product"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
@@ -29,15 +33,18 @@ import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
 import { Selector } from "../types/common"
 import {
-    CreateProductInput,
-    FilterableProductProps,
-    FindProductConfig,
-    ProductOptionInput,
-    ProductSelector,
-    UpdateProductInput,
+  CreateProductInput,
+  FilterableProductProps,
+  FindProductConfig,
+  ProductOptionInput,
+  ProductSelector,
+  UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
+import { CreateProductVariantInput } from "../types/product-variant"
+import SalesChannelService from "./sales-channel"
+import IsolateSalesChannelDomain from "../loaders/feature-flags/isolate-sales-channel-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -50,8 +57,10 @@ type InjectedDependencies = {
   productCategoryRepository: typeof ProductCategoryRepository
   productVariantService: ProductVariantService
   searchService: SearchService
+  salesChannelService: SalesChannelService
   eventBusService: EventBusService
   featureFlagRouter: FlagRouter
+  remoteQuery: RemoteQueryFunction
 }
 
 class ProductService extends TransactionBaseService {
@@ -65,8 +74,10 @@ class ProductService extends TransactionBaseService {
   protected readonly productCategoryRepository_: typeof ProductCategoryRepository
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
+  protected readonly salesChannelService_: SalesChannelService
   protected readonly eventBus_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
+  protected remoteQuery_: RemoteQueryFunction
 
   static readonly IndexName = `products`
   static readonly Events = {
@@ -86,6 +97,8 @@ class ProductService extends TransactionBaseService {
     productCategoryRepository,
     imageRepository,
     searchService,
+    remoteQuery,
+    salesChannelService,
     featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
@@ -101,7 +114,9 @@ class ProductService extends TransactionBaseService {
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
+    this.salesChannelService_ = salesChannelService
     this.featureFlagRouter_ = featureFlagRouter
+    this.remoteQuery_ = remoteQuery
   }
 
   /**
@@ -163,17 +178,42 @@ class ProductService extends TransactionBaseService {
     const manager = this.activeManager_
     const productRepo = manager.withRepository(this.productRepository_)
 
+    const hasSalesChannelsRelation =
+      config.relations?.includes("sales_channels")
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key) &&
+      hasSalesChannelsRelation
+    ) {
+      config.relations = config.relations?.filter((r) => r !== "sales_channels")
+    }
+
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
+    let count: number
+    let products: Product[]
+
     if (q) {
-      return await productRepo.getFreeTextSearchResultsAndCount(
+      ;[products, count] = await productRepo.getFreeTextSearchResultsAndCount(
         q,
         query,
         relations
       )
+    } else {
+      ;[products, count] = await productRepo.findWithRelationsAndCount(
+        relations,
+        query
+      )
     }
 
-    return await productRepo.findWithRelationsAndCount(relations, query)
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key) &&
+      hasSalesChannelsRelation
+    ) {
+      await this.decorateProductsWithSalesChannels(products)
+    }
+
+    return [products, count]
   }
 
   /**
@@ -294,6 +334,16 @@ class ProductService extends TransactionBaseService {
     const manager = this.activeManager_
     const productRepo = manager.withRepository(this.productRepository_)
 
+    const hasSalesChannelsRelation =
+      config.relations?.includes("sales_channels")
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key) &&
+      hasSalesChannelsRelation
+    ) {
+      config.relations = config.relations?.filter((r) => r !== "sales_channels")
+    }
+
     const { relations, ...query } = buildQuery(selector, config)
 
     const product = await productRepo.findOneWithRelations(
@@ -310,6 +360,13 @@ class ProductService extends TransactionBaseService {
         MedusaError.Types.NOT_FOUND,
         `Product with ${selectorConstraints} was not found`
       )
+    }
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key) &&
+      hasSalesChannelsRelation
+    ) {
+      await this.decorateProductsWithSalesChannels([product])
     }
 
     return product
@@ -429,6 +486,7 @@ class ProductService extends TransactionBaseService {
         tags,
         type,
         images,
+        variants,
         sales_channels: salesChannels,
         categories: categories,
         ...rest
@@ -462,7 +520,8 @@ class ProductService extends TransactionBaseService {
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+        !this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
       ) {
         if (isDefined(salesChannels)) {
           product.sales_channels = []
@@ -490,6 +549,20 @@ class ProductService extends TransactionBaseService {
 
       product = await productRepo.save(product)
 
+      if (
+        isDefined(salesChannels) &&
+        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+      ) {
+        if (salesChannels?.length) {
+          await Promise.all(
+            salesChannels?.map(
+              async (sc) =>
+                await this.salesChannelService_.addProducts(sc.id, [product.id])
+            )
+          )
+        }
+      }
+
       product.options = await Promise.all(
         (options ?? []).map(async (option) => {
           const res = optionRepo.create({
@@ -500,6 +573,27 @@ class ProductService extends TransactionBaseService {
           return res
         })
       )
+
+      if (variants) {
+        const toCreate = variants.map((variant) => {
+          return {
+            ...variant,
+            options:
+              variant.options?.map((option, index) => {
+                return {
+                  option_id: product.options[index].id,
+                  ...option,
+                }
+              }) ?? [],
+          }
+        })
+        product.variants = await this.productVariantService_
+          .withTransaction(manager)
+          .create(
+            product.id,
+            toCreate as unknown as CreateProductVariantInput[]
+          )
+      }
 
       const result = await this.retrieve(product.id, {
         relations: ["options"],
@@ -614,7 +708,8 @@ class ProductService extends TransactionBaseService {
       }
 
       if (
-        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+        !this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
       ) {
         if (isDefined(salesChannels)) {
           product.sales_channels = []
@@ -636,6 +731,19 @@ class ProductService extends TransactionBaseService {
       await Promise.all(promises)
 
       const result = await productRepo.save(product)
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+      ) {
+        if (salesChannels?.length) {
+          await Promise.all(
+            salesChannels?.map(
+              async (sc) =>
+                await this.salesChannelService_.addProducts(sc.id, [product.id])
+            )
+          )
+        }
+      }
 
       await this.eventBus_
         .withTransaction(manager)
@@ -1000,6 +1108,63 @@ class ProductService extends TransactionBaseService {
       relations: rels as (keyof Product)[],
       q,
     }
+  }
+
+  /**
+   * Temporary method to join sales channels of a product using RemoteQuery while
+   * IsolatedSalesChannelDomain FF is on.
+   *
+   * @param products
+   * @private
+   */
+  private async decorateProductsWithSalesChannels(products: Product[]) {
+    const productIdSalesChannelMapMap =
+      await this.getSalesChannelModuleChannels(products.map((p) => p.id))
+
+    products.forEach(
+      (product) =>
+        (product.sales_channels = productIdSalesChannelMapMap[product.id] ?? [])
+    )
+
+    return products
+  }
+
+  /**
+   * Temporary method to fetch sales channels of a product using RemoteQuery while
+   * IsolatedSalesChannelDomain FF is on.
+   *
+   * @param productIds
+   * @private
+   */
+  private async getSalesChannelModuleChannels(
+    productIds: string[]
+  ): Promise<Record<string, SalesChannel[]>> {
+    const query = {
+      product: {
+        __args: { filters: { id: productIds } },
+        fields: ["id"],
+        sales_channels: {
+          fields: [
+            "id",
+            "name",
+            "description",
+            "is_disabled",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+          ],
+        },
+      },
+    }
+
+    const ret = {}
+    const data = (await this.remoteQuery_(query)) as {
+      id: string
+      sales_channels: SalesChannel[]
+    }[]
+    data.forEach((record) => (ret[record.id] = record.sales_channels))
+
+    return ret
   }
 }
 
