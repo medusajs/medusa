@@ -113,7 +113,7 @@ export const loadMedusaApp = async (
 
   // Register all unresolved modules as undefined to be present in the container with undefined value by defaul
   // but still resolvable
-  for (const [, moduleDefinition] of Object.entries(ModulesDefinition)) {
+  for (const moduleDefinition of Object.values(ModulesDefinition)) {
     if (!container.hasRegistration(moduleDefinition.registrationName)) {
       container.register(moduleDefinition.registrationName, asValue(undefined))
     }

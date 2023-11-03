@@ -166,10 +166,7 @@ function registerCustomJoinerConfigs(servicesConfig: ModuleJoinerConfig[]) {
 export type MedusaAppOutput = {
   modules: Record<string, LoadedModule | LoadedModule[]>
   link: RemoteLink | undefined
-  query: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
+  query: RemoteQueryFunction
   entitiesMap?: Record<string, any>
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
@@ -200,14 +197,7 @@ export async function MedusaApp(
   } = {
     injectedDependencies: {},
   }
-): Promise<{
-  modules: Record<string, LoadedModule | LoadedModule[]>
-  link: RemoteLink | undefined
-  query: RemoteQueryFunction
-  entitiesMap?: Record<string, any>
-  notFound?: Record<string, Record<string, string>>
-  runMigrations: RunMigrationFn
-}> {
+): Promise<MedusaAppOutput> {
   const sharedContainer_ = createMedusaContainer({}, sharedContainer)
 
   const modules: MedusaModuleConfig =
