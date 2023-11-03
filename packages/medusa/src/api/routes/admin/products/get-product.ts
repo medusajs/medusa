@@ -109,7 +109,7 @@ export default async (req, res) => {
       const remoteQuery = req.scope.resolve("remoteQuery")
       const query = {
         sales_channels: {
-          fields: ["id", "name"],
+          fields: ["id"],
         },
       }
       salesChannels = await remoteQuery(query)
