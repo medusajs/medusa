@@ -4,7 +4,6 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
-  RequiredEntityData,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product, ProductOption } from "@models"
@@ -191,10 +190,7 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
         const updatedOption = manager.assign(existingOption, option)
         optionsToUpdate.push(updatedOption)
       } else {
-        const newOption = (manager as SqlEntityManager).create(
-          ProductOption,
-          option as RequiredEntityData<ProductOption>
-        )
+        const newOption = manager.create(ProductOption, option)
         optionsToCreate.push(newOption)
       }
     })
