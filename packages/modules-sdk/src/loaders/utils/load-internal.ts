@@ -1,8 +1,8 @@
 import {
   InternalModuleDeclaration,
   Logger,
-  MODULE_RESOURCE_TYPE,
   MedusaContainer,
+  MODULE_RESOURCE_TYPE,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
@@ -125,7 +125,8 @@ export async function loadModuleMigrations(
 ): Promise<[Function | undefined, Function | undefined]> {
   let loadedModule: ModuleExports
   try {
-    loadedModule = (await import(resolution.resolutionPath as string)).default
+    loadedModule = await import(resolution.resolutionPath as string)
+
     return [loadedModule.runMigrations, loadedModule.revertMigration]
   } catch {
     return [undefined, undefined]

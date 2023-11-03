@@ -27,14 +27,14 @@ export default class EventBusService
   protected readonly config_: ConfigModule
   protected readonly stagedJobService_: StagedJobService
   // eslint-disable-next-line max-len
+  protected get eventBusModuleService_(): EventBusTypes.IEventBusModuleService {
+    return this.__container__.eventBusModuleService
+  }
+
   protected readonly logger_: Logger
 
   protected shouldEnqueuerRun: boolean
   protected enqueue_: Promise<void>
-
-  protected get eventBusModuleService_(): EventBusTypes.IEventBusModuleService {
-    return this.__container__.eventBusModuleService
-  }
 
   constructor(
     { stagedJobService, logger }: InjectedDependencies,

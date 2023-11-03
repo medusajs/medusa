@@ -4,9 +4,9 @@ import {
   RemoteJoinerQuery,
 } from "../joiner"
 
+import { Logger } from "../logger"
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
-import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"

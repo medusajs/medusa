@@ -7,19 +7,25 @@ export function generateGraphQLSchema(
   joinerConfig: ModuleJoinerConfig,
   primary: ModuleJoinerRelationship,
   foreign: ModuleJoinerRelationship,
-  { logger }
+  { logger }: { logger } = { logger: console }
 ) {
-  const fieldNames = primary.foreignKey.split(",").concat(foreign.foreignKey)
-  const entityName = toPascalCase(
-    "Link_" +
-      (joinerConfig.databaseConfig?.tableName ??
-        composeTableName(
-          primary.serviceName,
-          primary.foreignKey,
-          foreign.serviceName,
-          foreign.foreignKey
-        ))
-  )
+  let fieldNames!: string[]
+  let entityName!: string
+
+  if (!joinerConfig.isReadOnlyLink) {
+    fieldNames = primary.foreignKey.split(",").concat(foreign.foreignKey)
+
+    entityName = toPascalCase(
+      "Link_" +
+        (joinerConfig.databaseConfig?.tableName ??
+          composeTableName(
+            primary.serviceName,
+            primary.foreignKey,
+            foreign.serviceName,
+            foreign.foreignKey
+          ))
+    )
+  }
 
   let typeDef = ""
 

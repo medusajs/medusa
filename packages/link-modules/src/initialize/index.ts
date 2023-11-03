@@ -208,10 +208,8 @@ export async function runMigrations(
     allLinks.add(serviceKey)
 
     if (
-      (!primary.isInternalService &&
-        !modulesLoadedKeys.includes(primary.serviceName)) ||
-      (!foreign.isInternalService &&
-        !modulesLoadedKeys.includes(foreign.serviceName))
+      !modulesLoadedKeys.includes(primary.serviceName) ||
+      !modulesLoadedKeys.includes(foreign.serviceName)
     ) {
       continue
     }

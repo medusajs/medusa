@@ -2,10 +2,16 @@ import { FlagRouter } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import { EntityManager } from "typeorm"
 import { Cart } from "../../../../../../models"
-import { CartService, LineItemService } from "../../../../../../services"
+import {
+  CartService,
+  LineItemService,
+  ProductVariantInventoryService,
+} from "../../../../../../services"
 import { WithRequiredProperty } from "../../../../../../types/common"
 import { IdempotencyCallbackResult } from "../../../../../../types/idempotency-key"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../../index"
+import SalesChannelFeatureFlag from "../../../../../../loaders/feature-flags/sales-channels"
+import { MedusaError } from "medusa-core-utils"
 
 export const CreateLineItemSteps = {
   STARTED: "started",
@@ -26,6 +32,9 @@ export async function handleAddOrUpdateLineItem(
   const lineItemService: LineItemService = container.resolve("lineItemService")
   const featureFlagRouter: FlagRouter = container.resolve("featureFlagRouter")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    container.resolve("productVariantInventoryService")
+
   const txCartService = cartService.withTransaction(manager)
 
   let cart = await txCartService.retrieve(cartId, {
@@ -43,16 +52,29 @@ export async function handleAddOrUpdateLineItem(
     validateSalesChannels: featureFlagRouter.isFeatureEnabled("sales_channels"),
   })
 
+  const relations = [
+    ...defaultStoreCartRelations,
+    "billing_address",
+    "region.payment_providers",
+    "payment_sessions",
+    "customer",
+  ]
+
+  const shouldSetAvailability =
+    relations?.some((rel) => rel.includes("variant")) &&
+    featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
+
   cart = await txCartService.retrieveWithTotals(cart.id, {
     select: defaultStoreCartFields,
-    relations: [
-      ...defaultStoreCartRelations,
-      "billing_address",
-      "region.payment_providers",
-      "payment_sessions",
-      "customer",
-    ],
+    relations,
   })
+
+  if (shouldSetAvailability) {
+    await productVariantInventoryService.setVariantAvailability(
+      cart.items.map((i) => i.variant),
+      cart.sales_channel_id!
+    )
+  }
 
   if (cart.payment_sessions?.length) {
     await txCartService.setPaymentSessions(

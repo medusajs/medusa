@@ -73,6 +73,7 @@ export class MedusaModule {
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
   private static joinerConfig_: Map<string, ModuleJoinerConfig> = new Map()
+  private static moduleResolutions_: Map<string, ModuleResolution> = new Map()
 
   public static onApplicationStart(): void {
     for (const instances of MedusaModule.instances_.values()) {
@@ -105,6 +106,7 @@ export class MedusaModule {
     MedusaModule.instances_.clear()
     MedusaModule.modules_.clear()
     MedusaModule.joinerConfig_.clear()
+    MedusaModule.moduleResolutions_.clear()
   }
 
   public static isInstalled(moduleKey: string, alias?: string): boolean {
@@ -126,11 +128,29 @@ export class MedusaModule {
     return [...MedusaModule.joinerConfig_.values()]
   }
 
+  public static getModuleResolutions(moduleKey: string): ModuleResolution {
+    return MedusaModule.moduleResolutions_.get(moduleKey)!
+  }
+
+  public static getAllModuleResolutions(): ModuleResolution[] {
+    return [...MedusaModule.moduleResolutions_.values()]
+  }
+
+  public static setModuleResolution(
+    moduleKey: string,
+    resolution: ModuleResolution
+  ): ModuleResolution {
+    MedusaModule.moduleResolutions_.set(moduleKey, resolution)
+
+    return resolution
+  }
+
   public static setJoinerConfig(
     moduleKey: string,
     config: ModuleJoinerConfig
   ): ModuleJoinerConfig {
     MedusaModule.joinerConfig_.set(moduleKey, config)
+
     return config
   }
 
@@ -284,6 +304,8 @@ export class MedusaModule {
         MedusaModule.setJoinerConfig(keyName, joinerConfig)
       }
 
+      MedusaModule.setModuleResolution(keyName, resolution)
+
       MedusaModule.registerModule(keyName, {
         key: keyName,
         hash: hashKey,
@@ -402,6 +424,7 @@ export class MedusaModule {
         }
       }
 
+      MedusaModule.setModuleResolution(keyName, resolution)
       MedusaModule.registerModule(keyName, {
         key: keyName,
         hash: hashKey,

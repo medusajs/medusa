@@ -19,7 +19,7 @@ eventEmitter.setMaxListeners(Infinity)
 
 // eslint-disable-next-line max-len
 export default class LocalEventBusService extends AbstractEventBusModuleService {
-  protected readonly logger_: Logger
+  protected readonly logger_?: Logger
   protected readonly eventEmitter_: EventEmitter
 
   constructor({ logger }: MedusaContainer & InjectedDependencies) {
@@ -61,7 +61,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         event.eventName
       )
 
-      this.logger_.info(
+      this.logger_?.info(
         `Processing ${event.eventName} which has ${eventListenersCount} subscribers`
       )
 
@@ -82,7 +82,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
         // @ts-ignore
         await subscriber(...args)
       } catch (e) {
-        this.logger_.error(
+        this.logger_?.error(
           `An error occurred while processing ${event.toString()}: ${e}`
         )
       }

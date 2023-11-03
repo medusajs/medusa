@@ -1,6 +1,5 @@
 import { EntityManager, In } from "typeorm"
 import {
-  ICacheService,
   IEventBusService,
   IInventoryService,
   InventoryItemDTO,
@@ -52,19 +51,22 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly salesChannelLocationService_: SalesChannelLocationService
   protected readonly salesChannelInventoryService_: SalesChannelInventoryService
   protected readonly productVariantService_: ProductVariantService
-  protected readonly stockLocationService_: IStockLocationService
-  protected readonly inventoryService_: IInventoryService
   protected readonly eventBusService_: IEventBusService
-  protected readonly cacheService_: ICacheService
   protected readonly featureFlagRouter_: FlagRouter
   protected readonly remoteQuery_: RemoteQueryFunction
 
+  protected get inventoryService_(): IInventoryService {
+    return this.__container__.inventoryService
+  }
+
+  protected get stockLocationService_(): IStockLocationService {
+    return this.__container__.stockLocationService
+  }
+
   constructor({
-    stockLocationService,
     salesChannelLocationService,
     salesChannelInventoryService,
     productVariantService,
-    inventoryService,
     eventBusService,
     featureFlagRouter,
     remoteQuery,
@@ -74,9 +76,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     this.salesChannelLocationService_ = salesChannelLocationService
     this.salesChannelInventoryService_ = salesChannelInventoryService
-    this.stockLocationService_ = stockLocationService
     this.productVariantService_ = productVariantService
-    this.inventoryService_ = inventoryService
     this.eventBusService_ = eventBusService
     this.featureFlagRouter_ = featureFlagRouter
     this.remoteQuery_ = remoteQuery

@@ -155,16 +155,18 @@ export class RemoteJoiner {
         // handle alias.name as array
         for (let idx = 0; idx < service.alias.length; idx++) {
           const alias = service.alias[idx]
-          if (Array.isArray(alias.name)) {
-            for (const name of alias.name) {
-              service.alias.push({
-                name,
-                args: alias.args,
-              })
-            }
-            service.alias.splice(idx, 1)
-            idx--
+          if (!Array.isArray(alias.name)) {
+            continue
           }
+
+          for (const name of alias.name) {
+            service.alias.push({
+              name,
+              args: alias.args,
+            })
+          }
+          service.alias.splice(idx, 1)
+          idx--
         }
 
         // self-reference
