@@ -1,6 +1,6 @@
 import { knex } from "knex"
 import { DB_URL } from "./database"
-import { EventBusService, joinerConfig, schema } from "../__fixtures__"
+import { joinerConfig, schema } from "../__fixtures__"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { MedusaApp, Modules } from "@medusajs/modules-sdk"
 import modulesConfig from "../__fixtures__/modules-config"
@@ -24,8 +24,6 @@ export async function initModules({ remoteQueryMock, eventBusMock }) {
     },
     schema,
   }
-
-  const eventBus = new EventBusService()
 
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: sharedPgConnection,

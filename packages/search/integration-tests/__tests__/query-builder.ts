@@ -19,7 +19,7 @@ const afterEach_ = async () => {
   await TestDatabase.clearDatabase()
 }
 
-describe("SearchEngineModuleService", function () {
+describe("SearchEngineModuleService query", function () {
   let module: ISearchModuleService
 
   beforeEach(async () => {
