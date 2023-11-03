@@ -6,7 +6,7 @@ import { EOL } from "os"
  * @param aggregateErrors
  */
 export async function promiseAll<T = unknown>(
-  promises: Promise<T>[],
+  promises: (T | PromiseLike<T>)[],
   { aggregateErrors } = { aggregateErrors: false }
 ): Promise<T[]> {
   const states = await Promise.allSettled(promises)

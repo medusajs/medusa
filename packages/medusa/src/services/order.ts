@@ -793,7 +793,7 @@ class OrderService extends TransactionBaseService {
               order_id: order.id,
             })
           }),
-        ].flat(Infinity) as Promise<unknown>[]
+        ].flat(Infinity)
       )
 
       await this.eventBus_
