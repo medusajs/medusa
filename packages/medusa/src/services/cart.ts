@@ -64,6 +64,7 @@ import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { validateEmail } from "../utils/is-email"
 import IsolateSalesChannelDomainFeatureFlag from "../loaders/feature-flags/isolate-sales-channel-domain"
+import { RemoteQueryFunction } from "@medusajs/types"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -94,6 +95,7 @@ type InjectedDependencies = {
   priceSelectionStrategy: IPriceSelectionStrategy
   productVariantInventoryService: ProductVariantInventoryService
   pricingService: PricingService
+  remoteQuery: RemoteQueryFunction
 }
 
 type TotalsConfig = {
@@ -135,6 +137,7 @@ class CartService extends TransactionBaseService {
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly featureFlagRouter_: FlagRouter
+  protected remoteQuery_: RemoteQueryFunction
   // eslint-disable-next-line max-len
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
   protected readonly pricingService_: PricingService
@@ -165,6 +168,7 @@ class CartService extends TransactionBaseService {
     salesChannelService,
     featureFlagRouter,
     storeService,
+    remoteQuery,
     productVariantInventoryService,
     pricingService,
   }: InjectedDependencies) {
@@ -198,6 +202,7 @@ class CartService extends TransactionBaseService {
     this.storeService_ = storeService
     this.productVariantInventoryService_ = productVariantInventoryService
     this.pricingService_ = pricingService
+    this.remoteQuery_ = remoteQuery
   }
 
   /**
@@ -508,9 +513,24 @@ class CartService extends TransactionBaseService {
   ): Promise<SalesChannel | never> {
     let salesChannel: SalesChannel
     if (isDefined(salesChannelId)) {
-      salesChannel = await this.salesChannelService_
-        .withTransaction(this.activeManager_)
-        .retrieve(salesChannelId)
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(
+          IsolateSalesChannelDomainFeatureFlag.key
+        )
+      ) {
+        const query = {
+          sales_channel: {
+            __args: {
+              id: salesChannelId,
+            },
+          },
+        }
+        ;[salesChannel] = await this.remoteQuery_(query)
+      } else {
+        salesChannel = await this.salesChannelService_
+          .withTransaction(this.activeManager_)
+          .retrieve(salesChannelId)
+      }
     } else {
       salesChannel = (
         await this.storeService_.withTransaction(this.activeManager_).retrieve({
