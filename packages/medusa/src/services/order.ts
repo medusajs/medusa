@@ -5,6 +5,7 @@ import {
   FlagRouter,
   isDefined,
   MedusaError,
+  promiseAll,
 } from "@medusajs/utils"
 import {
   EntityManager,
@@ -302,7 +303,7 @@ class OrderService extends TransactionBaseService {
 
     const raw = await orderRepo.findWithRelations(rels, query)
     const count = await orderRepo.count(query)
-    const orders = await Promise.all(
+    const orders = await promiseAll(
       raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
     )
 
@@ -768,7 +769,7 @@ class OrderService extends TransactionBaseService {
         this.shippingOptionService_.withTransaction(manager)
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         [
           cart.items.map((lineItem): unknown[] => {
             const toReturn: unknown[] = [
@@ -1225,7 +1226,7 @@ class OrderService extends TransactionBaseService {
       const inventoryServiceTx =
         this.productVariantInventoryService_.withTransaction(manager)
 
-      await Promise.all(
+      await promiseAll(
         order.items.map(async (item) => {
           if (item.variant_id) {
             return await inventoryServiceTx.deleteReservationsByLineItem(
@@ -1544,7 +1545,7 @@ class OrderService extends TransactionBaseService {
     transformer: (item: LineItem | undefined, quantity: number) => unknown
   ): Promise<LineItem[]> {
     return (
-      await Promise.all(
+      await promiseAll(
         items.map(async ({ item_id, quantity }) => {
           const item = order.items.find((i) => i.id === item_id)
           return transformer(item, quantity)
@@ -1662,7 +1663,7 @@ class OrderService extends TransactionBaseService {
         await this.totalsService_.getCalculationContext(order, {
           exclude_shipping: true,
         })
-      order.items = await Promise.all(
+      order.items = await promiseAll(
         (order.items || []).map(async (item) => {
           const itemTotals = await this.totalsService_.getLineItemTotals(
             item,
