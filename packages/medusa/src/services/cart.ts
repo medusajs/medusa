@@ -1240,9 +1240,21 @@ class CartService extends TransactionBaseService {
           isDefined(data.sales_channel_id) &&
           data.sales_channel_id != cart.sales_channel_id
         ) {
+          const salesChannel = await this.getValidatedSalesChannel(
+            data.sales_channel_id
+          )
+
           await this.onSalesChannelChange(cart, data.sales_channel_id)
-          // TODO: update SC here if IsolatedSCDomain
-          cart.sales_channel_id = data.sales_channel_id
+
+          if (
+            this.featureFlagRouter_.isFeatureEnabled(
+              IsolateSalesChannelDomainFeatureFlag.key
+            )
+          ) {
+            await this.salesChannelService_.addCarts(salesChannel.id, [cart.id])
+          } else {
+            cart.sales_channel_id = salesChannel.id
+          }
         }
 
         if (isDefined(data.discounts) && data.discounts.length) {
