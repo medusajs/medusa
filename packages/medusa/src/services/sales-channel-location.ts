@@ -19,19 +19,17 @@ type InjectedDependencies = {
 class SalesChannelLocationService extends TransactionBaseService {
   protected readonly salesChannelService_: SalesChannelService
   protected readonly eventBusService_: IEventBusService
-  protected readonly stockLocationService_: IStockLocationService
 
-  constructor({
-    salesChannelService,
-    stockLocationService,
-    eventBusService,
-  }: InjectedDependencies) {
+  protected get stockLocationService_(): IStockLocationService {
+    return this.__container__.stockLocationService
+  }
+
+  constructor({ salesChannelService, eventBusService }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.salesChannelService_ = salesChannelService
     this.eventBusService_ = eventBusService
-    this.stockLocationService_ = stockLocationService
   }
 
   /**

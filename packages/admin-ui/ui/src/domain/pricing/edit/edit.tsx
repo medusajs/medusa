@@ -59,11 +59,11 @@ const PriceListEdit = () => {
           )
         })}
         <PriceListGeneralSection
-          key={`${price_list.updated_at}`}
+          key={`gs_${price_list.id}_${price_list.updated_at}`}
           priceList={price_list}
         />
         <PriceListPricesSection
-          key={`${price_list.updated_at}`}
+          key={`ps_${price_list.id}_${price_list.updated_at}`}
           priceList={price_list}
         />
         {getWidgets("price_list.details.after").map((w, i) => {
