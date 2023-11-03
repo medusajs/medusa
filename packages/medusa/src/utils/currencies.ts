@@ -1017,13 +1017,13 @@ export const currencies: Record<string, Currency> = {
     code: "UZS",
     name_plural: "Uzbekistan som",
   },
-  VEF: {
-    symbol: "Bs.F.",
+  VES: {
+    symbol: "Bs.S.",
     name: "Venezuelan Bolívar",
-    symbol_native: "Bs.F.",
+    symbol_native: "Bs.S.",
     decimal_digits: 2,
     rounding: 0,
-    code: "VEF",
+    code: "VES",
     name_plural: "Venezuelan bolívars",
   },
   VND: {
