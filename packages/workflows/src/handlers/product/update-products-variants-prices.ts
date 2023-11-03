@@ -64,6 +64,7 @@ export async function updateProductsVariantsPrices({
           rules: {},
         }
 
+        // TODO: fetch all regions using .list and associate them here
         if (price.region_id) {
           const region = await regionService.retrieve(price.region_id)
           obj.currency_code = region.currency_code
@@ -82,21 +83,23 @@ export async function updateProductsVariantsPrices({
     const remoteLink = container.resolve("remoteLink")
     const pricingModuleService = container.resolve("pricingModuleService")
 
-    for (let { variantId } of variantIdsPricesData) {
-      const priceSet = await pricingModuleService.create({
-        rules: [{ rule_attribute: "region_id" }],
-        prices: variantPricesMap.get(variantId),
-      })
+    const priceSetsToCreate = variantIdsPricesData.map(({ variantId }) => ({
+      rules: [{ rule_attribute: "region_id" }],
+      prices: variantPricesMap.get(variantId),
+    }))
 
-      await remoteLink.create({
-        productService: {
-          variant_id: variantId,
-        },
-        pricingService: {
-          price_set_id: priceSet.id,
-        },
-      })
-    }
+    const priceSets = await pricingModuleService.create(priceSetsToCreate)
+
+    const links = priceSets.map((priceSet, index) => ({
+      productService: {
+        variant_id: variantIdsPricesData[index].variantId,
+      },
+      pricingService: {
+        price_set_id: priceSet.id,
+      },
+    }))
+
+    await remoteLink.create(links)
   } else {
     await productVariantServiceTx.updateVariantPrices(variantIdsPricesData)
   }
