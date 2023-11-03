@@ -1,11 +1,6 @@
-import {
-  IEventBusModuleService,
-  Message,
-  RemoteJoinerQuery,
-  Subscriber,
-} from "@medusajs/types"
+import { Message, RemoteQueryFunction, Subscriber } from "@medusajs/types"
 import { isDefined, remoteQueryObjectFromString } from "@medusajs/utils"
-import { EntityManager } from "@mikro-orm/postgresql"
+import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql"
 import { Catalog, CatalogRelation } from "@models"
 import {
   EntityNameModuleConfigMap,
@@ -14,19 +9,12 @@ import {
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
   SearchModuleOptions,
-  StorageProvider,
 } from "../types"
-import { QueryBuilder, createPartitions } from "../utils"
+import { createPartitions, QueryBuilder } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
-  eventBusModuleService: IEventBusModuleService
-  storageProviderCtr: StorageProvider
-  storageProviderOptions: unknown
-  remoteQuery: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
+  remoteQuery: RemoteQueryFunction
 }
 
 export class PostgresProvider {
@@ -44,24 +32,20 @@ export class PostgresProvider {
   protected readonly schemaObjectRepresentation_: SchemaObjectRepresentation
   protected readonly schemaEntitiesMap_: Record<string, any>
   protected readonly moduleOptions_: SearchModuleOptions
-
-  protected get remoteQuery_(): (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any> {
-    return this.container_.remoteQuery
-  }
+  protected readonly manager_: SqlEntityManager
+  protected readonly remoteQuery_: RemoteQueryFunction
 
   constructor(
-    container,
+    { manager, remoteQuery }: InjectedDependencies,
     options: {
       schemaObjectRepresentation: SchemaObjectRepresentation
       entityMap: Record<string, any>
     },
     moduleOptions: SearchModuleOptions
   ) {
-    this.container_ = container
+    this.remoteQuery_ = remoteQuery
     this.moduleOptions_ = moduleOptions
+    this.manager_ = manager
 
     this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
     this.schemaEntitiesMap_ = options.entityMap
@@ -94,7 +78,7 @@ export class PostgresProvider {
           field +
           "') STORED"
       )
-      await this.container_.manager.execute(query.join(";"))
+      await this.manager_.execute(query.join(";"))
     })()*/
   }
 
@@ -108,7 +92,7 @@ export class PostgresProvider {
 
     await createPartitions(
       this.schemaObjectRepresentation_,
-      this.container_.manager
+      this.manager_.fork()
     )
       .then(initalizedOk)
       .catch(initalizedNok)
@@ -202,7 +186,7 @@ export class PostgresProvider {
       hasPagination = true
     }
 
-    const connection = this.container_.manager.getConnection()
+    const connection = this.manager_.getConnection()
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
       entityMap: this.schemaEntitiesMap_,
@@ -237,7 +221,7 @@ export class PostgresProvider {
   async queryAndCount(selection: QueryFormat, options?: QueryOptions) {
     await this.#isReady_
 
-    const connection = this.container_.manager.getConnection()
+    const connection = this.manager_.getConnection()
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
       entityMap: this.schemaEntitiesMap_,
@@ -335,7 +319,7 @@ export class PostgresProvider {
     data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
-    await this.container_.manager.transactional(async (em) => {
+    await this.manager_.fork().transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
       const catalogRelationRepository = em.getRepository(CatalogRelation)
 
@@ -427,7 +411,7 @@ export class PostgresProvider {
     data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
-    await this.container_.manager.transactional(async (em) => {
+    await this.manager_.fork().transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
 
       const { data: data_, entityProperties } = PostgresProvider.parseData(
@@ -468,7 +452,7 @@ export class PostgresProvider {
     data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
-    await this.container_.manager.transactional(async (em) => {
+    await this.manager_.fork().transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
       const catalogRelationRepository = em.getRepository(CatalogRelation)
 
@@ -517,7 +501,7 @@ export class PostgresProvider {
     data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
-    await this.container_.manager.transactional(async (em) => {
+    await this.manager_.fork().transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
       const catalogRelationRepository = em.getRepository(CatalogRelation)
 
@@ -636,7 +620,7 @@ export class PostgresProvider {
     data: TData | TData[]
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   }) {
-    await this.container_.manager.transactional(async (em) => {
+    await this.manager_.fork().transactional(async (em) => {
       const catalogRepository = em.getRepository(Catalog)
       const catalogRelationRepository = em.getRepository(CatalogRelation)
 

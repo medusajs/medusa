@@ -2,14 +2,14 @@ import {
   IEventBusModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  RemoteJoinerQuery,
+  RemoteQueryFunction,
   SearchModuleTypes,
 } from "@medusajs/types"
 import {
   SchemaObjectRepresentation,
+  schemaObjectRepresentationPropertiesToOmit,
   SearchModuleOptions,
   StorageProvider,
-  schemaObjectRepresentationPropertiesToOmit,
 } from "../types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { joinerConfig } from "./../joiner-config"
@@ -18,10 +18,7 @@ type InjectedDependencies = {
   eventBusModuleService: IEventBusModuleService
   storageProviderCtr: StorageProvider
   storageProviderCtrOptions: unknown
-  remoteQuery: (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>
-  ) => Promise<any>
+  remoteQuery: RemoteQueryFunction
 }
 
 export default class SearchModuleService
@@ -35,7 +32,6 @@ export default class SearchModuleService
   protected schemaObjectRepresentation_: SchemaObjectRepresentation
   protected schemaEntitiesMap_: Record<string, any>
 
-  protected storageProviderInstance_: StorageProvider
   protected readonly storageProviderCtr_: StorageProvider
   protected readonly storageProviderCtrOptions_: unknown
 

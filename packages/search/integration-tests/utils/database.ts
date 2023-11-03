@@ -18,7 +18,7 @@ interface TestDatabase {
   setupDatabase(): Promise<void>
   clearDatabase(): Promise<void>
   getManager(): SqlEntityManager
-  forkManager(): Promise<SqlEntityManager>
+  forkManager(): SqlEntityManager
   getORM(): MikroORM
 }
 
@@ -34,12 +34,12 @@ export const TestDatabase: TestDatabase = {
     return this.manager
   },
 
-  async forkManager() {
+  forkManager() {
     if (this.manager === null) {
       throw new Error("manager entity not available")
     }
 
-    return await this.manager.fork()
+    return this.manager.fork()
   },
 
   getORM() {

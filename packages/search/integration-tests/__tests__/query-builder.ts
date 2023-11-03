@@ -9,21 +9,13 @@ const remoteQueryMock = jest.fn()
 
 jest.setTimeout(300000)
 
-const beforeEach_ = async () => {
-  await TestDatabase.setupDatabase()
-  jest.clearAllMocks()
-  return await TestDatabase.forkManager()
-}
-
-const afterEach_ = async () => {
-  await TestDatabase.clearDatabase()
-}
-
 describe("SearchEngineModuleService query", function () {
   let module: ISearchModuleService
 
   beforeEach(async () => {
-    const manager = await beforeEach_()
+    await TestDatabase.setupDatabase()
+    jest.clearAllMocks()
+    const manager = TestDatabase.forkManager()
 
     module = await initModules({
       remoteQueryMock,
@@ -189,7 +181,7 @@ describe("SearchEngineModuleService query", function () {
   })
 
   afterEach(async () => {
-    await afterEach_()
+    await TestDatabase.clearDatabase()
   })
 
   it("should query all products", async () => {
