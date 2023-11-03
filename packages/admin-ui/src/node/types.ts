@@ -27,7 +27,7 @@ export type DevelopOptions = {
    * The development server allowed hosts.
    * @default "auto"
    * */
-  allowedHosts: "auto" | string[]
+  allowedHosts: "auto" | "all" | string[]
 }
 
 export type AdminOptions = {
