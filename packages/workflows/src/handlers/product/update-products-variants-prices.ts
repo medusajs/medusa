@@ -3,7 +3,6 @@ import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { Region } from "@medusajs/medusa"
 
 type ProductHandle = string
 type VariantIndexAndPrices = {
@@ -83,7 +82,7 @@ export async function updateProductsVariantsPrices({
     const regions = await regionService.list({
       id: [...regionIds],
     })
-    const regionMap = new Map<string, Region>(regions.map((r) => [r.id, r]))
+    const regionMap = new Map<string, any>(regions.map((r) => [r.id, r]))
 
     for (const [, prices] of variantPricesMap.entries()) {
       prices.forEach((price) => {
