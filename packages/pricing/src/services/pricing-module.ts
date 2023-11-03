@@ -52,7 +52,7 @@ import {
 
 import { AddPricesDTO } from "@medusajs/types"
 import { joinerConfig } from "../joiner-config"
-import { PricingRepositoryService } from "../types"
+import { CreatePriceListRuleValueDTO, PricingRepositoryService } from "../types"
 import { CreatePriceListRuleDTO } from "@medusajs/types"
 import { PriceListRuleDTO } from "@medusajs/types"
 import { UpdatePriceListRuleDTO } from "@medusajs/types"
@@ -1372,7 +1372,7 @@ export default class PricingModuleService<
         )
 
         // Create the values for the rule
-        for (const ruleValue of ruleValues) {
+        for (const ruleValue of ruleValues as string[]) {
           await this.priceListRuleValueService_.create(
             [
               {
@@ -1629,7 +1629,7 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.PriceListDTO[]> {
     const priceLists = await this.priceListService_.list(
       { id: data.map((d) => d.priceListId) },
-      { relations: ["rules", "rules.rule_type"] },
+      { relations: ["price_list_rules", "price_list_rules.rule_type"] },
       sharedContext
     )
 
@@ -1641,8 +1641,11 @@ export default class PricingModuleService<
 
     const ruleTypeMap = new Map(ruleTypes.map((rt) => [rt.rule_attribute, rt]))
 
-    const rulesToUpdate: UpdatePriceListRuleDTO[] = []
+    const ruleIdsToUpdate: string[] = []
     const rulesToCreate: CreatePriceListRuleDTO[] = []
+
+    const priceRuleValues = new Map<string, Map<string, string[]>>()
+
     for (const { priceListId, rules } of data) {
       const priceList = priceListMap.get(priceListId)
 
@@ -1654,9 +1657,12 @@ export default class PricingModuleService<
       }
 
       const priceListRulesMap: Map<string, PriceListRule> = new Map(
-        priceList.rules.getItems().map((p) => [p.rule_type.rule_attribute, p])
+        priceList.price_list_rules
+          .getItems()
+          .map((p) => [p.rule_type.rule_attribute, p])
       )
 
+      const priceListRuleValues = new Map<string, string[]>()
       await Promise.all(
         Object.entries(rules).map(async ([key, value]) => {
           const ruleType = ruleTypeMap.get(key)
@@ -1669,25 +1675,59 @@ export default class PricingModuleService<
 
           const rule = priceListRulesMap.get(key)
 
+          priceListRuleValues.set(ruleType.id, Array.isArray(value) ? value : [value])
+
           if (!rule) {
             rulesToCreate.push({
               rule_type: ruleType.id,
               price_list: priceListId,
-              value,
             })
           } else {
-            rulesToUpdate.push({
-              id: rule.id,
-              value,
-            })
+            ruleIdsToUpdate.push(rule.id)
           }
         })
       )
+
+      priceRuleValues.set(priceListId, priceListRuleValues)
+    }
+
+    const [createdRules, priceListValuesToDelete] = await Promise.all([
+      this.priceListRuleService_.create(rulesToCreate),
+      this.priceListRuleValueService_.list({
+        price_list_rule_id: ruleIdsToUpdate,
+      }),
+    ])
+
+    const priceListRuleValuesToCreate: CreatePriceListRuleValueDTO[] = []
+
+    for (const { id, price_list, rule_type } of createdRules) {
+      const ruleValues = priceRuleValues.get(
+        price_list.id ?? (price_list as unknown as string)
+      )
+      if (!ruleValues) {
+        continue
+      }
+
+      const values = ruleValues.get(
+        rule_type.id ?? (rule_type as unknown as string)
+      )
+      if (!values) {
+        continue
+      }
+
+      values.forEach((v) => {
+        priceListRuleValuesToCreate.push({
+          price_list_rule: id,
+          value: v,
+        })
+      })
     }
 
     await Promise.all([
-      await this.priceListRuleService_.create(rulesToCreate),
-      await this.priceListRuleService_.update(rulesToUpdate),
+      this.priceListRuleValueService_.delete(
+        priceListValuesToDelete.map((p) => p.id)
+      ),
+      this.priceListRuleValueService_.create(priceListRuleValuesToCreate),
     ])
 
     return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
@@ -1715,7 +1755,7 @@ export default class PricingModuleService<
   ): Promise<PricingTypes.PriceListDTO[]> {
     const priceLists = await this.priceListService_.list(
       { id: data.map((d) => d.priceListId) },
-      { relations: ["rules", "rules.rule_type"] },
+      { relations: ["price_list_rules", "price_list_rules.rule_type"] },
       sharedContext
     )
 
@@ -1733,7 +1773,9 @@ export default class PricingModuleService<
       }
 
       const priceListRulesMap: Map<string, PriceListRule> = new Map(
-        priceList.rules.getItems().map((p) => [p.rule_type.rule_attribute, p])
+        priceList.price_list_rules
+          .getItems()
+          .map((p) => [p.rule_type.rule_attribute, p])
       )
 
       await Promise.all(

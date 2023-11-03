@@ -1,5 +1,6 @@
-import { BaseFilterable } from "../../dal"
 import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount"
+
+import { BaseFilterable } from "../../dal"
 import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 import { RuleTypeDTO } from "./rule-type"
 
@@ -119,7 +120,7 @@ export interface AddPriceListPricesDTO {
 
 export interface setPriceListRulesDTO{
 	priceListId: string,
-	rules: Record<string, string>
+	rules: Record<string, string | string[]>
 }
 
 export interface removePriceListRulesDTO{

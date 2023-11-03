@@ -6,8 +6,8 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
 import PriceListRule from "./price-list-rule"
+import { generateEntityId } from "@medusajs/utils"
 
 @Entity()
 export default class PriceListRuleValue {
@@ -16,6 +16,7 @@ export default class PriceListRuleValue {
 
   @ManyToOne(() => PriceListRule, {
     onDelete: "cascade",
+    fieldName: 'price_list_rule_id',
     index: "IDX_price_list_rule_price_list_rule_value_id",
   })
   price_list_rule: PriceListRule
