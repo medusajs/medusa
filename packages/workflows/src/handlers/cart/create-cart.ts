@@ -1,5 +1,6 @@
 import { CartDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+import { IsolatePricingDomainFeatureFlag } from "@medusajs/utils"
 
 enum Aliases {
   SalesChannel = "SalesChannel",
@@ -41,17 +42,22 @@ export async function createCart({
   const { manager } = context
 
   const cartService = container.resolve("cartService")
+  const featureFlagRouter = container.resolve("featureFlagRouter")
   const cartServiceTx = cartService.withTransaction(manager)
 
-  const cart = await cartServiceTx.create({
+  const payload = {
     ...data[Aliases.SalesChannel],
     ...data[Aliases.Addresses],
     ...data[Aliases.Customer],
     ...data[Aliases.Region],
     ...data[Aliases.Context],
-  })
+  }
 
-  return cart
+  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+    delete payload[Aliases.SalesChannel]
+  }
+
+  return await cartServiceTx.create(payload)
 }
 
 createCart.aliases = Aliases
