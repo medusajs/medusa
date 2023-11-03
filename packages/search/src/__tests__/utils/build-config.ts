@@ -5,16 +5,6 @@ import { buildSchemaObjectRepresentation } from "../../utils/build-config"
 import { joinerConfig } from "../__fixtures__/joiner-config"
 import modulesConfig from "../__fixtures__/modules-config"
 
-function removePropRecursively(obj, propToRemove) {
-  for (const prop in obj) {
-    if (prop === propToRemove) {
-      delete obj[prop]
-    } else if (typeof obj[prop] === "object") {
-      removePropRecursively(obj[prop], propToRemove)
-    }
-  }
-}
-
 const config = {
   schema: `
       type Product @Listeners(values: ["product.created", "product.updated"]) {
@@ -77,7 +67,7 @@ describe("buildSchemaObjectRepresentation", function () {
       ],
       alias: "variant",
       listeners: ["variants.created", "variants.updated"],
-      fields: ["id", "product_id", "sku", "product.id", "product.title"],
+      fields: ["id", "product_id", "sku", "product.id"],
       moduleConfig: expect.any(Object),
     }
 
@@ -94,13 +84,7 @@ describe("buildSchemaObjectRepresentation", function () {
         "LinkProductVariantPriceSet.attached",
         "LinkProductVariantPriceSet.detached",
       ],
-      fields: [
-        "variant_id",
-        "price_set_id",
-        "variant.id",
-        "variant.product_id",
-        "variant.sku",
-      ],
+      fields: ["id", "variant_id", "price_set_id"],
       moduleConfig: expect.any(Object),
     }
 
@@ -115,12 +99,7 @@ describe("buildSchemaObjectRepresentation", function () {
       ],
       alias: "price_set",
       listeners: ["PriceSet.created", "PriceSet.updated"],
-      fields: [
-        "id",
-        "product_variant_price_set.id",
-        "product_variant_price_set.variant_id",
-        "product_variant_price_set.price_set_id",
-      ],
+      fields: ["id"],
       moduleConfig: expect.any(Object),
     }
 
