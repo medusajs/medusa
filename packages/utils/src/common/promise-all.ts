@@ -16,13 +16,9 @@ export async function promiseAll<T = unknown>(
   ) as PromiseRejectedResult[]
 
   if (rejected.length) {
-    let aggregatedErrors = [rejected[0].reason]
-    if (aggregateErrors) {
-      aggregatedErrors = rejected.reduce((errors, state) => {
-        errors.push(state.reason)
-        return errors
-      }, [] as string[])
-    }
+    const aggregatedErrors = aggregateErrors
+      ? rejected.map((state) => state.reason)
+      : [rejected[0].reason]
     throw new Error(aggregatedErrors.join(EOL))
   }
 
