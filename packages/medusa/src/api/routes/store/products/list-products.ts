@@ -420,9 +420,7 @@ async function listAndCountProductWithIsolatedProductModule(
       ],
     }
     if (salesChannelIdFilter) {
-      query.product["sales_channels"]["__args"] = {
-        filters: { id: salesChannelIdFilter }, // TODO: check why this isn't working
-      }
+      query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter } // TODO: check why this isn't working
     }
   }
 

@@ -108,7 +108,7 @@ export default async (req, res) => {
     if (isSalesChannelModuleIsolationFFOn) {
       const remoteQuery = req.scope.resolve("remoteQuery")
       const query = {
-        sales_channels: {
+        sales_channel: {
           fields: ["id"],
         },
       }
