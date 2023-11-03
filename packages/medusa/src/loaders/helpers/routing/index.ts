@@ -85,53 +85,6 @@ function calculatePriority(path: string): number {
   return depth + specifity + catchall
 }
 
-const BASE_PRIORITY_FOR_REGEXP = Number.MAX_SAFE_INTEGER // Highest possible safe integer in JavaScript.
-const BASE_PRIORITY_FOR_WILDCARD = 5000 // Base priority for wildcard strings.
-
-/**
- * Calculates the priority of a middleware route matcher.
- *
- * Normally we don't want to apply middlewares in order of priority, but rather
- * in the order they are defined in the file. However, we want to prioritize
- *
- * - Highest priority (0) is given to a string matcher that is equal to the path.
- * - For a string matcher with wildcards, a penalty is applied. The score is improved
- *   based on the number of literal characters in the matcher.
- * - Regular expressions are given a high base score which is then reduced based on
- *   the number of literal characters in the matcher to improve its priority.
- *
- * @param path - The path to match against.
- * @param matcher - The matcher used for routing, either a string with possible wildcards or a RegExp.
- * @return An integer ranging from `0` to `Infinity`, where `0` is the highest priority.
- */
-function calculateMiddlewaresPriority(
-  path: string,
-  matcher: string | RegExp
-): number {
-  if (typeof matcher === "string") {
-    if (matcher === path) {
-      return 0 // Exact match has the highest priority.
-    } else {
-      const wildcardPenalty = matcher.includes("*")
-        ? BASE_PRIORITY_FOR_WILDCARD
-        : 0
-      // Prioritize based on the number of static characters in the matcher.
-      return wildcardPenalty + path.length - matcher.length
-    }
-  } else if (matcher instanceof RegExp) {
-    // Calculate the number of literal characters by replacing any non-literal parts.
-    const literalsCount = matcher.source.replace(
-      /\\.|[\^$.*+?()[\]{}|]/g,
-      ""
-    ).length
-    // Subtract literals count from base regExp priority to improve score.
-    return BASE_PRIORITY_FOR_REGEXP - literalsCount
-  }
-
-  // If it's neither string nor RegExp, it's the worst match.
-  return Infinity
-}
-
 function matchMethod(
   method: RouteVerb,
   configMethod: MiddlewareRoute["method"]
@@ -149,56 +102,50 @@ function matchMethod(
   }
 }
 
-function findBestMatch(
+/**
+ * Function that looks though the global middlewares and returns the first
+ * complete match for the given path and method.
+ *
+ * @param path - The path to match
+ * @param method - The method to match
+ * @param routes - The routes to match against
+ * @returns The first complete match or undefined if no match is found
+ */
+function findMatch(
   path: string,
   method: RouteVerb,
   routes: MiddlewareRoute[]
 ): MiddlewareRoute | undefined {
-  let bestMatch: MiddlewareRoute | undefined = undefined
-  let bestMatchLength = 0
-  let bestMatchPriority = Infinity
-
-  routes.forEach((route) => {
+  for (const route of routes) {
     const { matcher, method: configMethod } = route
 
     if (matchMethod(method, configMethod)) {
-      let matchLength = 0
-      let matchPriority = 0
       let isMatch = false
 
       if (typeof matcher === "string") {
-        const regex = new RegExp(`^${matcher.replace("*", ".*")}$`)
-        const match = regex.exec(path)
-        if (match) {
-          matchLength = match[0].length
-          matchPriority = calculateMiddlewaresPriority(path, matcher)
-          isMatch = true
-        }
+        // Convert wildcard expressions to proper regex for matching entire path
+        // The '.*' will match any character sequence including '/'
+        const regex = new RegExp(`^${matcher.split("*").join(".*")}$`)
+        isMatch = regex.test(path)
       } else if (matcher instanceof RegExp) {
-        const match = matcher.exec(path)
-        if (match) {
-          matchLength = match[0].length
-          matchPriority = calculateMiddlewaresPriority(path, matcher)
-          isMatch = true
-        }
+        // Ensure that the regex matches the entire path
+        const match = path.match(matcher)
+        isMatch = match !== null && match[0] === path
       }
 
-      if (
-        isMatch &&
-        matchLength >= bestMatchLength &&
-        matchPriority < bestMatchPriority
-      ) {
-        bestMatchLength = matchLength
-        bestMatchPriority = matchPriority
-
-        bestMatch = route
+      if (isMatch) {
+        return route // Return the first complete match
       }
     }
-  })
+  }
 
-  return bestMatch
+  return undefined // Return undefined if no complete match is found
 }
 
+/**
+ * Returns an array of body parser middlewares that are applied on routes
+ * out-of-the-box.
+ */
 function getBodyParserMiddleware(sizeLimit?: string | number | undefined) {
   return [
     json({ limit: sizeLimit }),
@@ -335,6 +282,7 @@ export class RoutesLoader {
     await Promise.all(
       [...this.routesMap.values()].map(async (descriptor: RouteDescriptor) => {
         const absolutePath = descriptor.absolutePath
+        const route = descriptor.route
 
         return await import(absolutePath).then((import_) => {
           const map = this.routesMap
@@ -362,7 +310,7 @@ export class RoutesLoader {
           const shouldAddCors =
             import_["CORS"] !== undefined ? (import_["CORS"] as boolean) : true
 
-          if (absolutePath.includes(join("api", "admin"))) {
+          if (route.startsWith("/admin")) {
             if (shouldAddCors) {
               config.shouldAppendAdminCors = true
             }
@@ -372,7 +320,7 @@ export class RoutesLoader {
             }
           }
 
-          if (absolutePath.includes(join("api", "store"))) {
+          if (route.startsWith("/store")) {
             config.shouldAppendCustomer = true
 
             if (shouldAddCors) {
@@ -380,10 +328,7 @@ export class RoutesLoader {
             }
           }
 
-          if (
-            shouldRequireAuth &&
-            absolutePath.includes(join("api", "store", "me"))
-          ) {
+          if (shouldRequireAuth && route.startsWith("/store/me")) {
             config.shouldRequireCustomerAuth = shouldRequireAuth
           }
 
@@ -587,7 +532,7 @@ export class RoutesLoader {
   applyBodyParserMiddleware(path: string, method: RouteVerb): void {
     const middlewareDescriptor = this.globalMiddlewaresDescriptor
 
-    const mostSpecificConfig = findBestMatch(
+    const mostSpecificConfig = findMatch(
       path,
       method,
       middlewareDescriptor?.config?.routes ?? []
@@ -715,10 +660,10 @@ export class RoutesLoader {
     const routes = descriptor.config.routes
 
     /**
-     * We don't sort the middlewares to preserve the order
-     * in which they are defined in the file. This is to
+     * We don't prioritize the middlewares to preserve the order
+     * in which they are defined in the 'middlewares.ts'. This is to
      * maintain the same behavior as how middleware is applied
-     * in express.
+     * in Express.
      */
 
     for (const route of routes) {

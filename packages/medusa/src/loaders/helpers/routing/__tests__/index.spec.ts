@@ -1,23 +1,14 @@
 import express from "express"
-import http from "http"
+import { IdMap } from "medusa-test-utils"
 import { resolve } from "path"
-import request from "supertest"
 import {
+  config,
   customersCreateMiddlewareMock,
   customersGlobalMiddlewareMock,
-  storeCorsMiddlewareMock,
+  storeGlobalMiddlewareMock,
 } from "../__fixtures__/mocks"
+import { createServer } from "../__fixtures__/server"
 import { RoutesLoader } from "../index"
-
-const mockConfigModule = {
-  projectConfig: {
-    store_cors: "http://localhost:8000",
-    admin_cors: "http://localhost:7001",
-    database_logging: false,
-  },
-  featureFlags: {},
-  plugins: [],
-}
 
 describe("RoutesLoader", function () {
   afterEach(function () {
@@ -25,44 +16,53 @@ describe("RoutesLoader", function () {
   })
 
   describe("Routes", function () {
-    const app = express()
-    const server = http.createServer(app)
+    let request
 
     beforeAll(async function () {
       const rootDir = resolve(__dirname, "../__fixtures__/routers")
 
-      await new RoutesLoader({
-        app,
-        rootDir,
-        configModule: mockConfigModule,
-      }).load()
+      const { request: request_ } = await createServer(rootDir)
+
+      request = request_
     })
 
     it("should return a status 200 on GET admin/order/:id", async function () {
-      await request(server)
-        .get("/admin/orders/1000")
-        .expect(200)
-        .expect("GET order 1000")
+      const res = await request("GET", "/admin/orders/1000", {
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
+          },
+        },
+      })
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("GET order 1000")
     })
 
     it("should return a status 200 on POST admin/order/:id", async function () {
-      await request(server)
-        .post("/admin/orders/1000")
-        .expect(200)
-        .expect("POST order 1000")
+      const res = await request("POST", "/admin/orders/1000", {
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
+          },
+        },
+      })
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("POST order 1000")
     })
 
     it("should call GET /customers/[customer_id]/orders/[order_id]", async function () {
-      await request(server)
-        .get("/customers/test-customer/orders/test-order")
-        .expect(200)
-        .expect(
-          'list customers {"customer_id":"test-customer","order_id":"test-order"}'
-        )
+      const res = await request("GET", "/customers/test-customer/orders/test")
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe(
+        'list customers {"customer_id":"test-customer","order_id":"test"}'
+      )
     })
 
     it("should not be able to GET /_private as the folder is prefixed with an underscore", async function () {
-      const res = await request(server).get("/_private")
+      const res = await request("GET", "/_private")
 
       expect(res.status).toBe(404)
       expect(res.text).toContain("Cannot GET /_private")
@@ -70,74 +70,114 @@ describe("RoutesLoader", function () {
   })
 
   describe("Middlewares", function () {
-    const app = express()
-    const server = http.createServer(app)
+    let request
 
     beforeAll(async function () {
       const rootDir = resolve(__dirname, "../__fixtures__/routers-middleware")
 
-      await new RoutesLoader({
-        app,
-        rootDir,
-        configModule: mockConfigModule,
-      }).load()
+      const { request: request_ } = await createServer(rootDir)
+
+      request = request_
     })
 
     it("should call middleware applied to `/customers`", async function () {
-      await request(server)
-        .get("/customers")
-        .expect(200)
-        .expect("list customers")
+      const res = await request("GET", "/customers")
 
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("list customers")
       expect(customersGlobalMiddlewareMock).toHaveBeenCalled()
     })
 
     it("should not call middleware applied to POST `/customers` when GET `/customers`", async function () {
-      await request(server)
-        .get("/customers")
-        .expect(200)
-        .expect("list customers")
+      const res = await request("GET", "/customers")
 
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("list customers")
       expect(customersGlobalMiddlewareMock).toHaveBeenCalled()
       expect(customersCreateMiddlewareMock).not.toHaveBeenCalled()
     })
 
     it("should call middleware applied to POST `/customers` when POST `/customers`", async function () {
-      await request(server)
-        .post("/customers")
-        .expect(200)
-        .expect("create customer")
+      const res = await request("POST", "/customers")
 
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("create customer")
       expect(customersGlobalMiddlewareMock).toHaveBeenCalled()
       expect(customersCreateMiddlewareMock).toHaveBeenCalled()
     })
 
-    it("should call store cors middleware on `/store/*` routes", async function () {
-      await request(server)
-        .post("/store/products/1000/sync")
-        .expect(200)
-        .expect("sync product 1000")
+    it("should call store global middleware on `/store/*` routes", async function () {
+      const res = await request("POST", "/store/products/1000/sync")
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("sync product 1000")
+      expect(storeGlobalMiddlewareMock).toHaveBeenCalled()
 
       expect(customersGlobalMiddlewareMock).not.toHaveBeenCalled()
       expect(customersCreateMiddlewareMock).not.toHaveBeenCalled()
-
-      expect(storeCorsMiddlewareMock).toHaveBeenCalled()
     })
 
     it("should apply raw middleware on POST `/webhooks/payment` route", async function () {
-      await request(server)
-        .post("/webhooks/payment")
-        .send({ test: "test" })
-        .expect(200)
-        .expect("OK")
+      const res = await request("POST", "/webhooks/payment", {
+        payload: { test: "test" },
+      })
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("OK")
     })
 
-    it("should apply default bodyParser middleware on `/webhooks/orders` routes", async function () {
-      await request(server)
-        .post("/webhooks/orders")
-        .send({ test: "test" })
-        .expect(200)
-        .expect("OK")
+    it("should return 200 when admin is authenticated", async () => {
+      const res = await request("GET", "/admin/protected", {
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
+          },
+        },
+      })
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("GET /admin/protected")
+    })
+
+    it("should return 401 when admin is not authenticated", async () => {
+      const res = await request("GET", "/admin/protected")
+
+      expect(res.status).toBe(401)
+      expect(res.text).toBe("Unauthorized")
+    })
+
+    it("should return 200 when admin route is opted out of authentication", async () => {
+      const res = await request("GET", "/admin/unprotected")
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("GET /admin/unprotected")
+    })
+
+    it("should return 200 when customer is authenticated", async () => {
+      const res = await request("GET", "/store/me/protected", {
+        clientSession: {
+          jwt: {
+            customer_id: IdMap.getId("lebron"),
+          },
+        },
+      })
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("GET /store/protected")
+    })
+
+    it("should return 401 when customer is not authenticated", async () => {
+      const res = await request("GET", "/store/me/protected")
+
+      expect(res.status).toBe(401)
+      expect(res.text).toBe("Unauthorized")
+    })
+
+    it("should return 200 when customer route is opted out of authentication", async () => {
+      const res = await request("GET", "/store/me/unprotected")
+
+      expect(res.status).toBe(200)
+      expect(res.text).toBe("GET /store/unprotected")
     })
   })
 
@@ -152,7 +192,7 @@ describe("RoutesLoader", function () {
       const err = await new RoutesLoader({
         app,
         rootDir,
-        configModule: mockConfigModule,
+        configModule: config,
       })
         .load()
         .catch((e) => e)

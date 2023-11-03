@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response, json, raw } from "express"
+import { NextFunction, Request, Response, raw } from "express"
 import { MiddlewaresConfig } from "../../types"
 import {
   customersCreateMiddlewareMock,
   customersGlobalMiddlewareMock,
-  storeCorsMiddlewareMock,
+  storeGlobalMiddlewareMock,
 } from "../mocks"
 
 const customersGlobalMiddleware = (
@@ -24,8 +24,8 @@ const customersCreateMiddleware = (
   next()
 }
 
-const storeCors = (req: Request, res: Response, next: NextFunction) => {
-  storeCorsMiddlewareMock()
+const storeGlobal = (req: Request, res: Response, next: NextFunction) => {
+  storeGlobalMiddlewareMock()
   next()
 }
 
@@ -42,12 +42,7 @@ export const config: MiddlewaresConfig = {
     },
     {
       matcher: "/store/*",
-      middlewares: [storeCors],
-    },
-    {
-      matcher: "/webhooks/orders",
-      method: "POST",
-      middlewares: [json()],
+      middlewares: [storeGlobal],
     },
     {
       matcher: "/webhooks/*",
