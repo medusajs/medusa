@@ -27,9 +27,7 @@ export default class EventBusService
   protected readonly config_: ConfigModule
   protected readonly stagedJobService_: StagedJobService
   // eslint-disable-next-line max-len
-  protected get eventBusModuleService_(): EventBusTypes.IEventBusModuleService {
-    return this.__container__.eventBusModuleService
-  }
+  protected readonly eventBusModuleService_: EventBusTypes.IEventBusModuleService
 
   protected readonly logger_: Logger
 
@@ -37,7 +35,7 @@ export default class EventBusService
   protected enqueue_: Promise<void>
 
   constructor(
-    { stagedJobService, logger }: InjectedDependencies,
+    { stagedJobService, logger, eventBusModuleService }: InjectedDependencies,
     config,
     isSingleton = true
   ) {
@@ -47,6 +45,7 @@ export default class EventBusService
     this.logger_ = logger
     this.config_ = config
     this.stagedJobService_ = stagedJobService
+    this.eventBusModuleService_ = eventBusModuleService
 
     if (process.env.NODE_ENV !== "test" && isSingleton) {
       this.startEnqueuer()

@@ -14,19 +14,19 @@ class SalesChannelInventoryService extends TransactionBaseService {
   protected readonly salesChannelLocationService_: SalesChannelLocationService
   protected readonly eventBusService_: EventBusTypes.IEventBusService
 
-  protected get inventoryService_(): IInventoryService {
-    return this.__container__.inventoryService
-  }
+  protected inventoryService_: IInventoryService
 
   constructor({
     salesChannelLocationService,
     eventBusService,
+    inventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
     this.salesChannelLocationService_ = salesChannelLocationService
     this.eventBusService_ = eventBusService
+    this.inventoryService_ = inventoryService
   }
 
   /**

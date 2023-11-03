@@ -56,12 +56,8 @@ class PricingService extends TransactionBaseService {
   protected readonly productVariantService: ProductVariantService
   protected readonly featureFlagRouter: FlagRouter
 
-  protected get pricingModuleService(): IPricingModuleService {
-    return this.__container__.pricingModuleService
-  }
-  protected get remoteQuery(): RemoteQueryFunction {
-    return this.__container__.remoteQuery
-  }
+  protected readonly pricingModuleService: IPricingModuleService
+  protected readonly remoteQuery: RemoteQueryFunction
 
   constructor({
     productVariantService,
@@ -69,10 +65,14 @@ class PricingService extends TransactionBaseService {
     regionService,
     priceSelectionStrategy,
     featureFlagRouter,
+    pricingModuleService,
+    remoteQuery,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
+    this.pricingModuleService = pricingModuleService
+    this.remoteQuery = remoteQuery
     this.regionService = regionService
     this.taxProviderService = taxProviderService
     this.priceSelectionStrategy = priceSelectionStrategy

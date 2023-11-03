@@ -55,13 +55,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly featureFlagRouter_: FlagRouter
   protected readonly remoteQuery_: RemoteQueryFunction
 
-  protected get inventoryService_(): IInventoryService {
-    return this.__container__.inventoryService
-  }
-
-  protected get stockLocationService_(): IStockLocationService {
-    return this.__container__.stockLocationService
-  }
+  protected inventoryService_: IInventoryService
+  protected stockLocationService_: IStockLocationService
 
   constructor({
     salesChannelLocationService,
@@ -70,10 +65,14 @@ class ProductVariantInventoryService extends TransactionBaseService {
     eventBusService,
     featureFlagRouter,
     remoteQuery,
+    inventoryService,
+    stockLocationService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
+    this.inventoryService_ = inventoryService
+    this.stockLocationService_ = stockLocationService
     this.salesChannelLocationService_ = salesChannelLocationService
     this.salesChannelInventoryService_ = salesChannelInventoryService
     this.productVariantService_ = productVariantService
