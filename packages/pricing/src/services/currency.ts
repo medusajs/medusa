@@ -1,6 +1,5 @@
 import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
 import {
-  doNotForceTransaction,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,

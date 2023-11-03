@@ -182,24 +182,31 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
     }
 
     const upsertedOptions: ProductOption[] = []
-    const optionToCreate: ProductOption[] = []
+    const optionsToCreate: ProductOption[] = []
+    const optionsToUpdate: ProductOption[] = []
 
     data.forEach((option) => {
       const existingOption = existingOptionsMap.get(option.id)
       if (existingOption) {
-        upsertedOptions.push(existingOption)
+        const updatedOption = manager.assign(existingOption, option)
+        optionsToUpdate.push(updatedOption)
       } else {
         const newOption = (manager as SqlEntityManager).create(
           ProductOption,
           option as RequiredEntityData<ProductOption>
         )
-        optionToCreate.push(newOption)
+        optionsToCreate.push(newOption)
       }
     })
 
-    if (optionToCreate.length) {
-      manager.persist(optionToCreate)
-      upsertedOptions.push(...optionToCreate)
+    if (optionsToCreate.length) {
+      manager.persist(optionsToCreate)
+      upsertedOptions.push(...optionsToCreate)
+    }
+
+    if (optionsToUpdate.length) {
+      manager.persist(optionsToUpdate)
+      upsertedOptions.push(...optionsToUpdate)
     }
 
     return upsertedOptions
