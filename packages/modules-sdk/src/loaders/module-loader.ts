@@ -1,16 +1,13 @@
 import {
   Logger,
-  MODULE_SCOPE,
   MedusaContainer,
+  MODULE_SCOPE,
   ModuleResolution,
 } from "@medusajs/types"
 
 import { asValue } from "awilix"
 import { EOL } from "os"
-import { ModulesHelper } from "../module-helper"
 import { loadInternalModule } from "./utils"
-
-export const moduleHelper = new ModulesHelper()
 
 export const moduleLoader = async ({
   container,
@@ -38,17 +35,6 @@ export const moduleLoader = async ({
       )
     }
   }
-
-  moduleHelper.setModules(
-    Object.entries(moduleResolutions).reduce((acc, [k, v]) => {
-      if (v.resolutionPath) {
-        acc[k] = v
-      }
-      return acc
-    }, {})
-  )
-
-  container.register("modulesHelper", asValue(moduleHelper))
 }
 
 async function loadModule(
