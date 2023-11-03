@@ -778,7 +778,7 @@ class OrderService extends TransactionBaseService {
 
             if (lineItem.is_giftcard) {
               toReturn.push(
-                this.createGiftCardsFromLineItem_(order, lineItem, manager)
+                ...this.createGiftCardsFromLineItem_(order, lineItem, manager)
               )
             }
 
