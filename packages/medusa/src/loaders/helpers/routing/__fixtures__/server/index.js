@@ -41,7 +41,6 @@ export const createServer = async (rootDir) => {
 
   const container = createContainer()
 
-  // TODO: remove once the util is merged in master
   container.registerAdd = function (name, registration) {
     const storeKey = name + "_STORE"
 
