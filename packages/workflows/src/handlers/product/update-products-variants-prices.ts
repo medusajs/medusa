@@ -2,6 +2,9 @@ import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 
 import { MedusaError } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
+import IsolatePricingDomainFeatureFlag from "@medusajs/medusa/dist/loaders/feature-flags/isolate-pricing-domain"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { Region } from "@medusajs/medusa"
 
 type ProductHandle = string
 type VariantIndexAndPrices = {
@@ -37,6 +40,8 @@ export async function updateProductsVariantsPrices({
     products.map((p) => [p.handle!, p])
   )
 
+  const regionIds = new Set()
+
   for (const mapData of productsHandleVariantsIndexPricesMap.entries()) {
     const [handle, variantData] = mapData
 
@@ -55,33 +60,56 @@ export async function updateProductsVariantsPrices({
         prices: item.prices,
       })
 
-      variantPricesMap.set(variant.id, [])
+      const prices: any[] = []
+      variantPricesMap.set(variant.id, prices)
 
-      item.prices.forEach(async (price) => {
+      item.prices.forEach((price) => {
         const obj = {
           amount: price.amount,
           currency_code: price.currency_code,
           rules: {},
         }
 
-        // TODO: fetch all regions using .list and associate them here
         if (price.region_id) {
-          const region = await regionService.retrieve(price.region_id)
-          obj.currency_code = region.currency_code
-          obj.rules = {
-            region_id: price.region_id,
-          }
+          regionIds.add(price.region_id)
+          ;(obj as any).region_id = price.region_id
         }
 
-        const variantPrices = variantPricesMap.get(variant.id)
-        variantPrices?.push(obj)
+        prices.push(obj)
       })
     })
   }
 
-  if (featureFlagRouter.isFeatureEnabled("isolate_pricing_domain")) {
+  let regions: Region[] = []
+  let regionMap = new Map<string, Region>()
+  if (regionIds.size) {
+    regions = await regionService.list({
+      id: [...regionIds],
+    })
+    regionMap = new Map<string, Region>(regions.map((r) => [r.id, r]))
+  }
+
+  if (regions.length) {
+    for (const [, prices] of variantPricesMap.entries()) {
+      prices.forEach((price) => {
+        if (price.region_id) {
+          const region = regionMap.get(price.region_id)
+          price.currency_code = region?.currency_code
+          price.rules = {
+            region_id: price.region_id,
+          }
+
+          delete price.region_id
+        }
+      })
+    }
+  }
+
+  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
     const remoteLink = container.resolve("remoteLink")
-    const pricingModuleService = container.resolve("pricingModuleService")
+    const pricingModuleService = container.resolve(
+      ModuleRegistrationName.PRICING
+    )
 
     const priceSetsToCreate = variantIdsPricesData.map(({ variantId }) => ({
       rules: [{ rule_attribute: "region_id" }],
