@@ -35,8 +35,7 @@ const SalesReportModal: React.FC<ExportModalProps> = ({
         filterTitle: string
     }
 
-  const DateSelect = ({selectedDate, setDate, filterTitle}: DateSelectType) => {
-          
+  const DateSelect = ({selectedDate, setDate, filterTitle}: DateSelectType) => { 
       return(
           <DatePicker
             date={selectedDate}
@@ -44,7 +43,6 @@ const SalesReportModal: React.FC<ExportModalProps> = ({
             label={filterTitle}
           />
       )
-
   }
 
   // Get report
