@@ -2,7 +2,6 @@ import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 
 import { MedusaError } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
-import IsolatePricingDomainFeatureFlag from "@medusajs/medusa/dist/loaders/feature-flags/isolate-pricing-domain"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { Region } from "@medusajs/medusa"
 
@@ -101,7 +100,7 @@ export async function updateProductsVariantsPrices({
     }
   }
 
-  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled("isolate_pricing_domain")) {
     const remoteLink = container.resolve("remoteLink")
     const pricingModuleService = container.resolve(
       ModuleRegistrationName.PRICING
