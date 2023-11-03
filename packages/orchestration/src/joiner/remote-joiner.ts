@@ -152,6 +152,23 @@ export class RemoteJoiner {
           service.alias = [service.alias]
         }
 
+        // handle alias.name as array
+        for (let idx = 0; idx < service.alias.length; idx++) {
+          const alias = service.alias[idx]
+          if (!Array.isArray(alias.name)) {
+            continue
+          }
+
+          for (const name of alias.name) {
+            service.alias.push({
+              name,
+              args: alias.args,
+            })
+          }
+          service.alias.splice(idx, 1)
+          idx--
+        }
+
         // self-reference
         for (const alias of service.alias) {
           if (this.serviceConfigCache.has(`alias_${alias.name}}`)) {
@@ -167,7 +184,7 @@ export class RemoteJoiner {
               : undefined
 
           service.relationships?.push({
-            alias: alias.name,
+            alias: alias.name as string,
             foreignKey: alias.name + "_id",
             primaryKey: "id",
             serviceName: service.serviceName!,
@@ -250,7 +267,7 @@ export class RemoteJoiner {
   private cacheServiceConfig(
     serviceConfigs,
     serviceName?: string,
-    serviceAlias?: string
+    serviceAlias?: string | string[]
   ): void {
     if (serviceAlias) {
       const name = `alias_${serviceAlias}`
