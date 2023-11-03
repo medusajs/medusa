@@ -8,7 +8,7 @@ describe("promiseAll", function () {
       Promise.resolve(3),
     ]).catch((e) => e)
 
-    expect(res).toBe("error")
+    expect(res.message).toBe("error")
   })
 
   it("should return all values if all promises are fulfilled", async function () {

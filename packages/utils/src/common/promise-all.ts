@@ -8,7 +8,7 @@ export async function promiseAll<T = unknown>(
   const states = await Promise.allSettled(promises)
   const rejected = states.filter((state) => state.status === "rejected")
   if (rejected.length) {
-    throw (rejected[0] as PromiseRejectedResult).reason
+    throw new Error((rejected[0] as PromiseRejectedResult).reason)
   }
 
   return states.map((state) => (state as PromiseFulfilledResult<T>).value)
