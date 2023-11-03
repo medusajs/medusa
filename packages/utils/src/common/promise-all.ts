@@ -16,7 +16,7 @@ export async function promiseAll<T = unknown>(
   ) as PromiseRejectedResult[]
 
   if (rejected.length) {
-    let aggregatedErrors = (rejected[0] as PromiseRejectedResult).reason
+    let aggregatedErrors = [rejected[0].reason]
     if (aggregateErrors) {
       aggregatedErrors = rejected.reduce((errors, state) => {
         errors.push(state.reason)
