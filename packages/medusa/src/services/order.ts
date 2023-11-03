@@ -771,8 +771,8 @@ class OrderService extends TransactionBaseService {
 
       await promiseAll(
         [
-          cart.items.map((lineItem): unknown[] => {
-            const toReturn: unknown[] = [
+          cart.items.map((lineItem): Promise<unknown>[] => {
+            const toReturn: Promise<unknown>[] = [
               lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
             ]
 
@@ -784,7 +784,7 @@ class OrderService extends TransactionBaseService {
 
             return toReturn
           }),
-          cart.shipping_methods.map(async (method) => {
+          cart.shipping_methods.map(async (method): Promise<unknown> => {
             // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
             // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
             // We normally should only pass what is needed?
@@ -793,7 +793,7 @@ class OrderService extends TransactionBaseService {
               order_id: order.id,
             })
           }),
-        ].flat(Infinity)
+        ].flat(Infinity) as Promise<unknown>[]
       )
 
       await this.eventBus_
