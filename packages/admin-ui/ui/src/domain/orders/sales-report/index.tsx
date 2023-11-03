@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
 import Modal from "../../../components/molecules/modal"
 import Button from "../../../components/fundamentals/button"
-import { DatePicker } from "@medusajs/ui"
 import { MEDUSA_BACKEND_URL_NOSLASH } from "../../../constants/medusa-backend-url"
 import moment from "moment"
 import openUrlNewWindow from "../../../utils/open-link-new-window"
+import DatePicker from "../../../components/atoms/date-picker/date-picker"
 
 type ExportModalProps = {
   handleClose: () => void
@@ -39,8 +39,9 @@ const SalesReportModal: React.FC<ExportModalProps> = ({
           
       return(
           <DatePicker
-            defaultValue={selectedDate}
-            onChange={setDate}
+            date={selectedDate}
+            onSubmitDate={setDate}
+            label={filterTitle}
           />
       )
 
