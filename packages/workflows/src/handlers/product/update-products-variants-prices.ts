@@ -80,16 +80,12 @@ export async function updateProductsVariantsPrices({
     })
   }
 
-  let regions: Region[] = []
-  let regionMap = new Map<string, Region>()
   if (regionIds.size) {
-    regions = await regionService.list({
+    const regions = await regionService.list({
       id: [...regionIds],
     })
-    regionMap = new Map<string, Region>(regions.map((r) => [r.id, r]))
-  }
+    const regionMap = new Map<string, Region>(regions.map((r) => [r.id, r]))
 
-  if (regions.length) {
     for (const [, prices] of variantPricesMap.entries()) {
       prices.forEach((price) => {
         if (price.region_id) {
