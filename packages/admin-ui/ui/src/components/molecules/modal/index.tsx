@@ -43,7 +43,7 @@ type ModalType = React.FC<ModalProps> & {
 
 const Overlay: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <Dialog.Overlay className="bg-grey-90/40 fixed top-0 bottom-0 left-0 right-0 z-50 grid place-items-center overflow-y-auto">
+    <Dialog.Overlay className="bg-grey-90/40 fixed top-0 bottom-0 left-0 right-0 grid place-items-center overflow-y-auto">
       {children}
     </Dialog.Overlay>
   )
