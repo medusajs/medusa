@@ -1,5 +1,4 @@
-import { AbstractFileService } from "@medusajs/medusa"
-import aws from "aws-sdk"
+import { AbstractFileService } from "@medusajs/medusa";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Upload } from "@aws-sdk/lib-storage";
 import { GetObjectCommand, S3 } from "@aws-sdk/client-s3";
