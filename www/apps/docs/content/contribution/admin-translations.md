@@ -28,7 +28,7 @@ If you already have it cloned, make sure to pull the latest changes from the `de
 2\. Create a branch that will be used to open the pull request later:
 
 ```bash
-git check -b feat/translate-<LANGUAGE>
+git checkout -b feat/translate-<LANGUAGE>
 ```
 
 Where `<LANGUAGE>` is your language name. For example, `feat/translate-da`.
