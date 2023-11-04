@@ -1,5 +1,8 @@
 import { AbstractFileService } from "@medusajs/medusa"
 import aws from "aws-sdk"
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { Upload } from "@aws-sdk/lib-storage";
+import { GetObjectCommand, S3 } from "@aws-sdk/client-s3";
 import fs from "fs"
 import { parse } from "path"
 import stream from "stream"
@@ -33,7 +36,7 @@ class DigitalOceanService extends AbstractFileService {
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
-    const s3 = new aws.S3()
+    const s3 = new S3()
     const params = {
       ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
       Bucket: this.bucket_,
@@ -41,7 +44,10 @@ class DigitalOceanService extends AbstractFileService {
       Key: fileKey,
     }
 
-    const data = await s3.upload(params).promise();
+    const data = await new Upload({
+      client: s3,
+      params
+    }).done();
     if (this.spacesUrl_) {
       return { url: `${this.spacesUrl_}/${data.Key}`, key: data.Key };
     }
@@ -51,7 +57,7 @@ class DigitalOceanService extends AbstractFileService {
   async delete(file) {
     this.updateAwsConfig()
 
-    const s3 = new aws.S3()
+    const s3 = new S3()
     const params = {
       Bucket: this.bucket_,
       Key: `${file}`,
@@ -85,19 +91,22 @@ class DigitalOceanService extends AbstractFileService {
       Key: fileKey,
     }
 
-    const s3 = new aws.S3()
+    const s3 = new S3()
     return {
       writeStream: pass,
-      promise: s3.upload(params).promise(),
+      promise: new Upload({
+        client: s3,
+        params
+      }).done(),
       url: `${this.spacesUrl_}/${fileKey}`,
       fileKey,
-    }
+    };
   }
 
   async getDownloadStream(fileData) {
     this.updateAwsConfig()
 
-    const s3 = new aws.S3()
+    const s3 = new S3()
 
     const params = {
       Bucket: this.bucket_,
@@ -112,7 +121,7 @@ class DigitalOceanService extends AbstractFileService {
       signatureVersion: "v4",
     })
 
-    const s3 = new aws.S3()
+    const s3 = new S3()
 
     const params = {
       Bucket: this.bucket_,
@@ -120,7 +129,9 @@ class DigitalOceanService extends AbstractFileService {
       Expires: this.downloadUrlDuration,
     }
 
-    return await s3.getSignedUrlPromise("getObject", params)
+    return await getSignedUrl(s3, new GetObjectCommand(params), {
+      expiresIn: "/* add value from 'Expires' from v2 call if present, else remove */"
+    });
   }
 
   updateAwsConfig(additionalConfiguration = {}) {
