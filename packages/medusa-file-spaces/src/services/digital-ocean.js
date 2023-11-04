@@ -21,14 +21,10 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   upload(file) {
-    this.updateAwsConfig()
-
     return this.uploadFile(file)
   }
 
   uploadProtected(file) {
-    this.updateAwsConfig()
-
     return this.uploadFile(file, { acl: "private" })
   }
 
@@ -36,7 +32,7 @@ class DigitalOceanService extends AbstractFileService {
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
-    const s3 = new S3()
+    const s3 = new S3(this.getAwsConfig())
     const params = {
       ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
       Bucket: this.bucket_,
@@ -52,9 +48,7 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async delete(file) {
-    this.updateAwsConfig()
-
-    const s3 = new S3()
+    const s3 = new S3(this.getAwsConfig())
     const params = {
       Bucket: this.bucket_,
       Key: `${file}`,
@@ -72,8 +66,6 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async getUploadStreamDescriptor(fileData) {
-    this.updateAwsConfig()
-
     const pass = new stream.PassThrough()
 
     // default to private
@@ -88,7 +80,7 @@ class DigitalOceanService extends AbstractFileService {
       Key: fileKey,
     }
 
-    const s3 = new S3()
+    const s3 = new S3(this.getAwsConfig())
     return {
       writeStream: pass,
       promise: new Upload({ client: s3, params }).done(),
@@ -98,9 +90,7 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async getDownloadStream(fileData) {
-    this.updateAwsConfig()
-
-    const s3 = new S3()
+    const s3 = new S3(this.getAwsConfig())
 
     const params = {
       Bucket: this.bucket_,
@@ -111,11 +101,7 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async getPresignedDownloadUrl(fileData) {
-    this.updateAwsConfig({
-      signatureVersion: "v4",
-    })
-
-    const s3 = new S3()
+    const s3 = new S3(this.getAwsConfig())
 
     const params = {
       Bucket: this.bucket_,
@@ -128,18 +114,15 @@ class DigitalOceanService extends AbstractFileService {
     });
   }
 
-  updateAwsConfig(additionalConfiguration = {}) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
+  getAwsConfig() {
+    return {
+      credentials: {
         accessKeyId: this.accessKeyId_,
         secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-        ...additionalConfiguration,
       },
-      true
-    )
+      region: this.region_,
+      endpoint: this.endpoint_,
+    };
   }
 }
 
