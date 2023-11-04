@@ -44,10 +44,7 @@ class DigitalOceanService extends AbstractFileService {
       Key: fileKey,
     }
 
-    const data = await new Upload({
-      client: s3,
-      params
-    }).done();
+    const data = await new Upload({ client: s3, params }).done();
     if (this.spacesUrl_) {
       return { url: `${this.spacesUrl_}/${data.Key}`, key: data.Key };
     }
@@ -94,10 +91,7 @@ class DigitalOceanService extends AbstractFileService {
     const s3 = new S3()
     return {
       writeStream: pass,
-      promise: new Upload({
-        client: s3,
-        params
-      }).done(),
+      promise: new Upload({ client: s3, params }).done(),
       url: `${this.spacesUrl_}/${fileKey}`,
       fileKey,
     };
