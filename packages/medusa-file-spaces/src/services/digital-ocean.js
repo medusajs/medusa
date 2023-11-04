@@ -29,7 +29,7 @@ class DigitalOceanService extends AbstractFileService {
     return this.uploadFile(file, { acl: "private" })
   }
 
-  uploadFile(file, options = { isProtected: false, acl: undefined }) {
+  async uploadFile(file, options = { isProtected: false, acl: undefined }) {
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
@@ -41,22 +41,11 @@ class DigitalOceanService extends AbstractFileService {
       Key: fileKey,
     }
 
-    return new Promise((resolve, reject) => {
-      // S3 ManagedUpload with callbacks are not supported in AWS SDK for JavaScript (v3).
-      // Please convert to 'await client.upload(params, options).promise()', and re-run aws-sdk-js-codemod.
-      s3.upload(params, (err, data) => {
-        if (err) {
-          reject(err)
-          return
-        }
-
-        if (this.spacesUrl_) {
-          resolve({ url: `${this.spacesUrl_}/${data.Key}`, key: data.Key })
-        }
-
-        resolve({ url: data.Location, key: data.Key })
-      })
-    });
+    const data = await s3.upload(params).promise();
+    if (this.spacesUrl_) {
+      return { url: `${this.spacesUrl_}/${data.Key}`, key: data.Key };
+    }
+    return { url: data.Location, key: data.Key };
   }
 
   async delete(file) {
