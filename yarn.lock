@@ -19172,7 +19172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-sdk@npm:^2.710.0, aws-sdk@npm:^2.983.0":
+"aws-sdk@npm:^2.983.0":
   version: 2.1409.0
   resolution: "aws-sdk@npm:2.1409.0"
   dependencies:
@@ -35634,6 +35634,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-file-spaces@workspace:packages/medusa-file-spaces"
   dependencies:
+    "@aws-sdk/client-s3": ^3.400.0
+    "@aws-sdk/lib-storage": ^3.400.0
+    "@aws-sdk/s3-request-presigner": ^3.400.0
     "@babel/cli": ^7.7.5
     "@babel/core": ^7.7.5
     "@babel/node": ^7.7.4
@@ -35645,7 +35648,6 @@ __metadata:
     "@babel/register": ^7.7.4
     "@babel/runtime": ^7.9.6
     "@medusajs/medusa": ^1.15.0
-    aws-sdk: ^2.710.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
