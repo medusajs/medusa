@@ -1,19 +1,19 @@
-import { IsolatePricingDomainFeatureFlag, MedusaError } from "@medusajs/utils"
+import { IsolateSalesChannelDomainFeatureFlag } from "@medusajs/utils"
 
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInputData = {
-  sales_channel: {
-    id: string
-  }
   cart: {
     id: string
+  }
+  sales_channel: {
+    sales_channel_id: string
   }
 }
 
 enum Aliases {
-  SalesChannel = "SalesChannel",
   Cart = "cart",
+  SalesChannel = "sales_channel",
 }
 
 export async function attachCartToSalesChannel({
@@ -23,7 +23,9 @@ export async function attachCartToSalesChannel({
   const salesChannelService = container.resolve("salesChannelService")
   const featureFlagRouter = container.resolve("featureFlagRouter")
   if (
-    !featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
+    !featureFlagRouter.isFeatureEnabled(
+      IsolateSalesChannelDomainFeatureFlag.key
+    )
   ) {
     return
   }
@@ -31,14 +33,7 @@ export async function attachCartToSalesChannel({
   const cart = data[Aliases.Cart]
   const salesChannel = data[Aliases.SalesChannel]
 
-  if (salesChannel.is_disabled) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Unable to assign the cart to a disabled Sales Channel "${salesChannel.name}"`
-    )
-  }
-
-  await salesChannelService.addCarts(salesChannel.id, [cart.id])
+  await salesChannelService.addCarts(salesChannel.sales_channel_id, [cart.id])
 }
 
 attachCartToSalesChannel.aliases = Aliases

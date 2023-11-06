@@ -14,10 +14,12 @@ import {
   SalesChannelHandlers,
 } from "../../handlers"
 import { exportWorkflow, pipe } from "../../helper"
+import { attachCartToSalesChannel } from "../../handlers/cart"
 
 enum CreateCartActions {
   setContext = "setContext",
   attachLineItems = "attachLineItems",
+  attachToSalesChannel = "attachToSalesChannel",
   findRegion = "findRegion",
   findSalesChannel = "findSalesChannel",
   createCart = "createCart",
@@ -58,10 +60,13 @@ const workflowSteps: TransactionStepsDefinition = {
         noCompensation: true,
         next: {
           action: CreateCartActions.createCart,
-          next: {
-            action: CreateCartActions.attachLineItems,
-            noCompensation: true,
-          },
+          next: [
+            {
+              action: CreateCartActions.attachLineItems,
+              noCompensation: true,
+            },
+            { action: CreateCartActions.attachToSalesChannel },
+          ],
         },
       },
     },
@@ -183,6 +188,26 @@ const handlers = new Map([
           ],
         },
         CartHandlers.attachLineItemsToCart
+      ),
+    },
+  ],
+  [
+    CreateCartActions.attachToSalesChannel,
+    {
+      invoke: pipe(
+        {
+          invoke: [
+            {
+              from: CreateCartActions.createCart,
+              alias: CartHandlers.attachCartToSalesChannel.aliases.Cart,
+            },
+            {
+              from: CreateCartActions.findSalesChannel,
+              alias: CartHandlers.attachCartToSalesChannel.aliases.SalesChannel,
+            },
+          ],
+        },
+        CartHandlers.attachCartToSalesChannel
       ),
     },
   ],
