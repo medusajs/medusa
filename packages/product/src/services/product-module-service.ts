@@ -1249,7 +1249,6 @@ export default class ProductModuleService<
 
     const promises: Promise<void>[] = []
     for (const group of Object.keys(groupedEvents)) {
-      // console.log(JSON.stringify(groupedEvents[group], null, 2))
       promises.push(this.eventBusModuleService_?.emit(groupedEvents[group]))
     }
 
