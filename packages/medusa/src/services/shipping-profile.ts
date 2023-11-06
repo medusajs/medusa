@@ -1,4 +1,4 @@
-import { FlagRouter, isDefined } from "@medusajs/utils"
+import { FlagRouter, isDefined, promiseAll } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -498,7 +498,7 @@ class ShippingProfileService extends TransactionBaseService {
       }
 
       return (
-        await Promise.all(
+        await promiseAll(
           rawOpts.map(async (so) => {
             return await this.shippingOptionService_
               .withTransaction(manager)

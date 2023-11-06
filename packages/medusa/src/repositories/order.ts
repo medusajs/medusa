@@ -1,4 +1,4 @@
-import { objectToStringPath } from "@medusajs/utils"
+import { objectToStringPath, promiseAll } from "@medusajs/utils"
 import { flatten } from "lodash"
 import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
 import { dataSource } from "../loaders/database"
@@ -21,7 +21,7 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
 
     const groupedRelations = getGroupedRelations(objectToStringPath(relations))
 
-    const entitiesIdsWithRelations = await Promise.all(
+    const entitiesIdsWithRelations = await promiseAll(
       Object.entries(groupedRelations).map(async ([topLevel, rels]) => {
         // If top level is region or items then get deleted region as well
         return this.find({

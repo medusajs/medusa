@@ -1,24 +1,24 @@
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { BasePaymentService } from "medusa-interfaces"
 import { EOL } from "os"
 import { EntityManager } from "typeorm"
 import {
-    AbstractPaymentProcessor,
-    AbstractPaymentService,
-    isPaymentProcessorError,
-    PaymentContext,
-    PaymentProcessorError,
-    PaymentSessionResponse,
-    TransactionBaseService,
+  AbstractPaymentProcessor,
+  AbstractPaymentService,
+  isPaymentProcessorError,
+  PaymentContext,
+  PaymentProcessorError,
+  PaymentSessionResponse,
+  TransactionBaseService,
 } from "../interfaces"
 import {
-    Cart,
-    Payment,
-    PaymentProvider,
-    PaymentSession,
-    PaymentSessionStatus,
-    Refund,
+  Cart,
+  Payment,
+  PaymentProvider,
+  PaymentSession,
+  PaymentSessionStatus,
+  Refund,
 } from "../models"
 import { PaymentRepository } from "../repositories/payment"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
@@ -87,7 +87,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       )
       await model.update({}, { is_installed: false })
 
-      await Promise.all(
+      await promiseAll(
         providerIds.map(async (providerId) => {
           const provider = model.create({
             id: providerId,

@@ -5,15 +5,15 @@ import { EOL } from "os"
  * @param promises
  * @param aggregateErrors
  */
-export async function promiseAll<T = unknown>(
-  promises: (T | PromiseLike<T>)[],
+export async function promiseAll<T extends readonly unknown[] | []>(
+  promises: T,
   { aggregateErrors } = { aggregateErrors: false }
-): Promise<T[]> {
+): Promise<{ -readonly [P in keyof T]: Awaited<T[P]> }> {
   const states = await Promise.allSettled(promises)
 
-  const rejected = states.filter(
-    (state) => state.status === "rejected"
-  ) as PromiseRejectedResult[]
+  const rejected = (states as PromiseSettledResult<unknown>[]).filter(
+    (state): state is PromiseRejectedResult => state.status === "rejected"
+  )
 
   if (rejected.length) {
     const aggregatedErrors = aggregateErrors
@@ -22,5 +22,7 @@ export async function promiseAll<T = unknown>(
     throw new Error(aggregatedErrors.join(EOL))
   }
 
-  return states.map((state) => (state as PromiseFulfilledResult<T>).value)
+  return (states as PromiseSettledResult<unknown>[]).map(
+    (state) => (state as PromiseFulfilledResult<T>).value
+  ) as unknown as Promise<{ -readonly [P in keyof T]: Awaited<T[P]> }>
 }

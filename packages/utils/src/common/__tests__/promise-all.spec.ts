@@ -39,7 +39,7 @@ describe("promiseAll", function () {
   })
 
   it("should return all values if all promises are fulfilled including waiting for nested promises", async function () {
-    const res = await promiseAll<number | void>([
+    const res = await promiseAll([
       Promise.resolve(1),
       (async () => {
         await promiseAll([Promise.resolve(1), Promise.resolve(2)])
