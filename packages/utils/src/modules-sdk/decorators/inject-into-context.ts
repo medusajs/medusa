@@ -16,7 +16,7 @@ export function InjectIntoContext(
     const original = descriptor.value
     descriptor.value = async function (...args: any[]) {
       for (const key of Object.keys(properties)) {
-        args[argIndex] = args[argIndex] ?? {}
+        args[argIndex] = { ...(args[argIndex] ?? {}) }
         args[argIndex][key] =
           args[argIndex][key] ??
           (typeof properties[key] === "function"
