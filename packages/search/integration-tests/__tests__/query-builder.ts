@@ -190,7 +190,7 @@ describe("SearchEngineModuleService query", function () {
     MedusaModule.clearInstances()
   })
 
-  it("should query all products", async () => {
+  it("should query all products ordered by sku DESC", async () => {
     const [result, count] = await module.queryAndCount(
       {
         select: {

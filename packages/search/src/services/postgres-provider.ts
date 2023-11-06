@@ -186,7 +186,8 @@ export class PostgresProvider {
       hasPagination = true
     }
 
-    const connection = this.manager_.getConnection()
+    const manager = this.manager_.fork()
+    const connection = manager.getConnection()
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
       entityMap: this.schemaEntitiesMap_,
@@ -197,7 +198,7 @@ export class PostgresProvider {
 
     const sql = qb.buildQuery(hasPagination, !!options?.keepFilteredEntities)
 
-    let resultset = await connection.execute(sql)
+    let resultset = await manager.execute(sql)
 
     if (options?.keepFilteredEntities) {
       const mainEntity = Object.keys(selection.select)[0]
