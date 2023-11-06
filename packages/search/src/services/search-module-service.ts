@@ -7,9 +7,9 @@ import {
 } from "@medusajs/types"
 import {
   SchemaObjectRepresentation,
-  schemaObjectRepresentationPropertiesToOmit,
   SearchModuleOptions,
   StorageProvider,
+  schemaObjectRepresentationPropertiesToOmit,
 } from "../types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { joinerConfig } from "./../joiner-config"
@@ -131,7 +131,7 @@ export default class SearchModuleService
     }
 
     const [objectRepresentation, entityMap] = buildSchemaObjectRepresentation(
-      this.moduleOptions_.schema
+      this.moduleOptions_.schema ?? ""
     )
     this.schemaObjectRepresentation_ = objectRepresentation
     this.schemaEntitiesMap_ = entityMap
