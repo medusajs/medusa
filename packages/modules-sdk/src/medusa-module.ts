@@ -75,12 +75,15 @@ export class MedusaModule {
   private static joinerConfig_: Map<string, ModuleJoinerConfig> = new Map()
   private static moduleResolutions_: Map<string, ModuleResolution> = new Map()
 
-  public static onApplicationStart(): void {
+  public static onApplicationStart(onApplicationStartCb?: () => void): void {
     for (const instances of MedusaModule.instances_.values()) {
       for (const instance of Object.values(instances)) {
         if (instance?.__hooks) {
           instance.__hooks?.onApplicationStart
             ?.bind(instance)()
+            .then(() => {
+              onApplicationStartCb?.()
+            })
             .catch(() => {
               // The module should handle this and log it
               return void 0

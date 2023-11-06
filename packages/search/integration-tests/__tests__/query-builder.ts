@@ -18,9 +18,18 @@ describe("SearchEngineModuleService query", function () {
     await TestDatabase.setupDatabase()
     const manager = TestDatabase.forkManager()
 
+    let moduleBootstrapPromiseOk
+    const moduleBootstrapPromise = new Promise((resolve) => {
+      moduleBootstrapPromiseOk = resolve
+    })
+
     const { searchService, shutdown } = await initModules({
       remoteQueryMock,
       eventBusMock: eventBus,
+      callback: () => {
+        console.log("cb called")
+        moduleBootstrapPromiseOk()
+      },
     })
     module = searchService
     shutdown_ = shutdown
@@ -179,6 +188,8 @@ describe("SearchEngineModuleService query", function () {
         },
       ].map((data) => catalogRelationRepository.create(data))
     )
+
+    await moduleBootstrapPromise
   })
 
   afterEach(async () => {

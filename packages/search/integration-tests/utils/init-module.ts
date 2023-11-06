@@ -6,7 +6,15 @@ import { MedusaApp, Modules } from "@medusajs/modules-sdk"
 import modulesConfig from "../__fixtures__/modules-config"
 import { ISearchModuleService } from "@medusajs/types"
 
-export async function initModules({ remoteQueryMock, eventBusMock }) {
+export async function initModules({
+  remoteQueryMock,
+  eventBusMock,
+  callback,
+}: {
+  remoteQueryMock: any
+  eventBusMock: any
+  callback?: any
+}) {
   const sharedPgConnection = knex<any, any>({
     client: "pg",
     searchPath: process.env.MEDUSA_SEARCH_DB_SCHEMA,
@@ -40,6 +48,7 @@ export async function initModules({ remoteQueryMock, eventBusMock }) {
     },
     servicesConfig: joinerConfig,
     injectedDependencies,
+    onApplicationStartCb: callback,
   })
 
   async function shutdown() {
