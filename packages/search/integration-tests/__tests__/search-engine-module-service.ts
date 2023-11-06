@@ -432,7 +432,6 @@ describe("SearchEngineModuleService", function () {
           },
         },
       ])
-      manager.clear()
     }
 
     const eventDataToEmit: EventBusTypes.EmitData[] = [

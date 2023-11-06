@@ -179,8 +179,6 @@ describe("SearchEngineModuleService query", function () {
         },
       ].map((data) => catalogRelationRepository.create(data))
     )
-
-    manager.clear()
   })
 
   afterEach(async () => {
