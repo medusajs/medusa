@@ -145,6 +145,12 @@ The shipping method tax line object has the following properties:
 - `shipping_method_id`: the ID of the shipping method.
 - `metadata`: an optional object that can hold any necessary additional data to be added to the shipping method tax lines.
 
+:::note
+
+Tax lines for a shipping method must have a unique `code` and `shipping_method_id` combination. Otherwise, the tax lines will be applied multiple times.
+
+:::
+
 The returned array would be a combination of both the line item tax lines and shipping method tax lines.
 
 :::note
