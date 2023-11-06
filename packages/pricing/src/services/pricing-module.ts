@@ -6,6 +6,7 @@ import {
   FindConfig,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  PriceListType,
   PriceSetDTO,
   PricingContext,
   PricingFilters,
@@ -149,18 +150,50 @@ export default class PricingModuleService<
     const pricesSetPricesMap = groupBy(results, "id")
 
     const calculatedPrices = pricingFilters.id.map(
-      (priceSetId: string): PricingTypes.CalculatedPriceSetDTO => {
+      (priceSetId: string): PricingTypes.CalculatedPriceSet => {
         // This is where we select prices, for now we just do a first match based on the database results
         // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
         // inject custom price selection here
-        const price = pricesSetPricesMap.get(priceSetId)?.[0]
+        const prices = pricesSetPricesMap.get(priceSetId) || []
+        const priceListPrice = prices?.find((p) => !!p.price_list_id)
+        const defaultPrice = prices?.find((p) => !!!p.price_list_id)
+
+        let calculatedPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
+        let originalPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
+
+        if (priceListPrice) {
+          calculatedPrice = priceListPrice
+
+          if (priceListPrice.price_list_type === PriceListType.OVERRIDE) {
+            originalPrice = priceListPrice
+          }
+        }
 
         return {
           id: priceSetId,
-          amount: price?.amount || null,
-          currency_code: price?.currency_code || null,
-          min_quantity: price?.min_quantity || null,
-          max_quantity: price?.max_quantity || null,
+          is_calculated_price_price_list: !!calculatedPrice?.price_list_id,
+          calculated_amount: calculatedPrice?.amount || null,
+
+          is_original_price_price_list: !!originalPrice?.price_list_id,
+          original_amount: originalPrice?.amount || null,
+
+          currency_code: calculatedPrice?.currency_code || null,
+
+          calculated_price: {
+            money_amount_id: calculatedPrice?.id || null,
+            price_list_id: calculatedPrice?.price_list_id || null,
+            price_list_type: calculatedPrice?.price_list_type || null,
+            min_quantity: calculatedPrice?.min_quantity || null,
+            max_quantity: calculatedPrice?.max_quantity || null,
+          },
+
+          original_price: {
+            money_amount_id: originalPrice?.id || null,
+            price_list_id: originalPrice?.price_list_id || null,
+            price_list_type: originalPrice?.price_list_type || null,
+            min_quantity: originalPrice?.min_quantity || null,
+            max_quantity: originalPrice?.max_quantity || null,
+          },
         }
       }
     )

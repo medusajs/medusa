@@ -9,6 +9,11 @@ export enum PriceListStatus {
   DRAFT = "draft",
 }
 
+export enum PriceListType {
+  SALE = "sale",
+  OVERRIDE = "override",
+}
+
 export interface PriceListDTO {
   id: string
   starts_at: Date | null
@@ -32,6 +37,7 @@ export interface CreatePriceListDTO {
   starts_at?: Date
   ends_at?: Date
   status?: PriceListStatus
+  type?: PriceListType
   number_rules?: number
   rules?: CreatePriceListRules
   prices?: PriceListPriceDTO[]
