@@ -103,7 +103,7 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table "price_list" ("id" text not null, "status" text check ("status" in (\'active\', \'draft\')) not null default \'draft\', "starts_at" timestamptz null, "ends_at" timestamptz null, "number_rules" integer not null default 0, constraint "price_list_pkey" primary key ("id"));'
+      'create table if not exists "price_list" ("id" text not null, "status" text check ("status" in (\'active\', \'draft\')) not null default \'draft\', "starts_at" timestamptz null, "ends_at" timestamptz null, "number_rules" integer not null default 0, constraint "price_list_pkey" primary key ("id"));'
     )
 
     this.addSql(

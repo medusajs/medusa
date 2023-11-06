@@ -19,6 +19,7 @@ export interface PriceListDTO {
   money_amounts?: MoneyAmountDTO[]
   rule_types?: RuleTypeDTO[]
   rules: PriceListRuleDTO[]
+  price_list_rules: PriceListRuleDTO[]
 }
 
 export interface PriceListPriceDTO extends CreateMoneyAmountDTO {
@@ -118,12 +119,12 @@ export interface AddPriceListPricesDTO {
   ]
 }
 
-export interface setPriceListRulesDTO{
-	priceListId: string,
-	rules: Record<string, string | string[]>
+export interface setPriceListRulesDTO {
+  priceListId: string
+  rules: Record<string, string | string[]>
 }
 
-export interface removePriceListRulesDTO{
-	priceListId: string,
-	rules: string[]
+export interface removePriceListRulesDTO {
+  priceListId: string
+  rules: string[]
 }

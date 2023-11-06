@@ -14,6 +14,10 @@ export class Migration20231101232834 extends Migration {
     )
 
     this.addSql('alter table "price_list_rule" drop column "value";')
+
+    this.addSql(
+      `ALTER TABLE price_list ADD COLUMN IF NOT EXISTS number_rules integer not null default 0`
+    )
   }
 
   async down(): Promise<void> {
@@ -22,5 +26,7 @@ export class Migration20231101232834 extends Migration {
     this.addSql(
       'alter table "price_list_rule" add column "value" text[] not null;'
     )
+
+    this.addSql(`ALTER TABLE price_list DROP COLUMN IF EXISTS number_rules`)
   }
 }
