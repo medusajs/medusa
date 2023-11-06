@@ -56,4 +56,5 @@ module.exports = {
   },
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
+  maxLevel: 4,
 }

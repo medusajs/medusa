@@ -74,6 +74,7 @@ export type FormattingOptionType = {
   frontmatterData?: Record<string, unknown>
   parameterComponent?: string
   mdxImports?: string[]
+  maxLevel?: number
 }
 
 export type FormattingOptionsType = {

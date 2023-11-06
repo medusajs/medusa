@@ -12,8 +12,7 @@ import {
   getDefaultValue,
   reflectionComponentFormatter,
 } from "./reflection-formatter"
-
-const MAX_LEVEL = 3
+import { MarkdownTheme } from "../theme"
 
 export function returnReflectionComponentFormatter(
   reflectionType: SomeType,
@@ -43,7 +42,10 @@ export function returnReflectionComponentFormatter(
         description: comment ? getReturnComment(comment) : "",
         children: [],
       })
-      if (!isOnlyVoid(reflectionType.typeArguments) && level + 1 <= MAX_LEVEL) {
+      if (
+        !isOnlyVoid(reflectionType.typeArguments) &&
+        level + 1 <= MarkdownTheme.MAX_LEVEL
+      ) {
         reflectionType.typeArguments.forEach((typeArg) => {
           const typeArgComponent = returnReflectionComponentFormatter(
             typeArg,
@@ -97,7 +99,7 @@ export function returnReflectionComponentFormatter(
       description: comment ? getReturnComment(comment) : "",
       children: [],
     })
-    if (level + 1 <= MAX_LEVEL) {
+    if (level + 1 <= MarkdownTheme.MAX_LEVEL) {
       const elementTypeItem = returnReflectionComponentFormatter(
         reflectionType.elementType,
         project,
@@ -132,7 +134,7 @@ export function returnReflectionComponentFormatter(
     } else {
       pushTo = componentItem
     }
-    if (level + 1 <= MAX_LEVEL) {
+    if (level + 1 <= MarkdownTheme.MAX_LEVEL) {
       reflectionType.elements.forEach((element) => {
         const elementTypeItem = returnReflectionComponentFormatter(
           element,

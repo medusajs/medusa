@@ -4,8 +4,8 @@ import { stripCode, stripLineBreaks } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
 import getType, { getReflectionType } from "./type-utils"
 import { getTypeChildren } from "utils"
+import { MarkdownTheme } from "../theme"
 
-const MAX_LEVEL = 3
 const ALLOWED_KINDS: ReflectionKind[] = [
   ReflectionKind.EnumMember,
   ReflectionKind.TypeParameter,
@@ -61,7 +61,10 @@ export function reflectionListFormatter(
 
   const hasChildren = "children" in reflection && reflection.children?.length
 
-  if ((reflection.type || hasChildren) && level + 1 <= MAX_LEVEL) {
+  if (
+    (reflection.type || hasChildren) &&
+    level + 1 <= MarkdownTheme.MAX_LEVEL
+  ) {
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, reflection.project)
@@ -107,7 +110,10 @@ export function reflectionComponentFormatter(
 
   const hasChildren = "children" in reflection && reflection.children?.length
 
-  if ((reflection.type || hasChildren) && level + 1 <= MAX_LEVEL) {
+  if (
+    (reflection.type || hasChildren) &&
+    level + 1 <= MarkdownTheme.MAX_LEVEL
+  ) {
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, reflection.project)
