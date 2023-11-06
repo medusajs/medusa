@@ -42,8 +42,15 @@ export function InjectTransactionManager(
         : this[managerProperty]
       ).transaction(
         async (transactionManager) => {
-          args[argIndex] = args[argIndex] ?? {}
-          args[argIndex].transactionManager = transactionManager
+          const context_: Context = {}
+
+          // Copy the ref of all context props before assigning the transaction manager
+          for (const key in args[argIndex]) {
+            context_[key] = args[argIndex][key]
+          }
+
+          context_.transactionManager = transactionManager
+          args[argIndex] = context_
 
           return await originalMethod.apply(this, args)
         },
