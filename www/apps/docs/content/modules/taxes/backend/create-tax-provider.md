@@ -131,6 +131,12 @@ The line item tax line object has the following properties:
 - `item_id`: the ID of the line item.
 - `metadata`: an optional object that can hold any necessary additional data to be added to the line item tax lines.
 
+:::note
+
+Tax lines for line item must have a unique `code` and `item_id` combination. Otherwise, the tax lines will be applied multiple times.
+
+:::
+
 The shipping method tax line object has the following properties:
 
 - `rate`: a number indicating the tax rate.
