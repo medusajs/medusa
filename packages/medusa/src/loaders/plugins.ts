@@ -39,6 +39,7 @@ import { EntitySchema } from "typeorm"
 import { MiddlewareService } from "../services"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import { RoutesLoader } from "./helpers/routing"
+import { SubscriberRegistrar } from "./helpers/subscribers"
 import logger from "./logger"
 
 type Options = {
@@ -93,7 +94,7 @@ export default async ({
         activityId
       )
       registerCoreRouters(pluginDetails, container)
-      registerSubscribers(pluginDetails, container)
+      await registerSubscribers(pluginDetails, container)
     })
   )
 
@@ -536,20 +537,25 @@ export async function registerServices(
  *    registered
  * @return {void}
  */
-function registerSubscribers(
+async function registerSubscribers(
   pluginDetails: PluginDetails,
   container: MedusaContainer
-): void {
-  const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
-  files.forEach((fn) => {
-    const loaded = require(fn).default
+): Promise<void> {
+  await new SubscriberRegistrar(
+    path.join(pluginDetails.resolve, "subscribers"),
+    container
+  ).register()
 
-    container.build(
-      asFunction(
-        (cradle) => new loaded(cradle, pluginDetails.options)
-      ).singleton()
-    )
-  })
+  // const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
+  // files.forEach((fn) => {
+  //   const loaded = require(fn).default
+
+  //   container.build(
+  //     asFunction(
+  //       (cradle) => new loaded(cradle, pluginDetails.options)
+  //     ).singleton()
+  //   )
+  // })
 }
 
 /**
