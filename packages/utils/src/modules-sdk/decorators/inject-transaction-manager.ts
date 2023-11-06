@@ -32,6 +32,7 @@ export function InjectTransactionManager(
     descriptor.value = async function (...args: any[]) {
       const shouldForceTransactionRes = shouldForceTransaction(target)
       const context: Context = args[argIndex] ?? {}
+      const copiedContext = { ...context }
 
       if (!shouldForceTransactionRes && context?.transactionManager) {
         return await originalMethod.apply(this, args)
@@ -42,17 +43,18 @@ export function InjectTransactionManager(
         : this[managerProperty]
       ).transaction(
         async (transactionManager) => {
-          const context_: Context = {}
+          copiedContext.transactionManager = transactionManager
+          args[argIndex] = copiedContext
 
-          // Copy the ref of all context props before assigning the transaction manager
-          for (const key in args[argIndex]) {
-            context_[key] = args[argIndex][key]
+          const res = await originalMethod.apply(this, args)
+
+          for (const key in copiedContext) {
+            if (key === "transactionManager") continue
+            context[key] = copiedContext[key]
           }
+          args[argIndex] = context
 
-          context_.transactionManager = transactionManager
-          args[argIndex] = context_
-
-          return await originalMethod.apply(this, args)
+          return res
         },
         {
           transaction: context?.transactionManager,

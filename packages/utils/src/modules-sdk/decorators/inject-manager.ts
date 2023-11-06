@@ -16,21 +16,25 @@ export function InjectManager(managerProperty?: string): MethodDecorator {
     const argIndex = target.MedusaContextIndex_[propertyKey]
 
     descriptor.value = function (...args: any[]) {
-      const context_: Context = {}
-
-      // Copy the ref of all context props before assigning the transaction manager
-      for (const key in args[argIndex]) {
-        context_[key] = args[argIndex][key]
-      }
+      const context: Context = args[argIndex] ?? {}
+      const copiedContext = { ...context }
 
       const resourceWithManager = !managerProperty
         ? this
         : this[managerProperty]
 
-      context_.manager ??= resourceWithManager.getFreshManager()
-      args[argIndex] = context_
+      copiedContext.manager ??= resourceWithManager.getFreshManager()
+      args[argIndex] = copiedContext
 
-      return originalMethod.apply(this, args)
+      const res = originalMethod.apply(this, args)
+
+      for (const key in copiedContext) {
+        if (key === "manager") continue
+        context[key] = copiedContext[key]
+      }
+      args[argIndex] = context
+
+      return res
     }
   }
 }
