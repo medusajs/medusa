@@ -22,7 +22,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe.skip("[Product & Pricing Module] POST /admin/products", () => {
+describe("[Product & Pricing Module] POST /admin/products", () => {
   let dbConnection
   let appContainer
   let shutdownServer
