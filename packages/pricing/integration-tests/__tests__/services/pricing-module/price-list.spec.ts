@@ -1,5 +1,5 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { IPricingModuleService } from "@medusajs/types"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { initialize } from "../../../../src"
 
 import { createCurrencies } from "../../../__fixtures__/currency"
@@ -181,18 +181,94 @@ describe("PriceList Service", () => {
     const id = "price-list-2"
 
     it("should update the starts_at date of the priceList successfully", async () => {
-      const updateDate = new Date()
-      await service.updatePriceLists([
+      const [created] = await service.createPriceLists([
         {
-          id,
-          starts_at: updateDate,
-          rules: [],
+          title: "test",
+          starts_at: "10/01/2023" as unknown as Date,
+          ends_at: "10/30/2023" as unknown as Date,
+          rules: {
+            customer_group_id: [
+              "vip-customer-group-id",
+              "another-vip-customer-group-id",
+            ],
+            region_id: ["DE", "DK"],
+          },
+          prices: [
+            {
+              amount: 400,
+              currency_code: "EUR",
+              price_set_id: "price-set-1",
+            },
+          ],
         },
       ])
 
-      const priceList = await service.retrievePriceList(id)
+      const updateDate = new Date()
+      await service.updatePriceLists([
+        {
+          id: created.id,
+          starts_at: updateDate,
+          rules: {
+            new_rule: ["new-rule-value"],
+          },
+        },
+      ])
 
-      expect(priceList.starts_at).toEqual(updateDate)
+      const [priceList] = await service.listPriceLists(
+        {
+          id: [created.id],
+        },
+        {
+          relations: [
+            "price_set_money_amounts.money_amount",
+            "price_set_money_amounts.price_set",
+            "price_list_rules.price_list_rule_values",
+            "price_list_rules.rule_type",
+          ],
+          select: [
+            "id",
+            "starts_at",
+            "price_set_money_amounts.money_amount.amount",
+            "price_set_money_amounts.money_amount.currency_code",
+            "price_set_money_amounts.money_amount.price_list_id",
+            "price_list_rules.price_list_rule_values.value",
+            "price_list_rules.rule_type.rule_attribute",
+          ],
+        }
+      )
+
+      expect(priceList).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          starts_at: updateDate,
+          price_set_money_amounts: expect.arrayContaining([
+            expect.objectContaining({
+              price_list: expect.objectContaining({
+                id: expect.any(String),
+              }),
+              money_amount: expect.objectContaining({
+                amount: "400",
+                currency_code: "EUR",
+              }),
+            }),
+          ]),
+          price_list_rules: [
+            expect.objectContaining({
+              id: expect.any(String),
+              rule_type: expect.objectContaining({
+                id: expect.any(String),
+                rule_attribute: "new_rule",
+              }),
+              price_list_rule_values: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "new-rule-value",
+                }),
+              ],
+            }),
+          ],
+        })
+      )
     })
 
     it("should throw an error when a id does not exist", async () => {
@@ -203,7 +279,7 @@ describe("PriceList Service", () => {
           {
             id: "does-not-exist",
             number_rules: 2,
-            rules: [],
+            rules: {},
           },
         ])
       } catch (e) {
@@ -316,5 +392,4 @@ describe("PriceList Service", () => {
       )
     })
   })
-
 })

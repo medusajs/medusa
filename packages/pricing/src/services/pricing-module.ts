@@ -1349,7 +1349,7 @@ export default class PricingModuleService<
   ) {
     const createdPriceLists: PricingTypes.PriceListDTO[] = []
     const ruleAttributes = data
-      .map((priceListData) => Object.keys(priceListData.rules))
+      .map((priceListData) => Object.keys(priceListData.rules || {}))
       .flat()
 
     const ruleTypes = await this.listRuleTypes({
@@ -1359,8 +1359,6 @@ export default class PricingModuleService<
     const ruleTypeMap: Map<string, RuleTypeDTO> = new Map(
       ruleTypes.map((rt) => [rt.rule_attribute, rt])
     )
-
-    data.map((priceListData) => Object.keys(priceListData.rules))
 
     for (const priceListData of data) {
       const { rules = {}, prices = [], ...priceListOnlyData } = priceListData
@@ -1451,7 +1449,7 @@ export default class PricingModuleService<
     data: PricingTypes.UpdatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.PriceListDTO[]> {
-    const priceLists = await this.priceListService_.update(data, sharedContext)
+    const priceLists = await this.updatePriceLists_(data, sharedContext)
 
     return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
       priceLists,
@@ -1459,6 +1457,113 @@ export default class PricingModuleService<
         populate: true,
       }
     )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  protected async updatePriceLists_(
+    data: PricingTypes.UpdatePriceListDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const updatedPriceLists: PricingTypes.PriceListDTO[] = []
+    const priceListIds = data.map((d) => d.id)
+    const ruleAttributes = data
+      .map((priceListData) => Object.keys(priceListData.rules || {}))
+      .flat()
+
+    const existingPriceLists = await this.listPriceLists(
+      { id: priceListIds },
+      { relations: ["price_list_rules"] },
+      sharedContext
+    )
+
+    const priceListRuleIds = existingPriceLists
+      .map((pl) => pl.price_list_rules.map((plr) => plr.id))
+      .flat()
+
+    const existingPriceListRules = await this.listPriceListRules(
+      {
+        id: priceListRuleIds,
+      },
+      {},
+      sharedContext
+    )
+
+    if (existingPriceListRules.length) {
+      await this.deletePriceListRules(
+        existingPriceListRules.map((plr) => plr.id),
+        sharedContext
+      )
+    }
+
+    const ruleTypes = await this.listRuleTypes(
+      {
+        rule_attribute: ruleAttributes,
+      },
+      {},
+      sharedContext
+    )
+
+    const ruleTypeMap: Map<string, RuleTypeDTO> = new Map(
+      ruleTypes.map((rt) => [rt.rule_attribute, rt])
+    )
+
+    for (const priceListData of data) {
+      const { rules = {}, ...priceListOnlyData } = priceListData
+
+      const [updatedPriceList] = (await this.priceListService_.update(
+        [
+          {
+            ...priceListOnlyData,
+            number_rules: Object.keys(rules).length,
+          },
+        ],
+        sharedContext
+      )) as unknown as PricingTypes.PriceListDTO[]
+
+      updatedPriceLists.push(updatedPriceList)
+
+      for (const [ruleAttribute, ruleValues = []] of Object.entries(rules)) {
+        let ruleType = ruleTypeMap.get(ruleAttribute)
+
+        if (!ruleType) {
+          ;[ruleType] = await this.createRuleTypes(
+            [
+              {
+                name: ruleAttribute,
+                rule_attribute: ruleAttribute,
+              },
+            ],
+            sharedContext
+          )
+
+          ruleTypeMap.set(ruleAttribute, ruleType)
+        }
+
+        const [priceListRule] = await this.priceListRuleService_.create(
+          [
+            {
+              price_list: updatedPriceList,
+              rule_type: ruleType?.id || ruleType,
+            },
+          ],
+          sharedContext
+        )
+
+        for (const ruleValue of ruleValues as string[]) {
+          await this.priceListRuleValueService_.create(
+            [
+              {
+                price_list_rule: priceListRule,
+                value: ruleValue,
+              },
+            ],
+            sharedContext
+          )
+        }
+      }
+    }
+
+    return updatedPriceLists
   }
 
   @InjectTransactionManager("baseRepository_")
