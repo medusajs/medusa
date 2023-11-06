@@ -1,5 +1,16 @@
 import { EOL } from "os"
 
+const getMessageError = (state: PromiseRejectedResult) =>
+  state.reason.message ?? state.reason
+
+const isRejected = (
+  state: PromiseSettledResult<unknown>
+): state is PromiseRejectedResult => {
+  return state.status === "rejected"
+}
+
+const getValue = (state: PromiseFulfilledResult<unknown>) => state.value
+
 /**
  * Promise.allSettled with error handling, safe alternative to Promise.all
  * @param promises
@@ -12,17 +23,17 @@ export async function promiseAll<T extends readonly unknown[] | []>(
   const states = await Promise.allSettled(promises)
 
   const rejected = (states as PromiseSettledResult<unknown>[]).filter(
-    (state): state is PromiseRejectedResult => state.status === "rejected"
+    isRejected
   )
 
   if (rejected.length) {
     const aggregatedErrors = aggregateErrors
-      ? rejected.map((state) => state.reason?.message ?? state.reason)
-      : [rejected[0].reason]
+      ? rejected.map(getMessageError)
+      : [getMessageError(rejected[0])]
     throw new Error(aggregatedErrors.join(EOL))
   }
 
-  return (states as PromiseSettledResult<unknown>[]).map(
-    (state) => (state as PromiseFulfilledResult<T>).value
+  return (states as PromiseFulfilledResult<unknown>[]).map(
+    getValue
   ) as unknown as Promise<{ -readonly [P in keyof T]: Awaited<T[P]> }>
 }
