@@ -12,7 +12,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { PriceListStatus } from "@medusajs/types"
+import { PriceListStatus, PriceListType } from "@medusajs/types"
 import PriceListRule from "./price-list-rule"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
@@ -23,6 +23,7 @@ export default class PriceList {
     | "price_set_money_amounts"
     | "rule_types"
     | "status"
+    | "type"
     | "rules"
     | "number_rules"
     | "starts_at"
@@ -36,6 +37,9 @@ export default class PriceList {
 
   @Enum({ items: () => PriceListStatus, default: PriceListStatus.DRAFT })
   status!: PriceListStatus
+
+  @Enum({ items: () => PriceListType, default: PriceListType.SALE })
+  type!: PriceListType
 
   @Property({
     columnType: "timestamptz",
@@ -58,12 +62,6 @@ export default class PriceList {
     cascade: [Cascade.REMOVE],
   })
   price_list_rules = new Collection<PriceListRule>(this)
-
-  // @ManyToMany({
-  //   entity: () => MoneyAmount,
-  //   pivotEntity: () => PriceSetMoneyAmount,
-  // })
-  // money_amounts = new Collection<MoneyAmount>(this)
 
   @ManyToMany({
     entity: () => RuleType,

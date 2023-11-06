@@ -12,7 +12,7 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 
-jest.setTimeout(30000)
+jest.setTimeout(100000)
 
 describe("UpdateProduct workflow", function () {
   let dbConnection

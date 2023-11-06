@@ -85,7 +85,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
     const priceListIds = data.map((priceListData) => priceListData.id)
-    const existingPriceSets = await this.find(
+    const existingPriceLists = await this.find(
       {
         where: {
           id: {
@@ -97,7 +97,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
     )
 
     const existingPriceListMap = new Map(
-      existingPriceSets.map<[string, PriceList]>((priceList) => [
+      existingPriceLists.map<[string, PriceList]>((priceList) => [
         priceList.id,
         priceList,
       ])

@@ -27,7 +27,7 @@ export class PricingRepository
     pricingContext: PricingContext = { context: {} },
     sharedContext: Context = {}
   ): Promise<CalculatedPriceSetDTO[]> {
-    const manager = this.getActiveManager<SqlEntityManager>()
+    const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
     const knex = manager.getKnex()
     const context = pricingContext.context || {}
 
@@ -69,6 +69,7 @@ export class PricingRepository
         number_rules: "psma1.number_rules",
         price_list_id: "psma1.price_list_id",
         pl_number_rules: "pl.number_rules",
+        pl_type: "pl.type",
       })
       .leftJoin("price_set_money_amount as psma1", "psma1.id", "psma1.id")
       .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma1.id")
@@ -135,6 +136,7 @@ export class PricingRepository
         default_priority: "rt.default_priority",
         number_rules: "psma.number_rules",
         pl_number_rules: "psma.pl_number_rules",
+        price_list_type: "psma.pl_type",
         price_list_id: "psma.price_list_id",
       })
       .join(psmaSubQueryKnex.as("psma"), "psma.price_set_id", "ps.id")

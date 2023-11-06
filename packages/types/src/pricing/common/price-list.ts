@@ -9,6 +9,11 @@ export enum PriceListStatus {
   DRAFT = "draft",
 }
 
+export enum PriceListType {
+  SALE = "sale",
+  OVERRIDE = "override",
+}
+
 export interface PriceListDTO {
   id: string
   starts_at: Date | null
@@ -32,9 +37,10 @@ export interface CreatePriceListDTO {
   starts_at?: Date
   ends_at?: Date
   status?: PriceListStatus
+  type?: PriceListType
   number_rules?: number
-  rules: CreatePriceListRules
-  prices: PriceListPriceDTO[]
+  rules?: CreatePriceListRules
+  prices?: PriceListPriceDTO[]
 }
 
 export interface UpdatePriceListDTO {
@@ -43,7 +49,7 @@ export interface UpdatePriceListDTO {
   ends_at?: Date
   status?: PriceListStatus
   number_rules?: number
-  rules?: PriceListRuleDTO[]
+  rules?: CreatePriceListRules
 }
 
 export interface FilterablePriceListProps
@@ -120,12 +126,12 @@ export interface AddPriceListPricesDTO {
   ]
 }
 
-export interface setPriceListRulesDTO {
+export interface SetPriceListRulesDTO {
   priceListId: string
   rules: Record<string, string | string[]>
 }
 
-export interface removePriceListRulesDTO {
+export interface RemovePriceListRulesDTO {
   priceListId: string
   rules: string[]
 }

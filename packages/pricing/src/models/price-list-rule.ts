@@ -51,6 +51,6 @@ export default class PriceListRule {
 
   @BeforeCreate()
   beforeCreate() {
-    this.id = generateEntityId(this.id, "prule")
+    this.id = generateEntityId(this.id, "plrule")
   }
 }

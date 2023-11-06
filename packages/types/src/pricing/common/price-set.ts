@@ -8,13 +8,13 @@ import { RuleTypeDTO } from "./rule-type"
 
 /**
  * @interface
- * 
+ *
  * The context to calculate prices. For example, you can specify the currency code to calculate prices in.
- * 
- * @prop context - 
+ *
+ * @prop context -
  * an object whose keys are the name of the context attribute. Its value can be a string or a number. For example, you can pass the `currency_code` property with its value being the currency code to calculate the price in.
  * Another example is passing the `quantity` property to calculate the price for that specified quantity, which finds a price set whose `min_quantity` and `max_quantity` conditions match the specified quantity.
- * 
+ *
  */
 export interface PricingContext {
   context?: Record<string, string | number>
@@ -22,9 +22,9 @@ export interface PricingContext {
 
 /**
  * @interface
- * 
+ *
  * Filters to apply on prices.
- * 
+ *
  * @prop id - IDs to filter prices.
  */
 export interface PricingFilters {
@@ -33,13 +33,13 @@ export interface PricingFilters {
 
 /**
  * @interface
- * 
+ *
  * A price set's data.
- * 
+ *
  * @prop id - The ID of the price set.
  * @prop money_amounts - The prices that belong to this price set.
  * @prop rule_types - The rule types applied on this price set.
- * 
+ *
  */
 export interface PriceSetDTO {
   id: string
@@ -49,9 +49,9 @@ export interface PriceSetDTO {
 
 /**
  * @interface
- * 
+ *
  * A calculated price set's data.
- * 
+ *
  * @prop id - The ID of the price set.
  * @prop amount - The calculated amount. It can possibly be `null` if there's no price set up for the provided context.
  * @prop currency_code - The currency code of the calculated price. It can possibly be `null`.
@@ -60,17 +60,46 @@ export interface PriceSetDTO {
  */
 export interface CalculatedPriceSetDTO {
   id: string
-  amount: number | null
+  amount: string | null
   currency_code: string | null
-  min_quantity: number | null
-  max_quantity: number | null
+  min_quantity: string | null
+  max_quantity: string | null
+  price_list_type: string | null
+  price_list_id: string | null
+}
+
+export interface CalculatedPriceSet {
+  id: string
+  is_calculated_price_price_list?: boolean
+  calculated_amount: string | null
+
+  is_original_price_price_list?: boolean
+  original_amount: string | null
+
+  currency_code: string | null
+
+  calculated_price?: {
+    money_amount_id: string | null
+    price_list_id: string | null
+    price_list_type: string | null
+    min_quantity: string | null
+    max_quantity: string | null
+  }
+
+  original_price?: {
+    money_amount_id: string | null
+    price_list_id: string | null
+    price_list_type: string | null
+    min_quantity: string | null
+    max_quantity: string | null
+  }
 }
 
 /**
  * @interface
- * 
+ *
  * The rules to add to a price set.
- * 
+ *
  * @prop priceSetId - The ID of the price set to add the rules to.
  * @prop rules - The rules to add to a price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.
  */
@@ -81,9 +110,9 @@ export interface AddRulesDTO {
 
 /**
  * @interface
- * 
+ *
  * The prices to create part of a price set.
- * 
+ *
  * @prop rules - The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
  */
 export interface CreatePricesDTO extends CreateMoneyAmountDTO {
@@ -92,9 +121,9 @@ export interface CreatePricesDTO extends CreateMoneyAmountDTO {
 
 /**
  * @interface
- * 
+ *
  * The prices to add to a price set.
- * 
+ *
  * @prop priceSetId - The ID of the price set to add prices to.
  * @prop prices - The prices to add to the price set.
  */
@@ -105,9 +134,9 @@ export interface AddPricesDTO {
 
 /**
  * @interface
- * 
+ *
  * The rules to remove from a price set.
- * 
+ *
  * @prop id - The ID of the price set.
  * @prop rules - The rules to remove. Each string is the `rule_attribute` of a rule to remove.
  */
@@ -118,9 +147,9 @@ export interface RemovePriceSetRulesDTO {
 
 /**
  * @interface
- * 
+ *
  * A price set to create.
- * 
+ *
  * @prop rules - The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.
  * @prop prices -The prices to create and add to this price set.
  */
@@ -131,9 +160,9 @@ export interface CreatePriceSetDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a price set. The `id` is used to identify which price set to update.
- * 
+ *
  * @prop id - A string indicating the ID of the price set to update.
  */
 export interface UpdatePriceSetDTO {
@@ -142,9 +171,9 @@ export interface UpdatePriceSetDTO {
 
 /**
  * @interface
- * 
+ *
  * Filters to apply on price sets.
- * 
+ *
  * @prop id - IDs to filter price sets by.
  * @prop money_amounts - Filters to apply on a price set's associated money amounts.
  */

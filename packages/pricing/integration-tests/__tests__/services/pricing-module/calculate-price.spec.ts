@@ -2,7 +2,9 @@ import {
   CreatePriceRuleDTO,
   CreatePriceSetDTO,
   IPricingModuleService,
+  PriceListType,
 } from "@medusajs/types"
+
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
@@ -13,6 +15,36 @@ import { DB_URL, MikroOrmWrapper } from "../../../utils"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 
 jest.setTimeout(30000)
+
+const createPriceLists = async (service, type = PriceListType.SALE) => {
+  await service.createPriceLists([
+    {
+      title: "Test Price List",
+      starts_at: "10/01/2023" as unknown as Date,
+      ends_at: "10/30/2023" as unknown as Date,
+      type,
+      rules: {
+        customer_group_id: [
+          "vip-customer-group-id",
+          "another-vip-customer-group-id",
+        ],
+        region_id: ["DE", "DK"],
+      },
+      prices: [
+        {
+          amount: 232,
+          currency_code: "PLN",
+          price_set_id: "price-set-PLN",
+        },
+        {
+          amount: 455,
+          currency_code: "EUR",
+          price_set_id: "price-set-EUR",
+        },
+      ],
+    },
+  ])
+}
 
 describe("PricingModule Service - Calculate Price", () => {
   let service: IPricingModuleService
@@ -367,17 +399,47 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         {
           id: "price-set-PLN",
-          amount: "1000",
+          is_calculated_price_price_list: false,
+          calculated_amount: "1000",
+          is_original_price_price_list: false,
+          original_amount: "1000",
           currency_code: "PLN",
-          min_quantity: "1",
-          max_quantity: "10",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "10",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "10",
+          },
         },
       ])
     })
@@ -393,17 +455,47 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         {
           id: "price-set-PLN",
-          amount: "300",
+          is_calculated_price_price_list: false,
+          calculated_amount: "300",
+          is_original_price_price_list: false,
+          original_amount: "300",
           currency_code: "PLN",
-          min_quantity: "1",
-          max_quantity: "4",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
         },
       ])
     })
@@ -419,17 +511,47 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         {
           id: "price-set-PLN",
-          amount: "1000",
+          is_calculated_price_price_list: false,
+          calculated_amount: "1000",
+          is_original_price_price_list: false,
+          original_amount: "1000",
           currency_code: "PLN",
-          min_quantity: "1",
-          max_quantity: "10",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "10",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "10",
+          },
         },
       ])
     })
@@ -445,17 +567,47 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         {
           id: "price-set-PLN",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
       ])
     })
@@ -471,17 +623,47 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         {
           id: "price-set-PLN",
-          amount: "300",
+          is_calculated_price_price_list: false,
+          calculated_amount: "300",
+          is_original_price_price_list: false,
+          original_amount: "300",
           currency_code: "PLN",
-          min_quantity: "1",
-          max_quantity: "4",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
         },
       ])
     })
@@ -497,17 +679,47 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         {
           id: "price-set-PLN",
-          amount: "1000",
+          is_calculated_price_price_list: false,
+          calculated_amount: "1000",
+          is_original_price_price_list: false,
+          original_amount: "1000",
           currency_code: "PLN",
-          min_quantity: "1",
-          max_quantity: "10",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "10",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "10",
+          },
         },
       ])
     })
@@ -523,10 +735,25 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-PLN",
-          amount: "250",
+          is_calculated_price_price_list: false,
+          calculated_amount: "250",
+          is_original_price_price_list: false,
+          original_amount: "250",
           currency_code: "PLN",
-          min_quantity: "4",
-          max_quantity: "10",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "4",
+            max_quantity: "10",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "4",
+            max_quantity: "10",
+          },
         },
       ])
     })
@@ -547,17 +774,47 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         {
           id: "price-set-PLN",
-          amount: "300",
+          is_calculated_price_price_list: false,
+          calculated_amount: "300",
+          is_original_price_price_list: false,
+          original_amount: "300",
           currency_code: "PLN",
-          min_quantity: "1",
-          max_quantity: "4",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
         },
       ])
     })
@@ -578,18 +835,48 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         // Currency Code + Region value + customer group id
         {
           id: "price-set-PLN",
-          amount: "100",
+          is_calculated_price_price_list: false,
+          calculated_amount: "100",
+          is_original_price_price_list: false,
+          original_amount: "100",
           currency_code: "EUR",
-          min_quantity: "1",
-          max_quantity: "3",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "3",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "3",
+          },
         },
       ])
     })
@@ -610,18 +897,48 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         // PLN price set is not setup for EUR currency_code so it will default to a null set
         {
           id: "price-set-PLN",
-          amount: "300",
+          is_calculated_price_price_list: false,
+          calculated_amount: "300",
+          is_original_price_price_list: false,
+          original_amount: "300",
           currency_code: "PLN",
-          min_quantity: "1",
-          max_quantity: "4",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
         },
       ])
     })
@@ -642,18 +959,48 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         // PLN price set is not setup for EUR currency_code so it will default to a null set
         {
           id: "price-set-PLN",
-          amount: "1000",
+          is_calculated_price_price_list: false,
+          calculated_amount: "1000",
+          is_original_price_price_list: false,
+          original_amount: "1000",
           currency_code: "PLN",
-          min_quantity: "1",
-          max_quantity: "10",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "10",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "10",
+          },
         },
       ])
     })
@@ -669,17 +1016,47 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         {
           id: "price-set-PLN",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
       ])
     })
@@ -695,52 +1072,55 @@ describe("PricingModule Service - Calculate Price", () => {
       expect(priceSetsResult).toEqual([
         {
           id: "price-set-EUR",
-          amount: null,
+          is_calculated_price_price_list: false,
+          calculated_amount: null,
+          is_original_price_price_list: false,
+          original_amount: null,
           currency_code: null,
-          min_quantity: null,
-          max_quantity: null,
+          calculated_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
+          original_price: {
+            money_amount_id: null,
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: null,
+            max_quantity: null,
+          },
         },
         {
           id: "price-set-PLN",
-          amount: "300",
+          is_calculated_price_price_list: false,
+          calculated_amount: "300",
+          is_original_price_price_list: false,
+          original_amount: "300",
           currency_code: "PLN",
-          min_quantity: "1",
-          max_quantity: "4",
+          calculated_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
+          original_price: {
+            money_amount_id: "price-set-PLN",
+            price_list_id: null,
+            price_list_type: null,
+            min_quantity: "1",
+            max_quantity: "4",
+          },
         },
       ])
     })
 
     describe("Price Lists", () => {
-      beforeEach(async () => {
-        await service.createPriceLists([
-          {
-            title: "Test Price List",
-            starts_at: "10/01/2023" as unknown as Date,
-            ends_at: "10/30/2023" as unknown as Date,
-            rules: {
-              customer_group_id: [
-                "vip-customer-group-id",
-                "another-vip-customer-group-id",
-              ],
-              region_id: ["DE", "DK"],
-            },
-            prices: [
-              {
-                amount: 232,
-                currency_code: "PLN",
-                price_set_id: "price-set-PLN",
-              },
-              {
-                amount: 455,
-                currency_code: "EUR",
-                price_set_id: "price-set-EUR",
-              },
-            ],
-          },
-        ])
-      })
-
       it("should return price list prices when price list conditions match", async () => {
+        await createPriceLists(service)
+
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-EUR", "price-set-PLN"] },
           {
@@ -756,22 +1136,116 @@ describe("PricingModule Service - Calculate Price", () => {
         expect(priceSetsResult).toEqual([
           {
             id: "price-set-EUR",
-            amount: null,
+            is_calculated_price_price_list: false,
+            calculated_amount: null,
+            is_original_price_price_list: false,
+            original_amount: null,
             currency_code: null,
-            min_quantity: null,
-            max_quantity: null,
+            calculated_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
           },
           {
             id: "price-set-PLN",
-            amount: "232",
+            is_calculated_price_price_list: true,
+            calculated_amount: "232",
+            is_original_price_price_list: false,
+            original_amount: "400",
             currency_code: "PLN",
-            min_quantity: null,
-            max_quantity: null,
+            calculated_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: expect.any(String),
+              price_list_type: "sale",
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: "1",
+              max_quantity: "5",
+            },
+          },
+        ])
+      })
+
+      it("should return price list prices when price list conditions match for override", async () => {
+        await createPriceLists(service, PriceListType.OVERRIDE)
+
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-EUR", "price-set-PLN"] },
+          {
+            context: {
+              currency_code: "PLN",
+              region_id: "DE",
+              customer_group_id: "vip-customer-group-id",
+              company_id: "medusa-company-id",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-EUR",
+            is_calculated_price_price_list: false,
+            calculated_amount: null,
+            is_original_price_price_list: false,
+            original_amount: null,
+            currency_code: null,
+            calculated_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+          },
+          {
+            id: "price-set-PLN",
+            is_calculated_price_price_list: true,
+            calculated_amount: "232",
+            is_original_price_price_list: true,
+            original_amount: "232",
+            currency_code: "PLN",
+            calculated_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: expect.any(String),
+              price_list_type: "override",
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: expect.any(String),
+              price_list_type: "override",
+              min_quantity: null,
+              max_quantity: null,
+            },
           },
         ])
       })
 
       it("should not return price list prices when price list conditions only partially match", async () => {
+        await createPriceLists(service)
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-EUR", "price-set-PLN"] },
           {
@@ -787,22 +1261,53 @@ describe("PricingModule Service - Calculate Price", () => {
         expect(priceSetsResult).toEqual([
           {
             id: "price-set-EUR",
-            amount: null,
+            is_calculated_price_price_list: false,
+            calculated_amount: null,
+            is_original_price_price_list: false,
+            original_amount: null,
             currency_code: null,
-            min_quantity: null,
-            max_quantity: null,
+            calculated_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
           },
           {
             id: "price-set-PLN",
-            amount: "300",
+            is_calculated_price_price_list: false,
+            calculated_amount: "300",
+            is_original_price_price_list: false,
+            original_amount: "300",
             currency_code: "PLN",
-            min_quantity: "1",
-            max_quantity: "4",
+            calculated_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: "1",
+              max_quantity: "4",
+            },
+            original_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: "1",
+              max_quantity: "4",
+            },
           },
         ])
       })
 
       it("should not return price list prices when price list conditions dont match", async () => {
+        await createPriceLists(service)
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-EUR", "price-set-PLN"] },
           {
@@ -818,17 +1323,47 @@ describe("PricingModule Service - Calculate Price", () => {
         expect(priceSetsResult).toEqual([
           {
             id: "price-set-EUR",
-            amount: null,
+            is_calculated_price_price_list: false,
+            calculated_amount: null,
+            is_original_price_price_list: false,
+            original_amount: null,
             currency_code: null,
-            min_quantity: null,
-            max_quantity: null,
+            calculated_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
           },
           {
             id: "price-set-PLN",
-            amount: "300",
+            is_calculated_price_price_list: false,
+            calculated_amount: "300",
+            is_original_price_price_list: false,
+            original_amount: "300",
             currency_code: "PLN",
-            min_quantity: "1",
-            max_quantity: "4",
+            calculated_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: "1",
+              max_quantity: "4",
+            },
+            original_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: "1",
+              max_quantity: "4",
+            },
           },
         ])
       })
