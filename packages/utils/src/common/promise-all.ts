@@ -17,7 +17,7 @@ export async function promiseAll<T extends readonly unknown[] | []>(
 
   if (rejected.length) {
     const aggregatedErrors = aggregateErrors
-      ? rejected.map((state) => state.reason)
+      ? rejected.map((state) => state.reason?.message ?? state.reason)
       : [rejected[0].reason]
     throw new Error(aggregatedErrors.join(EOL))
   }

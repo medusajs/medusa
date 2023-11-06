@@ -16,7 +16,9 @@ describe("promiseAll", function () {
     const res = await promiseAll(
       [
         Promise.resolve(1),
-        Promise.reject("error"),
+        (async () => {
+          throw new Error("error")
+        })(),
         Promise.reject("error2"),
         Promise.resolve(3),
       ],
