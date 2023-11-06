@@ -45,7 +45,7 @@ export const simpleProductFactory = async (
 
   data.isIsolatedSalesChannelFFOn =
     data.isIsolatedSalesChannelFFOn ??
-    process.env.ISOLATE_SALES_CHANNEL_DOMAIN == "true"
+    process.env.MEDUSA_FF_ISOLATE_SALES_CHANNEL_DOMAIN == "true"
 
   const manager = dataSource.manager
 
