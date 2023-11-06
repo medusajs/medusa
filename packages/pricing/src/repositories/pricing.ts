@@ -27,7 +27,7 @@ export class PricingRepository
     pricingContext: PricingContext = { context: {} },
     sharedContext: Context = {}
   ): Promise<CalculatedPriceSetDTO[]> {
-    const manager = this.getActiveManager<SqlEntityManager>()
+    const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
     const knex = manager.getKnex()
     const context = pricingContext.context || {}
 
