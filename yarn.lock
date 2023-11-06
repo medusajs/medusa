@@ -31966,6 +31966,7 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/runtime": ^7.9.6
     "@medusajs/medusa": ^1.15.1
+    "@medusajs/utils": "workspace:^"
     axios: ^0.20.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
@@ -32166,6 +32167,7 @@ __metadata:
     "@babel/register": ^7.7.4
     "@babel/runtime": ^7.9.6
     "@medusajs/medusa": ^1.17.2
+    "@medusajs/utils": "workspace:^"
     axios: ^0.19.2
     axios-mock-adapter: ^1.18.2
     axios-mock-server: ^0.19.1
@@ -32198,6 +32200,7 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/register": ^7.7.4
     "@babel/runtime": ^7.9.6
+    "@medusajs/utils": "workspace:^"
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
     contentful-management: ^5.27.1
@@ -32555,6 +32558,7 @@ __metadata:
     "@babel/preset-env": ^7.15.6
     "@babel/register": ^7.15.3
     "@babel/runtime": ^7.15.4
+    "@medusajs/utils": "workspace:^"
     "@shopify/shopify-api": ^1.4.1
     axios: ^0.21.4
     body-parser: ^1.19.0
