@@ -75,7 +75,13 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the sales channels.
+ */
 export class GetPublishableApiKeySalesChannelsParams extends extendedFindParamsMixin() {
+  /**
+   * Search term to search sales channels' names and descriptions.
+   */
   @IsOptional()
   @IsString()
   q?: string

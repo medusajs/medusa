@@ -19,7 +19,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Publishable API Key API Routes](https://docs.medusajs.com/api/admin#publishable-api-keys).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Publishable API Keys can be used to scope Store API calls with an API key, determining what resources are retrieved when querying the API.
  * For example, a publishable API key can be associated with one or more sales channels. When it is passed in the header of a request to the List Product store API Route,
@@ -35,7 +35,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * @privateRemark The query parameter serves no purpose, so will leave this without a description until it's removed/fixed.
    * @param {Record<string, any>} query
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} The publishable API key's details.
+   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} Resolves to the publishable API key's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -65,7 +65,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * Retrieve a list of publishable API keys. The publishable API keys can be filtered by fields such as `q` passed in `query`. The publishable API keys can also be paginated.
    * @param {GetPublishableApiKeysParams} query - Filters and pagination configurations to apply on the retrieved publishable API keys.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPublishableApiKeysListRes>} The list of publishable API keys with pagination fields.
+   * @returns {ResponsePromise<AdminPublishableApiKeysListRes>} Resolves to the list of publishable API keys with pagination fields.
    * 
    * @example
    * To list publishable API keys:
@@ -113,7 +113,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * Create a publishable API key.
    * @param {AdminPostPublishableApiKeysReq} payload - The publishable API key to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} The publishbale API key's details.
+   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} Resolves to the publishbale API key's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -139,7 +139,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * @param {string} id - The ID of the publishable API key.
    * @param {AdminPostPublishableApiKeysPublishableApiKeyReq} payload - The attributes to update in the publishable API key.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} The publishbale API key's details.
+   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} Resolves to the publishbale API key's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -165,7 +165,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * Delete a publishable API key. Associated resources, such as sales channels, are not deleted.
    * @param {string} id  - The ID of the publishable API key
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPublishableApiKeyDeleteRes>} The delete operation's details.
+   * @returns {ResponsePromise<AdminPublishableApiKeyDeleteRes>} Resolves to the delete operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -188,7 +188,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * Revoke a publishable API key. Revoking the publishable API Key can't be undone, and the key can't be used in future requests.
    * @param {string} id - The ID of the publishable API key.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} The publishbale API key's details.
+   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} Resolves to the publishbale API key's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -212,7 +212,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * @param {string} id - The ID of the publishable API key.
    * @param {AdminPostPublishableApiKeySalesChannelsBatchReq} payload - The sales channels to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} The publishbale API key's details.
+   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} Resolves to the publishbale API key's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -243,7 +243,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * @param {string} id - The ID of the publishable API key.
    * @param {AdminDeletePublishableApiKeySalesChannelsBatchReq} payload - The sales channels to delete from the publishable API key.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} The publishbale API key's details.
+   * @returns {ResponsePromise<AdminPublishableApiKeysRes>} Resolves to the publishbale API key's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -274,7 +274,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * @param {string} id - The ID of the publishable API key.
    * @param {GetPublishableApiKeySalesChannelsParams} query - Filters to apply on the retrieved sales channels.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsListRes>} The list of sales channels.
+   * @returns {ResponsePromise<AdminSalesChannelsListRes>} Resolves to the list of sales channels.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

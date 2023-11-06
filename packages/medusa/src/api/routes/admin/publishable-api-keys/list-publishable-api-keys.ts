@@ -82,10 +82,16 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved publishable API keys.
+ */
 export class GetPublishableApiKeysParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Search term to search publishable API keys' titles.
+   */
   @IsString()
   @IsOptional()
   q?: string

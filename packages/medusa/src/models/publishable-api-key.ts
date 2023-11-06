@@ -17,6 +17,9 @@ export class PublishableApiKey extends BaseEntity {
   @Column()
   title: string
 
+  /**
+   * @ignore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "pk")
