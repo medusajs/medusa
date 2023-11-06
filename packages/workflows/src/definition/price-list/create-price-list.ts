@@ -1,4 +1,4 @@
-import { InventoryTypes, WorkflowTypes } from "@medusajs/types"
+import { PricingTypes, WorkflowTypes } from "@medusajs/types"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
@@ -6,7 +6,6 @@ import {
 import { exportWorkflow, pipe } from "../../helper"
 
 import { PriceListHandlers } from "../../handlers"
-import { PricingTypes } from "@medusajs/types"
 import { Workflows } from "../../definitions"
 
 export enum CreatePriceListActions {

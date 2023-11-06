@@ -12,7 +12,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Workflows, createPriceLists } from "@medusajs/workflows"
+import { Workflows } from "@medusajs/workflows"
 import {
   defaultAdminPriceListFields,
   defaultAdminPriceListRelations,
@@ -26,7 +26,6 @@ import PriceListService from "../../../../services/price-list"
 import { Request } from "express"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { Type } from "class-transformer"
-import { WorkflowTypes } from "@medusajs/types"
 
 /**
  * @oas [post] /admin/price-lists
@@ -120,34 +119,34 @@ export default async (req: Request, res) => {
     workflows: Workflows.CreatePriceList,
   })
 
-  if (isWorkflowEnabled) {
-    const createPriceListWorkflow = createPriceLists(req.scope)
+  // if (isWorkflowEnabled) {
+  //   const createPriceListWorkflow = createPriceLists(req.scope)
 
-    const input = {
-      priceLists: [
-        req.validatedBody,
-      ] as WorkflowTypes.PriceListWorkflow.CreatePriceListDTO[],
-    }
+  //   const input = {
+  //     priceLists: [
+  //       req.validatedBody,
+  //     ] as WorkflowTypes.PriceListWorkflow.CreatePriceListDTO[],
+  //   }
 
-    const { result } = await createPriceListWorkflow.run({
-      input,
-      context: {
-        manager,
-      },
-    })
-    priceList = result[0]
-  } else {
-    const createdPl = await manager.transaction(async (transactionManager) => {
-      return await priceListService
-        .withTransaction(transactionManager)
-        .create(req.validatedBody as CreatePriceListInput)
-    })
+  //   const { result } = await createPriceListWorkflow.run({
+  //     input,
+  //     context: {
+  //       manager,
+  //     },
+  //   })
+  //   priceList = result[0]
+  // } else {
+  const createdPl = await manager.transaction(async (transactionManager) => {
+    return await priceListService
+      .withTransaction(transactionManager)
+      .create(req.validatedBody as CreatePriceListInput)
+  })
 
-    priceList = await priceListService.retrieve(createdPl.id, {
-      select: defaultAdminPriceListFields as (keyof PriceList)[],
-      relations: defaultAdminPriceListRelations,
-    })
-  }
+  priceList = await priceListService.retrieve(createdPl.id, {
+    select: defaultAdminPriceListFields as (keyof PriceList)[],
+    relations: defaultAdminPriceListRelations,
+  })
+  // }
 
   res.json({ price_list: priceList })
 }
