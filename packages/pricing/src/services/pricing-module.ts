@@ -172,10 +172,10 @@ export default class PricingModuleService<
         return {
           id: priceSetId,
           is_calculated_price_price_list: !!calculatedPrice?.price_list_id,
-          calculated_amount: calculatedPrice?.amount || null,
+          calculated_amount: parseInt(calculatedPrice?.amount || "") || null,
 
           is_original_price_price_list: !!originalPrice?.price_list_id,
-          original_amount: originalPrice?.amount || null,
+          original_amount: parseInt(originalPrice?.amount || "") || null,
 
           currency_code: calculatedPrice?.currency_code || null,
 
@@ -183,16 +183,16 @@ export default class PricingModuleService<
             money_amount_id: calculatedPrice?.id || null,
             price_list_id: calculatedPrice?.price_list_id || null,
             price_list_type: calculatedPrice?.price_list_type || null,
-            min_quantity: calculatedPrice?.min_quantity || null,
-            max_quantity: calculatedPrice?.max_quantity || null,
+            min_quantity: parseInt(calculatedPrice?.min_quantity || "") || null,
+            max_quantity: parseInt(calculatedPrice?.max_quantity || "") || null,
           },
 
           original_price: {
             money_amount_id: originalPrice?.id || null,
             price_list_id: originalPrice?.price_list_id || null,
             price_list_type: originalPrice?.price_list_type || null,
-            min_quantity: originalPrice?.min_quantity || null,
-            max_quantity: originalPrice?.max_quantity || null,
+            min_quantity: parseInt(originalPrice?.min_quantity || "") || null,
+            max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
           },
         }
       }

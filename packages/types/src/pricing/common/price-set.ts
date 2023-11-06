@@ -71,10 +71,10 @@ export interface CalculatedPriceSetDTO {
 export interface CalculatedPriceSet {
   id: string
   is_calculated_price_price_list?: boolean
-  calculated_amount: string | null
+  calculated_amount: number | null
 
   is_original_price_price_list?: boolean
-  original_amount: string | null
+  original_amount: number | null
 
   currency_code: string | null
 
@@ -82,16 +82,16 @@ export interface CalculatedPriceSet {
     money_amount_id: string | null
     price_list_id: string | null
     price_list_type: string | null
-    min_quantity: string | null
-    max_quantity: string | null
+    min_quantity: number | null
+    max_quantity: number | null
   }
 
   original_price?: {
     money_amount_id: string | null
     price_list_id: string | null
     price_list_type: string | null
-    min_quantity: string | null
-    max_quantity: string | null
+    min_quantity: number | null
+    max_quantity: number | null
   }
 }
 

@@ -150,6 +150,7 @@ tags:
       description: How to create a swap in a storefront
       url: https://docs.medusajs.com/modules/orders/storefront/create-swap
 servers:
+  - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 paths:
   /store/auth:
