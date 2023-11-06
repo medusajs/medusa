@@ -11,21 +11,15 @@ const remoteQueryMock = jest.fn()
 jest.setTimeout(300000)
 
 const beforeEach_ = async (eventDataToEmit) => {
-  MedusaModule.clearInstances()
   await TestDatabase.setupDatabase()
-  jest.clearAllMocks()
 
-  await initModules({
+  const { shutdown } = await initModules({
     remoteQueryMock,
     eventBusMock: eventBus,
   })
 
   await sendEvents(eventDataToEmit)
-  return await TestDatabase.forkManager()
-}
-
-const afterEach_ = async () => {
-  await TestDatabase.clearDatabase()
+  return { manager: TestDatabase.forkManager(), shutdown }
 }
 
 const productId = "prod_1"
@@ -85,6 +79,7 @@ const sendEvents = async (eventDataToEmit) => {
 describe("SearchEngineModuleService", function () {
   describe("on created or attached events", function () {
     let manager
+    let shutdown_
 
     const eventDataToEmit: EventBusTypes.EmitData[] = [
       {
@@ -134,11 +129,16 @@ describe("SearchEngineModuleService", function () {
     ]
 
     beforeEach(async () => {
-      manager = await beforeEach_(eventDataToEmit)
+      const { manager: manager_, shutdown } = await beforeEach_(eventDataToEmit)
+      manager = manager_
+      shutdown_ = shutdown
     })
 
     afterEach(async () => {
-      await afterEach_()
+      await TestDatabase.clearDatabase()
+      await shutdown_()
+      MedusaModule.clearInstances()
+      jest.clearAllMocks()
     })
 
     it("should create the corresponding catalog entries and catalog relation entries", async function () {
@@ -241,6 +241,7 @@ describe("SearchEngineModuleService", function () {
 
   describe("on unordered created or attached events", function () {
     let manager
+    let shutdown_
 
     const eventDataToEmit: EventBusTypes.EmitData[] = [
       {
@@ -290,10 +291,16 @@ describe("SearchEngineModuleService", function () {
     ]
 
     beforeEach(async () => {
-      manager = await beforeEach_(eventDataToEmit)
+      const { manager: manager_, shutdown } = await beforeEach_(eventDataToEmit)
+      manager = manager_
+      shutdown_ = shutdown
     })
+
     afterEach(async () => {
-      await afterEach_()
+      await TestDatabase.clearDatabase()
+      await shutdown_()
+      MedusaModule.clearInstances()
+      jest.clearAllMocks()
     })
 
     it("should create the corresponding catalog entries and catalog relation entries", async function () {
@@ -401,6 +408,7 @@ describe("SearchEngineModuleService", function () {
 
   describe("on updated events", function () {
     let manager
+    let shutdown_
 
     const updateData = async (manager) => {
       const catalogRepository = manager.getRepository(Catalog)
@@ -445,7 +453,9 @@ describe("SearchEngineModuleService", function () {
       },
     ]
     beforeEach(async () => {
-      manager = await beforeEach_(eventDataToEmit)
+      const { manager: manager_, shutdown } = await beforeEach_(eventDataToEmit)
+      manager = manager_
+      shutdown_ = shutdown
 
       await updateData(manager)
 
@@ -472,7 +482,10 @@ describe("SearchEngineModuleService", function () {
       await eventBus.emit(eventDataToEmit)
     })
     afterEach(async () => {
-      await afterEach_()
+      await TestDatabase.clearDatabase()
+      await shutdown_()
+      MedusaModule.clearInstances()
+      jest.clearAllMocks()
     })
 
     it("should update the corresponding catalog entries", async () => {
@@ -498,65 +511,68 @@ describe("SearchEngineModuleService", function () {
 
   describe("on deleted events", function () {
     let manager
+    let shutdown_
 
-    beforeEach(async () => {
-      const eventDataToEmit: EventBusTypes.EmitData[] = [
-        {
-          eventName: "product.created",
-          data: {
+    const eventDataToEmit: EventBusTypes.EmitData[] = [
+      {
+        eventName: "product.created",
+        data: {
+          id: productId,
+        },
+      },
+      {
+        eventName: "variant.created",
+        data: {
+          id: variantId,
+          product: {
             id: productId,
           },
         },
-        {
-          eventName: "variant.created",
-          data: {
-            id: variantId,
-            product: {
-              id: productId,
-            },
-          },
+      },
+      {
+        eventName: "PriceSet.created",
+        data: {
+          id: priceSetId,
         },
-        {
-          eventName: "PriceSet.created",
-          data: {
+      },
+      {
+        eventName: "price.created",
+        data: {
+          id: moneyAmountId,
+          price_set: {
             id: priceSetId,
           },
         },
-        {
-          eventName: "price.created",
-          data: {
-            id: moneyAmountId,
-            price_set: {
-              id: priceSetId,
-            },
-          },
+      },
+      {
+        eventName: "LinkProductVariantPriceSet.attached",
+        data: {
+          id: linkId,
+          variant_id: variantId,
+          price_set_id: priceSetId,
         },
-        {
-          eventName: "LinkProductVariantPriceSet.attached",
-          data: {
-            id: linkId,
-            variant_id: variantId,
-            price_set_id: priceSetId,
-          },
-        },
-      ]
+      },
+    ]
 
-      const deleteEventDataToEmit: EventBusTypes.EmitData[] = [
-        {
-          eventName: "product.deleted",
-          data: {
-            id: productId,
-          },
+    const deleteEventDataToEmit: EventBusTypes.EmitData[] = [
+      {
+        eventName: "product.deleted",
+        data: {
+          id: productId,
         },
-        {
-          eventName: "variant.deleted",
-          data: {
-            id: variantId,
-          },
+      },
+      {
+        eventName: "variant.deleted",
+        data: {
+          id: variantId,
         },
-      ]
+      },
+    ]
 
-      manager = await beforeEach_(eventDataToEmit)
+    beforeEach(async () => {
+      const { manager: manager_, shutdown } = await beforeEach_(eventDataToEmit)
+      manager = manager_
+      shutdown_ = shutdown
 
       remoteQueryMock.mockImplementation((query) => {
         if (query.product) {
@@ -580,7 +596,10 @@ describe("SearchEngineModuleService", function () {
       await eventBus.emit(deleteEventDataToEmit)
     })
     afterEach(async () => {
-      await afterEach_()
+      await TestDatabase.clearDatabase()
+      await shutdown_()
+      MedusaModule.clearInstances()
+      jest.clearAllMocks()
     })
 
     it("should consume all deleted events and delete the catalog entries", async () => {

@@ -3,6 +3,7 @@ import { Catalog, CatalogRelation } from "@models"
 import { EventBusService } from "../__fixtures__"
 import { TestDatabase } from "../utils"
 import { initModules } from "../utils/init-module"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 const eventBus = new EventBusService()
 const remoteQueryMock = jest.fn()
@@ -11,16 +12,18 @@ jest.setTimeout(300000)
 
 describe("SearchEngineModuleService query", function () {
   let module: ISearchModuleService
+  let shutdown_: () => Promise<void>
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
-    jest.clearAllMocks()
     const manager = TestDatabase.forkManager()
 
-    module = await initModules({
+    const { searchService, shutdown } = await initModules({
       remoteQueryMock,
       eventBusMock: eventBus,
     })
+    module = searchService
+    shutdown_ = shutdown
 
     const catalogRepository = manager.getRepository(Catalog)
 
@@ -182,6 +185,9 @@ describe("SearchEngineModuleService query", function () {
 
   afterEach(async () => {
     await TestDatabase.clearDatabase()
+    await shutdown_()
+    jest.clearAllMocks()
+    MedusaModule.clearInstances()
   })
 
   it("should query all products", async () => {

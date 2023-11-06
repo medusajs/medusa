@@ -42,5 +42,12 @@ export async function initModules({ remoteQueryMock, eventBusMock }) {
     injectedDependencies,
   })
 
-  return modules.searchService as unknown as ISearchModuleService
+  async function shutdown() {
+    await (sharedPgConnection as any).context?.destroy()
+  }
+
+  return {
+    searchService: modules.searchService as unknown as ISearchModuleService,
+    shutdown,
+  }
 }

@@ -114,7 +114,9 @@ export const TestDatabase: TestDatabase = {
       }";`
     )
 
-    await this.orm.close()
+    try {
+      await this.orm.close()
+    } catch {}
 
     this.orm = null
     this.manager = null
