@@ -6,7 +6,7 @@ import {
   LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { Product, ProductOption } from "@models"
+import { ProductOption } from "@models"
 
 // eslint-disable-next-line max-len
 export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseRepository<ProductOption> {
@@ -78,28 +78,7 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
 
     data.forEach((d) => d.product_id && productIds.push(d.product_id))
 
-    const existingProducts = await manager.find(Product, {
-      id: { $in: productIds },
-    })
-
-    const existingProductsMap = new Map(
-      existingProducts.map<[string, Product]>((product) => [
-        product.id,
-        product,
-      ])
-    )
-
     const productOptions = data.map((optionData) => {
-      const productId = optionData.product_id
-
-      delete optionData.product_id
-
-      if (productId) {
-        const product = existingProductsMap.get(productId)
-
-        optionData.product_id = product?.id
-      }
-
       return manager.create(ProductOption, optionData)
     })
 

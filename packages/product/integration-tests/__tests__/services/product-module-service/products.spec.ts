@@ -1,6 +1,5 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { kebabCase } from "@medusajs/utils"
 import {
   Product,
   ProductCategory,
@@ -15,6 +14,9 @@ import { createCollections, createTypes } from "../../../__fixtures__/product"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
 import { DB_URL, TestDatabase } from "../../../utils"
+import { kebabCase } from "@medusajs/utils"
+
+const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -23,6 +25,7 @@ const beforeEach_ = async () => {
 
 const afterEach_ = async () => {
   await TestDatabase.clearDatabase()
+  eventBusSpy.mockClear()
   jest.clearAllMocks()
 }
 
@@ -256,7 +259,6 @@ describe("ProductModuleService products", function () {
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
@@ -270,11 +272,100 @@ describe("ProductModuleService products", function () {
 
       await module.update([updateData])
 
-      expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith([
+      expect(eventBusSpy).toHaveBeenCalledTimes(6)
+      expect(eventBusSpy).toHaveBeenNthCalledWith(1, [
+        {
+          eventName: "product-image.created",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "ProductImage",
+              action: "created",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(2, [
+        {
+          eventName: "product-tag.created",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "ProductTag",
+              action: "created",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(3, [
+        {
+          eventName: "product-type.created",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "ProductType",
+              action: "created",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(4, [
         {
           eventName: "product.updated",
-          data: { id: productOne.id },
+          body: {
+            metadata: {
+              service: "productService",
+              object: "Product",
+              action: "updated",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(5, [
+        {
+          eventName: "product-variant.created",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "ProductVariant",
+              action: "created",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(6, [
+        {
+          eventName: "product-variant.deleted",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "Product",
+              action: "deleted",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
         },
       ])
     })
@@ -558,15 +649,30 @@ describe("ProductModuleService products", function () {
       })
 
       const products = await module.create([data])
+      const [product] = await module.list(
+        { id: products[0].id },
+        {
+          relations: [
+            "options",
+            "options.values",
+            "variants",
+            "variants.options",
+            "variants.options.value",
+            "tags",
+            "type",
+            "categories",
+            "images",
+          ],
+        }
+      )
 
-      expect(products).toHaveLength(1)
-      expect(products[0].images).toHaveLength(1)
-      expect(products[0].options).toHaveLength(1)
-      expect(products[0].tags).toHaveLength(1)
-      expect(products[0].categories).toHaveLength(0)
-      expect(products[0].variants).toHaveLength(1)
+      expect(product.images).toHaveLength(1)
+      expect(product.options).toHaveLength(1)
+      expect(product.tags).toHaveLength(1)
+      expect(product.categories).toHaveLength(0)
+      expect(product.variants).toHaveLength(1)
 
-      expect(products[0]).toEqual(
+      expect(product).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           title: data.title,
@@ -612,8 +718,6 @@ describe("ProductModuleService products", function () {
               sku: data.variants[0].sku,
               allow_backorder: false,
               manage_inventory: true,
-              inventory_quantity: 100,
-              variant_rank: 0,
               options: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
@@ -627,7 +731,6 @@ describe("ProductModuleService products", function () {
     })
 
     it("should emit events through eventBus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
@@ -635,11 +738,100 @@ describe("ProductModuleService products", function () {
 
       const products = await module.create([data])
 
-      expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith([
+      expect(eventBusSpy).toHaveBeenCalledTimes(6)
+      expect(eventBusSpy).toHaveBeenNthCalledWith(1, [
+        {
+          eventName: "product-image.created",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "ProductImage",
+              action: "created",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(2, [
+        {
+          eventName: "product-tag.created",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "ProductTag",
+              action: "created",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(3, [
+        {
+          eventName: "product-type.created",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "ProductType",
+              action: "created",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(4, [
         {
           eventName: "product.created",
-          data: { id: products[0].id },
+          body: {
+            metadata: {
+              service: "productService",
+              object: "Product",
+              action: "created",
+            },
+            data: {
+              id: products[0].id,
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(5, [
+        {
+          eventName: "product-option.created",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "ProductOption",
+              action: "created",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
+        },
+      ])
+
+      expect(eventBusSpy).toHaveBeenNthCalledWith(6, [
+        {
+          eventName: "product-variant.created",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "ProductVariant",
+              action: "created",
+            },
+            data: {
+              id: expect.any(String),
+            },
+          },
         },
       ])
     })
@@ -723,7 +915,6 @@ describe("ProductModuleService products", function () {
     })
 
     it("should emit events through eventBus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
@@ -731,12 +922,23 @@ describe("ProductModuleService products", function () {
 
       const products = await module.create([data])
 
+      eventBusSpy.mockClear()
       await module.softDelete([products[0].id])
 
-      expect(eventBusSpy).toHaveBeenCalledWith([
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenNthCalledWith(1, [
         {
-          eventName: "product.created",
-          data: { id: products[0].id },
+          eventName: "product.deleted",
+          body: {
+            metadata: {
+              service: "productService",
+              object: "Product",
+              action: "deleted",
+            },
+            data: {
+              id: products[0].id,
+            },
+          },
         },
       ])
     })

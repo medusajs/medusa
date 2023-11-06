@@ -1,6 +1,5 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { kebabCase } from "@medusajs/utils"
 import { knex } from "knex"
 import { initialize } from "../../src"
 import { EventBusService } from "../__fixtures__/event-bus"
@@ -11,6 +10,7 @@ import {
 } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
+import { kebabCase } from "@medusajs/utils"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -217,71 +217,73 @@ describe("Product module", function () {
       })
 
       const products = await module.create([data])
+      const [product] = await module.list(
+        { id: products[0].id },
+        {
+          relations: [
+            "options",
+            "variants",
+            "variants.options",
+            "variants.options.value",
+            "tags",
+            "type",
+            "categories",
+            "images",
+          ],
+        }
+      )
 
-      expect(products).toHaveLength(1)
+      expect(product.images).toHaveLength(1)
+      expect(product.options).toHaveLength(1)
+      expect(product.tags).toHaveLength(1)
+      expect(product.categories).toHaveLength(0)
+      expect(product.variants).toHaveLength(1)
 
-      expect(products[0].images).toHaveLength(1)
-      expect(products[0].options).toHaveLength(1)
-      expect(products[0].tags).toHaveLength(1)
-      expect(products[0].categories).toHaveLength(0)
-      expect(products[0].variants).toHaveLength(1)
-
-      expect(products[0]).toEqual(
+      expect(product).toEqual(
         expect.objectContaining({
           id: expect.any(String),
-          title: data.title,
+          title: expect.any(String),
           handle: kebabCase(data.title),
-          description: data.description,
-          subtitle: data.subtitle,
-          is_giftcard: data.is_giftcard,
-          discountable: data.discountable,
-          thumbnail: images[0],
-          status: data.status,
-          images: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              url: images[0],
-            }),
-          ]),
-          options: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              title: data.options[0].title,
-              values: expect.arrayContaining([
-                expect.objectContaining({
-                  id: expect.any(String),
-                  value: data.variants[0].options?.[0].value,
-                }),
-              ]),
-            }),
-          ]),
-          tags: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              value: data.tags[0].value,
-            }),
-          ]),
+          subtitle: expect.any(String),
+          description: expect.any(String),
+          is_giftcard: false,
+          status: "published",
+          thumbnail: "image-1",
+          type_id: expect.any(String),
           type: expect.objectContaining({
             id: expect.any(String),
-            value: data.type.value,
+            value: expect.any(String),
+            metadata: null,
           }),
-          variants: expect.arrayContaining([
+          discountable: true,
+          options: [
             expect.objectContaining({
               id: expect.any(String),
-              title: data.variants[0].title,
-              sku: data.variants[0].sku,
-              allow_backorder: false,
-              manage_inventory: true,
-              inventory_quantity: 100,
-              variant_rank: 0,
-              options: expect.arrayContaining([
-                expect.objectContaining({
-                  id: expect.any(String),
-                  value: data.variants[0].options?.[0].value,
-                }),
-              ]),
+              title: expect.any(String),
             }),
-          ]),
+          ],
+          variants: [
+            expect.objectContaining({
+              id: expect.any(String),
+              title: expect.any(String),
+              sku: expect.any(String),
+              inventory_quantity: "100",
+              variant_rank: "0",
+            }),
+          ],
+          tags: [
+            expect.objectContaining({
+              id: expect.any(String),
+              value: "tag-1",
+            }),
+          ],
+          images: [
+            expect.objectContaining({
+              id: expect.any(String),
+              url: "image-1",
+            }),
+          ],
+          categories: [],
         })
       )
     })

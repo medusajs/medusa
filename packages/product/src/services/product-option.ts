@@ -89,9 +89,7 @@ export default class ProductOptionService<
   ): Promise<TEntity[]> {
     const options = await (
       this.productOptionRepository_ as ProductOptionRepository
-    ).create(data, {
-      transactionManager: sharedContext.transactionManager,
-    })
+    ).create(data, sharedContext)
 
     sharedContext.messageAggregator?.save(
       options.map(({ id }) => {

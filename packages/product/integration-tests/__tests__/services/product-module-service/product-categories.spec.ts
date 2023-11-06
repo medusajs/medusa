@@ -24,14 +24,17 @@ describe("ProductModuleService product categories", () => {
     repositoryManager = await TestDatabase.forkManager()
     eventBus = new EventBusService()
 
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+    service = await initialize(
+      {
+        database: {
+          clientUrl: DB_URL,
+          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+        },
       },
-    }, {
-      eventBusModuleService: eventBus
-    })
+      {
+        eventBusModuleService: eventBus,
+      }
+    )
 
     testManager = await TestDatabase.forkManager()
 
@@ -286,19 +289,27 @@ describe("ProductModuleService product categories", () => {
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       const category = await service.createCategory({
         name: "New Category",
         parent_category_id: productCategoryOne.id,
       })
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product-category.created",
+      expect(eventBusSpy).toHaveBeenCalledWith([
         {
-          id: category.id
-        }
-      )
+          eventName: "product-category.created",
+          body: {
+            data: { id: category.id },
+            metadata: {
+              action: "created",
+              object: "ProductCategory",
+              service: "productService",
+            },
+          },
+          options: undefined,
+        },
+      ])
     })
 
     it("should append rank from an existing category depending on parent", async () => {
@@ -379,18 +390,26 @@ describe("ProductModuleService product categories", () => {
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       await service.updateCategory(productCategoryZero.id, {
         name: "New Category",
       })
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product-category.updated",
+      expect(eventBusSpy).toHaveBeenCalledWith([
         {
-          id: productCategoryZero.id
-        }
-      )
+          eventName: "product-category.updated",
+          body: {
+            data: { id: productCategoryZero.id },
+            metadata: {
+              action: "updated",
+              object: "ProductCategory",
+              service: "productService",
+            },
+          },
+          options: undefined,
+        },
+      ])
     })
 
     it("should update the name of the category successfully", async () => {
@@ -551,16 +570,24 @@ describe("ProductModuleService product categories", () => {
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, "emit")
       await service.deleteCategory(productCategoryOne.id)
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product-category.deleted",
+      expect(eventBusSpy).toHaveBeenCalledWith([
         {
-          id: productCategoryOne.id
-        }
-      )
+          eventName: "product-category.deleted",
+          body: {
+            data: { id: productCategoryOne.id },
+            metadata: {
+              action: "deleted",
+              object: "ProductCategory",
+              service: "productService",
+            },
+          },
+          options: undefined,
+        },
+      ])
     })
 
     it("should throw an error when an id does not exist", async () => {

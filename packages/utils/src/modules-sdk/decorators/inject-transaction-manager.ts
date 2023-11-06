@@ -42,7 +42,7 @@ export function InjectTransactionManager(
         : this[managerProperty]
       ).transaction(
         async (transactionManager) => {
-          args[argIndex] = { ...(args[argIndex] ?? {}) }
+          args[argIndex] = args[argIndex] ?? {}
           args[argIndex].transactionManager = transactionManager
 
           return await originalMethod.apply(this, args)

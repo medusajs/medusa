@@ -142,7 +142,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(products))
+    return await this.baseRepository_.serialize(products, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -704,10 +706,10 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
+  @InjectManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
-  @InjectManager("baseRepository_")
   async create(
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -728,10 +730,10 @@ export default class ProductModuleService<
     return createdProducts
   }
 
+  @InjectManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
-  @InjectManager("baseRepository_")
   async update(
     data: ProductTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -1116,10 +1118,10 @@ export default class ProductModuleService<
     await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
   }
 
+  @InjectManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
-  @InjectManager("baseRepository_")
   async softDelete<
     TReturnableLinkableKeys extends string = Lowercase<
       keyof typeof LinkableKeys
@@ -1127,7 +1129,7 @@ export default class ProductModuleService<
   >(
     productIds: string[],
     { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
-    sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [, cascadedEntitiesMap] = await this.softDelete_(
       productIds,
@@ -1145,13 +1147,12 @@ export default class ProductModuleService<
       })
     }
 
+    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
+
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
   @InjectTransactionManager("baseRepository_")
-  @InjectIntoContext({
-    messageAggregator: () => new MessageAggregator(),
-  })
   protected async softDelete_(
     productIds: string[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -1159,13 +1160,13 @@ export default class ProductModuleService<
     const [entities, cascadedEntitiesMap] =
       await this.productService_.softDelete(productIds, sharedContext)
 
-    // TODO: Emit events of affected entities in cascade
-    await this.emitEvents_(sharedContext.messageAggregator?.getMessages())
-
     return [entities, cascadedEntitiesMap]
   }
 
   @InjectManager("baseRepository_")
+  @InjectIntoContext({
+    messageAggregator: () => new MessageAggregator(),
+  })
   async restore<
     TReturnableLinkableKeys extends string = Lowercase<
       keyof typeof LinkableKeys
@@ -1173,7 +1174,7 @@ export default class ProductModuleService<
   >(
     productIds: string[],
     { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
-    sharedContext: InternalContext = {}
+    @MedusaContext() sharedContext: InternalContext = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [_, cascadedEntitiesMap] = await this.restore_(
       productIds,
@@ -1227,9 +1228,6 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  @InjectIntoContext({
-    messageAggregator: () => new MessageAggregator(),
-  })
   async restore_(
     productIds: string[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -1245,12 +1243,13 @@ export default class ProductModuleService<
   }
 
   private async emitEvents_(groupedEvents) {
-    if (!this.eventBusModuleService_) {
+    if (!this.eventBusModuleService_ || !groupedEvents) {
       return
     }
 
     const promises: Promise<void>[] = []
     for (const group of Object.keys(groupedEvents)) {
+      // console.log(JSON.stringify(groupedEvents[group], null, 2))
       promises.push(this.eventBusModuleService_?.emit(groupedEvents[group]))
     }
 
