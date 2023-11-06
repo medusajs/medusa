@@ -30,8 +30,10 @@ import {
   PriceSetMoneyAmountRulesDTO,
   PricingContext,
   PricingFilters,
+  RemovePriceListRulesDTO,
   RemovePriceSetRulesDTO,
   RuleTypeDTO,
+  SetPriceListRulesDTO,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
   UpdatePriceListDTO,
@@ -40,8 +42,6 @@ import {
   UpdatePriceSetDTO,
   UpdatePriceSetMoneyAmountRulesDTO,
   UpdateRuleTypeDTO,
-  removePriceListRulesDTO,
-  setPriceListRulesDTO,
 } from "./common"
 
 import { FindConfig } from "../common"
@@ -2948,12 +2948,12 @@ export interface IPricingModuleService {
   ): Promise<PriceListDTO>
 
   setPriceListRules(
-    data: setPriceListRulesDTO,
+    data: SetPriceListRulesDTO,
     sharedContext?: Context
   ): Promise<PriceListDTO>
 
   removePriceListRules(
-    data: removePriceListRulesDTO,
+    data: RemovePriceListRulesDTO,
     sharedContext?: Context
   ): Promise<PriceListDTO>
 }

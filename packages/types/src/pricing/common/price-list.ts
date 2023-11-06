@@ -119,12 +119,12 @@ export interface AddPriceListPricesDTO {
   ]
 }
 
-export interface setPriceListRulesDTO {
+export interface SetPriceListRulesDTO {
   priceListId: string
   rules: Record<string, string | string[]>
 }
 
-export interface removePriceListRulesDTO {
+export interface RemovePriceListRulesDTO {
   priceListId: string
   rules: string[]
 }
