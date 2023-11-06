@@ -9,7 +9,7 @@ describe("promiseAll", function () {
       Promise.resolve(3),
     ]).catch((e) => e)
 
-    expect(res).toBe("error")
+    expect(res.message).toBe("error")
   })
 
   it("should throw errors if any of the promises throw and aggregate them", async function () {
@@ -27,7 +27,7 @@ describe("promiseAll", function () {
       }
     ).catch((e) => e)
 
-    expect(res).toBe(["error", "error2"].join(EOL))
+    expect(res.message).toBe(["error", "error2"].join(EOL))
   })
 
   it("should return all values if all promises are fulfilled", async function () {
