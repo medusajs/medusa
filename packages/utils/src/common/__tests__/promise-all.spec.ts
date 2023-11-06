@@ -5,7 +5,9 @@ describe("promiseAll", function () {
   it("should throw an error if any of the promises throw", async function () {
     const res = await promiseAll([
       Promise.resolve(1),
-      Promise.reject("error"),
+      (async () => {
+        throw new Error("error")
+      })(),
       Promise.resolve(3),
     ]).catch((e) => e)
 
@@ -19,7 +21,9 @@ describe("promiseAll", function () {
         (async () => {
           throw new Error("error")
         })(),
-        Promise.reject("error2"),
+        (async () => {
+          throw new Error("error2")
+        })(),
         Promise.resolve(3),
       ],
       {

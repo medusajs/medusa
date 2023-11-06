@@ -27,10 +27,11 @@ export async function promiseAll<T extends readonly unknown[] | []>(
   )
 
   if (rejected.length) {
-    const aggregatedErrors = aggregateErrors
-      ? rejected.map(getMessageError)
-      : [getMessageError(rejected[0])]
-    throw new Error(aggregatedErrors.join(EOL))
+    if (aggregateErrors) {
+      throw new Error(rejected.map(getMessageError).join(EOL))
+    }
+
+    throw rejected[0].reason // Re throw the error itself
   }
 
   return (states as PromiseFulfilledResult<unknown>[]).map(
