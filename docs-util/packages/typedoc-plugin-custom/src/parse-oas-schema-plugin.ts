@@ -33,32 +33,102 @@ type SchemaProperty = {
 }
 
 export function load(app: Application) {
+  const definedSchemas = new Map<string, Schema>()
+
+  // Since some files, such as models, include the
+  // `@schema` declaration at the end of the file, i.e. not
+  // before the related class/type/interface, this extracts
+  // those schemas and applies them to reflections having the same
+  // name, if those reflections don't have a schema comment of their own.
+  const origConvertSymbol = app.converter.convertSymbol
+  app.converter.convertSymbol = (context, symbol, exportSymbol) => {
+    if (symbol.valueDeclaration) {
+      const sourceFile = symbol.valueDeclaration?.getSourceFile()
+      // find block comments
+      const blockCommentMatch = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm.exec(
+        sourceFile.text
+      )
+      blockCommentMatch?.forEach((matched) => {
+        if (!matched) {
+          return
+        }
+        const schemaStartIndex = matched.indexOf("@schema")
+        if (schemaStartIndex === -1) {
+          return
+        }
+        // find end index
+        let schemaEndIndex = matched.indexOf(" * @", schemaStartIndex)
+
+        if (schemaEndIndex === -1) {
+          schemaEndIndex = matched.length
+        }
+
+        const schemaText = matched
+          .substring(schemaStartIndex, schemaEndIndex)
+          .replaceAll(" */", "")
+          .replaceAll("*/", "")
+          .replaceAll(" * ", "")
+        const { name: schemaName = "" } =
+          /@schema (?<name>\w+)/.exec(schemaText)?.groups || {}
+
+        if (!schemaName || definedSchemas.has(schemaName)) {
+          return
+        }
+
+        // attempt to parse schema and save it
+        try {
+          const parsedSchema = parse(
+            schemaText.replace("@schema", "schema:")
+          ) as Schema
+
+          definedSchemas.set(schemaName, parsedSchema)
+        } catch (e) {
+          // ignore errors as the schema may be malformed.
+          console.error(`Error parsing schema ${schemaName}: ${e}`)
+        }
+      })
+    }
+
+    return origConvertSymbol(context, symbol, exportSymbol)
+  }
+
   app.converter.on(Converter.EVENT_RESOLVE_BEGIN, (context: Context) => {
     for (const reflection of context.project.getReflectionsByKind(
       ReflectionKind.All
     )) {
-      const { comment } = reflection
-      if (comment) {
-        comment.getTags("@schema").forEach((part) => {
+      let schema: Schema | undefined
+      let { comment } = reflection
+      const schemaTags = comment?.getTags(`@schema`)
+      if (schemaTags?.length) {
+        schemaTags.forEach((part) => {
           if (part.content.length) {
             const schemaComment = prepareSchemaComment(part.content)
-            const schema: Schema = parse(schemaComment)
-
-            if (schema.description) {
-              comment.summary.push({
-                kind: "text",
-                text: schema.description,
-              })
-            }
-
-            if (reflection.kind === ReflectionKind.TypeAlias) {
-              comment.modifierTags.add(`@interface`)
-            }
-
-            addComments(schema, reflection)
+            schema = parse(schemaComment)
           }
         })
         reflection.comment?.removeTags("@schema")
+      } else if (!comment && definedSchemas.has(reflection.name)) {
+        schema = definedSchemas.get(reflection.name)
+        comment = new Comment()
+      }
+
+      if (schema) {
+        if (schema.description) {
+          comment?.summary.push({
+            kind: "text",
+            text: schema.description,
+          })
+        }
+
+        if (reflection.kind === ReflectionKind.TypeAlias) {
+          comment?.modifierTags.add(`@interface`)
+        }
+
+        addComments(schema, reflection)
+
+        if (!reflection.comment && comment) {
+          reflection.comment = comment
+        }
       }
     }
   })
