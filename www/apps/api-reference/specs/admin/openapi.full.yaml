@@ -345,6 +345,7 @@ tags:
       description: How to manage users
       url: https://docs.medusajs.com/modules/users/admin/manage-users
 servers:
+  - url: http://localhost:9000
   - url: https://api.medusa-commerce.com
 paths:
   /admin/apps:
