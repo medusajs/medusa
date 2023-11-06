@@ -2,7 +2,6 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
-  RequiredEntityData,
 } from "@mikro-orm/core"
 import { ProductTag } from "@models"
 import {
@@ -141,26 +140,28 @@ export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
     )
 
     const upsertedTags: ProductTag[] = []
-    const tagsToCreate: RequiredEntityData<ProductTag>[] = []
+    const tagsToCreate: ProductTag[] = []
+    const tagsToUpdate: ProductTag[] = []
 
     tags.forEach((tag) => {
       const aTag = existingTagsMap.get(tag.value)
       if (aTag) {
-        upsertedTags.push(aTag)
+        const updatedTag = manager.assign(aTag, tag)
+        tagsToUpdate.push(updatedTag)
       } else {
-        const newTag = (manager as SqlEntityManager).create(ProductTag, tag)
+        const newTag = manager.create(ProductTag, tag)
         tagsToCreate.push(newTag)
       }
     })
 
     if (tagsToCreate.length) {
-      const newTags: ProductTag[] = []
-      tagsToCreate.forEach((tag) => {
-        newTags.push((manager as SqlEntityManager).create(ProductTag, tag))
-      })
+      manager.persist(tagsToCreate)
+      upsertedTags.push(...tagsToCreate)
+    }
 
-      manager.persist(newTags)
-      upsertedTags.push(...newTags)
+    if (tagsToUpdate.length) {
+      manager.persist(tagsToUpdate)
+      upsertedTags.push(...tagsToUpdate)
     }
 
     return upsertedTags
