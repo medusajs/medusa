@@ -1,5 +1,15 @@
 # @medusajs/modules-sdk
 
+## 1.12.2
+
+### Patch Changes
+
+- [#5468](https://github.com/medusajs/medusa/pull/5468) [`a45da9215`](https://github.com/medusajs/medusa/commit/a45da9215d2a7834c368037726aaa3961caadaf9) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, modules-sdk, modules): Module loading was missing the expected dependencies and remote query reference fix
+
+- Updated dependencies [[`148f537b4`](https://github.com/medusajs/medusa/commit/148f537b47635e8b73ebaa27bbfbe58624bfe641), [`5c77029cb`](https://github.com/medusajs/medusa/commit/5c77029cb021690a4f617b83b4999ed55bf9dea1)]:
+  - @medusajs/types@1.11.5
+  - @medusajs/orchestration@0.4.3
+
 ## 1.12.1
 
 ### Patch Changes

@@ -14,13 +14,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [internal](../../internal/modules/admin_discounts.internal.internal-2.mdx)
 - [internal](../../internal/modules/admin_discounts.internal.internal-3.mdx)
 - [internal](../../internal/modules/admin_discounts.internal.internal-4.mdx)
+- [internal](../../internal/modules/admin_discounts.internal.internal-5.mdx)
 
 ## Enumerations
 
 - [DefaultPriceType](../../internal/enums/admin_discounts.internal.DefaultPriceType.mdx)
 - [DiscountConditionJoinTableForeignKey](../../internal/enums/admin_discounts.internal.DiscountConditionJoinTableForeignKey.mdx)
 - [FulfillmentStatus](../../internal/enums/admin_discounts.internal.FulfillmentStatus.mdx)
-- [MODULE\_RESOURCE\_TYPE](../../internal/enums/admin_discounts.internal.MODULE_RESOURCE_TYPE.mdx)
 - [OrderStatus](../../internal/enums/admin_discounts.internal.OrderStatus.mdx)
 - [PaymentStatus](../../internal/enums/admin_discounts.internal.PaymentStatus.mdx)
 
@@ -122,7 +122,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [Tag](../../internal/classes/admin_discounts.internal.Tag.mdx)
 - [Transform](../../internal/classes/admin_discounts.internal.Transform.mdx)
 - [WritableBase](../../internal/classes/admin_discounts.internal.WritableBase.mdx)
-- [internal](../../internal/classes/admin_discounts.internal.internal-5.mdx)
+- [internal](../../internal/classes/admin_discounts.internal.internal-6.mdx)
 
 ## Interfaces
 
@@ -134,6 +134,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [AsyncIterable](../../internal/interfaces/admin_discounts.internal.AsyncIterable.mdx)
 - [AsyncIterableIterator](../../internal/interfaces/admin_discounts.internal.AsyncIterableIterator.mdx)
 - [AsyncIterator](../../internal/interfaces/admin_discounts.internal.AsyncIterator.mdx)
+- [BaseRepositoryService](../../internal/interfaces/admin_discounts.internal.BaseRepositoryService.mdx)
 - [BlobOptions](../../internal/interfaces/admin_discounts.internal.BlobOptions.mdx)
 - [Buffer](../../internal/interfaces/admin_discounts.internal.Buffer.mdx)
 - [BufferConstructor](../../internal/interfaces/admin_discounts.internal.BufferConstructor.mdx)
@@ -147,13 +148,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [Error](../../internal/interfaces/admin_discounts.internal.Error.mdx)
 - [EventEmitter](../../internal/interfaces/admin_discounts.internal.EventEmitter-2.mdx)
 - [EventEmitterOptions](../../internal/interfaces/admin_discounts.internal.EventEmitterOptions.mdx)
-- [FindConfig](../../internal/interfaces/admin_discounts.internal.FindConfig.mdx)
 - [ICacheService](../../internal/interfaces/admin_discounts.internal.ICacheService.mdx)
 - [IEventBusModuleService](../../internal/interfaces/admin_discounts.internal.IEventBusModuleService.mdx)
 - [IEventBusService](../../internal/interfaces/admin_discounts.internal.IEventBusService.mdx)
-- [IFlagRouter](../../internal/interfaces/admin_discounts.internal.IFlagRouter.mdx)
 - [IInventoryService](../../internal/interfaces/admin_discounts.internal.IInventoryService.mdx)
-- [ISearchService](../../internal/interfaces/admin_discounts.internal.ISearchService.mdx)
+- [IPricingModuleService](../../internal/interfaces/admin_discounts.internal.IPricingModuleService.mdx)
 - [IStockLocationService](../../internal/interfaces/admin_discounts.internal.IStockLocationService.mdx)
 - [ITransactionBaseService](../../internal/interfaces/admin_discounts.internal.ITransactionBaseService.mdx)
 - [IncomingHttpHeaders](../../internal/interfaces/admin_discounts.internal.IncomingHttpHeaders.mdx)
@@ -163,12 +162,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [Iterator](../../internal/interfaces/admin_discounts.internal.Iterator.mdx)
 - [IteratorReturnResult](../../internal/interfaces/admin_discounts.internal.IteratorReturnResult.mdx)
 - [IteratorYieldResult](../../internal/interfaces/admin_discounts.internal.IteratorYieldResult.mdx)
-- [JoinerServiceConfig](../../internal/interfaces/admin_discounts.internal.JoinerServiceConfig.mdx)
-- [JoinerServiceConfigAlias](../../internal/interfaces/admin_discounts.internal.JoinerServiceConfigAlias.mdx)
 - [Logger](../../internal/interfaces/admin_discounts.internal.Logger.mdx)
 - [LookupOneOptions](../../internal/interfaces/admin_discounts.internal.LookupOneOptions.mdx)
 - [LookupOptions](../../internal/interfaces/admin_discounts.internal.LookupOptions.mdx)
-- [NumericalComparisonOperator](../../internal/interfaces/admin_discounts.internal.NumericalComparisonOperator.mdx)
 - [Object](../../internal/interfaces/admin_discounts.internal.Object.mdx)
 - [OnReadOpts](../../internal/interfaces/admin_discounts.internal.OnReadOpts.mdx)
 - [PromiseLike](../../internal/interfaces/admin_discounts.internal.PromiseLike.mdx)
@@ -191,7 +187,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [SocketConstructorOpts](../../internal/interfaces/admin_discounts.internal.SocketConstructorOpts.mdx)
 - [StaticEventEmitterOptions](../../internal/interfaces/admin_discounts.internal.StaticEventEmitterOptions.mdx)
 - [StreamPipeOptions](../../internal/interfaces/admin_discounts.internal.StreamPipeOptions.mdx)
-- [StringComparisonOperator](../../internal/interfaces/admin_discounts.internal.StringComparisonOperator.mdx)
 - [TcpSocketConnectOpts](../../internal/interfaces/admin_discounts.internal.TcpSocketConnectOpts.mdx)
 - [TransformOptions](../../internal/interfaces/admin_discounts.internal.TransformOptions.mdx)
 - [UnderlyingByteSource](../../internal/interfaces/admin_discounts.internal.UnderlyingByteSource.mdx)
@@ -222,31 +217,19 @@ ___
 
 ### ReadableOptions
 
-Re-exports [ReadableOptions](../../internal-2/interfaces/admin_discounts.internal.internal-2.ReadableOptions.mdx)
+Re-exports [ReadableOptions](../../internal-3/interfaces/admin_discounts.internal.internal-3.ReadableOptions.mdx)
 
 ___
 
 ### WritableOptions
 
-Re-exports [WritableOptions](../../internal-2/interfaces/admin_discounts.internal.internal-2.WritableOptions.mdx)
+Re-exports [WritableOptions](../../internal-3/interfaces/admin_discounts.internal.internal-3.WritableOptions.mdx)
 
 ## Enumeration Members
 
 ### DEFAULT
 
  **DEFAULT**: ``"default"``
-
-___
-
-### EXTERNAL
-
- **EXTERNAL**: ``"external"``
-
-___
-
-### INTERNAL
-
- **INTERNAL**: ``"internal"``
 
 ## Type Aliases
 
@@ -965,7 +948,7 @@ ___
   },
   {
     "name": "modules",
-    "type": "Record<`string`, ``false`` \\| `string` \\| [`Partial`](admin_discounts.internal.mdx#partial)<[`InternalModuleDeclaration`](admin_discounts.internal.mdx#internalmoduledeclaration) \\| [`ExternalModuleDeclaration`](admin_discounts.internal.mdx#externalmoduledeclaration)\\>\\>",
+    "type": "Record<`string`, ``false`` \\| `string` \\| [`Partial`](admin_discounts.internal.mdx#partial)<[`InternalModuleDeclaration`](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#internalmoduledeclaration) \\| [`ExternalModuleDeclaration`](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#externalmoduledeclaration)\\>\\>",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -981,7 +964,7 @@ ___
   },
   {
     "name": "projectConfig",
-    "type": "[`ProjectConfigOptions`](admin_discounts.internal.mdx#projectconfigoptions)",
+    "type": "[`ProjectConfigOptions`](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#projectconfigoptions)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1795,180 +1778,6 @@ ___
     "type": "`string`",
     "description": "",
     "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### CreateInventoryItemInput
-
- **CreateInventoryItemInput**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "description",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "height",
-    "type": "`number` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "hs_code",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "length",
-    "type": "`number` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "material",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "metadata",
-    "type": "Record<`string`, `unknown`\\> \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "mid_code",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "origin_country",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "requires_shipping",
-    "type": "`boolean`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "sku",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "thumbnail",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "title",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "weight",
-    "type": "`number` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "width",
-    "type": "`number` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### CreateInventoryLevelInput
-
- **CreateInventoryLevelInput**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "incoming_quantity",
-    "type": "`number`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "inventory_item_id",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "location_id",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "reserved_quantity",
-    "type": "`number`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "stocked_quantity",
-    "type": "`number`",
-    "description": "",
-    "optional": false,
     "defaultValue": "",
     "children": []
   }
@@ -3072,81 +2881,6 @@ ___
 
 ___
 
-### CreateReservationItemInput
-
- **CreateReservationItemInput**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "created_by",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "description",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "external_id",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "inventory_item_id",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "line_item_id",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "location_id",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "metadata",
-    "type": "Record<`string`, `unknown`\\> \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "quantity",
-    "type": "`number`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
 ### CreateReturnInput
 
  **CreateReturnInput**: `Object`
@@ -3604,53 +3338,6 @@ ___
 
 ___
 
-### CreateStockLocationInput
-
- **CreateStockLocationInput**: `Object`
-
-#### Schema
-
-Represents the Input to create a Stock Location
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "address",
-    "type": "`string` \\| [`StockLocationAddressInput`](admin_discounts.internal.mdx#stocklocationaddressinput)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "address_id",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "name",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
 ### CreateTaxRateInput
 
  **CreateTaxRateInput**: `Object`
@@ -3737,7 +3424,7 @@ ___
 
 ### DefaultWithoutRelations
 
- **DefaultWithoutRelations**: [`Omit`](../../admin_auth/modules/admin_auth.internal.mdx#omit)<[`ExtendedFindConfig`](admin_discounts.internal.mdx#extendedfindconfig)<[`Product`](../../internal/classes/admin_collections.internal.Product.mdx)\>, ``"relations"``\>
+ **DefaultWithoutRelations**: [`Omit`](../../admin_auth/modules/admin_auth.internal.mdx#omit)<[`ExtendedFindConfig`](../../internal-1/modules/admin_discounts.internal.internal-1.CommonTypes.mdx#extendedfindconfig)<[`Product`](../../internal/classes/admin_collections.internal.Product.mdx)\>, ``"relations"``\>
 
 ___
 
@@ -3796,6 +3483,29 @@ ___
     "children": []
   }
 ]} />
+
+___
+
+### Dictionary
+
+ **Dictionary**<`T`\>: `object`
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Index signature
+
+▪ [k: `string`]: `T`
 
 ___
 
@@ -4099,15 +3809,15 @@ ___
 
 ___
 
-### ExtendedFindConfig
+### ExpandScalar
 
- **ExtendedFindConfig**<`TEntity`\>: [`Omit`](../../admin_auth/modules/admin_auth.internal.mdx#omit)<`FindOneOptions`<`TEntity`\>, ``"where"`` \| ``"relations"`` \| ``"select"``\> \| [`Omit`](../../admin_auth/modules/admin_auth.internal.mdx#omit)<`FindManyOptions`<`TEntity`\>, ``"where"`` \| ``"relations"`` \| ``"select"``\> & { `order?`: `FindOptionsOrder`<`TEntity`\> ; `relations?`: `FindOptionsRelations`<`TEntity`\> ; `select?`: `FindOptionsSelect`<`TEntity`\> ; `skip?`: `number` ; `take?`: `number` ; `where`: `FindOptionsWhere`<`TEntity`\> \| `FindOptionsWhere`<`TEntity`\>[]  }
+ **ExpandScalar**<`T`\>: ``null`` \| `T` extends `string` ? `string` \| `RegExp` : `T` extends `Date` ? `Date` \| `string` : `T`
 
 #### Type parameters
 
 <ParameterTypes parameters={[
   {
-    "name": "TEntity",
+    "name": "T",
     "type": "`object`",
     "description": "",
     "optional": false,
@@ -4142,112 +3852,6 @@ allOf:
         $ref: "#/components/schemas/FeatureFlagsResponse"
       modules:
         $ref: "#/components/schemas/ModulesResponse"
-
-___
-
-### ExternalModuleDeclaration
-
- **ExternalModuleDeclaration**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "alias",
-    "type": "`string`",
-    "description": "If multiple modules are registered with the same key, the alias can be used to differentiate them",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "definition",
-    "type": "[`ModuleDefinition`](admin_discounts.internal.mdx#moduledefinition)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "main",
-    "type": "`boolean`",
-    "description": "If the module is the main module for the key when multiple ones are registered",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "options",
-    "type": "Record<`string`, `unknown`\\>",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "scope",
-    "type": "[`EXTERNAL`](admin_discounts.internal.mdx#external)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "server",
-    "type": "`object`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "server.keepAlive",
-    "type": "`boolean`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "server.type",
-    "type": "``\"http\"``",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "server.url",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### FeatureFlagsResponse
-
- **FeatureFlagsResponse**: { `key`: `string` ; `value`: `boolean` \| Record<`string`, `boolean`\>  }[]
-
-#### Schema
-
-FeatureFlagsResponse
-type: array
-items:
-  type: object
-  required:
-    - key
-    - value
-  properties:
-    key:
-      description: The key of the feature flag.
-      type: string
-    value:
-      description: The value of the feature flag.
-      type: boolean
 
 ___
 
@@ -4348,66 +3952,18 @@ ___
 
 ___
 
-### FilterableInventoryItemProps
+### FilterValue
 
- **FilterableInventoryItemProps**: `Object`
+ **FilterValue**<`T`\>: [`OperatorMap`](admin_discounts.internal.mdx#operatormap)<[`FilterValue2`](admin_discounts.internal.mdx#filtervalue2)<`T`\>\> \| [`FilterValue2`](admin_discounts.internal.mdx#filtervalue2)<`T`\> \| [`FilterValue2`](admin_discounts.internal.mdx#filtervalue2)<`T`\>[] \| ``null``
 
-#### Type declaration
+#### Type parameters
 
 <ParameterTypes parameters={[
   {
-    "name": "hs_code",
-    "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../../internal/interfaces/admin_discounts.internal.StringComparisonOperator.mdx)",
+    "name": "T",
+    "type": "`object`",
     "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "id",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "location_id",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "origin_country",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "q",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "requires_shipping",
-    "type": "`boolean`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "sku",
-    "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../../internal/interfaces/admin_discounts.internal.StringComparisonOperator.mdx)",
-    "description": "",
-    "optional": true,
+    "optional": false,
     "defaultValue": "",
     "children": []
   }
@@ -4415,152 +3971,18 @@ ___
 
 ___
 
-### FilterableInventoryLevelProps
+### FilterValue2
 
- **FilterableInventoryLevelProps**: `Object`
+ **FilterValue2**<`T`\>: `T` \| [`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\> \| [`Primary`](admin_discounts.internal.mdx#primary)<`T`\>
 
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "incoming_quantity",
-    "type": "`number` \\| [`NumericalComparisonOperator`](../../internal/interfaces/admin_discounts.internal.NumericalComparisonOperator.mdx)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "inventory_item_id",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "location_id",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "reserved_quantity",
-    "type": "`number` \\| [`NumericalComparisonOperator`](../../internal/interfaces/admin_discounts.internal.NumericalComparisonOperator.mdx)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "stocked_quantity",
-    "type": "`number` \\| [`NumericalComparisonOperator`](../../internal/interfaces/admin_discounts.internal.NumericalComparisonOperator.mdx)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### FilterableReservationItemProps
-
- **FilterableReservationItemProps**: `Object`
-
-#### Type declaration
+#### Type parameters
 
 <ParameterTypes parameters={[
   {
-    "name": "created_by",
-    "type": "`string` \\| `string`[]",
+    "name": "T",
+    "type": "`object`",
     "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "description",
-    "type": "`string` \\| [`StringComparisonOperator`](../../internal/interfaces/admin_discounts.internal.StringComparisonOperator.mdx)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "id",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "inventory_item_id",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "line_item_id",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "location_id",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "quantity",
-    "type": "`number` \\| [`NumericalComparisonOperator`](../../internal/interfaces/admin_discounts.internal.NumericalComparisonOperator.mdx)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "type",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### FilterableStockLocationProps
-
- **FilterableStockLocationProps**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "id",
-    "type": "`string` \\| `string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "name",
-    "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../../internal/interfaces/admin_discounts.internal.StringComparisonOperator.mdx)",
-    "description": "",
-    "optional": true,
+    "optional": false,
     "defaultValue": "",
     "children": []
   }
@@ -5137,49 +4559,6 @@ ___
     "type": "`number` \\| ``null``",
     "description": "",
     "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### HttpCompressionOptions
-
- **HttpCompressionOptions**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "enabled",
-    "type": "`boolean`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "level",
-    "type": "`number`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "memLevel",
-    "type": "`number`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "threshold",
-    "type": "`number` \\| `string`",
-    "description": "",
-    "optional": true,
     "defaultValue": "",
     "children": []
   }
@@ -6713,6 +6092,14 @@ ___
     "children": []
   },
   {
+    "name": "pricingModuleService",
+    "type": "[`IPricingModuleService`](../../internal/interfaces/admin_discounts.internal.IPricingModuleService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
     "name": "productVariantService",
     "type": "[`ProductVariantService`](../../internal/classes/admin_discounts.internal.internal.ProductVariantService.mdx)",
     "description": "",
@@ -6723,6 +6110,14 @@ ___
   {
     "name": "regionService",
     "type": "[`RegionService`](../../internal/classes/admin_discounts.internal.internal.RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "remoteQuery",
+    "type": "[`RemoteQueryFunction`](admin_discounts.internal.mdx#remotequeryfunction)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -7857,81 +7252,6 @@ ___
 
 ___
 
-### InternalModuleDeclaration
-
- **InternalModuleDeclaration**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "alias",
-    "type": "`string`",
-    "description": "If multiple modules are registered with the same key, the alias can be used to differentiate them",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "definition",
-    "type": "[`ModuleDefinition`](admin_discounts.internal.mdx#moduledefinition)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "dependencies",
-    "type": "`string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "main",
-    "type": "`boolean`",
-    "description": "If the module is the main module for the key when multiple ones are registered",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "options",
-    "type": "Record<`string`, `unknown`\\>",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "resolve",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "resources",
-    "type": "[`MODULE_RESOURCE_TYPE`](../../internal/enums/admin_discounts.internal.MODULE_RESOURCE_TYPE.mdx)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "scope",
-    "type": "[`INTERNAL`](admin_discounts.internal.mdx#internal)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
 ### InventoryItemDTO
 
  **InventoryItemDTO**: `Object`
@@ -8255,81 +7575,6 @@ ___
   {
     "name": "TReturn",
     "type": "`object`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### JoinerRelationship
-
- **JoinerRelationship**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "alias",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "args",
-    "type": "Record<`string`, `any`\\>",
-    "description": "Extra arguments to pass to the remoteFetchData callback",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "foreignKey",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "inverse",
-    "type": "`boolean`",
-    "description": "In an inverted relationship the foreign key is on the other service and the primary key is on the current service",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "isInternalService",
-    "type": "`boolean`",
-    "description": "If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more \"internal\" services",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "isList",
-    "type": "`boolean`",
-    "description": "Force the relationship to return a list",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "primaryKey",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "serviceName",
-    "type": "`string`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -8866,112 +8111,15 @@ ___
 
 ___
 
-### ModuleDefinition
+### ModuleDeclaration
 
- **ModuleDefinition**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "canOverride",
-    "type": "`boolean`",
-    "description": "#### Deprecated property will be removed in future versions",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "defaultModuleDeclaration",
-    "type": "[`InternalModuleDeclaration`](admin_discounts.internal.mdx#internalmoduledeclaration) \\| [`ExternalModuleDeclaration`](admin_discounts.internal.mdx#externalmoduledeclaration)",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "defaultPackage",
-    "type": "`string` \\| ``false``",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "dependencies",
-    "type": "`string`[]",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "isLegacy",
-    "type": "`boolean`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "isQueryable",
-    "type": "`boolean`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "isRequired",
-    "type": "`boolean`",
-    "description": "#### Deprecated property will be removed in future versions",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "key",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "label",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "registrationName",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### ModuleJoinerConfig
-
- **ModuleJoinerConfig**: [`Omit`](../../admin_auth/modules/admin_auth.internal.mdx#omit)<[`JoinerServiceConfig`](../../internal/interfaces/admin_discounts.internal.JoinerServiceConfig.mdx), ``"serviceName"`` \| ``"primaryKeys"`` \| ``"relationships"`` \| ``"extends"``\> & { `databaseConfig?`: { `extraFields?`: Record<`string`, { `defaultValue?`: `string` ; `nullable?`: `boolean` ; `options?`: Record<`string`, `unknown`\> ; `type`: ``"date"`` \| ``"time"`` \| ``"datetime"`` \| ``"bigint"`` \| ``"blob"`` \| ``"uint8array"`` \| ``"array"`` \| ``"enumArray"`` \| ``"enum"`` \| ``"json"`` \| ``"integer"`` \| ``"smallint"`` \| ``"tinyint"`` \| ``"mediumint"`` \| ``"float"`` \| ``"double"`` \| ``"boolean"`` \| ``"decimal"`` \| ``"string"`` \| ``"uuid"`` \| ``"text"``  }\> ; `idPrefix?`: `string` ; `tableName?`: `string`  } ; `extends?`: { `fieldAlias?`: Record<`string`, `string` \| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\> ; `relationship`: [`ModuleJoinerRelationship`](admin_discounts.internal.mdx#modulejoinerrelationship) ; `serviceName`: `string`  }[] ; `isLink?`: `boolean` ; `isReadOnlyLink?`: `boolean` ; `linkableKeys?`: Record<`string`, `string`\> ; `primaryKeys?`: `string`[] ; `relationships?`: [`ModuleJoinerRelationship`](admin_discounts.internal.mdx#modulejoinerrelationship)[] ; `schema?`: `string` ; `serviceName?`: `string`  }
-
-___
-
-### ModuleJoinerRelationship
-
- **ModuleJoinerRelationship**: [`JoinerRelationship`](admin_discounts.internal.mdx#joinerrelationship) & { `deleteCascade?`: `boolean` ; `isInternalService?`: `boolean`  }
+ **ModuleDeclaration**: [`ExternalModuleDeclaration`](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#externalmoduledeclaration) \| [`InternalModuleDeclaration`](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#internalmoduledeclaration)
 
 ___
 
 ### ModulesResponse
 
- **ModulesResponse**: [`ModulesResponse`](admin_discounts.internal.mdx#modulesresponse-1)
+ **ModulesResponse**: [`ModulesResponse`](../../internal-1/modules/admin_discounts.internal.internal-1.ModulesSdkTypes.mdx#modulesresponse)
 
 #### Schema
 
@@ -8992,9 +8140,198 @@ items:
 
 ___
 
-### ModulesResponse
+### OperatorMap
 
- **ModulesResponse**: { `module`: `string` ; `resolution`: `string` \| ``false``  }[]
+ **OperatorMap**<`T`\>: `Object`
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "$and",
+    "type": "[`Query`](admin_discounts.internal.mdx#query)<`T`\\>[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$contained",
+    "type": "`string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$contains",
+    "type": "`string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$eq",
+    "type": "[`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\\> \\| [`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\\>[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$exists",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$fulltext",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$gt",
+    "type": "[`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$gte",
+    "type": "[`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$ilike",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$in",
+    "type": "[`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\\>[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$like",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$lt",
+    "type": "[`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$lte",
+    "type": "[`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$ne",
+    "type": "[`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$nin",
+    "type": "[`ExpandScalar`](admin_discounts.internal.mdx#expandscalar)<`T`\\>[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$not",
+    "type": "[`Query`](admin_discounts.internal.mdx#query)<`T`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$or",
+    "type": "[`Query`](admin_discounts.internal.mdx#query)<`T`\\>[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$overlap",
+    "type": "`string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "$re",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
+### Order
+
+ **Order**<`T`\>: { [key in keyof T]?: "ASC" \| "DESC" \| Order<T[key] extends any[] ? T[key][0] : T[key]\\> }
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
 
 ___
 
@@ -9275,6 +8612,12 @@ ___
 
 ___
 
+### PrevLimit
+
+ **PrevLimit**: [`never`, ``1``, ``2``, ``3``]
+
+___
+
 ### Price
 
  **Price**: [`Partial`](admin_discounts.internal.mdx#partial)<[`Omit`](../../admin_auth/modules/admin_auth.internal.mdx#omit)<[`MoneyAmount`](../../internal/classes/admin_collections.internal.MoneyAmount.mdx), ``"created_at"`` \| ``"updated_at"`` \| ``"deleted_at"``\>\> & { `amount`: `number`  }
@@ -9505,6 +8848,25 @@ ___
 
 ___
 
+### Primary
+
+ **Primary**<`T`\>: `T` extends { `[PrimaryKeyType]?`: infer PK  } ? [`ReadonlyPrimary`](admin_discounts.internal.mdx#readonlyprimary)<`PK`\> : `T` extends { `_id?`: infer PK  } ? [`ReadonlyPrimary`](admin_discounts.internal.mdx#readonlyprimary)<`PK`\> \| `string` : `T` extends { `uuid?`: infer PK  } ? [`ReadonlyPrimary`](admin_discounts.internal.mdx#readonlyprimary)<`PK`\> : `T` extends { `id?`: infer PK  } ? [`ReadonlyPrimary`](admin_discounts.internal.mdx#readonlyprimary)<`PK`\> : `never`
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
 ### ProductCategoryInput
 
  **ProductCategoryInput**: `Object`
@@ -9689,137 +9051,6 @@ ___
 
 ___
 
-### ProjectConfigOptions
-
- **ProjectConfigOptions**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "admin_cors",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "cookie_secret",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "database_database",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "database_extra",
-    "type": "Record<`string`, `unknown`\\> & { `ssl`: { `rejectUnauthorized`: ``false``  }  }",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "database_logging",
-    "type": "`LoggerOptions`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "database_schema",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "database_type",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "database_url",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "http_compression",
-    "type": "[`HttpCompressionOptions`](admin_discounts.internal.mdx#httpcompressionoptions)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "jwt_secret",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "redis_options",
-    "type": "`RedisOptions`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "redis_prefix",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "redis_url",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "session_options",
-    "type": "[`SessionOptions`](admin_discounts.internal.mdx#sessionoptions)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "store_cors",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
 ### PropertyDecorator
 
  **PropertyDecorator**: (`target`: [`Object`](admin_discounts.internal.mdx#object), `propertyKey`: `string` \| `symbol`) => `void`
@@ -9986,6 +9217,25 @@ A union type of the possible provider tax lines.
 
 ___
 
+### Query
+
+ **Query**<`T`\>: `T` extends `object` ? `T` extends [`Scalar`](admin_discounts.internal.mdx#scalar) ? `never` : [`FilterQuery`](../../internal-1/modules/admin_discounts.internal.internal-1.DAL.mdx#filterquery)<`T`\> : [`FilterValue`](admin_discounts.internal.mdx#filtervalue)<`T`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
 ### ReadableStreamController
 
  **ReadableStreamController**<`T`\>: [`ReadableStreamDefaultController`](admin_discounts.internal.mdx#readablestreamdefaultcontroller)<`T`\>
@@ -10024,6 +9274,46 @@ ___
 
 ___
 
+### Readonly
+
+ **Readonly**<`T`\>: { readonly [P in keyof T]: T[P] }
+
+Make all properties in T readonly
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
+### ReadonlyPrimary
+
+ **ReadonlyPrimary**<`T`\>: `T` extends `any`[] ? [`Readonly`](admin_discounts.internal.mdx#readonly)<`T`\> : `T`
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
 ### RegionDetails
 
  **RegionDetails**: `Object`
@@ -10045,6 +9335,52 @@ ___
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "children": []
+  }
+]} />
+
+___
+
+### RemoteQueryFunction
+
+ **RemoteQueryFunction**: (`query`: `string` \| [`RemoteJoinerQuery`](../../internal-1/interfaces/admin_discounts.internal.internal-1.RemoteJoinerQuery.mdx) \| `object`, `variables?`: Record<`string`, `unknown`\>) => `Promise`<`any`\> \| ``null``
+
+#### Type declaration
+
+(`query`, `variables?`): `Promise`<`any`\> \| ``null``
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "query",
+    "type": "`string` \\| [`RemoteJoinerQuery`](../../internal-1/interfaces/admin_discounts.internal.internal-1.RemoteJoinerQuery.mdx) \\| `object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "variables",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+##### Returns
+
+`Promise`<`any`\> \| ``null``
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise<any\\> \\| ``null``",
+    "type": "`Promise`<`any`\\> \\| ``null``",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
     "children": []
   }
 ]} />
@@ -10332,6 +9668,12 @@ ___
 
 ___
 
+### Scalar
+
+ **Scalar**: `boolean` \| `number` \| `string` \| `bigint` \| `symbol` \| `Date` \| `RegExp` \| [`Buffer`](admin_discounts.internal.mdx#buffer) \| { `toHexString`: Method toHexString  }
+
+___
+
 ### SessionOptions
 
  **SessionOptions**: `Object`
@@ -10382,33 +9724,6 @@ ___
   {
     "name": "ttl",
     "type": "`number`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### SharedContext
-
- **SharedContext**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "manager",
-    "type": "`EntityManager`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "transactionManager",
-    "type": "`EntityManager`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -10732,204 +10047,6 @@ ___
 
 ___
 
-### StockLocationAddressDTO
-
- **StockLocationAddressDTO**: `Object`
-
-#### Schema
-
-Represents a Stock Location Address
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "address_1",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "address_2",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "city",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "company",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "country_code",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "created_at",
-    "type": "`string` \\| `Date`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "deleted_at",
-    "type": "`string` \\| `Date` \\| ``null``",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "id",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "metadata",
-    "type": "Record<`string`, `unknown`\\> \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "phone",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "postal_code",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "province",
-    "type": "`string` \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "updated_at",
-    "type": "`string` \\| `Date`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### StockLocationAddressInput
-
- **StockLocationAddressInput**: `Object`
-
-#### Schema
-
-Represents a Stock Location Address Input
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "address_1",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "address_2",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "city",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "country_code",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "phone",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "postal_code",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "province",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
 ### StockLocationDTO
 
  **StockLocationDTO**: `Object`
@@ -10943,7 +10060,7 @@ Represents a Stock Location
 <ParameterTypes parameters={[
   {
     "name": "address",
-    "type": "[`StockLocationAddressDTO`](admin_discounts.internal.mdx#stocklocationaddressdto)",
+    "type": "[`StockLocationAddressDTO`](../../internal-1/modules/admin_discounts.internal.internal-1.StockLocationTypes.mdx#stocklocationaddressdto)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -11094,33 +10211,6 @@ ___
   {
     "name": "subscriberId",
     "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### SubscriberDescriptor
-
- **SubscriberDescriptor**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "id",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "subscriber",
-    "type": "[`Subscriber`](admin_discounts.internal.mdx#subscriber)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -12011,33 +11101,6 @@ ___
 
 ___
 
-### UpdateInventoryLevelInput
-
- **UpdateInventoryLevelInput**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "incoming_quantity",
-    "type": "`number`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "stocked_quantity",
-    "type": "`number`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
 ### UpdateOauthInput
 
  **UpdateOauthInput**: `Object`
@@ -12735,49 +11798,6 @@ ___
 
 ___
 
-### UpdateReservationItemInput
-
- **UpdateReservationItemInput**: `Object`
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "description",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "location_id",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "metadata",
-    "type": "Record<`string`, `unknown`\\> \\| ``null``",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "quantity",
-    "type": "`number`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
 ### UpdateReturnInput
 
  **UpdateReturnInput**: `Object`
@@ -13029,53 +12049,6 @@ ___
   {
     "name": "type",
     "type": "[`ShippingProfileType`](../../internal/enums/admin_collections.internal.ShippingProfileType.mdx)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-___
-
-### UpdateStockLocationInput
-
- **UpdateStockLocationInput**: `Object`
-
-#### Schema
-
-Represents the Input to update a Stock Location
-
-#### Type declaration
-
-<ParameterTypes parameters={[
-  {
-    "name": "address",
-    "type": "[`StockLocationAddressInput`](admin_discounts.internal.mdx#stocklocationaddressinput)",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "address_id",
-    "type": "`string`",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "children": []
-  },
-  {
-    "name": "name",
-    "type": "`string`",
     "description": "",
     "optional": true,
     "defaultValue": "",

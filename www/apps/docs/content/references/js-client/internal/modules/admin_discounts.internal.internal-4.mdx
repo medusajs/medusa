@@ -10,18 +10,26 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Functions
 
-### arrayBuffer
+### finished
 
-**arrayBuffer**(`stream`): `Promise`<`ArrayBuffer`\>
+**finished**(`stream`, `options?`): `Promise`<`void`\>
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx) \\| [`Readable`](../classes/admin_discounts.internal.Readable.mdx) \\| [`AsyncIterator`](../interfaces/admin_discounts.internal.AsyncIterator.mdx)<`any`, `any`, `undefined`\\>",
+    "type": "[`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx) \\| [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \\| [`ReadWriteStream`](../interfaces/admin_discounts.internal.ReadWriteStream.mdx)",
     "description": "",
     "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`FinishedOptions`](../../internal-3/interfaces/admin_discounts.internal.internal-3.FinishedOptions.mdx)",
+    "description": "",
+    "optional": true,
     "defaultValue": "",
     "children": []
   }
@@ -29,12 +37,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 #### Returns
 
-`Promise`<`ArrayBuffer`\>
+`Promise`<`void`\>
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`ArrayBuffer`\\>",
+    "type": "`Promise`<`void`\\>",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -44,16 +52,555 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ___
 
-### blob
+### pipeline
 
-**blob**(`stream`): `Promise`<[`Blob`](../classes/admin_discounts.internal.Blob.mdx)\>
+**pipeline**<`A`, `B`\>(`source`, `destination`, `options?`): [`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "A",
+    "type": "[`PipelineSource`](admin_discounts.internal.internal-3.mdx#pipelinesource)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "B",
+    "type": "[`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer), `any`\\> \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`any`\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`any`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
-    "name": "stream",
-    "type": "[`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx) \\| [`Readable`](../classes/admin_discounts.internal.Readable.mdx) \\| [`AsyncIterator`](../interfaces/admin_discounts.internal.AsyncIterator.mdx)<`any`, `any`, `undefined`\\>",
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`PipelineOptions`](../../internal-3/interfaces/admin_discounts.internal.internal-3.PipelineOptions.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "PipelinePromise",
+    "type": "[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+**pipeline**<`A`, `T1`, `B`\>(`source`, `transform1`, `destination`, `options?`): [`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "A",
+    "type": "[`PipelineSource`](admin_discounts.internal.internal-3.mdx#pipelinesource)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T1",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`A`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "B",
+    "type": "[`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer), `any`\\> \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`any`\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`any`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform1",
+    "type": "`T1`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`PipelineOptions`](../../internal-3/interfaces/admin_discounts.internal.internal-3.PipelineOptions.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "PipelinePromise",
+    "type": "[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+**pipeline**<`A`, `T1`, `T2`, `B`\>(`source`, `transform1`, `transform2`, `destination`, `options?`): [`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "A",
+    "type": "[`PipelineSource`](admin_discounts.internal.internal-3.mdx#pipelinesource)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T1",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`A`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T2",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`T1`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "B",
+    "type": "[`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer), `any`\\> \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`any`\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`any`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform1",
+    "type": "`T1`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform2",
+    "type": "`T2`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`PipelineOptions`](../../internal-3/interfaces/admin_discounts.internal.internal-3.PipelineOptions.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "PipelinePromise",
+    "type": "[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+**pipeline**<`A`, `T1`, `T2`, `T3`, `B`\>(`source`, `transform1`, `transform2`, `transform3`, `destination`, `options?`): [`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "A",
+    "type": "[`PipelineSource`](admin_discounts.internal.internal-3.mdx#pipelinesource)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T1",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`A`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T2",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`T1`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T3",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`T2`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "B",
+    "type": "[`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer), `any`\\> \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`any`\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`any`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform1",
+    "type": "`T1`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform2",
+    "type": "`T2`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform3",
+    "type": "`T3`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`PipelineOptions`](../../internal-3/interfaces/admin_discounts.internal.internal-3.PipelineOptions.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "PipelinePromise",
+    "type": "[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+**pipeline**<`A`, `T1`, `T2`, `T3`, `T4`, `B`\>(`source`, `transform1`, `transform2`, `transform3`, `transform4`, `destination`, `options?`): [`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "A",
+    "type": "[`PipelineSource`](admin_discounts.internal.internal-3.mdx#pipelinesource)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T1",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`A`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T2",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`T1`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T3",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`T2`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "T4",
+    "type": "[`PipelineTransform`](admin_discounts.internal.internal-3.mdx#pipelinetransform)<`T3`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "B",
+    "type": "[`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`string` \\| [`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer), `any`\\> \\| [`PipelineDestinationIterableFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationiterablefunction)<`any`\\> \\| [`PipelineDestinationPromiseFunction`](admin_discounts.internal.internal-3.mdx#pipelinedestinationpromisefunction)<`any`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform1",
+    "type": "`T1`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform2",
+    "type": "`T2`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform3",
+    "type": "`T3`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "transform4",
+    "type": "`T4`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`PipelineOptions`](../../internal-3/interfaces/admin_discounts.internal.internal-3.PipelineOptions.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "PipelinePromise",
+    "type": "[`PipelinePromise`](admin_discounts.internal.internal-3.mdx#pipelinepromise)<`B`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+**pipeline**(`streams`, `options?`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "streams",
+    "type": "readonly ([`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx) \\| [`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \\| [`ReadWriteStream`](../interfaces/admin_discounts.internal.ReadWriteStream.mdx))[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`PipelineOptions`](../../internal-3/interfaces/admin_discounts.internal.internal-3.PipelineOptions.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+**pipeline**(`stream1`, `stream2`, `...streams`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream1",
+    "type": "[`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "stream2",
+    "type": "[`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \\| [`ReadWriteStream`](../interfaces/admin_discounts.internal.ReadWriteStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "streams",
+    "type": "([`WritableStream`](../interfaces/admin_discounts.internal.WritableStream.mdx) \\| [`ReadWriteStream`](../interfaces/admin_discounts.internal.ReadWriteStream.mdx) \\| [`PipelineOptions`](../../internal-3/interfaces/admin_discounts.internal.internal-3.PipelineOptions.mdx))[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -63,193 +610,15 @@ ___
 
 #### Returns
 
-`Promise`<[`Blob`](../classes/admin_discounts.internal.Blob.mdx)\>
+`Promise`<`void`\>
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Blob`](../classes/admin_discounts.internal.Blob.mdx)\\>",
+    "type": "`Promise`<`void`\\>",
     "optional": false,
     "defaultValue": "",
     "description": "",
-    "children": [
-      {
-        "name": "size",
-        "type": "`number`",
-        "description": "The total size of the `Blob` in bytes. #### Since v15.7.0, v14.18.0",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "type",
-        "type": "`string`",
-        "description": "The content-type of the `Blob`. #### Since v15.7.0, v14.18.0",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "arrayBuffer",
-        "type": "() => `Promise`<`ArrayBuffer`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "slice",
-        "type": "(`start?`: `number`, `end?`: `number`, `type?`: `string`) => [`Blob`](../classes/admin_discounts.internal.Blob.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "stream",
-        "type": "() => [`ReadableStream`](../../admin_discounts/modules/admin_discounts.internal.mdx#readablestream)<`any`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "text",
-        "type": "() => `Promise`<`string`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      }
-    ]
-  }
-]} />
-
-___
-
-### buffer
-
-**buffer**(`stream`): `Promise`<[`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\>
-
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "stream",
-    "type": "[`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx) \\| [`Readable`](../classes/admin_discounts.internal.Readable.mdx) \\| [`AsyncIterator`](../interfaces/admin_discounts.internal.AsyncIterator.mdx)<`any`, `any`, `undefined`\\>",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
     "children": []
-  }
-]} />
-
-#### Returns
-
-`Promise`<[`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\>
-
-<ParameterTypes parameters={[
-  {
-    "name": "Promise",
-    "type": "`Promise`<[`Buffer`](../../admin_discounts/modules/admin_discounts.internal.mdx#buffer)\\>",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "children": [
-      {
-        "name": "Buffer",
-        "type": "[`BufferConstructor`](../interfaces/admin_discounts.internal.BufferConstructor.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      }
-    ]
-  }
-]} />
-
-___
-
-### json
-
-**json**(`stream`): `Promise`<`unknown`\>
-
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "stream",
-    "type": "[`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx) \\| [`Readable`](../classes/admin_discounts.internal.Readable.mdx) \\| [`AsyncIterator`](../interfaces/admin_discounts.internal.AsyncIterator.mdx)<`any`, `any`, `undefined`\\>",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-#### Returns
-
-`Promise`<`unknown`\>
-
-<ParameterTypes parameters={[
-  {
-    "name": "Promise",
-    "type": "`Promise`<`unknown`\\>",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "children": [
-      {
-        "name": "unknown",
-        "type": "`unknown`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "children": []
-      }
-    ]
-  }
-]} />
-
-___
-
-### text
-
-**text**(`stream`): `Promise`<`string`\>
-
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "stream",
-    "type": "[`ReadableStream`](../interfaces/admin_discounts.internal.ReadableStream.mdx) \\| [`Readable`](../classes/admin_discounts.internal.Readable.mdx) \\| [`AsyncIterator`](../interfaces/admin_discounts.internal.AsyncIterator.mdx)<`any`, `any`, `undefined`\\>",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "children": []
-  }
-]} />
-
-#### Returns
-
-`Promise`<`string`\>
-
-<ParameterTypes parameters={[
-  {
-    "name": "Promise",
-    "type": "`Promise`<`string`\\>",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "children": [
-      {
-        "name": "string",
-        "type": "`string`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "children": []
-      }
-    ]
   }
 ]} />
