@@ -70,7 +70,10 @@ export default class OrderEditService extends TransactionBaseService {
   protected readonly taxProviderService_: TaxProviderService
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
   protected readonly orderEditItemChangeService_: OrderEditItemChangeService
-  protected readonly inventoryService_: IInventoryService | undefined
+
+  protected get inventoryService_(): IInventoryService | undefined {
+    return this.__container__.inventoryService
+  }
 
   constructor({
     orderEditRepository,
@@ -82,7 +85,6 @@ export default class OrderEditService extends TransactionBaseService {
     orderEditItemChangeService,
     lineItemAdjustmentService,
     taxProviderService,
-    inventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -96,7 +98,6 @@ export default class OrderEditService extends TransactionBaseService {
     this.orderEditItemChangeService_ = orderEditItemChangeService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.taxProviderService_ = taxProviderService
-    this.inventoryService_ = inventoryService
   }
 
   async retrieve(
