@@ -18,6 +18,7 @@ import {
 
 import { DataSource } from "typeorm"
 import faker from "faker"
+import { generateEntityId } from "@medusajs/utils"
 
 export type ProductFactoryData = {
   id?: string
@@ -30,6 +31,7 @@ export type ProductFactoryData = {
   variants?: Omit<ProductVariantFactoryData, "product_id">[]
   sales_channels?: SalesChannelFactoryData[]
   metadata?: Record<string, unknown>
+  isIsolatedSalesChannelFFOn?: boolean
 }
 
 export const simpleProductFactory = async (
@@ -40,6 +42,10 @@ export const simpleProductFactory = async (
   if (typeof seed !== "undefined") {
     faker.seed(seed)
   }
+
+  data.isIsolatedSalesChannelFFOn =
+    data.isIsolatedSalesChannelFFOn ??
+    process.env.ISOLATE_SALES_CHANNEL_DOMAIN == "true"
 
   const manager = dataSource.manager
 
@@ -121,9 +127,26 @@ export const simpleProductFactory = async (
 
   const toSave = manager.create(Product, productToCreate)
 
-  toSave.sales_channels = sales_channels
+  if (!data.isIsolatedSalesChannelFFOn) {
+    toSave.sales_channels = sales_channels
+  }
 
   const product = await manager.save(toSave)
+
+  if (data.isIsolatedSalesChannelFFOn) {
+    await manager.query(
+      `INSERT INTO "product_sales_channel" (id, product_id, sales_channel_id) 
+        VALUES ${sales_channels
+          .map(
+            (sc) =>
+              `('${generateEntityId(undefined, "prodsc")}', '${toSave.id}', '${
+                sc.id
+              }')`
+          )
+          .join(", ")};
+        `
+    )
+  }
 
   const optionId = `${prodId}-option`
   const options = data.options || [{ id: optionId, title: "Size" }]
