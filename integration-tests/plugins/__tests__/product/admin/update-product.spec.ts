@@ -24,7 +24,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
+describe("[Product & Pricing Module] POST /admin/products/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -172,9 +172,7 @@ describe.skip("[Product & Pricing Module] POST /admin/products/:id", () => {
       ],
     }
 
-    console.log("I am here first")
     await api.post(`/admin/products/${product.id}`, data, adminHeaders)
-    console.log("I am here")
 
     const response = await api.get(
       `/admin/products/${product.id}`,

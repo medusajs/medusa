@@ -4,9 +4,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  doNotForceTransaction,
   retrieveEntity,
-  shouldForceTransaction,
 } from "@medusajs/utils"
 import { PriceRule } from "@models"
 import { PriceRuleRepository } from "@repositories"
@@ -65,7 +63,7 @@ export default class PriceRuleService<TEntity extends PriceRule = PriceRule> {
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "priceRuleRepository_")
+  @InjectTransactionManager("priceRuleRepository_")
   async create(
     data: PricingTypes.CreatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -76,7 +74,7 @@ export default class PriceRuleService<TEntity extends PriceRule = PriceRule> {
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "priceRuleRepository_")
+  @InjectTransactionManager("priceRuleRepository_")
   async update(
     data: PricingTypes.UpdatePriceRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -87,7 +85,7 @@ export default class PriceRuleService<TEntity extends PriceRule = PriceRule> {
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "priceRuleRepository_")
+  @InjectTransactionManager("priceRuleRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
