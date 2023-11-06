@@ -40,7 +40,8 @@ export async function prepareCreatePriceLists({
   // )
 
   const { priceLists } = data
-  return priceLists.map((priceListDTO) => {
+
+  priceLists.map((priceListDTO) => {
     priceListDTO.title ??= priceListDTO.name
     const {
       _associationTag,
