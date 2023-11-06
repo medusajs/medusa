@@ -4,7 +4,6 @@ import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
 import { generateEntityId } from "../utils"
 import { ProductSalesChannel } from "../models/product-sales-channel"
-import { CartSalesChannel } from "../models/cart-sales-channel"
 
 const productSalesChannelTable = "product_sales_channel"
 
@@ -125,7 +124,7 @@ export const SalesChannelRepository = dataSource
 
       await this.createQueryBuilder()
         .insert()
-        .into(CartSalesChannel)
+        .into("cart_sales_channel")
         .values(valuesToInsert)
         .orIgnore()
         .execute()
@@ -142,7 +141,7 @@ export const SalesChannelRepository = dataSource
 
       return await this.createQueryBuilder()
         .delete()
-        .from(CartSalesChannel)
+        .from("cart_sales_channel")
         .where(whereOptions)
         .execute()
     },
