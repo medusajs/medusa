@@ -151,6 +151,8 @@ export default async ({
             "failed: " +
             JSON.stringify(e)
         )
+        // to ensure the current behaviour of halting if a plugin initialization fails.
+        throw e
       }
     })
   )
