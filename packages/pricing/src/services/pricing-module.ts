@@ -1,4 +1,5 @@
 import {
+  AddPricesDTO,
   Context,
   CreateMoneyAmountDTO,
   DAL,
@@ -35,16 +36,15 @@ import {
 } from "@services"
 
 import {
+  groupBy,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
-  groupBy,
+  promiseAll,
   removeNullish,
   shouldForceTransaction,
 } from "@medusajs/utils"
-
-import { AddPricesDTO } from "@medusajs/types"
 import { joinerConfig } from "../joiner-config"
 import { PricingRepositoryService } from "../types"
 
@@ -286,7 +286,7 @@ export default class PricingModuleService<
       )
     }
 
-    const priceSets = await Promise.all(
+    const priceSets = await promiseAll(
       data.map(async (d) => {
         const { rules, prices, ...rest } = d
         const [priceSet] = await this.priceSetService_.create(
@@ -544,7 +544,7 @@ export default class PricingModuleService<
     })
 
     for (const { priceSetId, prices } of input) {
-      await Promise.all(
+      await promiseAll(
         prices.map(async (ma) => {
           const [moneyAmount] = await this.moneyAmountService_.create(
             [ma] as unknown as CreateMoneyAmountDTO[],

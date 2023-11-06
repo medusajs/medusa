@@ -42,7 +42,8 @@
     "express": "^4.17.1",
     "lodash": "^4.17.21",
     "medusa-core-utils": "^1.2.0",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "@medusajs/utils": "workspace:^"
   },
   "gitHead": "3bbd1e8507e00bc471de6ae3c30207999a4a4011",
   "keywords": [

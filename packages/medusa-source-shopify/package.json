@@ -27,7 +27,8 @@
     "express": "^4.17.1",
     "ioredis": "^4.27.9",
     "lodash": "^4.17.21",
-    "medusa-core-utils": "^1.2.0"
+    "medusa-core-utils": "^1.2.0",
+    "@medusajs/utils": "workspace:^"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",
