@@ -10,7 +10,18 @@ import {
   RestoreReturn,
   SoftDeleteReturn,
 } from "@medusajs/types"
-import { InjectIntoContext } from "@medusajs/utils"
+import {
+  InjectIntoContext,
+  InjectManager,
+  InjectTransactionManager,
+  isDefined,
+  isString,
+  kebabCase,
+  mapObjectTo,
+  MedusaContext,
+  MedusaError,
+  MessageAggregator,
+} from "@medusajs/utils"
 import {
   Image,
   Product,
@@ -40,20 +51,7 @@ import {
 import { UpdateProductDTO } from "../types/services/product"
 import { UpdateProductVariantDTO } from "../types/services/product-variant"
 
-import {
-  InjectManager,
-  InjectTransactionManager,
-  isDefined,
-  isString,
-  kebabCase,
-  mapObjectTo,
-  MedusaContext,
-  MedusaError,
-  MessageAggregator,
-} from "@medusajs/utils"
-
 import { InternalContext } from "../types"
-import { shouldForceTransaction } from "../utils"
 import {
   entityNameToLinkableKeysMap,
   joinerConfig,
@@ -267,7 +265,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(tags)), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -285,7 +283,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTags))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -303,7 +301,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTags))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -361,7 +359,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(types)), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -379,7 +377,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTypes))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -397,7 +395,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTypes))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -456,7 +454,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(productOptions)), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -478,7 +476,7 @@ export default class ProductModuleService<
     })
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -500,7 +498,7 @@ export default class ProductModuleService<
     })
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -558,7 +556,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(collections))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -576,7 +574,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCollections))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -594,7 +592,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCollections))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -640,7 +638,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -658,7 +656,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCategory))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -678,7 +676,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCategory))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -709,6 +707,7 @@ export default class ProductModuleService<
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
+  @InjectManager("baseRepository_")
   async create(
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -732,6 +731,7 @@ export default class ProductModuleService<
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
+  @InjectManager("baseRepository_")
   async update(
     data: ProductTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -753,7 +753,7 @@ export default class ProductModuleService<
     return updatedProducts
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async create_(
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -865,7 +865,7 @@ export default class ProductModuleService<
     return products
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async update_(
     data: ProductTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -895,14 +895,11 @@ export default class ProductModuleService<
       )[]
     >()
 
-    const productOptionsMap = new Map<
-      string,
-      ProductTypes.CreateProductOptionDTO[]
-    >()
+    const productOptionsMap = new Map<string, TProductOption[]>()
 
     const productsData = await Promise.all(
       data.map(async (product) => {
-        const { variants, options, ...productData } = product
+        const { variants, ...productData } = product
 
         if (!isDefined(productData.id)) {
           throw new MedusaError(
@@ -912,7 +909,6 @@ export default class ProductModuleService<
         }
 
         productVariantsMap.set(productData.id, variants ?? [])
-        productOptionsMap.set(productData.id, options ?? [])
 
         if (productData.is_giftcard) {
           productData.discountable = false
@@ -930,6 +926,15 @@ export default class ProductModuleService<
           productData,
           sharedContext
         )
+        await this.upsertAndAssignOptionsToProductData(
+          productData,
+          sharedContext
+        )
+
+        productOptionsMap.set(
+          productData.id,
+          (productData.options ?? []) as TProductOption[]
+        )
 
         return productData as UpdateProductDTO
       })
@@ -942,20 +947,6 @@ export default class ProductModuleService<
 
     const productByIdMap = new Map<string, TProduct>(
       products.map((product) => [product.id, product])
-    )
-
-    const productOptionsData = [...productOptionsMap]
-      .map(([id, options]) =>
-        options.map((option) => ({
-          ...option,
-          product: productByIdMap.get(id)!,
-        }))
-      )
-      .flat()
-
-    const productOptions = await this.productOptionService_.create(
-      productOptionsData,
-      sharedContext
     )
 
     const productVariantIdsToDelete: string[] = []
@@ -973,6 +964,7 @@ export default class ProductModuleService<
       const variantsToCreate: ProductTypes.CreateProductVariantDTO[] = []
       const variantsToUpdate: ProductTypes.UpdateProductVariantDTO[] = []
       const existingVariants = existingProductVariantsMap.get(productId)
+      const productOptions = productOptionsMap.get(productId)!
 
       variants.forEach((variant) => {
         const isVariantIdDefined = "id" in variant && isDefined(variant.id)
@@ -991,7 +983,7 @@ export default class ProductModuleService<
           }
         })
 
-        if (variantOptions) {
+        if (variantOptions?.length) {
           variant.options = variantOptions
         }
       })
@@ -1044,6 +1036,18 @@ export default class ProductModuleService<
     await Promise.all(promises)
 
     return products
+  }
+
+  protected async upsertAndAssignOptionsToProductData(
+    productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
+    sharedContext: Context = {}
+  ) {
+    if (productData.options?.length) {
+      productData.options = await this.productOptionService_.upsert(
+        productData.options,
+        sharedContext
+      )
+    }
   }
 
   protected async upsertAndAssignImagesToProductData(
@@ -1099,7 +1103,7 @@ export default class ProductModuleService<
     }
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -1115,6 +1119,7 @@ export default class ProductModuleService<
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
+  @InjectManager("baseRepository_")
   async softDelete<
     TReturnableLinkableKeys extends string = Lowercase<
       keyof typeof LinkableKeys
@@ -1143,7 +1148,7 @@ export default class ProductModuleService<
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })
@@ -1160,6 +1165,7 @@ export default class ProductModuleService<
     return [entities, cascadedEntitiesMap]
   }
 
+  @InjectManager("baseRepository_")
   async restore<
     TReturnableLinkableKeys extends string = Lowercase<
       keyof typeof LinkableKeys
@@ -1220,7 +1226,7 @@ export default class ProductModuleService<
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   @InjectIntoContext({
     messageAggregator: () => new MessageAggregator(),
   })

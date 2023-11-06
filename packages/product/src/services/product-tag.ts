@@ -8,11 +8,11 @@ import {
   UpsertProductTagDTO,
 } from "@medusajs/types"
 import {
+  composeMessage,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  composeMessage,
   retrieveEntity,
 } from "@medusajs/utils"
 import { ProductTag } from "@models"
@@ -20,7 +20,6 @@ import { ProductTagRepository } from "@repositories"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { InternalContext, ProductTagEvents } from "../types"
-import { doNotForceTransaction, shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
@@ -87,7 +86,7 @@ export default class ProductTagService<
     return queryOptions
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productTagRepository_")
+  @InjectTransactionManager("productTagRepository_")
   async create(
     data: CreateProductTagDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -110,7 +109,7 @@ export default class ProductTagService<
     return tags as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productTagRepository_")
+  @InjectTransactionManager("productTagRepository_")
   async update(
     data: UpdateProductTagDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -133,7 +132,7 @@ export default class ProductTagService<
     return tags as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productTagRepository_")
+  @InjectTransactionManager("productTagRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -152,7 +151,7 @@ export default class ProductTagService<
     )
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productTagRepository_")
+  @InjectTransactionManager("productTagRepository_")
   async upsert(
     data: UpsertProductTagDTO[],
     @MedusaContext() sharedContext: InternalContext = {}

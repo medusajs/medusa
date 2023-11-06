@@ -7,20 +7,19 @@ import {
   WithRequiredProperty,
 } from "@medusajs/types"
 import {
+  composeMessage,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   ProductUtils,
-  composeMessage,
-  isDefined,
 } from "@medusajs/utils"
 import { Product } from "@models"
 import { ProductRepository } from "@repositories"
 import { InternalContext, ProductEvents } from "../types"
 import { ProductServiceTypes } from "../types/services"
-import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -120,7 +119,7 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async create(
     data: ProductTypes.CreateProductOnlyDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -155,7 +154,7 @@ export default class ProductService<TEntity extends Product = Product> {
     return products as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async update(
     data: ProductServiceTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -186,7 +185,7 @@ export default class ProductService<TEntity extends Product = Product> {
     return products as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -207,7 +206,7 @@ export default class ProductService<TEntity extends Product = Product> {
     )
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async softDelete(
     productIds: string[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -231,7 +230,7 @@ export default class ProductService<TEntity extends Product = Product> {
     return [entities, cascadeEntities]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager("productRepository_")
   async restore(
     productIds: string[],
     @MedusaContext() sharedContext: InternalContext = {}

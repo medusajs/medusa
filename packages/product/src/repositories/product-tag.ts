@@ -7,10 +7,9 @@ import {
 } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  RequiredEntityData,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductTag } from "@models"
@@ -141,26 +140,30 @@ export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
     )
 
     const upsertedTags: ProductTag[] = []
-    const tagsToCreate: RequiredEntityData<ProductTag>[] = []
+    const tagsToCreate: ProductTag[] = []
+    const tagsToUpdate: ProductTag[] = []
 
     tags.forEach((tag) => {
       const aTag = existingTagsMap.get(tag.value)
       if (aTag) {
-        upsertedTags.push(aTag)
+        const updatedTag = manager.assign(aTag, tag)
+        tagsToUpdate.push(updatedTag)
       } else {
-        const newTag = (manager as SqlEntityManager).create(ProductTag, tag)
+        const newTag = manager.create(ProductTag, tag)
         tagsToCreate.push(newTag)
       }
     })
 
     const newTags: ProductTag[] = []
     if (tagsToCreate.length) {
-      tagsToCreate.forEach((tag) => {
-        newTags.push((manager as SqlEntityManager).create(ProductTag, tag))
-      })
+      manager.persist(tagsToCreate)
+      upsertedTags.push(...tagsToCreate)
+      newTags.push(...tagsToCreate)
+    }
 
-      manager.persist(newTags)
-      upsertedTags.push(...newTags)
+    if (tagsToUpdate.length) {
+      manager.persist(tagsToUpdate)
+      upsertedTags.push(...tagsToUpdate)
     }
 
     return [upsertedTags, existingTags, newTags]

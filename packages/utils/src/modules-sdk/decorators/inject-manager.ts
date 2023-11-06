@@ -16,7 +16,7 @@ export function InjectManager(managerProperty?: string): MethodDecorator {
     const argIndex = target.MedusaContextIndex_[propertyKey]
 
     descriptor.value = function (...args: any[]) {
-      const context: Context = args[argIndex] ?? {}
+      const context: Context = { ...(args[argIndex] ?? {}) }
       const resourceWithManager = !managerProperty
         ? this
         : this[managerProperty]

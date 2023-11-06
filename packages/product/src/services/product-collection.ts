@@ -1,17 +1,16 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
+  composeMessage,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  composeMessage,
   retrieveEntity,
 } from "@medusajs/utils"
 import { ProductCollection } from "@models"
 import { ProductCollectionRepository } from "../repositories"
 import { InternalContext, ProductCollectionEvents } from "../types"
-import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -86,10 +85,7 @@ export default class ProductCollectionService<
     return queryOptions
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCollectionRepository_"
-  )
+  @InjectTransactionManager("productCollectionRepository_")
   async create(
     data: ProductTypes.CreateProductCollectionDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -112,10 +108,7 @@ export default class ProductCollectionService<
     return collections as TEntity[]
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCollectionRepository_"
-  )
+  @InjectTransactionManager("productCollectionRepository_")
   async update(
     data: ProductTypes.UpdateProductCollectionDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -138,10 +131,7 @@ export default class ProductCollectionService<
     return collections as TEntity[]
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCollectionRepository_"
-  )
+  @InjectTransactionManager("productCollectionRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}

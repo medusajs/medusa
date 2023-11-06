@@ -1,10 +1,10 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
+  composeMessage,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  composeMessage,
   retrieveEntity,
 } from "@medusajs/utils"
 import { ProductOption } from "@models"
@@ -12,7 +12,6 @@ import { ProductOptionRepository } from "@repositories"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { InternalContext, ProductOptionEvents } from "../types"
-import { doNotForceTransaction, shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productOptionRepository: DAL.RepositoryService
@@ -83,7 +82,7 @@ export default class ProductOptionService<
     return queryOptions
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productOptionRepository_")
+  @InjectTransactionManager("productOptionRepository_")
   async create(
     data: ProductTypes.CreateProductOptionOnlyDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -108,7 +107,7 @@ export default class ProductOptionService<
     return options as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "productOptionRepository_")
+  @InjectTransactionManager("productOptionRepository_")
   async update(
     data: ProductTypes.UpdateProductOptionDTO[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -131,7 +130,7 @@ export default class ProductOptionService<
     return options as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productOptionRepository_")
+  @InjectTransactionManager("productOptionRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -148,5 +147,16 @@ export default class ProductOptionService<
         })
       })
     )
+  }
+
+  @InjectTransactionManager("productOptionRepository_")
+  async upsert(
+    data:
+      | ProductTypes.CreateProductOptionDTO[]
+      | ProductTypes.UpdateProductOptionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    return (await (this.productOptionRepository_ as ProductOptionRepository)
+      .upsert!(data, sharedContext)) as TEntity[]
   }
 }

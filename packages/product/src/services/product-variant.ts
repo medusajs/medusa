@@ -1,11 +1,11 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
+  composeMessage,
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   ModulesSdkUtils,
-  composeMessage,
-  isString,
   retrieveEntity,
 } from "@medusajs/utils"
 import { Product, ProductVariant } from "@models"
@@ -14,7 +14,6 @@ import { ProductVariantRepository } from "@repositories"
 import { Modules } from "@medusajs/modules-sdk"
 import { InternalContext, ProductVariantEvents } from "../types"
 import { ProductVariantServiceTypes } from "../types/services"
-import { doNotForceTransaction } from "../utils"
 import ProductService from "./product"
 
 type InjectedDependencies = {
@@ -89,7 +88,7 @@ export default class ProductVariantService<
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async create(
     productOrId: TProduct | string,
     data: ProductTypes.CreateProductVariantOnlyDTO[],
@@ -135,7 +134,7 @@ export default class ProductVariantService<
     return variants as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async update(
     productOrId: TProduct | string,
     data: ProductVariantServiceTypes.UpdateProductVariantDTO[],
@@ -174,7 +173,7 @@ export default class ProductVariantService<
     return variants as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -195,7 +194,7 @@ export default class ProductVariantService<
     )
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async softDelete(
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}
@@ -219,7 +218,7 @@ export default class ProductVariantService<
     return [entities, cascadeEntities]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager("productVariantRepository_")
   async restore(
     ids: string[],
     @MedusaContext() sharedContext: InternalContext = {}

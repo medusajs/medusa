@@ -1,12 +1,12 @@
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
+  composeMessage,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  composeMessage,
-  isDefined,
 } from "@medusajs/utils"
 import { ProductCategory } from "@models"
 import { ProductCategoryRepository } from "@repositories"
@@ -17,7 +17,6 @@ import {
   ProductCategoryEvents,
   ProductCategoryServiceTypes,
 } from "../types"
-import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
@@ -120,10 +119,7 @@ export default class ProductCategoryService<
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCategoryRepository_"
-  )
+  @InjectTransactionManager("productCategoryRepository_")
   async create(
     data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: InternalContext = {}
@@ -145,10 +141,7 @@ export default class ProductCategoryService<
     return variant as TEntity
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCategoryRepository_"
-  )
+  @InjectTransactionManager("productCategoryRepository_")
   async update(
     id: string,
     data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
@@ -171,10 +164,7 @@ export default class ProductCategoryService<
     return variant as TEntity
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCategoryRepository_"
-  )
+  @InjectTransactionManager("productCategoryRepository_")
   async delete(
     id: string,
     @MedusaContext() sharedContext: InternalContext = {}
