@@ -14,7 +14,10 @@ import {
   SalesChannelHandlers,
 } from "../../handlers"
 import { exportWorkflow, pipe } from "../../helper"
-import { attachCartToSalesChannel } from "../../handlers/cart"
+import {
+  attachCartToSalesChannel,
+  detachCartFromSalesChannel,
+} from "../../handlers/cart"
 
 enum CreateCartActions {
   setContext = "setContext",
@@ -140,6 +143,10 @@ const handlers = new Map([
         {
           invoke: [
             {
+              from: CreateCartActions.findSalesChannel,
+              alias: CartHandlers.createCart.aliases.SalesChannel,
+            },
+            {
               from: CreateCartActions.findRegion,
               alias: CartHandlers.createCart.aliases.Region,
             },
@@ -208,6 +215,18 @@ const handlers = new Map([
           ],
         },
         CartHandlers.attachCartToSalesChannel
+      ),
+      compensate: pipe(
+        {
+          invoke: [
+            {
+              from: CreateCartActions.findSalesChannel,
+              alias:
+                CartHandlers.detachCartFromSalesChannel.aliases.SalesChannel,
+            },
+          ],
+        },
+        CartHandlers.detachCartFromSalesChannel
       ),
     },
   ],

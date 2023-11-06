@@ -1,19 +1,19 @@
-import { IsolatePricingDomainFeatureFlag } from "@medusajs/utils"
+import { IsolateSalesChannelDomainFeatureFlag } from "@medusajs/utils"
 
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInputData = {
-  sales_channel: {
-    id: string
-  }
   cart: {
     id: string
+  }
+  sales_channel: {
+    sales_channel_id: string
   }
 }
 
 enum Aliases {
-  SalesChannel = "SalesChannel",
   Cart = "cart",
+  SalesChannel = "sales_channel",
 }
 
 export async function detachCartFromSalesChannel({
@@ -23,7 +23,9 @@ export async function detachCartFromSalesChannel({
   const salesChannelService = container.resolve("salesChannelService")
   const featureFlagRouter = container.resolve("featureFlagRouter")
   if (
-    !featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
+    !featureFlagRouter.isFeatureEnabled(
+      IsolateSalesChannelDomainFeatureFlag.key
+    )
   ) {
     return
   }
@@ -31,7 +33,9 @@ export async function detachCartFromSalesChannel({
   const cart = data[Aliases.Cart]
   const salesChannel = data[Aliases.SalesChannel]
 
-  await salesChannelService.removeCarts(salesChannel.id, [cart.id])
+  await salesChannelService.removeCarts(salesChannel.sales_channel_id, [
+    cart.id,
+  ])
 }
 
 detachCartFromSalesChannel.aliases = Aliases

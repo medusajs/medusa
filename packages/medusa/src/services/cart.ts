@@ -1,4 +1,5 @@
 import { FlagRouter, isDefined, MedusaError } from "@medusajs/utils"
+import IsolateSalesChannelDomainFeatureFlag from "../loaders/feature-flags/isolate-sales-channel-domain"
 import { isEmpty, isEqual } from "lodash"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
@@ -63,8 +64,8 @@ import { PaymentSessionInput } from "../types/payment"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { validateEmail } from "../utils/is-email"
-import IsolateSalesChannelDomainFeatureFlag from "../loaders/feature-flags/isolate-sales-channel-domain"
 import { RemoteQueryFunction } from "@medusajs/types"
+import IsolateSalesChannelDomain from "../loaders/feature-flags/isolate-sales-channel-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -278,6 +279,12 @@ class CartService extends TransactionBaseService {
         MedusaError.Types.NOT_FOUND,
         `Cart with ${cartId} was not found`
       )
+    }
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+    ) {
+      await this.decorateCartsWithSalesChannel([raw])
     }
 
     return raw
@@ -2978,6 +2985,63 @@ class CartService extends TransactionBaseService {
     relationSet.add("region.tax_rates")
 
     return Array.from(relationSet.values())
+  }
+
+  /**
+   * Temporary method to join sales channels of a product using RemoteQuery while
+   * IsolatedSalesChannelDomain FF is on.
+   *
+   * @param carts
+   * @private
+   */
+  private async decorateCartsWithSalesChannel(carts: Cart[]) {
+    const cartIdSalesChannelMapMap = await this.getSalesChannelModuleChannels(
+      carts.map((p) => p.id)
+    )
+
+    carts.forEach(
+      (cart) => (cart.sales_channel = cartIdSalesChannelMapMap[cart.id])
+    )
+
+    return carts
+  }
+
+  /**
+   * Temporary method to fetch sales channels of a carts using RemoteQuery while
+   * IsolatedSalesChannelDomain FF is on.
+   *
+   * @param cartIds
+   * @private
+   */
+  private async getSalesChannelModuleChannels(
+    cartIds: string[]
+  ): Promise<Record<string, SalesChannel>> {
+    const query = {
+      cart: {
+        __args: { filters: { id: cartIds } },
+        fields: ["id"],
+        sales_channel: {
+          fields: [
+            "id",
+            "name",
+            "description",
+            "is_disabled",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+          ],
+        },
+      },
+    }
+
+    const ret = {}
+    const data = (await this.remoteQuery_(query)) as {
+      id: string
+      sales_channel: SalesChannel
+    }[]
+    data.forEach((record) => (ret[record.id] = record.sales_channel))
+
+    return ret
   }
 }
 
