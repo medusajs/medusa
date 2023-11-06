@@ -1,78 +1,101 @@
-import {
-  CreatePriceListDTO,
-  CreatePriceListRuleDTO,
-  PriceListStatus,
-} from "@medusajs/types"
+import { CreatePriceListDTO, PriceListWorkflow } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+import { MedusaError } from "@medusajs/utils"
 
 type Result = {
   tag?: string
-  priceList: Omit<CreatePriceListDTO, "rules" | "prices">
-  rules: CreatePriceListRuleDTO[]
-  prices: string[] //CreatePriceListPriceDTO
+  priceList: CreatePriceListDTO
 }[]
 
 export async function prepareCreatePriceLists({
   container,
   data,
 }: WorkflowArguments<{
-  priceLists: (CreatePriceListWorkflowDTO & { _associationTag?: string })[]
+  priceLists: (PriceListWorkflow.CreatePriceListWorkflowDTO & {
+    _associationTag?: string
+  })[]
 }>): Promise<Result | void> {
-  // const pricingService: IPricingModuleService =
-  //   container.resolve(ModuleRegistrationName.PRICING)
-
-  // if (!pricingService) {
-  //   const logger = container.resolve("logger")
-  //   logger.warn(
-  //     `Pricing service not found. You should install the @medusajs/pricing package to use pricing. The 'createPriceList' step will be skipped.`
-  //   )
-  //   return void 0
-  // }
-
-  // return await Promise.all(
-  //   data.priceLists.map(async (item) => {
-  //     const [priceList] = await pricingService!.createPriceLists([{
-
-  //     }])
-
-  //     return { tag: item._associationTag ?? priceList.id, priceList }
-  //   })
-  // )
+  const remoteQuery = container.resolve("remoteQuery")
 
   const { priceLists } = data
 
-  priceLists.map((priceListDTO) => {
+  const variantIds = priceLists
+    .map((priceList) => priceList.prices.map((price) => price.variant_id))
+    .flat()
+
+  const variables = {
+    variant_id: variantIds,
+  }
+
+  const query = {
+    product_variant_price_set: {
+      __args: variables,
+      fields: ["variant_id", "price_set_id"],
+    },
+  }
+
+  const variantPriceSets = await remoteQuery(query)
+
+  const variantIdPriceSetIdMap: Map<string, string> = new Map(
+    variantPriceSets.map((variantPriceSet) => [
+      variantPriceSet.variant_id,
+      variantPriceSet.price_set_id,
+    ])
+  )
+
+  const variantsWithoutPriceSets: string[] = []
+
+  for (const variantId of variantIds) {
+    if (!variantIdPriceSetIdMap.has(variantId)) {
+      variantsWithoutPriceSets.push(variantId)
+    }
+  }
+
+  if (variantsWithoutPriceSets.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `No priceSet exist for variants: ${variantsWithoutPriceSets.join(", ")}`
+    )
+  }
+
+  return priceLists.map((priceListDTO) => {
     priceListDTO.title ??= priceListDTO.name
     const {
       _associationTag,
-      customer_groups,
-      rules = [],
+      customer_groups = [],
       type,
       includes_tax,
       name,
-      // prices,
-      ...priceList
+      prices,
+      ...rest
     } = priceListDTO
 
-    return { priceList, prices: [], rules, tag: _associationTag }
+    const priceList = rest as CreatePriceListDTO
+
+    priceList.rules ??= {}
+    priceList.prices =
+      prices?.map((price) => {
+        const price_set_id = variantIdPriceSetIdMap.get(price.variant_id)!
+
+        return {
+          currency_code: price.currency_code,
+          amount: price.amount,
+          min_quantity: price.min_quantity,
+          max_quantity: price.max_quantity,
+          price_set_id,
+        }
+      }) ?? []
+
+    if (customer_groups.length) {
+      priceList.rules["customer_groups"] = customer_groups.map(
+        (group) => group.id
+      )
+    }
+
+    return { priceList, tag: _associationTag }
   })
 }
 
 prepareCreatePriceLists.aliases = {
   payload: "payload",
-}
-
-export interface CreatePriceListWorkflowDTO {
-  name: string
-  title?: string
-  description: string
-  starts_at?: Date
-  ends_at?: Date
-  status?: PriceListStatus
-  number_rules?: number
-  customer_groups: { id: string }[]
-  rules?: CreatePriceListRuleDTO[]
-  type?: string
-  includes_tax?: boolean
-  // prices: PriceListPriceDTO[];
 }

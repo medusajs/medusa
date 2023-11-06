@@ -8,15 +8,19 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { WorkflowArguments } from "../../helper"
 
 type Result = {
-  tag: string
   priceList: PriceListDTO
+}[]
+
+type Input = {
+  tag?: string
+  priceList: CreatePriceListDTO
 }[]
 
 export async function createPriceLists({
   container,
   data,
 }: WorkflowArguments<{
-  priceLists: (CreatePriceListDTO & { _associationTag?: string })[]
+  priceLists: Input
 }>): Promise<Result | void> {
   const pricingService: IPricingModuleService = container.resolve(
     ModuleRegistrationName.PRICING
@@ -32,13 +36,15 @@ export async function createPriceLists({
 
   return await Promise.all(
     data.priceLists.map(async (item) => {
-      const [priceList] = await pricingService!.createPriceLists([])
+      const [priceList] = await pricingService!.createPriceLists([
+        item.priceList,
+      ])
 
-      return { tag: item._associationTag ?? priceList.id, priceList }
+      return { tag: item.tag ?? priceList.id, priceList }
     })
   )
 }
 
 createPriceLists.aliases = {
-  payload: "payload",
+  priceLists: "priceLists",
 }

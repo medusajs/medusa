@@ -32,6 +32,7 @@ export interface PriceListPriceDTO extends CreateMoneyAmountDTO {
 }
 
 export interface CreatePriceListRules extends Record<string, string[]> {}
+
 export interface CreatePriceListDTO {
   title: string
   starts_at?: Date

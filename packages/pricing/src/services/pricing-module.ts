@@ -2,6 +2,7 @@ import {
   AddPricesDTO,
   Context,
   CreateMoneyAmountDTO,
+  CreatePriceListRuleDTO,
   DAL,
   FindConfig,
   InternalModuleDeclaration,

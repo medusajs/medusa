@@ -16,16 +16,11 @@ export enum CreatePriceListActions {
 }
 
 const workflowSteps: TransactionStepsDefinition = {
-  action: CreatePriceListActions.prepare,
   next: {
+    action: CreatePriceListActions.prepare,
+    noCompensation: true,
     next: {
       action: CreatePriceListActions.createPriceList,
-      next: {
-        action: CreatePriceListActions.createPriceRules,
-        next: {
-          action: CreatePriceListActions.createPriceListPrices,
-        },
-      },
     },
   },
 }
@@ -42,17 +37,7 @@ const handlers = new Map([
             from: CreatePriceListActions.prepare,
           },
         },
-        PriceListHandlers.createPriceLists
-      ),
-      compensate: pipe(
-        {
-          merge: true,
-          invoke: {
-            from: CreatePriceListActions.createPriceList,
-            alias: PriceListHandlers.removePriceLists.aliases.priceLists,
-          },
-        },
-        PriceListHandlers.removePriceLists
+        PriceListHandlers.prepareCreatePriceLists
       ),
     },
   ],
@@ -61,10 +46,9 @@ const handlers = new Map([
     {
       invoke: pipe(
         {
-          inputAlias: CreatePriceListActions.prepare,
-          merge: true,
           invoke: {
             from: CreatePriceListActions.prepare,
+            alias: PriceListHandlers.createPriceLists.aliases.priceLists,
           },
         },
         PriceListHandlers.createPriceLists
@@ -86,7 +70,7 @@ const handlers = new Map([
 WorkflowManager.register(Workflows.CreatePriceList, workflowSteps, handlers)
 
 export const createPriceLists = exportWorkflow<
-  WorkflowTypes.PriceListWorkflow.CreatePriceListDTO,
+  WorkflowTypes.PriceListWorkflow.CreatePriceListWorkflowInputDTO,
   { priceList: PricingTypes.CreatePriceListDTO }[]
 >(
   Workflows.CreatePriceList,
