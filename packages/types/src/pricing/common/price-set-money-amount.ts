@@ -37,6 +37,14 @@ export interface CreatePriceSetMoneyAmountDTO {
   money_amount?: MoneyAmountDTO | string
 }
 
+/**
+ * @interface
+ * 
+ * Filters to apply on price set money amounts.
+ * 
+ * @prop id - The IDs to filter the price set money amounts by.
+ * @prop price_set_id - The IDs to filter the price set money amount's associated price set.
+ */
 export interface FilterablePriceSetMoneyAmountProps
   extends BaseFilterable<FilterablePriceSetMoneyAmountProps> {
   id?: string[]

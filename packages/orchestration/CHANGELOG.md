@@ -1,5 +1,14 @@
 # @medusajs/orchestration
 
+## 0.4.3
+
+### Patch Changes
+
+- [#5449](https://github.com/medusajs/medusa/pull/5449) [`5c77029cb`](https://github.com/medusajs/medusa/commit/5c77029cb021690a4f617b83b4999ed55bf9dea1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(orchestration): field alias should represent the isList in the result
+
+- Updated dependencies [[`148f537b4`](https://github.com/medusajs/medusa/commit/148f537b47635e8b73ebaa27bbfbe58624bfe641)]:
+  - @medusajs/types@1.11.5
+
 ## 0.4.2
 
 ### Patch Changes

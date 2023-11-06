@@ -9,57 +9,11 @@ import {
 
 import { isObject } from "@medusajs/utils"
 import resolveCwd from "resolve-cwd"
-import { MODULE_DEFINITIONS, ModulesDefinition } from "../definitions"
-
-/**
- *
- * @param modules
- * @param isolatedModules Will be removed once the isolated flag is being removed
- */
-// TODO: Remove once we have all modules migrated + rename to something like getResolutions
-export const registerModules = (
-  modules?: Record<
-    string,
-    | false
-    | string
-    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-  >,
-  { loadLegacyOnly } = { loadLegacyOnly: false }
-): Record<string, ModuleResolution> => {
-  const moduleResolutions = {} as Record<string, ModuleResolution>
-  const projectModules = modules ?? {}
-
-  for (const definition of MODULE_DEFINITIONS) {
-    // Skip non legacy modules
-    if (loadLegacyOnly && !definition.isLegacy) {
-      continue
-    }
-
-    const customConfig = projectModules[definition.key]
-
-    const canSkip =
-      !customConfig && !definition.isRequired && !definition.defaultPackage
-
-    const isObj = isObject(customConfig)
-    if (isObj && customConfig.scope === MODULE_SCOPE.EXTERNAL) {
-      // TODO: getExternalModuleResolution(...)
-      if (!canSkip) {
-        throw new Error("External Modules are not supported yet.")
-      }
-    }
-
-    moduleResolutions[definition.key] = getInternalModuleResolution(
-      definition,
-      customConfig as InternalModuleDeclaration
-    )
-  }
-
-  return moduleResolutions
-}
+import { ModulesDefinition } from "../definitions"
 
 export const registerMedusaModule = (
   moduleKey: string,
-  moduleDeclaration:
+  moduleDeclaration?:
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
     | string
     | false,
@@ -74,9 +28,17 @@ export const registerMedusaModule = (
     throw new Error(`Module: ${moduleKey} is not defined.`)
   }
 
+  const modDeclaration =
+    moduleDeclaration ??
+    (modDefinition?.defaultModuleDeclaration as InternalModuleDeclaration)
+
+  if (modDeclaration !== false && !modDeclaration) {
+    throw new Error(`Module: ${moduleKey} has no declaration.`)
+  }
+
   if (
-    isObject(moduleDeclaration) &&
-    moduleDeclaration?.scope === MODULE_SCOPE.EXTERNAL
+    isObject(modDeclaration) &&
+    modDeclaration?.scope === MODULE_SCOPE.EXTERNAL
   ) {
     // TODO: getExternalModuleResolution(...)
     throw new Error("External Modules are not supported yet.")

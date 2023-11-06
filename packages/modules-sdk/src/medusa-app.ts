@@ -40,8 +40,8 @@ export type RunMigrationFn = (
 
 export type MedusaModuleConfig = {
   [key: string | Modules]:
+    | boolean
     | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
-    | true
 }
 
 export type SharedResources = {

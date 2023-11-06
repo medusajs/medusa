@@ -46,7 +46,23 @@ Allows retrieval of prices.
     "children": []
   },
   {
+    "name": "getPricingModuleVariantMoneyAmounts",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
     "name": "getProductPricing_",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "getProductVariantPricingModulePricing_",
     "type": "`any`",
     "description": "",
     "optional": false,
@@ -78,6 +94,14 @@ Allows retrieval of prices.
     "children": []
   },
   {
+    "name": "pricingModuleService",
+    "type": "[`IPricingModuleService`](../interfaces/admin_discounts.internal.IPricingModuleService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
     "name": "productVariantService",
     "type": "[`ProductVariantService`](admin_discounts.internal.internal.ProductVariantService.mdx)",
     "description": "",
@@ -88,6 +112,14 @@ Allows retrieval of prices.
   {
     "name": "regionService",
     "type": "[`RegionService`](admin_discounts.internal.internal.RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "remoteQuery",
+    "type": "[`RemoteQueryFunction`](../../admin_discounts/modules/admin_discounts.internal.mdx#remotequeryfunction)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -655,6 +687,118 @@ Gets the prices for a shipping option.
         "optional": false,
         "defaultValue": "",
         "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### setAdminProductPricing
+
+**setAdminProductPricing**(`products`): `Promise`<([`Product`](admin_collections.internal.Product.mdx) \| [`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct))[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "products",
+    "type": "[`Product`](admin_collections.internal.Product.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<([`Product`](admin_collections.internal.Product.mdx) \| [`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct))[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<([`Product`](admin_collections.internal.Product.mdx) \\| [`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct))[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "(Product \\| PricedProduct)[]",
+        "type": "([`Product`](admin_collections.internal.Product.mdx) \\| [`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct))[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "children": [
+          {
+            "name": "Product \\| PricedProduct",
+            "type": "[`Product`](admin_collections.internal.Product.mdx) \\| [`PricedProduct`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedproduct)",
+            "optional": true,
+            "defaultValue": "",
+            "description": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### setAdminVariantPricing
+
+**setAdminVariantPricing**(`variants`, `context?`): `Promise`<[`PricedVariant`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedvariant)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variants",
+    "type": "[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../modules/admin_discounts.internal.internal.mdx#priceselectioncontext)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PricedVariant`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedvariant)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PricedVariant`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedvariant)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": [
+      {
+        "name": "PricedVariant[]",
+        "type": "[`PricedVariant`](../../admin_discounts/modules/admin_discounts.internal.mdx#pricedvariant)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "children": [
+          {
+            "name": "PricedVariant",
+            "type": "[`Partial`](../../admin_discounts/modules/admin_discounts.internal.mdx#partial)<[`ProductVariant`](admin_collections.internal.ProductVariant.mdx)\\> & [`ProductVariantPricing`](../../admin_discounts/modules/admin_discounts.internal.mdx#productvariantpricing)",
+            "description": "#### Schema PricedVariant title: \"Priced Product Variant\" type: object allOf: - $ref: \"#/components/schemas/ProductVariant\" - type: object properties: original_price: type: number description: The original price of the variant without any discounted prices applied. calculated_price: type: number description: The calculated price of the variant. Can be a discounted price. original_price_incl_tax: type: number description: The original price of the variant including taxes. calculated_price_incl_tax: type: number description: The calculated price of the variant including taxes. original_tax: type: number description: The taxes applied on the original price. calculated_tax: type: number description: The taxes applied on the calculated price. tax_rates: type: array description: An array of applied tax rates items: type: object properties: rate: type: number description: The tax rate value name: type: string description: The name of the tax rate code: type: string description: The code of the tax rate",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
       }
     ]
   }
