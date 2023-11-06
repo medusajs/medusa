@@ -159,7 +159,9 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(product))
+    return await this.baseRepository_.serialize(product, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
