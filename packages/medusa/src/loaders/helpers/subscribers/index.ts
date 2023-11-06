@@ -1,10 +1,10 @@
-import { Subscriber } from "@medusajs/types"
+import { MedusaContainer, Subscriber } from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import { readdir } from "fs/promises"
 import { join } from "path"
 
 import { EventBusService } from "../../../services"
-import { MedusaContainer } from "../../../types/global"
+import logger from "../../logger"
 
 type Config = {
   event: string | string[]
@@ -25,6 +25,7 @@ type SubscriberConfig<T> = {
 export class SubscriberRegistrar {
   protected container_: MedusaContainer
   protected pluginOptions_: Record<string, unknown>
+  protected activityId_: string
   protected rootDir_: string
   protected excludes: RegExp[] = [
     /\.DS_Store/,
@@ -38,47 +39,69 @@ export class SubscriberRegistrar {
   constructor(
     rootDir: string,
     container: MedusaContainer,
-    options: Record<string, unknown> = {}
+    options: Record<string, unknown> = {},
+    activityId: string
   ) {
     this.rootDir_ = rootDir
     this.pluginOptions_ = options
     this.container_ = container
+    this.activityId_ = activityId
   }
 
-  private async validateSubscriber() {
-    return null
+  private validateSubscriber(
+    subscriber: any
+  ): subscriber is { default: Handler<unknown>; config: Config } {
+    const handler = subscriber.default
+
+    if (!handler || typeof handler !== "function") {
+      /**
+       * If the handler is not a function, we can't use it
+       */
+      return false
+    }
+
+    const config = subscriber.config
+
+    if (!config) {
+      /**
+       * If the subscriber is missing a config, we can't use it
+       */
+      logger.warn(`The subscriber is missing a config. Skipping registration.`)
+      return false
+    }
+
+    if (!config.event) {
+      /**
+       * If the subscriber is missing an event, we can't use it
+       */
+      return false
+    }
+
+    if (
+      typeof config.event !== "string" &&
+      !Array.isArray(config.event) &&
+      !config.event.every((e: unknown) => typeof e === "string")
+    ) {
+      /**
+       * If the subscribers event is not a string or an array of strings, we can't use it
+       */
+      return false
+    }
+
+    return true
   }
 
   private async createDescriptor(absolutePath: string, entry: string) {
     return await import(absolutePath).then((module_) => {
-      // Check if module has a default export of type function
-      const handler = module_.default
+      const isValid = this.validateSubscriber(module_)
 
-      if (typeof handler !== "function") {
-        throw new Error(
-          `Subscriber ${absolutePath} does not have a default export of type function`
-        )
-      }
-
-      // check if the handler accepts more than 3 arguments
-      if (handler.length > 3) {
-        throw new Error(
-          `Subscriber ${absolutePath} has a default export that accepts more than 3 arguments`
-        )
-      }
-
-      // Check if module has a named export called config
-      const config = module_.config
-
-      if (!config) {
-        throw new Error(
-          `Subscriber ${absolutePath} is missing a named export called config`
-        )
+      if (!isValid) {
+        return
       }
 
       this.subscriberDescriptors_.set(absolutePath, {
-        config,
-        handler,
+        config: module_.config,
+        handler: module_.default,
       })
     })
   }
@@ -106,7 +129,6 @@ export class SubscriberRegistrar {
 
             return this.createDescriptor(fullPath, entry.name)
           })
-          .flat(Infinity)
       })
     )
   }

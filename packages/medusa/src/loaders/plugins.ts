@@ -94,7 +94,7 @@ export default async ({
         activityId
       )
       registerCoreRouters(pluginDetails, container)
-      await registerSubscribers(pluginDetails, container)
+      await registerSubscribers(pluginDetails, container, activityId)
     })
   )
 
@@ -539,11 +539,13 @@ export async function registerServices(
  */
 async function registerSubscribers(
   pluginDetails: PluginDetails,
-  container: MedusaContainer
+  container: MedusaContainer,
+  activityId: string
 ): Promise<void> {
   await new SubscriberRegistrar(
     path.join(pluginDetails.resolve, "subscribers"),
-    container
+    container,
+    activityId
   ).register()
 
   // const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
