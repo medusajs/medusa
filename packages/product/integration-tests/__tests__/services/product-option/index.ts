@@ -121,7 +121,9 @@ describe("ProductOption Service", () => {
     })
 
     it("should return product option and count when filtered", async () => {
-      const [optionResults, count] = await service.listAndCount({ id: "option-2" })
+      const [optionResults, count] = await service.listAndCount({
+        id: "option-2",
+      })
 
       expect(count).toEqual(1)
       expect(optionResults).toEqual([
@@ -132,7 +134,10 @@ describe("ProductOption Service", () => {
     })
 
     it("should return product option and count when using skip and take", async () => {
-      const [optionResults, count] = await service.listAndCount({}, { skip: 1, take: 1 })
+      const [optionResults, count] = await service.listAndCount(
+        {},
+        { skip: 1, take: 1 }
+      )
 
       expect(count).toEqual(2)
       expect(optionResults).toEqual([
@@ -143,10 +148,13 @@ describe("ProductOption Service", () => {
     })
 
     it("should return requested fields", async () => {
-      const [optionResults, count] = await service.listAndCount({}, {
-        take: 1,
-        select: ["title"],
-      })
+      const [optionResults, count] = await service.listAndCount(
+        {},
+        {
+          take: 1,
+          select: ["title"],
+        }
+      )
 
       const serialized = JSON.parse(JSON.stringify(optionResults))
 
@@ -164,13 +172,11 @@ describe("ProductOption Service", () => {
     const optionValue = "Option 1"
 
     it("should return option for the given id", async () => {
-      const option = await service.retrieve(
-        optionId,
-      )
+      const option = await service.retrieve(optionId)
 
       expect(option).toEqual(
         expect.objectContaining({
-          id: optionId
+          id: optionId,
         })
       )
     })
@@ -184,7 +190,9 @@ describe("ProductOption Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('ProductOption with id: does-not-exist was not found')
+      expect(error.message).toEqual(
+        "ProductOption with id: does-not-exist was not found"
+      )
     })
 
     it("should throw an error when an id is not provided", async () => {
@@ -200,21 +208,16 @@ describe("ProductOption Service", () => {
     })
 
     it("should return option based on config select param", async () => {
-      const option = await service.retrieve(
-        optionId,
-        {
-          select: ["id", "title"],
-        }
-      )
+      const option = await service.retrieve(optionId, {
+        select: ["id", "title"],
+      })
 
       const serialized = JSON.parse(JSON.stringify(option))
 
-      expect(serialized).toEqual(
-        {
-          id: optionId,
-          title: optionValue,
-        }
-      )
+      expect(serialized).toEqual({
+        id: optionId,
+        title: optionValue,
+      })
     })
   })
 
@@ -222,13 +225,10 @@ describe("ProductOption Service", () => {
     const optionId = "option-1"
 
     it("should delete the product option given an ID successfully", async () => {
-
-      await service.delete(
-        [optionId],
-      )
+      await service.delete([optionId])
 
       const options = await service.list({
-        id: optionId
+        id: optionId,
       })
 
       expect(options).toHaveLength(0)
@@ -239,12 +239,12 @@ describe("ProductOption Service", () => {
     const optionId = "option-1"
 
     it("should update the title of the option successfully", async () => {
-      await service.update(
-        [{
+      await service.update([
+        {
           id: optionId,
           title: "UK",
-        }]
-      )
+        },
+      ])
 
       const productOption = await service.retrieve(optionId)
 
@@ -252,23 +252,23 @@ describe("ProductOption Service", () => {
     })
 
     it("should update the relationship of the option successfully", async () => {
-      await service.update(
-        [{
+      await service.update([
+        {
           id: optionId,
           product_id: productTwo.id,
-        }]
-      )
+        },
+      ])
 
       const productOption = await service.retrieve(optionId, {
-        relations: ["product"]
+        relations: ["product"],
       })
 
       expect(productOption).toEqual(
         expect.objectContaining({
           id: optionId,
           product: expect.objectContaining({
-            id: productTwo.id
-          })
+            id: productTwo.id,
+          }),
         })
       )
     })
@@ -278,42 +278,97 @@ describe("ProductOption Service", () => {
 
       try {
         await service.update([
-        {
-          id: "does-not-exist",
-          title: "UK",
-        }
-      ])
+          {
+            id: "does-not-exist",
+            title: "UK",
+          },
+        ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('ProductOption with id "does-not-exist" not found')
+      expect(error.message).toEqual(
+        'ProductOption with id "does-not-exist" not found'
+      )
     })
   })
 
   describe("create", () => {
     it("should create a option successfully", async () => {
-      await service.create(
-        [{
+      await service.create([
+        {
           title: "UK",
-          product: productOne
-        }]
+          product: productOne,
+        },
+      ])
+
+      const [productOption] = await service.list(
+        {
+          title: "UK",
+        },
+        {
+          relations: ["product"],
+        }
       )
-
-      const [productOption] = await service.list({
-        title: "UK"
-      }, {
-        relations: ["product"],
-      })
-
 
       expect(productOption).toEqual(
         expect.objectContaining({
           title: "UK",
           product: expect.objectContaining({
-            id: productOne.id
-          })
+            id: productOne.id,
+          }),
         })
+      )
+    })
+  })
+
+  describe("upsert", function () {
+    it("should create an option and update another option successfully", async () => {
+      const productOption = (
+        await service.create([
+          {
+            title: "UK",
+            product: productOne,
+          },
+        ])
+      )[0]
+
+      const optionToUpdate = {
+        id: productOption.id,
+        title: "US",
+      }
+
+      const newOption = {
+        title: "US2",
+        product_id: productOne.id,
+      }
+
+      await service.upsert([optionToUpdate, newOption])
+
+      const productOptions = await service.list(
+        {
+          title: "US%",
+        },
+        {
+          relations: ["product"],
+        }
+      )
+
+      expect(JSON.parse(JSON.stringify(productOptions))).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "US",
+            product: expect.objectContaining({
+              id: productOne.id,
+            }),
+          }),
+          expect.objectContaining({
+            title: newOption.title,
+            product: expect.objectContaining({
+              id: productOne.id,
+            }),
+          }),
+        ])
       )
     })
   })

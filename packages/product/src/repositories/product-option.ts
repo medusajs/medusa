@@ -1,9 +1,9 @@
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product, ProductOption } from "@models"
@@ -148,5 +148,63 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
     manager.persist(productOptions)
 
     return productOptions
+  }
+
+  async upsert(
+    data:
+      | ProductTypes.CreateProductOptionDTO[]
+      | ProductTypes.UpdateProductOptionDTO[],
+    context: Context = {}
+  ): Promise<ProductOption[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    const optionIds = data.map((optionData) => optionData.id).filter((o) => o)
+
+    let existingOptions
+    let existingOptionsMap = new Map()
+
+    if (optionIds.length) {
+      existingOptions = await this.find(
+        {
+          where: {
+            id: {
+              $in: optionIds,
+            },
+          },
+        },
+        context
+      )
+
+      existingOptionsMap = new Map(
+        existingOptions.map((option) => [option.id, option])
+      )
+    }
+
+    const upsertedOptions: ProductOption[] = []
+    const optionsToCreate: ProductOption[] = []
+    const optionsToUpdate: ProductOption[] = []
+
+    data.forEach((option) => {
+      const existingOption = existingOptionsMap.get(option.id)
+      if (existingOption) {
+        const updatedOption = manager.assign(existingOption, option)
+        optionsToUpdate.push(updatedOption)
+      } else {
+        const newOption = manager.create(ProductOption, option)
+        optionsToCreate.push(newOption)
+      }
+    })
+
+    if (optionsToCreate.length) {
+      manager.persist(optionsToCreate)
+      upsertedOptions.push(...optionsToCreate)
+    }
+
+    if (optionsToUpdate.length) {
+      manager.persist(optionsToUpdate)
+      upsertedOptions.push(...optionsToUpdate)
+    }
+
+    return upsertedOptions
   }
 }
