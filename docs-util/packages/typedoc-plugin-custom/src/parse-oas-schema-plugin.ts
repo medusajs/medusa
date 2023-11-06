@@ -45,48 +45,50 @@ export function load(app: Application) {
     if (symbol.valueDeclaration) {
       const sourceFile = symbol.valueDeclaration?.getSourceFile()
       // find block comments
-      const blockCommentMatch = /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm.exec(
-        sourceFile.text
+      const blockCommentMatch = sourceFile.text.matchAll(
+        /\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm
       )
-      blockCommentMatch?.forEach((matched) => {
-        if (!matched) {
-          return
-        }
-        const schemaStartIndex = matched.indexOf("@schema")
-        if (schemaStartIndex === -1) {
-          return
-        }
-        // find end index
-        let schemaEndIndex = matched.indexOf(" * @", schemaStartIndex)
+      for (const blockMatch of blockCommentMatch) {
+        blockMatch.forEach((matched) => {
+          if (!matched) {
+            return
+          }
+          const schemaStartIndex = matched.indexOf("@schema")
+          if (schemaStartIndex === -1) {
+            return
+          }
+          // find end index
+          let schemaEndIndex = matched.indexOf(" * @", schemaStartIndex)
 
-        if (schemaEndIndex === -1) {
-          schemaEndIndex = matched.length
-        }
+          if (schemaEndIndex === -1) {
+            schemaEndIndex = matched.length
+          }
 
-        const schemaText = matched
-          .substring(schemaStartIndex, schemaEndIndex)
-          .replaceAll(" */", "")
-          .replaceAll("*/", "")
-          .replaceAll(" * ", "")
-        const { name: schemaName = "" } =
-          /@schema (?<name>\w+)/.exec(schemaText)?.groups || {}
+          const schemaText = matched
+            .substring(schemaStartIndex, schemaEndIndex)
+            .replaceAll(" */", "")
+            .replaceAll("*/", "")
+            .replaceAll(" * ", "")
+          const { name: schemaName = "" } =
+            /@schema (?<name>\w+)/.exec(schemaText)?.groups || {}
 
-        if (!schemaName || definedSchemas.has(schemaName)) {
-          return
-        }
+          if (!schemaName || definedSchemas.has(schemaName)) {
+            return
+          }
 
-        // attempt to parse schema and save it
-        try {
-          const parsedSchema = parse(
-            schemaText.replace("@schema", "schema:")
-          ) as Schema
+          // attempt to parse schema and save it
+          try {
+            const parsedSchema = parse(
+              schemaText.replace("@schema", "schema:")
+            ) as Schema
 
-          definedSchemas.set(schemaName, parsedSchema)
-        } catch (e) {
-          // ignore errors as the schema may be malformed.
-          console.error(`Error parsing schema ${schemaName}: ${e}`)
-        }
-      })
+            definedSchemas.set(schemaName, parsedSchema)
+          } catch (e) {
+            // ignore errors as the schema may be malformed.
+            console.error(`Error parsing schema ${schemaName}: ${e}`)
+          }
+        })
+      }
     }
 
     return origConvertSymbol(context, symbol, exportSymbol)
@@ -99,6 +101,20 @@ export function load(app: Application) {
       let schema: Schema | undefined
       let { comment } = reflection
       const schemaTags = comment?.getTags(`@schema`)
+      if (
+        reflection.name === "publishable_api_key" &&
+        "type" in reflection &&
+        reflection.type
+      ) {
+        const reflectionType = reflection.type as SomeType
+
+        if ("name" in reflectionType) {
+          console.log(
+            reflectionType.name,
+            definedSchemas.has(reflectionType.name)
+          )
+        }
+      }
       if (schemaTags?.length) {
         schemaTags.forEach((part) => {
           if (part.content.length) {
@@ -107,9 +123,21 @@ export function load(app: Application) {
           }
         })
         reflection.comment?.removeTags("@schema")
-      } else if (!comment && definedSchemas.has(reflection.name)) {
-        schema = definedSchemas.get(reflection.name)
-        comment = new Comment()
+      } else if (!comment) {
+        if (definedSchemas.has(reflection.name)) {
+          schema = definedSchemas.get(reflection.name)
+          comment = new Comment()
+        } else if ("type" in reflection && reflection.type) {
+          const reflectionType = reflection.type as SomeType
+
+          if (
+            "name" in reflectionType &&
+            definedSchemas.has(reflectionType.name)
+          ) {
+            schema = definedSchemas.get(reflectionType.name)
+            comment = new Comment()
+          }
+        }
       }
 
       if (schema) {
