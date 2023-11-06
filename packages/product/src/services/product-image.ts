@@ -1,7 +1,6 @@
 import { Image } from "@models"
 import { Context, DAL } from "@medusajs/types"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
-import { doNotForceTransaction } from "../utils"
 import { ProductImageRepository } from "@repositories"
 
 type InjectedDependencies = {
@@ -15,7 +14,7 @@ export default class ProductImageService<TEntity extends Image = Image> {
     this.productImageRepository_ = productImageRepository
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "productImageRepository_")
+  @InjectTransactionManager("productImageRepository_")
   async upsert(
     urls: string[],
     @MedusaContext() sharedContext: Context = {}
