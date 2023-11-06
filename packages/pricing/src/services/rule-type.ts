@@ -8,8 +8,6 @@ import {
 } from "@medusajs/utils"
 import { RuleType } from "@models"
 
-import { doNotForceTransaction, shouldForceTransaction } from "@medusajs/utils"
-
 type InjectedDependencies = {
   ruleTypeRepository: DAL.RepositoryService
 }
@@ -65,7 +63,7 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "ruleTypeRepository_")
+  @InjectTransactionManager("ruleTypeRepository_")
   async create(
     data: PricingTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -76,7 +74,7 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "ruleTypeRepository_")
+  @InjectTransactionManager("ruleTypeRepository_")
   async update(
     data: PricingTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -87,7 +85,7 @@ export default class RuleTypeService<TEntity extends RuleType = RuleType> {
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "ruleTypeRepository_")
+  @InjectTransactionManager("ruleTypeRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
