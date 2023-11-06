@@ -337,7 +337,7 @@ export default class PaymentCollectionService extends TransactionBaseService {
           const paymentProviderTx =
             this.paymentProviderService_.withTransaction(manager)
 
-          promiseAll(
+          await promiseAll(
             removeSessions.map(async (sess) =>
               paymentProviderTx.deleteSession(sess)
             )
