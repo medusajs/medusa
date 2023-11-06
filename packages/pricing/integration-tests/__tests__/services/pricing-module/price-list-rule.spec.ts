@@ -186,13 +186,17 @@ describe("PriceListRule Service", () => {
       await service.updatePriceListRules([
         {
           id,
-          value: "test",
+          price_list_id: "price-list-2",
+          rule_type_id: "rule-type-2",
         },
       ])
 
-      const priceList = await service.retrievePriceListRule(id)
+      const priceList = await service.retrievePriceListRule(id, {
+        relations: ["price_list", "rule_type"],
+      })
 
-      expect(priceList.value).toEqual("test")
+      expect(priceList.price_list.id).toEqual("price-list-2")
+      expect(priceList.rule_type.id).toEqual("rule-type-2")
     })
 
     it("should throw an error when a id does not exist", async () => {
@@ -202,7 +206,6 @@ describe("PriceListRule Service", () => {
         await service.updatePriceListRules([
           {
             id: "does-not-exist",
-            value: "test",
           },
         ])
       } catch (e) {
@@ -216,22 +219,25 @@ describe("PriceListRule Service", () => {
   })
 
   describe("create", () => {
-    it("should create a priceList successfully", async () => {
-      await service.createPriceListRules([
+    it("should create a priceListRule successfully", async () => {
+      const [created] = await service.createPriceListRules([
         {
-          id: "price-list-rule-3",
-          value: "USD",
-          price_list: "price-list-1",
-          rule_type: "rule-type-1",
+          price_list_id: "price-list-1",
+          rule_type_id: "rule-type-1",
         },
       ])
 
-      const [priceList] = await service.listPriceListRules({
-        id: ["price-list-rule-3"],
-      })
+      const [priceListRule] = await service.listPriceListRules(
+        {
+          id: [created.id],
+        },
+        {
+          relations: ["price_list", "rule_type"],
+        }
+      )
 
-      expect(priceList.value).toEqual("USD")
-      expect(priceList.id).toEqual("price-list-rule-3")
+      expect(priceListRule.price_list.id).toEqual("price-list-1")
+      expect(priceListRule.rule_type.id).toEqual("rule-type-1")
     })
   })
 
@@ -257,25 +263,39 @@ describe("PriceListRule Service", () => {
           id: ["price-list-1"],
         },
         {
-          relations: ["rules"],
+          relations: [
+            "price_list_rules",
+            "price_list_rules.price_list_rule_values",
+          ],
         }
       )
 
-      expect(priceList.rules).toEqual(
+      expect(priceList.price_list_rules).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ rule_type: "rule-type-3" }),
+          expect.objectContaining({
+            rule_type: "rule-type-3",
+            price_list_rule_values: [
+              expect.objectContaining({ value: "sc-1" }),
+            ],
+          }),
         ])
       )
     })
-  })
- 
-  describe("removePriceListRules", () => {
-    it("should remove a priceListRule from a priceList", async () => {
-      await service.removePriceListRules({
+
+    it("should multiple priceListRules to a priceList", async () => {
+      await createRuleTypes(testManager, [
+        {
+          id: "rule-type-3",
+          name: "test",
+          rule_attribute: "sales_channel",
+        },
+      ])
+
+      await service.setPriceListRules({
         priceListId: "price-list-1",
-        rules: [
-          "currency_code"
-        ]
+        rules: {
+          sales_channel: ["sc-1", "sc-2"],
+        },
       })
 
       const [priceList] = await service.listPriceLists(
@@ -283,15 +303,46 @@ describe("PriceListRule Service", () => {
           id: ["price-list-1"],
         },
         {
-          relations: ["rules"],
+          relations: [
+            "price_list_rules",
+            "price_list_rules.price_list_rule_values",
+          ],
         }
       )
 
-      expect(priceList.rules).toEqual(
-        [
-          expect.objectContaining({ rule_type: "rule-type-1" }),
-        ]
+      expect(priceList.price_list_rules).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            rule_type: "rule-type-3",
+            price_list_rule_values: expect.arrayContaining([
+              expect.objectContaining({ value: "sc-1" }),
+              expect.objectContaining({ value: "sc-2" }),
+            ]),
+          }),
+        ])
       )
+    })
+  })
+
+  describe("removePriceListRules", () => {
+    it("should remove a priceListRule from a priceList", async () => {
+      await service.removePriceListRules({
+        priceListId: "price-list-1",
+        rules: ["currency_code"],
+      })
+
+      const [priceList] = await service.listPriceLists(
+        {
+          id: ["price-list-1"],
+        },
+        {
+          relations: ["price_list_rules"],
+        }
+      )
+
+      expect(priceList.price_list_rules).toEqual([
+        expect.objectContaining({ rule_type: "rule-type-1" }),
+      ])
     })
   })
 })

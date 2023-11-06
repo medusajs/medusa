@@ -88,7 +88,8 @@ export default class PriceSetMoneyAmountService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (
-      this.priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
+      this
+        .priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
     ).create(data, sharedContext)) as TEntity[]
   }
 
@@ -101,7 +102,8 @@ export default class PriceSetMoneyAmountService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (
-      this.priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
+      this
+        .priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
     ).update(data, sharedContext)) as TEntity[]
   }
 

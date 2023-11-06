@@ -1,9 +1,11 @@
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
-
-import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createPriceLists } from "../../../__fixtures__/price-list"
+import { IPricingModuleService } from "@medusajs/types"
 import { initialize } from "../../../../src"
+
+import { createCurrencies } from "../../../__fixtures__/currency"
+import { createPriceLists } from "../../../__fixtures__/price-list"
+import { createPriceSets } from "../../../__fixtures__/price-set"
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -23,6 +25,8 @@ describe("PriceList Service", () => {
     })
 
     testManager = await MikroOrmWrapper.forkManager()
+    await createCurrencies(testManager)
+    await createPriceSets(testManager)
     await createPriceLists(testManager)
   })
 
@@ -181,7 +185,8 @@ describe("PriceList Service", () => {
       await service.updatePriceLists([
         {
           id,
-          starts_at: updateDate
+          starts_at: updateDate,
+          rules: [],
         },
       ])
 
@@ -197,7 +202,8 @@ describe("PriceList Service", () => {
         await service.updatePriceLists([
           {
             id: "does-not-exist",
-            starts_at: new Date(),
+            number_rules: 2,
+            rules: [],
           },
         ])
       } catch (e) {
@@ -212,19 +218,102 @@ describe("PriceList Service", () => {
 
   describe("create", () => {
     it("should create a priceList successfully", async () => {
-      await service.createPriceLists([
+      const [created] = await service.createPriceLists([
         {
-          id: "price-list-3",
-          number_rules: 4,
+          title: "test",
+          starts_at: "10/01/2023" as unknown as Date,
+          ends_at: "10/30/2023" as unknown as Date,
+          rules: {
+            customer_group_id: [
+              "vip-customer-group-id",
+              "another-vip-customer-group-id",
+            ],
+            region_id: ["DE", "DK"],
+          },
+          prices: [
+            {
+              amount: 400,
+              currency_code: "EUR",
+              price_set_id: "price-set-1",
+            },
+          ],
         },
       ])
 
-      const [priceList] = await service.listPriceLists({
-        id: ["price-list-3"],
-      })
+      const [priceList] = await service.listPriceLists(
+        {
+          id: [created.id],
+        },
+        {
+          relations: [
+            "price_set_money_amounts.money_amount",
+            "price_set_money_amounts.price_set",
+            "price_list_rules.price_list_rule_values",
+            "price_list_rules.rule_type",
+          ],
+          select: [
+            "id",
+            "price_set_money_amounts.money_amount.amount",
+            "price_set_money_amounts.money_amount.currency_code",
+            "price_set_money_amounts.money_amount.price_list_id",
+            "price_list_rules.price_list_rule_values.value",
+            "price_list_rules.rule_type.rule_attribute",
+          ],
+        }
+      )
 
-      expect(priceList.number_rules).toEqual(4)
-      expect(priceList.id).toEqual("price-list-3")
+      expect(priceList).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          price_set_money_amounts: expect.arrayContaining([
+            expect.objectContaining({
+              price_list: expect.objectContaining({
+                id: expect.any(String),
+              }),
+              money_amount: expect.objectContaining({
+                amount: "400",
+                currency_code: "EUR",
+              }),
+            }),
+          ]),
+          price_list_rules: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              rule_type: expect.objectContaining({
+                id: expect.any(String),
+                rule_attribute: "customer_group_id",
+              }),
+              price_list_rule_values: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "vip-customer-group-id",
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "another-vip-customer-group-id",
+                }),
+              ]),
+            }),
+            expect.objectContaining({
+              id: expect.any(String),
+              rule_type: expect.objectContaining({
+                id: expect.any(String),
+                rule_attribute: "region_id",
+              }),
+              price_list_rule_values: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "DE",
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: "DK",
+                }),
+              ]),
+            }),
+          ]),
+        })
+      )
     })
   })
 
