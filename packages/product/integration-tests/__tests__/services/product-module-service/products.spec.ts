@@ -228,6 +228,7 @@ describe("ProductModuleService products", function () {
               values: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
+                  value: "New option value",
                 }),
               ]),
             }),
