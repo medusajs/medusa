@@ -542,23 +542,34 @@ async function registerSubscribers(
   container: MedusaContainer,
   activityId: string
 ): Promise<void> {
-  await new SubscriberRegistrar(
+  const exclude: string[] = []
+
+  const loadedFiles = await new SubscriberRegistrar(
     path.join(pluginDetails.resolve, "subscribers"),
     container,
     pluginDetails.options,
     activityId
   ).register()
 
-  // const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
-  // files.forEach((fn) => {
-  //   const loaded = require(fn).default
+  /**
+   * Exclude any files that have already been loaded by the registrar
+   */
+  exclude.push(...(loadedFiles ?? []))
 
-  //   container.build(
-  //     asFunction(
-  //       (cradle) => new loaded(cradle, pluginDetails.options)
-  //     ).singleton()
-  //   )
-  // })
+  console.log("exclude", exclude, "loadedFiles", loadedFiles, "loadedFiles")
+
+  const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
+  files
+    .filter((file) => !exclude.includes(file))
+    .forEach((fn) => {
+      const loaded = require(fn).default
+
+      container.build(
+        asFunction(
+          (cradle) => new loaded(cradle, pluginDetails.options)
+        ).singleton()
+      )
+    })
 }
 
 /**

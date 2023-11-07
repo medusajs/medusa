@@ -1,25 +1,15 @@
 import { MedusaContainer, Subscriber } from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import { readdir } from "fs/promises"
-import { join } from "path"
+import { extname, join, sep } from "path"
 
 import { EventBusService } from "../../../services"
+import { SubscriberConfig, SubscriberHandler } from "../../../types/subscribers"
 import logger from "../../logger"
 
-type Config = {
-  event: string | string[]
-  subscriberId?: string
-}
-
-type Handler<T> = (
-  data: T,
-  eventName: string,
-  container: MedusaContainer
-) => Promise<void>
-
-type SubscriberConfig<T> = {
-  config: Config
-  handler: Handler<T>
+type SubscriberModule<T> = {
+  config: SubscriberConfig
+  handler: SubscriberHandler<T>
 }
 
 export class SubscriberRegistrar {
@@ -33,7 +23,7 @@ export class SubscriberRegistrar {
     /^_[^/\\]*(\.[^/\\]+)?$/,
   ]
 
-  protected subscriberDescriptors_: Map<string, SubscriberConfig<any>> =
+  protected subscriberDescriptors_: Map<string, SubscriberModule<any>> =
     new Map()
 
   constructor(
@@ -48,9 +38,10 @@ export class SubscriberRegistrar {
     this.activityId_ = activityId
   }
 
-  private validateSubscriber(
-    subscriber: any
-  ): subscriber is { default: Handler<unknown>; config: Config } {
+  private validateSubscriber(subscriber: any): subscriber is {
+    default: SubscriberHandler<unknown>
+    config: SubscriberConfig
+  } {
     const handler = subscriber.default
 
     if (!handler || typeof handler !== "function") {
@@ -72,8 +63,19 @@ export class SubscriberRegistrar {
 
     if (!config.event) {
       /**
-       * If the subscriber is missing an event, we can't use it
+       * If the subscriber is missing an event, we can't use it.
+       * In production we throw an error, else we log a warning
        */
+      if (process.env.NODE_ENV === "production") {
+        throw new Error(
+          "The subscriber is missing an event. Skipping registration."
+        )
+      } else {
+        logger.warn(
+          `The subscriber is missing an event. Skipping registration.`
+        )
+      }
+
       return false
     }
 
@@ -135,16 +137,16 @@ export class SubscriberRegistrar {
 
   private inferIdentifier<T>(
     fileName: string,
-    config: Config,
-    handler: Handler<T>
+    config: SubscriberConfig,
+    handler: SubscriberHandler<T>
   ) {
-    const { subscriberId } = config
+    const { context } = config
 
     /**
      * If subscriberId is provided, use that
      */
-    if (subscriberId) {
-      return subscriberId
+    if (context?.subscriberId) {
+      return context.subscriberId
     }
 
     const handlerName = handler.name
@@ -159,17 +161,19 @@ export class SubscriberRegistrar {
     /**
      * If the handler is anonymous, use the file name
      */
+    fileName = fileName.replace(extname(fileName), "").replace(sep, "-")
+
     return kebabCase(fileName)
   }
 
-  private async createSubscriber<T>({
+  private createSubscriber<T>({
     fileName,
     config,
     handler,
   }: {
     fileName: string
-    config: Config
-    handler: Handler<T>
+    config: SubscriberConfig
+    handler: SubscriberHandler<T>
   }) {
     const eventBusService: EventBusService =
       this.container_.resolve("eventBusService")
@@ -179,7 +183,7 @@ export class SubscriberRegistrar {
     const events = Array.isArray(event) ? event : [event]
 
     const subscriber: Subscriber<T> = async (data: T, eventName: string) => {
-      return handler(data, eventName, this.container_)
+      return handler(data, eventName, this.container_, this.pluginOptions_)
     }
 
     const subscriberId = this.inferIdentifier(fileName, config, handler)
@@ -210,11 +214,17 @@ export class SubscriberRegistrar {
     const map = this.subscriberDescriptors_
 
     for (const [fileName, { config, handler }] of map.entries()) {
-      await this.createSubscriber({
+      this.createSubscriber({
         fileName,
         config,
         handler,
       })
     }
+
+    /**
+     * Return the file paths of the registered subscribers, to prevent the
+     * backwards compatible loader from trying to register them.
+     */
+    return [...map.keys()]
   }
 }
