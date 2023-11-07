@@ -1,6 +1,8 @@
 import {
   IPricingModuleService,
   IProductModuleService,
+  MoneyAmountDTO,
+  PriceListDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
@@ -10,6 +12,19 @@ import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/i
 import PriceListService from "../../../../services/price-list"
 import { defaultAdminProductRemoteQueryObject } from "../products"
 
+type PriceListPriceCoreDTO = MoneyAmountDTO & {
+  region_id?: string | null
+  variant_id?: string | null
+  variant?: ProductVariantDTO | null
+  variants?: ProductVariantDTO[]
+  price_list_id?: string | null
+}
+
+type PriceListCoreDTO = PriceListDTO & {
+  name?: string
+  prices?: PriceListPriceCoreDTO[]
+  customer_groups?: any[]
+}
 /**
  * @oas [get] /admin/price-lists/{id}
  * operationId: "GetPriceListsPriceList"
@@ -72,7 +87,8 @@ export default async (req, res) => {
   let priceList
 
   if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
-    priceList = await retrievePriceListPricingModule(id, req)
+    const [priceLists, _] = await listAndCountPriceListPricingModule({ req })
+    priceList = priceLists[0]
   } else {
     priceList = await priceListService.retrieve(id, {
       select: defaultAdminPriceListFields as (keyof PriceList)[],
@@ -83,8 +99,12 @@ export default async (req, res) => {
   res.status(200).json({ price_list: priceList })
 }
 
-async function retrievePriceListPricingModule(id, req) {
-  let priceList
+export async function listAndCountPriceListPricingModule({
+  req,
+  list = false,
+}) {
+  const { id } = req.params
+
   const remoteQuery = req.scope.resolve("remoteQuery")
   const pricingModuleService: IPricingModuleService = req.scope.resolve(
     "pricingModuleService"
@@ -93,13 +113,17 @@ async function retrievePriceListPricingModule(id, req) {
     "productModuleService"
   )
 
-  priceList = await pricingModuleService.retrievePriceList(id, {
-    select: defaultAdminPriceListSelectsPricingModule,
-    relations: defaultAdminPriceListRelationsPricingModule,
-  })
+  const filter = id ? { id } : {}
 
-  const priceSetMoneyAmounts = priceList.price_set_money_amounts
-  const priceSetIds = priceSetMoneyAmounts.map((psma) => psma.price_set.id)
+  const [priceLists, count]: [PriceListCoreDTO[], number] =
+    await pricingModuleService.listAndCountPriceLists(filter, {
+      select: defaultAdminPriceListSelectsPricingModule,
+      relations: defaultAdminPriceListRelationsPricingModule,
+    })
+
+  const priceSetIds = priceLists
+    .map((pl) => pl.price_set_money_amounts?.map((psma) => psma?.price_set?.id))
+    .flat()
 
   const query = {
     product_variant_price_set: {
@@ -135,46 +159,49 @@ async function retrievePriceListPricingModule(id, req) {
     }
   }
 
-  delete priceList.price_set_money_amounts
+  for (const priceList of priceLists) {
+    const priceSetMoneyAmounts = priceList.price_set_money_amounts || []
+    delete priceList.price_set_money_amounts
 
-  const priceListPrices: any = []
+    const priceListPrices: PriceListPriceCoreDTO[] = []
 
-  for (const priceSetMoneyAmount of priceSetMoneyAmounts) {
-    const priceSetId = priceSetMoneyAmount.price_set.id
-    const productVariant = variantIdToPriceSetIdMap.get(priceSetId)
+    for (const priceSetMoneyAmount of priceSetMoneyAmounts) {
+      const priceSetId = priceSetMoneyAmount?.price_set?.id
+      const productVariant = variantIdToPriceSetIdMap.get(priceSetId as string)
 
-    const price = {
-      ...priceSetMoneyAmount.money_amount,
-      price_list_id: priceList.id,
+      const price: PriceListPriceCoreDTO = {
+        ...(priceSetMoneyAmount.money_amount as MoneyAmountDTO),
+        price_list_id: priceList.id,
+      }
+
+      // TODO: do something about region id
+      price.region_id = null
+
+      if (productVariant) {
+        // TODO: We have these 3 versions of variants in the response
+        // Remove 2 of them if its not needed
+        price.variant_id = productVariant.id
+        price.variant = productVariant
+        price.variants = [productVariant]
+      } else {
+        price.variant_id = null
+        price.variant = null
+        price.variants = []
+      }
+
+      priceListPrices.push(price)
     }
 
-    // TODO: do something about region id
-    price.region_id = null
+    priceList.prices = priceListPrices
+    priceList.name = priceList.title
 
-    if (productVariant) {
-      // TODO: We have these 3 versions of variants in the response
-      // Remove 2 of them if its not needed
-      price.variant_id = productVariant.id
-      price.variant = productVariant
-      price.variants = [productVariant]
-    } else {
-      price.variant_id = null
-      price.variant = null
-      price.variants = []
-    }
+    // TODO: do something about customer groups
+    priceList.customer_groups = []
 
-    priceListPrices.push(price)
+    delete priceList.title
   }
 
-  priceList.prices = priceListPrices
-  priceList.name = priceList.title
-
-  // TODO: do something about customer groups
-  priceList.customer_groups = []
-
-  delete priceList.title
-
-  return priceList
+  return [priceLists, count]
 }
 
 const defaultAdminPriceListRelationsPricingModule = [

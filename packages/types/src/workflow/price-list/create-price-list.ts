@@ -28,7 +28,7 @@ export interface CreatePriceListRuleDTO {
 export interface CreatePriceListPriceDTO {
   amount: number
   currency_code: string
-  price_set_id: string
+  price_set_id: string | null
   region_id?: string
   max_quantity?: number
   min_quantity?: number

@@ -1,9 +1,11 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
-
-import { FilterablePriceListProps } from "../../../../types/price-list"
-import PriceListService from "../../../../services/price-list"
-import { Request } from "express"
+import { FlagRouter } from "@medusajs/utils"
 import { Type } from "class-transformer"
+import { IsNumber, IsOptional, IsString } from "class-validator"
+import { Request } from "express"
+import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
+import PriceListService from "../../../../services/price-list"
+import { FilterablePriceListProps } from "../../../../types/price-list"
+import { listAndCountPriceListPricingModule } from "./get-price-list"
 
 /**
  * @oas [get] /admin/price-lists
@@ -161,22 +163,38 @@ import { Type } from "class-transformer"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res) => {
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+
   const validated = req.validatedQuery
 
-  const priceListService: PriceListService =
-    req.scope.resolve("priceListService")
+  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+    const [priceLists, count] = await listAndCountPriceListPricingModule({
+      req,
+      list: true,
+    })
 
-  const [price_lists, count] = await priceListService.listAndCount(
-    req.filterableFields,
-    req.listConfig
-  )
+    res.json({
+      price_lists: priceLists,
+      count,
+      offset: validated.offset,
+      limit: validated.limit,
+    })
+  } else {
+    const priceListService: PriceListService =
+      req.scope.resolve("priceListService")
 
-  res.json({
-    price_lists,
-    count,
-    offset: validated.offset,
-    limit: validated.limit,
-  })
+    const [priceLists, count] = await priceListService.listAndCount(
+      req.filterableFields,
+      req.listConfig
+    )
+
+    res.json({
+      price_lists: priceLists,
+      count,
+      offset: validated.offset,
+      limit: validated.limit,
+    })
+  }
 }
 
 // eslint-disable-next-line max-len
