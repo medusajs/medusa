@@ -4,7 +4,7 @@ import { LoaderOptions } from "@medusajs/modules-sdk"
 import { asClass, asValue } from "awilix"
 import { SearchModuleOptions } from "../types"
 import { PostgresProvider } from "../services/postgres-provider"
-import { BaseRepository } from "@medusajs/product/dist/repositories"
+import { MikroOrmBaseRepository as BaseRepository } from "@medusajs/utils"
 
 export default async ({
   container,
