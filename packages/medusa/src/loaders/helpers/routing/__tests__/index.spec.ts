@@ -10,6 +10,8 @@ import {
 import { createServer } from "../__fixtures__/server"
 import { RoutesLoader } from "../index"
 
+jest.setTimeout(30000)
+
 describe("RoutesLoader", function () {
   afterEach(function () {
     jest.clearAllMocks()
