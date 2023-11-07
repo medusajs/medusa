@@ -1,7 +1,4 @@
-import {
-  DateComparisonOperator,
-  extendedFindParamsMixin,
-} from "../../../../types/common"
+import { IPricingModuleService, IProductModuleService } from "@medusajs/types"
 import {
   IsArray,
   IsBoolean,
@@ -10,14 +7,21 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined } from "medusa-core-utils"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
-import { FilterableProductProps } from "../../../../types/product"
-import PriceListService from "../../../../services/price-list"
-import { ProductStatus } from "../../../../models"
-import { Request } from "express"
+import { FlagRouter } from "@medusajs/utils"
 import { Type } from "class-transformer"
+import { Request } from "express"
 import { pickBy } from "lodash"
+import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
+import { ProductStatus } from "../../../../models"
+import PriceListService from "../../../../services/price-list"
+import { FilterableProductProps } from "../../../../types/product"
+import { defaultAdminProductRemoteQueryObject } from "../products"
 
 /**
  * @oas [get] /admin/price-lists/{id}/products
@@ -181,6 +185,9 @@ import { pickBy } from "lodash"
 export default async (req: Request, res) => {
   const { id } = req.params
   const { offset, limit } = req.validatedQuery
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  let products
+  let count
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
@@ -190,11 +197,67 @@ export default async (req: Request, res) => {
     price_list_id: [id],
   }
 
-  const [products, count] = await priceListService.listProducts(
-    id,
-    pickBy(filterableFields, (val) => isDefined(val)),
-    req.listConfig
-  )
+  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+    const remoteQuery = req.scope.resolve("remoteQuery")
+    const pricingModuleService: IPricingModuleService = req.scope.resolve(
+      "pricingModuleService"
+    )
+    const productModuleService: IProductModuleService = req.scope.resolve(
+      "productModuleService"
+    )
+
+    const [priceList] = await pricingModuleService.listPriceLists(
+      { id: [id] },
+      {
+        relations: [
+          "price_set_money_amounts",
+          "price_set_money_amounts.price_set",
+        ],
+        select: ["price_set_money_amounts.price_set.id"],
+      }
+    )
+
+    const priceSetIds = priceList.price_set_money_amounts?.map(
+      (psma) => psma.price_set?.id
+    )
+
+    const query = {
+      product_variant_price_set: {
+        __args: {
+          price_set_id: priceSetIds,
+        },
+        fields: ["variant_id", "price_set_id"],
+      },
+    }
+
+    const variantPriceSets = await remoteQuery(query)
+    const variantIds = variantPriceSets.map((vps) => vps.variant_id)
+
+    const productVariants = await productModuleService.listVariants(
+      {
+        id: variantIds,
+      },
+      {
+        select: ["product_id"],
+      }
+    )
+
+    ;[products, count] = await productModuleService.listAndCount(
+      {
+        id: productVariants.map((pv) => pv.product_id),
+      },
+      {
+        select: defaultAdminProductRemoteQueryObject.fields,
+        relations: ["variants"],
+      }
+    )
+  } else {
+    ;[products, count] = await priceListService.listProducts(
+      id,
+      pickBy(filterableFields, (val) => isDefined(val)),
+      req.listConfig
+    )
+  }
 
   res.json({
     products,
