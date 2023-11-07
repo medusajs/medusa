@@ -16,7 +16,16 @@ import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 
 jest.setTimeout(30000)
 
-const createPriceLists = async (service, type = PriceListType.SALE) => {
+const defaultRules = {
+  customer_group_id: ["vip-customer-group-id", "another-vip-customer-group-id"],
+  region_id: ["DE", "DK"],
+}
+
+const createPriceLists = async (
+  service,
+  type = PriceListType.SALE,
+  rules: object = defaultRules
+) => {
   await service.createPriceLists([
     {
       title: "Test Price List",
@@ -24,13 +33,7 @@ const createPriceLists = async (service, type = PriceListType.SALE) => {
       starts_at: "10/01/2023" as unknown as Date,
       ends_at: "10/30/2023" as unknown as Date,
       type,
-      rules: {
-        customer_group_id: [
-          "vip-customer-group-id",
-          "another-vip-customer-group-id",
-        ],
-        region_id: ["DE", "DK"],
-      },
+      rules,
       prices: [
         {
           amount: 232,
@@ -1177,6 +1180,71 @@ describe("PricingModule Service - Calculate Price", () => {
               price_list_type: null,
               min_quantity: 1,
               max_quantity: 5,
+            },
+          },
+        ])
+      })
+
+      it("should return price list prices when price list dont have any rules", async () => {
+        await createPriceLists(service, PriceListType.SALE, {})
+
+        const pl = await service.listPriceLists(
+          {},
+          { relations: ["price_set_money_amounts"] }
+        )
+
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-EUR", "price-set-PLN"] },
+          {
+            context: {
+              currency_code: "PLN",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-EUR",
+            is_calculated_price_price_list: false,
+            calculated_amount: null,
+            is_original_price_price_list: false,
+            original_amount: null,
+            currency_code: null,
+            calculated_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+          },
+          {
+            id: "price-set-PLN",
+            is_calculated_price_price_list: true,
+            calculated_amount: 232,
+            is_original_price_price_list: false,
+            original_amount: 1000,
+            currency_code: "PLN",
+            calculated_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: expect.any(String),
+              price_list_type: "sale",
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: 1,
+              max_quantity: 10,
             },
           },
         ])
