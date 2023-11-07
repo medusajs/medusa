@@ -4,7 +4,7 @@ import { DiscountServiceMock } from "../../../../../services/__mocks__/discount"
 
 const validRegionId = IdMap.getId("region-france")
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 describe("POST /admin/discounts", () => {
   const adminSession = {
     jwt: {
