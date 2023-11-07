@@ -545,6 +545,7 @@ async function registerSubscribers(
   await new SubscriberRegistrar(
     path.join(pluginDetails.resolve, "subscribers"),
     container,
+    pluginDetails.options,
     activityId
   ).register()
 
