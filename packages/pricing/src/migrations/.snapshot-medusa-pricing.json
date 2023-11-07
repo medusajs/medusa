@@ -414,7 +414,7 @@
             "id"
           ],
           "referencedTableName": "public.price_list",
-          "deleteRule": "set null",
+          "deleteRule": "cascade",
           "updateRule": "cascade"
         }
       }

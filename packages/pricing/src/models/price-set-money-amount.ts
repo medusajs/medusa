@@ -53,6 +53,7 @@ export default class PriceSetMoneyAmount {
 
   @ManyToOne(() => PriceList, {
     index: "IDX_price_rule_price_list_id",
+    onDelete: "cascade",
     nullable: true,
   })
   price_list?: PriceList
