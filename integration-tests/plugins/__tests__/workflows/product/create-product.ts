@@ -25,8 +25,6 @@ describe("CreateProduct workflow", function () {
   })
 
   afterAll(async () => {
-    console.log("GLOABL GC()", typeof global)
-
     const db = useDb()
     await db.shutdown()
     await shutdownServer()

@@ -35,6 +35,10 @@ export async function createPartitions(
     })
     .flat()
 
+  if (!partitions.length) {
+    return
+  }
+
   partitions.push(`analyse ${activeSchema}catalog`)
   partitions.push(`analyse ${activeSchema}catalog_relation`)
 
