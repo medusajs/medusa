@@ -41,10 +41,7 @@ export function returnReflectionComponentFormatter(
             : "",
         description: comment ? getReturnComment(comment) : "",
         expandable: comment?.hasModifier(`@expandable`) || false,
-        featureFlag: comment
-          ?.getTag(`@featureFlag`)
-          ?.content.map((tagContent) => tagContent.text)
-          .join(""),
+        featureFlag: Handlebars.helpers.featureFlag(comment),
         children: [],
       })
       if (
@@ -103,10 +100,7 @@ export function returnReflectionComponentFormatter(
           : "",
       description: comment ? getReturnComment(comment) : "",
       expandable: comment?.hasModifier(`@expandable`) || false,
-      featureFlag: comment
-        ?.getTag(`@featureFlag`)
-        ?.content.map((tagContent) => tagContent.text)
-        .join(""),
+      featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
     })
     if (level + 1 <= MarkdownTheme.MAX_LEVEL) {
@@ -139,10 +133,7 @@ export function returnReflectionComponentFormatter(
             : "",
         description: comment ? getReturnComment(comment) : "",
         expandable: comment?.hasModifier(`@expandable`) || false,
-        featureFlag: comment
-          ?.getTag(`@featureFlag`)
-          ?.content.map((tagContent) => tagContent.text)
-          .join(""),
+        featureFlag: Handlebars.helpers.featureFlag(comment),
         children: [],
       })
       pushTo = componentItem[parentKey - 1].children!
@@ -177,10 +168,7 @@ export function returnReflectionComponentFormatter(
           : "",
       description: comment ? getReturnComment(comment) : "",
       expandable: comment?.hasModifier(`@expandable`) || false,
-      featureFlag: comment
-        ?.getTag(`@featureFlag`)
-        ?.content.map((tagContent) => tagContent.text)
-        .join(""),
+      featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
     })
   }
