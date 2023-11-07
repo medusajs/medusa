@@ -2,6 +2,7 @@ import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import { MikroORM, SqlEntityManager } from "@mikro-orm/postgresql"
 import * as ProductModels from "@models"
 import * as process from "process"
+import * as console from "console"
 
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? "postgres"
@@ -69,6 +70,8 @@ export const TestDatabase: TestDatabase = {
         generator: TSMigrationGenerator,
       },
     })
+
+    console.log(DB_URL)
 
     if (this.orm === null) {
       throw new Error("ORM not configured")

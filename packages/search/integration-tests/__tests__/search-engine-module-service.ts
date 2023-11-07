@@ -2,8 +2,7 @@ import { MedusaModule } from "@medusajs/modules-sdk"
 import { EventBusTypes } from "@medusajs/types"
 import { Catalog, CatalogRelation } from "@models"
 import { EventBusService } from "../__fixtures__"
-import { TestDatabase } from "../utils"
-import { initModules } from "../utils/init-module"
+import { initModules, TestDatabase } from "../utils"
 
 const eventBus = new EventBusService()
 const remoteQueryMock = jest.fn()
