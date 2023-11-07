@@ -30,15 +30,6 @@ function asArray(resolvers) {
 export const createServer = async (rootDir) => {
   const app = express()
 
-  // const moduleResolutions = registerModules({})
-  // // Load non legacy modules
-  // Object.keys(modules).map((moduleKey) => {
-  //   moduleResolutions[moduleKey] = registerMedusaModule(
-  //     moduleKey,
-  //     ModulesDefinition[moduleKey]
-  //   )[moduleKey]
-  // })
-
   const container = createContainer()
 
   container.registerAdd = function (name, registration) {
@@ -58,7 +49,6 @@ export const createServer = async (rootDir) => {
   }.bind(container)
 
   container.register("featureFlagRouter", asValue(featureFlagRouter))
-  // container.register("modulesHelper", asValue(moduleHelper))
   container.register("configModule", asValue(config))
   container.register({
     logger: asValue({

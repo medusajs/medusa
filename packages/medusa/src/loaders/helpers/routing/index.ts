@@ -6,11 +6,14 @@ import { extname, join, sep } from "path"
 import {
   authenticate,
   authenticateCustomer,
+  errorHandler,
   requireCustomerAuthentication,
+  wrapHandler,
 } from "../../../api/middlewares"
 import { ConfigModule } from "../../../types/global"
 import logger from "../../logger"
 import {
+  AsyncRouteHandler,
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
   MiddlewareRoute,
@@ -204,16 +207,16 @@ export class RoutesLoader {
   }: {
     config?: MiddlewaresConfig
   }): void {
-    if (!config?.routes) {
+    if (!config?.routes && !config?.errorHandler) {
       log({
         activityId: this.activityId,
-        message: `No middleware routes found. Skipping middleware application.`,
+        message: `Empty middleware config. Skipping middleware application.`,
       })
 
       return
     }
 
-    for (const route of config.routes) {
+    for (const route of config.routes ?? []) {
       if (!route.matcher) {
         throw new Error(
           `Route is missing a \`matcher\` field. The 'matcher' field is required when applying middleware to this route.`
@@ -558,7 +561,44 @@ export class RoutesLoader {
     return
   }
 
+  applyErrorHandlerMiddleware(): void {
+    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+
+    if (!middlewareDescriptor) {
+      return
+    }
+
+    const errorHandlerFn = middlewareDescriptor.config?.errorHandler
+
+    /**
+     * If the user has opted out of the error handler then return
+     */
+    if (errorHandlerFn === false) {
+      return
+    }
+
+    /**
+     * If the user has provided a custom error handler then use it
+     */
+    if (errorHandlerFn) {
+      this.router.use(errorHandlerFn)
+      return
+    }
+
+    /**
+     * If the user has not provided a custom error handler then use the
+     * default one.
+     */
+    this.router.use(errorHandler())
+  }
+
   protected async registerRoutes(): Promise<void> {
+    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+
+    const shouldWrapHandler = middlewareDescriptor?.config
+      ? middlewareDescriptor.config.errorHandler !== false
+      : true
+
     const prioritizedRoutes = prioritize([...this.routesMap.values()])
 
     for (const descriptor of prioritizedRoutes) {
@@ -638,10 +678,15 @@ export class RoutesLoader {
          */
         this.applyBodyParserMiddleware(descriptor.route, route.method!)
 
-        this.router[route.method!.toLowerCase()](
-          descriptor.route,
-          route.handler
-        )
+        /**
+         * If the user hasn't opted out of error handling then
+         * we wrap the handler in a try/catch block.
+         */
+        const handler = shouldWrapHandler
+          ? wrapHandler(route.handler as AsyncRouteHandler)
+          : route.handler
+
+        this.router[route.method!.toLowerCase()](descriptor.route, handler)
       }
     }
   }
@@ -715,6 +760,8 @@ export class RoutesLoader {
 
       await this.registerMiddlewares()
       await this.registerRoutes()
+
+      this.applyErrorHandlerMiddleware()
 
       /**
        * Apply the router to the app.

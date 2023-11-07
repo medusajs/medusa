@@ -179,6 +179,71 @@ describe("RoutesLoader", function () {
       expect(res.status).toBe(200)
       expect(res.text).toBe("GET /store/unprotected")
     })
+
+    it("should return the error as JSON when an error is thrown with default error handling", async () => {
+      const res = await request("GET", "/customers/error")
+
+      expect(res.status).toBe(400)
+      expect(res.body).toEqual({
+        message: "Not allowed",
+        type: "not_allowed",
+      })
+    })
+  })
+
+  describe("Custom error handling", function () {
+    let request
+
+    beforeAll(async function () {
+      const rootDir = resolve(
+        __dirname,
+        "../__fixtures__/routers-error-handler"
+      )
+
+      const { request: request_ } = await createServer(rootDir)
+
+      request = request_
+    })
+
+    it("should return 405 when NOT_ALLOWED error is thrown", async () => {
+      const res = await request("GET", "/store")
+
+      expect(res.status).toBe(405)
+      expect(res.body).toEqual({
+        message: "Not allowed to perform this action",
+        type: "not_allowed",
+      })
+    })
+
+    it("should return 400 when INVALID_DATA error is thrown", async () => {
+      const res = await request("POST", "/store")
+
+      expect(res.status).toBe(400)
+      expect(res.body).toEqual({
+        message: "Invalid data provided",
+        type: "invalid_data",
+      })
+    })
+
+    it("should return 409 when CONFLICT error is thrown", async () => {
+      const res = await request("PUT", "/store")
+
+      expect(res.status).toBe(409)
+      expect(res.body).toEqual({
+        message: "Conflict with another request",
+        type: "conflict",
+      })
+    })
+
+    it("should return 418 when TEAPOT error is thrown", async () => {
+      const res = await request("DELETE", "/store")
+
+      expect(res.status).toBe(418)
+      expect(res.body).toEqual({
+        message: "I'm a teapot",
+        type: "teapot",
+      })
+    })
   })
 
   describe("Duplicate parameters", function () {
