@@ -20,6 +20,7 @@ const createPriceLists = async (service, type = PriceListType.SALE) => {
   await service.createPriceLists([
     {
       title: "Test Price List",
+      description: "test description",
       starts_at: "10/01/2023" as unknown as Date,
       ends_at: "10/30/2023" as unknown as Date,
       type,

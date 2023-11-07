@@ -216,6 +216,7 @@ describe("PriceList Service", () => {
       const [created] = await service.create([
         {
           title: "test",
+          description: "test",
         },
       ])
 

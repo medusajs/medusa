@@ -184,6 +184,7 @@ describe("PriceList Service", () => {
       const [created] = await service.createPriceLists([
         {
           title: "test",
+          description: "test",
           starts_at: "10/01/2023" as unknown as Date,
           ends_at: "10/30/2023" as unknown as Date,
           rules: {
@@ -297,6 +298,7 @@ describe("PriceList Service", () => {
       const [created] = await service.createPriceLists([
         {
           title: "test",
+          description: "test",
           starts_at: "10/01/2023" as unknown as Date,
           ends_at: "10/30/2023" as unknown as Date,
           rules: {
