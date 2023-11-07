@@ -1,9 +1,4 @@
-import {
-  AdminPriceListPricesCreateReq,
-  CreatePriceListInput,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
+import { Workflows, createPriceLists } from "@medusajs/workflows"
 import {
   IsArray,
   IsBoolean,
@@ -12,21 +7,26 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { createPriceLists, Workflows } from "@medusajs/workflows"
+import {
+  AdminPriceListPricesCreateReq,
+  CreatePriceListInput,
+  PriceListStatus,
+  PriceListType,
+} from "../../../../types/price-list"
 import {
   defaultAdminPriceListFields,
   defaultAdminPriceListRelations,
 } from "./index"
 
 import { WorkflowTypes } from "@medusajs/types"
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "@medusajs/utils"
+import { Type } from "class-transformer"
+import { Request } from "express"
+import { EntityManager } from "typeorm"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { PriceList } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
-import { Request } from "express"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import { Type } from "class-transformer"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
  * @oas [post] /admin/price-lists
@@ -133,7 +133,7 @@ export default async (req: Request, res) => {
         manager,
       },
     })
-    priceList = result[0]
+    priceList = result[0]?.priceList
   } else {
     const createdPl = await manager.transaction(async (transactionManager) => {
       return await priceListService
