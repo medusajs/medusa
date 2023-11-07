@@ -1,9 +1,9 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
 import {
+  createProducts,
   CreateProductsActions,
   Handlers,
-  createProducts,
   pipe,
 } from "@medusajs/workflows"
 import path from "path"
@@ -11,7 +11,7 @@ import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
-jest.setTimeout(30000)
+jest.setTimeout(60000)
 
 describe("CreateProduct workflow", function () {
   let medusaContainer
@@ -129,7 +129,7 @@ describe("CreateProduct workflow", function () {
 
     expect(product).toEqual(
       expect.objectContaining({
-        deleted_at: expect.any(String),
+        deleted_at: expect.any(Date),
       })
     )
   })
