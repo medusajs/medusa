@@ -408,7 +408,8 @@ class ProductMediaService extends TransactionBaseService {
 
   async create(
     data: Pick<
-      ProductMedia, "name" | "file_key" | "variant_id" | "type"
+      ProductMedia, 
+      "name" | "file_key" | "variant_id" | "type" | "mime_type"
     >
   ): Promise<ProductMedia> {
     return this.atomicPhase_(async (manager) => {
@@ -498,6 +499,7 @@ export const POST = async (
     file_key,
     type = "main",
     name,
+    mime_type,
   } = req.body
 
   const productMediaService = req.scope.resolve<

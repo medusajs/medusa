@@ -9,8 +9,6 @@ import {
 import { MoneyAmount } from "@models"
 import { MoneyAmountRepository } from "@repositories"
 
-import { doNotForceTransaction, shouldForceTransaction } from "@medusajs/utils"
-
 type InjectedDependencies = {
   moneyAmountRepository: DAL.RepositoryService
 }
@@ -73,7 +71,7 @@ export default class MoneyAmountService<
     )) as [TEntity[], number]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "moneyAmountRepository_")
+  @InjectTransactionManager("moneyAmountRepository_")
   async create(
     data: PricingTypes.CreateMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -84,7 +82,7 @@ export default class MoneyAmountService<
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "moneyAmountRepository_")
+  @InjectTransactionManager("moneyAmountRepository_")
   async update(
     data: PricingTypes.UpdateMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -95,7 +93,7 @@ export default class MoneyAmountService<
     )) as TEntity[]
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "moneyAmountRepository_")
+  @InjectTransactionManager("moneyAmountRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
