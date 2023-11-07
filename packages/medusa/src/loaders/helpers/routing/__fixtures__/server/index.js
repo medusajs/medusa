@@ -1,3 +1,9 @@
+import {
+  moduleHelper,
+  moduleLoader,
+  ModulesDefinition,
+  registerMedusaModule,
+} from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
@@ -30,6 +36,16 @@ function asArray(resolvers) {
 export const createServer = async (rootDir) => {
   const app = express()
 
+  const moduleResolutions = {}
+  Object.entries(ModulesDefinition).forEach(([moduleKey, module]) => {
+    moduleResolutions[moduleKey] = registerMedusaModule(
+      moduleKey,
+      module.defaultModuleDeclaration,
+      undefined,
+      module
+    )[moduleKey]
+  })
+
   const container = createContainer()
 
   container.registerAdd = function (name, registration) {
@@ -49,6 +65,7 @@ export const createServer = async (rootDir) => {
   }.bind(container)
 
   container.register("featureFlagRouter", asValue(featureFlagRouter))
+  container.register("modulesHelper", asValue(moduleHelper))
   container.register("configModule", asValue(config))
   container.register({
     logger: asValue({
@@ -76,6 +93,7 @@ export const createServer = async (rootDir) => {
   servicesLoader({ container, configModule: config })
   strategiesLoader({ container, configModule: config })
   await passportLoader({ app: app, container, configModule: config })
+  await moduleLoader({ container, moduleResolutions })
 
   app.use((req, res, next) => {
     req.scope = container.createScope()

@@ -1,6 +1,16 @@
 import { SearchUtils, upperCaseFirst } from "@medusajs/utils"
 import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
+import { Express } from "express"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import glob from "glob"
+import _ from "lodash"
+import { createRequireFromPath } from "medusa-core-utils"
 import { FileService, OauthService } from "medusa-interfaces"
+import { trackInstallation } from "medusa-telemetry"
+import { EOL } from "os"
+import path from "path"
+import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
   isBatchJobStrategy,
@@ -10,6 +20,7 @@ import {
   isPriceSelectionStrategy,
   isTaxCalculationStrategy,
 } from "../interfaces"
+import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
   ConfigModule,
@@ -20,24 +31,13 @@ import {
   formatRegistrationName,
   formatRegistrationNameWithoutNamespace,
 } from "../utils/format-registration-name"
+import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import {
   registerAbstractFulfillmentServiceFromClass,
   registerFulfillmentServiceFromClass,
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
-
-import { Express } from "express"
-import fs from "fs"
-import { sync as existsSync } from "fs-exists-cached"
-import glob from "glob"
-import _ from "lodash"
-import { createRequireFromPath } from "medusa-core-utils"
-import { trackInstallation } from "medusa-telemetry"
-import path from "path"
-import { EntitySchema } from "typeorm"
-import { MiddlewareService } from "../services"
-import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import { RoutesLoader } from "./helpers/routing"
 import logger from "./logger"
 
@@ -374,12 +374,10 @@ async function registerApi(
     }).load()
   } catch (err) {
     logger.warn(
-      `An error occurred while registering API Routes in ${projectName}`
+      `An error occurred while registering API Routes in ${projectName}${
+        err.stack ? EOL + err.stack : ""
+      }`
     )
-
-    if (err.stack) {
-      logger.warn(`${err.stack}`)
-    }
   }
 
   try {

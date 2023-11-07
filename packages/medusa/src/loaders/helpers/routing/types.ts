@@ -19,7 +19,7 @@ export const HTTP_METHODS = [
 ] as const
 
 export type RouteVerb = (typeof HTTP_METHODS)[number]
-type MiddlewareVerb = "USE" | "ALL" | RouteVerb
+export type MiddlewareVerb = "USE" | "ALL" | RouteVerb
 
 type SyncRouteHandler = (req: MedusaRequest, res: MedusaResponse) => void
 

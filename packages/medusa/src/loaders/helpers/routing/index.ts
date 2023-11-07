@@ -17,6 +17,7 @@ import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
   MiddlewareRoute,
+  MiddlewareVerb,
   MiddlewaresConfig,
   RouteConfig,
   RouteDescriptor,
@@ -613,18 +614,19 @@ export class RoutesLoader {
        * not opted out of.
        */
 
-      if (descriptor.config.shouldAppendCustomer) {
+      if (descriptor.config.shouldAppendAdminCors) {
         /**
-         * Add the customer to the request object
+         * Apply the admin cors
          */
-        this.router.use(descriptor.route, authenticateCustomer())
-      }
-
-      if (descriptor.config.shouldRequireCustomerAuth) {
-        /**
-         * Require the customer to be authenticated
-         */
-        this.router.use(descriptor.route, requireCustomerAuthentication())
+        this.router.use(
+          descriptor.route,
+          cors({
+            origin: parseCorsOrigins(
+              this.configModule.projectConfig.admin_cors || ""
+            ),
+            credentials: true,
+          })
+        )
       }
 
       if (descriptor.config.shouldAppendStoreCors) {
@@ -642,26 +644,25 @@ export class RoutesLoader {
         )
       }
 
+      if (descriptor.config.shouldAppendCustomer) {
+        /**
+         * Add the customer to the request object
+         */
+        this.router.use(descriptor.route, authenticateCustomer())
+      }
+
+      if (descriptor.config.shouldRequireCustomerAuth) {
+        /**
+         * Require the customer to be authenticated
+         */
+        this.router.use(descriptor.route, requireCustomerAuthentication())
+      }
+
       if (descriptor.config.shouldRequireAdminAuth) {
         /**
          * Require the admin to be authenticated
          */
         this.router.use(descriptor.route, authenticate())
-      }
-
-      if (descriptor.config.shouldAppendAdminCors) {
-        /**
-         * Apply the admin cors
-         */
-        this.router.use(
-          descriptor.route,
-          cors({
-            origin: parseCorsOrigins(
-              this.configModule.projectConfig.admin_cors || ""
-            ),
-            credentials: true,
-          })
-        )
       }
 
       for (const route of routes) {
@@ -712,25 +713,17 @@ export class RoutesLoader {
      */
 
     for (const route of routes) {
-      if (Array.isArray(route.method)) {
-        for (const method of route.method) {
-          log({
-            activityId: this.activityId,
-            message: `Registering middleware [${method}] - ${route.matcher}`,
-          })
+      const methods = (
+        Array.isArray(route.method) ? route.method : [route.method]
+      ).filter(Boolean) as MiddlewareVerb[]
 
-          this.app[method.toLowerCase()](route.matcher, ...route.middlewares)
-        }
-      } else {
+      for (const method of methods) {
         log({
           activityId: this.activityId,
-          message: `Registering middleware [${route.method}] - ${route.matcher}`,
+          message: `Registering middleware [${method}] - ${route.matcher}`,
         })
 
-        this.router[route.method!.toLowerCase()](
-          route.matcher,
-          ...route.middlewares
-        )
+        this.router[method.toLowerCase()](route.matcher, ...route.middlewares)
       }
     }
   }
