@@ -23,7 +23,7 @@ class AuthResource extends BaseResource {
    * Authenticate a customer using their email and password. If the customer is authenticated successfully, the cookie is automatically attached to subsequent requests sent with the JS Client.
    * @param {StorePostAuthReq} payload - The credentials of the customer to authenticate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreAuthRes>} The customer's details.
+   * @returns {ResponsePromise<StoreAuthRes>} Resolves to the customer's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -63,7 +63,7 @@ class AuthResource extends BaseResource {
    * Retrieve the details of the logged-in customer. Can also be used to check if there is an authenticated customer.
    * This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreAuthRes>} The customer's details.
+   * @returns {ResponsePromise<StoreAuthRes>} Resolves to the customer's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -83,7 +83,7 @@ class AuthResource extends BaseResource {
    * Check if the email is already used by another registered customer. Can be used to validate a new customer's email.
    * @param {string} email - The email to check.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreGetAuthEmailRes>} The result of the check.
+   * @returns {ResponsePromise<StoreGetAuthEmailRes>} Resolves to the result of the check.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -99,7 +99,7 @@ class AuthResource extends BaseResource {
    * Authenticate the customer and retrieve a JWT token to use for subsequent authenticated requests.
    * @param {AdminPostAuthReq} payload - The credentials of the customer to authenticate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreBearerAuthRes>} The access token of the customer, if they're authenticated successfully.
+   * @returns {ResponsePromise<StoreBearerAuthRes>} Resolves to the access token of the customer, if they're authenticated successfully.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

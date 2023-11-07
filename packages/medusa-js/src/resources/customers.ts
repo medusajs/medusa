@@ -22,21 +22,21 @@ import PaymentMethodsResource from "./payment-methods"
  */
 class CustomerResource extends BaseResource {
   /**
-   * @prop paymentMethods - An instance of {@link PaymentMethodsResource} used to send requests to payment-related routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers).
+   * An instance of {@link PaymentMethodsResource} used to send requests to payment-related routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers).
    */
   public paymentMethods = new PaymentMethodsResource(this.client)
   /**
-   * @prop addresses - An instance of {@link AddressesResource} used to send requests to address-related routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers).
+   * An instance of {@link AddressesResource} used to send requests to address-related routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers).
    */
   public addresses = new AddressesResource(this.client)
 
   /**
    * Register a new customer. This will also automatically authenticate the customer and set their login session in the response Cookie header.
    * Subsequent requests sent with the JS client are sent with the Cookie session automatically.
-   * @param {StorePostCustomersReq} payload - The customer to create.d_at`. The product collections can also be paginated.
+   * @param {StorePostCustomersReq} payload - The details of the customer to be created.
    * @param {string} query - Filters and pagination configurations to apply on the retrieved product collections.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns { ResponsePromise<StoreCustomersRes>} The created customer's details.
+   * @returns { ResponsePromise<StoreCustomersRes>} Resolves to the created customer's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -62,7 +62,7 @@ class CustomerResource extends BaseResource {
   /**
    * Retrieve the logged-in customer's details. This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCustomersRes>} The logged-in customer's details.
+   * @returns {ResponsePromise<StoreCustomersRes>} Resolves to the logged-in customer's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -84,7 +84,7 @@ class CustomerResource extends BaseResource {
    * Update the logged-in customer's details. This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {StorePostCustomersCustomerReq} payload - The attributes to update in the logged-in customer.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCustomersRes>} The logged-in customer's details.
+   * @returns {ResponsePromise<StoreCustomersRes>} Resolves to the logged-in customer's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -110,7 +110,7 @@ class CustomerResource extends BaseResource {
    * This method requires {@link AuthResource.authenticate | customer authentication}.
    * @param {StoreGetCustomersCustomerOrdersParams} params - Filters and pagination configurations to apply on the retrieved orders.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCustomersListOrdersRes>} The list of orders with pagination fields.
+   * @returns {ResponsePromise<StoreCustomersListOrdersRes>} Resolves to the list of orders with pagination fields.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -140,7 +140,7 @@ class CustomerResource extends BaseResource {
    * you must create a new one.
    * @param {StorePostCustomersResetPasswordReq} payload - The necessary details to reset the password.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCustomersRes>} The customer's details.
+   * @returns {ResponsePromise<StoreCustomersRes>} Resolves to the customer's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

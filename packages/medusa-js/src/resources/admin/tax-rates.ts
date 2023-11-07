@@ -19,11 +19,15 @@ import {
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
+import { AdminPostTaxRatesTaxRateProductsParams } from "@medusajs/medusa"
+import { AdminPostTaxRatesTaxRateShippingOptionsParams } from "@medusajs/medusa"
+import { AdminPostTaxRatesParams } from "@medusajs/medusa"
+import { AdminPostTaxRatesTaxRateParams } from "@medusajs/medusa"
 
 /**
  * This class is used to send requests to [Admin Tax Rate API Routes](https://docs.medusajs.com/api/admin#tax-rates).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Each region has at least a default tax rate. Admins can create and manage additional tax rates that can be applied for certain conditions, such as for specific product types.
  * 
@@ -35,7 +39,7 @@ class AdminTaxRatesResource extends BaseResource {
    * @param {string} id - The tax rate's ID.
    * @param {AdminGetTaxRatesTaxRateParams} query - Configurations to apply on retrieved tax rates.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesRes>} The tax rate's details.
+   * @returns {ResponsePromise<AdminTaxRatesRes>} Resolves to the tax rate's details.
    * 
    * @example
    * A simple example that retrieves a tax rate by its ID:
@@ -83,7 +87,7 @@ class AdminTaxRatesResource extends BaseResource {
    * Retrieve a list of tax rates. The tax rates can be filtered by fields such as `name` or `rate` passed in the `query` parameter. The tax rates can also be paginated.
    * @param {AdminGetTaxRatesParams} query - Filters and pagination configurations applied to the retrieved tax rates.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesListRes>} The list of tax rates with pagination fields.
+   * @returns {ResponsePromise<AdminTaxRatesListRes>} Resolves to the list of tax rates with pagination fields.
    * 
    * @example
    * To list tax rates:
@@ -145,9 +149,9 @@ class AdminTaxRatesResource extends BaseResource {
   /**
    * Create a tax rate.
    * @param {AdminPostTaxRatesReq} payload - The tax rate to create.
-   * @param {AdminGetTaxRatesTaxRateParams} query - Configurations to apply on the retrieved tax rate.
+   * @param {AdminPostTaxRatesParams} query - Configurations to apply on the retrieved tax rate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesRes>} The tax rate's details.
+   * @returns {ResponsePromise<AdminTaxRatesRes>} Resolves to the tax rate's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -164,7 +168,7 @@ class AdminTaxRatesResource extends BaseResource {
    */
   create(
     payload: AdminPostTaxRatesReq,
-    query?: AdminGetTaxRatesTaxRateParams,
+    query?: AdminPostTaxRatesParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
     let path = `/admin/tax-rates`
@@ -181,9 +185,9 @@ class AdminTaxRatesResource extends BaseResource {
    * Update a tax rate's details.
    * @param {string} id - The tax rate's ID.
    * @param {AdminPostTaxRatesTaxRateReq} payload - The attributes to update in the tax rate.
-   * @param {AdminGetTaxRatesTaxRateParams} query - Configurations to apply on the retrieved tax rate.
+   * @param {AdminPostTaxRatesTaxRateParams} query - Configurations to apply on the retrieved tax rate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesRes>} The tax rate's details.
+   * @returns {ResponsePromise<AdminTaxRatesRes>} Resolves to the tax rate's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -199,7 +203,7 @@ class AdminTaxRatesResource extends BaseResource {
   update(
     id: string,
     payload: AdminPostTaxRatesTaxRateReq,
-    query?: AdminGetTaxRatesTaxRateParams,
+    query?: AdminPostTaxRatesTaxRateParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
     let path = `/admin/tax-rates/${id}`
@@ -216,9 +220,9 @@ class AdminTaxRatesResource extends BaseResource {
    * Add products to a tax rate.
    * @param {string} id - The tax rate's ID.
    * @param {AdminPostTaxRatesTaxRateProductsReq} payload - The products to add to the tax rate.
-   * @param {AdminGetTaxRatesTaxRateParams} query - Configurations to apply on the retrieved tax rate.
+   * @param {AdminPostTaxRatesTaxRateProductsParams} query - Configurations to apply on the retrieved tax rate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesRes>} The tax rate's details.
+   * @returns {ResponsePromise<AdminTaxRatesRes>} Resolves to the tax rate's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -236,7 +240,7 @@ class AdminTaxRatesResource extends BaseResource {
   addProducts(
     id: string,
     payload: AdminPostTaxRatesTaxRateProductsReq,
-    query?: AdminGetTaxRatesTaxRateParams,
+    query?: AdminPostTaxRatesTaxRateProductsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
     let path = `/admin/tax-rates/${id}/products/batch`
@@ -255,7 +259,7 @@ class AdminTaxRatesResource extends BaseResource {
    * @param {AdminPostTaxRatesTaxRateProductTypesReq} payload - The product types to add to the tax rate.
    * @param {AdminGetTaxRatesTaxRateParams} query - Configurations to apply on the retrieved tax rate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesRes>} The tax rate's details.
+   * @returns {ResponsePromise<AdminTaxRatesRes>} Resolves to the tax rate's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -290,9 +294,9 @@ class AdminTaxRatesResource extends BaseResource {
    * Add shipping options to a tax rate.
    * @param {string} id - The tax rate's ID.
    * @param {AdminPostTaxRatesTaxRateShippingOptionsReq} payload - The shipping options to add to the tax rate.
-   * @param {AdminGetTaxRatesTaxRateParams} query - Configurations to apply on the retrieved tax rate.
+   * @param {AdminPostTaxRatesTaxRateShippingOptionsParams} query - Configurations to apply on the retrieved tax rate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesRes>} The tax rate's details.
+   * @returns {ResponsePromise<AdminTaxRatesRes>} Resolves to the tax rate's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -310,7 +314,7 @@ class AdminTaxRatesResource extends BaseResource {
   addShippingOptions(
     id: string,
     payload: AdminPostTaxRatesTaxRateShippingOptionsReq,
-    query?: AdminGetTaxRatesTaxRateParams,
+    query?: AdminPostTaxRatesTaxRateShippingOptionsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminTaxRatesRes> {
     let path = `/admin/tax-rates/${id}/shipping-options/batch`
@@ -329,7 +333,7 @@ class AdminTaxRatesResource extends BaseResource {
    * @param {AdminDeleteTaxRatesTaxRateProductsReq} payload - The products to remove from the tax rate.
    * @param {AdminGetTaxRatesTaxRateParams} query - Configurations to apply on the retrieved tax rate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesRes>} The tax rate's details.
+   * @returns {ResponsePromise<AdminTaxRatesRes>} Resolves to the tax rate's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -366,7 +370,7 @@ class AdminTaxRatesResource extends BaseResource {
    * @param {AdminDeleteTaxRatesTaxRateProductTypesReq} payload - The product types to remove from the tax rate.
    * @param {AdminGetTaxRatesTaxRateParams} query - Configurations to apply on the retrieved tax rate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesRes>} The tax rate's details.
+   * @returns {ResponsePromise<AdminTaxRatesRes>} Resolves to the tax rate's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -403,7 +407,7 @@ class AdminTaxRatesResource extends BaseResource {
    * @param {AdminDeleteTaxRatesTaxRateShippingOptionsReq} payload - The shipping options to remove from the tax rate.
    * @param {AdminGetTaxRatesTaxRateParams} query - Configurations to apply on the retrieved tax rate.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesRes>} The tax rate's details.
+   * @returns {ResponsePromise<AdminTaxRatesRes>} Resolves to the tax rate's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -438,7 +442,7 @@ class AdminTaxRatesResource extends BaseResource {
    * Delete a tax rate. Resources associated with the tax rate, such as products or product types, are not deleted.
    * @param {string} id - The tax rate's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxRatesDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminTaxRatesDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

@@ -12,7 +12,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Return API Routes](https://docs.medusajs.com/api/admin#returns).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A return can be created by a customer or an admin to return items in an order.
  * Admins can manage these returns and change their state.
@@ -24,7 +24,7 @@ class AdminReturnsResource extends BaseResource {
    * Registers a return as canceled. The return can be associated with an order, claim, or swap.
    * @param {string} id - The return's ID. 
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReturnsCancelRes>} The details of the order associated with the return. If the return is associated with a claim or a swap, then it'll be the order
+   * @returns {ResponsePromise<AdminReturnsCancelRes>} Resolves to the details of the order associated with the return. If the return is associated with a claim or a swap, then it'll be the order
    * that the claim or swap belongs to.
    * 
    * @example
@@ -49,7 +49,7 @@ class AdminReturnsResource extends BaseResource {
    * @param {string} id - The return's ID.
    * @param {AdminPostReturnsReturnReceiveReq} payload - The received return.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReturnsRes>} The return's details.
+   * @returns {ResponsePromise<AdminReturnsRes>} Resolves to the return's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -80,7 +80,7 @@ class AdminReturnsResource extends BaseResource {
    * Retrieve a list of Returns. The returns can be paginated.
    * @param {AdminGetReturnsParams} query - Paignation configurations to be applied on the retrieved returns.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReturnsListRes>} The list of returns with pagination fields.
+   * @returns {ResponsePromise<AdminReturnsListRes>} Resolves to the list of returns with pagination fields.
    * 
    * @example
    * To list returns:

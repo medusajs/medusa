@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Shipping Profile API Routes](https://docs.medusajs.com/api/admin#shipping-profiles).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A shipping profile is used to group products that can be shipped in the same manner.
  * They are created by the admin and they're not associated with a fulfillment provider.
@@ -23,7 +23,7 @@ class AdminShippingProfilesResource extends BaseResource {
    * Create a shipping profile.
    * @param {AdminPostShippingProfilesReq} payload - The shipping profile to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminShippingProfilesRes>} The shipping profile's details.
+   * @returns {ResponsePromise<AdminShippingProfilesRes>} Resolves to the shipping profile's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -49,7 +49,7 @@ class AdminShippingProfilesResource extends BaseResource {
    * @param {string} id - The shipping profile's ID.
    * @param {AdminPostShippingProfilesProfileReq} payload - The attributes to update in the shipping profile.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminShippingProfilesRes>} The shipping profile's details.
+   * @returns {ResponsePromise<AdminShippingProfilesRes>} Resolves to the shipping profile's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -75,7 +75,7 @@ class AdminShippingProfilesResource extends BaseResource {
    * Delete a shipping profile. Associated shipping options are deleted as well.
    * @param {string} id - The shipping profile's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDeleteShippingProfileRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminDeleteShippingProfileRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -98,7 +98,7 @@ class AdminShippingProfilesResource extends BaseResource {
    * Retrieve a shipping profile's details.
    * @param {string} id - The shipping profile's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminShippingProfilesRes>} The shipping profile's details.
+   * @returns {ResponsePromise<AdminShippingProfilesRes>} Resolves to the shipping profile's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -120,7 +120,7 @@ class AdminShippingProfilesResource extends BaseResource {
   /**
    * Retrieve a list of shipping profiles.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminShippingProfilesListRes>} The list of shipping profiles.
+   * @returns {ResponsePromise<AdminShippingProfilesListRes>} Resolves to the list of shipping profiles.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

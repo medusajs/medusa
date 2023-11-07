@@ -10,11 +10,11 @@ import {
   AdminPostPublishableApiKeySalesChannelsBatchReq,
   AdminDeletePublishableApiKeySalesChannelsBatchReq,
   GetPublishableApiKeySalesChannelsParams,
-  AdminSalesChannelsListRes,
 } from "@medusajs/medusa"
 
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
+import { AdminPublishableApiKeysListSalesChannelsRes } from "@medusajs/medusa"
 
 /**
  * This class is used to send requests to [Admin Publishable API Key API Routes](https://docs.medusajs.com/api/admin#publishable-api-keys).
@@ -48,7 +48,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    */
   retrieve(
     id: string,
-    query?: {},
+    query: Record<string, any> = {},
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPublishableApiKeysRes> {
     let path = `/admin/publishable-api-keys/${id}`
@@ -274,7 +274,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
    * @param {string} id - The ID of the publishable API key.
    * @param {GetPublishableApiKeySalesChannelsParams} query - Filters to apply on the retrieved sales channels.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsListRes>} Resolves to the list of sales channels.
+   * @returns {ResponsePromise<AdminPublishableApiKeysListSalesChannelsRes>} Resolves to the list of sales channels.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -289,7 +289,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
     id: string,
     query?: GetPublishableApiKeySalesChannelsParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminSalesChannelsListRes> {
+  ): ResponsePromise<AdminPublishableApiKeysListSalesChannelsRes> {
     let path = `/admin/publishable-api-keys/${id}/sales-channels`
 
     if (query) {

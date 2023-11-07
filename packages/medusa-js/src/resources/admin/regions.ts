@@ -17,7 +17,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Region API Routes](https://docs.medusajs.com/api/admin#regions).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Regions are different countries or geographical regions that the commerce store serves customers in.
  * Admins can manage these regions, their providers, and more.
@@ -29,7 +29,7 @@ class AdminRegionsResource extends BaseResource {
    * Create a region.
    * @param {AdminPostRegionsReq} payload - The region to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsRes>}  The region's details.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -66,7 +66,7 @@ class AdminRegionsResource extends BaseResource {
    * @param {string} id - The region's ID.
    * @param {AdminPostRegionsRegionReq} payload - The attributes to update in the region.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsRes>}  The region's details.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -92,7 +92,7 @@ class AdminRegionsResource extends BaseResource {
    * Delete a region. Associated resources, such as providers or currencies are not deleted. Associated tax rates are deleted.
    * @param {string} id - The region's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminRegionsDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -115,7 +115,7 @@ class AdminRegionsResource extends BaseResource {
    * Retrieve a region's details.
    * @param {string} id - The region's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsRes>}  The region's details.
+   * @returns {ResponsePromise<AdminRegionsRes>}  Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -138,7 +138,7 @@ class AdminRegionsResource extends BaseResource {
    * Retrieve a list of Regions. The regions can be filtered by fields such as `created_at` passed in the `query` parameter. The regions can also be paginated.
    * @param {AdminGetRegionsParams} query - Filters and pagination configurations to apply on the retrieved regions.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsListRes>} The list of regions with pagination fields.
+   * @returns {ResponsePromise<AdminRegionsListRes>} Resolves to the list of regions with pagination fields.
    * 
    * @example
    * To list regions:
@@ -187,7 +187,7 @@ class AdminRegionsResource extends BaseResource {
    * @param {string} id - The region's ID.
    * @param {AdminPostRegionsRegionCountriesReq} payload - The country to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsRes>}  The region's details.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -214,7 +214,7 @@ class AdminRegionsResource extends BaseResource {
    * @param {string} id - The region's ID.
    * @param {string} country_code - The code of the country to delete from the region.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsRes>}  The region's details.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -239,7 +239,7 @@ class AdminRegionsResource extends BaseResource {
    * @param {string} id - The region's ID.
    * @param {AdminPostRegionsRegionFulfillmentProvidersReq} payload - The fulfillment provider to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsRes>}  The region's details.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -266,7 +266,7 @@ class AdminRegionsResource extends BaseResource {
    * @param {string} id - The region's ID.
    * @param {string} provider_id - The ID of the fulfillment provider to delete from the region.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsRes>}  The region's details.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -290,7 +290,7 @@ class AdminRegionsResource extends BaseResource {
    * Retrieve a list of fulfillment options available in a region.
    * @param {string} id - The region's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminGetRegionsRegionFulfillmentOptionsRes>} The list of fulfillment options.
+   * @returns {ResponsePromise<AdminGetRegionsRegionFulfillmentOptionsRes>} Resolves to the list of fulfillment options.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -314,7 +314,7 @@ class AdminRegionsResource extends BaseResource {
    * @param {string} id - The region's ID.
    * @param {AdminPostRegionsRegionPaymentProvidersReq} payload - The payment provider to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsRes>}  The region's details.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -341,7 +341,7 @@ class AdminRegionsResource extends BaseResource {
    * @param {string} id - The region's ID. 
    * @param {string} provider_id - The ID of the payment provider to delete from the region.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminRegionsRes>}  The region's details.
+   * @returns {ResponsePromise<AdminRegionsRes>} Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

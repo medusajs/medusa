@@ -15,7 +15,7 @@ class GiftCardsResource extends BaseResource {
    * Retrieve a Gift Card's details by its associated unique code.
    * @param {string} code - The code of the gift card.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreGiftCardsRes>} The details of the gift card.
+   * @returns {ResponsePromise<StoreGiftCardsRes>} Resolves to the details of the gift card.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

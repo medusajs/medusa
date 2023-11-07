@@ -143,7 +143,7 @@ export class StorePostPaymentCollectionsSessionsReq {
  *   - sessions
  * properties:
  *   sessions:
- *     description: "An array of payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted."
+ *     description: "Payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted."
  *     type: array
  *     items:
  *       type: object

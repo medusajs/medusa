@@ -21,7 +21,7 @@ class ProductVariantsResource extends BaseResource {
    * You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
    * @param {string} id - The ID of the product variant.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreVariantsRes>} The product variant's details.
+   * @returns {ResponsePromise<StoreVariantsRes>} Resolves to the product variant's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -47,7 +47,7 @@ class ProductVariantsResource extends BaseResource {
    * You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
    * @param {StoreGetVariantsParams} query - Filters and pagination configurations applied on the retrieved product variants.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreVariantsListRes>} The list of product variants.
+   * @returns {ResponsePromise<StoreVariantsListRes>} Resolves to the list of product variants.
    * 
    * @example
    * To list product variants:

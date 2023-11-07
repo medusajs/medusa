@@ -8,6 +8,7 @@ import {
   AdminInventoryItemsRes,
   AdminPostInventoryItemsInventoryItemReq,
   AdminPostInventoryItemsItemLocationLevelsLevelReq,
+  AdminPostInventoryItemsItemLocationLevelsParams,
   AdminPostInventoryItemsItemLocationLevelsReq,
   AdminPostInventoryItemsParams,
   AdminPostInventoryItemsReq,
@@ -16,12 +17,14 @@ import {
 import BaseResource from "../base"
 import { ResponsePromise } from "../../typings"
 import qs from "qs"
+import { AdminPostInventoryItemsInventoryItemParams } from "@medusajs/medusa"
+import { AdminPostInventoryItemsItemLocationLevelsLevelParams } from "@medusajs/medusa"
 
 /**
  * This class is used to send requests to [Admin Inventory Item API Routes](https://docs.medusajs.com/api/admin#inventory-items). To use these API Routes, make sure to install the
  * [@medusajs/inventory](https://docs.medusajs.com/modules/multiwarehouse/install-modules#inventory-module) module in your Medusa backend.
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Inventory items, provided by the [Inventory Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module), can be used to manage the inventory of saleable items in your store.
  * 
@@ -63,7 +66,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * Update an Inventory Item's details.
    * @param {string} inventoryItemId - The ID of the inventory item.
    * @param {AdminPostInventoryItemsInventoryItemReq} payload - The attributes to update in the inventory item.
-   * @param {AdminGetInventoryItemsItemParams} query - Configurations to apply on the retrieved inventory item.
+   * @param {AdminPostInventoryItemsInventoryItemParams} query - Configurations to apply on the retrieved inventory item.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminInventoryItemsRes>} The inventory item's details.
    * 
@@ -81,7 +84,7 @@ class AdminInventoryItemsResource extends BaseResource {
   update(
     inventoryItemId: string,
     payload: AdminPostInventoryItemsInventoryItemReq,
-    query?: AdminGetInventoryItemsItemParams,
+    query?: AdminPostInventoryItemsInventoryItemParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
     let path = `/admin/inventory-items/${inventoryItemId}`
@@ -213,7 +216,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * @param {string} inventoryItemId - The ID of the inventory item that the location level belongs to.
    * @param {string} locationId - The ID of the location level to update.
    * @param {AdminPostInventoryItemsItemLocationLevelsLevelReq} payload - The attributes to update in the location level.
-   * @param {AdminGetInventoryItemsParams} query - Configurations to apply on the returned inventory item.
+   * @param {AdminPostInventoryItemsItemLocationLevelsLevelParams} query - Configurations to apply on the returned inventory item.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminInventoryItemsRes>} the inventory item's details.
    * 
@@ -232,7 +235,7 @@ class AdminInventoryItemsResource extends BaseResource {
     inventoryItemId: string,
     locationId: string,
     payload: AdminPostInventoryItemsItemLocationLevelsLevelReq,
-    query?: AdminGetInventoryItemsParams,
+    query?: AdminPostInventoryItemsItemLocationLevelsLevelParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
     let path = `/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`
@@ -249,7 +252,7 @@ class AdminInventoryItemsResource extends BaseResource {
    * Create a Location Level for a given Inventory Item.
    * @param {string} inventoryItemId - The ID of the inventory item that the location level belongs to.
    * @param {AdminPostInventoryItemsItemLocationLevelsReq} payload - The location level to create.
-   * @param {AdminGetInventoryItemsParams} query - Configurations to apply on the returned inventory item.
+   * @param {AdminPostInventoryItemsItemLocationLevelsParams} query - Configurations to apply on the returned inventory item.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminInventoryItemsRes>} the inventory item's details.
    * 
@@ -268,7 +271,7 @@ class AdminInventoryItemsResource extends BaseResource {
   createLocationLevel(
     inventoryItemId: string,
     payload: AdminPostInventoryItemsItemLocationLevelsReq,
-    query?: AdminGetInventoryItemsParams,
+    query?: AdminPostInventoryItemsItemLocationLevelsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsRes> {
     let path = `/admin/inventory-items/${inventoryItemId}/location-levels`

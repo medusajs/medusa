@@ -143,6 +143,7 @@ export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 /**
  * @schema AdminPublishableApiKeysListSalesChannelsRes
  * type: object
+ * description: "The list of sales channel."
  * required:
  *   - sales_channels
  * properties:

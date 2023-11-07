@@ -235,6 +235,7 @@ export class Item {
 /**
  * @schema StorePostCartReq
  * type: object
+ * description: "The details of the cart to be created."
  * properties:
  *   region_id:
  *     type: string
@@ -250,7 +251,7 @@ export class Item {
  *      the cart will not be associated with any sales channel."
  *   country_code:
  *     type: string
- *     description: "The 2 character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address."
+ *     description: "The two character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address."
  *     externalDocs:
  *      url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
  *      description: See a list of codes.

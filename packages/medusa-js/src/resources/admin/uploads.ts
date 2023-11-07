@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Upload API Routes](https://docs.medusajs.com/api/admin#uploads).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * The methods in this class are used to upload any type of resources. For example, they can be used to upload CSV files that are used to import products into the store.
  * 
@@ -29,7 +29,7 @@ class AdminUploadsResource extends BaseResource {
   /**
    * Upload a file to a public bucket or storage. The file upload is handled by the file service installed on the Medusa backend.
    * @param {AdminCreateUploadPayload} file - The file to upload.
-   * @returns {ResponsePromise<AdminUploadsRes>} The uploaded file details.
+   * @returns {ResponsePromise<AdminUploadsRes>} Resolves to the uploaded file details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -51,7 +51,7 @@ class AdminUploadsResource extends BaseResource {
   /**
    * Upload a file to an ACL or a non-public bucket. The file upload is handled by the file service installed on the Medusa backend.
    * @param {AdminCreateUploadPayload} file - The file to upload.
-   * @returns {ResponsePromise<AdminUploadsRes>} The uploaded file details.
+   * @returns {ResponsePromise<AdminUploadsRes>} Resolves to the uploaded file details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -76,7 +76,7 @@ class AdminUploadsResource extends BaseResource {
    * Delete an uploaded file from storage. The file is deleted using the installed file service on the Medusa backend.
    * @param {AdminDeleteUploadsReq} payload - The uploaded file to delete.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDeleteUploadsRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminDeleteUploadsRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -102,7 +102,7 @@ class AdminUploadsResource extends BaseResource {
    * Create and retrieve a presigned or public download URL for a file. The URL creation is handled by the file service installed on the Medusa backend.
    * @param {AdminPostUploadsDownloadUrlReq} payload - The uploaded file to get a presigned download URL for.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminUploadsDownloadUrlRes>} The download URL details.
+   * @returns {ResponsePromise<AdminUploadsDownloadUrlRes>} Resolves to the download URL details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

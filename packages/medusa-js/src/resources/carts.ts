@@ -21,7 +21,7 @@ import LineItemsResource from "./line-items"
  */
 class CartsResource extends BaseResource {
   /**
-   * @prop lineItems - An instance of {@link LineItemsResource} used to send requests to line-item-related routes part of the [Store Cart API Routes](https://docs.medusajs.com/api/store#carts).
+   * An instance of {@link LineItemsResource} used to send requests to line-item-related routes part of the [Store Cart API Routes](https://docs.medusajs.com/api/store#carts).
    */
   public lineItems = new LineItemsResource(this.client)
 
@@ -30,7 +30,7 @@ class CartsResource extends BaseResource {
    * @param {string} cart_id - The ID of the cart to add the shipping method to.
    * @param {StorePostCartsCartShippingMethodReq} payload - The shipping method to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} - The cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -59,7 +59,7 @@ class CartsResource extends BaseResource {
    * key in the `Idempotency-Key` header.
    * @param {string} cart_id - The ID of the cart to complete.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCompleteCartRes>} If the cart is completed successfully, this will have the created order or the swap's details, based on the cart's type. Otherwise, it'll be the cart's details.
+   * @returns {ResponsePromise<StoreCompleteCartRes>} Resolves to the completion details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -83,7 +83,7 @@ class CartsResource extends BaseResource {
    * If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
    * @param {StorePostCartReq} payload - The cart to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The created cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the created cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -106,7 +106,7 @@ class CartsResource extends BaseResource {
    * it will be selected by default. The creation of the payment session uses the payment provider and may require sending requests to third-party services.
    * @param {string} cart_id - The ID of the cart to create the payment sessions for.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -130,7 +130,7 @@ class CartsResource extends BaseResource {
    * @param {string} cart_id - the ID of the cart to remove the discount from.
    * @param {string} code - The code of the discount to remove from the cart.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -154,7 +154,7 @@ class CartsResource extends BaseResource {
    * @param {string} cart_id - The ID of the cart to delete the payment session from.
    * @param {string} provider_id - The ID of the payment provider that the session is associated with.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -178,7 +178,7 @@ class CartsResource extends BaseResource {
    * @param {string} cart_id - The ID of the cart to refresh its payment session.
    * @param {string} provider_id - The ID of the payment provider that's associated with the payment session.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -201,7 +201,7 @@ class CartsResource extends BaseResource {
    * Retrieve a Cart's details. This includes recalculating its totals.
    * @param {string} cart_id - The cart's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -225,7 +225,7 @@ class CartsResource extends BaseResource {
    * @param {string} cart_id - The cart's ID.
    * @param {StorePostCartsCartPaymentSessionReq} payload - The associated payment provider.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -251,7 +251,7 @@ class CartsResource extends BaseResource {
    * @param {string} cart_id - The cart's ID.
    * @param {StorePostCartsCartReq} payload - The attributes to update in the cart.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -279,7 +279,7 @@ class CartsResource extends BaseResource {
    * @param {string} provider_id - The ID of the payment provider that the payment session is associated with.
    * @param {StorePostCartsCartPaymentSessionUpdateReq} payload - The attributes to update in the payment session.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

@@ -18,7 +18,7 @@ class CollectionsResource extends BaseResource {
    * Retrieve a product collection's details.
    * @param {string} id - The ID of the product collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCollectionsRes>} The collection's details.
+   * @returns {ResponsePromise<StoreCollectionsRes>} Resolves to the collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -38,7 +38,7 @@ class CollectionsResource extends BaseResource {
    * The product collections can also be paginated.
    * @param {StoreGetCollectionsParams} query - Filters and pagination configurations to apply on the retrieved product collections.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCollectionsListRes>} The list of product collections with pagination fields.
+   * @returns {ResponsePromise<StoreCollectionsListRes>} Resolves to the list of product collections with pagination fields.
    * 
    * @example
    * To list product collections:

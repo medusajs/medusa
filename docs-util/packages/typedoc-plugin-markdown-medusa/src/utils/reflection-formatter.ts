@@ -117,6 +117,7 @@ export function reflectionComponentFormatter(
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, reflection.project)
+
     children
       ?.filter((childItem) => childItem.kindOf(ALLOWED_KINDS))
       .forEach((childItem) => {
@@ -213,7 +214,7 @@ export function getDefaultValue(
   }
 
   return "defaultValue" in parameter &&
-    parameter.defaultValue &&
+    parameter.defaultValue !== undefined &&
     parameter.defaultValue !== "..."
     ? `${parameter.defaultValue}`
     : defaultComment

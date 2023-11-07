@@ -18,7 +18,7 @@ export class PublishableApiKey extends BaseEntity {
   title: string
 
   /**
-   * @ignore
+   * @apiIgnore
    */
   @BeforeInsert()
   private beforeInsert(): void {

@@ -14,7 +14,7 @@ import qs from "qs"
  * This class is used to send requests to [Admin Stock Location API Routes](https://docs.medusajs.com/api/admin#stock-locations). To use these API Routes, make sure to install the
  * [@medusajs/stock-location](https://docs.medusajs.com/modules/multiwarehouse/install-modules#stock-location-module) module in your Medusa backend.
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A stock location, provided by the [Stock Location module](https://docs.medusajs.com/modules/multiwarehouse/stock-location-module), indicates a physical address that stock-kept items, such as physical products, can be stored in.
  * An admin can create and manage available stock locations.
@@ -26,7 +26,7 @@ class AdminStockLocationsResource extends BaseResource {
    * Create a stock location.
    * @param {AdminPostStockLocationsReq} payload - The stock location to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminStockLocationsRes>} The stock location's details.
+   * @returns {ResponsePromise<AdminStockLocationsRes>} Resolves to the stock location's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -51,7 +51,7 @@ class AdminStockLocationsResource extends BaseResource {
    * Retrieve a stock location's details.
    * @param {string} itemId - The stock location's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminStockLocationsRes>} The stock location's details.
+   * @returns {ResponsePromise<AdminStockLocationsRes>} Resolves to the stock location's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -75,7 +75,7 @@ class AdminStockLocationsResource extends BaseResource {
    * @param {string} stockLocationId - The stock location's ID.
    * @param {AdminPostStockLocationsLocationReq} payload - The attributes to be updated in the stock location.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminStockLocationsRes>} The stock location's details.
+   * @returns {ResponsePromise<AdminStockLocationsRes>} Resolves to the stock location's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -101,7 +101,7 @@ class AdminStockLocationsResource extends BaseResource {
    * Delete a stock location.
    * @param {string} id - The stock location's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminStockLocationsDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminStockLocationsDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -125,7 +125,7 @@ class AdminStockLocationsResource extends BaseResource {
    * The stock locations can also be sorted or paginated.
    * @param {AdminGetStockLocationsParams} query - Filters and pagination configurations to apply on the retrieved stock locations.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminStockLocationsListRes>} The list of stock locations with pagination fields.
+   * @returns {ResponsePromise<AdminStockLocationsListRes>} Resolves to the list of stock locations with pagination fields.
    * 
    * @example
    * To list stock locations:

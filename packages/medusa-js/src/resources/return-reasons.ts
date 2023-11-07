@@ -15,7 +15,7 @@ class ReturnReasonsResource extends BaseResource {
    * Retrieve a Return Reason's details.
    * @param {string} id - The ID of the return reason.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreReturnReasonsRes>} The return reason's details.
+   * @returns {ResponsePromise<StoreReturnReasonsRes>} Resolves to the return reason's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -33,7 +33,7 @@ class ReturnReasonsResource extends BaseResource {
   /**
    * Retrieve a list of Return Reasons. This is useful when implementing a Create Return flow in the storefront.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreReturnReasonsListRes>} The list of return reasons.
+   * @returns {ResponsePromise<StoreReturnReasonsListRes>} Resolves to the list of return reasons.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

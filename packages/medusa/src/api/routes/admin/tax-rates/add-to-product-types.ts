@@ -125,6 +125,7 @@ export default async (req, res) => {
 /**
  * @schema AdminPostTaxRatesTaxRateProductTypesReq
  * type: object
+ * description: "The product types to add to the tax rate."
  * required:
  *   - product_types
  * properties:
@@ -139,11 +140,20 @@ export class AdminPostTaxRatesTaxRateProductTypesReq {
   product_types: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostTaxRatesTaxRateProductTypesParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

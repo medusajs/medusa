@@ -156,38 +156,65 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved sales channels.
+ */
 export class AdminGetSalesChannelsParams extends extendedFindParamsMixin() {
+  /**
+   * ID to filter sales channels by.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * Search term to search sales channels' names and descriptions.
+   */
   @IsOptional()
   @IsString()
   q?: string
 
+  /**
+   * Name to filter sales channels by.
+   */
   @IsOptional()
   @IsString()
   name?: string
 
+  /**
+   * Description to filter sales channels by.
+   */
   @IsOptional()
   @IsString()
   description?: string
 
+  /**
+   * Date filters to apply on sales channels' `created_at` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on sales channels' `updated_at` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on sales channels' `deleted_at` field.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string

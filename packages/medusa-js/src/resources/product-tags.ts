@@ -17,7 +17,7 @@ class ProductTagsResource extends BaseResource {
    * Retrieve a list of product tags. The product tags can be filtered by fields such as `id` or `q` passed in the `query` parameter. The product tags can also be sorted or paginated.
    * @param {StoreGetProductTagsParams} query - Filters and pagination configurations to apply on the retrieved product tags.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreProductTagsListRes>} The list of product tags with pagination fields.
+   * @returns {ResponsePromise<StoreProductTagsListRes>} Resolves to the list of product tags with pagination fields.
    * 
    * @example
    * To list product tags:

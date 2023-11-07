@@ -22,11 +22,31 @@ import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { Discount } from "./discount"
 
+/**
+ * @enum
+ * 
+ * The discount condition's type.
+ */
 export enum DiscountConditionType {
+  /**
+   * The discount condition is used for products.
+   */
   PRODUCTS = "products",
+  /**
+   * The discount condition is used for product types.
+   */
   PRODUCT_TYPES = "product_types",
+  /**
+   * The discount condition is used for product collections.
+   */
   PRODUCT_COLLECTIONS = "product_collections",
+  /**
+   * The discount condition is used for product tags.
+   */
   PRODUCT_TAGS = "product_tags",
+  /**
+   * The discount condition is used for customer groups.
+   */
   CUSTOMER_GROUPS = "customer_groups",
 }
 
@@ -142,6 +162,9 @@ export class DiscountCondition extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "discon")

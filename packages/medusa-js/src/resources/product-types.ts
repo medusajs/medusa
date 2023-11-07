@@ -17,7 +17,7 @@ class ProductTypesResource extends BaseResource {
    * Retrieve a list of product types. The product types can be filtered by fields such as `value` or `q` passed in the `query` parameter. The product types can also be sorted or paginated.
    * @param {StoreGetProductTypesParams} query - Filters and pagination configurations to apply on retrieved product types.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreProductTypesListRes>} The list of product types with pagination fields.
+   * @returns {ResponsePromise<StoreProductTypesListRes>} Resolves to the list of product types with pagination fields.
    * 
    * @example
    * To list product types:

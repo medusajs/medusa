@@ -12,7 +12,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Product Variant API Routes](https://docs.medusajs.com/api/admin#product-variants).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
  * Product variants can be managed through {@link AdminProductsResource}.
@@ -24,7 +24,7 @@ class AdminVariantsResource extends BaseResource {
    * Retrieve a list of product variants. The product variant can be filtered by fields such as `id` or `title` passed in the `query` parameter. The product variant can also be paginated.
    * @param {AdminGetVariantsParams} query - Filters and pagination configurations to apply on the retrieved product variants.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminVariantsListRes>} The list of product variants with pagination fields.
+   * @returns {ResponsePromise<AdminVariantsListRes>} Resolves to the list of product variants with pagination fields.
    * 
    * @example
    * To list product variants:
@@ -88,7 +88,7 @@ class AdminVariantsResource extends BaseResource {
    * @param {string} id - The product variant's ID.
    * @param {AdminGetVariantParams} query - Configurations to apply on the retrieved product variant.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminVariantsRes>} The product variant's details.
+   * @returns {ResponsePromise<AdminVariantsRes>} Resolves to the product variant's details.
    * 
    * @example
    * A simple example that retrieves a product variant by its ID:
@@ -136,7 +136,7 @@ class AdminVariantsResource extends BaseResource {
    * Retrieve the available inventory of a product variant.
    * @param {string} variantId - The product variant's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminGetVariantsVariantInventoryRes>} The inventory details of the product variant.
+   * @returns {ResponsePromise<AdminGetVariantsVariantInventoryRes>} Resolves to the inventory details of the product variant.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

@@ -14,7 +14,7 @@ class ReturnsResource extends BaseResource {
    * Create a return for an order. If a return shipping method is specified, the return is automatically fulfilled.
    * @param {StorePostReturnsReq} payload - The data of the return to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreReturnsRes>} The return's details.
+   * @returns {ResponsePromise<StoreReturnsRes>} Resolves to the return's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

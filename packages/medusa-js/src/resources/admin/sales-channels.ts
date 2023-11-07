@@ -17,7 +17,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Sales Channel API Routes](https://docs.medusajs.com/api/admin#sales-channels).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A sales channel indicates a channel where products can be sold in. For example, a webshop or a mobile app.
  * Admins can manage sales channels and the products available in them.
@@ -29,7 +29,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * Retrieve a sales channel's details.
    * @param {string} salesChannelId - The sales channel's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsRes>} The sales channel's details.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -52,7 +52,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * Create a sales channel.
    * @param {AdminPostSalesChannelsReq} payload - The sales channel to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsRes>} The sales channel's details.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -79,7 +79,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * @param {string} salesChannelId - The sales channel's ID.
    * @param {AdminPostSalesChannelsSalesChannelReq} payload - The attributes to update in the sales channel.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsRes>} The sales channel's details.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -105,7 +105,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * Retrieve a list of sales channels. The sales channels can be filtered by fields such as `q` or `name` passed in the `query` parameter. The sales channels can also be sorted or paginated.
    * @param {AdminGetSalesChannelsParams} query - Filters and pagination configurations applied on the retrieved sales channels.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsListRes>} The list of sales channels with pagination fields.
+   * @returns {ResponsePromise<AdminSalesChannelsListRes>} Resolves to the list of sales channels with pagination fields.
    * 
    * @example
    * To list sales channels:
@@ -168,7 +168,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * Delete a sales channel. Associated products, stock locations, and other resources are not deleted.
    * @param {string} salesChannelId - The sales channel's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminSalesChannelsDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -192,7 +192,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * @param {string} salesChannelId - The sales channel's ID.
    * @param {AdminDeleteSalesChannelsChannelProductsBatchReq} payload - The products to remove from the sales channel.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsRes>} The sales channel's details.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -223,7 +223,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * @param {string} salesChannelId - The sales channel's ID. 
    * @param {AdminPostSalesChannelsChannelProductsBatchReq} payload - The products to add to the sales channel.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsRes>} The sales channel's details.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -254,7 +254,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * @param {string} salesChannelId - The sales channel's ID. 
    * @param {AdminPostSalesChannelsChannelStockLocationsReq} payload - The stock location to associate with the sales channel.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsRes>} The sales channel's details.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -281,7 +281,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * @param {string} salesChannelId - The sales channel's ID.
    * @param {AdminDeleteSalesChannelsChannelStockLocationsReq} payload - The stock location to remove from the sales channel.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSalesChannelsRes>} The sales channel's details.
+   * @returns {ResponsePromise<AdminSalesChannelsRes>} Resolves to the sales channel's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

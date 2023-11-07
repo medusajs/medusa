@@ -20,7 +20,7 @@ import ProductVariantsResource from "./product-variants"
  */
 class ProductsResource extends BaseResource {
   /**
-   * @prop addresses - An instance of {@link ProductVariantsResource} used to send requests to [Store Product Variant API Routes](https://docs.medusajs.com/api/store#product-variants_getvariants).
+   * An instance of {@link ProductVariantsResource} used to send requests to [Store Product Variant API Routes](https://docs.medusajs.com/api/store#product-variants_getvariants).
    */
   public variants = new ProductVariantsResource(this.client)
 
@@ -32,7 +32,7 @@ class ProductsResource extends BaseResource {
    * You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
    * @param {string} id - The product's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreProductsRes>} The product's details.
+   * @returns {ResponsePromise<StoreProductsRes>} Resolves to the product's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -55,7 +55,7 @@ class ProductsResource extends BaseResource {
    * format depends on the search service you're using.
    * @param {StorePostSearchReq} searchOptions - Fields to search products.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StorePostSearchRes>} A list of search results. The format of the items depends on the search engine installed on the Medusa backend.
+   * @returns {ResponsePromise<StorePostSearchRes>} Resolves to the list of search results. The format of the items depends on the search engine installed on the Medusa backend.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -86,7 +86,7 @@ class ProductsResource extends BaseResource {
    * You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
    * @param {StoreGetProductsParams} query - Filters and pagination configurations to apply on the retrieved products.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreProductsListRes>} The list of products with pagination fields.
+   * @returns {ResponsePromise<StoreProductsListRes>} Resolves to the list of products with pagination fields.
    * 
    * @example
    * To list products:

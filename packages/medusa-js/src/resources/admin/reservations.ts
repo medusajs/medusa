@@ -14,7 +14,7 @@ import BaseResource from "../base"
  * This class is used to send requests to [Admin Reservation API Routes](https://docs.medusajs.com/api/admin#reservations). To use these API Routes, make sure to install the
  * [@medusajs/inventory](https://docs.medusajs.com/modules/multiwarehouse/install-modules#inventory-module) module in your Medusa backend.
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Reservations, provided by the [Inventory Module](https://docs.medusajs.com/modules/multiwarehouse/inventory-module), are quantities of an item that are reserved, typically when an order is placed but not yet fulfilled.
  * Reservations can be associated with any resources, but commonly with line items of an order.
@@ -26,7 +26,7 @@ class AdminReservationsResource extends BaseResource {
    * Retrieve a reservation's details.
    * @param {string} id - The reservation's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReservationsRes>} The reservation's details.
+   * @returns {ResponsePromise<AdminReservationsRes>} Resolves to the reservation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -49,7 +49,7 @@ class AdminReservationsResource extends BaseResource {
    * Retrieve a list of reservations. The reservations can be filtered by fields such as `location_id` or `quantity` passed in the `query` parameter. The reservations can also be paginated.
    * @param {AdminGetReservationsParams} query - Filters and pagination parameters to apply on the retrieved reservations.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReservationsListRes>} The list of reservations with pagination fields.
+   * @returns {ResponsePromise<AdminReservationsListRes>} Resolves to the list of reservations with pagination fields.
    * 
    * @example
    * To list reservations:
@@ -112,7 +112,7 @@ class AdminReservationsResource extends BaseResource {
    * Create a reservation which can be associated with any resource, such as an order's line item.
    * @param {AdminPostReservationsReq} payload - The reservation to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReservationsRes>} The reservation's details.
+   * @returns {ResponsePromise<AdminReservationsRes>} Resolves to the reservation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -141,7 +141,7 @@ class AdminReservationsResource extends BaseResource {
    * @param {string} id - The ID of the reservation.
    * @param {AdminPostReservationsReservationReq} payload - The attributes to update in the reservation.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReservationsRes>} The reservation's details.
+   * @returns {ResponsePromise<AdminReservationsRes>} Resolves to the reservation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -167,7 +167,7 @@ class AdminReservationsResource extends BaseResource {
    * Delete a reservation. Associated resources, such as the line item, will not be deleted.
    * @param {string} id - The ID of the reservation. 
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReservationsDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminReservationsDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

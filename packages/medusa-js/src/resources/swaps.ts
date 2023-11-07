@@ -20,7 +20,7 @@ class SwapsResource extends BaseResource {
    * key in the `Idempotency-Key` header.
    * @param {StorePostSwapsReq} payload - The data of the swap to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreSwapsRes>} The swap's details.
+   * @returns {ResponsePromise<StoreSwapsRes>} Resolves to the swap's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -53,7 +53,7 @@ class SwapsResource extends BaseResource {
    * Retrieve a Swap's details by the ID of its cart.
    * @param {string} cart_id - The cart's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreSwapsRes>} The swap's details.
+   * @returns {ResponsePromise<StoreSwapsRes>} Resolves to the swap's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

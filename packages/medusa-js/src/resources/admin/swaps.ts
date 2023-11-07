@@ -10,7 +10,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Swap API Routes](https://docs.medusajs.com/api/admin#swaps).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A swap is created by a customer or an admin to exchange an item with a new one.
  * Creating a swap implicitely includes creating a return for the item being exchanged.
@@ -22,7 +22,7 @@ class AdminSwapsResource extends BaseResource {
    * Retrieve a swap's details.
    * @param {string} id - The swap's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSwapsRes>} The swap's details.
+   * @returns {ResponsePromise<AdminSwapsRes>} Resolves to the swap's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -45,7 +45,7 @@ class AdminSwapsResource extends BaseResource {
    * Retrieve a list of swaps. The swaps can be paginated.
    * @param {AdminGetSwapsParams} query - Pagination configurations to apply on the retrieved swaps.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminSwapsListRes>} The list of swaps with pagination fields.
+   * @returns {ResponsePromise<AdminSwapsListRes>} Resolves to the list of swaps with pagination fields.
    * 
    * @example
    * To list swaps:

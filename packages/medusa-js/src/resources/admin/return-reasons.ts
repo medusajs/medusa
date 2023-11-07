@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Return Reason API Routes](https://docs.medusajs.com/api/admin#return-reasons).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * Return reasons are key-value pairs that are used to specify why an order return is being created.
  * Admins can manage available return reasons, and they can be used by both admins and customers when creating a return.
@@ -23,7 +23,7 @@ class AdminReturnReasonsResource extends BaseResource {
    * Create a return reason.
    * @param {AdminPostReturnReasonsReq} payload - The return reason to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReturnReasonsRes>} The return reason's details.
+   * @returns {ResponsePromise<AdminReturnReasonsRes>} Resolves to the return reason's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -50,7 +50,7 @@ class AdminReturnReasonsResource extends BaseResource {
    * @param {string} id - The return reason's ID.
    * @param {AdminPostReturnReasonsReasonReq} payload - The attributes to update in the return reason.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReturnReasonsRes>} The return reason's details.
+   * @returns {ResponsePromise<AdminReturnReasonsRes>} Resolves to the return reason's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -76,7 +76,7 @@ class AdminReturnReasonsResource extends BaseResource {
    * Delete a return reason.
    * @param {string} id - The ID of the return reason.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReturnReasonsDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminReturnReasonsDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -99,7 +99,7 @@ class AdminReturnReasonsResource extends BaseResource {
    * Retrieve a return reason's details.
    * @param {string} id - The return reason's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReturnReasonsRes>} The return reason's details.
+   * @returns {ResponsePromise<AdminReturnReasonsRes>} Resolves to the return reason's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -121,7 +121,7 @@ class AdminReturnReasonsResource extends BaseResource {
   /**
    * Retrieve a list of return reasons.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminReturnReasonsListRes>} The list of return reasons.
+   * @returns {ResponsePromise<AdminReturnReasonsListRes>} Resolves to the list of return reasons.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

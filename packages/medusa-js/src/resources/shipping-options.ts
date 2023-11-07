@@ -18,7 +18,7 @@ class ShippingOptionsResource extends BaseResource {
    * Retrieve a list of shipping options available for a cart.
    * @param {string} cart_id - The cart's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreShippingOptionsListRes>} The list of shipping options.
+   * @returns {ResponsePromise<StoreShippingOptionsListRes>} Resolves to the list of shipping options.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -37,7 +37,7 @@ class ShippingOptionsResource extends BaseResource {
    * Retrieve a list of shipping options. The shipping options can be filtered using the `query` parameter.
    * @param {StoreGetShippingOptionsParams} query - The filters to apply on the shipping options.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreShippingOptionsListRes>} The list of shipping options.
+   * @returns {ResponsePromise<StoreShippingOptionsListRes>} Resolves to the list of shipping options.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

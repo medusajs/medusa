@@ -11,7 +11,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Store API Routes](https://docs.medusajs.com/api/admin#store).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A store indicates the general configurations and details about the commerce store. By default, there's only one store in the Medusa backend.
  * Admins can manage the store and its details or configurations.
@@ -21,7 +21,7 @@ class AdminStoresResource extends BaseResource {
    * Update the store's details.
    * @param {AdminPostStoreReq} payload - The attributes to update in the store.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminStoresRes>} The store's details.
+   * @returns {ResponsePromise<AdminStoresRes>} Resolves to the store's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -47,7 +47,7 @@ class AdminStoresResource extends BaseResource {
    * To create a currency, you can [create a migration](https://docs.medusajs.com/development/entities/migrations/create) that inserts the currency into the database.
    * @param {string} currency_code - The code of the currency to add to the store.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminStoresRes>} The store's details.
+   * @returns {ResponsePromise<AdminStoresRes>} Resolves to the store's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -70,7 +70,7 @@ class AdminStoresResource extends BaseResource {
    * Delete a currency code from the available currencies in a store. This doesn't completely delete the currency and it can be added again later to the store.
    * @param {string} currency_code - The code of the currency to delete from the store.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminStoresRes>} The store's details.
+   * @returns {ResponsePromise<AdminStoresRes>} Resolves to the store's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -92,7 +92,7 @@ class AdminStoresResource extends BaseResource {
   /**
    * Retrieve the store's details.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminExtendedStoresRes>} The store's details.
+   * @returns {ResponsePromise<AdminExtendedStoresRes>} Resolves to the store's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -113,7 +113,7 @@ class AdminStoresResource extends BaseResource {
   /**
    * Retrieve a list of available payment providers in a store.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminPaymentProvidersList>} The list of payment providers.
+   * @returns {ResponsePromise<AdminPaymentProvidersList>} Resolves to the list of payment providers.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -134,7 +134,7 @@ class AdminStoresResource extends BaseResource {
   /**
    * Retrieve a list of available tax providers in a store.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminTaxProvidersList>} The list of tax providers.
+   * @returns {ResponsePromise<AdminTaxProvidersList>} Resolves to the list of tax providers.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

@@ -24,7 +24,7 @@ class ProductCategoriesResource extends BaseResource {
    * @param {string} id - The ID of the product category.
    * @param {StoreGetProductCategoriesCategoryParams} query - Configurations to apply on the retrieved product categories.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreGetProductCategoriesCategoryRes>} The product category's details.
+   * @returns {ResponsePromise<StoreGetProductCategoriesCategoryRes>} Resolves to the product category's details.
    * 
    * @example
    * A simple example that retrieves a product category by its ID:
@@ -73,7 +73,7 @@ class ProductCategoriesResource extends BaseResource {
    * The product categories can also be paginated. This method can also be used to retrieve a product category by its handle.
    * @param {StoreGetProductCategoriesParams} query - Filters and pagination configurations to apply on the retrieved product categories.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreGetProductCategoriesRes>} The list of product categories with pagination fields.
+   * @returns {ResponsePromise<StoreGetProductCategoriesRes>} Resolves to the list of product categories with pagination fields.
    * 
    * @example
    * To list product categories:

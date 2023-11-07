@@ -21,7 +21,7 @@ class OrdersResource extends BaseResource {
    * Retrieve an Order's details.
    * @param {string} id - The order's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreOrdersRes>} The details of the order.
+   * @returns {ResponsePromise<StoreOrdersRes>} Resolves to the details of the order.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -43,7 +43,7 @@ class OrdersResource extends BaseResource {
    * Retrieve an order's details by the ID of the cart that was used to create the order.
    * @param {string} cart_id - The cart's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreOrdersRes>} The details of the order.
+   * @returns {ResponsePromise<StoreOrdersRes>} Resolves to the details of the order.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -62,10 +62,10 @@ class OrdersResource extends BaseResource {
   }
 
   /**
-   * Look up an order using filters. If the filters don't narrow down the results to a single order, a 404 response is returned with no orders.
+   * Look up an order using filters. If the filters don't narrow down the results to a single order, a `404` response is returned with no orders.
    * @param {StoreGetOrdersParams} payload - Filters used to retrieve the order.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreOrdersRes>} The details of the order.
+   * @returns {ResponsePromise<StoreOrdersRes>} Resolves to the details of the order.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

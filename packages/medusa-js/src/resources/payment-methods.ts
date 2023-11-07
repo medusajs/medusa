@@ -12,7 +12,7 @@ class PaymentMethodsResource extends BaseResource {
    * Retrieve the logged-in customer's saved payment methods. This method only works with payment providers created with the deprecated Payment Service interface.
    * The payment methods are saved using the Payment Service's third-party service, and not on the Medusa backend. So, they're retrieved from the third-party service.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {StoreCustomersListPaymentMethodsRes} The customer's payment methods.
+   * @returns {StoreCustomersListPaymentMethodsRes} Resolves to the customer's payment methods.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

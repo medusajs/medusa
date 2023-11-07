@@ -18,7 +18,7 @@ class OrderEditsResource extends BaseResource {
    * Retrieve an Order Edit's details.
    * @param {string} id - The ID of the order edit.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<StoreOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -41,7 +41,7 @@ class OrderEditsResource extends BaseResource {
    * @param {string} id - The ID of the order edit.
    * @param {StorePostOrderEditsOrderEditDecline} payload - The decline details.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<StoreOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -64,7 +64,7 @@ class OrderEditsResource extends BaseResource {
    * Complete an Order Edit and reflect its changes on the original order. Any additional payment required must be authorized first using the {@link PaymentCollectionsResource} routes.
    * @param {string} id - The ID of the order edit.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreOrderEditsRes>} The order edit's details.
+   * @returns {ResponsePromise<StoreOrderEditsRes>} Resolves to the order edit's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

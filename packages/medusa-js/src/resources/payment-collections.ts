@@ -22,7 +22,7 @@ class PaymentCollectionsResource extends BaseResource {
    * @param {string} id - The ID of the payment collection.
    * @param {StoreGetPaymentCollectionsParams} query - Configurations to apply on the retrieved payment collection.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StorePaymentCollectionsRes>} The payment collection's details.
+   * @returns {ResponsePromise<StorePaymentCollectionsRes>} Resolves to the payment collection's details.
    * 
    * @example
    * A simple example that retrieves a payment collection by its ID:
@@ -71,7 +71,7 @@ class PaymentCollectionsResource extends BaseResource {
    * @param {string} id  - The ID of the payment collection.
    * @param {string} session_id - The ID of the payment session.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StorePaymentCollectionsRes>} The payment collection's details.
+   * @returns {ResponsePromise<StorePaymentCollectionsRes>} Resolves to the payment collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -96,7 +96,7 @@ class PaymentCollectionsResource extends BaseResource {
    * @param {string} id - The ID of the payment collection.
    * @param {StorePostPaymentCollectionsBatchSessionsAuthorizeReq} payload - The list of payment session IDs to authorize.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StorePaymentCollectionsRes>} The payment collection's details.
+   * @returns {ResponsePromise<StorePaymentCollectionsRes>} Resolves to the payment collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -121,7 +121,7 @@ class PaymentCollectionsResource extends BaseResource {
    * @param {string} id - The ID of the payment collection.
    * @param {StorePostPaymentCollectionsBatchSessionsReq} payload - The attributes of each session to update.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StorePaymentCollectionsRes>} The payment collection's details.
+   * @returns {ResponsePromise<StorePaymentCollectionsRes>} Resolves to the payment collection's details.
    * 
    * @example
    * To add two new payment sessions:
@@ -180,7 +180,7 @@ class PaymentCollectionsResource extends BaseResource {
    * @param {string} id - The ID of the payment collection.
    * @param {StorePaymentCollectionSessionsReq} payload - The payment session to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StorePaymentCollectionsRes>} The payment collection's details.
+   * @returns {ResponsePromise<StorePaymentCollectionsRes>} Resolves to the payment collection's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -205,7 +205,7 @@ class PaymentCollectionsResource extends BaseResource {
    * @param {string} id - The ID of the payment collection. 
    * @param {string} session_id - The ID of the payment session.
    * @param customHeaders 
-   * @returns {ResponsePromise<StorePaymentCollectionsSessionRes>} The refreshed payment session's details.
+   * @returns {ResponsePromise<StorePaymentCollectionsSessionRes>} Resolves to the refreshed payment session's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

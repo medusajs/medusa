@@ -15,7 +15,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin User API Routes](https://docs.medusajs.com/api/admin#users).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A store can have more than one user, each having the same privileges. Admins can manage users, their passwords, and more.
  * 
@@ -58,7 +58,7 @@ class AdminUsersResource extends BaseResource {
    * then use that token to reset the password in this method.
    * @param {AdminResetPasswordRequest} payload - The reset details.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminUserRes>} The user's details.
+   * @returns {ResponsePromise<AdminUserRes>} Resolves to the user's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -84,7 +84,7 @@ class AdminUsersResource extends BaseResource {
    * Retrieve an admin user's details.
    * @param {string} id - The user's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminUserRes>} The user's details.
+   * @returns {ResponsePromise<AdminUserRes>} Resolves to the user's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -107,7 +107,7 @@ class AdminUsersResource extends BaseResource {
    * Create an admin user. The user has the same privileges as all admin users, and will be able to authenticate and perform admin functionalities right after creation.
    * @param {AdminCreateUserPayload} payload - The user to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminUserRes>} The user's details.
+   * @returns {ResponsePromise<AdminUserRes>} Resolves to the user's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -134,7 +134,7 @@ class AdminUsersResource extends BaseResource {
    * @param {string} id - The user's ID.
    * @param {AdminUpdateUserPayload} payload - The attributes to update in the user.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminUserRes>} The user's details.
+   * @returns {ResponsePromise<AdminUserRes>} Resolves to the user's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -160,7 +160,7 @@ class AdminUsersResource extends BaseResource {
    * Delete a user. Once deleted, the user will not be able to authenticate or perform admin functionalities.
    * @param {string} id - The user's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminDeleteUserRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminDeleteUserRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -182,7 +182,7 @@ class AdminUsersResource extends BaseResource {
   /**
    * Retrieve all admin users.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminUsersListRes>} The list of users.
+   * @returns {ResponsePromise<AdminUsersListRes>} Resolves to the list of users.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

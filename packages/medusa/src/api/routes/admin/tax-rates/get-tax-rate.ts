@@ -90,11 +90,20 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminGetTaxRatesTaxRateParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

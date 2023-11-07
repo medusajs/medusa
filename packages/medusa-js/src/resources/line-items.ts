@@ -15,7 +15,7 @@ class LineItemsResource extends BaseResource {
    * @param {string} cart_id - The cart's ID.
    * @param {StorePostCartsCartLineItemsReq} payload - The line item to be created.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The associated cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the associated cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -42,7 +42,7 @@ class LineItemsResource extends BaseResource {
    * @param {string} line_id - The ID of the line item to update.
    * @param {StorePostCartsCartLineItemsItemReq} payload - The data to update in the line item.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The associated cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the associated cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -68,7 +68,7 @@ class LineItemsResource extends BaseResource {
    * @param {string} cart_id - The ID of the line item's cart.
    * @param {string} line_id - The ID of the line item to delete.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreCartsRes>} The associated cart's details.
+   * @returns {ResponsePromise<StoreCartsRes>} Resolves to the associated cart's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

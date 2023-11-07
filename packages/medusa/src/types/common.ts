@@ -172,7 +172,7 @@ export type DeleteResponse = {
 export class EmptyQueryParams {}
 
 /**
- * This class holds fields used to apply flexible filters on dates.
+ * Fields used to apply flexible filters on dates.
  */
 export class DateComparisonOperator {
   /**
@@ -209,7 +209,7 @@ export class DateComparisonOperator {
 }
 
 /**
- * This class holds fields used to apply flexible filters on strings.
+ * Fields used to apply flexible filters on strings.
  */
 export class StringComparisonOperator {
   /**
@@ -262,22 +262,37 @@ export class StringComparisonOperator {
   ends_with?: string
 }
 
+/**
+ * Fields used to apply flexible filters on numbers.
+ */
 export class NumericalComparisonOperator {
+  /**
+   * The filtered number must be less than this value.
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   lt?: number
 
+  /**
+   * The filtered number must be greater than this value.
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   gt?: number
 
+  /**
+   * The filtered number must be greater than or equal to this value.
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   gte?: number
 
+  /**
+   * The filtered number must be less than or equal to this value.
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)

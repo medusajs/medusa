@@ -18,6 +18,8 @@ import { getTypeChildren } from "utils"
 type Schema = {
   description?: string
   properties?: SchemaProperties
+  allOf?: SchemaProperty[]
+  oneOf?: SchemaProperty[]
 }
 
 type SchemaProperties = {
@@ -30,6 +32,9 @@ type SchemaProperty = {
   "x-featureFlag"?: string
   default?: string
   items?: Schema
+  properties?: SchemaProperties
+  allOf?: SchemaProperty[]
+  oneOf?: SchemaProperty[]
 }
 
 export function load(app: Application) {
@@ -101,20 +106,7 @@ export function load(app: Application) {
       let schema: Schema | undefined
       let { comment } = reflection
       const schemaTags = comment?.getTags(`@schema`)
-      if (
-        reflection.name === "publishable_api_key" &&
-        "type" in reflection &&
-        reflection.type
-      ) {
-        const reflectionType = reflection.type as SomeType
 
-        if ("name" in reflectionType) {
-          console.log(
-            reflectionType.name,
-            definedSchemas.has(reflectionType.name)
-          )
-        }
-      }
       if (schemaTags?.length) {
         schemaTags.forEach((part) => {
           if (part.content.length) {
@@ -172,6 +164,15 @@ function prepareSchemaComment(commentParts: CommentDisplayPart[]) {
 
 function addComments(schema: Schema, reflection: Reflection) {
   if (!schema.properties) {
+    if (schema.allOf) {
+      schema.allOf.forEach((valueChild) => {
+        addComments(valueChild, reflection)
+      })
+    } else if (schema.oneOf) {
+      schema.oneOf.forEach((valueChild) => {
+        addComments(valueChild, reflection)
+      })
+    }
     return
   }
   const children =
@@ -196,7 +197,7 @@ function addComments(schema: Schema, reflection: Reflection) {
         childItem.comment = comment
       }
       if (
-        value.default &&
+        value.default !== undefined &&
         "defaultValue" in childItem &&
         !childItem.defaultValue
       ) {
@@ -205,6 +206,10 @@ function addComments(schema: Schema, reflection: Reflection) {
 
       if (value.items) {
         addComments(value.items, childItem)
+      }
+
+      if (value.properties || value.allOf || value.oneOf) {
+        addComments(value, childItem)
       }
     }
   })

@@ -14,7 +14,7 @@ class RegionsResource extends BaseResource {
   /**
    * Retrieve a list of regions. This method is useful to show the customer all available regions to choose from.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreRegionsListRes>} The list of regions with pagination fields.
+   * @returns {ResponsePromise<StoreRegionsListRes>} Resolves to the list of regions with pagination fields.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -33,7 +33,7 @@ class RegionsResource extends BaseResource {
    * Retrieve a Region's details.
    * @param {string} id - The region's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<StoreRegionsRes>} The region's details.
+   * @returns {ResponsePromise<StoreRegionsRes>} Resolves to the region's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

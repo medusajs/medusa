@@ -233,6 +233,7 @@ export type StoreProductsRes = {
 
 /**
  * @schema StorePostSearchRes
+ * description: "The list of search results."
  * allOf:
  *   - type: object
  *     required:
@@ -250,6 +251,7 @@ export type StorePostSearchRes = {
 /**
  * @schema StoreProductsListRes
  * type: object
+ * description: "The list of products with pagination fields."
  * x-expanded-relations:
  *   field: products
  *   relations:

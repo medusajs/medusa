@@ -13,7 +13,7 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Shipping Option API Routes](https://docs.medusajs.com/api/admin#shipping-options).
  * 
- * All methods in this class require @link AdminAuthResource.createSession | user authentication}.
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
  * A shipping option is used to define the available shipping methods during checkout or when creating a return.
  * Admins can create an unlimited number of shipping options, each associated with a shipping profile and fulfillment provider, among other resources.
@@ -25,7 +25,7 @@ class AdminShippingOptionsResource extends BaseResource {
    * Create a shipping option.
    * @param {AdminPostShippingOptionsReq} payload - The shipping option to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminShippingOptionsRes>} The shipping option's details.
+   * @returns {ResponsePromise<AdminShippingOptionsRes>} Resolves to the shipping option's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -56,7 +56,7 @@ class AdminShippingOptionsResource extends BaseResource {
    * @param {string} id - The shipping option's ID. 
    * @param {AdminPostShippingOptionsOptionReq} payload - The attributes to update in the shipping option.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminShippingOptionsRes>} The shipping option's details.
+   * @returns {ResponsePromise<AdminShippingOptionsRes>} Resolves to the shipping option's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -89,7 +89,7 @@ class AdminShippingOptionsResource extends BaseResource {
    * Delete a shipping option. Once deleted, it can't be used when creating orders or returns.
    * @param {string} id - The shipping option's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminShippingOptionsDeleteRes>} The deletion operation's details.
+   * @returns {ResponsePromise<AdminShippingOptionsDeleteRes>} Resolves to the deletion operation's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -112,7 +112,7 @@ class AdminShippingOptionsResource extends BaseResource {
    * Retrieve a shipping option's details.
    * @param {string} id - The shipping option's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminShippingOptionsRes>} The shipping option's details.
+   * @returns {ResponsePromise<AdminShippingOptionsRes>} Resolves to the shipping option's details.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"
@@ -135,7 +135,7 @@ class AdminShippingOptionsResource extends BaseResource {
    * Retrieve a list of shipping options. The shipping options can be filtered by fields such as `region_id` or `is_return` passed in the `query` parameter.
    * @param {AdminGetShippingOptionsParams} query - Filters to apply on the retrieved shipping options.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
-   * @returns {ResponsePromise<AdminShippingOptionsListRes>} The list of shipping options.
+   * @returns {ResponsePromise<AdminShippingOptionsListRes>} Resolves to the list of shipping options.
    * 
    * @example
    * import Medusa from "@medusajs/medusa-js"

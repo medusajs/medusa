@@ -208,6 +208,9 @@ export class Product extends SoftDeletableEntity {
   ])
   sales_channels: SalesChannel[]
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "prod")
@@ -221,6 +224,9 @@ export class Product extends SoftDeletableEntity {
     }
   }
 
+  /**
+   * @apiIgnore
+   */
   @BeforeUpdate()
   private beforeUpdate(): void {
     if (this.profile_id) {
@@ -228,6 +234,9 @@ export class Product extends SoftDeletableEntity {
     }
   }
 
+  /**
+   * @apiIgnore
+   */
   @AfterLoad()
   private afterLoad(): void {
     if (this.profiles) {
