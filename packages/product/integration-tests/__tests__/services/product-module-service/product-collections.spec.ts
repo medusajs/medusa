@@ -6,6 +6,7 @@ import { initialize } from "../../../../src"
 import { EventBusService } from "../../../__fixtures__/event-bus"
 import { createCollections } from "../../../__fixtures__/product"
 import { DB_URL, TestDatabase } from "../../../utils"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 describe("ProductModuleService product collections", () => {
   let service: IProductModuleService
@@ -74,6 +75,7 @@ describe("ProductModuleService product collections", () => {
   afterEach(async () => {
     await TestDatabase.clearDatabase()
     jest.clearAllMocks()
+    MedusaModule.clearInstances()
   })
 
   describe("listCollections", () => {

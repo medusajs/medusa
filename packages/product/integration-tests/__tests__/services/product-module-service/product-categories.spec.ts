@@ -7,6 +7,7 @@ import { DB_URL, TestDatabase } from "../../../utils"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { productCategoriesRankData } from "../../../__fixtures__/product-category/data"
 import { EventBusService } from "../../../__fixtures__/event-bus"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 describe("ProductModuleService product categories", () => {
   let service: IProductModuleService
@@ -77,6 +78,7 @@ describe("ProductModuleService product categories", () => {
   afterEach(async () => {
     await TestDatabase.clearDatabase()
     jest.clearAllMocks()
+    MedusaModule.clearInstances()
   })
 
   describe("listCategories", () => {

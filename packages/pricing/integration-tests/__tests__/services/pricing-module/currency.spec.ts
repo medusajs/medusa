@@ -5,6 +5,7 @@ import { Currency } from "@models"
 import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 describe("PricingModule Service - Currency", () => {
   let service: IPricingModuleService
@@ -30,6 +31,7 @@ describe("PricingModule Service - Currency", () => {
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+    MedusaModule.clearInstances()
   })
 
   describe("listCurrencies", () => {

@@ -27,6 +27,7 @@ const beforeEach_ = async () => {
 
 const afterEach_ = async () => {
   await TestDatabase.clearDatabase()
+  MedusaModule.clearInstances()
 }
 
 describe("Product module", function () {

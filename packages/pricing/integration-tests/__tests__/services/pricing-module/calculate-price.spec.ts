@@ -11,6 +11,7 @@ import { initialize } from "../../../../src"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -34,6 +35,7 @@ describe("PricingModule Service - Calculate Price", () => {
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+    MedusaModule.clearInstances()
   })
 
   describe("calculatePrices", () => {

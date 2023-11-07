@@ -1,7 +1,7 @@
 import { CreatePriceRuleDTO, IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { PriceSetMoneyAmount, initialize } from "../../../../src"
+import { initialize, PriceSetMoneyAmount } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
@@ -10,6 +10,7 @@ import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-mone
 import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -39,6 +40,7 @@ describe("PricingModule Service - PriceRule", () => {
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+    MedusaModule.clearInstances()
   })
 
   describe("list", () => {

@@ -3,6 +3,7 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product, ProductOption } from "@models"
 import { initialize } from "../../../../src"
 import { DB_URL, TestDatabase } from "../../../utils"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 describe("ProductModuleService product options", () => {
   let service: IProductModuleService
@@ -54,6 +55,7 @@ describe("ProductModuleService product options", () => {
 
   afterEach(async () => {
     await TestDatabase.clearDatabase()
+    MedusaModule.clearInstances()
   })
 
   describe("listOptions", () => {

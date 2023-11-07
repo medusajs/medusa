@@ -3,7 +3,7 @@ import { DB_URL, TestDatabase } from "../../../utils"
 import { IProductModuleService } from "@medusajs/types"
 import { ProductType } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductTypes } from "@medusajs/types"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 describe("ProductModuleService product types", () => {
   let service: IProductModuleService
@@ -40,6 +40,7 @@ describe("ProductModuleService product types", () => {
 
   afterEach(async () => {
     await TestDatabase.clearDatabase()
+    MedusaModule.clearInstances()
   })
 
   describe("listTypes", () => {
@@ -87,7 +88,7 @@ describe("ProductModuleService product types", () => {
         },
         {
           select: ["value"],
-          take: 1
+          take: 1,
         }
       )
 
@@ -130,12 +131,13 @@ describe("ProductModuleService product types", () => {
           id: typeOne.id,
         }),
       ])
-
       ;[types, count] = await service.listAndCountTypes({}, { take: 1 })
 
       expect(count).toEqual(2)
-
-      ;[types, count] = await service.listAndCountTypes({}, { take: 1, skip: 1 })
+      ;[types, count] = await service.listAndCountTypes(
+        {},
+        { take: 1, skip: 1 }
+      )
 
       expect(count).toEqual(2)
       expect(types).toEqual([
@@ -152,7 +154,7 @@ describe("ProductModuleService product types", () => {
         },
         {
           select: ["value"],
-          take: 1
+          take: 1,
         }
       )
 
@@ -173,24 +175,19 @@ describe("ProductModuleService product types", () => {
       expect(type).toEqual(
         expect.objectContaining({
           id: typeOne.id,
-        }),
+        })
       )
     })
 
     it("should return requested attributes when requested through config", async () => {
-      const type = await service.retrieveType(
-        typeOne.id,
-        {
-          select: ["id", "value"],
-        }
-      )
+      const type = await service.retrieveType(typeOne.id, {
+        select: ["id", "value"],
+      })
 
-      expect(type).toEqual(
-        {
-          id: typeOne.id,
-          value: typeOne.value,
-        },
-      )
+      expect(type).toEqual({
+        id: typeOne.id,
+        value: typeOne.value,
+      })
     })
 
     it("should throw an error when a type with ID does not exist", async () => {
@@ -202,7 +199,9 @@ describe("ProductModuleService product types", () => {
         error = e
       }
 
-      expect(error.message).toEqual("ProductType with id: does-not-exist was not found")
+      expect(error.message).toEqual(
+        "ProductType with id: does-not-exist was not found"
+      )
     })
   })
 
@@ -210,12 +209,10 @@ describe("ProductModuleService product types", () => {
     const typeId = "type-1"
 
     it("should delete the product type given an ID successfully", async () => {
-      await service.deleteTypes(
-        [typeId],
-      )
+      await service.deleteTypes([typeId])
 
       const types = await service.listTypes({
-        id: typeId
+        id: typeId,
       })
 
       expect(types).toHaveLength(0)
@@ -226,12 +223,12 @@ describe("ProductModuleService product types", () => {
     const typeId = "type-1"
 
     it("should update the value of the type successfully", async () => {
-      await service.updateTypes(
-        [{
+      await service.updateTypes([
+        {
           id: typeId,
-          value: "UK"
-        }]
-      )
+          value: "UK",
+        },
+      ])
 
       const productType = await service.retrieveType(typeId)
 
@@ -245,31 +242,32 @@ describe("ProductModuleService product types", () => {
         await service.updateTypes([
           {
             id: "does-not-exist",
-            value: "UK"
-          }
+            value: "UK",
+          },
         ])
       } catch (e) {
         error = e
       }
 
-      expect(error.message).toEqual('ProductType with id "does-not-exist" not found')
+      expect(error.message).toEqual(
+        'ProductType with id "does-not-exist" not found'
+      )
     })
   })
 
   describe("createTypes", () => {
     it("should create a type successfully", async () => {
-      const res = await service.createTypes(
-        [{
-          value: "UK"
-        }]
-      )
+      const res = await service.createTypes([
+        {
+          value: "UK",
+        },
+      ])
 
       const productType = await service.listTypes({
-        value: "UK"
+        value: "UK",
       })
 
       expect(productType[0]?.value).toEqual("UK")
     })
   })
 })
-

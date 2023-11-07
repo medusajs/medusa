@@ -1,9 +1,9 @@
 import { initialize } from "../../../../src"
 import { DB_URL, TestDatabase } from "../../../utils"
-import { IProductModuleService } from "@medusajs/types"
+import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import { Product, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductTypes } from "@medusajs/types"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 describe("ProductModuleService product variants", () => {
   let service: IProductModuleService
@@ -58,6 +58,7 @@ describe("ProductModuleService product variants", () => {
 
   afterEach(async () => {
     await TestDatabase.clearDatabase()
+    MedusaModule.clearInstances()
   })
 
   describe("listAndCountVariants", () => {
@@ -140,18 +141,15 @@ describe("ProductModuleService product variants", () => {
         expect.objectContaining({
           id: "test-1",
           title: "variant 1",
-        }),
+        })
       )
     })
 
     it("should return requested attributes when requested through config", async () => {
-      const result = await service.retrieveVariant(
-        variantOne.id,
-        {
-          select: ["id", "title", "product.title"] as any,
-          relations: ["product"],
-        }
-      )
+      const result = await service.retrieveVariant(variantOne.id, {
+        select: ["id", "title", "product.title"] as any,
+        relations: ["product"],
+      })
 
       expect(result).toEqual(
         expect.objectContaining({
@@ -162,7 +160,7 @@ describe("ProductModuleService product variants", () => {
             id: "product-1",
             title: "product 1",
           }),
-        }),
+        })
       )
     })
 
@@ -175,8 +173,9 @@ describe("ProductModuleService product variants", () => {
         error = e
       }
 
-      expect(error.message).toEqual("ProductVariant with id: does-not-exist was not found")
+      expect(error.message).toEqual(
+        "ProductVariant with id: does-not-exist was not found"
+      )
     })
   })
 })
-

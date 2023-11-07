@@ -6,9 +6,10 @@ import {
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
 
-import { PriceSetRuleType, initialize } from "../../../../src"
+import { initialize, PriceSetRuleType } from "../../../../src"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -59,6 +60,7 @@ describe("PricingModule Service - PriceSet", () => {
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+    MedusaModule.clearInstances()
   })
 
   describe("list", () => {

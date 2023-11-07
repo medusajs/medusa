@@ -9,6 +9,7 @@ import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-mone
 import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -39,6 +40,7 @@ describe("PricingModule Service - PriceSetMoneyAmountRules", () => {
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+    MedusaModule.clearInstances()
   })
 
   describe("listPriceSetMoneyAmountRules", () => {

@@ -6,6 +6,7 @@ import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
@@ -36,6 +37,7 @@ describe("PricingModule Service - MoneyAmount", () => {
 
   afterEach(async () => {
     await MikroOrmWrapper.clearDatabase()
+    MedusaModule.clearInstances()
   })
 
   describe("listMoneyAmounts", () => {

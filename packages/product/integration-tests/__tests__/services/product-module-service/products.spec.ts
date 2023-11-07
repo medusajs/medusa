@@ -27,6 +27,7 @@ const afterEach_ = async () => {
   await TestDatabase.clearDatabase()
   eventBusSpy.mockClear()
   jest.clearAllMocks()
+  MedusaModule.clearInstances()
 }
 
 describe("ProductModuleService products", function () {
