@@ -7,18 +7,20 @@ import {
 } from "@medusajs/types"
 import {
   SchemaObjectRepresentation,
+  schemaObjectRepresentationPropertiesToOmit,
   SearchModuleOptions,
   StorageProvider,
-  schemaObjectRepresentationPropertiesToOmit,
 } from "../types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { joinerConfig } from "./../joiner-config"
+import { BaseRepository } from "@medusajs/product/dist/repositories"
 
 type InjectedDependencies = {
   eventBusModuleService: IEventBusModuleService
   storageProviderCtr: StorageProvider
   storageProviderCtrOptions: unknown
   remoteQuery: RemoteQueryFunction
+  baseRepository: BaseRepository
 }
 
 export default class SearchModuleService

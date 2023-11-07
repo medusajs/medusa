@@ -27,7 +27,6 @@ describe("SearchEngineModuleService query", function () {
       remoteQueryMock,
       eventBusMock: eventBus,
       callback: () => {
-        console.log("cb called")
         moduleBootstrapPromiseOk()
       },
     })

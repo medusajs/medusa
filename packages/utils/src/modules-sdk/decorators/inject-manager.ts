@@ -19,7 +19,7 @@ export function InjectManager(managerProperty?: string): MethodDecorator {
       const originalContext = args[argIndex] ?? {}
       const copiedContext = {} as Context
       for (const key in originalContext) {
-        if (key === "transactionManager") continue
+        if (key === "manager") continue
         Object.defineProperty(copiedContext, key, {
           get: function () {
             return originalContext[key]

@@ -1,5 +1,16 @@
-import { Message, RemoteQueryFunction, Subscriber } from "@medusajs/types"
-import { isDefined, remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  Context,
+  Message,
+  RemoteQueryFunction,
+  Subscriber,
+} from "@medusajs/types"
+import {
+  InjectManager,
+  InjectTransactionManager,
+  isDefined,
+  MedusaContext,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql"
 import { Catalog, CatalogRelation } from "@models"
 import {
@@ -11,10 +22,12 @@ import {
   SearchModuleOptions,
 } from "../types"
 import { createPartitions, QueryBuilder } from "../utils"
+import { BaseRepository } from "@medusajs/product/dist/repositories"
 
 type InjectedDependencies = {
   manager: EntityManager
   remoteQuery: RemoteQueryFunction
+  baseRepository: BaseRepository
 }
 
 export class PostgresProvider {
@@ -34,18 +47,20 @@ export class PostgresProvider {
   protected readonly moduleOptions_: SearchModuleOptions
   protected readonly manager_: SqlEntityManager
   protected readonly remoteQuery_: RemoteQueryFunction
+  protected baseRepository_: BaseRepository
 
   constructor(
-    { manager, remoteQuery }: InjectedDependencies,
+    { manager, remoteQuery, baseRepository }: InjectedDependencies,
     options: {
       schemaObjectRepresentation: SchemaObjectRepresentation
       entityMap: Record<string, any>
     },
     moduleOptions: SearchModuleOptions
   ) {
+    this.manager_ = manager
     this.remoteQuery_ = remoteQuery
     this.moduleOptions_ = moduleOptions
-    this.manager_ = manager
+    this.baseRepository_ = baseRepository
 
     this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
     this.schemaEntitiesMap_ = options.entityMap
@@ -175,9 +190,15 @@ export class PostgresProvider {
     return result
   }
 
-  async query(selection: QueryFormat, options?: QueryOptions) {
+  @InjectManager("baseRepository_")
+  async query(
+    selection: QueryFormat,
+    options?: QueryOptions,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
     await this.#isReady_
 
+    const { manager } = sharedContext as { manager: SqlEntityManager }
     let hasPagination = false
     if (
       typeof options?.take === "number" ||
@@ -186,7 +207,6 @@ export class PostgresProvider {
       hasPagination = true
     }
 
-    const manager = this.manager_.fork()
     const connection = manager.getConnection()
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
@@ -212,17 +232,23 @@ export class PostgresProvider {
             [`${mainEntity}.id`]: ids,
           },
         }
-        return await this.query(selection_)
+        return await this.query(selection_, undefined, sharedContext)
       }
     }
 
     return qb.buildObjectFromResultset(resultset)
   }
 
-  async queryAndCount(selection: QueryFormat, options?: QueryOptions) {
+  @InjectManager("baseRepository_")
+  async queryAndCount(
+    selection: QueryFormat,
+    options?: QueryOptions,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
     await this.#isReady_
 
-    const connection = this.manager_.getConnection()
+    const { manager } = sharedContext as { manager: SqlEntityManager }
+    const connection = manager.getConnection()
     const qb = new QueryBuilder({
       schema: this.schemaObjectRepresentation_,
       entityMap: this.schemaEntitiesMap_,
@@ -248,7 +274,7 @@ export class PostgresProvider {
             [`${mainEntity}.id`]: ids,
           },
         }
-        return [await this.query(selection_), count]
+        return [await this.query(selection_, undefined, sharedContext), count]
       }
     }
 
@@ -307,91 +333,93 @@ export class PostgresProvider {
    * @param entity
    * @param data
    * @param schemaEntityObjectRepresentation
+   * @param sharedContext
    * @protected
    */
+  @InjectTransactionManager("baseRepository_")
   protected async onCreate<
     TData extends { id: string; [key: string]: unknown }
-  >({
-    entity,
-    data,
-    schemaEntityObjectRepresentation,
-  }: {
-    entity: string
-    data: TData | TData[]
-    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
-  }) {
-    await this.manager_.fork().transactional(async (em) => {
-      const catalogRepository = em.getRepository(Catalog)
-      const catalogRelationRepository = em.getRepository(CatalogRelation)
+  >(
+    {
+      entity,
+      data,
+      schemaEntityObjectRepresentation,
+    }: {
+      entity: string
+      data: TData | TData[]
+      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+    },
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const { transactionManager: em } = sharedContext as {
+      transactionManager: SqlEntityManager
+    }
+    const catalogRepository = em.getRepository(Catalog)
+    const catalogRelationRepository = em.getRepository(CatalogRelation)
 
-      const {
-        data: data_,
-        entityProperties,
-        parentsProperties,
-      } = PostgresProvider.parseData(data, schemaEntityObjectRepresentation)
+    const {
+      data: data_,
+      entityProperties,
+      parentsProperties,
+    } = PostgresProvider.parseData(data, schemaEntityObjectRepresentation)
 
+    /**
+     * Loop through the data and create catalog entries for each entity as well as the
+     * catalog relation entries if the entity has parents
+     */
+
+    for (const entityData of data_) {
       /**
-       * Loop through the data and create catalog entries for each entity as well as the
-       * catalog relation entries if the entity has parents
+       * Clean the entity data to only keep the properties that are defined in the schema
        */
 
-      for (const entityData of data_) {
-        /**
-         * Clean the entity data to only keep the properties that are defined in the schema
-         */
+      const cleanedEntityData = entityProperties.reduce((acc, property) => {
+        acc[property] = entityData[property]
+        return acc
+      }, {}) as TData
 
-        const cleanedEntityData = entityProperties.reduce((acc, property) => {
-          acc[property] = entityData[property]
-          return acc
-        }, {}) as TData
+      await catalogRepository.upsert({
+        id: cleanedEntityData.id,
+        name: entity,
+        data: cleanedEntityData,
+      })
 
-        await catalogRepository.upsert({
-          id: cleanedEntityData.id,
-          name: entity,
-          data: cleanedEntityData,
-        })
+      /**
+       * Retrieve the parents to attach it to the catalog entry.
+       */
 
-        /**
-         * Retrieve the parents to attach it to the catalog entry.
-         */
+      for (const [parentEntity, parentProperties] of Object.entries(
+        parentsProperties
+      )) {
+        const parentAlias = parentProperties[0].split(".")[0]
+        const parentData = entityData[parentAlias] as TData[]
 
-        for (const [parentEntity, parentProperties] of Object.entries(
-          parentsProperties
-        )) {
-          const parentAlias = parentProperties[0].split(".")[0]
-          const parentData = entityData[parentAlias] as TData[]
+        if (!parentData) {
+          continue
+        }
 
-          if (!parentData) {
-            continue
-          }
+        const parentDataCollection = Array.isArray(parentData)
+          ? parentData
+          : [parentData]
 
-          const parentDataCollection = Array.isArray(parentData)
-            ? parentData
-            : [parentData]
+        for (const parentData_ of parentDataCollection) {
+          await catalogRepository.upsert({
+            id: (parentData_ as any).id,
+            name: parentEntity,
+            data: parentData_,
+          })
 
-          for (const parentData_ of parentDataCollection) {
-            await catalogRepository.upsert({
-              id: (parentData_ as any).id,
-              name: parentEntity,
-              data: parentData_,
-            })
-
-            const parentCatalogRelationEntry = catalogRelationRepository.create(
-              {
-                parent_id: (parentData_ as any).id,
-                parent_name: parentEntity,
-                child_id: cleanedEntityData.id,
-                child_name: entity,
-                pivot: `${parentEntity}-${entity}`,
-              }
-            )
-            catalogRelationRepository.persist(parentCatalogRelationEntry)
-          }
+          const parentCatalogRelationEntry = catalogRelationRepository.create({
+            parent_id: (parentData_ as any).id,
+            parent_name: parentEntity,
+            child_id: cleanedEntityData.id,
+            child_name: entity,
+            pivot: `${parentEntity}-${entity}`,
+          })
+          catalogRelationRepository.persist(parentCatalogRelationEntry)
         }
       }
-
-      await em.flush()
-    })
+    }
   }
 
   /**
@@ -399,40 +427,46 @@ export class PostgresProvider {
    * @param entity
    * @param data
    * @param schemaEntityObjectRepresentation
+   * @param sharedContext
    * @protected
    */
+  @InjectTransactionManager("baseRepository_")
   protected async onUpdate<
     TData extends { id: string; [key: string]: unknown }
-  >({
-    entity,
-    data,
-    schemaEntityObjectRepresentation,
-  }: {
-    entity: string
-    data: TData | TData[]
-    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
-  }) {
-    await this.manager_.fork().transactional(async (em) => {
-      const catalogRepository = em.getRepository(Catalog)
+  >(
+    {
+      entity,
+      data,
+      schemaEntityObjectRepresentation,
+    }: {
+      entity: string
+      data: TData | TData[]
+      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+    },
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const { transactionManager: em } = sharedContext as {
+      transactionManager: SqlEntityManager
+    }
+    const catalogRepository = em.getRepository(Catalog)
 
-      const { data: data_, entityProperties } = PostgresProvider.parseData(
-        data,
-        schemaEntityObjectRepresentation
-      )
+    const { data: data_, entityProperties } = PostgresProvider.parseData(
+      data,
+      schemaEntityObjectRepresentation
+    )
 
-      await catalogRepository.upsertMany(
-        data_.map((entityData) => {
-          return {
-            id: entityData.id,
-            name: entity,
-            data: entityProperties.reduce((acc, property) => {
-              acc[property] = entityData[property]
-              return acc
-            }, {}),
-          }
-        })
-      )
-    })
+    await catalogRepository.upsertMany(
+      data_.map((entityData) => {
+        return {
+          id: entityData.id,
+          name: entity,
+          data: entityProperties.reduce((acc, property) => {
+            acc[property] = entityData[property]
+            return acc
+          }, {}),
+        }
+      })
+    )
   }
 
   /**
@@ -440,47 +474,53 @@ export class PostgresProvider {
    * @param entity
    * @param data
    * @param schemaEntityObjectRepresentation
+   * @param sharedContext
    * @protected
    */
+  @InjectTransactionManager("baseRepository_")
   protected async onDelete<
     TData extends { id: string; [key: string]: unknown }
-  >({
-    entity,
-    data,
-    schemaEntityObjectRepresentation,
-  }: {
-    entity: string
-    data: TData | TData[]
-    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
-  }) {
-    await this.manager_.fork().transactional(async (em) => {
-      const catalogRepository = em.getRepository(Catalog)
-      const catalogRelationRepository = em.getRepository(CatalogRelation)
+  >(
+    {
+      entity,
+      data,
+      schemaEntityObjectRepresentation,
+    }: {
+      entity: string
+      data: TData | TData[]
+      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+    },
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const { transactionManager: em } = sharedContext as {
+      transactionManager: SqlEntityManager
+    }
+    const catalogRepository = em.getRepository(Catalog)
+    const catalogRelationRepository = em.getRepository(CatalogRelation)
 
-      const { data: data_ } = PostgresProvider.parseData(
-        data,
-        schemaEntityObjectRepresentation
-      )
+    const { data: data_ } = PostgresProvider.parseData(
+      data,
+      schemaEntityObjectRepresentation
+    )
 
-      const ids = data_.map((entityData) => entityData.id)
+    const ids = data_.map((entityData) => entityData.id)
 
-      await catalogRepository.nativeDelete({
-        id: { $in: ids },
-        name: entity,
-      })
+    await catalogRepository.nativeDelete({
+      id: { $in: ids },
+      name: entity,
+    })
 
-      await catalogRelationRepository.nativeDelete({
-        $or: [
-          {
-            parent_id: { $in: ids },
-            parent_name: entity,
-          },
-          {
-            child_id: { $in: ids },
-            child_name: entity,
-          },
-        ],
-      })
+    await catalogRelationRepository.nativeDelete({
+      $or: [
+        {
+          parent_id: { $in: ids },
+          parent_name: entity,
+        },
+        {
+          child_id: { $in: ids },
+          child_name: entity,
+        },
+      ],
     })
   }
 
@@ -491,116 +531,117 @@ export class PostgresProvider {
    * @param schemaEntityObjectRepresentation
    * @protected
    */
+  @InjectTransactionManager("baseRepository_")
   protected async onAttach<
     TData extends { id: string; [key: string]: unknown }
-  >({
-    entity,
-    data,
-    schemaEntityObjectRepresentation,
-  }: {
-    entity: string
-    data: TData | TData[]
-    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
-  }) {
-    await this.manager_.fork().transactional(async (em) => {
-      const catalogRepository = em.getRepository(Catalog)
-      const catalogRelationRepository = em.getRepository(CatalogRelation)
+  >(
+    {
+      entity,
+      data,
+      schemaEntityObjectRepresentation,
+    }: {
+      entity: string
+      data: TData | TData[]
+      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+    },
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const { transactionManager: em } = sharedContext as {
+      transactionManager: SqlEntityManager
+    }
+    const catalogRepository = em.getRepository(Catalog)
+    const catalogRelationRepository = em.getRepository(CatalogRelation)
 
-      const { data: data_, entityProperties } = PostgresProvider.parseData(
-        data,
-        schemaEntityObjectRepresentation
+    const { data: data_, entityProperties } = PostgresProvider.parseData(
+      data,
+      schemaEntityObjectRepresentation
+    )
+
+    /**
+     * Retrieve the property that represent the foreign key related to the parent entity of the link entity.
+     * Then from the service name of the parent entity, retrieve the entity name using the linkable keys.
+     */
+
+    const parentPropertyId =
+      schemaEntityObjectRepresentation.moduleConfig.relationships![0].foreignKey
+    const parentServiceName =
+      schemaEntityObjectRepresentation.moduleConfig.relationships![0]
+        .serviceName
+    const parentEntityName = (
+      this.schemaObjectRepresentation_._serviceNameModuleConfigMap[
+        parentServiceName
+      ] as EntityNameModuleConfigMap[0]
+    ).linkableKeys?.[parentPropertyId]
+
+    if (!parentEntityName) {
+      throw new Error(
+        `SearchModule error, unable to handle attach event for ${entity}. The parent entity name could not be found using the linkable keys from the module ${parentServiceName}.`
       )
+    }
 
+    /**
+     * Retrieve the property that represent the foreign key related to the child entity of the link entity.
+     * Then from the service name of the child entity, retrieve the entity name using the linkable keys.
+     */
+
+    const childPropertyId =
+      schemaEntityObjectRepresentation.moduleConfig.relationships![1].foreignKey
+    const childServiceName =
+      schemaEntityObjectRepresentation.moduleConfig.relationships![1]
+        .serviceName
+    const childEntityName = (
+      this.schemaObjectRepresentation_._serviceNameModuleConfigMap[
+        childServiceName
+      ] as EntityNameModuleConfigMap[0]
+    ).linkableKeys?.[childPropertyId]
+
+    if (!childEntityName) {
+      throw new Error(
+        `SearchModule error, unable to handle attach event for ${entity}. The child entity name could not be found using the linkable keys from the module ${childServiceName}.`
+      )
+    }
+
+    for (const entityData of data_) {
       /**
-       * Retrieve the property that represent the foreign key related to the parent entity of the link entity.
-       * Then from the service name of the parent entity, retrieve the entity name using the linkable keys.
+       * Clean the link entity data to only keep the properties that are defined in the schema
        */
 
-      const parentPropertyId =
-        schemaEntityObjectRepresentation.moduleConfig.relationships![0]
-          .foreignKey
-      const parentServiceName =
-        schemaEntityObjectRepresentation.moduleConfig.relationships![0]
-          .serviceName
-      const parentEntityName = (
-        this.schemaObjectRepresentation_._serviceNameModuleConfigMap[
-          parentServiceName
-        ] as EntityNameModuleConfigMap[0]
-      ).linkableKeys?.[parentPropertyId]
+      const cleanedEntityData = entityProperties.reduce((acc, property) => {
+        acc[property] = entityData[property]
+        return acc
+      }, {}) as TData
 
-      if (!parentEntityName) {
-        throw new Error(
-          `SearchModule error, unable to handle attach event for ${entity}. The parent entity name could not be found using the linkable keys from the module ${parentServiceName}.`
-        )
-      }
+      await catalogRepository.upsert({
+        id: cleanedEntityData.id,
+        name: entity,
+        data: cleanedEntityData,
+      })
 
       /**
-       * Retrieve the property that represent the foreign key related to the child entity of the link entity.
-       * Then from the service name of the child entity, retrieve the entity name using the linkable keys.
+       * Create the catalog relation entries for the parent entity and the child entity
        */
 
-      const childPropertyId =
-        schemaEntityObjectRepresentation.moduleConfig.relationships![1]
-          .foreignKey
-      const childServiceName =
-        schemaEntityObjectRepresentation.moduleConfig.relationships![1]
-          .serviceName
-      const childEntityName = (
-        this.schemaObjectRepresentation_._serviceNameModuleConfigMap[
-          childServiceName
-        ] as EntityNameModuleConfigMap[0]
-      ).linkableKeys?.[childPropertyId]
+      const parentCatalogRelationEntry = catalogRelationRepository.create({
+        parent_id: entityData[parentPropertyId] as string,
+        parent_name: parentEntityName,
+        child_id: cleanedEntityData.id,
+        child_name: entity,
+        pivot: `${parentEntityName}-${entity}`,
+      })
 
-      if (!childEntityName) {
-        throw new Error(
-          `SearchModule error, unable to handle attach event for ${entity}. The child entity name could not be found using the linkable keys from the module ${childServiceName}.`
-        )
-      }
+      const childCatalogRelationEntry = catalogRelationRepository.create({
+        parent_id: cleanedEntityData.id,
+        parent_name: entity,
+        child_id: entityData[childPropertyId] as string,
+        child_name: childEntityName,
+        pivot: `${entity}-${childEntityName}`,
+      })
 
-      for (const entityData of data_) {
-        /**
-         * Clean the link entity data to only keep the properties that are defined in the schema
-         */
-
-        const cleanedEntityData = entityProperties.reduce((acc, property) => {
-          acc[property] = entityData[property]
-          return acc
-        }, {}) as TData
-
-        await catalogRepository.upsert({
-          id: cleanedEntityData.id,
-          name: entity,
-          data: cleanedEntityData,
-        })
-
-        /**
-         * Create the catalog relation entries for the parent entity and the child entity
-         */
-
-        const parentCatalogRelationEntry = catalogRelationRepository.create({
-          parent_id: entityData[parentPropertyId] as string,
-          parent_name: parentEntityName,
-          child_id: cleanedEntityData.id,
-          child_name: entity,
-          pivot: `${parentEntityName}-${entity}`,
-        })
-
-        const childCatalogRelationEntry = catalogRelationRepository.create({
-          parent_id: cleanedEntityData.id,
-          parent_name: entity,
-          child_id: entityData[childPropertyId] as string,
-          child_name: childEntityName,
-          pivot: `${entity}-${childEntityName}`,
-        })
-
-        catalogRelationRepository.persist([
-          parentCatalogRelationEntry,
-          childCatalogRelationEntry,
-        ])
-      }
-
-      await em.flush()
-    })
+      catalogRelationRepository.persist([
+        parentCatalogRelationEntry,
+        childCatalogRelationEntry,
+      ])
+    }
   }
 
   /**
@@ -608,47 +649,53 @@ export class PostgresProvider {
    * @param entity
    * @param data
    * @param schemaEntityObjectRepresentation
+   * @param sharedContext
    * @protected
    */
+  @InjectTransactionManager("baseRepository_")
   protected async onDetach<
     TData extends { id: string; [key: string]: unknown }
-  >({
-    entity,
-    data,
-    schemaEntityObjectRepresentation,
-  }: {
-    entity: string
-    data: TData | TData[]
-    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
-  }) {
-    await this.manager_.fork().transactional(async (em) => {
-      const catalogRepository = em.getRepository(Catalog)
-      const catalogRelationRepository = em.getRepository(CatalogRelation)
+  >(
+    {
+      entity,
+      data,
+      schemaEntityObjectRepresentation,
+    }: {
+      entity: string
+      data: TData | TData[]
+      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+    },
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const { transactionManager: em } = sharedContext as {
+      transactionManager: SqlEntityManager
+    }
+    const catalogRepository = em.getRepository(Catalog)
+    const catalogRelationRepository = em.getRepository(CatalogRelation)
 
-      const { data: data_ } = PostgresProvider.parseData(
-        data,
-        schemaEntityObjectRepresentation
-      )
+    const { data: data_ } = PostgresProvider.parseData(
+      data,
+      schemaEntityObjectRepresentation
+    )
 
-      const ids = data_.map((entityData) => entityData.id)
+    const ids = data_.map((entityData) => entityData.id)
 
-      await catalogRepository.nativeDelete({
-        id: { $in: ids },
-        name: entity,
-      })
+    await catalogRepository.nativeDelete({
+      id: { $in: ids },
+      name: entity,
+    })
 
-      await catalogRelationRepository.nativeDelete({
-        $or: [
-          {
-            parent_id: { $in: ids },
-            parent_name: entity,
-          },
-          {
-            child_id: { $in: ids },
-            child_name: entity,
-          },
-        ],
-      })
+    await catalogRelationRepository.nativeDelete({
+      $or: [
+        {
+          parent_id: { $in: ids },
+          parent_name: entity,
+        },
+        {
+          child_id: { $in: ids },
+          child_name: entity,
+        },
+      ],
     })
   }
 }
