@@ -11,7 +11,6 @@ import { Workflows } from "../../definitions"
 export enum CreatePriceListActions {
   prepare = "prepare",
   createPriceList = "createPriceList",
-  failingStep = "failingStep",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
@@ -69,7 +68,9 @@ WorkflowManager.register(Workflows.CreatePriceList, workflowSteps, handlers)
 
 export const createPriceLists = exportWorkflow<
   WorkflowTypes.PriceListWorkflow.CreatePriceListWorkflowInputDTO,
-  { priceList: PricingTypes.CreatePriceListDTO }[]
+  {
+    priceList: PricingTypes.CreatePriceListDTO
+  }[]
 >(
   Workflows.CreatePriceList,
   CreatePriceListActions.createPriceList,
