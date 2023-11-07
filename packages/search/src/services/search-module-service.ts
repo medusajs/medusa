@@ -13,7 +13,7 @@ import {
 } from "../types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { joinerConfig } from "./../joiner-config"
-import { BaseRepository } from "@medusajs/product/dist/repositories"
+import { MikroOrmBaseRepository as BaseRepository } from "@medusajs/utils"
 
 type InjectedDependencies = {
   eventBusModuleService: IEventBusModuleService

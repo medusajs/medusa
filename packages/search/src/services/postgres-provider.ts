@@ -9,6 +9,7 @@ import {
   InjectTransactionManager,
   isDefined,
   MedusaContext,
+  MikroOrmBaseRepository as BaseRepository,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql"
@@ -22,7 +23,6 @@ import {
   SearchModuleOptions,
 } from "../types"
 import { createPartitions, QueryBuilder } from "../utils"
-import { BaseRepository } from "@medusajs/product/dist/repositories"
 
 type InjectedDependencies = {
   manager: EntityManager
