@@ -40,6 +40,11 @@ export function returnReflectionComponentFormatter(
               ) || ""
             : "",
         description: comment ? getReturnComment(comment) : "",
+        expandable: comment?.hasModifier(`@expandable`) || false,
+        featureFlag: comment
+          ?.getTag(`@featureFlag`)
+          ?.content.map((tagContent) => tagContent.text)
+          .join(""),
         children: [],
       })
       if (
@@ -97,6 +102,11 @@ export function returnReflectionComponentFormatter(
             ) || ""
           : "",
       description: comment ? getReturnComment(comment) : "",
+      expandable: comment?.hasModifier(`@expandable`) || false,
+      featureFlag: comment
+        ?.getTag(`@featureFlag`)
+        ?.content.map((tagContent) => tagContent.text)
+        .join(""),
       children: [],
     })
     if (level + 1 <= MarkdownTheme.MAX_LEVEL) {
@@ -128,6 +138,11 @@ export function returnReflectionComponentFormatter(
               ) || ""
             : "",
         description: comment ? getReturnComment(comment) : "",
+        expandable: comment?.hasModifier(`@expandable`) || false,
+        featureFlag: comment
+          ?.getTag(`@featureFlag`)
+          ?.content.map((tagContent) => tagContent.text)
+          .join(""),
         children: [],
       })
       pushTo = componentItem[parentKey - 1].children!
@@ -161,6 +176,11 @@ export function returnReflectionComponentFormatter(
           ? getDefaultValue(reflectionType.declaration) || ""
           : "",
       description: comment ? getReturnComment(comment) : "",
+      expandable: comment?.hasModifier(`@expandable`) || false,
+      featureFlag: comment
+        ?.getTag(`@featureFlag`)
+        ?.content.map((tagContent) => tagContent.text)
+        .join(""),
       children: [],
     })
   }

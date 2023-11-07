@@ -2,6 +2,7 @@ import {
   Application,
   Comment,
   CommentDisplayPart,
+  CommentTag,
   Context,
   Converter,
   DeclarationReflection,
@@ -192,16 +193,33 @@ function addComments(schema: Schema, reflection: Reflection) {
         const comment = new Comment()
         comment.summary.push({
           kind: "text",
-          text: getPropertyDescription(value),
+          text: value.description || "",
         })
         childItem.comment = comment
       }
+
       if (
         value.default !== undefined &&
         "defaultValue" in childItem &&
         !childItem.defaultValue
       ) {
         childItem.defaultValue = value.default
+      }
+
+      if (value["x-expandable"]) {
+        childItem.comment.modifierTags.add(`@expandable`)
+      }
+
+      if (value["x-featureFlag"]) {
+        childItem.comment.blockTags.push(
+          new CommentTag(`@featureFlag`, [
+            {
+              kind: `inline-tag`,
+              text: value["x-featureFlag"],
+              tag: `@featureFlag`,
+            },
+          ])
+        )
       }
 
       if (value.items) {
@@ -213,20 +231,4 @@ function addComments(schema: Schema, reflection: Reflection) {
       }
     }
   })
-}
-
-// TODO maybe add expandable and feature flag as tags instead
-function getPropertyDescription(schemaProperty: SchemaProperty): string {
-  let result = schemaProperty.description || ""
-
-  if (schemaProperty["x-expandable"]) {
-    result +=
-      " This property is only available if it's expanded using the `expand` parameter, if it's accepted by the associated request."
-  }
-
-  if (schemaProperty["x-featureFlag"]) {
-    result += ` This property is only available if the [feature flag ${schemaProperty["x-featureFlag"]} is enabled](https://docs.medusajs.com/development/feature-flags/toggle).`
-  }
-
-  return result
 }

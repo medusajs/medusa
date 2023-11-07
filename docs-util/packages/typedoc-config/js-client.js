@@ -4,11 +4,12 @@ const globalTypedocOptions = require("./_base")
 
 const pathPrefix = path.join(__dirname, "..", "..", "..")
 
+/** @type {import('typedoc').TypeDocOptions} */
 module.exports = {
   ...globalTypedocOptions,
   entryPoints: [path.join(pathPrefix, "packages/medusa-js/src/resources")],
   out: [path.join(pathPrefix, "www/apps/docs/content/references/js-client")],
-  tsconfig: path.join(pathPrefix, "packages/medusa-js/tsconfig.json"),
+  tsconfig: path.join(__dirname, "extended-tsconfig", "js-client.json"),
   name: "JS Client Reference",
   indexTitle: "JS Client Reference",
   entryDocument: "_index.mdx",

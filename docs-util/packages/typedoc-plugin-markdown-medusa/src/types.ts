@@ -99,6 +99,8 @@ export type Parameter = {
   optional?: boolean
   defaultValue?: string
   description?: string
+  featureFlag?: string
+  expandable: boolean
   children?: Parameter[]
 }
 

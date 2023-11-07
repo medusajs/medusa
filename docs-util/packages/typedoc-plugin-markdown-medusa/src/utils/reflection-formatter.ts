@@ -105,6 +105,11 @@ export function reflectionComponentFormatter(
       : "",
     optional,
     defaultValue,
+    expandable: reflection.comment?.hasModifier(`@expandable`) || false,
+    featureFlag: reflection.comment
+      ?.getTag(`@featureFlag`)
+      ?.content.map((tagContent) => tagContent.text)
+      .join(""),
     children: [],
   }
 

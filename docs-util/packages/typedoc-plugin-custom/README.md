@@ -8,7 +8,7 @@ A Typedoc plugin that combines utility plugins for documenting references.
 
 The [`resolve-reference-plugin`](./src/resolve-references-plugin.ts) imitates the [`typedoc-plugin-missing-exports`](https://www.npmjs.com/package/typedoc-plugin-missing-exports) plugin. So, it accepts the same options as the [`typedoc-plugin-missing-exports`](https://www.npmjs.com/package/typedoc-plugin-missing-exports) plugin.
 
-### Frontmatter Plugin
+### Frontmatter
 
 `frontmatterData` is an object of key-value pairs. If none provided, no frontmatter variables will be added to the Markdown files.
 
@@ -19,6 +19,12 @@ frontmatterData: {
   displayed_sidebar: "jsClientSidebar",
 },
 ```
+
+### API Ignore
+
+The `ignoreApi` option is a boolean that indicates whether reflections with the `@apiIgnore` tag should be ignored. If enabled, reflections having this tag are removed from the generated documentation. If disabled (which is the default), the `@apiIgnore` tag is removed from the reflection to ensure it's not shown in the generated documentation.
+
+---
 
 ## Build the Plugin
 

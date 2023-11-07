@@ -90,8 +90,9 @@ export class AdminGetCurrenciesParams extends FindPaginationParams {
   code?: string
 
   /**
-   * @featureFlag tax_inclusive_pricing
    * Filter currencies by whether they include tax.
+   *
+   * @featureFlag tax_inclusive_pricing
    */
   @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
     IsBoolean(),

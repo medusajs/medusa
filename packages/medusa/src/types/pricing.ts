@@ -21,11 +21,13 @@ export type ProductVariantPricing = {
   calculated_price: number | null
   /**
    * Whether the `original_price` field includes taxes.
+   *
    * @featureFlag tax_inclusive_pricing
    */
   original_price_includes_tax?: boolean | null
   /**
    * Whether the `calculated_price` field includes taxes.
+   *
    * @featureFlag tax_inclusive_pricing
    */
   calculated_price_includes_tax?: boolean | null
