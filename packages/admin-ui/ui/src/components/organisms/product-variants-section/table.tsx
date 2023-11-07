@@ -1,7 +1,7 @@
 import { Column, useTable } from "react-table"
 
 import { ProductVariant } from "@medusajs/medusa"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
@@ -11,6 +11,7 @@ import TrashIcon from "../../fundamentals/icons/trash-icon"
 import Actionables from "../../molecules/actionables"
 import Table from "../../molecules/table"
 import DeletePrompt from "../delete-prompt"
+import { useAccess } from "../../../providers/access-provider"
 
 type Props = {
   variants: ProductVariant[]
@@ -113,9 +114,16 @@ const VariantsTable = ({ variants, actions }: Props) => {
     updateVariantInventory,
   } = actions
 
+  const {checkAccess, loaded: accessLoaded} = useAccess();
+  const [inventoryAccess, setInventoryAccess] = useState(false);
+
+  useEffect(()=>{
+    setInventoryAccess(checkAccess('/inventory'));
+  },[accessLoaded])
+
   const getTableRowActionables = (variant: ProductVariant) => {
     const inventoryManagementActions = []
-    if (hasInventoryService) {
+    if (hasInventoryService && inventoryAccess) {
       inventoryManagementActions.push({
         label: t(
           "product-variants-section-manage-inventory",

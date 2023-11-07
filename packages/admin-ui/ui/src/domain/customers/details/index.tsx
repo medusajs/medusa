@@ -1,5 +1,5 @@
 import moment from "moment"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import Avatar from "../../../components/atoms/avatar"
@@ -21,6 +21,7 @@ import EditCustomerModal from "./edit"
 import { FormattedAddress } from "../../orders/details/templates"
 import CustomersGroupsWidget from "./groups"
 import useCustomerFull from "../../../hooks/use-customers-full"
+import { useAccess } from "../../../providers/access-provider"
 
 const CustomerDetail = () => {
   const { id } = useParams()
@@ -62,6 +63,13 @@ const CustomerDetail = () => {
     // Let the error boundary handle the error
     throw error
   }
+
+  const {checkAccess, loaded: accessLoaded} = useAccess();
+  const [ordersAccess, setOrdersAccess] = useState(false);
+
+  useEffect(()=>{
+    setOrdersAccess(checkAccess('/orders'));
+  },[accessLoaded])
 
   if (isLoading || !customer) {
     return (
@@ -159,19 +167,21 @@ const CustomerDetail = () => {
 
         <CustomersGroupsWidget customer={customer} />
 
-        <BodyCard
-          title={t("details-orders", "Orders {{count}}", {
-            count: customer.orders.length,
-          })}
-          subtitle={t(
-            "details-an-overview-of-customer-orders",
-            "An overview of Customer Orders"
-          )}
-        >
-          <div className="flex  grow flex-col">
-            <CustomerOrdersTable id={customer.id} />
-          </div>
-        </BodyCard>
+        {ordersAccess &&
+          <BodyCard
+            title={t("details-orders", "Orders {{count}}", {
+              count: customer.orders.length,
+            })}
+            subtitle={t(
+              "details-an-overview-of-customer-orders",
+              "An overview of Customer Orders"
+            )}
+          >
+            <div className="flex  grow flex-col">
+              <CustomerOrdersTable id={customer.id} />
+            </div>
+          </BodyCard>
+        }
 
         {getWidgets("customer.details.after").map((w, i) => {
           return (

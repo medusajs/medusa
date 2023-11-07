@@ -26,8 +26,8 @@ const AnalyticsPreferencesModal = () => {
   const form = useForm<AnalyticsPreferenceFormType>({
     defaultValues: {
       config: {
-        anonymize: false,
-        opt_out: false,
+        anonymize: true,
+        opt_out: true,
       },
     },
   })

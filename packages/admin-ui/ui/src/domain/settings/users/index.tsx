@@ -19,18 +19,23 @@ const Users: React.FC = () => {
   }
 
   useEffect(() => {
-    Medusa.users
-      .list()
-      .then((res) => res.data)
-      .then((userData) => {
-        Medusa.invites
-          .list()
-          .then((res) => res.data)
-          .then((inviteData) => {
-            setUsers(userData.users)
-            setInvites(inviteData.invites)
-          })
-      })
+    try{
+      Medusa.users
+        .list()
+        .then((res) => res.data)
+        .then((userData) => {
+          Medusa.invites
+            .list()
+            .then((res) => res.data)
+            .then((inviteData) => {
+              setUsers(userData.users)
+              setInvites(inviteData.invites)
+            })
+        })
+      }
+      catch(e) {
+        console.error(e);
+      }
   }, [shouldRefetch])
 
   const actionables = [
@@ -44,7 +49,7 @@ const Users: React.FC = () => {
       ),
     },
   ]
-
+  
   return (
     <div className="flex h-full flex-col">
       <div className="flex w-full grow flex-col">
@@ -54,7 +59,7 @@ const Users: React.FC = () => {
           className="mb-xsmall"
         />
         <BodyCard
-          title={t("users-the-team", "The Team")}
+          title={t("users-users", "Users")}
           subtitle={t(
             "users-manage-users-of-your-medusa-store",
             "Manage users of your Medusa Store"
@@ -67,9 +72,6 @@ const Users: React.FC = () => {
               invites={invites}
               triggerRefetch={triggerRefetch}
             />
-            <p className="inter-small-regular text-grey-50">
-              {t("users-count", "{{count}}", { count: users.length })}
-            </p>
           </div>
           {showInviteModal && (
             <InviteModal

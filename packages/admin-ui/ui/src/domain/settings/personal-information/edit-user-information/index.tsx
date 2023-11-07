@@ -5,6 +5,7 @@ import Avatar from "../../../../components/atoms/avatar"
 import Button from "../../../../components/fundamentals/button"
 import useToggleState from "../../../../hooks/use-toggle-state"
 import EditUserInformationModal from "./edit-user-information-modal"
+import EditUserPasswordModal from "./edit-user-password-modal"
 
 type Props = {
   user?: Omit<User, "password_hash">
@@ -12,6 +13,7 @@ type Props = {
 
 const EditUserInformation = ({ user }: Props) => {
   const { state, toggle, close } = useToggleState()
+  const { state: statePass, toggle: togglePass, close: closePass } = useToggleState()
   const { t } = useTranslation()
 
   const name = useMemo(() => {
@@ -48,17 +50,30 @@ const EditUserInformation = ({ user }: Props) => {
             )}
           </div>
         </div>
-        <Button
-          variant="secondary"
-          size="small"
-          disabled={!user}
-          onClick={toggle}
-        >
-          {t("edit-user-information-edit-information", "Edit information")}
-        </Button>
+        <div className="flex flex-row gap-4">
+          <Button
+            variant="secondary"
+            size="small"
+            disabled={!user}
+            onClick={toggle}
+          >
+            {t("edit-user-information-edit-information", "Edit information")}
+          </Button>
+          <Button
+            variant="secondary"
+            size="small"
+            disabled={!user}
+            onClick={togglePass}
+          >
+            {t("edit-user-information-edit-password", "Change password")}
+          </Button>
+        </div>
       </div>
       {user && (
         <EditUserInformationModal open={state} onClose={close} user={user} />
+      )}
+      {user && (
+        <EditUserPasswordModal open={statePass} onClose={closePass} user={user} />
       )}
     </>
   )

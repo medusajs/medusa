@@ -17,6 +17,10 @@ const client = axios.create({
  * Returns true if analytics are enabled for the current user.
  */
 export const analyticsOptIn = async () => {
+
+  // Disable
+  return false;
+
   const res = await getAnalyticsConfig().catch(() => undefined)
 
   // Don't track if we have no config to ensure we have permission
@@ -78,14 +82,13 @@ const useInvalidateAnalyticsConfig = () => {
 }
 
 export const useAdminAnalyticsConfig = () => {
-  const { isFeatureEnabled } = useFeatureFlag()
-
+  
   const { data, ...rest } = useQuery(
     ANALYTICS_CONFIG_KEY,
     async () => getAnalyticsConfig(),
     {
       retry: false,
-      enabled: isFeatureEnabled("analytics"),
+      enabled: false,
     }
   )
 

@@ -129,7 +129,7 @@ export function formatAmountWithSymbol({
     tax instanceof Array ? tax.reduce((acc, curr) => acc + curr.rate, 0) : tax
 
   return new Intl.NumberFormat(locale, {
-    style: "currency",
+    style: "decimal",
     currency,
     minimumFractionDigits: digits,
   }).format(normalizedAmount * (1 + taxRate / 100))

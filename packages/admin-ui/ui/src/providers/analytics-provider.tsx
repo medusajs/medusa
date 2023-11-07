@@ -54,10 +54,18 @@ export const AnalyticsProvider = ({ writeKey, children }: Props) => {
 
   const { isFeatureEnabled } = useFeatureFlag()
   const isEnabled = useMemo(() => {
+
+    // Disable
+    return false;
+
     return isFeatureEnabled("analytics")
   }, [isFeatureEnabled])
 
   const analytics = useMemo(() => {
+    
+    // Disable
+    return null;
+    
     if (!config || !isEnabled) {
       return null // Don't initialize analytics if not enabled or the user's preferences are not loaded yet
     }
@@ -70,6 +78,10 @@ export const AnalyticsProvider = ({ writeKey, children }: Props) => {
   }, [config, writeKey, isEnabled])
 
   useEffect(() => {
+
+    // Disable
+    return;
+
     if (!analytics || !config || !user || !store) {
       return
     }
@@ -80,6 +92,10 @@ export const AnalyticsProvider = ({ writeKey, children }: Props) => {
   }, [config, analytics, user, store])
 
   const askPermission = useMemo(() => {
+
+    // Disable
+    return false;
+
     if (submittingConfig) {
       return true
     }
@@ -98,6 +114,10 @@ export const AnalyticsProvider = ({ writeKey, children }: Props) => {
 
   const track = useCallback(
     (event: Event, properties?: Record<string, unknown>) => {
+
+      // Disable
+      return;
+
       if (!analytics) {
         // If analytics is not initialized, then we return early
         return
@@ -162,6 +182,10 @@ export const AnalyticsProvider = ({ writeKey, children }: Props) => {
 
   // Track pages visited when location changes
   useEffect(() => {
+
+    // Disable
+    return;
+
     if (!analytics) {
       return
     }
@@ -181,11 +205,6 @@ export const AnalyticsProvider = ({ writeKey, children }: Props) => {
         setSubmittingConfig,
       }}
     >
-      {askPermission && (
-        <Fade isVisible={animateIn} isFullScreen={true}>
-          <AnalyticsPreferencesModal />
-        </Fade>
-      )}
       {children}
     </AnalyticsContext.Provider>
   )

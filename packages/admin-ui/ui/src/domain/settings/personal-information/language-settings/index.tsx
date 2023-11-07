@@ -22,19 +22,6 @@ const LanguageSettings = () => {
         </div>
         <LanguageMenu />
       </div>
-      <div className="mt-small">
-        <a
-          href="/"
-          target="_blank"
-          className="text-blue-500"
-          rel="noopener noreferrer"
-        >
-          {t(
-            "personal-information-language-settings-help-us-translate",
-            "Help us translate"
-          )}
-        </a>
-      </div>
     </>
   )
 }

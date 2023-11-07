@@ -50,10 +50,10 @@ const UserMenu: React.FC = () => {
               variant="ghost"
               size="small"
               className={"w-full justify-start"}
-              onClick={() => navigate("/a/settings")}
+              onClick={() => navigate("/a/settings/personal-information")}
             >
               <GearIcon />
-              Settings
+              Personal information
             </Button>
           </DropdownMenu.Item>
           <DropdownMenu.Item className="outline-none">

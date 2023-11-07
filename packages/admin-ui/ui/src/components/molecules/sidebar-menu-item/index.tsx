@@ -1,7 +1,8 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import Collapsible from "react-collapsible"
 import { NavLink } from "react-router-dom"
 import Badge from "../../fundamentals/badge"
+import { useAccess } from "../../../providers/access-provider"
 
 type SidebarMenuSubitemProps = {
   pageLink: string
@@ -35,28 +36,44 @@ const SidebarMenuItem: React.FC<SidebarMenuItemProps> & {
     []
   )
 
+  // Check access
+  
+  const [isAccess, setIsAccess] = useState(false);
+  const {access, checkAccess} = useAccess();
+
+  useEffect(()=>{
+    let a = checkAccess(pageLink);
+    setIsAccess(a);
+  },[access])
+  
+// Output
+
   return (
-    <Collapsible
-      transitionTime={150}
-      transitionCloseTime={150}
-      {...triggerHandler()}
-      trigger={
-        <NavLink className={classNameFn} to={pageLink}>
-          <span className="items-start">{icon}</span>
-          <span className="group-[.is-active]:text-grey-90 ml-3">{text}</span>
-          {isNew && (
-            <Badge variant={"new-feature"} className="ml-auto">
-              New
-            </Badge>
-          )}
-        </NavLink>
+    <>
+      {!!isAccess &&
+        <Collapsible
+          transitionTime={150}
+          transitionCloseTime={150}
+          {...triggerHandler()}
+          trigger={
+            <NavLink className={classNameFn} to={pageLink}>
+              <span className="items-start">{icon}</span>
+              <span className="group-[.is-active]:text-grey-90 ml-3">{text}</span>
+              {isNew && (
+                <Badge variant={"new-feature"} className="ml-auto">
+                  New
+                </Badge>
+              )}
+            </NavLink>
+          }
+        >
+          {subItems?.length > 0 &&
+            subItems.map(({ pageLink, text }) => (
+              <SubItem pageLink={pageLink} text={text} />
+            ))}
+        </Collapsible>
       }
-    >
-      {subItems?.length > 0 &&
-        subItems.map(({ pageLink, text }) => (
-          <SubItem pageLink={pageLink} text={text} />
-        ))}
-    </Collapsible>
+    </>
   )
 }
 

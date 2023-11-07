@@ -7,6 +7,8 @@ import InputError from "../../atoms/input-error"
 import WidgetContainer from "../../extensions/widget-container"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
+import { useAccess } from "../../../providers/access-provider"
+import { useEffect, useState } from "react"
 
 type FormValues = {
   email: string
@@ -24,16 +26,15 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
     setError,
     formState: { errors },
   } = useForm<FormValues>()
-  const navigate = useNavigate()
   const { mutate, isLoading } = useAdminLogin()
   const { t } = useTranslation()
-
   const { getWidgets } = useWidgets()
+  const { getAccess } = useAccess();
 
   const onSubmit = (values: FormValues) => {
     mutate(values, {
-      onSuccess: () => {
-        navigate("/a/orders")
+      onSuccess: async () => {
+        getAccess();
       },
       onError: () => {
         setError(
@@ -67,7 +68,7 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center">
           <h1 className="inter-xlarge-semibold text-grey-90 mb-large text-[20px]">
-            {t("login-card-log-in-to-medusa", "Log in to Medusa")}
+            {t("login-card-log-in-to-medusa", "Log in")}
           </h1>
           <div>
             <SigninInput

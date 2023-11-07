@@ -24,6 +24,8 @@ import Regions from "./regions"
 import ReturnReasons from "./return-reasons"
 import Taxes from "./taxes"
 import Users from "./users"
+import UsersPermissions from "./users-permissions"
+import UsersRoles from "./users-roles"
 
 type SettingsCardType = {
   heading: string
@@ -46,12 +48,6 @@ const settings: SettingsCardType[] = [
     description: "Manage the currencies of your store",
     icon: CoinsIcon,
     to: "/a/settings/currencies",
-  },
-  {
-    heading: "Personal Information",
-    description: "Manage your Medusa profile",
-    icon: HappyIcon,
-    to: "/a/settings/personal-information",
   },
   {
     heading: "Regions",
@@ -85,10 +81,22 @@ const settings: SettingsCardType[] = [
     to: "/a/settings/taxes",
   },
   {
-    heading: "The Team",
-    description: "Manage users of your Medusa Store",
+    heading: "Users",
+    description: "Manage users of your Store",
     icon: UsersIcon,
     to: "/a/settings/team",
+  },
+  {
+    heading: "Users permissions",
+    description: "Manage users permissions",
+    icon: UsersIcon,
+    to: "/a/settings/users-permissions",
+  },
+  {
+    heading: "Users roles",
+    description: "Manage users roles",
+    icon: UsersIcon,
+    to: "/a/settings/users-roles",
   },
 ]
 
@@ -179,6 +187,8 @@ const Settings = () => {
       <Route path="/currencies" element={<CurrencySettings />} />
       <Route path="/return-reasons" element={<ReturnReasons />} />
       <Route path="/team" element={<Users />} />
+      <Route path="/users-permissions" element={<UsersPermissions />} />
+      <Route path="/users-roles" element={<UsersRoles />} />
       <Route path="/personal-information" element={<PersonalInformation />} />
       <Route path="/taxes/*" element={<Taxes />} />
       {getSettings().map((s) => (

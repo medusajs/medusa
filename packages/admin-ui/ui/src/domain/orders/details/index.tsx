@@ -72,6 +72,7 @@ import CreateRefundModal from "./refund"
 import { MEDUSA_BACKEND_URL_NOSLASH } from "../../../constants/medusa-backend-url"
 import DownloadIcon from "../../../components/fundamentals/icons/download-icon"
 import openUrlNewWindow from "../../../utils/open-link-new-window"
+import { useAccess } from "../../../providers/access-provider"
 
 type OrderDetailFulfillment = {
   title: string
@@ -254,18 +255,29 @@ const OrderDetails = () => {
 
   const allFulfillments = gatherAllFulfillments(order)
 
-  const customerActionables: ActionType[] = [
-    {
-      label: t("details-go-to-customer", "Go to Customer"),
-      icon: <DetailsIcon size={"20"} />,
-      onClick: () => navigate(`/a/customers/${order?.customer.id}`),
-    },
-    {
-      label: t("details-transfer-ownership", "Transfer ownership"),
-      icon: <RefreshIcon size={"20"} />,
-      onClick: () => toggleTransferOrderModal(),
-    },
-  ]
+  const customerActionables: ActionType[] = [];
+
+  const {checkAccess, loaded: accessLoaded} = useAccess();
+    const [customersAccess, setCustomersAccess] = useState(false);
+
+    useEffect(()=>{
+      setCustomersAccess(checkAccess('/customers'));
+    },[accessLoaded])
+  
+  if(customersAccess) {
+    customerActionables.push(
+      {
+        label: t("details-go-to-customer", "Go to Customer"),
+        icon: <DetailsIcon size={"20"} />,
+        onClick: () => navigate(`/a/customers/${order?.customer.id}`),
+      },
+      {
+        label: t("details-transfer-ownership", "Transfer ownership"),
+        icon: <RefreshIcon size={"20"} />,
+        onClick: () => toggleTransferOrderModal(),
+      },
+    )
+  }
 
   customerActionables.push({
     label: t("details-edit-shipping-address", "Edit Shipping Address"),

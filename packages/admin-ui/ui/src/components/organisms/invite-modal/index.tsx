@@ -1,37 +1,47 @@
-import { useAdminCreateInvite } from "medusa-react"
-import React from "react"
+import { useAdminRegions } from "medusa-react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
-import { Role } from "../../../types/shared"
+import { Option, Role } from "../../../types/shared"
 import { getErrorMessage } from "../../../utils/error-messages"
 import Button from "../../fundamentals/button"
 import InputField from "../../molecules/input"
 import Modal from "../../molecules/modal"
 import { NextSelect } from "../../molecules/select/next-select"
+import useRoles from "../../../domain/settings/users-roles/use-role"
+import { getOptions } from "../../../domain/settings/users-roles/utils"
+import { defaultRegion, defaultRole } from "../edit-user-modal"
+import { useAdminCreateInviteWithRole } from "../../../hooks/use-invites"
 
 type InviteModalProps = {
   handleClose: () => void
 }
 
-type InviteModalFormData = {
+export type InviteModalFormData = {
   user: string
-  role: Role
+  role: any
+  role_id: any
+  region_id: any
 }
 
 const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
   const notification = useNotification()
   const { t } = useTranslation()
 
-  const { mutate, isLoading } = useAdminCreateInvite()
+  const { mutate, isLoading } = useAdminCreateInviteWithRole()
 
   const { control, register, handleSubmit } = useForm<InviteModalFormData>()
+
+  const {get: getRoles} = useRoles();
 
   const onSubmit = (data: InviteModalFormData) => {
     mutate(
       {
         user: data.user,
-        role: data.role.value,
+        role: 'member',
+        role_id: data.role_id?.value || '',
+        region_id: data.region_id?.value || ''
       },
       {
         onSuccess: () => {
@@ -59,11 +69,28 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
     )
   }
 
-  const roleOptions: Role[] = [
-    { value: "member", label: t("invite-modal-member", "Member") },
-    { value: "admin", label: t("invite-modal-admin", "Admin") },
-    { value: "developer", label: t("invite-modal-developer", "Developer") },
-  ]
+  // Role options
+
+  const [roleOptions, setRoleOptions] = useState<Option[]>();
+  
+  useEffect(()=>{
+    getRoles().then(roles=>{
+      setRoleOptions(getOptions(roles))
+    })
+  },[])
+
+  // Regions options
+
+  const { regions } = useAdminRegions({limit: 100})
+
+  const regionOptions: Option[] = useMemo(() => {
+    return (
+      regions?.map((r) => ({
+        label: r.name,
+        value: r.id,
+      })) || []
+    )
+  }, [regions])
 
   return (
     <Modal handleClose={handleClose}>
@@ -76,33 +103,58 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
           </Modal.Header>
           <Modal.Content>
             <div className="gap-y-base flex flex-col">
-              <InputField
-                label={t("invite-modal-email", "Email")}
-                placeholder="lebron@james.com"
-                required
-                {...register("user", { required: true })}
-              />
-              <Controller
-                name="role"
-                control={control}
-                defaultValue={{
-                  label: t("invite-modal-member", "Member"),
-                  value: "member",
-                }}
-                render={({ field: { value, onChange, onBlur, ref } }) => {
-                  return (
-                    <NextSelect
-                      label={t("invite-modal-role", "Role")}
-                      placeholder={t("invite-modal-select-role", "Select role")}
-                      onBlur={onBlur}
-                      ref={ref}
-                      onChange={onChange}
-                      options={roleOptions}
-                      value={value}
-                    />
-                  )
-                }}
-              />
+              <div>
+                <InputField
+                  label={t("invite-modal-email", "Email")}
+                  placeholder="lebron@james.com"
+                  required
+                  {...register("user", { required: true })}
+                />
+              </div>
+              <div>
+                <Controller
+                  name="role_id"
+                  control={control}
+                  render={({ field: { value, onChange, onBlur, ref } }) => {
+                    return (
+                      <NextSelect
+                        label={t("edit-user-modal-role", "Role")}
+                        placeholder={defaultRole.name}
+                        onBlur={onBlur}
+                        ref={ref}
+                        onChange={onChange}
+                        options={roleOptions}
+                        value={value}
+                        defaultValue={defaultRole.id}
+                        isClearable
+                        isSearchable
+                      />
+                    )
+                  }}
+                />
+              </div>
+              <div>
+                <Controller
+                  name="region_id"
+                  control={control}
+                  render={({ field: { value, onChange, onBlur, ref } }) => {
+                    return (
+                      <NextSelect
+                        label={t("edit-user-modal-region", "Region restriction")}
+                        placeholder={t("edit-user-modal-select-region", "No region restriction")}
+                        onBlur={onBlur}
+                        ref={ref}
+                        onChange={onChange}
+                        options={regionOptions}
+                        value={value}
+                        defaultValue={defaultRegion.id}
+                        isClearable
+                        isSearchable
+                      />
+                    )
+                  }}
+                />
+              </div>
             </div>
           </Modal.Content>
           <Modal.Footer>
