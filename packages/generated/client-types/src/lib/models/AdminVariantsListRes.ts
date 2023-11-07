@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { PricedVariant } from "./PricedVariant"
 
+/**
+ * The list of variants with pagination fields.
+ */
 export interface AdminVariantsListRes {
   /**
    * An array of product variant details.

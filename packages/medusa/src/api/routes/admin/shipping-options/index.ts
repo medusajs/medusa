@@ -93,7 +93,7 @@ export type AdminShippingOptionsListRes = PaginatedResponse & {
 /**
  * @schema AdminShippingOptionsRes
  * type: object
- * dsecription: "The shipping option's details."
+ * description: "The shipping option's details."
  * x-expanded-relations:
  *   field: shipping_option
  *   relations:
