@@ -3,8 +3,10 @@ import {
   BeforeCreate,
   Collection,
   Entity,
+  Index,
   ManyToMany,
   ManyToOne,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -14,6 +16,8 @@ import PriceSet from "./price-set"
 
 @Entity()
 class MoneyAmount {
+  [OptionalProps]?: "created_at" | "updated_at" | "deleted_at"
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -41,6 +45,25 @@ class MoneyAmount {
 
   @Property({ columnType: "numeric", nullable: true })
   max_quantity?: number | null
+
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
+  @Index({ name: "IDX_money_amount_deleted_at" })
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date
 
   @BeforeCreate()
   onCreate() {

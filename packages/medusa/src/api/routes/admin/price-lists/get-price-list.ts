@@ -1,7 +1,14 @@
+import {
+  IPricingModuleService,
+  IProductModuleService,
+  ProductVariantDTO,
+} from "@medusajs/types"
+import { FlagRouter } from "@medusajs/utils"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-
 import { PriceList } from "../../../.."
+import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import PriceListService from "../../../../services/price-list"
+import { defaultAdminProductRemoteQueryObject } from "../products"
 
 /**
  * @oas [get] /admin/price-lists/{id}
@@ -58,13 +65,144 @@ import PriceListService from "../../../../services/price-list"
 export default async (req, res) => {
   const { id } = req.params
 
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const priceList = await priceListService.retrieve(id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+  let priceList
+
+  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+    priceList = await retrievePriceListPricingModule(id, req)
+  } else {
+    priceList = await priceListService.retrieve(id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.status(200).json({ price_list: priceList })
 }
+
+async function retrievePriceListPricingModule(id, req) {
+  let priceList
+  const remoteQuery = req.scope.resolve("remoteQuery")
+  const pricingModuleService: IPricingModuleService = req.scope.resolve(
+    "pricingModuleService"
+  )
+  const productModuleService: IProductModuleService = req.scope.resolve(
+    "productModuleService"
+  )
+
+  priceList = await pricingModuleService.retrievePriceList(id, {
+    select: defaultAdminPriceListSelectsPricingModule,
+    relations: defaultAdminPriceListRelationsPricingModule,
+  })
+
+  const priceSetMoneyAmounts = priceList.price_set_money_amounts
+  const priceSetIds = priceSetMoneyAmounts.map((psma) => psma.price_set.id)
+
+  const query = {
+    product_variant_price_set: {
+      __args: {
+        price_set_id: priceSetIds,
+      },
+      fields: ["variant_id", "price_set_id"],
+    },
+  }
+
+  const variantPriceSets = await remoteQuery(query)
+  const variantIds = variantPriceSets.map((vps) => vps.variant_id)
+
+  const productVariants = await productModuleService.listVariants(
+    {
+      id: variantIds,
+    },
+    {
+      select: defaultAdminProductRemoteQueryObject.variants.fields,
+    }
+  )
+
+  const variantsMap: Map<string, ProductVariantDTO> = new Map(
+    productVariants.map((productVariant) => [productVariant.id, productVariant])
+  )
+  const variantIdToPriceSetIdMap: Map<string, ProductVariantDTO> = new Map()
+
+  for (const { variant_id, price_set_id } of variantPriceSets) {
+    const productVariant = variantsMap.get(variant_id)
+
+    if (productVariant) {
+      variantIdToPriceSetIdMap.set(price_set_id, productVariant)
+    }
+  }
+
+  delete priceList.price_set_money_amounts
+
+  const priceListPrices: any = []
+
+  for (const priceSetMoneyAmount of priceSetMoneyAmounts) {
+    const priceSetId = priceSetMoneyAmount.price_set.id
+    const productVariant = variantIdToPriceSetIdMap.get(priceSetId)
+
+    const price = {
+      ...priceSetMoneyAmount.money_amount,
+      price_list_id: priceList.id,
+    }
+
+    // TODO: do something about region id
+    price.region_id = null
+
+    if (productVariant) {
+      // TODO: We have these 3 versions of variants in the response
+      // Remove 2 of them if its not needed
+      price.variant_id = productVariant.id
+      price.variant = productVariant
+      price.variants = [productVariant]
+    } else {
+      price.variant_id = null
+      price.variant = null
+      price.variants = []
+    }
+
+    priceListPrices.push(price)
+  }
+
+  priceList.prices = priceListPrices
+  priceList.name = priceList.title
+
+  // TODO: do something about customer groups
+  priceList.customer_groups = []
+
+  delete priceList.title
+
+  return priceList
+}
+
+const defaultAdminPriceListRelationsPricingModule = [
+  "price_set_money_amounts",
+  "price_set_money_amounts.money_amount",
+  "price_set_money_amounts.price_set",
+]
+
+const defaultAdminPriceListSelectsPricingModule = [
+  "created_at",
+  "deleted_at",
+  "description",
+  "ends_at",
+  "id",
+  "title",
+  "starts_at",
+  "status",
+  "type",
+  "updated_at",
+  "price_set_money_amounts.id",
+  "price_set_money_amounts.price_set.id",
+  "price_set_money_amounts.money_amount.id",
+  "price_set_money_amounts.money_amount.id",
+  "price_set_money_amounts.money_amount.currency_code",
+  "price_set_money_amounts.money_amount.amount",
+  "price_set_money_amounts.money_amount.min_quantity",
+  "price_set_money_amounts.money_amount.max_quantity",
+  "price_set_money_amounts.money_amount.created_at",
+  "price_set_money_amounts.money_amount.deleted_at",
+  "price_set_money_amounts.money_amount.updated_at",
+]

@@ -16,15 +16,16 @@ export enum PriceListType {
 
 export interface PriceListDTO {
   id: string
-  starts_at: Date | null
-  status: PriceListStatus
-  ends_at: Date | null
+  title?: string
+  starts_at?: Date | null
+  status?: PriceListStatus
+  ends_at?: Date | null
   number_rules?: number
-  price_set_money_amounts: PriceSetMoneyAmountDTO
+  price_set_money_amounts?: PriceSetMoneyAmountDTO[]
   money_amounts?: MoneyAmountDTO[]
   rule_types?: RuleTypeDTO[]
-  rules: PriceListRuleDTO[]
-  price_list_rules: PriceListRuleDTO[]
+  rules?: PriceListRuleDTO[]
+  price_list_rules?: PriceListRuleDTO[]
 }
 
 export interface PriceListPriceDTO extends CreateMoneyAmountDTO {

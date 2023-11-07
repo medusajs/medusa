@@ -2,11 +2,15 @@ import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import {
-  simplePriceListFactory,
   simpleProductFactory,
   simpleRegionFactory,
 } from "../../../../factories"
 
+import {
+  IPricingModuleService,
+  PriceListStatus,
+  PriceListType,
+} from "@medusajs/types"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../../helpers/admin-seeder"
@@ -26,18 +30,20 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe.skip("[Product & Pricing Module] POST /admin/price-lists/:id/prices/batch", () => {
+describe("[Product & Pricing Module] POST /admin/price-lists/:id/prices/batch", () => {
   let dbConnection
   let appContainer
   let shutdownServer
   let product
   let variant
+  let pricingModuleService: IPricingModuleService
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd, env } as any)
     shutdownServer = await startBootstrapApp({ cwd, env })
     appContainer = getContainer()
+    pricingModuleService = appContainer.resolve("pricingModuleService")
   })
 
   afterAll(async () => {
@@ -81,11 +87,16 @@ describe.skip("[Product & Pricing Module] POST /admin/price-lists/:id/prices/bat
   })
 
   it("should update money amounts if money amount id is present in prices", async () => {
-    const priceList = await simplePriceListFactory(dbConnection, {
-      name: "test price list",
-      ends_at: new Date(),
-      starts_at: new Date(),
-    })
+    const [priceList] = await pricingModuleService.createPriceLists([
+      {
+        title: "test price list",
+        description: "test",
+        ends_at: new Date(),
+        starts_at: new Date(),
+        status: PriceListStatus.ACTIVE,
+        type: PriceListType.OVERRIDE,
+      },
+    ])
 
     await createVariantPriceSet({
       container: appContainer,
@@ -122,32 +133,59 @@ describe.skip("[Product & Pricing Module] POST /admin/price-lists/:id/prices/bat
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.price_list).toEqual({
-      id: expect.any(String),
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
-      deleted_at: null,
-      name: "test price list",
-      description: "Some text",
-      type: "override",
-      status: "active",
-      starts_at: expect.any(String),
-      ends_at: expect.any(String),
-      customer_groups: [],
-      prices: [
-        {
-          id: expect.any(String),
-          created_at: expect.any(String),
-          updated_at: expect.any(String),
-          deleted_at: null,
-          currency_code: "usd",
-          amount: 5000,
-          min_quantity: null,
-          max_quantity: null,
-          price_list_id: expect.any(String),
-          region_id: null,
-          variants: [
-            {
+    expect(response.data.price_list).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        deleted_at: null,
+        name: "test price list",
+        description: "test",
+        type: "override",
+        status: "active",
+        starts_at: expect.any(String),
+        ends_at: expect.any(String),
+        customer_groups: [],
+        prices: [
+          expect.objectContaining({
+            id: expect.any(String),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+            currency_code: "usd",
+            amount: 5000,
+            min_quantity: null,
+            max_quantity: null,
+            price_list_id: expect.any(String),
+            region_id: null,
+            variants: [
+              expect.objectContaining({
+                id: expect.any(String),
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                deleted_at: null,
+                title: expect.any(String),
+                product_id: expect.any(String),
+                sku: null,
+                barcode: null,
+                ean: null,
+                upc: null,
+                variant_rank: 0,
+                inventory_quantity: 10,
+                allow_backorder: false,
+                manage_inventory: true,
+                hs_code: null,
+                origin_country: null,
+                mid_code: null,
+                material: null,
+                weight: null,
+                length: null,
+                height: null,
+                width: null,
+                metadata: null,
+              }),
+            ],
+            variant: expect.objectContaining({
               id: expect.any(String),
               created_at: expect.any(String),
               updated_at: expect.any(String),
@@ -171,36 +209,11 @@ describe.skip("[Product & Pricing Module] POST /admin/price-lists/:id/prices/bat
               height: null,
               width: null,
               metadata: null,
-            },
-          ],
-          variant: {
-            id: expect.any(String),
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            deleted_at: null,
-            title: expect.any(String),
-            product_id: expect.any(String),
-            sku: null,
-            barcode: null,
-            ean: null,
-            upc: null,
-            variant_rank: 0,
-            inventory_quantity: 10,
-            allow_backorder: false,
-            manage_inventory: true,
-            hs_code: null,
-            origin_country: null,
-            mid_code: null,
-            material: null,
-            weight: null,
-            length: null,
-            height: null,
-            width: null,
-            metadata: null,
-          },
-          variant_id: expect.any(String),
-        },
-      ],
-    })
+            }),
+            variant_id: expect.any(String),
+          }),
+        ],
+      })
+    )
   })
 })
