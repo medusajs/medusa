@@ -248,7 +248,7 @@ export default async (req: Request, res) => {
       },
       {
         select: defaultAdminProductRemoteQueryObject.fields,
-        relations: ["variants"],
+        relations: ["variants", "collection"],
       }
     )
   } else {
