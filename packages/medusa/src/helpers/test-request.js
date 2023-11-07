@@ -1,5 +1,4 @@
 import {
-  moduleHelper,
   moduleLoader,
   ModulesDefinition,
   registerMedusaModule,
@@ -79,7 +78,6 @@ container.registerAdd = function (name, registration) {
 }.bind(container)
 
 container.register("featureFlagRouter", asValue(featureFlagRouter))
-container.register("modulesHelper", asValue(moduleHelper))
 container.register("configModule", asValue(config))
 container.register({
   logger: asValue({
