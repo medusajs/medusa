@@ -1097,7 +1097,7 @@ export default class ProductModuleService<
     productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
     sharedContext: InternalContext = {}
   ) {
-    if (isDefined(productData.type)) {
+    if (productData.type) {
       const [productType] = await this.productTypeService_.upsert(
         [productData.type!],
         sharedContext

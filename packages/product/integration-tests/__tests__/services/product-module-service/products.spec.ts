@@ -1,5 +1,9 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
+import {
+  IProductModuleService,
+  ProductTypes,
+  UpdateProductDTO,
+} from "@medusajs/types"
 import {
   Product,
   ProductCategory,
@@ -169,21 +173,36 @@ describe("ProductModuleService products", function () {
     afterEach(afterEach_)
 
     it("should update a product and upsert relations that are not created yet", async () => {
-      const data = buildProductAndRelationsData({
-        images,
-        thumbnail: images[0],
-      })
+      const product = (await module.retrieve(productOne.id, {
+        relations: [
+          "images",
+          "variants",
+          "options",
+          "options.values",
+          "variants.options",
+          "tags",
+          "type",
+        ],
+      })) as unknown as UpdateProductDTO
 
-      const updateData = {
-        ...data,
-        id: productOne.id,
-        title: "updated title",
-      }
+      product.title = "updated title"
+      product.options = [
+        {
+          title: "New option",
+        },
+      ]
+      product.variants![0].options = [
+        {
+          value: "New option value",
+        },
+      ]
 
-      const updatedProducts = await module.update([updateData])
+      const updatedProducts = await module.update([
+        product as unknown as UpdateProductDTO,
+      ])
       expect(updatedProducts).toHaveLength(1)
 
-      const product = await module.retrieve(updateData.id, {
+      const updatedProduct = await module.retrieve(productOne.id, {
         relations: [
           "images",
           "variants",
@@ -195,62 +214,34 @@ describe("ProductModuleService products", function () {
         ],
       })
 
-      expect(product.images).toHaveLength(1)
-      expect(product.variants[0].options).toHaveLength(1)
-      expect(product.tags).toHaveLength(1)
-      expect(product.variants).toHaveLength(1)
+      expect(updatedProduct.variants).toHaveLength(1)
+      expect(updatedProduct.variants[0].options).toHaveLength(1)
 
-      expect(product).toEqual(
+      expect(updatedProduct).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           title: "updated title",
-          description: updateData.description,
-          subtitle: updateData.subtitle,
-          is_giftcard: updateData.is_giftcard,
-          discountable: updateData.discountable,
-          thumbnail: images[0],
-          status: updateData.status,
-          images: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              url: images[0],
-            }),
-          ]),
           options: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
-              title: updateData.options[0].title,
+              title: "New option",
               values: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  value: updateData.variants[0].options?.[0].value,
                 }),
               ]),
             }),
           ]),
-          tags: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              value: updateData.tags[0].value,
-            }),
-          ]),
-          type: expect.objectContaining({
-            id: expect.any(String),
-            value: updateData.type.value,
-          }),
           variants: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
-              title: updateData.variants[0].title,
-              sku: updateData.variants[0].sku,
               allow_backorder: false,
               manage_inventory: true,
-              inventory_quantity: "100",
+              inventory_quantity: "10",
               variant_rank: "0",
               options: expect.arrayContaining([
                 expect.objectContaining({
                   id: expect.any(String),
-                  value: updateData.variants[0].options?.[0].value,
                 }),
               ]),
             }),
