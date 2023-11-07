@@ -18,11 +18,11 @@ export function load(app: Application) {
     for (const reflection of context.project.getReflectionsByKind(
       ReflectionKind.All
     )) {
-      if (reflection.comment?.getTag(`@apiIgnore`)) {
+      if (reflection.comment?.hasModifier("@apiIgnore")) {
         if (app.options.getValue("ignoreApi")) {
           context.project.removeReflection(reflection)
         } else {
-          reflection.comment.removeTags(`@apiIgnore`)
+          reflection.comment.removeModifier(`@apiIgnore`)
         }
       }
     }
