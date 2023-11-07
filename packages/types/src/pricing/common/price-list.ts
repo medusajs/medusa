@@ -47,6 +47,7 @@ export interface CreatePriceListDTO {
 
 export interface UpdatePriceListDTO {
   id: string
+  title?: string
   starts_at?: Date
   ends_at?: Date
   status?: PriceListStatus
@@ -119,13 +120,7 @@ export interface UpdatePriceListRuleValueDTO {
 
 export interface AddPriceListPricesDTO {
   priceListId: string
-  prices: [
-    {
-      amount: number
-      currency_code: string
-      price_set_id: string
-    }
-  ]
+  prices: PriceListPriceDTO[]
 }
 
 export interface SetPriceListRulesDTO {
