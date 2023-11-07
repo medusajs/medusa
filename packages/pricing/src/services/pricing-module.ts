@@ -599,7 +599,7 @@ export default class PricingModuleService<
         rulesCursor++
         return Object.entries(rules).map(([k, v]) => ({
           price_set_money_amount: priceSetMoneyAmount,
-          rule_type: ruleTypeMap.get(priceSetId)!.get(k),
+          rule_type: ruleTypeMap.get(priceSetId)!.get(k)?.id,
           price_set: priceSetId,
           value: v,
           price_list_id: "test", // TODO: accept title
