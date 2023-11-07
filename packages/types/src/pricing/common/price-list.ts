@@ -35,6 +35,7 @@ export interface CreatePriceListRules extends Record<string, string[]> {}
 
 export interface CreatePriceListDTO {
   title: string
+  description: string
   starts_at?: Date
   ends_at?: Date
   status?: PriceListStatus

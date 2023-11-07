@@ -63,7 +63,6 @@ export async function prepareCreatePriceLists({
     const {
       _associationTag,
       customer_groups = [],
-      type,
       includes_tax,
       name,
       prices,

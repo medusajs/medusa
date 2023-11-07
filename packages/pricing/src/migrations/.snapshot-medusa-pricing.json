@@ -157,6 +157,24 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "status": {
           "name": "status",
           "type": "text",
@@ -168,6 +186,20 @@
           "enumItems": [
             "active",
             "draft"
+          ],
+          "mappedType": "enum"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'sale'",
+          "enumItems": [
+            "sale",
+            "override"
           ],
           "mappedType": "enum"
         },

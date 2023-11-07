@@ -35,6 +35,9 @@ export default class PriceList {
   @Property({ columnType: "text" })
   title: string
 
+  @Property({ columnType: "text" })
+  description: string
+
   @Enum({ items: () => PriceListStatus, default: PriceListStatus.DRAFT })
   status!: PriceListStatus
 

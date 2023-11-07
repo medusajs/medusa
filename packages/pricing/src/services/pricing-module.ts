@@ -43,7 +43,6 @@ import {
   RuleTypeService,
 } from "@services"
 
-import { CreatePriceListRuleDTO } from "@medusajs/types"
 import {
   groupBy,
   InjectManager,

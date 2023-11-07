@@ -11,8 +11,7 @@ import { Workflows } from "../../definitions"
 export enum CreatePriceListActions {
   prepare = "prepare",
   createPriceList = "createPriceList",
-  createPriceRules = "createPriceRules",
-  createPriceListPrices = "createPriceListPrices",
+  failingStep = "failingStep",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
@@ -55,7 +54,6 @@ const handlers = new Map([
       ),
       compensate: pipe(
         {
-          merge: true,
           invoke: {
             from: CreatePriceListActions.createPriceList,
             alias: PriceListHandlers.removePriceLists.aliases.priceLists,
