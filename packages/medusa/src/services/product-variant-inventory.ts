@@ -15,6 +15,7 @@ import {
   FlagRouter,
   isDefined,
   MedusaError,
+  promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
@@ -143,7 +144,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return false
     }
 
-    const hasInventory = await Promise.all(
+    const hasInventory = await promiseAll(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_.confirmInventory(
@@ -411,7 +412,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     )
 
     const toCreate = (
-      await Promise.all(
+      await promiseAll(
         data.map(async (d) => {
           if (existingMap.get(d.variantId)?.has(d.inventoryItemId)) {
             return null
@@ -815,7 +816,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return
     }
 
-    await Promise.all(
+    await promiseAll(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_.adjustInventory(
@@ -846,7 +847,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         availabilityContext
       )
 
-    return await Promise.all(
+    return await promiseAll(
       variants.map(async (variant) => {
         if (!variant.id) {
           return variant
@@ -973,7 +974,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       salesChannelId
     )
 
-    return await Promise.all(
+    return await promiseAll(
       products.map(async (product) => {
         if (!product.variants || product.variants.length === 0) {
           return product
@@ -1020,7 +1021,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       this.salesChannelInventoryService_.withTransaction(this.activeManager_)
 
     return Math.min(
-      ...(await Promise.all(
+      ...(await promiseAll(
         variantInventoryItems.map(async (variantInventory) => {
           // get the total available quantity for the given sales channel
           // divided by the required quantity to account for how many of the

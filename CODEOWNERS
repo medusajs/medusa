@@ -2,3 +2,4 @@
 *                                               @medusajs/core
 /docs/                                          @medusajs/docs
 /www/                                           @medusajs/docs
+/packages/design-system/                        @medusajs/ui

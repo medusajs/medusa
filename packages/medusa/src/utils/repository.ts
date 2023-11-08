@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import { flatten, groupBy, map, merge } from "lodash"
 import {
   EntityMetadata,
@@ -43,7 +44,7 @@ export async function queryEntityWithIds<T extends ObjectLiteral>({
   ) => false | undefined)[]
 }): Promise<T[]> {
   const alias = repository.metadata.name.toLowerCase()
-  return await Promise.all(
+  return await promiseAll(
     Object.entries(groupedRelations).map(
       async ([toplevel, topLevelRelations]) => {
         let querybuilder = repository.createQueryBuilder(alias)
@@ -191,7 +192,7 @@ export async function queryEntityWithoutRelations<T extends ObjectLiteral>({
   let entities: T[]
   let count = 0
   if (shouldCount) {
-    const result = await Promise.all([qb.getMany(), qb.getCount()])
+    const result = await promiseAll([qb.getMany(), qb.getCount()])
     entities = result[0]
     count = result[1]
   } else {

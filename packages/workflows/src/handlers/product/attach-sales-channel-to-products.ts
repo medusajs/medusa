@@ -1,4 +1,5 @@
 import { WorkflowArguments } from "../../helper"
+import { promiseAll } from "@medusajs/utils"
 
 type ProductHandle = string
 type SalesChannelId = string
@@ -38,7 +39,7 @@ export async function attachSalesChannelToProducts({
     }
   })
 
-  await Promise.all(
+  await promiseAll(
     Array.from(salesChannelIdProductIdsMap.entries()).map(
       async ([salesChannelId, productIds]) => {
         return await salesChannelServiceTx.addProducts(

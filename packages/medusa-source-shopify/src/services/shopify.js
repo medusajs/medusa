@@ -1,5 +1,6 @@
 import { BaseService } from "medusa-interfaces"
 import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
+import { promiseAll } from "@medusajs/utils"
 
 class ShopifyService extends BaseService {
   constructor(
@@ -83,11 +84,10 @@ class ShopifyService extends BaseService {
         updatedSinceQuery
       )
 
-      const resolvedProducts = await Promise.all(
+      const productServiceTx = this.productService_.withTransaction(manager)
+      const resolvedProducts = await promiseAll(
         products.map(async (product) => {
-          return await this.productService_
-            .withTransaction(manager)
-            .create(product)
+          return await productServiceTx.create(product)
         })
       )
 

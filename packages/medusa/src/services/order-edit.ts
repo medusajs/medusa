@@ -33,6 +33,7 @@ import EventBusService from "./event-bus"
 import { IInventoryService } from "@medusajs/types"
 import { OrderEditRepository } from "../repositories/order-edit"
 import { TransactionBaseService } from "../interfaces"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -521,7 +522,7 @@ export default class OrderEditService extends TransactionBaseService {
     })
 
     const computedOrder = { ...order, items } as Order
-    await Promise.all([
+    await promiseAll([
       await orderServiceTx.decorateTotals(computedOrder),
       await orderServiceTx.decorateTotals(order),
     ])
@@ -752,7 +753,7 @@ export default class OrderEditService extends TransactionBaseService {
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
 
-      const [lineItems] = await Promise.all([
+      const [lineItems] = await promiseAll([
         lineItemServiceTx.update(
           { order_id: orderEdit.order_id },
           { order_id: null }
@@ -840,7 +841,7 @@ export default class OrderEditService extends TransactionBaseService {
       orderEdit.changes.map((change) => change.id)
     )
 
-    await Promise.all(
+    await promiseAll(
       [
         taxProviderServiceTs.clearLineItemsTaxLines(clonedItemIds),
         clonedItemIds.map(async (id) => {
@@ -851,7 +852,7 @@ export default class OrderEditService extends TransactionBaseService {
       ].flat()
     )
 
-    await Promise.all(
+    await promiseAll(
       clonedItemIds.map(async (id) => {
         return await lineItemServiceTx.delete(id)
       })

@@ -8,11 +8,12 @@ import {
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
+  composeMessage,
   InjectEntityManager,
+  isDefined,
   MedusaContext,
   MedusaError,
-  composeMessage,
-  isDefined,
+  promiseAll,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevelService } from "."
@@ -147,7 +148,7 @@ export default class ReservationItemService {
       }))
     )
 
-    const [newReservationItems] = await Promise.all([
+    const [newReservationItems] = await promiseAll([
       reservationItemRepository.save(reservationItems),
       ...data.map(
         async (data) =>
@@ -232,7 +233,7 @@ export default class ReservationItemService {
 
     ops.push(itemRepository.save(item))
 
-    await Promise.all(ops)
+    await promiseAll(ops)
 
     context.messageAggregator?.save(
       composeMessage(ReservationItemEvents.RESERVATION_ITEM_UPDATED, {
@@ -287,7 +288,7 @@ export default class ReservationItemService {
       )
     }
 
-    await Promise.all(ops)
+    await promiseAll(ops)
 
     context.messageAggregator?.save(
       softDeletedReservationIds.map((id) => {
@@ -360,7 +361,7 @@ export default class ReservationItemService {
 
     promises.push(itemRepository.softRemove(items))
 
-    await Promise.all(promises)
+    await promiseAll(promises)
 
     context.messageAggregator?.save(
       ids.map((id) => {

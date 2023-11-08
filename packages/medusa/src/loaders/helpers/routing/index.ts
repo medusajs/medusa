@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import cors from "cors"
 import { Express, json, urlencoded } from "express"
 import { readdir } from "fs/promises"
@@ -207,7 +208,7 @@ export class RoutesLoader {
    * @return {Promise<void>}
    */
   protected async createRoutesConfig(): Promise<void> {
-    await Promise.all(
+    await promiseAll(
       [...this.routesMap.values()].map(async (descriptor: RouteDescriptor) => {
         const absolutePath = descriptor.absolutePath
 
@@ -400,7 +401,7 @@ export class RoutesLoader {
     dirPath: string
     parentPath?: string
   }): Promise<void> {
-    await Promise.all(
+    await promiseAll(
       await readdir(dirPath, { withFileTypes: true }).then((entries) => {
         return entries
           .filter((entry) => {

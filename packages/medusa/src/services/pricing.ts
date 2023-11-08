@@ -4,7 +4,7 @@ import {
   PriceSetMoneyAmountDTO,
   RemoteQueryFunction,
 } from "@medusajs/types"
-import { FlagRouter, removeNullish } from "@medusajs/utils"
+import { FlagRouter, promiseAll, removeNullish } from "@medusajs/utils"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -501,7 +501,7 @@ class PricingService extends TransactionBaseService {
       Record<string, ProductVariantPricing>
     >()
 
-    await Promise.all(
+    await promiseAll(
       data.map(async ({ productId, variants }) => {
         const pricingData = variants.map((variant) => {
           return { variantId: variant.id }
@@ -876,7 +876,7 @@ class PricingService extends TransactionBaseService {
       regions.add(shippingOption.region_id)
     }
 
-    const contexts = await Promise.all(
+    const contexts = await promiseAll(
       [...regions].map(async (regionId) => {
         return {
           context: await this.collectPricingContext({
@@ -907,7 +907,7 @@ class PricingService extends TransactionBaseService {
       )
     })
 
-    return await Promise.all(shippingOptionPricingPromises)
+    return await promiseAll(shippingOptionPricingPromises)
   }
 }
 

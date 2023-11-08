@@ -25,6 +25,7 @@ import {
   MedusaContext,
   MedusaError,
   MessageAggregator,
+  promiseAll,
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { joinerConfig } from "../joiner-config"
@@ -535,7 +536,7 @@ export default class InventoryService implements IInventoryService {
       return acc
     }, new Map())
 
-    const result = await Promise.all(
+    const result = await promiseAll(
       updates.map(async (update) => {
         const levelId = levelMap
           .get(update.inventory_item_id)
