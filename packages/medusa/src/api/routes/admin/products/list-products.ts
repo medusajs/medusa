@@ -7,12 +7,12 @@ import {
   SalesChannelService,
 } from "../../../../services"
 
-import { FilterableProductProps } from "../../../../types/product"
 import { IInventoryService } from "@medusajs/types"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { PricedProduct } from "../../../../types/pricing"
-import { Product } from "../../../../models"
 import { Type } from "class-transformer"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { Product } from "../../../../models"
+import { PricedProduct } from "../../../../types/pricing"
+import { FilterableProductProps } from "../../../../types/product"
 import { defaultAdminProductRemoteQueryObject } from "./index"
 
 /**
@@ -301,7 +301,7 @@ export default async (req, res) => {
   })
 }
 
-async function listAndCountProductWithIsolatedProductModule(
+export async function listAndCountProductWithIsolatedProductModule(
   req,
   filterableFields,
   listConfig

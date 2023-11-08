@@ -53,6 +53,7 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id/products", () =>
 
     product = await simpleProductFactory(dbConnection, {
       id: "test-product-with-variant",
+      title: "uniquely fun product",
       variants: [
         {
           options: [{ option_id: "test-product-option-1", value: "test" }],
@@ -168,9 +169,78 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id/products", () =>
             created_at: expect.any(String),
             updated_at: expect.any(String),
             deleted_at: null,
-            product: expect.any(String),
           }),
         ],
+      }),
+    ])
+  })
+
+  it("should get all products with a search under a price list", async () => {
+    const priceSet = await createVariantPriceSet({
+      container: appContainer,
+      variantId: variant.id,
+      prices: [
+        {
+          amount: 3000,
+          currency_code: "usd",
+          rules: {},
+        },
+      ],
+      rules: [],
+    })
+
+    const [priceList] = await pricingModuleService.createPriceLists([
+      {
+        title: "test price list",
+        description: "test",
+        ends_at: new Date(),
+        starts_at: new Date(),
+        status: PriceListStatus.ACTIVE,
+        type: PriceListType.OVERRIDE,
+        prices: [
+          {
+            amount: 5000,
+            currency_code: "usd",
+            price_set_id: priceSet.id,
+          },
+        ],
+      },
+    ])
+
+    const api = useApi() as any
+
+    let response = await api.get(
+      `/admin/price-lists/${priceList.id}/products?q=shouldnotreturnanything`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.count).toEqual(0)
+    expect(response.data.products).toEqual([])
+
+    response = await api.get(
+      `/admin/price-lists/${priceList.id}/products?q=uniquely`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.count).toEqual(1)
+    expect(response.data.products).toEqual([
+      expect.objectContaining({
+        id: expect.any(String),
+      }),
+    ])
+
+    response = await api.get(
+      `/admin/price-lists/${priceList.id}/products?q=`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.count).toEqual(1)
+    expect(response.data.products).toEqual([
+      expect.objectContaining({
+        id: expect.any(String),
       }),
     ])
   })

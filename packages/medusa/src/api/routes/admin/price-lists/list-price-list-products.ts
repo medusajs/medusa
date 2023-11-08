@@ -21,7 +21,7 @@ import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/i
 import { ProductStatus } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
 import { FilterableProductProps } from "../../../../types/product"
-import { defaultAdminProductRemoteQueryObject } from "../products"
+import { listAndCountProductWithIsolatedProductModule } from "../products/list-products"
 
 /**
  * @oas [get] /admin/price-lists/{id}/products
@@ -242,14 +242,10 @@ export default async (req: Request, res) => {
       }
     )
 
-    ;[products, count] = await productModuleService.listAndCount(
-      {
-        id: productVariants.map((pv) => pv.product_id),
-      },
-      {
-        select: defaultAdminProductRemoteQueryObject.fields,
-        relations: ["variants", "collection"],
-      }
+    ;[products, count] = await listAndCountProductWithIsolatedProductModule(
+      req,
+      req.filterableFields,
+      req.listConfig
     )
   } else {
     ;[products, count] = await priceListService.listProducts(
