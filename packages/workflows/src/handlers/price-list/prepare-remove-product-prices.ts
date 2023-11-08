@@ -3,6 +3,7 @@ import { prepareCreatePriceLists } from "./prepare-create-price-list"
 
 type Result = {
   priceSets: string[]
+  priceListId: string
 }
 
 export async function prepareRemoveProductPrices({
@@ -10,10 +11,11 @@ export async function prepareRemoveProductPrices({
   data,
 }: WorkflowArguments<{
   productIds: string[]
+  priceListId: string
 }>): Promise<Result | void> {
   const remoteQuery = container.resolve("remoteQuery")
 
-  const { productIds } = data
+  const { priceListId, productIds } = data
 
   const variables = {
     id: productIds,
@@ -26,26 +28,34 @@ export async function prepareRemoveProductPrices({
     },
   }
 
-  const variantPriceSets = await remoteQuery(query)
+  const productsWithVariantPriceSets: QueryResult[] = await remoteQuery(query)
 
-  const variantIdPriceSetIdMap: Map<string, string> = new Map(
-    variantPriceSets.map((variantPriceSet) => [
-      variantPriceSet.variant_id,
-      variantPriceSet.price_set_id,
-    ])
-  )
+  const priceSets = productsWithVariantPriceSets
+    .map(({ variants }) => variants.map(({ price }) => price.price_set_id))
+    .flat()
 
-  return { priceSets: [] }
+  return { priceSets, priceListId }
 }
 
 prepareCreatePriceLists.aliases = {
   payload: "payload",
 }
 
+type QueryResult = {
+  id: string
+  variants: {
+    id: string
+    price: {
+      price_set_id: string
+      variant_id: string
+    }
+  }[]
+}
+
 const defaultAdminProductRemoteQueryObject = {
   fields: ["id"],
   variants: {
-    product_variant_price_set: {
+    price: {
       fields: ["variant_id", "price_set_id"],
     },
   },

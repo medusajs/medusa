@@ -17,9 +17,10 @@ const workflowSteps: TransactionStepsDefinition = {
   next: {
     action: RemoveProductPricesActions.prepare,
     noCompensation: true,
-    // next: {
-    //   action: RemoveProductPricesActions.removePriceSetPrices,
-    // },
+    next: {
+      action: RemoveProductPricesActions.removePriceSetPrices,
+      noCompensation: true,
+    },
   },
 }
 
@@ -39,29 +40,21 @@ const handlers = new Map([
       ),
     },
   ],
-  // [
-  //   RemoveProductPricesActions.removePriceSetPrices,
-  //   {
-  //     invoke: pipe(
-  //       {
-  //         invoke: {
-  //           from: RemoveProductPricesActions.prepare,
-  //           alias: PriceListHandlers.createPriceLists.aliases.priceLists,
-  //         },
-  //       },
-  //       PriceListHandlers.createPriceLists
-  //     ),
-  //     compensate: pipe(
-  //       {
-  //         invoke: {
-  //           from: RemoveProductPricesActions.removePriceSetPrices,
-  //           alias: PriceListHandlers.removePriceLists.aliases.priceLists,
-  //         },
-  //       },
-  //       PriceListHandlers.removePriceLists
-  //     ),
-  //   },
-  // ],
+  [
+    RemoveProductPricesActions.removePriceSetPrices,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: RemoveProductPricesActions.prepare,
+            alias: PriceListHandlers.createPriceLists.aliases.priceLists,
+          },
+        },
+        PriceListHandlers.removePriceListPriceSetPrices
+      ),
+    },
+  ],
 ])
 
 WorkflowManager.register(
@@ -72,7 +65,7 @@ WorkflowManager.register(
 
 export const removePriceListProductPrices = exportWorkflow<
   WorkflowTypes.PriceListWorkflow.RemovePriceListProductsWorkflowInputDTO,
-  void
+  string[]
 >(
   Workflows.RemovePriceListProducts,
   RemoveProductPricesActions.removePriceSetPrices,

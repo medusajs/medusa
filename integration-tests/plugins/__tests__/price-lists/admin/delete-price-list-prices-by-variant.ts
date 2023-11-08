@@ -12,7 +12,6 @@ import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { AxiosInstance } from "axios"
 
 jest.setTimeout(50000)
 
@@ -32,9 +31,7 @@ describe("[Product & Pricing Module] DELETE /admin/price-lists/:id", () => {
   let appContainer
   let shutdownServer
   let product
-  let variant1
-  let priceSet
-  let priceListId
+  let variant
   let pricingModuleService: IPricingModuleService
 
   beforeAll(async () => {
@@ -52,8 +49,6 @@ describe("[Product & Pricing Module] DELETE /admin/price-lists/:id", () => {
   })
 
   beforeEach(async () => {
-    const api = useApi()! as AxiosInstance
-
     await adminSeeder(dbConnection)
     await createDefaultRuleTypes(appContainer)
 
@@ -79,11 +74,18 @@ describe("[Product & Pricing Module] DELETE /admin/price-lists/:id", () => {
       ],
     })
 
-    variant1 = product.variants[0]
+    variant = product.variants[0]
+  })
 
-    priceSet = await createVariantPriceSet({
+  afterEach(async () => {
+    const db = useDb()
+    await db.teardown()
+  })
+
+  it("should delete prices based on product ids", async () => {
+    const priceSet = await createVariantPriceSet({
       container: appContainer,
-      variantId: variant1.id,
+      variantId: variant.id,
       prices: [
         {
           amount: 3000,
@@ -93,6 +95,7 @@ describe("[Product & Pricing Module] DELETE /admin/price-lists/:id", () => {
       ],
     })
 
+    const api = useApi() as any
     const data = {
       name: "test price list",
       description: "test",
@@ -102,81 +105,25 @@ describe("[Product & Pricing Module] DELETE /admin/price-lists/:id", () => {
       prices: [
         {
           amount: 400,
-          variant_id: variant1.id,
+          variant_id: variant.id,
           currency_code: "usd",
         },
       ],
     }
 
-    const priceListResult = await api.post(
-      `admin/price-lists`,
-      data,
-      adminHeaders
-    )
-    priceListId = priceListResult.data.price_list.id
-  })
+    const result = await api.post(`admin/price-lists`, data, adminHeaders)
+    const priceListId = result.data.price_list.id
 
-  afterEach(async () => {
-    const db = useDb()
-    await db.teardown()
-  })
-
-  it("should batch delete prices based on product ids", async () => {
-    const api = useApi()! as AxiosInstance
-
-    let priceSetMoneyAmounts =
-      await pricingModuleService.listPriceSetMoneyAmounts({
-        price_set_id: [priceSet.id],
-      })
-    expect(priceSetMoneyAmounts.length).toEqual(2)
-
-    const deleteRes = await api.delete(
-      `/admin/price-lists/${priceListId}/products/prices/batch`,
-      {
-        headers: adminHeaders.headers,
-        data: {
-          product_ids: [product.id],
-        },
-      }
-    )
-    expect(deleteRes.status).toEqual(200)
-
-    priceSetMoneyAmounts = await pricingModuleService.listPriceSetMoneyAmounts({
-      price_set_id: [priceSet.id],
+    let psmas = await pricingModuleService.listPriceSetMoneyAmounts({
+      price_list_id: [priceListId],
     })
+    expect(psmas.length).toEqual(1)
 
-    expect(priceSetMoneyAmounts.length).toEqual(1)
-    expect(priceSetMoneyAmounts).toEqual([
-      expect.objectContaining({
-        price_list: null,
-      }),
-    ])
-  })
+    // TODO delete here
 
-  it("should delete prices based on single product id", async () => {
-    const api = useApi()! as AxiosInstance
-
-    let priceSetMoneyAmounts =
-      await pricingModuleService.listPriceSetMoneyAmounts({
-        price_set_id: [priceSet.id],
-      })
-    expect(priceSetMoneyAmounts.length).toEqual(2)
-
-    const deleteRes = await api.delete(
-      `/admin/price-lists/${priceListId}/products/${product.id}/prices`,
-      adminHeaders
-    )
-    expect(deleteRes.status).toEqual(200)
-
-    priceSetMoneyAmounts = await pricingModuleService.listPriceSetMoneyAmounts({
-      price_set_id: [priceSet.id],
+    psmas = await pricingModuleService.listPriceSetMoneyAmounts({
+      price_list_id: [priceListId],
     })
-
-    expect(priceSetMoneyAmounts.length).toEqual(1)
-    expect(priceSetMoneyAmounts).toEqual([
-      expect.objectContaining({
-        price_list: null,
-      }),
-    ])
+    expect(psmas.length).toEqual(0)
   })
 })

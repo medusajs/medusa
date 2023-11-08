@@ -86,10 +86,10 @@ export default async (req: Request, res: Response) => {
   const manager: EntityManager = req.scope.resolve("manager")
 
   const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.CreatePriceList,
+    workflows: Workflows.RemovePriceListProducts,
   })
 
-  let deletedPriceIds
+  let deletedPriceIds: string[] = []
 
   if (isWorkflowEnabled) {
     const deletePriceListProductsWorkflow = removePriceListProductPrices(
@@ -98,6 +98,7 @@ export default async (req: Request, res: Response) => {
 
     const input = {
       productIds: validated.product_ids,
+      priceListId: id,
     }
 
     const { result } = await deletePriceListProductsWorkflow.run({
