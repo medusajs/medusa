@@ -9,6 +9,7 @@ import {
 import { isDate } from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { validator } from "../validator"
+import { promiseAll } from "@medusajs/utils"
 
 async function typeValidator(
   typedClass: any,
@@ -43,7 +44,7 @@ async function typeValidator(
       if (isArray(typedClass) && isArray(plain)) {
         const errors: Map<any, string> = new Map()
         const result = (
-          await Promise.all(
+          await promiseAll(
             (plain as any[]).map(
               async (p) =>
                 await typeValidator(typedClass[0], p).catch((e) => {
@@ -80,7 +81,7 @@ export function IsType(types: any[], validationOptions?: ValidationOptions) {
       validator: {
         async validate(value: unknown, args: ValidationArguments) {
           const errors: Map<any, string> = new Map()
-          const results = await Promise.all(
+          const results = await promiseAll(
             types.map(
               async (v) =>
                 await typeValidator(v, value).catch((e) => {
