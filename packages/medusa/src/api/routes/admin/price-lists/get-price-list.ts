@@ -6,6 +6,7 @@ import {
   ProductVariantDTO,
 } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
+import { MedusaError } from "medusa-core-utils"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
 import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
@@ -199,6 +200,13 @@ export async function listAndCountPriceListPricingModule({
     priceList.customer_groups = []
 
     delete priceList.title
+  }
+
+  if (!list && count === 0) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Price list with id: ${id} was not found`
+    )
   }
 
   return [priceLists, count]

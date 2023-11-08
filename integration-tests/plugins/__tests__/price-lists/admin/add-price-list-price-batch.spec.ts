@@ -1,7 +1,10 @@
 import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { simpleProductFactory } from "../../../../factories"
+import {
+  simpleProductFactory,
+  simpleRegionFactory,
+} from "../../../../factories"
 
 import {
   IPricingModuleService,
@@ -11,6 +14,7 @@ import {
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import adminSeeder from "../../../../helpers/admin-seeder"
+import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
 
 jest.setTimeout(50000)
@@ -26,7 +30,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] GET /admin/price-lists/:id", () => {
+describe("[Product & Pricing Module] POST /admin/price-lists/:id/prices/batch", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -50,6 +54,14 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id", () => {
 
   beforeEach(async () => {
     await adminSeeder(dbConnection)
+    await createDefaultRuleTypes(appContainer)
+
+    await simpleRegionFactory(dbConnection, {
+      id: "test-region",
+      name: "Test Region",
+      currency_code: "usd",
+      tax_rate: 0,
+    })
 
     product = await simpleProductFactory(dbConnection, {
       id: "test-product-with-variant",
@@ -74,8 +86,19 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id", () => {
     await db.teardown()
   })
 
-  it("should get price list and its money amounts with variants", async () => {
-    const priceSet = await createVariantPriceSet({
+  it("should update money amounts if money amount id is present in prices", async () => {
+    const [priceList] = await pricingModuleService.createPriceLists([
+      {
+        title: "test price list",
+        description: "test",
+        ends_at: new Date(),
+        starts_at: new Date(),
+        status: PriceListStatus.ACTIVE,
+        type: PriceListType.OVERRIDE,
+      },
+    ])
+
+    await createVariantPriceSet({
       container: appContainer,
       variantId: variant.id,
       prices: [
@@ -85,28 +108,24 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id", () => {
           rules: {},
         },
       ],
-      rules: [],
     })
 
-    const [priceList] = await pricingModuleService.createPriceLists([
-      {
-        title: "test price list",
-        description: "test",
-        ends_at: new Date(),
-        starts_at: new Date(),
-        status: PriceListStatus.ACTIVE,
-        type: PriceListType.OVERRIDE,
-        prices: [
-          {
-            amount: 5000,
-            currency_code: "usd",
-            price_set_id: priceSet.id,
-          },
-        ],
-      },
-    ])
-
     const api = useApi() as any
+    const data = {
+      prices: [
+        {
+          variant_id: variant.id,
+          amount: 5000,
+          currency_code: "usd",
+        },
+      ],
+    }
+
+    await api.post(
+      `admin/price-lists/${priceList.id}/prices/batch`,
+      data,
+      adminHeaders
+    )
 
     const response = await api.get(
       `/admin/price-lists/${priceList.id}`,
@@ -196,19 +215,5 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id", () => {
         ],
       })
     )
-  })
-
-  it("should throw an error when price list is not found", async () => {
-    const api = useApi() as any
-
-    const error = await api
-      .get(`/admin/price-lists/does-not-exist`, adminHeaders)
-      .catch((e) => e)
-
-    expect(error.response.status).toBe(404)
-    expect(error.response.data).toEqual({
-      type: "not_found",
-      message: "Price list with id: does-not-exist was not found",
-    })
   })
 })

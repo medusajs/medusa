@@ -1,3 +1,6 @@
+import { WorkflowTypes } from "@medusajs/types"
+import { UpdatePriceLists } from "@medusajs/workflows"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -6,20 +9,20 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { EntityManager } from "typeorm"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+import { PriceList } from "../../../.."
+import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import PriceListService from "../../../../services/price-list"
 import {
   AdminPriceListPricesUpdateReq,
   PriceListStatus,
   PriceListType,
 } from "../../../../types/price-list"
-
-import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
-import { PriceList } from "../../../.."
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
-import PriceListService from "../../../../services/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
+import { listAndCountPriceListPricingModule } from "./get-price-list"
 
 /**
  * @oas [post] /admin/price-lists/{id}
@@ -86,26 +89,54 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   const { id } = req.params
+  let priceList
+  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
+  const manager: EntityManager = req.scope.resolve("manager")
+  const priceListService: PriceListService =
+    req.scope.resolve("priceListService")
 
   const validated = await validator(
     AdminPostPriceListsPriceListPriceListReq,
     req.body
   )
 
-  const priceListService: PriceListService =
-    req.scope.resolve("priceListService")
+  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+    const updateVariantsWorkflow = UpdatePriceLists.updatePriceLists(req.scope)
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await priceListService
-      .withTransaction(transactionManager)
-      .update(id, validated)
-  })
+    const input = {
+      price_lists: [
+        {
+          id,
+          ...validated,
+        },
+      ],
+    } as WorkflowTypes.PriceListWorkflow.UpdatePriceListWorkflowInputDTO
 
-  const priceList = await priceListService.retrieve(id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+    await updateVariantsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    const [priceLists, _] = await listAndCountPriceListPricingModule({
+      req,
+      list: false,
+    })
+
+    priceList = priceLists[0]
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      return await priceListService
+        .withTransaction(transactionManager)
+        .update(id, validated)
+    })
+
+    priceList = await priceListService.retrieve(id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.json({ price_list: priceList })
 }

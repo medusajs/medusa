@@ -8,6 +8,7 @@ import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/i
 import PriceListService from "../../../../services/price-list"
 import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
+import { listAndCountPriceListPricingModule } from "./get-price-list"
 
 /**
  * @oas [post] /admin/price-lists/{id}/prices/batch
@@ -86,6 +87,7 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   const { id } = req.params
+  let priceList
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
   const priceListService: PriceListService =
@@ -111,18 +113,25 @@ export default async (req, res) => {
         manager,
       },
     })
+
+    const [priceLists, _] = await listAndCountPriceListPricingModule({
+      req,
+      list: false,
+    })
+
+    priceList = priceLists[0]
   } else {
     await manager.transaction(async (transactionManager) => {
       return await priceListService
         .withTransaction(transactionManager)
         .addPrices(id, validated.prices, validated.override)
     })
-  }
 
-  const priceList = await priceListService.retrieve(id, {
-    select: defaultAdminPriceListFields as (keyof PriceList)[],
-    relations: defaultAdminPriceListRelations,
-  })
+    priceList = await priceListService.retrieve(id, {
+      select: defaultAdminPriceListFields as (keyof PriceList)[],
+      relations: defaultAdminPriceListRelations,
+    })
+  }
 
   res.json({ price_list: priceList })
 }

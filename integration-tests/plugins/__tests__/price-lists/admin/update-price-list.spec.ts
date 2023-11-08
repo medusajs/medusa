@@ -30,7 +30,7 @@ const env = {
   MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/price-lists/:id/prices/batch", () => {
+describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -86,7 +86,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id/prices/batch", 
     await db.teardown()
   })
 
-  it("should update money amounts if money amount id is present in prices", async () => {
+  it("should update price lists successfully", async () => {
     const [priceList] = await pricingModuleService.createPriceLists([
       {
         title: "test price list",
@@ -112,6 +112,8 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id/prices/batch", 
 
     const api = useApi() as any
     const data = {
+      name: "new price list name",
+      description: "new price list description",
       prices: [
         {
           variant_id: variant.id,
@@ -121,11 +123,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id/prices/batch", 
       ],
     }
 
-    await api.post(
-      `admin/price-lists/${priceList.id}/prices/batch`,
-      data,
-      adminHeaders
-    )
+    await api.post(`admin/price-lists/${priceList.id}`, data, adminHeaders)
 
     const response = await api.get(
       `/admin/price-lists/${priceList.id}`,
@@ -139,8 +137,8 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id/prices/batch", 
         created_at: expect.any(String),
         updated_at: expect.any(String),
         deleted_at: null,
-        name: "test price list",
-        description: "test",
+        name: "new price list name",
+        description: "new price list description",
         type: "override",
         status: "active",
         starts_at: expect.any(String),
