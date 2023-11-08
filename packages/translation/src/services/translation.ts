@@ -6,16 +6,16 @@ import { buildQuery } from "@medusajs/medusa/dist"
 import { TranslationRepository } from "../repositories/translation"
 
 type InjectedDependencies = {
-  transactionRepository: typeof TranslationRepository
+  translationRepository: typeof TranslationRepository
 }
 
 export default class TranslationService extends TransactionBaseService {
-  protected readonly transactionRepository_: typeof TranslationRepository
-  constructor({ transactionRepository }) {
+  protected readonly translationRepository_: typeof TranslationRepository
+  constructor({ translationRepository }) {
     // @ts-ignore
     super(...arguments)
 
-    this.transactionRepository_ = transactionRepository
+    this.translationRepository_ = translationRepository
   }
 
   async retrieve(
@@ -30,7 +30,7 @@ export default class TranslationService extends TransactionBaseService {
     }
 
     const translationRepo = this.activeManager_.withRepository(
-      this.transactionRepository_
+      this.translationRepository_
     )
 
     const query = buildQuery({ id }, config)
@@ -55,7 +55,7 @@ export default class TranslationService extends TransactionBaseService {
     }
   ): Promise<any> {
     const translationRepo = this.activeManager_.withRepository(
-      this.transactionRepository_
+      this.translationRepository_
     )
 
     const query = buildQuery(selector, config)
@@ -71,7 +71,7 @@ export default class TranslationService extends TransactionBaseService {
     }
   ): Promise<any> {
     const translationRepo = this.activeManager_.withRepository(
-      this.transactionRepository_
+      this.translationRepository_
     )
 
     const query = buildQuery(selector, config)
@@ -84,7 +84,7 @@ export default class TranslationService extends TransactionBaseService {
 
     return await this.atomicPhase_(async (manager) => {
       const translationRepo = manager.withRepository(
-        this.transactionRepository_
+        this.translationRepository_
       )
 
       return promiseAll(
@@ -122,7 +122,7 @@ export default class TranslationService extends TransactionBaseService {
       }
 
       const translationRepo = manager.withRepository(
-        this.transactionRepository_
+        this.translationRepository_
       )
 
       const translationToSave = data.map((translationData) => {
@@ -151,7 +151,7 @@ export default class TranslationService extends TransactionBaseService {
 
     return await this.atomicPhase_(async (manager) => {
       const translationRepo = manager.withRepository(
-        this.transactionRepository_
+        this.translationRepository_
       )
 
       await translationRepo.delete(ids_)
