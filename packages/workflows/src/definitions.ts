@@ -14,6 +14,7 @@ export enum Workflows {
   // Price list workflows
   CreatePriceList = "create-price-list",
   UpdatePriceLists = "update-price-lists",
+  DeletePriceLists = "delete-price-lists",
 }
 
 export enum InputAlias {

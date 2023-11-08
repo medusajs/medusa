@@ -17,7 +17,9 @@ export interface CreatePriceListDTO {
     max_quantity?: number
     min_quantity?: number
   }[]
-  customer_groups?: { id: string }[]
+  customer_groups?: {
+    id: string
+  }[]
 }
 
 export interface CreatePriceListRuleDTO {

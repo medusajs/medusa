@@ -71,8 +71,4 @@ export const createPriceLists = exportWorkflow<
   {
     priceList: PricingTypes.CreatePriceListDTO
   }[]
->(
-  Workflows.CreatePriceList,
-  CreatePriceListActions.createPriceList,
-  async (data) => data
-)
+>(Workflows.CreatePriceList, CreatePriceListActions.createPriceList)
