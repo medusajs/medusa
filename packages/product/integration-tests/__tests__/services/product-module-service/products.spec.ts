@@ -192,9 +192,9 @@ describe("ProductModuleService products", function () {
       })
 
       expect(product.images).toHaveLength(1)
-      expect(product.variants[0].options).toHaveLength(1)
+      expect(product.variants[1].options).toHaveLength(1)
       expect(product.tags).toHaveLength(1)
-      expect(product.variants).toHaveLength(1)
+      expect(product.variants).toHaveLength(2)
 
       expect(product).toEqual(
         expect.objectContaining({
