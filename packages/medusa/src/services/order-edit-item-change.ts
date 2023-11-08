@@ -9,6 +9,7 @@ import { CreateOrderEditItemChangeInput } from "../types/order-edit"
 import { buildQuery } from "../utils"
 import { LineItemService } from "./index"
 import TaxProviderService from "./tax-provider"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -119,7 +120,7 @@ export default class OrderEditItemChangeService extends TransactionBaseService {
       await orderItemChangeRepo.delete({ id: In(itemChangeIds as string[]) })
 
       const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
-      await Promise.all([
+      await promiseAll([
         ...lineItemIdsToRemove.map(
           async (id) => await lineItemServiceTx.delete(id)
         ),

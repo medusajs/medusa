@@ -12,6 +12,7 @@ import {
 } from "./types"
 
 import { EventEmitter } from "events"
+import { promiseAll } from "@medusajs/utils"
 
 export type TransactionFlow = {
   modelId: string
@@ -404,7 +405,7 @@ export class TransactionOrchestrator extends EventEmitter {
       }
     }
 
-    await Promise.all(execution)
+    await promiseAll(execution)
 
     if (nextSteps.next.length > 0) {
       await this.executeNext(transaction)

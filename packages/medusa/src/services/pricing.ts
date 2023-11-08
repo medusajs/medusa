@@ -2,10 +2,9 @@ import {
   CalculatedPriceSetDTO,
   IPricingModuleService,
   PriceSetMoneyAmountDTO,
-  RemoteJoinerQuery,
   RemoteQueryFunction,
 } from "@medusajs/types"
-import { FlagRouter, removeNullish } from "@medusajs/utils"
+import { FlagRouter, promiseAll, removeNullish } from "@medusajs/utils"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -56,8 +55,13 @@ class PricingService extends TransactionBaseService {
   protected readonly priceSelectionStrategy: IPriceSelectionStrategy
   protected readonly productVariantService: ProductVariantService
   protected readonly featureFlagRouter: FlagRouter
-  protected readonly pricingModuleService: IPricingModuleService
-  protected readonly remoteQuery: RemoteQueryFunction
+
+  protected get pricingModuleService(): IPricingModuleService {
+    return this.__container__.pricingModuleService
+  }
+  protected get remoteQuery(): RemoteQueryFunction {
+    return this.__container__.remoteQuery
+  }
 
   constructor({
     productVariantService,
@@ -65,8 +69,6 @@ class PricingService extends TransactionBaseService {
     regionService,
     priceSelectionStrategy,
     featureFlagRouter,
-    remoteQuery,
-    pricingModuleService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -76,8 +78,6 @@ class PricingService extends TransactionBaseService {
     this.priceSelectionStrategy = priceSelectionStrategy
     this.productVariantService = productVariantService
     this.featureFlagRouter = featureFlagRouter
-    this.pricingModuleService = pricingModuleService
-    this.remoteQuery = remoteQuery
   }
 
   /**
@@ -501,7 +501,7 @@ class PricingService extends TransactionBaseService {
       Record<string, ProductVariantPricing>
     >()
 
-    await Promise.all(
+    await promiseAll(
       data.map(async ({ productId, variants }) => {
         const pricingData = variants.map((variant) => {
           return { variantId: variant.id }
@@ -876,7 +876,7 @@ class PricingService extends TransactionBaseService {
       regions.add(shippingOption.region_id)
     }
 
-    const contexts = await Promise.all(
+    const contexts = await promiseAll(
       [...regions].map(async (regionId) => {
         return {
           context: await this.collectPricingContext({
@@ -907,7 +907,7 @@ class PricingService extends TransactionBaseService {
       )
     })
 
-    return await Promise.all(shippingOptionPricingPromises)
+    return await promiseAll(shippingOptionPricingPromises)
   }
 }
 
