@@ -3,7 +3,7 @@ import moduleSchema from "./schema"
 import { Translation } from "./models/translation"
 
 export const LinkableKeys = {
-  id: Translation.name,
+  translation_id: Translation.name,
 }
 
 export const joinerConfig: ModuleJoinerConfig = {
