@@ -1,4 +1,3 @@
-import { IPricingModuleService, IProductModuleService } from "@medusajs/types"
 import {
   IsArray,
   IsBoolean,
@@ -198,53 +197,9 @@ export default async (req: Request, res) => {
   }
 
   if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
-    const remoteQuery = req.scope.resolve("remoteQuery")
-    const pricingModuleService: IPricingModuleService = req.scope.resolve(
-      "pricingModuleService"
-    )
-    const productModuleService: IProductModuleService = req.scope.resolve(
-      "productModuleService"
-    )
-
-    const [priceList] = await pricingModuleService.listPriceLists(
-      { id: [id] },
-      {
-        relations: [
-          "price_set_money_amounts",
-          "price_set_money_amounts.price_set",
-        ],
-        select: ["price_set_money_amounts.price_set.id"],
-      }
-    )
-
-    const priceSetIds = priceList.price_set_money_amounts?.map(
-      (psma) => psma.price_set?.id
-    )
-
-    const query = {
-      product_variant_price_set: {
-        __args: {
-          price_set_id: priceSetIds,
-        },
-        fields: ["variant_id", "price_set_id"],
-      },
-    }
-
-    const variantPriceSets = await remoteQuery(query)
-    const variantIds = variantPriceSets.map((vps) => vps.variant_id)
-
-    const productVariants = await productModuleService.listVariants(
-      {
-        id: variantIds,
-      },
-      {
-        select: ["product_id"],
-      }
-    )
-
     ;[products, count] = await listAndCountProductWithIsolatedProductModule(
       req,
-      req.filterableFields,
+      filterableFields,
       req.listConfig
     )
   } else {

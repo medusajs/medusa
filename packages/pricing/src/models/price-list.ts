@@ -101,6 +101,6 @@ export default class PriceList {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "pset")
+    this.id = generateEntityId(this.id, "plist")
   }
 }

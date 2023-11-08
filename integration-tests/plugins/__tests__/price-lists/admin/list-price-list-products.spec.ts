@@ -31,7 +31,9 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id/products", () =>
   let appContainer
   let shutdownServer
   let product
+  let product2
   let variant
+  let variant2
   let pricingModuleService: IPricingModuleService
 
   beforeAll(async () => {
@@ -68,6 +70,24 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id/products", () =>
     })
 
     variant = product.variants[0]
+
+    product2 = await simpleProductFactory(dbConnection, {
+      id: "test-product-with-variant-2",
+      title: "uniquely fun product 2",
+      variants: [
+        {
+          options: [{ option_id: "test-product-option-2", value: "test 2" }],
+        },
+      ],
+      options: [
+        {
+          id: "test-product-option-2",
+          title: "Test option 2",
+        },
+      ],
+    })
+
+    variant2 = product2.variants[0]
   })
 
   afterEach(async () => {
