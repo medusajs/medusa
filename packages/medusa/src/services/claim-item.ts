@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { TransactionBaseService } from "../interfaces"
 import { ClaimImage, ClaimItem, ClaimTag } from "../models"
@@ -79,7 +80,7 @@ class ClaimItemService extends TransactionBaseService {
       let tagsToAdd: ClaimTag[] = []
       if (tags && tags.length) {
         const claimTagRepo = manager.withRepository(this.claimTagRepository_)
-        tagsToAdd = await Promise.all(
+        tagsToAdd = await promiseAll(
           tags.map(async (t) => {
             const normalized = t.trim().toLowerCase()
             const existing = await claimTagRepo.findOne({

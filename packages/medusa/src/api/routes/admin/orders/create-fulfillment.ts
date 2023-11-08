@@ -19,6 +19,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { Fulfillment, LineItem } from "../../../../models"
 import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [post] /admin/orders/{id}/fulfillment
@@ -167,7 +168,7 @@ export const updateInventoryAndReservations = async (
 ) => {
   const { inventoryService, locationId } = context
 
-  await Promise.all(
+  await promiseAll(
     fulfillments.map(async ({ items }) => {
       await inventoryService.validateInventoryAtLocation(
         items.map(({ item, quantity }) => ({ ...item, quantity } as LineItem)),
@@ -176,9 +177,9 @@ export const updateInventoryAndReservations = async (
     })
   )
 
-  await Promise.all(
+  await promiseAll(
     fulfillments.map(async ({ items }) => {
-      await Promise.all(
+      await promiseAll(
         items.map(async ({ item, quantity }) => {
           if (!item.variant_id) {
             return
