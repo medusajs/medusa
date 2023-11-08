@@ -1,9 +1,14 @@
 import { TransactionBaseService } from "@medusajs/medusa"
 import { FindConfig, Selector } from "@medusajs/types"
-import { isDefined, MedusaError, promiseAll } from "@medusajs/utils"
+import { isDefined, MedusaError } from "@medusajs/utils"
 import { Translation } from "../models/translation"
 import { buildQuery } from "@medusajs/medusa/dist"
 import { TranslationRepository } from "../repositories/translation"
+import {
+  CreateTranslationDTO,
+  TranslationDTO,
+  UpdateTranslationDTO,
+} from "../types"
 
 type InjectedDependencies = {
   translationRepository: typeof TranslationRepository
@@ -21,7 +26,7 @@ export default class TranslationService extends TransactionBaseService {
   async retrieve(
     id: string,
     config: FindConfig<Translation> = {}
-  ): Promise<Translation> {
+  ): Promise<TranslationDTO> {
     if (!isDefined(id)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -53,7 +58,7 @@ export default class TranslationService extends TransactionBaseService {
       skip: 0,
       take: 20,
     }
-  ): Promise<any> {
+  ): Promise<TranslationDTO[]> {
     const translationRepo = this.activeManager_.withRepository(
       this.translationRepository_
     )
@@ -69,7 +74,7 @@ export default class TranslationService extends TransactionBaseService {
       skip: 0,
       take: 20,
     }
-  ): Promise<any> {
+  ): Promise<[TranslationDTO[], number]> {
     const translationRepo = this.activeManager_.withRepository(
       this.translationRepository_
     )
@@ -79,7 +84,7 @@ export default class TranslationService extends TransactionBaseService {
     return await translationRepo.findAndCount(query)
   }
 
-  async create(data: Partial<Translation>[]): Promise<Translation> {
+  async create(data: CreateTranslationDTO[]): Promise<TranslationDTO[]> {
     const data_ = Array.isArray(data) ? data : [data]
 
     return await this.atomicPhase_(async (manager) => {
@@ -87,18 +92,18 @@ export default class TranslationService extends TransactionBaseService {
         this.translationRepository_
       )
 
-      return promiseAll(
-        data_.map(async (d) => {
-          const translation = translationRepo.create(d)
-          return await translationRepo.save(translation)
-        })
-      )
+      const translationToCreate = data_.map((d) => {
+        return translationRepo.create(d)
+      })
+
+      const result = await translationRepo.insert(translationToCreate)
+      return this.list({
+        id: result.identifiers.map((i) => i.id),
+      })
     })
   }
 
-  async update(
-    data: { id: string; lang?: string; attributes: Record<string, string> }[]
-  ): Promise<Translation[]> {
+  async update(data: UpdateTranslationDTO[]): Promise<TranslationDTO[]> {
     return await this.atomicPhase_(async (manager) => {
       const translations = await this.list({
         id: data.map((d) => d.id),
