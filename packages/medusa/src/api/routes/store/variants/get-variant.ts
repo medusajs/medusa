@@ -9,6 +9,7 @@ import { IsOptional, IsString } from "class-validator"
 
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { validator } from "../../../../utils/validator"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/variants/{id}
@@ -122,7 +123,7 @@ export default async (req, res) => {
     )) as any
   )
 
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({ variant })
 }

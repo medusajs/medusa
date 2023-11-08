@@ -61,6 +61,7 @@ import {
   mapObjectTo,
   MedusaContext,
   MedusaError,
+  promiseAll,
 } from "@medusajs/utils"
 import {
   entityNameToLinkableKeysMap,
@@ -734,7 +735,7 @@ export default class ProductModuleService<
       ProductTypes.CreateProductOptionDTO[]
     >()
 
-    const productsData = await Promise.all(
+    const productsData = await promiseAll(
       data.map(async (product) => {
         const productData = { ...product }
         if (!productData.handle) {
@@ -816,7 +817,7 @@ export default class ProductModuleService<
       })
     }
 
-    await Promise.all(
+    await promiseAll(
       [...productVariantsMap].map(async ([handle, variants]) => {
         return await this.productVariantService_.create(
           productByHandleMap.get(handle)!,
@@ -861,7 +862,7 @@ export default class ProductModuleService<
 
     const productOptionsMap = new Map<string, TProductOption[]>()
 
-    const productsData = await Promise.all(
+    const productsData = await promiseAll(
       data.map(async (product) => {
         const { variants, ...productData } = product
 
@@ -997,7 +998,7 @@ export default class ProductModuleService<
       )
     }
 
-    await Promise.all(promises)
+    await promiseAll(promises)
 
     return products
   }
