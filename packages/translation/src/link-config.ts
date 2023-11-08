@@ -1,11 +1,15 @@
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 import { composeLinkName } from "@medusajs/link-modules"
+import { lowerCaseFirst } from "@medusajs/utils"
+import TranslationService from "./services/translation"
+
+const translationServiceName = lowerCaseFirst(TranslationService.name)
 
 export const LinkProductTranslationServiceName = composeLinkName(
   Modules.PRODUCT,
   "product_id",
-  "translationService",
+  translationServiceName,
   "translation_id"
 )
 
@@ -30,7 +34,8 @@ export const ProductTranslation: ModuleJoinerConfig = {
       alias: "product",
     },
     {
-      serviceName: "translationService",
+      serviceName: translationServiceName,
+      isInternalService: true,
       primaryKey: "id",
       foreignKey: "translation_id",
       alias: "translation",
@@ -41,19 +46,22 @@ export const ProductTranslation: ModuleJoinerConfig = {
     {
       serviceName: Modules.PRODUCT,
       fieldAlias: {
-        translations: "product_translations.translation",
+        translations: "translations_link.translation",
       },
       relationship: {
-        serviceName: "productService",
+        serviceName: LinkProductTranslationServiceName,
         primaryKey: "product_id",
         foreignKey: "id",
-        alias: "translations",
+        alias: "translations_link",
       },
     },
     {
-      serviceName: LinkProductTranslationServiceName,
+      serviceName: translationServiceName,
+      fieldAlias: {
+        product: "product_link.product",
+      },
       relationship: {
-        serviceName: "translationService",
+        serviceName: LinkProductTranslationServiceName,
         primaryKey: "translation_id",
         foreignKey: "id",
         alias: "product_link",
