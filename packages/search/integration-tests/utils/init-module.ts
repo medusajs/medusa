@@ -2,7 +2,7 @@ import { knex } from "knex"
 import { DB_URL } from "./database"
 import { joinerConfig, schema } from "../__fixtures__"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { MedusaApp, Modules } from "@medusajs/modules-sdk"
+import { MedusaApp, Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import modulesConfig from "../__fixtures__/modules-config"
 import { ISearchModuleService } from "@medusajs/types"
 
@@ -43,6 +43,7 @@ export async function initModules({
     modulesConfig: {
       ...modulesConfig,
       [Modules.SEARCH]: {
+        definition: ModulesDefinition[Modules.SEARCH],
         options: searchEngineModuleOptions,
       },
     },

@@ -126,7 +126,9 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       registrationName: ModuleRegistrationName.SEARCH,
       defaultPackage: false,
       label: "SearchModuleService",
-      isQueryable: false,
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
       dependencies: ["logger", ModuleRegistrationName.EVENT_BUS, "remoteQuery"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
