@@ -1,6 +1,7 @@
 import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { ConfigModule, Logger } from "../types/global"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   logger: Logger
@@ -86,7 +87,7 @@ export default class JobSchedulerService {
     const observers = this.handlers_.get(eventName) || []
     this.logger_.info(`Processing scheduled job: ${eventName}`)
 
-    return await Promise.all(
+    return await promiseAll(
       observers.map(async (subscriber) => {
         return subscriber(data, eventName).catch((err) => {
           this.logger_.warn(

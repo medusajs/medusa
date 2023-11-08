@@ -1,4 +1,4 @@
-import { FlagRouter, isDefined, MedusaError } from "@medusajs/utils"
+import { FlagRouter, isDefined, MedusaError, promiseAll } from "@medusajs/utils"
 import IsolateSalesChannelDomainFeatureFlag from "../loaders/feature-flags/isolate-sales-channel-domain"
 import { isEmpty, isEqual } from "lodash"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
@@ -856,7 +856,7 @@ class CartService extends TransactionBaseService {
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
-            const areValid = await Promise.all(
+            const areValid = await promiseAll(
               items.map(async (item) => {
                 if (item.variant_id) {
                   return await this.validateLineItem(
@@ -984,7 +984,7 @@ class CartService extends TransactionBaseService {
 
         // Update all items that needs to be updated
         if (itemKeysToUpdate.length) {
-          await Promise.all(
+          await promiseAll(
             itemKeysToUpdate.map(async (id) => {
               return await lineItemServiceTx.update(id, lineItemsToUpdate[id])
             })
@@ -1175,7 +1175,7 @@ class CartService extends TransactionBaseService {
           }
         )
       } else {
-        await Promise.all(
+        await promiseAll(
           cart.shipping_methods.map(async (shippingMethod) => {
             // if free shipping discount is removed, we adjust the shipping
             // back to its original amount
@@ -1319,7 +1319,7 @@ class CartService extends TransactionBaseService {
         if ("gift_cards" in data) {
           cart.gift_cards = []
 
-          await Promise.all(
+          await promiseAll(
             (data.gift_cards ?? []).map(async ({ code }) => {
               return this.applyGiftCard_(cart, code)
             })
@@ -1395,7 +1395,7 @@ class CartService extends TransactionBaseService {
     })
 
     if (itemsToRemove.length) {
-      const results = await Promise.all(
+      const results = await promiseAll(
         itemsToRemove.map(async (item) => {
           return this.removeLineItem(cart.id, item.id)
         })
@@ -1996,7 +1996,7 @@ class CartService extends TransactionBaseService {
         // In the case of a cart that has a total <= 0 we can return prematurely.
         // we are deleting the sessions, and we don't need to create or update anything from now on.
         if (total <= 0) {
-          await Promise.all(
+          await promiseAll(
             cart.payment_sessions.map(async (session) => {
               return deleteSessionAppropriately(session)
             })
@@ -2020,7 +2020,7 @@ class CartService extends TransactionBaseService {
           amount: total,
         }
 
-        await Promise.all(
+        await promiseAll(
           cart.payment_sessions.map(async (session) => {
             if (!providerSet.has(session.provider_id)) {
               /**
@@ -2101,7 +2101,7 @@ class CartService extends TransactionBaseService {
           return
         }
 
-        await Promise.all(
+        await promiseAll(
           region.payment_providers.map(async (paymentProvider) => {
             if (alreadyConsumedProviderIds.has(paymentProvider.id)) {
               return
@@ -2319,7 +2319,7 @@ class CartService extends TransactionBaseService {
             )
           }
 
-          await Promise.all(
+          await promiseAll(
             cart.items.map(async (item) => {
               return lineItemServiceTx.update(item.id, {
                 has_shipping: this.validateLineItemShipping_(
@@ -2423,7 +2423,7 @@ class CartService extends TransactionBaseService {
       })
 
     cart.items = (
-      await Promise.all(
+      await promiseAll(
         cart.items.map(async (item) => {
           if (!item.variant_id) {
             return item

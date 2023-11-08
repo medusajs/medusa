@@ -12,6 +12,7 @@ import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/variants
@@ -189,7 +190,7 @@ export default async (req, res) => {
       sales_channel_id
     )) as any
   )
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({ variants })
 }
