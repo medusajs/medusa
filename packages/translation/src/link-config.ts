@@ -13,7 +13,7 @@ export const LinkProductTranslationServiceName = composeLinkName(
   "translation_id"
 )
 
-export const ProductTranslation: ModuleJoinerConfig = {
+export const ProductTranslationLinkConfiguration: ModuleJoinerConfig = {
   serviceName: LinkProductTranslationServiceName,
   isLink: true,
   databaseConfig: {
