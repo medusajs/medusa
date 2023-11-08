@@ -1,0 +1,1708 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# internal
+
+[internal](../../modules/internal.mdx).internal
+
+## Namespaces
+
+- [finished](../../internal-2/modules/internal.internal-2.finished.mdx)
+- [pipeline](../../internal-2/modules/internal.internal-2.pipeline.mdx)
+
+## Classes
+
+- [Writable](../../internal-2/classes/internal.internal-2.Writable.mdx)
+
+## Interfaces
+
+- [FinishedOptions](../../internal-2/interfaces/internal.internal-2.FinishedOptions.mdx)
+- [Pipe](../../internal-2/interfaces/internal.internal-2.Pipe.mdx)
+- [PipelineOptions](../../internal-2/interfaces/internal.internal-2.PipelineOptions.mdx)
+- [StreamOptions](../../internal-2/interfaces/internal.internal-2.StreamOptions.mdx)
+- [WritableOptions](../../internal-2/interfaces/internal.internal-2.WritableOptions.mdx)
+
+## References
+
+### Duplex
+
+Re-exports [Duplex](../classes/internal.Duplex.mdx)
+
+___
+
+### DuplexOptions
+
+Re-exports [DuplexOptions](../interfaces/internal.DuplexOptions.mdx)
+
+___
+
+### PassThrough
+
+Re-exports [PassThrough](../classes/internal.PassThrough.mdx)
+
+___
+
+### Readable
+
+Re-exports [Readable](../classes/internal.Readable.mdx)
+
+___
+
+### ReadableOptions
+
+Re-exports [ReadableOptions](../interfaces/internal.ReadableOptions.mdx)
+
+___
+
+### Stream
+
+Re-exports [Stream](../classes/internal.Stream.mdx)
+
+___
+
+### Transform
+
+Re-exports [Transform](../classes/internal.Transform.mdx)
+
+___
+
+### TransformCallback
+
+Re-exports [TransformCallback](../../modules/internal.mdx#transformcallback)
+
+___
+
+### TransformOptions
+
+Re-exports [TransformOptions](../interfaces/internal.TransformOptions.mdx)
+
+## Type Aliases
+
+### PipelineCallback
+
+ **PipelineCallback**<`S`\>: `S` extends [`PipelineDestinationPromiseFunction`](internal.internal-2.mdx#pipelinedestinationpromisefunction)<`any`, infer P\> ? (`err`: [`ErrnoException`](../interfaces/internal.ErrnoException.mdx) \| ``null``, `value`: `P`) => `void` : (`err`: [`ErrnoException`](../interfaces/internal.ErrnoException.mdx) \| ``null``) => `void`
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "S",
+    "type": "[`PipelineDestination`](internal.internal-2.mdx#pipelinedestination)<`any`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### PipelineDestination
+
+ **PipelineDestination**<`S`, `P`\>: `S` extends [`PipelineTransformSource`](internal.internal-2.mdx#pipelinetransformsource)<infer ST\> ? [`WritableStream`](../interfaces/internal.WritableStream.mdx) \| [`PipelineDestinationIterableFunction`](internal.internal-2.mdx#pipelinedestinationiterablefunction)<`ST`\> \| [`PipelineDestinationPromiseFunction`](internal.internal-2.mdx#pipelinedestinationpromisefunction)<`ST`, `P`\> : `never`
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "S",
+    "type": "[`PipelineTransformSource`](internal.internal-2.mdx#pipelinetransformsource)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "P",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### PipelineDestinationIterableFunction
+
+ **PipelineDestinationIterableFunction**<`T`\>: (`source`: [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\>) => [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`any`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "[`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "AsyncIterable",
+    "type": "[`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "any",
+        "type": "`any`",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### PipelineDestinationPromiseFunction
+
+ **PipelineDestinationPromiseFunction**<`T`, `P`\>: (`source`: [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\>) => `Promise`<`P`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "P",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "[`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`P`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### PipelinePromise
+
+ **PipelinePromise**<`S`\>: `S` extends [`PipelineDestinationPromiseFunction`](internal.internal-2.mdx#pipelinedestinationpromisefunction)<`any`, infer P\> ? `Promise`<`P`\> : `Promise`<`void`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "S",
+    "type": "[`PipelineDestination`](internal.internal-2.mdx#pipelinedestination)<`any`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### PipelineSource
+
+ **PipelineSource**<`T`\>: [`Iterable`](../interfaces/internal.Iterable.mdx)<`T`\> \| [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\> \| [`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx) \| [`PipelineSourceFunction`](internal.internal-2.mdx#pipelinesourcefunction)<`T`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### PipelineSourceFunction
+
+ **PipelineSourceFunction**<`T`\>: () => [`Iterable`](../interfaces/internal.Iterable.mdx)<`T`\> \| [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Iterable<T\\> \\| AsyncIterable<T\\>",
+    "type": "[`Iterable`](../interfaces/internal.Iterable.mdx)<`T`\\> \\| [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\\>",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### PipelineTransform
+
+ **PipelineTransform**<`S`, `U`\>: [`ReadWriteStream`](../interfaces/internal.ReadWriteStream.mdx) \| (`source`: `S` extends (...`args`: `any`[]) => [`Iterable`](../interfaces/internal.Iterable.mdx)<infer ST\> \| [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<infer ST\> ? [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`ST`\> : `S`) => [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`U`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "S",
+    "type": "[`PipelineTransformSource`](internal.internal-2.mdx#pipelinetransformsource)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "U",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### PipelineTransformSource
+
+ **PipelineTransformSource**<`T`\>: [`PipelineSource`](internal.internal-2.mdx#pipelinesource)<`T`\> \| [`PipelineTransform`](internal.internal-2.mdx#pipelinetransform)<`any`, `T`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Variables
+
+### consumers
+
+ `Const` **consumers**: typeof [`internal`](internal.internal-4.mdx)
+
+___
+
+### promises
+
+ `Const` **promises**: typeof [`internal`](internal.internal-3.mdx)
+
+## Functions
+
+### addAbortSignal
+
+A stream to attach a signal to.
+
+Attaches an AbortSignal to a readable or writeable stream. This lets code
+control stream destruction using an `AbortController`.
+
+Calling `abort` on the `AbortController` corresponding to the passed`AbortSignal` will behave the same way as calling `.destroy(new AbortError())`on the stream, and `controller.error(new
+AbortError())` for webstreams.
+
+```js
+const fs = require('node:fs');
+
+const controller = new AbortController();
+const read = addAbortSignal(
+  controller.signal,
+  fs.createReadStream(('object.json')),
+);
+// Later, abort the operation closing the stream
+controller.abort();
+```
+
+Or using an `AbortSignal` with a readable stream as an async iterable:
+
+```js
+const controller = new AbortController();
+setTimeout(() => controller.abort(), 10_000); // set a timeout
+const stream = addAbortSignal(
+  controller.signal,
+  fs.createReadStream(('object.json')),
+);
+(async () => {
+  try {
+    for await (const chunk of stream) {
+      await process(chunk);
+    }
+  } catch (e) {
+    if (e.name === 'AbortError') {
+      // The operation was cancelled
+    } else {
+      throw e;
+    }
+  }
+})();
+```
+
+Or using an `AbortSignal` with a ReadableStream:
+
+```js
+const controller = new AbortController();
+const rs = new ReadableStream({
+  start(controller) {
+    controller.enqueue('hello');
+    controller.enqueue('world');
+    controller.close();
+  },
+});
+
+addAbortSignal(controller.signal, rs);
+
+finished(rs, (err) => {
+  if (err) {
+    if (err.name === 'AbortError') {
+      // The operation was cancelled
+    }
+  }
+});
+
+const reader = rs.getReader();
+
+reader.read().then(({ value, done }) => {
+  console.log(value); // hello
+  console.log(done); // false
+  controller.abort();
+});
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "signal",
+    "type": "`AbortSignal`",
+    "description": "A signal representing possible cancellation",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "stream",
+    "type": "`T`",
+    "description": "a stream to attach a signal to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[]} />
+
+#### Since
+
+v15.4.0
+
+___
+
+### finished
+
+**finished**(`stream`, `options`, `callback`): () => `void`
+
+A readable and/or writable stream/webstream.
+
+A function to get notified when a stream is no longer readable, writable
+or has experienced an error or a premature close event.
+
+```js
+const { finished } = require('node:stream');
+const fs = require('node:fs');
+
+const rs = fs.createReadStream('archive.tar');
+
+finished(rs, (err) => {
+  if (err) {
+    console.error('Stream failed.', err);
+  } else {
+    console.log('Stream is done reading.');
+  }
+});
+
+rs.resume(); // Drain the stream.
+```
+
+Especially useful in error handling scenarios where a stream is destroyed
+prematurely (like an aborted HTTP request), and will not emit `'end'`or `'finish'`.
+
+The `finished` API provides `promise version`.
+
+`stream.finished()` leaves dangling event listeners (in particular`'error'`, `'end'`, `'finish'` and `'close'`) after `callback` has been
+invoked. The reason for this is so that unexpected `'error'` events (due to
+incorrect stream implementations) do not cause unexpected crashes.
+If this is unwanted behavior then the returned cleanup function needs to be
+invoked in the callback:
+
+```js
+const cleanup = finished(rs, (err) => {
+  cleanup();
+  // ...
+});
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream",
+    "type": "[`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx) \\| [`WritableStream`](../interfaces/internal.WritableStream.mdx) \\| [`ReadWriteStream`](../interfaces/internal.ReadWriteStream.mdx)",
+    "description": "A readable and/or writable stream.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`FinishedOptions`](../../internal-2/interfaces/internal.internal-2.FinishedOptions.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "error",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readable",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "signal",
+        "type": "`AbortSignal`",
+        "description": "When provided the corresponding `AbortController` can be used to cancel an asynchronous action.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writable",
+        "type": "`boolean`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "callback",
+    "type": "(`err?`: ``null`` \\| [`ErrnoException`](../interfaces/internal.ErrnoException.mdx)) => `void`",
+    "description": "A callback function that takes an optional error argument.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`err?`: ``null`` \\| [`ErrnoException`](../interfaces/internal.ErrnoException.mdx)) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "() => `void`",
+    "type": "() => `void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "A cleanup function which removes all registered listeners.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v10.0.0
+
+**finished**(`stream`, `callback`): () => `void`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream",
+    "type": "[`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx) \\| [`WritableStream`](../interfaces/internal.WritableStream.mdx) \\| [`ReadWriteStream`](../interfaces/internal.ReadWriteStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "(`err?`: ``null`` \\| [`ErrnoException`](../interfaces/internal.ErrnoException.mdx)) => `void`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`err?`: ``null`` \\| [`ErrnoException`](../interfaces/internal.ErrnoException.mdx)) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "() => `void`",
+    "type": "() => `void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getDefaultHighWaterMark
+
+Returns the default highWaterMark used by streams.
+Defaults to `16384` (16 KiB), or `16` for `objectMode`.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "objectMode",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "number",
+    "type": "`number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v19.9.0
+
+___
+
+### isErrored
+
+Returns whether the stream has encountered an error.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream",
+    "type": "[`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx) \\| [`Readable`](../classes/internal.Readable.mdx) \\| [`WritableStream`](../interfaces/internal.WritableStream.mdx) \\| [`Writable`](../../internal-2/classes/internal.internal-2.Writable.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v17.3.0, v16.14.0
+
+___
+
+### isReadable
+
+Returns whether the stream is readable.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream",
+    "type": "[`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx) \\| [`Readable`](../classes/internal.Readable.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v17.4.0, v16.14.0
+
+___
+
+### pipeline
+
+**pipeline**<`A`, `B`\>(`source`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)
+
+A module method to pipe between streams and generators forwarding errors and
+properly cleaning up and provide a callback when the pipeline is complete.
+
+```js
+const { pipeline } = require('node:stream');
+const fs = require('node:fs');
+const zlib = require('node:zlib');
+
+// Use the pipeline API to easily pipe a series of streams
+// together and get notified when the pipeline is fully done.
+
+// A pipeline to gzip a potentially huge tar file efficiently:
+
+pipeline(
+  fs.createReadStream('archive.tar'),
+  zlib.createGzip(),
+  fs.createWriteStream('archive.tar.gz'),
+  (err) => {
+    if (err) {
+      console.error('Pipeline failed.', err);
+    } else {
+      console.log('Pipeline succeeded.');
+    }
+  },
+);
+```
+
+The `pipeline` API provides a `promise version`.
+
+`stream.pipeline()` will call `stream.destroy(err)` on all streams except:
+
+* `Readable` streams which have emitted `'end'` or `'close'`.
+* `Writable` streams which have emitted `'finish'` or `'close'`.
+
+`stream.pipeline()` leaves dangling event listeners on the streams
+after the `callback` has been invoked. In the case of reuse of streams after
+failure, this can cause event listener leaks and swallowed errors. If the last
+stream is readable, dangling event listeners will be removed so that the last
+stream can be consumed later.
+
+`stream.pipeline()` closes all the streams when an error is raised.
+The `IncomingRequest` usage with `pipeline` could lead to an unexpected behavior
+once it would destroy the socket without sending the expected response.
+See the example below:
+
+```js
+const fs = require('node:fs');
+const http = require('node:http');
+const { pipeline } = require('node:stream');
+
+const server = http.createServer((req, res) => {
+  const fileStream = fs.createReadStream('./fileNotExist.txt');
+  pipeline(fileStream, res, (err) => {
+    if (err) {
+      console.log(err); // No such file
+      // this message can't be sent once `pipeline` already destroyed the socket
+      return res.end('error!!!');
+    }
+  });
+});
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "[`PipelineCallback`](internal.internal-2.mdx#pipelinecallback)<`B`\\>",
+    "description": "Called when the pipeline is fully done.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "type": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v10.0.0
+
+**pipeline**<`A`, `T1`, `B`\>(`source`, `transform1`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform1",
+    "type": "`T1`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "[`PipelineCallback`](internal.internal-2.mdx#pipelinecallback)<`B`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "type": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**pipeline**<`A`, `T1`, `T2`, `B`\>(`source`, `transform1`, `transform2`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform1",
+    "type": "`T1`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform2",
+    "type": "`T2`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "[`PipelineCallback`](internal.internal-2.mdx#pipelinecallback)<`B`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "type": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**pipeline**<`A`, `T1`, `T2`, `T3`, `B`\>(`source`, `transform1`, `transform2`, `transform3`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform1",
+    "type": "`T1`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform2",
+    "type": "`T2`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform3",
+    "type": "`T3`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "[`PipelineCallback`](internal.internal-2.mdx#pipelinecallback)<`B`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "type": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**pipeline**<`A`, `T1`, `T2`, `T3`, `T4`, `B`\>(`source`, `transform1`, `transform2`, `transform3`, `transform4`, `destination`, `callback?`): `B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "source",
+    "type": "`A`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform1",
+    "type": "`T1`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform2",
+    "type": "`T2`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform3",
+    "type": "`T3`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transform4",
+    "type": "`T4`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "destination",
+    "type": "`B`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "[`PipelineCallback`](internal.internal-2.mdx#pipelinecallback)<`B`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "type": "`B` extends [`WritableStream`](../interfaces/internal.WritableStream.mdx) ? `B` : [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**pipeline**(`streams`, `callback?`): [`WritableStream`](../interfaces/internal.WritableStream.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "streams",
+    "type": "readonly ([`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx) \\| [`WritableStream`](../interfaces/internal.WritableStream.mdx) \\| [`ReadWriteStream`](../interfaces/internal.ReadWriteStream.mdx))[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "(`err`: ``null`` \\| [`ErrnoException`](../interfaces/internal.ErrnoException.mdx)) => `void`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`err`: ``null`` \\| [`ErrnoException`](../interfaces/internal.ErrnoException.mdx)) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "writable",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "[captureRejectionSymbol]",
+    "type": "(`error`: [`Error`](../../modules/internal.mdx#error), `event`: `string`, ...`args`: `any`[]) => `void`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "addListener",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "emit",
+    "type": "(`eventName`: `string` \\| `symbol`, ...`args`: `any`[]) => `boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "end",
+    "type": "(`cb?`: () => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)(`data`: `string` \\| `Uint8Array`, `cb?`: () => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)(`str`: `string`, `encoding?`: [`BufferEncoding`](../../modules/internal.mdx#bufferencoding), `cb?`: () => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventNames",
+    "type": "() => (`string` \\| `symbol`)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getMaxListeners",
+    "type": "() => `number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listenerCount",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener?`: `Function`) => `number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listeners",
+    "type": "(`eventName`: `string` \\| `symbol`) => `Function`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "off",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "on",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "once",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "prependListener",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "prependOnceListener",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rawListeners",
+    "type": "(`eventName`: `string` \\| `symbol`) => `Function`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "removeAllListeners",
+    "type": "(`event?`: `string` \\| `symbol`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "removeListener",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "setMaxListeners",
+    "type": "(`n`: `number`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "write",
+    "type": "(`buffer`: `string` \\| `Uint8Array`, `cb?`: (`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`) => `boolean`(`str`: `string`, `encoding?`: [`BufferEncoding`](../../modules/internal.mdx#bufferencoding), `cb?`: (`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`) => `boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**pipeline**(`stream1`, `stream2`, `...streams`): [`WritableStream`](../interfaces/internal.WritableStream.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream1",
+    "type": "[`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "readable",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "stream2",
+    "type": "[`WritableStream`](../interfaces/internal.WritableStream.mdx) \\| [`ReadWriteStream`](../interfaces/internal.ReadWriteStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "streams",
+    "type": "([`WritableStream`](../interfaces/internal.WritableStream.mdx) \\| [`ReadWriteStream`](../interfaces/internal.ReadWriteStream.mdx) \\| (`err`: ``null`` \\| [`ErrnoException`](../interfaces/internal.ErrnoException.mdx)) => `void`)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "writable",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "[captureRejectionSymbol]",
+    "type": "(`error`: [`Error`](../../modules/internal.mdx#error), `event`: `string`, ...`args`: `any`[]) => `void`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "addListener",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "emit",
+    "type": "(`eventName`: `string` \\| `symbol`, ...`args`: `any`[]) => `boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "end",
+    "type": "(`cb?`: () => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)(`data`: `string` \\| `Uint8Array`, `cb?`: () => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)(`str`: `string`, `encoding?`: [`BufferEncoding`](../../modules/internal.mdx#bufferencoding), `cb?`: () => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventNames",
+    "type": "() => (`string` \\| `symbol`)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getMaxListeners",
+    "type": "() => `number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listenerCount",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener?`: `Function`) => `number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listeners",
+    "type": "(`eventName`: `string` \\| `symbol`) => `Function`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "off",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "on",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "once",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "prependListener",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "prependOnceListener",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rawListeners",
+    "type": "(`eventName`: `string` \\| `symbol`) => `Function`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "removeAllListeners",
+    "type": "(`event?`: `string` \\| `symbol`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "removeListener",
+    "type": "(`eventName`: `string` \\| `symbol`, `listener`: (...`args`: `any`[]) => `void`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "setMaxListeners",
+    "type": "(`n`: `number`) => [`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "write",
+    "type": "(`buffer`: `string` \\| `Uint8Array`, `cb?`: (`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`) => `boolean`(`str`: `string`, `encoding?`: [`BufferEncoding`](../../modules/internal.mdx#bufferencoding), `cb?`: (`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`) => `boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setDefaultHighWaterMark
+
+Sets the default highWaterMark used by streams.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "objectMode",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "value",
+    "type": "`number`",
+    "description": "highWaterMark value",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v19.9.0
