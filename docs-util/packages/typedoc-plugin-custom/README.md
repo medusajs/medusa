@@ -24,6 +24,15 @@ frontmatterData: {
 
 The `ignoreApi` option is a boolean that indicates whether reflections with the `@apiIgnore` tag should be ignored. If enabled, reflections having this tag are removed from the generated documentation. If disabled (which is the default), the `@apiIgnore` tag is removed from the reflection to ensure it's not shown in the generated documentation.
 
+### ESLint
+
+If the `eslintPathName` option is set, code snippets provided in `@example` tag are linted based on the documentation's ESLint rules.
+
+The following options are useful for linting:
+
+- `eslintPathName`: The path to the ESLint configuration file.
+- `pluginsResolvePath`: The path to resolve plugins used in the ESLint configuration files.
+
 ---
 
 ## Build the Plugin
