@@ -1,3 +1,5 @@
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+import { Workflows, createProducts } from "@medusajs/workflows"
 import {
   IsArray,
   IsBoolean,
@@ -37,17 +39,15 @@ import {
 } from "./transaction/create-product-variant"
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
-import { createProducts, Workflows } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
 import { validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /admin/products
@@ -269,7 +269,9 @@ export default async (req, res) => {
     })
   }
 
-  const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
+  const [pricedProduct] = await pricingService.setAdminProductPricing([
+    rawProduct,
+  ])
 
   res.json({ product: pricedProduct })
 }

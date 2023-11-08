@@ -46,7 +46,7 @@ export function getMigration(
 
     const generator = orm.getSchemaGenerator()
     if (hasTable) {
-      const updateSql = await generator.getUpdateSchemaSQL()
+      /* const updateSql = await generator.getUpdateSchemaSQL()
       const entityUpdates = updateSql
         .split(";")
         .map((sql) => sql.trim())
@@ -65,7 +65,10 @@ export function getMigration(
         }
       } else {
         logger.info(`Skipping "${tableName}" migration.`)
-      }
+      }*/
+      logger.info(
+        `Link module "${serviceName}" table update skipped because the table already exists. Please write your own migration if needed.`
+      )
     } else {
       try {
         await generator.createSchema()

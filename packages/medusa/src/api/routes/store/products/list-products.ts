@@ -17,14 +17,14 @@ import { Transform, Type } from "class-transformer"
 import { DateComparisonOperator } from "../../../../types/common"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import PricingService from "../../../../services/pricing"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultStoreProductRemoteQueryObject } from "./index"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /store/products

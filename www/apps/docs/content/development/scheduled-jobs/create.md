@@ -112,7 +112,7 @@ jobSchedulerService.create(
 
 ### Pass Data to the Scheduled Job
 
-To pass data to your scheduled job, you can add them to the object passed as a second parameter under the `data` property. This is helpful if you use one function to handle multiple scheduled jobs.
+To pass data to your scheduled job, add the data to the object passed as a second parameter under the `data` property. This is helpful if you use one function to handle multiple scheduled jobs.
 
 For example:
 

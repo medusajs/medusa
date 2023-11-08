@@ -1,5 +1,9 @@
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+
 import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
@@ -55,6 +59,10 @@ export default async (req, res) => {
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
   )
+
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   const manager: EntityManager = req.scope.resolve("manager")
 
   const headerKey = req.get("Idempotency-Key") || ""
@@ -97,6 +105,11 @@ export default async (req, res) => {
                       select: defaultStoreCartFields,
                       relations: defaultStoreCartRelations,
                     })
+
+                  await productVariantInventoryService.setVariantAvailability(
+                    cart.items.map((i) => i.variant),
+                    cart.sales_channel_id!
+                  )
 
                   return {
                     response_code: 200,

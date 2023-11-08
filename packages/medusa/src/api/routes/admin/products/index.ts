@@ -1,13 +1,14 @@
 import "reflect-metadata"
 
 import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
-import { FindParams, PaginatedResponse } from "../../../../types/common"
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
 
 import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
 import { PricedProduct } from "../../../../types/pricing"
 import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
+import { AdminGetProductParams } from "./get-product"
 import { AdminGetProductsParams } from "./list-products"
 
 const route = Router()
@@ -76,7 +77,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   )
   route.get(
     "/:id",
-    transformQuery(FindParams, {
+    transformQuery(AdminGetProductParams, {
       defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
       isList: false,
@@ -502,3 +503,4 @@ export * from "./set-metadata"
 export * from "./update-option"
 export * from "./update-product"
 export * from "./update-variant"
+

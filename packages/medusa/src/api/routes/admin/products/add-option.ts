@@ -1,9 +1,9 @@
 import { PricingService, ProductService } from "../../../../services"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
+import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /admin/products/{id}/options
@@ -91,7 +91,7 @@ export default async (req, res) => {
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [product] = await pricingService.setAdminProductPricing([rawProduct])
 
   res.json({ product })
 }
