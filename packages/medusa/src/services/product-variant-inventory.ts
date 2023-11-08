@@ -1,6 +1,5 @@
 import { EntityManager, In } from "typeorm"
 import {
-  ICacheService,
   IEventBusService,
   IInventoryService,
   InventoryItemDTO,
@@ -10,7 +9,7 @@ import {
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { isDefined, MedusaError } from "@medusajs/utils"
+import { isDefined, MedusaError, promiseAll } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
@@ -42,17 +41,20 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly salesChannelLocationService_: SalesChannelLocationService
   protected readonly salesChannelInventoryService_: SalesChannelInventoryService
   protected readonly productVariantService_: ProductVariantService
-  protected readonly stockLocationService_: IStockLocationService
-  protected readonly inventoryService_: IInventoryService
   protected readonly eventBusService_: IEventBusService
-  protected readonly cacheService_: ICacheService
+
+  protected get inventoryService_(): IInventoryService {
+    return this.__container__.inventoryService
+  }
+
+  protected get stockLocationService_(): IStockLocationService {
+    return this.__container__.stockLocationService
+  }
 
   constructor({
-    stockLocationService,
     salesChannelLocationService,
     salesChannelInventoryService,
     productVariantService,
-    inventoryService,
     eventBusService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
@@ -60,9 +62,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     this.salesChannelLocationService_ = salesChannelLocationService
     this.salesChannelInventoryService_ = salesChannelInventoryService
-    this.stockLocationService_ = stockLocationService
     this.productVariantService_ = productVariantService
-    this.inventoryService_ = inventoryService
     this.eventBusService_ = eventBusService
   }
 
@@ -128,7 +128,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return false
     }
 
-    const hasInventory = await Promise.all(
+    const hasInventory = await promiseAll(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_.confirmInventory(
@@ -379,7 +379,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     )
 
     const toCreate = (
-      await Promise.all(
+      await promiseAll(
         data.map(async (d) => {
           if (existingMap.get(d.variantId)?.has(d.inventoryItemId)) {
             return null
@@ -766,7 +766,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       return
     }
 
-    await Promise.all(
+    await promiseAll(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
         return await this.inventoryService_.adjustInventory(
@@ -797,7 +797,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         availabilityContext
       )
 
-    return await Promise.all(
+    return await promiseAll(
       variants.map(async (variant) => {
         if (!variant.id) {
           return variant
@@ -924,7 +924,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       salesChannelId
     )
 
-    return await Promise.all(
+    return await promiseAll(
       products.map(async (product) => {
         if (!product.variants || product.variants.length === 0) {
           return product
@@ -971,7 +971,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
       this.salesChannelInventoryService_.withTransaction(this.activeManager_)
 
     return Math.min(
-      ...(await Promise.all(
+      ...(await promiseAll(
         variantInventoryItems.map(async (variantInventory) => {
           // get the total available quantity for the given sales channel
           // divided by the required quantity to account for how many of the

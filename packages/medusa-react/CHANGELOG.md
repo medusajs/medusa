@@ -1,5 +1,11 @@
 # Change Log
 
+## 9.0.10
+
+### Patch Changes
+
+- [#5480](https://github.com/medusajs/medusa/pull/5480) [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): admin get product should return prices when expected
+
 ## 9.0.9
 
 ### Patch Changes

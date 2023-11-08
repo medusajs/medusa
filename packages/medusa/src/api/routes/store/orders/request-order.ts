@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import { IsNotEmpty, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { CustomerService, OrderService } from "../../../../services"
@@ -102,7 +103,7 @@ export default async (req, res) => {
     {}
   )
 
-  await Promise.all(
+  await promiseAll(
     Object.entries(emailOrderMapping).map(async ([email, order_ids]) => {
       const token = tokenService.signToken(
         {

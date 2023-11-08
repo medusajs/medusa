@@ -1,5 +1,15 @@
 # @medusajs/oas-cli
 
+## 0.2.23
+
+### Patch Changes
+
+- [#5453](https://github.com/medusajs/medusa/pull/5453) [`c1b97050a`](https://github.com/medusajs/medusa/commit/c1b97050ab801c6b5702311f777ebd7f98080a97) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(medusa-oas-cli): Added `--main-file-name` option to specify output file name
+  feat(oas-github-ci): Added `--with-full-file"` option to output both split and full files
+- Updated dependencies [[`148f537b4`](https://github.com/medusajs/medusa/commit/148f537b47635e8b73ebaa27bbfbe58624bfe641), [`e64823d1b`](https://github.com/medusajs/medusa/commit/e64823d1b9e7556d8bc12c553accefa0b2a8b714), [`9ff22110a`](https://github.com/medusajs/medusa/commit/9ff22110a60da6d91ca49e93de509512382a46a3), [`a45da9215`](https://github.com/medusajs/medusa/commit/a45da9215d2a7834c368037726aaa3961caadaf9), [`2548ea8e5`](https://github.com/medusajs/medusa/commit/2548ea8e5ed3374143500baa37e2accf0fa367a0), [`ebba93e03`](https://github.com/medusajs/medusa/commit/ebba93e03d223fb3a79276090f7cfad612d70243), [`148f537b4`](https://github.com/medusajs/medusa/commit/148f537b47635e8b73ebaa27bbfbe58624bfe641), [`4d52082bf`](https://github.com/medusajs/medusa/commit/4d52082bf05fce18b55dae7f982c0c2cf4c65194), [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1)]:
+  - @medusajs/medusa@1.17.3
+  - @medusajs/types@1.11.5
+
 ## 0.2.22
 
 ### Patch Changes

@@ -1,35 +1,27 @@
 import path from "path"
+import { startBootstrapApp } from "../../../environment-helpers/bootstrap-app"
+import { getContainer } from "../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../environment-helpers/use-db"
-import { bootstrapApp } from "../../../environment-helpers/bootstrap-app"
-import { setPort } from "../../../environment-helpers/use-api"
 
 jest.setTimeout(30000)
 
 describe("product", () => {
-  let dbConnection
   let medusaContainer
   let productService
 
-  let express
+  let shutdownServer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd } as any)
-    const { container, port, app } = await bootstrapApp({ cwd })
-
-    setPort(port)
-    express = app.listen(port, () => {
-      process.send!(port)
-    })
-
-    medusaContainer = container
+    await initDb({ cwd })
+    shutdownServer = shutdownServer = await startBootstrapApp({ cwd })
+    medusaContainer = getContainer()
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-
-    express.close()
+    await shutdownServer()
   })
 
   afterEach(async () => {

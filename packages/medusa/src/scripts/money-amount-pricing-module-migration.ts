@@ -1,7 +1,5 @@
-import { FlagRouter, MedusaError } from "@medusajs/utils"
+import { FlagRouter, MedusaError, promiseAll } from "@medusajs/utils"
 import { IPricingModuleService, MedusaContainer } from "@medusajs/types"
-
-import { AwilixContainer } from "awilix"
 import { EntityManager } from "typeorm"
 import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
 import { Modules } from "@medusajs/modules-sdk"
@@ -69,7 +67,7 @@ const processBatch = async (
 ) => {
   const manager = container.resolve("manager")
   return await manager.transaction(async (transactionManager) => {
-    await Promise.all(
+    await promiseAll(
       variants.map(async (variant) => {
         await migrateProductVariant(variant, {
           container,

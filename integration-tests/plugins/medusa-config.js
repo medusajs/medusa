@@ -58,7 +58,7 @@ module.exports = {
     },
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
-      options: { ttl: 5 },
+      options: { ttl: 0 }, // Cache disabled
     },
     [Modules.PRODUCT]: {
       scope: "internal",

@@ -5,11 +5,11 @@ import { useAdminProducts } from "medusa-react"
 import * as React from "react"
 
 import { useTranslation } from "react-i18next"
+import { Form } from "../../../../components/helpers/form"
 import { useDebounce } from "../../../../hooks/use-debounce"
 import { NestedForm } from "../../../../utils/nested-form"
 import { ProductFilter, ProductFilterMenu } from "../../components"
 import { PriceListPricesSchema } from "./types"
-import { Form } from "../../../../components/helpers/form"
 
 type PriceListPricesFormProps = {
   form: NestedForm<PriceListPricesSchema>
@@ -46,13 +46,13 @@ const PriceListPricesForm = ({
     {
       id: productIds,
       q: debouncedQuery,
-      limit: productIds?.length,
       price_list_id: priceListId ? [priceListId] : undefined,
       ...filters,
       expand: "variants.prices",
     },
     {
       keepPreviousData: true,
+      enabled: !!productIds?.length,
     }
   )
 

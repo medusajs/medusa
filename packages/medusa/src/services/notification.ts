@@ -11,6 +11,7 @@ import { Notification } from "../models"
 import { NotificationProviderRepository } from "../repositories/notification-provider"
 import { NotificationRepository } from "../repositories/notification"
 import { buildQuery } from "../utils"
+import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -194,7 +195,7 @@ class NotificationService extends TransactionBaseService {
       return Promise.resolve()
     }
 
-    return Promise.all(
+    return promiseAll(
       subs.map(async (providerId) => {
         return this.send(eventName, data, providerId).catch((err) => {
           console.log(err)
