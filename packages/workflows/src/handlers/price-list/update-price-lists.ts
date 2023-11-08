@@ -3,6 +3,7 @@ import {
   IPricingModuleService,
   PriceListDTO,
   PriceListPriceDTO,
+  UpdateMoneyAmountDTO,
   UpdatePriceListDTO,
 } from "@medusajs/types"
 
@@ -27,15 +28,26 @@ export async function updatePriceLists({
 
   const priceLists = await pricingService.updatePriceLists(priceListsData)
   const addPriceListPricesData: AddPriceListPricesDTO[] = []
+  const updateMoneyAmounts: UpdateMoneyAmountDTO[] = []
 
   for (const [priceListId, prices] of priceListPricesMap.entries()) {
     addPriceListPricesData.push({
       priceListId,
-      prices,
+      prices: prices.filter((price) => !price.id),
     })
+
+    updateMoneyAmounts.push(
+      ...(prices.filter((price) => !!price.id) as UpdateMoneyAmountDTO[])
+    )
   }
 
-  await pricingService.addPriceListPrices(addPriceListPricesData)
+  if (addPriceListPricesData.length) {
+    await pricingService.addPriceListPrices(addPriceListPricesData)
+  }
+
+  if (updateMoneyAmounts.length) {
+    await pricingService.updateMoneyAmounts(updateMoneyAmounts)
+  }
 
   return { priceLists }
 }

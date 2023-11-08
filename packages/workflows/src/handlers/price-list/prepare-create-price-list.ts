@@ -1,6 +1,6 @@
 import { CreatePriceListDTO, PriceListWorkflow } from "@medusajs/types"
-import { WorkflowArguments } from "../../helper"
 import { MedusaError } from "@medusajs/utils"
+import { WorkflowArguments } from "../../helper"
 
 type Result = {
   tag?: string

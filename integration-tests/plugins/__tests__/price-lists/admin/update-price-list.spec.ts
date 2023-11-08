@@ -36,6 +36,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
   let shutdownServer
   let product
   let variant
+  let variant2
   let pricingModuleService: IPricingModuleService
 
   beforeAll(async () => {
@@ -69,16 +70,24 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
         {
           options: [{ option_id: "test-product-option-1", value: "test" }],
         },
+        {
+          options: [{ option_id: "test-product-option-2", value: "test 2" }],
+        },
       ],
       options: [
         {
           id: "test-product-option-1",
           title: "Test option 1",
         },
+        {
+          id: "test-product-option-2",
+          title: "Test option 2",
+        },
       ],
     })
 
     variant = product.variants[0]
+    variant2 = product.variants[1]
   })
 
   afterEach(async () => {
@@ -86,7 +95,13 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
     await db.teardown()
   })
 
-  it("should update price lists successfully", async () => {
+  it("should update price lists successfully with prices", async () => {
+    const var2PriceSet = await createVariantPriceSet({
+      container: appContainer,
+      variantId: variant2.id,
+      prices: [],
+    })
+
     const [priceList] = await pricingModuleService.createPriceLists([
       {
         title: "test price list",
@@ -95,8 +110,24 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
         starts_at: new Date(),
         status: PriceListStatus.ACTIVE,
         type: PriceListType.OVERRIDE,
+        prices: [
+          {
+            amount: 3000,
+            currency_code: "usd",
+            price_set_id: var2PriceSet.id,
+          },
+        ],
       },
     ])
+
+    console.log(
+      "priceList- ",
+      JSON.stringify(
+        priceList?.price_set_money_amounts?.[0].money_amount?.id,
+        null,
+        2
+      )
+    )
 
     await createVariantPriceSet({
       container: appContainer,
@@ -119,6 +150,12 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
           variant_id: variant.id,
           amount: 5000,
           currency_code: "usd",
+        },
+        {
+          id: priceList?.price_set_money_amounts?.[0].money_amount?.id,
+          amount: 6000,
+          currency_code: "usd",
+          variant_id: variant2.id,
         },
       ],
     }
@@ -144,7 +181,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
         starts_at: expect.any(String),
         ends_at: expect.any(String),
         customer_groups: [],
-        prices: [
+        prices: expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
             created_at: expect.any(String),
@@ -154,7 +191,19 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
             amount: 5000,
             min_quantity: null,
             max_quantity: null,
-            price_list_id: expect.any(String),
+            price_list_id: priceList.id,
+            region_id: null,
+          }),
+          expect.objectContaining({
+            id: expect.any(String),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+            currency_code: "usd",
+            amount: 6000,
+            min_quantity: null,
+            max_quantity: null,
+            price_list_id: priceList.id,
             region_id: null,
             variants: [
               expect.objectContaining({
@@ -210,7 +259,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
             }),
             variant_id: expect.any(String),
           }),
-        ],
+        ]),
       })
     )
   })
