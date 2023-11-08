@@ -1,6 +1,7 @@
 import { ProductCollection } from "../models"
 import { dataSource } from "../loaders/database"
 import { ExtendedFindConfig } from "../types/common"
+import { promiseAll } from "@medusajs/utils"
 
 // eslint-disable-next-line max-len
 export const ProductCollectionRepository = dataSource
@@ -19,7 +20,7 @@ export const ProductCollectionRepository = dataSource
           { dcId: conditionId }
         )
 
-      return await Promise.all([qb.getMany(), qb.getCount()])
+      return await promiseAll([qb.getMany(), qb.getCount()])
     },
   })
 export default ProductCollectionRepository

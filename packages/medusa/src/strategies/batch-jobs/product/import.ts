@@ -2,7 +2,7 @@
 import { computerizeAmount, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
@@ -716,7 +716,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
         result: { files },
       })
 
-    await Promise.all(uploadPromises)
+    await promiseAll(uploadPromises)
   }
 
   /**

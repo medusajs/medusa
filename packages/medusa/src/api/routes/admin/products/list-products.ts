@@ -14,6 +14,7 @@ import { Product } from "../../../../models"
 import { PricedProduct } from "../../../../types/pricing"
 import { FilterableProductProps } from "../../../../types/product"
 import { defaultAdminProductRemoteQueryObject } from "./index"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/products
@@ -377,7 +378,7 @@ export async function listAndCountProductWithIsolatedProductModule(
     // TODO implement later
   }
 
-  await Promise.all(promises)
+  await promiseAll(promises)
 
   if (productIdsFilter.size > 0) {
     filterableFields.id = Array.from(productIdsFilter)
