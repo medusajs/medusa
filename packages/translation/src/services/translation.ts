@@ -1,5 +1,5 @@
 import { TransactionBaseService } from "@medusajs/medusa"
-import { FindConfig, Selector } from "@medusajs/types"
+import { FindConfig, ModuleJoinerConfig, Selector } from "@medusajs/types"
 import { isDefined, MedusaError } from "@medusajs/utils"
 import { Translation } from "../models/translation"
 import { buildQuery } from "@medusajs/medusa/dist"
@@ -9,6 +9,7 @@ import {
   TranslationDTO,
   UpdateTranslationDTO,
 } from "../types"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   translationRepository: typeof TranslationRepository
@@ -16,6 +17,11 @@ type InjectedDependencies = {
 
 export default class TranslationService extends TransactionBaseService {
   protected readonly translationRepository_: typeof TranslationRepository
+
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
+  }
+
   constructor({ translationRepository }) {
     // @ts-ignore
     super(...arguments)

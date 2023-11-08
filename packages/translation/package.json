@@ -49,7 +49,8 @@
     "express": "^4.17.1",
     "medusa-core-utils": "^1.2.0",
     "typeorm": "0.3.17",
-    "@medusajs/utils": "workspace:^"
+    "@medusajs/utils": "workspace:^",
+    "@medusajs/modules-sdk": "workspace:^"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808",
   "keywords": [
