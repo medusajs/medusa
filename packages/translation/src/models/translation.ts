@@ -5,8 +5,8 @@ import { generateEntityId } from "@medusajs/medusa/dist/utils"
 @Entity()
 export class Translation extends BaseEntity {
   @Column({ type: "text", nullable: false })
-  @Index("IDX_translation_lang")
-  lang: string
+  @Index("IDX_translation_local")
+  local: string
 
   @Column({ type: "jsonb", nullable: false, default: {} })
   @Index("IDX_translation_attributes", { synchronize: false })
@@ -14,7 +14,7 @@ export class Translation extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.lang = this.lang.toLowerCase()
+    this.local = this.local.toLowerCase()
     this.id = generateEntityId(this.id, "trans")
   }
 }

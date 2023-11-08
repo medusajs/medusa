@@ -10,11 +10,11 @@ export class CreateTranslationTable1699433680271 implements MigrationInterface {
             "id"          text        NOT NULL,
             "created_at"  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "updated_at"  TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-            "lang"        text        NOT NULL,
+            "local"        text        NOT NULL,
             "attributes"  jsonb                    NOT NULL,
             CONSTRAINT "PK_translation_id" PRIMARY KEY ("id")
         );
-        CREATE INDEX IF NOT EXISTS "IDX_translation_lang" ON "translation" ("lang");
+        CREATE INDEX IF NOT EXISTS "IDX_translation_local" ON "translation" ("local");
         CREATE INDEX IF NOT EXISTS "IDX_translation_attributes" ON "translation" USING GIN ("attributes");
     `)
   }
@@ -22,7 +22,7 @@ export class CreateTranslationTable1699433680271 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
         DROP TABLE IF EXISTS "translation";
-        DROP INDEX IF EXISTS "IDX_translation_lang";
+        DROP INDEX IF EXISTS "IDX_translation_local";
         DROP INDEX IF EXISTS "IDX_translation_attributes";
     `)
   }

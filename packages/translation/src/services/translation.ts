@@ -139,8 +139,8 @@ export default class TranslationService extends TransactionBaseService {
       const translationToSave = data.map((translationData) => {
         const translation = translationMap.get(translationData.id)!
 
-        if (translationData.lang) {
-          translation.lang = translationData.lang
+        if (translationData.local) {
+          translation.local = translationData.local
         }
 
         if (translationData.attributes) {

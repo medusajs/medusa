@@ -4,7 +4,7 @@ scalar JSON
 
 type Translation {
   id: ID!
-  lang: String!
+  local: String!
   attributes: JSON!
   createdAt: Date!
   updatedAt: Date!
