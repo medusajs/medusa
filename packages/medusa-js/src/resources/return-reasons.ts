@@ -6,7 +6,8 @@ import {
 import { ResponsePromise } from "../typings"
 
 /**
- * This class is used to send requests to [Store Return Reason API Routes](https://docs.medusajs.com/api/store#return-reasons).
+ * This class is used to send requests to [Store Return Reason API Routes](https://docs.medusajs.com/api/store#return-reasons). All its method
+ * are available in the JS Client under the `medusa.returnReasons` property.
  * 
  * Return reasons are key-value pairs that are used to specify why an order return is being created.
  */

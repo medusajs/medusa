@@ -9,7 +9,8 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Shipping Profile API Routes](https://docs.medusajs.com/api/admin#shipping-profiles).
+ * This class is used to send requests to [Admin Shipping Profile API Routes](https://docs.medusajs.com/api/admin#shipping-profiles). All its method
+ * are available in the JS Client under the `medusa.admin.shippingProfiles` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

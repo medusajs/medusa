@@ -10,7 +10,8 @@ import BaseResource from "../base"
 import { stringifyNullProperties } from "../../utils"
 
 /**
- * This class is used to send requests to [Admin Batch Job API Routes](https://docs.medusajs.com/api/admin#batch-jobs).
+ * This class is used to send requests to [Admin Batch Job API Routes](https://docs.medusajs.com/api/admin#batch-jobs). All its method
+ * are available in the JS Client under the `medusa.admin.batchJobs` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

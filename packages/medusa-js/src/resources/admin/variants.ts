@@ -10,7 +10,8 @@ import { ResponsePromise } from "../.."
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Product Variant API Routes](https://docs.medusajs.com/api/admin#product-variants).
+ * This class is used to send requests to [Admin Product Variant API Routes](https://docs.medusajs.com/api/admin#product-variants). All its method
+ * are available in the JS Client under the `medusa.admin.variants` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

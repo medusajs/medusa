@@ -8,7 +8,8 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to [Store Product Collection API Routes](https://docs.medusajs.com/api/store#product-collections).
+ * This class is used to send requests to [Store Product Collection API Routes](https://docs.medusajs.com/api/store#product-collections). All its method
+ * are available in the JS Client under the `medusa.collections` property.
  * 
  * A product collection is used to organize products for different purposes such as marketing or discount purposes. For example, you can create a Summer Collection.
  * Using the methods in this class, you can list or retrieve a collection's details and products.

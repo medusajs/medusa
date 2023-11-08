@@ -15,7 +15,8 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Product Category API Routes](https://docs.medusajs.com/api/admin#product-categories).
+ * This class is used to send requests to [Admin Product Category API Routes](https://docs.medusajs.com/api/admin#product-categories). All its method
+ * are available in the JS Client under the `medusa.admin.productCategories` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

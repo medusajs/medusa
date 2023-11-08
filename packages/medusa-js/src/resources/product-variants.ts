@@ -8,7 +8,8 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to [Store Product Variant API Routes](https://docs.medusajs.com/api/store#product-variants).
+ * This class is used to send requests to [Store Product Variant API Routes](https://docs.medusajs.com/api/store#product-variants). All its method
+ * are available in the JS Client under the `medusa.product.variants` property.
  * 
  * Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
  */

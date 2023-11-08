@@ -9,7 +9,8 @@ import JwtTokenManager from "../jwt-token-manager"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to [Store Auth API Routes](https://docs.medusajs.com/api/store#auth).
+ * This class is used to send requests to [Store Auth API Routes](https://docs.medusajs.com/api/store#auth). All its method
+ * are available in the JS Client under the `medusa.auth` property.
  * 
  * The methods in this class allows you to manage a customer's session, such as login or log out.
  * You can send authenticated requests for a customer either using the Cookie header or using the JWT Token.

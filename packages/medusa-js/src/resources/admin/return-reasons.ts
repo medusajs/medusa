@@ -9,7 +9,8 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Return Reason API Routes](https://docs.medusajs.com/api/admin#return-reasons).
+ * This class is used to send requests to [Admin Return Reason API Routes](https://docs.medusajs.com/api/admin#return-reasons). All its method
+ * are available in the JS Client under the `medusa.admin.returnReasons` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

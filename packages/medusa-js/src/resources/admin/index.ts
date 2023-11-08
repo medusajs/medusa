@@ -39,7 +39,8 @@ import AdminUsersResource from "./users"
 import AdminVariantsResource from "./variants"
 
 /**
- * This class includes properties used to send requests to the [Admin API Routes](https://docs.medusajs.com/api/admin)
+ * This class includes properties used to send requests to the [Admin API Routes](https://docs.medusajs.com/api/admin). All its properties
+ * are available in the JS Client under the `medusa.admin` property.
  */
 class Admin extends BaseResource {
   /**

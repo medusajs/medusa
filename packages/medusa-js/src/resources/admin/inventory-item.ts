@@ -22,7 +22,8 @@ import { AdminPostInventoryItemsItemLocationLevelsLevelParams } from "@medusajs/
 
 /**
  * This class is used to send requests to [Admin Inventory Item API Routes](https://docs.medusajs.com/api/admin#inventory-items). To use these API Routes, make sure to install the
- * [@medusajs/inventory](https://docs.medusajs.com/modules/multiwarehouse/install-modules#inventory-module) module in your Medusa backend.
+ * [@medusajs/inventory](https://docs.medusajs.com/modules/multiwarehouse/install-modules#inventory-module) module in your Medusa backend. All its method
+ * are available in the JS Client under the `medusa.admin.inventoryItems` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

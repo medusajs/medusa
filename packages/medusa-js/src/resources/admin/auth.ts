@@ -4,7 +4,8 @@ import JwtTokenManager from "../../jwt-token-manager"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Auth API Routes](https://docs.medusajs.com/api/admin#auth_getauth).
+ * This class is used to send requests to [Admin Auth API Routes](https://docs.medusajs.com/api/admin#auth_getauth). All its method
+ * are available in the JS Client under the `medusa.admin.auth` property.
  * 
  * The methods in this class allow admin users to manage their session, such as login or log out.
  * You can send authenticated requests for an admin user either using the Cookie header, their API token, or the JWT Token.

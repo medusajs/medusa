@@ -20,7 +20,8 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Product API Routes](https://docs.medusajs.com/api/admin#products).
+ * This class is used to send requests to [Admin Product API Routes](https://docs.medusajs.com/api/admin#products). All its method
+ * are available in the JS Client under the `medusa.admin.products` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
@@ -194,6 +195,7 @@ class AdminProductsResource extends BaseResource {
 
   /**
    * @ignore
+   * 
    * @deprecated Use {@link AdminProductTypesResource.list} instead.
    */
   listTypes(

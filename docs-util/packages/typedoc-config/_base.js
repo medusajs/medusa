@@ -8,7 +8,6 @@ module.exports = {
   // extends: [typedocConfig],
   plugin: ["typedoc-plugin-markdown-medusa"],
   readme: "none",
-  excludeTags: "@privateRemark",
   eslintPathName: path.join(
     pathPrefix,
     "www/packages/eslint-config-docs/content.js"

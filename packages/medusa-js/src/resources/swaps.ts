@@ -3,7 +3,8 @@ import { StoreSwapsRes, StorePostSwapsReq } from "@medusajs/medusa"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to [Store Swap API Routes](https://docs.medusajs.com/api/store#swaps)
+ * This class is used to send requests to [Store Swap API Routes](https://docs.medusajs.com/api/store#swaps). All its method
+ * are available in the JS Client under the `medusa.swaps` property.
  * 
  * A swap is created by a customer or an admin to exchange an item with a new one.
  * Creating a swap implicitely includes creating a return for the item being exchanged.

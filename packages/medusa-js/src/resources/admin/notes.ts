@@ -11,7 +11,8 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Note API Routes](https://docs.medusajs.com/api/admin#notes).
+ * This class is used to send requests to [Admin Note API Routes](https://docs.medusajs.com/api/admin#notes). All its method
+ * are available in the JS Client under the `medusa.admin.notes` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

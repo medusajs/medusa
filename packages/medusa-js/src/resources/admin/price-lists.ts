@@ -19,7 +19,8 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Price List API Routes](https://docs.medusajs.com/api/admin#price-lists).
+ * This class is used to send requests to [Admin Price List API Routes](https://docs.medusajs.com/api/admin#price-lists). All its method
+ * are available in the JS Client under the `medusa.admin.priceLists` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

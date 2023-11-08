@@ -7,7 +7,8 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Product Tag API Routes](https://docs.medusajs.com/api/admin#product-tags).
+ * This class is used to send requests to [Admin Product Tag API Routes](https://docs.medusajs.com/api/admin#product-tags). All its method
+ * are available in the JS Client under the `medusa.admin.productTags` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

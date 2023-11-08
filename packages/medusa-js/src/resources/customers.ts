@@ -14,7 +14,8 @@ import BaseResource from "./base"
 import PaymentMethodsResource from "./payment-methods"
 
 /**
- * This class is used to send requests to [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers).
+ * This class is used to send requests to [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers). All its method
+ * are available in the JS Client under the `medusa.customers` property.
  * 
  * A customer can register and manage their information such as addresses, orders, payment methods, and more.
  * 

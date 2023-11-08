@@ -7,7 +7,8 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to [Store Product Tag API Routes](https://docs.medusajs.com/api/store#product-tags).
+ * This class is used to send requests to [Store Product Tag API Routes](https://docs.medusajs.com/api/store#product-tags). All its method
+ * are available in the JS Client under the `medusa.productTags` property.
  * 
  * Product tags are string values that can be used to filter products by.
  * Products can have more than one tag, and products can share tags.

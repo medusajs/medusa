@@ -6,7 +6,8 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to [Store Order Edits API Routes](https://docs.medusajs.com/api/store#order-edits).
+ * This class is used to send requests to [Store Order Edits API Routes](https://docs.medusajs.com/api/store#order-edits). All its method
+ * are available in the JS Client under the `medusa.orderEdits` property.
  * 
  * Order edits are changes made to items in an order such as adding, updating their quantity, or deleting them. Order edits are created by the admin.
  * A customer can review order edit requests created by an admin and confirm or decline them.

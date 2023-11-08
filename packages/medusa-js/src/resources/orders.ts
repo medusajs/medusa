@@ -9,7 +9,8 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to [Store Order API Routes](https://docs.medusajs.com/api/store#orders).
+ * This class is used to send requests to [Store Order API Routes](https://docs.medusajs.com/api/store#orders). All its method
+ * are available in the JS Client under the `medusa.orders` property.
  * 
  * Orders are purchases made by customers, typically through a storefront.
  * Orders are placed and created using {@link CartsResource}. The methods in this class allow retrieving and claiming orders.

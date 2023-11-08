@@ -7,7 +7,8 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to Line Item API Routes part of the [Store Cart API Routes](https://docs.medusajs.com/api/store#carts).
+ * This class is used to send requests to Line Item API Routes part of the [Store Cart API Routes](https://docs.medusajs.com/api/store#carts). All its method
+ * are available in the JS Client under the `medusa.carts.lineItems` property.
  */
 class LineItemsResource extends BaseResource {
   /**

@@ -12,7 +12,8 @@ import BaseResource from "./base"
 import LineItemsResource from "./line-items"
 
 /**
- * This class is used to send requests to [Store Cart API Routes](https://docs.medusajs.com/api/store#carts).
+ * This class is used to send requests to [Store Cart API Routes](https://docs.medusajs.com/api/store#carts). All its method
+ * are available in the JS Client under the `medusa.carts` property.
  * 
  * A cart is a virtual shopping bag that customers can use to add items they want to purchase.
  * A cart is then used to checkout and place an order.

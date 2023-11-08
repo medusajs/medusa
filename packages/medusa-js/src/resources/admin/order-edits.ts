@@ -15,7 +15,8 @@ import BaseResource from "../base"
 import qs from "qs"
 
 /**
- * This class is used to send requests to [Admin Order Edit API Routes](https://docs.medusajs.com/api/admin#order-edits).
+ * This class is used to send requests to [Admin Order Edit API Routes](https://docs.medusajs.com/api/admin#order-edits). All its method
+ * are available in the JS Client under the `medusa.admin.orderEdits` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

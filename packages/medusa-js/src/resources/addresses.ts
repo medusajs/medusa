@@ -7,7 +7,8 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to Address API Routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers).
+ * This class is used to send requests to Address API Routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers). All its method
+ * are available in the JS Client under the `medusa.customers.addresses` property.
  * 
  * All methods in this class require {@link AuthResource.authenticate | customer authentication}.
  */

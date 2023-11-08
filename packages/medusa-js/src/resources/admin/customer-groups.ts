@@ -17,7 +17,8 @@ import BaseResource from "../base"
 import { ResponsePromise } from "../.."
 
 /**
- * This class is used to send requests to [Admin Customer Group API Routes](https://docs.medusajs.com/api/admin#customer-groups).
+ * This class is used to send requests to [Admin Customer Group API Routes](https://docs.medusajs.com/api/admin#customer-groups). All its method
+ * are available in the JS Client under the `medusa.admin.customerGroups` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

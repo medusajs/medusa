@@ -9,7 +9,8 @@ import { AdminCreateUploadPayload, ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Upload API Routes](https://docs.medusajs.com/api/admin#uploads).
+ * This class is used to send requests to [Admin Upload API Routes](https://docs.medusajs.com/api/admin#uploads). All its method
+ * are available in the JS Client under the `medusa.admin.uploads` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
@@ -20,7 +21,7 @@ import BaseResource from "../base"
 class AdminUploadsResource extends BaseResource {
   /**
    * @ignore
-   * @privateRemark No need to include this in the generated documentation.
+   * @privateRemarks No need to include this in the generated documentation.
    */
   private headers = {
     "Content-Type": "multipart/form-data",

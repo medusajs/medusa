@@ -7,7 +7,8 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to [Store Shipping Option API Routes](https://docs.medusajs.com/api/store#shipping-options).
+ * This class is used to send requests to [Store Shipping Option API Routes](https://docs.medusajs.com/api/store#shipping-options). All its method
+ * are available in the JS Client under the `medusa.shippingOptions` property.
  * 
  * A shipping option is used to define the available shipping methods during checkout or when creating a return.
  * 

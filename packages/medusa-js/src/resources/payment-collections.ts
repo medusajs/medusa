@@ -11,7 +11,8 @@ import BaseResource from "./base"
 import qs from "qs"
 
 /**
- * This class is used to send requests to [Store Payment Collection API Routes](https://docs.medusajs.com/api/store#payment-collections).
+ * This class is used to send requests to [Store Payment Collection API Routes](https://docs.medusajs.com/api/store#payment-collections). All its method
+ * are available in the JS Client under the `medusa.paymentCollections` property.
  * 
  * A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
  */

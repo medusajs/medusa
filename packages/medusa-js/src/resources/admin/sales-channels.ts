@@ -15,7 +15,8 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Sales Channel API Routes](https://docs.medusajs.com/api/admin#sales-channels).
+ * This class is used to send requests to [Admin Sales Channel API Routes](https://docs.medusajs.com/api/admin#sales-channels). All its method
+ * are available in the JS Client under the `medusa.admin.salesChannels` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

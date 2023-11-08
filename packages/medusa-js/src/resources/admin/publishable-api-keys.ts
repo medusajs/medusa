@@ -17,7 +17,8 @@ import BaseResource from "../base"
 import { AdminPublishableApiKeysListSalesChannelsRes } from "@medusajs/medusa"
 
 /**
- * This class is used to send requests to [Admin Publishable API Key API Routes](https://docs.medusajs.com/api/admin#publishable-api-keys).
+ * This class is used to send requests to [Admin Publishable API Key API Routes](https://docs.medusajs.com/api/admin#publishable-api-keys). All its method
+ * are available in the JS Client under the `medusa.admin.publishableApiKeys` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
@@ -32,7 +33,7 @@ class AdminPublishableApiKeyResource extends BaseResource {
   /**
    * Retrieve a publishable API key's details.
    * @param {string} id - The ID of the publishable API key.
-   * @privateRemark The query parameter serves no purpose, so will leave this without a description until it's removed/fixed.
+   * @privateRemarks The query parameter serves no purpose, so will leave this without a description until it's removed/fixed.
    * @param {Record<string, any>} query
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminPublishableApiKeysRes>} Resolves to the publishable API key's details.

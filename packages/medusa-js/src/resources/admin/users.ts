@@ -13,7 +13,8 @@ import {
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin User API Routes](https://docs.medusajs.com/api/admin#users).
+ * This class is used to send requests to [Admin User API Routes](https://docs.medusajs.com/api/admin#users). All its method
+ * are available in the JS Client under the `medusa.admin.users` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

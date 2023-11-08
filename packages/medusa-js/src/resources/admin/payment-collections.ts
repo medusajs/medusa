@@ -9,7 +9,8 @@ import BaseResource from "../base"
 import qs from "qs"
 
 /**
- * This class is used to send requests to [Admin Payment Collection API Routes](https://docs.medusajs.com/api/admin#payment-collections).
+ * This class is used to send requests to [Admin Payment Collection API Routes](https://docs.medusajs.com/api/admin#payment-collections). All its method
+ * are available in the JS Client under the `medusa.admin.paymentCollections` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

@@ -9,7 +9,8 @@ import { ResponsePromise } from "../.."
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Notification API Routes](https://docs.medusajs.com/api/admin#notifications).
+ * This class is used to send requests to [Admin Notification API Routes](https://docs.medusajs.com/api/admin#notifications). All its method
+ * are available in the JS Client under the `medusa.admin.notifications` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

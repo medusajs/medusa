@@ -9,7 +9,8 @@ import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 /**
- * This class is used to send requests to [Store Product Category API Routes](https://docs.medusajs.com/api/store#product-categories_getproductcategories).
+ * This class is used to send requests to [Store Product Category API Routes](https://docs.medusajs.com/api/store#product-categories_getproductcategories). All its method
+ * are available in the JS Client under the `medusa.productCategories` property.
  * 
  * Products can be categoriezed into categories. A product can be associated more than one category.
  * Using the methods in this class, you can list or retrieve a category's details and products.

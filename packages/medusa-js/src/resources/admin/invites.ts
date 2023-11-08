@@ -7,7 +7,8 @@ import { AdminPostInvitesPayload, ResponsePromise } from "../.."
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Invite API Routes](https://docs.medusajs.com/api/admin#invites).
+ * This class is used to send requests to [Admin Invite API Routes](https://docs.medusajs.com/api/admin#invites). All its method
+ * are available in the JS Client under the `medusa.admin.invites` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 

@@ -9,7 +9,8 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 /**
- * This class is used to send requests to [Admin Payment API Routes](https://docs.medusajs.com/api/admin#payments).
+ * This class is used to send requests to [Admin Payment API Routes](https://docs.medusajs.com/api/admin#payments). All its method
+ * are available in the JS Client under the `medusa.admin.payments` property.
  * 
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
  * 
