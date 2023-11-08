@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-// const typedocConfig = require("typedoc/typedoc.json")
+const path = require("path")
+
+const pathPrefix = path.join(__dirname, "..", "..", "..")
 
 /** @type {import('typedoc').TypeDocOptions} */
 module.exports = {
@@ -7,6 +9,11 @@ module.exports = {
   plugin: ["typedoc-plugin-markdown-medusa"],
   readme: "none",
   excludeTags: "@privateRemark",
+  eslintPathName: path.join(
+    pathPrefix,
+    "www/packages/eslint-config-docs/content.js"
+  ),
+  pluginsResolvePath: path.join(pathPrefix, "www"),
   // Uncomment this when debugging
   // showConfig: true,
 }
