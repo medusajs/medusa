@@ -18,6 +18,7 @@ export interface PriceSetMoneyAmountDTO {
   id: string
   title?: string
   price_set?: PriceSetDTO
+  price_list?: PriceListDTO
   price_set_id?: string
   price_rules?: PriceRuleDTO[]
   money_amount?: MoneyAmountDTO
@@ -39,9 +40,9 @@ export interface CreatePriceSetMoneyAmountDTO {
 
 /**
  * @interface
- * 
+ *
  * Filters to apply on price set money amounts.
- * 
+ *
  * @prop id - The IDs to filter the price set money amounts by.
  * @prop price_set_id - The IDs to filter the price set money amount's associated price set.
  */

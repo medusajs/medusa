@@ -5,7 +5,7 @@ import {
   RemoteQueryFunction,
 } from "@medusajs/types"
 
-import { FlagRouter, removeNullish, promiseAll } from "@medusajs/utils"
+import { FlagRouter, promiseAll, removeNullish } from "@medusajs/utils"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
 
 import {
@@ -686,6 +686,7 @@ class PricingService extends TransactionBaseService {
         {
           relations: [
             "money_amount",
+            "price_list",
             "price_set",
             "price_rules",
             "price_rules.rule_type",
@@ -709,6 +710,7 @@ class PricingService extends TransactionBaseService {
         const moneyAmount = {
           ...priceSetMoneyAmount.money_amount,
           region_id: null as null | string,
+          price_list_id: priceSetMoneyAmount.price_list?.id,
         }
 
         if (regionId) {

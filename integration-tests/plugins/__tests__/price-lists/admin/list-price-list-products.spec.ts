@@ -129,7 +129,7 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id/products", () =>
 
     const api = useApi() as any
 
-    const response = await api.get(
+    let response = await api.get(
       `/admin/price-lists/${priceList.id}/products`,
       adminHeaders
     )
@@ -191,6 +191,44 @@ describe("[Product & Pricing Module] GET /admin/price-lists/:id/products", () =>
             deleted_at: null,
           }),
         ],
+      }),
+    ])
+
+    response = await api.get(
+      `/admin/products?price_list_id[]=${priceList.id}`,
+      adminHeaders
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.count).toEqual(1)
+    expect(response.data.products).toEqual([
+      expect.objectContaining({
+        id: expect.any(String),
+        title: expect.any(String),
+        handle: expect.any(String),
+        subtitle: null,
+        description: null,
+        is_giftcard: false,
+        status: "draft",
+        thumbnail: null,
+        weight: null,
+        length: null,
+        height: null,
+        width: null,
+        origin_country: null,
+        hs_code: null,
+        mid_code: null,
+        material: null,
+        collection_id: null,
+        collection: null,
+        type_id: null,
+        type: null,
+        discountable: true,
+        external_id: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        deleted_at: null,
+        metadata: null,
       }),
     ])
   })
