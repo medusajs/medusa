@@ -119,7 +119,11 @@ describe("[Product & Pricing Module] DELETE /admin/price-lists/:id", () => {
     })
     expect(psmas.length).toEqual(1)
 
-    // TODO delete here
+    const deleteRes = await api.delete(
+      `/admin/price-lists/${priceListId}/variants/${variant.id}/prices`,
+      adminHeaders
+    )
+    expect(deleteRes.status).toEqual(200)
 
     psmas = await pricingModuleService.listPriceSetMoneyAmounts({
       price_list_id: [priceListId],

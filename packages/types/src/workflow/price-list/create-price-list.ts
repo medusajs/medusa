@@ -45,6 +45,11 @@ export interface RemovePriceListProductsWorkflowInputDTO {
   priceListId: string
 }
 
+export interface RemovePriceListVariantsWorkflowInputDTO {
+  variantIds: string[]
+  priceListId: string
+}
+
 export interface CreatePriceListWorkflowDTO {
   title?: string
   name: string
