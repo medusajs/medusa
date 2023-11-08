@@ -1,5 +1,5 @@
-import { SearchUtils, upperCaseFirst } from "@medusajs/utils"
-import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
+import { promiseAll, SearchUtils, upperCaseFirst } from "@medusajs/utils"
+import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import { Express } from "express"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"
@@ -73,13 +73,13 @@ export default async ({
 }: Options): Promise<void> => {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
 
-  await Promise.all(
+  await promiseAll(
     resolved.map(
       async (pluginDetails) => await runSetupFunctions(pluginDetails)
     )
   )
 
-  await Promise.all(
+  await promiseAll(
     resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
@@ -97,7 +97,7 @@ export default async ({
     })
   )
 
-  await Promise.all(
+  await promiseAll(
     resolved.map(async (pluginDetails) => runLoaders(pluginDetails, container))
   )
 
@@ -152,7 +152,7 @@ export async function registerPluginModels({
     getResolvedPlugins(rootDirectory, configModule, extensionDirectoryPath) ||
     []
 
-  await Promise.all(
+  await promiseAll(
     resolved.map(async (pluginDetails) => {
       registerModels(pluginDetails, container, rootDirectory, pathGlob)
     })
@@ -167,7 +167,7 @@ async function runLoaders(
     `${pluginDetails.resolve}/loaders/[!__]*.js`,
     {}
   )
-  await Promise.all(
+  await promiseAll(
     loaderFiles.map(async (loader) => {
       try {
         const module = require(loader).default
@@ -431,7 +431,7 @@ export async function registerServices(
   container: MedusaContainer
 ): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*.js`, {})
-  await Promise.all(
+  await promiseAll(
     files.map(async (fn) => {
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
@@ -680,7 +680,7 @@ function registerModels(
  */
 async function runSetupFunctions(pluginDetails: PluginDetails): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/setup/*.js`, {})
-  await Promise.all(
+  await promiseAll(
     files.map(async (fn) => {
       const loaded = require(fn).default
       try {

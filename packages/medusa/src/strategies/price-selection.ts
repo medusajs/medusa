@@ -6,8 +6,8 @@ import {
 } from "../interfaces"
 
 import { ICacheService } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
+import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -58,7 +58,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
     const variantPricesMap = new Map<string, PriceSelectionResult>()
 
     if (!context.ignore_cache) {
-      const cacheHits = await Promise.all(
+      const cacheHits = await promiseAll(
         [...cacheKeysMap].map(async ([, cacheKey]) => {
           return await this.cacheService_.get<PriceSelectionResult>(cacheKey)
         })
@@ -93,7 +93,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       results = await this.calculateVariantPrice_old(nonCachedData, context)
     }
 
-    await Promise.all(
+    await promiseAll(
       [...results].map(async ([variantId, prices]) => {
         variantPricesMap.set(variantId, prices)
         if (!context.ignore_cache) {
@@ -284,7 +284,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   }
 
   public async onVariantsPricesUpdate(variantIds: string[]): Promise<void> {
-    await Promise.all(
+    await promiseAll(
       variantIds.map(
         async (id: string) => await this.cacheService_.invalidate(`ps:${id}:*`)
       )

@@ -6,8 +6,6 @@ import {
   ModulesSdkUtils,
   retrieveEntity,
 } from "@medusajs/utils"
-
-import { shouldForceTransaction } from "../utils"
 import { ProductCollectionRepository } from "../repositories"
 
 import { ProductCollection } from "@models"
@@ -85,10 +83,7 @@ export default class ProductCollectionService<
     return queryOptions
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCollectionRepository_"
-  )
+  @InjectTransactionManager("productCollectionRepository_")
   async create(
     data: ProductTypes.CreateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -98,10 +93,7 @@ export default class ProductCollectionService<
     ).create(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCollectionRepository_"
-  )
+  @InjectTransactionManager("productCollectionRepository_")
   async update(
     data: ProductTypes.UpdateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -111,10 +103,7 @@ export default class ProductCollectionService<
     ).update(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "productCollectionRepository_"
-  )
+  @InjectTransactionManager("productCollectionRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}

@@ -2,6 +2,7 @@ import { FindOperator, FindOptionsWhere, ILike, In } from "typeorm"
 import { PriceList, ProductVariantMoneyAmount } from "../models"
 import { ExtendedFindConfig } from "../types/common"
 import { dataSource } from "../loaders/database"
+import { promiseAll } from "@medusajs/utils"
 
 export const PriceListRepository = dataSource.getRepository(PriceList).extend({
   async listAndCount(
@@ -52,7 +53,7 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
       ]
     }
 
-    return await Promise.all([this.find(query_), this.count(query_)])
+    return await promiseAll([this.find(query_), this.count(query_)])
   },
 
   async listPriceListsVariantIdsMap(

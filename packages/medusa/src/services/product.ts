@@ -3,6 +3,7 @@ import {
   buildSelects,
   FlagRouter,
   objectToStringPath,
+  promiseAll,
 } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
@@ -494,7 +495,7 @@ class ProductService extends TransactionBaseService {
 
       product = await productRepo.save(product)
 
-      product.options = await Promise.all(
+      product.options = await promiseAll(
         (options ?? []).map(async (option) => {
           const res = optionRepo.create({
             ...option,
@@ -658,7 +659,7 @@ class ProductService extends TransactionBaseService {
         }
       }
 
-      await Promise.all(promises)
+      await promiseAll(promises)
 
       const result = await productRepo.save(product)
 
@@ -924,7 +925,7 @@ class ProductService extends TransactionBaseService {
           (o) => o.option_id === optionId
         )?.value
 
-        const equalsFirst = await Promise.all(
+        const equalsFirst = await promiseAll(
           product.variants.map(async (v) => {
             const option = v.options.find((o) => o.option_id === optionId)
             return option?.value === valueToMatch
