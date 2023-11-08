@@ -6,7 +6,7 @@ import {
 } from "../../../../services"
 
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, promiseAll } from "@medusajs/utils"
 import { FindParams } from "../../../../types/common"
 import { defaultAdminProductRemoteQueryObject } from "./index"
 
@@ -114,7 +114,7 @@ export default async (req, res) => {
       )
     )
   }
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({ product })
 }

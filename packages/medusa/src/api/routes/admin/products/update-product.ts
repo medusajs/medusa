@@ -1,6 +1,6 @@
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { FlagRouter, MedusaError } from "@medusajs/utils"
-import { Workflows, updateProducts } from "@medusajs/workflows"
+import { FlagRouter, MedusaError, promiseAll } from "@medusajs/utils"
+import { updateProducts, Workflows } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -272,7 +272,7 @@ export default async (req, res) => {
           )
           allVariantTransactions.push(varTransaction)
         } catch (e) {
-          await Promise.all(
+          await promiseAll(
             allVariantTransactions.map(async (transaction) => {
               await revertVariantTransaction(
                 transactionDependencies,

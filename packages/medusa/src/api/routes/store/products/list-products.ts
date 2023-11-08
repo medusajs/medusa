@@ -25,6 +25,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { defaultStoreProductRemoteQueryObject } from "./index"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/products
@@ -277,7 +278,7 @@ export default async (req, res) => {
     )
   }
 
-  const [[rawProducts, count], cart] = await Promise.all(promises)
+  const [[rawProducts, count], cart] = await promiseAll(promises)
 
   if (validated.cart_id) {
     regionId = cart.region_id
@@ -320,7 +321,7 @@ export default async (req, res) => {
 
   // We can run them concurrently as the new properties are assigned to the references
   // of the appropriate entity
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({
     products: cleanResponseData(computedProducts, req.allowedProperties || []),

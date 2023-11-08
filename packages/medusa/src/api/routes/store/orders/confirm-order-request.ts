@@ -5,6 +5,7 @@ import {
   OrderService,
   TokenService,
 } from "../../../../services"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [post] /store/orders/customer/confirm
@@ -96,7 +97,7 @@ export default async (req, res) => {
 
     const orders = await orderService.list({ id: orderIds })
 
-    await Promise.all(
+    await promiseAll(
       orders.map(async (order) => {
         await orderSerivce
           .withTransaction(transactionManager)

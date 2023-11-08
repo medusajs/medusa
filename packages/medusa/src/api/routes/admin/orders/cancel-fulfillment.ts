@@ -10,6 +10,7 @@ import { EntityManager } from "typeorm"
 import { Fulfillment } from "../../../../models"
 import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [post] /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel
@@ -120,7 +121,7 @@ export const adjustInventoryForCancelledFulfillment = async (
   }
 ) => {
   const { productVariantInventoryService } = context
-  await Promise.all(
+  await promiseAll(
     fulfillment.items.map(async ({ item, quantity }) => {
       if (item.variant_id) {
         await productVariantInventoryService.adjustInventory(

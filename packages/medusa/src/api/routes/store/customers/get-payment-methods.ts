@@ -2,6 +2,7 @@ import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import PaymentProviderService from "../../../../services/payment-provider"
 import { PaymentProvider } from "../../../../models"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/customers/me/payment-methods
@@ -68,7 +69,7 @@ export default async (req, res) => {
   const paymentProviders: PaymentProvider[] =
     await paymentProviderService.list()
 
-  const methods = await Promise.all(
+  const methods = await promiseAll(
     paymentProviders.map(async (paymentProvider: PaymentProvider) => {
       const provider = paymentProviderService.retrieveProvider(
         paymentProvider.id

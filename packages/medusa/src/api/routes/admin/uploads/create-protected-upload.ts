@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import fs from "fs"
 import { IFileService } from "../../../../interfaces"
 
@@ -64,7 +65,7 @@ import { IFileService } from "../../../../interfaces"
 export default async (req, res) => {
   const fileService: IFileService = req.scope.resolve("fileService")
 
-  const result = await Promise.all(
+  const result = await promiseAll(
     req.files.map(async (f) => {
       return fileService.uploadProtected(f).then((result) => {
         fs.unlinkSync(f.path)

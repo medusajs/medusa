@@ -1,8 +1,8 @@
 import {
   DateComparisonOperator,
+  extendedFindParamsMixin,
   NumericalComparisonOperator,
   StringComparisonOperator,
-  extendedFindParamsMixin,
 } from "../../../../types/common"
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
@@ -14,6 +14,7 @@ import { LineItemService } from "../../../../services"
 import { Type } from "class-transformer"
 import { joinInventoryItems } from "./utils/join-inventory-items"
 import { joinLineItems } from "./utils/join-line-items"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/reservations
@@ -198,7 +199,7 @@ export default async (req: Request, res: Response) => {
     promises.push(joinLineItems(reservations, lineItemService))
   }
 
-  await Promise.all(promises)
+  await promiseAll(promises)
 
   const { limit, offset } = req.validatedQuery
 
