@@ -534,6 +534,9 @@ export class RoutesLoader {
     )
   }
 
+  /**
+   * Apply the most specific body parser middleware to the router
+   */
   applyBodyParserMiddleware(path: string, method: RouteVerb): void {
     const middlewareDescriptor = this.globalMiddlewaresDescriptor
 
@@ -563,44 +566,13 @@ export class RoutesLoader {
     return
   }
 
-  applyErrorHandlerMiddleware(): void {
-    const middlewareDescriptor = this.globalMiddlewaresDescriptor
-
-    if (!middlewareDescriptor) {
-      return
-    }
-
-    const errorHandlerFn = middlewareDescriptor.config?.errorHandler
-
-    /**
-     * If the user has opted out of the error handler then return
-     */
-    if (errorHandlerFn === false) {
-      return
-    }
-
-    /**
-     * If the user has provided a custom error handler then use it
-     */
-    if (errorHandlerFn) {
-      this.router.use(errorHandlerFn)
-      return
-    }
-
-    /**
-     * If the user has not provided a custom error handler then use the
-     * default one.
-     */
-    this.router.use(errorHandler())
-  }
-
-  protected async registerRoutes(): Promise<void> {
-    const middlewareDescriptor = this.globalMiddlewaresDescriptor
-
-    const shouldWrapHandler = middlewareDescriptor?.config
-      ? middlewareDescriptor.config.errorHandler !== false
-      : true
-
+  /**
+   * Apply the route specific middlewares to the router,
+   * this includes the cors, authentication and
+   * body parsing. These are applied first to ensure
+   * that they are applied before any other middleware.
+   */
+  applyRouteSpecificMiddlewares(): void {
     const prioritizedRoutes = prioritize([...this.routesMap.values()])
 
     for (const descriptor of prioritizedRoutes) {
@@ -667,18 +639,72 @@ export class RoutesLoader {
       }
 
       for (const route of routes) {
+        /**
+         * Apply the body parser middleware if the route
+         * has not opted out of it.
+         */
+        this.applyBodyParserMiddleware(descriptor.route, route.method!)
+      }
+    }
+  }
+
+  /**
+   * Apply the error handler middleware to the router
+   */
+  applyErrorHandlerMiddleware(): void {
+    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+
+    if (!middlewareDescriptor) {
+      return
+    }
+
+    const errorHandlerFn = middlewareDescriptor.config?.errorHandler
+
+    /**
+     * If the user has opted out of the error handler then return
+     */
+    if (errorHandlerFn === false) {
+      return
+    }
+
+    /**
+     * If the user has provided a custom error handler then use it
+     */
+    if (errorHandlerFn) {
+      this.router.use(errorHandlerFn)
+      return
+    }
+
+    /**
+     * If the user has not provided a custom error handler then use the
+     * default one.
+     */
+    this.router.use(errorHandler())
+  }
+
+  protected async registerRoutes(): Promise<void> {
+    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+
+    const shouldWrapHandler = middlewareDescriptor?.config
+      ? middlewareDescriptor.config.errorHandler !== false
+      : true
+
+    const prioritizedRoutes = prioritize([...this.routesMap.values()])
+
+    for (const descriptor of prioritizedRoutes) {
+      if (!descriptor.config?.routes?.length) {
+        continue
+      }
+
+      const routes = descriptor.config.routes
+
+      for (const route of routes) {
         log({
           activityId: this.activityId,
           message: `Registering route [${route.method?.toUpperCase()}] - ${
             descriptor.route
           }`,
         })
-
-        /**
-         * Apply the body parser middleware if the route
-         * has not opted out of it.
-         */
-        this.applyBodyParserMiddleware(descriptor.route, route.method!)
 
         /**
          * If the user hasn't opted out of error handling then
@@ -751,6 +777,8 @@ export class RoutesLoader {
 
       await this.createRoutesMap({ dirPath: this.rootDir })
       await this.createRoutesConfig()
+
+      this.applyRouteSpecificMiddlewares()
 
       await this.registerMiddlewares()
       await this.registerRoutes()
