@@ -7927,6 +7927,35 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/translation@workspace:packages/translation":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/translation@workspace:packages/translation"
+  dependencies:
+    "@medusajs/admin": ^7.1.3
+    "@medusajs/medusa": ^1.17.0
+    "@tanstack/react-table": ^8.7.9
+    awilix: ^8.0.1
+    body-parser: ^1.19.0
+    cross-env: ^5.2.1
+    express: ^4.17.1
+    jest: ^25.5.4
+    medusa-core-utils: ^1.2.0
+    medusa-react: ^9.0.6
+    rimraf: ^5.0.1
+    typeorm: 0.3.17
+    typescript: ^4.9.5
+  peerDependencies:
+    "@medusajs/medusa": ^1.12.0
+    "@tanstack/react-table": ^8.7.9
+    medusa-react: ^9.0.0
+  peerDependenciesMeta:
+    "@tanstack/react-table":
+      optional: true
+    medusa-react:
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/types@^1.10.0, @medusajs/types@^1.11.4, @medusajs/types@^1.11.5, @medusajs/types@^1.8.10, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
@@ -47687,7 +47716,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.16":
+"typeorm@npm:0.3.17, typeorm@npm:^0.3.16":
   version: 0.3.17
   resolution: "typeorm@npm:0.3.17"
   dependencies:
