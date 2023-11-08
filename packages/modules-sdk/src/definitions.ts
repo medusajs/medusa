@@ -124,7 +124,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
     [Modules.SEARCH]: {
       key: Modules.SEARCH,
       registrationName: ModuleRegistrationName.SEARCH,
-      defaultPackage: MODULE_PACKAGE_NAMES[Modules.SEARCH],
+      defaultPackage: false,
       label: "SearchModuleService",
       isQueryable: false,
       dependencies: ["logger", ModuleRegistrationName.EVENT_BUS, "remoteQuery"],
