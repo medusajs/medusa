@@ -26,7 +26,7 @@ export type WorkflowResult<TResult = unknown> = {
 }
 
 export const exportWorkflow = <TData = unknown, TResult = unknown>(
-  workflowId: Workflows,
+  workflowId: Workflows | string,
   defaultResult?: string,
   dataPreparation?: (data: TData) => Promise<unknown>
 ) => {
