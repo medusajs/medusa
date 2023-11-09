@@ -8,7 +8,7 @@ describe("Workflow composer", function () {
 
   afterAll(async () => {})
 
-  it("should compose a new workflow and execute it", async () => {
+  it.only("should compose a new workflow and execute it", async () => {
     const step1 = createStep("step1", (input) => {
       const ret = "return from 1 + input = " + JSON.stringify(input)
       console.log(ret)
@@ -28,6 +28,14 @@ describe("Workflow composer", function () {
       const ret = {
         obj: "return from 3",
         args: [param, other],
+      }
+      console.log(ret)
+      return ret
+    })
+
+    const step4 = createStep("step4", () => {
+      const ret = {
+        obj: "return from 4",
       }
       console.log(ret)
       return ret

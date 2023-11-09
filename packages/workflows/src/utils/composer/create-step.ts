@@ -3,7 +3,9 @@ export function createStep(
   invokeFn: Function,
   compensateFn?: Function
 ) {
-  return function (this: any, ...otherStepInput) {
+  const stepName = name ?? invokeFn.name
+
+  const returnFn = function (this: any, ...otherStepInput) {
     const step = global.step
     return step(function () {
       // @ts-ignore
@@ -13,7 +15,6 @@ export function createStep(
         )
       }
 
-      const stepName = name ?? invokeFn.name
       const handler = {
         invoke: async (transactionContext) => {
           const { invoke, payload, container } = transactionContext
@@ -55,4 +56,8 @@ export function createStep(
       }
     })
   }
+
+  returnFn.__step__ = stepName
+
+  return returnFn
 }
